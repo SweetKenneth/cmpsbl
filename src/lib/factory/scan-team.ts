@@ -11,6 +11,7 @@ import type { RateLimitDecision } from '@/lib/substrate/adaptive-rate-limit';
 import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
+import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 
@@ -134,6 +135,20 @@ function buildVerticalCatalog(): {
     return { spine: [...SPINE_PRIMITIVES], expansion: [...roboEngines, ...roboAgents] };
   }
 
+  if (vertical === 'quantum') {
+    const qEngines = getQuantumEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const qAgents = getQuantumAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...qEngines, ...qAgents] };
+  }
+
   // Dynamic verticals — auto-discovered from the factory engine
   if (vertical) {
     const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
@@ -229,6 +244,22 @@ const CAPABILITY_REGISTRY: CapabilityDefinition[] = [
   { id: 'dark-web-intelligence', name: 'Dark Web Intelligence Monitor', description: 'Monitors underground forums, paste sites, and threat actor communications. Detects credential leaks, brand abuse, and emerging threat campaigns.', archetype: 'Passive', sourcePrimitives: ['nocturne', 'harvest', 'sentinel'], usageExample: "import { DarkWebIntel } from '@cmpsbl/cyber';\nDarkWebIntel.monitor({ brand: 'acme', alertThreshold: 'high' });", minComplexity: 50 },
   { id: 'compliance-continuous-validator', name: 'Compliance Continuous Validator', description: 'Continuously validates security postures against SOC2, ISO 27001, NIST, and CIS benchmarks. Generates gap analysis and remediation priorities.', archetype: 'Hybrid', sourcePrimitives: ['ironclad', 'governance', 'treaty'], usageExample: "import { ComplianceValidator } from '@cmpsbl/cyber';\nconst report = ComplianceValidator.audit({ frameworks: ['SOC2', 'NIST'] });", minComplexity: 50 },
   { id: 'supply-chain-integrity', name: 'Supply Chain Integrity Monitor', description: 'Audits dependencies, generates SBOMs, detects compromised packages, typosquatting, and validates software provenance chains.', archetype: 'Hybrid', sourcePrimitives: ['bulwark', 'immunity', 'engineer'], usageExample: "import { SupplyChainMonitor } from '@cmpsbl/cyber';\nconst sbom = SupplyChainMonitor.audit({ depth: 'transitive' });", minComplexity: 30 },
+
+  // ═══ QUANTUM VERTICAL — Quantum physics-specific capabilities ═══
+  { id: 'quantum-circuit-optimizer', name: 'Quantum Circuit Optimizer', description: 'Transpiles and optimizes quantum gate sequences for target hardware. Reduces gate depth, minimizes CNOT count, and applies noise-aware routing.', archetype: 'Active', sourcePrimitives: ['qubit', 'entangle', 'brain'], usageExample: "import { CircuitOptimizer } from '@cmpsbl/quantum';\nCircuitOptimizer.transpile({ backend: 'ibm_eagle', optimization: 3 });", minComplexity: 50 },
+  { id: 'particle-collision-analyzer', name: 'Particle Collision Analyzer', description: 'Reconstructs collision events from detector data, clusters jets, identifies decay products, and computes invariant mass distributions.', archetype: 'Active', sourcePrimitives: ['hadron', 'muon', 'meson'], usageExample: "import { CollisionAnalyzer } from '@cmpsbl/quantum';\nconst events = CollisionAnalyzer.reconstruct({ cms_energy: 13000 });", minComplexity: 80 },
+  { id: 'entanglement-verifier', name: 'Entanglement Verification Protocol', description: 'Performs Bell inequality tests, computes concurrence and entanglement entropy, and certifies quantum correlations for QKD channels.', archetype: 'Hybrid', sourcePrimitives: ['entangle', 'photon', 'oracle'], usageExample: "import { EntanglementVerifier } from '@cmpsbl/quantum';\nconst result = EntanglementVerifier.bellTest({ pairs: 1000 });", minComplexity: 50 },
+  { id: 'wavefunction-solver', name: 'Wavefunction Evolution Solver', description: 'Numerically solves time-dependent Schrödinger and Dirac equations for multi-particle systems using split-operator and Crank-Nicolson methods.', archetype: 'Active', sourcePrimitives: ['fermion', 'lattice', 'brain'], usageExample: "import { WaveSolver } from '@cmpsbl/quantum';\nWaveSolver.evolve({ potential: V, dt: 1e-15 });", minComplexity: 100 },
+  { id: 'spectral-line-identifier', name: 'Spectral Line Identifier', description: 'Matches emission and absorption spectra against atomic databases, identifies elements, and computes Doppler shifts for redshift analysis.', archetype: 'Passive', sourcePrimitives: ['prism', 'photon', 'observer'], usageExample: "import { SpectralID } from '@cmpsbl/quantum';\nconst elements = SpectralID.match(spectrum, { db: 'NIST' });", minComplexity: 30 },
+  { id: 'fusion-reactor-modeler', name: 'Fusion Reactor Modeler', description: 'Simulates tokamak plasma confinement, computes Lawson criterion parameters, models instabilities, and optimizes magnetic field configurations.', archetype: 'Active', sourcePrimitives: ['plasma', 'cryogen', 'engineer'], usageExample: "import { FusionModeler } from '@cmpsbl/quantum';\nFusionModeler.simulate({ geometry: 'toroidal', B_field: 5.3 });", minComplexity: 100 },
+  { id: 'quantum-error-correction', name: 'Quantum Error Correction Engine', description: 'Implements surface codes, Steane codes, and Shor codes. Monitors syndrome measurements and applies real-time correction cycles.', archetype: 'Active', sourcePrimitives: ['qubit', 'failsafe', 'defense'], usageExample: "import { QEC } from '@cmpsbl/quantum';\nQEC.protect({ code: 'surface', distance: 3 });", minComplexity: 80 },
+  { id: 'qcd-color-simulator', name: 'QCD Color Charge Simulator', description: 'Lattice QCD Monte Carlo simulation for gluon exchange, asymptotic freedom verification, and hadron mass computation from first principles.', archetype: 'Active', sourcePrimitives: ['gluon', 'meson', 'hadron'], usageExample: "import { QCDSim } from '@cmpsbl/quantum';\nconst mass = QCDSim.lattice({ quarks: ['u', 'd'], beta: 6.0 });", minComplexity: 100 },
+  { id: 'gravitational-wave-matcher', name: 'Gravitational Wave Template Matcher', description: 'Generates and cross-correlates binary merger waveform templates against detector strain data for LIGO/Virgo signal identification.', archetype: 'Hybrid', sourcePrimitives: ['graviton', 'oracle', 'memory'], usageExample: "import { GWMatcher } from '@cmpsbl/quantum';\nconst match = GWMatcher.correlate(strainData, { snrThreshold: 8 });", minComplexity: 80 },
+  { id: 'neutrino-oscillation-predictor', name: 'Neutrino Oscillation Predictor', description: 'Computes PMNS matrix parameters, predicts flavor transition probabilities over baseline distances, and models MSW matter effects.', archetype: 'Passive', sourcePrimitives: ['neutrino', 'boson', 'oracle'], usageExample: "import { NeutrinoOsc } from '@cmpsbl/quantum';\nconst prob = NeutrinoOsc.predict({ flavor: 'mu', baseline_km: 295 });", minComplexity: 50 },
+  { id: 'cryogenic-decoherence-shield', name: 'Cryogenic Decoherence Shield', description: 'Models T1/T2 relaxation times, thermal photon flux, and Johnson-Nyquist noise to optimize dilution refrigerator staging for qubit coherence.', archetype: 'Hybrid', sourcePrimitives: ['cryogen', 'qubit', 'defense'], usageExample: "import { DecoherenceShield } from '@cmpsbl/quantum';\nDecoherenceShield.optimize({ stages: 4, base_temp_mK: 15 });", minComplexity: 50 },
+  { id: 'tachyonic-causality-analyzer', name: 'Tachyonic Causality Analyzer', description: 'Explores Lorentz invariance violation bounds, models closed timelike curves, and evaluates tachyonic field condensation in theoretical frameworks.', archetype: 'Passive', sourcePrimitives: ['tachyon', 'graviton', 'conscience'], usageExample: "import { CausalityAnalyzer } from '@cmpsbl/quantum';\nCausalityAnalyzer.evaluate({ violation_bound: 1e-23 });", minComplexity: 80 },
+  { id: 'band-structure-calculator', name: 'Band Structure Calculator', description: 'Computes electronic band structures using tight-binding and DFT methods. Maps Brillouin zones, identifies Dirac cones, and predicts topological properties.', archetype: 'Passive', sourcePrimitives: ['lattice', 'fermion', 'engineer'], usageExample: "import { BandCalc } from '@cmpsbl/quantum';\nconst bands = BandCalc.compute({ material: 'graphene', method: 'tb' });", minComplexity: 80 },
+  { id: 'quantum-teleportation-protocol', name: 'Quantum Teleportation Protocol', description: 'End-to-end quantum state transfer using EPR pairs, Bell measurements, and classical communication channels. Includes fidelity verification.', archetype: 'Active', sourcePrimitives: ['entangle', 'photon', 'relay'], usageExample: "import { QTeleport } from '@cmpsbl/quantum';\nconst fidelity = QTeleport.transfer(qubitState, { channel: eprPair });", minComplexity: 50 },
 ];
 
 export function getCapabilityRegistry() {
@@ -640,6 +671,24 @@ function scorePrimitiveRelevance(
     welder: { signals: [code.includes('weld') || code.includes('assemble') || code.includes('join'), hasAsync], rationale: 'Assembly operations and joining processes with seam tracking' },
     inspector: { signals: [code.includes('inspect') || code.includes('defect') || code.includes('quality'), hasState], rationale: 'Quality inspection and defect detection with machine vision classification' },
     pioneer: { signals: [code.includes('explor') || code.includes('frontier') || code.includes('unknown'), hasAsync], rationale: 'Autonomous exploration and frontier mapping in unknown environments' },
+    // Quantum vertical primitives — Engines
+    hadron: { signals: [code.includes('particle') || code.includes('collision') || code.includes('scatter'), len > 200], rationale: 'Particle collision simulation and cross-section computation for high-energy physics' },
+    qubit: { signals: [code.includes('qubit') || code.includes('gate') || code.includes('circuit'), hasAsync], rationale: 'Quantum gate orchestration and circuit transpilation for quantum algorithms' },
+    photon: { signals: [code.includes('photon') || code.includes('optic') || code.includes('laser') || code.includes('interferom'), hasAsync], rationale: 'Optical computing and photonic signal processing with interferometry modeling' },
+    fermion: { signals: [code.includes('wavefunction') || code.includes('schrodinger') || code.includes('hamiltonian') || code.includes('eigenvalue'), len > 200], rationale: 'Many-body quantum state evolution with Schrödinger equation solvers' },
+    entangle: { signals: [code.includes('entangle') || code.includes('bell') || code.includes('teleport') || code.includes('epr'), hasAsync], rationale: 'Quantum entanglement management and Bell state preparation for quantum communication' },
+    lattice: { signals: [code.includes('lattice') || code.includes('crystal') || code.includes('phonon') || code.includes('band'), hasState], rationale: 'Crystal structure simulation and phonon modeling for condensed matter physics' },
+    plasma: { signals: [code.includes('plasma') || code.includes('tokamak') || code.includes('fusion') || code.includes('mhd'), hasAsync], rationale: 'Plasma dynamics and magneto-hydrodynamics for fusion reactor modeling' },
+    cryogen: { signals: [code.includes('cryogen') || code.includes('dilution') || code.includes('thermal') || code.includes('decoher'), hasState], rationale: 'Cryogenic system modeling and thermal noise reduction for quantum hardware' },
+    // Quantum vertical primitives — Agents
+    muon: { signals: [code.includes('muon') || code.includes('decay') || code.includes('lepton'), len > 100], rationale: 'Decay chain analysis and lepton tracking for particle detector data' },
+    boson: { signals: [code.includes('boson') || code.includes('higgs') || code.includes('gauge') || code.includes('electroweak'), len > 200], rationale: 'Force carrier simulation and gauge field mapping for the Standard Model' },
+    neutrino: { signals: [code.includes('neutrino') || code.includes('oscillat') || code.includes('weak') || code.includes('flavor'), hasAsync], rationale: 'Weak interaction modeling and neutrino flavor oscillation prediction' },
+    gluon: { signals: [code.includes('gluon') || code.includes('qcd') || code.includes('quark') || code.includes('color charge'), len > 200], rationale: 'Strong force coupling and QCD color charge simulation' },
+    graviton: { signals: [code.includes('graviton') || code.includes('gravity') || code.includes('spacetime') || code.includes('relativi'), hasAsync], rationale: 'Gravitational wave detection and spacetime curvature modeling' },
+    tachyon: { signals: [code.includes('tachyon') || code.includes('superluminal') || code.includes('lorentz') || code.includes('causal'), hasAsync], rationale: 'Superluminal signal modeling and causality analysis in relativistic frameworks' },
+    meson: { signals: [code.includes('meson') || code.includes('hadron') || code.includes('quark') || code.includes('fragmentation'), len > 200], rationale: 'Quark confinement and hadronization processes for jet formation modeling' },
+    prism: { signals: [code.includes('spectro') || code.includes('wavelength') || code.includes('emission') || code.includes('raman'), hasState], rationale: 'Spectroscopy analysis and wavelength decomposition for atomic line identification' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
