@@ -472,6 +472,8 @@ For licensing inquiries: founder@cmpsbl.com
 
 9. IBM Research. (2025). *Qiskit: An Open-Source Framework for Quantum Computing.* https://github.com/Qiskit/qiskit
 
+10. OpenSSL Software Foundation. (2025). *OpenSSL: Cryptography and SSL/TLS Toolkit.* https://github.com/openssl/openssl
+
 ---
 
 ## Citation
