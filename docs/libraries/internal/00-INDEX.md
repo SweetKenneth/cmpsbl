@@ -32,6 +32,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 15 | [Primitive Specifications](15-primitive-specifications.md) | All 40 ULTIMATE primitive specs (v9.0.0) |
 | 16 | [Trade Secrets & Algorithms](16-trade-secrets.md) | Proprietary algorithms, CJPI scoring, convergence formulas |
 | 17 | [Crown Jewel Registry](17-crown-jewel-registry.md) | 54 classified capabilities, mining reports, S-Tier vault |
+| 18 | [Vertical Ecosystem & Factory Engine](18-vertical-ecosystem.md) | Full ecosystem spec, factory engine, SSO, roadmap, valuation |
 
 ---
 
