@@ -2928,6 +2928,123 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+
+        {/* ═══════════════════════════════════════════════════════════════════ */}
+        {/* Case Studies #13-15 — CMPSBL Self-Audit Batch                     */}
+        {/* ═══════════════════════════════════════════════════════════════════ */}
+        <section className="space-y-6">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 font-mono text-xs">Case Studies #13–15</Badge>
+            <Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/30 font-mono text-xs">CJPI 100 APEX × 3</Badge>
+            <Badge variant="outline" className="font-mono text-xs">Self-Audit Batch</Badge>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-1">CMPSBL® Internal Systems — Self-Audit Continuation</h2>
+              <p className="text-muted-foreground text-sm">
+                Three additional CMPSBL substrate internals run through the original 40-Primitive base matrix. Continuing the self-referential audit that began with pipeline-fingerprint.ts (Case Study #12).
+              </p>
+            </div>
+
+            {/* Three-card grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Card: decode-audit.ts */}
+              <div className="bg-card/60 border border-border/60 rounded-xl p-4 space-y-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="font-mono text-[10px]">#13</Badge>
+                  <span className="text-sm font-bold text-foreground">decode-audit.ts</span>
+                </div>
+                <div className="space-y-1 text-xs text-muted-foreground">
+                  <p><span className="text-foreground font-medium">Purpose:</span> DECODE audit logging — admin directives, security refusals, security events</p>
+                  <p><span className="text-foreground font-medium">Serial:</span> <code className="text-[10px]">CMPSBL-MNJEX0UY-4RGQ</code></p>
+                  <p><span className="text-foreground font-medium">Fingerprint:</span> <code className="text-[10px]">91ac14dd4706312f</code></p>
+                  <p><span className="text-foreground font-medium">Findings:</span> 0 CRITICAL · 3 WARNING</p>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-[10px] bg-yellow-500/15 text-yellow-600 border-yellow-500/30">warning</Badge>
+                    <span className="text-xs text-foreground">Cyclomatic complexity 27</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-[10px] bg-yellow-500/15 text-yellow-600 border-yellow-500/30">warning</Badge>
+                    <span className="text-xs text-foreground">Math.random() in audit IDs</span>
+                    <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-500/20">fixed</Badge>
+                  </div>
+                </div>
+                <div className="text-xs text-muted-foreground pt-1 border-t border-border/30">
+                  <span className="text-foreground font-medium">Capabilities:</span> Self-Healing State Machine, Circuit Breaker Mesh
+                </div>
+                <a href="/downloads/case-studies/cmpsbl-decode-audit-CMPSBL-MNJEX0UY-4RGQ.zip" download className="flex items-center gap-1.5 text-xs text-primary hover:underline">
+                  <Download className="w-3 h-3" /> Download Artifact
+                </a>
+              </div>
+
+              {/* Card: memory-lineage.ts */}
+              <div className="bg-card/60 border border-border/60 rounded-xl p-4 space-y-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="font-mono text-[10px]">#14</Badge>
+                  <span className="text-sm font-bold text-foreground">memory-lineage.ts</span>
+                </div>
+                <div className="space-y-1 text-xs text-muted-foreground">
+                  <p><span className="text-foreground font-medium">Purpose:</span> Memory Stream lineage registry — tracks module ancestry of crystallized pipelines</p>
+                  <p><span className="text-foreground font-medium">Serial:</span> <code className="text-[10px]">CMPSBL-MNJEYCOS-F1UO</code></p>
+                  <p><span className="text-foreground font-medium">Fingerprint:</span> <code className="text-[10px]">7bc9ab831fe3ce53</code></p>
+                  <p><span className="text-foreground font-medium">Findings:</span> 0 CRITICAL · 1 WARNING (most significant)</p>
+                </div>
+                <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-2">
+                  <p className="text-xs text-foreground/90">
+                    <strong>Key finding:</strong> Weak randomness (<code className="text-[10px]">Math.random()</code>) in lineage record IDs — predictable IDs could allow ancestry forgery.
+                    <Badge variant="outline" className="ml-1.5 text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-500/20">fixed</Badge>
+                  </p>
+                </div>
+                <div className="text-xs text-muted-foreground pt-1 border-t border-border/30">
+                  <span className="text-foreground font-medium">Capabilities:</span> Structural Drift Detector, Adaptive Load Router
+                </div>
+                <a href="/downloads/case-studies/cmpsbl-memory-lineage-CMPSBL-MNJEYCOS-F1UO.zip" download className="flex items-center gap-1.5 text-xs text-primary hover:underline">
+                  <Download className="w-3 h-3" /> Download Artifact
+                </a>
+              </div>
+
+              {/* Card: substrate-metrics.ts */}
+              <div className="bg-card/60 border border-border/60 rounded-xl p-4 space-y-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="font-mono text-[10px]">#15</Badge>
+                  <span className="text-sm font-bold text-foreground">substrate-metrics.ts</span>
+                </div>
+                <div className="space-y-1 text-xs text-muted-foreground">
+                  <p><span className="text-foreground font-medium">Purpose:</span> Runtime metrics store — real observability for all 40 Primitives</p>
+                  <p><span className="text-foreground font-medium">Serial:</span> <code className="text-[10px]">CMPSBL-MNJF01GS-I1XH</code></p>
+                  <p><span className="text-foreground font-medium">Fingerprint:</span> <code className="text-[10px]">5fe824a3da09e5d2</code></p>
+                  <p><span className="text-foreground font-medium">Findings:</span> 0 CRITICAL · 2 WARNING</p>
+                </div>
+                <div className="bg-blue-500/5 border border-blue-500/20 rounded-lg p-2">
+                  <p className="text-xs text-foreground/90">
+                    <strong>False positive:</strong> Ascension flagged weak randomness, but source verification confirmed <strong>no Math.random() exists</strong> in this file. IDs derived from module names, not random generation.
+                  </p>
+                </div>
+                <div className="text-xs text-muted-foreground pt-1 border-t border-border/30">
+                  <span className="text-foreground font-medium">Capabilities:</span> Live Threat Neutralizer, Autonomous Patch Engine
+                </div>
+                <a href="/downloads/case-studies/cmpsbl-substrate-metrics-CMPSBL-MNJF01GS-I1XH.zip" download className="flex items-center gap-1.5 text-xs text-primary hover:underline">
+                  <Download className="w-3 h-3" /> Download Artifact
+                </a>
+              </div>
+            </div>
+
+            {/* Self-Audit Summary */}
+            <div className="bg-muted/30 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Self-Audit Summary (Case Studies #12–15)</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>Four CMPSBL internal files analyzed through the original 40-Primitive base matrix</li>
+                <li><strong className="text-foreground">2 CRITICAL findings</strong> in pipeline-fingerprint.ts (error handling + async rejections) — remediated with 29 tests</li>
+                <li><strong className="text-foreground">2 weak randomness findings</strong> in decode-audit.ts and memory-lineage.ts — <code className="text-xs bg-muted px-1 rounded">Math.random()</code> → <code className="text-xs bg-muted px-1 rounded">crypto.randomUUID()</code></li>
+                <li><strong className="text-foreground">1 false positive</strong> in substrate-metrics.ts — flagged for weak randomness but source verification found none</li>
+                <li>Fifteen runs. Fifteen targets. The substrate doesn&apos;t know whose code it&apos;s looking at. <strong className="text-foreground">It just sees the math.</strong></li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
