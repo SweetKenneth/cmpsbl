@@ -8,6 +8,7 @@
  */
 
 import { useRef } from "react";
+import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
@@ -68,6 +69,7 @@ const CAPABILITIES_PREVIEW = [
 /* ═══════════════════════════════════════════════════════════════ */
 
 export default function RoboticsHome() {
+  useSSORelay();
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });

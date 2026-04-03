@@ -12,6 +12,8 @@ import { motion } from "framer-motion";
 import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
 
 const VERTICALS = [
   {
@@ -39,6 +41,16 @@ const VERTICALS = [
 ];
 
 export default function VerticalPortal() {
+  const { session } = useAuth();
+
+  const handleVisitVertical = (url: string) => {
+    if (session?.access_token && session?.refresh_token) {
+      const ssoUrl = buildSSOVerticalUrl(url, session.access_token, session.refresh_token);
+      window.open(ssoUrl, '_blank');
+    } else {
+      window.open(url, '_blank');
+    }
+  };
   return (
     <>
       <Helmet>
@@ -111,7 +123,7 @@ export default function VerticalPortal() {
                     <Button
                       className="w-full border-0 text-sm font-semibold"
                       style={{ background: v.accentColor, color: 'white' }}
-                      onClick={() => window.open(v.url, '_blank')}
+                      onClick={() => handleVisitVertical(v.url)}
                     >
                       Visit {v.name.split('™')[0]}™ <ExternalLink className="ml-2 h-3.5 w-3.5" />
                     </Button>

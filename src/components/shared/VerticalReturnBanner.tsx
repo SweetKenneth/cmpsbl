@@ -6,6 +6,8 @@
  */
 
 import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { buildSSOVerticalUrl } from '@/lib/relay/sso/crossVerticalSSO';
 
 interface VerticalReturnBannerProps {
   verticalName: string;
@@ -13,6 +15,16 @@ interface VerticalReturnBannerProps {
 }
 
 export function VerticalReturnBanner({ verticalName, accentColor = 'hsl(200 100% 55%)' }: VerticalReturnBannerProps) {
+  const { session } = useAuth();
+
+  const homeUrl = (() => {
+    const base = 'https://cmpsbl.com';
+    if (session?.access_token && session?.refresh_token) {
+      return buildSSOVerticalUrl(base, session.access_token, session.refresh_token);
+    }
+    return base;
+  })();
+
   return (
     <div
       className="w-full flex items-center justify-between px-4 sm:px-6 h-8 text-xs font-mono tracking-wide"
@@ -23,7 +35,7 @@ export function VerticalReturnBanner({ verticalName, accentColor = 'hsl(200 100%
       }}
     >
       <a
-        href="https://cmpsbl.com"
+        href={homeUrl}
         className="flex items-center gap-1.5 hover:underline transition-colors"
         style={{ color: accentColor }}
       >
