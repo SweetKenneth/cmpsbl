@@ -634,44 +634,80 @@ function scorePrimitiveRelevance(
   return { score: Math.min(99, score), rationale: rationale || `${primitive.name} strengthens ${primitive.category.toLowerCase()}-level hardening` };
 }
 
+/**
+ * Generate up to 20 capability recommendations with vertical-aware weighting.
+ *
+ * Strategy: 10 SPINE slots (Organs/Layers for stabilization) +
+ *           10 EXPANSION slots (vertical-specific Engines/Agents for specialization).
+ *
+ * The expansion primitives are the randomized deciding factor — they determine
+ * what the software actually becomes after Ascension, producing unique loadouts
+ * per vertical substrate.
+ */
 function generateRecommendations(
   findings: ScanFinding[],
   code: string,
   rand: () => number,
 ): PrimitiveRecommendation[] {
-  // Score ALL 40 primitives for the active vertical
-  const catalog = buildVerticalCatalog();
-  const scored = catalog.map(p => {
+  const MAX_TOTAL = 20;
+  const SPINE_SLOTS = 10;
+  const EXPANSION_SLOTS = 10;
+
+  const { spine, expansion } = buildVerticalCatalog();
+
+  // Score spine primitives (Organs + Layers) — stabilization
+  const scoredSpine = spine.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
     return { ...p, impactScore: score, rationale };
   });
+  scoredSpine.sort((a, b) => b.impactScore - a.impactScore);
 
-  // Sort by impact, take top 20 (max selectable), ensuring at least
-  // 2 from each category for balanced recommendations
-  scored.sort((a, b) => b.impactScore - a.impactScore);
+  // Score expansion primitives (vertical Engines + Agents) — specialization
+  // Apply a vertical-specialization bonus to make these primitives more impactful
+  const scoredExpansion = expansion.map(p => {
+    const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
+    const verticalBonus = 10 + Math.floor(rand() * 15);
+    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale };
+  });
+  scoredExpansion.sort((a, b) => b.impactScore - a.impactScore);
 
   const result: PrimitiveRecommendation[] = [];
-  const categoryCounts: Record<string, number> = { Organ: 0, Layer: 0, Engine: 0, Agent: 0 };
-  const minPerCategory = 2;
 
-  // First pass: ensure minimum per category
-  for (const cat of ['Engine', 'Layer', 'Organ', 'Agent'] as const) {
-    const catPrims = scored.filter(p => p.category === cat);
-    for (const p of catPrims) {
-      if (categoryCounts[cat] < minPerCategory && result.length < 20) {
-        result.push(p);
-        categoryCounts[cat]++;
-      }
-    }
+  // Phase 1: Fill SPINE slots — balanced Organ/Layer mix
+  const spineOrgans = scoredSpine.filter(p => p.category === 'Organ');
+  const spineLayers = scoredSpine.filter(p => p.category === 'Layer');
+  const minOrgans = 5;
+  const minLayers = 5;
+
+  for (const o of spineOrgans) {
+    if (result.filter(r => r.category === 'Organ').length < minOrgans) result.push(o);
+  }
+  for (const l of spineLayers) {
+    if (result.filter(r => r.category === 'Layer').length < minLayers) result.push(l);
+  }
+  // If either category is short, fill from the other
+  for (const p of scoredSpine) {
+    if (result.length >= SPINE_SLOTS) break;
+    if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
   }
 
-  // Second pass: fill remaining slots by impact score
-  for (const p of scored) {
-    if (result.length >= 20) break;
-    if (!result.find(r => r.primitiveId === p.primitiveId)) {
-      result.push(p);
-      categoryCounts[p.category]++;
-    }
+  // Phase 2: Fill EXPANSION slots — vertical-specific specialization
+  // These are the randomized primitives that define what the software becomes
+  const expansionEngines = scoredExpansion.filter(p => p.category === 'Engine');
+  const expansionAgents = scoredExpansion.filter(p => p.category === 'Agent');
+  const minEngines = 5;
+  const minAgents = 5;
+
+  for (const e of expansionEngines) {
+    if (result.filter(r => r.category === 'Engine').length < minEngines) result.push(e);
+  }
+  for (const a of expansionAgents) {
+    if (result.filter(r => r.category === 'Agent').length < minAgents) result.push(a);
+  }
+  // Fill remaining expansion slots
+  for (const p of scoredExpansion) {
+    if (result.length >= MAX_TOTAL) break;
+    if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
   }
 
   return result.sort((a, b) => b.impactScore - a.impactScore);
