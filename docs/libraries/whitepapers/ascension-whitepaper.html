@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ascension: Deterministic Software Evolution Through Autonomous Primitive Collision — CMPSBL® Whitepaper</title>
+  <meta name="author" content="Kenneth E. Sweet Jr." />
+  <meta name="description" content="Academic whitepaper introducing Ascension, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through collision with a 40-primitive matrix." />
+  <meta name="keywords" content="software evolution, deterministic analysis, code hardening, primitive collision, sealed runtime, cognitive infrastructure, CMPSBL, Ascension" />
+  <link rel="icon" href="https://cmpsbl.com/favicon.ico" />
+  <style>
+    /* ── Reset & Base ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #3a3a5c;
+      --ink-muted: #6b6b8d;
+      --bg: #fdfcfa;
+      --bg-alt: #f5f3ef;
+      --accent: #2d5016;
+      --accent-light: #4a7a2e;
+      --accent-bg: #edf5e6;
+      --border: #d4d0c8;
+      --border-light: #e8e4dc;
+      --rule: #c4bfb4;
+      --serif: 'Georgia', 'Times New Roman', 'Noto Serif', serif;
+      --sans: 'Helvetica Neue', 'Arial', 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      --max-w: 44rem;
+    }
+
+    html { font-size: 17px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--serif);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ──────────────────────────────────────────── */
+    .paper {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    @media (min-width: 768px) {
+      .paper { padding: 4rem 2rem 6rem; }
+    }
+
+    /* ── Title Block ─────────────────────────────────────── */
+    .title-block {
+      text-align: center;
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .title-block h1 {
+      font-size: 1.65rem;
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+    }
+
+    .title-block .subtitle {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-bottom: 1.8rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+
+    .meta-grid a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-light);
+    }
+
+    .meta-grid a:hover { border-bottom-color: var(--accent); }
+
+    /* ── Abstract ─────────────────────────────────────────── */
+    .abstract {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .abstract h2 {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .abstract p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--ink-light);
+    }
+
+    .keywords {
+      margin-top: 1rem;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    .keywords strong { color: var(--ink-light); }
+
+    /* ── Headings ─────────────────────────────────────────── */
+    h2.section-heading {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 2.8rem;
+      margin-bottom: 0.6rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      counter-increment: section;
+    }
+
+    h3 {
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-top: 1.8rem;
+      margin-bottom: 0.4rem;
+      color: var(--ink);
+    }
+
+    /* ── Paragraphs ───────────────────────────────────────── */
+    p {
+      margin-bottom: 1rem;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    /* ── Lists ────────────────────────────────────────────── */
+    ol, ul {
+      margin: 0.6rem 0 1rem 1.5rem;
+    }
+
+    li { margin-bottom: 0.35rem; }
+
+    /* ── Tables ───────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+    }
+
+    thead { background: var(--bg-alt); }
+
+    th {
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      padding: 0.6rem 0.8rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 0.55rem 0.8rem;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--ink-light);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* ── Code ─────────────────────────────────────────────── */
+    code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      background: var(--bg-alt);
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+      border: 1px solid var(--border-light);
+    }
+
+    pre {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      line-height: 1.5;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.78rem;
+    }
+
+    /* ── Blockquote ───────────────────────────────────────── */
+    blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 1.2rem 0;
+      padding: 0.8rem 1.2rem;
+      background: var(--accent-bg);
+      font-style: italic;
+      color: var(--ink-light);
+    }
+
+    /* ── Figures ──────────────────────────────────────────── */
+    .pipeline-figure {
+      text-align: center;
+      margin: 1.5rem 0;
+      padding: 1.5rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .pipeline-stages {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.3rem;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .pipeline-stages span {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 0.35rem 0.7rem;
+      border-radius: 3px;
+    }
+
+    .pipeline-stages .arrow {
+      background: none;
+      color: var(--ink-muted);
+      padding: 0.35rem 0.1rem;
+      font-size: 0.9rem;
+    }
+
+    .figure-caption {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      margin-top: 0.8rem;
+    }
+
+    /* ── Highlight Box ────────────────────────────────────── */
+    .highlight-box {
+      background: linear-gradient(135deg, var(--accent-bg), #f0f7ea);
+      border: 1px solid #b8d4a0;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box .label {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── References ───────────────────────────────────────── */
+    .references {
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+
+    .references ol {
+      list-style: none;
+      counter-reset: ref;
+      padding-left: 0;
+    }
+
+    .references li {
+      counter-increment: ref;
+      padding-left: 2rem;
+      position: relative;
+      margin-bottom: 0.7rem;
+    }
+
+    .references li::before {
+      content: "[" counter(ref) "]";
+      position: absolute;
+      left: 0;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
+
+    .references a {
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    /* ── Citation Block ───────────────────────────────────── */
+    .citation-block {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.2rem 1.4rem;
+      margin: 1.5rem 0;
+    }
+
+    .citation-block h3 {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 0.6rem;
+      margin-top: 0;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    .paper-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--ink);
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      line-height: 1.8;
+    }
+
+    /* ── Print ────────────────────────────────────────────── */
+    @media print {
+      html { font-size: 11pt; }
+      .paper { max-width: none; padding: 0; }
+      .title-block, h2.section-heading { break-after: avoid; }
+      .abstract, .highlight-box, table { break-inside: avoid; }
+      a { color: var(--ink) !important; }
+    }
+  </style>
+</head>
+<body>
+  <article class="paper" role="main">
+
+    <!-- ═══════════════ TITLE BLOCK ═══════════════ -->
+    <header class="title-block">
+      <h1>Ascension: Deterministic Software Evolution<br />Through Autonomous Primitive Collision</h1>
+      <p class="subtitle">A Whitepaper on Structural Code Hardening Without Artificial Intelligence</p>
+      <div class="meta-grid">
+        <div><strong>Kenneth E. Sweet Jr.</strong></div>
+        <div>PromptFluid™ · Austin, TX</div>
+        <div>ORCID: <a href="https://orcid.org/0009-0001-4237-1243" target="_blank" rel="noopener">0009-0001-4237-1243</a></div>
+        <div>April 2026 · Version 1.0.0</div>
+        <div>License: CC BY 4.0 International</div>
+      </div>
+    </header>
+
+    <!-- ═══════════════ ABSTRACT ═══════════════ -->
+    <section class="abstract">
+      <h2>Abstract</h2>
+      <p>
+        We introduce <strong>Ascension</strong>, a deterministic software evolution engine that identifies, scores, and hardens
+        latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine
+        operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic
+        categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index (CJPI),
+        and exporting hardened artifacts as self-contained Sealed Runtimes. We present empirical results from five case studies
+        spanning four programming languages and five industry verticals, including the discovery and remediation of a critical
+        error-handling vulnerability in Hugging Face's <code>tokenizers</code> library — a package with over 73&nbsp;million monthly
+        PyPI downloads. Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies
+        invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension as the foundation
+        for a new discipline: <strong>post-authorship software evolution</strong>, where code improvement occurs structurally
+        rather than generatively.
+      </p>
+      <p class="keywords">
+        <strong>Keywords:</strong> software evolution · deterministic analysis · code hardening · primitive collision ·
+        sealed runtime · cognitive infrastructure · structural vulnerability · post-authorship engineering
+      </p>
+    </section>
+
+    <!-- ═══════════════ 1. INTRODUCTION ═══════════════ -->
+    <h2 class="section-heading">1. Introduction</h2>
+
+    <h3>1.1 The Post-Authorship Problem</h3>
+    <p>
+      Modern software engineering invests heavily in the authorship phase — writing, reviewing, and testing code.
+      Yet the structural characteristics of software <em>after</em> authorship are rarely interrogated systematically.
+      Static analyzers detect syntactic violations. Linters enforce style. AI copilots suggest completions. None of
+      these tools ask the fundamental question: <em>what latent capabilities does this code possess that its author
+      did not intend or recognize?</em>
+    </p>
+    <p>
+      This gap — between what code <em>does</em> and what code <em>could do</em> if structurally augmented — represents
+      an untapped reservoir of architectural value. We call this the <strong>post-authorship problem</strong>.
+    </p>
+
+    <h3>1.2 The Ascension Hypothesis</h3>
+    <p>We hypothesize that a fixed, finite set of computational primitives, when systematically collided against arbitrary source code, will reliably surface:</p>
+    <ol>
+      <li><strong>Structural vulnerabilities</strong> invisible to conventional tooling</li>
+      <li><strong>Latent capabilities</strong> that emerge from the interaction between code structure and primitive behavior</li>
+      <li><strong>Hardening opportunities</strong> that can be applied deterministically without modifying original logic</li>
+    </ol>
+    <p>
+      This hypothesis is testable because the primitive set is fixed (40 primitives), the collision process is
+      deterministic (no stochastic model inference), and the scoring function (CJPI) produces reproducible results.
+    </p>
+
+    <h3>1.3 Contributions</h3>
+    <ol>
+      <li><strong>Architecture:</strong> A formal description of the 40-primitive collision matrix and its taxonomic organization</li>
+      <li><strong>Method:</strong> The Ascension pipeline — an 8-stage deterministic transformation process</li>
+      <li><strong>Evidence:</strong> Five case studies demonstrating structural discovery across languages and domains</li>
+      <li><strong>Discovery:</strong> Identification of a critical vulnerability in Hugging Face <code>tokenizers</code> (73M+ monthly downloads) that evaded all existing quality assurance</li>
+    </ol>
+
+    <!-- ═══════════════ 2. BACKGROUND ═══════════════ -->
+    <h2 class="section-heading">2. Background and Related Work</h2>
+
+    <h3>2.1 Static Analysis</h3>
+    <p>
+      Traditional static analysis tools (ESLint, Pylint, SonarQube) operate on syntactic pattern matching and control
+      flow analysis. They excel at detecting known anti-patterns but cannot reason about <em>emergent structural
+      properties</em> — capabilities that arise from the interaction of code structure with external computational models.
+    </p>
+
+    <h3>2.2 AI-Assisted Code Review</h3>
+    <p>
+      LLM-based code review tools generate suggestions probabilistically. Their outputs are non-deterministic,
+      non-reproducible, and cannot guarantee coverage of structural properties. Furthermore, they introduce the
+      very vulnerabilities they claim to detect — hallucination, prompt injection susceptibility, and training
+      data contamination (OWASP, 2024).
+    </p>
+
+    <h3>2.3 Formal Verification</h3>
+    <p>
+      Formal methods (TLA+, Coq, Isabelle) provide mathematical guarantees but require manual specification
+      of properties to verify. They cannot autonomously <em>discover</em> properties — only verify those
+      the engineer already suspects.
+    </p>
+
+    <h3>2.4 Position of Ascension</h3>
+    <p>
+      Ascension occupies a novel position: it autonomously discovers structural properties through deterministic
+      collision, without requiring the engineer to specify what to look for, and without invoking probabilistic
+      AI models. It is, to our knowledge, the first system to achieve autonomous structural discovery through
+      a fixed primitive matrix.
+    </p>
+
+    <!-- ═══════════════ 3. ARCHITECTURE ═══════════════ -->
+    <h2 class="section-heading">3. Architecture</h2>
+
+    <h3>3.1 The 40-Primitive Matrix</h3>
+    <p>CMPSBL's computational substrate consists of exactly 40 primitives organized into four taxonomic categories:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Count</th><th>Role</th><th>Interaction Model</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Organs</strong></td><td>12</td><td>Core state management and data flow</td><td>Observable, not interactive</td></tr>
+          <tr><td><strong>Layers</strong></td><td>12</td><td>Cross-cutting concerns</td><td>Observable, not interactive</td></tr>
+          <tr><td><strong>Engines</strong></td><td>8</td><td>Active computational processes</td><td>Interactive, configurable</td></tr>
+          <tr><td><strong>Agents</strong></td><td>8</td><td>Autonomous task execution</td><td>Interactive, autonomous</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Each primitive exposes a defined behavioral surface. When source code is introduced as Primitive #41,
+      the matrix tests every pairwise combination, producing up to 40 collision events per upload.
+    </p>
+
+    <h3>3.2 Taxonomic Integrity</h3>
+    <ul>
+      <li><strong>Organs</strong> never couple directly to <strong>Agents</strong> (mediated by Layers)</li>
+      <li><strong>Layers</strong> provide cross-cutting governance without owning state</li>
+      <li><strong>Engines</strong> perform bounded computation with circuit-breaker protection</li>
+      <li><strong>Agents</strong> operate autonomously within governance constraints</li>
+    </ul>
+
+    <h3>3.3 Vertical Extension</h3>
+    <p>
+      The base 40-primitive matrix can be extended with domain-specific primitives for vertical specialization.
+      The LLM Vertical adds 16 primitives (8 Engines + 8 Agents) specialized for large language model vulnerability
+      detection. Vertical primitives participate in collision alongside spine primitives, expanding the discovery
+      surface without modifying the core matrix.
+    </p>
+
+    <!-- ═══════════════ 4. METHOD ═══════════════ -->
+    <h2 class="section-heading">4. Method: The Ascension Pipeline</h2>
+
+    <h3>4.1 Pipeline Overview</h3>
+
+    <div class="pipeline-figure">
+      <div class="pipeline-stages">
+        <span>Upload</span><span class="arrow">→</span>
+        <span>Classify</span><span class="arrow">→</span>
+        <span>Register</span><span class="arrow">→</span>
+        <span>Chain</span><span class="arrow">→</span>
+        <span>Discover</span><span class="arrow">→</span>
+        <span>Score</span><span class="arrow">→</span>
+        <span>Export</span><span class="arrow">→</span>
+        <span>Protect</span>
+      </div>
+      <p class="figure-caption">Figure 1. The 8-stage Ascension pipeline. Each stage is idempotent and produces auditable artifacts.</p>
+    </div>
+
+    <h3>4.2 Stage Descriptions</h3>
+
+    <p><strong>Stage 1 — Upload.</strong> Source code is accepted in any of 25 supported languages (18 software + 7 hardware description). No preprocessing or normalization is applied.</p>
+    <p><strong>Stage 2 — Classify.</strong> A diagnostic squad of 6 primitives computes structural metrics: cyclomatic complexity, nesting depth, dependency fan-out, type coverage, error handling density, and documentation ratio. These produce a 0–100 <em>depth score</em>.</p>
+    <p><strong>Stage 3 — Register.</strong> The code is registered as Primitive #41 with a unique serial identifier (format: <code>CMPSBL-XXXXXX-XXXX</code>).</p>
+    <p><strong>Stage 4 — Chain.</strong> Memory chains — predefined multi-primitive reaction workflows — are evaluated. Matching chains fire automatically, producing intermediate discoveries.</p>
+    <p><strong>Stage 5 — Discover.</strong> Full 40-primitive collision. Each primitive tests whether its behavioral surface combines meaningfully with the uploaded code's structure.</p>
+    <p><strong>Stage 6 — Score.</strong> Each candidate is evaluated via the Crown Jewel Pipeline Index (CJPI):</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Factor</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Novelty</td><td>Uniqueness of the primitive–code combination</td></tr>
+          <tr><td>Utility</td><td>Practical applicability of the resulting capability</td></tr>
+          <tr><td>Complexity</td><td>Sophistication of the structural interaction</td></tr>
+          <tr><td>Composability</td><td>Potential for combination with other discoveries</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Stage 7 — Export.</strong> Hardened artifacts are packaged as a <strong>Sealed Runtime™</strong> — a self-contained archive that executes independently of the CMPSBL substrate.</p>
+    <p><strong>Stage 8 — Protect.</strong> DEFENSE Layer shielding, GOVERNANCE integrity checks, and BEACON health signals confirm production readiness.</p>
+
+    <div class="highlight-box">
+      <div class="label">Determinism Guarantee</div>
+      <p>
+        No stage invokes external AI, stochastic inference, or probabilistic generation. Every collision is a
+        deterministic function of the uploaded code's structure and the fixed primitive matrix. Given identical
+        inputs, Ascension produces identical outputs.
+      </p>
+    </div>
+
+    <!-- ═══════════════ 5. CASE STUDIES ═══════════════ -->
+    <h2 class="section-heading">5. Case Studies</h2>
+
+    <h3>5.1 Overview</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Software</th><th>Language</th><th>Vertical</th><th>CJPI</th><th>Capabilities</th><th>Critical Findings</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Stripe Node.js SDK</td><td>TypeScript</td><td>FinTech</td><td>98</td><td>20 S-Tier</td><td>Undocumented circuit-breaker gaps</td></tr>
+          <tr><td>2</td><td>PHP Agent Framework</td><td>PHP</td><td>Agentic AI</td><td>100 APEX</td><td>20 S-Tier</td><td>~$2.6M latent IP discovered</td></tr>
+          <tr><td>3</td><td>NASA cFS Framework</td><td>C</td><td>Aerospace</td><td>97</td><td>20 S-Tier</td><td>Memory safety augmentation paths</td></tr>
+          <tr><td>4</td><td>Solana Token Program</td><td>Rust</td><td>Blockchain</td><td>96</td><td>20 S-Tier</td><td>Cross-program invocation hardening</td></tr>
+          <tr><td>5</td><td>HuggingFace Tokenizers</td><td>Python</td><td>LLM / ML</td><td>100 APEX</td><td>20 S-Tier</td><td><strong>Critical error-handling vulnerability</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.2 Case Study 5: Hugging Face Tokenizers (Detailed)</h3>
+
+    <p>
+      <strong>Subject:</strong> <code>tokenizers/__init__.py</code> — the entry point for Hugging Face's tokenization library,
+      downloaded 73M+ times monthly via PyPI.
+    </p>
+    <p>
+      <strong>Classification:</strong> Python · 101 lines · Depth Score 42/100 (moderate complexity, low error handling density).
+    </p>
+
+    <div class="highlight-box">
+      <div class="label">Critical Discovery</div>
+      <p>
+        During Stage 5 collision, the VERITAS Engine detected a <strong>complete absence of error handling</strong>
+        in the module's import chain. The <code>from .tokenizers import (...)</code> statement — which loads the
+        Rust-compiled native extension — contained zero <code>try/except</code> protection. A failed native load
+        would produce an unhandled <code>ImportError</code>, crashing any downstream application without
+        diagnostic information. This library is a foundational dependency for 🤗 Transformers (140M+ monthly
+        downloads) and every major LLM inference pipeline.
+      </p>
+    </div>
+
+    <p>
+      <strong>Remediation:</strong> Ascension's hardening layer wrapped the native import chain with structured
+      error handling, graceful degradation paths, BEACON health signals, and circuit-breaker protection.
+    </p>
+    <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 spine, 10 LLM Vertical expansion.</p>
+
+    <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
+    <h2 class="section-heading">6. The Sealed Runtime Architecture</h2>
+
+    <p>
+      Every Ascension export is delivered as a <strong>Sealed Runtime™</strong> — a self-contained archive that executes
+      independently of the CMPSBL substrate. The portability guarantee is structural: the export contains its own
+      execution environment, cognitive augmentations, and test harness.
+    </p>
+
+    <pre><code>sealed-runtime/
+├── original-source.txt          # Unmodified input
+├── refurbished-source.ts        # Hardened output
+├── mini-runtime/                # Standalone execution engine
+├── cognitive-layer/             # Substrate augmentations
+├── docs/                        # Auto-generated documentation
+├── test-harness/                # Validation suite
+├── LICENSE.txt                  # CC BY 4.0
+└── README.md                    # Integration guide</code></pre>
+
+    <!-- ═══════════════ 7. VERTICALS ═══════════════ -->
+    <h2 class="section-heading">7. Vertical Substrates</h2>
+
+    <p>
+      Different software domains exhibit different vulnerability profiles. <strong>Vertical substrates</strong>
+      extend the base matrix with domain-specific primitives while preserving the core collision architecture.
+    </p>
+
+    <h3>7.1 CMPSBL LLM™ — The First Production Vertical</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Primitive</th><th>Type</th><th>Target Vulnerability</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>VERITAS</td><td>Engine</td><td>Hallucination / factual grounding</td></tr>
+          <tr><td>RAMPART</td><td>Engine</td><td>Prompt injection defense</td></tr>
+          <tr><td>SYLLOGISM</td><td>Engine</td><td>Reasoning chain validation</td></tr>
+          <tr><td>LEXICON</td><td>Engine</td><td>Token-level semantic analysis</td></tr>
+          <tr><td>CLARITY</td><td>Engine</td><td>Output explainability</td></tr>
+          <tr><td>FULCRUM</td><td>Engine</td><td>Bias detection and mitigation</td></tr>
+          <tr><td>TETHER</td><td>Engine</td><td>Context window management</td></tr>
+          <tr><td>SIEVE</td><td>Engine</td><td>Training data contamination filtering</td></tr>
+          <tr><td>SKEPTIC</td><td>Agent</td><td>Adversarial output challenge</td></tr>
+          <tr><td>TRIBUNAL</td><td>Agent</td><td>Multi-model output consistency</td></tr>
+          <tr><td>HERALD</td><td>Agent</td><td>Regulatory compliance reporting</td></tr>
+          <tr><td>MIMIC</td><td>Agent</td><td>Behavioral fingerprint detection</td></tr>
+          <tr><td>LINEAGE</td><td>Agent</td><td>Data provenance tracking</td></tr>
+          <tr><td>EMBARGO</td><td>Agent</td><td>Sensitive data exfiltration prevention</td></tr>
+          <tr><td>GAUNTLET</td><td>Agent</td><td>Adversarial stress testing</td></tr>
+          <tr><td>CUSTODIAN</td><td>Agent</td><td>Model supply chain security</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══════════════ 8. MEMORY STREAM ═══════════════ -->
+    <h2 class="section-heading">8. Memory Stream and Autonomous Discovery</h2>
+
+    <p>
+      The <strong>Memory Stream</strong> is CMPSBL's autonomous discovery engine. Operating on 8-hour cycles, it
+      observes system behavior, identifies novel capability combinations, and promotes high-scoring discoveries
+      to permanent storage. It runs autonomously — it is not triggered by user action.
+    </p>
+    <p>
+      The <strong>DREAM Engine</strong> generates heuristic insights through sub-threshold synthesis — processing
+      signals that individually fall below the discovery threshold but collectively reveal emergent patterns.
+      DREAM contains no artificial intelligence; it is a purely algorithmic synthesis process.
+    </p>
+    <p>
+      Every Ascension upload enriches the discovery corpus. Every Memory Stream cycle processes the enriched
+      corpus. The result is <strong>compounding intelligence</strong>: the substrate becomes more capable with
+      every interaction.
+    </p>
+
+    <!-- ═══════════════ 9. DISCUSSION ═══════════════ -->
+    <h2 class="section-heading">9. Discussion</h2>
+
+    <h3>9.1 Implications</h3>
+    <p>
+      Ascension demonstrates that post-authorship software evolution is tractable. Code need not be "finished"
+      when the author commits — it can be systematically evolved by structural processes that discover and
+      harden capabilities the author could not have anticipated.
+    </p>
+
+    <h3>9.2 The Determinism Advantage</h3>
+    <ul>
+      <li><strong>Reproducibility:</strong> Identical inputs always produce identical outputs</li>
+      <li><strong>Auditability:</strong> Every collision, score, and transformation is traceable</li>
+      <li><strong>Independence:</strong> No external API calls, no model inference, no training data dependencies</li>
+      <li><strong>Sovereignty:</strong> The operator's code never leaves their control for model processing</li>
+    </ul>
+
+    <h3>9.3 Limitations</h3>
+    <ol>
+      <li>Ascension reasons about code <em>structure</em>, not semantic intent</li>
+      <li>Language coverage depth varies; compiled languages with rich type systems produce higher-fidelity results</li>
+      <li>Only one vertical (LLM) is production-ready; additional verticals require domain expertise</li>
+    </ol>
+
+    <!-- ═══════════════ 10. CONCLUSION ═══════════════ -->
+    <h2 class="section-heading">10. Conclusion</h2>
+
+    <p>
+      We have presented Ascension, a deterministic software evolution engine that discovers and hardens latent
+      capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix.
+      Across five case studies spanning four languages and five verticals, Ascension consistently surfaced
+      structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap
+      in one of the world's most-downloaded software libraries.
+    </p>
+    <p>
+      The implications extend beyond individual code hardening. Ascension establishes the foundation for
+      <strong>post-authorship software evolution</strong> — a discipline where code improvement is structural,
+      deterministic, and autonomous.
+    </p>
+    <blockquote>
+      Every piece of software ever written is a candidate. Every vulnerability is discoverable.
+      Every capability is hardenable. The future of code is not how it is written — it is how it evolves.
+    </blockquote>
+
+    <!-- ═══════════════ REFERENCES ═══════════════ -->
+    <h2 class="section-heading">References</h2>
+
+    <div class="references">
+      <ol>
+        <li>Sweet, K. E. Jr. (2026). <em>CMPSBL: Governed Cognitive Infrastructure for Autonomous Software Evolution.</em> DOI: <a href="https://doi.org/10.5281/zenodo.15065111" target="_blank" rel="noopener">10.5281/zenodo.15065111</a></li>
+        <li>Sweet, K. E. Jr. (2026). <em>Ascension: Deterministic Code Evolution via 40-Primitive Collision Matrix.</em> DOI: <a href="https://doi.org/10.5281/zenodo.15065111" target="_blank" rel="noopener">10.5281/zenodo.15065111</a></li>
+        <li>Sweet, K. E. Jr. (2026). <em>Memory Stream: Autonomous Discovery in Governed Cognitive Substrates.</em> DOI: <a href="https://doi.org/10.5281/zenodo.15065111" target="_blank" rel="noopener">10.5281/zenodo.15065111</a></li>
+        <li>OWASP Foundation. (2024). <em>OWASP Top 10 for Large Language Model Applications.</em> <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener">owasp.org</a></li>
+        <li>Hugging Face. (2026). <em>Tokenizers: Fast State-of-the-Art Tokenizers.</em> <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener">github.com/huggingface/tokenizers</a></li>
+        <li>NASA Goddard Space Flight Center. (2024). <em>core Flight System (cFS).</em> <a href="https://github.com/nasa/cFS" target="_blank" rel="noopener">github.com/nasa/cFS</a></li>
+        <li>Solana Foundation. (2025). <em>Solana Program Library: Token Program.</em> <a href="https://github.com/solana-labs/solana-program-library" target="_blank" rel="noopener">github.com/solana-labs/solana-program-library</a></li>
+        <li>Stripe, Inc. (2025). <em>Stripe Node.js SDK.</em> <a href="https://github.com/stripe/stripe-node" target="_blank" rel="noopener">github.com/stripe/stripe-node</a></li>
+      </ol>
+    </div>
+
+    <!-- ═══════════════ CITATION ═══════════════ -->
+    <div class="citation-block">
+      <h3>BibTeX Citation</h3>
+      <pre><code>@article{sweet2026ascension,
+  title     = {Ascension: Deterministic Software Evolution
+               Through Autonomous Primitive Collision},
+  author    = {Sweet, Kenneth E., Jr.},
+  year      = {2026},
+  month     = {April},
+  publisher = {PromptFluid},
+  address   = {Austin, TX},
+  note      = {ORCID: 0009-0001-4237-1243},
+  url       = {https://cmpsbl.com/ascension},
+  doi       = {10.5281/zenodo.XXXXXXX}
+}</code></pre>
+    </div>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="paper-footer">
+      <p>© 2025–2026 CMPSBL®. All rights reserved.</p>
+      <p>CMPSBL® is a registered trademark of PromptFluid™. Sealed Runtime™ is a trademark of PromptFluid™.</p>
+      <p><a href="https://cmpsbl.com" style="color: var(--accent);">cmpsbl.com</a></p>
+    </footer>
+
+  </article>
+</body>
+</html>
