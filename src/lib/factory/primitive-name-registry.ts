@@ -7,14 +7,17 @@
  *
  * RULE: No primitive name may appear in more than one substrate context.
  *
+ * Dynamic verticals register names at instantiation time via
+ * registerDynamicName(), which updates RESERVED_NAMES in place.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
-/** Primitive name entry with provenance */
+/** Primitive name entry with provenance — context/vertical are open strings for dynamic verticals */
 export interface PrimitiveNameEntry {
   name: string;
-  context: 'spine-organ' | 'spine-layer' | 'standard-engine' | 'standard-agent' | 'cyber-engine' | 'cyber-agent' | 'robotics-engine' | 'robotics-agent';
-  vertical: 'core' | 'security' | 'robotics';
+  context: string;
+  vertical: string;
   role: 'organ' | 'layer' | 'engine' | 'agent';
 }
 
@@ -125,7 +128,7 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'PIONEER',    context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
 ];
 
-/** Set of all reserved primitive names (case-insensitive lookup) */
+/** Mutable set of all reserved primitive names (case-insensitive lookup) */
 const RESERVED_NAMES = new Set(
   GLOBAL_PRIMITIVE_NAMES.map(e => e.name.toUpperCase())
 );
@@ -135,6 +138,15 @@ const RESERVED_NAMES = new Set(
  */
 export function isPrimitiveNameTaken(name: string): boolean {
   return RESERVED_NAMES.has(name.toUpperCase());
+}
+
+/**
+ * Register a dynamic vertical's primitive name into the global registry.
+ * Called by the Vertical Factory Engine at instantiation time.
+ */
+export function registerDynamicName(entry: PrimitiveNameEntry): void {
+  GLOBAL_PRIMITIVE_NAMES.push(entry);
+  RESERVED_NAMES.add(entry.name.toUpperCase());
 }
 
 /**

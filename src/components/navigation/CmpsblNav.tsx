@@ -20,6 +20,7 @@ import {
   FileText,
   CreditCard,
   Package,
+  Globe,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
