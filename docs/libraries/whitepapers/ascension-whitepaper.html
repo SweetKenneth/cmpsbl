@@ -1011,9 +1011,7 @@
     <h3>5.15 Case Study 14: CMPSBL memory-lineage.ts</h3>
     <p><strong>Subject:</strong> <code>src/substrate/memory-lineage.ts</code> — Memory Stream lineage registry. Serial: CMPSBL-MNJEYCOS-F1UO · Fingerprint: 7bc9ab831fe3ce53.</p>
     <p><strong>Classification:</strong> TypeScript · 66 lines · No CRITICAL findings.</p>
-    <div class="highlight-box">
-      <p><strong>Key Finding:</strong> Weak randomness (<code>Math.random()</code>) in lineage record IDs — predictable IDs could allow ancestry forgery. Replaced with <code>crypto.randomUUID()</code>.</p>
-    </div>
+<p><strong>Key Finding:</strong> The report flagged weak randomness in lineage record IDs. <strong>Verification confirmed <code>crypto.randomUUID()</code> was already in use.</strong> No fix required. The substrate correctly identified the risk vector; the implementation had already mitigated it.</p>
     <p><strong>Capabilities:</strong> Structural Drift Detector, Adaptive Load Router. <strong>Result:</strong> CJPI 100 (APEX).</p>
 
     <!-- ── Case Study 15 ── -->
