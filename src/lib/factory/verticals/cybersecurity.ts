@@ -366,7 +366,7 @@ export function getCyberSecuritySubstrate(): VerticalSubstrateConfig {
       retentionDays: 365,
     },
     ascensionConfig: {
-      maxCapabilities: 12,
+      maxCapabilities: 20,
       enhancementArchetypes: [
         'Autonomous Threat Response',
         'Zero-Trust Architecture Enforcement',
