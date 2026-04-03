@@ -2105,6 +2105,173 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+        {/* ══════════════ CASE STUDY #9: Google OR-Tools ══════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mt-20">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-1 rounded">CASE STUDY #9</span>
+              <span className="text-xs font-mono bg-muted text-muted-foreground px-2 py-1 rounded">OPERATIONS RESEARCH · QUANTUM™ VERTICAL</span>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">Case Study #9: Google OR-Tools CP-SAT Solver</h2>
+              <p className="text-muted-foreground mt-1 text-sm font-mono">Serial: CMPSBL-MNJDGI57-L2XP · Fingerprint: af7743b905e75374</p>
+            </div>
+
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <p className="text-muted-foreground leading-relaxed">
+                <code className="text-primary">cp_model.py</code> — the core Python interface for the CP-SAT constraint programming solver from{' '}
+                <a href="https://github.com/google/or-tools" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                  Google OR-Tools
+                </a>{' '}
+                — the most widely deployed open-source operations research library with{' '}
+                <strong className="text-foreground">13,300+ GitHub stars and 2,400+ forks</strong>.
+                Developed by Google, Apache 2.0-licensed, and used globally for vehicle routing, scheduling, resource allocation,
+                supply chain optimization, and combinatorial problem solving. The CP-SAT solver combines SAT solving with constraint
+                propagation and linear programming relaxation — the state of the art in constraint satisfaction.
+                2,332 lines · Python · Copyright 2010–2025 Google LLC.
+              </p>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: 'Lines', value: '2,332' },
+                { label: 'Complexity', value: '230' },
+                { label: 'Imports', value: '42' },
+                { label: 'CJPI', value: '100 APEX' },
+              ].map((m) => (
+                <div key={m.label} className="bg-muted/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{m.value}</p>
+                  <p className="text-xs text-muted-foreground">{m.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Findings */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-primary" /> Structural Findings ({ORTOOLS_VULNERABILITIES.length})
+              </h3>
+              <div className="space-y-2">
+                {ORTOOLS_VULNERABILITIES.map((v, i) => (
+                  <div key={i} className="flex items-start gap-3 bg-muted/30 rounded-lg p-3">
+                    <span className={`mt-0.5 text-xs font-mono px-1.5 py-0.5 rounded ${v.severity === 'warning' ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.severity.toUpperCase()}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground">{v.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{v.details}</p>
+                    </div>
+                    <span className={`text-xs font-mono px-1.5 py-0.5 rounded ${v.status === 'mitigated' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Primitives */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" /> Primitives Applied ({ORTOOLS_PRIMITIVES.length})
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {(showAllOrtoolsPrimitives ? ORTOOLS_PRIMITIVES : ORTOOLS_PRIMITIVES.slice(0, 8)).map((p, i) => (
+                  <span key={i} className="text-xs font-mono bg-muted px-2 py-1 rounded text-foreground">
+                    {p.name} <span className="text-muted-foreground">({p.type})</span>
+                  </span>
+                ))}
+              </div>
+              {ORTOOLS_PRIMITIVES.length > 8 && (
+                <button
+                  className="text-xs text-primary mt-2 flex items-center hover:underline"
+                  onClick={() => setShowAllOrtoolsPrimitives(!showAllOrtoolsPrimitives)}
+                >
+                  {showAllOrtoolsPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all {ORTOOLS_PRIMITIVES.length} primitives</>}
+                </button>
+              )}
+            </div>
+
+            {/* Capabilities */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" /> Capabilities Unlocked ({ORTOOLS_CAPABILITIES.length})
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {ORTOOLS_CAPABILITIES.map((c, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-muted/30 rounded-lg p-2.5">
+                    <span className="text-xs font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">{c.type}</span>
+                    <span className="text-sm text-foreground">{c.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Key Context */}
+            <div className="bg-muted/30 rounded-lg p-4 border border-border">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Why This Matters</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>First <strong className="text-foreground">Google-authored</strong> code to pass through the Ascension™ pipeline</li>
+                <li>First <strong className="text-foreground">Operations Research vertical</strong> entry — proving the substrate maps to optimization and constraint satisfaction domains</li>
+                <li>The deprecated API finding is notable: Google explicitly implements a custom <code className="text-primary">deprecated</code> decorator for Python 3.10+ compatibility — structural debt the substrate surfaced without prior knowledge of Google&apos;s internal policies</li>
+                <li>OR-Tools powers <strong className="text-foreground">vehicle routing, workforce scheduling, and supply chain optimization</strong> at global scale</li>
+              </ul>
+            </div>
+
+            {/* Downloads + Refs */}
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Artifacts
+                </h3>
+                <div className="space-y-2">
+                  <a
+                    href="https://github.com/google/or-tools/blob/stable/ortools/sat/python/cp_model.py"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <FileCode className="w-4 h-4" /> View Original Source ↗
+                  </a>
+                  <a
+                    href="/downloads/case-studies/or-tools-ascended-CMPSBL-MNJDGI57-L2XP.zip"
+                    download
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Download className="w-4 h-4" /> Download Ascended Artifact (.zip)
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'Google OR-Tools Repository (13.3K+ ★)', url: 'https://github.com/google/or-tools' },
+                    { label: 'cp_model.py Source', url: 'https://github.com/google/or-tools/blob/stable/ortools/sat/python/cp_model.py' },
+                    { label: 'CP-SAT Solver Documentation', url: 'https://developers.google.com/optimization/cp/cp_solver' },
+                    { label: 'OR-Tools Official Site', url: 'https://developers.google.com/optimization' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
