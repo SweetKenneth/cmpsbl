@@ -41,6 +41,16 @@ const VERTICALS = [
 ];
 
 export default function VerticalPortal() {
+  const { session } = useAuth();
+
+  const handleVisitVertical = (url: string) => {
+    if (session?.access_token && session?.refresh_token) {
+      const ssoUrl = buildSSOVerticalUrl(url, session.access_token, session.refresh_token);
+      window.open(ssoUrl, '_blank');
+    } else {
+      window.open(url, '_blank');
+    }
+  };
   return (
     <>
       <Helmet>
