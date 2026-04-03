@@ -12,6 +12,7 @@ import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getVerticalSubdomain } from '@/config/domains';
+import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 
 export interface ScanFinding {
   id: string;
