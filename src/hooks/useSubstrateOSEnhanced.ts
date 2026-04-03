@@ -113,7 +113,7 @@ export function useBrainDeepThink() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (query: string, depth?: number) => brain.deepThink(query, depth),
+    mutationFn: async (query: string) => brain.deepThink(query),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
       if (data.success) {
