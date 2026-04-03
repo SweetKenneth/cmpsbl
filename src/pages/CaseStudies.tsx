@@ -484,12 +484,52 @@ const ARDUPILOT_CAPABILITIES = [
   'Intent Disambiguation Engine',
 ];
 
+/* ───────── QuantLib Data ───────── */
+
+const QUANTLIB_VULNERABILITIES = [
+  { severity: 'warning' as const, title: 'Synchronous-only architecture', status: 'mitigated', details: 'No async patterns found in substantial codebase. May block the event loop under load during iterative calibration.' },
+  { severity: 'warning' as const, title: 'High cyclomatic complexity (30)', status: 'mitigated', details: 'Complexity score of 30 indicates too many branching paths. Hard to test and maintain.' },
+  { severity: 'info' as const, title: 'No fallback mechanisms detected', status: 'monitor', details: 'ORACLE identifies single-path execution. Failure in any calibration step halts the entire pipeline.' },
+  { severity: 'info' as const, title: 'Low function density', status: 'monitor', details: 'ORACLE detects 4 functions across 490 lines (~123 lines/fn). Monolithic functions resist change.' },
+  { severity: 'warning' as const, title: 'Complex codebase without type safety', status: 'mitigated', details: 'ORACLE predicts 45% higher bug rate in complex untyped code. Type contracts prevent class of runtime errors.' },
+  { severity: 'info' as const, title: 'No type contracts detected', status: 'monitor', details: 'No interfaces or type definitions found. Type safety improves long-term maintainability.' },
+  { severity: 'warning' as const, title: 'Monolithic file (490 lines)', status: 'mitigated', details: '490 lines in a single file. ENGINEER recommends decomposition to reduce cognitive load.' },
+  { severity: 'info' as const, title: 'No module exports detected', status: 'monitor', details: 'Code appears self-contained with no exports. Limits reusability and testability.' },
+  { severity: 'info' as const, title: 'High comment ratio (37%)', status: 'monitor', details: 'Over 30% of lines are comments. MEDIC suspects commented-out dead code that should be pruned.' },
+];
+
+const QUANTLIB_PRIMITIVES = [
+  { name: 'MUON', type: 'Agent' }, { name: 'FERMION', type: 'Engine' },
+  { name: 'ENTANGLE', type: 'Engine' }, { name: 'PRISM', type: 'Agent' },
+  { name: 'BOSON', type: 'Agent' }, { name: 'GLUON', type: 'Agent' },
+  { name: 'GRAVITON', type: 'Agent' }, { name: 'HADRON', type: 'Engine' },
+  { name: 'LATTICE', type: 'Engine' }, { name: 'QUBIT', type: 'Engine' },
+  { name: 'TREATY', type: 'Layer' }, { name: 'LINGUA', type: 'Organ' },
+  { name: 'RELAY', type: 'Layer' }, { name: 'MEMORY', type: 'Organ' },
+  { name: 'COMPASS', type: 'Organ' }, { name: 'SOVEREIGN', type: 'Layer' },
+  { name: 'PHANTOM', type: 'Organ' }, { name: 'EVOLUTION', type: 'Layer' },
+  { name: 'OBSERVER', type: 'Organ' }, { name: 'SANDBOX', type: 'Layer' },
+];
+
+const QUANTLIB_CAPABILITIES = [
+  { name: 'Quantum Circuit Optimizer', type: 'Active' },
+  { name: 'QCD Color Charge Simulator', type: 'Active' },
+  { name: 'Spectral Line Identifier', type: 'Passive' },
+  { name: 'API Contract Validator', type: 'Passive' },
+  { name: 'Version Reconciliation Engine', type: 'Hybrid' },
+  { name: 'Cryptographic Agility Layer', type: 'Hybrid' },
+  { name: 'Quantum Teleportation Protocol', type: 'Active' },
+  { name: 'Policy Enforcement Layer', type: 'Hybrid' },
+  { name: 'Band Structure Calculator', type: 'Passive' },
+  { name: 'Particle Collision Analyzer', type: 'Active' },
+];
+
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '7', label: 'Case Studies', icon: FileCode },
+  { value: '8', label: 'Case Studies', icon: FileCode },
   { value: '6', label: 'Verticals Proven', icon: Layers },
-  { value: '140', label: 'Primitives Applied', icon: Shield },
+  { value: '160', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
@@ -502,6 +542,7 @@ const HERO_SUBJECTS = [
   { name: 'HuggingFace Tokenizers', org: 'Hugging Face', vertical: 'LLM' },
   { name: 'OpenSSL tls13_enc.c', org: 'OpenSSL Foundation', vertical: 'Cyber' },
   { name: 'ArduPilot autotest', org: 'ArduPilot', vertical: 'Robotics' },
+  { name: 'QuantLib Gaussian 1D', org: 'QuantLib', vertical: 'FinTech' },
 ];
 
 /* ───────── Main Page ───────── */
