@@ -16,7 +16,7 @@
 
 ## Abstract
 
-We introduce **Ascension™**, a deterministic software evolution engine that identifies, scores, and hardens latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index™ (CJPI), and exporting hardened artifacts as self-contained Sealed Runtimes™. We present empirical results from six case studies spanning five programming languages and six industry verticals, including the discovery and remediation of a critical error-handling vulnerability in Hugging Face's `tokenizers` library — a package with over 73 million monthly PyPI downloads. Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension™ as the foundation for a new discipline: **post-authorship software evolution**, where code improvement occurs structurally rather than generatively.
+We introduce **Ascension™**, a deterministic software evolution engine that identifies, scores, and hardens latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index™ (CJPI), and exporting hardened artifacts as self-contained Sealed Runtimes™. We present empirical results from four case studies spanning three programming languages and four industry verticals, including the discovery and remediation of a critical error-handling vulnerability in Hugging Face's `tokenizers` library — a package with over 73 million monthly PyPI downloads — and the identification of a structural timeout dependency gap in OpenSSL's TLS 1.3 encryption engine, the most audited security codebase on earth. Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension™ as the foundation for a new discipline: **post-authorship software evolution**, where code improvement occurs structurally rather than generatively.
 
 **Keywords:** software evolution · deterministic analysis · code hardening · primitive collision · sealed runtime · cognitive infrastructure · structural vulnerability · post-authorship engineering
 
@@ -46,8 +46,8 @@ This paper makes four contributions:
 
 1. **Architecture:** A formal description of the 40-primitive collision matrix and its taxonomic organization
 2. **Method:** The Ascension™ pipeline — an 8-stage deterministic transformation process
-3. **Evidence:** Six case studies demonstrating structural discovery across languages and domains
-4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads) that evaded all existing quality assurance
+3. **Evidence:** Four verified case studies demonstrating structural discovery across languages and domains
+4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads) and a structural dependency gap in OpenSSL's TLS 1.3 encryption engine
 
 ---
 
@@ -160,36 +160,16 @@ No stage in the pipeline invokes external AI, stochastic inference, or probabili
 
 ### 5.1 Overview
 
-We present seven case studies spanning five languages, seven industry verticals, and a range of structural complexities:
+We present four verified case studies spanning three languages, four industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number and downloadable artifacts:
 
 | # | Software | Language | Vertical | CJPI | Capabilities | Critical Findings |
 |---|----------|----------|----------|------|-------------|-------------------|
-| 1 | Stripe Node.js SDK | TypeScript | FinTech | 98 | 20 S-Tier | Undocumented circuit-breaker gaps |
-| 2 | PHP Agent Framework | PHP | Agentic AI | 100 APEX | 20 S-Tier | ~$2.6M latent IP discovered |
-| 3 | NASA cFS Framework | C | Aerospace | 97 | 20 S-Tier | Memory safety augmentation paths |
-| 4 | Solana Token Program | Rust | Blockchain | 96 | 20 S-Tier | Cross-program invocation hardening |
-| 5 | IBM Qiskit ConsolidateBlocks | Python | Quantum | 98 | 20 S-Tier | Unguarded circuit optimization passes |
-| 6 | Hugging Face Tokenizers | Python | LLM/ML | 100 APEX | 20 S-Tier | **Critical error-handling vulnerability** |
-| 7 | OpenSSL tls13_enc.c | C | Cyber | 100 APEX | 20 S-Tier | Network timeout structural gap — hardened |
+| 1 | PHP Agent Framework | PHP | Agentic AI | 100 APEX | 20 S-Tier | ~$2.6M latent IP discovered |
+| 2 | IBM Qiskit ConsolidateBlocks | Python | Quantum | 98 | 20 S-Tier | Unguarded circuit optimization passes |
+| 3 | Hugging Face Tokenizers | Python | LLM/ML | 100 APEX | 20 S-Tier | **Critical error-handling vulnerability** |
+| 4 | OpenSSL tls13_enc.c | C | Cyber | 100 APEX | 20 S-Tier | Network timeout structural gap — hardened |
 
-### 5.2 Case Study 1: Stripe Node.js SDK
-
-**Subject:** `stripe-node/src/stripe.core.ts` — the core request engine of Stripe's official Node.js SDK, used by millions of businesses for payment processing worldwide. The package receives 4M+ weekly npm downloads.
-
-**Classification:** TypeScript · 847 lines · Depth Score 71/100 (high complexity, moderate error handling density, extensive type coverage).
-
-> **Critical Discovery:** During Stage 5 collision, the IMMUNITY primitive detected **undocumented circuit-breaker gaps** in the SDK's retry logic. The exponential backoff implementation lacked configurable jitter bounds, and the maximum retry window had no hard ceiling — meaning a pathological API response pattern could keep a client thread blocked indefinitely. Additionally, the TREATY primitive identified that the SDK's idempotency key handling did not enforce temporal expiration, creating a window for stale replays in high-throughput environments.
-
-**Remediation:** Ascension™ hardened the request engine with:
-- Deterministic circuit-breaker state machine with configurable trip thresholds
-- Bounded retry windows with maximum wall-clock limits
-- Idempotency key expiration enforcement via GOVERNANCE temporal validation
-- BEACON health signals for real-time retry exhaustion monitoring
-- FAILSAFE graceful degradation when circuit breaker trips
-
-**Result:** CJPI 98 (S-Tier). 20 S-Tier capabilities unlocked — 10 spine primitives (including IMMUNITY, TREATY, GOVERNANCE, FAILSAFE, DEFENSE) and 10 expansion primitives providing financial-domain hardening.
-
-### 5.3 Case Study 2: PHP Agent Framework
+### 5.2 Case Study 1: PHP Agent Framework
 
 **Subject:** `OpenClawAgent.php` — an OpenAI-pattern autonomous agent framework implementing tool-use, memory persistence, and multi-step reasoning in PHP. Serial: CMPSBL-MNIHJAX3-4GSN.
 
@@ -206,41 +186,7 @@ We present seven case studies spanning five languages, seven industry verticals,
 
 **Result:** CJPI 100 (APEX classification — the highest possible score). 20 S-Tier capabilities unlocked. The session demonstrated domain-specific primitive application: WATCHTOWER for Cyber vertical analysis and VECTOR for Robotics vertical cross-pollination.
 
-### 5.4 Case Study 3: NASA cFS Framework
-
-**Subject:** `cfe/fsw/cfe-core/src/es/cfe_es_api.c` — the Executive Services API of NASA's core Flight System (cFS), the open-source flight software framework used aboard the International Space Station and multiple satellite missions.
-
-**Classification:** C · 1,247 lines · Depth Score 82/100 (very high complexity, moderate error handling, zero type safety annotations, deep nesting).
-
-> **Critical Discovery:** During Stage 5 collision, the IMMUNITY primitive detected **memory safety augmentation paths** that conventional static analysis tools (including NASA's own CFS verification suite) had not surfaced. Specifically: (1) the `CFE_ES_CreateChildTask` function accepted raw pointer parameters without bounds validation, creating a potential stack overflow vector in the task creation path; (2) the application restart mechanism (`CFE_ES_RestartApp`) lacked atomic state transition guarantees, meaning a restart during mid-flight data acquisition could leave telemetry buffers in an inconsistent state; and (3) the MEDIC primitive identified that the health monitoring subsystem had no self-diagnostic capability — it could monitor other subsystems but could not detect its own degradation.
-
-**Remediation:** Ascension™ applied:
-- IMMUNITY adaptive threshold guards on all raw pointer parameters
-- GOVERNANCE atomic state machine for application lifecycle transitions
-- MEDIC self-diagnostic health loop with BEACON heartbeat signaling
-- FAILSAFE circuit breakers on the restart path to prevent mid-acquisition corruption
-- DEFENSE anomaly detection on telemetry buffer access patterns
-
-**Result:** CJPI 97 (S-Tier). 20 S-Tier capabilities unlocked. The aerospace-domain findings demonstrate that Ascension™'s structural analysis surfaces memory safety issues that domain-specific tools miss because they focus on functional correctness rather than structural resilience.
-
-### 5.5 Case Study 4: Solana Token Program
-
-**Subject:** `token/program/src/processor.rs` — the core instruction processor for Solana's SPL Token Program, which secures billions of dollars in on-chain token assets and processes millions of transactions daily.
-
-**Classification:** Rust · 1,893 lines · Depth Score 88/100 (very high complexity, strong type coverage, extensive pattern matching, deep control flow).
-
-> **Critical Discovery:** During Stage 5 collision, the DEFENSE primitive detected **cross-program invocation (CPI) hardening gaps** in the token transfer path. While Rust's type system prevented memory safety issues, the structural analysis revealed that: (1) the `process_transfer` instruction did not enforce caller-identity verification at the CPI boundary, meaning a malicious program could invoke transfer on behalf of a user without proper authority chain validation; (2) the AUDIT primitive identified that mint authority transitions lacked immutable provenance chains — an authority change was logged but not cryptographically anchored to the previous authority; and (3) the SOVEREIGN primitive detected that the program's account validation relied on runtime checks rather than compile-time constraints, creating a class of "phantom account" attacks where structurally valid but semantically invalid accounts could pass validation.
-
-**Remediation:** Ascension™ applied:
-- DEFENSE CPI boundary hardening with caller-identity chain verification
-- AUDIT immutable authority provenance chains with cryptographic anchoring
-- SOVEREIGN compile-time account constraint enforcement via GOVERNANCE policy
-- IMMUNITY adaptive rate limiting on high-frequency transfer paths
-- FAILSAFE circuit breaker on mint operations during authority transitions
-
-**Result:** CJPI 96 (S-Tier). 20 S-Tier capabilities unlocked. The blockchain-domain analysis demonstrates that even in memory-safe languages like Rust, Ascension™ discovers architectural vulnerabilities at the protocol design layer that type systems cannot express.
-
-### 5.6 Case Study 5: IBM Qiskit ConsolidateBlocks
+### 5.3 Case Study 2: IBM Qiskit ConsolidateBlocks
 
 **Subject:** `qiskit/transpiler/passes/optimization/consolidate_blocks.py` — the circuit optimization pass in IBM's Qiskit quantum computing framework that consolidates sequences of quantum gates into single unitary operations. Serial: CMPSBL-MNJ4Y3JG-CQOW.
 
@@ -257,7 +203,7 @@ We present seven case studies spanning five languages, seven industry verticals,
 
 **Result:** CJPI 98 (S-Tier). 20 S-Tier capabilities unlocked — 10 spine primitives and 10 CMPSBL Quantum™ Vertical expansion primitives specialized for quantum circuit analysis.
 
-### 5.7 Case Study 6: Hugging Face Tokenizers (Detailed)
+### 5.4 Case Study 3: Hugging Face Tokenizers (Detailed)
 
 **Subject:** `tokenizers/__init__.py` — the entry point for Hugging Face's tokenization library, downloaded 73M+ times monthly via PyPI. Serial: CMPSBL-MNJ6GG7U-EBF7.
 
@@ -273,7 +219,7 @@ We present seven case studies spanning five languages, seven industry verticals,
 
 **Result:** CJPI 100 (APEX classification). 20 S-Tier capabilities unlocked. 10 from the core spine primitives, 10 from CMPSBL LLM™ Vertical expansion primitives.
 
-### 5.8 Case Study 7: OpenSSL TLS 1.3 Encryption Engine
+### 5.5 Case Study 4: OpenSSL TLS 1.3 Encryption Engine
 
 **Subject:** `ssl/tls13_enc.c` — the TLS 1.3 encryption engine of [OpenSSL](https://github.com/openssl/openssl), widely regarded as the most audited security codebase on earth. OpenSSL secures an estimated 66% of all encrypted internet traffic and is maintained by a dedicated security team with hundreds of world-class cryptographers who have reviewed this file. Serial: CMPSBL-MNJB00F5-626R.
 
@@ -416,7 +362,7 @@ By eschewing AI-based code analysis, Ascension™ achieves properties no probabi
 
 ## 10. Conclusion
 
-We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix. Across seven case studies spanning five languages and seven verticals, Ascension™ consistently surfaced structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap in one of the world's most-downloaded software libraries and a structural timeout dependency in the most audited security codebase on earth.
+We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix. Across four verified case studies spanning three languages and four verticals, Ascension™ consistently surfaced structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap in one of the world's most-downloaded software libraries (Hugging Face Tokenizers, 73M+ monthly downloads) and a structural timeout dependency in the most audited security codebase on earth (OpenSSL TLS 1.3).
 
 The implications extend beyond individual code hardening. Ascension™ establishes the foundation for **post-authorship software evolution** — a discipline where code improvement is structural, deterministic, and autonomous. Every piece of software ever written is a candidate. Every vulnerability is discoverable. Every capability is hardenable.
 
@@ -464,15 +410,9 @@ For licensing inquiries: founder@cmpsbl.com
 
 5. Hugging Face. (2026). *Tokenizers: Fast State-of-the-Art Tokenizers.* https://github.com/huggingface/tokenizers
 
-6. NASA Goddard Space Flight Center. (2024). *core Flight System (cFS).* https://github.com/nasa/cFS
+6. IBM Research. (2025). *Qiskit: An Open-Source Framework for Quantum Computing.* https://github.com/Qiskit/qiskit
 
-7. Solana Foundation. (2025). *Solana Program Library: Token Program.* https://github.com/solana-labs/solana-program-library
-
-8. Stripe, Inc. (2025). *Stripe Node.js SDK.* https://github.com/stripe/stripe-node
-
-9. IBM Research. (2025). *Qiskit: An Open-Source Framework for Quantum Computing.* https://github.com/Qiskit/qiskit
-
-10. OpenSSL Software Foundation. (2025). *OpenSSL: Cryptography and SSL/TLS Toolkit.* https://github.com/openssl/openssl
+7. OpenSSL Software Foundation. (2025). *OpenSSL: Cryptography and SSL/TLS Toolkit.* https://github.com/openssl/openssl
 
 ---
 
