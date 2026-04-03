@@ -634,6 +634,10 @@ For licensing inquiries: founder@cmpsbl.com
 
 23. notactuallytreyanastasio. (2025). *Infinitely hanging clients breaking bigger/complex sessions.* GitHub Issue #867. https://github.com/anthropics/anthropic-sdk-typescript/issues/867
 
+24. Sweet, K. E. Jr. (2026). *CMPSBL pipeline-fingerprint.ts — Self-referential Ascension analysis.* Serial: CMPSBL-MNJEN2SS-XF1N. Fingerprint: 18b8cd05bd02ba6d. CMPSBL® Internal Case Study #12.
+
+25. MDN Web Docs. (2026). *SubtleCrypto.digest() — Web Crypto API.* https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+
 ---
 
 ## Citation
