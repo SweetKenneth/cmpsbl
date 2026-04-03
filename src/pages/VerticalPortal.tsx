@@ -12,6 +12,8 @@ import { motion } from "framer-motion";
 import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
 
 const VERTICALS = [
   {

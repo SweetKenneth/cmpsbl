@@ -75,6 +75,7 @@ const CAPABILITIES_PREVIEW = [
 /* ═══════════════════════════════════════════════════════════════ */
 
 export default function CyberSecurityHome() {
+  useSSORelay();
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });

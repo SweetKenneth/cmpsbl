@@ -69,6 +69,7 @@ const CAPABILITIES_PREVIEW = [
 /* ═══════════════════════════════════════════════════════════════ */
 
 export default function RoboticsHome() {
+  useSSORelay();
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
