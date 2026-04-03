@@ -100,7 +100,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    // ── Auth: verify the caller has a valid session ──
+    // ── Auth: allow admin users or trusted internal service calls ──
     const authHeader = req.headers.get('Authorization');
     if (!authHeader?.startsWith('Bearer ')) {
       return errorResponse('Unauthorized — Bearer token required', 401);
@@ -109,30 +109,36 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const bearerToken = authHeader.slice('Bearer '.length).trim();
+    const apiKeyHeader = req.headers.get('apikey');
+    const isInternalServiceCall = bearerToken === serviceKey || apiKeyHeader === serviceKey;
 
-    // Verify the user's JWT
-    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: { user }, error: authError } = await userClient.auth.getUser();
-    if (authError || !user) {
-      return errorResponse('Unauthorized — invalid or expired token', 401);
-    }
-
-    // ── Admin role check — restrict backups to admin users ──
-    const adminClient = createClient(supabaseUrl, serviceKey);
-    const { data: roles } = await adminClient
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .limit(1);
-    if (!roles || roles.length === 0) {
-      return errorResponse('Forbidden — admin role required', 403);
+    let userId: string | null = null;
+    if (!isInternalServiceCall) {
+      const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+        global: { headers: { Authorization: authHeader } },
+      });
+      const { data: { user }, error: authError } = await userClient.auth.getUser();
+      if (authError || !user) {
+        return errorResponse('Unauthorized — invalid or expired token', 401);
+      }
+      userId = user.id;
     }
 
     // ── Service-role client for full data access ──
     const admin = createClient(supabaseUrl, serviceKey);
+
+    if (!isInternalServiceCall && userId) {
+      const { data: roles } = await admin
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .limit(1);
+      if (!roles || roles.length === 0) {
+        return errorResponse('Forbidden — admin role required', 403);
+      }
+    }
     const projectRef = supabaseUrl.split('//')[1]?.split('.')[0] || 'unknown';
 
     const now = new Date();
