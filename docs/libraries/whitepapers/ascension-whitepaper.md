@@ -522,6 +522,10 @@ For licensing inquiries: founder@cmpsbl.com
 
 12. Lee, A. (2018). *Gaussian 1D Models — QuantLib-SWIG Python Example.* https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py
 
+13. Google LLC. (2010–2025). *OR-Tools: Google's Operations Research Tools.* https://github.com/google/or-tools
+
+14. Perron, L. & Furnon, V. (2023). *CP-SAT Solver.* Google OR-Tools Documentation. https://developers.google.com/optimization/cp/cp_solver
+
 ---
 
 ## Citation
