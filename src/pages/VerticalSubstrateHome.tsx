@@ -142,7 +142,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <section className="max-w-6xl mx-auto px-4 py-16 border-t border-border">
           <h2 className="text-2xl font-bold mb-2">Agents</h2>
           <p className="text-muted-foreground mb-8">
-            8 autonomous agents purpose-built for threat detection, response, and compliance
+            8 autonomous agents purpose-built for {verticalKey} intelligence and operations
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {agents.map((agent) => (
