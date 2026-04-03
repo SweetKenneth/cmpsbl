@@ -126,6 +126,26 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'WELDER',     context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'INSPECTOR',  context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'PIONEER',    context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
+
+  // ═══ QUANTUM VERTICAL (quantum.cmpsbl.com) — 8 Engines ═══
+  { name: 'HADRON',    context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'QUBIT',     context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'PHOTON',    context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'FERMION',   context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'ENTANGLE',  context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'LATTICE',   context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'PLASMA',    context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+  { name: 'CRYOGEN',   context: 'quantum-engine', vertical: 'quantum', role: 'engine' },
+
+  // ═══ QUANTUM VERTICAL (quantum.cmpsbl.com) — 8 Agents ═══
+  { name: 'MUON',      context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'BOSON',     context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'NEUTRINO',  context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'GLUON',     context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'GRAVITON',  context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'TACHYON',   context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'MESON',     context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
+  { name: 'PRISM',     context: 'quantum-agent', vertical: 'quantum', role: 'agent' },
 ];
 
 /** Mutable set of all reserved primitive names (case-insensitive lookup) */

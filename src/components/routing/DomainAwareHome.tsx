@@ -6,6 +6,7 @@ const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
 const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
+const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
 
 /**
  * Domain-aware routing:
@@ -44,6 +45,14 @@ export default function DomainAwareHome() {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(215 25% 5%)" }} />}>
         <RoboticsHome />
+      </Suspense>
+    );
+  }
+
+  if (verticalKey === 'quantum') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(260 30% 4%)" }} />}>
+        <QuantumHome />
       </Suspense>
     );
   }
