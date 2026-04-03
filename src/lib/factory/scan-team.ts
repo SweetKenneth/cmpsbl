@@ -11,6 +11,7 @@ import type { RateLimitDecision } from '@/lib/substrate/adaptive-rate-limit';
 import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
+import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 
