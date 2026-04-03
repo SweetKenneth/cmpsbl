@@ -647,6 +647,7 @@ export default function CaseStudies() {
   const [showAllArduPrimitives, setShowAllArduPrimitives] = useState(false);
   const [showAllQuantLibPrimitives, setShowAllQuantLibPrimitives] = useState(false);
   const [showAllOrtoolsPrimitives, setShowAllOrtoolsPrimitives] = useState(false);
+  const [showAllPytorchPrimitives, setShowAllPytorchPrimitives] = useState(false);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
