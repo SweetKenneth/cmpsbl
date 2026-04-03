@@ -746,6 +746,7 @@ export function validateWebhookSignature(
 
 const ALLOWED_HOSTS = new Set([
   'cmpsbl.lovable.app',
+  'cmpsbl-com.lovable.app',
   'cmpsbl.com',
   'www.cmpsbl.com',
   'promptfluid.com',
