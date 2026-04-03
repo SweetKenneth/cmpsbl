@@ -33,6 +33,18 @@ export {
 } from './robotics';
 
 export {
+  getQuantumSubstrate,
+  getQuantumPrimitives,
+  getQuantumEngines,
+  getQuantumAgents,
+  getAllQuantumCapabilities,
+  getQuantumCrownJewels,
+  getQuantumCrownJewelCount,
+  getQuantumCrownJewelCapabilities,
+  getQuantumCrownJewelSummary,
+} from './quantum';
+
+export {
   type VerticalPrimitive,
   type VerticalSubstrateConfig,
   type VerticalSubstrateStatus,
