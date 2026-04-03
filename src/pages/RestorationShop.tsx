@@ -301,7 +301,7 @@ export default function RestorationShop() {
         `- \`src/refurbished-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
         `- \`restoration-report.json\` — Full machine-readable report`,
         `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
-        `- \`LICENSE.txt\` — Usage license`,
+        `- \`LICENSE.html\` — Usage license`,
         `- \`docs/\` — Pipeline details, capabilities, testing guide, error codes, CJPI cert`,
         ``,
         `## Quick Start`,
