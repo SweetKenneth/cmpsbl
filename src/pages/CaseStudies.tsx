@@ -559,6 +559,7 @@ export default function CaseStudies() {
   const [showAllOpensslPrimitives, setShowAllOpensslPrimitives] = useState(false);
   const visibleOpensslPrimitives = showAllOpensslPrimitives ? OPENSSL_PRIMITIVES : OPENSSL_PRIMITIVES.slice(0, 8);
   const [showAllArduPrimitives, setShowAllArduPrimitives] = useState(false);
+  const [showAllQuantLibPrimitives, setShowAllQuantLibPrimitives] = useState(false);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
