@@ -226,6 +226,8 @@ export default function QuantumHome() {
           </div>
         </section>
       </div>
+
+      <EnhancedFooter />
     </>
   );
 }
