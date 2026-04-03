@@ -9,9 +9,9 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, ExternalLink, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical, Atom } from 'lucide-react';
+import { Download, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical, Sparkles, Brain, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 /* ───────── Case Study #1 Data — A* Path Planner ───────── */
 
@@ -265,6 +265,54 @@ const MSF_CAPABILITIES = [
   { name: 'Compliance Continuous Validator', mode: 'Hybrid', desc: 'Validates security postures against SOC2, ISO 27001, NIST, and CIS benchmarks with gap analysis and remediation priorities.' },
 ];
 
+/* ───────── Case Study #5 Data — HuggingFace Tokenizers (LLM) ───────── */
+
+const HF_VULNERABILITIES = [
+  { severity: 'critical', title: 'No error handling detected', status: 'hardened', detail: 'Code has no try/catch, except, or rescue blocks. Any runtime exception will crash the process — hardened with FAILSAFE circuit breakers.' },
+  { severity: 'warning', title: 'Synchronous-only architecture', status: 'mitigated', detail: 'No async patterns found in substantial codebase. May block the event loop under load.' },
+  { severity: 'warning', title: 'No test coverage detected', status: 'mitigated', detail: 'ORACLE predicts 73% probability of regression bugs within 6 months without test coverage.' },
+  { severity: 'info', title: 'No fallback mechanisms detected', status: 'monitor', detail: 'ORACLE identifies single-path execution. Failure in any step halts the entire pipeline.' },
+  { severity: 'info', title: 'No module exports detected', status: 'monitor', detail: 'Code appears self-contained with no exports. Limits reusability and testability.' },
+  { severity: 'info', title: 'Zero documentation comments', status: 'monitor', detail: 'No comments in 50+ lines of code. MEDIC flags undocumented logic as maintainability risk.' },
+  { severity: 'info', title: 'No cleanup handlers detected', status: 'monitor', detail: 'Long-running code without finally blocks or cleanup handlers. Resources may leak on unexpected termination.' },
+];
+
+const HF_PRIMITIVES = [
+  { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries — complex systems need alignment monitoring' },
+  { name: 'SIMULATE', type: 'Layer', action: 'Simulation enables safe testing of architectural changes' },
+  { name: 'HERALD', type: 'Agent', action: 'Drift detection and monitoring for model output consistency' },
+  { name: 'TRIBUNAL', type: 'Agent', action: 'Output consistency validation and cross-reference checking' },
+  { name: 'BRAIN', type: 'Organ', action: 'Continuous learning patterns for complex logic optimization' },
+  { name: 'SKEPTIC', type: 'Agent', action: 'Fact-checking and hallucination detection for generated outputs' },
+  { name: 'SHADOW', type: 'Layer', action: 'No test coverage detected — shadow testing for safe canary analysis' },
+  { name: 'LEXICON', type: 'Engine', action: 'Tokenizer security and adversarial input sanitization' },
+  { name: 'LINEAGE', type: 'Agent', action: 'Data provenance tracking and training data attribution' },
+  { name: 'RELAY', type: 'Layer', action: 'Synchronous-only architecture — message relay with delivery guarantees' },
+  { name: 'EVOLUTION', type: 'Layer', action: 'Technical debt signals benefit from managed evolution cycles' },
+  { name: 'ECHO', type: 'Organ', action: 'Structured echo patterns replace scattered logging' },
+  { name: 'TETHER', type: 'Engine', action: 'Context window management and attention span optimization' },
+  { name: 'SIEVE', type: 'Engine', action: 'Output safety filtering and harmful content blocking' },
+  { name: 'CUSTODIAN', type: 'Agent', action: 'Supply chain security for model dependencies and weights' },
+  { name: 'LINGUA', type: 'Organ', action: 'Text processing benefits from structured language interpretation' },
+  { name: 'SYLLOGISM', type: 'Engine', action: 'Reasoning chain validation and logical consistency enforcement' },
+  { name: 'CLARITY', type: 'Engine', action: 'Explainability and decision transparency for model outputs' },
+  { name: 'COMPASS', type: 'Organ', action: 'No module exports detected — module navigation and dependency mapping' },
+  { name: 'IMMUNITY', type: 'Layer', action: 'Dependency chains need immunity against cascading failures' },
+];
+
+const HF_CAPABILITIES = [
+  { name: 'Intelligent Retry Fabric', mode: 'Active', desc: 'Replaces naive retry loops with context-aware retry strategies. Backs off intelligently, switches fallback paths, and learns from failure patterns.' },
+  { name: 'Chaos Pen Test Engine', mode: 'Active', desc: 'Automated penetration testing via chaos injection, adversarial simulation, blast radius analysis, and red team automation.' },
+  { name: 'Silent Regression Scanner', mode: 'Passive', desc: 'Background scanner that detects behavioral regressions by comparing output signatures against historical baselines.' },
+  { name: 'Cognitive Load Profiler', mode: 'Passive', desc: 'Measures code complexity per module and identifies areas where developer cognitive load exceeds maintainability thresholds.' },
+  { name: 'Canary Deployment Gate', mode: 'Hybrid', desc: 'Routes configurable traffic percentages to new code paths. Monitors for anomalies and auto-rolls back if thresholds are breached.' },
+  { name: 'Intent Disambiguation Engine', mode: 'Hybrid', desc: 'Observes ambiguous user inputs and actively resolves intent through contextual analysis and confidence scoring.' },
+  { name: 'Structural Drift Detector', mode: 'Passive', desc: 'Compares current architecture against the original blueprint and flags deviations to prevent architectural erosion.' },
+  { name: 'Real-Time Performance Optimizer', mode: 'Active', desc: 'Profiles execution paths at runtime and dynamically optimizes hot paths. Typical improvement: 15-40% latency reduction.' },
+  { name: 'Quantum Circuit Optimizer', mode: 'Active', desc: 'Transpiles and optimizes quantum gate sequences for target hardware. Reduces gate depth, minimizes CNOT count.' },
+  { name: 'Phantom Load Tester', mode: 'Hybrid', desc: 'Generates synthetic traffic that mirrors real user patterns. Passively collects baselines, then actively stress-tests under configurable scenarios.' },
+];
+
 /* ───────── Shared Components ───────── */
 
 function SeverityBadge({ severity }: { severity: string }) {
@@ -294,8 +342,6 @@ function TypeBadge({ type }: { type: string }) {
   };
   return <Badge variant="outline" className={`text-[10px] uppercase font-bold ${colors[type] ?? ''}`}>{type}</Badge>;
 }
-
-/* ───────── Cross-Vertical Comparison Card ───────── */
 
 function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRun; isExpanded: boolean; onToggle: () => void }) {
   return (
@@ -340,6 +386,23 @@ function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRu
   );
 }
 
+/* ───────── Hero Stats ───────── */
+
+const HERO_STATS = [
+  { value: '5', label: 'Case Studies', icon: FileCode },
+  { value: '5', label: 'Verticals Proven', icon: Layers },
+  { value: '100', label: 'Primitives Applied', icon: Shield },
+  { value: '0', label: 'AI Calls Made', icon: Brain },
+];
+
+const HERO_SUBJECTS = [
+  { name: 'PythonRobotics', org: 'Atsushi Sakai', vertical: 'Robotics' },
+  { name: 'OpenAI Agents SDK', org: 'OpenAI', vertical: 'Cross-Vertical' },
+  { name: 'Qiskit', org: 'IBM', vertical: 'Quantum' },
+  { name: 'Metasploit', org: 'Rapid7', vertical: 'Cyber' },
+  { name: 'HuggingFace Tokenizers', org: 'Hugging Face', vertical: 'LLM' },
+];
+
 /* ───────── Main Page ───────── */
 
 export default function CaseStudies() {
@@ -349,6 +412,8 @@ export default function CaseStudies() {
   const visibleQiskitPrimitives = showAllQiskitPrimitives ? QISKIT_PRIMITIVES : QISKIT_PRIMITIVES.slice(0, 8);
   const [showAllMsfPrimitives, setShowAllMsfPrimitives] = useState(false);
   const visibleMsfPrimitives = showAllMsfPrimitives ? MSF_PRIMITIVES : MSF_PRIMITIVES.slice(0, 8);
+  const [showAllHfPrimitives, setShowAllHfPrimitives] = useState(false);
+  const visibleHfPrimitives = showAllHfPrimitives ? HF_PRIMITIVES : HF_PRIMITIVES.slice(0, 8);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
@@ -359,23 +424,346 @@ export default function CaseStudies() {
     <>
       <Helmet>
         <title>Case Studies — CMPSBL® Ascension Results</title>
-        <meta name="description" content="Real-world case studies demonstrating CMPSBL® Ascension refurbishment results. See before-and-after code analysis, cross-vertical substrate comparisons, and primitive application on production software." />
+        <meta name="description" content="Real-world case studies demonstrating CMPSBL® Ascension refurbishment results on software from IBM, Rapid7, Hugging Face, OpenAI, and PythonRobotics. See before-and-after analysis with downloadable artifacts." />
         <link rel="canonical" href="https://cmpsbl.com/case-studies" />
       </Helmet>
 
       <PublicNav />
 
       <main className="min-h-screen bg-background pt-20 pb-16">
-        {/* Hero */}
+
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/*  HERO — What Ascension Has Proven                          */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        <section className="relative overflow-hidden">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-transparent to-transparent" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-primary/[0.02] blur-3xl" />
+
+          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-8 pb-16">
+            {/* Top badge */}
+            <div className="text-center mb-6">
+              <Badge variant="outline" className="mb-6 text-xs tracking-wider uppercase bg-primary/5 border-primary/20 text-primary">
+                <Sparkles className="w-3 h-3 mr-1.5" />
+                Proven Across 5 Verticals
+              </Badge>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-foreground mb-6 leading-[1.1]">
+                The World's Code.{' '}
+                <span className="bg-gradient-to-r from-primary via-neon-cyan to-neon-purple bg-clip-text text-transparent">
+                  Hardened.
+                </span>
+              </h1>
+
+              <p className="text-muted-foreground text-base sm:text-lg max-w-3xl mx-auto leading-relaxed mb-4">
+                We ran production code from <strong className="text-foreground">IBM</strong>, <strong className="text-foreground">Rapid7</strong>, <strong className="text-foreground">Hugging Face</strong>, <strong className="text-foreground">OpenAI</strong>, and the most-starred robotics repository on GitHub through the CMPSBL® Ascension pipeline. Every file scored <strong className="text-foreground">CJPI 100 (Apex)</strong>. Every one had vulnerabilities we found and fixed. Zero AI was used.
+              </p>
+
+              <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                All code is a candidate for Ascension. When code is done being written, Ascension hardens it, improves it, and delivers it as a Sealed Runtime — with full provenance, zero dependency on us, and domain-specific intelligence that no linter, formatter, or AI copilot can replicate.
+              </p>
+            </div>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10 max-w-3xl mx-auto">
+              {HERO_STATS.map(({ value, label, icon: Icon }) => (
+                <div key={label} className="text-center p-4 rounded-xl bg-card/60 border border-border/60">
+                  <Icon className="w-4 h-4 text-primary mx-auto mb-2" />
+                  <div className="text-2xl sm:text-3xl font-bold text-foreground">{value}</div>
+                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider mt-1">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Subject marquee */}
+            <div className="max-w-3xl mx-auto">
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground text-center mb-3 font-medium">Software Tested</div>
+              <div className="flex flex-wrap justify-center gap-2">
+                {HERO_SUBJECTS.map((s) => (
+                  <div key={s.name} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/40 border border-border/50">
+                    <span className="text-xs font-medium text-foreground">{s.name}</span>
+                    <Badge variant="outline" className="text-[9px] uppercase">{s.vertical}</Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Manifesto callout */}
+            <div className="max-w-3xl mx-auto mt-10 bg-primary/[0.03] border border-primary/10 rounded-2xl p-6 sm:p-8">
+              <h2 className="text-lg sm:text-xl font-bold text-foreground mb-3">What These Case Studies Prove</h2>
+              <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                <p>
+                  <strong className="text-foreground">1. Every codebase has structural vulnerabilities.</strong> IBM's quantum transpiler, Rapid7's pen test engine, Hugging Face's tokenizer core — maintained by world-class engineers, and Ascension still found critical issues in every one. Not bugs. Structural architectural weaknesses that static analysis, AI copilots, and code review miss entirely.
+                </p>
+                <p>
+                  <strong className="text-foreground">2. Domain-specific hardening changes everything.</strong> The same OpenAI agent file received four completely different Sealed Runtimes from four different verticals — CYBER added forensic audit trails, ROBOTICS injected motion planning, QUANTUM applied state isolation. Generic tools produce generic results. Ascension produces <em>specialized cognitive infrastructure</em>.
+                </p>
+                <p>
+                  <strong className="text-foreground">3. Full vertical substrates are buildable for any category on Earth.</strong> We built CMPSBL LLM™ with 16 domain-specific primitives targeting hallucination, prompt injection, bias, and alignment — then immediately ran HuggingFace's tokenizer core through it and found a critical error. Any industry can have its own Ascension vertical with its own Memory Stream, software factory, and specialized hardening.
+                </p>
+                <p>
+                  <strong className="text-foreground">4. This is the future of code.</strong> Ascension doesn't replace developers. It does what no developer can: systematically collide finished code against 40 Primitives to surface architectural weaknesses, inject domain-aware guards, and deliver a Sealed Runtime that survives platform loss. All in ~10 seconds. All purely algorithmic. All verifiable.
+                </p>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link to="/ascension">
+                  <Button size="sm" className="gap-2">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Try Ascension
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Button>
+                </Link>
+                <Link to="/verticals">
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Layers className="w-3.5 h-3.5" />
+                    Explore Verticals
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/*  CASE STUDY #5 — HuggingFace Tokenizers (LLM)             */}
+        {/* ════════════════════════════════════════════════════════════ */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
-          <div className="text-center mb-10">
-            <Badge variant="outline" className="mb-4 text-xs tracking-wider uppercase">Ascension Case Studies</Badge>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground mb-4">
-              Real Code. Real Results.
-            </h1>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-              Verified refurbishment results from the CMPSBL® Ascension pipeline — with downloadable before-and-after artifacts for independent verification.
-            </p>
+          <div className="border border-border rounded-2xl overflow-hidden bg-card">
+            {/* Study Header */}
+            <div className="bg-gradient-to-br from-emerald-500/10 to-muted/30 border-b border-border p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <Badge className="bg-emerald-500/15 text-emerald-500 border-emerald-500/20" variant="outline">LLM</Badge>
+                <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" variant="outline">CJPI 100 — Apex</Badge>
+                <Badge className="bg-destructive/15 text-destructive border-destructive/20" variant="outline">Critical Error Found</Badge>
+                <Badge variant="outline" className="text-muted-foreground">CMPSBL-MNJ6GG7U-EBF7</Badge>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                HuggingFace Tokenizers — The Foundation of Modern AI
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
+                The <code className="text-xs px-1.5 py-0.5 rounded bg-muted font-mono">__init__.py</code> core of{' '}
+                <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">Hugging Face Tokenizers</a>{' '}
+                — the tokenization library powering virtually every LLM in production today, with over <strong className="text-foreground">73 million monthly PyPI downloads</strong>. The first code ever processed through CMPSBL LLM™, our brand-new vertical substrate. Ascension found a <strong className="text-destructive">critical error</strong> and hardened it with 20 LLM-specialized primitives — in under 10 seconds, with zero AI.
+              </p>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
+              {[
+                { icon: Clock, label: 'Processing Time', value: '~10s' },
+                { icon: Shield, label: 'Primitives Applied', value: '20' },
+                { icon: Bug, label: 'Vulnerabilities Found', value: '7' },
+                { icon: Award, label: 'CJPI Score', value: '100' },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="p-4 sm:p-5 text-center border-r border-border last:border-r-0">
+                  <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
+                  <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
+                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 sm:p-8 space-y-10">
+
+              {/* ─── Origin & Provenance ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <GitBranch className="w-4 h-4 text-primary" /> Origin & Provenance
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    <strong className="text-foreground">Repository:</strong>{' '}
+                    <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">huggingface/tokenizers</a>{' '}
+                    — the fast, Rust-backed tokenization library maintained by{' '}
+                    <a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Hugging Face</a>. With over <strong className="text-foreground">9,400+ GitHub stars</strong> and{' '}
+                    <strong className="text-foreground">73+ million monthly PyPI downloads</strong>, this library is the tokenization backbone for GPT, BERT, LLaMA, Mistral, and virtually every transformer model in production. Licensed under Apache 2.0.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">File:</strong>{' '}
+                    <a href="https://github.com/huggingface/tokenizers/blob/main/bindings/python/py_src/tokenizers/__init__.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">bindings/python/py_src/tokenizers/__init__.py</a>{' '}
+                    — the Python package initializer that defines the type system for every tokenizer interaction: <code className="text-xs px-1 py-0.5 rounded bg-muted">TextInputSequence</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">EncodeInput</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">PreTokenizedInputSequence</code>, offset referentials, split delimiter behaviors, and the complete import surface for BPE, WordPiece, Unigram, and SentencePiece tokenizers.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Why This File Matters:</strong> This is the entry point for every Python call to the Hugging Face tokenizers library. Every <code className="text-xs px-1 py-0.5 rounded bg-muted">from tokenizers import Tokenizer</code> statement flows through this file. The type aliases defined here (<code className="text-xs px-1 py-0.5 rounded bg-muted">TextEncodeInput</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">PreTokenizedEncodeInput</code>) are the API contract for every tokenization operation across the entire Hugging Face ecosystem — transformers, datasets, evaluate, and hub.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Real-World Impact:</strong> Every ChatGPT response, every Claude answer, every Gemini generation, every LLaMA inference — all begin with tokenization. This library processes billions of tokens daily across research labs, production APIs, and edge deployments worldwide. It includes implementations for{' '}
+                    <code className="text-xs px-1 py-0.5 rounded bg-muted">BertWordPieceTokenizer</code>,{' '}
+                    <code className="text-xs px-1 py-0.5 rounded bg-muted">ByteLevelBPETokenizer</code>,{' '}
+                    <code className="text-xs px-1 py-0.5 rounded bg-muted">SentencePieceUnigramTokenizer</code>, and more — all imported through this exact file.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Critical Finding ─── */}
+              <div className="bg-destructive/[0.04] border border-destructive/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Bug className="w-4 h-4 text-destructive" /> Critical Finding: Zero Error Handling
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  The CMPSBL diagnostic squad identified that the core entry point of HuggingFace's tokenizers library — used in <strong className="text-foreground">73+ million monthly installations</strong> — has <strong className="text-destructive">zero error handling</strong>. No try/except blocks, no error boundaries, no graceful degradation. Any runtime exception during tokenizer initialization or type resolution crashes the process without recovery. This is the file through which every LLM tokenization call flows. Ascension's FAILSAFE primitive injected circuit breakers to ensure graceful degradation, and IMMUNITY wrapped the dependency chain to prevent cascading failures.
+                </p>
+              </div>
+
+              {/* ─── Vulnerability Assessment ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Bug className="w-4 h-4 text-destructive" /> Pre-Ascension Vulnerability Assessment
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The CMPSBL six-primitive diagnostic squad identified 7 structural vulnerabilities in the 100-line Python source:
+                </p>
+                <div className="space-y-2">
+                  {HF_VULNERABILITIES.map((v) => (
+                    <div key={v.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/40 border border-border/50">
+                      <div className="flex gap-2 shrink-0 pt-0.5">
+                        <SeverityBadge severity={v.severity} />
+                        <StatusBadge status={v.status} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-foreground">{v.title}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{v.detail}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Why LLM Vertical ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Brain className="w-4 h-4 text-primary" /> Why the LLM Vertical Matters Here
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    Running HuggingFace Tokenizers through <strong className="text-foreground">CMPSBL LLM™</strong> is the defining use case for our newest vertical. The LLM substrate was built specifically to address the{' '}
+                    <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">OWASP Top 10 for LLMs</a>{' '}
+                    — hallucination, prompt injection, bias, context poisoning, and supply chain vulnerabilities. The expansion primitives aren't generic: LEXICON understands tokenizer security and adversarial input sanitization. SKEPTIC validates output consistency. TETHER manages context windows. SIEVE filters harmful content.
+                  </p>
+                  <p>
+                    This case study validates the entire vertical substrate architecture: we designed 16 LLM-specific primitives, activated 80 S-Tier Crown Jewels, wired it into the Ascension pipeline, and ran the most-downloaded tokenization library on Earth through it — all in a single session. The result is a <strong className="text-foreground">tokenizer that understands its own vulnerabilities</strong>, wrapped in an LLM-aware Sealed Runtime with provenance, portability, and domain-specific intelligence that no generic tool can provide.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Primitives Applied ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" /> 20 Primitives Applied
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The CMPSBL LLM™ vertical selected 20 primitives — 10 from the fixed Spine (Organs/Layers) and 10 from the LLM expansion matrix (Engines/Agents) — each addressing LLM-specific vulnerabilities:
+                </p>
+                <div className="grid gap-2">
+                  {visibleHfPrimitives.map((p) => (
+                    <div key={p.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/40">
+                      <span className="font-mono text-xs font-bold text-foreground w-24 shrink-0">{p.name}</span>
+                      <TypeBadge type={p.type} />
+                      <span className="text-xs text-muted-foreground">{p.action}</span>
+                    </div>
+                  ))}
+                </div>
+                {HF_PRIMITIVES.length > 8 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-3 w-full text-xs text-muted-foreground"
+                    onClick={() => setShowAllHfPrimitives(!showAllHfPrimitives)}
+                  >
+                    {showAllHfPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all 20 primitives</>}
+                  </Button>
+                )}
+              </div>
+
+              {/* ─── New Capabilities Unlocked ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" /> 10 New Capabilities Unlocked
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {HF_CAPABILITIES.map((c) => (
+                    <div key={c.name} className="p-3 rounded-lg bg-muted/30 border border-border/40">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-medium text-foreground">{c.name}</span>
+                        <Badge variant="outline" className="text-[9px] uppercase">{c.mode}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{c.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Key Insight ─── */}
+              <div className="bg-emerald-500/[0.04] border border-emerald-500/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  HuggingFace Tokenizers is downloaded <strong className="text-foreground">73+ million times per month</strong>. It is the tokenization layer beneath GPT, BERT, LLaMA, Mistral, and essentially every transformer model in the world. Despite being maintained by one of the most respected AI companies on Earth, the core entry point had a <strong className="text-destructive">critical vulnerability</strong> — zero error handling — that Ascension's diagnostic squad identified in seconds.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  CMPSBL LLM™ then applied 20 primitives purpose-built for LLM infrastructure. LEXICON hardened the tokenizer against adversarial inputs. SKEPTIC added fact-checking patterns. HERALD monitors for output drift. TRIBUNAL validates cross-reference consistency. The result: the library that every LLM depends on is now wrapped in an <strong className="text-foreground">LLM-aware Sealed Runtime</strong> — a tokenizer that has been hardened by a substrate that understands tokenizer-specific attack surfaces. Processed in ~10 seconds with zero AI.
+                </p>
+              </div>
+
+              {/* ─── Downloads ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Download & Verify
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Both the original Hugging Face source and the full CMPSBL LLM™ Ascension export are available for download.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a href="/downloads/case-studies/tokenizers_original.py" download>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <FileCode className="w-3.5 h-3.5" />
+                      Original Source (.py)
+                    </Button>
+                  </a>
+                  <a href="/downloads/case-studies/huggingface-tokenizers-ascended-CMPSBL-MNJ6GG7U-EBF7.zip" download>
+                    <Button size="sm" className="gap-2">
+                      <Download className="w-3.5 h-3.5" />
+                      Ascended Export (.zip)
+                    </Button>
+                  </a>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-3">
+                  Serial: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">CMPSBL-MNJ6GG7U-EBF7</code>{' · '}
+                  Fingerprint: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">2c8b3cbaef71cecd</code>{' · '}
+                  Generated: April 3, 2026
+                </p>
+              </div>
+
+              {/* ─── External References ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References & Further Reading
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'HuggingFace Tokenizers GitHub (9.4K+ ★)', url: 'https://github.com/huggingface/tokenizers' },
+                    { label: 'Tokenizers PyPI — 73M+ Monthly Downloads', url: 'https://pypistats.org/packages/tokenizers' },
+                    { label: 'HuggingFace Tokenizers Documentation', url: 'https://huggingface.co/docs/tokenizers' },
+                    { label: 'OWASP Top 10 for LLMs (2025)', url: 'https://owasp.org/www-project-top-10-for-large-language-model-applications/' },
+                    { label: 'BPE — Byte Pair Encoding (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Byte_pair_encoding' },
+                    { label: 'SentencePiece — Google Research', url: 'https://github.com/google/sentencepiece' },
+                    { label: 'Hugging Face — Company', url: 'https://huggingface.co' },
+                    { label: 'CMPSBL LLM™ Vertical', url: '/verticals' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -438,11 +826,7 @@ export default function CaseStudies() {
                   <p>
                     <strong className="text-foreground">Algorithm:</strong> A* search is a best-first graph traversal algorithm that finds the shortest path between nodes using a heuristic function. It is foundational in robotics for{' '}
                     <a href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">grid-based motion planning</a>,{' '}
-                    autonomous navigation, warehouse logistics, and multi-robot coordination. The algorithm is O(b^d) in time complexity where b is the branching factor and d is the depth of the solution.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Real-World Applications:</strong> This specific implementation is used as a reference in autonomous vehicle path planning, drone navigation systems, industrial AGV (Automated Guided Vehicle) routing, and robotics education curricula at universities including MIT, Stanford, and ETH Zürich. The PythonRobotics repository has been cited in over 100 peer-reviewed papers (
-                    <a href="https://scholar.google.com/scholar?q=PythonRobotics+Sakai" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Google Scholar</a>).
+                    autonomous navigation, warehouse logistics, and multi-robot coordination.
                   </p>
                 </div>
               </div>
@@ -453,7 +837,7 @@ export default function CaseStudies() {
                   <Bug className="w-4 h-4 text-destructive" /> Pre-Ascension Vulnerability Assessment
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  The CMPSBL six-primitive diagnostic squad (ENCODE, ORACLE, ENGINEER, MEDIC, DEFENSE, FAILSAFE) identified 7 structural vulnerabilities in the original 283-line source file:
+                  The CMPSBL six-primitive diagnostic squad identified 7 structural vulnerabilities in the original 283-line source file:
                 </p>
                 <div className="space-y-2">
                   {ASTAR_VULNERABILITIES.map((v) => (
@@ -477,7 +861,7 @@ export default function CaseStudies() {
                   <Shield className="w-4 h-4 text-primary" /> 20 Primitives Applied
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  The CMPSBL ROBOTICS™ vertical substrate selected 20 primitives — 10 from the fixed Spine (Organs/Layers) and 10 from the Robotics expansion matrix (Engines/Agents) — each providing domain-specific hardening:
+                  The CMPSBL ROBOTICS™ vertical substrate selected 20 primitives — 10 from the fixed Spine (Organs/Layers) and 10 from the Robotics expansion matrix (Engines/Agents):
                 </p>
                 <div className="grid gap-2">
                   {visiblePrimitives.map((p) => (
@@ -522,7 +906,7 @@ export default function CaseStudies() {
               <div className="bg-primary/[0.04] border border-primary/15 rounded-xl p-5">
                 <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  This 283-line Python file — used in production autonomous navigation worldwide — was analyzed, classified, registered as artifact #41, collided against all 40 Primitives, scored CJPI 100 (Apex tier), and delivered as a Sealed Runtime in <strong className="text-foreground">approximately 10 seconds</strong>. No AI was used at any stage of the Ascension pipeline. Every transformation is purely algorithmic — circuit breakers, defense layers, ethical gates, and structured logging were applied through deterministic pattern matching and structural analysis.
+                  This 283-line Python file — used in production autonomous navigation worldwide — was analyzed, classified, registered as artifact #41, collided against all 40 Primitives, scored CJPI 100 (Apex tier), and delivered as a Sealed Runtime in <strong className="text-foreground">approximately 10 seconds</strong>. No AI was used at any stage of the Ascension pipeline.
                 </p>
               </div>
 
@@ -531,9 +915,6 @@ export default function CaseStudies() {
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Download className="w-4 h-4 text-primary" /> Download & Verify
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Both the original source and the full Ascension export are available for download. Inspect the before-and-after yourself.
-                </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="/downloads/case-studies/a_star_original.py" download>
                     <Button variant="outline" size="sm" className="gap-2">
@@ -558,185 +939,14 @@ export default function CaseStudies() {
               {/* ─── External References ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4 text-primary" /> References & Further Reading
+                  <Eye className="w-4 h-4 text-primary" /> References & Further Reading
                 </h3>
                 <ul className="space-y-1.5 text-sm">
                   {[
                     { label: 'PythonRobotics Repository', url: 'https://github.com/AtsushiSakai/PythonRobotics' },
                     { label: 'Original a_star.py Source', url: 'https://github.com/AtsushiSakai/PythonRobotics/blob/master/PathPlanning/AStar/a_star.py' },
                     { label: 'A* Search Algorithm — Wikipedia', url: 'https://en.wikipedia.org/wiki/A*_search_algorithm' },
-                    { label: 'PythonRobotics Online Documentation', url: 'https://atsushisakai.github.io/PythonRobotics/' },
-                    { label: 'Academic Citations — Google Scholar', url: 'https://scholar.google.com/scholar?q=PythonRobotics+Sakai' },
-                  ].map((ref) => (
-                    <li key={ref.url}>
-                      <a
-                        href={ref.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
-                      >
-                        {ref.label} ↗
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ════════════════════════════════════════════════════════════ */}
-        {/*  CASE STUDY #2 — OpenClawAgent Cross-Vertical Comparison  */}
-        {/* ════════════════════════════════════════════════════════════ */}
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
-          <div className="border border-border rounded-2xl overflow-hidden bg-card">
-            {/* Study Header */}
-            <div className="bg-gradient-to-br from-muted/60 to-muted/30 border-b border-border p-6 sm:p-8">
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                <Badge className="bg-violet-500/15 text-violet-500 border-violet-500/20" variant="outline">Cross-Vertical</Badge>
-                <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" variant="outline">4× CJPI 100 — Apex</Badge>
-                <Badge variant="outline" className="text-muted-foreground">PHP · OpenAI Agents SDK Pattern</Badge>
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-                OpenClawAgent — Same Code, Four Substrates
-              </h2>
-              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
-                A functional PHP agent mirroring the{' '}
-                <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">OpenAI Agents SDK</a>{' '}
-                architecture — featuring tool calling, memory management, planning loops, execution chains, and agent handoff — was uploaded to all four CMPSBL® substrates to demonstrate how the same source code receives fundamentally different hardening based on the active vertical.
-              </p>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
-              {[
-                { icon: Layers, label: 'Substrates Tested', value: '4' },
-                { icon: Shield, label: 'Total Primitives', value: '72' },
-                { icon: FlaskConical, label: 'Unique Expansion', value: '32' },
-                { icon: Award, label: 'All CJPI Scores', value: '100' },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="p-4 sm:p-5 text-center border-r border-border last:border-r-0">
-                  <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
-                  <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
-                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-6 sm:p-8 space-y-10">
-
-              {/* ─── About the Upload ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <GitBranch className="w-4 h-4 text-primary" /> About the Upload
-                </h3>
-                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
-                  <p>
-                    <strong className="text-foreground">Subject:</strong> <code className="text-xs px-1.5 py-0.5 rounded bg-muted font-mono">OpenClawAgent</code> — a single-file PHP agent implementing the core architectural patterns from the{' '}
-                    <a href="https://openai.com/index/new-tools-for-building-agents/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">OpenAI Agents SDK</a>: memory stores, tool registration and calling, planning loops with reasoning, multi-step execution chains, and inter-agent handoff protocols.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Language:</strong> PHP — chosen deliberately to test a non-typical language for AI agent development. The Ascension pipeline correctly detected and preserved the PHP source language across all four substrate runs via the Bridge Adapter system.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Experiment Design:</strong> The identical PHP file was uploaded to CMPSBL® Core, CMPSBL CYBER™, CMPSBL ROBOTICS™, and CMPSBL QUANTUM™ in sequence. Each substrate shares the same 24-primitive Spine (12 Organs + 12 Layers) but swaps in 16 vertical-specific expansion primitives (8 Engines + 8 Agents). This produces four distinct hardening profiles from the same input — demonstrating that Ascension is not a generic linter but a domain-aware specialization engine.
-                  </p>
-                </div>
-              </div>
-
-              {/* ─── Shared Spine ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-primary" /> Shared Spine (Common Across All Verticals)
-                </h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  These 10 primitives from the fixed 24-primitive Spine were selected consistently across all four runs, providing the universal hardening baseline:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {SHARED_SPINE_PRIMITIVES.map((name) => (
-                    <Badge key={name} variant="outline" className="font-mono text-xs bg-muted/40">
-                      {name}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* ─── Vertical Comparison ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-primary" /> Vertical Expansion Comparison
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Each substrate swapped in its own 8 expansion primitives. Expand each vertical below to see the domain-specific Engines and Agents applied:
-                </p>
-                <div className="space-y-2">
-                  {OPENCLAW_RUNS.map((run) => (
-                    <VerticalComparisonCard
-                      key={run.vertical}
-                      run={run}
-                      isExpanded={!!expandedVerticals[run.vertical]}
-                      onToggle={() => toggleVertical(run.vertical)}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* ─── Key Insight ─── */}
-              <div className="bg-primary/[0.04] border border-primary/15 rounded-xl p-5">
-                <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  The same PHP agent file received <strong className="text-foreground">four completely different hardening profiles</strong> from the same Ascension pipeline — all scoring CJPI 100 (Apex). The difference is not cosmetic: CYBER applied cryptographic hardening and forensic audit trails; ROBOTICS injected motion planning and safety monitoring; QUANTUM added state isolation and collision modeling. The 24-primitive Spine remained constant while the 16 expansion slots specialized to each domain.
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  This demonstrates that CMPSBL® Ascension is a <strong className="text-foreground">domain-aware specialization engine</strong>, not a generic code formatter. The vertical substrate determines which expansion primitives collide with the uploaded artifact, producing fundamentally different cognitive infrastructure for the same source code — all in under 10 seconds, with zero AI.
-                </p>
-              </div>
-
-              {/* ─── Session Evidence ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <Eye className="w-4 h-4 text-primary" /> Session Evidence
-                </h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  All four sessions are recorded in the restoration ledger with verifiable serial numbers and timestamps:
-                </p>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="border-b border-border">
-                        <th className="text-left p-2 text-muted-foreground font-medium">Vertical</th>
-                        <th className="text-left p-2 text-muted-foreground font-medium">Serial</th>
-                        <th className="text-left p-2 text-muted-foreground font-medium">CJPI</th>
-                        <th className="text-left p-2 text-muted-foreground font-medium hidden sm:table-cell">Timestamp</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {OPENCLAW_RUNS.map((run) => (
-                        <tr key={run.serial} className="border-b border-border/50">
-                          <td className="p-2">
-                            <Badge variant="outline" className={`text-[9px] ${run.color}`}>{run.verticalLabel}</Badge>
-                          </td>
-                          <td className="p-2 font-mono text-foreground">{run.serial}</td>
-                          <td className="p-2 font-bold text-foreground">{run.cjpi}</td>
-                          <td className="p-2 text-muted-foreground hidden sm:table-cell">{run.timestamp}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* ─── References ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4 text-primary" /> References
-                </h3>
-                <ul className="space-y-1.5 text-sm">
-                  {[
-                    { label: 'OpenAI Agents SDK (Python)', url: 'https://github.com/openai/openai-agents-python' },
-                    { label: 'OpenAI Agents SDK Announcement', url: 'https://openai.com/index/new-tools-for-building-agents/' },
                     { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
-                    { label: 'CMPSBL® Primitive Reference', url: '/docs' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -756,11 +966,111 @@ export default function CaseStudies() {
         </section>
 
         {/* ════════════════════════════════════════════════════════════ */}
+        {/*  CASE STUDY #2 — OpenClawAgent Cross-Vertical              */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
+          <div className="border border-border rounded-2xl overflow-hidden bg-card">
+            <div className="bg-gradient-to-br from-muted/60 to-muted/30 border-b border-border p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <Badge className="bg-primary/10 text-primary border-primary/20" variant="outline">Cross-Vertical</Badge>
+                <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" variant="outline">4× CJPI 100 — Apex</Badge>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                OpenClawAgent — Same Code, Four Substrates
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
+                A functional PHP agent mirroring the{' '}
+                <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">OpenAI Agents SDK</a>{' '}
+                architecture — uploaded to all four CMPSBL® substrates to demonstrate how the same source code receives fundamentally different hardening based on the active vertical.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
+              {[
+                { icon: Layers, label: 'Substrates Tested', value: '4' },
+                { icon: Shield, label: 'Total Primitives', value: '72' },
+                { icon: FlaskConical, label: 'Unique Expansion', value: '32' },
+                { icon: Award, label: 'All CJPI Scores', value: '100' },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="p-4 sm:p-5 text-center border-r border-border last:border-r-0">
+                  <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
+                  <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
+                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 sm:p-8 space-y-10">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" /> Shared Spine
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {SHARED_SPINE_PRIMITIVES.map((name) => (
+                    <Badge key={name} variant="outline" className="font-mono text-xs bg-muted/40">{name}</Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-primary" /> Vertical Expansion Comparison
+                </h3>
+                <div className="space-y-2">
+                  {OPENCLAW_RUNS.map((run) => (
+                    <VerticalComparisonCard
+                      key={run.vertical}
+                      run={run}
+                      isExpanded={!!expandedVerticals[run.vertical]}
+                      onToggle={() => toggleVertical(run.vertical)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-primary/[0.04] border border-primary/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  The same PHP agent file received <strong className="text-foreground">four completely different hardening profiles</strong> from the same Ascension pipeline — all scoring CJPI 100 (Apex). CYBER applied cryptographic hardening; ROBOTICS injected motion planning; QUANTUM added state isolation. This demonstrates that Ascension is a <strong className="text-foreground">domain-aware specialization engine</strong>, not a generic code formatter.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> Session Evidence
+                </h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left p-2 text-muted-foreground font-medium">Vertical</th>
+                        <th className="text-left p-2 text-muted-foreground font-medium">Serial</th>
+                        <th className="text-left p-2 text-muted-foreground font-medium">CJPI</th>
+                        <th className="text-left p-2 text-muted-foreground font-medium hidden sm:table-cell">Timestamp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {OPENCLAW_RUNS.map((run) => (
+                        <tr key={run.serial} className="border-b border-border/50">
+                          <td className="p-2"><Badge variant="outline" className={`text-[9px] ${run.color}`}>{run.verticalLabel}</Badge></td>
+                          <td className="p-2 font-mono text-foreground">{run.serial}</td>
+                          <td className="p-2 font-bold text-foreground">{run.cjpi}</td>
+                          <td className="p-2 text-muted-foreground hidden sm:table-cell">{run.timestamp}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ════════════════════════════════════════════════════════════ */}
         {/*  CASE STUDY #3 — Qiskit ConsolidateBlocks (Quantum)       */}
         {/* ════════════════════════════════════════════════════════════ */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
           <div className="border border-border rounded-2xl overflow-hidden bg-card">
-            {/* Study Header */}
             <div className="bg-gradient-to-br from-violet-500/10 to-muted/30 border-b border-border p-6 sm:p-8">
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <Badge className="bg-violet-500/15 text-violet-500 border-violet-500/20" variant="outline">Quantum</Badge>
@@ -773,13 +1083,10 @@ export default function CaseStudies() {
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The{' '}
                 <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">ConsolidateBlocks</a>{' '}
-                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads, 7K+ GitHub stars). This critical optimization pass consolidates consecutive quantum gates into single unitary operations using{' '}
-                <a href="https://en.wikipedia.org/wiki/KAK_decomposition" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">KAK decomposition</a>{' '}
-                — refurbished through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
+                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads). Refurbished through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
               </p>
             </div>
 
-            {/* Quick Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
               {[
                 { icon: Clock, label: 'Processing Time', value: '~10s' },
@@ -796,8 +1103,6 @@ export default function CaseStudies() {
             </div>
 
             <div className="p-6 sm:p-8 space-y-10">
-
-              {/* ─── Origin & Provenance ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <GitBranch className="w-4 h-4 text-primary" /> Origin & Provenance
@@ -806,46 +1111,15 @@ export default function CaseStudies() {
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
                     <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Qiskit/qiskit</a>{' '}
-                    — IBM's open-source SDK for quantum computing. Qiskit is the world's most popular quantum software stack, with over{' '}
-                    <strong className="text-foreground">13 million downloads</strong> and{' '}
-                    <strong className="text-foreground">69% developer preference</strong> according to IBM. It powers research and production workloads on IBM Quantum hardware, including 1,121+ qubit processors.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">File:</strong>{' '}
-                    <a href="https://github.com/Qiskit/qiskit/blob/main/qiskit/transpiler/passes/optimization/consolidate_blocks.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">transpiler/passes/optimization/consolidate_blocks.py</a>{' '}
-                    — the <code className="text-xs px-1 py-0.5 rounded bg-muted">ConsolidateBlocks</code> transpiler pass. Copyright IBM 2017–2019, licensed under Apache 2.0.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Algorithm:</strong> ConsolidateBlocks replaces consecutive sequences of quantum gates acting on the same qubits with a single{' '}
-                    <a href="https://en.wikipedia.org/wiki/Unitary_matrix" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Unitary</a>{' '}
-                    node, which is then resynthesized into an optimal subcircuit using{' '}
-                    <a href="https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.synthesis.TwoQubitBasisDecomposer" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">KAK (Cartan) decomposition</a>{' '}
-                    — a mathematical technique from Lie group theory that decomposes any two-qubit unitary into a minimal sequence of single-qubit rotations and entangling gates. This is critical for reducing circuit depth on NISQ-era hardware where every additional gate introduces decoherence.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Why This File Matters:</strong> On today's noisy quantum processors, circuit depth directly determines whether a computation produces meaningful results or noise. ConsolidateBlocks is activated at{' '}
-                    <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level=2</code> and above in Qiskit's transpiler pipeline — meaning it runs on virtually every production quantum circuit compiled through Qiskit. It supports 12 basis gate types (CX, CZ, iSwap, ECR, RXX, RYY, RZZ, RZX, CRX, CRY, CRZ, CPhase) and handles recursive control-flow operations.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Real-World Impact:</strong> This pass is used by{' '}
-                    <a href="https://www.ibm.com/quantum" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">IBM Quantum</a>,{' '}
-                    research institutions worldwide, and every major quantum computing lab running Qiskit. It has been cited in hundreds of peer-reviewed quantum computing papers and is a core component of the{' '}
-                    <a href="https://www.ibm.com/quantum/blog/qiskit-2-0-release-summary" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Qiskit 2.x release series</a>{' '}
-                    that IBM describes as "the world's most performant quantum SDK." Open issues (
-                    <a href="https://github.com/Qiskit/qiskit/issues/11975" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">#11975</a>,{' '}
-                    <a href="https://github.com/Qiskit/qiskit/issues/15631" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">#15631</a>) demonstrate the ongoing complexity of this optimization problem.
+                    — IBM's open-source SDK for quantum computing with over <strong className="text-foreground">13 million downloads</strong>. This critical optimization pass consolidates consecutive quantum gates into single unitary operations using KAK decomposition.
                   </p>
                 </div>
               </div>
 
-              {/* ─── Vulnerability Assessment ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Bug className="w-4 h-4 text-destructive" /> Pre-Ascension Vulnerability Assessment
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  The CMPSBL six-primitive diagnostic squad (ENCODE, ORACLE, ENGINEER, MEDIC, DEFENSE, FAILSAFE) identified 7 structural vulnerabilities in the 192-line transpiler pass:
-                </p>
                 <div className="space-y-2">
                   {QISKIT_VULNERABILITIES.map((v) => (
                     <div key={v.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/40 border border-border/50">
@@ -862,29 +1136,10 @@ export default function CaseStudies() {
                 </div>
               </div>
 
-              {/* ─── Quantum-Specific Hardening ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <Atom className="w-4 h-4 text-primary" /> Why Quantum Vertical Matters Here
-                </h3>
-                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
-                  <p>
-                    Running ConsolidateBlocks through the <strong className="text-foreground">CMPSBL QUANTUM™</strong> vertical instead of the core substrate is not arbitrary — it is the correct domain match. The Quantum vertical's expansion primitives understand quantum-computational semantics: QUBIT provides gate orchestration and circuit transpilation awareness, FERMION brings Schrödinger equation solvers for many-body state evolution, CRYOGEN models T1/T2 decoherence timescales that directly affect how aggressively gates should be consolidated, and PHOTON adds interferometry modeling relevant to optical quantum hardware.
-                  </p>
-                  <p>
-                    The core substrate would harden this file generically — circuit breakers, logging, IP obfuscation. The Quantum vertical instead enriches it with <strong className="text-foreground">domain-aware capabilities</strong> like the Neutrino Oscillation Predictor (PMNS matrix computation), Cryogenic Decoherence Shield (dilution refrigerator optimization), and Fusion Reactor Modeler (tokamak plasma confinement). These capabilities compose with the existing KAK decomposition logic to create a transpiler pass that is not just hardened but quantum-physically informed.
-                  </p>
-                </div>
-              </div>
-
-              {/* ─── Primitives Applied ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Shield className="w-4 h-4 text-primary" /> 20 Primitives Applied
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  The CMPSBL QUANTUM™ vertical selected 20 primitives — 5 Organs for structural integrity, 5 Layers for operational resilience, 5 Engines for domain-specific computation, and 5 Agents for quantum-physical simulation:
-                </p>
                 <div className="grid gap-2">
                   {visibleQiskitPrimitives.map((p) => (
                     <div key={p.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/40">
@@ -895,18 +1150,12 @@ export default function CaseStudies() {
                   ))}
                 </div>
                 {QISKIT_PRIMITIVES.length > 8 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="mt-3 w-full text-xs text-muted-foreground"
-                    onClick={() => setShowAllQiskitPrimitives(!showAllQiskitPrimitives)}
-                  >
+                  <Button variant="ghost" size="sm" className="mt-3 w-full text-xs text-muted-foreground" onClick={() => setShowAllQiskitPrimitives(!showAllQiskitPrimitives)}>
                     {showAllQiskitPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all 20 primitives</>}
                   </Button>
                 )}
               </div>
 
-              {/* ─── New Capabilities Unlocked ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Zap className="w-4 h-4 text-primary" /> 10 New Capabilities Unlocked
@@ -924,37 +1173,23 @@ export default function CaseStudies() {
                 </div>
               </div>
 
-              {/* ─── Key Insight ─── */}
               <div className="bg-violet-500/[0.04] border border-violet-500/15 rounded-xl p-5">
                 <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  IBM's ConsolidateBlocks is arguably the single most-executed quantum circuit optimization in the world — it runs on every Qiskit circuit compiled at <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level≥2</code>. Despite being authored by IBM Research and maintained by a world-class quantum engineering team, the CMPSBL six-primitive diagnostic squad still identified <strong className="text-foreground">3 actionable vulnerabilities</strong> (synchronous-only architecture, cyclomatic complexity of 32, and 19-dependency coupling with no fallback strategy) and <strong className="text-foreground">4 structural monitors</strong>.
-                </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The CMPSBL QUANTUM™ vertical then wrapped this file in 20 primitives that don't just harden it generically — they understand quantum physics. CRYOGEN models the thermal noise environment where consolidated gates will execute. FERMION tracks many-body state evolution that consolidation affects. BOSON and GLUON add Standard Model simulation capabilities. The result is a transpiler pass that is no longer just an optimizer — it is a <strong className="text-foreground">quantum-physically aware Sealed Runtime</strong>, processed in approximately 10 seconds with zero AI.
+                  IBM's ConsolidateBlocks runs on every Qiskit circuit compiled at <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level≥2</code>. Despite being authored by IBM Research, Ascension found <strong className="text-foreground">3 actionable vulnerabilities</strong> and wrapped it with quantum-physically aware primitives like CRYOGEN, FERMION, and BOSON — creating a <strong className="text-foreground">quantum-aware Sealed Runtime</strong> in ~10 seconds with zero AI.
                 </p>
               </div>
 
-              {/* ─── Downloads ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Download className="w-4 h-4 text-primary" /> Download & Verify
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Both the original IBM source and the full CMPSBL QUANTUM™ Ascension export are available for download.
-                </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="/downloads/case-studies/consolidate_blocks_original.py" download>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <FileCode className="w-3.5 h-3.5" />
-                      Original Source (.py)
-                    </Button>
+                    <Button variant="outline" size="sm" className="gap-2"><FileCode className="w-3.5 h-3.5" />Original Source (.py)</Button>
                   </a>
                   <a href="/downloads/case-studies/qiskit-consolidate-ascended-CMPSBL-MNJ4Y3JG-CQOW.zip" download>
-                    <Button size="sm" className="gap-2">
-                      <Download className="w-3.5 h-3.5" />
-                      Ascended Export (.zip)
-                    </Button>
+                    <Button size="sm" className="gap-2"><Download className="w-3.5 h-3.5" />Ascended Export (.zip)</Button>
                   </a>
                 </div>
                 <p className="text-[11px] text-muted-foreground mt-3">
@@ -962,38 +1197,6 @@ export default function CaseStudies() {
                   Fingerprint: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">09d1c4bea3108524</code>{' · '}
                   Generated: April 3, 2026
                 </p>
-              </div>
-
-              {/* ─── External References ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4 text-primary" /> References & Further Reading
-                </h3>
-                <ul className="space-y-1.5 text-sm">
-                  {[
-                    { label: 'Qiskit GitHub Repository (7K+ ★)', url: 'https://github.com/Qiskit/qiskit' },
-                    { label: 'ConsolidateBlocks — IBM Quantum Docs', url: 'https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.transpiler.passes.ConsolidateBlocks' },
-                    { label: 'TwoQubitBasisDecomposer (KAK) — IBM Docs', url: 'https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.synthesis.TwoQubitBasisDecomposer' },
-                    { label: 'Qiskit 2.0 Release Summary — IBM Blog', url: 'https://www.ibm.com/quantum/blog/qiskit-2-0-release-summary' },
-                    { label: 'Issue #11975: Resynthesis Edge Cases', url: 'https://github.com/Qiskit/qiskit/issues/11975' },
-                    { label: 'Issue #15631: Improve Block Merging', url: 'https://github.com/Qiskit/qiskit/issues/15631' },
-                    { label: 'KAK Decomposition — Wikipedia', url: 'https://en.wikipedia.org/wiki/KAK_decomposition' },
-                    { label: 'IBM Quantum Platform', url: 'https://www.ibm.com/quantum' },
-                    { label: 'Qiskit PyPI Stats (13M+ Downloads)', url: 'https://pypistats.org/packages/qiskit' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
-                  ].map((ref) => (
-                    <li key={ref.url}>
-                      <a
-                        href={ref.url}
-                        target={ref.url.startsWith('http') ? '_blank' : undefined}
-                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
-                      >
-                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </div>
@@ -1004,7 +1207,6 @@ export default function CaseStudies() {
         {/* ════════════════════════════════════════════════════════════ */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
           <div className="border border-border rounded-2xl overflow-hidden bg-card">
-            {/* Study Header */}
             <div className="bg-gradient-to-br from-red-500/10 to-muted/30 border-b border-border p-6 sm:p-8">
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <Badge className="bg-red-500/15 text-red-500 border-red-500/20" variant="outline">Cyber</Badge>
@@ -1017,11 +1219,10 @@ export default function CaseStudies() {
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The core TCP communication mixin from{' '}
                 <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">Rapid7's Metasploit Framework</a>{' '}
-                — the world's most-used penetration testing platform (38K+ GitHub stars). This 342-line Ruby module is the foundation of <em>every remote exploit</em> in the framework. Refurbished through CMPSBL CYBER™ in under 10 seconds, with zero AI.
+                — 38K+ GitHub stars. This 342-line Ruby module is the foundation of every remote exploit in the framework. Refurbished through CMPSBL CYBER™ in under 10 seconds, with zero AI.
               </p>
             </div>
 
-            {/* Quick Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
               {[
                 { icon: Clock, label: 'Processing Time', value: '~10s' },
@@ -1038,8 +1239,6 @@ export default function CaseStudies() {
             </div>
 
             <div className="p-6 sm:p-8 space-y-10">
-
-              {/* ─── Origin & Provenance ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <GitBranch className="w-4 h-4 text-primary" /> Origin & Provenance
@@ -1048,40 +1247,15 @@ export default function CaseStudies() {
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
                     <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">rapid7/metasploit-framework</a>{' '}
-                    — the open-source penetration testing framework maintained by{' '}
-                    <a href="https://www.rapid7.com" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Rapid7</a>. With{' '}
-                    <strong className="text-foreground">38,000+ GitHub stars</strong>, Metasploit is the industry standard for vulnerability validation, used by security teams at Fortune 500 companies, government agencies, and independent researchers worldwide. Originally created by H.D. Moore in 2003.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">File:</strong>{' '}
-                    <a href="https://github.com/rapid7/metasploit-framework/blob/master/lib/msf/core/exploit/remote/tcp.rb" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">lib/msf/core/exploit/remote/tcp.rb</a>{' '}
-                    — the <code className="text-xs px-1 py-0.5 rounded bg-muted">Msf::Exploit::Remote::Tcp</code> mixin. This module is <em>included</em> by every remote TCP-based exploit, auxiliary scanner, and post-exploitation module in the framework.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Architecture:</strong> The Tcp mixin provides TCP socket establishment, SSL/TLS negotiation (with SNI, cipher selection, and key logging), proxy support, evasive TCP segmentation (via the <code className="text-xs px-1 py-0.5 rounded bg-muted">EvasiveTCP</code> module), connection lifecycle management, and handler delegation. It wraps Ruby's native sockets with{' '}
-                    <a href="https://docs.metasploit.com/api/Msf/Exploit/Remote/Tcp.html" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Rex::Socket::Tcp</a>{' '}
-                    to enable framework features like pivoting and session management.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Why This File Matters:</strong> According to the{' '}
-                    <a href="https://rapid7.github.io/metasploit-framework/docs/development/developing-modules/libraries/how-to-use-the-msf-exploit-remote-tcp-mixin.html" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">official Metasploit documentation</a>, this mixin is the base layer for all TCP communication in the framework. Every module that connects to a remote service — from SMB and FTP exploits to Redis and MSSQL scanners — inherits from this mixin. It is included by dozens of higher-level mixins including <code className="text-xs px-1 py-0.5 rounded bg-muted">HttpClient</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">SMB::Client</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">Ftp</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">MSSQL</code>, and <code className="text-xs px-1 py-0.5 rounded bg-muted">Telnet</code>.
-                  </p>
-                  <p>
-                    <strong className="text-foreground">Real-World Impact:</strong> This code runs during active penetration tests against live production infrastructure. The{' '}
-                    <a href="https://www.rapid7.com/blog/post/2025/01/03/metasploit-2024-annual-wrap-up/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">2024 Annual Wrap-Up</a>{' '}
-                    reports hundreds of new exploit modules added annually — every one of them built on this TCP foundation. The evasive TCP segmentation features allow operators to bypass IDS/IPS by fragmenting payloads into configurable-size segments with configurable delays between sends.
+                    — the open-source penetration testing framework maintained by Rapid7. The <code className="text-xs px-1 py-0.5 rounded bg-muted">Msf::Exploit::Remote::Tcp</code> mixin provides TCP socket establishment, SSL/TLS negotiation, proxy support, and evasive TCP segmentation. Every remote TCP-based exploit in the framework inherits from this module.
                   </p>
                 </div>
               </div>
 
-              {/* ─── Vulnerability Assessment ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Bug className="w-4 h-4 text-destructive" /> Pre-Ascension Vulnerability Assessment
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  The CMPSBL six-primitive diagnostic squad identified 9 structural vulnerabilities in the 342-line Ruby mixin — the highest count of any case study to date:
-                </p>
                 <div className="space-y-2">
                   {MSF_VULNERABILITIES.map((v) => (
                     <div key={v.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/40 border border-border/50">
@@ -1098,29 +1272,10 @@ export default function CaseStudies() {
                 </div>
               </div>
 
-              {/* ─── Why Cyber Vertical ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-primary" /> Why Cyber Vertical Matters Here
-                </h3>
-                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
-                  <p>
-                    Running Metasploit's TCP foundation through <strong className="text-foreground">CMPSBL CYBER™</strong> is the definitive domain match — a security tool hardened by a security-specialized substrate. The Cyber vertical's expansion primitives understand offensive and defensive security semantics: CIPHER enforces cryptographic key lifecycle management on the SSL/TLS negotiation paths, BASTION wraps the socket creation with zero-trust micro-segmentation, RECON adds continuous attack surface reconnaissance to the very tool used for reconnaissance, and WATCHTOWER provides real-time threat detection on the connection telemetry.
-                  </p>
-                  <p>
-                    The irony is structurally significant: Metasploit is the tool that <em>finds</em> vulnerabilities in other software — yet its own TCP foundation had a cyclomatic complexity of <strong className="text-foreground">49</strong> (highest of any case study), no test coverage, no graceful shutdown handler, and no type safety. CMPSBL CYBER™ doesn't just identify these issues — it wraps the mixin with SPECTER (deception honeypots), NOCTURNE (dark web credential monitoring), and IRONCLAD (SOC2/NIST/ISO 27001 compliance validation). The penetration testing tool now has its own penetration testing layer.
-                  </p>
-                </div>
-              </div>
-
-              {/* ─── Primitives Applied ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Shield className="w-4 h-4 text-primary" /> 20 Primitives Applied
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  The CMPSBL CYBER™ vertical selected 20 primitives — heavily weighted toward offensive/defensive security Engines and Agents from the Cyber expansion matrix:
-                </p>
                 <div className="grid gap-2">
                   {visibleMsfPrimitives.map((p) => (
                     <div key={p.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/40">
@@ -1131,18 +1286,12 @@ export default function CaseStudies() {
                   ))}
                 </div>
                 {MSF_PRIMITIVES.length > 8 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="mt-3 w-full text-xs text-muted-foreground"
-                    onClick={() => setShowAllMsfPrimitives(!showAllMsfPrimitives)}
-                  >
+                  <Button variant="ghost" size="sm" className="mt-3 w-full text-xs text-muted-foreground" onClick={() => setShowAllMsfPrimitives(!showAllMsfPrimitives)}>
                     {showAllMsfPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all 20 primitives</>}
                   </Button>
                 )}
               </div>
 
-              {/* ─── New Capabilities Unlocked ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Zap className="w-4 h-4 text-primary" /> 10 New Capabilities Unlocked
@@ -1160,37 +1309,23 @@ export default function CaseStudies() {
                 </div>
               </div>
 
-              {/* ─── Key Insight ─── */}
               <div className="bg-red-500/[0.04] border border-red-500/15 rounded-xl p-5">
                 <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                  Metasploit's <code className="text-xs px-1 py-0.5 rounded bg-muted">Exploit::Remote::Tcp</code> is the TCP socket layer beneath every remote exploit in the world's most-used penetration testing framework — 38,000+ stars, maintained by Rapid7, trusted by security teams at every tier of industry. Despite being authored by professional security engineers, CMPSBL's diagnostic squad found <strong className="text-foreground">9 structural vulnerabilities</strong> including the highest cyclomatic complexity (49) of any case study, zero test coverage, and no graceful shutdown handling.
-                </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The CMPSBL CYBER™ vertical then applied 20 primitives purpose-built for offensive/defensive security. CIPHER hardened the SSL/TLS negotiation paths. BASTION enforced zero-trust on the socket factory. SPECTER added deception honeypots. NOCTURNE monitors the dark web for credential exposure. The result: the penetration testing tool that tests everyone else now has its own <strong className="text-foreground">security-hardened Sealed Runtime</strong> — a security tool secured by a security substrate, processed in ~10 seconds with zero AI.
+                  Metasploit's TCP mixin — the foundation of every remote exploit in the world's most-used pen test framework — had <strong className="text-foreground">9 structural vulnerabilities</strong> including the highest cyclomatic complexity (49) of any case study. CMPSBL CYBER™ applied CIPHER, BASTION, SPECTER, and NOCTURNE to create a <strong className="text-foreground">security-hardened Sealed Runtime</strong> — the penetration testing tool secured by a security substrate.
                 </p>
               </div>
 
-              {/* ─── Downloads ─── */}
               <div>
                 <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
                   <Download className="w-4 h-4 text-primary" /> Download & Verify
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Both the original Rapid7 source and the full CMPSBL CYBER™ Ascension export are available for download.
-                </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="/downloads/case-studies/tcp_original.rb" download>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <FileCode className="w-3.5 h-3.5" />
-                      Original Source (.rb)
-                    </Button>
+                    <Button variant="outline" size="sm" className="gap-2"><FileCode className="w-3.5 h-3.5" />Original Source (.rb)</Button>
                   </a>
                   <a href="/downloads/case-studies/metasploit-tcp-ascended-CMPSBL-MNJ5AB71-71MP.zip" download>
-                    <Button size="sm" className="gap-2">
-                      <Download className="w-3.5 h-3.5" />
-                      Ascended Export (.zip)
-                    </Button>
+                    <Button size="sm" className="gap-2"><Download className="w-3.5 h-3.5" />Ascended Export (.zip)</Button>
                   </a>
                 </div>
                 <p className="text-[11px] text-muted-foreground mt-3">
@@ -1198,36 +1333,6 @@ export default function CaseStudies() {
                   Fingerprint: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">f90f697548eab361</code>{' · '}
                   Generated: April 3, 2026
                 </p>
-              </div>
-
-              {/* ─── External References ─── */}
-              <div>
-                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4 text-primary" /> References & Further Reading
-                </h3>
-                <ul className="space-y-1.5 text-sm">
-                  {[
-                    { label: 'Metasploit Framework GitHub (38K+ ★)', url: 'https://github.com/rapid7/metasploit-framework' },
-                    { label: 'Msf::Exploit::Remote::Tcp API Docs', url: 'https://docs.metasploit.com/api/Msf/Exploit/Remote/Tcp.html' },
-                    { label: 'How to Use the Tcp Mixin — Metasploit Docs', url: 'https://rapid7.github.io/metasploit-framework/docs/development/developing-modules/libraries/how-to-use-the-msf-exploit-remote-tcp-mixin.html' },
-                    { label: 'Metasploit 2024 Annual Wrap-Up — Rapid7 Blog', url: 'https://www.rapid7.com/blog/post/2025/01/03/metasploit-2024-annual-wrap-up/' },
-                    { label: 'Metasploit Framework 6.4 Release', url: 'https://cybersecuritynews.com/metasploit-framework-released/' },
-                    { label: 'Mixin Architecture Issue #18060', url: 'https://github.com/rapid7/metasploit-framework/issues/18060' },
-                    { label: 'Rapid7 — Metasploit Maintainer', url: 'https://www.rapid7.com' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
-                  ].map((ref) => (
-                    <li key={ref.url}>
-                      <a
-                        href={ref.url}
-                        target={ref.url.startsWith('http') ? '_blank' : undefined}
-                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
-                      >
-                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </div>
@@ -1241,7 +1346,8 @@ export default function CaseStudies() {
           { question: 'What is CMPSBL Ascension?', answer: 'Ascension is the CMPSBL® code refurbishment pipeline that analyzes, classifies, and hardens source code by colliding it against 40 Primitives — all without AI.' },
           { question: 'How long does Ascension take?', answer: 'A typical file processes through the full 20-primitive pipeline in approximately 10 seconds.' },
           { question: 'Does Ascension use AI?', answer: 'No. The Ascension pipeline is purely algorithmic — deterministic pattern matching, structural analysis, and primitive guard injection. Zero external AI calls.' },
-          { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, or Quantum.' },
+          { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, Quantum, or LLM.' },
+          { question: 'What software has been tested?', answer: 'Case studies include code from IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, and PythonRobotics — all scored CJPI 100 (Apex).' },
         ]}
       />
       <EnhancedFooter />
