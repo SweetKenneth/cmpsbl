@@ -110,7 +110,7 @@ export default function CyberSecurityHome() {
         <VerticalReturnBanner verticalName="CMPSBL CYBER™" accentColor="hsl(0 85% 60%)" />
 
         {/* ── NAV ── */}
-        <CyberNav />
+        <PublicNav />
 
         {/* ── HERO ── */}
         <motion.section
