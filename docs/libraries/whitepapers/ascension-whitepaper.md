@@ -401,7 +401,7 @@ We present fifteen verified case studies spanning five programming languages, ei
 
 **Subject:** `src/substrate/pipeline-fingerprint.ts` — the cryptographic fingerprint generation engine of the CMPSBL® substrate itself. The system that produces the unique identity hash on every Certificate of Discovery. Run through the original 40-Primitive base matrix with no vertical hot-swap — the substrate analyzing itself. Serial: CMPSBL-MNJEN2SS-XF1N · Fingerprint: 18b8cd05bd02ba6d.
 
-**Classification:** TypeScript · 116 lines · 10 classes · 93 imports · Cyclomatic complexity 83 · Deep nesting 7 levels · Zero test coverage · Two CRITICAL findings.
+**Classification:** TypeScript · 116 lines · 0 classes · 3 imports · Deep nesting 7 levels · Zero test coverage · Two CRITICAL findings.
 
 > **Critical Discovery:** The substrate found that its own fingerprinting system had no error handling around cryptographic operations and unhandled async rejection paths — meaning a fingerprint generation failure would produce no diagnostic information. FAILSAFE fired first. The system that signs every Certificate of Discovery had never been signed itself. Until now.
 >
