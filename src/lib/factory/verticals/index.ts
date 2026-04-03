@@ -45,6 +45,19 @@ export {
 } from './quantum';
 
 export {
+  seedQuantumDiscoveries,
+  getQuantumSeedResult,
+  getQuantumSeedSummary,
+  getQuantumVault,
+  getQuantumVaultCount,
+  getQuantumMemoryStreamPool,
+  getQuantumMemoryStreamCount,
+  resetQuantumSeed,
+  type QuantumDiscovery,
+  type QuantumSeedResult,
+} from './quantum-seed';
+
+export {
   type VerticalPrimitive,
   type VerticalSubstrateConfig,
   type VerticalSubstrateStatus,
