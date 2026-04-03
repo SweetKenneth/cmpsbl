@@ -46,8 +46,8 @@ This paper makes four contributions:
 
 1. **Architecture:** A formal description of the 40-primitive collision matrix and its taxonomic organization
 2. **Method:** The Ascension™ pipeline — an 8-stage deterministic transformation process
-3. **Evidence:** Twelve verified case studies spanning five languages and eight verticals, each with a verifiable serial number and fingerprint
-4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads), a structural dependency gap in OpenSSL's TLS 1.3 encryption engine, structural hardening of Metasploit's core TCP exploitation framework, dynamic code execution detection in ArduPilot autonomous vehicle software (1M+ vehicles), structural deficiencies in QuantLib's swaption calibration models, deprecated API / monolithic architecture patterns in Google OR-Tools CP-SAT (13.3K+ GitHub stars), unhandled async rejection patterns in PyTorch's `torch.nn.functional` (99K+ GitHub stars) and Anthropic's official Python SDK, and a self-referential analysis of CMPSBL's own pipeline-fingerprint.ts — the cryptographic engine that signs every Certificate of Discovery
+3. **Evidence:** Fifteen verified case studies spanning five languages and eight verticals, including a four-part self-referential audit of CMPSBL's own substrate internals
+4. **Discovery:** Critical findings across IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers (73M+ downloads), OpenSSL TLS 1.3, ArduPilot (1M+ vehicles), QuantLib, Google OR-Tools CP-SAT (13.3K+ stars), PyTorch (99K+ stars), Anthropic's Claude SDK, and four CMPSBL internal systems — including weak cryptographic randomness in lineage tracking and audit logging
 
 ---
 
