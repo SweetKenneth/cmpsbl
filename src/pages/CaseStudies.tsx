@@ -167,6 +167,54 @@ const SHARED_SPINE_PRIMITIVES = [
   'SIMULATE', 'MEMORY', 'SHADOW', 'RELAY', 'OBSERVER', 'FORGE', 'ECHO', 'EVOLUTION', 'COMPASS', 'LINGUA',
 ];
 
+/* ───────── Case Study #3 Data — Qiskit ConsolidateBlocks (Quantum) ───────── */
+
+const QISKIT_VULNERABILITIES = [
+  { severity: 'warning', title: 'Synchronous-only architecture', status: 'mitigated', detail: 'No async patterns found in substantial codebase. May block the event loop under load.' },
+  { severity: 'warning', title: 'High cyclomatic complexity (32)', status: 'mitigated', detail: 'Complexity score of 32 indicates too many branching paths. Hard to test and maintain.' },
+  { severity: 'info', title: 'No fallback mechanisms detected', status: 'monitor', detail: 'ORACLE identifies single-path execution. Failure in any step halts the entire pipeline.' },
+  { severity: 'info', title: 'Low function density', status: 'monitor', detail: 'ORACLE detects 3 functions across 192 lines (~64 lines/fn). Monolithic functions resist change.' },
+  { severity: 'warning', title: 'High dependency coupling (19 imports)', status: 'mitigated', detail: '19 imports detected — high coupling increases blast radius of dependency failures.' },
+  { severity: 'info', title: 'No module exports detected', status: 'monitor', detail: 'Code appears self-contained with no exports. Limits reusability and testability.' },
+  { severity: 'info', title: 'No dependency failure fallbacks', status: 'monitor', detail: '19 dependencies with no fallback strategy. Any dependency failure cascades to your application.' },
+];
+
+const QISKIT_PRIMITIVES = [
+  { name: 'BOSON', type: 'Agent', action: 'Force carrier simulation and gauge field mapping for the Standard Model' },
+  { name: 'NEUTRINO', type: 'Agent', action: 'Weak interaction modeling and neutrino flavor oscillation prediction' },
+  { name: 'HARVEST', type: 'Organ', action: 'Dead code identification and pruning advisory for large codebases' },
+  { name: 'PHOTON', type: 'Engine', action: 'Optical computing and photonic signal processing with interferometry modeling' },
+  { name: 'FERMION', type: 'Engine', action: 'Many-body quantum state evolution with Schrödinger equation solvers' },
+  { name: 'PLASMA', type: 'Engine', action: 'Plasma dynamics and magneto-hydrodynamics for fusion reactor modeling' },
+  { name: 'MUON', type: 'Agent', action: 'Decay chain analysis and lepton tracking for particle detector data' },
+  { name: 'QUBIT', type: 'Engine', action: 'Quantum gate orchestration and circuit transpilation for quantum algorithms' },
+  { name: 'MESON', type: 'Agent', action: 'Quark confinement and hadronization processes for jet formation modeling' },
+  { name: 'SHADOW', type: 'Layer', action: 'Shadow testing and canary analysis for complex system deployments' },
+  { name: 'IMMUNITY', type: 'Layer', action: 'Dependency shielding and isolation barriers for high-coupling codebases' },
+  { name: 'RELAY', type: 'Layer', action: 'Message relay with delivery guarantees and dead-letter handling' },
+  { name: 'GLUON', type: 'Agent', action: 'Strong force coupling and QCD color charge simulation' },
+  { name: 'CRYOGEN', type: 'Engine', action: 'Cryogenic system modeling and thermal noise reduction for quantum hardware' },
+  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered print/debug statements' },
+  { name: 'IDENTITY', type: 'Organ', action: 'Authentication and identity resolution for access control' },
+  { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for complex systems' },
+  { name: 'COMPASS', type: 'Organ', action: 'Module navigation and dependency mapping' },
+  { name: 'SIMULATE', type: 'Layer', action: 'Simulation-based safe testing of architectural changes' },
+  { name: 'EVOLUTION', type: 'Layer', action: 'Managed evolution cycles for technical debt reduction' },
+];
+
+const QISKIT_CAPABILITIES = [
+  { name: 'QCD Color Charge Simulator', mode: 'Active', desc: 'Lattice QCD Monte Carlo simulation for gluon exchange, asymptotic freedom verification, and hadron mass computation from first principles.' },
+  { name: 'Quantum Teleportation Protocol', mode: 'Active', desc: 'End-to-end quantum state transfer using EPR pairs, Bell measurements, and classical communication channels with fidelity verification.' },
+  { name: 'Silent Regression Scanner', mode: 'Passive', desc: 'Background scanner detecting behavioral regressions by comparing output signatures against historical baselines.' },
+  { name: 'Neutrino Oscillation Predictor', mode: 'Passive', desc: 'Computes PMNS matrix parameters, predicts flavor transition probabilities over baseline distances, and models MSW matter effects.' },
+  { name: 'Cryogenic Decoherence Shield', mode: 'Hybrid', desc: 'Models T1/T2 relaxation times, thermal photon flux, and Johnson-Nyquist noise to optimize dilution refrigerator staging for qubit coherence.' },
+  { name: 'Canary Deployment Gate', mode: 'Hybrid', desc: 'Routes configurable traffic percentages to new code paths with anomaly monitoring and auto-rollback.' },
+  { name: 'Fusion Reactor Modeler', mode: 'Active', desc: 'Simulates tokamak plasma confinement, computes Lawson criterion parameters, and optimizes magnetic field configurations.' },
+  { name: 'Particle Collision Analyzer', mode: 'Active', desc: 'Reconstructs collision events from detector data, clusters jets, identifies decay products, and computes invariant mass distributions.' },
+  { name: 'Chaos Pen Test Engine', mode: 'Active', desc: 'Automated penetration testing via chaos injection, adversarial simulation, and blast radius analysis.' },
+  { name: 'Structural Drift Detector', mode: 'Passive', desc: 'Compares current architecture against original blueprint and flags deviations to prevent architectural erosion.' },
+];
+
 /* ───────── Shared Components ───────── */
 
 function SeverityBadge({ severity }: { severity: string }) {
