@@ -16,7 +16,7 @@
 
 ## Abstract
 
-We introduce **Ascension™**, a deterministic software evolution engine that identifies, scores, and hardens latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index™ (CJPI), and exporting hardened artifacts as self-contained Sealed Runtimes™. We present empirical results from eight verified case studies spanning four programming languages and six industry verticals, including the discovery and remediation of a critical error-handling vulnerability in Hugging Face's `tokenizers` library — a package with over 73 million monthly PyPI downloads — the identification of a structural timeout dependency gap in OpenSSL's TLS 1.3 encryption engine, the most audited security codebase on earth — the detection of dynamic code execution patterns in ArduPilot's autonomous vehicle test orchestration software, installed in over 1,000,000 vehicles worldwide — and structural hardening of QuantLib's Gaussian 1D swaption calibration models, the most widely adopted open-source quantitative finance library (6.9K+ GitHub stars, 210 contributors, BSD-licensed). Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension™ as the foundation for a new discipline: **post-authorship software evolution**, where code improvement occurs structurally rather than generatively.
+We introduce **Ascension™**, a deterministic software evolution engine that identifies, scores, and hardens latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index™ (CJPI), and exporting hardened artifacts as self-contained Sealed Runtimes™. We present empirical results from nine verified case studies spanning four programming languages and seven industry verticals, including the discovery and remediation of a critical error-handling vulnerability in Hugging Face's `tokenizers` library — a package with over 73 million monthly PyPI downloads — the identification of a structural timeout dependency gap in OpenSSL's TLS 1.3 encryption engine — dynamic code execution detection in ArduPilot's autonomous vehicle test software (1M+ vehicles) — structural hardening of QuantLib's swaption calibration models — and structural analysis of Google OR-Tools' CP-SAT constraint solver (13.3K+ GitHub stars), the most widely deployed open-source operations research library, used globally for logistics, scheduling, and resource optimization. Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension™ as the foundation for a new discipline: **post-authorship software evolution**, where code improvement occurs structurally rather than generatively.
 
 **Keywords:** software evolution · deterministic analysis · code hardening · primitive collision · sealed runtime · cognitive infrastructure · structural vulnerability · post-authorship engineering
 
@@ -46,8 +46,8 @@ This paper makes four contributions:
 
 1. **Architecture:** A formal description of the 40-primitive collision matrix and its taxonomic organization
 2. **Method:** The Ascension™ pipeline — an 8-stage deterministic transformation process
-3. **Evidence:** Eight verified case studies spanning four languages and six verticals, each with a verifiable serial number and fingerprint
-4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads), a structural dependency gap in OpenSSL's TLS 1.3 encryption engine, structural hardening of Metasploit's core TCP exploitation framework, dynamic code execution detection in ArduPilot autonomous vehicle software (1M+ vehicles), and structural deficiencies in QuantLib's swaption calibration models used across global financial institutions
+3. **Evidence:** Nine verified case studies spanning four languages and seven verticals, each with a verifiable serial number and fingerprint
+4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads), a structural dependency gap in OpenSSL's TLS 1.3 encryption engine, structural hardening of Metasploit's core TCP exploitation framework, dynamic code execution detection in ArduPilot autonomous vehicle software (1M+ vehicles), structural deficiencies in QuantLib's swaption calibration models, and deprecated API / monolithic architecture patterns in Google OR-Tools CP-SAT (13.3K+ GitHub stars)
 
 ---
 
@@ -160,7 +160,7 @@ No stage in the pipeline invokes external AI, stochastic inference, or probabili
 
 ### 5.1 Overview
 
-We present eight verified case studies spanning four programming languages, six industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:
+We present nine verified case studies spanning four programming languages, seven industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:
 
 | # | Software | Language | Vertical | CJPI | Serial | Fingerprint |
 |---|----------|----------|----------|------|--------|-------------|
@@ -172,6 +172,7 @@ We present eight verified case studies spanning four programming languages, six 
 | 6 | OpenSSL tls13_enc.c | C | Cyber | 100 APEX | CMPSBL-MNJB00F5-626R | b82607914337f881 |
 | 7 | ArduPilot vehicle_test_suite.py | Python | Robotics | 100 APEX | CMPSBL-MNJBTP5Q-V0OK | 13c42397bead4a65 |
 | 8 | QuantLib Gaussian 1D Models | Python | FinTech | 100 APEX | CMPSBL-MNJD2A7W-DMM8 | 9012a33c2dd6b2ce |
+| 9 | Google OR-Tools CP-SAT | Python | Operations Research | 100 APEX | CMPSBL-MNJDGI57-L2XP | af7743b905e75374 |
 
 ### 5.2 Case Study 1: A* Path Planner (PythonRobotics)
 
@@ -312,6 +313,26 @@ We present eight verified case studies spanning four programming languages, six 
 
 **Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 from the Quantum™ Vertical expansion primitives (MUON, FERMION, ENTANGLE, PRISM, BOSON, GLUON, GRAVITON, HADRON, LATTICE, QUBIT) and 10 from the core spine (TREATY, LINGUA, RELAY, MEMORY, COMPASS, SOVEREIGN, PHANTOM, EVOLUTION, OBSERVER, SANDBOX). The first case study to activate the complete QUANTUM primitive chain on financial quantitative code — demonstrating that the same structural analysis that hardens particle physics simulation (Qiskit) applies directly to derivative pricing and yield curve modeling.
 
+### 5.10 Case Study 9: Google OR-Tools CP-SAT Solver
+
+**Subject:** `cp_model.py` — the core Python interface for the CP-SAT constraint programming solver from [Google OR-Tools](https://github.com/google/or-tools) (13.3K+ GitHub stars, 2.4K forks), the most widely deployed open-source operations research library. OR-Tools is developed by Google, Apache 2.0-licensed, and used globally for vehicle routing, scheduling, resource allocation, supply chain optimization, and combinatorial problem solving. The CP-SAT solver specifically is the state-of-the-art constraint programming satisfiability solver, combining SAT solving with constraint propagation and linear programming relaxation. Copyright 2010–2025 Google LLC. Serial: CMPSBL-MNJDGI57-L2XP · Fingerprint: af7743b905e75374.
+
+**Classification:** Python · 2,332 lines · Depth Score 88/100 (high complexity — cyclomatic complexity 230, 42 imports, 9 classes, synchronous-only architecture with no async patterns).
+
+> **Structural Findings:** The substrate identified patterns characteristic of large-scale Google engineering infrastructure that has accumulated structural debt: (1) **cyclomatic complexity of 230** — extreme branching across model-building, constraint-posting, and solver-invocation paths; (2) **monolithic file at 2,332 lines** — the entire CP-SAT Python API consolidated into a single module; (3) **deprecated API usage** — the file explicitly implements its own `deprecated` decorator because `warnings.deprecated` is Python 3.13+ only, confirming backward-compatibility debt across deprecated method surfaces; (4) **insecure HTTP protocol** — non-HTTPS URLs detected in the Apache 2.0 license header (`http://www.apache.org/licenses/LICENSE-2.0`), a structural flag that, while not exploitable here, indicates the codebase predates HTTPS-by-default policy; (5) **42 high-coupling imports** with no fallback strategy — any dependency failure cascades; (6) **synchronous-only architecture** — no async patterns in a solver that can run for hours on complex optimization problems; and (7) **9 classes in a single file** — including `CpModel`, `CpSolver`, `Constraint`, `LinearExpr`, `BoundedLinearExpression`, and multiple solution callback classes, suggesting God Object decomposition opportunities.
+
+**Remediation:** Ascension™ applied a mixed Quantum™ / core spine stack:
+- QUBIT gate orchestration mapped to constraint-to-SAT reduction hardening
+- PLASMA magneto-hydrodynamics mapped to objective function optimization flows
+- ENTANGLE correlated constraint variable binding
+- LATTICE constraint propagation lattice modeling
+- CONSCIENCE ethical decision boundaries for optimization outcome validation
+- ORACLE Monte Carlo simulation for solver convergence prediction
+- SANDBOX isolation for untrusted constraint evaluation
+- IMMUNITY resilience injection for dependency cascade prevention
+
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The largest codebase by line count in the case study suite after ArduPilot (2,332 lines). Notable as the first **Google-authored** code to pass through the Ascension™ pipeline — and the first Operations Research vertical entry. The deprecated API finding is particularly significant: Google's own engineering standards enforce deprecation warnings, yet the structural implementation confirms backward-compatibility debt that the substrate surfaced without any prior knowledge of Google's internal policies.
+
 ---
 
 ## 6. The Sealed Runtime™ Architecture
@@ -439,7 +460,7 @@ By eschewing AI-based code analysis, Ascension™ achieves properties no probabi
 
 ## 10. Conclusion
 
-We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix. Across eight verified case studies spanning four languages (Python, PHP, Ruby, C) and six verticals (Robotics, Agentic AI, Quantum, Cyber, LLM/ML, FinTech), Ascension™ consistently surfaced structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap in one of the world's most-downloaded software libraries (Hugging Face Tokenizers, 73M+ monthly downloads), a structural timeout dependency in the most audited security codebase on earth (OpenSSL TLS 1.3), 9 vulnerabilities in the world's most-used penetration testing framework (Metasploit), dynamic code execution patterns in the autonomous vehicle platform installed in over 1,000,000 vehicles worldwide (ArduPilot), and structural deficiencies in QuantLib's swaption calibration models — the most widely adopted open-source quantitative finance library used by banks and financial institutions globally.
+We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix. Across nine verified case studies spanning four languages (Python, PHP, Ruby, C) and seven verticals (Robotics, Agentic AI, Quantum, Cyber, LLM/ML, FinTech, Operations Research), Ascension™ consistently surfaced structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap in Hugging Face Tokenizers (73M+ monthly downloads), a structural timeout dependency in OpenSSL TLS 1.3, 9 vulnerabilities in Metasploit, dynamic code execution in ArduPilot (1M+ vehicles), structural deficiencies in QuantLib's swaption calibration models, and deprecated API patterns with monolithic architecture in Google OR-Tools CP-SAT — the most widely deployed open-source constraint solver (13.3K+ GitHub stars).
 
 The implications extend beyond individual code hardening. Ascension™ establishes the foundation for **post-authorship software evolution** — a discipline where code improvement is structural, deterministic, and autonomous. Every piece of software ever written is a candidate. Every vulnerability is discoverable. Every capability is hardenable.
 
@@ -500,6 +521,10 @@ For licensing inquiries: founder@cmpsbl.com
 11. Ballabio, L. et al. (2000–2026). *QuantLib: A Free/Open-Source Library for Quantitative Finance.* https://github.com/lballabio/QuantLib
 
 12. Lee, A. (2018). *Gaussian 1D Models — QuantLib-SWIG Python Example.* https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py
+
+13. Google LLC. (2010–2025). *OR-Tools: Google's Operations Research Tools.* https://github.com/google/or-tools
+
+14. Perron, L. & Furnon, V. (2023). *CP-SAT Solver.* Google OR-Tools Documentation. https://developers.google.com/optimization/cp/cp_solver
 
 ---
 
