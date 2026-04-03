@@ -2,17 +2,196 @@
  * Generate Refurbished Code — Dual-layer source output
  * Takes original code + applied primitives and produces the "refurbished" version
  * with real per-primitive wrappers, guards, and instrumentation injected INTO the code.
+ *
+ * Bridge Adapter: Output always matches the source language via language-specific
+ * syntax adapters. Python in → Python out. Rust in → Rust out. HDL in → HDL out.
  */
 
 import type { PrimitiveRecommendation } from './scan-team';
+import { detectLanguage } from './code-metrics';
 
-/** Per-primitive code transformation templates */
+// ── Language Syntax Adapters ──
+
+interface LanguageAdapter {
+  comment: (text: string) => string;
+  blockComment: (lines: string[]) => string;
+  importStatement: (module: string, symbols: string[]) => string;
+  constDecl: (name: string, value: string) => string;
+  fileExtension: string;
+}
+
+const ADAPTERS: Record<string, LanguageAdapter> = {
+  TypeScript: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, syms) => `import { ${syms.join(', ')} } from '${mod}';`,
+    constDecl: (name, val) => `const ${name} = Object.freeze(${val});`,
+    fileExtension: '.ts',
+  },
+  JavaScript: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, syms) => `import { ${syms.join(', ')} } from '${mod}';`,
+    constDecl: (name, val) => `const ${name} = Object.freeze(${val});`,
+    fileExtension: '.js',
+  },
+  Python: {
+    comment: (t) => `# ${t}`,
+    blockComment: (lines) => `"""\n${lines.join('\n')}\n"""`,
+    importStatement: (mod, syms) => `from ${mod.replace(/@/g, '').replace(/\//g, '.')} import ${syms.join(', ')}`,
+    constDecl: (name, val) => `${name} = ${val}`,
+    fileExtension: '.py',
+  },
+  Rust: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, syms) => `use ${mod.replace(/@/g, '').replace(/\//g, '::')}::{${syms.join(', ')}};`,
+    constDecl: (name, val) => `const ${name.toUpperCase()}: &str = r#"${val}"#;`,
+    fileExtension: '.rs',
+  },
+  Go: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `import "${mod}"`,
+    constDecl: (name, val) => `var ${name} = ${val}`,
+    fileExtension: '.go',
+  },
+  Java: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s};`).join('\n'),
+    constDecl: (name, val) => `static final String ${name} = ${val};`,
+    fileExtension: '.java',
+  },
+  'C#': {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/// <summary>\n${lines.map(l => `/// ${l}`).join('\n')}\n/// </summary>`,
+    importStatement: (mod, _syms) => `using ${mod.replace(/@/g, '').replace(/\//g, '.')};`,
+    constDecl: (name, val) => `static readonly string ${name} = @"${val}";`,
+    fileExtension: '.cs',
+  },
+  C: {
+    comment: (t) => `/* ${t} */`,
+    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `#include "${mod}.h"`,
+    constDecl: (name, val) => `static const char* ${name} = "${val}";`,
+    fileExtension: '.c',
+  },
+  'C++': {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `#include "${mod}.hpp"`,
+    constDecl: (name, val) => `constexpr auto ${name} = R"(${val})";`,
+    fileExtension: '.cpp',
+  },
+  Ruby: {
+    comment: (t) => `# ${t}`,
+    blockComment: (lines) => `=begin\n${lines.join('\n')}\n=end`,
+    importStatement: (mod, _syms) => `require '${mod}'`,
+    constDecl: (name, val) => `${name.toUpperCase()} = ${val}.freeze`,
+    fileExtension: '.rb',
+  },
+  Swift: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}`,
+    constDecl: (name, val) => `let ${name} = ${val}`,
+    fileExtension: '.swift',
+  },
+  Kotlin: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s}`).join('\n'),
+    constDecl: (name, val) => `val ${name} = ${val}`,
+    fileExtension: '.kt',
+  },
+  PHP: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `use ${mod.replace(/@/g, '').replace(/\//g, '\\\\')};`,
+    constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
+    fileExtension: '.php',
+  },
+  Scala: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, syms) => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.{${syms.join(', ')}}`,
+    constDecl: (name, val) => `val ${name} = ${val}`,
+    fileExtension: '.scala',
+  },
+  Lua: {
+    comment: (t) => `-- ${t}`,
+    blockComment: (lines) => `--[[\n${lines.join('\n')}\n]]`,
+    importStatement: (mod, _syms) => `local ${mod.split('/').pop()} = require("${mod}")`,
+    constDecl: (name, val) => `local ${name} = ${val}`,
+    fileExtension: '.lua',
+  },
+  R: {
+    comment: (t) => `# ${t}`,
+    blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
+    importStatement: (mod, _syms) => `library(${mod.split('/').pop()})`,
+    constDecl: (name, val) => `${name} <- ${val}`,
+    fileExtension: '.R',
+  },
+  Dart: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `import 'package:${mod.replace(/@/g, '')}';`,
+    constDecl: (name, val) => `const ${name} = ${val};`,
+    fileExtension: '.dart',
+  },
+  Elixir: {
+    comment: (t) => `# ${t}`,
+    blockComment: (lines) => `@moduledoc """\n${lines.join('\n')}\n"""`,
+    importStatement: (mod, _syms) => `import ${mod.split('/').pop()?.replace(/-/g, '_') ?? mod}`,
+    constDecl: (name, val) => `@${name} ${val}`,
+    fileExtension: '.ex',
+  },
+  // HDL adapters
+  VHDL: {
+    comment: (t) => `-- ${t}`,
+    blockComment: (lines) => lines.map(l => `-- ${l}`).join('\n'),
+    importStatement: (mod, _syms) => `library ${mod.split('/').pop()};\nuse ${mod.split('/').pop()}.all;`,
+    constDecl: (name, val) => `constant ${name} : string := "${val}";`,
+    fileExtension: '.vhd',
+  },
+  Verilog: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `\`include "${mod}.v"`,
+    constDecl: (name, val) => `localparam ${name} = "${val}";`,
+    fileExtension: '.v',
+  },
+  SystemVerilog: {
+    comment: (t) => `// ${t}`,
+    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
+    importStatement: (mod, _syms) => `import ${mod.split('/').pop()}::*;`,
+    constDecl: (name, val) => `localparam string ${name} = "${val}";`,
+    fileExtension: '.sv',
+  },
+};
+
+/** Resolve the adapter for a detected language, falling back to TypeScript */
+function getAdapter(language: string): LanguageAdapter {
+  return ADAPTERS[language] ?? ADAPTERS['TypeScript'];
+}
+
+/** Extract module path and symbol names from a TS import string */
+function parseImport(tsImport: string): { module: string; symbols: string[] } {
+  const modMatch = tsImport.match(/from\s+['"]([^'"]+)['"]/);
+  const symMatch = tsImport.match(/\{([^}]+)\}/);
+  return {
+    module: modMatch?.[1] ?? 'cmpsbl/runtime',
+    symbols: symMatch?.[1].split(',').map(s => s.trim()) ?? [],
+  };
+}
+
+/** Per-primitive code transformation templates (canonical TS format — adapted at output) */
 const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapper: (code: string) => string }> = {
   failsafe: {
     imports: "import { CircuitBreaker, SnapshotManager } from '@cmpsbl/runtime/failsafe';",
     guard: "const failsafeBreaker = CircuitBreaker.create({ threshold: 5, resetMs: 30_000 });\nSnapshotManager.init({ autoSnapshot: true, intervalMs: 300_000 });",
     wrapper: (code) => {
-      // Wrap top-level async calls with circuit breaker
       return code.replace(
         /(?:await\s+)(fetch|axios|http)\b/g,
         'await failsafeBreaker.execute(() => $1'
@@ -143,7 +322,6 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
     imports: "import { StructuredLogger, EventCorrelator } from '@cmpsbl/runtime/echo';",
     guard: "StructuredLogger.init({ format: 'json', level: 'info', correlationId: true });\nEventCorrelator.enable({ traceContext: true, spanDepth: 10 });",
     wrapper: (code) => {
-      // Replace console.log with structured logger
       return code.replace(/console\.(log|warn|error|info)\(/g, 'StructuredLogger.$1(');
     },
   },
@@ -181,7 +359,6 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
     imports: "import { StealthOps, SecretRotator } from '@cmpsbl/runtime/wraith';",
     guard: "StealthOps.init({ minimalFootprint: true, encryptInTransit: true });\nSecretRotator.enable({ rotationIntervalMs: 86_400_000, auditAccess: true });",
     wrapper: (code) => {
-      // Mask hardcoded secrets
       return code.replace(
         /(?:password|secret|api_key|token)\s*[:=]\s*['"]([^'"]{8,})['"]/gi,
         (match, _val) => match.replace(_val, '${WRAITH_SEALED_SECRET}')
@@ -220,12 +397,21 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   },
 };
 
-/** Generate the refurbished source with real per-primitive wrappers */
+/**
+ * Generate the refurbished source with real per-primitive wrappers.
+ * Uses the Bridge adapter to output in the SAME language as the source.
+ */
 export function generateRefurbishedCode(
   originalCode: string,
   selectedPrimitives: PrimitiveRecommendation[],
   fingerprint: string,
+  sourceLanguage?: string,
+  fileName?: string,
 ): string {
+  // Detect language from explicit param, fileName, or code content
+  const detected = sourceLanguage ?? detectLanguage(originalCode, fileName ?? undefined).language;
+  const adapter = getAdapter(detected);
+
   const imports: string[] = [];
   const guards: string[] = [];
   let transformedCode = originalCode;
@@ -233,66 +419,79 @@ export function generateRefurbishedCode(
   for (const p of selectedPrimitives) {
     const wrapper = PRIMITIVE_WRAPPERS[p.primitiveId];
     if (wrapper) {
-      imports.push(wrapper.imports);
-      guards.push(`// ─── ${p.name} ───`);
+      // Adapt the import to the source language
+      const parsed = parseImport(wrapper.imports);
+      imports.push(adapter.importStatement(parsed.module, parsed.symbols));
+
+      guards.push(adapter.comment(`─── ${p.name} ───`));
       guards.push(wrapper.guard);
       transformedCode = wrapper.wrapper(transformedCode);
     }
   }
 
-  const header = [
-    `/**`,
-    ` * ═══════════════════════════════════════════════════════════`,
-    ` * CMPSBL® Refurbished Code — Sealed Runtime`,
-    ` * ═══════════════════════════════════════════════════════════`,
-    ` * Fingerprint: ${fingerprint}`,
-    ` * Primitives:  ${selectedPrimitives.map(p => p.name).join(', ')}`,
-    ` * Generated:   ${new Date().toISOString()}`,
-    ` * `,
-    ` * Layer 1: Original source (hardened in-place)`,
-    ` * Layer 2: Primitive guard activations + instrumentation`,
-    ` * `,
-    ` * DO NOT remove guard activations — they protect runtime integrity.`,
-    ` * DO NOT modify the fingerprint — it validates this artifact.`,
-    ` * ═══════════════════════════════════════════════════════════`,
-    ` */`,
-  ].join('\n');
+  const headerLines = [
+    '═══════════════════════════════════════════════════════════',
+    'CMPSBL® Refurbished Code — Sealed Runtime',
+    `Language: ${detected} (Bridge Adapter)`,
+    '═══════════════════════════════════════════════════════════',
+    `Fingerprint: ${fingerprint}`,
+    `Primitives:  ${selectedPrimitives.map(p => p.name).join(', ')}`,
+    `Generated:   ${new Date().toISOString()}`,
+    '',
+    'Layer 1: Original source (hardened in-place)',
+    'Layer 2: Primitive guard activations + instrumentation',
+    '',
+    'DO NOT remove guard activations — they protect runtime integrity.',
+    'DO NOT modify the fingerprint — it validates this artifact.',
+    '═══════════════════════════════════════════════════════════',
+  ];
+
+  const header = adapter.blockComment(headerLines);
+
+  const metaJson = JSON.stringify({
+    fingerprint,
+    primitiveCount: selectedPrimitives.length,
+    generatedAt: new Date().toISOString(),
+    runtimeVersion: '2.5.0',
+    sourceLanguage: detected,
+  }, null, 2);
 
   const metaBlock = [
-    `// ═══ CMPSBL Artifact Metadata ═══`,
-    `const __CMPSBL_META__ = Object.freeze({`,
-    `  fingerprint: '${fingerprint}',`,
-    `  primitiveCount: ${selectedPrimitives.length},`,
-    `  generatedAt: '${new Date().toISOString()}',`,
-    `  runtimeVersion: '2.5.0',`,
-    `});`,
+    adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
+    adapter.constDecl('__CMPSBL_META__', metaJson),
   ].join('\n');
 
   return [
     header,
     '',
-    '// ═══ Runtime Imports ═══',
+    adapter.comment('═══ Runtime Imports ═══'),
     ...imports,
     '',
     metaBlock,
     '',
-    '// ═══════════════════════════════════════════════════════════',
-    '// PRIMITIVE GUARD ACTIVATIONS',
-    '// Each block initializes a primitive\'s protection layer.',
-    '// ═══════════════════════════════════════════════════════════',
+    adapter.comment('═══════════════════════════════════════════════════════════'),
+    adapter.comment('PRIMITIVE GUARD ACTIVATIONS'),
+    adapter.comment("Each block initializes a primitive's protection layer."),
+    adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     ...guards,
     '',
-    '// ═══════════════════════════════════════════════════════════',
-    '// ORIGINAL SOURCE (HARDENED)',
-    '// Your code below has been analyzed and transformed in-place.',
-    '// Dangerous patterns replaced. Logging upgraded. Secrets sealed.',
-    '// ═══════════════════════════════════════════════════════════',
+    adapter.comment('═══════════════════════════════════════════════════════════'),
+    adapter.comment('ORIGINAL SOURCE (HARDENED)'),
+    adapter.comment('Your code below has been analyzed and transformed in-place.'),
+    adapter.comment('Dangerous patterns replaced. Logging upgraded. Secrets sealed.'),
+    adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     transformedCode,
     '',
-    '// ═══ End of CMPSBL® Sealed Runtime ═══',
+    adapter.comment('═══ End of CMPSBL® Sealed Runtime ═══'),
   ].join('\n');
+}
+
+/** Get the correct file extension for the refurbished output */
+export function getRefurbishedExtension(sourceLanguage: string): string {
+  const adapter = getAdapter(sourceLanguage);
+  return adapter.fileExtension;
 }
 
 /** Generate the CMPSBL license text for export */
