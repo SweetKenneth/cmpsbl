@@ -123,7 +123,105 @@ All colors MUST be HSL.
   }
 }
 
-@layer base {
+/* ═══════════════════════════════════════════════════════════════ */
+/* CMPSBL CYBER™ — Security Vertical Theme                       */
+/* Applied globally when on security.cmpsbl.com                   */
+/* Dark obsidian base · Red threat accents · Cyan data highlights */
+/* ═══════════════════════════════════════════════════════════════ */
+.cyber-theme,
+.cyber-theme .dark,
+.cyber-theme :root {
+  --background: 220 30% 3%;
+  --foreground: 0 0% 95%;
+  --card: 220 25% 6%;
+  --card-foreground: 0 0% 92%;
+  --popover: 220 25% 5%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 0 85% 55%;
+  --primary-variant: 0 70% 45%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 20% 10%;
+  --secondary-foreground: 0 0% 90%;
+  --muted: 220 20% 8%;
+  --muted-foreground: 220 15% 50%;
+  --accent: 185 100% 50%;
+  --accent-foreground: 220 30% 3%;
+  --destructive: 0 90% 55%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 220 20% 12%;
+  --input: 220 20% 10%;
+  --ring: 0 85% 55%;
+  --sidebar-background: 220 25% 5%;
+  --sidebar-foreground: 0 0% 90%;
+  --sidebar-primary: 0 85% 55%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 20% 10%;
+  --sidebar-accent-foreground: 0 0% 90%;
+  --sidebar-border: 220 20% 12%;
+  --sidebar-ring: 0 85% 55%;
+
+  /* Cyber neon palette overrides */
+  --neon-cyan: 185 100% 50%;
+  --neon-magenta: 0 85% 60%;
+  --neon-purple: 280 100% 65%;
+  --neon-amber: 38 100% 55%;
+  --neon-green: 145 80% 50%;
+  --neon-blue: 210 100% 60%;
+  --stream-slate: 220 20% 8%;
+
+  --system-green: 145 80% 50%;
+  --system-amber: 38 100% 55%;
+
+  --gradient-fluid: linear-gradient(135deg, hsl(0 85% 55%), hsl(0 70% 40%));
+  --gradient-primary: linear-gradient(135deg, hsl(0 85% 55%), hsl(0 70% 40%));
+  --gradient-accent: linear-gradient(135deg, hsl(185 100% 50%), hsl(185 80% 40%));
+  --gradient-warm: linear-gradient(135deg, hsl(0 85% 55%), hsl(0 70% 40%));
+  --gradient-mesh: radial-gradient(at 0% 0%, hsl(0 85% 50% / 0.08) 0px, transparent 50%),
+                   radial-gradient(at 100% 0%, hsl(280 100% 50% / 0.06) 0px, transparent 50%),
+                   radial-gradient(at 100% 100%, hsl(185 100% 50% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsl(0 85% 50% / 0.04) 0px, transparent 50%);
+  --shadow-glow: 0 0 40px hsl(0 85% 50% / 0.15);
+  --shadow-glow-lg: 0 20px 60px hsl(0 85% 50% / 0.12);
+  --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
+
+  color-scheme: dark;
+}
+
+/* Cyber theme body-level overrides */
+.cyber-theme body {
+  background: hsl(220 30% 3%);
+  color: hsl(0 0% 95%);
+}
+
+/* Cyber grid overlay on sections */
+.cyber-theme .cyber-grid-bg {
+  background-image:
+    linear-gradient(hsl(185 100% 50% / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(185 100% 50% / 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Cyber scan line animation */
+@keyframes cyber-scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.6; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.cyber-theme .cyber-scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(0 85% 55% / 0.6), hsl(185 100% 50% / 0.6), transparent);
+  animation: cyber-scan 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+
   * {
     @apply border-border;
   }
