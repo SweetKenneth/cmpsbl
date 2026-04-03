@@ -245,7 +245,7 @@ export default function RestorationShop() {
         `## Contents`,
         ``,
         `- \`src/original-source.txt\` — Your original code`,
-        `- \`src/refurbished-source.ts\` — Hardened code with primitive guards`,
+        `- \`src/refurbished-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
         `- \`restoration-report.json\` — Full machine-readable report`,
         `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
         `- \`LICENSE.txt\` — Usage license`,
