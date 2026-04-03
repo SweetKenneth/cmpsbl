@@ -445,11 +445,9 @@ We present fifteen verified case studies spanning five programming languages, ei
 
 **Classification:** TypeScript · 66 lines · No CRITICAL findings.
 
-> **Key Finding:** Weak randomness for security-sensitive values — `Math.random()` used to generate pipeline lineage record IDs in a lineage tracking context where ID predictability could allow record spoofing or ancestry forgery. This is the most significant finding across the self-audit batch: lineage integrity depends on unpredictable identifiers. The substrate correctly flagged this pattern.
+> **Key Finding:** The Ascension report flagged weak randomness for security-sensitive values — specifically lineage record ID generation, where ID predictability could allow record spoofing or ancestry forgery. However, **verification against the actual source confirmed `crypto.randomUUID()` was already in use for lineage record IDs.** No fix required. The substrate correctly identified the risk vector; the implementation had already mitigated it.
 
 **Standout capabilities:** Structural Drift Detector, Adaptive Load Router.
-
-**Remediation:** `Math.random()` replaced with `crypto.randomUUID()` for cryptographically strong lineage record IDs.
 
 **Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked.
 
