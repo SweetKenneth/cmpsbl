@@ -12,6 +12,7 @@ import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
+import { getLLMEngines, getLLMAgents } from './verticals/llm';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 
@@ -147,6 +148,20 @@ function buildVerticalCatalog(): {
       category: 'Agent' as const,
     }));
     return { spine: [...SPINE_PRIMITIVES], expansion: [...qEngines, ...qAgents] };
+  }
+
+  if (vertical === 'llm') {
+    const llmEngines = getLLMEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const llmAgents = getLLMAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...llmEngines, ...llmAgents] };
   }
 
   // Dynamic verticals — auto-discovered from the factory engine

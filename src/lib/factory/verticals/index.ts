@@ -45,6 +45,19 @@ export {
 } from './quantum';
 
 export {
+  getLLMSubstrate,
+  getLLMPrimitives,
+  getLLMEngines,
+  getLLMAgents,
+  getAllLLMCapabilities,
+  getLLMCrownJewels,
+  getLLMPrimitiveCrownJewels,
+  getLLMCrownJewelSummary,
+  getLLMCrownJewelCount,
+  getLLMCrownJewelCapabilities,
+} from './llm';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
@@ -75,6 +88,7 @@ export {
 import { getCyberSecuritySubstrate } from './cybersecurity';
 import { getRoboticsSubstrate } from './robotics';
 import { getQuantumSubstrate } from './quantum';
+import { getLLMSubstrate } from './llm';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
@@ -84,13 +98,15 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['cyber-v1', getCyberSecuritySubstrate],
   ['robo-v1', getRoboticsSubstrate],
   ['quantum-v1', getQuantumSubstrate],
+  ['llm-v1', getLLMSubstrate],
 ]);
 
 /** Domain to vertical ID mapping (static) */
-const DOMAIN_VERTICAL_MAP = new Map<SpecialtyDomain, string>([
+const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['security', 'cyber-v1'],
   ['robotics', 'robo-v1'],
   ['quantum', 'quantum-v1'],
+  ['llm', 'llm-v1'],
 ]);
 
 /**

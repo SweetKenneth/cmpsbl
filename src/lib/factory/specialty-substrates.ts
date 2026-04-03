@@ -5,7 +5,7 @@
  * Built from patterns learned through Ascension interactions.
  */
 
-export type SpecialtyDomain = 'fintech' | 'healthcare' | 'legal' | 'security' | 'gaming' | 'education' | 'robotics' | 'quantum';
+export type SpecialtyDomain = 'fintech' | 'healthcare' | 'legal' | 'security' | 'gaming' | 'education' | 'robotics' | 'quantum' | 'llm';
 
 export interface SpecialtySubstrate {
   id: string;
@@ -28,6 +28,7 @@ const DOMAIN_CONFIG: Record<SpecialtyDomain, { label: string; description: strin
   education: { label: 'Education & Research', description: 'Learning path optimization, research integrity, data ethics' },
   robotics: { label: 'Robotics & Automation', description: 'Motion planning, sensor fusion, fleet coordination, safety compliance' },
   quantum: { label: 'Quantum Physics', description: 'Particle simulation, quantum computing, entanglement protocols, spectroscopy' },
+  llm: { label: 'Large Language Models', description: 'Hallucination detection, prompt injection defense, bias calibration, alignment monitoring' },
 };
 
 /**

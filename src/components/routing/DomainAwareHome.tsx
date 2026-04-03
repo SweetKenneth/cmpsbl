@@ -7,12 +7,15 @@ const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
 const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
 const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
+const LLMHome = lazy(() => import("@/pages/LLMHome"));
 
 /**
  * Domain-aware routing:
  * - promptfluid.com → PromptFluid landing (parent company)
  * - security.cmpsbl.com → CMPSBL CYBER™ (custom security landing)
  * - robotics.cmpsbl.com → CMPSBL ROBOTICS™ (custom robotics landing)
+ * - quantum.cmpsbl.com → CMPSBL QUANTUM™ (custom quantum landing)
+ * - llm.cmpsbl.com → CMPSBL LLM™ (custom LLM landing)
  * - {dynamic}.cmpsbl.com → Dynamic vertical substrate landing
  * - cmpsbl.com (default) → Factory-era CMPSBL homepage
  */
@@ -53,6 +56,14 @@ export default function DomainAwareHome() {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(260 30% 4%)" }} />}>
         <QuantumHome />
+      </Suspense>
+    );
+  }
+
+  if (verticalKey === 'llm') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(170 30% 3%)" }} />}>
+        <LLMHome />
       </Suspense>
     );
   }

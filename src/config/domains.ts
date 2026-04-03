@@ -40,6 +40,7 @@ export const DOMAIN_CONFIG = {
     education: 'education.cmpsbl.com',
     robotics: 'robotics.cmpsbl.com',
     quantum: 'quantum.cmpsbl.com',
+    llm: 'llm.cmpsbl.com',
   },
 } as const;
 
@@ -57,6 +58,7 @@ export const COPYRIGHT_NOTICE = {
     'CMPSBL NEXUS™',
     'CMPSBL RIPPLE™',
     'CMPSBL CYBER™',
+    'CMPSBL LLM™',
   ],
   legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of CMPSBL's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
   enforcementNotice: `This system is protected by CMPSBL DEFENSE™. All access attempts are monitored, logged, and analyzed for security threats.`,
