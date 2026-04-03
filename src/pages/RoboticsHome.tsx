@@ -379,7 +379,7 @@ export default function RoboticsHome() {
         </section>
 
         {/* FOOTER */}
-        <RoboFooter />
+        <EnhancedFooter />
 
         {/* JSON-LD */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
