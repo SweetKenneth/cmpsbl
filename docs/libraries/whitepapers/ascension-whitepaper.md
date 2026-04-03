@@ -557,6 +557,16 @@ For licensing inquiries: founder@cmpsbl.com
 
 14. Perron, L. & Furnon, V. (2023). *CP-SAT Solver.* Google OR-Tools Documentation. https://developers.google.com/optimization/cp/cp_solver
 
+15. Meta Platforms, Inc. (2016–2026). *PyTorch: Tensors and Dynamic Neural Networks in Python with Strong GPU Acceleration.* https://github.com/pytorch/pytorch
+
+16. PyTorch Contributors. (2026). *torch.nn.functional — PyTorch Functional Interface.* https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py
+
+17. NVD. (2022). *CVE-2022-45907: PyTorch torch.jit.annotations.parse_type_line Arbitrary Code Execution.* https://nvd.nist.gov/vuln/detail/CVE-2022-45907
+
+18. Gerste, P. (2025). *Code Injection via torch.jit.annotations.parse_type_line() — Incomplete Mitigation.* GitHub Issue #151233. https://github.com/pytorch/pytorch/issues/151233
+
+19. PyTorch Contributors. (2026). *Silent CUDA hang under high VRAM pressure — async error never propagated.* GitHub Issue #178491. https://github.com/pytorch/pytorch/issues/178491
+
 ---
 
 ## Citation
