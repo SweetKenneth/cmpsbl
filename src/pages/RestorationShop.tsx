@@ -94,6 +94,7 @@ export default function RestorationShop() {
     try {
       const result = await runScanTeam(code, fileName ?? undefined);
       setScanResult(result);
+      setDetectedLang(result.metrics.language || 'TypeScript');
       setPhase('diagnostic');
     } finally {
       setIsScanning(false);
