@@ -41,15 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!isMounted) return;
       supabaseRef.current = supabase;
       
-      // Check for existing session
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (!isMounted) return;
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      });
-
-      // Set up auth state listener
+      // CRITICAL: Set up auth state listener BEFORE getSession to prevent race conditions
       const { data } = supabase.auth.onAuthStateChange((_event, session) => {
         if (!isMounted) return;
         setSession(session);
@@ -84,6 +76,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       });
       subscription = data.subscription;
+
+      // Now check for existing session (listener is already registered)
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (!isMounted) return;
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      });
     });
 
     return () => {
