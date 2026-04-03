@@ -421,7 +421,51 @@ We present eleven verified case studies spanning four programming languages, eig
 
 **Standout capabilities:** Autonomous Decision Loop, Predictive Failure Shield, APT Threat Hunter, Real-Time Performance Optimizer, Telemetry Mesh.
 
-**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The final case study — and the only one where every finding was immediately remediated in the production codebase. Twelve runs. Twelve targets. IBM, Rapid7, HuggingFace, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic, and finally CMPSBL itself. The substrate found two CRITICAL gaps in its own fingerprinting system and hardened them. It doesn't know whose code it's looking at. It just sees the math.
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The first of four self-referential case studies — and the only one where every finding was immediately remediated in the production codebase.
+
+### 5.14 Case Study 13: CMPSBL decode-audit.ts
+
+**Subject:** `src/substrate/decode-audit.ts` — the DECODE audit logging system that records admin directives, security refusals, and security events across the substrate. Serial: CMPSBL-MNJEX0UY-4RGQ · Fingerprint: 91ac14dd4706312f.
+
+**Classification:** TypeScript · 91 lines · Cyclomatic complexity 27 · No CRITICAL findings.
+
+> **Structural Findings:** Three warnings: (1) synchronous-only architecture — no async patterns in a logging system that could benefit from non-blocking writes; (2) no test coverage detected; (3) cyclomatic complexity of 27 — excessive decision branching for an audit file, reducing reasoning confidence. Additionally, `Math.random()` was used for audit entry ID generation — while classified as WARNING-level here (the IDs are in-memory array keys, not database primary keys), the substrate flagged it because predictable IDs in a security audit trail reduce tamper-evidence guarantees.
+
+**Standout capabilities:** Self-Healing State Machine, Circuit Breaker Mesh — the substrate found fault-tolerant state management patterns inside audit logic.
+
+**Remediation:** `Math.random()` replaced with `crypto.randomUUID()` for cryptographically strong audit entry IDs.
+
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked.
+
+### 5.15 Case Study 14: CMPSBL memory-lineage.ts
+
+**Subject:** `src/substrate/memory-lineage.ts` — the Memory Stream lineage registry that tracks module ancestry of crystallized pipelines. Serial: CMPSBL-MNJEYCOS-F1UO · Fingerprint: 7bc9ab831fe3ce53.
+
+**Classification:** TypeScript · 66 lines · No CRITICAL findings.
+
+> **Key Finding:** Weak randomness for security-sensitive values — `Math.random()` used to generate pipeline lineage record IDs in a lineage tracking context where ID predictability could allow record spoofing or ancestry forgery. This is the most significant finding across the self-audit batch: lineage integrity depends on unpredictable identifiers. The substrate correctly flagged this pattern.
+
+**Standout capabilities:** Structural Drift Detector, Adaptive Load Router.
+
+**Remediation:** `Math.random()` replaced with `crypto.randomUUID()` for cryptographically strong lineage record IDs.
+
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked.
+
+### 5.16 Case Study 15: CMPSBL substrate-metrics.ts
+
+**Subject:** `src/substrate/substrate-metrics.ts` — the runtime metrics store providing real observability for all 40 Primitives, tracking operations, errors, latency, circuit breaker state, and module health. Serial: CMPSBL-MNJF01GS-I1XH · Fingerprint: 5fe824a3da09e5d2.
+
+**Classification:** TypeScript · 150 lines · No CRITICAL findings.
+
+> **Structural Findings:** Synchronous-only architecture and no test coverage detected. The Ascension report also flagged weak randomness, but **verification against the actual source code confirmed this is a false positive** — `substrate-metrics.ts` contains no `Math.random()` calls. IDs are derived from module names (uppercased strings), not random generation. This demonstrates the importance of the verification step: not every Ascension finding survives source-level validation.
+
+**Standout capabilities:** Live Threat Neutralizer, Autonomous Patch Engine.
+
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked.
+
+---
+
+**Self-Audit Summary:** Four CMPSBL internal files were run through Ascension using the original 40-Primitive base matrix. The substrate found two instances of weak cryptographic randomness (both remediated), two CRITICAL error-handling gaps in the fingerprinting system (Case Study 12, remediated with 29 unit tests), and one false positive (substrate-metrics.ts randomness flag). Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
 
 ---
 
