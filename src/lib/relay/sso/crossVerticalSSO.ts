@@ -107,7 +107,8 @@ export function extractSSOToken(): SSORelayToken | null {
  */
 export function detectVertical(): string | null {
   const hostname = window.location.hostname;
-  for (const [key, domain] of Object.entries(VERTICAL_DOMAINS)) {
+  const domains = getAllVerticalDomains();
+  for (const [key, domain] of Object.entries(domains)) {
     if (hostname === domain || hostname.startsWith(`${key}.`)) {
       return key;
     }
