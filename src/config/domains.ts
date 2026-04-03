@@ -30,6 +30,15 @@ export const DOMAIN_CONFIG = {
     restricted: false,
     requiresAuth: false,
   },
+  /** Vertical substrate subdomains — each is a full 40-primitive instance */
+  verticals: {
+    security: 'security.cmpsbl.com',
+    health: 'health.cmpsbl.com',
+    fintech: 'fintech.cmpsbl.com',
+    legal: 'legal.cmpsbl.com',
+    gaming: 'gaming.cmpsbl.com',
+    education: 'education.cmpsbl.com',
+  },
 } as const;
 
 export const COPYRIGHT_NOTICE = {
@@ -45,6 +54,7 @@ export const COPYRIGHT_NOTICE = {
     'CMPSBL DEFENSE™',
     'CMPSBL NEXUS™',
     'CMPSBL RIPPLE™',
+    'CMPSBL CYBER™',
   ],
   legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of CMPSBL's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
   enforcementNotice: `This system is protected by CMPSBL DEFENSE™. All access attempts are monitored, logged, and analyzed for security threats.`,
@@ -73,4 +83,27 @@ export function isBackendDomain(): boolean {
 
 export function isFrontendDomain(): boolean {
   return getCurrentDomainType() === 'frontend';
+}
+
+/**
+ * Detect if current hostname is a vertical substrate subdomain
+ * Returns the vertical key (e.g. 'security') or null
+ */
+export function getVerticalSubdomain(): string | null {
+  if (typeof window === 'undefined') return null;
+  const hostname = window.location.hostname.toLowerCase();
+
+  for (const [key, subdomain] of Object.entries(DOMAIN_CONFIG.verticals)) {
+    if (hostname === subdomain || hostname === `www.${subdomain}`) {
+      return key;
+    }
+  }
+  return null;
+}
+
+/**
+ * Check if on any vertical substrate subdomain
+ */
+export function isVerticalDomain(): boolean {
+  return getVerticalSubdomain() !== null;
 }

@@ -1,11 +1,15 @@
 import { lazy, Suspense } from "react";
+import { getVerticalSubdomain } from "@/config/domains";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
+const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
 
 /**
- * Shows PromptFluidHome only when accessed via promptfluid.com,
- * otherwise shows the factory-era CMPSBL homepage.
+ * Domain-aware routing:
+ * - promptfluid.com → PromptFluid landing
+ * - security.cmpsbl.com → CyberSecurity vertical substrate
+ * - cmpsbl.com (default) → Factory-era CMPSBL homepage
  */
 function isPromptFluidDomain(): boolean {
   if (typeof window === "undefined") return false;
@@ -14,6 +18,8 @@ function isPromptFluidDomain(): boolean {
 }
 
 export default function DomainAwareHome() {
+  const verticalKey = getVerticalSubdomain();
+
   if (isPromptFluidDomain()) {
     return (
       <Suspense fallback={<div className="min-h-screen bg-background" />}>
@@ -21,6 +27,15 @@ export default function DomainAwareHome() {
       </Suspense>
     );
   }
+
+  if (verticalKey) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <VerticalSubstrateHome verticalKey={verticalKey} />
+      </Suspense>
+    );
+  }
+
   return (
     <Suspense fallback={<div className="min-h-screen bg-background" />}>
       <FactoryHome />

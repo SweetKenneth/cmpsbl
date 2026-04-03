@@ -18001,6 +18001,257 @@ export type Database = {
           },
         ]
       }
+      vertical_ascension_sessions: {
+        Row: {
+          capabilities_added: string[] | null
+          completed_at: string | null
+          created_at: string
+          enhancement_archetypes: string[] | null
+          final_cjpi: number | null
+          fingerprint_id: string
+          id: string
+          metadata: Json | null
+          original_cjpi: number | null
+          primitives_applied: string[] | null
+          status: string
+          user_id: string | null
+          vertical_id: string
+        }
+        Insert: {
+          capabilities_added?: string[] | null
+          completed_at?: string | null
+          created_at?: string
+          enhancement_archetypes?: string[] | null
+          final_cjpi?: number | null
+          fingerprint_id: string
+          id?: string
+          metadata?: Json | null
+          original_cjpi?: number | null
+          primitives_applied?: string[] | null
+          status?: string
+          user_id?: string | null
+          vertical_id: string
+        }
+        Update: {
+          capabilities_added?: string[] | null
+          completed_at?: string | null
+          created_at?: string
+          enhancement_archetypes?: string[] | null
+          final_cjpi?: number | null
+          fingerprint_id?: string
+          id?: string
+          metadata?: Json | null
+          original_cjpi?: number | null
+          primitives_applied?: string[] | null
+          status?: string
+          user_id?: string | null
+          vertical_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vertical_ascension_sessions_vertical_id_fkey"
+            columns: ["vertical_id"]
+            isOneToOne: false
+            referencedRelation: "vertical_substrates"
+            referencedColumns: ["vertical_id"]
+          },
+        ]
+      }
+      vertical_clm_cycles: {
+        Row: {
+          created_at: string
+          cycle_number: number
+          duration_ms: number | null
+          health_after: number | null
+          health_before: number | null
+          id: string
+          knowledge_gained: Json | null
+          primitive_id: string
+          topic: string
+          vertical_id: string
+        }
+        Insert: {
+          created_at?: string
+          cycle_number?: number
+          duration_ms?: number | null
+          health_after?: number | null
+          health_before?: number | null
+          id?: string
+          knowledge_gained?: Json | null
+          primitive_id: string
+          topic: string
+          vertical_id: string
+        }
+        Update: {
+          created_at?: string
+          cycle_number?: number
+          duration_ms?: number | null
+          health_after?: number | null
+          health_before?: number | null
+          id?: string
+          knowledge_gained?: Json | null
+          primitive_id?: string
+          topic?: string
+          vertical_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vertical_clm_cycles_vertical_id_fkey"
+            columns: ["vertical_id"]
+            isOneToOne: false
+            referencedRelation: "vertical_substrates"
+            referencedColumns: ["vertical_id"]
+          },
+        ]
+      }
+      vertical_memory_stream: {
+        Row: {
+          cjpi_score: number | null
+          content: Json
+          contributed_to_global: boolean | null
+          created_at: string
+          discovery_type: string
+          id: string
+          scanner_focus: string | null
+          title: string
+          vertical_id: string
+        }
+        Insert: {
+          cjpi_score?: number | null
+          content?: Json
+          contributed_to_global?: boolean | null
+          created_at?: string
+          discovery_type: string
+          id?: string
+          scanner_focus?: string | null
+          title: string
+          vertical_id: string
+        }
+        Update: {
+          cjpi_score?: number | null
+          content?: Json
+          contributed_to_global?: boolean | null
+          created_at?: string
+          discovery_type?: string
+          id?: string
+          scanner_focus?: string | null
+          title?: string
+          vertical_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vertical_memory_stream_vertical_id_fkey"
+            columns: ["vertical_id"]
+            isOneToOne: false
+            referencedRelation: "vertical_substrates"
+            referencedColumns: ["vertical_id"]
+          },
+        ]
+      }
+      vertical_primitives: {
+        Row: {
+          capabilities: string[]
+          classification: string
+          created_at: string
+          description: string | null
+          health_score: number | null
+          id: string
+          inherited: boolean
+          name: string
+          primitive_id: string
+          replaces: string | null
+          role: string
+          vertical_id: string
+          weight: number
+        }
+        Insert: {
+          capabilities?: string[]
+          classification?: string
+          created_at?: string
+          description?: string | null
+          health_score?: number | null
+          id?: string
+          inherited?: boolean
+          name: string
+          primitive_id: string
+          replaces?: string | null
+          role: string
+          vertical_id: string
+          weight?: number
+        }
+        Update: {
+          capabilities?: string[]
+          classification?: string
+          created_at?: string
+          description?: string | null
+          health_score?: number | null
+          id?: string
+          inherited?: boolean
+          name?: string
+          primitive_id?: string
+          replaces?: string | null
+          role?: string
+          vertical_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vertical_primitives_vertical_id_fkey"
+            columns: ["vertical_id"]
+            isOneToOne: false
+            referencedRelation: "vertical_substrates"
+            referencedColumns: ["vertical_id"]
+          },
+        ]
+      }
+      vertical_substrates: {
+        Row: {
+          config: Json
+          created_at: string
+          domain: string
+          health_score: number | null
+          id: string
+          name: string
+          primitive_count: number
+          status: string
+          subdomain: string
+          total_capabilities: number
+          updated_at: string
+          version: string
+          vertical_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          domain: string
+          health_score?: number | null
+          id?: string
+          name: string
+          primitive_count?: number
+          status?: string
+          subdomain: string
+          total_capabilities?: number
+          updated_at?: string
+          version?: string
+          vertical_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          domain?: string
+          health_score?: number | null
+          id?: string
+          name?: string
+          primitive_count?: number
+          status?: string
+          subdomain?: string
+          total_capabilities?: number
+          updated_at?: string
+          version?: string
+          vertical_id?: string
+        }
+        Relationships: []
+      }
       vision_anomalies: {
         Row: {
           anomaly_type: string
