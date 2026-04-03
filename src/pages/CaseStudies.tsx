@@ -10,10 +10,10 @@ import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, ExternalLink, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, ExternalLink, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical } from 'lucide-react';
 import { useState } from 'react';
 
-/* ───────── Case Study Data ───────── */
+/* ───────── Case Study #1 Data — A* Path Planner ───────── */
 
 const ASTAR_VULNERABILITIES = [
   { severity: 'critical', title: 'No error handling detected', status: 'hardened', detail: 'Zero try/except blocks. Any runtime exception crashes the process — now wrapped with FAILSAFE circuit breakers.' },
@@ -61,6 +61,114 @@ const NEW_CAPABILITIES = [
   { name: 'Permission Boundary Map', mode: 'Passive', desc: 'Visualizes access control boundaries and identifies over-privileged paths.' },
 ];
 
+/* ───────── Case Study #2 Data — OpenClawAgent Cross-Vertical ───────── */
+
+interface VerticalRun {
+  vertical: string;
+  verticalLabel: string;
+  color: string;
+  serial: string;
+  fingerprint: string;
+  cjpi: number;
+  tier: string;
+  timestamp: string;
+  expansionPrimitives: { name: string; type: string; purpose: string }[];
+  focusArea: string;
+}
+
+const OPENCLAW_RUNS: VerticalRun[] = [
+  {
+    vertical: 'main',
+    verticalLabel: 'CMPSBL® Core',
+    color: 'bg-primary/15 text-primary border-primary/20',
+    serial: 'CMPSBL-MNHWO6NU-70AA',
+    fingerprint: 'e1d40a3c',
+    cjpi: 100,
+    tier: 'Apex',
+    timestamp: 'Apr 2, 2026 · 20:06 UTC',
+    expansionPrimitives: [
+      { name: 'ENGINEER', type: 'Engine', purpose: 'Structural analysis and code architecture assessment' },
+      { name: 'CORTEX', type: 'Engine', purpose: 'Cognitive pattern recognition and decision optimization' },
+      { name: 'MONOLITH', type: 'Agent', purpose: 'Monolithic-to-modular decomposition advisory' },
+      { name: 'WRAITH', type: 'Agent', purpose: 'IP obfuscation and stealth hardening' },
+      { name: 'OBSIDIAN', type: 'Agent', purpose: 'Deep structural integrity scanning' },
+      { name: 'PRIMITIVE', type: 'Agent', purpose: 'Base-level guard injection and primitive activation' },
+      { name: 'FAILSAFE', type: 'Engine', purpose: 'Circuit breaker injection for fault tolerance' },
+      { name: 'ARCHITECT', type: 'Engine', purpose: 'High-level architecture pattern enforcement' },
+    ],
+    focusArea: 'General-purpose hardening: circuit breakers, structured logging, IP obfuscation, and modular decomposition advisory.',
+  },
+  {
+    vertical: 'cyber',
+    verticalLabel: 'CMPSBL CYBER™',
+    color: 'bg-red-500/15 text-red-500 border-red-500/20',
+    serial: 'CMPSBL-MNIHJAX3-4GSN',
+    fingerprint: '32d6e316',
+    cjpi: 100,
+    tier: 'Apex',
+    timestamp: 'Apr 3, 2026 · 05:50 UTC',
+    expansionPrimitives: [
+      { name: 'CIPHER', type: 'Engine', purpose: 'Cryptographic hardening and key management enforcement' },
+      { name: 'VANGUARD', type: 'Engine', purpose: 'Proactive threat modeling and attack surface reduction' },
+      { name: 'AEGIS', type: 'Agent', purpose: 'Shield layer for zero-trust perimeter enforcement' },
+      { name: 'RECON', type: 'Agent', purpose: 'Reconnaissance detection and counter-intelligence patterns' },
+      { name: 'IRONCLAD', type: 'Agent', purpose: 'Input validation and injection prevention' },
+      { name: 'TEMPEST', type: 'Engine', purpose: 'Side-channel attack mitigation and emissions security' },
+      { name: 'TRACER', type: 'Agent', purpose: 'Forensic logging with chain-of-custody evidence trails' },
+      { name: 'BLACKOUT', type: 'Agent', purpose: 'Emergency kill-switch and data purge protocols' },
+    ],
+    focusArea: 'Offensive/defensive security: cryptographic hardening, zero-trust perimeters, forensic audit trails, and side-channel mitigation.',
+  },
+  {
+    vertical: 'robotics',
+    verticalLabel: 'CMPSBL ROBOTICS™',
+    color: 'bg-blue-500/15 text-blue-500 border-blue-500/20',
+    serial: 'CMPSBL-MNIHLRJY-QJXQ',
+    fingerprint: 'e3d1a767',
+    cjpi: 100,
+    tier: 'Apex',
+    timestamp: 'Apr 3, 2026 · 05:52 UTC',
+    expansionPrimitives: [
+      { name: 'FABRICATOR', type: 'Engine', purpose: 'Manufacturing process optimization and assembly sequencing' },
+      { name: 'INSPECTOR', type: 'Agent', purpose: 'Quality assurance and defect detection patterns' },
+      { name: 'VECTOR', type: 'Engine', purpose: 'Navigation, pathfinding, and spatial reasoning' },
+      { name: 'FLUX', type: 'Engine', purpose: 'Real-time data flow management and stream processing' },
+      { name: 'KINETIC', type: 'Engine', purpose: 'Motion planning and trajectory optimization' },
+      { name: 'CALIBER', type: 'Engine', purpose: 'Precision calibration and tolerance enforcement' },
+      { name: 'GUARDIAN', type: 'Agent', purpose: 'Safety monitoring with emergency stop protocols' },
+      { name: 'SWARM', type: 'Agent', purpose: 'Multi-robot coordination and fleet management' },
+    ],
+    focusArea: 'Physical-world intelligence: motion planning, sensor fusion, safety monitoring, multi-robot coordination, and precision calibration.',
+  },
+  {
+    vertical: 'quantum',
+    verticalLabel: 'CMPSBL QUANTUM™',
+    color: 'bg-violet-500/15 text-violet-500 border-violet-500/20',
+    serial: 'CMPSBL-MNIJ0Y6N-9ZQG',
+    fingerprint: 'fd0f1eeb',
+    cjpi: 100,
+    tier: 'Apex',
+    timestamp: 'Apr 3, 2026 · 06:32 UTC',
+    expansionPrimitives: [
+      { name: 'FERMION', type: 'Engine', purpose: 'Fermion-class state isolation and anti-symmetry enforcement' },
+      { name: 'LATTICE', type: 'Engine', purpose: 'Lattice structure validation and crystal symmetry analysis' },
+      { name: 'MESON', type: 'Agent', purpose: 'Quark-level decomposition and binding energy optimization' },
+      { name: 'GLUON', type: 'Engine', purpose: 'Strong-force binding patterns for tightly coupled modules' },
+      { name: 'MUON', type: 'Engine', purpose: 'Penetration testing at quantum depth with muon-class probes' },
+      { name: 'HADRON', type: 'Agent', purpose: 'Composite particle simulation and collision modeling' },
+      { name: 'CRYOGEN', type: 'Engine', purpose: 'Cryogenic-state optimization for low-noise computation' },
+      { name: 'PHOTON', type: 'Agent', purpose: 'Light-speed data path optimization and zero-latency routing' },
+    ],
+    focusArea: 'Quantum-computational hardening: state isolation, lattice validation, collision modeling, and zero-latency path optimization.',
+  },
+];
+
+const SHARED_SPINE_PRIMITIVES = [
+  'SIMULATE', 'MEMORY', 'SHADOW', 'RELAY', 'OBSERVER', 'FORGE', 'ECHO', 'EVOLUTION', 'COMPASS', 'LINGUA',
+];
+
+/* ───────── Shared Components ───────── */
+
 function SeverityBadge({ severity }: { severity: string }) {
   const colors: Record<string, string> = {
     critical: 'bg-destructive/15 text-destructive border-destructive/20',
@@ -89,15 +197,67 @@ function TypeBadge({ type }: { type: string }) {
   return <Badge variant="outline" className={`text-[10px] uppercase font-bold ${colors[type] ?? ''}`}>{type}</Badge>;
 }
 
+/* ───────── Cross-Vertical Comparison Card ───────── */
+
+function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRun; isExpanded: boolean; onToggle: () => void }) {
+  return (
+    <div className="border border-border rounded-xl overflow-hidden bg-card/50">
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between p-4 hover:bg-muted/30 transition-colors text-left"
+      >
+        <div className="flex items-center gap-3">
+          <Badge variant="outline" className={`text-[10px] uppercase font-bold ${run.color}`}>
+            {run.verticalLabel}
+          </Badge>
+          <span className="text-sm font-medium text-foreground">CJPI {run.cjpi} — {run.tier}</span>
+          <span className="text-xs text-muted-foreground hidden sm:inline font-mono">{run.serial}</span>
+        </div>
+        {isExpanded ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
+      </button>
+      {isExpanded && (
+        <div className="border-t border-border p-4 space-y-4">
+          <p className="text-sm text-muted-foreground">{run.focusArea}</p>
+          <div>
+            <div className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+              Expansion Primitives (Vertical-Specific)
+            </div>
+            <div className="grid gap-1.5">
+              {run.expansionPrimitives.map((p) => (
+                <div key={p.name} className="flex items-center gap-2.5 p-2 rounded-lg bg-muted/30 border border-border/40">
+                  <span className="font-mono text-xs font-bold text-foreground w-24 shrink-0">{p.name}</span>
+                  <TypeBadge type={p.type} />
+                  <span className="text-xs text-muted-foreground">{p.purpose}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-4 text-[11px] text-muted-foreground">
+            <span>Serial: <code className="px-1 py-0.5 rounded bg-muted font-mono">{run.serial}</code></span>
+            <span>{run.timestamp}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────── Main Page ───────── */
+
 export default function CaseStudies() {
   const [showAllPrimitives, setShowAllPrimitives] = useState(false);
   const visiblePrimitives = showAllPrimitives ? PRIMITIVES_APPLIED : PRIMITIVES_APPLIED.slice(0, 8);
+  const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
+
+  const toggleVertical = (key: string) => {
+    setExpandedVerticals((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <>
       <Helmet>
         <title>Case Studies — CMPSBL® Ascension Results</title>
-        <meta name="description" content="Real-world case studies demonstrating CMPSBL® Ascension refurbishment results. See before-and-after code analysis, vulnerability hardening, and primitive application on production robotics software." />
+        <meta name="description" content="Real-world case studies demonstrating CMPSBL® Ascension refurbishment results. See before-and-after code analysis, cross-vertical substrate comparisons, and primitive application on production software." />
         <link rel="canonical" href="https://cmpsbl.com/case-studies" />
       </Helmet>
 
@@ -120,7 +280,7 @@ export default function CaseStudies() {
         {/* ════════════════════════════════════════════════════════════ */}
         {/*  CASE STUDY #1 — A* Path Planning (PythonRobotics)        */}
         {/* ════════════════════════════════════════════════════════════ */}
-        <section className="max-w-5xl mx-auto px-4 sm:px-6">
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
           <div className="border border-border rounded-2xl overflow-hidden bg-card">
             {/* Study Header */}
             <div className="bg-gradient-to-br from-muted/60 to-muted/30 border-b border-border p-6 sm:p-8">
@@ -322,6 +482,176 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/*  CASE STUDY #2 — OpenClawAgent Cross-Vertical Comparison  */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
+          <div className="border border-border rounded-2xl overflow-hidden bg-card">
+            {/* Study Header */}
+            <div className="bg-gradient-to-br from-muted/60 to-muted/30 border-b border-border p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <Badge className="bg-violet-500/15 text-violet-500 border-violet-500/20" variant="outline">Cross-Vertical</Badge>
+                <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" variant="outline">4× CJPI 100 — Apex</Badge>
+                <Badge variant="outline" className="text-muted-foreground">PHP · OpenAI Agents SDK Pattern</Badge>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                OpenClawAgent — Same Code, Four Substrates
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
+                A functional PHP agent mirroring the{' '}
+                <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">OpenAI Agents SDK</a>{' '}
+                architecture — featuring tool calling, memory management, planning loops, execution chains, and agent handoff — was uploaded to all four CMPSBL® substrates to demonstrate how the same source code receives fundamentally different hardening based on the active vertical.
+              </p>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
+              {[
+                { icon: Layers, label: 'Substrates Tested', value: '4' },
+                { icon: Shield, label: 'Total Primitives', value: '72' },
+                { icon: FlaskConical, label: 'Unique Expansion', value: '32' },
+                { icon: Award, label: 'All CJPI Scores', value: '100' },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="p-4 sm:p-5 text-center border-r border-border last:border-r-0">
+                  <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
+                  <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
+                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 sm:p-8 space-y-10">
+
+              {/* ─── About the Upload ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <GitBranch className="w-4 h-4 text-primary" /> About the Upload
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    <strong className="text-foreground">Subject:</strong> <code className="text-xs px-1.5 py-0.5 rounded bg-muted font-mono">OpenClawAgent</code> — a single-file PHP agent implementing the core architectural patterns from the{' '}
+                    <a href="https://openai.com/index/new-tools-for-building-agents/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">OpenAI Agents SDK</a>: memory stores, tool registration and calling, planning loops with reasoning, multi-step execution chains, and inter-agent handoff protocols.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Language:</strong> PHP — chosen deliberately to test a non-typical language for AI agent development. The Ascension pipeline correctly detected and preserved the PHP source language across all four substrate runs via the Bridge Adapter system.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Experiment Design:</strong> The identical PHP file was uploaded to CMPSBL® Core, CMPSBL CYBER™, CMPSBL ROBOTICS™, and CMPSBL QUANTUM™ in sequence. Each substrate shares the same 24-primitive Spine (12 Organs + 12 Layers) but swaps in 16 vertical-specific expansion primitives (8 Engines + 8 Agents). This produces four distinct hardening profiles from the same input — demonstrating that Ascension is not a generic linter but a domain-aware specialization engine.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Shared Spine ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" /> Shared Spine (Common Across All Verticals)
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  These 10 primitives from the fixed 24-primitive Spine were selected consistently across all four runs, providing the universal hardening baseline:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {SHARED_SPINE_PRIMITIVES.map((name) => (
+                    <Badge key={name} variant="outline" className="font-mono text-xs bg-muted/40">
+                      {name}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Vertical Comparison ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-primary" /> Vertical Expansion Comparison
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Each substrate swapped in its own 8 expansion primitives. Expand each vertical below to see the domain-specific Engines and Agents applied:
+                </p>
+                <div className="space-y-2">
+                  {OPENCLAW_RUNS.map((run) => (
+                    <VerticalComparisonCard
+                      key={run.vertical}
+                      run={run}
+                      isExpanded={!!expandedVerticals[run.vertical]}
+                      onToggle={() => toggleVertical(run.vertical)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Key Insight ─── */}
+              <div className="bg-primary/[0.04] border border-primary/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  The same PHP agent file received <strong className="text-foreground">four completely different hardening profiles</strong> from the same Ascension pipeline — all scoring CJPI 100 (Apex). The difference is not cosmetic: CYBER applied cryptographic hardening and forensic audit trails; ROBOTICS injected motion planning and safety monitoring; QUANTUM added state isolation and collision modeling. The 24-primitive Spine remained constant while the 16 expansion slots specialized to each domain.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  This demonstrates that CMPSBL® Ascension is a <strong className="text-foreground">domain-aware specialization engine</strong>, not a generic code formatter. The vertical substrate determines which expansion primitives collide with the uploaded artifact, producing fundamentally different cognitive infrastructure for the same source code — all in under 10 seconds, with zero AI.
+                </p>
+              </div>
+
+              {/* ─── Session Evidence ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> Session Evidence
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  All four sessions are recorded in the restoration ledger with verifiable serial numbers and timestamps:
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left p-2 text-muted-foreground font-medium">Vertical</th>
+                        <th className="text-left p-2 text-muted-foreground font-medium">Serial</th>
+                        <th className="text-left p-2 text-muted-foreground font-medium">CJPI</th>
+                        <th className="text-left p-2 text-muted-foreground font-medium hidden sm:table-cell">Timestamp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {OPENCLAW_RUNS.map((run) => (
+                        <tr key={run.serial} className="border-b border-border/50">
+                          <td className="p-2">
+                            <Badge variant="outline" className={`text-[9px] ${run.color}`}>{run.verticalLabel}</Badge>
+                          </td>
+                          <td className="p-2 font-mono text-foreground">{run.serial}</td>
+                          <td className="p-2 font-bold text-foreground">{run.cjpi}</td>
+                          <td className="p-2 text-muted-foreground hidden sm:table-cell">{run.timestamp}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* ─── References ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <ExternalLink className="w-4 h-4 text-primary" /> References
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'OpenAI Agents SDK (Python)', url: 'https://github.com/openai/openai-agents-python' },
+                    { label: 'OpenAI Agents SDK Announcement', url: 'https://openai.com/index/new-tools-for-building-agents/' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Primitive Reference', url: '/docs' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
@@ -331,6 +661,7 @@ export default function CaseStudies() {
           { question: 'What is CMPSBL Ascension?', answer: 'Ascension is the CMPSBL® code refurbishment pipeline that analyzes, classifies, and hardens source code by colliding it against 40 Primitives — all without AI.' },
           { question: 'How long does Ascension take?', answer: 'A typical file processes through the full 20-primitive pipeline in approximately 10 seconds.' },
           { question: 'Does Ascension use AI?', answer: 'No. The Ascension pipeline is purely algorithmic — deterministic pattern matching, structural analysis, and primitive guard injection. Zero external AI calls.' },
+          { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, or Quantum.' },
         ]}
       />
       <EnhancedFooter />
