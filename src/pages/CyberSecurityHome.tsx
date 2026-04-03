@@ -38,32 +38,34 @@ const THREAT_STATS = [
 ];
 
 const ENGINE_DATA = [
-  { id: "SENTINEL", name: "SENTINEL", desc: "Real-time threat detection & behavioral analysis", icon: Eye, color: "hsl(0 85% 60%)" },
-  { id: "PHANTOM", name: "PHANTOM", desc: "Adversary deception & honeypot orchestration", icon: ScanLine, color: "hsl(280 100% 65%)" },
-  { id: "AEGIS", name: "AEGIS", desc: "Adaptive firewall & perimeter defense", icon: Shield, color: "hsl(185 100% 50%)" },
-  { id: "CIPHER", name: "CIPHER", desc: "Cryptographic operations & key management", icon: Lock, color: "hsl(145 80% 50%)" },
-  { id: "RECON", name: "RECON", desc: "Attack surface mapping & vulnerability intelligence", icon: Radar, color: "hsl(38 100% 55%)" },
-  { id: "VANGUARD", name: "VANGUARD", desc: "Digital forensics & incident reconstruction", icon: Fingerprint, color: "hsl(210 100% 60%)" },
-  { id: "BASTION", name: "BASTION", desc: "Zero-trust architecture enforcement", icon: Server, color: "hsl(310 100% 60%)" },
-  { id: "TEMPEST", name: "TEMPEST", desc: "Stress testing & adversarial simulation", icon: Zap, color: "hsl(45 100% 55%)" },
+  { id: "SENTINEL", name: "SENTINEL", desc: "Real-time threat detection & IOC correlation with behavioral heuristics and MITRE ATT&CK mapping", icon: Eye, color: "hsl(0 85% 60%)" },
+  { id: "PHANTOM", name: "PHANTOM", desc: "Stealth operations for covert reconnaissance, silent data exfiltration detection, and lateral movement tracking", icon: ScanLine, color: "hsl(280 100% 65%)" },
+  { id: "AEGIS", name: "AEGIS", desc: "Shield orchestration — DDoS mitigation, adaptive rate limiting, geo-blocking, and bot detection", icon: Shield, color: "hsl(185 100% 50%)" },
+  { id: "CIPHER", name: "CIPHER", desc: "Cryptographic operations — key rotation, certificate management, PKI orchestration, quantum-resistant prep", icon: Lock, color: "hsl(145 80% 50%)" },
+  { id: "RECON", name: "RECON", desc: "Attack surface mapping — port enumeration, service fingerprinting, vulnerability scanning, exposure scoring", icon: Radar, color: "hsl(38 100% 55%)" },
+  { id: "VANGUARD", name: "VANGUARD", desc: "Incident response & digital forensics — containment, evidence preservation, root cause analysis, playbook execution", icon: Fingerprint, color: "hsl(210 100% 60%)" },
+  { id: "BASTION", name: "BASTION", desc: "Zero-trust perimeter enforcement — micro-segmentation, least-privilege access, continuous verification", icon: Server, color: "hsl(310 100% 60%)" },
+  { id: "TEMPEST", name: "TEMPEST", desc: "Chaos engineering & pen testing — attack scenario simulation, resilience validation, red team automation", icon: Zap, color: "hsl(45 100% 55%)" },
 ];
 
 const AGENT_DATA = [
-  { id: "IRONCLAD", name: "IRONCLAD", desc: "Compliance automation & audit trails" },
-  { id: "SPECTER", name: "SPECTER", desc: "Deception deployment & threat luring" },
-  { id: "BULWARK", name: "BULWARK", desc: "Infrastructure hardening & patching" },
-  { id: "CRUCIBLE", name: "CRUCIBLE", desc: "Penetration testing & red team ops" },
-  { id: "AEGIS_AGENT", name: "AEGIS AGENT", desc: "Autonomous perimeter response" },
-  { id: "WARDEN", name: "WARDEN", desc: "Access control & identity verification" },
-  { id: "CIPHER_AGENT", name: "CIPHER AGENT", desc: "Key rotation & certificate management" },
-  { id: "NEXUS_SEC", name: "NEXUS SEC", desc: "Threat intelligence correlation" },
+  { id: "WRAITH", name: "WRAITH", desc: "Silent threat hunter — autonomous APT detection across network segments with behavioral profiling" },
+  { id: "OBSIDIAN", name: "OBSIDIAN", desc: "Deep analysis — correlates disparate security events into unified attack narratives with kill chain mapping" },
+  { id: "SPECTER", name: "SPECTER", desc: "Deception agent — deploys honeypots, canary tokens, and decoy infrastructure to lure and profile attackers" },
+  { id: "BLACKOUT", name: "BLACKOUT", desc: "Emergency isolation — kill-switch protocols for active breach containment and connection severing" },
+  { id: "TRACER", name: "TRACER", desc: "Attack chain reconstruction — traces lateral movement paths, privilege escalation, and credential abuse" },
+  { id: "NOCTURNE", name: "NOCTURNE", desc: "Dark web intelligence & OSINT — monitors underground forums, credential leaks, and threat actor comms" },
+  { id: "IRONCLAD", name: "IRONCLAD", desc: "Compliance enforcement — continuous validation against SOC2, ISO 27001, NIST, and CIS benchmarks" },
+  { id: "BULWARK", name: "BULWARK", desc: "Supply chain security — dependency auditing, SBOM generation, compromised package and typosquat detection" },
 ];
 
 const CAPABILITIES_PREVIEW = [
-  "Behavioral Anomaly Detection", "Zero-Day Signature Generation", "Automated Incident Response",
-  "Network Traffic Analysis", "Cryptographic Key Rotation", "Compliance Report Generation",
-  "Threat Intelligence Fusion", "Adversarial Machine Learning Defense", "Runtime Sandboxing",
-  "Supply Chain Integrity Verification", "Deception Network Orchestration", "Forensic Timeline Reconstruction",
+  "IOC Correlation", "Behavioral Anomaly Detection", "MITRE ATT&CK Mapping",
+  "Stealth Network Scanning", "DDoS Mitigation", "Zero-Trust Policy Enforcement",
+  "Key Rotation & PKI", "Attack Surface Mapping", "Forensic Timeline Reconstruction",
+  "APT Detection", "Kill Chain Mapping", "Honeypot Orchestration",
+  "Emergency Breach Containment", "Dark Web Monitoring", "SOC2/NIST Validation",
+  "Supply Chain Auditing", "Credential Leak Detection", "Red Team Automation",
 ];
 
 /* ═══════════════════════════════════════════════════════════════ */
@@ -335,7 +337,7 @@ export default function CyberSecurityHome() {
               background: "hsl(185 100% 50% / 0.08)",
               color: "hsl(185 100% 55%)",
             }}>
-              +118 more
+              +112 more
             </span>
           </div>
         </section>
