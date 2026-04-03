@@ -974,6 +974,31 @@
       endemic to async Python infrastructure. The substrate governed the governor.
     </p>
 
+    <!-- ── Case Study 12 ── -->
+    <h3>5.13 Case Study 12: CMPSBL pipeline-fingerprint.ts (Self-Referential)</h3>
+
+    <p><strong>Subject:</strong> <code>src/substrate/pipeline-fingerprint.ts</code> — the cryptographic fingerprint generation engine of the CMPSBL® substrate itself. The system that produces the unique identity hash on every Certificate of Discovery. Run through the original 40-Primitive base matrix with no vertical hot-swap — the substrate analyzing itself. Serial: CMPSBL-MNJEN2SS-XF1N · Fingerprint: 18b8cd05bd02ba6d.</p>
+    <p><strong>Classification:</strong> TypeScript · 116 lines · Cyclomatic complexity 83 · Deep nesting 7 levels · Zero test coverage · Two CRITICAL findings.</p>
+
+    <div class="highlight-box">
+      <p><strong>Critical Discovery:</strong> The substrate found that its own fingerprinting system had no error handling around cryptographic operations and unhandled async rejection paths — meaning a fingerprint generation failure would produce no diagnostic information. FAILSAFE fired first. <strong>The system that signs every Certificate of Discovery had never been signed itself. Until now.</strong></p>
+      <p><strong>(1) No error handling detected — CRITICAL.</strong> Zero try/catch blocks around cryptographic operations. <code>generateStructuralFingerprint</code> calls <code>sha256()</code> via WebCrypto (<code>crypto.subtle.digest</code>) with no error handling. FAILSAFE fired first.</p>
+      <p><strong>(2) Unhandled async rejections — CRITICAL.</strong> The same class of structural gap found in PyTorch (Case Study 10) and Anthropic (Case Study 11) — confirming that unhandled async rejection patterns are endemic across languages, not just Python.</p>
+    </div>
+
+    <p><strong>Remediation:</strong> All findings were remediated in the live codebase:</p>
+    <ul>
+      <li>FAILSAFE structured error handling with <code>FingerprintError</code> typed exceptions carrying diagnostic codes and context</li>
+      <li>BEACON health signals via structured logger on all cryptographic operation failures</li>
+      <li>Input validation on all public API surfaces</li>
+      <li>Deep nesting refactored into named helper functions</li>
+      <li>29 unit tests covering determinism, uniqueness, error handling, async rejection handling, and legacy compatibility</li>
+    </ul>
+
+    <p><strong>Primitive chain:</strong> FAILSAFE → BEACON → ATLAS → MONOLITH → ARCHITECT → ENGINEER → CORTEX → <strong>PRIMITIVE</strong> → HARVEST → SANDBOX → WRAITH → ORACLE → DECODE → TREATY → FORGE → OBSERVER → EVOLUTION → BRAIN → PHANTOM → REFLEX. PRIMITIVE — the foundational execution layer — fired on its own fingerprinting logic. That has never happened in any other run across 12 case studies.</p>
+
+    <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The final case study — and the only one where every finding was immediately remediated in the production codebase. Twelve runs. Twelve targets. IBM, Rapid7, HuggingFace, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic, and finally CMPSBL itself. The substrate found two CRITICAL gaps in its own fingerprinting system and hardened them. It doesn't know whose code it's looking at. It just sees the math.</p>
+
     <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
     <h2 class="section-heading">6. The Sealed Runtime™ Architecture</h2>
 
