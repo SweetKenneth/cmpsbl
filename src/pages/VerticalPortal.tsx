@@ -67,6 +67,17 @@ const STATIC_VERTICALS = [
     capabilityCount: '100+',
     status: 'Active' as const,
   },
+  {
+    id: 'agency',
+    name: 'CMPSBL AGENCY™',
+    tagline: 'Governed Autonomous Agent Infrastructure — Agents That Learn, Collaborate, and Ship',
+    url: 'https://agency.cmpsbl.com',
+    icon: Users,
+    accentColor: 'hsl(35 90% 55%)',
+    primitiveCount: 16,
+    capabilityCount: '100+',
+    status: 'Active' as const,
+  },
 ];
 
 /** Merge static + dynamic verticals */
