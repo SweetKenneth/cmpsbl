@@ -20,7 +20,7 @@
  * 
  * Hot-swapped Agents (8):
  *   OPERATOR  — Autonomous mission executor with minimal direction
- *   SENTINEL  — Agent health monitor, self-healing, and graceful degradation
+ *   OVERSEER  — Agent health monitor, self-healing, and graceful degradation
  *   DIPLOMAT  — Teamwork coordination and conflict resolution
  *   SCHOLAR   — Continuous skill acquisition and knowledge distillation
  *   ENVOY    — User-facing communication and progress reporting
@@ -204,8 +204,8 @@ const AGENCY_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'SENTINEL',
-    name: 'SENTINEL',
+    id: 'OVERSEER',
+    name: 'OVERSEER',
     role: 'agent',
     description: 'Agent health monitor implementing self-healing protocols, graceful degradation, circuit breakers, and fleet-wide resilience orchestration.',
     inherited: false,

@@ -86,14 +86,14 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'TEMPEST',    context: 'cyber-engine', vertical: 'security', role: 'engine' },
 
   // ═══ CYBERSECURITY VERTICAL (security.cmpsbl.com) — 8 Agents ═══
+  { name: 'PROWLER',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
+  { name: 'ONYX',       context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'SPECTER',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'BLACKOUT',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'TRACER',     context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'NOCTURNE',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'IRONCLAD',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'BULWARK',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
-  { name: 'SENTRY',     context: 'cyber-agent', vertical: 'security', role: 'agent' },
-  { name: 'SENTINEL',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
 
   // ═══ ROBOTICS VERTICAL (robotics.cmpsbl.com) — 8 Engines ═══
   { name: 'SERVO',      context: 'robotics-engine', vertical: 'robotics', role: 'engine' },
@@ -154,6 +154,26 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'EMBARGO',   context: 'llm-agent', vertical: 'llm', role: 'agent' },
   { name: 'GAUNTLET',  context: 'llm-agent', vertical: 'llm', role: 'agent' },
   { name: 'CUSTODIAN', context: 'llm-agent', vertical: 'llm', role: 'agent' },
+
+  // ═══ AGENCY VERTICAL (agency.cmpsbl.com) — 8 Engines ═══
+  { name: 'MANDATE',   context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'DELEGATE',  context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'RECONN',    context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'UPLINK',    context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'SCRIBE',    context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'INCENTIVE', context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'REASON',    context: 'agency-engine', vertical: 'agency', role: 'engine' },
+  { name: 'TOOLKIT',   context: 'agency-engine', vertical: 'agency', role: 'engine' },
+
+  // ═══ AGENCY VERTICAL (agency.cmpsbl.com) — 8 Agents ═══
+  { name: 'OPERATOR',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'OVERSEER',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'DIPLOMAT',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'SCHOLAR',   context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'ENVOY',     context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'WARDEN',    context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'ROGUE',     context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'ANCHOR',    context: 'agency-agent', vertical: 'agency', role: 'agent' },
 ];
 
 /** Mutable set of all reserved primitive names (case-insensitive lookup) */
