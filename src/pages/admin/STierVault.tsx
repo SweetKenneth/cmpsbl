@@ -1175,6 +1175,70 @@ export default function STierVault() {
               </>
             )}
           </TabsContent>
+
+          {/* ─── A-Tier Vault Tab ─── */}
+          <TabsContent value="a-tier" className="space-y-4 mt-4">
+            {/* Vertical filter chips */}
+            <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+              <div className="flex items-center gap-1.5 min-w-max pb-1">
+                <Filter className="w-3 h-3 text-muted-foreground shrink-0" />
+                <Badge variant={aTierVerticalFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setATierVerticalFilter(null)}>
+                  All Verticals ({aTierVault.entries.length})
+                </Badge>
+                {aTierVerticals.map(v => {
+                  const count = aTierVault.entries.filter(e => e.id.toUpperCase().startsWith(v.toUpperCase()) || e.cluster?.toLowerCase() === v).length;
+                  return (
+                    <Badge key={v} variant={aTierVerticalFilter === v ? "default" : "outline"} className="cursor-pointer text-xs shrink-0 capitalize" onClick={() => setATierVerticalFilter(aTierVerticalFilter === v ? null : v)}>
+                      {v} ({count})
+                    </Badge>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Primitive filter chips */}
+            <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+              <div className="flex items-center gap-1.5 min-w-max pb-1">
+                <Zap className="w-3 h-3 text-muted-foreground shrink-0" />
+                <Badge variant={aTierPrimitiveFilter === null ? "default" : "outline"} className="cursor-pointer text-xs shrink-0" onClick={() => setATierPrimitiveFilter(null)}>
+                  All Primitives
+                </Badge>
+                {aTierPrimitives.slice(0, 20).map(m => (
+                  <Badge key={m} variant={aTierPrimitiveFilter === m ? "default" : "outline"} className={`cursor-pointer text-xs shrink-0 ${aTierPrimitiveFilter === m ? '' : MODULE_COLORS[m] ?? ''}`} onClick={() => setATierPrimitiveFilter(aTierPrimitiveFilter === m ? null : m)}>
+                    {m}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              Showing {filteredATier.length} of {aTierVault.totalArtifacts} A-Tier capabilities • CJPI 85–91 • Governor-curated
+              {filteredATier.length > 0 && (
+                <> • Avg CJPI: {(filteredATier.reduce((s, e) => s + e.cjpi, 0) / filteredATier.length).toFixed(1)}</>
+              )}
+            </p>
+
+            <div className="space-y-3">
+              {filteredATier.map(entry => (
+                <ArtifactCard
+                  key={entry.id}
+                  entry={entry}
+                  onViewCode={handleViewCode}
+                  onExport={handleExport}
+                  loadingCode={loadingCode}
+                  expanded={expandedIds.has(entry.id)}
+                  onToggle={() => toggleExpand(entry.id)}
+                />
+              ))}
+            </div>
+
+            {filteredATier.length === 0 && (
+              <div className="text-center py-12">
+                <Package className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
+                <p className="text-muted-foreground">No A-Tier artifacts match your filters</p>
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </div>
 
