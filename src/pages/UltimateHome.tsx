@@ -311,9 +311,9 @@ export default function UltimateHome() {
               Ascend Without Limits
             </h2>
             <p className="text-sm mb-6" style={{ color: 'hsl(270 15% 50%)' }}>
-              Upload any codebase. The Universal Scanner evaluates {poolSize} candidate primitives
-              and assembles the perfect 40-primitive surface — the maximum compounding configuration
-              that no single vertical can match. This is the true power of Ascension.
+              Upload any codebase. The Universal Scanner evaluates {poolSize} candidates
+              across extended collision passes and selects the 40 primitives that produce the
+              maximum compounding effect — no locked spine, no category restrictions, no ceiling.
             </p>
             <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(270 20% 4%)' }}
               onClick={() => navigate('/ascension')}>

@@ -367,11 +367,14 @@ export const ULTIMATE_AFFINITY_SIGNALS: Record<string, string[]> = {
 /* ─── Substrate Config Builder ─── */
 
 export function getUltimateSubstrate(): VerticalSubstrateConfig {
-  const primitives = assembleVerticalPrimitives(ULTIMATE_ENGINES, ULTIMATE_AGENTS);
+  // Ultimate does NOT use assembleVerticalPrimitives — it has no spine lock.
+  // The 16 Universal primitives serve as the "default" display surface.
+  // During actual Ascension, the Universal Pool Scanner replaces all 40 slots.
+  const primitives: VerticalPrimitive[] = [...ULTIMATE_ENGINES, ...ULTIMATE_AGENTS];
   return {
     verticalId: 'ultimate-v1',
     name: 'CMPSBL ULTIMATE™',
-    tagline: 'Every Primitive. Maximum Compounding. Universal Ascension.',
+    tagline: '120 Candidates. 40 Slots. Zero Restrictions. Maximum Compounding.',
     domain: 'ultimate' as any,
     subdomain: 'ultimate',
     url: 'https://ultimate.cmpsbl.com',
