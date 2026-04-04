@@ -17,8 +17,8 @@
  *   GRIPPER   — Manipulation and dexterous object handling
  *   SWARM     — Multi-robot coordination and fleet management
  *   ENVIRON   — Environmental awareness and scene understanding
- *   GUARDIAN  — Safety monitoring and collision avoidance
- *   CONDUCTOR — Task sequencing and workflow automation
+ *   MARSHAL   — Safety monitoring and collision avoidance
+ *   DISPATCH  — Task sequencing and workflow automation
  *   WELDER    — Assembly operations and joining processes
  *   INSPECTOR — Quality inspection and defect detection
  *   PIONEER   — Autonomous exploration and frontier mapping
