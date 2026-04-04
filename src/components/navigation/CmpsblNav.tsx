@@ -22,6 +22,7 @@ import {
   Package,
   Globe,
   ScrollText,
+  Store,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -41,6 +42,7 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { name: "Explore Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
+  { name: "Marketplace", href: "/store", icon: Store, badge: "NEW", highlight: true },
   { name: "Code Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
   { name: "Verticals", href: "/verticals", icon: Globe },
   { name: "Case Studies", href: "/case-studies", icon: ScrollText },
