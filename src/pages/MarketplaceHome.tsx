@@ -576,7 +576,7 @@ function FilterPanel({
                 active={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
                 label={`${meta.emoji} ${meta.label}`}
-                count={MERCHANT_INVENTORY.filter(i => i.category === cat).length}
+                count={items.filter(i => i.category === cat).length}
               />
             );
           })}
