@@ -71,6 +71,17 @@ export {
 } from './agency';
 
 export {
+  getUltimateSubstrate,
+  getUltimatePrimitives,
+  getUltimateEngines,
+  getUltimateAgents,
+  getAllUltimateCapabilities,
+  ULTIMATE_ALL_ENGINES,
+  ULTIMATE_ALL_AGENTS,
+  ULTIMATE_AFFINITY_SIGNALS,
+} from './ultimate';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
