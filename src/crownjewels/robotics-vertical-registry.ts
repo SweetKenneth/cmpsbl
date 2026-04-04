@@ -246,40 +246,40 @@ const ENVIRON_JEWELS: STierEntry[] = [
     'b5c6d7e8r'),
 ];
 
-// ── GUARDIAN ──
-const GUARDIAN_JEWELS: STierEntry[] = [
-  cj(455, 'S-GRD01', 'ISO 10218 Compliance Engine', 97, 'GUARDIAN',
+// ── MARSHAL ──
+const MARSHAL_JEWELS: STierEntry[] = [
+  cj(455, 'S-GRD01', 'ISO 10218 Compliance Engine', 97, 'MARSHAL',
     'Continuously validates robot operations against ISO 10218 safety requirements including speed monitoring, force limiting, and safety-rated monitored stop verification.',
     'c1d2e3f4r'),
-  cj(456, 'S-GRD02', 'Human Proximity Speed Scaler', 96, 'GUARDIAN',
+  cj(456, 'S-GRD02', 'Human Proximity Speed Scaler', 96, 'MARSHAL',
     'Dynamically scales robot speed based on detected human proximity using ISO/TS 15066 speed and separation monitoring. Implements progressive deceleration curves.',
     'c2d3e4f5r'),
-  cj(457, 'S-GRD03', 'Collision Force Limiter', 95, 'GUARDIAN',
+  cj(457, 'S-GRD03', 'Collision Force Limiter', 95, 'MARSHAL',
     'Limits contact forces during unexpected collisions using current-based impact detection with sub-10ms reaction time. Implements ISO/TS 15066 biomechanical force limits.',
     'c3d4e5f6r'),
-  cj(458, 'S-GRD04', 'Safety Zone Dynamic Enforcer', 96, 'GUARDIAN',
+  cj(458, 'S-GRD04', 'Safety Zone Dynamic Enforcer', 96, 'MARSHAL',
     'Computes and enforces dynamic safety zones around robots based on current velocity, payload, and stopping distance calculations. Zones adapt in real-time to operational conditions.',
     'c4d5e6f7r'),
-  cj(459, 'S-GRD05', 'Protective Stop Orchestrator', 94, 'GUARDIAN',
+  cj(459, 'S-GRD05', 'Protective Stop Orchestrator', 94, 'MARSHAL',
     'Orchestrates protective stop sequences with graceful deceleration profiles that minimize mechanical stress while achieving safety-rated stop times. Manages restart verification procedures.',
     'c5d6e7f8r'),
 ];
 
-// ── CONDUCTOR ──
-const CONDUCTOR_JEWELS: STierEntry[] = [
-  cj(460, 'S-CND01', 'Finite State Machine Orchestrator', 96, 'CONDUCTOR',
+// ── DISPATCH ──
+const DISPATCH_JEWELS: STierEntry[] = [
+  cj(460, 'S-CND01', 'Finite State Machine Orchestrator', 96, 'DISPATCH',
     'Manages complex multi-step robotic operations through hierarchical finite state machines with conditional branching, timeout handling, and automatic error recovery transitions.',
     'd1e2f3g4r'),
-  cj(461, 'S-CND02', 'Cycle Time Optimizer', 95, 'CONDUCTOR',
+  cj(461, 'S-CND02', 'Cycle Time Optimizer', 95, 'DISPATCH',
     'Analyzes and optimizes production cycle times by identifying bottlenecks, parallelizing independent operations, and minimizing non-productive robot movements.',
     'd2e3f4g5r'),
-  cj(462, 'S-CND03', 'Error Recovery Protocol Engine', 97, 'CONDUCTOR',
+  cj(462, 'S-CND03', 'Error Recovery Protocol Engine', 97, 'DISPATCH',
     'Implements hierarchical error recovery strategies from simple retries through alternative approaches to graceful task abandonment with workspace cleanup.',
     'd3e4f5g6r'),
-  cj(463, 'S-CND04', 'Multi-Robot Workflow Scheduler', 94, 'CONDUCTOR',
+  cj(463, 'S-CND04', 'Multi-Robot Workflow Scheduler', 94, 'DISPATCH',
     'Schedules workflows across multiple robots with shared resource management, precedence constraint satisfaction, and dynamic re-scheduling on disruptions.',
     'd4e5f6g7r'),
-  cj(464, 'S-CND05', 'Production Recipe Manager', 95, 'CONDUCTOR',
+  cj(464, 'S-CND05', 'Production Recipe Manager', 95, 'DISPATCH',
     'Manages parameterized production recipes with version control, variant management, and runtime parameter adaptation based on material batch properties.',
     'd5e6f7g8r'),
 ];
@@ -356,8 +356,8 @@ export const ROBOTICS_CROWN_JEWELS: STierEntry[] = [
   ...GRIPPER_JEWELS,
   ...SWARM_JEWELS,
   ...ENVIRON_JEWELS,
-  ...GUARDIAN_JEWELS,
-  ...CONDUCTOR_JEWELS,
+  ...MARSHAL_JEWELS,
+  ...DISPATCH_JEWELS,
   ...WELDER_JEWELS,
   ...INSPECTOR_JEWELS,
   ...PIONEER_JEWELS,

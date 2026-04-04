@@ -126,13 +126,13 @@ const SENTINEL_A: STierEntry[] = [
   cj(5050, 'A-SNT05', 'Watchdog Timer Controller', 86, 'SENTINEL', 'Monitors agent execution timeouts and triggers safe termination for runaway processes.', 'ag-sn05'),
 ];
 
-// ── DIPLOMAT ──
-const DIPLOMAT: STierEntry[] = [
-  cj(5051, 'A-DIP01', 'Inter-Agent Protocol Negotiator', 91, 'DIPLOMAT', 'Negotiates communication protocols and data formats between heterogeneous agent implementations.', 'ag-dp01'),
-  cj(5052, 'A-DIP02', 'Conflict Resolution Mediator', 90, 'DIPLOMAT', 'Mediates conflicts between agents with competing objectives using Nash bargaining solutions.', 'ag-dp02'),
-  cj(5053, 'A-DIP03', 'Consensus Building Engine', 89, 'DIPLOMAT', 'Builds consensus among agent groups using voting mechanisms and preference aggregation.', 'ag-dp03'),
-  cj(5054, 'A-DIP04', 'Cross-Team Communication Bridge', 88, 'DIPLOMAT', 'Translates communication between agent teams with different domain vocabularies and abstractions.', 'ag-dp04'),
-  cj(5055, 'A-DIP05', 'Alliance Formation Strategist', 86, 'DIPLOMAT', 'Identifies beneficial agent alliances for complex tasks using cooperative game theory analysis.', 'ag-dp05'),
+// ── LIAISON ──
+const LIAISON_A: STierEntry[] = [
+  cj(5051, 'A-DIP01', 'Inter-Agent Protocol Negotiator', 91, 'LIAISON', 'Negotiates communication protocols and data formats between heterogeneous agent implementations.', 'ag-dp01'),
+  cj(5052, 'A-DIP02', 'Conflict Resolution Mediator', 90, 'LIAISON', 'Mediates conflicts between agents with competing objectives using Nash bargaining solutions.', 'ag-dp02'),
+  cj(5053, 'A-DIP03', 'Consensus Building Engine', 89, 'LIAISON', 'Builds consensus among agent groups using voting mechanisms and preference aggregation.', 'ag-dp03'),
+  cj(5054, 'A-DIP04', 'Cross-Team Communication Bridge', 88, 'LIAISON', 'Translates communication between agent teams with different domain vocabularies and abstractions.', 'ag-dp04'),
+  cj(5055, 'A-DIP05', 'Alliance Formation Strategist', 86, 'LIAISON', 'Identifies beneficial agent alliances for complex tasks using cooperative game theory analysis.', 'ag-dp05'),
 ];
 
 // ── SCHOLAR ──
@@ -183,6 +183,6 @@ const ANCHOR: STierEntry[] = [
 export const AGENCY_ATIER_JEWELS: STierEntry[] = [
   ...MANDATE, ...DELEGATE, ...RECONN, ...UPLINK,
   ...SCRIBE, ...INCENTIVE, ...REASON, ...TOOLKIT,
-  ...OPERATOR, ...SENTINEL_A, ...DIPLOMAT, ...SCHOLAR,
+  ...OPERATOR, ...SENTINEL_A, ...LIAISON_A, ...SCHOLAR,
   ...ENVOY, ...WARDEN, ...ROGUE, ...ANCHOR,
 ];

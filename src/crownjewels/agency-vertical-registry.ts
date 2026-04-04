@@ -227,21 +227,21 @@ const SENTINEL_JEWELS: STierEntry[] = [
     'ag-sn05'),
 ];
 
-// ── DIPLOMAT ──
-const DIPLOMAT_JEWELS: STierEntry[] = [
-  cj(550, 'S-DIPL01', 'Conflict Resolution Protocol', 96, 'DIPLOMAT',
+// ── LIAISON ──
+const LIAISON_JEWELS: STierEntry[] = [
+  cj(550, 'S-DIPL01', 'Conflict Resolution Protocol', 96, 'LIAISON',
     'Structured conflict resolution when agents produce contradictory results, using evidence weighting, confidence scoring, and consensus voting.',
     'ag-dp01'),
-  cj(551, 'S-DIPL02', 'Consensus Building Engine', 95, 'DIPLOMAT',
+  cj(551, 'S-DIPL02', 'Consensus Building Engine', 95, 'LIAISON',
     'Multi-round consensus protocol for distributed agent decisions with weighted voting, minority report preservation, and deadlock breaking.',
     'ag-dp02'),
-  cj(552, 'S-DIPL03', 'Team Formation Optimizer', 94, 'DIPLOMAT',
+  cj(552, 'S-DIPL03', 'Team Formation Optimizer', 94, 'LIAISON',
     'Dynamic team assembly engine that composes optimal agent groups for specific mission types based on skill complementarity and collaboration history.',
     'ag-dp03'),
-  cj(553, 'S-DIPL04', 'Role Negotiation Framework', 93, 'DIPLOMAT',
+  cj(553, 'S-DIPL04', 'Role Negotiation Framework', 93, 'LIAISON',
     'Agent role assignment through structured negotiation where agents bid on tasks based on self-assessed competency and workload capacity.',
     'ag-dp04'),
-  cj(554, 'S-DIPL05', 'Collaborative Decision Protocol', 92, 'DIPLOMAT',
+  cj(554, 'S-DIPL05', 'Collaborative Decision Protocol', 92, 'LIAISON',
     'Formal decision-making framework for group choices with structured argumentation, devil\'s advocate injection, and decision audit trails.',
     'ag-dp05'),
 ];
@@ -356,7 +356,7 @@ export const AGENCY_CROWN_JEWELS: STierEntry[] = [
   ...TOOLKIT_JEWELS,
   ...OPERATOR_JEWELS,
   ...SENTINEL_JEWELS,
-  ...DIPLOMAT_JEWELS,
+  ...LIAISON_JEWELS,
   ...SCHOLAR_JEWELS,
   ...ENVOY_JEWELS,
   ...WARDEN_JEWELS,

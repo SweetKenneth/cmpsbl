@@ -323,21 +323,21 @@ const IRONCLAD_JEWELS: STierEntry[] = [
     'o5p6q7r8'),
 ];
 
-// ── BULWARK ──
-const BULWARK_JEWELS: STierEntry[] = [
-  cj(317, 'S-BLW01', 'Software Bill of Materials Analyzer', 96, 'BULWARK',
+// ── CITADEL ──
+const CITADEL_JEWELS: STierEntry[] = [
+  cj(317, 'S-BLW01', 'Software Bill of Materials Analyzer', 96, 'CITADEL',
     'Deep SBOM analysis engine that traces transitive dependencies, identifies vulnerable components, and maps license obligations across the entire dependency tree.',
     'p1q2r3s4'),
-  cj(318, 'S-BLW02', 'Dependency Compromise Detector', 97, 'BULWARK',
+  cj(318, 'S-BLW02', 'Dependency Compromise Detector', 97, 'CITADEL',
     'Real-time detection of compromised packages through behavioral analysis, maintainer account takeover signals, and malicious code injection pattern matching.',
     'p2q3r4s5'),
-  cj(319, 'S-BLW03', 'Typosquat Shield', 95, 'BULWARK',
+  cj(319, 'S-BLW03', 'Typosquat Shield', 95, 'CITADEL',
     'Detects typosquatting attacks on package registries through Levenshtein distance analysis, popularity anomaly detection, and maintainer reputation scoring.',
     'p3q4r5s6'),
-  cj(320, 'S-BLW04', 'Supply Chain Provenance Verifier', 94, 'BULWARK',
+  cj(320, 'S-BLW04', 'Supply Chain Provenance Verifier', 94, 'CITADEL',
     'Validates software provenance through SLSA framework compliance checking, build reproducibility verification, and artifact signing chain validation.',
     'p4q5r6s7'),
-  cj(321, 'S-BLW05', 'License Compliance Arbitrator', 93, 'BULWARK',
+  cj(321, 'S-BLW05', 'License Compliance Arbitrator', 93, 'CITADEL',
     'Analyzes license compatibility across dependency trees, detects copyleft contamination risks, and produces compliance reports for legal review with automated remediation suggestions.',
     'p5q6r7s8'),
 ];
@@ -361,7 +361,7 @@ export const CYBER_CROWN_JEWELS: STierEntry[] = [
   ...TRACER_JEWELS,
   ...NOCTURNE_JEWELS,
   ...IRONCLAD_JEWELS,
-  ...BULWARK_JEWELS,
+  ...CITADEL_JEWELS,
 ];
 
 /** Total count of cyber vertical Crown Jewels */
