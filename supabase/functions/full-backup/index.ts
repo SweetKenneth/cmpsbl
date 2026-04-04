@@ -24,12 +24,12 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
  * Runtime budget: use most of the available edge window while still
  * leaving enough time to finalize the ZIP directory cleanly.
  */
-const TIME_BUDGET_MS = 142_000;
-const FINALIZE_RESERVE_MS = 6_000;
+const TIME_BUDGET_MS = 130_000;
+const FINALIZE_RESERVE_MS = 15_000;
 
-/** Page size for table exports */
-const PAGE_SIZE = 250;
-const MIN_PAGE_SIZE = 25;
+/** Page size for table exports — larger = fewer round trips = more tables in budget */
+const PAGE_SIZE = 500;
+const MIN_PAGE_SIZE = 50;
 const QUERY_RETRIES = 2;
 const RETRY_DELAY_MS = 250;
 
@@ -223,14 +223,31 @@ Deno.serve(async (req: Request) => {
           }
         }
 
+        // ── Estimate row counts to export small tables first (maximizes table coverage) ──
+        const tableCounts: { table: string; count: number }[] = [];
         for (const table of exportTables) {
+          try {
+            const { count, error } = await admin
+              .from(table)
+              .select('*', { count: 'exact', head: true });
+            tableCounts.push({ table, count: error ? 999999 : (count ?? 999999) });
+          } catch {
+            tableCounts.push({ table, count: 999999 });
+          }
+        }
+        tableCounts.sort((a, b) => a.count - b.count);
+        const sortedExportTables = tableCounts.map((t) => t.table);
+        console.log(`[FullBackup] Export order: ${sortedExportTables.length} tables sorted by size`);
+
+        for (const table of sortedExportTables) {
           if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
             timedOut = true;
-            for (let j = exportTables.indexOf(table); j < exportTables.length; j++) {
-              tableSummary[exportTables[j]] = -2;
-              tableParts[exportTables[j]] = 0;
+            const remaining = sortedExportTables.slice(sortedExportTables.indexOf(table));
+            for (const t of remaining) {
+              tableSummary[t] = -2;
+              tableParts[t] = 0;
             }
-            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${exportTables.length - tablesExported} remaining tables.`);
+            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${remaining.length} remaining tables.`);
             break;
           }
 
