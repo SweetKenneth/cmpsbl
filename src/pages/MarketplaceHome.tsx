@@ -521,12 +521,14 @@ function FilterPanel({
   selectedSubstrate,
   setSelectedSubstrate,
   categories,
+  items,
 }: {
   selectedCategory: ListingCategory | 'all';
   setSelectedCategory: (v: ListingCategory | 'all') => void;
   selectedSubstrate: SourceSubstrate | 'all';
   setSelectedSubstrate: (v: SourceSubstrate | 'all') => void;
   categories: ListingCategory[];
+  items: MarketplaceItem[];
 }) {
   return (
     <div className="space-y-6">
