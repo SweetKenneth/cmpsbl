@@ -248,25 +248,25 @@ export async function downloadTieredFoundryZip(options: {
     }));
 
     for (const file of bundle.files) {
-      if (mergeRuntime && file.language === 'typescript' && file.adapter === 'standalone') {
-        // Merge: prepend sealed runtime directly into the source file
-        const mergedContent = [
-          '// ═══════════════════════════════════════════════════════════════════',
-          '// CMPSBL® Merged Artifact — Runtime + Source in a Single Drop-In File',
-          '// ═══════════════════════════════════════════════════════════════════',
-          '',
-          '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
-          '',
-          runtimeFiles.runtime,
-          '',
-          '// ── Artifact Source ─────────────────────────────────────────────────',
-          '',
-          file.content,
-        ].join('\n');
-        artifactFolder.file(file.filename, mergedContent);
-      } else {
-        artifactFolder.file(file.filename, file.content);
-      }
+      // Merge sealed runtime into every source file — single drop-in artifact
+      const mergedContent = [
+        '// ═══════════════════════════════════════════════════════════════════',
+        '// CMPSBL® Sealed Artifact — Runtime + Source · Single Drop-In File',
+        '// ═══════════════════════════════════════════════════════════════════',
+        '',
+        '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
+        '',
+        runtimeFiles.runtime,
+        '',
+        '// ── Artifact Source ─────────────────────────────────────────────────',
+        '',
+        file.content,
+      ].join('\n');
+
+      // Apply black-box obfuscation — protect CJPI weights, tier thresholds, and internals
+      const lang = file.language || 'typescript';
+      const sealed = blackboxFile(mergedContent, lang);
+      artifactFolder.file(file.filename, sealed);
       fileCount += 1;
     }
 
