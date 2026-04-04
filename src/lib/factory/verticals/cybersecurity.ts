@@ -14,8 +14,8 @@
  *   TEMPEST  — Chaos engineering and penetration testing
  * 
  * Hot-swapped Agents (8):
- *   WRAITH   — Silent threat hunter (inherited from core)
- *   OBSIDIAN — Deep analysis and pattern correlation
+ *   PROWLER  — Silent threat hunter (inherited from core)
+ *   ONYX     — Deep analysis and pattern correlation
  *   SPECTER  — Deception and honeypot orchestration
  *   BLACKOUT — Emergency kill-switch and isolation
  *   TRACER   — Attack chain reconstruction
@@ -176,8 +176,8 @@ const CYBER_ENGINES: VerticalPrimitive[] = [
 
 const CYBER_AGENTS: VerticalPrimitive[] = [
   {
-    id: 'WRAITH',
-    name: 'WRAITH',
+    id: 'PROWLER',
+    name: 'PROWLER',
     role: 'agent',
     description: 'Silent threat hunter. Operates autonomously across network segments to detect advanced persistent threats (APTs).',
     inherited: false,
@@ -192,8 +192,8 @@ const CYBER_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'OBSIDIAN',
-    name: 'OBSIDIAN',
+    id: 'ONYX',
+    name: 'ONYX',
     role: 'agent',
     description: 'Deep analysis agent. Correlates disparate security events into unified attack narratives.',
     inherited: false,
