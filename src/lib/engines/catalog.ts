@@ -62,7 +62,7 @@ const ENGINE_VERSIONS: Record<string, string> = {
   // ELITE
   'mini-cortex': '1.2.0',
   'mini-forge': '1.1.0',
-  oracle: '1.0.0',
+  'mini-oracle': '1.0.0',
   vanguard: '1.0.0',
   conductor: '1.0.0',
   arbiter: '1.0.0',
