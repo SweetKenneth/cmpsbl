@@ -122,16 +122,34 @@ These vertical primitives were renamed because they collided with Spine codename
 | DIPLOMAT | TREATY Layer codename "Diplomat" | **LIAISON** | Agency |
 | SENTINEL | IDENTITY Organ codename "Sentinel" | **OVERSEER** | Agency |
 
-### Known Product-Primitive Name Overlaps (Flagged)
+---
 
-Two store products share names with canonical primitives. This is intentional for marketing purposes but must never cause internal confusion:
+## Substrate-Class Products (Mini-X Convention)
 
-| Name | As Primitive | As Product |
-|------|-------------|-----------|
-| CORTEX | Agent #38 — Multi-step pipeline orchestration | $129 Store Engine |
-| NEXUS | Organ #6 — AI provider routing | $159 Store Engine |
+When a substrate primitive is surfaced as a consumer product, it is branded with the **Mini-** prefix and carries a **"Substrate-Class"** badge. This makes it clear the product:
 
-**Rule:** When "CORTEX" or "NEXUS" appears in code, it ALWAYS refers to the **primitive**. Store products are referenced by their product IDs, never by name in substrate logic.
+- Is **modeled after** a real substrate primitive
+- Contains a **subset** of the primitive's capabilities (never the full primitive)
+- Shares the **same lineage** as the infrastructure powering the substrate
+
+### Current Substrate-Class Products
+
+| Store Product | Source Primitive | Category | Price |
+|---------------|----------------|----------|-------|
+| **Mini-NEXUS** | NEXUS (Organ #6) | Multi-Model AI Router | $39 |
+| **Mini-CORTEX** | CORTEX (Agent #38) | Agent Runtime & Orchestration | $19 |
+| **Mini-PHANTOM** | PHANTOM (Engine #30) | Self-Healing Service Mesh | $39 |
+| **Mini-FORGE** | FORGE (Engine #27) | Code Generation & Refactoring | $19 |
+| **Mini-ORACLE** | ORACLE (Agent #39) | Real-Time Analytics & Prediction | $19 |
+
+### Rules for Substrate-Class Products
+
+1. **Always use Mini- prefix** — never sell a product under the bare primitive name
+2. **Always display the Substrate-Class badge** — uses `<SubstrateClassBadge>` component
+3. **Never expose full primitive capabilities** — the product is a curated subset
+4. **Code references use the Mini- slug** — `mini-nexus`, `mini-cortex`, etc.
+5. **Internal substrate code always refers to the primitive** — NEXUS, CORTEX, etc. without Mini- prefix
+6. **Marketing may say "Powered by the NEXUS primitive"** — but never imply the product IS the primitive
 
 ---
 
