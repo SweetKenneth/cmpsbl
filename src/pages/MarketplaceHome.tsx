@@ -22,16 +22,13 @@ import {
   Store, Award, Tag, Cpu, Lock,
 } from 'lucide-react';
 import {
-  MERCHANT_INVENTORY,
-  getInventoryStats,
-} from '@/agents/merchant/merchant-inventory';
-import {
   CATEGORY_META,
   SUBSTRATE_META,
   type MarketplaceItem,
   type ListingCategory,
   type SourceSubstrate,
 } from '@/agents/merchant/merchant-engine';
+import { useMarketplaceInventory } from '@/hooks/useMarketplaceInventory';
 
 type SortOption = 'featured' | 'newest' | 'price-low' | 'price-high' | 'rating' | 'cjpi';
 
