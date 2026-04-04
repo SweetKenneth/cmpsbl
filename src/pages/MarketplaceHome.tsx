@@ -148,13 +148,13 @@ export default function MarketplaceHome() {
   }, [search, selectedCategory, selectedSubstrate, sort, inventory]);
 
   const featuredItems = useMemo(() =>
-    MERCHANT_INVENTORY.filter(i => i.isFeatured).slice(0, 4),
-  []);
+    inventory.filter(i => i.isFeatured).slice(0, 4),
+  [inventory]);
 
   const activeCategories = useMemo(() => {
-    const cats = new Set(MERCHANT_INVENTORY.map(i => i.category));
+    const cats = new Set(inventory.map(i => i.category));
     return Array.from(cats) as ListingCategory[];
-  }, []);
+  }, [inventory]);
 
   return (
     <>
