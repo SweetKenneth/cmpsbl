@@ -1015,6 +1015,7 @@ export default function STierVault() {
           <TabsList className="w-full sm:w-auto">
             <TabsTrigger value="registry" className="gap-1.5"><Shield className="w-3.5 h-3.5" /> Registry ({filtered.length})</TabsTrigger>
             <TabsTrigger value="promoted" className="gap-1.5"><Zap className="w-3.5 h-3.5" /> Discovered ({filteredPromoted.length})</TabsTrigger>
+            <TabsTrigger value="a-tier" className="gap-1.5"><Package className="w-3.5 h-3.5" /> A-Tier ({filteredATier.length})</TabsTrigger>
           </TabsList>
 
           {/* ─── Registry Tab ─── */}
