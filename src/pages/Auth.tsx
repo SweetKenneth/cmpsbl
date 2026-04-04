@@ -3,7 +3,8 @@
  * Memory Stream identity layer with crystallization effects
  */
 
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
+import { lovable } from '@/integrations/lovable/index';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
