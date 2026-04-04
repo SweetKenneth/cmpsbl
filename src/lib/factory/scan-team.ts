@@ -719,6 +719,24 @@ function scorePrimitiveRelevance(
     tachyon: { signals: [code.includes('tachyon') || code.includes('superluminal') || code.includes('lorentz') || code.includes('causal'), hasAsync], rationale: 'Superluminal signal modeling and causality analysis in relativistic frameworks' },
     meson: { signals: [code.includes('meson') || code.includes('hadron') || code.includes('quark') || code.includes('fragmentation'), len > 200], rationale: 'Quark confinement and hadronization processes for jet formation modeling' },
     prism: { signals: [code.includes('spectro') || code.includes('wavelength') || code.includes('emission') || code.includes('raman'), hasState], rationale: 'Spectroscopy analysis and wavelength decomposition for atomic line identification' },
+    // Agency vertical primitives — Engines
+    mandate: { signals: [code.includes('task') || code.includes('mission') || code.includes('objective'), hasAsync], rationale: 'Mission decomposition and autonomous task planning with dependency graphs' },
+    delegate: { signals: [code.includes('route') || code.includes('assign') || code.includes('dispatch'), hasAsync], rationale: 'Skill-based task routing and workload distribution across agents' },
+    reconn: { signals: [code.includes('search') || code.includes('crawl') || code.includes('research'), hasHttp], rationale: 'Deep research and web crawling with source verification and citation tracking' },
+    uplink: { signals: [code.includes('message') || code.includes('channel') || code.includes('broadcast'), hasAsync], rationale: 'Inter-agent communication bus and knowledge sharing protocol' },
+    scribe: { signals: [code.includes('write') || code.includes('draft') || code.includes('content'), len > 100], rationale: 'Writing, drafting, and content generation with structured output' },
+    incentive: { signals: [code.includes('reward') || code.includes('score') || code.includes('progress'), hasState], rationale: 'Reward programs and reinforcement loops for skill progression' },
+    reason: { signals: [code.includes('reason') || code.includes('logic') || code.includes('decision'), len > 200], rationale: 'Chain-of-thought reasoning and structured decision-making' },
+    toolkit: { signals: [code.includes('tool') || code.includes('api') || code.includes('plugin'), hasHttp], rationale: 'Tool use orchestration and API integration layer for agent capabilities' },
+    // Agency vertical primitives — Agents
+    operator: { signals: [code.includes('execute') || code.includes('run') || code.includes('perform'), hasAsync], rationale: 'Autonomous mission executor with minimal direction and self-correction' },
+    overseer: { signals: [code.includes('health') || code.includes('monitor') || code.includes('heal'), hasAsync], rationale: 'Agent health monitoring, self-healing, and graceful degradation' },
+    liaison: { signals: [code.includes('team') || code.includes('collaborat') || code.includes('coordinat'), hasAsync], rationale: 'Teamwork coordination and conflict resolution across agent groups' },
+    scholar: { signals: [code.includes('learn') || code.includes('knowledge') || code.includes('skill'), hasState], rationale: 'Continuous skill acquisition and knowledge distillation for agent improvement' },
+    envoy: { signals: [code.includes('report') || code.includes('status') || code.includes('notify'), hasAsync], rationale: 'User-facing communication and progress reporting agent' },
+    warden: { signals: [code.includes('policy') || code.includes('rule') || code.includes('govern'), hasAuth], rationale: 'Governance enforcement and safety boundary management' },
+    rogue: { signals: [code.includes('creative') || code.includes('alternative') || code.includes('experiment'), len > 200], rationale: 'Creative problem-solving and unconventional approach generation' },
+    anchor: { signals: [code.includes('context') || code.includes('session') || code.includes('persist'), hasState], rationale: 'Context persistence and long-term memory for continuous agent operation' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
