@@ -9,7 +9,7 @@ import { RecoveryEmail } from '../_shared/email-templates/recovery.tsx'
 import { EmailChangeEmail } from '../_shared/email-templates/email-change.tsx'
 import { ReauthenticationEmail } from '../_shared/email-templates/reauthentication.tsx'
 
-const RESEND_API_URL = 'https://api.resend.com'
+const RESEND_GATEWAY_URL = 'https://connector-gateway.lovable.dev/resend'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
