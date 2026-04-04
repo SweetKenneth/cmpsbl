@@ -26,6 +26,7 @@ import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { getUniversalPoolSize, getUniversalPoolBreakdown } from "@/lib/factory/universal-pool-scanner";
+import { getUltimateSubstrate } from "@/lib/factory/verticals/ultimate";
 
 /* ─── Theme Constants ─── */
 const ACCENT = 'hsl(270 80% 65%)';
