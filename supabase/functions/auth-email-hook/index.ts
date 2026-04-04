@@ -232,11 +232,12 @@ async function handleWebhook(req: Request): Promise<Response> {
 
   // Send via Resend API directly through PromptFluid.com
   try {
-    const response = await fetch(`${RESEND_API_URL}/emails`, {
+    const response = await fetch(`${RESEND_GATEWAY_URL}/emails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${resendApiKey}`,
+        'Authorization': `Bearer ${lovableApiKey}`,
+        'X-Connection-Api-Key': resendApiKey,
       },
       body: JSON.stringify({
         from: FROM_ADDRESS,
