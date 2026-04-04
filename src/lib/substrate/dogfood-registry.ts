@@ -163,10 +163,10 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
   // EVOLUTION & SELF-IMPROVEMENT
   // ═══════════════════════════════════════════════════════════════
   {
-    storeSlug: 'forge',
-    codename: 'FORGE',
+    storeSlug: 'mini-forge',
+    codename: 'Mini-FORGE',
     internalPrimitives: ['ENCODE Systems Engineer', 'SEBA Evolution Engine', 'Patch Writer'],
-    internalRole: 'Powers the self-evolving substrate — SEBA uses FORGE\'s code generation and refactoring capabilities to write, audit, and apply surgical patches across the codebase.',
+    internalRole: 'Powers the self-evolving substrate — SEBA uses Mini-FORGE\'s code generation and refactoring capabilities to write, audit, and apply surgical patches across the codebase.',
     active: true,
     activeSince: '2025-11-15',
     category: 'evolution',
