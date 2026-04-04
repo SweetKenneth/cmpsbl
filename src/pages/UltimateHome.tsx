@@ -172,13 +172,13 @@ export default function UltimateHome() {
               How Universal Ascension Works
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              Unlike standard verticals with 16 fixed expansion primitives, Ultimate evaluates the entire pool
+              No spine lock. No category quotas. All 40 slots are open — the scanner fills every one
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
               {[
-                { step: "01", title: "Pool Assembly", desc: `${poolSize} expansion primitives from all 6 verticals are loaded into the Universal Pool — Cyber, Robotics, Quantum, LLM, Agency, and 16 Universal gap-fillers.` },
-                { step: "02", title: "Affinity Scoring", desc: "Every candidate is scored against your uploaded code using signal matching, capability breadth, and compounding potential. Diversity constraints prevent any single vertical from dominating." },
-                { step: "03", title: "Optimal Selection", desc: "The top 16 are selected and merged with the 24-primitive Spine to form your unique 40-primitive surface — the maximum compounding configuration for your specific codebase." },
+                { step: "01", title: "Full Pool Assembly", desc: `${poolSize} primitives from every source — Spine organs, layers, Cyber, Robotics, Quantum, LLM, Agency expansion primitives, and 16 Universal gap-fillers — all loaded as equal candidates.` },
+                { step: "02", title: "Extended Collision", desc: "Multi-pass scoring evaluates every candidate against your code using signal matching, capability overlap, breadth analysis, and cross-primitive compounding potential. Extended scan time ensures deep evaluation." },
+                { step: "03", title: "40 Best Selected", desc: "The top 40 are selected by pure compounding score — no forced organs, no locked layers, no engine/agent quotas. The result is the maximum-impact surface for your specific codebase." },
               ].map((item, i) => (
                 <motion.div key={item.step} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
