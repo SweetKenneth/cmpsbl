@@ -1,12 +1,99 @@
 export const LANG_MAP: Record<string, string> = {
+  // ═══ Web / Scripting ═══
   ts: 'TypeScript', tsx: 'TypeScript/React', js: 'JavaScript', jsx: 'JavaScript/React',
-  py: 'Python', rs: 'Rust', go: 'Go', java: 'Java', rb: 'Ruby', cs: 'C#',
-  cpp: 'C++', cc: 'C++', cxx: 'C++', hpp: 'C++ Header', c: 'C', h: 'C/C++ Header',
-  zig: 'Zig', hs: 'Haskell', lhs: 'Haskell', swift: 'Swift', kt: 'Kotlin', kts: 'Kotlin',
-  php: 'PHP', lua: 'Lua', dart: 'Dart', scala: 'Scala', sc: 'Scala', ex: 'Elixir', exs: 'Elixir',
-  v: 'Verilog', sv: 'SystemVerilog', svh: 'SystemVerilog', vhd: 'VHDL', vhdl: 'VHDL', bsv: 'Bluespec',
-  cir: 'SPICE', sp: 'SPICE', spice: 'SPICE', json: 'JSON', yaml: 'YAML', yml: 'YAML', toml: 'TOML', xml: 'XML',
-  md: 'Markdown', txt: 'Text',
+  mjs: 'JavaScript', cjs: 'JavaScript', mts: 'TypeScript',
+  py: 'Python', pyw: 'Python', pyi: 'Python',
+  rb: 'Ruby', erb: 'Ruby/ERB',
+  php: 'PHP', phtml: 'PHP',
+  lua: 'Lua',
+  pl: 'Perl', pm: 'Perl',
+  r: 'R', R: 'R', rmd: 'R Markdown',
+  jl: 'Julia',
+  groovy: 'Groovy', gvy: 'Groovy',
+  coffee: 'CoffeeScript',
+
+  // ═══ Systems ═══
+  rs: 'Rust',
+  go: 'Go',
+  c: 'C', h: 'C/C++ Header',
+  cpp: 'C++', cc: 'C++', cxx: 'C++', hpp: 'C++ Header', hxx: 'C++ Header', hh: 'C++ Header',
+  zig: 'Zig',
+  nim: 'Nim', nims: 'Nim',
+  cr: 'Crystal',
+  d: 'D',
+  asm: 'Assembly', s: 'Assembly',
+
+  // ═══ JVM ═══
+  java: 'Java',
+  kt: 'Kotlin', kts: 'Kotlin',
+  scala: 'Scala', sc: 'Scala',
+  clj: 'Clojure', cljs: 'ClojureScript', cljc: 'Clojure',
+  groovy2: 'Groovy',
+
+  // ═══ .NET / Microsoft ═══
+  cs: 'C#', csx: 'C# Script',
+  fs: 'F#', fsx: 'F# Script', fsi: 'F#',
+  vb: 'Visual Basic',
+  ps1: 'PowerShell', psm1: 'PowerShell', psd1: 'PowerShell',
+
+  // ═══ Apple / Mobile ═══
+  swift: 'Swift',
+  dart: 'Dart',
+  m: 'Objective-C', mm: 'Objective-C++',
+
+  // ═══ Functional ═══
+  hs: 'Haskell', lhs: 'Haskell',
+  ml: 'OCaml', mli: 'OCaml',
+  erl: 'Erlang', hrl: 'Erlang',
+  ex: 'Elixir', exs: 'Elixir',
+  elm: 'Elm',
+  purs: 'PureScript',
+  rkt: 'Racket',
+  scm: 'Scheme',
+  lisp: 'Lisp', cl: 'Common Lisp',
+
+  // ═══ Blockchain / Smart Contracts ═══
+  sol: 'Solidity',
+  vy: 'Vyper',
+  move: 'Move',
+  cairo: 'Cairo',
+  fe: 'Fe',
+
+  // ═══ HDL / Hardware ═══
+  v: 'Verilog', sv: 'SystemVerilog', svh: 'SystemVerilog',
+  vhd: 'VHDL', vhdl: 'VHDL',
+  bsv: 'Bluespec',
+  chisel: 'Chisel',
+  cir: 'SPICE', sp: 'SPICE', spice: 'SPICE',
+  firrtl: 'FIRRTL',
+
+  // ═══ Scientific / HPC ═══
+  f90: 'Fortran', f95: 'Fortran', f03: 'Fortran', f08: 'Fortran', f: 'Fortran', for: 'Fortran',
+  mat: 'MATLAB',
+  nb: 'Mathematica', wl: 'Wolfram',
+
+  // ═══ Shell ═══
+  sh: 'Shell', bash: 'Bash', zsh: 'Zsh', fish: 'Fish',
+  bat: 'Batch', cmd: 'Batch',
+
+  // ═══ Infrastructure / Config ═══
+  tf: 'Terraform/HCL', hcl: 'HCL',
+  proto: 'Protobuf',
+  sql: 'SQL',
+  graphql: 'GraphQL', gql: 'GraphQL',
+  prisma: 'Prisma',
+  dockerfile: 'Dockerfile',
+
+  // ═══ Markup / Data ═══
+  json: 'JSON', yaml: 'YAML', yml: 'YAML', toml: 'TOML', xml: 'XML',
+  md: 'Markdown', txt: 'Text', csv: 'CSV', ini: 'INI',
+
+  // ═══ WebAssembly ═══
+  wat: 'WebAssembly Text', wast: 'WebAssembly',
+
+  // ═══ GPU / Shaders ═══
+  glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL', cu: 'CUDA', cl: 'OpenCL',
+  metal: 'Metal',
 };
 
 const SUPPORTED_TEXT_EXTENSIONS = new Set(Object.keys(LANG_MAP));
