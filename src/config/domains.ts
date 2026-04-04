@@ -43,6 +43,10 @@ export const DOMAIN_CONFIG = {
     llm: 'llm.cmpsbl.com',
     agency: 'agency.cmpsbl.com',
   },
+  /** Special-purpose subdomains (not full substrates) */
+  services: {
+    marketplace: 'marketplace.cmpsbl.com',
+  },
 } as const;
 
 export const COPYRIGHT_NOTICE = {
@@ -111,4 +115,14 @@ export function getVerticalSubdomain(): string | null {
  */
 export function isVerticalDomain(): boolean {
   return getVerticalSubdomain() !== null;
+}
+
+/**
+ * Detect if current hostname is the marketplace subdomain
+ */
+export function isMarketplaceDomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname.toLowerCase();
+  return hostname === DOMAIN_CONFIG.services.marketplace
+    || hostname === `www.${DOMAIN_CONFIG.services.marketplace}`;
 }

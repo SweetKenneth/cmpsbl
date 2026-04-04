@@ -119,10 +119,13 @@ const Terms = lazy(() => import("@/pages/Terms"));
 const MemberHub = lazy(() => import("@/pages/MemberHub"));
 const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 
+const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
+
 export const publicRoutes = (
   <>
     {/* Core Public Pages */}
     <Route path="/" element={<DomainAwareHome />} />
+    <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
     <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />

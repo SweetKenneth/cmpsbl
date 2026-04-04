@@ -9909,6 +9909,96 @@ export type Database = {
         }
         Relationships: []
       }
+      marketplace_inventory: {
+        Row: {
+          category: string
+          cjpi_score: number
+          created_at: string | null
+          description: string | null
+          downloads: number | null
+          features: string[] | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          last_verified_at: string | null
+          original_value_cents: number | null
+          pain_points: string[] | null
+          price_cents: number
+          primitive_chain: string[] | null
+          rating: number | null
+          slug: string
+          source_id: string
+          source_substrate: string
+          source_vault: string
+          stripe_price_id: string | null
+          stripe_product_id: string | null
+          subtitle: string | null
+          tags: string[] | null
+          tier: string
+          title: string
+          updated_at: string | null
+          version: string | null
+        }
+        Insert: {
+          category: string
+          cjpi_score?: number
+          created_at?: string | null
+          description?: string | null
+          downloads?: number | null
+          features?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          last_verified_at?: string | null
+          original_value_cents?: number | null
+          pain_points?: string[] | null
+          price_cents?: number
+          primitive_chain?: string[] | null
+          rating?: number | null
+          slug: string
+          source_id: string
+          source_substrate: string
+          source_vault: string
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          subtitle?: string | null
+          tags?: string[] | null
+          tier?: string
+          title: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Update: {
+          category?: string
+          cjpi_score?: number
+          created_at?: string | null
+          description?: string | null
+          downloads?: number | null
+          features?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          last_verified_at?: string | null
+          original_value_cents?: number | null
+          pain_points?: string[] | null
+          price_cents?: number
+          primitive_chain?: string[] | null
+          rating?: number | null
+          slug?: string
+          source_id?: string
+          source_substrate?: string
+          source_vault?: string
+          stripe_price_id?: string | null
+          stripe_product_id?: string | null
+          subtitle?: string | null
+          tags?: string[] | null
+          tier?: string
+          title?: string
+          updated_at?: string | null
+          version?: string | null
+        }
+        Relationships: []
+      }
       marketplace_licenses: {
         Row: {
           activated: boolean | null
@@ -9997,6 +10087,7 @@ export type Database = {
         Row: {
           download_count: number | null
           id: string
+          inventory_id: string | null
           last_downloaded_at: string | null
           license_key: string | null
           metadata: Json | null
@@ -10011,6 +10102,7 @@ export type Database = {
         Insert: {
           download_count?: number | null
           id?: string
+          inventory_id?: string | null
           last_downloaded_at?: string | null
           license_key?: string | null
           metadata?: Json | null
@@ -10025,6 +10117,7 @@ export type Database = {
         Update: {
           download_count?: number | null
           id?: string
+          inventory_id?: string | null
           last_downloaded_at?: string | null
           license_key?: string | null
           metadata?: Json | null
@@ -10036,7 +10129,15 @@ export type Database = {
           template_name?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_purchases_inventory_id_fkey"
+            columns: ["inventory_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_inventory"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       marketplace_release_alerts: {
         Row: {
@@ -10230,6 +10331,42 @@ export type Database = {
           memory_id?: string
           reason_code?: string
           rps_score?: number | null
+        }
+        Relationships: []
+      }
+      merchant_scan_log: {
+        Row: {
+          created_at: string | null
+          id: string
+          items_added: number | null
+          items_qualified: number | null
+          items_retired: number | null
+          items_scanned: number | null
+          scan_duration_ms: number | null
+          substrate: string
+          vault: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          items_added?: number | null
+          items_qualified?: number | null
+          items_retired?: number | null
+          items_scanned?: number | null
+          scan_duration_ms?: number | null
+          substrate: string
+          vault: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          items_added?: number | null
+          items_qualified?: number | null
+          items_retired?: number | null
+          items_scanned?: number | null
+          scan_duration_ms?: number | null
+          substrate?: string
+          vault?: string
         }
         Relationships: []
       }
