@@ -859,6 +859,16 @@ export default function STierVault() {
       if (vaultDiscovery) {
         folder.file('DISCOVERY-CONTEXT.md', vaultDiscovery);
       }
+
+      // ═══ Universal User Guide (HTML) — ships in every export ═══
+      folder.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
+        name: d.name,
+        slug,
+        kind: 'crown-jewel',
+        tier: getTierFromScore(d.cjpi),
+        cjpi: d.cjpi,
+        modules: d.module_chain || [primaryModule],
+      }));
     }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
