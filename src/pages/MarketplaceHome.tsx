@@ -22,16 +22,13 @@ import {
   Store, Award, Tag, Cpu, Lock,
 } from 'lucide-react';
 import {
-  MERCHANT_INVENTORY,
-  getInventoryStats,
-} from '@/agents/merchant/merchant-inventory';
-import {
   CATEGORY_META,
   SUBSTRATE_META,
   type MarketplaceItem,
   type ListingCategory,
   type SourceSubstrate,
 } from '@/agents/merchant/merchant-engine';
+import { useMarketplaceInventory } from '@/hooks/useMarketplaceInventory';
 
 type SortOption = 'featured' | 'newest' | 'price-low' | 'price-high' | 'rating' | 'cjpi';
 
@@ -60,7 +57,15 @@ export default function MarketplaceHome() {
   const [showFilters, setShowFilters] = useState(false);
   const [buyingId, setBuyingId] = useState<string | null>(null);
 
-  const stats = useMemo(() => getInventoryStats(), []);
+  const { data: inventory = [], isLoading } = useMarketplaceInventory();
+
+  const stats = useMemo(() => {
+    if (inventory.length === 0) return { total: 0, featured: 0, avgPrice: '$0', substrates: 0 };
+    const featured = inventory.filter(i => i.isFeatured).length;
+    const avgCents = Math.round(inventory.reduce((s, i) => s + i.priceCents, 0) / inventory.length);
+    const substrates = new Set(inventory.map(i => i.sourceSubstrate)).size;
+    return { total: inventory.length, featured, avgPrice: `$${(avgCents / 100).toFixed(0)}`, substrates };
+  }, [inventory]);
 
   const handleBuy = useCallback(async (item: MarketplaceItem) => {
     setBuyingId(item.id);
@@ -94,7 +99,7 @@ export default function MarketplaceHome() {
   }, []);
 
   const filteredItems = useMemo(() => {
-    let items = [...MERCHANT_INVENTORY];
+    let items = [...inventory];
 
     // Search
     if (search.trim()) {
@@ -140,16 +145,16 @@ export default function MarketplaceHome() {
     }
 
     return items;
-  }, [search, selectedCategory, selectedSubstrate, sort]);
+  }, [search, selectedCategory, selectedSubstrate, sort, inventory]);
 
   const featuredItems = useMemo(() =>
-    MERCHANT_INVENTORY.filter(i => i.isFeatured).slice(0, 4),
-  []);
+    inventory.filter(i => i.isFeatured).slice(0, 4),
+  [inventory]);
 
   const activeCategories = useMemo(() => {
-    const cats = new Set(MERCHANT_INVENTORY.map(i => i.category));
+    const cats = new Set(inventory.map(i => i.category));
     return Array.from(cats) as ListingCategory[];
-  }, []);
+  }, [inventory]);
 
   return (
     <>
@@ -255,6 +260,7 @@ export default function MarketplaceHome() {
                 selectedSubstrate={selectedSubstrate}
                 setSelectedSubstrate={setSelectedSubstrate}
                 categories={activeCategories}
+                items={inventory}
               />
             </aside>
 
@@ -304,6 +310,7 @@ export default function MarketplaceHome() {
                       selectedSubstrate={selectedSubstrate}
                       setSelectedSubstrate={setSelectedSubstrate}
                       categories={activeCategories}
+                      items={inventory}
                     />
                   </motion.div>
                 )}
@@ -514,12 +521,14 @@ function FilterPanel({
   selectedSubstrate,
   setSelectedSubstrate,
   categories,
+  items,
 }: {
   selectedCategory: ListingCategory | 'all';
   setSelectedCategory: (v: ListingCategory | 'all') => void;
   selectedSubstrate: SourceSubstrate | 'all';
   setSelectedSubstrate: (v: SourceSubstrate | 'all') => void;
   categories: ListingCategory[];
+  items: MarketplaceItem[];
 }) {
   return (
     <div className="space-y-6">
@@ -541,7 +550,7 @@ function FilterPanel({
               active={selectedSubstrate === key}
               onClick={() => setSelectedSubstrate(key as SourceSubstrate)}
               label={meta.label}
-              count={MERCHANT_INVENTORY.filter(i => i.sourceSubstrate === key).length}
+              count={items.filter(i => i.sourceSubstrate === key).length}
             />
           ))}
         </div>
@@ -567,7 +576,7 @@ function FilterPanel({
                 active={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
                 label={`${meta.emoji} ${meta.label}`}
-                count={MERCHANT_INVENTORY.filter(i => i.category === cat).length}
+                count={items.filter(i => i.category === cat).length}
               />
             );
           })}
