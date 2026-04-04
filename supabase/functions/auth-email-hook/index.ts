@@ -9,7 +9,7 @@ import { RecoveryEmail } from '../_shared/email-templates/recovery.tsx'
 import { EmailChangeEmail } from '../_shared/email-templates/email-change.tsx'
 import { ReauthenticationEmail } from '../_shared/email-templates/reauthentication.tsx'
 
-const GATEWAY_URL = 'https://connector-gateway.lovable.dev/resend'
+const RESEND_API_URL = 'https://api.resend.com'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -130,9 +130,9 @@ async function handleWebhook(req: Request): Promise<Response> {
     )
   }
 
-  const resendApiKey = Deno.env.get('RESEND_API_KEY_1')
+  const resendApiKey = Deno.env.get('RESEND_API_KEY')
   if (!resendApiKey) {
-    console.error('RESEND_API_KEY_1 not configured')
+    console.error('RESEND_API_KEY not configured')
     return new Response(
       JSON.stringify({ error: 'Resend not configured' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -221,14 +221,13 @@ async function handleWebhook(req: Request): Promise<Response> {
     plainText: true,
   })
 
-  // Send via Resend connector gateway through PromptFluid.com
+  // Send via Resend API directly through PromptFluid.com
   try {
-    const response = await fetch(`${GATEWAY_URL}/emails`, {
+    const response = await fetch(`${RESEND_API_URL}/emails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'X-Connection-Api-Key': resendApiKey,
+        'Authorization': `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
         from: FROM_ADDRESS,

@@ -9,7 +9,7 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, type LucideIcon } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNav } from "@/components/PublicNav";
@@ -19,7 +19,7 @@ import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory
 
 /** Map icon names to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = {
-  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain,
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users,
 };
 
 const STATIC_VERTICALS = [
@@ -63,6 +63,17 @@ const STATIC_VERTICALS = [
     url: 'https://llm.cmpsbl.com',
     icon: Brain,
     accentColor: 'hsl(160 90% 45%)',
+    primitiveCount: 16,
+    capabilityCount: '100+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'agency',
+    name: 'CMPSBL AGENCY™',
+    tagline: 'Governed Autonomous Agent Infrastructure — Agents That Learn, Collaborate, and Ship',
+    url: 'https://agency.cmpsbl.com',
+    icon: Users,
+    accentColor: 'hsl(35 90% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
     status: 'Active' as const,
