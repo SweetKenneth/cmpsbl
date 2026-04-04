@@ -256,7 +256,7 @@ export default function EngineDetail() {
   return (
     <>
       <Helmet>
-        <title>{engine.codename} Engine — Sealed Runtime | CMPSBL</title>
+        <title>{`${engine.codename} Engine — Sealed Runtime | CMPSBL`}</title>
         <meta name="description" content={engine.briefing} />
         <link rel="canonical" href={`https://cmpsbl.com/engines/${engine.slug}`} />
         <script type="application/ld+json">

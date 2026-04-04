@@ -101,7 +101,7 @@ export default function EngineDocsPage() {
   return (
     <>
       <Helmet>
-        <title>{engine.codename} Documentation — CMPSBL</title>
+        <title>{`${engine.codename} Documentation — CMPSBL`}</title>
         <meta name="description" content={`Integration guide and reference for the ${engine.codename} sealed runtime engine.`} />
       </Helmet>
 

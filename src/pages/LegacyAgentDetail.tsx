@@ -114,7 +114,7 @@ export default function LegacyAgentDetail() {
   return (
     <>
       <Helmet>
-        <title>{agent.codename} Agent — Sealed Runtime | CMPSBL</title>
+        <title>{`${agent.codename} Agent — Sealed Runtime | CMPSBL`}</title>
         <meta name="description" content={agent.description} />
         <link rel="canonical" href={`https://cmpsbl.com/agents/${agent.slug}`} />
         <script type="application/ld+json">
