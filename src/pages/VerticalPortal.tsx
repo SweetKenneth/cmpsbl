@@ -9,7 +9,7 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, type LucideIcon } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNav } from "@/components/PublicNav";
@@ -20,7 +20,7 @@ import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory
 
 /** Map icon names to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = {
-  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users,
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users, Crown,
 };
 
 const STATIC_VERTICALS = [
@@ -77,6 +77,17 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(35 90% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'ultimate',
+    name: 'CMPSBL ULTIMATE™',
+    tagline: 'Universal Ascension Infrastructure — Every Primitive, Maximum Compounding',
+    url: 'https://ultimate.cmpsbl.com',
+    icon: Crown,
+    accentColor: 'hsl(270 70% 50%)',
+    primitiveCount: 40,
+    capabilityCount: '96 pool',
     status: 'Active' as const,
   },
 ];
