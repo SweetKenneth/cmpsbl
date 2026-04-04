@@ -60,7 +60,7 @@ export function createCulturalContextAdapter() {
     // Idiom substitution
     for (const [idiom, replacement] of profile.idioms) {
       if (output.includes(idiom)) {
-        output = output.replaceAll(idiom, replacement);
+        output = output.split(idiom).join(replacement);
         adjustments.push(`idiom_replaced: ${idiom}`);
       }
     }
