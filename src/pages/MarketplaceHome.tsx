@@ -168,12 +168,18 @@ export default function MarketplaceHome() {
             className="text-center max-w-4xl mx-auto"
           >
             {/* New Drops badge */}
-            <Badge variant="outline" className="gap-2 px-4 py-2 mb-4 border-[hsl(var(--neon-green))]/40 bg-[hsl(var(--neon-green))]/10 text-[hsl(var(--neon-green))]">
-              <Clock className="w-3.5 h-3.5" />
-              <span className="text-xs font-bold">New Drops Every 8 Hours</span>
-            </Badge>
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+              <Badge variant="outline" className="gap-2 px-4 py-2 border-[hsl(var(--neon-green))]/40 bg-[hsl(var(--neon-green))]/10 text-[hsl(var(--neon-green))]">
+                <Clock className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">New Drops Every 8 Hours</span>
+              </Badge>
+              <Badge variant="outline" className="gap-2 px-4 py-2 border-[hsl(var(--neon-cyan))]/40 bg-[hsl(var(--neon-cyan))]/10 text-[hsl(var(--neon-cyan))]">
+                <Gift className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">1 Free Item — Always Available</span>
+              </Badge>
+            </div>
 
-            <Badge variant="outline" className="gap-2 px-4 py-2 mb-6 ml-2 border-primary/40 bg-primary/10">
+            <Badge variant="outline" className="gap-2 px-4 py-2 mb-6 border-primary/40 bg-primary/10">
               <Store className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">CMPSBL Marketplace</span>
             </Badge>
