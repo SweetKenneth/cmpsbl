@@ -29,6 +29,7 @@ import {
 } from '@/agents/merchant/merchant-engine';
 import { useMarketplaceInventory } from '@/hooks/useMarketplaceInventory';
 import { MARKETPLACE_IMAGES } from '@/assets/marketplace';
+import { downloadMarketplaceArtifact } from '@/lib/export/marketplace-export';
 import merchantHeroBg from '@/assets/marketplace/merchant-hero-bg.jpg';
 
 const TIER_COLORS: Record<string, string> = {
