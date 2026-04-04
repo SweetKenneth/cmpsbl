@@ -380,7 +380,7 @@ function analyzeWithEncode(code: string, metrics: CodeMetrics): ScanFinding[] {
   }
 
   if ((code.includes('req.body') || code.includes('req.params') || code.includes('req.query') || code.includes('request.')) && !code.includes('validate') && !code.includes('schema') && !code.includes('zod')) {
-    findings.push({ id: `enc-${ts}-6`, severity: 'warning', title: 'Unvalidated request input', description: 'Request parameters accessed without validation. Risk of injection and malformed data processing.', source: 'ENCODE', primitiveRecommendation: 'SENTINEL' });
+    findings.push({ id: `enc-${ts}-6`, severity: 'warning', title: 'Unvalidated request input', description: 'Request parameters accessed without validation. Risk of injection and malformed data processing.', source: 'ENCODE', primitiveRecommendation: 'ACCESS' });
   }
 
   if (metrics.cyclomaticComplexity > 20) {
