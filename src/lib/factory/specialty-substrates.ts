@@ -29,6 +29,7 @@ const DOMAIN_CONFIG: Record<SpecialtyDomain, { label: string; description: strin
   robotics: { label: 'Robotics & Automation', description: 'Motion planning, sensor fusion, fleet coordination, safety compliance' },
   quantum: { label: 'Quantum Physics', description: 'Particle simulation, quantum computing, entanglement protocols, spectroscopy' },
   llm: { label: 'Large Language Models', description: 'Hallucination detection, prompt injection defense, bias calibration, alignment monitoring' },
+  agency: { label: 'Autonomous Agents', description: 'Agent autonomy, tool mastery, research synthesis, team collaboration, governed self-healing' },
 };
 
 /**

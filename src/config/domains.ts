@@ -41,6 +41,7 @@ export const DOMAIN_CONFIG = {
     robotics: 'robotics.cmpsbl.com',
     quantum: 'quantum.cmpsbl.com',
     llm: 'llm.cmpsbl.com',
+    agency: 'agency.cmpsbl.com',
   },
 } as const;
 
