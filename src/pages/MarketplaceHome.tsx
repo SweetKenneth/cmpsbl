@@ -17,7 +17,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { cn } from '@/lib/utils';
 import {
   Search, ShoppingCart, Star, TrendingUp, X, ChevronLeft, ChevronRight,
-  Shield, Zap, Eye, Globe, Package,
+  Shield, Zap, Eye, Globe, Package, Gift, Download,
   Store, Award, Tag, Cpu, Lock, Clock,
 } from 'lucide-react';
 import {
