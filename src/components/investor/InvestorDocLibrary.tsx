@@ -188,7 +188,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Evolution", "7-gate SEBA with TSAC truth arbitration", "Manual deployment"],
             ["Security", "40-primitive zone-shielded mesh", "Perimeter only"],
             ["Learning", "CLM — up to 14,400 calls/day", "None or fine-tuning"],
-            ["Export", "25 languages, standalone artifacts", "API access only"],
+            ["Export", "90+ languages, standalone artifacts", "API access only"],
             ["Audit", "Tamper-evident Merkle chains", "Append-only logs"],
           ],
         },
