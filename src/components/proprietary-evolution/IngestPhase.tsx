@@ -486,7 +486,7 @@ export function IngestPhase() {
               {!canUpload ? 'Upgrade your tier for more daily uploads' : '90+ extensions — TypeScript, Python, Rust, Go, Solidity, VHDL, CUDA, Julia, F#, and any source file up to 5MB'}
             </p>
             {canUpload && <p className="mt-3 text-xs text-primary font-mono">click or drag to upload</p>}
-            <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
+            <input ref={fileInputRef} type="file" multiple accept="*/*,.ts,.tsx,.go,.rs,.py,.js,.jsx,.sol,.vhd,.sv,.cu,.jl,.hs,.ex,.rb,.php,.java,.kt,.swift,.dart,.cs,.fs,.zig,.nim,.erl,.ml,.cairo,.move,.vy,.glsl,.hlsl,.wgsl,.metal,.f90,.proto,.sql,.sh,.bat,.lua,.r,.pl,.groovy,.scala,.clj,.elm,.purs,.rkt,.scm,.lisp,.wat,.wast,.prisma,.graphql,.hcl,.tf,.yaml,.yml,.json,.toml,.xml,.md,.txt,.csv,.dockerfile,.coffee,.d,.cr" className="hidden" onChange={handleFileSelect} />
           </div>
 
           {/* File List */}
