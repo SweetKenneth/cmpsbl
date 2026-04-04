@@ -29,6 +29,8 @@ import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from 
 import { generateRefurbishedCode, generateLicense, getRefurbishedExtension } from "@/lib/factory/generate-refurbished-code";
 import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
+import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
+import { generateUniversalUserGuide } from "@/lib/export/universal-user-guide";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
