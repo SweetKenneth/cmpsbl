@@ -86,14 +86,14 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'TEMPEST',    context: 'cyber-engine', vertical: 'security', role: 'engine' },
 
   // ═══ CYBERSECURITY VERTICAL (security.cmpsbl.com) — 8 Agents ═══
+  { name: 'PROWLER',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
+  { name: 'ONYX',       context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'SPECTER',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'BLACKOUT',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'TRACER',     context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'NOCTURNE',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'IRONCLAD',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'BULWARK',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
-  { name: 'SENTRY',     context: 'cyber-agent', vertical: 'security', role: 'agent' },
-  { name: 'SENTINEL',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
 
   // ═══ ROBOTICS VERTICAL (robotics.cmpsbl.com) — 8 Engines ═══
   { name: 'SERVO',      context: 'robotics-engine', vertical: 'robotics', role: 'engine' },
