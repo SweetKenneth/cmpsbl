@@ -225,7 +225,7 @@ export const publicRoutes = (
     {/* System pages */}
     <Route path="/modules" element={<Navigate to="/architecture" replace />} />
     <Route path="/modules/:slug" element={<ModuleDetail />} />
-    <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
+    <Route path="/ai-operating-system" element={<Navigate to="/architecture" replace />} />
     <Route path="/products/encode" element={<Navigate to="/" replace />} />
 
     {/* Cluster redirects */}
