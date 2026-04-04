@@ -589,7 +589,7 @@ And they did it autonomously.
 
 ---
 
-**Ascension™ did this for HuggingFace's most critical training model code. It protected 700,000 monthly downloads worth of infrastructure in under four minutes.**
+**Ascension™ did this for HuggingFace's most critical training model code. It protected 126 million monthly downloads worth of infrastructure in under four minutes.**
 
 **It can do this for your code too.**
 
