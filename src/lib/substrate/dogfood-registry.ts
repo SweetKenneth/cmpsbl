@@ -261,8 +261,8 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
     category: 'governance',
   },
   {
-    storeSlug: 'cortex',
-    codename: 'CORTEX',
+    storeSlug: 'mini-cortex',
+    codename: 'Mini-CORTEX',
     internalPrimitives: ['CORTEX Orchestrator', 'Agency Runtime', 'Agent Competency Tracking'],
     internalRole: 'Orchestrates multi-agent coordination in the Agency system — task delegation, cognitive load balancing, shared memory coordination, and competency-based skill routing.',
     active: true,
