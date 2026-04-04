@@ -24,6 +24,7 @@ import {
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import registryData from "@/crownjewels/s-tier.registry.json";
 import type { STierEntry } from "@/crownjewels/types";
+import { getATierVault, type ATierEntry } from "@/crownjewels/a-tier";
 import {
   generateSingleExport, generateExportBundle, downloadBundle,
   getAllLanguages, getAllAdapters,
