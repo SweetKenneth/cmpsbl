@@ -29,6 +29,43 @@ function toSnakeCase(s: string): string {
   return s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
 }
 
+/** Convert camelCase to PascalCase */
+function toPascalCase(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// ── Boolean / Null / Literal Normalizers ──
+
+function boolToPython(c: string): string { return c.replace(/\btrue\b/g, 'True').replace(/\bfalse\b/g, 'False'); }
+function nullToPython(c: string): string { return c.replace(/\bnull\b/g, 'None'); }
+function nullToNil(c: string): string { return c.replace(/\bnull\b/g, 'nil'); }
+function nullToNone(c: string): string { return c.replace(/\bnull\b/g, 'None'); }
+function nullToNothing(c: string): string { return c.replace(/\bnull\b/g, 'nothing'); }
+function nullToUndefined(c: string): string { return c.replace(/\bnull\b/g, 'undefined'); }
+function literalsToR(c: string): string { return c.replace(/\btrue\b/g, 'TRUE').replace(/\bfalse\b/g, 'FALSE').replace(/\bnull\b/g, 'NULL'); }
+function literalsToPerl(c: string): string { return c.replace(/\btrue\b/g, '1').replace(/\bfalse\b/g, '0').replace(/\bnull\b/g, 'undef'); }
+function literalsToFortran(c: string): string { return c.replace(/\btrue\b/g, '.TRUE.').replace(/\bfalse\b/g, '.FALSE.').replace(/\bnull\b/g, '.FALSE.'); }
+function litsPowerShell(c: string): string { return c.replace(/\btrue\b/g, '$true').replace(/\bfalse\b/g, '$false').replace(/\bnull\b/g, '$null'); }
+
+/** Generic object-literal converter: `({ key: val })` → language-native */
+function convertObjectArgs(
+  g: string,
+  keyFmt: (k: string) => string,
+  sep: string,
+  wrap: (pairs: string) => string = (p) => `(${p})`,
+): string {
+  return g.replace(/\(\{([^}]*)\}\)/g, (_m, inner: string) => {
+    const pairs = inner.split(',').map(p => p.trim()).filter(Boolean).map(pair => {
+      const ci = pair.indexOf(':');
+      if (ci === -1) return pair;
+      const k = pair.slice(0, ci).trim().replace(/['"]/g, '');
+      const v = pair.slice(ci + 1).trim();
+      return `${keyFmt(k)}${sep}${v}`;
+    });
+    return wrap(pairs.join(', '));
+  });
+}
+
 /**
  * Convert JS object-literal args to keyword-argument style.
  * `{ blockThreshold: 0.30, reviewThreshold: 0.60 }` → `block_threshold=0.30, review_threshold=0.60`
@@ -85,6 +122,8 @@ const identityGuard = (g: string) => g;
 function pythonGuard(g: string): string {
   let out = jsArgsToKwargs(g, toSnakeCase, '=');
   out = jsArrayToNative(out, toSnakeCase, '=', (inner) => `dict(${inner})`);
+  out = boolToPython(out);
+  out = nullToPython(out);
   return stripSemicolons(out);
 }
 
@@ -92,23 +131,24 @@ function pythonGuard(g: string): string {
 function rubyGuard(g: string): string {
   let out = jsArgsToKwargs(g, (k) => `${toSnakeCase(k)}:`, ' ');
   out = jsArrayToNative(out, (k) => `${toSnakeCase(k)}:`, ' ');
+  out = nullToNil(out);
   return stripSemicolons(out);
 }
 
 /** Go: struct literals with PascalCase keys */
 function goGuard(g: string): string {
-  const toPascal = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-  let out = jsArgsToKwargs(g, toPascal, ': ');
-  out = jsArrayToNative(out, toPascal, ': ');
+  let out = jsArgsToKwargs(g, toPascalCase, ': ');
+  out = jsArrayToNative(out, toPascalCase, ': ');
+  out = nullToNil(out);
   return stripSemicolons(out);
 }
 
 /** Rust: struct literals with snake_case + `::` method separator */
 function rustGuard(g: string): string {
-  // Replace `.method(` with `::method(`
   let out = g.replace(/\.(\w+)\(/g, '::$1(');
   out = jsArgsToKwargs(out, toSnakeCase, ': ');
   out = jsArrayToNative(out, toSnakeCase, ': ');
+  out = nullToNone(out);
   return out; // Rust keeps semicolons
 }
 
@@ -116,10 +156,11 @@ function rustGuard(g: string): string {
 function elixirGuard(g: string): string {
   let out = jsArgsToKwargs(g, (k) => `${toSnakeCase(k)}:`, ' ');
   out = jsArrayToNative(out, (k) => `${toSnakeCase(k)}:`, ' ');
+  out = nullToNil(out);
   return stripSemicolons(out);
 }
 
-/** Kotlin/Scala: named args with camelCase (same as JS keys) */
+/** Kotlin/Scala/Groovy: named args with camelCase */
 function namedArgGuard(g: string): string {
   return jsArgsToKwargs(g, (k) => k, ' = ');
 }
@@ -127,13 +168,124 @@ function namedArgGuard(g: string): string {
 /** Lua: table constructor `{ key = value }` + no semicolons */
 function luaGuard(g: string): string {
   let out = jsArgsToKwargs(g, toSnakeCase, ' = ');
-  // Re-wrap in `({...})` → `({...})` is already correct for Lua tables
+  out = nullToNil(out);
   return stripSemicolons(out);
 }
 
-/** Swift: trailing argument labels with camelCase */
+/** Swift: trailing argument labels with camelCase + nil */
 function swiftGuard(g: string): string {
+  let out = jsArgsToKwargs(g, (k) => `${k}:`, ' ');
+  return nullToNil(out);
+}
+
+/** Java: `({ key: val })` → `(Map.of("key", val))` */
+function javaGuard(g: string): string {
+  return convertObjectArgs(g, (k) => `"${k}"`, ', ', (p) => `(Map.of(${p}))`);
+}
+
+/** C#: `({ key: val })` → `(new { Key = val })` */
+function csharpGuard(g: string): string {
+  return convertObjectArgs(g, toPascalCase, ' = ', (p) => `(new { ${p} })`);
+}
+
+/** PHP: `({ key: val })` → `(['key' => val])` */
+function phpGuard(g: string): string {
+  return convertObjectArgs(g, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
+}
+
+/** Dart: named params `({ key: val })` → `(key: val)` */
+function dartGuard(g: string): string {
   return jsArgsToKwargs(g, (k) => `${k}:`, ' ');
+}
+
+/** R: named args + TRUE/FALSE/NULL */
+function rGuard(g: string): string {
+  let out = jsArgsToKwargs(g, toSnakeCase, ' = ');
+  out = literalsToR(out);
+  return stripSemicolons(out);
+}
+
+/** Perl: hash args + 1/0/undef */
+function perlGuard(g: string): string {
+  let out = convertObjectArgs(g, (k) => `${toSnakeCase(k)}`, ' => ', (p) => `({${p}})`);
+  return literalsToPerl(out);
+}
+
+/** Fortran: .TRUE./.FALSE. + no semicolons */
+function fortranGuard(g: string): string {
+  return literalsToFortran(stripSemicolons(g));
+}
+
+/** C/C++: designated initializer style `.key = val` */
+function cStructGuard(g: string): string {
+  return convertObjectArgs(g, (k) => `.${toSnakeCase(k)}`, ' = ', (p) => `((struct){ ${p} })`);
+}
+
+/** Clojure: `({ key: val })` → `({:key val})` */
+function clojureGuard(g: string): string {
+  let out = g.replace(/\(\{([^}]*)\}\)/g, (_m, inner: string) => {
+    const pairs = inner.split(',').map(p => p.trim()).filter(Boolean).map(pair => {
+      const ci = pair.indexOf(':');
+      if (ci === -1) return pair;
+      const k = pair.slice(0, ci).trim().replace(/['"]/g, '');
+      const v = pair.slice(ci + 1).trim();
+      return `:${toSnakeCase(k)} ${v}`;
+    });
+    return `({${pairs.join(' ')}})`;
+  });
+  out = nullToNil(out);
+  return stripSemicolons(out);
+}
+
+/** Erlang: `({ key: val })` → `(#{key => val})` */
+function erlangGuard(g: string): string {
+  let out = convertObjectArgs(g, toSnakeCase, ' => ', (p) => `(#{${p}})`);
+  return nullToUndefined(out);
+}
+
+/** OCaml: labeled args `~key:val` + None */
+function ocamlGuard(g: string): string {
+  let out = jsArgsToKwargs(g, (k) => `~${toSnakeCase(k)}:`, '');
+  out = nullToNone(out);
+  return stripSemicolons(out);
+}
+
+/** F#: named args PascalCase + None */
+function fsharpGuard(g: string): string {
+  let out = jsArgsToKwargs(g, toPascalCase, ' = ');
+  out = nullToNone(out);
+  return stripSemicolons(out);
+}
+
+/** Nim: snake_case named args + nil */
+function nimGuard(g: string): string {
+  let out = jsArgsToKwargs(g, toSnakeCase, ' = ');
+  out = nullToNil(out);
+  return stripSemicolons(out);
+}
+
+/** Julia: snake_case kwargs + nothing */
+function juliaGuard(g: string): string {
+  let out = jsArgsToKwargs(g, toSnakeCase, '=');
+  out = nullToNothing(out);
+  return stripSemicolons(out);
+}
+
+/** Shell/Bash: guards become comment lines */
+function shellGuard(g: string): string {
+  return g.split('\n').map(line => `# ${line.replace(/;$/, '')}`).join('\n');
+}
+
+/** PowerShell: `@{ Key = val }` hashtable + $true/$false/$null */
+function powershellGuard(g: string): string {
+  let out = convertObjectArgs(g, toPascalCase, ' = ', (p) => `(@{ ${p} })`);
+  out = litsPowerShell(out);
+  return stripSemicolons(out);
+}
+
+/** Objective-C: `@{ @"key": val }` dictionary */
+function objcGuard(g: string): string {
+  return convertObjectArgs(g, (k) => `@"${k}"`, ': ', (p) => `(@{ ${p} })`);
 }
 
 const ADAPTERS: Record<string, LanguageAdapter> = {
@@ -182,7 +334,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s};`).join('\n'),
     constDecl: (name, val) => `static final String ${name} = ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: javaGuard,
     fileExtension: '.java',
   },
   'C#': {
@@ -190,7 +342,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/// <summary>\n${lines.map(l => `/// ${l}`).join('\n')}\n/// </summary>`,
     importStatement: (mod, _syms) => `using ${mod.replace(/@/g, '').replace(/\//g, '.')};`,
     constDecl: (name, val) => `static readonly string ${name} = @"${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: csharpGuard,
     fileExtension: '.cs',
   },
   C: {
@@ -198,7 +350,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#include "${mod}.h"`,
     constDecl: (name, val) => `static const char* ${name} = "${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.c',
   },
   'C++': {
@@ -206,7 +358,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#include "${mod}.hpp"`,
     constDecl: (name, val) => `constexpr auto ${name} = R"(${val})";`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.cpp',
   },
   Ruby: {
@@ -238,7 +390,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `use ${mod.replace(/@/g, '').replace(/\//g, '\\\\')};`,
     constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
-    transformGuard: identityGuard,
+    transformGuard: phpGuard,
     fileExtension: '.php',
   },
   Scala: {
@@ -262,7 +414,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
     importStatement: (mod, _syms) => `library(${mod.split('/').pop()})`,
     constDecl: (name, val) => `${name} <- ${val}`,
-    transformGuard: namedArgGuard,
+    transformGuard: rGuard,
     fileExtension: '.R',
   },
   Dart: {
@@ -270,7 +422,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `import 'package:${mod.replace(/@/g, '')}';`,
     constDecl: (name, val) => `const ${name} = ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: dartGuard,
     fileExtension: '.dart',
   },
   Elixir: {
@@ -287,7 +439,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `-- ${l}`).join('\n'),
     importStatement: (mod, _syms) => `library ${mod.split('/').pop()};\nuse ${mod.split('/').pop()}.all;`,
     constDecl: (name, val) => `constant ${name} : string := "${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: stripSemicolons,
     fileExtension: '.vhd',
   },
   Verilog: {
@@ -312,7 +464,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `=pod\n${lines.join('\n')}\n=cut`,
     importStatement: (mod, _syms) => `use ${mod.replace(/\//g, '::')};`,
     constDecl: (name, val) => `use constant ${name} => ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: perlGuard,
     fileExtension: '.pl',
   },
   Julia: {
@@ -320,7 +472,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `#=\n${lines.join('\n')}\n=#`,
     importStatement: (mod, _syms) => `using ${mod.split('/').pop()}`,
     constDecl: (name, val) => `const ${name} = ${val}`,
-    transformGuard: namedArgGuard,
+    transformGuard: juliaGuard,
     fileExtension: '.jl',
   },
   'F#': {
@@ -328,7 +480,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `(*\n${lines.join('\n')}\n*)`,
     importStatement: (mod, _syms) => `open ${mod.replace(/\//g, '.')}`,
     constDecl: (name, val) => `let [<Literal>] ${name} = ${val}`,
-    transformGuard: identityGuard,
+    transformGuard: fsharpGuard,
     fileExtension: '.fs',
   },
   Clojure: {
@@ -336,7 +488,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `;; ${l}`).join('\n'),
     importStatement: (mod, _syms) => `(require '[${mod.split('/').pop()}])`,
     constDecl: (name, val) => `(def ${name} ${val})`,
-    transformGuard: identityGuard,
+    transformGuard: clojureGuard,
     fileExtension: '.clj',
   },
   Erlang: {
@@ -344,7 +496,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `% ${l}`).join('\n'),
     importStatement: (mod, _syms) => `-include("${mod.split('/').pop()}.hrl").`,
     constDecl: (name, val) => `-define(${name.toUpperCase()}, ${val}).`,
-    transformGuard: identityGuard,
+    transformGuard: erlangGuard,
     fileExtension: '.erl',
   },
   OCaml: {
@@ -352,7 +504,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `(*\n${lines.join('\n')}\n*)`,
     importStatement: (mod, _syms) => `open ${mod.split('/').pop()?.charAt(0).toUpperCase()}${mod.split('/').pop()?.slice(1)}`,
     constDecl: (name, val) => `let ${name} = ${val}`,
-    transformGuard: identityGuard,
+    transformGuard: ocamlGuard,
     fileExtension: '.ml',
   },
   Nim: {
@@ -360,7 +512,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `#[\n${lines.join('\n')}\n]#`,
     importStatement: (mod, _syms) => `import ${mod.split('/').pop()}`,
     constDecl: (name, val) => `const ${name} = ${val}`,
-    transformGuard: identityGuard,
+    transformGuard: nimGuard,
     fileExtension: '.nim',
   },
   Crystal: {
@@ -384,7 +536,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `! ${l}`).join('\n'),
     importStatement: (mod, _syms) => `use ${mod.split('/').pop()}`,
     constDecl: (name, val) => `character(len=*), parameter :: ${name} = "${val}"`,
-    transformGuard: identityGuard,
+    transformGuard: fortranGuard,
     fileExtension: '.f90',
   },
   'Objective-C': {
@@ -392,7 +544,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#import "${mod}.h"`,
     constDecl: (name, val) => `static NSString *const ${name} = @"${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: objcGuard,
     fileExtension: '.m',
   },
   D: {
@@ -408,7 +560,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
     importStatement: (mod, _syms) => `source "${mod}"`,
     constDecl: (name, val) => `readonly ${name}="${val}"`,
-    transformGuard: identityGuard,
+    transformGuard: shellGuard,
     fileExtension: '.sh',
   },
   Bash: {
@@ -416,7 +568,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
     importStatement: (mod, _syms) => `source "${mod}"`,
     constDecl: (name, val) => `readonly ${name}="${val}"`,
-    transformGuard: identityGuard,
+    transformGuard: shellGuard,
     fileExtension: '.sh',
   },
   PowerShell: {
@@ -424,7 +576,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `<#\n${lines.join('\n')}\n#>`,
     importStatement: (mod, _syms) => `Import-Module ${mod.split('/').pop()}`,
     constDecl: (name, val) => `Set-Variable -Name "${name}" -Value "${val}" -Option Constant`,
-    transformGuard: identityGuard,
+    transformGuard: powershellGuard,
     fileExtension: '.ps1',
   },
   Solidity: {
@@ -440,7 +592,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#include "${mod}.cuh"`,
     constDecl: (name, val) => `__constant__ const char* ${name} = "${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.cu',
   },
   GLSL: {
@@ -456,7 +608,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: () => '#include <metal_stdlib>',
     constDecl: (name, val) => `constant auto ${name} = ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.metal',
   },
   WGSL: {
