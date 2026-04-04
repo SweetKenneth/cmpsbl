@@ -142,7 +142,7 @@ export const publicRoutes = (
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/memory-stream" element={<Foundry />} />
     <Route path="/proof" element={<ProofMode />} />
-    <Route path="/showcase" element={<STierDemos />} />
+    <Route path="/showcase" element={<Navigate to="/" replace />} />
     <Route path="/publication" element={<Publication />} />
     <Route path="/documentation" element={<Documentation />} />
     <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
