@@ -460,7 +460,7 @@ const ARDUPILOT_PRIMITIVES = [
   { name: 'GRIPPER', category: 'Agent', contribution: 'Manipulation and adaptive grasp planning' },
   { name: 'MARSHAL', category: 'Agent', contribution: 'Safety monitoring and collision avoidance' },
   { name: 'CONSCIENCE', category: 'Organ', contribution: 'Ethical decision boundaries' },
-  { name: 'LINGUA', category: 'Organ', contribution: 'Structured language interpretation' },
+  { name: 'LINGUA', category: 'Engine', contribution: 'Structured language interpretation' },
   { name: 'SHADOW', category: 'Layer', contribution: 'Shadow testing and canary analysis' },
   { name: 'BRAIN', category: 'Organ', contribution: 'Continuous learning patterns' },
   { name: 'HARVEST', category: 'Organ', contribution: 'Dead code identification and pruning' },
