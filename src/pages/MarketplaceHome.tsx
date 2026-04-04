@@ -529,7 +529,7 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
           </div>
 
           {/* Description */}
-          <p className="text-[11px] text-muted-foreground/80 leading-relaxed line-clamp-3">
+          <p className="text-[11px] text-muted-foreground/80 leading-relaxed">
             {item.description}
           </p>
 
