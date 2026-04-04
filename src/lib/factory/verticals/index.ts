@@ -58,6 +58,19 @@ export {
 } from './llm';
 
 export {
+  getAgencySubstrate,
+  getAgencyPrimitives,
+  getAgencyEngines,
+  getAgencyAgents,
+  getAllAgencyCapabilities,
+  getAgencyCrownJewels,
+  getAgencyPrimitiveCrownJewels,
+  getAgencyCrownJewelSummary,
+  getAgencyCrownJewelCount,
+  getAgencyCrownJewelCapabilities,
+} from './agency';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
