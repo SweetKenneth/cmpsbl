@@ -87,6 +87,11 @@ export const LANG_MAP: Record<string, string> = {
   // ═══ Markup / Data ═══
   json: 'JSON', yaml: 'YAML', yml: 'YAML', toml: 'TOML', xml: 'XML',
   md: 'Markdown', txt: 'Text', csv: 'CSV', ini: 'INI',
+  cfg: 'Config', conf: 'Config', env: 'Environment',
+  cmake: 'CMake', make: 'Makefile', mk: 'Makefile',
+  gradle: 'Gradle', sbt: 'SBT',
+  nix: 'Nix', dhall: 'Dhall',
+  jsonnet: 'Jsonnet', libsonnet: 'Jsonnet',
 
   // ═══ WebAssembly ═══
   wat: 'WebAssembly Text', wast: 'WebAssembly',
