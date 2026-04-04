@@ -221,6 +221,8 @@ const NotFound = () => {
         )}
       </AnimatePresence>
     </div>
+    <EnhancedFooter />
+    </>
   );
 };
 
