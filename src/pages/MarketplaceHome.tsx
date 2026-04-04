@@ -61,8 +61,40 @@ export default function MarketplaceHome() {
   const [selectedSubstrate, setSelectedSubstrate] = useState<SourceSubstrate | 'all'>('all');
   const [sort, setSort] = useState<SortOption>('featured');
   const [showFilters, setShowFilters] = useState(false);
+  const [buyingId, setBuyingId] = useState<string | null>(null);
 
   const stats = useMemo(() => getInventoryStats(), []);
+
+  const handleBuy = useCallback(async (item: MarketplaceItem) => {
+    setBuyingId(item.id);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error('Please sign in to purchase', { description: 'Redirecting to login...' });
+        window.location.href = `/auth?redirect=/marketplace`;
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
+        body: {
+          product_type: 'capability',
+          unit_amount_usd: Math.round(item.priceCents / 100),
+          item_name: `CMPSBL: ${item.title}`,
+          capability_id: item.sourceId,
+          product_id: item.slug,
+        },
+      });
+
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (err) {
+      toast.error('Checkout failed', { description: err instanceof Error ? err.message : 'Please try again' });
+    } finally {
+      setBuyingId(null);
+    }
+  }, []);
 
   const filteredItems = useMemo(() => {
     let items = [...MERCHANT_INVENTORY];
