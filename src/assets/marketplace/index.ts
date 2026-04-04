@@ -26,6 +26,35 @@ import progressiveMigrationEngine from './progressive-migration-engine.jpg';
 import predictiveIntentPreloader from './predictive-intent-preloader.jpg';
 import contractEvolutionMediator from './contract-evolution-mediator.jpg';
 
+// New batch
+import autonomousHealingOrchestrator from './autonomous-healing-orchestrator.jpg';
+import recursiveValueExtractor from './recursive-value-extractor.jpg';
+import cognitiveLoadBalancer from './cognitive-load-balancer.jpg';
+import zeroKnowledgeProofValidator from './zero-knowledge-proof-validator.jpg';
+import emergentPatternSynthesizer from './emergent-pattern-synthesizer.jpg';
+import threatGenomeSequencer from './threat-genome-sequencer.jpg';
+import phantomDecoyNetwork from './phantom-decoy-network.jpg';
+import cryptographicAgilityLayer from './cryptographic-agility-layer.jpg';
+import behavioralBiometricAuthenticator from './behavioral-biometric-authenticator.jpg';
+import supplyChainIntegrityVerifier from './supply-chain-integrity-verifier.jpg';
+import swarmConsensusArbiter from './swarm-consensus-arbiter.jpg';
+import kinematicChainSolver from './kinematic-chain-solver.jpg';
+import predictiveMaintenanceOracle from './predictive-maintenance-oracle.jpg';
+import terrainAdaptationController from './terrain-adaptation-controller.jpg';
+import multiSensorFusionEngine from './multi-sensor-fusion-engine.jpg';
+import entanglementStateManager from './entanglement-state-manager.jpg';
+import decoherenceShieldProtocol from './decoherence-shield-protocol.jpg';
+import quantumErrorCorrectionEngine from './quantum-error-correction-engine.jpg';
+import superpositionDecisionTree from './superposition-decision-tree.jpg';
+import hallucinationDetectionGrid from './hallucination-detection-grid.jpg';
+import promptInjectionFirewall from './prompt-injection-firewall.jpg';
+import semanticDriftMonitor from './semantic-drift-monitor.jpg';
+import tokenEconomyOptimizer from './token-economy-optimizer.jpg';
+import autonomousBudgetAllocator from './autonomous-budget-allocator.jpg';
+import delegationAuthorityChain from './delegation-authority-chain.jpg';
+import conflictResolutionMatrix from './conflict-resolution-matrix.jpg';
+import collectiveIntelligenceAggregator from './collective-intelligence-aggregator.jpg';
+
 export const MARKETPLACE_IMAGES: Record<string, string> = {
   'predictive-oracle-engine': predictiveOracleEngine,
   'recursive-capability-discoverer': recursiveCapabilityDiscoverer,
@@ -50,4 +79,32 @@ export const MARKETPLACE_IMAGES: Record<string, string> = {
   'progressive-migration-engine': progressiveMigrationEngine,
   'predictive-intent-preloader': predictiveIntentPreloader,
   'contract-evolution-mediator': contractEvolutionMediator,
+  // New items
+  'autonomous-healing-orchestrator': autonomousHealingOrchestrator,
+  'recursive-value-extractor': recursiveValueExtractor,
+  'cognitive-load-balancer': cognitiveLoadBalancer,
+  'zero-knowledge-proof-validator': zeroKnowledgeProofValidator,
+  'emergent-pattern-synthesizer': emergentPatternSynthesizer,
+  'threat-genome-sequencer': threatGenomeSequencer,
+  'phantom-decoy-network': phantomDecoyNetwork,
+  'cryptographic-agility-layer': cryptographicAgilityLayer,
+  'behavioral-biometric-authenticator': behavioralBiometricAuthenticator,
+  'supply-chain-integrity-verifier': supplyChainIntegrityVerifier,
+  'swarm-consensus-arbiter': swarmConsensusArbiter,
+  'kinematic-chain-solver': kinematicChainSolver,
+  'predictive-maintenance-oracle': predictiveMaintenanceOracle,
+  'terrain-adaptation-controller': terrainAdaptationController,
+  'multi-sensor-fusion-engine': multiSensorFusionEngine,
+  'entanglement-state-manager': entanglementStateManager,
+  'decoherence-shield-protocol': decoherenceShieldProtocol,
+  'quantum-error-correction-engine': quantumErrorCorrectionEngine,
+  'superposition-decision-tree': superpositionDecisionTree,
+  'hallucination-detection-grid': hallucinationDetectionGrid,
+  'prompt-injection-firewall': promptInjectionFirewall,
+  'semantic-drift-monitor': semanticDriftMonitor,
+  'token-economy-optimizer': tokenEconomyOptimizer,
+  'autonomous-budget-allocator': autonomousBudgetAllocator,
+  'delegation-authority-chain': delegationAuthorityChain,
+  'conflict-resolution-matrix': conflictResolutionMatrix,
+  'collective-intelligence-aggregator': collectiveIntelligenceAggregator,
 };
