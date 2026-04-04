@@ -224,8 +224,8 @@ const ROBO_AGENTS: VerticalPrimitive[] = [
     classification: 'passive',
   },
   {
-    id: 'GUARDIAN',
-    name: 'GUARDIAN',
+    id: 'MARSHAL',
+    name: 'MARSHAL',
     role: 'agent',
     description: 'Safety monitoring and collision avoidance agent. Enforces safety zones, monitors human proximity, and triggers protective stops per ISO 10218 and ISO/TS 15066.',
     inherited: false,
