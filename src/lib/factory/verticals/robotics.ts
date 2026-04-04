@@ -333,7 +333,7 @@ export function getRoboticsSubstrate(): VerticalSubstrateConfig {
         'quality_inspection_algorithms',
         'exploration_frontier_heuristics',
       ],
-      priorityPrimitives: ['SERVO', 'GUARDIAN', 'KINETIC', 'LIDAR'],
+      priorityPrimitives: ['SERVO', 'MARSHAL', 'KINETIC', 'LIDAR'],
       batchSize: 4,
     },
     memoryStreamConfig: {
