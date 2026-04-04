@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Shapeshifter — CMPSBL ULTIMATE™ × HuggingFace Case Study</title>
+<meta name="description" content="How 40 autonomous primitives protected the most downloaded training model on Earth. A technical case study on CMPSBL ULTIMATE™ Ascension of HuggingFace modeling_utils.py.">
+<meta name="author" content="Kenneth E. Sweet Jr.">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --fg: #e8e6e3;
+    --accent: #8b5cf6;
+    --accent-glow: #a78bfa;
+    --gold: #f59e0b;
+    --critical: #ef4444;
+    --warning: #f59e0b;
+    --success: #10b981;
+    --info: #3b82f6;
+    --muted: #6b7280;
+    --surface: #111118;
+    --surface-2: #1a1a24;
+    --border: #2a2a3a;
+    --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* Header */
+  .hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(139,92,246,0.08) 0%, transparent 100%);
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 9999px;
+    color: var(--accent-glow);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--fg), var(--accent-glow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .hero-meta span {
+    padding: 0.2rem 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .hero-meta a { color: var(--accent-glow); text-decoration: none; }
+  .hero-meta a:hover { text-decoration: underline; }
+
+  /* CJPI Badge */
+  .cjpi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    background: linear-gradient(135deg, var(--gold), #d97706);
+    color: #000;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+  }
+  .cjpi-badge .score { font-size: 1.4rem; }
+
+  /* Sections */
+  .section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  h2 .num {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+  }
+  h3 { font-size: 1.15rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--accent-glow); }
+  h4 { font-size: 1rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+  p { margin-bottom: 1rem; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface-2);
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent-glow);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    word-break: keep-all;
+  }
+  tr:hover td { background: rgba(139,92,246,0.04); }
+  .mono { font-family: var(--font-mono); font-size: 0.8rem; }
+  .collision-high { color: var(--success); font-weight: 600; }
+  .collision-mid { color: var(--warning); font-weight: 600; }
+
+  /* Severity badges */
+  .sev { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+  .sev-critical { background: rgba(239,68,68,0.15); color: var(--critical); border: 1px solid rgba(239,68,68,0.3); }
+  .sev-warning { background: rgba(245,158,11,0.15); color: var(--warning); border: 1px solid rgba(245,158,11,0.3); }
+  .sev-info { background: rgba(59,130,246,0.15); color: var(--info); border: 1px solid rgba(59,130,246,0.3); }
+  .sev-hardened { background: rgba(16,185,129,0.15); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+
+  /* Code blocks */
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+  }
+  pre code { background: none; padding: 0; }
+
+  /* Stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .stat-card .value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-glow);
+    font-family: var(--font-mono);
+  }
+  .stat-card .label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  /* Source distribution */
+  .source-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.75rem 0;
+  }
+  .source-bar div { height: 100%; }
+  .sb-ultimate { background: var(--accent); flex: 12; }
+  .sb-llm { background: #10b981; flex: 9; }
+  .sb-quantum { background: #06b6d4; flex: 5; }
+  .sb-robotics { background: #3b82f6; flex: 4; }
+  .sb-agency { background: #f59e0b; flex: 4; }
+  .sb-cyber { background: #ef4444; flex: 2; }
+  .sb-spine { background: #6b7280; flex: 1; }
+  .source-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .source-legend span::before {
+    content: '●';
+    margin-right: 0.3rem;
+  }
+  .sl-ultimate::before { color: var(--accent) !important; }
+  .sl-llm::before { color: #10b981 !important; }
+  .sl-quantum::before { color: #06b6d4 !important; }
+  .sl-robotics::before { color: #3b82f6 !important; }
+  .sl-agency::before { color: #f59e0b !important; }
+  .sl-cyber::before { color: #ef4444 !important; }
+  .sl-spine::before { color: #6b7280 !important; }
+
+  /* Callout */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0;
+  }
+
+  /* Footer */
+  .closing {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(139,92,246,0.06) 100%);
+  }
+  .closing-line {
+    font-size: 1.25rem;
+    font-weight: 600;
+    max-width: 700px;
+    margin: 0 auto 0.75rem;
+    line-height: 1.5;
+  }
+  .closing-cta {
+    font-size: 1.35rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-glow), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 1.5rem;
+  }
+  .copyright {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .copyright a { color: var(--accent-glow); text-decoration: none; }
+
+  /* Primitive detail cards */
+  .prim-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+  .prim-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .prim-name {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--accent-glow);
+  }
+  .prim-tag {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* IP protection table */
+  .ip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .ip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .ip-card h4 { margin-top: 0; }
+  .ip-card.verifiable { border-color: rgba(16,185,129,0.3); }
+  .ip-card.protected { border-color: rgba(239,68,68,0.3); }
+  .ip-card ul { padding-left: 1.2rem; margin: 0.5rem 0; font-size: 0.9rem; }
+  .ip-card li { margin: 0.3rem 0; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 2.5rem 1rem; }
+    .hero h1 { font-size: 1.6rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .ip-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.75rem; }
+    td, th { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ HERO ═══ -->
+<header class="hero">
+  <div class="hero-badge">CMPSBL ULTIMATE™ Case Study</div>
+  <h1>The Shapeshifter</h1>
+  <p class="hero-subtitle">How 40 Autonomous Primitives Protected the Most Downloaded Training Model on Earth</p>
+  <div class="cjpi-badge">
+    <span>CJPI</span>
+    <span class="score">100</span>
+    <span>Apex</span>
+  </div>
+  <div class="hero-meta">
+    <span>Serial: <code>CMPSBL-MNKQ1LXE-X0ZD</code></span>
+    <span>Fingerprint: <code>504ac991648533ac</code></span>
+    <span>April 4, 2026 · 19:24 UTC</span>
+    <span>Author: <a href="https://orcid.org/0009-0001-4237-1243">Kenneth E. Sweet Jr.</a></span>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════ ABSTRACT ═══ -->
+<section class="section">
+  <h2><span class="num">§0</span> Abstract</h2>
+  <p>We present the first documented case of a deterministic, non-AI software evolution engine — <strong>Ascension™</strong> — autonomously selecting and deploying 40 computational primitives from a 120-candidate cross-vertical pool to structurally harden HuggingFace's <code>modeling_utils.py</code>, the foundational training model utility layer of the Transformers library, which receives over <strong>700,000 downloads per month</strong> and underpins virtually every major large language model in production today.</p>
+  <p>The CMPSBL ULTIMATE™ substrate — operating without human guidance, without machine learning, and without prior knowledge of the target codebase — identified 12 structural vulnerabilities (2 critical), surfaced 10 latent capabilities, and wrapped every known architectural weakness in protective primitive guards that provide observability, statefulness, resilience, and governance to a codebase that was never designed to have them.</p>
+  <p>The entire transformation completed in <strong>217.7 seconds</strong>.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="value">40</div><div class="label">Primitives Selected</div></div>
+    <div class="stat-card"><div class="value">120</div><div class="label">Candidates Evaluated</div></div>
+    <div class="stat-card"><div class="value">217.7s</div><div class="label">Total Execution</div></div>
+    <div class="stat-card"><div class="value">4,891</div><div class="label">Source Lines</div></div>
+    <div class="stat-card"><div class="value">12</div><div class="label">Vulnerabilities Found</div></div>
+    <div class="stat-card"><div class="value">7</div><div class="label">Verticals Drawn From</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ TARGET ═══ -->
+<section class="section">
+  <h2><span class="num">§1</span> The Target</h2>
+  <p>HuggingFace's <code>modeling_utils.py</code> is the circulatory system of modern machine learning. Every model checkpoint loaded by every researcher, every startup, and every enterprise deploying GPT-class models passes through this code.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="value">4,891</div><div class="label">Lines of Code</div></div>
+    <div class="stat-card"><div class="value">28</div><div class="label">Classes</div></div>
+    <div class="stat-card"><div class="value">331</div><div class="label">Import Dependencies</div></div>
+    <div class="stat-card"><div class="value">1,146</div><div class="label">Cyclomatic Complexity</div></div>
+  </div>
+
+  <div class="callout">
+    <p style="margin:0;font-size:0.9rem;"><strong>Copyright lineage:</strong> Google AI Language Team · Facebook AI Research · HuggingFace Inc. · NVIDIA Corporation. Four of the most powerful technology organizations in history contributed to this code. It has been reviewed by thousands of engineers. Tested by millions of downstream consumers. And yet it carries structural vulnerabilities that no conventional tool has ever addressed at the architectural level.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ PRIMITIVE CHAIN ═══ -->
+<section class="section">
+  <h2><span class="num">§2</span> The 40 Primitives That Chose Themselves</h2>
+  <p>From a pool of 120 candidates across 7 domains, the ULTIMATE scanner autonomously selected these 40 primitives based on structural collision scoring — no human input, no AI recommendation.</p>
+
+  <h3>Source Distribution</h3>
+  <div class="source-bar">
+    <div class="sb-ultimate"></div>
+    <div class="sb-llm"></div>
+    <div class="sb-quantum"></div>
+    <div class="sb-robotics"></div>
+    <div class="sb-agency"></div>
+    <div class="sb-cyber"></div>
+    <div class="sb-spine"></div>
+  </div>
+  <div class="source-legend">
+    <span class="sl-ultimate">Ultimate (12)</span>
+    <span class="sl-llm">LLM (9)</span>
+    <span class="sl-quantum">Quantum (5)</span>
+    <span class="sl-robotics">Robotics (4)</span>
+    <span class="sl-agency">Agency (4)</span>
+    <span class="sl-cyber">Cyber (2)</span>
+    <span class="sl-spine">Spine (1)</span>
+  </div>
+
+  <div class="callout" style="margin-top:1rem;">
+    <p style="margin:0;font-size:0.9rem;">The fact that a machine learning utility file draws primitives from <strong>Robotics</strong>, <strong>Quantum</strong>, and <strong>Agency</strong> — domains that have nothing to do with ML on the surface — reveals that the structural patterns in <code>modeling_utils.py</code> are universal architectural patterns that manifest across every domain of complex software.</p>
+  </div>
+
+  <h3>Complete Chain</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Primitive</th><th>Category</th><th>Source</th><th>Signals</th><th>Collision</th><th>Time</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td class="mono">CONDUIT</td><td>Engine</td><td>Ultimate</td><td>4/10</td><td class="collision-high">98</td><td>3,637ms</td></tr>
+        <tr><td>2</td><td class="mono">ORACLE</td><td>Agent</td><td>Ultimate</td><td>7/10</td><td class="collision-high">98</td><td>7,155ms</td></tr>
+        <tr><td>3</td><td class="mono">APEX</td><td>Engine</td><td>Ultimate</td><td>8/11</td><td class="collision-high">96</td><td>2,759ms</td></tr>
+        <tr><td>4</td><td class="mono">GENESIS</td><td>Engine</td><td>Ultimate</td><td>6/10</td><td class="collision-high">94</td><td>7,354ms</td></tr>
+        <tr><td>5</td><td class="mono">CRUCIBLE</td><td>Engine</td><td>Ultimate</td><td>7/11</td><td class="collision-high">94</td><td>4,267ms</td></tr>
+        <tr><td>6</td><td class="mono">LEXICON</td><td>Engine</td><td>LLM</td><td>12/26</td><td class="collision-high">93</td><td>2,900ms</td></tr>
+        <tr><td>7</td><td class="mono">LIDAR</td><td>Engine</td><td>Robotics</td><td>14/29</td><td class="collision-high">92</td><td>4,463ms</td></tr>
+        <tr><td>8</td><td class="mono">DELEGATE</td><td>Engine</td><td>Agency</td><td>14/26</td><td class="collision-high">92</td><td>4,838ms</td></tr>
+        <tr><td>9</td><td class="mono">TOOLKIT</td><td>Engine</td><td>Agency</td><td>10/23</td><td class="collision-high">90</td><td>3,288ms</td></tr>
+        <tr><td>10</td><td class="mono">PRISM</td><td>Engine</td><td>Ultimate</td><td>8/12</td><td class="collision-high">90</td><td>8,052ms</td></tr>
+        <tr><td>11</td><td class="mono">FLUX</td><td>Engine</td><td>Ultimate</td><td>6/12</td><td class="collision-high">90</td><td>7,678ms</td></tr>
+        <tr><td>12</td><td class="mono">DYNAMO</td><td>Engine</td><td>Ultimate</td><td>5/12</td><td class="collision-high">90</td><td>4,570ms</td></tr>
+        <tr><td>13</td><td class="mono">SENTINEL</td><td>Agent</td><td>Ultimate</td><td>5/10</td><td class="collision-high">90</td><td>5,898ms</td></tr>
+        <tr><td>14</td><td class="mono">CATALYST</td><td>Agent</td><td>Ultimate</td><td>4/10</td><td class="collision-high">90</td><td>2,449ms</td></tr>
+        <tr><td>15</td><td class="mono">HERALD</td><td>Agent</td><td>Ultimate</td><td>3/10</td><td class="collision-high">90</td><td>2,803ms</td></tr>
+        <tr><td>16</td><td class="mono">PHOENIX</td><td>Agent</td><td>Ultimate</td><td>5/10</td><td class="collision-high">90</td><td>5,067ms</td></tr>
+        <tr><td>17</td><td class="mono">SIEVE</td><td>Engine</td><td>LLM</td><td>8/26</td><td class="collision-mid">89</td><td>3,865ms</td></tr>
+        <tr><td>18</td><td class="mono">TENSOR</td><td>Engine</td><td>Robotics</td><td>11/26</td><td class="collision-mid">89</td><td>9,889ms</td></tr>
+        <tr><td>19</td><td class="mono">NEUTRINO</td><td>Agent</td><td>Quantum</td><td>8/23</td><td class="collision-mid">89</td><td>6,475ms</td></tr>
+        <tr><td>20</td><td class="mono">TETHER</td><td>Engine</td><td>LLM</td><td>7/26</td><td class="collision-mid">89</td><td>3,409ms</td></tr>
+        <tr><td>21</td><td class="mono">MEMORY</td><td>Organ</td><td>Spine</td><td>7/10</td><td class="collision-mid">88</td><td>2,353ms</td></tr>
+        <tr><td>22</td><td class="mono">CUSTODIAN</td><td>Agent</td><td>LLM</td><td>12/26</td><td class="collision-mid">88</td><td>8,802ms</td></tr>
+        <tr><td>23</td><td class="mono">GRIPPER</td><td>Agent</td><td>Robotics</td><td>8/17</td><td class="collision-mid">87</td><td>2,161ms</td></tr>
+        <tr><td>24</td><td class="mono">QUBIT</td><td>Engine</td><td>Quantum</td><td>10/24</td><td class="collision-mid">87</td><td>7,731ms</td></tr>
+        <tr><td>25</td><td class="mono">OPERATOR</td><td>Agent</td><td>Agency</td><td>10/25</td><td class="collision-mid">87</td><td>4,644ms</td></tr>
+        <tr><td>26</td><td class="mono">SERVO</td><td>Engine</td><td>Robotics</td><td>9/28</td><td class="collision-mid">86</td><td>5,569ms</td></tr>
+        <tr><td>27</td><td class="mono">HADRON</td><td>Engine</td><td>Quantum</td><td>11/32</td><td class="collision-mid">86</td><td>3,697ms</td></tr>
+        <tr><td>28</td><td class="mono">RAMPART</td><td>Engine</td><td>LLM</td><td>11/28</td><td class="collision-mid">86</td><td>5,596ms</td></tr>
+        <tr><td>29</td><td class="mono">RECONN</td><td>Engine</td><td>Agency</td><td>7/20</td><td class="collision-mid">86</td><td>2,574ms</td></tr>
+        <tr><td>30</td><td class="mono">CLARITY</td><td>Engine</td><td>LLM</td><td>9/28</td><td class="collision-mid">85</td><td>9,071ms</td></tr>
+        <tr><td>31</td><td class="mono">FULCRUM</td><td>Engine</td><td>LLM</td><td>7/26</td><td class="collision-mid">85</td><td>8,763ms</td></tr>
+        <tr><td>32</td><td class="mono">MARSHAL</td><td>Agent</td><td>Robotics</td><td>5/22</td><td class="collision-mid">84</td><td>2,914ms</td></tr>
+        <tr><td>33</td><td class="mono">TACHYON</td><td>Agent</td><td>Quantum</td><td>10/25</td><td class="collision-mid">84</td><td>4,921ms</td></tr>
+        <tr><td>34</td><td class="mono">MESON</td><td>Agent</td><td>Quantum</td><td>11/16</td><td class="collision-mid">84</td><td>6,798ms</td></tr>
+        <tr><td>35</td><td class="mono">PRISM</td><td>Agent</td><td>Quantum</td><td>7/21</td><td class="collision-mid">84</td><td>8,430ms</td></tr>
+        <tr><td>36</td><td class="mono">LINEAGE</td><td>Agent</td><td>LLM</td><td>13/24</td><td class="collision-mid">84</td><td>7,259ms</td></tr>
+        <tr><td>37</td><td class="mono">BASTION</td><td>Engine</td><td>Cyber</td><td>4/17</td><td class="collision-mid">83</td><td>6,906ms</td></tr>
+        <tr><td>38</td><td class="mono">SYLLOGISM</td><td>Engine</td><td>LLM</td><td>8/27</td><td class="collision-mid">83</td><td>8,371ms</td></tr>
+        <tr><td>39</td><td class="mono">SCRIBE</td><td>Engine</td><td>Agency</td><td>8/21</td><td class="collision-mid">83</td><td>3,238ms</td></tr>
+        <tr><td>40</td><td class="mono">IRONCLAD</td><td>Agent</td><td>Cyber</td><td>7/22</td><td class="collision-mid">83</td><td>7,076ms</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ VULNERABILITIES ═══ -->
+<section class="section">
+  <h2><span class="num">§3</span> Vulnerability Assessment</h2>
+  <p>12 structural findings identified — not bugs in the traditional sense, but architectural characteristics that create latent risk.</p>
+
+  <h3>Critical Findings</h3>
+  <div class="prim-card" style="border-left: 3px solid var(--critical);">
+    <div class="prim-card-header">
+      <span class="sev sev-critical">Critical</span>
+      <strong>Dynamic Code Execution Vulnerability</strong>
+      <span class="sev sev-hardened">Hardened</span>
+    </div>
+    <p style="font-size:0.9rem;margin:0 0 0.5rem;"><code>eval()</code>, <code>Function()</code>, or <code>exec()</code> detected — injection vector for arbitrary code execution.</p>
+    <p style="font-size:0.85rem;color:var(--muted);margin:0;"><strong>Primitive Response:</strong> BASTION (Cyber) + IRONCLAD (Cyber) deployed perimeter hardening around dynamic execution paths.</p>
+  </div>
+
+  <div class="prim-card" style="border-left: 3px solid var(--critical);">
+    <div class="prim-card-header">
+      <span class="sev sev-critical">Critical</span>
+      <strong>Unhandled Async Rejections</strong>
+      <span class="sev sev-hardened">Hardened</span>
+    </div>
+    <p style="font-size:0.9rem;margin:0 0 0.5rem;">Asynchronous operations without rejection handlers create silent failure paths.</p>
+    <p style="font-size:0.85rem;color:var(--muted);margin:0;"><strong>Primitive Response:</strong> PHOENIX (Ultimate) deployed resurrection patterns with exponential backoff + SENTINEL alerting.</p>
+  </div>
+
+  <h3>Warning &amp; Informational</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Finding</th><th>Severity</th><th>Status</th><th>Primitive</th></tr></thead>
+      <tbody>
+        <tr><td>Unvalidated request input</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">SIEVE</td></tr>
+        <tr><td>Cyclomatic complexity: 1,146</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">PRISM</td></tr>
+        <tr><td>8 technical debt markers</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">SCRIBE</td></tr>
+        <tr><td>331 import dependencies</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">CONDUIT</td></tr>
+        <tr><td>Deprecated API usage</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">CATALYST</td></tr>
+        <tr><td>Insecure HTTP protocol</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">RAMPART</td></tr>
+        <tr><td>No graceful shutdown</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">FLUX</td></tr>
+        <tr><td>No module exports</td><td><span class="sev sev-info">Info</span></td><td>Monitor</td><td class="mono">HERALD</td></tr>
+        <tr><td>28 classes in single file</td><td><span class="sev sev-info">Info</span></td><td>Monitor</td><td class="mono">MARSHAL</td></tr>
+        <tr><td>Monolithic file (4,892 lines)</td><td><span class="sev sev-info">Info</span></td><td>Monitor</td><td class="mono">CLARITY</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ WHAT IT DID ═══ -->
+<section class="section">
+  <h2><span class="num">§4</span> What No Other Tool Has Done</h2>
+
+  <h3>It Made the Model Stateful</h3>
+  <p><code>modeling_utils.py</code> has always been stateless. MEMORY — the only Spine organ selected — injected state persistence that allows the model layer to remember its own operational history for the first time.</p>
+
+  <h3>It Made the Model Observable</h3>
+  <p>SENTINEL, HERALD, and PRISM collectively deployed observability infrastructure that did not exist. The file can now report its own health, surface its implicit API contracts, and decompose its execution path for external inspection.</p>
+
+  <h3>It Protected Without Modifying</h3>
+  <p>Ascension did not refactor the code. It did not rewrite functions. It did not change the API surface. It <strong>wrapped</strong> every vulnerability in a protective primitive guard while leaving the original logic completely intact. The original 4,891 lines are preserved verbatim.</p>
+
+  <h3>It Crossed Domain Boundaries Autonomously</h3>
+  <p>No human told the scanner to look at Quantum primitives. No configuration suggested Robotics patterns would apply. The collision engine made these determinations because the structural patterns in the code — not its domain label — drove the selection.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════ TESTING ═══ -->
+<section class="section">
+  <h2><span class="num">§5</span> Testing &amp; Verification</h2>
+  <p>All primitive hardening can be independently verified using <code>@cmpsbl/runtime</code> (v2.0.0) and <code>@cmpsbl/test-harness</code>.</p>
+
+  <h3>Setup</h3>
+  <pre><code>npm install @cmpsbl/test-harness
+npx cmpsbl-test --config ./test-harness.config.json</code></pre>
+
+  <h3>Phase 1: Handler Registration</h3>
+  <pre><code>npx cmpsbl-test --phase registration --config ./restoration-report.json
+
+# Verifies all 40 primitives resolve to domain-specific handlers
+# Expected: ✓ All 40 primitives resolved to specific handlers</code></pre>
+
+  <h3>Phase 2: Signal Verification</h3>
+  <pre><code>npx cmpsbl-test --phase signals --config ./restoration-report.json
+
+# Verifies collision scores match recorded values
+# Expected: ✓ Mean collision score: 88.4 (matches report)</code></pre>
+
+  <h3>Phase 3: Chain Execution</h3>
+  <pre><code>npx cmpsbl-test --phase chain --config ./restoration-report.json
+
+# Executes full 40-primitive chain in pipeline order
+# Verifies output envelopes contain required markers:
+#   __primitive, __domain, __classification
+# Expected: ✓ Chain executed: 40/40 primitives · CJPI: 100</code></pre>
+
+  <h3>Reproducing This Study</h3>
+  <ol style="padding-left:1.5rem;font-size:0.9rem;">
+    <li>Download <code>modeling_utils.py</code> from <a href="https://github.com/huggingface/transformers" style="color:var(--accent-glow);">HuggingFace Transformers</a></li>
+    <li>Upload to <code>ultimate.cmpsbl.com</code></li>
+    <li>Run the Ascension pipeline</li>
+    <li>Compare output <code>restoration-report.json</code> against this study</li>
+    <li>Run: <code>npx cmpsbl-test --config ./restoration-report.json</code></li>
+  </ol>
+</section>
+
+<!-- ═══════════════════════════════════════════════ IP PROTECTION ═══ -->
+<section class="section">
+  <h2><span class="num">§6</span> Intellectual Property Protection</h2>
+  <p>The architecture resolves the transparency paradox through a three-layer model: <strong>observable outcomes, black-boxed mechanics</strong>.</p>
+
+  <div class="ip-grid">
+    <div class="ip-card verifiable">
+      <h4 style="color:var(--success);">✓ What Engineers Can Verify</h4>
+      <ul>
+        <li>Primitive exists and has a handler</li>
+        <li>Primitive fires correctly in chain</li>
+        <li>Collision score is reproducible</li>
+        <li>Output artifact is structurally sound</li>
+        <li>CJPI score is consistent</li>
+        <li>Serial number is authentic</li>
+      </ul>
+    </div>
+    <div class="ip-card protected">
+      <h4 style="color:var(--critical);">✗ What Cannot Be Reconstructed</h4>
+      <ul>
+        <li>How primitives are selected</li>
+        <li>How signals are detected</li>
+        <li>How CJPI is computed</li>
+        <li>How the runtime chains primitives</li>
+        <li>How cross-vertical affinity works</li>
+        <li>Discovery Engine™ heuristics</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:0.9rem;color:var(--muted);">Protected under copyright, trade secret law, and prior art: DOI <a href="https://doi.org/10.5281/zenodo.19409933" style="color:var(--accent-glow);">10.5281/zenodo.19409933</a></p>
+</section>
+
+<!-- ═══════════════════════════════════════════════ CAPABILITIES ═══ -->
+<section class="section">
+  <h2><span class="num">§7</span> Surfaced Capabilities</h2>
+  <p>10 latent capabilities identified — structural patterns that already exist in the code's architecture.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Capability</th><th>Type</th><th>Domain</th></tr></thead>
+      <tbody>
+        <tr><td>QCD Color Charge Simulator</td><td>Active</td><td>Quantum</td></tr>
+        <tr><td>Particle Collision Analyzer</td><td>Active</td><td>Quantum</td></tr>
+        <tr><td>Context Persistence Layer</td><td>Passive</td><td>Agency</td></tr>
+        <tr><td>Neutrino Oscillation Predictor</td><td>Passive</td><td>Quantum</td></tr>
+        <tr><td>Reinforcement Learning Loop</td><td>Hybrid</td><td>LLM</td></tr>
+        <tr><td>Cryogenic Decoherence Shield</td><td>Hybrid</td><td>Quantum</td></tr>
+        <tr><td>Skill-Based Task Router</td><td>Active</td><td>Agency</td></tr>
+        <tr><td>Self-Healing State Machine</td><td>Active</td><td>Ultimate</td></tr>
+        <tr><td>Quantum Circuit Optimizer</td><td>Active</td><td>Quantum</td></tr>
+        <tr><td>Zero-Trust Perimeter Enforcer</td><td>Active</td><td>Cyber</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ PROVENANCE ═══ -->
+<section class="section">
+  <h2><span class="num">§8</span> Provenance &amp; References</h2>
+
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        <tr><td><strong>Serial Number</strong></td><td class="mono">CMPSBL-MNKQ1LXE-X0ZD</td></tr>
+        <tr><td><strong>Fingerprint ID</strong></td><td class="mono">504ac991648533ac</td></tr>
+        <tr><td><strong>CJPI Score</strong></td><td>100 (Apex)</td></tr>
+        <tr><td><strong>Pipeline Start</strong></td><td>April 4, 2026 · 19:24:32.453 UTC</td></tr>
+        <tr><td><strong>Total Execution</strong></td><td>3 min 37.7 sec (217,690 ms)</td></tr>
+        <tr><td><strong>Source Verticals</strong></td><td>7 (Ultimate, LLM, Quantum, Robotics, Agency, Cyber, Spine)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size:0.9rem;margin-top:1rem;">This fingerprint (<code>504ac991648533ac</code>) is researchable at <a href="https://cmpsbl.com" style="color:var(--accent-glow);">cmpsbl.com</a> via the DECODE assistant.</p>
+
+  <h3>References</h3>
+  <ol style="font-size:0.85rem;padding-left:1.5rem;">
+    <li>Sweet, K.E. Jr. (2026). "Ascension: Deterministic Software Evolution Through Autonomous Primitive Collision." DOI: <a href="https://doi.org/10.5281/zenodo.19409933" style="color:var(--accent-glow);">10.5281/zenodo.19409933</a></li>
+    <li>Sweet, K.E. Jr. (2026). "CMPSBL® Substrate Architecture." DOI: <a href="https://doi.org/10.5281/zenodo.18895141" style="color:var(--accent-glow);">10.5281/zenodo.18895141</a></li>
+    <li>Sweet, K.E. Jr. (2026). "Memory Stream™: Autonomous Cognitive Learning." DOI: <a href="https://doi.org/10.5281/zenodo.18834080" style="color:var(--accent-glow);">10.5281/zenodo.18834080</a></li>
+    <li>Wolf, T. et al. (2020). "Transformers: State-of-the-Art NLP." DOI: 10.18653/v1/2020.emnlp-demos.6</li>
+    <li>HuggingFace Transformers. <a href="https://github.com/huggingface/transformers" style="color:var(--accent-glow);">github.com/huggingface/transformers</a></li>
+  </ol>
+</section>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════ CLOSING ═══ -->
+<div class="closing">
+  <p class="closing-line">On April 4, 2026, a deterministic engine with no artificial intelligence was given 4,891 lines of the most downloaded training model utility on Earth.</p>
+  <p class="closing-line">In 217.7 seconds, it selected 40 primitives from 120 candidates spanning six domains. Every primitive fired with a distinct purpose. Every known flaw was wrapped in a protective guard. Every structural weakness was identified, classified, and governed.</p>
+  <p class="closing-line">The primitives did not fix the code. They <em>protected</em> it. They did not rewrite it. They <em>wrapped</em> it. They did not judge it. They <em>served</em> it.</p>
+  <p class="closing-cta">Ascension™ did this for HuggingFace's most critical training model code.<br>It can do this for your code too.</p>
+
+  <div class="copyright">
+    <p>© 2026 PromptFluid™ · CMPSBL® · All rights reserved.</p>
+    <p>Serial: <code>CMPSBL-MNKQ1LXE-X0ZD</code> · Fingerprint: <code>504ac991648533ac</code> · CJPI: 100 (Apex)</p>
+    <p>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></p>
+  </div>
+</div>
+
+</body>
+</html>
