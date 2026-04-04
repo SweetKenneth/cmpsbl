@@ -81,17 +81,15 @@ export function useMarketplaceInventory() {
         .eq('is_active', true)
         .order('cjpi_score', { ascending: false });
 
-      if (error) {
-        /** Fallback to static seed if DB read fails */
+      if (error || !data || data.length === 0) {
+        /** Fallback to static seed if DB read fails or is empty */
         return MERCHANT_INVENTORY;
       }
 
-      if (!data || data.length === 0) {
-        /** DB empty — use static seed until first MERCHANT scan populates it */
-        return MERCHANT_INVENTORY;
-      }
+      const dbItems = (data as unknown as DBInventoryRow[]).map(rowToItem);
 
-      return (data as unknown as DBInventoryRow[]).map(rowToItem);
+      /** Use whichever source has more items — DB may lag behind seed after expansion */
+      return dbItems.length >= MERCHANT_INVENTORY.length ? dbItems : MERCHANT_INVENTORY;
     },
     staleTime: 5 * 60_000, // 5 min — MERCHANT scans every 8h so no need for rapid refresh
     refetchOnWindowFocus: false,
