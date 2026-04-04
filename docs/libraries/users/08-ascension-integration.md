@@ -61,11 +61,33 @@ The export contains:
 
 ---
 
-## Supported Languages
+## Supported Languages (90+ extensions)
 
-**Software (18):** JavaScript, TypeScript, Python, Rust, Go, Java, C, C++, C#, Ruby, Swift, Kotlin, PHP, Scala, Lua, R, Dart, Elixir
+**Web / Scripting (16):** JavaScript, TypeScript, Python, Ruby, PHP, Lua, Perl, R, Julia, Groovy, CoffeeScript, Elm, PureScript, Racket, Scheme, Lisp
 
-**Hardware Description (7):** VHDL, Verilog, SystemVerilog, Chisel, SpinalHDL, Amaranth, FIRRTL
+**Systems (8):** Rust, Go, C, C++, Zig, Nim, Crystal, D
+
+**JVM (4):** Java, Kotlin, Scala, Clojure
+
+**.NET (4):** C#, F#, Visual Basic, PowerShell
+
+**Apple / Mobile (3):** Swift, Dart, Objective-C
+
+**Functional (5):** Haskell, OCaml, Erlang, Elixir, PureScript
+
+**Blockchain (5):** Solidity, Vyper, Move, Cairo, Fe
+
+**Hardware Description (7):** VHDL, Verilog, SystemVerilog, Chisel, Bluespec, SPICE, FIRRTL
+
+**Scientific / HPC (4):** Fortran, MATLAB, Mathematica, Wolfram
+
+**Shell (4):** Bash, Zsh, Fish, Batch
+
+**GPU / Shaders (6):** GLSL, HLSL, WGSL, CUDA, OpenCL, Metal
+
+**Infrastructure (6):** Terraform/HCL, Protobuf, SQL, GraphQL, Prisma, Dockerfile
+
+**WebAssembly (2):** WAT, WAST
 
 ---
 
