@@ -454,7 +454,13 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
             </Badge>
           </div>
           <div className="absolute top-2 right-2 flex gap-1.5">
-            {item.isFeatured && (
+            {item.priceCents === 0 && (
+              <Badge className="text-[10px] h-5 bg-[hsl(var(--neon-cyan))]/90 text-white gap-1 backdrop-blur-md animate-pulse">
+                <Gift className="w-3 h-3" />
+                Free Drop
+              </Badge>
+            )}
+            {item.isFeatured && item.priceCents > 0 && (
               <Badge className="text-[10px] h-5 bg-primary/90 text-primary-foreground gap-1 backdrop-blur-md">
                 <TrendingUp className="w-3 h-3" />
                 Featured
