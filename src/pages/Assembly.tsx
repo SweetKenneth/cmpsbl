@@ -304,11 +304,11 @@ export default function Assembly() {
               Start with a free consultation. Tell us what you have and we'll tell you exactly what we can do.
             </p>
             <Button asChild size="lg" className="gap-2 px-10 h-12 sm:h-13 text-sm font-bold rounded-xl">
-              <Link to="/ascension">
+              <a href="mailto:hello@cmpsbl.com?subject=Code%20Assembly%20Consultation&body=Hi%20CMPSBL%2C%0A%0AI%20have%20a%20codebase%20that%20needs%20assembly%20%2F%20reconstruction.%0A%0AHere%E2%80%99s%20what%20I%20have%3A%0A%0A">
                 <Wrench className="w-4 h-4" />
                 Book a Consultation
                 <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+              </a>
             </Button>
           </div>
         </section>

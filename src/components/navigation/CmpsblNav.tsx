@@ -44,8 +44,9 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
   { name: "Explore Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
   { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
+  { name: "Code Ascension", href: "/ascension", icon: Sparkles, badge: "NEW", highlight: true },
+  { name: "Verticals", href: "/verticals", icon: Globe, badge: "EXPLORE" },
   { name: "Code Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
-  { name: "Verticals", href: "/verticals", icon: Globe },
   { name: "Case Studies", href: "/case-studies", icon: ScrollText },
   { name: "View Plans", href: "/plans", icon: CreditCard },
   { name: "Read the Docs", href: "/documentation", icon: FileText },
