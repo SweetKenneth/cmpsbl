@@ -193,11 +193,11 @@ The Ascension pipeline identified 12 structural findings in `modeling_utils.py`.
 
 ### 4.1 Critical Findings
 
-#### 4.1.1 Dynamic Code Execution Vulnerability
+#### 4.1.1 Unsafe Deserialization via `torch.load()`
 - **Severity:** CRITICAL
 - **Status:** Hardened
-- **Details:** `eval()`, `Function()`, or `exec()` detected — injection vector for arbitrary code execution
-- **Primitive Response:** BASTION (Cyber) and IRONCLAD (Cyber) deployed perimeter hardening around dynamic execution paths, wrapping them in sandboxed execution contexts with input validation gates
+- **Details:** The file calls `torch.load()` on arbitrary checkpoint files fetched from the internet. Malicious pickle-based checkpoints can execute arbitrary code during deserialization. HuggingFace added `check_torch_load_is_safe()` as a partial mitigation but the vulnerability remains a known, documented risk.
+- **Primitive Response:** BASTION (Cyber) + IRONCLAD (Cyber) deployed perimeter hardening around the deserialization path
 
 #### 4.1.2 Unhandled Async Rejections
 - **Severity:** CRITICAL
