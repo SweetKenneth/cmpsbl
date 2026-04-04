@@ -251,8 +251,14 @@ function createItem(input: {
   const priceCents = calculateMarketplacePrice(input.cjpi, input.chain.length);
   const originalValueCents = input.cjpi * 150; // ECONOMY nominal per-point value
   
+  /** Deterministic hash for stable IDs and seeded values */
+  const hash = input.title.split('').reduce((h, c) => ((h << 5) - h + c.charCodeAt(0)) | 0, 0);
+  const absHash = Math.abs(hash);
+  const stableDownloads = 50 + (absHash % 451);
+  const stableRating = Number((4.0 + ((absHash % 90) / 100)).toFixed(1));
+
   return {
-    id: `MKT-${input.sourceId}-${Date.now().toString(36).slice(-4)}`,
+    id: `MKT-${input.sourceId}`,
     slug: generateSlug(input.title),
     title: input.title,
     subtitle: input.subtitle,
@@ -268,8 +274,8 @@ function createItem(input: {
     priceCents,
     originalValueCents,
     primitiveChain: input.chain,
-    downloads: Math.floor(Math.random() * 500) + 50,
-    rating: Number((4.0 + Math.random() * 0.9).toFixed(1)),
+    downloads: stableDownloads,
+    rating: stableRating,
     isFeatured: input.cjpi >= 90,
     isNew: true,
     addedAt: new Date().toISOString(),

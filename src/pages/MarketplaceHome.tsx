@@ -374,7 +374,6 @@ export default function MarketplaceHome() {
 
 function FeaturedCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy: () => void; isLoading?: boolean }) {
   const meta = CATEGORY_META[item.category];
-  const substrateMeta = SUBSTRATE_META[item.sourceSubstrate];
 
   return (
     <Card className="group relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-xl hover:shadow-primary/5">
