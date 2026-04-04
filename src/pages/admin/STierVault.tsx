@@ -531,6 +531,31 @@ export default function STierVault() {
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
   const [promoting, setPromoting] = useState(false);
 
+  // A-Tier vault state
+  const [aTierVerticalFilter, setATierVerticalFilter] = useState<string | null>(null);
+  const [aTierPrimitiveFilter, setATierPrimitiveFilter] = useState<string | null>(null);
+
+  const aTierVault = useMemo(() => getATierVault(), []);
+  const aTierVerticals = aTierVault.verticals;
+  const aTierPrimitives = useMemo(() => [...new Set(aTierVault.entries.map(e => e.module))].sort(), [aTierVault]);
+
+  const filteredATier = useMemo(() => {
+    let result = aTierVault.entries;
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(e =>
+        e.name.toLowerCase().includes(q) || e.id.toLowerCase().includes(q) ||
+        e.module.toLowerCase().includes(q) || e.description.toLowerCase().includes(q)
+      );
+    }
+    if (aTierVerticalFilter) {
+      const verticalPrefix = aTierVerticalFilter.toUpperCase();
+      result = result.filter(e => e.id.toUpperCase().startsWith(verticalPrefix) || e.cluster?.toLowerCase() === aTierVerticalFilter);
+    }
+    if (aTierPrimitiveFilter) result = result.filter(e => e.module === aTierPrimitiveFilter);
+    return result;
+  }, [search, aTierVault, aTierVerticalFilter, aTierPrimitiveFilter]);
+
   // Pricing engine for S-Tier repricing
   const pricingEngine = usePricingEngine();
 
