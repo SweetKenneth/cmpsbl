@@ -334,7 +334,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s};`).join('\n'),
     constDecl: (name, val) => `static final String ${name} = ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: javaGuard,
     fileExtension: '.java',
   },
   'C#': {
@@ -342,7 +342,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/// <summary>\n${lines.map(l => `/// ${l}`).join('\n')}\n/// </summary>`,
     importStatement: (mod, _syms) => `using ${mod.replace(/@/g, '').replace(/\//g, '.')};`,
     constDecl: (name, val) => `static readonly string ${name} = @"${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: csharpGuard,
     fileExtension: '.cs',
   },
   C: {
@@ -350,7 +350,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#include "${mod}.h"`,
     constDecl: (name, val) => `static const char* ${name} = "${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.c',
   },
   'C++': {
@@ -358,7 +358,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#include "${mod}.hpp"`,
     constDecl: (name, val) => `constexpr auto ${name} = R"(${val})";`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.cpp',
   },
   Ruby: {
@@ -390,7 +390,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `use ${mod.replace(/@/g, '').replace(/\//g, '\\\\')};`,
     constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
-    transformGuard: identityGuard,
+    transformGuard: phpGuard,
     fileExtension: '.php',
   },
   Scala: {
@@ -414,7 +414,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
     importStatement: (mod, _syms) => `library(${mod.split('/').pop()})`,
     constDecl: (name, val) => `${name} <- ${val}`,
-    transformGuard: namedArgGuard,
+    transformGuard: rGuard,
     fileExtension: '.R',
   },
   Dart: {
@@ -422,7 +422,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `import 'package:${mod.replace(/@/g, '')}';`,
     constDecl: (name, val) => `const ${name} = ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: dartGuard,
     fileExtension: '.dart',
   },
   Elixir: {
@@ -439,7 +439,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `-- ${l}`).join('\n'),
     importStatement: (mod, _syms) => `library ${mod.split('/').pop()};\nuse ${mod.split('/').pop()}.all;`,
     constDecl: (name, val) => `constant ${name} : string := "${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: stripSemicolons,
     fileExtension: '.vhd',
   },
   Verilog: {
@@ -464,7 +464,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `=pod\n${lines.join('\n')}\n=cut`,
     importStatement: (mod, _syms) => `use ${mod.replace(/\//g, '::')};`,
     constDecl: (name, val) => `use constant ${name} => ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: perlGuard,
     fileExtension: '.pl',
   },
   Julia: {
@@ -472,7 +472,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `#=\n${lines.join('\n')}\n=#`,
     importStatement: (mod, _syms) => `using ${mod.split('/').pop()}`,
     constDecl: (name, val) => `const ${name} = ${val}`,
-    transformGuard: namedArgGuard,
+    transformGuard: juliaGuard,
     fileExtension: '.jl',
   },
   'F#': {
@@ -480,7 +480,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `(*\n${lines.join('\n')}\n*)`,
     importStatement: (mod, _syms) => `open ${mod.replace(/\//g, '.')}`,
     constDecl: (name, val) => `let [<Literal>] ${name} = ${val}`,
-    transformGuard: identityGuard,
+    transformGuard: fsharpGuard,
     fileExtension: '.fs',
   },
   Clojure: {
@@ -488,7 +488,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `;; ${l}`).join('\n'),
     importStatement: (mod, _syms) => `(require '[${mod.split('/').pop()}])`,
     constDecl: (name, val) => `(def ${name} ${val})`,
-    transformGuard: identityGuard,
+    transformGuard: clojureGuard,
     fileExtension: '.clj',
   },
   Erlang: {
@@ -496,7 +496,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `% ${l}`).join('\n'),
     importStatement: (mod, _syms) => `-include("${mod.split('/').pop()}.hrl").`,
     constDecl: (name, val) => `-define(${name.toUpperCase()}, ${val}).`,
-    transformGuard: identityGuard,
+    transformGuard: erlangGuard,
     fileExtension: '.erl',
   },
   OCaml: {
@@ -504,7 +504,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `(*\n${lines.join('\n')}\n*)`,
     importStatement: (mod, _syms) => `open ${mod.split('/').pop()?.charAt(0).toUpperCase()}${mod.split('/').pop()?.slice(1)}`,
     constDecl: (name, val) => `let ${name} = ${val}`,
-    transformGuard: identityGuard,
+    transformGuard: ocamlGuard,
     fileExtension: '.ml',
   },
   Nim: {
@@ -512,7 +512,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `#[\n${lines.join('\n')}\n]#`,
     importStatement: (mod, _syms) => `import ${mod.split('/').pop()}`,
     constDecl: (name, val) => `const ${name} = ${val}`,
-    transformGuard: identityGuard,
+    transformGuard: nimGuard,
     fileExtension: '.nim',
   },
   Crystal: {
@@ -536,7 +536,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `! ${l}`).join('\n'),
     importStatement: (mod, _syms) => `use ${mod.split('/').pop()}`,
     constDecl: (name, val) => `character(len=*), parameter :: ${name} = "${val}"`,
-    transformGuard: identityGuard,
+    transformGuard: fortranGuard,
     fileExtension: '.f90',
   },
   'Objective-C': {
@@ -544,7 +544,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#import "${mod}.h"`,
     constDecl: (name, val) => `static NSString *const ${name} = @"${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: objcGuard,
     fileExtension: '.m',
   },
   D: {
@@ -560,7 +560,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
     importStatement: (mod, _syms) => `source "${mod}"`,
     constDecl: (name, val) => `readonly ${name}="${val}"`,
-    transformGuard: identityGuard,
+    transformGuard: shellGuard,
     fileExtension: '.sh',
   },
   Bash: {
@@ -568,7 +568,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
     importStatement: (mod, _syms) => `source "${mod}"`,
     constDecl: (name, val) => `readonly ${name}="${val}"`,
-    transformGuard: identityGuard,
+    transformGuard: shellGuard,
     fileExtension: '.sh',
   },
   PowerShell: {
@@ -576,7 +576,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `<#\n${lines.join('\n')}\n#>`,
     importStatement: (mod, _syms) => `Import-Module ${mod.split('/').pop()}`,
     constDecl: (name, val) => `Set-Variable -Name "${name}" -Value "${val}" -Option Constant`,
-    transformGuard: identityGuard,
+    transformGuard: powershellGuard,
     fileExtension: '.ps1',
   },
   Solidity: {
@@ -592,7 +592,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (mod, _syms) => `#include "${mod}.cuh"`,
     constDecl: (name, val) => `__constant__ const char* ${name} = "${val}";`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.cu',
   },
   GLSL: {
@@ -608,7 +608,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: () => '#include <metal_stdlib>',
     constDecl: (name, val) => `constant auto ${name} = ${val};`,
-    transformGuard: identityGuard,
+    transformGuard: cStructGuard,
     fileExtension: '.metal',
   },
   WGSL: {
