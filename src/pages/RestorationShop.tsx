@@ -51,7 +51,6 @@ function escHtml(s: string): string {
 function wrapDocHtml(title: string, bodyContent: string): string {
   return wrapPremiumDocPage(title, bodyContent);
 }
-}
 
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
 type ProcessingPrimitive = { name: string; status: 'pending' | 'active' | 'done' };
