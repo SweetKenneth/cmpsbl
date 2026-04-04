@@ -263,3 +263,10 @@ export {
   type PoolCandidate,
   type UniversalScanResult,
 } from '../factory/universal-pool-scanner';
+
+// Expansion Capabilities Bridge (Ultimate substrate)
+export {
+  getExpansionCapabilities,
+  buildExpansionCapabilities,
+  resetExpansionCapabilities,
+} from './expansion-capabilities';
