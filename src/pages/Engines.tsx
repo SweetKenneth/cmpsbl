@@ -171,6 +171,9 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
                 Powers CMPSBL
               </Badge>
             )}
+            {engine.isSubstrateClass && engine.sourcePrimitive && (
+              <SubstrateClassBadge primitiveName={engine.sourcePrimitive} />
+            )}
           </div>
 
           {/* Title & tagline */}
