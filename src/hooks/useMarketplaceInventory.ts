@@ -83,7 +83,7 @@ export function useMarketplaceInventory() {
 
       if (error || !data || data.length === 0) {
         /** Fallback to static seed if DB read fails or is empty */
-        return MERCHANT_INVENTORY;
+        return applyFreeItemRotation(MERCHANT_INVENTORY);
       }
 
       const dbItems = (data as unknown as DBInventoryRow[]).map(rowToItem);
