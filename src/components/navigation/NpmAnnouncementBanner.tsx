@@ -48,13 +48,14 @@ export function NpmAnnouncementBanner() {
               <span className="hidden sm:inline text-white/80">
                 50+ premium engines, agents, and memory chains — $10 to $50.
               </span>
-              <Link
-                to="/showroom"
+              <a
+                href="https://marketplace.cmpsbl.com"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 ml-2 font-semibold text-white hover:underline underline-offset-2"
               >
                 Browse Now
                 <ArrowRight className="w-3 h-3" />
-              </Link>
+              </a>
             </motion.div>
             <button
               onClick={handleDismiss}

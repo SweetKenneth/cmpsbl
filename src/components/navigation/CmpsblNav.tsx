@@ -1,10 +1,9 @@
 /**
  * CmpsblNav — Factory-Era Flat Navigation
- * Clean dark command bar: Home · Memory Stream · Ascension · Pricing · Docs · Try · Case Studies · Login
- * Preserves all legacy routes — only navigation menu changes.
+ * Clean dark command bar with quick-link grid on mobile.
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { NpmAnnouncementBanner } from "./NpmAnnouncementBanner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -15,14 +14,13 @@ import {
   LogOut,
   Command,
   Sparkles,
-  Zap,
   Play,
   FileText,
   CreditCard,
   Package,
   Globe,
   ScrollText,
-  Store,
+  ShoppingBag,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -32,17 +30,20 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+const MARKETPLACE_URL = "https://marketplace.cmpsbl.com";
+
 interface NavLink {
   name: string;
   href: string;
   icon: React.ElementType;
   badge?: string;
   highlight?: boolean;
+  external?: boolean;
 }
 
 const NAV_LINKS: NavLink[] = [
   { name: "Explore Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
-  { name: "Marketplace", href: "/store", icon: Store, badge: "NEW", highlight: true },
+  { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
   { name: "Code Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
   { name: "Verticals", href: "/verticals", icon: Globe },
   { name: "Case Studies", href: "/case-studies", icon: ScrollText },
@@ -50,6 +51,10 @@ const NAV_LINKS: NavLink[] = [
   { name: "Read the Docs", href: "/documentation", icon: FileText },
   { name: "Try the Substrate", href: "/try", icon: Play },
 ];
+
+/** Top 4 routes for the mobile quick-link grid */
+const QUICK_LINKS = NAV_LINKS.slice(0, 4);
+const REST_LINKS = NAV_LINKS.slice(4);
 
 export function CmpsblNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -81,6 +86,22 @@ export function CmpsblNav() {
   const isActive = (path: string) => location.pathname === path;
 
   const bannerHeight = 36;
+
+  /** Render a nav link — handles external vs internal */
+  const NavAnchor = ({ link, children, className }: { link: NavLink; children: React.ReactNode; className?: string }) => {
+    if (link.external) {
+      return (
+        <a href={link.href} rel="noopener noreferrer" className={className}>
+          {children}
+        </a>
+      );
+    }
+    return (
+      <Link to={link.href} className={className}>
+        {children}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -125,12 +146,12 @@ export function CmpsblNav() {
             {/* Desktop Links */}
             <div className="hidden lg:flex items-center gap-1">
               {NAV_LINKS.map((link) => (
-                <Link
+                <NavAnchor
                   key={link.href}
-                  to={link.href}
+                  link={link}
                   className={cn(
                     "relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
-                    isActive(link.href)
+                    !link.external && isActive(link.href)
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
                   )}
@@ -141,13 +162,13 @@ export function CmpsblNav() {
                       {link.badge}
                     </span>
                   )}
-                  {isActive(link.href) && (
+                  {!link.external && isActive(link.href) && (
                     <motion.span
                       layoutId="nav-indicator"
                       className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
                     />
                   )}
-                </Link>
+                </NavAnchor>
               ))}
             </div>
 
@@ -265,37 +286,78 @@ export function CmpsblNav() {
                 </motion.div>
               </div>
 
-              {/* Mobile Quick Links */}
+              {/* ── Quick-Link Grid (top 4) ── */}
+              <motion.div
+                initial={{ y: 15, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.12 }}
+                className="grid grid-cols-2 gap-2.5 mb-6"
+              >
+                {QUICK_LINKS.map((link, idx) => (
+                  <NavAnchor
+                    key={link.href}
+                    link={link}
+                    className={cn(
+                      "group relative overflow-hidden flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border transition-all touch-manipulation",
+                      "bg-card hover:bg-secondary border-border",
+                      !link.external && isActive(link.href) && "border-primary/40 bg-primary/5"
+                    )}
+                  >
+                    {/* Glimmer sweep effect */}
+                    <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
+                    {/* Subtle corner glow */}
+                    <span className="pointer-events-none absolute -top-3 -right-3 w-12 h-12 rounded-full bg-primary/8 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    <div className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
+                      !link.external && isActive(link.href) ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground group-hover:text-primary group-hover:bg-primary/10"
+                    )}>
+                      <link.icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-semibold text-center leading-tight">{link.name}</span>
+                      {link.badge && (
+                        <span className="text-[8px] font-bold px-1 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">{link.badge}</span>
+                      )}
+                    </div>
+                  </NavAnchor>
+                ))}
+              </motion.div>
+
+              {/* ── Remaining Links (list) ── */}
               <div className="space-y-1 mb-8">
-                {NAV_LINKS.map((link, idx) => (
+                {REST_LINKS.map((link, idx) => (
                   <motion.div
                     key={link.href}
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.15 + idx * 0.03 }}
+                    transition={{ delay: 0.2 + idx * 0.03 }}
                   >
-                    <Link
-                      to={link.href}
+                    <NavAnchor
+                      link={link}
                       className={cn(
-                        "flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
-                        isActive(link.href)
+                        "group relative overflow-hidden flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
+                        !link.external && isActive(link.href)
                           ? "bg-primary/10 border border-primary/30"
                           : "bg-card hover:bg-secondary border border-border"
                       )}
                     >
+                      {/* Glimmer sweep */}
+                      <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-primary/8 to-transparent" />
+
                       <div className={cn(
                         "w-9 h-9 rounded-lg flex items-center justify-center",
-                        isActive(link.href) ? "bg-primary/10" : "bg-secondary"
+                        !link.external && isActive(link.href) ? "bg-primary/10" : "bg-secondary"
                       )}>
-                        <link.icon className={cn("w-4.5 h-4.5", isActive(link.href) ? "text-primary" : "text-muted-foreground")} />
+                        <link.icon className={cn("w-4.5 h-4.5", !link.external && isActive(link.href) ? "text-primary" : "text-muted-foreground")} />
                       </div>
                       <div className="flex items-center gap-2 flex-1">
-                        <span className={cn("text-sm font-semibold", isActive(link.href) && "text-primary")}>{link.name}</span>
+                        <span className={cn("text-sm font-semibold", !link.external && isActive(link.href) && "text-primary")}>{link.name}</span>
                         {link.badge && (
                           <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">{link.badge}</span>
                         )}
                       </div>
-                    </Link>
+                    </NavAnchor>
                   </motion.div>
                 ))}
               </div>
