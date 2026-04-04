@@ -458,7 +458,7 @@ const ARDUPILOT_PRIMITIVES = [
   { name: 'KINETIC', category: 'Engine', contribution: 'Motion planning and trajectory optimization' },
   { name: 'FLUX', category: 'Engine', contribution: 'Power management and energy distribution' },
   { name: 'GRIPPER', category: 'Agent', contribution: 'Manipulation and adaptive grasp planning' },
-  { name: 'GUARDIAN', category: 'Agent', contribution: 'Safety monitoring and collision avoidance' },
+  { name: 'MARSHAL', category: 'Agent', contribution: 'Safety monitoring and collision avoidance' },
   { name: 'CONSCIENCE', category: 'Organ', contribution: 'Ethical decision boundaries' },
   { name: 'LINGUA', category: 'Organ', contribution: 'Structured language interpretation' },
   { name: 'SHADOW', category: 'Layer', contribution: 'Shadow testing and canary analysis' },
