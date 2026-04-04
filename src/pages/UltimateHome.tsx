@@ -91,8 +91,8 @@ export default function UltimateHome() {
   return (
     <>
       <Helmet>
-        <title>CMPSBL ULTIMATE™ — Universal Ascension · Every Primitive Is a Candidate</title>
-        <meta name="description" content="CMPSBL ULTIMATE™ — The ceiling of Ascension. 96 candidate primitives from every vertical compete for 40 slots. Dynamic selection produces the maximum compounding effect for your specific codebase." />
+        <title>CMPSBL ULTIMATE™ — {poolSize} Candidates · 40 Open Slots · Zero Restrictions</title>
+        <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for all 40 slots. No spine lock. No category restrictions. The scanner selects the 40 that maximize compounding for your codebase.`} />
       </Helmet>
 
       <VerticalReturnBanner verticalName="CMPSBL ULTIMATE™" accentColor={ACCENT} />
