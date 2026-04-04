@@ -221,8 +221,8 @@ const AGENCY_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'DIPLOMAT',
-    name: 'DIPLOMAT',
+    id: 'LIAISON',
+    name: 'LIAISON',
     role: 'agent',
     description: 'Teamwork coordination agent handling conflict resolution between agents, consensus building, and collaborative decision protocols.',
     inherited: false,
