@@ -113,8 +113,19 @@ const LANG_EXT: Record<ExportLanguage, string> = {
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
   elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
   scala: 'scala', haskell: 'hs',
+  // Extended software
+  perl: 'pl', r: 'R', julia: 'jl', nim: 'nim', crystal: 'cr', fsharp: 'fs',
+  clojure: 'clj', erlang: 'erl', ocaml: 'ml', groovy: 'groovy', d: 'd',
+  fortran: 'f90', 'objective-c': 'm',
+  // Shell / Infra
+  bash: 'sh', powershell: 'ps1',
+  // Blockchain
+  solidity: 'sol', vyper: 'vy', move: 'move', cairo: 'cairo',
+  // GPU / Shaders
+  cuda: 'cu', glsl: 'glsl', hlsl: 'hlsl', wgsl: 'wgsl', metal: 'metal', opencl: 'cl',
+  // HDL / Hardware
   verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
-  amaranth: 'py', spice: 'sp', systemc: 'cpp',
+  amaranth: 'py', spice: 'sp', systemc: 'cpp', firrtl: 'fir', bluespec: 'bsv',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
@@ -123,8 +134,16 @@ const LANG_LABELS: Record<ExportLanguage, string> = {
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
   c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
   scala: 'Scala', haskell: 'Haskell',
+  // Extended
+  perl: 'Perl', r: 'R', julia: 'Julia', nim: 'Nim', crystal: 'Crystal', fsharp: 'F#',
+  clojure: 'Clojure', erlang: 'Erlang', ocaml: 'OCaml', groovy: 'Groovy', d: 'D',
+  fortran: 'Fortran', 'objective-c': 'Objective-C',
+  bash: 'Bash', powershell: 'PowerShell',
+  solidity: 'Solidity', vyper: 'Vyper', move: 'Move', cairo: 'Cairo',
+  cuda: 'CUDA', glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL', metal: 'Metal', opencl: 'OpenCL',
   verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
   amaranth: 'Amaranth (Python HDL)', spice: 'SPICE Netlist', systemc: 'SystemC (C++)',
+  firrtl: 'FIRRTL', bluespec: 'Bluespec SystemVerilog',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
