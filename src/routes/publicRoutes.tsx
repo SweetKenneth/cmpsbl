@@ -253,7 +253,7 @@ export const publicRoutes = (
     <Route path="/plans" element={<Plans />} />
     <Route path="/upgrade" element={<Navigate to="/plans" replace />} />
     <Route path="/packs" element={<Packs />} />
-    <Route path="/start-here" element={<StartHere />} />
+    <Route path="/start-here" element={<Navigate to="/" replace />} />
     <Route path="/enterprise" element={<Enterprise />} />
     <Route path="/api-access" element={<ApiAccess />} />
     <Route path="/keys" element={<Navigate to="/api-access" replace />} />
