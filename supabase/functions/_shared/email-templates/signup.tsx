@@ -9,12 +9,9 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
-  Section,
   Text,
-  Hr,
 } from 'npm:@react-email/components@0.0.22'
 
 interface SignupEmailProps {
@@ -32,51 +29,32 @@ export const SignupEmail = ({
 }: SignupEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>You're one step away from the substrate</Preview>
+    <Preview>Confirm your email for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        {/* Dark header band */}
-        <Section style={headerBand}>
-          <Img
-            src="https://bxodolqqczjuahwdrswy.supabase.co/storage/v1/object/public/email-assets/cmpsbl-logo.png"
-            width="120"
-            height="auto"
-            alt="CMPSBL"
-            style={logo}
-          />
-        </Section>
-
-        {/* Accent line */}
-        <Section style={accentLine} />
-
-        {/* Content */}
-        <Section style={content}>
-          <Text style={eyebrow}>ACCOUNT VERIFICATION</Text>
-          <Heading style={h1}>Confirm your email</Heading>
-          <Text style={text}>
-            Welcome to{' '}
-            <Link href={siteUrl} style={link}>CMPSBL</Link>
-            . Confirm{' '}
-            <Link href={`mailto:${recipient}`} style={link}>{recipient}</Link>
-            {' '}to activate your account and access the substrate.
-          </Text>
-          <Section style={buttonSection}>
-            <Button style={button} href={confirmationUrl}>
-              Get Started →
-            </Button>
-          </Section>
-        </Section>
-
-        {/* Footer */}
-        <Hr style={divider} />
-        <Section style={footerSection}>
-          <Text style={footer}>
-            If you didn't create this account, no action is needed.
-          </Text>
-          <Text style={footerBrand}>
-            CMPSBL® · Cognitive Infrastructure for AI
-          </Text>
-        </Section>
+        <Text style={brand}>CMPSBL®</Text>
+        <Heading style={h1}>Confirm your email</Heading>
+        <Text style={text}>
+          Thanks for signing up for{' '}
+          <Link href={siteUrl} style={link}>
+            <strong>{siteName}</strong>
+          </Link>
+          !
+        </Text>
+        <Text style={text}>
+          Please confirm your email address (
+          <Link href={`mailto:${recipient}`} style={link}>
+            {recipient}
+          </Link>
+          ) by clicking the button below:
+        </Text>
+        <Button style={button} href={confirmationUrl}>
+          Verify Email
+        </Button>
+        <Text style={footer}>
+          If you didn't create an account, you can safely ignore this email.
+        </Text>
+        <Text style={footerBrand}>CMPSBL® · PromptFluid™</Text>
       </Container>
     </Body>
   </Html>
@@ -84,57 +62,12 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = {
-  backgroundColor: '#ffffff',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-}
-const container = { maxWidth: '520px', margin: '0 auto' }
-const headerBand = {
-  backgroundColor: 'hsl(220, 25%, 6%)',
-  padding: '28px 32px 24px',
-  borderRadius: '12px 12px 0 0',
-}
-const logo = { display: 'block' as const }
-const accentLine = {
-  height: '3px',
-  background: 'linear-gradient(90deg, hsl(210, 60%, 45%), hsl(185, 100%, 40%), hsl(145, 65%, 42%))',
-}
-const content = { padding: '32px 32px 24px' }
-const eyebrow = {
-  fontSize: '11px',
-  fontWeight: '600' as const,
-  color: 'hsl(210, 60%, 45%)',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase' as const,
-  margin: '0 0 8px',
-}
-const h1 = {
-  fontSize: '26px',
-  fontWeight: '600' as const,
-  color: 'hsl(220, 15%, 12%)',
-  margin: '0 0 16px',
-  letterSpacing: '-0.03em',
-  lineHeight: '1.2',
-}
-const text = {
-  fontSize: '15px',
-  color: 'hsl(220, 10%, 40%)',
-  lineHeight: '1.65',
-  margin: '0 0 24px',
-}
-const link = { color: 'hsl(210, 60%, 45%)', textDecoration: 'none', fontWeight: '500' as const }
-const buttonSection = { margin: '8px 0 0' }
-const button = {
-  backgroundColor: 'hsl(210, 60%, 45%)',
-  color: '#ffffff',
-  fontSize: '15px',
-  fontWeight: '500' as const,
-  borderRadius: '8px',
-  padding: '13px 32px',
-  textDecoration: 'none',
-  letterSpacing: '0.01em',
-}
-const divider = { borderColor: 'hsl(220, 10%, 90%)', margin: '0' }
-const footerSection = { padding: '20px 32px 28px' }
-const footer = { fontSize: '13px', color: 'hsl(220, 10%, 55%)', margin: '0 0 6px', lineHeight: '1.5' }
-const footerBrand = { fontSize: '11px', color: 'hsl(220, 10%, 70%)', margin: '0', letterSpacing: '0.02em' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif" }
+const container = { padding: '40px 25px' }
+const brand = { fontSize: '14px', fontWeight: 'bold' as const, color: '#2E78C2', letterSpacing: '2px', margin: '0 0 30px' }
+const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: '#212733', margin: '0 0 20px' }
+const text = { fontSize: '14px', color: '#5C6370', lineHeight: '1.6', margin: '0 0 25px' }
+const link = { color: '#2E78C2', textDecoration: 'underline' }
+const button = { backgroundColor: '#2E78C2', color: '#ffffff', fontSize: '14px', borderRadius: '8px', padding: '12px 24px', textDecoration: 'none', fontWeight: 'bold' as const }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footerBrand = { fontSize: '11px', color: '#bbb', margin: '10px 0 0', letterSpacing: '1px' }

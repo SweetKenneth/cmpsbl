@@ -9,11 +9,8 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Preview,
-  Section,
   Text,
-  Hr,
 } from 'npm:@react-email/components@0.0.22'
 
 interface MagicLinkEmailProps {
@@ -27,40 +24,22 @@ export const MagicLinkEmail = ({
 }: MagicLinkEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Your secure sign-in link — no password needed</Preview>
+    <Preview>Your login link for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Section style={headerBand}>
-          <Img
-            src="https://bxodolqqczjuahwdrswy.supabase.co/storage/v1/object/public/email-assets/cmpsbl-logo.png"
-            width="120"
-            height="auto"
-            alt="CMPSBL"
-            style={logo}
-          />
-        </Section>
-        <Section style={accentLine} />
-        <Section style={content}>
-          <Text style={eyebrow}>SECURE AUTHENTICATION</Text>
-          <Heading style={h1}>Sign in to CMPSBL</Heading>
-          <Text style={text}>
-            Tap the button below to authenticate. This link is single-use and expires shortly — zero passwords, ever.
-          </Text>
-          <Section style={buttonSection}>
-            <Button style={button} href={confirmationUrl}>
-              Sign In →
-            </Button>
-          </Section>
-        </Section>
-        <Hr style={divider} />
-        <Section style={footerSection}>
-          <Text style={footer}>
-            Didn't request this? Your account is secure — just ignore this email.
-          </Text>
-          <Text style={footerBrand}>
-            CMPSBL® · Cognitive Infrastructure for AI
-          </Text>
-        </Section>
+        <Text style={brand}>CMPSBL®</Text>
+        <Heading style={h1}>Your login link</Heading>
+        <Text style={text}>
+          Click the button below to log in to {siteName}. This link will expire
+          shortly.
+        </Text>
+        <Button style={button} href={confirmationUrl}>
+          Log In
+        </Button>
+        <Text style={footer}>
+          If you didn't request this link, you can safely ignore this email.
+        </Text>
+        <Text style={footerBrand}>CMPSBL® · PromptFluid™</Text>
       </Container>
     </Body>
   </Html>
@@ -68,56 +47,11 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = {
-  backgroundColor: '#ffffff',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-}
-const container = { maxWidth: '520px', margin: '0 auto' }
-const headerBand = {
-  backgroundColor: 'hsl(220, 25%, 6%)',
-  padding: '28px 32px 24px',
-  borderRadius: '12px 12px 0 0',
-}
-const logo = { display: 'block' as const }
-const accentLine = {
-  height: '3px',
-  background: 'linear-gradient(90deg, hsl(210, 60%, 45%), hsl(185, 100%, 40%), hsl(145, 65%, 42%))',
-}
-const content = { padding: '32px 32px 24px' }
-const eyebrow = {
-  fontSize: '11px',
-  fontWeight: '600' as const,
-  color: 'hsl(210, 60%, 45%)',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase' as const,
-  margin: '0 0 8px',
-}
-const h1 = {
-  fontSize: '26px',
-  fontWeight: '600' as const,
-  color: 'hsl(220, 15%, 12%)',
-  margin: '0 0 16px',
-  letterSpacing: '-0.03em',
-  lineHeight: '1.2',
-}
-const text = {
-  fontSize: '15px',
-  color: 'hsl(220, 10%, 40%)',
-  lineHeight: '1.65',
-  margin: '0 0 24px',
-}
-const buttonSection = { margin: '8px 0 0' }
-const button = {
-  backgroundColor: 'hsl(210, 60%, 45%)',
-  color: '#ffffff',
-  fontSize: '15px',
-  fontWeight: '500' as const,
-  borderRadius: '8px',
-  padding: '13px 32px',
-  textDecoration: 'none',
-  letterSpacing: '0.01em',
-}
-const divider = { borderColor: 'hsl(220, 10%, 90%)', margin: '0' }
-const footerSection = { padding: '20px 32px 28px' }
-const footer = { fontSize: '13px', color: 'hsl(220, 10%, 55%)', margin: '0 0 6px', lineHeight: '1.5' }
-const footerBrand = { fontSize: '11px', color: 'hsl(220, 10%, 70%)', margin: '0', letterSpacing: '0.02em' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif" }
+const container = { padding: '40px 25px' }
+const brand = { fontSize: '14px', fontWeight: 'bold' as const, color: '#2E78C2', letterSpacing: '2px', margin: '0 0 30px' }
+const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: '#212733', margin: '0 0 20px' }
+const text = { fontSize: '14px', color: '#5C6370', lineHeight: '1.6', margin: '0 0 25px' }
+const button = { backgroundColor: '#2E78C2', color: '#ffffff', fontSize: '14px', borderRadius: '8px', padding: '12px 24px', textDecoration: 'none', fontWeight: 'bold' as const }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footerBrand = { fontSize: '11px', color: '#bbb', margin: '10px 0 0', letterSpacing: '1px' }
