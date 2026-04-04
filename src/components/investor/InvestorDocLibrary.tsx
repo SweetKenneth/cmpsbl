@@ -96,7 +96,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         heading: "Proprietary Technology Stack",
         bullets: [
           "Memory Stream — autonomous discovery engine that finds new software capabilities without human direction",
-          "Ascension — single-file export engine producing IP-protected artifacts in 25 languages",
+          "Ascension — single-file export engine producing IP-protected artifacts in 90+ languages",
           "Evolution Engine — self-improving codebase that fixed 166 production bugs for $0.06",
           "DREAM Engine — background learning during idle time; the system gets smarter while you sleep",
           "BRAIN Organ — 4-tier persistent memory with Constant Learning Mode (up to 14,400 AI calls/day)",
