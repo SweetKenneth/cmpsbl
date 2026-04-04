@@ -8,6 +8,7 @@ const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
 const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
 const LLMHome = lazy(() => import("@/pages/LLMHome"));
+const AgencyHome = lazy(() => import("@/pages/AgencyHome"));
 
 /**
  * Domain-aware routing:
