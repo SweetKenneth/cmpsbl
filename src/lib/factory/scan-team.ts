@@ -13,6 +13,7 @@ import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cyb
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getLLMEngines, getLLMAgents } from './verticals/llm';
+import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 
