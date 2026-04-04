@@ -45,6 +45,10 @@ export interface Engine {
   freeForSubscribers?: boolean;
   /** Extended description for the detail page */
   longDescription?: string;
+  /** True if this product is derived from a canonical substrate primitive */
+  isSubstrateClass?: boolean;
+  /** The canonical primitive this product is modeled after */
+  sourcePrimitive?: string;
 }
 
 /** Engine version registry — centralized version tracking for all engines */
