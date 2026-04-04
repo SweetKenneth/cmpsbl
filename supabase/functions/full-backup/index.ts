@@ -24,12 +24,12 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
  * Runtime budget: use most of the available edge window while still
  * leaving enough time to finalize the ZIP directory cleanly.
  */
-const TIME_BUDGET_MS = 142_000;
-const FINALIZE_RESERVE_MS = 6_000;
+const TIME_BUDGET_MS = 130_000;
+const FINALIZE_RESERVE_MS = 15_000;
 
-/** Page size for table exports */
-const PAGE_SIZE = 250;
-const MIN_PAGE_SIZE = 25;
+/** Page size for table exports — larger = fewer round trips = more tables in budget */
+const PAGE_SIZE = 500;
+const MIN_PAGE_SIZE = 50;
 const QUERY_RETRIES = 2;
 const RETRY_DELAY_MS = 250;
 
