@@ -47,51 +47,10 @@ function escHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-/** Wrap doc content in a styled, self-contained HTML page matching the Ascension aesthetic */
+/** Wrap doc content using the premium HTML wrapper for uniform exports ecosystem-wide */
 function wrapDocHtml(title: string, bodyContent: string): string {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${title} — CMPSBL®</title>
-<style>
-:root{--primary:#8b5cf6;--bg:#0a0a0b;--surface:#141416;--border:#27272a;--text:#fafafa;--text-muted:#a1a1aa;--text-dim:#71717a;--success:#22c55e;--warning:#f59e0b;--error:#ef4444}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:2rem;max-width:800px;margin:0 auto}
-h1{font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
-h2{font-size:1.15rem;font-weight:700;margin:1.5rem 0 .75rem;color:var(--text)}
-h3{font-size:1rem;font-weight:600;margin:.5rem 0 .25rem}
-p{color:var(--text-muted);margin-bottom:.75rem;font-size:.9rem}
-code{font-family:'SF Mono','Fira Code',monospace;font-size:.8rem;background:rgba(39,39,42,.5);padding:.15rem .4rem;border-radius:.25rem}
-pre{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1rem;font-size:.8rem;overflow-x:auto;margin:.75rem 0}
-pre code{background:none;padding:0}
-.card{border:1px solid var(--border);border-radius:.75rem;padding:1rem 1.25rem;background:var(--surface);margin-bottom:.75rem}
-.step{display:flex;align-items:flex-start;gap:.75rem;padding:.5rem 0;border-bottom:1px solid rgba(39,39,42,.3)}
-.step-num{width:28px;height:28px;border-radius:50%;background:rgba(139,92,246,.15);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
-.dim{color:var(--text-dim);font-size:.8rem;margin-left:.5rem}
-.detail{color:var(--text-muted);font-size:.8rem;margin-top:.25rem}
-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0}
-th{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--border);color:var(--text-dim);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
-td{padding:.5rem .75rem;border-bottom:1px solid rgba(39,39,42,.5)}
-strong{color:var(--text)}
-ol,ul{padding-left:1.25rem;margin:.75rem 0}
-li{margin-bottom:.5rem;color:var(--text-muted);font-size:.9rem}
-.badge{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .5rem;border-radius:.375rem;margin-right:.25rem}
-.badge-critical{background:rgba(239,68,68,.15);color:var(--error)}
-.badge-warning{background:rgba(245,158,11,.15);color:var(--warning)}
-.badge-info{background:rgba(139,92,246,.15);color:var(--primary)}
-.badge-hardened{background:rgba(34,197,94,.15);color:var(--success)}
-.badge-mitigated{background:rgba(245,158,11,.15);color:var(--warning)}
-.badge-monitor{background:rgba(139,92,246,.1);color:var(--text-dim)}
-.footer{text-align:center;padding:2rem 0;color:var(--text-dim);font-size:.7rem;border-top:1px solid var(--border);margin-top:2rem}
-</style>
-</head>
-<body>
-<h1>${title}</h1>
-${bodyContent}
-<div class="footer">© ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.</div>
-</body>
-</html>`;
+  return wrapPremiumDocPage(title, bodyContent);
+}
 }
 
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
