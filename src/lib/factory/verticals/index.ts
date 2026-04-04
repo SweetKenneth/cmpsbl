@@ -115,6 +115,7 @@ import { getCyberSecuritySubstrate } from './cybersecurity';
 import { getRoboticsSubstrate } from './robotics';
 import { getQuantumSubstrate } from './quantum';
 import { getLLMSubstrate } from './llm';
+import { getAgencySubstrate } from './agency';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
