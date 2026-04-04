@@ -62,7 +62,7 @@ export default function ModuleDetail() {
   return (
     <>
       <Helmet>
-        <title>{mod.useCaseH1} | CMPSBL {mod.name}</title>
+        <title>{`${mod.useCaseH1} | CMPSBL ${mod.name}`}</title>
         <meta name="description" content={`${mod.heroDescription.slice(0, 155)}…`} />
         <link rel="canonical" href={`https://cmpsbl.com/modules/${mod.slug}`} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>

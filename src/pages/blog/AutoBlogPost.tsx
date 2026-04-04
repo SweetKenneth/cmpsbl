@@ -120,7 +120,7 @@ export default function AutoBlogPost() {
     <div className="min-h-screen bg-background">
       {post && (
         <Helmet>
-          <title>{post.title} | CMPSBL Substrate Blog</title>
+          <title>{`${post.title} | CMPSBL Substrate Blog`}</title>
           <meta name="description" content={post.excerpt} />
           <script type="application/ld+json">{JSON.stringify({
             '@context': 'https://schema.org',

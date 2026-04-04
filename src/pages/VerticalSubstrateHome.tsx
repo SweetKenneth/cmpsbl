@@ -88,7 +88,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
   return (
     <>
       <Helmet>
-        <title>{displayName} | Cognitive Security Infrastructure</title>
+        <title>{`${displayName} | Cognitive Security Infrastructure`}</title>
         <meta name="description" content={tagline} />
       </Helmet>
 

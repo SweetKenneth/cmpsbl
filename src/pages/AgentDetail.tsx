@@ -148,7 +148,7 @@ export default function AgentDetail() {
   return (
     <>
       <Helmet>
-        <title>{agent.name} Meta-Agent — Sealed AI Runtime | CMPSBL</title>
+        <title>{`${agent.name} Meta-Agent — Sealed AI Runtime | CMPSBL`}</title>
         <meta name="description" content={agent.description} />
         <link rel="canonical" href={`https://cmpsbl.com${path}`} />
         <script type="application/ld+json">
