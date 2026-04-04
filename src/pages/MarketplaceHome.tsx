@@ -410,9 +410,9 @@ function FeaturedCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy
           <span className="text-xl font-black text-primary">
             ${(item.priceCents / 100).toFixed(0)}
           </span>
-          <Button size="sm" className="gap-1.5 text-xs">
+          <Button size="sm" className="gap-1.5 text-xs" onClick={onBuy} disabled={isLoading}>
             <ShoppingCart className="w-3.5 h-3.5" />
-            Buy
+            {isLoading ? '...' : 'Buy'}
           </Button>
         </div>
       </CardContent>
