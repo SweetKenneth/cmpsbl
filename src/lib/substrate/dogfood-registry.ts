@@ -252,8 +252,8 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
   // GOVERNANCE & WORKFLOW
   // ═══════════════════════════════════════════════════════════════
   {
-    storeSlug: 'sovereign',
-    codename: 'SOVEREIGN',
+    storeSlug: 'dominion',
+    codename: 'DOMINION',
     internalPrimitives: ['ADA (Autonomous Decision Authority)', 'GOVERNANCE Module', 'Policy Gate'],
     internalRole: 'Powers the Autonomous Decision Authority (ADA) — 15-domain scoped autonomy, 7-gate pipeline, trust calibration, and policy-aware governance across all substrate decisions.',
     active: true,
