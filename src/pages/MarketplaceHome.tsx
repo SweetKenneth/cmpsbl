@@ -145,7 +145,7 @@ export default function MarketplaceHome() {
     }
 
     return items;
-  }, [search, selectedCategory, selectedSubstrate, sort]);
+  }, [search, selectedCategory, selectedSubstrate, sort, inventory]);
 
   const featuredItems = useMemo(() =>
     MERCHANT_INVENTORY.filter(i => i.isFeatured).slice(0, 4),
