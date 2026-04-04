@@ -315,7 +315,7 @@ export default function MarketplaceHome() {
               {/* Product Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filteredItems.map((item) => (
-                  <ProductCard key={item.id} item={item} />
+                  <ProductCard key={item.id} item={item} onBuy={() => handleBuy(item)} isLoading={buyingId === item.id} />
                 ))}
               </div>
 
