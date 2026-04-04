@@ -212,10 +212,10 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
   // RESILIENCE & RECOVERY
   // ═══════════════════════════════════════════════════════════════
   {
-    storeSlug: 'phantom',
-    codename: 'PHANTOM',
+    storeSlug: 'mini-phantom',
+    codename: 'Mini-PHANTOM',
     internalPrimitives: ['Self-Healing Consensus', 'Circuit Breakers', 'Graceful Degradation'],
-    internalRole: 'The Self-Healing Consensus Meta-Engine IS PHANTOM running in production — Byzantine fault tolerance, automatic node recovery, and zero-downtime healing.',
+    internalRole: 'The Self-Healing Consensus Meta-Engine IS Mini-PHANTOM running in production — Byzantine fault tolerance, automatic node recovery, and zero-downtime healing.',
     active: true,
     activeSince: '2026-03-28',
     category: 'resilience',
