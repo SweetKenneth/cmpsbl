@@ -50,7 +50,7 @@ export const LANG_MAP: Record<string, string> = {
   purs: 'PureScript',
   rkt: 'Racket',
   scm: 'Scheme',
-  lisp: 'Lisp', cl: 'Common Lisp',
+  lisp: 'Lisp',
 
   // ═══ Blockchain / Smart Contracts ═══
   sol: 'Solidity',
