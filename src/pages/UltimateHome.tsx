@@ -74,12 +74,34 @@ const VERTICAL_SOURCES = [
 export default function UltimateHome() {
   useSSORelay();
   const navigate = useNavigate();
-  const [poolSize, setPoolSize] = useState(96);
+  const [poolSize, setPoolSize] = useState(120);
   const [breakdown, setBreakdown] = useState<Record<string, number>>({});
+  const [allPrimitives, setAllPrimitives] = useState<{ name: string; role: string; source: string }[]>([]);
 
   useEffect(() => {
     setPoolSize(getUniversalPoolSize());
     setBreakdown(getUniversalPoolBreakdown());
+
+    // Build full primitive list grouped by source
+    const substrate = getUltimateSubstrate();
+    const spine = substrate.primitives.filter(p => p.inherited !== false && (p.role === 'organ' || p.role === 'layer'));
+    const rest = substrate.primitives.filter(p => p.inherited === false);
+
+    const tagged: { name: string; role: string; source: string }[] = [];
+    for (const p of spine) {
+      tagged.push({ name: p.name, role: p.role, source: 'Spine' });
+    }
+    // Map expansion primitives to their source vertical by ID prefix
+    for (const p of rest) {
+      let source = 'Universal';
+      if (p.id.startsWith('ULT_')) source = 'Universal';
+      else if (['WATCHTOWER','SHADE','AEGIS','CIPHER','RECON','VANGUARD','BASTION','TEMPEST','PROWLER','ONYX','SPECTER','BLACKOUT','TRACER','NOCTURNE','IRONCLAD','CITADEL'].includes(p.name)) source = 'Cyber';
+      else if (['MARSHAL','DISPATCH','FABRICATOR','KINETIC','SWARMLINK','CALIBRATE','TERRAIN','TETHER','SENTINEL_R','ASSEMBLER','PATHFINDER','GYROSCOPE','TELEMETRIX','HARDPOINT','LOADMASTER','FAILOVER'].includes(p.name)) source = 'Robotics';
+      else if (['MANDATE','DELEGATE','RECONN','UPLINK','SCRIBE','INCENTIVE','REASON','TOOLKIT','OPERATOR','OVERSEER','LIAISON','SCHOLAR','ENVOY','WARDEN','ROGUE','ANCHOR'].includes(p.name)) source = 'Agency';
+      else source = p.id.includes('Q_') ? 'Quantum' : p.id.includes('LLM_') ? 'LLM' : 'Expansion';
+      tagged.push({ name: p.name, role: p.role, source });
+    }
+    setAllPrimitives(tagged);
   }, []);
 
   const STATS = [
