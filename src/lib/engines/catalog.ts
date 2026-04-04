@@ -312,11 +312,12 @@ export const ENGINES: Engine[] = [
   // ═══════════════════════════════════════════════════════════════════════════
 
   {
-    slug: "sovereign", codename: "SOVEREIGN", tagline: "Autonomous Governance Kernel",
+    slug: "dominion", codename: "DOMINION", tagline: "Autonomous Governance Kernel",
     priceStandalone: 4900, priceBundled: 2900, priceDisplay: "$49", bundleDisplay: "$29",
     priceId: "price_1T9hKAQ7FtTiAL4alDEWJ33m", icon: Shield, color: "350 85% 50%", tier: "APEX",
     edition: "S-TIER Edition — Governance Supremacy",
-    briefing: "SOVEREIGN fuses the Intelligence Governance Kernel, Policy-Aware Intelligence Gate, Audit-Grade Decision Ledger, Regulatory Mode Switcher, Capability Impact Forecaster, and Entitlement Resolution into an autonomous governance supercomplex. Every decision is policy-gated, audit-logged, and regulation-aware — zero human oversight required.",
+    isSubstrateClass: true, sourcePrimitive: 'SOVEREIGN',
+    briefing: "DOMINION fuses the Intelligence Governance Kernel, Policy-Aware Intelligence Gate, Audit-Grade Decision Ledger, Regulatory Mode Switcher, Capability Impact Forecaster, and Entitlement Resolution into an autonomous governance supercomplex. Every decision is policy-gated, audit-logged, and regulation-aware — zero human oversight required.",
     capabilities: ["Intelligence Governance Kernel — meta-governance over all cognitive subsystems", "Policy-Aware Intelligence Gate — blocks non-compliant reasoning paths", "Audit-Grade Decision Ledger — immutable hash-chain decision trail", "Regulatory Mode Switcher — auto-adapts to GDPR/HIPAA/SOC2 contexts", "Capability Impact Forecaster — predicts downstream effects before execution", "Entitlement Resolution — resolves cascading access rights in real time"],
     threatLevel: "SUPREME — GOVERNANCE KERNEL", clearance: "LEVEL 10 — S-TIER",
   },
