@@ -78,7 +78,7 @@ const ENGINE_VERSIONS: Record<string, string> = {
   // APEX — Triage
   genesis: '1.0.0',
   // S-TIER Wave 1
-  sovereign: '1.0.0',
+  dominion: '1.0.0',
   colossus: '1.0.0',
   harbinger: '1.0.0',
   prometheus: '1.0.0',
