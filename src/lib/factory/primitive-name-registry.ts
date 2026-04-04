@@ -93,7 +93,7 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'TRACER',     context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'NOCTURNE',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'IRONCLAD',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
-  { name: 'BULWARK',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
+  { name: 'CITADEL',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
 
   // ═══ ROBOTICS VERTICAL (robotics.cmpsbl.com) — 8 Engines ═══
   { name: 'SERVO',      context: 'robotics-engine', vertical: 'robotics', role: 'engine' },
