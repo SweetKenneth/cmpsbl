@@ -651,7 +651,7 @@ function scorePrimitiveRelevance(
     monolith: { signals: [hasAsync, len > 400], rationale: 'Complex multi-step operations need atomic transaction coordination' },
     raptor: { signals: [hasHttp, hasAuth], rationale: 'Perimeter scanning and real-time threat detection' },
     decode: { signals: [code.includes('input') || code.includes('command'), len > 100], rationale: 'User input interpretation benefits from structured intent resolution' },
-    sentinel: { signals: [hasHttp, hasAuth], rationale: 'Continuous validation and guard enforcement at system boundaries' },
+    access: { signals: [hasHttp, hasAuth], rationale: 'Continuous validation and guard enforcement at system boundaries' },
     atlas: { signals: [len > 300, code.includes('import')], rationale: 'System-wide mapping and navigation for complex codebases' },
     // CyberSecurity vertical primitives
     watchtower: { signals: [hasHttp, hasAuth], rationale: 'Real-time threat detection and classification with behavioral telemetry fusion' },
