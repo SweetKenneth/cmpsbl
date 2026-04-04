@@ -84,6 +84,19 @@ export {
 } from './quantum-seed';
 
 export {
+  seedAgencyDiscoveries,
+  getAgencySeedResult,
+  getAgencySeedSummary,
+  getAgencyVault,
+  getAgencyVaultCount,
+  getAgencyMemoryStreamPool,
+  getAgencyMemoryStreamCount,
+  resetAgencySeed,
+  type AgencyDiscovery,
+  type AgencySeedResult,
+} from './agency-seed';
+
+export {
   type VerticalPrimitive,
   type VerticalSubstrateConfig,
   type VerticalSubstrateStatus,
