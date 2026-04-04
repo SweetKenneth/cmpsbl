@@ -281,9 +281,24 @@ export default function RestorationShop() {
       ].join('\n');
       zip.file('README.md', readmeMd);
 
+      // ═══ Universal User Guide (HTML) — ships in every export ═══
+      zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
+        name: fileName?.replace(/\.[^.]+$/, '') || 'Refurbished Code',
+        slug: `refurbished-${report.id}`,
+        kind: 'ascension',
+        tier: report.cjpiCertificate.tier,
+        cjpi: report.cjpiCertificate.score,
+        fingerprint,
+        modules: report.primitiveManifest.map(p => p.name),
+      }));
+
+      // Dynamic ZIP naming: use the source file name, not generic serial
+      const safeName = (fileName?.replace(/\.[^.]+$/, '') || 'refurbished')
+        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
       zip.generateAsync({ type: 'blob' }).then(blob => {
         import('file-saver').then(({ saveAs }) => {
-          saveAs(blob, `cmpsbl-refurbished-${report.id}.zip`);
+          saveAs(blob, `cmpsbl-${safeName}-${report.cjpiCertificate.tier.toLowerCase()}.zip`);
           toast.success('Export complete. Your refurbished code has been downloaded.');
         });
       });
