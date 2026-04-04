@@ -8,6 +8,8 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { registerAllPrimitives } from './primitives';
+
 // ═══════════════════════════════════════════════════════════════
 // Inlined Types (self-contained — no external @cmpsbl deps)
 // ═══════════════════════════════════════════════════════════════
