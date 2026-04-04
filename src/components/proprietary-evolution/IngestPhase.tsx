@@ -472,7 +472,7 @@ export function IngestPhase() {
               {!canUpload ? 'Upload limit reached for today' : 'Drop source files here'}
             </p>
             <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
-              {!canUpload ? 'Upgrade your tier for more daily uploads' : 'All languages accepted — TypeScript, Python, Rust, Go, Verilog, VHDL, SystemVerilog, and any source file'}
+              {!canUpload ? 'Upgrade your tier for more daily uploads' : '90+ extensions — TypeScript, Python, Rust, Go, Solidity, VHDL, CUDA, Julia, F#, and any source file up to 5MB'}
             </p>
             {canUpload && <p className="mt-3 text-xs text-primary font-mono">click or drag to upload</p>}
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
