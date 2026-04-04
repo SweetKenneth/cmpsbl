@@ -106,7 +106,7 @@ export {
   LLM_ATIER_JEWELS,
   AGENCY_ATIER_JEWELS,
   type ATierEntry,
-} from '../../crownjewels/a-tier';
+} from '../../../crownjewels/a-tier';
 
 export {
   type VerticalPrimitive,
