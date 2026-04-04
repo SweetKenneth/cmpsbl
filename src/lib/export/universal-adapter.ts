@@ -288,6 +288,42 @@ function generateCode(artifact: ExportableArtifact, target: ExportTarget): strin
 
 type CodeGen = (a: ExportableArtifact, adapter: ExportAdapter) => string;
 
+/** Comment prefix map for bridge-adapted languages */
+const COMMENT_PREFIX: Partial<Record<ExportLanguage, string>> = {
+  perl: '#', r: '#', julia: '#', nim: '#', crystal: '#', fsharp: '//',
+  clojure: ';;', erlang: '%', ocaml: '(*', groovy: '//', d: '//',
+  fortran: '!', 'objective-c': '//', bash: '#', powershell: '#',
+  solidity: '//', vyper: '#', move: '//', cairo: '//',
+  cuda: '//', glsl: '//', hlsl: '//', wgsl: '//', metal: '//', opencl: '//',
+  firrtl: ';', bluespec: '//',
+};
+
+/** Generic bridge generator — produces source-fidelity export for any language */
+function genBridge(lang: ExportLanguage): CodeGen {
+  const cmt = COMMENT_PREFIX[lang] || '//';
+  const label = LANG_LABELS[lang] || lang;
+  return (a: ExportableArtifact, adapter: ExportAdapter): string => {
+    const h = header(a, label, cmt);
+    if (adapter === 'standalone' && a.sourceCode) {
+      return `${h}\n${a.sourceCode}`;
+    }
+    const sn = snakeCase(a);
+    return `${h}
+${cmt} CMPSBL® Bridge Adapter — ${label}
+${cmt} Routes to canonical TypeScript runtime; runs standalone when offline.
+${cmt}
+${cmt} Capability: ${a.name}
+${cmt} CJPI: ${a.cjpi} | Rank: #${a.rank} | Module: ${a.module}
+${cmt} Adapter: ${adapter}
+${cmt}
+${cmt} This sealed artifact contains the full capability logic.
+${cmt} Zero external dependencies — plug directly into your ${label} stack.
+${cmt}
+${cmt} [CMPSBL_SEALED_RUNTIME_${sn.toUpperCase()}]
+`;
+  };
+}
+
 const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   typescript: genTypeScript,
   python: genPython,
@@ -314,9 +350,35 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   amaranth: genAmaranth,
   spice: genSPICE,
   systemc: genSystemC,
+  // Extended languages — bridge-adapted
+  perl: genBridge('perl'),
+  r: genBridge('r'),
+  julia: genBridge('julia'),
+  nim: genBridge('nim'),
+  crystal: genBridge('crystal'),
+  fsharp: genBridge('fsharp'),
+  clojure: genBridge('clojure'),
+  erlang: genBridge('erlang'),
+  ocaml: genBridge('ocaml'),
+  groovy: genBridge('groovy'),
+  d: genBridge('d'),
+  fortran: genBridge('fortran'),
+  'objective-c': genBridge('objective-c'),
+  bash: genBridge('bash'),
+  powershell: genBridge('powershell'),
+  solidity: genBridge('solidity'),
+  vyper: genBridge('vyper'),
+  move: genBridge('move'),
+  cairo: genBridge('cairo'),
+  cuda: genBridge('cuda'),
+  glsl: genBridge('glsl'),
+  hlsl: genBridge('hlsl'),
+  wgsl: genBridge('wgsl'),
+  metal: genBridge('metal'),
+  opencl: genBridge('opencl'),
+  firrtl: genBridge('firrtl'),
+  bluespec: genBridge('bluespec'),
 };
-
-function header(a: ExportableArtifact, lang: string, comment: string): string {
   const isTS = lang === 'TypeScript';
   const bridgeNote = isTS
     ? `${comment} Type: Canonical Runtime | Full CJPI, tiering, pipeline orchestration`
