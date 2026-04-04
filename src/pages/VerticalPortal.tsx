@@ -20,7 +20,7 @@ import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory
 
 /** Map icon names to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = {
-  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users,
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users, Crown,
 };
 
 const STATIC_VERTICALS = [
