@@ -5,6 +5,7 @@
  */
 
 import { useRef, useState } from "react";
+import { SubstrateClassBadge } from "@/components/ui/substrate-class-badge";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Lock, ArrowRight, ShieldCheck, Search, X } from "lucide-react";
