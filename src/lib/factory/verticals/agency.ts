@@ -401,7 +401,7 @@ export function getAgencySubstrate(): VerticalSubstrateConfig {
         reliability: 0.30,
         maintainability: 0.20,
       },
-      collisionPriority: ['MANDATE', 'OPERATOR', 'DELEGATE', 'SENTINEL', 'TOOLKIT'],
+      collisionPriority: ['MANDATE', 'OPERATOR', 'DELEGATE', 'OVERSEER', 'TOOLKIT'],
     },
     theme: {
       primaryHue: 35,

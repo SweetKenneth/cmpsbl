@@ -289,8 +289,8 @@ const CYBER_AGENTS: VerticalPrimitive[] = [
     classification: 'hybrid',
   },
   {
-    id: 'BULWARK',
-    name: 'BULWARK',
+    id: 'CITADEL',
+    name: 'CITADEL',
     role: 'agent',
     description: 'Supply chain security agent. Audits dependencies, monitors for compromised packages, and validates software bill of materials.',
     inherited: false,

@@ -369,7 +369,7 @@ export function getRoboticsSubstrate(): VerticalSubstrateConfig {
         reliability: 0.35,
         maintainability: 0.15,
       },
-      collisionPriority: ['SERVO', 'KINETIC', 'GUARDIAN', 'LIDAR', 'TENSOR'],
+      collisionPriority: ['SERVO', 'KINETIC', 'MARSHAL', 'LIDAR', 'TENSOR'],
     },
     theme: {
       primaryHue: 200,

@@ -168,7 +168,7 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   // ═══ AGENCY VERTICAL (agency.cmpsbl.com) — 8 Agents ═══
   { name: 'OPERATOR',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'OVERSEER',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
-  { name: 'DIPLOMAT',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'LIAISON',   context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'SCHOLAR',   context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'ENVOY',     context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'WARDEN',    context: 'agency-agent', vertical: 'agency', role: 'agent' },
