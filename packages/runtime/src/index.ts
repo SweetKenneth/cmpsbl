@@ -370,3 +370,21 @@ export type {
   PackageDomain,
   DomainPattern,
 } from './first-contact';
+
+// ═══════════════════════════════════════════════════════════════
+// §8 — Primitive Catalog (131 unique primitives)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  PRIMITIVE_CATALOG,
+  registerAllPrimitives,
+  getCatalogEntry,
+  getCatalogBySource,
+  getCatalogNames,
+} from './primitives';
+
+export type {
+  PrimitiveCatalogEntry,
+  PrimitiveClassification,
+  PrimitiveSource,
+} from './primitives';
