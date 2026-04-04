@@ -24,7 +24,7 @@ export interface CascadeResolvedEntitlement {
 
 export class EntitlementCascadeResolver {
   private entitlements: Map<string, EntitlementDef> = new Map();
-  private resolveCache: Map<string, ResolvedEntitlement> = new Map();
+  private resolveCache: Map<string, CascadeResolvedEntitlement> = new Map();
   private auditLog: { roleId: string; action: string; timestamp: string }[] = [];
 
   define(roleId: string, permissions: string[], inheritsFrom?: string, overrides: string[] = [], conditions?: Record<string, unknown>): void {
@@ -37,7 +37,7 @@ export class EntitlementCascadeResolver {
     return result.effectivePermissions;
   }
 
-  resolveWithDetails(roleId: string): ResolvedEntitlement {
+  resolveWithDetails(roleId: string): CascadeResolvedEntitlement {
     const cached = this.resolveCache.get(roleId);
     if (cached) return cached;
 
@@ -63,7 +63,7 @@ export class EntitlementCascadeResolver {
 
     walk(roleId);
 
-    const result: ResolvedEntitlement = {
+    const result: CascadeResolvedEntitlement = {
       roleId,
       effectivePermissions: [...perms],
       inheritanceChain: chain,

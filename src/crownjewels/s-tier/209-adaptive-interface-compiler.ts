@@ -26,15 +26,15 @@ export interface CompiledOutput {
 }
 
 export class AdaptiveInterfaceCompiler {
-  private profiles: Map<string, AccessibilityProfile> = new Map();
+  private profiles: Map<string, AdaptiveAccessibilityProfile> = new Map();
   private compilationLog: { userId: string; modality: Modality; adaptations: number; timestamp: number }[] = [];
 
-  private readonly defaults: AccessibilityProfile = {
+  private readonly defaults: AdaptiveAccessibilityProfile = {
     modality: 'text', fontSize: 16, contrast: 'normal',
     reducedMotion: false, screenReader: false, colorBlindMode: 'none',
   };
 
-  setProfile(userId: string, profile: Partial<AccessibilityProfile>): void {
+  setProfile(userId: string, profile: Partial<AdaptiveAccessibilityProfile>): void {
     this.profiles.set(userId, { ...this.defaults, ...profile });
   }
 
@@ -86,7 +86,7 @@ export class AdaptiveInterfaceCompiler {
     return { output, modality: profile.modality, adaptations, ariaAnnotations, estimatedReadTimeMs };
   }
 
-  getProfile(userId: string): AccessibilityProfile | null {
+  getProfile(userId: string): AdaptiveAccessibilityProfile | null {
     return this.profiles.get(userId) ?? null;
   }
 

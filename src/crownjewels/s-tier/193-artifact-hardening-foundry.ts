@@ -89,7 +89,7 @@ export class ArtifactHardeningFoundry {
     return a.stage === 'hardened' && Object.values(a.scores).every(s => s >= this.minScoreThreshold);
   }
 
-  attest(artifactId: string): Attestation | null {
+  attest(artifactId: string): HardeningAttestation | null {
     const a = this.artifacts.get(artifactId);
     if (!a) return null;
 

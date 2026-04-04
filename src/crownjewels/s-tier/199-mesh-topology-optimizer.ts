@@ -16,7 +16,7 @@ export interface TopologyMeshNode {
 }
 
 export class MeshTopologyOptimizer {
-  private nodes: Map<string, MeshNode> = new Map();
+  private nodes: Map<string, TopologyMeshNode> = new Map();
   private optimizationLog: { action: string; detail: string; timestamp: number }[] = [];
 
   addNode(id: string, connections: string[] = []): void {

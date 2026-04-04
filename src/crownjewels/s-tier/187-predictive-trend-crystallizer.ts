@@ -24,7 +24,7 @@ export interface TrendDataPoint {
 }
 
 export class PredictiveTrendCrystallizer {
-  private dataPoints: DataPoint[] = [];
+  private dataPoints: TrendDataPoint[] = [];
   private readonly maxBuffer: number;
 
   constructor(maxBuffer: number = 2000) {

@@ -26,7 +26,7 @@ export interface FlameGraph {
 }
 
 export class CognitiveFlameGraphGenerator {
-  private spans: Map<string, Span> = new Map();
+  private spans: Map<string, FlameSpan> = new Map();
   private activeSpans: Map<string, number> = new Map(); // spanId → startTime
 
   startSpan(label: string, category: string, parentId?: string, metadata: Record<string, unknown> = {}): string {
@@ -101,7 +101,7 @@ export class CognitiveFlameGraphGenerator {
     return { roots, totalDuration, hotspots, categoryBreakdown, anomalies };
   }
 
-  getSpan(spanId: string): Span | null {
+  getSpan(spanId: string): FlameSpan | null {
     const s = this.spans.get(spanId);
     return s ? { ...s, children: [...s.children] } : null;
   }
