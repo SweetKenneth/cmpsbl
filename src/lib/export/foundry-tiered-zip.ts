@@ -154,12 +154,7 @@ export async function downloadTieredFoundryZip(options: {
   };
   root.file('manifest.json', JSON.stringify(manifest, null, 2));
 
-  // When mergeRuntime is true, skip the separate _runtime folder — it gets inlined into each source file
-  if (!mergeRuntime) {
-    const runtimeFolder = root.folder('_runtime')!;
-    runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-    runtimeFolder.file('README.md', generateSealedRuntimeReadme());
-  }
+  // Runtime is merged into each source file — no separate _runtime/ folder
 
   let fileCount = 0;
   let totalLanguageVariants = 0;
