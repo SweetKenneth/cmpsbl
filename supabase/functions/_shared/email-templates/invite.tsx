@@ -30,6 +30,7 @@ export const InviteEmail = ({
     <Preview>You've been invited to join {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
+        <Text style={brand}>CMPSBL®</Text>
         <Heading style={h1}>You've been invited</Heading>
         <Text style={text}>
           You've been invited to join{' '}
@@ -46,6 +47,7 @@ export const InviteEmail = ({
           If you weren't expecting this invitation, you can safely ignore this
           email.
         </Text>
+        <Text style={footerBrand}>CMPSBL® · PromptFluid™</Text>
       </Container>
     </Body>
   </Html>
@@ -53,27 +55,12 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const link = { color: 'inherit', textDecoration: 'underline' }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
-}
+const main = { backgroundColor: '#ffffff', fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif" }
+const container = { padding: '40px 25px' }
+const brand = { fontSize: '14px', fontWeight: 'bold' as const, color: '#2E78C2', letterSpacing: '2px', margin: '0 0 30px' }
+const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: '#212733', margin: '0 0 20px' }
+const text = { fontSize: '14px', color: '#5C6370', lineHeight: '1.6', margin: '0 0 25px' }
+const link = { color: '#2E78C2', textDecoration: 'underline' }
+const button = { backgroundColor: '#2E78C2', color: '#ffffff', fontSize: '14px', borderRadius: '8px', padding: '12px 24px', textDecoration: 'none', fontWeight: 'bold' as const }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footerBrand = { fontSize: '11px', color: '#bbb', margin: '10px 0 0', letterSpacing: '1px' }
