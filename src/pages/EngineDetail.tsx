@@ -9,6 +9,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, ShieldCheck, ArrowLeft, Check, Download, FileText, Sparkles, ArrowRight, Zap, Brain } from "lucide-react";
+import { SubstrateClassBadge } from "@/components/ui/substrate-class-badge";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -305,11 +306,14 @@ export default function EngineDetail() {
                 <engine.icon className="w-8 h-8 sm:w-10 sm:h-10" style={{ color: `hsl(${engine.color})` }} />
               </div>
               <div>
-                <div className="flex items-center gap-3 mb-1">
+                <div className="flex items-center gap-3 mb-1 flex-wrap">
                   <h1 className="text-3xl sm:text-4xl font-black tracking-tight">{engine.codename}</h1>
                   <Badge variant="outline" className={cn("text-[11px] font-mono", TIER_ACCENT[engine.tier])}>
                     {engine.tier}
                   </Badge>
+                  {engine.isSubstrateClass && engine.sourcePrimitive && (
+                    <SubstrateClassBadge primitiveName={engine.sourcePrimitive} size="md" />
+                  )}
                 </div>
                 <p className="text-base sm:text-lg text-muted-foreground">{engine.tagline}</p>
               </div>

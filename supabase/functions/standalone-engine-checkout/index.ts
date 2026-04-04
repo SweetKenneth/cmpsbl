@@ -32,9 +32,9 @@ const ENGINE_PRICE_IDS: Record<string, { price_id: string; mode: "payment" | "su
   aegis:        { price_id: PRICE_CORE, mode: "payment" },
 
   // ELITE ($19)
-  cortex:       { price_id: PRICE_ELITE, mode: "payment" },
-  forge:        { price_id: PRICE_ELITE, mode: "payment" },
-  oracle:       { price_id: PRICE_ELITE, mode: "payment" },
+  'mini-cortex':  { price_id: PRICE_ELITE, mode: "payment" },
+  'mini-forge':   { price_id: PRICE_ELITE, mode: "payment" },
+  'mini-oracle':  { price_id: PRICE_ELITE, mode: "payment" },
   vanguard:     { price_id: PRICE_ELITE, mode: "payment" },
   conductor:    { price_id: PRICE_ELITE, mode: "payment" },
   arbiter:      { price_id: PRICE_ELITE, mode: "payment" },
@@ -42,8 +42,8 @@ const ENGINE_PRICE_IDS: Record<string, { price_id: string; mode: "payment" | "su
 
   // APEX ($39)
   sentinel:     { price_id: PRICE_APEX, mode: "payment" },
-  phantom:      { price_id: PRICE_APEX, mode: "payment" },
-  nexus:        { price_id: PRICE_APEX, mode: "payment" },
+  'mini-phantom': { price_id: PRICE_APEX, mode: "payment" },
+  'mini-nexus':   { price_id: PRICE_APEX, mode: "payment" },
   prism:        { price_id: PRICE_APEX, mode: "payment" },
   genesis:      { price_id: PRICE_APEX, mode: "payment" },
 

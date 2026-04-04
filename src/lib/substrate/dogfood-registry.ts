@@ -163,10 +163,10 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
   // EVOLUTION & SELF-IMPROVEMENT
   // ═══════════════════════════════════════════════════════════════
   {
-    storeSlug: 'forge',
-    codename: 'FORGE',
+    storeSlug: 'mini-forge',
+    codename: 'Mini-FORGE',
     internalPrimitives: ['ENCODE Systems Engineer', 'SEBA Evolution Engine', 'Patch Writer'],
-    internalRole: 'Powers the self-evolving substrate — SEBA uses FORGE\'s code generation and refactoring capabilities to write, audit, and apply surgical patches across the codebase.',
+    internalRole: 'Powers the self-evolving substrate — SEBA uses Mini-FORGE\'s code generation and refactoring capabilities to write, audit, and apply surgical patches across the codebase.',
     active: true,
     activeSince: '2025-11-15',
     category: 'evolution',
@@ -212,10 +212,10 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
   // RESILIENCE & RECOVERY
   // ═══════════════════════════════════════════════════════════════
   {
-    storeSlug: 'phantom',
-    codename: 'PHANTOM',
+    storeSlug: 'mini-phantom',
+    codename: 'Mini-PHANTOM',
     internalPrimitives: ['Self-Healing Consensus', 'Circuit Breakers', 'Graceful Degradation'],
-    internalRole: 'The Self-Healing Consensus Meta-Engine IS PHANTOM running in production — Byzantine fault tolerance, automatic node recovery, and zero-downtime healing.',
+    internalRole: 'The Self-Healing Consensus Meta-Engine IS Mini-PHANTOM running in production — Byzantine fault tolerance, automatic node recovery, and zero-downtime healing.',
     active: true,
     activeSince: '2026-03-28',
     category: 'resilience',
@@ -261,8 +261,8 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
     category: 'governance',
   },
   {
-    storeSlug: 'cortex',
-    codename: 'CORTEX',
+    storeSlug: 'mini-cortex',
+    codename: 'Mini-CORTEX',
     internalPrimitives: ['CORTEX Orchestrator', 'Agency Runtime', 'Agent Competency Tracking'],
     internalRole: 'Orchestrates multi-agent coordination in the Agency system — task delegation, cognitive load balancing, shared memory coordination, and competency-based skill routing.',
     active: true,
@@ -301,8 +301,8 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
     category: 'observability',
   },
   {
-    storeSlug: 'oracle',
-    codename: 'ORACLE',
+    storeSlug: 'mini-oracle',
+    codename: 'Mini-ORACLE',
     internalPrimitives: ['ORACLE Prophetic Engine', 'Drift Detector', 'Confidence Classifier'],
     internalRole: 'Predictive modeling for substrate health — drift detection, confidence gating before autonomous execution, and pattern recognition across system signals.',
     active: true,

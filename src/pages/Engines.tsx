@@ -5,6 +5,7 @@
  */
 
 import { useRef, useState } from "react";
+import { SubstrateClassBadge } from "@/components/ui/substrate-class-badge";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Lock, ArrowRight, ShieldCheck, Search, X } from "lucide-react";
@@ -169,6 +170,9 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
               <Badge variant="outline" className="text-[10px] font-mono text-neon-cyan border-neon-cyan/25 bg-neon-cyan/5">
                 Powers CMPSBL
               </Badge>
+            )}
+            {engine.isSubstrateClass && engine.sourcePrimitive && (
+              <SubstrateClassBadge primitiveName={engine.sourcePrimitive} />
             )}
           </div>
 

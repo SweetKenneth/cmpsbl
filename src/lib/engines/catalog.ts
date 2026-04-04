@@ -45,6 +45,10 @@ export interface Engine {
   freeForSubscribers?: boolean;
   /** Extended description for the detail page */
   longDescription?: string;
+  /** True if this product is derived from a canonical substrate primitive */
+  isSubstrateClass?: boolean;
+  /** The canonical primitive this product is modeled after */
+  sourcePrimitive?: string;
 }
 
 /** Engine version registry — centralized version tracking for all engines */
@@ -52,13 +56,13 @@ const ENGINE_VERSIONS: Record<string, string> = {
   // APEX — Flagship
   architect: '2.1.0',
   sentinel: '1.2.0',
-  phantom: '1.1.0',
-  nexus: '1.3.0',
+  'mini-phantom': '1.1.0',
+  'mini-nexus': '1.3.0',
   prism: '1.1.0',
   // ELITE
-  cortex: '1.2.0',
-  forge: '1.1.0',
-  oracle: '1.0.0',
+  'mini-cortex': '1.2.0',
+  'mini-forge': '1.1.0',
+  'mini-oracle': '1.0.0',
   vanguard: '1.0.0',
   conductor: '1.0.0',
   arbiter: '1.0.0',
@@ -133,20 +137,22 @@ export const ENGINES: Engine[] = [
     threatLevel: "CRITICAL — ACTIVE DEFENSE", clearance: "LEVEL 9 — TOP SECRET",
   },
   {
-    slug: "phantom", codename: "PHANTOM", tagline: "Self-Healing Service Mesh",
+    slug: "mini-phantom", codename: "Mini-PHANTOM", tagline: "Self-Healing Service Mesh",
     priceStandalone: 3900, priceBundled: 2300, priceDisplay: "$39", bundleDisplay: "$23",
     priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: Ghost, color: "280 70% 55%", tier: "APEX",
     edition: "Edition 001 of ∞",
-    briefing: "PHANTOM makes downtime impossible. Auto-recovery, circuit breaking, and intelligent failover keep your services alive even when individual nodes fail.",
+    isSubstrateClass: true, sourcePrimitive: "PHANTOM",
+    briefing: "Mini-PHANTOM makes downtime impossible. Auto-recovery, circuit breaking, and intelligent failover keep your services alive even when individual nodes fail.",
     capabilities: ["Automatic service recovery", "Circuit breaker orchestration", "Zero-downtime deployments", "Intelligent failover routing", "Health-based load shedding", "Chaos resilience built-in"],
     threatLevel: "HIGH — RESILIENCE OPS", clearance: "LEVEL 8 — CLASSIFIED",
   },
   {
-    slug: "nexus", codename: "NEXUS", tagline: "Multi-Model AI Router",
+    slug: "mini-nexus", codename: "Mini-NEXUS", tagline: "Multi-Model AI Router",
     priceStandalone: 3900, priceBundled: 2300, priceDisplay: "$39", bundleDisplay: "$23",
     priceId: "price_1T6OBJQ7FtTiAL4ar4khmX2R", icon: Network, color: "160 75% 45%", tier: "APEX",
     edition: "Edition 001 of ∞",
-    briefing: "NEXUS routes every AI call to the optimal model in real time. Cost-aware selection, latency-based failover, response quality scoring, and automatic provider rotation — best answer at the best price.",
+    isSubstrateClass: true, sourcePrimitive: "NEXUS",
+    briefing: "Mini-NEXUS routes every AI call to the optimal model in real time. Cost-aware selection, latency-based failover, response quality scoring, and automatic provider rotation — best answer at the best price.",
     capabilities: ["Real-time model selection & routing", "Cost-aware provider optimization", "Latency-based automatic failover", "Response quality scoring & feedback", "Token budget management", "Multi-provider load balancing"],
     threatLevel: "CRITICAL — ROUTING OPS", clearance: "LEVEL 9 — TOP SECRET",
   },
@@ -160,29 +166,32 @@ export const ENGINES: Engine[] = [
     threatLevel: "HIGH — KNOWLEDGE OPS", clearance: "LEVEL 8 — CLASSIFIED",
   },
   {
-    slug: "cortex", codename: "CORTEX", tagline: "Agent Runtime & Orchestration",
+    slug: "mini-cortex", codename: "Mini-CORTEX", tagline: "Agent Runtime & Orchestration",
     priceStandalone: 1900, priceBundled: 1100, priceDisplay: "$19", bundleDisplay: "$11",
     priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Brain, color: "310 70% 55%", tier: "ELITE",
     edition: "Edition 001 of ∞",
-    briefing: "CORTEX gives your AI agents a brain. Multi-agent orchestration, task delegation, memory coordination, and cognitive load balancing — agents think together instead of stepping on each other.",
+    isSubstrateClass: true, sourcePrimitive: "CORTEX",
+    briefing: "Mini-CORTEX gives your AI agents a brain. Multi-agent orchestration, task delegation, memory coordination, and cognitive load balancing — agents think together instead of stepping on each other.",
     capabilities: ["Multi-agent task delegation", "Cognitive load balancing", "Shared memory coordination", "Agent competency tracking", "Automatic skill routing", "Collaborative reasoning"],
     threatLevel: "ELEVATED — COGNITIVE OPS", clearance: "LEVEL 7 — RESTRICTED",
   },
   {
-    slug: "forge", codename: "FORGE", tagline: "Code Generation & Refactoring",
+    slug: "mini-forge", codename: "Mini-FORGE", tagline: "Code Generation & Refactoring",
     priceStandalone: 1900, priceBundled: 1100, priceDisplay: "$19", bundleDisplay: "$11",
     priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Hammer, color: "25 95% 55%", tier: "ELITE",
     edition: "Edition 001 of ∞",
-    briefing: "FORGE writes code that ships. Multi-file generation, intelligent refactoring, type-safe transformations, and automated test scaffolding — all inside a sandboxed execution environment with rollback.",
+    isSubstrateClass: true, sourcePrimitive: "FORGE",
+    briefing: "Mini-FORGE writes code that ships. Multi-file generation, intelligent refactoring, type-safe transformations, and automated test scaffolding — all inside a sandboxed execution environment with rollback.",
     capabilities: ["Multi-file code generation", "Type-safe AST transformations", "Automated test scaffolding", "Dead code elimination", "Dependency graph analysis", "Sandboxed execution with rollback"],
     threatLevel: "ELEVATED — CODE OPS", clearance: "LEVEL 7 — RESTRICTED",
   },
   {
-    slug: "oracle", codename: "ORACLE", tagline: "Real-Time Analytics & Prediction",
+    slug: "mini-oracle", codename: "Mini-ORACLE", tagline: "Real-Time Analytics & Prediction",
     priceStandalone: 1900, priceBundled: 1100, priceDisplay: "$19", bundleDisplay: "$11",
     priceId: "price_1T6OBKQ7FtTiAL4aZpSs8MYy", icon: Eye, color: "45 90% 50%", tier: "ELITE",
     edition: "Edition 001 of ∞",
-    briefing: "ORACLE sees what's coming. Predictive modeling, anomaly detection, and live data intelligence that turns raw signals into actionable foresight. Know before it happens.",
+    isSubstrateClass: true, sourcePrimitive: "ORACLE",
+    briefing: "Mini-ORACLE sees what's coming. Predictive modeling, anomaly detection, and live data intelligence that turns raw signals into actionable foresight. Know before it happens.",
     capabilities: ["Predictive trend modeling", "Real-time anomaly detection", "Live data stream processing", "Automated insight generation", "Pattern recognition at scale", "Forecasting with confidence intervals"],
     threatLevel: "MODERATE — INTELLIGENCE", clearance: "LEVEL 7 — RESTRICTED",
   },
