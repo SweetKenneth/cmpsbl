@@ -23,7 +23,7 @@
  *   SENTINEL  — Agent health monitor, self-healing, and graceful degradation
  *   DIPLOMAT  — Teamwork coordination and conflict resolution
  *   SCHOLAR   — Continuous skill acquisition and knowledge distillation
- *   HERALD    — User-facing communication and progress reporting
+ *   ENVOY    — User-facing communication and progress reporting
  *   WARDEN    — Governance enforcement and safety boundary agent
  *   ROGUE     — Creative problem-solving and unconventional approach agent
  *   ANCHOR    — Context persistence and long-term memory agent
@@ -254,8 +254,8 @@ const AGENCY_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'HERALD',
-    name: 'HERALD',
+    id: 'ENVOY',
+    name: 'ENVOY',
     role: 'agent',
     description: 'User-facing communication agent that provides clear progress reports, translates technical results, and manages expectation alignment.',
     inherited: false,

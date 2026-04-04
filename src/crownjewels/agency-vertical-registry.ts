@@ -266,20 +266,20 @@ const SCHOLAR_JEWELS: STierEntry[] = [
 ];
 
 // ── HERALD ──
-const HERALD_JEWELS: STierEntry[] = [
-  cj(560, 'S-HRLD01', 'Adaptive Progress Reporter', 96, 'HERALD',
+const ENVOY_JEWELS: STierEntry[] = [
+  cj(560, 'S-ENVY01', 'Adaptive Progress Reporter', 96, 'ENVOY',
     'Context-aware progress reporting that adjusts detail level, technical depth, and update frequency based on user preferences and urgency.',
     'ag-h01'),
-  cj(561, 'S-HRLD02', 'Technical Result Translator', 95, 'HERALD',
+  cj(561, 'S-ENVY02', 'Technical Result Translator', 95, 'ENVOY',
     'Translates complex technical outputs into clear, audience-appropriate summaries with optional deep-dive sections for technical stakeholders.',
     'ag-h02'),
-  cj(562, 'S-HRLD03', 'Expectation Alignment Engine', 94, 'HERALD',
+  cj(562, 'S-ENVY03', 'Expectation Alignment Engine', 94, 'ENVOY',
     'Proactively manages user expectations by communicating capability boundaries, estimated completion times, and potential limitations.',
     'ag-h03'),
-  cj(563, 'S-HRLD04', 'Notification Priority Router', 93, 'HERALD',
+  cj(563, 'S-ENVY04', 'Notification Priority Router', 93, 'ENVOY',
     'Intelligent notification system that filters, prioritizes, and batches updates to minimize user interruption while ensuring critical alerts surface.',
     'ag-h04'),
-  cj(564, 'S-HRLD05', 'Status Dashboard Composer', 92, 'HERALD',
+  cj(564, 'S-ENVY05', 'Status Dashboard Composer', 92, 'ENVOY',
     'Real-time status visualization generator producing summary dashboards of agent fleet activity, mission progress, and system health.',
     'ag-h05'),
 ];
@@ -358,7 +358,7 @@ export const AGENCY_CROWN_JEWELS: STierEntry[] = [
   ...SENTINEL_JEWELS,
   ...DIPLOMAT_JEWELS,
   ...SCHOLAR_JEWELS,
-  ...HERALD_JEWELS,
+  ...ENVOY_JEWELS,
   ...WARDEN_JEWELS,
   ...ROGUE_JEWELS,
   ...ANCHOR_JEWELS,
