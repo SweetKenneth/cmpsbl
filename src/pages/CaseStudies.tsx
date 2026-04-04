@@ -194,10 +194,10 @@ const QISKIT_PRIMITIVES = [
   { name: 'RELAY', type: 'Layer', action: 'Message relay with delivery guarantees and dead-letter handling' },
   { name: 'GLUON', type: 'Agent', action: 'Strong force coupling and QCD color charge simulation' },
   { name: 'CRYOGEN', type: 'Engine', action: 'Cryogenic system modeling and thermal noise reduction for quantum hardware' },
-  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered print/debug statements' },
+  { name: 'ECHO', type: 'Engine', action: 'Structured logging replacing scattered print/debug statements' },
   { name: 'IDENTITY', type: 'Organ', action: 'Authentication and identity resolution for access control' },
   { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for complex systems' },
-  { name: 'COMPASS', type: 'Organ', action: 'Module navigation and dependency mapping' },
+  { name: 'COMPASS', type: 'Layer', action: 'Module navigation and dependency mapping' },
   { name: 'SIMULATE', type: 'Layer', action: 'Simulation-based safe testing of architectural changes' },
   { name: 'EVOLUTION', type: 'Layer', action: 'Managed evolution cycles for technical debt reduction' },
 ];
