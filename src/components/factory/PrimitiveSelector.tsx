@@ -1,5 +1,5 @@
 /**
- * PrimitiveSelector — Select up to 20 primitives for Ascension restoration
+ * PrimitiveSelector — Select surfaced primitives for Ascension restoration
  * Shows scan team recommendations with impact scores.
  */
 
@@ -9,7 +9,7 @@ import { CheckCircle2, Circle, Zap, Shield, Brain, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { PrimitiveRecommendation } from "@/lib/factory/scan-team";
 
-const MAX_SELECTIONS = 20;
+const DEFAULT_MAX_SELECTIONS = 20;
 
 const CATEGORY_ICONS: Record<string, typeof Brain> = {
   Organ: Brain,
@@ -29,13 +29,21 @@ interface PrimitiveSelectorProps {
   recommendations: PrimitiveRecommendation[];
   onConfirm: (selected: PrimitiveRecommendation[]) => void;
   isProcessing?: boolean;
+  maxSelections?: number;
+  defaultSelectionCount?: number;
 }
 
-export function PrimitiveSelector({ recommendations, onConfirm, isProcessing }: PrimitiveSelectorProps) {
+export function PrimitiveSelector({
+  recommendations,
+  onConfirm,
+  isProcessing,
+  maxSelections = DEFAULT_MAX_SELECTIONS,
+  defaultSelectionCount = Math.min(8, maxSelections),
+}: PrimitiveSelectorProps) {
   const [selected, setSelected] = useState<Set<string>>(() => {
     // Pre-select top recommendations
     const initial = new Set<string>();
-    for (const rec of recommendations.slice(0, Math.min(8, recommendations.length))) {
+    for (const rec of recommendations.slice(0, Math.min(defaultSelectionCount, recommendations.length, maxSelections))) {
       initial.add(rec.primitiveId);
     }
     return initial;
@@ -46,12 +54,12 @@ export function PrimitiveSelector({ recommendations, onConfirm, isProcessing }: 
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
-      } else if (next.size < MAX_SELECTIONS) {
+      } else if (next.size < maxSelections) {
         next.add(id);
       }
       return next;
     });
-  }, []);
+  }, [maxSelections]);
 
   const handleConfirm = useCallback(() => {
     const selectedPrimitives = recommendations.filter(r => selected.has(r.primitiveId));
@@ -71,7 +79,7 @@ export function PrimitiveSelector({ recommendations, onConfirm, isProcessing }: 
         <div>
           <h3 className="text-sm font-bold text-foreground">Select Primitives</h3>
           <p className="text-xs text-muted-foreground">
-            {selected.size}/{MAX_SELECTIONS} selected · Scan team recommendations pre-selected
+            {selected.size}/{maxSelections} selected · Scan team recommendations pre-selected
           </p>
         </div>
         <Button
@@ -104,13 +112,13 @@ export function PrimitiveSelector({ recommendations, onConfirm, isProcessing }: 
                   <button
                     key={primitive.primitiveId}
                     onClick={() => toggle(primitive.primitiveId)}
-                    disabled={!isSelected && selected.size >= MAX_SELECTIONS}
+                    disabled={!isSelected && selected.size >= maxSelections}
                     className={cn(
                       "flex items-start gap-2 p-3 rounded-lg border text-left transition-all duration-200",
                       isSelected
                         ? "border-primary/40 bg-primary/5"
                         : "border-border/30 bg-card/10 hover:border-border/60",
-                      !isSelected && selected.size >= MAX_SELECTIONS && "opacity-40 cursor-not-allowed",
+                      !isSelected && selected.size >= maxSelections && "opacity-40 cursor-not-allowed",
                     )}
                   >
                     {isSelected ? (

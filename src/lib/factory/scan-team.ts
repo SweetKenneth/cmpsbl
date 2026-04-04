@@ -16,6 +16,7 @@ import { getLLMEngines, getLLMAgents } from './verticals/llm';
 import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
+import { runUniversalPoolScan } from './universal-pool-scanner';
 
 export interface ScanFinding {
   id: string;
@@ -204,6 +205,44 @@ export function getPrimitiveCatalog() {
   return buildVerticalCatalog();
 }
 
+function toRecommendationCategory(
+  role: 'organ' | 'layer' | 'engine' | 'agent',
+): PrimitiveRecommendation['category'] {
+  switch (role) {
+    case 'organ':
+      return 'Organ';
+    case 'layer':
+      return 'Layer';
+    case 'engine':
+      return 'Engine';
+    case 'agent':
+      return 'Agent';
+  }
+}
+
+function buildUltimateRecommendations(code: string): PrimitiveRecommendation[] {
+  const scan = runUniversalPoolScan(code);
+
+  return scan.selectedPrimitives
+    .map((candidate) => {
+      const sourceLabel = candidate.sourceVertical === 'spine'
+        ? 'Shared substrate'
+        : `${candidate.sourceVertical.charAt(0).toUpperCase()}${candidate.sourceVertical.slice(1)} source`;
+      const signalSummary = candidate.totalSignals > 0
+        ? `${candidate.signalHits}/${candidate.totalSignals} signal hits`
+        : 'collision surfaced';
+
+      return {
+        primitiveId: candidate.primitive.id.toLowerCase(),
+        name: candidate.primitive.name,
+        category: toRecommendationCategory(candidate.primitive.role),
+        impactScore: Math.max(55, Math.min(99, Math.round(candidate.compoundingScore * 100))),
+        rationale: `${sourceLabel} · ${signalSummary} · collision ${Math.round(candidate.compoundingScore * 100)}`,
+      };
+    })
+    .sort((a, b) => b.impactScore - a.impactScore);
+}
+
 // ═══════════════════════════════════════════════════════════════
 // CAPABILITY REGISTRY — 5× expanded, classified by archetype
 // ENCODE uses these to recommend upgrades based on code analysis
@@ -344,6 +383,7 @@ export async function runScanTeam(codeSnippet: string, fileName?: string): Promi
   const startTime = Date.now();
   const rand = seededRandom(codeSeed(codeSnippet));
   const metrics = analyzeCodeMetrics(codeSnippet, fileName);
+  const isUltimateSurface = getVerticalSubdomain() === 'ultimate';
 
   // Six-primitive scan squad
   const encodeFindings = analyzeWithEncode(codeSnippet, metrics);
@@ -362,8 +402,11 @@ export async function runScanTeam(codeSnippet: string, fileName?: string): Promi
     ...failsafeFindings,
   ];
 
-  // ENCODE drives recommendation — all 40 primitives eligible
-  const recommendations = generateRecommendations(allFindings, codeSnippet, rand);
+  // Ultimate runs the unrestricted 40-slot pool scan.
+  // All other substrates keep the standard recommendation pass.
+  const recommendations = isUltimateSurface
+    ? buildUltimateRecommendations(codeSnippet)
+    : generateRecommendations(allFindings, codeSnippet, rand);
 
   const criticalCount = allFindings.filter(f => f.severity === 'critical').length;
   const warningCount = allFindings.filter(f => f.severity === 'warning').length;
