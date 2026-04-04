@@ -1,7 +1,7 @@
 /**
  * CMPSBL® Universal Export Adapter System
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Generates exportable code across 25 languages/frameworks.
+ * Generates exportable code across 90+ languages/frameworks.
  * 
  * ARCHITECTURE: One Runtime, Many Bridges.
  *   - TypeScript: Canonical runtime (full CJPI, tiering, FSM, saga)

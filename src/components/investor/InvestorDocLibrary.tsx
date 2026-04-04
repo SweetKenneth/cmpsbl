@@ -341,7 +341,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           rows: [
             ["Cognitive Substrate (40-Primitive Matrix)", "Core Architecture", "Symmetric 12·12·8·8 topology with governed inter-node mesh — architectural complexity prevents replication"],
             ["Memory Stream (Discovery Engine)", "Autonomous Discovery", "Self-observing behavior analysis that crystallizes viable software pipelines — no other system discovers its own capabilities"],
-            ["Ascension (Export Engine)", "Software Factory", "Upload → classify → filter → export as single-file IP-protected artifact in 25 languages — entirely unique capability"],
+            ["Ascension (Export Engine)", "Software Factory", "Upload → classify → filter → export as single-file IP-protected artifact in 90+ languages — entirely unique capability"],
             ["Evolution Engine (SEBA Pipeline)", "Self-Improvement", "7-gate validated autonomous code improvement — 166 bugs fixed for $0.06 with 100% ENCODE apply rate"],
             ["BRAIN Organ (Persistent Memory)", "Cognitive Memory", "4-tier governed memory with Constant Learning Mode — up to 14,400 AI training calls/day compounding daily"],
             ["DREAM Engine", "Background Learning", "Autonomous idle-time consolidation, memory synthesis, and cross-agent knowledge sharing — no other platform does this"],

@@ -684,7 +684,7 @@ const HeritagePaper = () => {
                                             ↓
                                 Capability Pack Generation
                                             ↓
-                                Universal Export (25 languages)`}
+                                Universal Export (90+ languages)`}
             </pre>
           </section>
 
