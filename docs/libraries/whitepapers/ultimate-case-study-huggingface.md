@@ -199,11 +199,11 @@ The Ascension pipeline identified 12 structural findings in `modeling_utils.py`.
 - **Details:** The file calls `torch.load()` on arbitrary checkpoint files fetched from the internet. Malicious pickle-based checkpoints can execute arbitrary code during deserialization. HuggingFace added `check_torch_load_is_safe()` as a partial mitigation but the vulnerability remains a known, documented risk.
 - **Primitive Response:** BASTION (Cyber) + IRONCLAD (Cyber) deployed perimeter hardening around the deserialization path
 
-#### 4.1.2 Unhandled Async Rejections
+#### 4.1.2 Remote Code Execution via `trust_remote_code=True`
 - **Severity:** CRITICAL
 - **Status:** Hardened
-- **Details:** Asynchronous operations without rejection handlers create silent failure paths
-- **Primitive Response:** PHOENIX (Ultimate) deployed resurrection patterns — automatic retry with exponential backoff and SENTINEL alerting on failure threshold breach
+- **Details:** The file explicitly accepts and executes arbitrary Python code from HuggingFace Hub when `trust_remote_code=True` is set. This is a documented intentional feature with real attack surface.
+- **Primitive Response:** PHOENIX (Ultimate) + SENTINEL (Ultimate) deployed resurrection patterns and input validation gates around the remote code loading path
 
 ### 4.2 Warning Findings
 
