@@ -87,6 +87,11 @@ export const LANG_MAP: Record<string, string> = {
   // ═══ Markup / Data ═══
   json: 'JSON', yaml: 'YAML', yml: 'YAML', toml: 'TOML', xml: 'XML',
   md: 'Markdown', txt: 'Text', csv: 'CSV', ini: 'INI',
+  cfg: 'Config', conf: 'Config', env: 'Environment',
+  cmake: 'CMake', make: 'Makefile', mk: 'Makefile',
+  gradle: 'Gradle', sbt: 'SBT',
+  nix: 'Nix', dhall: 'Dhall',
+  jsonnet: 'Jsonnet', libsonnet: 'Jsonnet',
 
   // ═══ WebAssembly ═══
   wat: 'WebAssembly Text', wast: 'WebAssembly',
@@ -94,6 +99,24 @@ export const LANG_MAP: Record<string, string> = {
   // ═══ GPU / Shaders ═══
   glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL', cu: 'CUDA', cl: 'OpenCL',
   metal: 'Metal',
+};
+
+/** Extensionless filenames → language mapping (case-insensitive) */
+const EXTENSIONLESS_MAP: Record<string, string> = {
+  dockerfile: 'Dockerfile',
+  makefile: 'Makefile',
+  rakefile: 'Ruby/Rake',
+  gemfile: 'Ruby/Bundler',
+  vagrantfile: 'Ruby/Vagrant',
+  justfile: 'Justfile',
+  cmakelists: 'CMake',
+  snakefile: 'Snakemake',
+  jenkinsfile: 'Groovy/Jenkins',
+  procfile: 'Procfile',
+  brewfile: 'Homebrew',
+  taskfile: 'Taskfile',
+  earthfile: 'Earthfile',
+  containerfile: 'Containerfile',
 };
 
 const SUPPORTED_TEXT_EXTENSIONS = new Set(Object.keys(LANG_MAP));
@@ -129,12 +152,26 @@ function getFileExtension(name: string): string {
   return name.split('.').pop()?.toLowerCase() || '';
 }
 
+/** Resolve the bare filename (no extension) for extensionless files like Dockerfile */
+function getBareName(name: string): string {
+  const base = name.split('/').pop() || name;
+  // Strip leading dot for dotfiles like .gitignore
+  return base.replace(/^\./, '').toLowerCase();
+}
+
 function isKnownSourceFile(file: File): boolean {
-  return SUPPORTED_TEXT_EXTENSIONS.has(getFileExtension(file.name));
+  const ext = getFileExtension(file.name);
+  if (SUPPORTED_TEXT_EXTENSIONS.has(ext)) return true;
+  // Extensionless files (Dockerfile, Makefile, etc.)
+  const bare = getBareName(file.name);
+  return bare in EXTENSIONLESS_MAP;
 }
 
 function detectLanguage(file: File): string {
-  return LANG_MAP[getFileExtension(file.name)] || 'Unknown';
+  const ext = getFileExtension(file.name);
+  if (LANG_MAP[ext]) return LANG_MAP[ext];
+  const bare = getBareName(file.name);
+  return EXTENSIONLESS_MAP[bare] || 'Unknown';
 }
 
 export function sanitizeCandidateName(fileName: string): string {
