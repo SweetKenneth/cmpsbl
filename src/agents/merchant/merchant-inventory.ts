@@ -6,7 +6,7 @@
  * Memory Stream discoveries and MERCHANT scan cycles.
  */
 
-import type { MarketplaceItem, SourceSubstrate, ListingCategory } from './merchant-engine';
+import type { MarketplaceItem, SourceSubstrate, SourceVault, ListingCategory } from './merchant-engine';
 import { calculateMarketplacePrice, getMarketplaceTier, generateSlug } from './merchant-engine';
 
 /** Seed inventory — representative of what MERCHANT discovers across the ecosystem */
