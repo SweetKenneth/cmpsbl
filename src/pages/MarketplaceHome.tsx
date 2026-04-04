@@ -375,7 +375,7 @@ export default function MarketplaceHome() {
 
 /* ═══ Sub-components ═══ */
 
-function FeaturedCard({ item }: { item: MarketplaceItem }) {
+function FeaturedCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy: () => void; isLoading?: boolean }) {
   const meta = CATEGORY_META[item.category];
   const substrateMeta = SUBSTRATE_META[item.sourceSubstrate];
 
