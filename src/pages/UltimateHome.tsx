@@ -284,8 +284,8 @@ export default function UltimateHome() {
             </h2>
             <div className="grid sm:grid-cols-2 gap-4 mb-8 text-left">
               {[
-                { label: "Standard Vertical", desc: "16 fixed expansion primitives per domain. Great for specialized codebases.", style: "muted" },
-                { label: "Ultimate Ascension", desc: `${poolSize} candidates compete. Dynamic selection. Maximum compounding. No ceiling.`, style: "highlight" },
+                { label: "Standard Vertical", desc: "24 locked spine + 16 fixed expansion primitives. Optimized for one domain.", style: "muted" },
+                { label: "Ultimate Ascension", desc: `${poolSize} candidates. All 40 slots open. No spine lock. No quotas. The scanner picks the 40 primitives that maximize compounding for your code.`, style: "highlight" },
               ].map(item => (
                 <div key={item.label} className="p-5 rounded-xl" style={{
                   background: item.style === 'highlight' ? `${ACCENT}08` : BG_CARD,
