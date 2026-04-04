@@ -42,6 +42,7 @@ export const DOMAIN_CONFIG = {
     quantum: 'quantum.cmpsbl.com',
     llm: 'llm.cmpsbl.com',
     agency: 'agency.cmpsbl.com',
+    ultimate: 'ultimate.cmpsbl.com',
   },
   /** Special-purpose subdomains (not full substrates) */
   services: {
