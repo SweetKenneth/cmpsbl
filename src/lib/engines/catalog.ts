@@ -56,12 +56,12 @@ const ENGINE_VERSIONS: Record<string, string> = {
   // APEX — Flagship
   architect: '2.1.0',
   sentinel: '1.2.0',
-  phantom: '1.1.0',
-  nexus: '1.3.0',
+  'mini-phantom': '1.1.0',
+  'mini-nexus': '1.3.0',
   prism: '1.1.0',
   // ELITE
-  cortex: '1.2.0',
-  forge: '1.1.0',
+  'mini-cortex': '1.2.0',
+  'mini-forge': '1.1.0',
   oracle: '1.0.0',
   vanguard: '1.0.0',
   conductor: '1.0.0',
