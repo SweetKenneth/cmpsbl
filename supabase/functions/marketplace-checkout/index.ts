@@ -78,7 +78,10 @@ serve(async (req) => {
     };
 
     // Normalize any USD amount to the nearest public tier (always <= $299)
+    // Marketplace capability items ($10–$50) pass through at exact price
+    const isMarketplaceCapability = product_type === 'capability';
     const normalizePriceUsd = (priceUsd: number): number => {
+      if (isMarketplaceCapability && priceUsd >= 10 && priceUsd <= 50) return priceUsd;
       if (priceUsd <= 19) return 19;
       if (priceUsd <= 49) return 49;
       if (priceUsd <= 99) return 99;
