@@ -140,7 +140,34 @@ export default function Auth() {
     }
   };
 
-  const SETUP_STEPS = [
+  const handleGoogleSignIn = useCallback(async () => {
+    setLoading(true);
+    setCrystallizing(true);
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const redirectTo = params.get('redirect');
+      if (redirectTo) {
+        sessionStorage.setItem('cmpsbl_auth_redirect', redirectTo);
+      }
+      const result = await lovable.auth.signInWithOAuth('google', {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        toast.error('Google sign-in failed. Please try again.');
+        return;
+      }
+      if (result.redirected) return;
+      const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
+      navigate(storedRedirect || '/os');
+    } catch {
+      toast.error('Google sign-in failed');
+    } finally {
+      setLoading(false);
+      setTimeout(() => setCrystallizing(false), 1500);
+    }
+  }, [navigate]);
+
+
     { num: '1', text: 'Enter your email and click "Send Link"' },
     { num: '2', text: 'Open the link in your email to sign in' },
     { num: '3', text: 'You\'ll be prompted to set up Face ID — tap "Set Up Face ID"' },
