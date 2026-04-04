@@ -126,6 +126,7 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['robo-v1', getRoboticsSubstrate],
   ['quantum-v1', getQuantumSubstrate],
   ['llm-v1', getLLMSubstrate],
+  ['agency-v1', getAgencySubstrate],
 ]);
 
 /** Domain to vertical ID mapping (static) */
