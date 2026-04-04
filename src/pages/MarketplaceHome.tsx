@@ -1,10 +1,10 @@
 /**
- * MarketplaceHome — Steam/App Store style marketplace landing
+ * MarketplaceHome — Blog-style horizontal scroll carousels grouped by category
  * Lives at marketplace.cmpsbl.com
  * Browse freely, auth to buy. Shared SSO with substrates.
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -12,12 +12,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { cn } from '@/lib/utils';
 import {
-  Search, ShoppingCart, Star, TrendingUp, Filter, X,
+  Search, ShoppingCart, Star, TrendingUp, X, ChevronLeft, ChevronRight,
   Shield, Zap, Eye, Globe, Package,
   Store, Award, Tag, Cpu, Lock,
 } from 'lucide-react';
@@ -29,17 +28,7 @@ import {
   type SourceSubstrate,
 } from '@/agents/merchant/merchant-engine';
 import { useMarketplaceInventory } from '@/hooks/useMarketplaceInventory';
-
-type SortOption = 'featured' | 'newest' | 'price-low' | 'price-high' | 'rating' | 'cjpi';
-
-const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'price-low', label: 'Price: Low → High' },
-  { value: 'price-high', label: 'Price: High → Low' },
-  { value: 'rating', label: 'Top Rated' },
-  { value: 'cjpi', label: 'CJPI Score' },
-];
+import { MARKETPLACE_IMAGES } from '@/assets/marketplace';
 
 const TIER_COLORS: Record<string, string> = {
   Mint: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
@@ -49,12 +38,17 @@ const TIER_COLORS: Record<string, string> = {
   Apex: 'bg-primary/10 text-primary border-primary/30',
 };
 
+const TIER_BORDER: Record<string, string> = {
+  Mint: 'border-emerald-500/20 hover:border-emerald-500/40',
+  Prime: 'border-sky-500/20 hover:border-sky-500/40',
+  Relic: 'border-amber-500/20 hover:border-amber-500/40',
+  Mythic: 'border-purple-500/20 hover:border-purple-500/40',
+  Apex: 'border-primary/20 hover:border-primary/40',
+};
+
 export default function MarketplaceHome() {
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<ListingCategory | 'all'>('all');
   const [selectedSubstrate, setSelectedSubstrate] = useState<SourceSubstrate | 'all'>('all');
-  const [sort, setSort] = useState<SortOption>('featured');
-  const [showFilters, setShowFilters] = useState(false);
   const [buyingId, setBuyingId] = useState<string | null>(null);
 
   const { data: inventory = [], isLoading } = useMarketplaceInventory();
@@ -76,7 +70,6 @@ export default function MarketplaceHome() {
         window.location.href = `/auth?redirect=/marketplace`;
         return;
       }
-
       const { data, error } = await supabase.functions.invoke('marketplace-checkout', {
         body: {
           product_type: 'capability',
@@ -86,11 +79,8 @@ export default function MarketplaceHome() {
           product_id: item.slug,
         },
       });
-
       if (error) throw error;
-      if (data?.url) {
-        window.open(data.url, '_blank');
-      }
+      if (data?.url) window.open(data.url, '_blank');
     } catch (err) {
       toast.error('Checkout failed', { description: err instanceof Error ? err.message : 'Please try again' });
     } finally {
@@ -100,61 +90,41 @@ export default function MarketplaceHome() {
 
   const filteredItems = useMemo(() => {
     let items = [...inventory];
-
-    // Search
     if (search.trim()) {
       const q = search.toLowerCase();
       items = items.filter(i =>
         i.title.toLowerCase().includes(q) ||
         i.subtitle.toLowerCase().includes(q) ||
+        i.description.toLowerCase().includes(q) ||
         i.tags.some(t => t.includes(q)) ||
         i.category.includes(q)
       );
     }
-
-    // Category filter
-    if (selectedCategory !== 'all') {
-      items = items.filter(i => i.category === selectedCategory);
-    }
-
-    // Substrate filter
     if (selectedSubstrate !== 'all') {
       items = items.filter(i => i.sourceSubstrate === selectedSubstrate);
     }
-
-    // Sort
-    switch (sort) {
-      case 'featured':
-        items.sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0) || b.cjpiScore - a.cjpiScore);
-        break;
-      case 'newest':
-        items.sort((a, b) => b.addedAt.localeCompare(a.addedAt));
-        break;
-      case 'price-low':
-        items.sort((a, b) => a.priceCents - b.priceCents);
-        break;
-      case 'price-high':
-        items.sort((a, b) => b.priceCents - a.priceCents);
-        break;
-      case 'rating':
-        items.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'cjpi':
-        items.sort((a, b) => b.cjpiScore - a.cjpiScore);
-        break;
-    }
-
     return items;
-  }, [search, selectedCategory, selectedSubstrate, sort, inventory]);
+  }, [search, selectedSubstrate, inventory]);
+
+  /** Group filtered items by category */
+  const categoryRows = useMemo(() => {
+    const map = new Map<ListingCategory, MarketplaceItem[]>();
+    for (const item of filteredItems) {
+      const arr = map.get(item.category) || [];
+      arr.push(item);
+      map.set(item.category, arr);
+    }
+    return Array.from(map.entries())
+      .sort((a, b) => {
+        const aMax = Math.max(...a[1].map(i => i.cjpiScore));
+        const bMax = Math.max(...b[1].map(i => i.cjpiScore));
+        return bMax - aMax;
+      });
+  }, [filteredItems]);
 
   const featuredItems = useMemo(() =>
-    inventory.filter(i => i.isFeatured).slice(0, 4),
+    inventory.filter(i => i.isFeatured).slice(0, 6),
   [inventory]);
-
-  const activeCategories = useMemo(() => {
-    const cats = new Set(inventory.map(i => i.category));
-    return Array.from(cats) as ListingCategory[];
-  }, [inventory]);
 
   return (
     <>
@@ -233,108 +203,98 @@ export default function MarketplaceHome() {
         </div>
       </section>
 
-      {/* Featured Carousel */}
-      <section className="py-12 border-b border-border/20">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="w-5 h-5 text-primary" />
-            <h2 className="text-xl font-bold">Featured This Week</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {featuredItems.map((item) => (
-              <FeaturedCard key={item.id} item={item} onBuy={() => handleBuy(item)} isLoading={buyingId === item.id} />
-            ))}
+      {/* Substrate pills */}
+      <div className="border-b border-border/30">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style={{ scrollbarWidth: 'none' }}>
+            <SubstratePill
+              active={selectedSubstrate === 'all'}
+              onClick={() => setSelectedSubstrate('all')}
+              label="All Substrates"
+              count={inventory.length}
+            />
+            {Object.entries(SUBSTRATE_META).map(([key, meta]) => {
+              const count = inventory.filter(i => i.sourceSubstrate === key).length;
+              if (count === 0) return null;
+              return (
+                <SubstratePill
+                  key={key}
+                  active={selectedSubstrate === key}
+                  onClick={() => setSelectedSubstrate(key as SourceSubstrate)}
+                  label={meta.label}
+                  count={count}
+                />
+              );
+            })}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Main Browse */}
-      <section className="py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Sidebar Filters (desktop) */}
-            <aside className="hidden lg:block w-64 shrink-0 space-y-6">
-              <FilterPanel
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                selectedSubstrate={selectedSubstrate}
-                setSelectedSubstrate={setSelectedSubstrate}
-                categories={activeCategories}
-                items={inventory}
-              />
-            </aside>
-
-            {/* Main content */}
-            <div className="flex-1">
-              {/* Toolbar */}
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="lg:hidden gap-2"
-                  onClick={() => setShowFilters(!showFilters)}
-                >
-                  <Filter className="w-4 h-4" />
-                  Filters
-                </Button>
-
-                <div className="flex-1" />
-
-                <span className="text-sm text-muted-foreground">
-                  {filteredItems.length} {filteredItems.length === 1 ? 'product' : 'products'}
-                </span>
-
-                <select
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value as SortOption)}
-                  className="text-sm bg-card border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  {SORT_OPTIONS.map(o => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Mobile Filters */}
-              <AnimatePresence>
-                {showFilters && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="lg:hidden mb-6 overflow-hidden"
-                  >
-                    <FilterPanel
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                      selectedSubstrate={selectedSubstrate}
-                      setSelectedSubstrate={setSelectedSubstrate}
-                      categories={activeCategories}
-                      items={inventory}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Product Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                {filteredItems.map((item) => (
-                  <ProductCard key={item.id} item={item} onBuy={() => handleBuy(item)} isLoading={buyingId === item.id} />
-                ))}
-              </div>
-
-              {filteredItems.length === 0 && (
-                <div className="text-center py-20">
-                  <Package className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
-                  <p className="text-lg font-medium text-muted-foreground">No products match your filters</p>
-                  <Button variant="outline" size="sm" className="mt-4" onClick={() => { setSearch(''); setSelectedCategory('all'); setSelectedSubstrate('all'); }}>
-                    Clear Filters
-                  </Button>
-                </div>
-              )}
+      {/* Featured Row */}
+      {featuredItems.length > 0 && selectedSubstrate === 'all' && !search && (
+        <section className="py-10 border-b border-border/20">
+          <div className="container mx-auto px-4 mb-5">
+            <div className="flex items-center gap-3">
+              <TrendingUp className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-bold">Featured This Week</h2>
+              <span className="text-xs text-muted-foreground ml-auto">{featuredItems.length} items</span>
             </div>
           </div>
-        </div>
+          <div className="container mx-auto px-4">
+            <ScrollCarousel>
+              {featuredItems.map(item => (
+                <div key={item.id} className="snap-start shrink-0 w-[320px] sm:w-[360px]">
+                  <ProductCard item={item} onBuy={() => handleBuy(item)} isLoading={buyingId === item.id} />
+                </div>
+              ))}
+            </ScrollCarousel>
+          </div>
+        </section>
+      )}
+
+      {/* Category Rows — horizontal scroll like blog */}
+      <section className="py-8 space-y-12">
+        {categoryRows.map(([category, items]) => {
+          const meta = CATEGORY_META[category];
+          return (
+            <div key={category}>
+              <div className="container mx-auto px-4 mb-5">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{meta.emoji}</span>
+                  <h2 className="text-lg sm:text-xl font-bold">{meta.label}</h2>
+                  <Badge variant="outline" className="text-[10px] h-5 ml-1">{items.length}</Badge>
+                  <span className="text-xs text-muted-foreground ml-auto hidden sm:block">
+                    Scroll to browse →
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+                  {getCategoryDescription(category)}
+                </p>
+              </div>
+              <div className="container mx-auto px-4">
+                <ScrollCarousel>
+                  {items
+                    .sort((a, b) => b.cjpiScore - a.cjpiScore)
+                    .map(item => (
+                      <div key={item.id} className="snap-start shrink-0 w-[320px] sm:w-[360px]">
+                        <ProductCard item={item} onBuy={() => handleBuy(item)} isLoading={buyingId === item.id} />
+                      </div>
+                    ))}
+                </ScrollCarousel>
+              </div>
+            </div>
+          );
+        })}
+
+        {categoryRows.length === 0 && (
+          <div className="text-center py-20">
+            <Package className="w-12 h-12 text-muted-foreground/30 mx-auto mb-4" />
+            <p className="text-lg font-medium text-muted-foreground">No products match your search</p>
+            <Button variant="outline" size="sm" className="mt-4" onClick={() => { setSearch(''); setSelectedSubstrate('all'); }}>
+              Clear Filters
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* MERCHANT Info */}
@@ -377,240 +337,221 @@ export default function MarketplaceHome() {
   );
 }
 
-/* ═══ Sub-components ═══ */
+/* ═══ Scroll Carousel ═══ */
 
-function FeaturedCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy: () => void; isLoading?: boolean }) {
-  const meta = CATEGORY_META[item.category];
+function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (dir: 'left' | 'right') => {
+    if (!ref.current) return;
+    const amount = ref.current.clientWidth * 0.7;
+    ref.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
 
   return (
-    <Card className="group relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-xl hover:shadow-primary/5">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]" />
-      <CardContent className="p-5 space-y-3">
-        <div className="flex items-start justify-between">
-          <Badge className={cn('text-[10px]', TIER_COLORS[item.tier])}>
-            {item.tier}
-          </Badge>
-          <Badge variant="outline" className="text-[10px] gap-1">
-            <Star className="w-3 h-3 fill-primary text-primary" />
-            {item.rating}
-          </Badge>
-        </div>
-
-        <div>
-          <h3 className="font-bold text-sm leading-tight group-hover:text-primary transition-colors">
-            {item.title}
-          </h3>
-          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{item.subtitle}</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-[10px] gap-1">
-            {meta.emoji} {meta.label}
-          </Badge>
-        </div>
-
-        <div className="flex items-center justify-between pt-2 border-t border-border/30">
-          <span className="text-xl font-black text-primary">
-            ${(item.priceCents / 100).toFixed(0)}
-          </span>
-          <Button size="sm" className="gap-1.5 text-xs" onClick={onBuy} disabled={isLoading}>
-            <ShoppingCart className="w-3.5 h-3.5" />
-            {isLoading ? '...' : 'Buy'}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+    <div className={cn("group relative", className)}>
+      <button
+        onClick={() => scroll('left')}
+        aria-label="Scroll left"
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <div
+        ref={ref}
+        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+      <button
+        onClick={() => scroll('right')}
+        aria-label="Scroll right"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
   );
 }
+
+/* ═══ Product Card — detailed with image ═══ */
 
 function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy: () => void; isLoading?: boolean }) {
   const meta = CATEGORY_META[item.category];
   const substrateMeta = SUBSTRATE_META[item.sourceSubstrate];
+  const image = MARKETPLACE_IMAGES[item.slug];
 
   return (
-    <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
-      <Card className="group h-full overflow-hidden border hover:border-primary/30 transition-all hover:shadow-lg">
-        {/* Header strip */}
-        <div className="h-24 relative overflow-hidden bg-gradient-to-br from-muted/50 to-muted/20">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-14 h-14 rounded-xl bg-card border border-border/50 flex items-center justify-center shadow-lg">
-              <span className="text-2xl">{meta.emoji}</span>
+    <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
+      <div className={cn(
+        "h-full rounded-xl border overflow-hidden bg-card transition-all duration-200 hover:shadow-xl flex flex-col",
+        TIER_BORDER[item.tier] || 'border-border hover:border-primary/30',
+      )}>
+        {/* Image header */}
+        <div className="relative h-40 overflow-hidden bg-muted/30">
+          {image ? (
+            <img
+              src={image}
+              alt={item.title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              width={896}
+              height={512}
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-muted/50 to-muted/20 flex items-center justify-center">
+              <span className="text-4xl">{meta.emoji}</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+
+          {/* Floating badges */}
+          <div className="absolute top-2 left-2 flex gap-1.5">
+            <Badge className={cn('text-[10px] h-5 px-1.5 backdrop-blur-md', TIER_COLORS[item.tier])}>
+              {item.tier} · CJPI {item.cjpiScore}
+            </Badge>
+          </div>
+          <div className="absolute top-2 right-2 flex gap-1.5">
+            {item.isFeatured && (
+              <Badge className="text-[10px] h-5 bg-primary/90 text-primary-foreground gap-1 backdrop-blur-md">
+                <TrendingUp className="w-3 h-3" />
+                Featured
+              </Badge>
+            )}
+            {item.isNew && (
+              <Badge className="text-[10px] h-5 bg-[hsl(var(--neon-green))]/90 text-white backdrop-blur-md">
+                New
+              </Badge>
+            )}
+          </div>
+
+          {/* Price floating */}
+          <div className="absolute bottom-2 right-2">
+            <div className="bg-card/90 backdrop-blur-md rounded-lg px-3 py-1 border border-border/30">
+              <span className="text-xl font-black text-primary">${(item.priceCents / 100).toFixed(0)}</span>
             </div>
           </div>
-          {item.isFeatured && (
-            <Badge className="absolute top-2 left-2 text-[10px] bg-primary/90 text-primary-foreground gap-1">
-              <TrendingUp className="w-3 h-3" />
-              Featured
-            </Badge>
-          )}
-          {item.isNew && (
-            <Badge className="absolute top-2 right-2 text-[10px] bg-[hsl(var(--neon-green))]/90 text-white gap-1">
-              New
-            </Badge>
-          )}
         </div>
 
-        <CardContent className="p-4 space-y-3">
-          {/* Badges row */}
+        {/* Content */}
+        <div className="p-4 flex-1 flex flex-col space-y-3">
+          {/* Substrate + category */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <Badge className={cn('text-[10px] h-5 px-1.5', TIER_COLORS[item.tier])}>
-              {item.tier} · {item.cjpiScore}
-            </Badge>
             <Badge variant="outline" className="text-[10px] h-5 px-1.5">
               {substrateMeta.label}
             </Badge>
+            <Badge variant="outline" className="text-[10px] h-5 px-1.5">
+              {meta.emoji} {meta.label}
+            </Badge>
           </div>
 
-          {/* Title */}
-          <h3 className="font-bold text-sm leading-tight group-hover:text-primary transition-colors line-clamp-2">
-            {item.title}
-          </h3>
-          <p className="text-xs text-muted-foreground line-clamp-2">{item.subtitle}</p>
+          {/* Title & subtitle */}
+          <div>
+            <h3 className="font-bold text-sm leading-tight">{item.title}</h3>
+            <p className="text-xs text-muted-foreground mt-1">{item.subtitle}</p>
+          </div>
 
-          {/* Pain points */}
+          {/* Description */}
+          <p className="text-[11px] text-muted-foreground/80 leading-relaxed line-clamp-3">
+            {item.description}
+          </p>
+
+          {/* Pain points solved */}
           <div className="space-y-1">
-            {item.painPoints.slice(0, 2).map((p, i) => (
+            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Solves</span>
+            {item.painPoints.map((p, i) => (
               <div key={i} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
-                <span className="text-primary mt-0.5">✓</span>
+                <span className="text-primary mt-0.5 shrink-0">✓</span>
                 <span>{p}</span>
               </div>
             ))}
           </div>
 
-          {/* Tags */}
+          {/* Features */}
           <div className="flex flex-wrap gap-1">
-            {item.tags.slice(0, 3).map(tag => (
-              <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-                {tag}
+            {item.features.slice(0, 4).map(f => (
+              <span key={f} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                {f}
               </span>
             ))}
           </div>
 
-          {/* Chain */}
+          {/* Primitive chain */}
           <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-            <Zap className="w-3 h-3" />
-            {item.primitiveChain.join(' → ')}
+            <Zap className="w-3 h-3 shrink-0" />
+            <span className="font-mono">{item.primitiveChain.join(' → ')}</span>
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1">
+            {item.tags.map(tag => (
+              <span key={tag} className="text-[9px] px-1.5 py-0.5 rounded-full border border-border/40 text-muted-foreground/70">
+                #{tag}
+              </span>
+            ))}
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-3 border-t border-border/30">
-            <div>
-              <span className="text-xl font-black text-primary">
-                ${(item.priceCents / 100).toFixed(0)}
-              </span>
-              <div className="flex items-center gap-1 mt-0.5">
+          <div className="flex items-center justify-between pt-3 mt-auto border-t border-border/30">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <Star className="w-3 h-3 text-primary fill-primary" />
-                <span className="text-[10px] text-muted-foreground">{item.rating}</span>
-                <span className="text-[10px] text-muted-foreground ml-1">· {item.downloads} sold</span>
+                <span className="text-xs font-medium">{item.rating}</span>
               </div>
+              <span className="text-[10px] text-muted-foreground">· {item.downloads} sold</span>
+              <span className="text-[10px] text-muted-foreground">· v{item.version}</span>
             </div>
             <Button size="sm" className="gap-1.5 text-xs shadow-md" onClick={onBuy} disabled={isLoading}>
               <ShoppingCart className="w-3.5 h-3.5" />
               {isLoading ? '...' : 'Buy'}
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }
 
-function FilterPanel({
-  selectedCategory,
-  setSelectedCategory,
-  selectedSubstrate,
-  setSelectedSubstrate,
-  categories,
-  items,
-}: {
-  selectedCategory: ListingCategory | 'all';
-  setSelectedCategory: (v: ListingCategory | 'all') => void;
-  selectedSubstrate: SourceSubstrate | 'all';
-  setSelectedSubstrate: (v: SourceSubstrate | 'all') => void;
-  categories: ListingCategory[];
-  items: MarketplaceItem[];
-}) {
-  return (
-    <div className="space-y-6">
-      {/* Substrate Filter */}
-      <div>
-        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-          <Globe className="w-4 h-4 text-primary" />
-          Substrate
-        </h3>
-        <div className="space-y-1">
-          <FilterButton
-            active={selectedSubstrate === 'all'}
-            onClick={() => setSelectedSubstrate('all')}
-            label="All Substrates"
-          />
-          {Object.entries(SUBSTRATE_META).map(([key, meta]) => (
-            <FilterButton
-              key={key}
-              active={selectedSubstrate === key}
-              onClick={() => setSelectedSubstrate(key as SourceSubstrate)}
-              label={meta.label}
-              count={items.filter(i => i.sourceSubstrate === key).length}
-            />
-          ))}
-        </div>
-      </div>
+/* ═══ Substrate Pill ═══ */
 
-      {/* Category Filter */}
-      <div>
-        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-          <Package className="w-4 h-4 text-primary" />
-          Category
-        </h3>
-        <div className="space-y-1">
-          <FilterButton
-            active={selectedCategory === 'all'}
-            onClick={() => setSelectedCategory('all')}
-            label="All Categories"
-          />
-          {categories.map(cat => {
-            const meta = CATEGORY_META[cat];
-            return (
-              <FilterButton
-                key={cat}
-                active={selectedCategory === cat}
-                onClick={() => setSelectedCategory(cat)}
-                label={`${meta.emoji} ${meta.label}`}
-                count={items.filter(i => i.category === cat).length}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FilterButton({
-  active,
-  onClick,
-  label,
-  count,
-}: {
+function SubstratePill({ active, onClick, label, count }: {
   active: boolean;
   onClick: () => void;
   label: string;
-  count?: number;
+  count: number;
 }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        'w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between',
+        'shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all border',
         active
-          ? 'bg-primary/10 text-primary font-medium'
-          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+          ? 'bg-primary/15 text-primary border-primary/30'
+          : 'bg-card text-muted-foreground border-border/50 hover:bg-muted hover:text-foreground'
       )}
     >
-      <span className="truncate">{label}</span>
-      {count !== undefined && (
-        <span className="text-[10px] tabular-nums text-muted-foreground">{count}</span>
-      )}
+      {label}
+      <span className="ml-1.5 text-[10px] tabular-nums opacity-60">{count}</span>
     </button>
   );
+}
+
+/* ═══ Category Descriptions ═══ */
+
+function getCategoryDescription(category: ListingCategory): string {
+  const descriptions: Record<ListingCategory, string> = {
+    'meta-engine': 'Core algorithmic engines that power prediction, discovery, and recursive analysis across the substrate.',
+    'meta-agent': 'Autonomous agents that operate independently, scanning, curating, and optimizing system resources.',
+    'memory-chain': 'Intelligent data lifecycle management — retention, migration, and selective forgetting systems.',
+    'security-module': 'Breach calculation, penalty estimation, and covert signal routing for enterprise security.',
+    'robotics-controller': 'Spatial awareness, mesh optimization, and coordination protocols for robotic systems.',
+    'quantum-optimizer': 'Calibration engines and probability systems leveraging quantum-inspired algorithms.',
+    'llm-toolkit': 'Translation, terminology management, and multi-format parsing tools for language model integration.',
+    'agency-workflow': 'Multi-agent negotiation, gossip protocols, and distributed state synchronization engines.',
+    'governance-tool': 'Ethical constraint enforcement, compliance checking, and cross-border data transfer arbitration.',
+    'integration-bridge': 'UI compilation, migration management, and API contract evolution for seamless system integration.',
+    'analytics-engine': 'Flame graph profiling, impact analysis, and performance bottleneck detection systems.',
+    'defense-layer': 'Event storm dampening, autoimmune prevention, and adaptive rate-limiting for system resilience.',
+  };
+  return descriptions[category] || '';
 }
