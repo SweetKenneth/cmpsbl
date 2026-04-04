@@ -253,3 +253,13 @@ export {
   type ArchetypeDetectionResult,
   type AffinitySelection,
 } from './capability-affinity';
+
+// Universal Pool Scanner (Ultimate substrate)
+export {
+  runUniversalPoolScan,
+  getUniversalPoolSize,
+  getUniversalPoolBreakdown,
+  resetUniversalPool,
+  type PoolCandidate,
+  type UniversalScanResult,
+} from '../factory/universal-pool-scanner';
