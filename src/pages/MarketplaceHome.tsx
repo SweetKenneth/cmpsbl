@@ -575,7 +575,6 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
                 <Star className="w-3 h-3 text-primary fill-primary" />
                 <span className="text-xs font-medium">{item.rating}</span>
               </div>
-              <span className="text-[10px] text-muted-foreground">· {item.downloads} sold</span>
               <span className="text-[10px] text-muted-foreground">· v{item.version}</span>
             </div>
             {item.priceCents === 0 ? (
