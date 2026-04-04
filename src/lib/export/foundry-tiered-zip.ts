@@ -227,6 +227,23 @@ export async function downloadTieredFoundryZip(options: {
       category: item.category || undefined,
     }));
 
+    // ═══ Universal User Guide (HTML) — ships in every export ═══
+    artifactFolder.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
+      name: displayName,
+      slug: slugify(item.name || item.id),
+      kind: 'memory-stream',
+      tier: item.publicTier || getTierFromScore(item.score),
+      cjpi: item.score,
+      fingerprint: item.fingerprint || undefined,
+      modules: item.systemChain || ['SYSTEM'],
+      substrate: item.source?.includes('cyber') ? 'cyber'
+        : item.source?.includes('robotics') ? 'robotics'
+        : item.source?.includes('quantum') ? 'quantum'
+        : item.source?.includes('llm') ? 'llm'
+        : item.source?.includes('agency') ? 'agency'
+        : undefined,
+    }));
+
     for (const file of bundle.files) {
       artifactFolder.file(file.filename, file.content);
       fileCount += 1;
