@@ -21,7 +21,7 @@
  *   TRACER   — Attack chain reconstruction
  *   NOCTURNE — Dark web intelligence and OSINT
  *   IRONCLAD — Compliance enforcement (SOC2, ISO27001, NIST)
- *   BULWARK  — Supply chain security and dependency auditing
+ *   CITADEL  — Supply chain security and dependency auditing
  */
 
 import type { VerticalPrimitive, VerticalSubstrateConfig } from '../vertical-substrate';
