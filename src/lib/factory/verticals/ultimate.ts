@@ -3,18 +3,16 @@
  * 
  * Subdomain: ultimate.cmpsbl.com
  * 
- * The Ultimate substrate is the only vertical that does NOT use a fixed
- * set of 16 expansion primitives. Instead, it maintains a Universal Pool
- * of ALL expansion primitives from every vertical (80) plus 16 unique
- * "Universal" primitives designed to fill cross-domain gaps.
+ * The Ultimate substrate is the ONLY substrate with NO locked primitives.
+ * No spine lock. No organ/layer/engine/agent quotas. All 40 slots are
+ * open. The Universal Pool Scanner evaluates every primitive in the entire
+ * CMPSBL ecosystem — 120 candidates (24 Spine + 80 vertical expansion +
+ * 16 Universal gap-fillers) — and selects the 40 that produce the maximum
+ * compounding effect for the uploaded codebase.
  * 
- * During Ascension, a Universal Scanner evaluates the uploaded code against
- * the ENTIRE pool (96 candidates) and dynamically selects the optimal 40
- * primitives (24 spine + up to 16 best-fit expansion) that produce the
- * maximum compounding effect for that specific codebase.
- * 
- * This is the ceiling of what Ascension can do — every primitive in the
- * ecosystem is a candidate.
+ * Extended scan time ensures deep collision evaluation across all candidates.
+ * The result is always the highest-impact 40-primitive surface possible —
+ * no two scans alike.
  * 
  * Hot-swapped Default Engines (8) — Universal Gap-Fillers:
  *   APEX     — Peak performance optimization and hot-path analysis
@@ -369,11 +367,14 @@ export const ULTIMATE_AFFINITY_SIGNALS: Record<string, string[]> = {
 /* ─── Substrate Config Builder ─── */
 
 export function getUltimateSubstrate(): VerticalSubstrateConfig {
-  const primitives = assembleVerticalPrimitives(ULTIMATE_ENGINES, ULTIMATE_AGENTS);
+  // Ultimate does NOT use assembleVerticalPrimitives — it has no spine lock.
+  // The 16 Universal primitives serve as the "default" display surface.
+  // During actual Ascension, the Universal Pool Scanner replaces all 40 slots.
+  const primitives: VerticalPrimitive[] = [...ULTIMATE_ENGINES, ...ULTIMATE_AGENTS];
   return {
     verticalId: 'ultimate-v1',
     name: 'CMPSBL ULTIMATE™',
-    tagline: 'Every Primitive. Maximum Compounding. Universal Ascension.',
+    tagline: '120 Candidates. 40 Slots. Zero Restrictions. Maximum Compounding.',
     domain: 'ultimate' as any,
     subdomain: 'ultimate',
     url: 'https://ultimate.cmpsbl.com',

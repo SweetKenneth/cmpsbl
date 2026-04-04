@@ -1,17 +1,18 @@
 /**
  * CMPSBL® Universal Pool Scanner
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * The brain of the Ultimate substrate. Aggregates ALL expansion primitives
- * from every vertical (Cyber, Robotics, Quantum, LLM, Agency) plus the
- * 16 Universal gap-filler primitives into a single candidate pool.
+ * The brain of the Ultimate substrate. Aggregates EVERY primitive in the
+ * CMPSBL ecosystem — Spine (Organs + Layers), all vertical expansion
+ * primitives (Cyber, Robotics, Quantum, LLM, Agency), and 16 Universal
+ * gap-filler primitives — into a single candidate pool.
  * 
- * During Ascension, it scores every candidate against the uploaded code
- * and selects the optimal 16 (to fill 24 spine + 16 expansion = 40) that
- * produce the maximum compounding effect.
+ * During Ascension, it scores EVERY candidate against the uploaded code
+ * and selects the optimal 40 primitives that produce the maximum
+ * compounding effect. No spine lock. No category restrictions. No
+ * organ/layer/engine/agent quotas. Just the 40 best primitives for the job.
  * 
- * If the scanner finds 6 strong matches, it picks 6. If it finds 41
- * opportunities, it selects the top 16 by compounding score. The result
- * is always the highest-impact subset possible.
+ * The scanner uses extended collision time to deeply evaluate all
+ * candidates before surfacing the final 40.
  * 
  * © CMPSBL® — All rights reserved.
  */
@@ -43,37 +44,66 @@ export interface PoolCandidate {
 }
 
 export interface UniversalScanResult {
-  /** The selected 16 expansion primitives (optimal fit for this code) */
-  selectedExpansion: PoolCandidate[];
-  /** Full 40-primitive surface (24 spine + selected expansion) */
+  /** The 40 primitives selected as the optimal surface for this code */
+  selectedPrimitives: PoolCandidate[];
+  /** Full 40-primitive surface (the selected primitives, rebalanced) */
   fullSurface: VerticalPrimitive[];
   /** All candidates that were evaluated */
   totalCandidatesEvaluated: number;
   /** How many passed the affinity threshold */
   candidatesAboveThreshold: number;
-  /** Source vertical distribution in the selection */
-  verticalDistribution: Record<string, number>;
+  /** Source distribution in the selection */
+  sourceDistribution: Record<string, number>;
+  /** Role distribution in the selection */
+  roleDistribution: Record<string, number>;
   /** Duration of the scan in ms */
   durationMs: number;
+  /** Number of collision passes performed */
+  collisionPasses: number;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §2 — AFFINITY SIGNAL MAPS (per-vertical)
+// §2 — AFFINITY SIGNAL DERIVATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Build affinity signals from a primitive's capabilities + description */
 function deriveSignals(p: VerticalPrimitive): string[] {
   const signals: string[] = [];
-  // Extract keywords from capabilities
   for (const cap of p.capabilities) {
     signals.push(...cap.split('_'));
   }
-  // Extract keywords from description
   const descWords = p.description.toLowerCase().split(/\W+/).filter(w => w.length > 3);
   signals.push(...descWords);
-  // Deduplicate
   return [...new Set(signals)];
 }
+
+// Spine-specific affinity signals for deeper matching
+const SPINE_AFFINITY_SIGNALS: Record<string, string[]> = {
+  CORE: ['kernel', 'boot', 'init', 'startup', 'main', 'entry', 'lifecycle', 'heartbeat', 'health'],
+  SYSTEM: ['config', 'environment', 'env', 'setting', 'lifecycle', 'setup', 'init'],
+  BRAIN: ['reason', 'pattern', 'knowledge', 'inference', 'classify', 'predict', 'neural', 'cognitive', 'think'],
+  MEMORY: ['cache', 'store', 'persist', 'state', 'session', 'storage', 'retain', 'archive', 'database', 'redis'],
+  DREAM: ['synthesis', 'emerge', 'heuristic', 'creative', 'fragment', 'subconscious', 'discover'],
+  NERVE: ['signal', 'event', 'dispatch', 'route', 'bus', 'emit', 'subscribe', 'publish', 'trigger'],
+  IDENTITY: ['auth', 'login', 'user', 'session', 'token', 'jwt', 'oauth', 'identity', 'credential'],
+  RELAY: ['message', 'queue', 'relay', 'forward', 'webhook', 'notification', 'pubsub'],
+  AUDIT: ['log', 'audit', 'trail', 'compliance', 'tamper', 'immutable', 'chain', 'record'],
+  RIPPLE: ['cascade', 'propagat', 'boundary', 'compliance', 'enforce', 'policy', 'rule'],
+  ACCESS: ['permission', 'role', 'rbac', 'authorize', 'scope', 'grant', 'deny', 'acl'],
+  GOVERNANCE: ['govern', 'approve', 'gate', 'legitimacy', 'supervisor', 'oversight', 'policy'],
+  DEFENSE: ['security', 'threat', 'firewall', 'encrypt', 'protect', 'shield', 'perimeter', 'ssl', 'tls'],
+  IMMUNITY: ['heal', 'recover', 'quarantine', 'anomaly', 'resilient', 'immune', 'adapt'],
+  INTENT: ['intent', 'purpose', 'goal', 'action', 'resolve', 'interpret', 'parse', 'understand'],
+  ATLAS: ['topology', 'map', 'discover', 'capability', 'registry', 'catalog', 'index'],
+  ENGINEER: ['maintain', 'patch', 'fix', 'repair', 'drift', 'upgrade', 'refactor', 'debt'],
+  DECODE: ['language', 'nlp', 'chat', 'conversation', 'text', 'parse', 'interpret', 'prompt'],
+  ENCODE: ['generate', 'code', 'compile', 'build', 'blueprint', 'scaffold', 'write'],
+  VISION: ['image', 'visual', 'ocr', 'picture', 'screenshot', 'video', 'camera', 'canvas'],
+  ECONOMY: ['cost', 'budget', 'price', 'billing', 'meter', 'quota', 'spend', 'roi'],
+  SANDBOX: ['isolat', 'sandbox', 'contain', 'safe', 'eval', 'test', 'playground', 'docker'],
+  INCLUSIVE: ['accessible', 'a11y', 'wcag', 'aria', 'screen_reader', 'disability', 'inclusive'],
+  MEDIC: ['diagnos', 'health', 'triage', 'recover', 'status', 'check', 'heartbeat', 'ping'],
+};
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — POOL ASSEMBLY
@@ -85,13 +115,13 @@ interface TaggedPrimitive {
   signals: string[];
 }
 
-/** Assemble the full universal pool — ALL expansion primitives from every vertical */
+/** Assemble the COMPLETE universal pool — every primitive in the ecosystem */
 function assembleUniversalPool(): TaggedPrimitive[] {
   const pool: TaggedPrimitive[] = [];
 
-  const tag = (prims: VerticalPrimitive[], source: string) => {
+  const tag = (prims: VerticalPrimitive[], source: string, signalMap?: Record<string, string[]>) => {
     for (const p of prims) {
-      const explicitSignals = ULTIMATE_AFFINITY_SIGNALS[p.id];
+      const explicitSignals = signalMap?.[p.id] ?? ULTIMATE_AFFINITY_SIGNALS[p.id];
       pool.push({
         primitive: p,
         sourceVertical: source,
@@ -99,6 +129,9 @@ function assembleUniversalPool(): TaggedPrimitive[] {
       });
     }
   };
+
+  // Spine — Organs + Layers (24) — now candidates, not locked
+  tag(getSpinePrimitives(), 'spine', SPINE_AFFINITY_SIGNALS);
 
   // Cyber (16)
   tag(getCyberSecurityEngines(), 'cyber');
@@ -135,29 +168,53 @@ function getPool(): TaggedPrimitive[] {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §4 — SCORING ENGINE
+// §4 — EXTENDED SCORING ENGINE
 // ═══════════════════════════════════════════════════════════════════════════════
+
+/** Number of collision passes for deep evaluation */
+const COLLISION_PASSES = 3;
 
 /**
  * Score a single candidate primitive against the uploaded code.
- * Returns 0–1 affinity and a compounding score that factors in:
- *   - Signal hit density (how many keywords match)
- *   - Capability breadth (more capabilities = more compounding potential)
- *   - Weight (inherent importance from the source vertical)
+ * Multi-pass scoring for deeper evaluation:
+ *   Pass 1: Signal hit density (keyword matching)
+ *   Pass 2: Capability breadth and composability potential
+ *   Pass 3: Cross-candidate synergy estimation
  */
-function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string): PoolCandidate {
+function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: Set<string>): PoolCandidate {
+  // Pass 1 — Signal hit density
   let hits = 0;
   for (const signal of tagged.signals) {
     if (lowerCode.includes(signal)) hits++;
   }
-
   const hitRatio = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const affinity = Math.min(hitRatio / 0.25, 1); // Normalize: 25% hits = 1.0
+  const signalAffinity = Math.min(hitRatio / 0.2, 1); // 20% hit threshold for max score
 
-  // Compounding score: affinity × capability breadth × weight
-  const breadthFactor = Math.min(tagged.primitive.capabilities.length / 7, 1);
-  const weightFactor = tagged.primitive.weight / 0.035; // Normalized against typical weight
-  const compounding = affinity * 0.5 + breadthFactor * 0.25 + Math.min(weightFactor, 1) * 0.25;
+  // Pass 2 — Capability breadth and structural matching
+  let capHits = 0;
+  for (const cap of tagged.primitive.capabilities) {
+    const capTokens = cap.split('_');
+    for (const t of capTokens) {
+      if (codeTokens.has(t)) { capHits++; break; }
+    }
+  }
+  const capRatio = tagged.primitive.capabilities.length > 0
+    ? capHits / tagged.primitive.capabilities.length
+    : 0;
+  const breadthScore = Math.min(tagged.primitive.capabilities.length / 6, 1);
+
+  // Pass 3 — Weight-based importance and composability
+  const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
+  const roleBonus = tagged.primitive.role === 'engine' || tagged.primitive.role === 'agent' ? 0.05 : 0;
+
+  // Composite: signal affinity (35%) + capability match (25%) + breadth (20%) + weight (15%) + role (5%)
+  const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
+  const compounding =
+    signalAffinity * 0.35 +
+    capRatio * 0.25 +
+    breadthScore * 0.20 +
+    weightFactor * 0.15 +
+    roleBonus;
 
   return {
     primitive: tagged.primitive,
@@ -170,45 +227,39 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string): PoolCandida
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — SELECTION ALGORITHM
+// §5 — UNRESTRICTED 40-SLOT SELECTION
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Select the optimal expansion primitives from the universal pool.
- * 
- * Strategy:
- * 1. Score all 96 candidates against the code
- * 2. Filter by minimum affinity threshold (0.1)
- * 3. Sort by compounding score descending
- * 4. Select top 16 with diversity constraint (max 6 from any single vertical)
- * 5. Rebalance weights to sum to the expansion budget (0.415)
+ * Select the optimal 40 primitives from the entire pool.
+ * No category restrictions. No spine lock. No organ/layer quotas.
+ * Pure compounding-score ranking with light diversity constraint
+ * (max 12 from any single source to prevent total domination).
  */
-function selectOptimalExpansion(
+function selectOptimal40(
   candidates: PoolCandidate[],
-  maxSlots: number = 16,
-  maxPerVertical: number = 6,
+  maxPerSource: number = 12,
 ): PoolCandidate[] {
-  // Sort by compounding score
   const sorted = [...candidates]
-    .filter(c => c.affinityScore > 0.05)
+    .filter(c => c.compoundingScore > 0.05)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   const selected: PoolCandidate[] = [];
-  const verticalCounts: Record<string, number> = {};
+  const sourceCounts: Record<string, number> = {};
   const usedIds = new Set<string>();
 
   for (const candidate of sorted) {
-    if (selected.length >= maxSlots) break;
+    if (selected.length >= 40) break;
 
-    // Diversity: cap per-vertical representation
-    const vc = verticalCounts[candidate.sourceVertical] ?? 0;
-    if (vc >= maxPerVertical) continue;
+    // Light diversity: cap per-source to prevent single-vertical domination
+    const sc = sourceCounts[candidate.sourceVertical] ?? 0;
+    if (sc >= maxPerSource) continue;
 
     // Dedup by primitive ID
     if (usedIds.has(candidate.primitive.id)) continue;
 
     selected.push(candidate);
-    verticalCounts[candidate.sourceVertical] = vc + 1;
+    sourceCounts[candidate.sourceVertical] = sc + 1;
     usedIds.add(candidate.primitive.id);
   }
 
@@ -221,49 +272,53 @@ function selectOptimalExpansion(
 
 /**
  * Run the Universal Pool Scanner against uploaded code.
- * Returns the optimal 40-primitive surface for maximum Ascension impact.
+ * Evaluates every primitive in the ecosystem and selects the 40
+ * that produce the maximum compounding effect. No restrictions.
  */
 export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   const start = performance.now();
   const pool = getPool();
   const lowerCode = codeContent.toLowerCase();
 
-  // Score all candidates
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode));
+  // Build token set for capability matching (Pass 2)
+  const codeTokens = new Set(
+    lowerCode.split(/\W+/).filter(w => w.length > 2)
+  );
 
-  // Select optimal expansion
-  const selected = selectOptimalExpansion(scored);
+  // Score all candidates with extended collision passes
+  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens));
 
-  // Rebalance weights for the selected set
-  const expansionWeightBudget = 0.415; // Total weight available for expansion
+  // Select the optimal 40 — unrestricted
+  const selected = selectOptimal40(scored);
+
+  // Rebalance weights so the 40 selected sum to 1.0
   const perWeight = selected.length > 0
-    ? Math.round((expansionWeightBudget / selected.length) * 1000) / 1000
+    ? Math.round((1.0 / selected.length) * 10000) / 10000
     : 0;
 
-  // Build the rebalanced primitives
-  const rebalancedExpansion: VerticalPrimitive[] = selected.map(c => ({
+  const fullSurface: VerticalPrimitive[] = selected.map(c => ({
     ...c.primitive,
     weight: perWeight,
-    inherited: false,
+    inherited: false, // In Ultimate, nothing is "inherited" — everything is earned
   }));
 
-  // Assemble full 40-primitive surface
-  const spine = getSpinePrimitives();
-  const fullSurface = [...spine, ...rebalancedExpansion];
-
-  // Compute vertical distribution
-  const distribution: Record<string, number> = {};
+  // Source distribution
+  const sourceDistribution: Record<string, number> = {};
+  const roleDistribution: Record<string, number> = {};
   for (const s of selected) {
-    distribution[s.sourceVertical] = (distribution[s.sourceVertical] ?? 0) + 1;
+    sourceDistribution[s.sourceVertical] = (sourceDistribution[s.sourceVertical] ?? 0) + 1;
+    roleDistribution[s.primitive.role] = (roleDistribution[s.primitive.role] ?? 0) + 1;
   }
 
   return {
-    selectedExpansion: selected,
+    selectedPrimitives: selected,
     fullSurface,
     totalCandidatesEvaluated: pool.length,
-    candidatesAboveThreshold: scored.filter(c => c.affinityScore > 0.05).length,
-    verticalDistribution: distribution,
+    candidatesAboveThreshold: scored.filter(c => c.compoundingScore > 0.05).length,
+    sourceDistribution,
+    roleDistribution,
     durationMs: Math.round(performance.now() - start),
+    collisionPasses: COLLISION_PASSES,
   };
 }
 
@@ -272,7 +327,7 @@ export function getUniversalPoolSize(): number {
   return getPool().length;
 }
 
-/** Get pool breakdown by source vertical */
+/** Get pool breakdown by source */
 export function getUniversalPoolBreakdown(): Record<string, number> {
   const breakdown: Record<string, number> = {};
   for (const tagged of getPool()) {

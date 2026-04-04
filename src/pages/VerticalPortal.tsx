@@ -82,12 +82,12 @@ const STATIC_VERTICALS = [
   {
     id: 'ultimate',
     name: 'CMPSBL ULTIMATE™',
-    tagline: 'Universal Ascension Infrastructure — Every Primitive, Maximum Compounding',
+    tagline: '120 Candidates · 40 Open Slots · No Spine Lock · Maximum Compounding',
     url: 'https://ultimate.cmpsbl.com',
     icon: Crown,
     accentColor: 'hsl(270 70% 50%)',
     primitiveCount: 40,
-    capabilityCount: '96 pool',
+    capabilityCount: '120 pool',
     status: 'Active' as const,
   },
 ];

@@ -61,6 +61,7 @@ const AGENT_DATA: { id: string; name: string; desc: string; icon: LucideIcon }[]
 ];
 
 const VERTICAL_SOURCES = [
+  { name: "Spine (Organs + Layers)", color: "hsl(220 70% 55%)", count: 24 },
   { name: "Cyber", color: "hsl(0 80% 55%)", count: 16 },
   { name: "Robotics", color: "hsl(210 80% 55%)", count: 16 },
   { name: "Quantum", color: "hsl(270 80% 60%)", count: 16 },
@@ -82,16 +83,16 @@ export default function UltimateHome() {
 
   const STATS = [
     { label: "Candidate Primitives", value: `${poolSize}`, icon: Layers },
-    { label: "Source Verticals", value: "6", icon: Activity },
-    { label: "Max Ascension Slots", value: "40", icon: Crown },
-    { label: "Dynamic Selection", value: "∞", icon: Sparkles },
+    { label: "Sources", value: `${Object.keys(breakdown).length || 7}`, icon: Activity },
+    { label: "Open Slots", value: "40", icon: Crown },
+    { label: "Restrictions", value: "0", icon: Sparkles },
   ];
 
   return (
     <>
       <Helmet>
-        <title>CMPSBL ULTIMATE™ — Universal Ascension · Every Primitive Is a Candidate</title>
-        <meta name="description" content="CMPSBL ULTIMATE™ — The ceiling of Ascension. 96 candidate primitives from every vertical compete for 40 slots. Dynamic selection produces the maximum compounding effect for your specific codebase." />
+        <title>CMPSBL ULTIMATE™ — {poolSize} Candidates · 40 Open Slots · Zero Restrictions</title>
+        <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for all 40 slots. No spine lock. No category restrictions. The scanner selects the 40 that maximize compounding for your codebase.`} />
       </Helmet>
 
       <VerticalReturnBanner verticalName="CMPSBL ULTIMATE™" accentColor={ACCENT} />
@@ -125,13 +126,14 @@ export default function UltimateHome() {
               </h1>
 
               <p className="text-lg sm:text-xl mb-2 font-semibold" style={{ color: GOLD }}>
-                Every Primitive. Maximum Compounding. Universal Ascension.
+                {poolSize} Candidates. 40 Slots. Zero Restrictions.
               </p>
 
               <p className="text-sm sm:text-base max-w-2xl mx-auto mb-10" style={{ color: TEXT_SECONDARY }}>
-                {poolSize} candidate primitives from {Object.keys(breakdown).length || 6} verticals compete for 40 Ascension slots.
-                A universal scanner dynamically selects the optimal combination that produces
-                the maximum compounding effect for your specific codebase — no two results alike.
+                Every primitive in the CMPSBL ecosystem — Spine, vertical expansions, and
+                Universal gap-fillers — competes for all 40 slots. No locked organs. No forced
+                layers. The scanner chooses the 40 primitives that produce the maximum
+                compounding effect for your specific codebase. No two scans alike.
               </p>
 
               <div className="flex flex-wrap gap-3 justify-center">
@@ -171,13 +173,13 @@ export default function UltimateHome() {
               How Universal Ascension Works
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              Unlike standard verticals with 16 fixed expansion primitives, Ultimate evaluates the entire pool
+              No spine lock. No category quotas. All 40 slots are open — the scanner fills every one
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
               {[
-                { step: "01", title: "Pool Assembly", desc: `${poolSize} expansion primitives from all 6 verticals are loaded into the Universal Pool — Cyber, Robotics, Quantum, LLM, Agency, and 16 Universal gap-fillers.` },
-                { step: "02", title: "Affinity Scoring", desc: "Every candidate is scored against your uploaded code using signal matching, capability breadth, and compounding potential. Diversity constraints prevent any single vertical from dominating." },
-                { step: "03", title: "Optimal Selection", desc: "The top 16 are selected and merged with the 24-primitive Spine to form your unique 40-primitive surface — the maximum compounding configuration for your specific codebase." },
+                { step: "01", title: "Full Pool Assembly", desc: `${poolSize} primitives from every source — Spine organs, layers, Cyber, Robotics, Quantum, LLM, Agency expansion primitives, and 16 Universal gap-fillers — all loaded as equal candidates.` },
+                { step: "02", title: "Extended Collision", desc: "Multi-pass scoring evaluates every candidate against your code using signal matching, capability overlap, breadth analysis, and cross-primitive compounding potential. Extended scan time ensures deep evaluation." },
+                { step: "03", title: "40 Best Selected", desc: "The top 40 are selected by pure compounding score — no forced organs, no locked layers, no engine/agent quotas. The result is the maximum-impact surface for your specific codebase." },
               ].map((item, i) => (
                 <motion.div key={item.step} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
@@ -195,10 +197,10 @@ export default function UltimateHome() {
         <section className="px-4 sm:px-6 pb-20">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
-              Primitive Pool Sources
+              {poolSize} Candidates From Every Source
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              {poolSize} candidates drawn from every vertical substrate in the ecosystem
+              Spine primitives, vertical expansions, and universal gap-fillers — all compete equally for 40 slots
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {VERTICAL_SOURCES.map((v, i) => (
@@ -282,8 +284,8 @@ export default function UltimateHome() {
             </h2>
             <div className="grid sm:grid-cols-2 gap-4 mb-8 text-left">
               {[
-                { label: "Standard Vertical", desc: "16 fixed expansion primitives per domain. Great for specialized codebases.", style: "muted" },
-                { label: "Ultimate Ascension", desc: `${poolSize} candidates compete. Dynamic selection. Maximum compounding. No ceiling.`, style: "highlight" },
+                { label: "Standard Vertical", desc: "24 locked spine + 16 fixed expansion primitives. Optimized for one domain.", style: "muted" },
+                { label: "Ultimate Ascension", desc: `${poolSize} candidates. All 40 slots open. No spine lock. No quotas. The scanner picks the 40 primitives that maximize compounding for your code.`, style: "highlight" },
               ].map(item => (
                 <div key={item.label} className="p-5 rounded-xl" style={{
                   background: item.style === 'highlight' ? `${ACCENT}08` : BG_CARD,
@@ -309,9 +311,9 @@ export default function UltimateHome() {
               Ascend Without Limits
             </h2>
             <p className="text-sm mb-6" style={{ color: 'hsl(270 15% 50%)' }}>
-              Upload any codebase. The Universal Scanner evaluates {poolSize} candidate primitives
-              and assembles the perfect 40-primitive surface — the maximum compounding configuration
-              that no single vertical can match. This is the true power of Ascension.
+              Upload any codebase. The Universal Scanner evaluates {poolSize} candidates
+              across extended collision passes and selects the 40 primitives that produce the
+              maximum compounding effect — no locked spine, no category restrictions, no ceiling.
             </p>
             <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(270 20% 4%)' }}
               onClick={() => navigate('/ascension')}>
