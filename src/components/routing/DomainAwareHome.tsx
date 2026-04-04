@@ -87,6 +87,14 @@ export default function DomainAwareHome() {
     );
   }
 
+  if (verticalKey === 'ultimate') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(270 30% 4%)" }} />}>
+        <UltimateHome />
+      </Suspense>
+    );
+  }
+
   // Dynamic verticals from the factory engine + generic fallback
   if (verticalKey) {
     const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
