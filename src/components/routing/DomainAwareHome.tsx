@@ -8,6 +8,7 @@ const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
 const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
 const LLMHome = lazy(() => import("@/pages/LLMHome"));
+const AgencyHome = lazy(() => import("@/pages/AgencyHome"));
 
 /**
  * Domain-aware routing:
@@ -64,6 +65,14 @@ export default function DomainAwareHome() {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(170 30% 3%)" }} />}>
         <LLMHome />
+      </Suspense>
+    );
+  }
+
+  if (verticalKey === 'agency') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(30 20% 4%)" }} />}>
+        <AgencyHome />
       </Suspense>
     );
   }

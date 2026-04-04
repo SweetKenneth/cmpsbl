@@ -58,6 +58,19 @@ export {
 } from './llm';
 
 export {
+  getAgencySubstrate,
+  getAgencyPrimitives,
+  getAgencyEngines,
+  getAgencyAgents,
+  getAllAgencyCapabilities,
+  getAgencyCrownJewels,
+  getAgencyPrimitiveCrownJewels,
+  getAgencyCrownJewelSummary,
+  getAgencyCrownJewelCount,
+  getAgencyCrownJewelCapabilities,
+} from './agency';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
@@ -69,6 +82,19 @@ export {
   type QuantumDiscovery,
   type QuantumSeedResult,
 } from './quantum-seed';
+
+export {
+  seedAgencyDiscoveries,
+  getAgencySeedResult,
+  getAgencySeedSummary,
+  getAgencyVault,
+  getAgencyVaultCount,
+  getAgencyMemoryStreamPool,
+  getAgencyMemoryStreamCount,
+  resetAgencySeed,
+  type AgencyDiscovery,
+  type AgencySeedResult,
+} from './agency-seed';
 
 export {
   type VerticalPrimitive,
@@ -89,6 +115,7 @@ import { getCyberSecuritySubstrate } from './cybersecurity';
 import { getRoboticsSubstrate } from './robotics';
 import { getQuantumSubstrate } from './quantum';
 import { getLLMSubstrate } from './llm';
+import { getAgencySubstrate } from './agency';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
@@ -99,6 +126,7 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['robo-v1', getRoboticsSubstrate],
   ['quantum-v1', getQuantumSubstrate],
   ['llm-v1', getLLMSubstrate],
+  ['agency-v1', getAgencySubstrate],
 ]);
 
 /** Domain to vertical ID mapping (static) */
@@ -107,6 +135,7 @@ const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['robotics', 'robo-v1'],
   ['quantum', 'quantum-v1'],
   ['llm', 'llm-v1'],
+  ['agency', 'agency-v1'],
 ]);
 
 /**
