@@ -135,7 +135,7 @@ const OPENCLAW_RUNS: VerticalRun[] = [
       { name: 'FLUX', type: 'Engine', purpose: 'Real-time data flow management and stream processing' },
       { name: 'KINETIC', type: 'Engine', purpose: 'Motion planning and trajectory optimization' },
       { name: 'CALIBER', type: 'Engine', purpose: 'Precision calibration and tolerance enforcement' },
-      { name: 'GUARDIAN', type: 'Agent', purpose: 'Safety monitoring with emergency stop protocols' },
+      { name: 'MARSHAL', type: 'Agent', purpose: 'Safety monitoring with emergency stop protocols' },
       { name: 'SWARM', type: 'Agent', purpose: 'Multi-robot coordination and fleet management' },
     ],
     focusArea: 'Physical-world intelligence: motion planning, sensor fusion, safety monitoring, multi-robot coordination, and precision calibration.',
