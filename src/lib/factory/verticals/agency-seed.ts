@@ -229,7 +229,7 @@ export function seedAgencyDiscoveries(): AgencySeedResult {
   if (_seedResult) return _seedResult;
 
   const runId = 'ag-seed-' + Date.now().toString(36);
-  const rand = seedRng(0xAGEN_CAFE);
+  const rand = seedRng(0xA6E4_CAFE);
   const discoveries: AgencyDiscovery[] = [];
 
   let vaultCount = 0;
