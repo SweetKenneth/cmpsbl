@@ -9,6 +9,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, ShieldCheck, ArrowLeft, Check, Download, FileText, Sparkles, ArrowRight, Zap, Brain } from "lucide-react";
+import { SubstrateClassBadge } from "@/components/ui/substrate-class-badge";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
