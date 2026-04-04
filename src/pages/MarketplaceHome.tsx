@@ -550,7 +550,7 @@ function FilterPanel({
               active={selectedSubstrate === key}
               onClick={() => setSelectedSubstrate(key as SourceSubstrate)}
               label={meta.label}
-              count={MERCHANT_INVENTORY.filter(i => i.sourceSubstrate === key).length}
+              count={items.filter(i => i.sourceSubstrate === key).length}
             />
           ))}
         </div>
