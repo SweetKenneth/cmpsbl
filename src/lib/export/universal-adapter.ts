@@ -37,21 +37,39 @@ import {
 } from './test-harness-generator';
 
 export type ExportLanguage =
+  // Software
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
   | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
   | 'scala' | 'haskell'
+  // Extended software
+  | 'perl' | 'r' | 'julia' | 'nim' | 'crystal' | 'fsharp'
+  | 'clojure' | 'erlang' | 'ocaml' | 'groovy' | 'd'
+  | 'fortran' | 'objective-c'
+  // Shell / Infra
+  | 'bash' | 'powershell'
+  // Blockchain
+  | 'solidity' | 'vyper' | 'move' | 'cairo'
+  // GPU / Shaders
+  | 'cuda' | 'glsl' | 'hlsl' | 'wgsl' | 'metal' | 'opencl'
+  // Hardware / HDL
   | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel'
-  | 'amaranth' | 'spice' | 'systemc';
+  | 'amaranth' | 'spice' | 'systemc' | 'firrtl' | 'bluespec';
 
 export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
   'typescript', 'python', 'go', 'rust', 'java', 'csharp',
   'ruby', 'php', 'swift', 'kotlin', 'elixir', 'lua',
   'c', 'cpp', 'dart', 'zig', 'scala', 'haskell',
+  'perl', 'r', 'julia', 'nim', 'crystal', 'fsharp',
+  'clojure', 'erlang', 'ocaml', 'groovy', 'd',
+  'fortran', 'objective-c', 'bash', 'powershell',
+  'solidity', 'vyper', 'move', 'cairo',
+  'cuda', 'glsl', 'hlsl', 'wgsl', 'metal', 'opencl',
 ];
 
 export const HARDWARE_LANGUAGES: ExportLanguage[] = [
-  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice', 'systemc',
+  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth',
+  'spice', 'systemc', 'firrtl', 'bluespec',
 ];
 
 export type ExportAdapter =
@@ -95,8 +113,19 @@ const LANG_EXT: Record<ExportLanguage, string> = {
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
   elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
   scala: 'scala', haskell: 'hs',
+  // Extended software
+  perl: 'pl', r: 'R', julia: 'jl', nim: 'nim', crystal: 'cr', fsharp: 'fs',
+  clojure: 'clj', erlang: 'erl', ocaml: 'ml', groovy: 'groovy', d: 'd',
+  fortran: 'f90', 'objective-c': 'm',
+  // Shell / Infra
+  bash: 'sh', powershell: 'ps1',
+  // Blockchain
+  solidity: 'sol', vyper: 'vy', move: 'move', cairo: 'cairo',
+  // GPU / Shaders
+  cuda: 'cu', glsl: 'glsl', hlsl: 'hlsl', wgsl: 'wgsl', metal: 'metal', opencl: 'cl',
+  // HDL / Hardware
   verilog: 'v', vhdl: 'vhd', systemverilog: 'sv', chisel: 'scala',
-  amaranth: 'py', spice: 'sp', systemc: 'cpp',
+  amaranth: 'py', spice: 'sp', systemc: 'cpp', firrtl: 'fir', bluespec: 'bsv',
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
@@ -105,8 +134,16 @@ const LANG_LABELS: Record<ExportLanguage, string> = {
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
   c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
   scala: 'Scala', haskell: 'Haskell',
+  // Extended
+  perl: 'Perl', r: 'R', julia: 'Julia', nim: 'Nim', crystal: 'Crystal', fsharp: 'F#',
+  clojure: 'Clojure', erlang: 'Erlang', ocaml: 'OCaml', groovy: 'Groovy', d: 'D',
+  fortran: 'Fortran', 'objective-c': 'Objective-C',
+  bash: 'Bash', powershell: 'PowerShell',
+  solidity: 'Solidity', vyper: 'Vyper', move: 'Move', cairo: 'Cairo',
+  cuda: 'CUDA', glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL', metal: 'Metal', opencl: 'OpenCL',
   verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
   amaranth: 'Amaranth (Python HDL)', spice: 'SPICE Netlist', systemc: 'SystemC (C++)',
+  firrtl: 'FIRRTL', bluespec: 'Bluespec SystemVerilog',
 };
 
 const ADAPTER_LABELS: Record<ExportAdapter, string> = {
@@ -251,6 +288,42 @@ function generateCode(artifact: ExportableArtifact, target: ExportTarget): strin
 
 type CodeGen = (a: ExportableArtifact, adapter: ExportAdapter) => string;
 
+/** Comment prefix map for bridge-adapted languages */
+const COMMENT_PREFIX: Partial<Record<ExportLanguage, string>> = {
+  perl: '#', r: '#', julia: '#', nim: '#', crystal: '#', fsharp: '//',
+  clojure: ';;', erlang: '%', ocaml: '(*', groovy: '//', d: '//',
+  fortran: '!', 'objective-c': '//', bash: '#', powershell: '#',
+  solidity: '//', vyper: '#', move: '//', cairo: '//',
+  cuda: '//', glsl: '//', hlsl: '//', wgsl: '//', metal: '//', opencl: '//',
+  firrtl: ';', bluespec: '//',
+};
+
+/** Generic bridge generator — produces source-fidelity export for any language */
+function genBridge(lang: ExportLanguage): CodeGen {
+  const cmt = COMMENT_PREFIX[lang] || '//';
+  const label = LANG_LABELS[lang] || lang;
+  return (a: ExportableArtifact, adapter: ExportAdapter): string => {
+    const h = header(a, label, cmt);
+    if (adapter === 'standalone' && a.sourceCode) {
+      return `${h}\n${a.sourceCode}`;
+    }
+    const sn = snakeCase(a);
+    return `${h}
+${cmt} CMPSBL® Bridge Adapter — ${label}
+${cmt} Routes to canonical TypeScript runtime; runs standalone when offline.
+${cmt}
+${cmt} Capability: ${a.name}
+${cmt} CJPI: ${a.cjpi} | Rank: #${a.rank} | Module: ${a.module}
+${cmt} Adapter: ${adapter}
+${cmt}
+${cmt} This sealed artifact contains the full capability logic.
+${cmt} Zero external dependencies — plug directly into your ${label} stack.
+${cmt}
+${cmt} [CMPSBL_SEALED_RUNTIME_${sn.toUpperCase()}]
+`;
+  };
+}
+
 const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   typescript: genTypeScript,
   python: genPython,
@@ -277,6 +350,34 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   amaranth: genAmaranth,
   spice: genSPICE,
   systemc: genSystemC,
+  // Extended languages — bridge-adapted
+  perl: genBridge('perl'),
+  r: genBridge('r'),
+  julia: genBridge('julia'),
+  nim: genBridge('nim'),
+  crystal: genBridge('crystal'),
+  fsharp: genBridge('fsharp'),
+  clojure: genBridge('clojure'),
+  erlang: genBridge('erlang'),
+  ocaml: genBridge('ocaml'),
+  groovy: genBridge('groovy'),
+  d: genBridge('d'),
+  fortran: genBridge('fortran'),
+  'objective-c': genBridge('objective-c'),
+  bash: genBridge('bash'),
+  powershell: genBridge('powershell'),
+  solidity: genBridge('solidity'),
+  vyper: genBridge('vyper'),
+  move: genBridge('move'),
+  cairo: genBridge('cairo'),
+  cuda: genBridge('cuda'),
+  glsl: genBridge('glsl'),
+  hlsl: genBridge('hlsl'),
+  wgsl: genBridge('wgsl'),
+  metal: genBridge('metal'),
+  opencl: genBridge('opencl'),
+  firrtl: genBridge('firrtl'),
+  bluespec: genBridge('bluespec'),
 };
 
 function header(a: ExportableArtifact, lang: string, comment: string): string {

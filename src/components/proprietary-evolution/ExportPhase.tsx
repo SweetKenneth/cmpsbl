@@ -65,12 +65,28 @@ const DISPLAY_TO_EXPORT: Record<string, ExportLanguage> = {
   'typescript': 'typescript', 'typescript/react': 'typescript',
   'javascript': 'typescript', 'javascript/react': 'typescript',
   'python': 'python', 'rust': 'rust', 'go': 'go', 'java': 'java',
-  'c#': 'csharp', 'c++': 'cpp', 'c': 'c', 'zig': 'zig',
+  'c#': 'csharp', 'c#script': 'csharp', 'c++': 'cpp', 'c': 'c', 'zig': 'zig',
   'haskell': 'haskell', 'swift': 'swift', 'kotlin': 'kotlin',
   'php': 'php', 'lua': 'lua', 'dart': 'dart', 'scala': 'scala',
-  'elixir': 'elixir', 'ruby': 'ruby',
+  'elixir': 'elixir', 'ruby': 'ruby', 'd': 'd',
+  // Functional
+  'perl': 'perl', 'r': 'r', 'rmarkdown': 'r', 'julia': 'julia',
+  'nim': 'nim', 'crystal': 'crystal', 'f#': 'fsharp', 'f#script': 'fsharp',
+  'clojure': 'clojure', 'clojurescript': 'clojure',
+  'erlang': 'erlang', 'ocaml': 'ocaml', 'groovy': 'groovy',
+  'fortran': 'fortran', 'objective-c': 'objective-c', 'objective-c++': 'objective-c',
+  // Shell
+  'bash': 'bash', 'shell': 'bash', 'zsh': 'bash', 'fish': 'bash',
+  'powershell': 'powershell',
+  // Blockchain
+  'solidity': 'solidity', 'vyper': 'vyper', 'move': 'move', 'cairo': 'cairo',
+  // GPU
+  'cuda': 'cuda', 'glsl': 'glsl', 'hlsl': 'hlsl', 'wgsl': 'wgsl',
+  'metal': 'metal', 'opencl': 'opencl',
+  // HDL / Hardware
   'verilog': 'verilog', 'systemverilog': 'systemverilog', 'vhdl': 'vhdl',
-  'spice': 'spice', 'bluespec': 'systemverilog',
+  'spice': 'spice', 'bluespec': 'bluespec', 'chisel': 'chisel',
+  'firrtl': 'firrtl', 'systemc': 'systemc',
 };
 
 function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
@@ -340,7 +356,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
     );
   }
 
-  const isHdl = ['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth'].includes(exportLanguage);
+  const isHdl = ['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth', 'firrtl', 'bluespec'].includes(exportLanguage);
 
   return (
     <div className="space-y-6">
