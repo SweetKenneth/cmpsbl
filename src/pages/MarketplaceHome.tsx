@@ -501,9 +501,9 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
                 <span className="text-[10px] text-muted-foreground ml-1">· {item.downloads} sold</span>
               </div>
             </div>
-            <Button size="sm" className="gap-1.5 text-xs shadow-md">
+            <Button size="sm" className="gap-1.5 text-xs shadow-md" onClick={onBuy} disabled={isLoading}>
               <ShoppingCart className="w-3.5 h-3.5" />
-              Buy
+              {isLoading ? '...' : 'Buy'}
             </Button>
           </div>
         </CardContent>
