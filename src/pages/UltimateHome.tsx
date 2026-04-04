@@ -125,13 +125,14 @@ export default function UltimateHome() {
               </h1>
 
               <p className="text-lg sm:text-xl mb-2 font-semibold" style={{ color: GOLD }}>
-                Every Primitive. Maximum Compounding. Universal Ascension.
+                {poolSize} Candidates. 40 Slots. Zero Restrictions.
               </p>
 
               <p className="text-sm sm:text-base max-w-2xl mx-auto mb-10" style={{ color: TEXT_SECONDARY }}>
-                {poolSize} candidate primitives from {Object.keys(breakdown).length || 6} verticals compete for 40 Ascension slots.
-                A universal scanner dynamically selects the optimal combination that produces
-                the maximum compounding effect for your specific codebase — no two results alike.
+                Every primitive in the CMPSBL ecosystem — Spine, vertical expansions, and
+                Universal gap-fillers — competes for all 40 slots. No locked organs. No forced
+                layers. The scanner chooses the 40 primitives that produce the maximum
+                compounding effect for your specific codebase. No two scans alike.
               </p>
 
               <div className="flex flex-wrap gap-3 justify-center">
