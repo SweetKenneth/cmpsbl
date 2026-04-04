@@ -147,12 +147,26 @@ function getFileExtension(name: string): string {
   return name.split('.').pop()?.toLowerCase() || '';
 }
 
+/** Resolve the bare filename (no extension) for extensionless files like Dockerfile */
+function getBareName(name: string): string {
+  const base = name.split('/').pop() || name;
+  // Strip leading dot for dotfiles like .gitignore
+  return base.replace(/^\./, '').toLowerCase();
+}
+
 function isKnownSourceFile(file: File): boolean {
-  return SUPPORTED_TEXT_EXTENSIONS.has(getFileExtension(file.name));
+  const ext = getFileExtension(file.name);
+  if (SUPPORTED_TEXT_EXTENSIONS.has(ext)) return true;
+  // Extensionless files (Dockerfile, Makefile, etc.)
+  const bare = getBareName(file.name);
+  return bare in EXTENSIONLESS_MAP;
 }
 
 function detectLanguage(file: File): string {
-  return LANG_MAP[getFileExtension(file.name)] || 'Unknown';
+  const ext = getFileExtension(file.name);
+  if (LANG_MAP[ext]) return LANG_MAP[ext];
+  const bare = getBareName(file.name);
+  return EXTENSIONLESS_MAP[bare] || 'Unknown';
 }
 
 export function sanitizeCandidateName(fileName: string): string {
