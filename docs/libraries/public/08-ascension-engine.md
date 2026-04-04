@@ -12,7 +12,7 @@ Ascension is CMPSBL's **software evolution engine**. Upload any working code —
 
 ### 1. Upload
 
-Upload a source file (any of 25 supported languages). The Ascension Engine accepts it as a first-class participant in the substrate's discovery process.
+Upload a source file (any of 90+ supported languages). The Ascension Engine accepts it as a first-class participant in the substrate's discovery process.
 
 ### 2. Discovery
 

@@ -7,7 +7,7 @@
 
 ## 1. What It Does
 
-Upload any code → classify its archetype → filter and score capabilities via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 25 languages. Already built. Already functional.
+Upload any code → classify its archetype → filter and score capabilities via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 90+ languages. Already built. Already functional.
 
 ---
 

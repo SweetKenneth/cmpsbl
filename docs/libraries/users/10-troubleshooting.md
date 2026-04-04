@@ -49,7 +49,7 @@
 
 ### Ascension discovery shows no results
 - Ensure uploaded code is syntactically valid
-- Check that the language is in the 25 supported list
+- Check that the language is in the supported extensions list
 - Small files (< 10 lines) may not produce meaningful discoveries
 
 ---

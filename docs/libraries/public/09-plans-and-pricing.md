@@ -18,7 +18,7 @@
 | **ATLAS Engine governance** | — | — | Full (7-tab) | Full |
 | **EVOLUTION Layer control** | — | View only | Full | Full |
 | **AutoBlog** | — | 2 posts/week | Unlimited | Full |
-| **Universal Export** | — | — | Standard formats | All 25 languages |
+| **Universal Export** | — | — | Standard formats | All 90+ languages |
 | **Availability SLA** | Best effort | 99.5% | 99.9% | Self-managed |
 | **Support** | Community | 24h response | 4h dedicated | License support |
 

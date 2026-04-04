@@ -26,7 +26,7 @@ This library provides investors, advisors, and potential partners with a compreh
 | 09 | [Defensible Valuation](09-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium |
 | 10 | [Ascension Demo Script](10-ascension-demo-script.md) | Step-by-step narration for live Ascension demonstrations |
 | 11 | [Evolution Engine](11-evolution-engine.md) | Self-improving software: 166 bugs fixed for $0.06, engine benchmarks, market opportunity |
-| 12 | [Ascension: The Software Product Factory](12-ascension-product-factory.md) | Upload → classify → score → export as IP-protected artifact in 25 languages |
+| 12 | [Ascension: The Software Product Factory](12-ascension-product-factory.md) | Upload → classify → score → export as IP-protected artifact in 90+ languages |
 | 13 | [Memory Stream: The Discovery Engine](13-memory-stream.md) | Autonomous pipeline crystallization every 8 hours |
 | 14 | [DREAM Engine: The Compounding Intelligence Layer](14-dream-engine.md) | Cross-agent knowledge consolidation, Pre-conscious Emergence |
 | 15 | [DEFENSE: Cognitive Security Mesh](15-defense.md) | Zero-trust security architecture, zone shielding, tamper-evident audit |

@@ -31,7 +31,7 @@ Existing approaches to software augmentation fall into two categories: (1) gener
 
 Ascension introduces a third paradigm: **deterministic software evolution**. The system:
 
-1. Accepts any working source code in 25 supported languages
+1. Accepts any working source code in 90+ supported languages
 2. Derives a capability surface from the code's actual structure (function signatures, domain signals, behavioral patterns)
 3. Registers this surface as a first-class participant ("Primitive #41" or "Auxiliary Primitive Ψ₄₁") in a fixed 40-primitive substrate matrix
 4. Executes multi-chain collisions between the Auxiliary Primitive and all 40 substrate primitives
@@ -703,7 +703,7 @@ The collision sweep produced 5 distinct capability futures:
 | External AI dependency | ✅ Requires API calls | ⚠️ Often requires API calls | ❌ Zero external AI |
 | Provenance | None | Partial | Full (fingerprints, moat signatures, audit chain) |
 | Platform lock-in | Provider-dependent | Framework-dependent | Zero (Mini-Runtime survives platform loss) |
-| Cross-language support | Limited | Per-framework | 25 languages including 7 HDL |
+| Cross-language support | Limited | Per-framework | 90+ languages including 7 HDL |
 | IP protection | None | None | Hex-encoded weights, sealed heuristics |
 
 ---
