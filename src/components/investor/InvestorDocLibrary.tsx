@@ -229,7 +229,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Builder", "Included", "1", "Session memory, view-only discovery"],
             ["Studio", "$29/mo", "3", "Persistent memory, 3 export languages"],
             ["Creator", "$49/mo", "10", "Full memory, 10 languages, basic DREAM"],
-            ["Architect", "$79/mo", "25", "Priority routing, all 25 languages, full DREAM"],
+            ["Architect", "$79/mo", "25", "Priority routing, all 90+ languages, full DREAM"],
             ["Governor", "Admin", "∞", "Full governance authority, all capabilities"],
           ],
         },
