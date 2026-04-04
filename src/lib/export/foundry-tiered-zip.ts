@@ -92,6 +92,8 @@ export async function downloadTieredFoundryZip(options: {
   artifacts: TieredFoundryExportArtifact[];
   filePrefix: string;
   sourceLabel: string;
+  /** When true, inline the sealed runtime into each source file instead of a separate _runtime/ folder */
+  mergeRuntime?: boolean;
 }): Promise<TieredFoundryZipResult> {
   const { artifacts, filePrefix, sourceLabel } = options;
 
