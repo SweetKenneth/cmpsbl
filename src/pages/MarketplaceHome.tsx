@@ -99,7 +99,7 @@ export default function MarketplaceHome() {
   }, []);
 
   const filteredItems = useMemo(() => {
-    let items = [...MERCHANT_INVENTORY];
+    let items = [...inventory];
 
     // Search
     if (search.trim()) {
