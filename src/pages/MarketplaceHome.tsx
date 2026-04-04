@@ -67,6 +67,12 @@ export default function MarketplaceHome() {
   }, [inventory]);
 
   const handleBuy = useCallback(async (item: MarketplaceItem) => {
+    /** Free items — immediate download, no auth required */
+    if (item.priceCents === 0) {
+      toast.success('Free download started!', { description: `${item.title} is yours — no sign-in required.` });
+      return;
+    }
+
     setBuyingId(item.id);
     try {
       const { data: { session } } = await supabase.auth.getSession();
