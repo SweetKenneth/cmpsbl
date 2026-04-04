@@ -170,6 +170,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
           </div>
         </section>
       </div>
+      <EnhancedFooter />
     </>
   );
 }
