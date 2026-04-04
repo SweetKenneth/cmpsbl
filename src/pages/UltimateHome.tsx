@@ -82,9 +82,9 @@ export default function UltimateHome() {
 
   const STATS = [
     { label: "Candidate Primitives", value: `${poolSize}`, icon: Layers },
-    { label: "Source Verticals", value: "6", icon: Activity },
-    { label: "Max Ascension Slots", value: "40", icon: Crown },
-    { label: "Dynamic Selection", value: "∞", icon: Sparkles },
+    { label: "Sources", value: `${Object.keys(breakdown).length || 7}`, icon: Activity },
+    { label: "Open Slots", value: "40", icon: Crown },
+    { label: "Restrictions", value: "0", icon: Sparkles },
   ];
 
   return (
