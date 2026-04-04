@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { MarketplaceItem, SourceSubstrate, SourceVault, ListingCategory } from '@/agents/merchant/merchant-engine';
 import { getMarketplaceTier } from '@/agents/merchant/merchant-engine';
-import { MERCHANT_INVENTORY } from '@/agents/merchant/merchant-inventory';
+import { MERCHANT_INVENTORY, applyFreeItemRotation } from '@/agents/merchant/merchant-inventory';
 
 interface DBInventoryRow {
   id: string;
