@@ -223,7 +223,23 @@ Deno.serve(async (req: Request) => {
           }
         }
 
+        // ── Estimate row counts to export small tables first (maximizes table coverage) ──
+        const tableCounts: { table: string; count: number }[] = [];
         for (const table of exportTables) {
+          try {
+            const { count, error } = await admin
+              .from(table)
+              .select('*', { count: 'exact', head: true });
+            tableCounts.push({ table, count: error ? 999999 : (count ?? 999999) });
+          } catch {
+            tableCounts.push({ table, count: 999999 });
+          }
+        }
+        tableCounts.sort((a, b) => a.count - b.count);
+        const sortedExportTables = tableCounts.map((t) => t.table);
+        console.log(`[FullBackup] Export order: ${sortedExportTables.length} tables sorted by size`);
+
+        for (const table of sortedExportTables) {
           if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
             timedOut = true;
             for (let j = exportTables.indexOf(table); j < exportTables.length; j++) {
