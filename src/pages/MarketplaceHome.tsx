@@ -6,7 +6,6 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,15 +13,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { cn } from '@/lib/utils';
 import {
   Search, ShoppingCart, Star, TrendingUp, Filter, X,
-  Sparkles, Shield, Brain, Zap, Eye, Globe, Package,
-  ArrowRight, ChevronRight, Store, Award, Download,
-  Heart, ExternalLink, Tag, Cpu, Lock,
+  Shield, Zap, Eye, Globe, Package,
+  Store, Award, Tag, Cpu, Lock,
 } from 'lucide-react';
 import {
   MERCHANT_INVENTORY,
