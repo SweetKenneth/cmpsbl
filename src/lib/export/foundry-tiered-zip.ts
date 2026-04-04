@@ -17,6 +17,7 @@ import { generateIntegrationGuide } from './integration-guide-generator';
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from './export-artifacts-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { generateUniversalUserGuide } from './universal-user-guide';
 
 export interface TieredFoundryExportArtifact {
   id: string;
