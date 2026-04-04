@@ -13,6 +13,7 @@ import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cyb
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getLLMEngines, getLLMAgents } from './verticals/llm';
+import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 
@@ -164,6 +165,20 @@ function buildVerticalCatalog(): {
     return { spine: [...SPINE_PRIMITIVES], expansion: [...llmEngines, ...llmAgents] };
   }
 
+  if (vertical === 'agency') {
+    const agencyEngines = getAgencyEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const agencyAgents = getAgencyAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...agencyEngines, ...agencyAgents] };
+  }
+
   // Dynamic verticals — auto-discovered from the factory engine
   if (vertical) {
     const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
@@ -275,6 +290,22 @@ const CAPABILITY_REGISTRY: CapabilityDefinition[] = [
   { id: 'tachyonic-causality-analyzer', name: 'Tachyonic Causality Analyzer', description: 'Explores Lorentz invariance violation bounds, models closed timelike curves, and evaluates tachyonic field condensation in theoretical frameworks.', archetype: 'Passive', sourcePrimitives: ['tachyon', 'graviton', 'conscience'], usageExample: "import { CausalityAnalyzer } from '@cmpsbl/quantum';\nCausalityAnalyzer.evaluate({ violation_bound: 1e-23 });", minComplexity: 80 },
   { id: 'band-structure-calculator', name: 'Band Structure Calculator', description: 'Computes electronic band structures using tight-binding and DFT methods. Maps Brillouin zones, identifies Dirac cones, and predicts topological properties.', archetype: 'Passive', sourcePrimitives: ['lattice', 'fermion', 'engineer'], usageExample: "import { BandCalc } from '@cmpsbl/quantum';\nconst bands = BandCalc.compute({ material: 'graphene', method: 'tb' });", minComplexity: 80 },
   { id: 'quantum-teleportation-protocol', name: 'Quantum Teleportation Protocol', description: 'End-to-end quantum state transfer using EPR pairs, Bell measurements, and classical communication channels. Includes fidelity verification.', archetype: 'Active', sourcePrimitives: ['entangle', 'photon', 'relay'], usageExample: "import { QTeleport } from '@cmpsbl/quantum';\nconst fidelity = QTeleport.transfer(qubitState, { channel: eprPair });", minComplexity: 50 },
+
+  // ═══ AGENCY VERTICAL — Autonomous agent-specific capabilities ═══
+  { id: 'mission-decomposer', name: 'Mission Decomposer', description: 'Breaks complex user objectives into executable sub-tasks with dependency graphs, priority scoring, and deadline-aware scheduling. Handles re-planning on failure.', archetype: 'Active', sourcePrimitives: ['mandate', 'reason', 'brain'], usageExample: "import { MissionDecomposer } from '@cmpsbl/agency';\nconst plan = MissionDecomposer.plan({ objective, deadline });", minComplexity: 50 },
+  { id: 'skill-router', name: 'Skill-Based Task Router', description: 'Matches tasks to agents based on competency matrices, current workload, and historical success rates. Detects bottlenecks and re-routes in real-time.', archetype: 'Active', sourcePrimitives: ['delegate', 'operator', 'cortex'], usageExample: "import { SkillRouter } from '@cmpsbl/agency';\nSkillRouter.assign(task, { strategy: 'competency' });", minComplexity: 50 },
+  { id: 'deep-research-synthesizer', name: 'Deep Research Synthesizer', description: 'Crawls, aggregates, and synthesizes multi-source research with citation tracking, source credibility scoring, and competitive intelligence extraction.', archetype: 'Active', sourcePrimitives: ['reconn', 'scholar', 'harvest'], usageExample: "import { ResearchSynth } from '@cmpsbl/agency';\nconst report = ResearchSynth.research({ topic, depth: 'deep' });", minComplexity: 30 },
+  { id: 'inter-agent-protocol', name: 'Inter-Agent Communication Protocol', description: 'Structured message passing between agents with priority channels, knowledge broadcast, and conflict-free shared memory access.', archetype: 'Active', sourcePrimitives: ['uplink', 'liaison', 'relay'], usageExample: "import { AgentComms } from '@cmpsbl/agency';\nAgentComms.broadcast({ channel: 'research', payload });", minComplexity: 30 },
+  { id: 'content-generation-engine', name: 'Content Generation Engine', description: 'Structured content drafting with style adherence, audience targeting, format templating, and iterative revision loops.', archetype: 'Active', sourcePrimitives: ['scribe', 'lingua', 'encode'], usageExample: "import { ContentGen } from '@cmpsbl/agency';\nconst draft = ContentGen.write({ brief, style: 'technical' });", minComplexity: 30 },
+  { id: 'reinforcement-loop', name: 'Reinforcement Learning Loop', description: 'Tracks agent performance, applies reward signals, adjusts skill weights, and drives continuous improvement via competency scoring.', archetype: 'Hybrid', sourcePrimitives: ['incentive', 'scholar', 'memory'], usageExample: "import { ReinforcementLoop } from '@cmpsbl/agency';\nReinforcementLoop.reward(agentId, { taskScore: 0.92 });", minComplexity: 50 },
+  { id: 'chain-of-thought-reasoner', name: 'Chain-of-Thought Reasoner', description: 'Structured multi-step reasoning with evidence tracking, confidence scoring, and transparent decision audit trails for agent actions.', archetype: 'Active', sourcePrimitives: ['reason', 'brain', 'conscience'], usageExample: "import { CoTReasoner } from '@cmpsbl/agency';\nconst decision = CoTReasoner.reason({ problem, evidence });", minComplexity: 50 },
+  { id: 'tool-orchestrator', name: 'Tool Use Orchestrator', description: 'Manages API integrations, plugin lifecycle, and tool selection strategies. Agents discover, authenticate, and invoke tools autonomously.', archetype: 'Active', sourcePrimitives: ['toolkit', 'nexus', 'access'], usageExample: "import { ToolOrch } from '@cmpsbl/agency';\nToolOrch.invoke('github', { action: 'create_pr', params });", minComplexity: 50 },
+  { id: 'agent-self-healer', name: 'Agent Self-Healing System', description: 'Monitors agent health, detects degradation, triggers graceful fallback, and autonomously restarts failed agents with state recovery.', archetype: 'Hybrid', sourcePrimitives: ['overseer', 'medic', 'ripple'], usageExample: "import { AgentHealer } from '@cmpsbl/agency';\nAgentHealer.monitor({ agents: fleet, checkInterval: 5000 });", minComplexity: 50 },
+  { id: 'team-conflict-resolver', name: 'Team Conflict Resolver', description: 'Detects competing objectives, resource contention, and priority conflicts between agents. Applies negotiation protocols and consensus building.', archetype: 'Hybrid', sourcePrimitives: ['liaison', 'warden', 'treaty'], usageExample: "import { ConflictResolver } from '@cmpsbl/agency';\nConflictResolver.mediate({ agents: [a1, a2], conflict });", minComplexity: 30 },
+  { id: 'progress-reporter', name: 'Progress Reporter', description: 'User-facing real-time status updates with milestone tracking, ETA prediction, and human-readable summaries of agent activity.', archetype: 'Passive', sourcePrimitives: ['envoy', 'vision', 'nerve'], usageExample: "import { ProgressReporter } from '@cmpsbl/agency';\nProgressReporter.update({ missionId, status: 'in_progress' });", minComplexity: 0 },
+  { id: 'safety-boundary-enforcer', name: 'Safety Boundary Enforcer', description: 'Enforces governance policies, resource limits, and ethical constraints on agent actions. Prevents unbounded autonomy and policy violations.', archetype: 'Active', sourcePrimitives: ['warden', 'governance', 'sovereign'], usageExample: "import { SafetyEnforcer } from '@cmpsbl/agency';\nSafetyEnforcer.check(action, { policy: 'production' });", minComplexity: 30 },
+  { id: 'creative-problem-solver', name: 'Creative Problem Solver', description: 'Generates unconventional approaches when standard strategies fail. Applies lateral thinking, analogical reasoning, and constraint relaxation.', archetype: 'Active', sourcePrimitives: ['rogue', 'reason', 'dream'], usageExample: "import { CreativeSolver } from '@cmpsbl/agency';\nconst approach = CreativeSolver.diverge({ problem, constraints });", minComplexity: 50 },
+  { id: 'context-persistence-layer', name: 'Context Persistence Layer', description: 'Maintains agent context across sessions with long-term memory, conversation threading, and knowledge graph integration for continuity.', archetype: 'Passive', sourcePrimitives: ['anchor', 'memory', 'echo'], usageExample: "import { ContextLayer } from '@cmpsbl/agency';\nContextLayer.persist({ sessionId, context, ttl: '30d' });", minComplexity: 30 },
 ];
 
 export function getCapabilityRegistry() {
@@ -704,6 +735,24 @@ function scorePrimitiveRelevance(
     tachyon: { signals: [code.includes('tachyon') || code.includes('superluminal') || code.includes('lorentz') || code.includes('causal'), hasAsync], rationale: 'Superluminal signal modeling and causality analysis in relativistic frameworks' },
     meson: { signals: [code.includes('meson') || code.includes('hadron') || code.includes('quark') || code.includes('fragmentation'), len > 200], rationale: 'Quark confinement and hadronization processes for jet formation modeling' },
     prism: { signals: [code.includes('spectro') || code.includes('wavelength') || code.includes('emission') || code.includes('raman'), hasState], rationale: 'Spectroscopy analysis and wavelength decomposition for atomic line identification' },
+    // Agency vertical primitives — Engines
+    mandate: { signals: [code.includes('task') || code.includes('mission') || code.includes('objective'), hasAsync], rationale: 'Mission decomposition and autonomous task planning with dependency graphs' },
+    delegate: { signals: [code.includes('route') || code.includes('assign') || code.includes('dispatch'), hasAsync], rationale: 'Skill-based task routing and workload distribution across agents' },
+    reconn: { signals: [code.includes('search') || code.includes('crawl') || code.includes('research'), hasHttp], rationale: 'Deep research and web crawling with source verification and citation tracking' },
+    uplink: { signals: [code.includes('message') || code.includes('channel') || code.includes('broadcast'), hasAsync], rationale: 'Inter-agent communication bus and knowledge sharing protocol' },
+    scribe: { signals: [code.includes('write') || code.includes('draft') || code.includes('content'), len > 100], rationale: 'Writing, drafting, and content generation with structured output' },
+    incentive: { signals: [code.includes('reward') || code.includes('score') || code.includes('progress'), hasState], rationale: 'Reward programs and reinforcement loops for skill progression' },
+    reason: { signals: [code.includes('reason') || code.includes('logic') || code.includes('decision'), len > 200], rationale: 'Chain-of-thought reasoning and structured decision-making' },
+    toolkit: { signals: [code.includes('tool') || code.includes('api') || code.includes('plugin'), hasHttp], rationale: 'Tool use orchestration and API integration layer for agent capabilities' },
+    // Agency vertical primitives — Agents
+    operator: { signals: [code.includes('execute') || code.includes('run') || code.includes('perform'), hasAsync], rationale: 'Autonomous mission executor with minimal direction and self-correction' },
+    overseer: { signals: [code.includes('health') || code.includes('monitor') || code.includes('heal'), hasAsync], rationale: 'Agent health monitoring, self-healing, and graceful degradation' },
+    liaison: { signals: [code.includes('team') || code.includes('collaborat') || code.includes('coordinat'), hasAsync], rationale: 'Teamwork coordination and conflict resolution across agent groups' },
+    scholar: { signals: [code.includes('learn') || code.includes('knowledge') || code.includes('skill'), hasState], rationale: 'Continuous skill acquisition and knowledge distillation for agent improvement' },
+    envoy: { signals: [code.includes('report') || code.includes('status') || code.includes('notify'), hasAsync], rationale: 'User-facing communication and progress reporting agent' },
+    warden: { signals: [code.includes('policy') || code.includes('rule') || code.includes('govern'), hasAuth], rationale: 'Governance enforcement and safety boundary management' },
+    rogue: { signals: [code.includes('creative') || code.includes('alternative') || code.includes('experiment'), len > 200], rationale: 'Creative problem-solving and unconventional approach generation' },
+    anchor: { signals: [code.includes('context') || code.includes('session') || code.includes('persist'), hasState], rationale: 'Context persistence and long-term memory for continuous agent operation' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
