@@ -64,7 +64,7 @@ CMPSBL is a **cognitive orchestration substrate** — a runtime infrastructure l
 | Agent Marketplace | 20 agents across 4 price tiers ($79–$249/agent) |
 | Engine Marketplace | 54 premium engines across META, APEX, ELITE, CORE tiers |
 | Self-Hosted Licenses | Full-control perpetual licenses |
-| Ascension Exports | Single-file, IP-protected capability artifacts in 25 languages |
+| Ascension Exports | Single-file, IP-protected capability artifacts in 90+ languages |
 
 ---
 
@@ -84,7 +84,7 @@ CMPSBL is the **only AI orchestration system** where:
 4. **Agents are sealed** — source-blocked, memory-isolated runtimes
 5. **Audit is tamper-evident** — Merkle chain integrity verification
 6. **Learning is continuous** — CLM compounds knowledge 24/7
-7. **Exports are portable** — single-file, zero-dependency distributions in 25 languages
+7. **Exports are portable** — single-file, zero-dependency distributions in 90+ languages
 
 ---
 

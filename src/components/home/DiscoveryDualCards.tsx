@@ -31,10 +31,10 @@ const CARDS = [
     glow: "--neon-purple",
     badge: "Transformation",
     summary:
-      "Upload any code in 25 languages. It enters the 40‑Primitive matrix as Node #41, collides with every Organ, Layer, Engine, and Agent, and surfaces capabilities your software already had — but couldn't see.",
+      "Upload any code in 90+ languages. It enters the 40‑Primitive matrix as Node #41, collides with every Organ, Layer, Engine, and Agent, and surfaces capabilities your software already had — but couldn't see.",
     bullets: [
       "Zero external AI calls — confirmed",
-      "25 languages incl. 7 HDLs (VHDL, Verilog…)",
+      "90+ languages incl. HDL, GPU, blockchain, quantum & robotics",
       "CJPI‑scored capability certificates",
       "Sealed Mini‑Runtime™ in every export",
     ],

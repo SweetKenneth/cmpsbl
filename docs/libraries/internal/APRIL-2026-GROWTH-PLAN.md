@@ -29,7 +29,7 @@ At scale, each paying user funds 1.75 days of ads. The flywheel starts.
 ## Two Products, Two Messages
 
 ### Ascension (Conversion product — Architect $249/mo value)
-> "Upload your code. Get back a portable, IP-protected artifact in 25 languages. Your script becomes a product."
+> "Upload your code. Get back a portable, IP-protected artifact in 90+ languages. Your script becomes a product."
 
 ### Memory Stream (Retention product — included Pro+)
 > "Your system discovers new capabilities every 8 hours while you sleep. The catalog writes itself."
@@ -140,7 +140,7 @@ At scale, each paying user funds 1.75 days of ads. The flywheel starts.
 1. "Upload your code. Get back a product." (Ascension)
 2. "Your system discovers capabilities while you sleep." (Memory Stream)
 3. "npm install. No signup. No credit card. Just memory." (Gateway)
-4. "One file. Zero dependencies. 25 languages." (Export)
+4. "One file. Zero dependencies. 90+ languages." (Export)
 5. "What if your code was worth $992K more?" (CJPI value prop)
 
 ### Build in Public Content

@@ -566,7 +566,7 @@ const HeritagePaper = () => {
               </div>
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">IRONCLAD Epoch (v11–v13.5)</h4>
-                <p className="text-xs text-muted-foreground">100% hardening coverage. 3-tier bounded autonomy. Universal export (25 languages). Memory crystallization.</p>
+                <p className="text-xs text-muted-foreground">100% hardening coverage. 3-tier bounded autonomy. Universal export (90+ languages). Memory crystallization.</p>
               </div>
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">MINDGAMES Epoch (v14.0–v14.2.0)</h4>
@@ -684,7 +684,7 @@ const HeritagePaper = () => {
                                             ↓
                                 Capability Pack Generation
                                             ↓
-                                Universal Export (25 languages)`}
+                                Universal Export (90+ languages)`}
             </pre>
           </section>
 

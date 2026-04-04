@@ -38,7 +38,7 @@ export const TIER_1_DEMOS: DemoCardData[] = [
     subtitle: "Single-File Export Engine",
     icon: <Sparkles className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
-    what: "Upload code → classify archetype → filter capabilities → export as a single-file, zero-dependency distribution in 25 languages.",
+    what: "Upload code → classify archetype → filter capabilities → export as a single-file, zero-dependency distribution in 90+ languages.",
     why: "The clearest proof of value — input basic code, output IP-protected production software.",
     value: "Every developer becomes 10x. Every script becomes a portable, sellable product.",
   },

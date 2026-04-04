@@ -70,7 +70,7 @@ CMPSBL can **discover new software capabilities** from its own runtime behavior:
 3. Discoveries are scored (CJPI: Novelty, Utility, Complexity, Composability)
 4. High-scoring discoveries crystallize into exportable artifacts
 5. Artifacts are packaged as single-file, zero-dependency "drop-in" distributions
-6. Exports are available in **25 languages** (18 software + 7 HDL)
+6. Exports are available in **90+ languages** (software, HDL, GPU, blockchain, quantum & robotics)
 
 This is not a feature. It is the system **writing new software from its own experience**.
 

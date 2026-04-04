@@ -61,7 +61,7 @@ Tier Classification — Mint → Prime → Relic → Mythic → Apex
     ↓
 Export — single-file, zero-dependency "drop-in" distribution
     ↓
-25 languages — 18 software + 7 HDL
+90+ languages — software, HDL, GPU, blockchain, quantum & robotics
 ```
 
 ### What the customer gets:
@@ -73,7 +73,7 @@ Export — single-file, zero-dependency "drop-in" distribution
 
 ### Key selling points:
 - **Zero dependencies** — drop it into any project
-- **25 languages** — works in their stack, whatever it is
+- **90+ languages** — works in their stack, whatever it is
 - **IP-protected** — black-boxed proprietary logic
 - **One-way export** — artifacts are final, production-ready products (not re-ingested)
 

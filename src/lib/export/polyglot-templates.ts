@@ -1,7 +1,7 @@
 /**
  * Polyglot Template Engine
  * ━━━━━━━━━━━━━━━━━━━━━━━━
- * Hand-coded syntax templates for ALL 25 supported languages.
+ * Hand-coded syntax templates for ALL 90+ supported languages.
  * One renderer + language syntax maps = full working code in every language.
  *
  * Software (18): JavaScript, TypeScript, Python, Rust, Go, Java, C, C++, C#,

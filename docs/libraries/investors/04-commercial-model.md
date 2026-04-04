@@ -12,7 +12,7 @@
 | **Platform Subscriptions** | Monthly/Annual | 5 tiers: Builder → Studio → Creator → Architect → Governor |
 | **Agent Marketplace** | One-time purchase | 20 cognitive agents at $79–$249 each |
 | **Engine Marketplace** | Tiered pricing | 54 premium engines across META, APEX, ELITE, CORE |
-| **Ascension Exports** | Per-export | Single-file, zero-dependency capability artifacts in 25 languages |
+| **Ascension Exports** | Per-export | Single-file, zero-dependency capability artifacts in 90+ languages |
 | **Self-Hosted Licenses** | License fee + BYOK | Full control, perpetual |
 
 ---
@@ -60,7 +60,7 @@ The Ascension pipeline produces single-file, zero-dependency "drop-in" distribut
 |----------|--------|
 | **Format** | Single file (e.g., `cmpsbl.ts`, `cmpsbl.py`, `cmpsbl.rs`) |
 | **Contents** | Mini-Runtime™ + Primitive Effects + Runtime Bridge + Public API |
-| **Languages** | 25 (18 software + 7 HDL) |
+| **Languages** | 25 (software, HDL, GPU, blockchain, quantum & robotics) |
 | **Dependencies** | Zero — drops into any project |
 | **IP protection** | Black-boxed — CJPI weights hex-encoded, internal comments stripped |
 | **Export model** | One-way — final production artifact, not re-ingested |

@@ -653,7 +653,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/ascension': {
     title: 'Ascension — Zero-LLM Code Transformation | CMPSBL',
-    description: 'Upload code in 25 languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording.',
+    description: 'Upload code in 90+ languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording.',
     ogTitle: 'Ascension — Zero-LLM Code Transformation',
     ogDescription: 'Upload code, collide against 40 primitives, export enhanced capabilities. No LLM.',
     ogImage: OG_ASCENSION,

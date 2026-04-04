@@ -91,7 +91,7 @@ As capabilities appear:
 
 When complete:
 
-> "The system just enhanced this [agent/form/API] with [N] production capabilities in [X]ms. Every one is IP-protected, zero-dependency, and runs in 25 languages."
+> "The system just enhanced this [agent/form/API] with [N] production capabilities in [X]ms. Every one is IP-protected, zero-dependency, and runs in 90+ languages."
 
 Point to the "After Ascension" summary.
 
@@ -133,7 +133,7 @@ Pause.
 > "Those systems generate code from prompts. We evolve existing code. The output isn't a suggestion — it's a portable, executable capability with full provenance. The original code is preserved and runs first."
 
 ### "What does the export actually give me?"
-> "A single file — drop it into your project, zero dependencies. It contains a Mini-Runtime, all included primitive effects, a bridge executor, and a public API. Works in 25 languages. It's a finished product, not a prototype."
+> "A single file — drop it into your project, zero dependencies. It contains a Mini-Runtime, all included primitive effects, a bridge executor, and a public API. Works in 90+ languages. It's a finished product, not a prototype."
 
 ### "How do you protect your IP in exports?"
 > "CJPI weights are hex-encoded arrays. Tier thresholds are obfuscated. Internal comments are stripped. Architecture references are genericized. The file works perfectly — but reveals nothing about our discovery heuristics or scoring internals."
@@ -168,7 +168,7 @@ Pause.
 - ✅ "The original code is the authority"
 - ✅ "Single-file, zero-dependency distribution"
 - ✅ "IP-protected with hex-encoded proprietary constants"
-- ✅ "25 languages, hand-coded idiomatic templates"
+- ✅ "90+ languages, hand-coded idiomatic templates"
 - ✅ "We augment, we don't replace"
 
 ---

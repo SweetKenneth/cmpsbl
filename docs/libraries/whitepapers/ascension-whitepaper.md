@@ -117,7 +117,7 @@ Each stage is idempotent and produces auditable artifacts.
 
 ### 4.2 Stage Descriptions
 
-**Stage 1: Upload.** Source code is accepted in any of 25 supported languages (18 software + 7 hardware description languages). No preprocessing or normalization is applied — the code enters the matrix as-is.
+**Stage 1: Upload.** Source code is accepted in any of 90+ supported languages (18 software + 7 hardware description languages). No preprocessing or normalization is applied — the code enters the matrix as-is.
 
 **Stage 2: Classify.** A diagnostic squad of 6 primitives computes structural metrics:
 - Cyclomatic complexity
@@ -580,7 +580,7 @@ By eschewing AI-based code analysis, Ascension™ achieves properties no probabi
 ### 9.3 Limitations
 
 1. **Semantic understanding:** Ascension™ reasons about code structure, not semantic intent. It cannot determine whether a function's *purpose* is correct — only whether its *structure* is sound.
-2. **Language coverage:** While 25 languages are supported, coverage depth varies. Compiled languages with rich type systems produce higher-fidelity collision results.
+2. **Language coverage:** While 90+ languages are supported, coverage depth varies. Compiled languages with rich type systems produce higher-fidelity collision results.
 3. **Vertical completeness:** Four verticals are currently production-ready (CMPSBL Cyber™, CMPSBL Quantum™, CMPSBL Robotics™, CMPSBL LLM™); additional domain verticals are under active development.
 
 ### 9.4 Future Work

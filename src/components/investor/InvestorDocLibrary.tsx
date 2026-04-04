@@ -74,7 +74,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Platform Subscriptions", "Builder → Studio ($29) → Creator ($49) → Architect ($79) → Governor"],
             ["Agent Marketplace", "20 agents across 4 price tiers ($79–$249/agent)"],
             ["Engine Marketplace", "54 premium engines across META, APEX, ELITE, CORE"],
-            ["Ascension Exports", "Single-file, IP-protected capability artifacts in 25 languages"],
+            ["Ascension Exports", "Single-file, IP-protected capability artifacts in 90+ languages"],
             ["Self-Hosted Licenses", "Full-control perpetual licenses"],
           ],
         },
@@ -96,7 +96,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         heading: "Proprietary Technology Stack",
         bullets: [
           "Memory Stream — autonomous discovery engine that finds new software capabilities without human direction",
-          "Ascension — single-file export engine producing IP-protected artifacts in 25 languages",
+          "Ascension — single-file export engine producing IP-protected artifacts in 90+ languages",
           "Evolution Engine — self-improving codebase that fixed 166 production bugs for $0.06",
           "DREAM Engine — background learning during idle time; the system gets smarter while you sleep",
           "BRAIN Organ — 4-tier persistent memory with Constant Learning Mode (up to 14,400 AI calls/day)",
@@ -188,7 +188,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Evolution", "7-gate SEBA with TSAC truth arbitration", "Manual deployment"],
             ["Security", "40-primitive zone-shielded mesh", "Perimeter only"],
             ["Learning", "CLM — up to 14,400 calls/day", "None or fine-tuning"],
-            ["Export", "25 languages, standalone artifacts", "API access only"],
+            ["Export", "90+ languages, standalone artifacts", "API access only"],
             ["Audit", "Tamper-evident Merkle chains", "Append-only logs"],
           ],
         },
@@ -229,7 +229,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Builder", "Included", "1", "Session memory, view-only discovery"],
             ["Studio", "$29/mo", "3", "Persistent memory, 3 export languages"],
             ["Creator", "$49/mo", "10", "Full memory, 10 languages, basic DREAM"],
-            ["Architect", "$79/mo", "25", "Priority routing, all 25 languages, full DREAM"],
+            ["Architect", "$79/mo", "25", "Priority routing, all 90+ languages, full DREAM"],
             ["Governor", "Admin", "∞", "Full governance authority, all capabilities"],
           ],
         },
@@ -341,7 +341,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           rows: [
             ["Cognitive Substrate (40-Primitive Matrix)", "Core Architecture", "Symmetric 12·12·8·8 topology with governed inter-node mesh — architectural complexity prevents replication"],
             ["Memory Stream (Discovery Engine)", "Autonomous Discovery", "Self-observing behavior analysis that crystallizes viable software pipelines — no other system discovers its own capabilities"],
-            ["Ascension (Export Engine)", "Software Factory", "Upload → classify → filter → export as single-file IP-protected artifact in 25 languages — entirely unique capability"],
+            ["Ascension (Export Engine)", "Software Factory", "Upload → classify → filter → export as single-file IP-protected artifact in 90+ languages — entirely unique capability"],
             ["Evolution Engine (SEBA Pipeline)", "Self-Improvement", "7-gate validated autonomous code improvement — 166 bugs fixed for $0.06 with 100% ENCODE apply rate"],
             ["BRAIN Organ (Persistent Memory)", "Cognitive Memory", "4-tier governed memory with Constant Learning Mode — up to 14,400 AI training calls/day compounding daily"],
             ["DREAM Engine", "Background Learning", "Autonomous idle-time consolidation, memory synthesis, and cross-agent knowledge sharing — no other platform does this"],
@@ -401,7 +401,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           "Evolution history — 166+ validated patches create a learned corpus that makes each subsequent cycle smarter",
           "Merkle provenance — every autonomous change is hash-chained; tamper-evident audit trail proves system integrity",
           "NPM ecosystem — 11 published packages embedding cognitive capabilities into the developer ecosystem; network effects compound",
-          "Black-box exports — hex-encoded constants in all 25 languages make decompilation meaningless",
+          "Black-box exports — hex-encoded constants in all 90+ languages make decompilation meaningless",
           "First-mover in category — Governed Cognitive Infrastructure has no direct competitor; CMPSBL defines the space",
         ],
       },
@@ -546,7 +546,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "Ascension Premium",
-        content: "Ascension exports represent a unique value multiplier. Each exported artifact is a standalone, zero-dependency software product in any of 25 languages — with built-in IP protection via hex-encoding. This transforms CMPSBL from a platform into a software product factory, where every discovered capability becomes a sellable product with near-zero marginal cost.",
+        content: "Ascension exports represent a unique value multiplier. Each exported artifact is a standalone, zero-dependency software product in any of 90+ languages — with built-in IP protection via hex-encoding. This transforms CMPSBL from a platform into a software product factory, where every discovered capability becomes a sellable product with near-zero marginal cost.",
       },
       {
         heading: "Data Compounding Moat",
@@ -608,7 +608,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           rows: [
             ["Phase 1 — Developer Adoption", "Months 1–4", "NPM package ecosystem (@cmpsbl), developer tutorials, open-source community hooks", "$0 (awareness)"],
             ["Phase 2 — Engine Marketplace", "Months 3–6", "Launch premium Engines (DREAM, ORACLE, FORGE), self-serve purchasing, developer evangelism", "$5K–$15K MRR"],
-            ["Phase 3 — Ascension-as-a-Service", "Months 4–8", "Position Ascension as a never-before-seen capability — upload code, export production-ready IP-protected artifacts in 25 languages", "$15K–$40K MRR"],
+            ["Phase 3 — Ascension-as-a-Service", "Months 4–8", "Position Ascension as a never-before-seen capability — upload code, export production-ready IP-protected artifacts in 90+ languages", "$15K–$40K MRR"],
             ["Phase 4 — Enterprise Pilots", "Months 6–12", "Self-improving codebases (Evolution Engine), governed AI agent deployment, compliance-ready infrastructure", "$40K–$100K MRR"],
             ["Phase 5 — Platform Expansion", "Months 10–18", "Federation, advanced agents, silicon export preview, partner ecosystem", "$100K+ MRR"],
           ],
@@ -641,7 +641,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "Ascension — A Never-Before-Seen Service",
-        content: "Ascension is already built and functional. No other platform offers this: upload any code → classify its archetype → filter and score capabilities → export as a single-file, zero-dependency, IP-protected distribution in 25 languages. With polish and marketing, Ascension becomes the flagship differentiator — a product factory where every export is a revenue event with near-zero marginal cost.",
+        content: "Ascension is already built and functional. No other platform offers this: upload any code → classify its archetype → filter and score capabilities → export as a single-file, zero-dependency, IP-protected distribution in 90+ languages. With polish and marketing, Ascension becomes the flagship differentiator — a product factory where every export is a revenue event with near-zero marginal cost.",
         callout: { label: "Key Differentiator", text: "Ascension transforms CMPSBL from a platform into a software product factory. Every developer becomes 10x. Every script becomes a portable, sellable product. No competitor offers anything comparable.", variant: "primary" },
       },
       {
@@ -847,7 +847,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "The Mini Runtime",
-        content: "Every export includes a sealed CMPSBL Mini-Runtime™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 25 supported languages including 7 hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
+        content: "Every export includes a sealed CMPSBL Mini-Runtime™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 90+ supported languages including hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
       },
       {
         heading: "Export Languages",
@@ -860,7 +860,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         },
         callout: {
           label: "HDL Input",
-          text: "Ascension accepts hardware description code as input in addition to software. HDL files can be uploaded, classified by computational signature, and ascended through the substrate exactly as software code. The export can target any of the 25 supported languages, enabling cross-language conversion from hardware to software or software to hardware. Ascension is the only engine that treats silicon and software as interchangeable substrates.",
+          text: "Ascension accepts hardware description code as input in addition to software. HDL files can be uploaded, classified by computational signature, and ascended through the substrate exactly as software code. The export can target any of the 90+ supported languages, enabling cross-language conversion from hardware to software or software to hardware. Ascension is the only engine that treats silicon and software as interchangeable substrates.",
           variant: "success",
         },
       },

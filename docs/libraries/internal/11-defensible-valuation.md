@@ -114,7 +114,7 @@ The substrate is valued across six pillars:
 
 1. **Preserves original code** — the developer's software runs first, always
 2. **Dual-layer architecture** — native execution + cognitive overlay
-3. **Universal language support** — 18 software + 7 HDL = 25 targets
+3. **Universal language support** — software, HDL, GPU, blockchain, quantum & robotics = 25 targets
 4. **Mutual dependency (The Moat)** — exported capabilities depend on both the developer's code AND the substrate's primitives
 5. **Portable output** — exports survive platform loss with Mini Runtime
 
@@ -140,7 +140,7 @@ The substrate is valued across six pillars:
 
 | Property | CMPSBL | Unity |
 |----------|--------|-------|
-| Export targets | 25 languages (18 software + 7 HDL) | 25+ platforms |
+| Export targets | 90+ languages (software, HDL, GPU, blockchain, quantum & robotics) | 25+ platforms |
 | Runtime included | Mini Runtime™ bundled | Unity Runtime required |
 | Documentation | Auto-generated per export | Manual |
 | Portability | Survives platform loss | Platform-dependent |
@@ -267,7 +267,7 @@ Applied to raw technology valuations below. This discount accounts for key-perso
 |-----------|-----------|--------------|
 | Mid-range components | $72M | $51M |
 | Ascension (software evolution) | $50–150M | $35–105M |
-| Universal Export (25 languages) | $15–30M | $11–21M |
+| Universal Export (90+ languages) | $15–30M | $11–21M |
 | Category creation premium | $30–80M | $21–56M |
 | Compounding data moat (CLM + CDM) | $20–50M | $14–35M |
 | **Ceiling Total** | **$187–382M** | **$132–268M** |
