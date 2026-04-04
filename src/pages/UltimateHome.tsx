@@ -197,10 +197,10 @@ export default function UltimateHome() {
         <section className="px-4 sm:px-6 pb-20">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
-              Primitive Pool Sources
+              {poolSize} Candidates From Every Source
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              {poolSize} candidates drawn from every vertical substrate in the ecosystem
+              Spine primitives, vertical expansions, and universal gap-fillers — all compete equally for 40 slots
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {VERTICAL_SOURCES.map((v, i) => (
