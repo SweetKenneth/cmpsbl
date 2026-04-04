@@ -51,7 +51,7 @@ const ENGINE_PRICE_IDS: Record<string, { price_id: string; mode: "payment" | "su
   architect:    { price_id: PRICE_ARCH, mode: "subscription" },
 
   // S-TIER Wave 1 ($49)
-  sovereign:    { price_id: PRICE_STIER, mode: "payment" },
+  dominion:     { price_id: PRICE_STIER, mode: "payment" },
   colossus:     { price_id: PRICE_STIER, mode: "payment" },
   harbinger:    { price_id: PRICE_STIER, mode: "payment" },
   prometheus:   { price_id: PRICE_STIER, mode: "payment" },

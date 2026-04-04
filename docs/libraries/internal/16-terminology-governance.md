@@ -141,6 +141,7 @@ When a substrate primitive is surfaced as a consumer product, it is branded with
 | **Mini-PHANTOM** | PHANTOM (Engine #30) | Self-Healing Service Mesh | $39 |
 | **Mini-FORGE** | FORGE (Engine #27) | Code Generation & Refactoring | $19 |
 | **Mini-ORACLE** | ORACLE (Agent #39) | Real-Time Analytics & Prediction | $19 |
+| **DOMINION** | SOVEREIGN (Organ #8) | Autonomous Governance Kernel | $49 |
 
 ### Rules for Substrate-Class Products
 

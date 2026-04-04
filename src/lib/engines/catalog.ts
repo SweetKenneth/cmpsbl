@@ -78,7 +78,7 @@ const ENGINE_VERSIONS: Record<string, string> = {
   // APEX — Triage
   genesis: '1.0.0',
   // S-TIER Wave 1
-  sovereign: '1.0.0',
+  dominion: '1.0.0',
   colossus: '1.0.0',
   harbinger: '1.0.0',
   prometheus: '1.0.0',
@@ -312,11 +312,12 @@ export const ENGINES: Engine[] = [
   // ═══════════════════════════════════════════════════════════════════════════
 
   {
-    slug: "sovereign", codename: "SOVEREIGN", tagline: "Autonomous Governance Kernel",
+    slug: "dominion", codename: "DOMINION", tagline: "Autonomous Governance Kernel",
     priceStandalone: 4900, priceBundled: 2900, priceDisplay: "$49", bundleDisplay: "$29",
     priceId: "price_1T9hKAQ7FtTiAL4alDEWJ33m", icon: Shield, color: "350 85% 50%", tier: "APEX",
     edition: "S-TIER Edition — Governance Supremacy",
-    briefing: "SOVEREIGN fuses the Intelligence Governance Kernel, Policy-Aware Intelligence Gate, Audit-Grade Decision Ledger, Regulatory Mode Switcher, Capability Impact Forecaster, and Entitlement Resolution into an autonomous governance supercomplex. Every decision is policy-gated, audit-logged, and regulation-aware — zero human oversight required.",
+    isSubstrateClass: true, sourcePrimitive: 'SOVEREIGN',
+    briefing: "DOMINION fuses the Intelligence Governance Kernel, Policy-Aware Intelligence Gate, Audit-Grade Decision Ledger, Regulatory Mode Switcher, Capability Impact Forecaster, and Entitlement Resolution into an autonomous governance supercomplex. Every decision is policy-gated, audit-logged, and regulation-aware — zero human oversight required.",
     capabilities: ["Intelligence Governance Kernel — meta-governance over all cognitive subsystems", "Policy-Aware Intelligence Gate — blocks non-compliant reasoning paths", "Audit-Grade Decision Ledger — immutable hash-chain decision trail", "Regulatory Mode Switcher — auto-adapts to GDPR/HIPAA/SOC2 contexts", "Capability Impact Forecaster — predicts downstream effects before execution", "Entitlement Resolution — resolves cascading access rights in real time"],
     threatLevel: "SUPREME — GOVERNANCE KERNEL", clearance: "LEVEL 10 — S-TIER",
   },
@@ -630,8 +631,8 @@ export const ENGINES: Engine[] = [
     priceStandalone: 7900, priceBundled: 4700, priceDisplay: "$79", bundleDisplay: "$47",
     priceId: "price_1T9pgKQ7FtTiAL4aJfC6B3ev", icon: Gem, color: "180 70% 45%", tier: "META",
     edition: "META-ENGINE — Governance Singularity",
-    briefing: "ETERNUS chains SOVEREIGN → SERAPH → MONOLITH → GOLEM into an autonomous governance superpipeline. SOVEREIGN provides policy-gated governance, SERAPH ensures every action meets ethical standards, MONOLITH maintains immutable state for full auditability, and GOLEM automates workflow execution — creating an autonomous system that governs itself ethically, transparently, and indefinitely.",
-    capabilities: ["SOVEREIGN stage — policy-gated governance with regulatory compliance", "SERAPH stage — ethical constraint reasoning and value alignment", "MONOLITH stage — immutable state management for full audit trail", "GOLEM stage — autonomous workflow execution and goal tracking", "Compound synergy: 4 engines × 5-6 primitives = 22 primitives orchestrated", "Self-governing: operates indefinitely without human oversight while maintaining ethical alignment"],
+    briefing: "ETERNUS chains DOMINION → SERAPH → MONOLITH → GOLEM into an autonomous governance superpipeline. DOMINION provides policy-gated governance, SERAPH ensures every action meets ethical standards, MONOLITH maintains immutable state for full auditability, and GOLEM automates workflow execution — creating an autonomous system that governs itself ethically, transparently, and indefinitely.",
+    capabilities: ["DOMINION stage — policy-gated governance with regulatory compliance", "SERAPH stage — ethical constraint reasoning and value alignment", "MONOLITH stage — immutable state management for full audit trail", "GOLEM stage — autonomous workflow execution and goal tracking", "Compound synergy: 4 engines × 5-6 primitives = 22 primitives orchestrated", "Self-governing: operates indefinitely without human oversight while maintaining ethical alignment"],
     threatLevel: "TRANSCENDENT — META-GOVERNANCE", clearance: "LEVEL 11 — META-TIER",
   },
   // ─── FEATURED ──────────────────────────────────────────
