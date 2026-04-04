@@ -91,7 +91,7 @@ export default function UltimateHome() {
   return (
     <>
       <Helmet>
-        <title>CMPSBL ULTIMATE™ — {poolSize} Candidates · 40 Open Slots · Zero Restrictions</title>
+        <title>{`CMPSBL ULTIMATE™ — ${poolSize} Candidates · 40 Open Slots · Zero Restrictions`}</title>
         <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for all 40 slots. No spine lock. No category restrictions. The scanner selects the 40 that maximize compounding for your codebase.`} />
       </Helmet>
 
