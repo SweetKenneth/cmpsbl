@@ -1,7 +1,7 @@
 {
   "name": "@cmpsbl/runtime",
-  "version": "1.3.0",
-  "description": "CMPSBL® Mini-Runtime™ Engine — CJPI scoring, auto-tiering, pipeline orchestration, and manifest parsing. Zero dependencies.",
+  "version": "2.0.0",
+  "description": "CMPSBL® Mini-Runtime™ Engine — CJPI scoring, auto-tiering, pipeline orchestration, manifest parsing, and full 131-primitive catalog. Zero dependencies.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": ["dist"],
