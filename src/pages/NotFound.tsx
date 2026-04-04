@@ -19,7 +19,7 @@ const SUGGESTIONS = [
   { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent" },
   { name: "Blog", href: "/blog", description: "Research & updates" },
   { name: "Developer Guide", href: "/developers/guide", description: "Get oriented fast" },
-  { name: "Academy", href: "/academy", description: "Interactive tutorials" },
+  { name: "Showroom", href: "/showroom", description: "Browse pre-built solutions" },
 ];
 
 const NotFound = () => {
