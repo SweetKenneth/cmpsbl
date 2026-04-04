@@ -221,14 +221,13 @@ async function handleWebhook(req: Request): Promise<Response> {
     plainText: true,
   })
 
-  // Send via Resend connector gateway through PromptFluid.com
+  // Send via Resend API directly through PromptFluid.com
   try {
-    const response = await fetch(`${GATEWAY_URL}/emails`, {
+    const response = await fetch(`${RESEND_API_URL}/emails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'X-Connection-Api-Key': resendApiKey,
+        'Authorization': `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
         from: FROM_ADDRESS,
