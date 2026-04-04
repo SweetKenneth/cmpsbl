@@ -27,7 +27,7 @@ const ASTAR_VULNERABILITIES = [
 
 const PRIMITIVES_APPLIED = [
   { name: 'TENSOR', type: 'Engine', action: 'Sensor fusion and multi-modal signal processing for situational awareness' },
-  { name: 'GUARDIAN', type: 'Agent', action: 'Safety monitoring and collision avoidance with emergency stop protocols' },
+  { name: 'MARSHAL', type: 'Agent', action: 'Safety monitoring and collision avoidance with emergency stop protocols' },
   { name: 'KINETIC', type: 'Engine', action: 'Motion planning and trajectory optimization for multi-axis coordination' },
   { name: 'VECTOR', type: 'Engine', action: 'Navigation, pathfinding, and localization with SLAM integration' },
   { name: 'SWARM', type: 'Agent', action: 'Multi-robot coordination and fleet management with consensus protocols' },
@@ -36,14 +36,14 @@ const PRIMITIVES_APPLIED = [
   { name: 'WELDER', type: 'Agent', action: 'Assembly operations and joining processes with seam tracking' },
   { name: 'CALIBER', type: 'Engine', action: 'Precision calibration and tolerance enforcement for repeatable operations' },
   { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for complex systems' },
-  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered print statements' },
-  { name: 'HARVEST', type: 'Organ', action: 'Dead code identification and pruning advisory' },
+  { name: 'ECHO', type: 'Engine', action: 'Structured logging replacing scattered print statements' },
+  { name: 'HARVEST', type: 'Engine', action: 'Dead code identification and pruning advisory' },
   { name: 'SHADOW', type: 'Layer', action: 'Shadow testing and canary deployment for safe rollouts' },
-  { name: 'SIMULATE', type: 'Layer', action: 'Simulation-based safe testing of architectural changes' },
-  { name: 'CONDUCTOR', type: 'Agent', action: 'Task sequencing and workflow automation for multi-step operations' },
+  { name: 'VISION', type: 'Layer', action: 'Telemetry analysis and anomaly detection for architectural changes' },
+  { name: 'DISPATCH', type: 'Agent', action: 'Task sequencing and workflow automation for multi-step operations' },
   { name: 'SERVO', type: 'Engine', action: 'Motor control and actuator orchestration with PID tuning' },
   { name: 'ENVIRON', type: 'Agent', action: 'Environmental awareness and scene understanding for safe operation' },
-  { name: 'SANDBOX', type: 'Layer', action: 'Sandboxed isolation for untrusted execution paths' },
+  { name: 'SANDBOX', type: 'Engine', action: 'Sandboxed isolation for untrusted execution paths' },
   { name: 'TREATY', type: 'Layer', action: 'API contract enforcement and schema validation' },
   { name: 'DEFENSE', type: 'Layer', action: 'Defense-in-depth hardening for network-facing code' },
 ];
