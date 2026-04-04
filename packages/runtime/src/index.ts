@@ -317,7 +317,13 @@ export interface MiniRuntime {
   version: string;
 }
 
-export function createRuntime(): MiniRuntime {
+export function createRuntime(options?: { autoRegister?: boolean }): MiniRuntime {
+  const shouldRegister = options?.autoRegister !== false;
+
+  if (shouldRegister) {
+    registerAllPrimitives(registerPrimitive);
+  }
+
   return {
     computeCJPI,
     tierFromCJPI,
@@ -329,7 +335,7 @@ export function createRuntime(): MiniRuntime {
     executePrimitive,
     executeChain,
     createStateMachine: <S extends string, E extends string>(config: StateMachineConfig<S, E>) => new StateMachine(config),
-    version: '1.0.0',
+    version: '2.0.0',
   };
 }
 
