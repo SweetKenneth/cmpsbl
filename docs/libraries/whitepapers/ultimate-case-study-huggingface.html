@@ -480,21 +480,21 @@
   <div class="prim-card" style="border-left: 3px solid var(--critical);">
     <div class="prim-card-header">
       <span class="sev sev-critical">Critical</span>
-      <strong>Dynamic Code Execution Vulnerability</strong>
+      <strong>Unsafe Deserialization via <code>torch.load()</code></strong>
       <span class="sev sev-hardened">Hardened</span>
     </div>
-    <p style="font-size:0.9rem;margin:0 0 0.5rem;"><code>eval()</code>, <code>Function()</code>, or <code>exec()</code> detected — injection vector for arbitrary code execution.</p>
-    <p style="font-size:0.85rem;color:var(--muted);margin:0;"><strong>Primitive Response:</strong> BASTION (Cyber) + IRONCLAD (Cyber) deployed perimeter hardening around dynamic execution paths.</p>
+    <p style="font-size:0.9rem;margin:0 0 0.5rem;">The file calls <code>torch.load()</code> on arbitrary checkpoint files fetched from the internet. Malicious pickle-based checkpoints can execute arbitrary code during deserialization. HuggingFace added <code>check_torch_load_is_safe()</code> as a partial mitigation but the vulnerability remains a known, documented risk.</p>
+    <p style="font-size:0.85rem;color:var(--muted);margin:0;"><strong>Primitive Response:</strong> BASTION (Cyber) + IRONCLAD (Cyber) deployed perimeter hardening around the deserialization path.</p>
   </div>
 
   <div class="prim-card" style="border-left: 3px solid var(--critical);">
     <div class="prim-card-header">
       <span class="sev sev-critical">Critical</span>
-      <strong>Unhandled Async Rejections</strong>
+      <strong>Remote Code Execution via <code>trust_remote_code=True</code></strong>
       <span class="sev sev-hardened">Hardened</span>
     </div>
-    <p style="font-size:0.9rem;margin:0 0 0.5rem;">Asynchronous operations without rejection handlers create silent failure paths.</p>
-    <p style="font-size:0.85rem;color:var(--muted);margin:0;"><strong>Primitive Response:</strong> PHOENIX (Ultimate) deployed resurrection patterns with exponential backoff + SENTINEL alerting.</p>
+    <p style="font-size:0.9rem;margin:0 0 0.5rem;">The file explicitly accepts and executes arbitrary Python code from HuggingFace Hub when <code>trust_remote_code=True</code> is set. This is a documented intentional feature with real attack surface.</p>
+    <p style="font-size:0.85rem;color:var(--muted);margin:0;"><strong>Primitive Response:</strong> PHOENIX (Ultimate) + SENTINEL (Ultimate) deployed resurrection patterns and input validation gates around the remote code loading path.</p>
   </div>
 
   <h3>Warning &amp; Informational</h3>
