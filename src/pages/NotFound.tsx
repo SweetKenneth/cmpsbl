@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SUGGESTIONS = [
@@ -64,6 +65,7 @@ const NotFound = () => {
     : displayedSuggestions;
 
   return (
+    <>
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 relative overflow-hidden">
       <PublicNav />
       <SEO title="Signal Lost — CMPSBL" description="This path dissolved before crystallization." noindex />
@@ -220,6 +222,8 @@ const NotFound = () => {
         )}
       </AnimatePresence>
     </div>
+    <EnhancedFooter />
+    </>
   );
 };
 

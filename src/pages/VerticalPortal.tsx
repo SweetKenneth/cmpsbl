@@ -13,6 +13,7 @@ import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gam
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
 import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory/vertical-factory-engine";
@@ -214,6 +215,7 @@ export default function VerticalPortal() {
           })()}
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 }

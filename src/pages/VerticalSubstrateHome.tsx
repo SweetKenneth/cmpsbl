@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { resolveSubdomainVertical, type VerticalSubstrateConfig, type VerticalPrimitive } from "@/lib/factory/verticals";
 
 const ENGINE_ICONS: Record<string, React.ElementType> = {
@@ -90,6 +92,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <meta name="description" content={tagline} />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">
@@ -167,6 +170,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
           </div>
         </section>
       </div>
+      <EnhancedFooter />
     </>
   );
 }
