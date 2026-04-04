@@ -190,11 +190,22 @@ export default function MarketplaceHome() {
               <span className="text-primary">From Every Substrate</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4">
               Enterprise-grade engines, agents, and memory chains curated by MERCHANT™ 
               from across the entire CMPSBL ecosystem.{' '}
               <span className="text-foreground font-semibold">$10–$50. Plug and play.</span>
             </p>
+
+            {freeItem && (
+              <p className="text-sm text-[hsl(var(--neon-cyan))] mb-8 flex items-center justify-center gap-2">
+                <Gift className="w-4 h-4" />
+                <span>
+                  <strong>Today's Free Drop:</strong> {freeItem.title} — no sign-in, instant download. Rotates every 8 hours.
+                </span>
+              </p>
+            )}
+
+            {!freeItem && <div className="mb-8" />}
 
             {/* Search Bar */}
             <div className="relative max-w-2xl mx-auto mb-8">
