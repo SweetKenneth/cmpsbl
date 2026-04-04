@@ -310,7 +310,7 @@ export default function TryIt() {
           {
             question: "What languages does CMPSBL support?",
             answer:
-              "CMPSBL supports 25 languages including JavaScript, TypeScript, Python, Rust, Go, Java, and 7 hardware description languages via the Ascension Engine.",
+              "CMPSBL supports 90+ languages including JavaScript, TypeScript, Python, Rust, Go, Java, and 7 hardware description languages via the Ascension Engine.",
           },
           {
             question: "Does CMPSBL require external AI API calls?",

@@ -440,7 +440,7 @@ export default function RestorationShop() {
                     <div>
                       <p className="text-sm font-medium text-foreground">Click to upload a file</p>
                       <p className="text-[10px] text-muted-foreground mt-1">
-                        Any of 25 supported languages · Max 1MB
+                        Any of 90+ supported languages · Max 1MB
                       </p>
                     </div>
                   )}

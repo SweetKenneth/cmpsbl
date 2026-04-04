@@ -949,14 +949,14 @@ export default function STierVault() {
         exportTargets: {
           softwareLanguages: 18,
           hardwareLanguages: 7,
-          totalCombinations: '25 languages × 8 adapters = 200 outputs',
+          totalCombinations: '90+ languages × 8 adapters = 200 outputs',
         },
         categories: [...new Set(promoted.map(d => d.category))].sort(),
       },
       instructions: {
         howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
         howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries. The Mini-Runtime™ Engine (included in ZIP exports) provides CJPI scoring and pipeline orchestration.',
-        howToExport: 'Each discovery can be exported to any of 25 languages (18 software + 7 hardware/HDL) using the CMPSBL® Substrate.',
+        howToExport: 'Each discovery can be exported to any of 90+ languages (18 software + 7 hardware/HDL) using the CMPSBL® Substrate.',
       },
     };
 

@@ -12,7 +12,7 @@ The Ascension Engine lets you upload working source code and have the substrate'
 
 - **Creator tier** or above
 - API key with `ascension` scope
-- Source files in any of 25 supported languages
+- Source files in any of 90+ supported languages
 
 ---
 

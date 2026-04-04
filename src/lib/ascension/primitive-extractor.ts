@@ -4,7 +4,7 @@
  * Converts raw uploaded software into structured primitives.
  * Integrates quality gate, language post-processing, and deduplication.
  *
- * Supports 25 languages (18 software + 7 HDL).
+ * Supports 90+ languages (software, HDL, GPU, blockchain, quantum & robotics).
  * Does NOT aim for perfect parsing — focuses on consistent, repeatable
  * extraction that improves over time via BRAIN learning.
  *
@@ -75,7 +75,7 @@ const CONTROL_FLOW_KEYWORDS = new Set([
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §2 — EXTRACTION PATTERNS (25 languages)
+// §2 — EXTRACTION PATTERNS (90+ languages)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface ExtractionPattern {

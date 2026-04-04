@@ -401,7 +401,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           "Evolution history — 166+ validated patches create a learned corpus that makes each subsequent cycle smarter",
           "Merkle provenance — every autonomous change is hash-chained; tamper-evident audit trail proves system integrity",
           "NPM ecosystem — 11 published packages embedding cognitive capabilities into the developer ecosystem; network effects compound",
-          "Black-box exports — hex-encoded constants in all 25 languages make decompilation meaningless",
+          "Black-box exports — hex-encoded constants in all 90+ languages make decompilation meaningless",
           "First-mover in category — Governed Cognitive Infrastructure has no direct competitor; CMPSBL defines the space",
         ],
       },
@@ -546,7 +546,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "Ascension Premium",
-        content: "Ascension exports represent a unique value multiplier. Each exported artifact is a standalone, zero-dependency software product in any of 25 languages — with built-in IP protection via hex-encoding. This transforms CMPSBL from a platform into a software product factory, where every discovered capability becomes a sellable product with near-zero marginal cost.",
+        content: "Ascension exports represent a unique value multiplier. Each exported artifact is a standalone, zero-dependency software product in any of 90+ languages — with built-in IP protection via hex-encoding. This transforms CMPSBL from a platform into a software product factory, where every discovered capability becomes a sellable product with near-zero marginal cost.",
       },
       {
         heading: "Data Compounding Moat",
@@ -608,7 +608,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           rows: [
             ["Phase 1 — Developer Adoption", "Months 1–4", "NPM package ecosystem (@cmpsbl), developer tutorials, open-source community hooks", "$0 (awareness)"],
             ["Phase 2 — Engine Marketplace", "Months 3–6", "Launch premium Engines (DREAM, ORACLE, FORGE), self-serve purchasing, developer evangelism", "$5K–$15K MRR"],
-            ["Phase 3 — Ascension-as-a-Service", "Months 4–8", "Position Ascension as a never-before-seen capability — upload code, export production-ready IP-protected artifacts in 25 languages", "$15K–$40K MRR"],
+            ["Phase 3 — Ascension-as-a-Service", "Months 4–8", "Position Ascension as a never-before-seen capability — upload code, export production-ready IP-protected artifacts in 90+ languages", "$15K–$40K MRR"],
             ["Phase 4 — Enterprise Pilots", "Months 6–12", "Self-improving codebases (Evolution Engine), governed AI agent deployment, compliance-ready infrastructure", "$40K–$100K MRR"],
             ["Phase 5 — Platform Expansion", "Months 10–18", "Federation, advanced agents, silicon export preview, partner ecosystem", "$100K+ MRR"],
           ],
@@ -641,7 +641,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "Ascension — A Never-Before-Seen Service",
-        content: "Ascension is already built and functional. No other platform offers this: upload any code → classify its archetype → filter and score capabilities → export as a single-file, zero-dependency, IP-protected distribution in 25 languages. With polish and marketing, Ascension becomes the flagship differentiator — a product factory where every export is a revenue event with near-zero marginal cost.",
+        content: "Ascension is already built and functional. No other platform offers this: upload any code → classify its archetype → filter and score capabilities → export as a single-file, zero-dependency, IP-protected distribution in 90+ languages. With polish and marketing, Ascension becomes the flagship differentiator — a product factory where every export is a revenue event with near-zero marginal cost.",
         callout: { label: "Key Differentiator", text: "Ascension transforms CMPSBL from a platform into a software product factory. Every developer becomes 10x. Every script becomes a portable, sellable product. No competitor offers anything comparable.", variant: "primary" },
       },
       {
@@ -847,7 +847,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "The Mini Runtime",
-        content: "Every export includes a sealed CMPSBL Mini-Runtime™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 25 supported languages including 7 hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
+        content: "Every export includes a sealed CMPSBL Mini-Runtime™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 90+ supported languages including hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
       },
       {
         heading: "Export Languages",
@@ -860,7 +860,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         },
         callout: {
           label: "HDL Input",
-          text: "Ascension accepts hardware description code as input in addition to software. HDL files can be uploaded, classified by computational signature, and ascended through the substrate exactly as software code. The export can target any of the 25 supported languages, enabling cross-language conversion from hardware to software or software to hardware. Ascension is the only engine that treats silicon and software as interchangeable substrates.",
+          text: "Ascension accepts hardware description code as input in addition to software. HDL files can be uploaded, classified by computational signature, and ascended through the substrate exactly as software code. The export can target any of the 90+ supported languages, enabling cross-language conversion from hardware to software or software to hardware. Ascension is the only engine that treats silicon and software as interchangeable substrates.",
           variant: "success",
         },
       },
