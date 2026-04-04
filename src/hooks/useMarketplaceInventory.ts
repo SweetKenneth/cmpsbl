@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { MarketplaceItem, SourceSubstrate, SourceVault, ListingCategory } from '@/agents/merchant/merchant-engine';
 import { getMarketplaceTier } from '@/agents/merchant/merchant-engine';
-import { MERCHANT_INVENTORY } from '@/agents/merchant/merchant-inventory';
+import { MERCHANT_INVENTORY, applyFreeItemRotation } from '@/agents/merchant/merchant-inventory';
 
 interface DBInventoryRow {
   id: string;
@@ -83,13 +83,16 @@ export function useMarketplaceInventory() {
 
       if (error || !data || data.length === 0) {
         /** Fallback to static seed if DB read fails or is empty */
-        return MERCHANT_INVENTORY;
+        return applyFreeItemRotation(MERCHANT_INVENTORY);
       }
 
       const dbItems = (data as unknown as DBInventoryRow[]).map(rowToItem);
 
       /** Use whichever source has more items — DB may lag behind seed after expansion */
-      return dbItems.length >= MERCHANT_INVENTORY.length ? dbItems : MERCHANT_INVENTORY;
+      const base = dbItems.length >= MERCHANT_INVENTORY.length ? dbItems : MERCHANT_INVENTORY;
+
+      /** Apply the rotating free item — always exactly one $0 item */
+      return applyFreeItemRotation(base);
     },
     staleTime: 5 * 60_000, // 5 min — MERCHANT scans every 8h so no need for rapid refresh
     refetchOnWindowFocus: false,

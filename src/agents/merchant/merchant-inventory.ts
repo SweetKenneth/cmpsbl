@@ -540,6 +540,28 @@ function createItem(input: {
   };
 }
 
+/**
+ * Deterministically select the current "free item" based on the 8-hour MERCHANT scan window.
+ * Rotates every 8 hours so there's always exactly one free item in the store.
+ */
+export function getFreeItemIndex(inventory: MarketplaceItem[]): number {
+  if (inventory.length === 0) return -1;
+  const EIGHT_HOURS_MS = 8 * 60 * 60 * 1000;
+  const windowIndex = Math.floor(Date.now() / EIGHT_HOURS_MS);
+  return windowIndex % inventory.length;
+}
+
+/** Apply the free item override — sets one item to $0 */
+export function applyFreeItemRotation(inventory: MarketplaceItem[]): MarketplaceItem[] {
+  const idx = getFreeItemIndex(inventory);
+  if (idx < 0) return inventory;
+  return inventory.map((item, i) =>
+    i === idx
+      ? { ...item, priceCents: 0, isFeatured: true, tags: [...item.tags.filter(t => t !== 'free-drop'), 'free-drop'] }
+      : item
+  );
+}
+
 /** Get inventory summary statistics */
 export function getInventoryStats(): {
   total: number;

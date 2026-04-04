@@ -17,7 +17,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { cn } from '@/lib/utils';
 import {
   Search, ShoppingCart, Star, TrendingUp, X, ChevronLeft, ChevronRight,
-  Shield, Zap, Eye, Globe, Package,
+  Shield, Zap, Eye, Globe, Package, Gift, Download,
   Store, Award, Tag, Cpu, Lock, Clock,
 } from 'lucide-react';
 import {
@@ -54,15 +54,25 @@ export default function MarketplaceHome() {
 
   const { data: inventory = [], isLoading } = useMarketplaceInventory();
 
+  /** The current free item (rotates every 8h) */
+  const freeItem = useMemo(() => inventory.find(i => i.priceCents === 0) ?? null, [inventory]);
+
   const stats = useMemo(() => {
     if (inventory.length === 0) return { total: 0, featured: 0, avgPrice: '$0', substrates: 0 };
     const featured = inventory.filter(i => i.isFeatured).length;
-    const avgCents = Math.round(inventory.reduce((s, i) => s + i.priceCents, 0) / inventory.length);
+    const paidItems = inventory.filter(i => i.priceCents > 0);
+    const avgCents = paidItems.length > 0 ? Math.round(paidItems.reduce((s, i) => s + i.priceCents, 0) / paidItems.length) : 0;
     const substrates = new Set(inventory.map(i => i.sourceSubstrate)).size;
     return { total: inventory.length, featured, avgPrice: `$${(avgCents / 100).toFixed(0)}`, substrates };
   }, [inventory]);
 
   const handleBuy = useCallback(async (item: MarketplaceItem) => {
+    /** Free items — immediate download, no auth required */
+    if (item.priceCents === 0) {
+      toast.success('Free download started!', { description: `${item.title} is yours — no sign-in required.` });
+      return;
+    }
+
     setBuyingId(item.id);
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -158,12 +168,18 @@ export default function MarketplaceHome() {
             className="text-center max-w-4xl mx-auto"
           >
             {/* New Drops badge */}
-            <Badge variant="outline" className="gap-2 px-4 py-2 mb-4 border-[hsl(var(--neon-green))]/40 bg-[hsl(var(--neon-green))]/10 text-[hsl(var(--neon-green))]">
-              <Clock className="w-3.5 h-3.5" />
-              <span className="text-xs font-bold">New Drops Every 8 Hours</span>
-            </Badge>
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+              <Badge variant="outline" className="gap-2 px-4 py-2 border-[hsl(var(--neon-green))]/40 bg-[hsl(var(--neon-green))]/10 text-[hsl(var(--neon-green))]">
+                <Clock className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">New Drops Every 8 Hours</span>
+              </Badge>
+              <Badge variant="outline" className="gap-2 px-4 py-2 border-[hsl(var(--neon-cyan))]/40 bg-[hsl(var(--neon-cyan))]/10 text-[hsl(var(--neon-cyan))]">
+                <Gift className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold">1 Free Item — Always Available</span>
+              </Badge>
+            </div>
 
-            <Badge variant="outline" className="gap-2 px-4 py-2 mb-6 ml-2 border-primary/40 bg-primary/10">
+            <Badge variant="outline" className="gap-2 px-4 py-2 mb-6 border-primary/40 bg-primary/10">
               <Store className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">CMPSBL Marketplace</span>
             </Badge>
@@ -174,11 +190,22 @@ export default function MarketplaceHome() {
               <span className="text-primary">From Every Substrate</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4">
               Enterprise-grade engines, agents, and memory chains curated by MERCHANT™ 
               from across the entire CMPSBL ecosystem.{' '}
               <span className="text-foreground font-semibold">$10–$50. Plug and play.</span>
             </p>
+
+            {freeItem && (
+              <p className="text-sm text-[hsl(var(--neon-cyan))] mb-8 flex items-center justify-center gap-2">
+                <Gift className="w-4 h-4" />
+                <span>
+                  <strong>Today's Free Drop:</strong> {freeItem.title} — no sign-in, instant download. Rotates every 8 hours.
+                </span>
+              </p>
+            )}
+
+            {!freeItem && <div className="mb-8" />}
 
             {/* Search Bar */}
             <div className="relative max-w-2xl mx-auto mb-8">
@@ -411,7 +438,9 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
       <div className={cn(
         "h-full rounded-xl border overflow-hidden bg-card transition-all duration-200 hover:shadow-xl flex flex-col",
-        TIER_BORDER[item.tier] || 'border-border hover:border-primary/30',
+        item.priceCents === 0
+          ? 'border-[hsl(var(--neon-green))]/50 hover:border-[hsl(var(--neon-green))] shadow-[0_0_20px_-5px_hsl(var(--neon-green)/0.3)]'
+          : TIER_BORDER[item.tier] || 'border-border hover:border-primary/30',
       )}>
         {/* Image header */}
         <div className="relative h-40 overflow-hidden bg-muted/30">
@@ -438,7 +467,13 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
             </Badge>
           </div>
           <div className="absolute top-2 right-2 flex gap-1.5">
-            {item.isFeatured && (
+            {item.priceCents === 0 && (
+              <Badge className="text-[10px] h-5 bg-[hsl(var(--neon-cyan))]/90 text-white gap-1 backdrop-blur-md animate-pulse">
+                <Gift className="w-3 h-3" />
+                Free Drop
+              </Badge>
+            )}
+            {item.isFeatured && item.priceCents > 0 && (
               <Badge className="text-[10px] h-5 bg-primary/90 text-primary-foreground gap-1 backdrop-blur-md">
                 <TrendingUp className="w-3 h-3" />
                 Featured
@@ -453,9 +488,18 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
 
           {/* Price floating */}
           <div className="absolute bottom-2 right-2">
-            <div className="bg-card/90 backdrop-blur-md rounded-lg px-3 py-1 border border-border/30">
-              <span className="text-xl font-black text-primary">${(item.priceCents / 100).toFixed(0)}</span>
-            </div>
+            {item.priceCents === 0 ? (
+              <div className="bg-[hsl(var(--neon-green))]/90 backdrop-blur-md rounded-lg px-3 py-1.5 border border-[hsl(var(--neon-green))]/50 animate-pulse">
+                <span className="text-sm font-black text-white flex items-center gap-1">
+                  <Gift className="w-3.5 h-3.5" />
+                  FREE
+                </span>
+              </div>
+            ) : (
+              <div className="bg-card/90 backdrop-blur-md rounded-lg px-3 py-1 border border-border/30">
+                <span className="text-xl font-black text-primary">${(item.priceCents / 100).toFixed(0)}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -527,10 +571,17 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
               <span className="text-[10px] text-muted-foreground">· {item.downloads} sold</span>
               <span className="text-[10px] text-muted-foreground">· v{item.version}</span>
             </div>
-            <Button size="sm" className="gap-1.5 text-xs shadow-md" onClick={onBuy} disabled={isLoading}>
-              <ShoppingCart className="w-3.5 h-3.5" />
-              {isLoading ? '...' : 'Buy'}
-            </Button>
+            {item.priceCents === 0 ? (
+              <Button size="sm" className="gap-1.5 text-xs shadow-md bg-[hsl(var(--neon-green))] hover:bg-[hsl(var(--neon-green))]/80 text-white" onClick={onBuy}>
+                <Download className="w-3.5 h-3.5" />
+                Free Download
+              </Button>
+            ) : (
+              <Button size="sm" className="gap-1.5 text-xs shadow-md" onClick={onBuy} disabled={isLoading}>
+                <ShoppingCart className="w-3.5 h-3.5" />
+                {isLoading ? '...' : 'Buy'}
+              </Button>
+            )}
           </div>
         </div>
       </div>
