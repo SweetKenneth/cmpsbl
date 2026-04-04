@@ -17,7 +17,123 @@ interface LanguageAdapter {
   blockComment: (lines: string[]) => string;
   importStatement: (module: string, symbols: string[]) => string;
   constDecl: (name: string, value: string) => string;
+  /** Transform a JS-syntax guard block into language-native call syntax */
+  transformGuard: (jsGuard: string) => string;
   fileExtension: string;
+}
+
+// ── Guard Syntax Transform Helpers ──
+
+/** Convert camelCase to snake_case */
+function toSnakeCase(s: string): string {
+  return s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
+}
+
+/**
+ * Convert JS object-literal args to keyword-argument style.
+ * `{ blockThreshold: 0.30, reviewThreshold: 0.60 }` → `block_threshold=0.30, review_threshold=0.60`
+ * Works for single-line and multi-line object args.
+ */
+function jsArgsToKwargs(call: string, keyTransform: (k: string) => string, separator: string): string {
+  // Match `({ ... })` blocks (single or multi-line)
+  return call.replace(/\(\{([^}]*)\}\)/g, (_match, inner: string) => {
+    const pairs = inner
+      .split(',')
+      .map(p => p.trim())
+      .filter(Boolean)
+      .map(pair => {
+        const colonIdx = pair.indexOf(':');
+        if (colonIdx === -1) return pair;
+        const key = pair.slice(0, colonIdx).trim().replace(/['"]/g, '');
+        const val = pair.slice(colonIdx + 1).trim();
+        return `${keyTransform(key)}${separator}${val}`;
+      });
+    return `(${pairs.join(', ')})`;
+  });
+}
+
+/** Remove trailing semicolons from each line */
+function stripSemicolons(code: string): string {
+  return code.replace(/;[ \t]*$/gm, '');
+}
+
+/** Convert JS array-of-objects `[{ key: val }, ...]` to native list/slice syntax */
+function jsArrayToNative(call: string, keyTransform: (k: string) => string, separator: string, wrapItem?: (inner: string) => string): string {
+  // Match `([...])` containing object literals
+  return call.replace(/\(\[([^\]]*)\]\)/gs, (_match, inner: string) => {
+    // Split by `},` to get each object
+    const items = inner.split(/\},/).map(s => s.trim().replace(/^\{/, '').replace(/\}$/, '').trim()).filter(Boolean);
+    const converted = items.map(item => {
+      const pairs = item.split(',').map(p => p.trim()).filter(Boolean).map(pair => {
+        const colonIdx = pair.indexOf(':');
+        if (colonIdx === -1) return pair;
+        const key = pair.slice(0, colonIdx).trim().replace(/['"]/g, '');
+        const val = pair.slice(colonIdx + 1).trim();
+        return `${keyTransform(key)}${separator}${val}`;
+      });
+      const joined = pairs.join(', ');
+      return wrapItem ? wrapItem(joined) : `{${joined}}`;
+    });
+    return `([${converted.join(', ')}])`;
+  });
+}
+
+/** Identity — JS/TS guard syntax is already correct */
+const identityGuard = (g: string) => g;
+
+/** Python: kwargs + snake_case + no semicolons */
+function pythonGuard(g: string): string {
+  let out = jsArgsToKwargs(g, toSnakeCase, '=');
+  out = jsArrayToNative(out, toSnakeCase, '=', (inner) => `dict(${inner})`);
+  return stripSemicolons(out);
+}
+
+/** Ruby: kwargs with symbol keys + snake_case + no semicolons */
+function rubyGuard(g: string): string {
+  let out = jsArgsToKwargs(g, (k) => `${toSnakeCase(k)}:`, ' ');
+  out = jsArrayToNative(out, (k) => `${toSnakeCase(k)}:`, ' ');
+  return stripSemicolons(out);
+}
+
+/** Go: struct literals with PascalCase keys */
+function goGuard(g: string): string {
+  const toPascal = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  let out = jsArgsToKwargs(g, toPascal, ': ');
+  out = jsArrayToNative(out, toPascal, ': ');
+  return stripSemicolons(out);
+}
+
+/** Rust: struct literals with snake_case + `::` method separator */
+function rustGuard(g: string): string {
+  // Replace `.method(` with `::method(`
+  let out = g.replace(/\.(\w+)\(/g, '::$1(');
+  out = jsArgsToKwargs(out, toSnakeCase, ': ');
+  out = jsArrayToNative(out, toSnakeCase, ': ');
+  return out; // Rust keeps semicolons
+}
+
+/** Elixir: keyword list syntax with snake_case atoms + no semicolons */
+function elixirGuard(g: string): string {
+  let out = jsArgsToKwargs(g, (k) => `${toSnakeCase(k)}:`, ' ');
+  out = jsArrayToNative(out, (k) => `${toSnakeCase(k)}:`, ' ');
+  return stripSemicolons(out);
+}
+
+/** Kotlin/Scala: named args with camelCase (same as JS keys) */
+function namedArgGuard(g: string): string {
+  return jsArgsToKwargs(g, (k) => k, ' = ');
+}
+
+/** Lua: table constructor `{ key = value }` + no semicolons */
+function luaGuard(g: string): string {
+  let out = jsArgsToKwargs(g, toSnakeCase, ' = ');
+  // Re-wrap in `({...})` → `({...})` is already correct for Lua tables
+  return stripSemicolons(out);
+}
+
+/** Swift: trailing argument labels with camelCase */
+function swiftGuard(g: string): string {
+  return jsArgsToKwargs(g, (k) => `${k}:`, ' ');
 }
 
 const ADAPTERS: Record<string, LanguageAdapter> = {
