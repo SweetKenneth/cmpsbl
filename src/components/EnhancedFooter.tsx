@@ -31,36 +31,36 @@ export function EnhancedFooter() {
 
   const footerSections: FooterSection[] = [
     {
-      title: "Factory",
+      title: "Products",
       links: [
-        { name: "Memory Stream", href: "/foundry" },
-        { name: "Ascension", href: "/ascension" },
         { name: "Showroom", href: "/showroom" },
-        { name: "Junkyard", href: "/junkyard" },
-        { name: "Assembly", href: "/assembly" },
-        { name: "Plans & pricing", href: "/plans", highlight: true },
+        { name: "Code Ascension", href: "/ascension" },
+        { name: "Code Assembly", href: "/assembly" },
+        { name: "Memory Stream", href: "/foundry" },
+        { name: "Marketplace", href: "https://marketplace.cmpsbl.com", external: true },
+        { name: "Plans & Pricing", href: "/plans", highlight: true },
       ]
     },
     {
       title: "Resources",
       links: [
         { name: "Documentation", href: "/documentation" },
-        { name: "Heritage paper", href: "/heritage-paper", highlight: true },
-        { name: "API access", href: "/api-access" },
+        { name: "Heritage Paper", href: "/heritage-paper", highlight: true },
+        { name: "API Access", href: "/api-access" },
         { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
-        { name: "Academy", href: "/academy" },
+        { name: "Case Studies", href: "/case-studies" },
       ]
     },
     {
       title: "Explore",
       links: [
-        { name: "Architecture", href: "/architecture" },
-        { name: "How it works", href: "/ai-operating-system" },
-        { name: "Use cases", href: "/use-cases" },
-        { name: "Developers", href: "/developers" },
+        { name: "Verticals", href: "/verticals" },
+        { name: "Use Cases", href: "/use-cases" },
+        { name: "Try the Substrate", href: "/try" },
         { name: "Enterprise", href: "/enterprise" },
-        { name: "Start here", href: "/start-here" },
+        { name: "Developers", href: "/developers" },
+        { name: "Architecture", href: "/architecture" },
       ]
     },
     {
@@ -69,8 +69,8 @@ export function EnhancedFooter() {
         { name: "About", href: "/about" },
         { name: "Investors", href: "/investors" },
         { name: "Roadmap", href: "/roadmap" },
-        { name: "Careers", href: "/careers" },
         { name: "Contact", href: "/contact" },
+        { name: "Support", href: "/support" },
         { name: "Status", href: "/status" },
       ]
     },

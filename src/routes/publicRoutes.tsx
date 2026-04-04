@@ -142,7 +142,7 @@ export const publicRoutes = (
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/memory-stream" element={<Foundry />} />
     <Route path="/proof" element={<ProofMode />} />
-    <Route path="/showcase" element={<STierDemos />} />
+    <Route path="/showcase" element={<Navigate to="/" replace />} />
     <Route path="/publication" element={<Publication />} />
     <Route path="/documentation" element={<Documentation />} />
     <Route path="/intent-mesh" element={<PhaseGateRoute><IntentMeshPublic /></PhaseGateRoute>} />
@@ -156,7 +156,7 @@ export const publicRoutes = (
     <Route path="/agency" element={<Navigate to="/" replace />} />
     <Route path="/a/:slug" element={<AgencyPortal />} />
     <Route path="/devtools" element={<DevTools />} />
-    <Route path="/academy" element={<DeveloperAcademy />} />
+    <Route path="/academy" element={<Navigate to="/developers/guide" replace />} />
     <Route path="/audit" element={<Navigate to="/" replace />} />
     <Route path="/gaming" element={<GamingSubstrate />} />
     <Route path="/verticals" element={<VerticalPortal />} />
@@ -225,7 +225,7 @@ export const publicRoutes = (
     {/* System pages */}
     <Route path="/modules" element={<Navigate to="/architecture" replace />} />
     <Route path="/modules/:slug" element={<ModuleDetail />} />
-    <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
+    <Route path="/ai-operating-system" element={<Navigate to="/architecture" replace />} />
     <Route path="/products/encode" element={<Navigate to="/" replace />} />
 
     {/* Cluster redirects */}
@@ -239,7 +239,7 @@ export const publicRoutes = (
     <Route path="/privacy" element={<Privacy />} />
     <Route path="/terms" element={<Terms />} />
     <Route path="/heritage-paper" element={<HeritagePaper />} />
-    <Route path="/member" element={<MemberHub />} />
+    <Route path="/member" element={<Navigate to="/" replace />} />
 
     {/* Misc public */}
     <Route path="/evolution" element={
@@ -253,11 +253,11 @@ export const publicRoutes = (
     <Route path="/plans" element={<Plans />} />
     <Route path="/upgrade" element={<Navigate to="/plans" replace />} />
     <Route path="/packs" element={<Packs />} />
-    <Route path="/start-here" element={<StartHere />} />
+    <Route path="/start-here" element={<Navigate to="/" replace />} />
     <Route path="/enterprise" element={<Enterprise />} />
     <Route path="/api-access" element={<ApiAccess />} />
     <Route path="/keys" element={<Navigate to="/api-access" replace />} />
-    <Route path="/careers" element={<Careers />} />
+    <Route path="/careers" element={<Navigate to="/about" replace />} />
     <Route path="/x" element={<ProprietaryEvolution />} />
     <Route path="/ascension" element={<RestorationShop />} />
     <Route path="/agent-forge" element={<AgentForge />} />
