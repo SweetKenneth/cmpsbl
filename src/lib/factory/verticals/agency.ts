@@ -21,7 +21,7 @@
  * Hot-swapped Agents (8):
  *   OPERATOR  — Autonomous mission executor with minimal direction
  *   OVERSEER  — Agent health monitor, self-healing, and graceful degradation
- *   DIPLOMAT  — Teamwork coordination and conflict resolution
+ *   LIAISON   — Teamwork coordination and conflict resolution
  *   SCHOLAR   — Continuous skill acquisition and knowledge distillation
  *   ENVOY    — User-facing communication and progress reporting
  *   WARDEN    — Governance enforcement and safety boundary agent
