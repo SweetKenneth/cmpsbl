@@ -60,7 +60,7 @@ function stripSemicolons(code: string): string {
 /** Convert JS array-of-objects `[{ key: val }, ...]` to native list/slice syntax */
 function jsArrayToNative(call: string, keyTransform: (k: string) => string, separator: string, wrapItem?: (inner: string) => string): string {
   // Match `([...])` containing object literals
-  return call.replace(/\(\[([^\]]*)\]\)/gs, (_match, inner: string) => {
+  return call.replace(/\(\[([^\]]*)\]\)/g, (_match, inner: string) => {
     // Split by `},` to get each object
     const items = inner.split(/\},/).map(s => s.trim().replace(/^\{/, '').replace(/\}$/, '').trim()).filter(Boolean);
     const converted = items.map(item => {
