@@ -43,6 +43,10 @@ export const DOMAIN_CONFIG = {
     llm: 'llm.cmpsbl.com',
     agency: 'agency.cmpsbl.com',
   },
+  /** Special-purpose subdomains (not full substrates) */
+  services: {
+    marketplace: 'marketplace.cmpsbl.com',
+  },
 } as const;
 
 export const COPYRIGHT_NOTICE = {
