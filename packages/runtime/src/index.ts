@@ -8,6 +8,8 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { registerAllPrimitives } from './primitives';
+
 // ═══════════════════════════════════════════════════════════════
 // Inlined Types (self-contained — no external @cmpsbl deps)
 // ═══════════════════════════════════════════════════════════════
@@ -317,7 +319,13 @@ export interface MiniRuntime {
   version: string;
 }
 
-export function createRuntime(): MiniRuntime {
+export function createRuntime(options?: { autoRegister?: boolean }): MiniRuntime {
+  const shouldRegister = options?.autoRegister !== false;
+
+  if (shouldRegister) {
+    registerAllPrimitives(registerPrimitive);
+  }
+
   return {
     computeCJPI,
     tierFromCJPI,
@@ -329,7 +337,7 @@ export function createRuntime(): MiniRuntime {
     executePrimitive,
     executeChain,
     createStateMachine: <S extends string, E extends string>(config: StateMachineConfig<S, E>) => new StateMachine(config),
-    version: '1.0.0',
+    version: '2.0.0',
   };
 }
 
@@ -364,3 +372,21 @@ export type {
   PackageDomain,
   DomainPattern,
 } from './first-contact';
+
+// ═══════════════════════════════════════════════════════════════
+// §8 — Primitive Catalog (131 unique primitives)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  PRIMITIVE_CATALOG,
+  registerAllPrimitives,
+  getCatalogEntry,
+  getCatalogBySource,
+  getCatalogNames,
+} from './primitives';
+
+export type {
+  PrimitiveCatalogEntry,
+  PrimitiveClassification,
+  PrimitiveSource,
+} from './primitives';
