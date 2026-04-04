@@ -130,9 +130,9 @@ async function handleWebhook(req: Request): Promise<Response> {
     )
   }
 
-  const resendApiKey = Deno.env.get('RESEND_API_KEY_1')
+  const resendApiKey = Deno.env.get('RESEND_API_KEY')
   if (!resendApiKey) {
-    console.error('RESEND_API_KEY_1 not configured')
+    console.error('RESEND_API_KEY not configured')
     return new Response(
       JSON.stringify({ error: 'Resend not configured' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
