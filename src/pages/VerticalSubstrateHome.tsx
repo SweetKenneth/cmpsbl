@@ -92,6 +92,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <meta name="description" content={tagline} />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">

@@ -215,6 +215,7 @@ export default function VerticalPortal() {
           })()}
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 }
