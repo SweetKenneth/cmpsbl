@@ -135,6 +135,7 @@ const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['robotics', 'robo-v1'],
   ['quantum', 'quantum-v1'],
   ['llm', 'llm-v1'],
+  ['agency', 'agency-v1'],
 ]);
 
 /**
