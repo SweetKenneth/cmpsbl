@@ -469,9 +469,18 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
 
           {/* Price floating */}
           <div className="absolute bottom-2 right-2">
-            <div className="bg-card/90 backdrop-blur-md rounded-lg px-3 py-1 border border-border/30">
-              <span className="text-xl font-black text-primary">${(item.priceCents / 100).toFixed(0)}</span>
-            </div>
+            {item.priceCents === 0 ? (
+              <div className="bg-[hsl(var(--neon-green))]/90 backdrop-blur-md rounded-lg px-3 py-1.5 border border-[hsl(var(--neon-green))]/50 animate-pulse">
+                <span className="text-sm font-black text-white flex items-center gap-1">
+                  <Gift className="w-3.5 h-3.5" />
+                  FREE
+                </span>
+              </div>
+            ) : (
+              <div className="bg-card/90 backdrop-blur-md rounded-lg px-3 py-1 border border-border/30">
+                <span className="text-xl font-black text-primary">${(item.priceCents / 100).toFixed(0)}</span>
+              </div>
+            )}
           </div>
         </div>
 
