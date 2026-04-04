@@ -92,8 +92,10 @@ export async function downloadTieredFoundryZip(options: {
   artifacts: TieredFoundryExportArtifact[];
   filePrefix: string;
   sourceLabel: string;
+  /** When true, inline the sealed runtime into each source file instead of a separate _runtime/ folder */
+  mergeRuntime?: boolean;
 }): Promise<TieredFoundryZipResult> {
-  const { artifacts, filePrefix, sourceLabel } = options;
+  const { artifacts, filePrefix, sourceLabel, mergeRuntime = false } = options;
 
   if (artifacts.length === 0) {
     return { artifactCount: 0, totalLanguageVariants: 0, fileCount: 0 };
@@ -153,9 +155,12 @@ export async function downloadTieredFoundryZip(options: {
   };
   root.file('manifest.json', JSON.stringify(manifest, null, 2));
 
-  const runtimeFolder = root.folder('_runtime')!;
-  runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-  runtimeFolder.file('README.md', generateSealedRuntimeReadme());
+  // When mergeRuntime is true, skip the separate _runtime folder — it gets inlined into each source file
+  if (!mergeRuntime) {
+    const runtimeFolder = root.folder('_runtime')!;
+    runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
+    runtimeFolder.file('README.md', generateSealedRuntimeReadme());
+  }
 
   let fileCount = 0;
   let totalLanguageVariants = 0;
@@ -249,7 +254,25 @@ export async function downloadTieredFoundryZip(options: {
     }));
 
     for (const file of bundle.files) {
-      artifactFolder.file(file.filename, file.content);
+      if (mergeRuntime && file.language === 'typescript' && file.adapter === 'standalone') {
+        // Merge: prepend sealed runtime directly into the source file
+        const mergedContent = [
+          '// ═══════════════════════════════════════════════════════════════════',
+          '// CMPSBL® Merged Artifact — Runtime + Source in a Single Drop-In File',
+          '// ═══════════════════════════════════════════════════════════════════',
+          '',
+          '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
+          '',
+          runtimeFiles.runtime,
+          '',
+          '// ── Artifact Source ─────────────────────────────────────────────────',
+          '',
+          file.content,
+        ].join('\n');
+        artifactFolder.file(file.filename, mergedContent);
+      } else {
+        artifactFolder.file(file.filename, file.content);
+      }
       fileCount += 1;
     }
 
