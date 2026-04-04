@@ -95,6 +95,18 @@ export {
   type AgencyDiscovery,
   type AgencySeedResult,
 } from './agency-seed';
+export {
+  getATierVault,
+  getATierByVertical,
+  getATierByPrimitive,
+  getATierSummary,
+  CYBER_ATIER_JEWELS,
+  ROBOTICS_ATIER_JEWELS,
+  QUANTUM_ATIER_JEWELS,
+  LLM_ATIER_JEWELS,
+  AGENCY_ATIER_JEWELS,
+  type ATierEntry,
+} from '../../crownjewels/a-tier';
 
 export {
   type VerticalPrimitive,
