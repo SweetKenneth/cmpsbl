@@ -39,6 +39,7 @@ import { MembershipTiers } from "@/components/factory/MembershipTiers";
 import { DecodeDebrief } from "@/components/factory/DecodeDebrief";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { useDecodeStore } from "@/stores/decodeStore";
+import { getVerticalSubdomain } from "@/config/domains";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
@@ -64,6 +65,7 @@ const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
 ];
 
 export default function RestorationShop() {
+  const isUltimateSurface = getVerticalSubdomain() === 'ultimate';
   const [phase, setPhase] = useState<Phase>('upload');
   const [code, setCode] = useState('');
   const [fileName, setFileName] = useState<string | null>(null);
@@ -566,6 +568,8 @@ export default function RestorationShop() {
                 recommendations={scanResult.recommendedPrimitives}
                 onConfirm={handleSelectPrimitives}
                 isProcessing={isRestoring}
+                maxSelections={isUltimateSurface ? scanResult.recommendedPrimitives.length : 20}
+                defaultSelectionCount={isUltimateSurface ? scanResult.recommendedPrimitives.length : 8}
               />
             </div>
           )}
