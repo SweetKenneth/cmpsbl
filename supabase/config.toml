@@ -1,8 +1,6 @@
 project_id = "bxodolqqczjuahwdrswy"
 
 [functions]
-  [functions.auth-email-hook]
-    verify_jwt = false
   [functions.cmpsbl-patch-download]
     verify_jwt = false
   [functions.cmpsbl-patch-manifest]
