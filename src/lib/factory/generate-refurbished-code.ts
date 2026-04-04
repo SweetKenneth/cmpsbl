@@ -746,7 +746,7 @@ export function generateRefurbishedCode(
       imports.push(adapter.importStatement(parsed.module, parsed.symbols));
 
       guards.push(adapter.comment(`─── ${p.name} ───`));
-      guards.push(wrapper.guard);
+      guards.push(adapter.transformGuard(wrapper.guard));
       transformedCode = wrapper.wrapper(transformedCode);
     }
   }
