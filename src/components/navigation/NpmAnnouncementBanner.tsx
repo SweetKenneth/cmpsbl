@@ -43,16 +43,16 @@ export function NpmAnnouncementBanner() {
             >
               <Sparkles className="w-4 h-4 text-white/90 shrink-0" />
               <span className="font-medium">
-                <span className="font-bold text-white">New look, same substrate.</span>
+                <span className="font-bold text-white">Marketplace Now Open.</span>
               </span>
               <span className="hidden sm:inline text-white/80">
-                Showroom, Restoration Shop, new plans, and more.
+                50+ premium engines, agents, and memory chains — $10 to $50.
               </span>
               <Link
-                to="/changelog"
+                to="/showroom"
                 className="inline-flex items-center gap-1 ml-2 font-semibold text-white hover:underline underline-offset-2"
               >
-                See what changed
+                Browse Now
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </motion.div>
