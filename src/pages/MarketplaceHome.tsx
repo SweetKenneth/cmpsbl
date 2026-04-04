@@ -310,6 +310,7 @@ export default function MarketplaceHome() {
                       selectedSubstrate={selectedSubstrate}
                       setSelectedSubstrate={setSelectedSubstrate}
                       categories={activeCategories}
+                      items={inventory}
                     />
                   </motion.div>
                 )}
