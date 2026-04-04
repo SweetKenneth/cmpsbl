@@ -356,7 +356,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
     );
   }
 
-  const isHdl = ['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth'].includes(exportLanguage);
+  const isHdl = ['verilog', 'vhdl', 'systemverilog', 'systemc', 'spice', 'chisel', 'amaranth', 'firrtl', 'bluespec'].includes(exportLanguage);
 
   return (
     <div className="space-y-6">
