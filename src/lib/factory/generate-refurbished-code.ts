@@ -385,8 +385,8 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
     guard: "IntentResolver.init({ fallbackStrategy: 'ask-clarification', minConfidence: 0.70 });\nConfidenceScorer.enable({ contextWindow: 10, disambiguate: true });",
     wrapper: (code) => code,
   },
-  sentinel: {
-    imports: "import { BoundaryGuard, PayloadValidator } from '@cmpsbl/runtime/sentinel';",
+  access: {
+    imports: "import { BoundaryGuard, PayloadValidator } from '@cmpsbl/runtime/access';",
     guard: "BoundaryGuard.init({ validateAll: true, rejectUnknownFields: true });\nPayloadValidator.enforce({ maxSizeBytes: 10_485_760, sanitize: true });",
     wrapper: (code) => code,
   },

@@ -78,11 +78,11 @@ Each vertical substrate's expansion primitives are **unique to that vertical** a
 | Vertical | Subdomain | Engines | Agents |
 |----------|-----------|---------|--------|
 | **Core CMPSBL** | cmpsbl.com | DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE | ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER |
-| **Cyber** | security.cmpsbl.com | WATCHTOWER, SHADE, AEGIS, CIPHER, RECON, VANGUARD, BASTION, TEMPEST | PROWLER, ONYX, SPECTER, BLACKOUT, TRACER, NOCTURNE, IRONCLAD, BULWARK |
-| **Robotics** | robotics.cmpsbl.com | SERVO, KINETIC, LIDAR, FABRICATOR, FLUX, VECTOR, TENSOR, CALIBER | GRIPPER, SWARM, ENVIRON, GUARDIAN, CONDUCTOR, WELDER, INSPECTOR, PIONEER |
+| **Cyber** | security.cmpsbl.com | WATCHTOWER, SHADE, AEGIS, CIPHER, RECON, VANGUARD, BASTION, TEMPEST | PROWLER, ONYX, SPECTER, BLACKOUT, TRACER, NOCTURNE, IRONCLAD, CITADEL |
+| **Robotics** | robotics.cmpsbl.com | SERVO, KINETIC, LIDAR, FABRICATOR, FLUX, VECTOR, TENSOR, CALIBER | GRIPPER, SWARM, ENVIRON, MARSHAL, DISPATCH, WELDER, INSPECTOR, PIONEER |
 | **Quantum** | quantum.cmpsbl.com | HADRON, QUBIT, PHOTON, FERMION, ENTANGLE, LATTICE, PLASMA, CRYOGEN | MUON, BOSON, NEUTRINO, GLUON, GRAVITON, TACHYON, MESON, PRISM |
 | **LLM** | llm.cmpsbl.com | VERITAS, RAMPART, SYLLOGISM, LEXICON, CLARITY, FULCRUM, TETHER, SIEVE | SKEPTIC, TRIBUNAL, HERALD, MIMIC, LINEAGE, EMBARGO, GAUNTLET, CUSTODIAN |
-| **Agency** | agency.cmpsbl.com | MANDATE, DELEGATE, RECONN, UPLINK, SCRIBE, INCENTIVE, REASON, TOOLKIT | OPERATOR, OVERSEER, DIPLOMAT, SCHOLAR, ENVOY, WARDEN, ROGUE, ANCHOR |
+| **Agency** | agency.cmpsbl.com | MANDATE, DELEGATE, RECONN, UPLINK, SCRIBE, INCENTIVE, REASON, TOOLKIT | OPERATOR, OVERSEER, LIAISON, SCHOLAR, ENVOY, WARDEN, ROGUE, ANCHOR |
 
 ---
 
@@ -107,6 +107,31 @@ They share category labels (Engine, Agent) but are fundamentally different thing
 2. **No primitive name may appear in more than one substrate** — enforced by the Global Name Registry
 3. **Spine primitives are immutable** — the 24 Organs + Layers never change across verticals
 4. **Expansion primitives must be unique per vertical** — checked at vertical instantiation time
+5. **No vertical primitive may match any Spine codename** — e.g., "Bulwark" is DEFENSE's codename, so BULWARK cannot be a vertical primitive (renamed to CITADEL)
+6. **No name may be reused across ANY context** — primitives, codenames, products, and verticals all draw from one global namespace
+
+### Codename Collision Renames (Historical)
+
+These vertical primitives were renamed because they collided with Spine codenames:
+
+| Original | Collided With | Renamed To | Vertical |
+|----------|--------------|------------|----------|
+| BULWARK | DEFENSE Layer codename "Bulwark" | **CITADEL** | Cyber |
+| GUARDIAN | SOVEREIGN Organ codename "Guardian" | **MARSHAL** | Robotics |
+| CONDUCTOR | NERVE Organ codename "Conductor" | **DISPATCH** | Robotics |
+| DIPLOMAT | TREATY Layer codename "Diplomat" | **LIAISON** | Agency |
+| SENTINEL | IDENTITY Organ codename "Sentinel" | **OVERSEER** | Agency |
+
+### Known Product-Primitive Name Overlaps (Flagged)
+
+Two store products share names with canonical primitives. This is intentional for marketing purposes but must never cause internal confusion:
+
+| Name | As Primitive | As Product |
+|------|-------------|-----------|
+| CORTEX | Agent #38 — Multi-step pipeline orchestration | $129 Store Engine |
+| NEXUS | Organ #6 — AI provider routing | $159 Store Engine |
+
+**Rule:** When "CORTEX" or "NEXUS" appears in code, it ALWAYS refers to the **primitive**. Store products are referenced by their product IDs, never by name in substrate logic.
 
 ---
 

@@ -3,20 +3,38 @@
  * Prevents non-canonical module references in S-tier artifacts.
  */
 
-/** All 26 canonical substrate modules + known execution-layer entities */
+/** All canonical substrate primitives + vertical expansion primitives */
 export const CANONICAL_MODULES = [
-  // Core 40 Primitives
-  'CORE', 'SYSTEM', 'BRAIN', 'DREAM', 'RIPPLE', 'ACCESS', 'DEFENSE',
-  'NEXUS', 'DECODE', 'VISION', 'CORTEX', 'INCLUSIVE', 'INTEGRATION',
-  'EVOLUTION', 'MEDIC', 'NERVE', 'GOVERNANCE', 'OBSERVABILITY',
-  'ANALYTICS', 'IMMUNITY', 'INTENT', 'MESH', 'AUDIT',
-  'MEMORY', 'ECONOMY', 'RELAY', 'IDENTITY', 'ATLAS', 'ENCODE',
-  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
-  'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
+  // Core 40 Primitives — 12 Organs
+  'CORE', 'SYSTEM', 'BRAIN', 'MEMORY', 'NERVE', 'NEXUS',
+  'IDENTITY', 'SOVEREIGN', 'ATLAS', 'MEDIC', 'RELAY', 'CONSCIENCE',
+  // Core 40 Primitives — 12 Layers
+  'DEFENSE', 'IMMUNITY', 'GOVERNANCE', 'TREATY', 'EVOLUTION', 'REFLEX',
+  'COMPASS', 'INTEGRATION', 'INTENT', 'ACCESS', 'VISION', 'SHADOW',
+  // Core 40 Primitives — 8 Engines
+  'DREAM', 'HARVEST', 'FORGE', 'LINGUA', 'ECHO', 'PHANTOM', 'SANDBOX', 'RIPPLE',
+  // Core 40 Primitives — 8 Agents
+  'ENCODE', 'DECODE', 'AUDIT', 'ECONOMY', 'INCLUSIVE', 'CORTEX', 'ORACLE', 'ENGINEER',
   // CYBER™ Vertical Engines
-  'SENTINEL', 'AEGIS', 'CIPHER', 'RECON', 'VANGUARD', 'BASTION', 'TEMPEST',
+  'WATCHTOWER', 'SHADE', 'AEGIS', 'CIPHER', 'RECON', 'VANGUARD', 'BASTION', 'TEMPEST',
   // CYBER™ Vertical Agents
-  'WRAITH', 'OBSIDIAN', 'SPECTER', 'BLACKOUT', 'TRACER', 'NOCTURNE', 'IRONCLAD', 'BULWARK',
+  'PROWLER', 'ONYX', 'SPECTER', 'BLACKOUT', 'TRACER', 'NOCTURNE', 'IRONCLAD', 'CITADEL',
+  // ROBOTICS™ Vertical Engines
+  'SERVO', 'KINETIC', 'LIDAR', 'FABRICATOR', 'FLUX', 'VECTOR', 'TENSOR', 'CALIBER',
+  // ROBOTICS™ Vertical Agents
+  'GRIPPER', 'SWARM', 'ENVIRON', 'MARSHAL', 'DISPATCH', 'WELDER', 'INSPECTOR', 'PIONEER',
+  // QUANTUM™ Vertical Engines
+  'HADRON', 'QUBIT', 'PHOTON', 'FERMION', 'ENTANGLE', 'LATTICE', 'PLASMA', 'CRYOGEN',
+  // QUANTUM™ Vertical Agents
+  'MUON', 'BOSON', 'NEUTRINO', 'GLUON', 'GRAVITON', 'TACHYON', 'MESON', 'PRISM',
+  // LLM™ Vertical Engines
+  'VERITAS', 'RAMPART', 'SYLLOGISM', 'LEXICON', 'CLARITY', 'FULCRUM', 'TETHER', 'SIEVE',
+  // LLM™ Vertical Agents
+  'SKEPTIC', 'TRIBUNAL', 'HERALD', 'MIMIC', 'LINEAGE', 'EMBARGO', 'GAUNTLET', 'CUSTODIAN',
+  // AGENCY™ Vertical Engines
+  'MANDATE', 'DELEGATE', 'RECONN', 'UPLINK', 'SCRIBE', 'INCENTIVE', 'REASON', 'TOOLKIT',
+  // AGENCY™ Vertical Agents
+  'OPERATOR', 'OVERSEER', 'LIAISON', 'SCHOLAR', 'ENVOY', 'WARDEN', 'ROGUE', 'ANCHOR',
 ] as const;
 
 export type CanonicalModule = typeof CANONICAL_MODULES[number];

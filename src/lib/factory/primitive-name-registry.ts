@@ -93,7 +93,7 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'TRACER',     context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'NOCTURNE',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
   { name: 'IRONCLAD',   context: 'cyber-agent', vertical: 'security', role: 'agent' },
-  { name: 'BULWARK',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
+  { name: 'CITADEL',    context: 'cyber-agent', vertical: 'security', role: 'agent' },
 
   // ═══ ROBOTICS VERTICAL (robotics.cmpsbl.com) — 8 Engines ═══
   { name: 'SERVO',      context: 'robotics-engine', vertical: 'robotics', role: 'engine' },
@@ -109,8 +109,8 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   { name: 'GRIPPER',    context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'SWARM',      context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'ENVIRON',    context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
-  { name: 'GUARDIAN',   context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
-  { name: 'CONDUCTOR',  context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
+  { name: 'MARSHAL',    context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
+  { name: 'DISPATCH',   context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'WELDER',     context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'INSPECTOR',  context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
   { name: 'PIONEER',    context: 'robotics-agent', vertical: 'robotics', role: 'agent' },
@@ -168,7 +168,7 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   // ═══ AGENCY VERTICAL (agency.cmpsbl.com) — 8 Agents ═══
   { name: 'OPERATOR',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'OVERSEER',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
-  { name: 'DIPLOMAT',  context: 'agency-agent', vertical: 'agency', role: 'agent' },
+  { name: 'LIAISON',   context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'SCHOLAR',   context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'ENVOY',     context: 'agency-agent', vertical: 'agency', role: 'agent' },
   { name: 'WARDEN',    context: 'agency-agent', vertical: 'agency', role: 'agent' },

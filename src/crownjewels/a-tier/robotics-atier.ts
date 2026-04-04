@@ -135,22 +135,22 @@ const ENVIRON: STierEntry[] = [
   cj(2055, 'A-ENV05', 'Illumination Adaptation Engine', 86, 'ENVIRON', 'Adjusts vision processing parameters for varying illumination conditions including HDR and low-light scenarios.', 'rb-ev05'),
 ];
 
-// ── GUARDIAN ──
-const GUARDIAN_A: STierEntry[] = [
-  cj(2056, 'A-GUA01', 'Predictive Collision Avoidance', 91, 'GUARDIAN', 'Predicts collision events 500ms ahead using trajectory extrapolation and generates evasive maneuvers.', 'rb-gu01'),
-  cj(2057, 'A-GUA02', 'Safety-Rated Speed Monitor', 90, 'GUARDIAN', 'Enforces speed limits based on proximity to humans using ISO 13849 compliant safety functions.', 'rb-gu02'),
-  cj(2058, 'A-GUA03', 'Emergency Stop Coordinator', 89, 'GUARDIAN', 'Coordinates safe emergency stops across multi-robot cells with controlled deceleration profiles.', 'rb-gu03'),
-  cj(2059, 'A-GUA04', 'Protective Zone Manager', 88, 'GUARDIAN', 'Dynamically adjusts safety zones based on robot speed, payload, and operator position tracking.', 'rb-gu04'),
-  cj(2060, 'A-GUA05', 'Fault Tolerance Orchestrator', 86, 'GUARDIAN', 'Manages graceful degradation when sensor or actuator faults are detected with safe-state transitions.', 'rb-gu05'),
+// ── MARSHAL ──
+const MARSHAL_A: STierEntry[] = [
+  cj(2056, 'A-GUA01', 'Predictive Collision Avoidance', 91, 'MARSHAL', 'Predicts collision events 500ms ahead using trajectory extrapolation and generates evasive maneuvers.', 'rb-gu01'),
+  cj(2057, 'A-GUA02', 'Safety-Rated Speed Monitor', 90, 'MARSHAL', 'Enforces speed limits based on proximity to humans using ISO 13849 compliant safety functions.', 'rb-gu02'),
+  cj(2058, 'A-GUA03', 'Emergency Stop Coordinator', 89, 'MARSHAL', 'Coordinates safe emergency stops across multi-robot cells with controlled deceleration profiles.', 'rb-gu03'),
+  cj(2059, 'A-GUA04', 'Protective Zone Manager', 88, 'MARSHAL', 'Dynamically adjusts safety zones based on robot speed, payload, and operator position tracking.', 'rb-gu04'),
+  cj(2060, 'A-GUA05', 'Fault Tolerance Orchestrator', 86, 'MARSHAL', 'Manages graceful degradation when sensor or actuator faults are detected with safe-state transitions.', 'rb-gu05'),
 ];
 
-// ── CONDUCTOR ──
-const CONDUCTOR: STierEntry[] = [
-  cj(2061, 'A-CON01', 'Multi-Robot Workflow Orchestrator', 91, 'CONDUCTOR', 'Sequences multi-robot workflows with shared resource management and priority-based scheduling.', 'rb-co01'),
-  cj(2062, 'A-CON02', 'Human-Robot Handoff Coordinator', 90, 'CONDUCTOR', 'Manages safe task handoffs between humans and robots with intent recognition and confirmation protocols.', 'rb-co02'),
-  cj(2063, 'A-CON03', 'Production Line Balancer', 89, 'CONDUCTOR', 'Optimizes robot task assignments across production lines to minimize cycle time and maximize throughput.', 'rb-co03'),
-  cj(2064, 'A-CON04', 'Shift Schedule Optimizer', 88, 'CONDUCTOR', 'Plans robot operational schedules with maintenance windows and battery charging coordination.', 'rb-co04'),
-  cj(2065, 'A-CON05', 'Cross-Cell Resource Arbiter', 86, 'CONDUCTOR', 'Arbitrates shared resource access between robot cells using token-based locking with deadlock prevention.', 'rb-co05'),
+// ── DISPATCH ──
+const DISPATCH_A: STierEntry[] = [
+  cj(2061, 'A-CON01', 'Multi-Robot Workflow Orchestrator', 91, 'DISPATCH', 'Sequences multi-robot workflows with shared resource management and priority-based scheduling.', 'rb-co01'),
+  cj(2062, 'A-CON02', 'Human-Robot Handoff Coordinator', 90, 'DISPATCH', 'Manages safe task handoffs between humans and robots with intent recognition and confirmation protocols.', 'rb-co02'),
+  cj(2063, 'A-CON03', 'Production Line Balancer', 89, 'DISPATCH', 'Optimizes robot task assignments across production lines to minimize cycle time and maximize throughput.', 'rb-co03'),
+  cj(2064, 'A-CON04', 'Shift Schedule Optimizer', 88, 'DISPATCH', 'Plans robot operational schedules with maintenance windows and battery charging coordination.', 'rb-co04'),
+  cj(2065, 'A-CON05', 'Cross-Cell Resource Arbiter', 86, 'DISPATCH', 'Arbitrates shared resource access between robot cells using token-based locking with deadlock prevention.', 'rb-co05'),
 ];
 
 // ── WELDER ──
@@ -183,6 +183,6 @@ const PIONEER: STierEntry[] = [
 export const ROBOTICS_ATIER_JEWELS: STierEntry[] = [
   ...SERVO, ...KINETIC, ...LIDAR, ...FABRICATOR,
   ...FLUX, ...VECTOR, ...TENSOR, ...CALIBER,
-  ...GRIPPER, ...SWARM, ...ENVIRON, ...GUARDIAN_A,
-  ...CONDUCTOR, ...WELDER, ...INSPECTOR_A, ...PIONEER,
+  ...GRIPPER, ...SWARM, ...ENVIRON, ...MARSHAL_A,
+  ...DISPATCH_A, ...WELDER, ...INSPECTOR_A, ...PIONEER,
 ];

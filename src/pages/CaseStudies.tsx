@@ -27,7 +27,7 @@ const ASTAR_VULNERABILITIES = [
 
 const PRIMITIVES_APPLIED = [
   { name: 'TENSOR', type: 'Engine', action: 'Sensor fusion and multi-modal signal processing for situational awareness' },
-  { name: 'GUARDIAN', type: 'Agent', action: 'Safety monitoring and collision avoidance with emergency stop protocols' },
+  { name: 'MARSHAL', type: 'Agent', action: 'Safety monitoring and collision avoidance with emergency stop protocols' },
   { name: 'KINETIC', type: 'Engine', action: 'Motion planning and trajectory optimization for multi-axis coordination' },
   { name: 'VECTOR', type: 'Engine', action: 'Navigation, pathfinding, and localization with SLAM integration' },
   { name: 'SWARM', type: 'Agent', action: 'Multi-robot coordination and fleet management with consensus protocols' },
@@ -36,14 +36,14 @@ const PRIMITIVES_APPLIED = [
   { name: 'WELDER', type: 'Agent', action: 'Assembly operations and joining processes with seam tracking' },
   { name: 'CALIBER', type: 'Engine', action: 'Precision calibration and tolerance enforcement for repeatable operations' },
   { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for complex systems' },
-  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered print statements' },
-  { name: 'HARVEST', type: 'Organ', action: 'Dead code identification and pruning advisory' },
+  { name: 'ECHO', type: 'Engine', action: 'Structured logging replacing scattered print statements' },
+  { name: 'HARVEST', type: 'Engine', action: 'Dead code identification and pruning advisory' },
   { name: 'SHADOW', type: 'Layer', action: 'Shadow testing and canary deployment for safe rollouts' },
-  { name: 'SIMULATE', type: 'Layer', action: 'Simulation-based safe testing of architectural changes' },
-  { name: 'CONDUCTOR', type: 'Agent', action: 'Task sequencing and workflow automation for multi-step operations' },
+  { name: 'VISION', type: 'Layer', action: 'Telemetry analysis and anomaly detection for architectural changes' },
+  { name: 'DISPATCH', type: 'Agent', action: 'Task sequencing and workflow automation for multi-step operations' },
   { name: 'SERVO', type: 'Engine', action: 'Motor control and actuator orchestration with PID tuning' },
   { name: 'ENVIRON', type: 'Agent', action: 'Environmental awareness and scene understanding for safe operation' },
-  { name: 'SANDBOX', type: 'Layer', action: 'Sandboxed isolation for untrusted execution paths' },
+  { name: 'SANDBOX', type: 'Engine', action: 'Sandboxed isolation for untrusted execution paths' },
   { name: 'TREATY', type: 'Layer', action: 'API contract enforcement and schema validation' },
   { name: 'DEFENSE', type: 'Layer', action: 'Defense-in-depth hardening for network-facing code' },
 ];
@@ -87,14 +87,14 @@ const OPENCLAW_RUNS: VerticalRun[] = [
     tier: 'Apex',
     timestamp: 'Apr 2, 2026 · 20:06 UTC',
     expansionPrimitives: [
-      { name: 'ENGINEER', type: 'Engine', purpose: 'Structural analysis and code architecture assessment' },
-      { name: 'CORTEX', type: 'Engine', purpose: 'Cognitive pattern recognition and decision optimization' },
-      { name: 'MONOLITH', type: 'Agent', purpose: 'Monolithic-to-modular decomposition advisory' },
-      { name: 'WRAITH', type: 'Agent', purpose: 'IP obfuscation and stealth hardening' },
-      { name: 'OBSIDIAN', type: 'Agent', purpose: 'Deep structural integrity scanning' },
-      { name: 'PRIMITIVE', type: 'Agent', purpose: 'Base-level guard injection and primitive activation' },
-      { name: 'FAILSAFE', type: 'Engine', purpose: 'Circuit breaker injection for fault tolerance' },
-      { name: 'ARCHITECT', type: 'Engine', purpose: 'High-level architecture pattern enforcement' },
+      { name: 'ENCODE', type: 'Agent', purpose: 'Structural analysis and code architecture assessment' },
+      { name: 'CORTEX', type: 'Agent', purpose: 'Cognitive pattern recognition and decision optimization' },
+      { name: 'DECODE', type: 'Agent', purpose: 'Natural language understanding and intent classification' },
+      { name: 'ORACLE', type: 'Agent', purpose: 'Predictive analysis and forecasting' },
+      { name: 'DREAM', type: 'Engine', purpose: 'Heuristic synthesis and autonomous learning' },
+      { name: 'FORGE', type: 'Engine', purpose: 'Artifact manufacturing and template synthesis' },
+      { name: 'RIPPLE', type: 'Engine', purpose: 'Event cascade and backpressure handling' },
+      { name: 'HARVEST', type: 'Engine', purpose: 'Data acquisition and deduplication' },
     ],
     focusArea: 'General-purpose hardening: circuit breakers, structured logging, IP obfuscation, and modular decomposition advisory.',
   },
@@ -135,7 +135,7 @@ const OPENCLAW_RUNS: VerticalRun[] = [
       { name: 'FLUX', type: 'Engine', purpose: 'Real-time data flow management and stream processing' },
       { name: 'KINETIC', type: 'Engine', purpose: 'Motion planning and trajectory optimization' },
       { name: 'CALIBER', type: 'Engine', purpose: 'Precision calibration and tolerance enforcement' },
-      { name: 'GUARDIAN', type: 'Agent', purpose: 'Safety monitoring with emergency stop protocols' },
+      { name: 'MARSHAL', type: 'Agent', purpose: 'Safety monitoring with emergency stop protocols' },
       { name: 'SWARM', type: 'Agent', purpose: 'Multi-robot coordination and fleet management' },
     ],
     focusArea: 'Physical-world intelligence: motion planning, sensor fusion, safety monitoring, multi-robot coordination, and precision calibration.',
@@ -164,7 +164,7 @@ const OPENCLAW_RUNS: VerticalRun[] = [
 ];
 
 const SHARED_SPINE_PRIMITIVES = [
-  'SIMULATE', 'MEMORY', 'SHADOW', 'RELAY', 'OBSERVER', 'FORGE', 'ECHO', 'EVOLUTION', 'COMPASS', 'LINGUA',
+  'MEMORY', 'SHADOW', 'RELAY', 'VISION', 'FORGE', 'ECHO', 'EVOLUTION', 'COMPASS', 'LINGUA', 'DEFENSE',
 ];
 
 /* ───────── Case Study #3 Data — Qiskit ConsolidateBlocks (Quantum) ───────── */
@@ -182,7 +182,7 @@ const QISKIT_VULNERABILITIES = [
 const QISKIT_PRIMITIVES = [
   { name: 'BOSON', type: 'Agent', action: 'Force carrier simulation and gauge field mapping for the Standard Model' },
   { name: 'NEUTRINO', type: 'Agent', action: 'Weak interaction modeling and neutrino flavor oscillation prediction' },
-  { name: 'HARVEST', type: 'Organ', action: 'Dead code identification and pruning advisory for large codebases' },
+  { name: 'HARVEST', type: 'Engine', action: 'Dead code identification and pruning advisory for large codebases' },
   { name: 'PHOTON', type: 'Engine', action: 'Optical computing and photonic signal processing with interferometry modeling' },
   { name: 'FERMION', type: 'Engine', action: 'Many-body quantum state evolution with Schrödinger equation solvers' },
   { name: 'PLASMA', type: 'Engine', action: 'Plasma dynamics and magneto-hydrodynamics for fusion reactor modeling' },
@@ -194,10 +194,10 @@ const QISKIT_PRIMITIVES = [
   { name: 'RELAY', type: 'Layer', action: 'Message relay with delivery guarantees and dead-letter handling' },
   { name: 'GLUON', type: 'Agent', action: 'Strong force coupling and QCD color charge simulation' },
   { name: 'CRYOGEN', type: 'Engine', action: 'Cryogenic system modeling and thermal noise reduction for quantum hardware' },
-  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered print/debug statements' },
+  { name: 'ECHO', type: 'Engine', action: 'Structured logging replacing scattered print/debug statements' },
   { name: 'IDENTITY', type: 'Organ', action: 'Authentication and identity resolution for access control' },
   { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for complex systems' },
-  { name: 'COMPASS', type: 'Organ', action: 'Module navigation and dependency mapping' },
+  { name: 'COMPASS', type: 'Layer', action: 'Module navigation and dependency mapping' },
   { name: 'SIMULATE', type: 'Layer', action: 'Simulation-based safe testing of architectural changes' },
   { name: 'EVOLUTION', type: 'Layer', action: 'Managed evolution cycles for technical debt reduction' },
 ];
@@ -458,9 +458,9 @@ const ARDUPILOT_PRIMITIVES = [
   { name: 'KINETIC', category: 'Engine', contribution: 'Motion planning and trajectory optimization' },
   { name: 'FLUX', category: 'Engine', contribution: 'Power management and energy distribution' },
   { name: 'GRIPPER', category: 'Agent', contribution: 'Manipulation and adaptive grasp planning' },
-  { name: 'GUARDIAN', category: 'Agent', contribution: 'Safety monitoring and collision avoidance' },
+  { name: 'MARSHAL', category: 'Agent', contribution: 'Safety monitoring and collision avoidance' },
   { name: 'CONSCIENCE', category: 'Organ', contribution: 'Ethical decision boundaries' },
-  { name: 'LINGUA', category: 'Organ', contribution: 'Structured language interpretation' },
+  { name: 'LINGUA', category: 'Engine', contribution: 'Structured language interpretation' },
   { name: 'SHADOW', category: 'Layer', contribution: 'Shadow testing and canary analysis' },
   { name: 'BRAIN', category: 'Organ', contribution: 'Continuous learning patterns' },
   { name: 'HARVEST', category: 'Organ', contribution: 'Dead code identification and pruning' },

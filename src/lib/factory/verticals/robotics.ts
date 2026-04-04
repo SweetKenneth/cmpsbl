@@ -17,8 +17,8 @@
  *   GRIPPER   — Manipulation and dexterous object handling
  *   SWARM     — Multi-robot coordination and fleet management
  *   ENVIRON   — Environmental awareness and scene understanding
- *   GUARDIAN  — Safety monitoring and collision avoidance
- *   CONDUCTOR — Task sequencing and workflow automation
+ *   MARSHAL   — Safety monitoring and collision avoidance
+ *   DISPATCH  — Task sequencing and workflow automation
  *   WELDER    — Assembly operations and joining processes
  *   INSPECTOR — Quality inspection and defect detection
  *   PIONEER   — Autonomous exploration and frontier mapping
@@ -224,8 +224,8 @@ const ROBO_AGENTS: VerticalPrimitive[] = [
     classification: 'passive',
   },
   {
-    id: 'GUARDIAN',
-    name: 'GUARDIAN',
+    id: 'MARSHAL',
+    name: 'MARSHAL',
     role: 'agent',
     description: 'Safety monitoring and collision avoidance agent. Enforces safety zones, monitors human proximity, and triggers protective stops per ISO 10218 and ISO/TS 15066.',
     inherited: false,
@@ -240,8 +240,8 @@ const ROBO_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'CONDUCTOR',
-    name: 'CONDUCTOR',
+    id: 'DISPATCH',
+    name: 'DISPATCH',
     role: 'agent',
     description: 'Task sequencing and workflow automation agent. Orchestrates multi-step robotic operations, manages dependencies, and handles error recovery in production workflows.',
     inherited: false,
@@ -333,7 +333,7 @@ export function getRoboticsSubstrate(): VerticalSubstrateConfig {
         'quality_inspection_algorithms',
         'exploration_frontier_heuristics',
       ],
-      priorityPrimitives: ['SERVO', 'GUARDIAN', 'KINETIC', 'LIDAR'],
+      priorityPrimitives: ['SERVO', 'MARSHAL', 'KINETIC', 'LIDAR'],
       batchSize: 4,
     },
     memoryStreamConfig: {
@@ -369,7 +369,7 @@ export function getRoboticsSubstrate(): VerticalSubstrateConfig {
         reliability: 0.35,
         maintainability: 0.15,
       },
-      collisionPriority: ['SERVO', 'KINETIC', 'GUARDIAN', 'LIDAR', 'TENSOR'],
+      collisionPriority: ['SERVO', 'KINETIC', 'MARSHAL', 'LIDAR', 'TENSOR'],
     },
     theme: {
       primaryHue: 200,

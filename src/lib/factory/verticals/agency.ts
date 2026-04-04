@@ -21,7 +21,7 @@
  * Hot-swapped Agents (8):
  *   OPERATOR  — Autonomous mission executor with minimal direction
  *   OVERSEER  — Agent health monitor, self-healing, and graceful degradation
- *   DIPLOMAT  — Teamwork coordination and conflict resolution
+ *   LIAISON   — Teamwork coordination and conflict resolution
  *   SCHOLAR   — Continuous skill acquisition and knowledge distillation
  *   ENVOY    — User-facing communication and progress reporting
  *   WARDEN    — Governance enforcement and safety boundary agent
@@ -221,8 +221,8 @@ const AGENCY_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'DIPLOMAT',
-    name: 'DIPLOMAT',
+    id: 'LIAISON',
+    name: 'LIAISON',
     role: 'agent',
     description: 'Teamwork coordination agent handling conflict resolution between agents, consensus building, and collaborative decision protocols.',
     inherited: false,
@@ -363,7 +363,7 @@ export function getAgencySubstrate(): VerticalSubstrateConfig {
         'context_preservation_methods',
         'creative_problem_solving_patterns',
       ],
-      priorityPrimitives: ['MANDATE', 'OPERATOR', 'SENTINEL', 'SCHOLAR'],
+      priorityPrimitives: ['MANDATE', 'OPERATOR', 'OVERSEER', 'SCHOLAR'],
       batchSize: 6,
     },
     memoryStreamConfig: {
@@ -401,7 +401,7 @@ export function getAgencySubstrate(): VerticalSubstrateConfig {
         reliability: 0.30,
         maintainability: 0.20,
       },
-      collisionPriority: ['MANDATE', 'OPERATOR', 'DELEGATE', 'SENTINEL', 'TOOLKIT'],
+      collisionPriority: ['MANDATE', 'OPERATOR', 'DELEGATE', 'OVERSEER', 'TOOLKIT'],
     },
     theme: {
       primaryHue: 35,

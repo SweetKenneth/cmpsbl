@@ -171,18 +171,18 @@ const IRONCLAD_A: STierEntry[] = [
   cj(1075, 'A-IC05', 'Third-Party Risk Assessor', 86, 'IRONCLAD', 'Evaluates vendor security posture using questionnaire automation, continuous monitoring, and breach history analysis.', 'cya-ic05'),
 ];
 
-// ── BULWARK ──
-const BULWARK_A: STierEntry[] = [
-  cj(1076, 'A-BW01', 'WAF Rule Optimization Engine', 91, 'BULWARK', 'Tunes web application firewall rules by analyzing false positive rates and coverage gaps against OWASP Top 10.', 'cya-bw01'),
-  cj(1077, 'A-BW02', 'API Security Gateway', 90, 'BULWARK', 'Enforces API security policies including rate limiting, schema validation, and broken access control detection.', 'cya-bw02'),
-  cj(1078, 'A-BW03', 'Bot Detection Classifier', 89, 'BULWARK', 'Distinguishes automated bot traffic from legitimate users using behavioral biometrics and browser fingerprinting.', 'cya-bw03'),
-  cj(1079, 'A-BW04', 'Request Anomaly Scorer', 88, 'BULWARK', 'Scores HTTP requests for anomalous patterns using statistical baselines and protocol conformance checks.', 'cya-bw04'),
-  cj(1080, 'A-BW05', 'Origin Shield Coordinator', 86, 'BULWARK', 'Coordinates multi-CDN origin shielding to protect backend infrastructure from volumetric and application-layer attacks.', 'cya-bw05'),
+// ── CITADEL ──
+const CITADEL_A: STierEntry[] = [
+  cj(1076, 'A-BW01', 'WAF Rule Optimization Engine', 91, 'CITADEL', 'Tunes web application firewall rules by analyzing false positive rates and coverage gaps against OWASP Top 10.', 'cya-bw01'),
+  cj(1077, 'A-BW02', 'API Security Gateway', 90, 'CITADEL', 'Enforces API security policies including rate limiting, schema validation, and broken access control detection.', 'cya-bw02'),
+  cj(1078, 'A-BW03', 'Bot Detection Classifier', 89, 'CITADEL', 'Distinguishes automated bot traffic from legitimate users using behavioral biometrics and browser fingerprinting.', 'cya-bw03'),
+  cj(1079, 'A-BW04', 'Request Anomaly Scorer', 88, 'CITADEL', 'Scores HTTP requests for anomalous patterns using statistical baselines and protocol conformance checks.', 'cya-bw04'),
+  cj(1080, 'A-BW05', 'Origin Shield Coordinator', 86, 'CITADEL', 'Coordinates multi-CDN origin shielding to protect backend infrastructure from volumetric and application-layer attacks.', 'cya-bw05'),
 ];
 
 export const CYBER_ATIER_JEWELS: STierEntry[] = [
   ...WATCHTOWER, ...SHADE, ...AEGIS, ...CIPHER,
   ...RECON, ...VANGUARD, ...BASTION, ...TEMPEST,
   ...WRAITH, ...OBSIDIAN_A, ...SPECTER_A, ...BLACKOUT_A,
-  ...TRACER_A, ...NOCTURNE_A, ...IRONCLAD_A, ...BULWARK_A,
+  ...TRACER_A, ...NOCTURNE_A, ...IRONCLAD_A, ...CITADEL_A,
 ];
