@@ -29,6 +29,7 @@ import {
 } from '@/agents/merchant/merchant-engine';
 import { useMarketplaceInventory } from '@/hooks/useMarketplaceInventory';
 import { MARKETPLACE_IMAGES } from '@/assets/marketplace';
+import { downloadMarketplaceArtifact } from '@/lib/export/marketplace-export';
 import merchantHeroBg from '@/assets/marketplace/merchant-hero-bg.jpg';
 
 const TIER_COLORS: Record<string, string> = {
@@ -67,9 +68,15 @@ export default function MarketplaceHome() {
   }, [inventory]);
 
   const handleBuy = useCallback(async (item: MarketplaceItem) => {
-    /** Free items — immediate download, no auth required */
+    /** Free items — immediate Sealed Runtime download, no auth required */
     if (item.priceCents === 0) {
-      toast.success('Free download started!', { description: `${item.title} is yours — no sign-in required.` });
+      toast.info('Generating Sealed Runtime...', { description: `Packaging ${item.title} for download.` });
+      try {
+        await downloadMarketplaceArtifact(item);
+        toast.success('Download complete!', { description: `${item.title} — full Sealed Runtime ZIP with source, docs, and User Guide.` });
+      } catch (err) {
+        toast.error('Download failed', { description: err instanceof Error ? err.message : 'Please try again' });
+      }
       return;
     }
 
