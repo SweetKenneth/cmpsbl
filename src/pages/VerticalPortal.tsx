@@ -79,6 +79,17 @@ const STATIC_VERTICALS = [
     capabilityCount: '100+',
     status: 'Active' as const,
   },
+  {
+    id: 'ultimate',
+    name: 'CMPSBL ULTIMATE™',
+    tagline: 'Universal Ascension Infrastructure — Every Primitive, Maximum Compounding',
+    url: 'https://ultimate.cmpsbl.com',
+    icon: Crown,
+    accentColor: 'hsl(270 70% 50%)',
+    primitiveCount: 40,
+    capabilityCount: '96 pool',
+    status: 'Active' as const,
+  },
 ];
 
 /** Merge static + dynamic verticals */
