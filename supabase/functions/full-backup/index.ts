@@ -242,11 +242,12 @@ Deno.serve(async (req: Request) => {
         for (const table of sortedExportTables) {
           if (Date.now() - backupStart > TIME_BUDGET_MS - FINALIZE_RESERVE_MS) {
             timedOut = true;
-            for (let j = exportTables.indexOf(table); j < exportTables.length; j++) {
-              tableSummary[exportTables[j]] = -2;
-              tableParts[exportTables[j]] = 0;
+            const remaining = sortedExportTables.slice(sortedExportTables.indexOf(table));
+            for (const t of remaining) {
+              tableSummary[t] = -2;
+              tableParts[t] = 0;
             }
-            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${exportTables.length - tablesExported} remaining tables.`);
+            errors.push(`Time budget exceeded after ${tablesExported} tables. Skipped ${remaining.length} remaining tables.`);
             break;
           }
 
