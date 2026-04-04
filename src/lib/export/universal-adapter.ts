@@ -37,21 +37,39 @@ import {
 } from './test-harness-generator';
 
 export type ExportLanguage =
+  // Software
   | 'typescript' | 'python' | 'go' | 'rust' | 'java'
   | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
   | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
   | 'scala' | 'haskell'
+  // Extended software
+  | 'perl' | 'r' | 'julia' | 'nim' | 'crystal' | 'fsharp'
+  | 'clojure' | 'erlang' | 'ocaml' | 'groovy' | 'd'
+  | 'fortran' | 'objective-c'
+  // Shell / Infra
+  | 'bash' | 'powershell'
+  // Blockchain
+  | 'solidity' | 'vyper' | 'move' | 'cairo'
+  // GPU / Shaders
+  | 'cuda' | 'glsl' | 'hlsl' | 'wgsl' | 'metal' | 'opencl'
+  // Hardware / HDL
   | 'verilog' | 'vhdl' | 'systemverilog' | 'chisel'
-  | 'amaranth' | 'spice' | 'systemc';
+  | 'amaranth' | 'spice' | 'systemc' | 'firrtl' | 'bluespec';
 
 export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
   'typescript', 'python', 'go', 'rust', 'java', 'csharp',
   'ruby', 'php', 'swift', 'kotlin', 'elixir', 'lua',
   'c', 'cpp', 'dart', 'zig', 'scala', 'haskell',
+  'perl', 'r', 'julia', 'nim', 'crystal', 'fsharp',
+  'clojure', 'erlang', 'ocaml', 'groovy', 'd',
+  'fortran', 'objective-c', 'bash', 'powershell',
+  'solidity', 'vyper', 'move', 'cairo',
+  'cuda', 'glsl', 'hlsl', 'wgsl', 'metal', 'opencl',
 ];
 
 export const HARDWARE_LANGUAGES: ExportLanguage[] = [
-  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth', 'spice', 'systemc',
+  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth',
+  'spice', 'systemc', 'firrtl', 'bluespec',
 ];
 
 export type ExportAdapter =
