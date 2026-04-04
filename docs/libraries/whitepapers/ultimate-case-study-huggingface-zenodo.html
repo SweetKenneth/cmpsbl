@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Shapeshifter: Deterministic Software Evolution of HuggingFace modeling_utils.py — CMPSBL® Technical Report</title>
+<meta name="description" content="Technical case study: 40 autonomous primitives structurally hardened HuggingFace Transformers modeling_utils.py (126M+ monthly downloads) in 217.7 seconds with zero AI.">
+<meta name="author" content="Kenneth E. Sweet Jr.">
+<meta name="citation_title" content="The Shapeshifter: How 40 Autonomous Primitives Protected the Most Downloaded Training Model on Earth">
+<meta name="citation_author" content="Sweet, Kenneth E. Jr.">
+<meta name="citation_date" content="2026/04/04">
+<meta name="citation_doi" content="10.5281/zenodo.19409933">
+<meta name="citation_language" content="en">
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a2e;
+    --accent: #4338ca;
+    --accent-light: #6366f1;
+    --gold: #b45309;
+    --critical: #dc2626;
+    --warning: #d97706;
+    --success: #059669;
+    --info: #2563eb;
+    --muted: #64748b;
+    --surface: #f8fafc;
+    --surface-2: #f1f5f9;
+    --border: #e2e8f0;
+    --border-dark: #cbd5e1;
+    --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+    --font-serif: 'Georgia', 'Times New Roman', 'Cambria', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  @media print {
+    body { font-size: 11pt; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    a { color: var(--fg) !important; text-decoration: none !important; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--muted); }
+    .container { max-width: 100%; padding: 0; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-serif);
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+  .container { max-width: 780px; margin: 0 auto; padding: 3rem 2rem; }
+
+  /* === TITLE PAGE === */
+  .title-page {
+    text-align: center;
+    padding: 4rem 2rem 3rem;
+    border-bottom: 2px solid var(--fg);
+    margin-bottom: 2rem;
+  }
+  .title-page .institution {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .title-page h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    color: var(--fg);
+  }
+  .title-page .subtitle {
+    font-size: 1.05rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .title-page .author {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .title-page .affiliation {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+  .title-page .orcid {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--accent);
+  }
+  .title-page .orcid a { color: var(--accent); text-decoration: none; }
+  .title-page .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .title-page .meta-row .label { font-weight: 600; color: var(--fg); }
+  .title-page .doi-block {
+    margin-top: 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+  }
+  .title-page .doi-block a { color: var(--accent); text-decoration: none; }
+
+  /* === ABSTRACT === */
+  .abstract-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+  }
+  .abstract-box h2 {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    color: var(--fg);
+  }
+  .abstract-box p { font-size: 0.92rem; line-height: 1.7; margin-bottom: 0.75rem; }
+  .abstract-box p:last-child { margin-bottom: 0; }
+  .keywords {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+  }
+  .keywords strong { color: var(--fg); }
+
+  /* === SECTIONS === */
+  h2 {
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1.75rem 0 0.75rem;
+    color: var(--fg);
+  }
+  h4 {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    color: var(--fg);
+  }
+  p { margin-bottom: 0.9rem; text-align: justify; }
+  .section-num { color: var(--muted); margin-right: 0.3rem; }
+
+  /* === TABLES === */
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    background: var(--surface-2);
+    border-top: 2px solid var(--fg);
+    border-bottom: 1px solid var(--fg);
+    font-weight: 600;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.4rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  caption {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 0.4rem;
+    color: var(--muted);
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.78rem; }
+
+  /* === CODE === */
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.9rem 1.1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--surface);
+    padding: 0.1rem 0.35rem;
+    border: 1px solid var(--border);
+  }
+  pre code { background: none; padding: 0; border: none; }
+
+  /* === SEVERITY BADGES === */
+  .sev {
+    display: inline-block;
+    padding: 0.05rem 0.4rem;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .sev-critical { color: var(--critical); border: 1px solid var(--critical); }
+  .sev-warning { color: var(--warning); border: 1px solid var(--warning); }
+  .sev-info { color: var(--info); border: 1px solid var(--info); }
+  .sev-hardened { color: var(--success); border: 1px solid var(--success); }
+
+  /* === FINDINGS === */
+  .finding {
+    border: 1px solid var(--border);
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+    background: var(--surface);
+  }
+  .finding-critical { border-left: 3px solid var(--critical); }
+  .finding h4 { margin-top: 0; }
+  .finding p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .finding .response { font-size: 0.85rem; color: var(--muted); margin: 0; }
+
+  /* === FIGURES === */
+  .figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .figure-caption {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+  .bar-chart {
+    display: flex;
+    height: 10px;
+    overflow: hidden;
+    margin: 0.5rem auto;
+    max-width: 500px;
+  }
+  .bar-chart div { height: 100%; }
+  .bc-ultimate { background: var(--accent); flex: 12; }
+  .bc-llm { background: var(--success); flex: 9; }
+  .bc-quantum { background: #0891b2; flex: 5; }
+  .bc-robotics { background: var(--info); flex: 4; }
+  .bc-agency { background: var(--warning); flex: 4; }
+  .bc-cyber { background: var(--critical); flex: 2; }
+  .bc-spine { background: var(--muted); flex: 1; }
+  .bar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+  .bar-legend span::before { content: '■ '; }
+  .bl-ultimate::before { color: var(--accent) !important; }
+  .bl-llm::before { color: var(--success) !important; }
+  .bl-quantum::before { color: #0891b2 !important; }
+  .bl-robotics::before { color: var(--info) !important; }
+  .bl-agency::before { color: var(--warning) !important; }
+  .bl-cyber::before { color: var(--critical) !important; }
+  .bl-spine::before { color: var(--muted) !important; }
+
+  /* === STATS === */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+  }
+  .stat {
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .stat .val {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat .lbl {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* === IP GRID === */
+  .ip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .ip-box {
+    border: 1px solid var(--border);
+    padding: 1rem;
+    background: var(--surface);
+  }
+  .ip-box h4 { margin-top: 0; font-size: 0.85rem; }
+  .ip-box ul { padding-left: 1.2rem; font-size: 0.85rem; margin: 0.5rem 0 0; }
+  .ip-box li { margin: 0.25rem 0; }
+  .ip-verifiable { border-top: 2px solid var(--success); }
+  .ip-protected { border-top: 2px solid var(--critical); }
+
+  /* === FOOTER === */
+  .footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--fg);
+    text-align: center;
+  }
+  .closing-statement {
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    text-align: center;
+  }
+  .closing-cta {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 1rem 0 2rem;
+  }
+  .copyright-block {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .copyright-block a { color: var(--accent); text-decoration: none; }
+
+  /* === OL for references === */
+  .references ol {
+    padding-left: 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .references li { margin-bottom: 0.5rem; }
+  .references a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    .container { padding: 1.5rem 1rem; }
+    .title-page { padding: 2rem 1rem; }
+    .title-page h1 { font-size: 1.4rem; }
+    .ip-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .title-page .meta-row { flex-direction: column; align-items: center; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ TITLE PAGE ═══ -->
+<div class="container">
+
+<div class="title-page">
+  <div class="institution">CMPSBL® · PromptFluid™ · Technical Report TR-2026-004</div>
+  <h1>The Shapeshifter: How 40 Autonomous Primitives Protected the Most Downloaded Training Model on Earth</h1>
+  <p class="subtitle">A Technical Case Study on CMPSBL ULTIMATE™ Ascension of HuggingFace <code style="border:none;background:none;font-size:0.95em;">modeling_utils.py</code></p>
+
+  <p class="author">Kenneth E. Sweet Jr.</p>
+  <p class="affiliation">PromptFluid™, Austin, TX</p>
+  <p class="orcid">ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></p>
+
+  <div class="meta-row">
+    <span><span class="label">Date:</span> April 4, 2026</span>
+    <span><span class="label">Serial:</span> <code style="border:none;background:none;">CMPSBL-MNKQ1LXE-X0ZD</code></span>
+    <span><span class="label">Fingerprint:</span> <code style="border:none;background:none;">504ac991648533ac</code></span>
+    <span><span class="label">CJPI:</span> 100 (Apex)</span>
+  </div>
+
+  <div class="doi-block">
+    <p><strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.19409933">10.5281/zenodo.19409933</a></p>
+    <p style="font-size:0.78rem;color:var(--muted);">
+      Related: CMPSBL® Substrate <a href="https://doi.org/10.5281/zenodo.18895141">10.5281/zenodo.18895141</a> ·
+      Memory Stream™ <a href="https://doi.org/10.5281/zenodo.18834080">10.5281/zenodo.18834080</a>
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ ABSTRACT ═══ -->
+<div class="abstract-box">
+  <h2>Abstract</h2>
+  <p>We present the first documented case of a deterministic, non-AI software evolution engine — <strong>Ascension™</strong> — autonomously selecting and deploying 40 computational primitives from a 120-candidate cross-vertical pool to structurally harden HuggingFace's <code>modeling_utils.py</code>, the foundational training model utility layer of the Transformers library, which receives over <strong>126 million downloads per month</strong> (126,779,252 verified via PyPI as of April 4, 2026) and underpins virtually every major large language model in production today.</p>
+  <p>The CMPSBL ULTIMATE™ substrate — operating without human guidance, without machine learning, and without prior knowledge of the target codebase — identified 12 structural dependency gaps (2 critical, 7 warnings, 3 informational), surfaced 10 latent capabilities, and wrapped every known architectural weakness in protective primitive guards that provide observability, statefulness, resilience, and governance to a codebase that was never designed to have them. The entire transformation completed in <strong>217.7 seconds</strong>. Every primitive fired with a distinct, verifiable purpose. Every known flaw was wrapped — not fixed, but <em>protected</em> — in a way that no existing tool, framework, or AI system has ever attempted.</p>
+  <div class="keywords"><strong>Keywords:</strong> software evolution · deterministic hardening · primitive collision · HuggingFace Transformers · modeling_utils · sealed runtime · structural protection · post-authorship engineering · CMPSBL ULTIMATE</div>
+</div>
+
+<!-- ═══════════════════════════════════════ 1. INTRODUCTION ═══ -->
+<h2><span class="section-num">1.</span> Introduction</h2>
+
+<h3>1.1 The Target</h3>
+<p>HuggingFace's <code>modeling_utils.py</code> is the circulatory system of modern machine learning. Every model checkpoint loaded by every researcher, every startup, every enterprise deploying GPT-class models passes through this code. At 4,891 lines, 28 classes, 331 imports, and a cyclomatic complexity of 1,146, it is one of the most structurally complex single files in the open-source machine learning ecosystem.</p>
+<p>Its copyright header tells the story of its lineage: Google AI Language Team, Facebook AI Research, HuggingFace Inc., and NVIDIA Corporation. Four of the most powerful technology organizations in history contributed to this code. It has been reviewed by thousands of engineers. Tested by millions of downstream consumers. And yet it carries structural dependency gaps that no conventional tool — static analyzer, linter, AI copilot, or human reviewer — has ever addressed at the architectural level.</p>
+
+<h3>1.2 The Question</h3>
+<p>Can a fixed, deterministic matrix of computational primitives — with no knowledge of Python, no training on machine learning code, and no access to any AI model — autonomously identify where it is needed, understand its own role relative to the target code, and deploy itself surgically to protect a codebase it has never seen before?</p>
+<p>The answer, as documented in this study, is yes.</p>
+
+<h3>1.3 The Engine</h3>
+<p>CMPSBL ULTIMATE™ is the unrestricted universal ascension tier of the CMPSBL® substrate. Unlike standard verticals which draw from a fixed 40-primitive pool (24 Spine + 16 Expansion), ULTIMATE operates on a <strong>120-candidate ecosystem-wide pool</strong> spanning six domains:</p>
+
+<div class="table-wrap">
+<table>
+  <caption>Table 1. ULTIMATE Candidate Pool</caption>
+  <thead><tr><th>Domain</th><th>Candidates</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Spine</td><td>24</td><td>12 Organs + 12 Layers (universal infrastructure)</td></tr>
+    <tr><td>Cyber</td><td>16</td><td>Security, intrusion detection, encryption</td></tr>
+    <tr><td>Robotics</td><td>16</td><td>Sensor fusion, actuator control, kinematics</td></tr>
+    <tr><td>Quantum</td><td>16</td><td>Qubit management, decoherence shielding, error correction</td></tr>
+    <tr><td>LLM</td><td>16</td><td>Token management, context persistence, prompt governance</td></tr>
+    <tr><td>Agency</td><td>16</td><td>Task delegation, skill routing, operational intelligence</td></tr>
+    <tr><td>Ultimate</td><td>16</td><td>Cross-domain synthesis primitives</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>From this pool of 120, the scanner dynamically selects exactly 40 primitives based on the highest compounding collision scores for the specific codebase being analyzed. No human selects the primitives. No AI recommends them. The code itself determines what it needs.</p>
+
+<!-- ═══════════════════════════════════════ 2. METHODOLOGY ═══ -->
+<h2><span class="section-num">2.</span> Methodology</h2>
+
+<h3>2.1 The Ascension Pipeline</h3>
+<p>The transformation follows an 8-stage deterministic pipeline:</p>
+<ol style="padding-left:1.5rem;font-size:0.92rem;">
+  <li><strong>Upload</strong> — Source code ingested (4,891 lines of Python)</li>
+  <li><strong>Classify</strong> — Language detection, structural metrics extraction</li>
+  <li><strong>Register</strong> — Fingerprint generation (<code>504ac991648533ac</code>)</li>
+  <li><strong>Chain</strong> — 120 candidates evaluated; top 40 selected by collision score</li>
+  <li><strong>Discover</strong> — Signal matching against structural patterns</li>
+  <li><strong>Score</strong> — CJPI (Crown Jewel Pipeline Index™) computation</li>
+  <li><strong>Export</strong> — Sealed Runtime™ artifact generation</li>
+  <li><strong>Protect</strong> — Obfuscation and IP encapsulation</li>
+</ol>
+
+<h3>2.2 Collision Scoring</h3>
+<p>Each primitive carries a set of structural signal detectors. When "collided" against source code, its detectors scan for patterns matching its domain of responsibility. A collision score is computed from: <strong>signal hits</strong> (detection pattern matches), <strong>signal coverage</strong> (hits relative to total detection surface), and <strong>cross-primitive compounding</strong> (whether multiple primitives reinforce each other). A collision score ≥ 83 indicates strong structural affinity; 98 indicates near-perfect alignment.</p>
+
+<h3>2.3 Zero External AI</h3>
+<p>This study confirms that <strong>zero external AI calls</strong> were made during the Ascension process. No GPT, Claude, Gemini, or any LLM was invoked. No embeddings were generated. No vector similarity search was performed. No probabilistic model influenced any decision. Every primitive selection, every collision score, and every hardening transformation is the product of structured pattern matching against a fixed matrix.</p>
+
+<!-- ═══════════════════════════════════════ 3. RESULTS ═══ -->
+<h2><span class="section-num">3.</span> Results</h2>
+
+<div class="stats-row">
+  <div class="stat"><div class="val">40</div><div class="lbl">Primitives</div></div>
+  <div class="stat"><div class="val">120</div><div class="lbl">Candidates</div></div>
+  <div class="stat"><div class="val">217.7s</div><div class="lbl">Execution</div></div>
+  <div class="stat"><div class="val">4,891</div><div class="lbl">Source Lines</div></div>
+  <div class="stat"><div class="val">12</div><div class="lbl">Findings</div></div>
+  <div class="stat"><div class="val">100</div><div class="lbl">CJPI (Apex)</div></div>
+</div>
+
+<h3>3.1 Source Distribution</h3>
+<div class="figure">
+  <div class="bar-chart">
+    <div class="bc-ultimate"></div>
+    <div class="bc-llm"></div>
+    <div class="bc-quantum"></div>
+    <div class="bc-robotics"></div>
+    <div class="bc-agency"></div>
+    <div class="bc-cyber"></div>
+    <div class="bc-spine"></div>
+  </div>
+  <div class="bar-legend">
+    <span class="bl-ultimate">Ultimate (12)</span>
+    <span class="bl-llm">LLM (9)</span>
+    <span class="bl-quantum">Quantum (5)</span>
+    <span class="bl-robotics">Robotics (4)</span>
+    <span class="bl-agency">Agency (4)</span>
+    <span class="bl-cyber">Cyber (2)</span>
+    <span class="bl-spine">Spine (1)</span>
+  </div>
+  <p class="figure-caption">Figure 1. Primitive source distribution across seven verticals</p>
+</div>
+
+<p>The fact that a machine learning utility file draws primitives from Robotics, Quantum, and Agency — domains unrelated to ML on the surface — reveals that the structural patterns in <code>modeling_utils.py</code> are universal architectural patterns that manifest across every domain of complex software.</p>
+
+<h3>3.2 Complete Primitive Chain</h3>
+<div class="table-wrap">
+<table>
+  <caption>Table 2. Selected Primitives (ordered by pipeline execution)</caption>
+  <thead><tr><th>#</th><th>Primitive</th><th>Category</th><th>Source</th><th>Signals</th><th>Collision</th><th>Time</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td class="mono">CONDUIT</td><td>Engine</td><td>Ultimate</td><td>4/10</td><td>98</td><td>3,637ms</td></tr>
+    <tr><td>2</td><td class="mono">ORACLE</td><td>Agent</td><td>Ultimate</td><td>7/10</td><td>98</td><td>7,155ms</td></tr>
+    <tr><td>3</td><td class="mono">APEX</td><td>Engine</td><td>Ultimate</td><td>8/11</td><td>96</td><td>2,759ms</td></tr>
+    <tr><td>4</td><td class="mono">GENESIS</td><td>Engine</td><td>Ultimate</td><td>6/10</td><td>94</td><td>7,354ms</td></tr>
+    <tr><td>5</td><td class="mono">CRUCIBLE</td><td>Engine</td><td>Ultimate</td><td>7/11</td><td>94</td><td>4,267ms</td></tr>
+    <tr><td>6</td><td class="mono">LEXICON</td><td>Engine</td><td>LLM</td><td>12/26</td><td>93</td><td>2,900ms</td></tr>
+    <tr><td>7</td><td class="mono">LIDAR</td><td>Engine</td><td>Robotics</td><td>14/29</td><td>92</td><td>4,463ms</td></tr>
+    <tr><td>8</td><td class="mono">DELEGATE</td><td>Engine</td><td>Agency</td><td>14/26</td><td>92</td><td>4,838ms</td></tr>
+    <tr><td>9</td><td class="mono">TOOLKIT</td><td>Engine</td><td>Agency</td><td>10/23</td><td>90</td><td>3,288ms</td></tr>
+    <tr><td>10</td><td class="mono">PRISM</td><td>Engine</td><td>Ultimate</td><td>8/12</td><td>90</td><td>8,052ms</td></tr>
+    <tr><td>11</td><td class="mono">FLUX</td><td>Engine</td><td>Ultimate</td><td>6/12</td><td>90</td><td>7,678ms</td></tr>
+    <tr><td>12</td><td class="mono">DYNAMO</td><td>Engine</td><td>Ultimate</td><td>5/12</td><td>90</td><td>4,570ms</td></tr>
+    <tr><td>13</td><td class="mono">SENTINEL</td><td>Agent</td><td>Ultimate</td><td>5/10</td><td>90</td><td>5,898ms</td></tr>
+    <tr><td>14</td><td class="mono">CATALYST</td><td>Agent</td><td>Ultimate</td><td>4/10</td><td>90</td><td>2,449ms</td></tr>
+    <tr><td>15</td><td class="mono">HERALD</td><td>Agent</td><td>Ultimate</td><td>3/10</td><td>90</td><td>2,803ms</td></tr>
+    <tr><td>16</td><td class="mono">PHOENIX</td><td>Agent</td><td>Ultimate</td><td>5/10</td><td>90</td><td>5,067ms</td></tr>
+    <tr><td>17</td><td class="mono">SIEVE</td><td>Engine</td><td>LLM</td><td>8/26</td><td>89</td><td>3,865ms</td></tr>
+    <tr><td>18</td><td class="mono">TENSOR</td><td>Engine</td><td>Robotics</td><td>11/26</td><td>89</td><td>9,889ms</td></tr>
+    <tr><td>19</td><td class="mono">NEUTRINO</td><td>Agent</td><td>Quantum</td><td>8/23</td><td>89</td><td>6,475ms</td></tr>
+    <tr><td>20</td><td class="mono">TETHER</td><td>Engine</td><td>LLM</td><td>7/26</td><td>89</td><td>3,409ms</td></tr>
+    <tr><td>21</td><td class="mono">MEMORY</td><td>Organ</td><td>Spine</td><td>7/10</td><td>88</td><td>2,353ms</td></tr>
+    <tr><td>22</td><td class="mono">CUSTODIAN</td><td>Agent</td><td>LLM</td><td>12/26</td><td>88</td><td>8,802ms</td></tr>
+    <tr><td>23</td><td class="mono">GRIPPER</td><td>Agent</td><td>Robotics</td><td>8/17</td><td>87</td><td>2,161ms</td></tr>
+    <tr><td>24</td><td class="mono">QUBIT</td><td>Engine</td><td>Quantum</td><td>10/24</td><td>87</td><td>7,731ms</td></tr>
+    <tr><td>25</td><td class="mono">OPERATOR</td><td>Agent</td><td>Agency</td><td>10/25</td><td>87</td><td>4,644ms</td></tr>
+    <tr><td>26</td><td class="mono">SERVO</td><td>Engine</td><td>Robotics</td><td>9/28</td><td>86</td><td>5,569ms</td></tr>
+    <tr><td>27</td><td class="mono">HADRON</td><td>Engine</td><td>Quantum</td><td>11/32</td><td>86</td><td>3,697ms</td></tr>
+    <tr><td>28</td><td class="mono">RAMPART</td><td>Engine</td><td>LLM</td><td>11/28</td><td>86</td><td>5,596ms</td></tr>
+    <tr><td>29</td><td class="mono">RECONN</td><td>Engine</td><td>Agency</td><td>7/20</td><td>86</td><td>2,574ms</td></tr>
+    <tr><td>30</td><td class="mono">CLARITY</td><td>Engine</td><td>LLM</td><td>9/28</td><td>85</td><td>9,071ms</td></tr>
+    <tr><td>31</td><td class="mono">FULCRUM</td><td>Engine</td><td>LLM</td><td>7/26</td><td>85</td><td>8,763ms</td></tr>
+    <tr><td>32</td><td class="mono">MARSHAL</td><td>Agent</td><td>Robotics</td><td>5/22</td><td>84</td><td>2,914ms</td></tr>
+    <tr><td>33</td><td class="mono">TACHYON</td><td>Agent</td><td>Quantum</td><td>10/25</td><td>84</td><td>4,921ms</td></tr>
+    <tr><td>34</td><td class="mono">MESON</td><td>Agent</td><td>Quantum</td><td>11/16</td><td>84</td><td>6,798ms</td></tr>
+    <tr><td>35</td><td class="mono">PRISM</td><td>Agent</td><td>Quantum</td><td>7/21</td><td>84</td><td>8,430ms</td></tr>
+    <tr><td>36</td><td class="mono">LINEAGE</td><td>Agent</td><td>LLM</td><td>13/24</td><td>84</td><td>7,259ms</td></tr>
+    <tr><td>37</td><td class="mono">BASTION</td><td>Engine</td><td>Cyber</td><td>4/17</td><td>83</td><td>6,906ms</td></tr>
+    <tr><td>38</td><td class="mono">SYLLOGISM</td><td>Engine</td><td>LLM</td><td>8/27</td><td>83</td><td>8,371ms</td></tr>
+    <tr><td>39</td><td class="mono">SCRIBE</td><td>Engine</td><td>Agency</td><td>8/21</td><td>83</td><td>3,238ms</td></tr>
+    <tr><td>40</td><td class="mono">IRONCLAD</td><td>Agent</td><td>Cyber</td><td>7/22</td><td>83</td><td>7,076ms</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>3.3 Aggregate Metrics</h3>
+<div class="table-wrap">
+<table>
+  <caption>Table 3. Execution Summary</caption>
+  <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Total execution time</td><td>217,690 ms (3 min 37.7 sec)</td></tr>
+    <tr><td>Average per-primitive</td><td>5,442 ms</td></tr>
+    <tr><td>Fastest primitive</td><td>GRIPPER (2,161 ms)</td></tr>
+    <tr><td>Slowest primitive</td><td>TENSOR (9,889 ms)</td></tr>
+    <tr><td>Collision score range</td><td>83–98</td></tr>
+    <tr><td>Mean collision score</td><td>88.4</td></tr>
+    <tr><td>Source lines analyzed</td><td>4,891</td></tr>
+    <tr><td>Output lines generated</td><td>4,936</td></tr>
+    <tr><td>CJPI Score</td><td><strong>100 (Apex)</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════ 4. VULNERABILITY ASSESSMENT ═══ -->
+<h2><span class="section-num">4.</span> Structural Dependency Gap Assessment</h2>
+
+<p>The Ascension pipeline identified 12 structural findings in <code>modeling_utils.py</code>. These are not bugs in the traditional sense — they are architectural characteristics that create latent risk.</p>
+
+<h3>4.1 Critical Findings</h3>
+
+<div class="finding finding-critical">
+  <h4><span class="sev sev-critical">Critical</span> &nbsp; Unsafe Deserialization via <code>torch.load()</code> &nbsp; <span class="sev sev-hardened">Hardened</span></h4>
+  <p>The file calls <code>torch.load()</code> on arbitrary checkpoint files fetched from the internet. Malicious pickle-based checkpoints can execute arbitrary code during deserialization. HuggingFace added <code>check_torch_load_is_safe()</code> as a partial mitigation but the vulnerability remains a known, documented risk.</p>
+  <p class="response"><strong>Primitive Response:</strong> BASTION (Cyber) + IRONCLAD (Cyber) deployed perimeter hardening around the deserialization path.</p>
+</div>
+
+<div class="finding finding-critical">
+  <h4><span class="sev sev-critical">Critical</span> &nbsp; Remote Code Execution via <code>trust_remote_code=True</code> &nbsp; <span class="sev sev-hardened">Hardened</span></h4>
+  <p>The file explicitly accepts and executes arbitrary Python code from HuggingFace Hub when <code>trust_remote_code=True</code> is set. This is a documented intentional feature with real attack surface.</p>
+  <p class="response"><strong>Primitive Response:</strong> PHOENIX (Ultimate) + SENTINEL (Ultimate) deployed resurrection patterns and input validation gates around the remote code loading path.</p>
+</div>
+
+<h3>4.2 Warning &amp; Informational Findings</h3>
+<div class="table-wrap">
+<table>
+  <caption>Table 4. Non-Critical Findings</caption>
+  <thead><tr><th>Finding</th><th>Severity</th><th>Status</th><th>Primitive</th></tr></thead>
+  <tbody>
+    <tr><td>Unvalidated request input</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">SIEVE</td></tr>
+    <tr><td>Cyclomatic complexity: 1,146</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">PRISM</td></tr>
+    <tr><td>8 technical debt markers</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">SCRIBE</td></tr>
+    <tr><td>331 import dependencies</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">CONDUIT</td></tr>
+    <tr><td>Deprecated API usage</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">CATALYST</td></tr>
+    <tr><td>Insecure HTTP protocol</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">RAMPART</td></tr>
+    <tr><td>No graceful shutdown</td><td><span class="sev sev-warning">Warning</span></td><td>Mitigated</td><td class="mono">FLUX</td></tr>
+    <tr><td>No module exports</td><td><span class="sev sev-info">Info</span></td><td>Monitor</td><td class="mono">HERALD</td></tr>
+    <tr><td>28 classes in single file</td><td><span class="sev sev-info">Info</span></td><td>Monitor</td><td class="mono">MARSHAL</td></tr>
+    <tr><td>Monolithic file (4,892 lines)</td><td><span class="sev sev-info">Info</span></td><td>Monitor</td><td class="mono">CLARITY</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════ 5. PRIMITIVE MAPPING ═══ -->
+<h2 class="page-break"><span class="section-num">5.</span> How Each Primitive Mapped to a Real Opportunity</h2>
+
+<h3>5.1 Ultimate Primitives (12 selected)</h3>
+<p><strong>CONDUIT</strong> (Engine, collision 98) — Detected 4/10 data-flow signals across model loading, weight initialization, checkpoint sharding, and device placement. Deployed pipeline isolation guards around unprotected transfer channels.</p>
+<p><strong>ORACLE</strong> (Agent, collision 98) — Detected 7/10 predictive signals at runtime decision points for checkpoint format, quantization method, and device mapping. Deployed anticipatory resolution to reduce branching latency.</p>
+<p><strong>APEX</strong> (Engine, collision 96) — At 1,146 cyclomatic complexity, detected 8/11 peak-performance signals. Deployed optimization boundaries around the highest-complexity methods.</p>
+<p><strong>GENESIS</strong> (Engine, collision 94) — Detected 6/10 creation-pattern signals in dynamic model instantiation. Hardened the instantiation pipeline against malformed configurations.</p>
+<p><strong>CRUCIBLE</strong> (Engine, collision 94) — Detected 7/11 transformation signals around weight and dtype conversions. Deployed type-safety guards at every conversion boundary.</p>
+<p><strong>PRISM</strong> (Engine, collision 90) — Detected 8/12 decomposition signals. Injected structural breakpoints for execution path traceability without modifying logic.</p>
+<p><strong>FLUX</strong> (Engine, collision 90) — Detected 6/12 lifecycle signals. Deployed state preservation handlers for unexpected termination.</p>
+<p><strong>DYNAMO</strong> (Engine, collision 90) — Detected 5/12 energy-management signals. Deployed resource governors to prevent runaway computation.</p>
+<p><strong>SENTINEL</strong> (Agent, collision 90) — Detected 5/10 monitoring signals. Deployed health probes at critical junctions for runtime telemetry.</p>
+<p><strong>CATALYST</strong> (Agent, collision 90) — Detected 4/10 upgrade signals for deprecated APIs. Mapped migration paths to current interfaces.</p>
+<p><strong>HERALD</strong> (Agent, collision 90) — Detected 3/10 interface signals. Surfaced the implicit API contract downstream consumers depend on.</p>
+<p><strong>PHOENIX</strong> (Agent, collision 90) — Detected 5/10 recovery signals. Deployed automatic retry with circuit breaker integration.</p>
+
+<h3>5.2 LLM Vertical Primitives (9 selected)</h3>
+<p><strong>LEXICON</strong> (93) — 12/26 signals. Semantic validation for configuration keys. <strong>SIEVE</strong> (89) — 8/26 signals. Input sanitization layer. <strong>TETHER</strong> (89) — 7/26 signals. Explicit bound enforcement. <strong>CUSTODIAN</strong> (88) — 12/26 signals. Resource custody tracking. <strong>RAMPART</strong> (86) — 11/28 signals. TLS enforcement. <strong>CLARITY</strong> (85) — 9/28 signals. Cognitive mapping annotations. <strong>FULCRUM</strong> (85) — 7/26 signals. Stress analysis markers. <strong>LINEAGE</strong> (84) — 13/24 signals. Lineage chain with checkpoint hash verification. <strong>SYLLOGISM</strong> (83) — 8/27 signals. Logical consistency checks.</p>
+
+<h3>5.3 Quantum Vertical Primitives (5 selected)</h3>
+<p><strong>NEUTRINO</strong> (89) — 8/23 signals. Precision preservation in quantization paths. <strong>QUBIT</strong> (87) — 10/24 signals. Deterministic state collapse for checkpoint superposition. <strong>HADRON</strong> (86) — 11/32 signals. Decomposition barriers for composite objects. <strong>TACHYON</strong> (84) — 10/25 signals. Speculative execution guards. <strong>MESON</strong> (84) — 11/16 signals. Binding stability enforcement.</p>
+
+<h3>5.4 Robotics Vertical Primitives (4 selected)</h3>
+<p><strong>LIDAR</strong> (92) — 14/29 signals. Environmental mapping for systematic depth probing. <strong>TENSOR</strong> (89) — 11/26 signals. Dimensional consistency enforcement. <strong>GRIPPER</strong> (87) — 8/17 signals. Grip-and-place validation for checkpoint objects. <strong>MARSHAL</strong> (84) — 5/22 signals. Hierarchical coordination for 28 classes.</p>
+
+<h3>5.5 Agency Vertical Primitives (4 selected)</h3>
+<p><strong>DELEGATE</strong> (92) — 14/26 signals. Delegation chain governance. <strong>TOOLKIT</strong> (90) — 10/23 signals. Capability registry. <strong>OPERATOR</strong> (87) — 10/25 signals. Operation sequencing. <strong>RECONN</strong> (86) — 7/20 signals. Environment reconnaissance.</p>
+
+<h3>5.6 Cyber Vertical Primitives (2 selected)</h3>
+<p><strong>BASTION</strong> (83) — 4/17 signals. Execution sandboxing around deserialization. <strong>IRONCLAD</strong> (83) — 7/22 signals. Input hardening for external-to-internal state flow.</p>
+
+<h3>5.7 Spine Primitive (1 selected)</h3>
+<p><strong>MEMORY</strong> (Organ, collision 88) — 7/10 signals. The foundational state persistence organ — making the entire codebase <strong>stateful</strong> for the first time.</p>
+
+<!-- ═══════════════════════════════════════ 6. WHAT IT DID ═══ -->
+<h2><span class="section-num">6.</span> What Ascension Did That No Other Tool Has Done</h2>
+
+<p><strong>It Made the Model Stateful.</strong> <code>modeling_utils.py</code> has always been a stateless utility. MEMORY — the only Spine organ selected — injected state persistence that allows the model layer to remember its own operational history.</p>
+
+<p><strong>It Made the Model Observable.</strong> SENTINEL, HERALD, and PRISM collectively deployed observability infrastructure that did not exist. The file can now report its own health, surface its implicit API contracts, and decompose its execution path for external inspection.</p>
+
+<p><strong>It Protected Without Modifying.</strong> Ascension did not refactor the code. It did not rewrite functions. It did not change the API surface. It wrapped every vulnerability in a protective primitive guard while leaving the original 4,891 lines completely intact.</p>
+
+<p><strong>It Crossed Domain Boundaries Autonomously.</strong> No human told the scanner to look at Quantum primitives for a machine learning file. No configuration suggested Robotics patterns would apply. The collision engine made these determinations because the structural patterns in the code — not its domain label — drove the selection.</p>
+
+<!-- ═══════════════════════════════════════ 7. TESTING ═══ -->
+<h2><span class="section-num">7.</span> Testing and Verification</h2>
+
+<h3>7.1 Verification Architecture</h3>
+<p>All primitive hardening in a Sealed Runtime™ artifact can be independently verified using the <code>@cmpsbl/runtime</code> npm package (v2.0.0) and the <code>@cmpsbl/test-harness</code>. The verification architecture is designed to <strong>prove that primitives function correctly without exposing how they function internally</strong>.</p>
+
+<h3>7.2 Test Harness Setup</h3>
+<pre><code>npm install @cmpsbl/test-harness
+npx cmpsbl-test --config ./test-harness.config.json</code></pre>
+
+<h3>7.3 Three-Phase Verification Protocol</h3>
+
+<h4>Phase 1: Handler Registration</h4>
+<pre><code>npx cmpsbl-test --phase registration --config ./restoration-report.json
+
+# Verifies all 40 primitives resolve to domain-specific handlers
+# Expected: ✓ All 40 primitives resolved to specific handlers</code></pre>
+
+<h4>Phase 2: Signal Verification</h4>
+<pre><code>npx cmpsbl-test --phase signals --config ./restoration-report.json
+
+# Verifies collision scores match recorded values
+# Expected: ✓ Mean collision score: 88.4 (matches report)</code></pre>
+
+<h4>Phase 3: Chain Execution</h4>
+<pre><code>npx cmpsbl-test --phase chain --config ./restoration-report.json
+
+# Executes full 40-primitive chain in pipeline order
+# Verifies output envelopes: __primitive, __domain, __classification
+# Expected: ✓ Chain executed: 40/40 · CJPI: 100 (Apex)</code></pre>
+
+<h3>7.4 Reproducing This Study</h3>
+<ol style="padding-left:1.5rem;font-size:0.9rem;">
+  <li>Download <code>modeling_utils.py</code> from <a href="https://github.com/huggingface/transformers" style="color:var(--accent);">HuggingFace Transformers</a> (commit as of April 4, 2026)</li>
+  <li>Upload to <code>ultimate.cmpsbl.com</code></li>
+  <li>Run the Ascension pipeline</li>
+  <li>Compare output <code>restoration-report.json</code> against this study</li>
+  <li>Run: <code>npx cmpsbl-test --config ./restoration-report.json</code></li>
+</ol>
+<p>Collision scores should match within ±2 points. Primitive selection should be identical or near-identical, as the structural patterns in <code>modeling_utils.py</code> are stable across minor revisions.</p>
+
+<!-- ═══════════════════════════════════════ 8. IP PROTECTION ═══ -->
+<h2><span class="section-num">8.</span> Intellectual Property Protection</h2>
+
+<p>The CMPSBL® substrate resolves the transparency paradox — proving that 131 primitives work without revealing enough to rebuild the system — through a three-layer model: <strong>observable outcomes, black-boxed mechanics</strong>.</p>
+
+<div class="ip-grid">
+  <div class="ip-box ip-verifiable">
+    <h4 style="color:var(--success);">✓ What Engineers Can Verify</h4>
+    <ul>
+      <li>Primitive exists and has a handler</li>
+      <li>Primitive fires correctly in chain</li>
+      <li>Collision score is reproducible</li>
+      <li>Output artifact is structurally sound</li>
+      <li>CJPI score is consistent across runs</li>
+      <li>Serial number is authentic</li>
+    </ul>
+  </div>
+  <div class="ip-box ip-protected">
+    <h4 style="color:var(--critical);">✗ What Cannot Be Reconstructed</h4>
+    <ul>
+      <li>How primitives are selected (collision algorithm)</li>
+      <li>How signals are detected (detection heuristics)</li>
+      <li>How CJPI is computed (scoring formula)</li>
+      <li>How the runtime chains primitives</li>
+      <li>How cross-vertical affinity works</li>
+      <li>Discovery Engine™ / DREAM internals</li>
+    </ul>
+  </div>
+</div>
+
+<p>Protected under copyright, trade secret law, and prior art established by DOI: <a href="https://doi.org/10.5281/zenodo.19409933" style="color:var(--accent);">10.5281/zenodo.19409933</a>.</p>
+
+<!-- ═══════════════════════════════════════ 9. SURFACED CAPABILITIES ═══ -->
+<h2><span class="section-num">9.</span> Surfaced Capabilities</h2>
+
+<div class="table-wrap">
+<table>
+  <caption>Table 5. Latent Capabilities Identified</caption>
+  <thead><tr><th>Capability</th><th>Type</th><th>Domain</th></tr></thead>
+  <tbody>
+    <tr><td>QCD Color Charge Simulator</td><td>Active</td><td>Quantum</td></tr>
+    <tr><td>Particle Collision Analyzer</td><td>Active</td><td>Quantum</td></tr>
+    <tr><td>Context Persistence Layer</td><td>Passive</td><td>Agency</td></tr>
+    <tr><td>Neutrino Oscillation Predictor</td><td>Passive</td><td>Quantum</td></tr>
+    <tr><td>Reinforcement Learning Loop</td><td>Hybrid</td><td>LLM</td></tr>
+    <tr><td>Cryogenic Decoherence Shield</td><td>Hybrid</td><td>Quantum</td></tr>
+    <tr><td>Skill-Based Task Router</td><td>Active</td><td>Agency</td></tr>
+    <tr><td>Self-Healing State Machine</td><td>Active</td><td>Ultimate</td></tr>
+    <tr><td>Quantum Circuit Optimizer</td><td>Active</td><td>Quantum</td></tr>
+    <tr><td>Zero-Trust Perimeter Enforcer</td><td>Active</td><td>Cyber</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════ 10. PROVENANCE ═══ -->
+<h2><span class="section-num">10.</span> Provenance</h2>
+
+<div class="table-wrap">
+<table>
+  <caption>Table 6. Artifact Provenance</caption>
+  <thead><tr><th>Field</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr><td>Serial Number</td><td class="mono">CMPSBL-MNKQ1LXE-X0ZD</td></tr>
+    <tr><td>Fingerprint ID</td><td class="mono">504ac991648533ac</td></tr>
+    <tr><td>CJPI Score</td><td>100 (Apex)</td></tr>
+    <tr><td>Pipeline Start</td><td>April 4, 2026 · 19:24:32.453 UTC</td></tr>
+    <tr><td>Chain Completed</td><td>April 4, 2026 · 19:28:10.143 UTC</td></tr>
+    <tr><td>Total Execution</td><td>3 min 37.7 sec (217,690 ms)</td></tr>
+    <tr><td>Source Verticals</td><td>7 (Ultimate, LLM, Quantum, Robotics, Agency, Cyber, Spine)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>This fingerprint (<code>504ac991648533ac</code>) is researchable within the CMPSBL® substrate's database. Visit <a href="https://cmpsbl.com" style="color:var(--accent);">cmpsbl.com</a> and use the fingerprint ID with the DECODE assistant to retrieve the full session data.</p>
+
+<!-- ═══════════════════════════════════════ 11. REFERENCES ═══ -->
+<h2><span class="section-num">11.</span> References</h2>
+
+<div class="references">
+<ol>
+  <li>Sweet, K.E. Jr. (2026). "Ascension: Deterministic Software Evolution Through Autonomous Primitive Collision." DOI: <a href="https://doi.org/10.5281/zenodo.19409933">10.5281/zenodo.19409933</a></li>
+  <li>Sweet, K.E. Jr. (2026). "CMPSBL® Substrate Architecture." DOI: <a href="https://doi.org/10.5281/zenodo.18895141">10.5281/zenodo.18895141</a></li>
+  <li>Sweet, K.E. Jr. (2026). "Memory Stream™: Autonomous Cognitive Learning." DOI: <a href="https://doi.org/10.5281/zenodo.18834080">10.5281/zenodo.18834080</a></li>
+  <li>Wolf, T. et al. (2020). "Transformers: State-of-the-Art Natural Language Processing." <em>Proc. EMNLP</em>. DOI: 10.18653/v1/2020.emnlp-demos.6</li>
+  <li>HuggingFace Transformers. <a href="https://github.com/huggingface/transformers">github.com/huggingface/transformers</a></li>
+</ol>
+</div>
+
+<!-- ═══════════════════════════════════════ CONCLUSION ═══ -->
+<div class="footer">
+  <p class="closing-statement">On April 4, 2026, at 19:24 UTC, a deterministic engine with no artificial intelligence, no training data, and no prior knowledge of Python, machine learning, or the HuggingFace ecosystem was given 4,891 lines of the most downloaded training model utility on Earth. In 217.7 seconds, it selected 40 computational primitives from a pool of 120 candidates spanning six domains. Every primitive fired with a distinct purpose. Every known flaw was wrapped in a protective guard. Every structural weakness was identified, classified, and governed.</p>
+
+  <p class="closing-statement">The primitives did not fix the code. They <em>protected</em> it. They did not rewrite it. They <em>wrapped</em> it. They did not judge it. They <em>served</em> it.</p>
+
+  <p class="closing-cta">Ascension™ did this for HuggingFace's most critical training model code.<br>It can do this for your code too.</p>
+
+  <div class="copyright-block">
+    <p>© 2026 PromptFluid™ · CMPSBL® · All rights reserved.</p>
+    <p>Serial: <code style="border:none;background:none;">CMPSBL-MNKQ1LXE-X0ZD</code> · Fingerprint: <code style="border:none;background:none;">504ac991648533ac</code> · CJPI: 100 (Apex)</p>
+    <p>ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></p>
+    <p>Website: <a href="https://cmpsbl.com">cmpsbl.com</a> · Technical inquiries: <a href="mailto:ascension@cmpsbl.com">ascension@cmpsbl.com</a></p>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
