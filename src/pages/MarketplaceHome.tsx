@@ -427,7 +427,9 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
     <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
       <div className={cn(
         "h-full rounded-xl border overflow-hidden bg-card transition-all duration-200 hover:shadow-xl flex flex-col",
-        TIER_BORDER[item.tier] || 'border-border hover:border-primary/30',
+        item.priceCents === 0
+          ? 'border-[hsl(var(--neon-green))]/50 hover:border-[hsl(var(--neon-green))] shadow-[0_0_20px_-5px_hsl(var(--neon-green)/0.3)]'
+          : TIER_BORDER[item.tier] || 'border-border hover:border-primary/30',
       )}>
         {/* Image header */}
         <div className="relative h-40 overflow-hidden bg-muted/30">
