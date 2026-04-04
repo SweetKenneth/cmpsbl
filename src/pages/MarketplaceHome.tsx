@@ -552,10 +552,17 @@ function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy:
               <span className="text-[10px] text-muted-foreground">· {item.downloads} sold</span>
               <span className="text-[10px] text-muted-foreground">· v{item.version}</span>
             </div>
-            <Button size="sm" className="gap-1.5 text-xs shadow-md" onClick={onBuy} disabled={isLoading}>
-              <ShoppingCart className="w-3.5 h-3.5" />
-              {isLoading ? '...' : 'Buy'}
-            </Button>
+            {item.priceCents === 0 ? (
+              <Button size="sm" className="gap-1.5 text-xs shadow-md bg-[hsl(var(--neon-green))] hover:bg-[hsl(var(--neon-green))]/80 text-white" onClick={onBuy}>
+                <Download className="w-3.5 h-3.5" />
+                Free Download
+              </Button>
+            ) : (
+              <Button size="sm" className="gap-1.5 text-xs shadow-md" onClick={onBuy} disabled={isLoading}>
+                <ShoppingCart className="w-3.5 h-3.5" />
+                {isLoading ? '...' : 'Buy'}
+              </Button>
+            )}
           </div>
         </div>
       </div>
