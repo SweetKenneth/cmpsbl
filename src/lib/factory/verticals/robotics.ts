@@ -240,8 +240,8 @@ const ROBO_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'CONDUCTOR',
-    name: 'CONDUCTOR',
+    id: 'DISPATCH',
+    name: 'DISPATCH',
     role: 'agent',
     description: 'Task sequencing and workflow automation agent. Orchestrates multi-step robotic operations, manages dependencies, and handles error recovery in production workflows.',
     inherited: false,
