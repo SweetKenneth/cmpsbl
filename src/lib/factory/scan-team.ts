@@ -667,7 +667,7 @@ function scorePrimitiveRelevance(
     tracer: { signals: [hasAuth, code.includes('trace') || code.includes('chain')], rationale: 'Attack chain reconstruction traces lateral movement and credential abuse' },
     nocturne: { signals: [hasHttp, code.includes('monitor') || code.includes('intel')], rationale: 'Dark web intelligence monitors credential leaks and threat actor activity' },
     ironclad: { signals: [code.includes('compliance') || code.includes('audit'), hasAuth], rationale: 'Continuous compliance validation against SOC2, NIST, and ISO 27001' },
-    bulwark: { signals: [code.includes('import') || code.includes('require'), code.includes('package')], rationale: 'Supply chain auditing detects compromised packages and typosquatting' },
+    citadel: { signals: [code.includes('import') || code.includes('require'), code.includes('package')], rationale: 'Supply chain auditing detects compromised packages and typosquatting' },
     // Robotics vertical primitives — Engines
     fabricator: { signals: [code.includes('build') || code.includes('manufacture') || code.includes('cad'), hasAsync], rationale: 'Hardware fabrication and component lifecycle with CAD-to-part pipelines and predictive maintenance' },
     servo: { signals: [code.includes('motor') || code.includes('actuator') || code.includes('pid'), hasAsync], rationale: 'Motor control and actuator orchestration with PID tuning and torque profiling' },
