@@ -39,6 +39,11 @@
 
 import type { VerticalPrimitive, VerticalSubstrateConfig } from '../vertical-substrate';
 import { getSpinePrimitives, assembleVerticalPrimitives } from '../vertical-substrate';
+import { getCyberSecurityEngines, getCyberSecurityAgents } from './cybersecurity';
+import { getRoboticsEngines, getRoboticsAgents } from './robotics';
+import { getQuantumEngines, getQuantumAgents } from './quantum';
+import { getLLMEngines, getLLMAgents } from './llm';
+import { getAgencyEngines, getAgencyAgents } from './agency';
 
 /* ─── Universal Engines (gap-fillers) ─── */
 
