@@ -597,4 +597,5 @@ And they did it autonomously.
 
 *© 2026 PromptFluid™ · CMPSBL® · All rights reserved.*  
 *Serial: CMPSBL-MNKQ1LXE-X0ZD · Fingerprint: 504ac991648533ac · CJPI: 100 (Apex)*  
-*ORCID: [0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)*
+*ORCID: [0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)*  
+*Website: [cmpsbl.com](https://cmpsbl.com) · Technical inquiries: [ascension@cmpsbl.com](mailto:ascension@cmpsbl.com)*
