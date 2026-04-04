@@ -17,6 +17,7 @@ import {
 import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
+import { generateUniversalUserGuide } from '@/lib/export/universal-user-guide';
 
 export interface ProductZipInput {
   id: string;
@@ -292,6 +293,18 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
   for (const [filename, content] of Object.entries(htmlArtifacts)) {
     htmlFolder.file(filename, content);
   }
+
+  // ═══ Universal User Guide (HTML) — ships in every export ═══
+  docsFolder.file('USER-GUIDE.html', generateUniversalUserGuide({
+    name: product.name,
+    slug: product.slug,
+    kind: product.kind,
+    tier: product.tier,
+    cjpi: cjpi,
+    version: product.version,
+    capabilities: caps,
+    modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
+  }));
 
   return zip.generateAsync({ type: 'blob' });
 }

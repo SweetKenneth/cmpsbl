@@ -17,6 +17,7 @@ import { generateIntegrationGuide } from './integration-guide-generator';
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from './export-artifacts-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { generateUniversalUserGuide } from './universal-user-guide';
 
 export interface TieredFoundryExportArtifact {
   id: string;
@@ -112,8 +113,12 @@ export async function downloadTieredFoundryZip(options: {
   const JSZip = JSZipMod.default;
   const zip = new JSZip();
 
+  // Dynamic naming: use first artifact name if single, otherwise use prefix
+  const dynamicName = artifacts.length === 1
+    ? slugify(artifacts[0].name || artifacts[0].id)
+    : filePrefix;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const rootName = `${filePrefix}-${timestamp}`;
+  const rootName = `${dynamicName}-${timestamp}`;
   const root = zip.folder(rootName)!;
 
   const languageMap: Record<string, ExportLanguage[]> = {};
@@ -224,6 +229,23 @@ export async function downloadTieredFoundryZip(options: {
       systemChain: item.systemChain || ['SYSTEM'],
       score: item.score,
       category: item.category || undefined,
+    }));
+
+    // ═══ Universal User Guide (HTML) — ships in every export ═══
+    artifactFolder.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
+      name: displayName,
+      slug: slugify(item.name || item.id),
+      kind: 'memory-stream',
+      tier: item.publicTier || getTierFromScore(item.score),
+      cjpi: item.score,
+      fingerprint: item.fingerprint || undefined,
+      modules: item.systemChain || ['SYSTEM'],
+      substrate: item.source?.includes('cyber') ? 'cyber'
+        : item.source?.includes('robotics') ? 'robotics'
+        : item.source?.includes('quantum') ? 'quantum'
+        : item.source?.includes('llm') ? 'llm'
+        : item.source?.includes('agency') ? 'agency'
+        : undefined,
     }));
 
     for (const file of bundle.files) {

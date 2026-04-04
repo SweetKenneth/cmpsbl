@@ -5,6 +5,7 @@ import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page'
 import { humanizeCapabilityName } from '@/lib/export/humanize-name';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { generateExportArtifacts, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
+import { generateUniversalUserGuide } from '@/lib/export/universal-user-guide';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -858,6 +859,16 @@ export default function STierVault() {
       if (vaultDiscovery) {
         folder.file('DISCOVERY-CONTEXT.md', vaultDiscovery);
       }
+
+      // ═══ Universal User Guide (HTML) — ships in every export ═══
+      folder.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
+        name: d.name,
+        slug,
+        kind: 'crown-jewel',
+        tier: getTierFromScore(d.cjpi),
+        cjpi: d.cjpi,
+        modules: d.module_chain || [primaryModule],
+      }));
     }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
