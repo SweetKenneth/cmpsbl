@@ -37,6 +37,5 @@ export async function downloadMarketplaceArtifact(item: MarketplaceItem): Promis
     artifacts: [artifact],
     filePrefix: `cmpsbl-marketplace-${item.slug}`,
     sourceLabel: `Marketplace · ${item.tier} Tier`,
-    mergeRuntime: true,
   });
 }

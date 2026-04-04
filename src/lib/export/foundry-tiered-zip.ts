@@ -14,6 +14,7 @@ import {
   generateSealedRuntimeReadme,
 } from './sealed-runtime-generator';
 import { generateIntegrationGuide } from './integration-guide-generator';
+import { blackboxFile } from './blackbox';
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from './export-artifacts-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
@@ -92,10 +93,8 @@ export async function downloadTieredFoundryZip(options: {
   artifacts: TieredFoundryExportArtifact[];
   filePrefix: string;
   sourceLabel: string;
-  /** When true, inline the sealed runtime into each source file instead of a separate _runtime/ folder */
-  mergeRuntime?: boolean;
 }): Promise<TieredFoundryZipResult> {
-  const { artifacts, filePrefix, sourceLabel, mergeRuntime = false } = options;
+  const { artifacts, filePrefix, sourceLabel } = options;
 
   if (artifacts.length === 0) {
     return { artifactCount: 0, totalLanguageVariants: 0, fileCount: 0 };
@@ -155,12 +154,7 @@ export async function downloadTieredFoundryZip(options: {
   };
   root.file('manifest.json', JSON.stringify(manifest, null, 2));
 
-  // When mergeRuntime is true, skip the separate _runtime folder — it gets inlined into each source file
-  if (!mergeRuntime) {
-    const runtimeFolder = root.folder('_runtime')!;
-    runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-    runtimeFolder.file('README.md', generateSealedRuntimeReadme());
-  }
+  // Runtime is merged into each source file — no separate _runtime/ folder
 
   let fileCount = 0;
   let totalLanguageVariants = 0;
@@ -254,25 +248,25 @@ export async function downloadTieredFoundryZip(options: {
     }));
 
     for (const file of bundle.files) {
-      if (mergeRuntime && file.language === 'typescript' && file.adapter === 'standalone') {
-        // Merge: prepend sealed runtime directly into the source file
-        const mergedContent = [
-          '// ═══════════════════════════════════════════════════════════════════',
-          '// CMPSBL® Merged Artifact — Runtime + Source in a Single Drop-In File',
-          '// ═══════════════════════════════════════════════════════════════════',
-          '',
-          '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
-          '',
-          runtimeFiles.runtime,
-          '',
-          '// ── Artifact Source ─────────────────────────────────────────────────',
-          '',
-          file.content,
-        ].join('\n');
-        artifactFolder.file(file.filename, mergedContent);
-      } else {
-        artifactFolder.file(file.filename, file.content);
-      }
+      // Merge sealed runtime into every source file — single drop-in artifact
+      const mergedContent = [
+        '// ═══════════════════════════════════════════════════════════════════',
+        '// CMPSBL® Sealed Artifact — Runtime + Source · Single Drop-In File',
+        '// ═══════════════════════════════════════════════════════════════════',
+        '',
+        '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
+        '',
+        runtimeFiles.runtime,
+        '',
+        '// ── Artifact Source ─────────────────────────────────────────────────',
+        '',
+        file.content,
+      ].join('\n');
+
+      // Apply black-box obfuscation — protect CJPI weights, tier thresholds, and internals
+      const lang = file.language || 'typescript';
+      const sealed = blackboxFile(mergedContent, lang);
+      artifactFolder.file(file.filename, sealed);
       fileCount += 1;
     }
 
