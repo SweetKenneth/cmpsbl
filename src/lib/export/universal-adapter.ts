@@ -379,7 +379,9 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   firrtl: genBridge('firrtl'),
   bluespec: genBridge('bluespec'),
 };
-  function header(a: ExportableArtifact, lang: string, comment: string): string {
+
+function header(a: ExportableArtifact, lang: string, comment: string): string {
+  const isTS = lang === 'TypeScript';
   const bridgeNote = isTS
     ? `${comment} Type: Canonical Runtime | Full CJPI, tiering, pipeline orchestration`
     : `${comment} Type: Bridge Adapter | Routes to canonical runtime, falls back locally`;
