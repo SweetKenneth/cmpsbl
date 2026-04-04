@@ -89,7 +89,10 @@ export function useMarketplaceInventory() {
       const dbItems = (data as unknown as DBInventoryRow[]).map(rowToItem);
 
       /** Use whichever source has more items — DB may lag behind seed after expansion */
-      return dbItems.length >= MERCHANT_INVENTORY.length ? dbItems : MERCHANT_INVENTORY;
+      const base = dbItems.length >= MERCHANT_INVENTORY.length ? dbItems : MERCHANT_INVENTORY;
+
+      /** Apply the rotating free item — always exactly one $0 item */
+      return applyFreeItemRotation(base);
     },
     staleTime: 5 * 60_000, // 5 min — MERCHANT scans every 8h so no need for rapid refresh
     refetchOnWindowFocus: false,
