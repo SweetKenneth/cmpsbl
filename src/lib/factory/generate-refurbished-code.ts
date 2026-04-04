@@ -888,7 +888,9 @@ export function generateRefurbishedCode(
 
   const imports: string[] = [];
   const guards: string[] = [];
-  let transformedCode = originalCode;
+  // Strip any existing sealed-runtime footers from prior passes to prevent duplication
+  const cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Sealed Runtime ═══.*\n?/g, '\n').trimEnd();
+  let transformedCode = cleanedSource;
 
   for (const p of selectedPrimitives) {
     const wrapper = PRIMITIVE_WRAPPERS[p.primitiveId];
