@@ -254,7 +254,25 @@ export async function downloadTieredFoundryZip(options: {
     }));
 
     for (const file of bundle.files) {
-      artifactFolder.file(file.filename, file.content);
+      if (mergeRuntime && file.language === 'typescript' && file.adapter === 'standalone') {
+        // Merge: prepend sealed runtime directly into the source file
+        const mergedContent = [
+          '// ═══════════════════════════════════════════════════════════════════',
+          '// CMPSBL® Merged Artifact — Runtime + Source in a Single Drop-In File',
+          '// ═══════════════════════════════════════════════════════════════════',
+          '',
+          '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
+          '',
+          runtimeFiles.runtime,
+          '',
+          '// ── Artifact Source ─────────────────────────────────────────────────',
+          '',
+          file.content,
+        ].join('\n');
+        artifactFolder.file(file.filename, mergedContent);
+      } else {
+        artifactFolder.file(file.filename, file.content);
+      }
       fileCount += 1;
     }
 
