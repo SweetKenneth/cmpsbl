@@ -363,7 +363,7 @@ export function getAgencySubstrate(): VerticalSubstrateConfig {
         'context_preservation_methods',
         'creative_problem_solving_patterns',
       ],
-      priorityPrimitives: ['MANDATE', 'OPERATOR', 'SENTINEL', 'SCHOLAR'],
+      priorityPrimitives: ['MANDATE', 'OPERATOR', 'OVERSEER', 'SCHOLAR'],
       batchSize: 6,
     },
     memoryStreamConfig: {
