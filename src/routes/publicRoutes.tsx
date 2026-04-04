@@ -156,7 +156,7 @@ export const publicRoutes = (
     <Route path="/agency" element={<Navigate to="/" replace />} />
     <Route path="/a/:slug" element={<AgencyPortal />} />
     <Route path="/devtools" element={<DevTools />} />
-    <Route path="/academy" element={<DeveloperAcademy />} />
+    <Route path="/academy" element={<Navigate to="/developers/guide" replace />} />
     <Route path="/audit" element={<Navigate to="/" replace />} />
     <Route path="/gaming" element={<GamingSubstrate />} />
     <Route path="/verticals" element={<VerticalPortal />} />
