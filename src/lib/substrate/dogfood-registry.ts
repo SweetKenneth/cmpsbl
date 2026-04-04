@@ -301,8 +301,8 @@ export const DOGFOOD_REGISTRY: DogfoodEntry[] = [
     category: 'observability',
   },
   {
-    storeSlug: 'oracle',
-    codename: 'ORACLE',
+    storeSlug: 'mini-oracle',
+    codename: 'Mini-ORACLE',
     internalPrimitives: ['ORACLE Prophetic Engine', 'Drift Detector', 'Confidence Classifier'],
     internalRole: 'Predictive modeling for substrate health — drift detection, confidence gating before autonomous execution, and pattern recognition across system signals.',
     active: true,
