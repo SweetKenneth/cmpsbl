@@ -9,6 +9,7 @@ const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
 const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
 const LLMHome = lazy(() => import("@/pages/LLMHome"));
 const AgencyHome = lazy(() => import("@/pages/AgencyHome"));
+const UltimateHome = lazy(() => import("@/pages/UltimateHome"));
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 
 /**
@@ -82,6 +83,14 @@ export default function DomainAwareHome() {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(30 20% 4%)" }} />}>
         <AgencyHome />
+      </Suspense>
+    );
+  }
+
+  if (verticalKey === 'ultimate') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(270 30% 4%)" }} />}>
+        <UltimateHome />
       </Suspense>
     );
   }

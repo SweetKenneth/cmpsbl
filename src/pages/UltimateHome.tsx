@@ -1,0 +1,327 @@
+/**
+ * CMPSBL ULTIMATE™ — Universal Ascension Landing Page
+ *
+ * Royal purple/violet theme. Every-primitive-is-a-candidate aesthetic.
+ * Distinct visual identity for ultimate.cmpsbl.com.
+ *
+ * © CMPSBL® — All rights reserved.
+ */
+
+import { useSSORelay } from "@/hooks/useSSORelay";
+import { Helmet } from "react-helmet-async";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {
+  Crown, Zap, ArrowRight, Layers, Activity, Sparkles,
+  Target, Brain, Shield, Search, Wrench, MessageSquare,
+  Eye, Gauge, GitBranch, Server, Radio, Blocks,
+  Cpu, Network, Globe, Flame,
+  type LucideIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { getUniversalPoolSize, getUniversalPoolBreakdown } from "@/lib/factory/universal-pool-scanner";
+
+/* ─── Theme Constants ─── */
+const ACCENT = 'hsl(270 80% 65%)';
+const ACCENT_GLOW = 'hsl(270 90% 75%)';
+const ACCENT_DIM = 'hsl(270 60% 45%)';
+const BG_DEEP = 'hsl(270 30% 4%)';
+const BG_CARD = 'hsl(270 20% 7%)';
+const BORDER = 'hsl(270 15% 14%)';
+const TEXT_PRIMARY = 'hsl(270 10% 92%)';
+const TEXT_SECONDARY = 'hsl(270 15% 45%)';
+const GOLD = 'hsl(45 100% 60%)';
+
+const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
+  { id: "APEX", name: "APEX", desc: "Peak performance — hot path detection, algorithmic bottlenecks, cache optimization, lazy evaluation", icon: Gauge, color: "hsl(0 85% 60%)" },
+  { id: "CONDUIT", name: "CONDUIT", desc: "Data pipelines — ETL detection, stream processing, backpressure handling, idempotency patterns", icon: GitBranch, color: "hsl(200 85% 55%)" },
+  { id: "PRISM", name: "PRISM", desc: "Multi-paradigm — OOP/FP/reactive/actor model recognition, SOLID scoring, paradigm coherence", icon: Eye, color: "hsl(160 80% 50%)" },
+  { id: "GENESIS", name: "GENESIS", desc: "Architecture seeding — boilerplate detection, project maturity, module boundaries, DI patterns", icon: Blocks, color: "hsl(35 90% 55%)" },
+  { id: "FLUX", name: "FLUX", desc: "State management — Redux/signals/atoms, event sourcing, CQRS, state machines, side-effect isolation", icon: Radio, color: "hsl(270 80% 60%)" },
+  { id: "CRUCIBLE", name: "CRUCIBLE", desc: "Stress analysis — resource exhaustion, connection pools, memory leaks, thread starvation, GC pressure", icon: Flame, color: "hsl(15 90% 55%)" },
+  { id: "MERIDIAN", name: "MERIDIAN", desc: "API governance — contract validation, REST maturity, versioning, breaking change detection, pagination", icon: Server, color: "hsl(180 70% 50%)" },
+  { id: "DYNAMO", name: "DYNAMO", desc: "Concurrency — async patterns, race conditions, deadlock detection, mutex analysis, worker threads", icon: Cpu, color: "hsl(45 90% 55%)" },
+];
+
+const AGENT_DATA: { id: string; name: string; desc: string; icon: LucideIcon }[] = [
+  { id: "SENTINEL", name: "SENTINEL", desc: "Input validation — sanitization, type coercion, injection vectors, schema enforcement", icon: Shield },
+  { id: "CATALYST", name: "CATALYST", desc: "Dependency optimization — dead code, circular imports, bundle bloat, tree-shaking", icon: Zap },
+  { id: "ARBITER", name: "ARBITER", desc: "Error handling — try-catch scoring, recovery strategies, circuit breakers, fault tolerance", icon: Target },
+  { id: "HERALD", name: "HERALD", desc: "Observability — logging patterns, metrics, distributed tracing, health checks, alerting", icon: MessageSquare },
+  { id: "NOMAD", name: "NOMAD", desc: "Portability — platform coupling, containerization readiness, cross-runtime compatibility", icon: Globe },
+  { id: "WELDER", name: "WELDER", desc: "Integration — REST/GraphQL/gRPC/WebSocket/message queue patterns, coupling scoring", icon: Network },
+  { id: "ORACLE", name: "ORACLE", desc: "Configuration — feature flags, environment overrides, secrets handling, config drift", icon: Brain },
+  { id: "PHOENIX", name: "PHOENIX", desc: "Migration — deprecation detection, upgrade pathways, backward compatibility, schema evolution", icon: Sparkles },
+];
+
+const VERTICAL_SOURCES = [
+  { name: "Cyber", color: "hsl(0 80% 55%)", count: 16 },
+  { name: "Robotics", color: "hsl(210 80% 55%)", count: 16 },
+  { name: "Quantum", color: "hsl(270 80% 60%)", count: 16 },
+  { name: "LLM", color: "hsl(155 80% 50%)", count: 16 },
+  { name: "Agency", color: "hsl(35 90% 55%)", count: 16 },
+  { name: "Universal", color: ACCENT, count: 16 },
+];
+
+export default function UltimateHome() {
+  useSSORelay();
+  const navigate = useNavigate();
+  const [poolSize, setPoolSize] = useState(96);
+  const [breakdown, setBreakdown] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    setPoolSize(getUniversalPoolSize());
+    setBreakdown(getUniversalPoolBreakdown());
+  }, []);
+
+  const STATS = [
+    { label: "Candidate Primitives", value: `${poolSize}`, icon: Layers },
+    { label: "Source Verticals", value: "6", icon: Activity },
+    { label: "Max Ascension Slots", value: "40", icon: Crown },
+    { label: "Dynamic Selection", value: "∞", icon: Sparkles },
+  ];
+
+  return (
+    <>
+      <Helmet>
+        <title>CMPSBL ULTIMATE™ — Universal Ascension · Every Primitive Is a Candidate</title>
+        <meta name="description" content="CMPSBL ULTIMATE™ — The ceiling of Ascension. 96 candidate primitives from every vertical compete for 40 slots. Dynamic selection produces the maximum compounding effect for your specific codebase." />
+      </Helmet>
+
+      <VerticalReturnBanner verticalName="CMPSBL ULTIMATE™" accentColor={ACCENT} />
+      <PublicNav />
+
+      <div className="min-h-screen" style={{ background: BG_DEEP }}>
+        {/* Hero */}
+        <section className="relative overflow-hidden px-4 sm:px-6 pt-20 pb-24">
+          <div className="absolute inset-0 pointer-events-none" style={{
+            background: `radial-gradient(ellipse 60% 50% at 50% 0%, hsl(270 60% 25% / 0.5), transparent)`,
+          }} />
+          <div className="absolute inset-0 pointer-events-none" style={{
+            background: `radial-gradient(ellipse 30% 40% at 20% 30%, hsl(45 100% 30% / 0.1), transparent)`,
+          }} />
+          <div className="absolute inset-0 pointer-events-none" style={{
+            background: `radial-gradient(ellipse 25% 35% at 80% 20%, hsl(270 80% 40% / 0.15), transparent)`,
+          }} />
+
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+              <Badge className="mb-6 border-0 px-3 py-1 text-xs font-mono tracking-wider" style={{
+                background: `${ACCENT}15`,
+                color: GOLD,
+              }}>
+                <Crown className="inline h-3 w-3 mr-1" />
+                ULTIMATE SUBSTRATE · {poolSize} CANDIDATES
+              </Badge>
+
+              <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-4" style={{ color: TEXT_PRIMARY }}>
+                CMPSBL <span style={{ color: ACCENT }}>ULTIMATE</span>™
+              </h1>
+
+              <p className="text-lg sm:text-xl mb-2 font-semibold" style={{ color: GOLD }}>
+                Every Primitive. Maximum Compounding. Universal Ascension.
+              </p>
+
+              <p className="text-sm sm:text-base max-w-2xl mx-auto mb-10" style={{ color: TEXT_SECONDARY }}>
+                {poolSize} candidate primitives from {Object.keys(breakdown).length || 6} verticals compete for 40 Ascension slots.
+                A universal scanner dynamically selects the optimal combination that produces
+                the maximum compounding effect for your specific codebase — no two results alike.
+              </p>
+
+              <div className="flex flex-wrap gap-3 justify-center">
+                <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(270 20% 4%)' }}
+                  onClick={() => navigate('/ascension')}>
+                  Enter Ultimate Ascension <Crown className="ml-2 h-4 w-4" />
+                </Button>
+                <Button size="lg" variant="outline" className="font-bold" style={{
+                  borderColor: BORDER, color: 'hsl(270 10% 70%)',
+                  background: BG_CARD,
+                }} onClick={() => navigate('/explore')}>
+                  Explore Capabilities <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Stats */}
+        <section className="px-4 sm:px-6 pb-16">
+          <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {STATS.map((s, i) => (
+              <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                className="text-center p-4 rounded-xl" style={{ background: BG_CARD, border: `1px solid ${BORDER}` }}>
+                <s.icon className="h-5 w-5 mx-auto mb-2" style={{ color: ACCENT }} />
+                <div className="text-xl font-bold font-mono" style={{ color: TEXT_PRIMARY }}>{s.value}</div>
+                <div className="text-xs" style={{ color: TEXT_SECONDARY }}>{s.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section className="px-4 sm:px-6 pb-20">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
+              How Universal Ascension Works
+            </h2>
+            <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
+              Unlike standard verticals with 16 fixed expansion primitives, Ultimate evaluates the entire pool
+            </p>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                { step: "01", title: "Pool Assembly", desc: `${poolSize} expansion primitives from all 6 verticals are loaded into the Universal Pool — Cyber, Robotics, Quantum, LLM, Agency, and 16 Universal gap-fillers.` },
+                { step: "02", title: "Affinity Scoring", desc: "Every candidate is scored against your uploaded code using signal matching, capability breadth, and compounding potential. Diversity constraints prevent any single vertical from dominating." },
+                { step: "03", title: "Optimal Selection", desc: "The top 16 are selected and merged with the 24-primitive Spine to form your unique 40-primitive surface — the maximum compounding configuration for your specific codebase." },
+              ].map((item, i) => (
+                <motion.div key={item.step} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * i }}
+                  className="p-5 rounded-xl" style={{ background: BG_CARD, border: `1px solid ${BORDER}` }}>
+                  <div className="text-2xl font-black font-mono mb-2" style={{ color: ACCENT_DIM }}>{item.step}</div>
+                  <div className="text-sm font-bold mb-2" style={{ color: TEXT_PRIMARY }}>{item.title}</div>
+                  <p className="text-xs leading-relaxed" style={{ color: TEXT_SECONDARY }}>{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Vertical Sources */}
+        <section className="px-4 sm:px-6 pb-20">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
+              Primitive Pool Sources
+            </h2>
+            <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
+              {poolSize} candidates drawn from every vertical substrate in the ecosystem
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {VERTICAL_SOURCES.map((v, i) => (
+                <motion.div key={v.name} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.05 * i }}
+                  className="p-4 rounded-xl text-center" style={{
+                    background: BG_CARD, border: `1px solid ${BORDER}`,
+                  }}>
+                  <div className="text-lg font-bold font-mono mb-1" style={{ color: v.color }}>{v.count}</div>
+                  <div className="text-xs font-medium" style={{ color: TEXT_SECONDARY }}>{v.name}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Universal Engines */}
+        <section className="px-4 sm:px-6 pb-20">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
+              Universal Engines
+            </h2>
+            <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
+              8 cross-domain engines designed to fill gaps no specialized vertical covers
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {ENGINE_DATA.map((e, i) => (
+                <motion.div key={e.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }}>
+                  <Card className="border" style={{ background: BG_CARD, borderColor: BORDER }}>
+                    <CardContent className="p-5">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 rounded-lg" style={{ background: `${e.color}15` }}>
+                          <e.icon className="h-5 w-5" style={{ color: e.color }} />
+                        </div>
+                        <span className="font-mono font-bold text-sm" style={{ color: TEXT_PRIMARY }}>{e.name}</span>
+                        <Badge className="ml-auto border-0 text-[10px]" style={{ background: `${ACCENT}15`, color: ACCENT_GLOW }}>
+                          UNIVERSAL
+                        </Badge>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: 'hsl(270 15% 50%)' }}>{e.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Universal Agents */}
+        <section className="px-4 sm:px-6 pb-20">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
+              Universal Agents
+            </h2>
+            <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
+              8 versatile agents covering the most universally desirable capabilities
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {AGENT_DATA.map((a, i) => (
+                <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }}>
+                  <Card className="h-full border" style={{ background: BG_CARD, borderColor: BORDER }}>
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <a.icon className="h-4 w-4" style={{ color: GOLD }} />
+                        <span className="font-mono font-bold text-xs" style={{ color: GOLD }}>{a.name}</span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: 'hsl(270 15% 50%)' }}>{a.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* The Promise */}
+        <section className="px-4 sm:px-6 pb-20">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-2xl font-black mb-6" style={{ color: TEXT_PRIMARY }}>
+              The Ultimate Difference
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4 mb-8 text-left">
+              {[
+                { label: "Standard Vertical", desc: "16 fixed expansion primitives per domain. Great for specialized codebases.", style: "muted" },
+                { label: "Ultimate Ascension", desc: `${poolSize} candidates compete. Dynamic selection. Maximum compounding. No ceiling.`, style: "highlight" },
+              ].map(item => (
+                <div key={item.label} className="p-5 rounded-xl" style={{
+                  background: item.style === 'highlight' ? `${ACCENT}08` : BG_CARD,
+                  border: `1px solid ${item.style === 'highlight' ? ACCENT_DIM : BORDER}`,
+                }}>
+                  <div className="text-sm font-bold mb-2" style={{ color: item.style === 'highlight' ? ACCENT : TEXT_PRIMARY }}>
+                    {item.label}
+                  </div>
+                  <p className="text-xs" style={{ color: TEXT_SECONDARY }}>{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="px-4 sm:px-6 pb-24">
+          <div className="max-w-2xl mx-auto text-center p-10 rounded-2xl" style={{
+            background: BG_CARD, border: `1px solid ${BORDER}`,
+          }}>
+            <Crown className="h-8 w-8 mx-auto mb-4" style={{ color: GOLD }} />
+            <h2 className="text-2xl font-black mb-3" style={{ color: TEXT_PRIMARY }}>
+              Ascend Without Limits
+            </h2>
+            <p className="text-sm mb-6" style={{ color: 'hsl(270 15% 50%)' }}>
+              Upload any codebase. The Universal Scanner evaluates {poolSize} candidate primitives
+              and assembles the perfect 40-primitive surface — the maximum compounding configuration
+              that no single vertical can match. This is the true power of Ascension.
+            </p>
+            <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(270 20% 4%)' }}
+              onClick={() => navigate('/ascension')}>
+              Enter Ultimate Ascension <Crown className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </section>
+      </div>
+
+      <EnhancedFooter />
+    </>
+  );
+}
