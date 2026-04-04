@@ -61,6 +61,7 @@ const AGENT_DATA: { id: string; name: string; desc: string; icon: LucideIcon }[]
 ];
 
 const VERTICAL_SOURCES = [
+  { name: "Spine (Organs + Layers)", color: "hsl(220 70% 55%)", count: 24 },
   { name: "Cyber", color: "hsl(0 80% 55%)", count: 16 },
   { name: "Robotics", color: "hsl(210 80% 55%)", count: 16 },
   { name: "Quantum", color: "hsl(270 80% 60%)", count: 16 },
