@@ -113,8 +113,12 @@ export async function downloadTieredFoundryZip(options: {
   const JSZip = JSZipMod.default;
   const zip = new JSZip();
 
+  // Dynamic naming: use first artifact name if single, otherwise use prefix
+  const dynamicName = artifacts.length === 1
+    ? slugify(artifacts[0].name || artifacts[0].id)
+    : filePrefix;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const rootName = `${filePrefix}-${timestamp}`;
+  const rootName = `${dynamicName}-${timestamp}`;
   const root = zip.folder(rootName)!;
 
   const languageMap: Record<string, ExportLanguage[]> = {};
