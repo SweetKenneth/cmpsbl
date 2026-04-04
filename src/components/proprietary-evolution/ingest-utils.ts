@@ -96,6 +96,24 @@ export const LANG_MAP: Record<string, string> = {
   metal: 'Metal',
 };
 
+/** Extensionless filenames → language mapping (case-insensitive) */
+const EXTENSIONLESS_MAP: Record<string, string> = {
+  dockerfile: 'Dockerfile',
+  makefile: 'Makefile',
+  rakefile: 'Ruby/Rake',
+  gemfile: 'Ruby/Bundler',
+  vagrantfile: 'Ruby/Vagrant',
+  justfile: 'Justfile',
+  cmakelists: 'CMake',
+  snakefile: 'Snakemake',
+  jenkinsfile: 'Groovy/Jenkins',
+  procfile: 'Procfile',
+  brewfile: 'Homebrew',
+  taskfile: 'Taskfile',
+  earthfile: 'Earthfile',
+  containerfile: 'Containerfile',
+};
+
 const SUPPORTED_TEXT_EXTENSIONS = new Set(Object.keys(LANG_MAP));
 const TEXT_SAMPLE_BYTES = 64 * 1024;
 const MAX_TEXT_ANALYSIS_BYTES = 5 * 1024 * 1024; // 5MB — supports larger multi-file projects
