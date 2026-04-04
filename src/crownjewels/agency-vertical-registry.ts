@@ -208,21 +208,21 @@ const OPERATOR_JEWELS: STierEntry[] = [
     'ag-o05'),
 ];
 
-// ── SENTINEL ──
-const SENTINEL_JEWELS: STierEntry[] = [
-  cj(545, 'S-SNTL01', 'Fleet Health Pulse Monitor', 97, 'SENTINEL',
+// ── OVERSEER ──
+const OVERSEER_JEWELS: STierEntry[] = [
+  cj(545, 'S-SNTL01', 'Fleet Health Pulse Monitor', 97, 'OVERSEER',
     'Continuous health monitoring across all active agents with EMA-smoothed metrics, anomaly detection, and predictive failure alerts.',
     'ag-sn01'),
-  cj(546, 'S-SNTL02', 'Self-Healing Protocol Engine', 96, 'SENTINEL',
+  cj(546, 'S-SNTL02', 'Self-Healing Protocol Engine', 96, 'OVERSEER',
     'Autonomous repair protocols for degraded agents including state reconstruction, memory recovery, and capability reinitialization.',
     'ag-sn02'),
-  cj(547, 'S-SNTL03', 'Graceful Degradation Controller', 95, 'SENTINEL',
+  cj(547, 'S-SNTL03', 'Graceful Degradation Controller', 95, 'OVERSEER',
     'Staged capability reduction during system stress with priority-based feature shedding and guaranteed core functionality preservation.',
     'ag-sn03'),
-  cj(548, 'S-SNTL04', 'Circuit Breaker Mesh', 94, 'SENTINEL',
+  cj(548, 'S-SNTL04', 'Circuit Breaker Mesh', 94, 'OVERSEER',
     'Fleet-wide circuit breaker network preventing cascade failures with configurable trip thresholds, half-open testing, and recovery tracking.',
     'ag-sn04'),
-  cj(549, 'S-SNTL05', 'Failure Prediction Model', 93, 'SENTINEL',
+  cj(549, 'S-SNTL05', 'Failure Prediction Model', 93, 'OVERSEER',
     'Predictive failure analysis using historical telemetry patterns, resource utilization trends, and environmental signal correlation.',
     'ag-sn05'),
 ];
@@ -355,7 +355,7 @@ export const AGENCY_CROWN_JEWELS: STierEntry[] = [
   ...REASON_JEWELS,
   ...TOOLKIT_JEWELS,
   ...OPERATOR_JEWELS,
-  ...SENTINEL_JEWELS,
+  ...OVERSEER_JEWELS,
   ...LIAISON_JEWELS,
   ...SCHOLAR_JEWELS,
   ...ENVOY_JEWELS,

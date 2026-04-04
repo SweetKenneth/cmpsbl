@@ -117,13 +117,13 @@ const OPERATOR: STierEntry[] = [
   cj(5045, 'A-OPR05', 'Parallel Execution Coordinator', 86, 'OPERATOR', 'Coordinates parallel task execution with dependency-aware scheduling and result aggregation.', 'ag-op05'),
 ];
 
-// ── SENTINEL ──
-const SENTINEL_A: STierEntry[] = [
-  cj(5046, 'A-SNT01', 'Agent Behavior Anomaly Detector', 91, 'SENTINEL', 'Detects anomalous agent behaviors that deviate from expected operational patterns using statistical profiling.', 'ag-sn01'),
-  cj(5047, 'A-SNT02', 'Resource Abuse Prevention Engine', 90, 'SENTINEL', 'Prevents resource abuse by monitoring agent consumption patterns and enforcing usage quotas.', 'ag-sn02'),
-  cj(5048, 'A-SNT03', 'Hallucination Guard for Agents', 89, 'SENTINEL', 'Validates agent claims and assertions against factual sources before they propagate to outputs.', 'ag-sn03'),
-  cj(5049, 'A-SNT04', 'Permission Boundary Enforcer', 88, 'SENTINEL', 'Enforces strict permission boundaries preventing agents from accessing unauthorized data or tools.', 'ag-sn04'),
-  cj(5050, 'A-SNT05', 'Watchdog Timer Controller', 86, 'SENTINEL', 'Monitors agent execution timeouts and triggers safe termination for runaway processes.', 'ag-sn05'),
+// ── OVERSEER ──
+const OVERSEER_A: STierEntry[] = [
+  cj(5046, 'A-SNT01', 'Agent Behavior Anomaly Detector', 91, 'OVERSEER', 'Detects anomalous agent behaviors that deviate from expected operational patterns using statistical profiling.', 'ag-sn01'),
+  cj(5047, 'A-SNT02', 'Resource Abuse Prevention Engine', 90, 'OVERSEER', 'Prevents resource abuse by monitoring agent consumption patterns and enforcing usage quotas.', 'ag-sn02'),
+  cj(5048, 'A-SNT03', 'Hallucination Guard for Agents', 89, 'OVERSEER', 'Validates agent claims and assertions against factual sources before they propagate to outputs.', 'ag-sn03'),
+  cj(5049, 'A-SNT04', 'Permission Boundary Enforcer', 88, 'OVERSEER', 'Enforces strict permission boundaries preventing agents from accessing unauthorized data or tools.', 'ag-sn04'),
+  cj(5050, 'A-SNT05', 'Watchdog Timer Controller', 86, 'OVERSEER', 'Monitors agent execution timeouts and triggers safe termination for runaway processes.', 'ag-sn05'),
 ];
 
 // ── LIAISON ──
@@ -183,6 +183,6 @@ const ANCHOR: STierEntry[] = [
 export const AGENCY_ATIER_JEWELS: STierEntry[] = [
   ...MANDATE, ...DELEGATE, ...RECONN, ...UPLINK,
   ...SCRIBE, ...INCENTIVE, ...REASON, ...TOOLKIT,
-  ...OPERATOR, ...SENTINEL_A, ...LIAISON_A, ...SCHOLAR,
+  ...OPERATOR, ...OVERSEER_A, ...LIAISON_A, ...SCHOLAR,
   ...ENVOY, ...WARDEN, ...ROGUE, ...ANCHOR,
 ];
