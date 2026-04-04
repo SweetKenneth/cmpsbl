@@ -5,7 +5,7 @@
  * Built from patterns learned through Ascension interactions.
  */
 
-export type SpecialtyDomain = 'fintech' | 'healthcare' | 'legal' | 'security' | 'gaming' | 'education' | 'robotics' | 'quantum' | 'llm' | 'agency';
+export type SpecialtyDomain = 'fintech' | 'healthcare' | 'legal' | 'security' | 'gaming' | 'education' | 'robotics' | 'quantum' | 'llm' | 'agency' | 'ultimate';
 
 export interface SpecialtySubstrate {
   id: string;
