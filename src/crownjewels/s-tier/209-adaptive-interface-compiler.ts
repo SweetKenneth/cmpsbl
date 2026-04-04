@@ -8,7 +8,7 @@
 
 export type Modality = 'voice' | 'text' | 'simplified' | 'assistive' | 'visual';
 
-export interface AccessibilityProfile {
+export interface AdaptiveAccessibilityProfile {
   modality: Modality;
   fontSize: number;
   contrast: 'normal' | 'high' | 'ultra-high';

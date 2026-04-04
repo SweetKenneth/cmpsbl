@@ -14,7 +14,7 @@ export interface EntitlementDef {
   conditions?: Record<string, unknown>;
 }
 
-export interface ResolvedEntitlement {
+export interface CascadeResolvedEntitlement {
   roleId: string;
   effectivePermissions: string[];
   inheritanceChain: string[];

@@ -19,7 +19,7 @@ export interface Artifact {
   metadata: Record<string, unknown>;
 }
 
-export interface Attestation {
+export interface HardeningAttestation {
   artifactId: string;
   stage: HardeningStage;
   allScoresPass: boolean;

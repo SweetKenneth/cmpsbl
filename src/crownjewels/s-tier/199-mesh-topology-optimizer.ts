@@ -7,7 +7,7 @@
  * and computing reachability metrics.
  */
 
-export interface MeshNode {
+export interface TopologyMeshNode {
   id: string;
   connections: Set<string>;
   trafficIn: number;

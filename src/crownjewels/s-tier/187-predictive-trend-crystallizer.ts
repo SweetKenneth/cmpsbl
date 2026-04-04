@@ -17,7 +17,7 @@ export interface TrendResult {
   forecast: number[];
 }
 
-export interface DataPoint {
+export interface TrendDataPoint {
   metric: string;
   value: number;
   timestamp: number;

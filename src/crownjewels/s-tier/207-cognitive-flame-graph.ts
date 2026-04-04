@@ -6,7 +6,7 @@
  * hotspot detection, category-level aggregation, and anomaly flagging.
  */
 
-export interface Span {
+export interface FlameSpan {
   id: string;
   parent?: string;
   label: string;
