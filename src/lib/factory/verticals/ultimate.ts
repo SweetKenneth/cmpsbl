@@ -39,6 +39,11 @@
 
 import type { VerticalPrimitive, VerticalSubstrateConfig } from '../vertical-substrate';
 import { getSpinePrimitives, assembleVerticalPrimitives } from '../vertical-substrate';
+import { getCyberSecurityEngines, getCyberSecurityAgents } from './cybersecurity';
+import { getRoboticsEngines, getRoboticsAgents } from './robotics';
+import { getQuantumEngines, getQuantumAgents } from './quantum';
+import { getLLMEngines, getLLMAgents } from './llm';
+import { getAgencyEngines, getAgencyAgents } from './agency';
 
 /* ─── Universal Engines (gap-fillers) ─── */
 
@@ -367,20 +372,34 @@ export const ULTIMATE_AFFINITY_SIGNALS: Record<string, string[]> = {
 /* ─── Substrate Config Builder ─── */
 
 export function getUltimateSubstrate(): VerticalSubstrateConfig {
-  // Ultimate does NOT use assembleVerticalPrimitives — it has no spine lock.
-  // The 16 Universal primitives serve as the "default" display surface.
-  // During actual Ascension, the Universal Pool Scanner replaces all 40 slots.
-  const primitives: VerticalPrimitive[] = [...ULTIMATE_ENGINES, ...ULTIMATE_AGENTS];
+  // Ultimate exposes the FULL 120-candidate pool as its primitives.
+  // During Ascension, the Universal Pool Scanner selects the optimal 40.
+  const allCandidates: VerticalPrimitive[] = [
+    ...getSpinePrimitives(),          // 24 Spine (Organs + Layers)
+    ...getCyberSecurityEngines(),     // 8 Cyber engines
+    ...getCyberSecurityAgents(),      // 8 Cyber agents
+    ...getRoboticsEngines(),          // 8 Robotics engines
+    ...getRoboticsAgents(),           // 8 Robotics agents
+    ...getQuantumEngines(),           // 8 Quantum engines
+    ...getQuantumAgents(),            // 8 Quantum agents
+    ...getLLMEngines(),               // 8 LLM engines
+    ...getLLMAgents(),                // 8 LLM agents
+    ...getAgencyEngines(),            // 8 Agency engines
+    ...getAgencyAgents(),             // 8 Agency agents
+    ...ULTIMATE_ENGINES,              // 8 Universal engines
+    ...ULTIMATE_AGENTS,               // 8 Universal agents
+  ];
+
   return {
     verticalId: 'ultimate-v1',
     name: 'CMPSBL ULTIMATE™',
-    tagline: '120 Candidates. 40 Slots. Zero Restrictions. Maximum Compounding.',
+    tagline: `${allCandidates.length} Candidates. 40 Slots. Zero Restrictions. Maximum Compounding.`,
     domain: 'ultimate' as any,
     subdomain: 'ultimate',
     url: 'https://ultimate.cmpsbl.com',
     status: 'active',
     version: '1.0.0',
-    primitives,
+    primitives: allCandidates,
     clmCurriculum: {
       cyclesPerDay: 2400,
       curriculum: [

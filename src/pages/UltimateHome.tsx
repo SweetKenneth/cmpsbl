@@ -26,6 +26,7 @@ import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { getUniversalPoolSize, getUniversalPoolBreakdown } from "@/lib/factory/universal-pool-scanner";
+import { getUltimateSubstrate } from "@/lib/factory/verticals/ultimate";
 
 /* ─── Theme Constants ─── */
 const ACCENT = 'hsl(270 80% 65%)';
@@ -73,12 +74,34 @@ const VERTICAL_SOURCES = [
 export default function UltimateHome() {
   useSSORelay();
   const navigate = useNavigate();
-  const [poolSize, setPoolSize] = useState(96);
+  const [poolSize, setPoolSize] = useState(120);
   const [breakdown, setBreakdown] = useState<Record<string, number>>({});
+  const [allPrimitives, setAllPrimitives] = useState<{ name: string; role: string; source: string }[]>([]);
 
   useEffect(() => {
     setPoolSize(getUniversalPoolSize());
     setBreakdown(getUniversalPoolBreakdown());
+
+    // Build full primitive list grouped by source
+    const substrate = getUltimateSubstrate();
+    const spine = substrate.primitives.filter(p => p.inherited !== false && (p.role === 'organ' || p.role === 'layer'));
+    const rest = substrate.primitives.filter(p => p.inherited === false);
+
+    const tagged: { name: string; role: string; source: string }[] = [];
+    for (const p of spine) {
+      tagged.push({ name: p.name, role: p.role, source: 'Spine' });
+    }
+    // Map expansion primitives to their source vertical by ID prefix
+    for (const p of rest) {
+      let source = 'Universal';
+      if (p.id.startsWith('ULT_')) source = 'Universal';
+      else if (['WATCHTOWER','SHADE','AEGIS','CIPHER','RECON','VANGUARD','BASTION','TEMPEST','PROWLER','ONYX','SPECTER','BLACKOUT','TRACER','NOCTURNE','IRONCLAD','CITADEL'].includes(p.name)) source = 'Cyber';
+      else if (['MARSHAL','DISPATCH','FABRICATOR','KINETIC','SWARMLINK','CALIBRATE','TERRAIN','TETHER','SENTINEL_R','ASSEMBLER','PATHFINDER','GYROSCOPE','TELEMETRIX','HARDPOINT','LOADMASTER','FAILOVER'].includes(p.name)) source = 'Robotics';
+      else if (['MANDATE','DELEGATE','RECONN','UPLINK','SCRIBE','INCENTIVE','REASON','TOOLKIT','OPERATOR','OVERSEER','LIAISON','SCHOLAR','ENVOY','WARDEN','ROGUE','ANCHOR'].includes(p.name)) source = 'Agency';
+      else source = p.id.includes('Q_') ? 'Quantum' : p.id.includes('LLM_') ? 'LLM' : 'Expansion';
+      tagged.push({ name: p.name, role: p.role, source });
+    }
+    setAllPrimitives(tagged);
   }, []);
 
   const STATS = [
@@ -217,14 +240,60 @@ export default function UltimateHome() {
           </div>
         </section>
 
-        {/* Universal Engines */}
+        {/* Full Ecosystem Pool */}
         <section className="px-4 sm:px-6 pb-20">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
-              Universal Engines
+              Full Ecosystem Pool — {allPrimitives.length} Candidates
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              8 cross-domain engines designed to fill gaps no specialized vertical covers
+              Every primitive from every source competes equally. The scanner selects the 40 best for your code.
+            </p>
+
+            {/* Group by source */}
+            {['Spine', 'Cyber', 'Robotics', 'Quantum', 'LLM', 'Agency', 'Universal', 'Expansion'].map(source => {
+              const prims = allPrimitives.filter(p => p.source === source);
+              if (prims.length === 0) return null;
+              const sourceColor = source === 'Spine' ? 'hsl(220 70% 55%)'
+                : source === 'Cyber' ? 'hsl(0 80% 55%)'
+                : source === 'Robotics' ? 'hsl(210 80% 55%)'
+                : source === 'Quantum' ? 'hsl(270 80% 60%)'
+                : source === 'LLM' ? 'hsl(155 80% 50%)'
+                : source === 'Agency' ? 'hsl(35 90% 55%)'
+                : ACCENT;
+              return (
+                <div key={source} className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-3 h-3 rounded-full" style={{ background: sourceColor }} />
+                    <span className="text-sm font-bold font-mono" style={{ color: sourceColor }}>
+                      {source} ({prims.length})
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {prims.map(p => (
+                      <span key={`${source}-${p.name}`} className="px-2.5 py-1 rounded-md text-xs font-mono font-medium" style={{
+                        background: `${sourceColor}12`,
+                        color: sourceColor,
+                        border: `1px solid ${sourceColor}30`,
+                      }}>
+                        {p.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Universal Engines — Spotlight */}
+        <section className="px-4 sm:px-6 pb-20">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
+              16 Universal Gap-Fillers
+            </h2>
+            <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
+              Architecture-agnostic primitives designed to fill gaps no specialized vertical covers
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {ENGINE_DATA.map((e, i) => (
@@ -237,7 +306,7 @@ export default function UltimateHome() {
                         </div>
                         <span className="font-mono font-bold text-sm" style={{ color: TEXT_PRIMARY }}>{e.name}</span>
                         <Badge className="ml-auto border-0 text-[10px]" style={{ background: `${ACCENT}15`, color: ACCENT_GLOW }}>
-                          UNIVERSAL
+                          ENGINE
                         </Badge>
                       </div>
                       <p className="text-xs leading-relaxed" style={{ color: 'hsl(270 15% 50%)' }}>{e.desc}</p>
@@ -246,19 +315,7 @@ export default function UltimateHome() {
                 </motion.div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Universal Agents */}
-        <section className="px-4 sm:px-6 pb-20">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: TEXT_PRIMARY }}>
-              Universal Agents
-            </h2>
-            <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              8 versatile agents covering the most universally desirable capabilities
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
               {AGENT_DATA.map((a, i) => (
                 <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }}>
                   <Card className="h-full border" style={{ background: BG_CARD, borderColor: BORDER }}>
