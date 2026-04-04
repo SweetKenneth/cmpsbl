@@ -164,7 +164,7 @@ const OPENCLAW_RUNS: VerticalRun[] = [
 ];
 
 const SHARED_SPINE_PRIMITIVES = [
-  'SIMULATE', 'MEMORY', 'SHADOW', 'RELAY', 'OBSERVER', 'FORGE', 'ECHO', 'EVOLUTION', 'COMPASS', 'LINGUA',
+  'MEMORY', 'SHADOW', 'RELAY', 'VISION', 'FORGE', 'ECHO', 'EVOLUTION', 'COMPASS', 'LINGUA', 'DEFENSE',
 ];
 
 /* ───────── Case Study #3 Data — Qiskit ConsolidateBlocks (Quantum) ───────── */
