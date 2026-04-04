@@ -57,7 +57,15 @@ export default function MarketplaceHome() {
   const [showFilters, setShowFilters] = useState(false);
   const [buyingId, setBuyingId] = useState<string | null>(null);
 
-  const stats = useMemo(() => getInventoryStats(), []);
+  const { data: inventory = [], isLoading } = useMarketplaceInventory();
+
+  const stats = useMemo(() => {
+    if (inventory.length === 0) return { total: 0, featured: 0, avgPrice: '$0', substrates: 0 };
+    const featured = inventory.filter(i => i.isFeatured).length;
+    const avgCents = Math.round(inventory.reduce((s, i) => s + i.priceCents, 0) / inventory.length);
+    const substrates = new Set(inventory.map(i => i.sourceSubstrate)).size;
+    return { total: inventory.length, featured, avgPrice: `$${(avgCents / 100).toFixed(0)}`, substrates };
+  }, [inventory]);
 
   const handleBuy = useCallback(async (item: MarketplaceItem) => {
     setBuyingId(item.id);
