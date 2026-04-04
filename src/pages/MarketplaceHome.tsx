@@ -420,7 +420,7 @@ function FeaturedCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy
   );
 }
 
-function ProductCard({ item }: { item: MarketplaceItem }) {
+function ProductCard({ item, onBuy, isLoading }: { item: MarketplaceItem; onBuy: () => void; isLoading?: boolean }) {
   const meta = CATEGORY_META[item.category];
   const substrateMeta = SUBSTRATE_META[item.sourceSubstrate];
 
