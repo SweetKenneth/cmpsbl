@@ -235,11 +235,20 @@ export default function ControlCenterHome() {
           supabase.functions.invoke("pf-substrate", { body: { module: m, action: "status" } })
             .then(r => {
               const d = r.data as Record<string, unknown> | null;
+              if (!d) return { module: m, health: 0, status: "unknown", latency: 0 };
+              // Derive numeric health: explicit field → boolean healthy → healthScore fallback
+              let health = 0;
+              if (typeof d.health === "number") health = d.health;
+              else if (typeof d.health_score === "number") health = d.health_score as number;
+              else if (typeof (d.health as Record<string, unknown>)?.healthScore === "number")
+                health = (d.health as Record<string, unknown>).healthScore as number;
+              else if (d.healthy === true) health = 100;
+              else if (d.success === true && d.healthy !== false) health = 85; // Responsive but no score
               return {
                 module: m,
-                health: (d?.health as number) ?? (d?.health_score as number) ?? 0,
-                status: (d?.status as string) ?? "unknown",
-                latency: (d?.latency_ms as number) ?? 0,
+                health,
+                status: (d.status as string) ?? (health >= 80 ? "healthy" : health >= 50 ? "degraded" : "critical"),
+                latency: (d.latency_ms as number) ?? 0,
               };
             })
             .catch(() => ({ module: m, health: 0, status: "error", latency: 0 }))
