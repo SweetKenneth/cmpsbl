@@ -27,7 +27,7 @@ score = (novelty × 0.30) + (utility × 0.30) + (complexity × 0.20) + (composab
 
 Each dimension is scored 0–100. The weighted sum produces a composite score of 0–100.
 
-**Note:** In the Mini-Runtime™ v2, CJPI weights were encoded as hex values `[0x1E, 0x1E, 0x14, 0x14]` for IP protection. Convex Core™ continues this practice — the weights above are published for documentation purposes, but the compiled dispatch matrix uses FNV-1a-derived weight encodings that produce equivalent results through a different computational path.
+**Note:** In the Convex Core™ v2, CJPI weights were encoded as hex values `[0x1E, 0x1E, 0x14, 0x14]` for IP protection. Convex Core™ continues this practice — the weights above are published for documentation purposes, but the compiled dispatch matrix uses FNV-1a-derived weight encodings that produce equivalent results through a different computational path.
 
 ---
 

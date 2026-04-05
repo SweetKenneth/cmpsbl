@@ -101,7 +101,7 @@ function s(n,u,c,p){return(n*W[0]+u*W[1]+c*W[2]+p*W[3])/100}
 - All substrate IP held by legal entity (CMPSBL®)
 - BYOK model means operator data is theirs — platform IP is CMPSBL's
 - Primitive names are architectural invariants — permanent
-- Universal Export includes Mini-Runtime™ Engine (proprietary)
+- Universal Export includes Convex Core™ Processing Layer (proprietary)
 - Founder Intent document survives ownership changes as architectural constraint
 
 ---

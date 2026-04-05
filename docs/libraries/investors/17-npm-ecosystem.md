@@ -18,7 +18,7 @@
 | Package | Capability | What's New to NPM |
 |---------|-----------|-------------------|
 | `@cmpsbl/types` | Schemas, interfaces, and type definitions for the full substrate | First governed cognitive type system — 40-primitive topology types |
-| `@cmpsbl/runtime` | Mini-Runtime™ execution engine | First embeddable cognitive runtime with CJPI scoring |
+| `@cmpsbl/runtime` | Convex Core™ execution engine | First embeddable cognitive runtime with CJPI scoring |
 | `@cmpsbl/sdk` | Unified interface to the full substrate | First single-import cognitive orchestration SDK |
 
 ### Tier 2 — Cognitive Primitives

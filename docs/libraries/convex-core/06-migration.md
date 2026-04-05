@@ -1,4 +1,4 @@
-# 06 — Migration from Mini-Runtime™
+# 06 — Migration from Convex Core™
 
 **Classification:** Open — Zenodo Archive
 
@@ -6,9 +6,9 @@
 
 ## 1. Deprecation Notice
 
-The **Mini-Runtime™ Engine** (versions 1.x and 2.x) is deprecated as of Convex Core™ 3.0.0. The Mini-Runtime™ will receive no further updates, security patches, or compatibility fixes.
+The **Convex Core™ Processing Layer** (versions 1.x and 2.x) is deprecated as of Convex Core™ 3.0.0. The Convex Core™ will receive no further updates, security patches, or compatibility fixes.
 
-All new artifacts are generated using Convex Core™. Existing Mini-Runtime™ artifacts continue to function but are considered **legacy format** and are not eligible for re-certification.
+All new artifacts are generated using Convex Core™. Existing Convex Core™ artifacts continue to function but are considered **legacy format** and are not eligible for re-certification.
 
 ---
 
@@ -16,13 +16,13 @@ All new artifacts are generated using Convex Core™. Existing Mini-Runtime™ a
 
 ### Architectural Paradigm
 
-The Mini-Runtime™ was an **interpreted runtime** — it registered primitive handlers, resolved them dynamically at invocation time, and executed a 12-stage sequential pipeline for every operation.
+The Convex Core™ was an **interpreted runtime** — it registered primitive handlers, resolved them dynamically at invocation time, and executed a 12-stage sequential pipeline for every operation.
 
 Convex Core™ is a **deterministic processing layer** — it compiles all primitive relationships into dispatch matrices at artifact-creation time. There is no dynamic resolution, no sequential pipeline, and no mutable runtime state.
 
 ### Removed Concepts
 
-| Mini-Runtime™ Concept | Status | Convex Core™ Equivalent |
+| Convex Core™ Concept | Status | Convex Core™ Equivalent |
 |-----------------------|--------|------------------------|
 | `createRuntime()` | Removed | No initialization — processing layer is compiled |
 | `registerAllPrimitives()` | Removed | Primitives are bound during BIND layer |
@@ -47,12 +47,12 @@ Convex Core™ is a **deterministic processing layer** — it compiles all primi
 
 ## 3. NPM Package Migration
 
-The `@cmpsbl/runtime` package (v2.x) exported the Mini-Runtime™ API. Starting with v3.0.0, this package exports the Convex Core™ processing layer.
+The `@cmpsbl/runtime` package (v2.x) exported the Convex Core™ API. Starting with v3.0.0, this package exports the Convex Core™ processing layer.
 
 ### Breaking Changes
 
 ```typescript
-// v2.x (Mini-Runtime™) — DEPRECATED
+// v2.x (Convex Core™) — DEPRECATED
 import { createRuntime, executePrimitive } from '@cmpsbl/runtime';
 const runtime = createRuntime();
 const result = await runtime.executePrimitive('DEFENSE', input, 0.95);
@@ -80,7 +80,7 @@ This compatibility layer is provided for migration convenience and will be remov
 
 | Artifact Source | Convex Core™ Compatible |
 |----------------|------------------------|
-| Mini-Runtime™ v2.x exports | ✅ Read-only (cannot re-certify) |
+| Convex Core™ v2.x exports | ✅ Read-only (cannot re-certify) |
 | Convex Core™ v3.x exports | ✅ Full support |
 | Pre-v2 exports | ❌ Not supported |
 
@@ -91,9 +91,9 @@ This compatibility layer is provided for migration convenience and will be remov
 | Date | Event |
 |------|-------|
 | 2026-Q1 | Convex Core™ 3.0.0 released |
-| 2026-Q2 | Mini-Runtime™ enters maintenance mode |
+| 2026-Q2 | Convex Core™ enters maintenance mode |
 | 2026-Q3 | Compatibility layer deprecated |
-| 2026-Q4 | Mini-Runtime™ archived |
+| 2026-Q4 | Convex Core™ archived |
 
 ---
 

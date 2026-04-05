@@ -1,14 +1,14 @@
 # CMPSBL® Convex Core™ — Technical Documentation
 
 **Version:** 3.0.0 — CONVERGENCE Epoch  
-**Replaces:** Mini-Runtime™ Engine (deprecated v2.x)  
+**Replaces:** Convex Core™ Processing Layer (deprecated v2.x)  
 **Classification:** Open — Zenodo Archive
 
 ---
 
 ## Abstract
 
-Convex Core™ represents a paradigm shift from the interpreted runtime model used in CMPSBL® v1–v2 to a **deterministic processing layer** architecture. Where the Mini-Runtime™ operated as an event-driven dispatcher executing primitives sequentially, Convex Core™ compiles primitive relationships into pre-computed **dispatch matrices** that resolve at initialization time — not at execution time.
+Convex Core™ represents a paradigm shift from the interpreted runtime model used in CMPSBL® v1–v2 to a **deterministic processing layer** architecture. Where the Convex Core™ operated as an event-driven dispatcher executing primitives sequentially, Convex Core™ compiles primitive relationships into pre-computed **dispatch matrices** that resolve at initialization time — not at execution time.
 
 This transition eliminates the runtime overhead of dynamic primitive resolution, removes the sequential pipeline bottleneck, and — critically — makes the processing layer's behavior **deterministic across environments**. The same artifact produces identical results regardless of host platform, language runtime, or execution context.
 
@@ -30,9 +30,9 @@ The name reflects the mathematical foundation: primitive interactions are modele
 
 ---
 
-## Key Differences from Mini-Runtime™
+## Key Differences from Convex Core™
 
-| Aspect | Mini-Runtime™ (v2, deprecated) | Convex Core™ (v3) |
+| Aspect | Convex Core™ (v2, deprecated) | Convex Core™ (v3) |
 |--------|-------------------------------|-------------------|
 | Execution model | Interpreted, sequential pipeline | Pre-compiled dispatch matrices |
 | Primitive resolution | Runtime lookup per invocation | Initialization-time matrix compilation |

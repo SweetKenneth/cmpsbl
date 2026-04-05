@@ -10,7 +10,7 @@ Convex Core™ is not a runtime. It is a **processing layer** — a pre-compiled
 
 The distinction matters: a runtime interprets instructions during execution. A processing layer resolves all dispatch paths **before** execution begins. By the time user code runs, every primitive binding, guard contract, and effect injection has been compiled into a static dispatch matrix. There is no dynamic resolution, no event loop overhead, no sequential pipeline bottleneck.
 
-This is the fundamental architectural advance over the deprecated Mini-Runtime™ engine.
+This is the fundamental architectural advance over the deprecated Convex Core™ engine.
 
 ---
 

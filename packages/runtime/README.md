@@ -1,6 +1,6 @@
 # @cmpsbl/runtime
 
-> CMPSBL® Mini-Runtime™ Engine — CJPI scoring, manifest parsing, pipeline execution, First Contact ceremony, and full 131-primitive catalog.
+> CMPSBL® Convex Core™ Processing Layer — CJPI scoring, manifest parsing, pipeline execution, First Contact ceremony, and full 131-primitive catalog.
 
 [![npm](https://img.shields.io/npm/v/@cmpsbl/runtime)](https://www.npmjs.com/package/@cmpsbl/runtime)
 

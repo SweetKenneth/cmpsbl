@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-The dispatch matrix is the central data structure of Convex Core™. It replaces the dynamic handler registry used in the Mini-Runtime™ with a pre-computed, immutable numeric array that encodes all primitive dispatch paths and cross-primitive interaction weights.
+The dispatch matrix is the central data structure of Convex Core™. It replaces the dynamic handler registry used in the Convex Core™ with a pre-computed, immutable numeric array that encodes all primitive dispatch paths and cross-primitive interaction weights.
 
 A dispatch matrix is generated once per artifact during the BIND processing layer and persists immutably for the artifact's lifetime. It cannot be modified after generation — any modification invalidates the integrity seal.
 
@@ -51,7 +51,7 @@ Where:
 
 The collision matrix allows the processing layer to account for **compound effects** — situations where two or more primitives produce combined behavior that differs from their individual effects.
 
-In the Mini-Runtime™, compound effects were computed at invocation time through a "collision scoring" phase. This was the most expensive stage in the deprecated 12-stage pipeline. Convex Core™ pre-computes all possible collisions into the CM, reducing compound effect resolution to a single array lookup.
+In the Convex Core™, compound effects were computed at invocation time through a "collision scoring" phase. This was the most expensive stage in the deprecated 12-stage pipeline. Convex Core™ pre-computes all possible collisions into the CM, reducing compound effect resolution to a single array lookup.
 
 ---
 

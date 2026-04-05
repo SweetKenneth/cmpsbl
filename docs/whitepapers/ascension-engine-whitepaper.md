@@ -36,7 +36,7 @@ Ascension introduces a third paradigm: **deterministic software evolution**. The
 3. Registers this surface as a first-class participant ("Primitive #41" or "Auxiliary Primitive Ψ₄₁") in a fixed 40-primitive substrate matrix
 4. Executes multi-chain collisions between the Auxiliary Primitive and all 40 substrate primitives
 5. Scores each discovered combination using the Crown Jewel Pipeline Index (CJPI)
-6. Exports selected discoveries as portable, single-file artifacts with an embedded mini-runtime engine
+6. Exports selected discoveries as portable, single-file artifacts with an embedded convex-core engine
 7. Protects intellectual property through hex-encoded CJPI weights, stripped comments, and genericized naming
 
 The entire process requires **zero external AI API calls**. All discovery is algorithmic, deterministic (given the same input code and substrate version), and auditable through cryptographic fingerprinting.

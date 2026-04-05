@@ -825,7 +825,7 @@ As Governor, these are your most powerful commands:
 | Package | Purpose | Tier Required |
 |---------|---------|--------------|
 | `@cmpsbl/types` | TypeScript schemas and interfaces | Free |
-| `@cmpsbl/runtime` | Mini-Runtime™ engine (CJPI, tiering, gates) | Free |
+| `@cmpsbl/runtime` | Convex Core™ engine (CJPI, tiering, gates) | Free |
 | `@cmpsbl/failsafe` | Migration toolkit for platform portability | Free |
 | `@cmpsbl/intent` | Intent broadcast and DAG sequencing | Creator |
 | `@cmpsbl/mesh` | Mesh telemetry and communications | Creator |

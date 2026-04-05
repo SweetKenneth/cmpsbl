@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-Primitive binding is the process by which Convex Core™ attaches primitive effects to source code during the BIND processing layer. Unlike the Mini-Runtime™'s handler registration model (where primitives were registered as callbacks and invoked dynamically), Convex Core™ compiles primitive effects directly into the source graph.
+Primitive binding is the process by which Convex Core™ attaches primitive effects to source code during the BIND processing layer. Unlike the Convex Core™'s handler registration model (where primitives were registered as callbacks and invoked dynamically), Convex Core™ compiles primitive effects directly into the source graph.
 
 The result is source code with **embedded cognitive infrastructure** — guards, instrumentation, and effect markers that are part of the compiled output, not external runtime hooks.
 

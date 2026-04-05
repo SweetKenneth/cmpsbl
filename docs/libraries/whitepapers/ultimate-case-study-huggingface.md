@@ -386,7 +386,7 @@ Each primitive is tested through a three-phase verification protocol:
 ```bash
 npx cmpsbl-test --phase registration --config ./restoration-report.json
 ```
-Verifies that all 40 primitives in the chain are registered in the Mini-Runtime™ and resolve to domain-specific handlers (not fallback handlers). The runtime v2.0.0 contains handlers for all 131 ecosystem primitives.
+Verifies that all 40 primitives in the chain are registered in the Convex Core™ and resolve to domain-specific handlers (not fallback handlers). The runtime v2.0.0 contains handlers for all 131 ecosystem primitives.
 
 **Expected output:**
 ```
@@ -470,7 +470,7 @@ The architecture resolves this through a three-layer protection model:
 
 **Layer 1: Public Verification** — The `@cmpsbl/test-harness` proves that every primitive fires, produces correct output envelopes, and chains correctly. Engineers can verify outcomes. They can see *what* each primitive does.
 
-**Layer 2: Sealed Execution** — The Mini-Runtime™ handlers are delivered as sealed, obfuscated modules. Engineers can invoke primitives through the public API but cannot inspect the detection heuristics, signal matching algorithms, or collision scoring formulas that drive selection.
+**Layer 2: Sealed Execution** — The Convex Core™ handlers are delivered as sealed, obfuscated modules. Engineers can invoke primitives through the public API but cannot inspect the detection heuristics, signal matching algorithms, or collision scoring formulas that drive selection.
 
 **Layer 3: Protected Internals** — The following components are classified as trade secrets (as documented in the Ascension™ whitepaper, Section 11, DOI: 10.5281/zenodo.19409933):
 
