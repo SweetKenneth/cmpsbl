@@ -71,6 +71,19 @@ export {
 } from './agency';
 
 export {
+  getMediaSubstrate,
+  getMediaPrimitives,
+  getMediaEngines,
+  getMediaAgents,
+  getAllMediaCapabilities,
+  getMediaCrownJewels,
+  getMediaPrimitiveCrownJewels,
+  getMediaCrownJewelSummary,
+  getMediaCrownJewelCount,
+  getMediaCrownJewelCapabilities,
+} from './media';
+
+export {
   getUltimateSubstrate,
   getUltimatePrimitives,
   getUltimateEngines,
