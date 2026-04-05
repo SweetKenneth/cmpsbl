@@ -240,7 +240,7 @@ export default function ControlCenterHome() {
       }
 
       // Memory
-      if (memRes.data) setMemoryTiers(memRes.data as { tier: string; cnt: number }[]);
+      if (memRes.data) setMemoryTiers((memRes as { data: { tier: string; cnt: number }[] }).data);
 
       // Page views
       setPageViews24h(pvRes.count ?? 0);

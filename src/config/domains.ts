@@ -142,3 +142,13 @@ export function isMarketplaceDomain(): boolean {
   return hostname === DOMAIN_CONFIG.services.marketplace
     || hostname === `www.${DOMAIN_CONFIG.services.marketplace}`;
 }
+
+/**
+ * Detect if current hostname is the control center subdomain
+ */
+export function isControlDomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname.toLowerCase();
+  return hostname === DOMAIN_CONFIG.services.control
+    || hostname === `www.${DOMAIN_CONFIG.services.control}`;
+}

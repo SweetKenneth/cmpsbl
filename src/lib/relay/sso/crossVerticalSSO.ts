@@ -28,6 +28,7 @@ const STATIC_VERTICAL_DOMAINS: Record<string, string> = {
   robotics: 'robotics.cmpsbl.com',
   quantum: 'quantum.cmpsbl.com',
   media: 'media.cmpsbl.com',
+  control: 'control.cmpsbl.com',
 };
 
 /** Lazy import to avoid circular deps — merged at query time */

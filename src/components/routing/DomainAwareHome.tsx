@@ -34,6 +34,14 @@ function isPromptFluidDomain(): boolean {
 export default function DomainAwareHome() {
   const verticalKey = getVerticalSubdomain();
 
+  if (isControlDomain()) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <ControlCenterHome />
+      </Suspense>
+    );
+  }
+
   if (isMarketplaceDomain()) {
     return (
       <Suspense fallback={<div className="min-h-screen bg-background" />}>
