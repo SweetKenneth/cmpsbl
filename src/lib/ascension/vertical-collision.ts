@@ -142,7 +142,27 @@ function buildDiscoveryDescription(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — PUBLIC API
+// §3 — DETERMINISTIC PRNG (seeded per-collision for reproducibility)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** FNV-1a seed from string for deterministic per-collision variance */
+function fnvSeed(input: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return (h >>> 0);
+}
+
+/** Deterministic 0–1 from seed — replaces Math.random() in scoring */
+function deterministicVariance(seed: number): number {
+  const s = Math.imul(seed, 16807) % 2147483647;
+  return (s & 0x7fffffff) / 2147483647;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §4 — PUBLIC API
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -176,20 +196,25 @@ export function runVerticalCollision(
   const discoveries: VerticalDiscovery[] = [];
   let totalCollisions = 0;
 
+  // Pre-compute affinity per primitive once (was being double-computed)
+  const affinityCache = new Map<string, number>();
   for (const primitive of primitives) {
-    const primitiveAffinity = scoreReservePrimitiveAffinity(primitive, codeContent);
+    affinityCache.set(primitive.id, scoreReservePrimitiveAffinity(primitive, codeContent));
+  }
 
-    // Collide each capability against the code
+  for (const primitive of primitives) {
+    const primitiveAffinity = affinityCache.get(primitive.id)!;
+
     for (const capability of primitive.capabilities) {
       totalCollisions++;
 
-      // Each capability gets a portion of the primitive's affinity
-      const capabilityAffinity = primitiveAffinity * (0.7 + Math.random() * 0.3);
+      // Deterministic variance per collision (seeded from primitive+capability)
+      const seed = fnvSeed(`${primitive.id}::${capability}`);
+      const variance = 0.7 + deterministicVariance(seed) * 0.3;
+      const capabilityAffinity = primitiveAffinity * variance;
       const cjpiScore = scoreCollision(primitive, capability, capabilityAffinity, baseDiscoveries);
 
-      // Accept discoveries with CJPI >= 40 (generous threshold for specialized discoveries)
       if (cjpiScore >= 40) {
-        // Find the best base discovery to stack on (if any)
         const bestBase = baseDiscoveries.length > 0
           ? baseDiscoveries.reduce((best, d) => d.cjpiScore > best.cjpiScore ? d : best)
           : null;
@@ -212,7 +237,7 @@ export function runVerticalCollision(
     }
   }
 
-    // Sort by CJPI score descending, take top N (one per base discovery for merging)
+  // Sort by CJPI score descending, take top N
   discoveries.sort((a, b) => b.cjpiScore - a.cjpiScore);
   const maxDiscoveries = Math.max(baseDiscoveries.length, 5);
   const topDiscoveries = discoveries.slice(0, maxDiscoveries);
@@ -221,7 +246,6 @@ export function runVerticalCollision(
   if (baseDiscoveries.length > 0) {
     const usedBaseIds = new Set<string>();
     for (const disc of topDiscoveries) {
-      // Find best unassigned base discovery
       const available = baseDiscoveries.filter(b => !usedBaseIds.has(b.id));
       const target = available.length > 0 ? available[0] : baseDiscoveries[0];
       disc.baseDiscoveryId = target.id;
@@ -229,11 +253,10 @@ export function runVerticalCollision(
     }
   }
 
-  // Overall vertical affinity
-  const avgAffinity = primitives.reduce(
-    (sum, p) => sum + scoreReservePrimitiveAffinity(p, codeContent),
-    0,
-  ) / primitives.length;
+  // Overall vertical affinity — reuse cached values (no recomputation)
+  let affinitySum = 0;
+  for (const score of affinityCache.values()) affinitySum += score;
+  const avgAffinity = affinitySum / affinityCache.size;
 
   return {
     vertical,
