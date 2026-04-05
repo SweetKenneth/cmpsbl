@@ -9,6 +9,11 @@
 
 import type { PrimitiveRecommendation } from './scan-team';
 import { detectLanguage } from './code-metrics';
+import {
+  generateCompiledPreamble,
+  generateDecoyPipelineComments,
+  FUNCTIONAL_TRANSFORMS,
+} from '../export/opacity-engine';
 
 // ── Language Syntax Adapters ──
 
@@ -675,32 +680,32 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   defense: {
     imports: "import { DefenseLayer, RequestValidator, DeviceFingerprint } from '@cmpsbl/runtime/defense';",
     guard: "DefenseLayer.activate({ mode: 'enforce', fingerprinting: true });\nRequestValidator.init({ blockInjection: true, blockXSS: true, rateLimitPerIp: 100 });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.defense ?? ((code) => code),
   },
   governance: {
     imports: "import { GovernancePolicy, ComplianceAuditor } from '@cmpsbl/runtime/governance';",
     guard: "GovernancePolicy.enforce({\n  maxConcurrency: 100,\n  auditAllMutations: true,\n  requireApprovalAbove: 'high-risk',\n});\nComplianceAuditor.start({ logDestination: 'structured' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.governance ?? ((code) => code),
   },
   beacon: {
     imports: "import { HealthBeacon, MetricsCollector } from '@cmpsbl/runtime/beacon';",
     guard: "HealthBeacon.start({ interval: 15_000, endpoints: ['/_health', '/_ready'] });\nMetricsCollector.init({ exportFormat: 'prometheus' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.beacon ?? ((code) => code),
   },
   brain: {
     imports: "import { LearningEngine, InsightAccumulator } from '@cmpsbl/runtime/brain';",
     guard: "LearningEngine.init({ mode: 'passive', retentionDays: 90 });\nInsightAccumulator.observe({ trackPatterns: true, autoOptimize: false });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.brain ?? ((code) => code),
   },
   memory: {
     imports: "import { PersistentMemory, StateRecovery } from '@cmpsbl/runtime/memory';",
     guard: "PersistentMemory.init({ adapter: 'filesystem', snapshotOnCrash: true });\nStateRecovery.enable({ strategy: 'last-known-good' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.memory ?? ((code) => code),
   },
   identity: {
     imports: "import { IdentityResolver, SessionBinder } from '@cmpsbl/runtime/identity';",
     guard: "IdentityResolver.init({ multiFactorRequired: true, sessionTtlMs: 3_600_000 });\nSessionBinder.enforce({ bindToDevice: true, maxConcurrentSessions: 3 });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.identity ?? ((code) => code),
   },
   conscience: {
     imports: "import { EthicalGate, AlignmentMonitor } from '@cmpsbl/runtime/conscience';",
@@ -745,7 +750,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   shadow: {
     imports: "import { ShadowMirror, CanaryOrchestrator } from '@cmpsbl/runtime/shadow';",
     guard: "ShadowMirror.init({ mirrorPercent: 5, compareOutputs: true });\nCanaryOrchestrator.enable({ autoRollback: true, anomalyThreshold: 0.05 });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.shadow ?? ((code) => code),
   },
   sovereign: {
     imports: "import { AuthorityResolver, PolicyEnforcer } from '@cmpsbl/runtime/sovereign';",
@@ -755,7 +760,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   treaty: {
     imports: "import { ContractValidator, SchemaEnforcer } from '@cmpsbl/runtime/treaty';",
     guard: "ContractValidator.init({ strictMode: true, breakingChangeAlert: true });\nSchemaEnforcer.enable({ validateRequests: true, validateResponses: true });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.treaty ?? ((code) => code),
   },
   relay: {
     imports: "import { MessageRelay, DeliveryGuarantee } from '@cmpsbl/runtime/relay';",
@@ -785,7 +790,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   compass: {
     imports: "import { ModuleNavigator, DependencyMapper } from '@cmpsbl/runtime/compass';",
     guard: "ModuleNavigator.init({ autoIndex: true, resolveAliases: true });\nDependencyMapper.generate({ outputPath: './architecture-map.json' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.compass ?? ((code) => code),
   },
   reflex: {
     imports: "import { ReflexHandler, FallbackChain } from '@cmpsbl/runtime/reflex';",
@@ -822,7 +827,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   nerve: {
     imports: "import { EventBus, SignalPropagator } from '@cmpsbl/runtime/nerve';",
     guard: "EventBus.init({ delivery: 'exactly-once', ordering: 'causal' });\nSignalPropagator.enable({ partitionTolerant: true, retryPolicy: 'bounded' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.nerve ?? ((code) => code),
   },
   primitive: {
     imports: "import { RuntimeKernel, BaseHardening } from '@cmpsbl/runtime/primitive';",
@@ -862,12 +867,12 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   access: {
     imports: "import { BoundaryGuard, PayloadValidator } from '@cmpsbl/runtime/access';",
     guard: "BoundaryGuard.init({ validateAll: true, rejectUnknownFields: true });\nPayloadValidator.enforce({ maxSizeBytes: 10_485_760, sanitize: true });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.access ?? ((code) => code),
   },
   atlas: {
     imports: "import { TopologyMapper, ServiceDiscovery } from '@cmpsbl/runtime/atlas';",
     guard: "TopologyMapper.init({ autoDiscover: true, refreshIntervalMs: 30_000 });\nServiceDiscovery.enable({ protocol: 'dns', fallback: 'static-config' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.atlas ?? ((code) => code),
   },
 };
 
@@ -907,22 +912,32 @@ export function generateRefurbishedCode(
 
   const headerLines = [
     '═══════════════════════════════════════════════════════════',
-    'CMPSBL® Refurbished Code — Sealed Runtime',
+    'CMPSBL® Sealed Runtime™ — Refurbished Artifact',
     `Language: ${detected} (Bridge Adapter)`,
     '═══════════════════════════════════════════════════════════',
     `Fingerprint: ${fingerprint}`,
-    `Primitives:  ${selectedPrimitives.map(p => p.name).join(', ')}`,
+    `Chain:       ${selectedPrimitives.map(p => p.name).join(' → ')}`,
     `Generated:   ${new Date().toISOString()}`,
     '',
+    'This artifact contains a sealed orchestration matrix.',
     'Layer 1: Original source (hardened in-place)',
-    'Layer 2: Primitive guard activations + instrumentation',
+    'Layer 2: Orchestration matrix + primitive instrumentation',
     '',
-    'DO NOT remove guard activations — they protect runtime integrity.',
+    'DO NOT modify the orchestration matrix — it governs',
+    'primitive sequencing and collision resolution.',
     'DO NOT modify the fingerprint — it validates this artifact.',
     '═══════════════════════════════════════════════════════════',
   ];
 
   const header = adapter.blockComment(headerLines);
+
+  // Generate the compiled preamble — opaque dispatch tables and collision matrix
+  const langKey = detected.toLowerCase();
+  const primitiveNames = selectedPrimitives.map(p => p.primitiveId);
+  const compiledPreamble = generateCompiledPreamble(primitiveNames, fingerprint, langKey);
+
+  // Generate decoy pipeline comments — shows 5 of 12 stages
+  const pipelineComments = generateDecoyPipelineComments(primitiveNames, langKey);
 
   const metaJson = JSON.stringify({
     fingerprint,
@@ -930,6 +945,8 @@ export function generateRefurbishedCode(
     generatedAt: new Date().toISOString(),
     runtimeVersion: '2.5.0',
     sourceLanguage: detected,
+    orchestrationVersion: '3.0.0',
+    pipelineStages: 5,
   }, null, 2);
 
   const metaBlock = [
@@ -945,17 +962,20 @@ export function generateRefurbishedCode(
     '',
     metaBlock,
     '',
+    compiledPreamble,
+    '',
+    pipelineComments,
+    '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
-    adapter.comment('PRIMITIVE GUARD ACTIVATIONS'),
-    adapter.comment("Each block initializes a primitive's protection layer."),
+    adapter.comment('PRIMITIVE INSTRUMENTATION'),
+    adapter.comment('Guards bound via orchestration matrix dispatch.'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     ...guards,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
-    adapter.comment('ORIGINAL SOURCE (HARDENED)'),
-    adapter.comment('Your code below has been analyzed and transformed in-place.'),
-    adapter.comment('Dangerous patterns replaced. Logging upgraded. Secrets sealed.'),
+    adapter.comment('SOURCE (HARDENED)'),
+    adapter.comment('Analyzed, instrumented, and sealed by the orchestration matrix.'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     transformedCode,
