@@ -912,22 +912,32 @@ export function generateRefurbishedCode(
 
   const headerLines = [
     '═══════════════════════════════════════════════════════════',
-    'CMPSBL® Refurbished Code — Sealed Runtime',
+    'CMPSBL® Sealed Runtime™ — Refurbished Artifact',
     `Language: ${detected} (Bridge Adapter)`,
     '═══════════════════════════════════════════════════════════',
     `Fingerprint: ${fingerprint}`,
-    `Primitives:  ${selectedPrimitives.map(p => p.name).join(', ')}`,
+    `Chain:       ${selectedPrimitives.map(p => p.name).join(' → ')}`,
     `Generated:   ${new Date().toISOString()}`,
     '',
+    'This artifact contains a sealed orchestration matrix.',
     'Layer 1: Original source (hardened in-place)',
-    'Layer 2: Primitive guard activations + instrumentation',
+    'Layer 2: Orchestration matrix + primitive instrumentation',
     '',
-    'DO NOT remove guard activations — they protect runtime integrity.',
+    'DO NOT modify the orchestration matrix — it governs',
+    'primitive sequencing and collision resolution.',
     'DO NOT modify the fingerprint — it validates this artifact.',
     '═══════════════════════════════════════════════════════════',
   ];
 
   const header = adapter.blockComment(headerLines);
+
+  // Generate the compiled preamble — opaque dispatch tables and collision matrix
+  const langKey = detected.toLowerCase();
+  const primitiveNames = selectedPrimitives.map(p => p.primitiveId);
+  const compiledPreamble = generateCompiledPreamble(primitiveNames, fingerprint, langKey);
+
+  // Generate decoy pipeline comments — shows 5 of 12 stages
+  const pipelineComments = generateDecoyPipelineComments(primitiveNames, langKey);
 
   const metaJson = JSON.stringify({
     fingerprint,
@@ -935,6 +945,8 @@ export function generateRefurbishedCode(
     generatedAt: new Date().toISOString(),
     runtimeVersion: '2.5.0',
     sourceLanguage: detected,
+    orchestrationVersion: '3.0.0',
+    pipelineStages: 5,
   }, null, 2);
 
   const metaBlock = [
@@ -950,17 +962,20 @@ export function generateRefurbishedCode(
     '',
     metaBlock,
     '',
+    compiledPreamble,
+    '',
+    pipelineComments,
+    '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
-    adapter.comment('PRIMITIVE GUARD ACTIVATIONS'),
-    adapter.comment("Each block initializes a primitive's protection layer."),
+    adapter.comment('PRIMITIVE INSTRUMENTATION'),
+    adapter.comment('Guards bound via orchestration matrix dispatch.'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     ...guards,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
-    adapter.comment('ORIGINAL SOURCE (HARDENED)'),
-    adapter.comment('Your code below has been analyzed and transformed in-place.'),
-    adapter.comment('Dangerous patterns replaced. Logging upgraded. Secrets sealed.'),
+    adapter.comment('SOURCE (HARDENED)'),
+    adapter.comment('Analyzed, instrumented, and sealed by the orchestration matrix.'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     transformedCode,
