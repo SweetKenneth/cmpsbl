@@ -680,7 +680,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   defense: {
     imports: "import { DefenseLayer, RequestValidator, DeviceFingerprint } from '@cmpsbl/runtime/defense';",
     guard: "DefenseLayer.activate({ mode: 'enforce', fingerprinting: true });\nRequestValidator.init({ blockInjection: true, blockXSS: true, rateLimitPerIp: 100 });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.defense ?? ((code) => code),
   },
   governance: {
     imports: "import { GovernancePolicy, ComplianceAuditor } from '@cmpsbl/runtime/governance';",
