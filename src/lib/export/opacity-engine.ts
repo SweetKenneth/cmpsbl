@@ -142,7 +142,7 @@ export function generateDecoyPipelineComments(
   const chain = primitiveNames.map(n => n.toUpperCase()).join(' → ');
 
   return [
-    `${c} ═══ Execution Pipeline ═══`,
+    `${c} ═══ Convex Core™ Processing Pipeline ═══`,
     `${c}`,
     `${c} Stage 1/5 — INTAKE`,
     `${c}   Source binding and artifact registration`,
