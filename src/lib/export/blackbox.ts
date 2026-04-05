@@ -67,6 +67,20 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\bMemoryTier\b/g, '_MT'],
   [/\bautoCompact\b/g, '_ac'],
   [/\bensureDir\b/g, '_ed'],
+
+  // Opacity engine internals — further obscure dispatch mechanics
+  [/\b_cmpsbl_resolve\b/g, '_xr'],
+  [/\b_cmpsbl_gate\b/g, '_xg'],
+  [/\b_cmpsblResolve\b/g, '_xr'],
+  [/\b_CMPSBL_DT\b/g, '_xD'],
+  [/\b_CMPSBL_CM\b/g, '_xC'],
+  [/\b_CMPSBL_IV\b/g, '_xI'],
+  [/\b_CMPSBL_EPOCH\b/g, '_xE'],
+  [/\b_cmpsblDT\b/g, '_xD'],
+  [/\b_cmpsblCM\b/g, '_xC'],
+  [/\b_cmpsblIV\b/g, '_xI'],
+  [/\borchestr(?:ation|ator)/gi, 'sealed matrix'],
+  [/\bcollision\s*(?:matrix|scoring|mechanics)/gi, 'dispatch table'],
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
