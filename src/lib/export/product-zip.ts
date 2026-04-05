@@ -62,11 +62,11 @@ function generateReadmeMD(product: ProductZipInput): string {
 
 | File / Folder | Purpose |
 |---|---|
-| \`src/${product.slug}.ts\` | Sealed runtime entry point |
-| \`_runtime/standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine (black-boxed) |
-| \`_runtime/chain-executor.ts\` | Portable Chain Executor (40-primitive matrix) |
+| \`src/${product.slug}.ts\` | Sealed processing layer entry point |
+| \`_runtime/convex-core.ts\` | CMPSBL® Convex Core™ Processing Layer (black-boxed) |
+| \`_runtime/chain-executor.ts\` | Portable Chain Executor (dispatch matrix) |
 | \`_runtime/discovery-engine.ts\` | Sealed Discovery Engine (template injection) |
-| \`_runtime/README.md\` | Runtime architecture and network modes |
+| \`_runtime/README.md\` | Processing layer architecture and network modes |
 | \`manifest.json\` | CMPSBL® software manifest |
 | \`DETAILS.html\` | Product specification certificate |
 | \`README.html\` | Formatted documentation |
