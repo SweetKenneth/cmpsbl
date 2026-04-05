@@ -36,7 +36,7 @@ export function generateSealedRuntime(): string {
  * Zero dependencies. Pure TypeScript. Drop-in ready.
  *
  * Architecture: Deterministic Processing Layer v3.0
- * Supersedes: Mini-Runtime™ Engine (deprecated v2.x)
+ * Supersedes: Convex Core™ Processing Layer (deprecated v2.x)
  *
  * © CMPSBL® — All rights reserved.
  * Unauthorized reverse engineering is prohibited.
@@ -399,7 +399,7 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
 
 export function generateSealedDiscoveryEngine(): string {
   return `/**
- * CMPSBL® Mini-Runtime™ Discovery Engine — Sealed Distribution
+ * CMPSBL® Convex Core™ Discovery Engine — Sealed Distribution
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * This is a sealed build. Internal synthesis templates, reactor
  * algorithms, and discovery heuristics are protected trade secrets.
@@ -648,9 +648,9 @@ export function formatReport(result: ChainResult): string {
 
 export function generateSealedRuntimeReadme(): string {
   return [
-    '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
+    '# CMPSBL® Convex Core™ Processing Layer — Sealed Distribution',
     '',
-    'This is a **sealed build** of the CMPSBL® Mini-Runtime™ Engine.',
+    'This is a **sealed build** of the CMPSBL® Convex Core™ Processing Layer.',
     'Internal algorithms and scoring weights are protected.',
     '',
     '## Network-Aware Execution',
@@ -677,7 +677,7 @@ export function generateSealedRuntimeReadme(): string {
     '',
     '## Included Components',
     '',
-     '- **standalone-runtime.ts** — Sealed Mini-Runtime™: CJPI scoring, state machine, memory chain orchestration, network bridge',
+     '- **standalone-runtime.ts** — Sealed Convex Core™: CJPI scoring, state machine, memory chain orchestration, network bridge',
      '- **chain-executor.ts** — Sealed Chain Executor: memory chain playback with labeled primitives (Organs, Layers, Engines, Agents)',
     '',
     '## NOT Included',

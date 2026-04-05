@@ -1,8 +1,8 @@
 /**
- * CMPSBL® Mini-Runtime™ Discovery Engine
+ * CMPSBL® Convex Core™ Discovery Engine
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Fully portable capability discovery reactor.
- * Powered by the CMPSBL® Mini-Runtime™ Engine — zero external dependencies.
+ * Powered by the CMPSBL® Convex Core™ Processing Layer — zero external dependencies.
  *
  * This is the same reactor that powers the CMPSBL Autonomous Software Foundry,
  * packaged for standalone operation outside the substrate.

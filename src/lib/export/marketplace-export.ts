@@ -3,7 +3,7 @@
  * 
  * Reuses the universal export infrastructure to deliver the full artifact package:
  * source code variants, HTML report, User Guide, Integration Guide, LICENSE, README,
- * and Mini-Runtime™ — all in a single downloadable ZIP.
+ * and Convex Core™ — all in a single downloadable ZIP.
  *
  * © 2025–2026 CMPSBL® · PromptFluid™. All rights reserved.
  */

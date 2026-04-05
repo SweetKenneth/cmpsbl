@@ -115,7 +115,7 @@ export function generateBridgeHeader(opts: BridgeHeaderOptions): string {
     `${opts.comment} Primitive Chain: ${labelChain(opts.moduleChain)}`,
     `${opts.comment}`,
     `${opts.comment} This is a BRIDGE ADAPTER, not a standalone runtime.`,
-    `${opts.comment} Runtime logic lives in the canonical TypeScript Mini-Runtime™.`,
+    `${opts.comment} Runtime logic lives in the canonical TypeScript Convex Core™.`,
     `${opts.comment} This adapter delegates execution via:`,
     `${opts.comment}   1. Remote canonical runtime (when endpoint configured)`,
     `${opts.comment}   2. Deterministic local fallback (offline mode)`,

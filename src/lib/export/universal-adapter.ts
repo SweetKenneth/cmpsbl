@@ -2521,7 +2521,7 @@ ${langList}
 
 This bundle follows the **CMPSBL® One Runtime, Many Bridges** architecture:
 
-- **TypeScript**: Contains the full canonical Mini-Runtime™ (CJPI, tiering, FSM, saga)
+- **TypeScript**: Contains the full canonical Convex Core™ (CJPI, tiering, FSM, saga)
 - **All other languages**: Bridge adapters that route execution to the canonical runtime
   when configured, with deterministic local fallback for offline operation
 
@@ -2549,7 +2549,7 @@ Mode transitions are recorded, inspectable, and never hidden.
 
 | File | Purpose |
 |------|---------|
-| \`standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine — the single canonical runtime |
+| \`standalone-runtime.ts\` | CMPSBL® Convex Core™ Processing Layer — the single canonical runtime |
 | \`*.py / *.go / *.rs / etc\` | Bridge adapters — metadata + integrity + remote-first + fallback |
 | \`Makefile\` | Build & test commands for every included language |
 | \`LICENSE\` | CMPSBL® Proprietary License |
@@ -2592,7 +2592,7 @@ engine = ${cls}()
 result = engine.execute({"key": "value"})
 \`\`\`
 
-### Using the CMPSBL® Mini-Runtime™ Engine (Advanced)
+### Using the CMPSBL® Convex Core™ Processing Layer (Advanced)
 \`\`\`typescript
 import { createRuntime } from './standalone-runtime';
 

@@ -43,7 +43,7 @@ export function synthesizeRust(ctx: SynthesisContext): string {
 //! Bridge Type: hybrid | Canonical Runtime: v${CANONICAL_RUNTIME_VERSION}
 //!
 //! This is a BRIDGE ADAPTER. Runtime logic lives in the canonical
-//! TypeScript Mini-Runtime™. This adapter routes execution remotely
+//! TypeScript Convex Core™. This adapter routes execution remotely
 //! when configured, falling back to deterministic local output.
 
 use std::collections::HashMap;

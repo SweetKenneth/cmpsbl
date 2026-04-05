@@ -285,7 +285,7 @@ export function generateProductDetailsHTML(input: ProductDetailsInput): string {
     <div class="bundle-file">LICENSE.html</div><div class="bundle-desc">Formatted license certificate</div>
     <div class="bundle-file">DETAILS.html</div><div class="bundle-desc">This product specification document</div>
     <div class="bundle-file">src/</div><div class="bundle-desc">Sealed runtime entry point</div>
-    <div class="bundle-file">_runtime/</div><div class="bundle-desc">CMPSBL® Mini-Runtime™ Engine</div>
+    <div class="bundle-file">_runtime/</div><div class="bundle-desc">CMPSBL® Convex Core™ Processing Layer</div>
     <div class="bundle-file">test/</div><div class="bundle-desc">Auto-generated test harness</div>
   </div>
 
@@ -294,7 +294,7 @@ export function generateProductDetailsHTML(input: ProductDetailsInput): string {
   <h2>Runtime Information</h2>
   <div class="section-card">
     <p>
-      This ${input.kind} includes the <strong>CMPSBL® Mini-Runtime™ Engine</strong> — a zero-dependency, 
+      This ${input.kind} includes the <strong>CMPSBL® Convex Core™ Processing Layer</strong> — a zero-dependency, 
       pure TypeScript in-memory runtime providing CJPI scoring, auto-tiering, Saga orchestration, 
       memory chain composition, and finite state machine capabilities. It supports the full 
       40-primitive taxonomy: Organs (infrastructure), Layers (governance), Engines (processing), 

@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Mini-Runtime™ Engine
+ * CMPSBL® Convex Core™ Processing Layer
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * The official CMPSBL® portable runtime engine — a self-contained
  * micro-substrate that provides everything the Discovery Engine needs

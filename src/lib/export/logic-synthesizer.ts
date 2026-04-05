@@ -235,7 +235,7 @@ Primitive Chain: ${labelChain(modules)}
 Category: ${ctx.category} | CJPI: ${ctx.cjpi}
 
 This is a BRIDGE ADAPTER, not a standalone runtime.
-Runtime logic lives in the canonical TypeScript Mini-Runtime™.
+Runtime logic lives in the canonical TypeScript Convex Core™.
 This adapter routes execution to the canonical runtime when available,
 falling back to deterministic local output when offline.
 
@@ -654,7 +654,7 @@ export function synthesizeGo(ctx: SynthesisContext): string {
 // Category: ${ctx.category} | CJPI: ${ctx.cjpi}
 //
 // This is a BRIDGE ADAPTER, not a standalone runtime.
-// Runtime logic lives in the canonical TypeScript Mini-Runtime™.
+// Runtime logic lives in the canonical TypeScript Convex Core™.
 // This adapter routes execution to the canonical runtime when available,
 // falling back to deterministic local output when offline.
 //
