@@ -225,8 +225,8 @@ function generateAutoProposal(
   if (uniqueDomains.length === 0 && expectedOutputs.size === 0) return null;
 
   const existingDomains = new Set(existingResolvers.flatMap(r => r.domains));
-  const newDomains = possibleDomains.filter(d => !existingDomains.has(d));
-  const domains = newDomains.length > 0 ? newDomains : possibleDomains;
+  const newDomains = uniqueDomains.filter(d => !existingDomains.has(d));
+  const domains = newDomains.length > 0 ? newDomains : uniqueDomains;
 
   return {
     resolverId: `${targetModule.toLowerCase()}.${intentType.replace(/[^a-z0-9]/gi, '_')}_auto`,
