@@ -80,39 +80,40 @@ function deriveSignals(p: VerticalPrimitive): string[] {
 
 // Spine-specific affinity signals for deeper matching
 const SPINE_AFFINITY_SIGNALS: Record<string, string[]> = {
-  CORE: ['kernel', 'boot', 'init', 'startup', 'main', 'entry', 'lifecycle', 'heartbeat', 'health'],
-  SYSTEM: ['config', 'environment', 'env', 'setting', 'lifecycle', 'setup', 'init'],
+  CORE: ['kernel', 'boot', 'init', 'startup', 'main', 'entry', 'lifecycle', 'heartbeat', 'orchestrat', 'pipeline', 'cadence'],
+  SYSTEM: ['config', 'environment', 'env', 'setting', 'lifecycle', 'setup', 'init', 'configur'],
   BRAIN: ['reason', 'pattern', 'knowledge', 'inference', 'classify', 'predict', 'neural', 'cognitive', 'think'],
   MEMORY: ['cache', 'store', 'persist', 'state', 'session', 'storage', 'retain', 'archive', 'database', 'redis'],
   DREAM: ['synthesis', 'emerge', 'heuristic', 'creative', 'fragment', 'subconscious', 'discover'],
   NERVE: ['signal', 'event', 'dispatch', 'route', 'bus', 'emit', 'subscribe', 'publish', 'trigger'],
   IDENTITY: ['auth', 'login', 'user', 'session', 'token', 'jwt', 'oauth', 'identity', 'credential'],
   RELAY: ['message', 'queue', 'relay', 'forward', 'webhook', 'notification', 'pubsub'],
-  AUDIT: ['log', 'audit', 'trail', 'compliance', 'tamper', 'immutable', 'chain', 'record', 'receipt', 'provenance', 'merkle'],
-  RIPPLE: ['cascade', 'propagat', 'boundary', 'compliance', 'enforce', 'policy', 'rule', 'prevent', 'contain'],
+  AUDIT: ['log', 'audit', 'trail', 'compliance', 'tamper', 'immutable', 'chain', 'record', 'receipt', 'provenance', 'merkle', 'hash'],
+  RIPPLE: ['cascade', 'propagat', 'boundary', 'enforce', 'contain'],
   ACCESS: ['permission', 'role', 'rbac', 'authorize', 'scope', 'grant', 'deny', 'acl'],
-  GOVERNANCE: ['govern', 'approve', 'gate', 'legitimacy', 'supervisor', 'oversight', 'policy', 'verdict', 'deny', 'review', 'decision', 'authorize'],
-  DEFENSE: ['security', 'threat', 'firewall', 'encrypt', 'protect', 'shield', 'perimeter', 'ssl', 'tls', 'risk', 'safe', 'guard', 'vulnerability', 'scan'],
-  IMMUNITY: ['heal', 'recover', 'quarantine', 'anomaly', 'resilient', 'immune', 'adapt', 'rollback', 'envelope', 'wrapper'],
-  CONSCIENCE: ['ethic', 'bias', 'fair', 'moral', 'boundary', 'responsible', 'transparent', 'safe', 'preflight', 'risk', 'verdict', 'ethical'],
+  GOVERNANCE: ['govern', 'approve', 'gate', 'legitimacy', 'supervisor', 'oversight', 'policy', 'verdict', 'deny', 'review', 'decision', 'authorize', 'governance_policy', 'auto_fix'],
+  DEFENSE: ['security', 'threat', 'firewall', 'encrypt', 'protect', 'shield', 'perimeter', 'ssl', 'tls', 'risk', 'guard', 'vulnerability', 'scan', 'security_smell', 'blocked'],
+  IMMUNITY: ['heal', 'recover', 'quarantine', 'anomaly', 'resilient', 'immune', 'adapt', 'rollback', 'envelope', 'wrapper', 'rollbackavailable', 'pre_snapshot', 'post_snapshot'],
+  CONSCIENCE: ['ethic', 'bias', 'fair', 'moral', 'boundary', 'responsible', 'transparent', 'preflight', 'conscience', 'ethical', 'review_required', 'blocked_categories'],
   INTENT: ['intent', 'purpose', 'goal', 'action', 'resolve', 'interpret', 'parse', 'understand'],
-  ATLAS: ['topology', 'discover', 'capability', 'registry', 'catalog', 'service_discovery', 'dependency_graph'],
-  ENGINEER: ['maintain', 'patch', 'fix', 'repair', 'drift', 'upgrade', 'refactor', 'debt', 'maintenance', 'remediat', 'autofix', 'detect'],
+  ATLAS: ['topology', 'capability', 'registry', 'catalog', 'service_discovery', 'dependency_graph'],
+  ENGINEER: ['maintain', 'patch', 'fix', 'repair', 'drift', 'upgrade', 'refactor', 'debt', 'maintenance', 'remediat', 'autofix', 'detect', 'auto_fix', 'stale'],
   DECODE: ['language', 'nlp', 'chat', 'conversation', 'text', 'parse', 'interpret', 'prompt'],
   ENCODE: ['generate', 'code', 'compile', 'build', 'blueprint', 'scaffold', 'write'],
   VISION: ['image', 'visual', 'ocr', 'picture', 'screenshot', 'video', 'camera', 'canvas'],
   ECONOMY: ['cost', 'budget', 'price', 'billing', 'meter', 'quota', 'spend', 'roi'],
-  SANDBOX: ['isolat', 'sandbox', 'contain', 'safe', 'eval', 'test', 'playground', 'docker'],
+  SANDBOX: ['isolat', 'sandbox', 'contain', 'eval', 'playground', 'docker'],
   INCLUSIVE: ['accessible', 'a11y', 'wcag', 'aria', 'screen_reader', 'disability', 'inclusive'],
-  MEDIC: ['diagnos', 'health', 'triage', 'recover', 'status', 'check', 'heartbeat', 'ping', 'assess', 'repair', 'severity', 'damage'],
-  SOVEREIGN: ['policy', 'compliance', 'classify', 'regulation', 'jurisdiction', 'consent', 'data_class'],
-  COMPASS: ['direction', 'priority', 'weight', 'score', 'rank', 'sort', 'order', 'threshold'],
-  SHADOW: ['canary', 'shadow', 'trace', 'monitor', 'snapshot', 'baseline', 'compare', 'observe'],
-  EVOLUTION: ['evolve', 'mutate', 'generation', 'adapt', 'select', 'fitness', 'population', 'upgrade'],
-  REFLEX: ['retry', 'circuit', 'breaker', 'timeout', 'backoff', 'fallback', 'degrade', 'cooldown'],
+  MEDIC: ['diagnos', 'triage', 'assess', 'repair', 'severity', 'damage', 'triageissue', 'triageall', 'riskscore', 'autofixable'],
+  SOVEREIGN: ['policy', 'compliance', 'classify', 'regulation', 'jurisdiction', 'consent', 'data_class', 'blockedcategories', 'governancepolicy'],
+  COMPASS: ['direction', 'priority', 'weight', 'rank', 'sort', 'order', 'threshold', 'severity_order', 'confidence', 'riskscore'],
+  SHADOW: ['canary', 'shadow', 'trace', 'monitor', 'snapshot', 'baseline', 'compare', 'observe', 'pre_snapshot', 'post_snapshot', 'presnapshot', 'postsnapshot'],
+  EVOLUTION: ['evolve', 'mutate', 'generation', 'adapt', 'select', 'fitness', 'population', 'upgrade', 'patch', 'update', 'updateconfig'],
+  REFLEX: ['retry', 'circuit', 'breaker', 'timeout', 'backoff', 'fallback', 'degrade', 'cooldown', 'graceful', 'circuit_breaker', 'degradation'],
   INTEGRATION: ['adapter', 'bridge', 'transform', 'protocol', 'format', 'normalize'],
   TREATY: ['contract', 'agreement', 'sla', 'obligation', 'terms', 'binding'],
   NEXUS: ['router', 'balance', 'failover', 'provider', 'endpoint', 'gateway', 'proxy'],
+  BEACON: ['beacon', 'heartbeat', 'health_signal', 'healthsignal', 'telemetry', 'uptime', 'emithealthsignal', 'beaconhealthsignal'],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -224,15 +225,16 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
   // primitives — they get a structural bonus because they provide the
   // core infrastructure that makes expansion primitives effective.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
-  const structuralBonus = isSpine ? 0.12 : 0;
+  const structuralBonus = isSpine ? 0.15 : 0;
 
   // Composite scoring — spine-aware
-  // Signal affinity (30%) + capability match (25%) + breadth (15%) + weight (15%) + structural (15%)
+  // Signal affinity (35%) + capability match (20%) + breadth (10%) + weight (15%) + structural (20%)
+  // Higher signal weight rewards genuine keyword alignment over broad capability lists
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.30 +
-    capRatio * 0.25 +
-    breadthScore * 0.15 +
+    signalAffinity * 0.35 +
+    capRatio * 0.20 +
+    breadthScore * 0.10 +
     weightFactor * 0.15 +
     structuralBonus;
 
