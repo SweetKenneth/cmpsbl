@@ -187,22 +187,14 @@
   ul { padding-left: 20px; }
   ul li { margin-bottom: 8px; }
 
-  /* ── Publication table ── */
-  .pub-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
-  .pub-table th {
-    background: var(--surface-2); border: 1px solid var(--border);
-    padding: 10px 14px; text-align: left; font-weight: 700;
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+  .story-quote {
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px; margin: 24px 0;
+    background: var(--surface);
+    font-size: 17px; font-style: italic; font-weight: 500;
+    color: var(--text); line-height: 1.7;
   }
-  .pub-table td {
-    border: 1px solid var(--border); padding: 10px 14px;
-    vertical-align: top; color: var(--text-muted);
-  }
-  .pub-table td a { color: var(--accent); text-decoration: none; font-weight: 500; }
-  .pub-table tr:nth-child(even) { background: var(--surface); }
-  .pub-table .pub-title { font-weight: 600; color: var(--text); }
 
-  /* ── Three col ── */
   .tri-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0; }
   @media (max-width: 768px) { .tri-col { grid-template-columns: 1fr; } }
 
@@ -219,7 +211,7 @@
   <div class="container">
     <div class="header-badge"><span class="dot"></span> Founder Portfolio — Investor Document</div>
     <h1>Kenneth E. Sweet Jr.</h1>
-    <p class="subtitle">Solo founder of CMPSBL® — the world's first cognitive substrate. 200,000+ lines of pure deterministic code. Patent pending. Zero AI dependency. Built entirely by one person.</p>
+    <p class="subtitle">Solo founder of CMPSBL® — the world's first cognitive substrate. Over 200,000 lines of pure deterministic code. Patent pending. Zero AI dependency. 3,000+ hours of work. Built entirely by one person, with zero funding, from nothing.</p>
     <div class="meta-row">
       <span><strong>ORCID:</strong> <a href="https://orcid.org/0009-0001-4237-1243" target="_blank">0009-0001-4237-1243</a></span>
       <span><strong>Parent Company:</strong> PromptFluid™ (TX)</span>
@@ -237,67 +229,128 @@
 
     <div class="plain-english">
       <div class="label">🟢 Plain English</div>
-      <p>Kenneth built a system that takes any developer's code and automatically wraps it in industrial-strength protection — without changing a single line of the original code. Think of it like an invisible suit of armor for software. It finds the weak spots, hardens them, scores how strong the result is, and packages it for delivery. The entire process is <strong>pure math and algorithms — no AI involved at all.</strong> That means it's predictable, repeatable, and can never "hallucinate" or make something up. It works the same way every single time.</p>
+      <p>Kenneth built a system that takes any developer's code — in any programming language — and automatically wraps it in industrial-strength protection without changing a single line of the original code. Think of it like an invisible suit of armor for software. It finds the weak spots, hardens them, scores how strong the result is, and packages it for delivery. The entire process is <strong>pure math and algorithms — no AI involved at all.</strong> That means it's predictable, repeatable, and can never "hallucinate" or make something up. It works the same way every single time. He did this alone, unfunded, working 12–18 hour days for over 15 months.</p>
     </div>
 
     <div class="tech-def">
       <div class="label">🔷 Technical Definition</div>
-      <p>CMPSBL® is a <strong>governed cognitive infrastructure substrate</strong> — a 40-primitive deterministic processing matrix organized into 12 Organs, 12 Layers, 8 Engines, and 8 Agents. It performs autonomous capability discovery, CJPI scoring, and dual-layer code hardening via the Ascension pipeline. Zero external AI calls. FNV-1a hash-chain integrity verification. Patent-pending dual-layer architecture under U.S. App. No. 64/029,678.</p>
+      <p>CMPSBL® is a <strong>governed cognitive infrastructure substrate</strong> — a 40-primitive deterministic processing matrix organized into 12 Organs, 12 Layers, 8 Engines, and 8 Agents. It performs autonomous capability discovery, CJPI scoring (Crown Jewel Priority Index — a 0–100 quality rating that measures how novel, useful, complex, and composable a discovery is), and dual-layer code hardening via the Ascension pipeline. Zero external AI calls. FNV-1a hash-chain integrity verification. Patent-pending dual-layer architecture under U.S. App. No. 64/029,678.</p>
     </div>
 
     <div class="stats-grid">
       <div class="stat-box"><div class="number">200K+</div><div class="label">Lines of Code</div></div>
-      <div class="stat-box"><div class="number">40</div><div class="label">Primitives</div></div>
+      <div class="stat-box"><div class="number">3,000+</div><div class="label">Hours of Work</div></div>
       <div class="stat-box"><div class="number">1</div><div class="label">Person Built It</div></div>
-      <div class="stat-box"><div class="number">0</div><div class="label">AI Dependencies</div></div>
+      <div class="stat-box"><div class="number">$0</div><div class="label">Outside Funding</div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ WORLD FIRSTS ═══ -->
+<!-- ═══ THE REAL STORY ═══ -->
 <section class="section">
   <div class="container">
-    <div class="section-label">Documented World Firsts</div>
-    <h2>What Has Never Been Done Before</h2>
+    <div class="section-label">The Story Nobody Tells</div>
+    <h2>How One Person Built the Future of Software — With Nothing</h2>
 
-    <div class="card card-green">
-      <h3>🌍 World's First Cognitive Substrate</h3>
-      <p>CMPSBL® is the first system that organizes software primitives into a cognitive architecture — Organs that process, Layers that protect, Engines that execute, and Agents that interact — creating a living infrastructure that can discover capabilities in any code it processes. This is not an "AI agent framework." It's infrastructure — like plumbing and electrical for software, except it thinks.</p>
+    <div class="story-quote">
+      "I didn't have a team. I didn't have funding. I didn't have a safety net. I had an idea, a laptop, and the refusal to quit. Every credit I bought to keep building came from delivering food. Every hour I spent coding was an hour I didn't spend earning money to eat. But I knew what I was building was real, and I knew nobody else was going to build it for me."
     </div>
 
-    <div class="card card-green">
-      <h3>🌍 World's First Autonomous Capability Discovery Without AI</h3>
-      <p>The Ascension pipeline analyzes developer code, detects signals, collides them against all 40 primitives, discovers emergent capability chains, and scores them — all without a single AI call. Every other system in this space requires an LLM. CMPSBL® does it with pure algorithms.</p>
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px;">The Beginning — January 2025</h3>
+
+    <p>Kenneth E. Sweet Jr. started building in <strong>January 2025</strong> — not November 2025, which is when the first academic publication appeared. The work started months before anything was published.</p>
+
+    <p>He began with the <strong>PromptFluid™ ecosystem</strong> — a full cognitive orchestration platform built using Lovable, an AI-assisted development tool. He built the Cascade architecture, the Dream Protocol, the Brain substrate, the Defense layer, Nexus routing, and dozens of edge functions into a sprawling, living ecosystem. He worked 12–18 hour days. Every day. No weekends off. No vacations. Just building.</p>
+
+    <p>Then the project hit a wall. The ecosystem Kenneth had built was <strong>too large</strong> — the edge functions exceeded the platform's capacity limits. Lovable couldn't handle the size of what he'd created. <strong>The project was shut down.</strong> Not by choice. Not because he failed. Because he'd built something bigger than the tool could hold.</p>
+
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px;">The Side Quest — XCTBL Space</h3>
+
+    <p>With his main project frozen, Kenneth didn't stop. He pivoted and invented <strong>XCTBL Space</strong> (<a href="https://xctbl.com" style="color:var(--accent)">xctbl.com</a>) — a creative shared universe spanning eight interconnected websites. XCTBL Space (pronounced "Excitable") is a completely separate project — a digital playground with its own identity, its own aesthetic, and its own community. Kenneth has plans to eventually transform it into the <strong>developer playground for CMPSBL®</strong>. It's already linked in the footer of the main website.</p>
+
+    <p>During this period, Kenneth thought he would <strong>never get to come back</strong> to his main project. He'd built something extraordinary, and it was sitting on ice, unreachable.</p>
+
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px;">The Return — The Remix</h3>
+
+    <p>Then Lovable fixed the issue. The solution was a "<strong>remix</strong>" — rebuilding the project on a fresh foundation. Kenneth started over. Not from scratch in terms of knowledge — he carried everything he'd learned, every architecture decision, every pattern — but from scratch in terms of code. The remix became the starting point for what CMPSBL® is today. Everything since then has been built in partnership with Lovable's AI-assisted development tools, with Kenneth directing every architectural decision, every line of logic, and every strategic choice.</p>
+
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px;">The Grind — Every Single Day</h3>
+
+    <p>For over <strong>15 months</strong>, Kenneth has worked <strong>12–18 hours a day, every day</strong>. That's over <strong>3,000 hours</strong> of focused, deliberate work on a single project. To put that in perspective: most "vibe coders" spend a weekend on a project and try to sell it within a week. Kenneth has spent <em>fifteen months</em> — relentlessly — building, testing, documenting, publishing, and protecting this technology.</p>
+
+    <div class="card card-amber">
+      <h3>⚠️ How He Funded It</h3>
+      <p>Kenneth lives on a <strong>fixed monthly income</strong> — a set financial amount with no room for extras. He funded the entire project by <strong>driving for DoorDash</strong>, buying development credits in <strong>$15 and $30 increments</strong> — sometimes less, sometimes nothing at all. On days he couldn't afford credits, he worked with the five free daily credits that come with a basic membership. Some days he went hungry so he could put that money toward building instead of eating. <strong>Not a single dollar of outside funding has ever gone into this project.</strong></p>
     </div>
 
-    <div class="card card-green">
-      <h3>🌍 World's First Dual-Layer Code Hardening (Patent Pending)</h3>
-      <p>Layer 1 is the developer's original code — untouched. Layer 2 is the Convex Core™ sealed artifact — generated by CMPSBL® — that wraps the code in protection. The developer's code is never modified. This is protected under U.S. Patent Application No. 64/029,678.</p>
+    <div class="card card-amber">
+      <h3>⚠️ The Scam</h3>
+      <p>When Kenneth finally began looking for investment, he was targeted by an <strong>investment accelerator scam</strong>. A person posing as an accelerator operator took his time and trust — consuming an entire month that could have been spent raising real money or building. It turned out this individual was running a <strong>scheme on Reddit that ripped off over 100 people</strong>. Kenneth lost a month of momentum. He kept going anyway.</p>
     </div>
 
-    <div class="card card-green">
-      <h3>🌍 World's First Autonomous Dream-Cycle AI (SimNap → Cascade)</h3>
-      <p>Kenneth invented the first documented artificial intelligence capable of initiating dream-like generative sequences without user prompting. The SimNap → Cascade Dream-Cycle Architecture uses latent-drift buildup, internal seed generation, subconscious recombination, and multi-stage reflection to produce autonomous creative output. This invention is formally disclosed with timestamped priority at OSF (DOI: <a href="https://doi.org/10.17605/osf.io/t3d5s" style="color:var(--green)">10.17605/OSF.IO/T3D5S</a>) and includes 13 independently verifiable proof files.</p>
+    <p>Through all of it — the financial pressure, the scam, the isolation of working alone, the days of doubt — Kenneth kept his head up and his eyes on the prize. He didn't quit. He didn't pivot to something easier. He kept building.</p>
+
+    <div class="story-quote">
+      "It took me 3,000 hours to create the first substrate. Now I can spin one up in 10 minutes. That's the whole point. That's what this engine does — it turns months of work into minutes."
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE TRIFECTA ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">The Three Pillars</div>
+    <h2>The Trifecta: Substrate + Memory Stream + Ascension</h2>
+
+    <p>CMPSBL® is built on three pillars. Each one is powerful on its own. Together, they form something that has never existed before.</p>
+
+    <!-- SUBSTRATE -->
+    <div class="card card-accent" style="margin-top:24px;">
+      <h3>🏗️ Pillar 1: The Substrate — A Living Foundation for Software</h3>
+      <p style="margin-bottom:14px;"><strong>What it is:</strong> The substrate is a 40-primitive architecture — 12 Organs, 12 Layers, 8 Engines, and 8 Agents — that provides enterprise-grade capabilities built directly into any software that runs on it.</p>
+      <p style="margin-bottom:14px;"><strong>In plain English:</strong> Imagine if every app you built came with built-in security, built-in self-healing, built-in monitoring, built-in learning, and built-in governance — out of the box, without writing extra code. That's what the substrate provides. It's the foundation that makes ordinary software extraordinary.</p>
+      <p style="margin-bottom:14px;"><strong>Key capabilities include:</strong></p>
+      <ul style="margin-top:8px;">
+        <li><strong>EVOLUTION</strong> — The software can patch and update itself without human intervention</li>
+        <li><strong>DREAM</strong> — The software observes patterns below the noise floor and synthesizes them into new capabilities (pure algorithmic — not AI)</li>
+        <li><strong>DEFENSE</strong> — Enterprise-grade security is woven into every function call</li>
+        <li><strong>GOVERNANCE</strong> — Every action is audited, tracked, and controlled</li>
+        <li><strong>BEACON</strong> — Real-time health monitoring across every primitive</li>
+        <li><strong>MEMORY</strong> — Persistent learning that compounds knowledge over time</li>
+      </ul>
+      <p style="margin-top:14px;"><strong>Why it matters for AI:</strong> The substrate doesn't replace AI — it <em>governs</em> it. It's the layer that can make ChatGPT, Claude, or any AI model enterprise-grade. It wraps AI in security, audit trails, governance, and deterministic safety rails. Without something like this, AI is a powerful tool with no guardrails. With the substrate, AI becomes safe enough for banks, hospitals, and governments to trust.</p>
     </div>
 
-    <div class="card card-green">
-      <h3>🌍 World's First Memory Stream — Autonomous Learning Without AI</h3>
-      <p>Memory Stream runs on an autonomous 8-hour cycle, observing patterns across the substrate, discovering new capability combinations, scoring them, and crystallizing the best ones into permanent knowledge. It runs on its own — it is never triggered by a user. No AI is involved.</p>
+    <!-- MEMORY STREAM -->
+    <div class="card card-green" style="margin-top:24px;">
+      <h3>🧠 Pillar 2: Memory Stream — A Software Printing Press</h3>
+      <p style="margin-bottom:14px;"><strong>What it is:</strong> Memory Stream is an autonomous discovery engine that runs on an 8-hour cycle — completely on its own, without any human triggering it. Every 8 hours, it observes how the substrate is behaving, detects new patterns, scores them using a quality rating called the CJPI (Crown Jewel Priority Index — a 0 to 100 scale), and crystallizes the best discoveries into standalone, exportable software.</p>
+      <p style="margin-bottom:14px;"><strong>In plain English:</strong> Memory Stream is like a machine that prints new software products while you sleep. Every 8 hours, it looks at what's happening across the substrate, finds valuable new combinations of capabilities, and packages them into products that can be sold. It's an <strong>autonomous software factory</strong>.</p>
+      <p style="margin-bottom:14px;"><strong>Why this is a big deal:</strong> Every single discovery Memory Stream produces is a potential product. The system autonomously expands the catalog of sellable software without any engineering labor. It's like having an infinite R&D department that works for free, 24/7, and never makes mistakes — because it's deterministic code, not AI.</p>
+      <p><strong>It works for any industry.</strong> Build a substrate for healthcare — Memory Stream discovers healthcare capabilities. Build one for finance — it discovers finance capabilities. Build one for robotics — it discovers robotics capabilities. And Kenneth can now spin up a new substrate in about <strong>10 minutes</strong>.</p>
     </div>
 
-    <div class="card card-green">
-      <h3>🌍 World's First DREAM Synthesis — Sub-Threshold Pattern Emergence</h3>
-      <p>DREAM observes signals that individually fall below the activation threshold. When enough sub-threshold signals accumulate, DREAM synthesizes them into new heuristics — essentially "dreaming up" new capabilities from noise. Pure algorithmic. No AI. Patentable on its own.</p>
+    <!-- ASCENSION -->
+    <div class="card card-cyan" style="margin-top:24px;">
+      <h3>👑 Pillar 3: Ascension — The Crown Jewel That Changes Software Forever</h3>
+      <p style="margin-bottom:14px;"><strong>What it is:</strong> Ascension is the engine that takes any developer's existing code — in any programming language — analyzes it, discovers what it can become, wraps it in protection, scores the result, and exports a hardened artifact. The original code is never modified. Not a single line.</p>
+      <p style="margin-bottom:14px;"><strong>In plain English:</strong> Ascension is a <strong>new layer of coding</strong>. It's the layer <em>below</em> software itself. Before Ascension, there was only one layer — the code developers write. Now there are two layers: the developer's code (Layer 1) and the protective shell that Ascension generates around it (Layer 2). <strong>This second layer didn't exist before. It exists now. And it has a patent pending.</strong></p>
+      <p style="margin-bottom:14px;"><strong>Why this is the crown jewel:</strong> Every piece of software that has ever been written — and every piece that will ever be written — is a candidate for Ascension. Every single one. If it's code, Ascension can harden it. That means:</p>
+      <ul style="margin-top:8px;">
+        <li>If Kenneth can harden <strong>Hugging Face's code</strong> (126 million downloads per month), he can harden <strong>ChatGPT's code</strong></li>
+        <li>If he can harden ChatGPT, he can harden <strong>Anthropic's Claude</strong></li>
+        <li>He can harden <strong>every other AI model</strong> — large or small, famous or unknown</li>
+        <li>He can harden <strong>every web application, every mobile app, every enterprise system, every piece of open-source software on the planet</strong></li>
+        <li>All he needs is the right vertical substrate (which he can spin up in 10 minutes) or the Universal substrate with the right primitives</li>
+      </ul>
+      <p style="margin-top:14px;"><strong>This is not an incremental improvement. This is a new category of software engineering that didn't exist 16 months ago.</strong></p>
     </div>
 
-    <div class="card card-green">
-      <h3>🌍 World's First AI Governance Namespace (AIGVRN)</h3>
-      <p>Kenneth created the first structured terminology framework for AI governance — defining twelve surface domains spanning standards, certification, verification, compliance, security, safety, regulation, policy, privacy, sovereignty, and control. Each domain is represented by a dedicated namespace, published as an open reference work for researchers, regulators, and enterprise risk teams (DOI: <a href="https://doi.org/10.5281/zenodo.18393018" style="color:var(--green)">10.5281/zenodo.18393018</a>).</p>
-    </div>
-
-    <div class="card card-green">
-      <h3>🌍 World's First Adaptive Free-Tier AI Router</h3>
-      <p>Kenneth authored the first formal whitepaper on cost-constrained AI routing — a system that intelligently routes AI requests across free-tier providers to enable zero-cost AI operations. This addresses the fundamental barrier of AI cost for startups and individual developers (OSF: <a href="https://osf.io/r4hs2" style="color:var(--green)">osf.io/r4hs2</a>).</p>
+    <div class="stats-grid" style="margin-top:28px;">
+      <div class="stat-box"><div class="number">10</div><div class="label">Substrates Running</div></div>
+      <div class="stat-box"><div class="number">10</div><div class="label">Ascension Engines</div></div>
+      <div class="stat-box"><div class="number">10</div><div class="label">Memory Streams</div></div>
+      <div class="stat-box"><div class="number">~10 min</div><div class="label">To Spin Up a New One</div></div>
     </div>
   </div>
 </section>
@@ -306,53 +359,102 @@
 <section class="section">
   <div class="container">
     <div class="section-label">Critical Distinction</div>
-    <h2>This Is Not AI. This Is Deterministic Code. Here's Why That Matters.</h2>
+    <h2>This Is Not AI. This Is Classic Deterministic Code. Here's Why That Matters More Than Anything.</h2>
 
     <div class="plain-english">
       <div class="label">🟢 Plain English</div>
-      <p>When people hear "software that discovers capabilities" or "code that learns," they assume AI is involved. It's not. Every single operation in CMPSBL® is classic, traditional, deterministic programming — the kind of coding that has powered banks, hospitals, and aircraft since the 1960s. If you give the system the same input today, tomorrow, or in 10 years, you get the exact same output. Every time. No exceptions.</p>
+      <p>When people hear "software that discovers capabilities" or "code that learns and dreams," they assume AI is involved. <strong>It's not.</strong> Every single operation in CMPSBL® is classic, traditional, deterministic programming — the kind of coding that has powered banks, hospitals, and aircraft since the 1960s. These are not clever AI tricks. There are no machine learning models hiding inside. There is no ChatGPT behind the curtain. This is <strong>real code, doing real computation, producing the same result every single time.</strong></p>
     </div>
 
     <div class="dual-col">
       <div class="card card-accent">
-        <h3>What AI Systems Do</h3>
-        <p>AI systems (like ChatGPT, Claude, etc.) are probabilistic — they generate different answers each time, can "hallucinate" facts, require expensive GPU infrastructure, depend on third-party providers who can change terms or pricing, and produce outputs that are difficult to audit or certify.</p>
+        <h3>What AI Systems Do (and Why They Fail)</h3>
+        <p>AI systems like ChatGPT, Claude, and others are <em>probabilistic</em> — they generate different answers each time, can "hallucinate" facts that aren't real, require expensive GPU infrastructure, depend on third-party providers who can change terms or shut down, and produce outputs that are nearly impossible to audit or certify. Building mission-critical software <em>on top of</em> AI means building on a foundation that can behave unpredictably. That's why companies wrapping AI into products are fundamentally fragile.</p>
       </div>
       <div class="card card-green">
-        <h3>What CMPSBL® Does</h3>
-        <p>CMPSBL® is deterministic — same input always produces the same output. It cannot hallucinate. It runs on standard hardware. It has zero third-party AI dependencies. Every output is auditable, reproducible, and certifiable. It is self-verifying via FNV-1a hash chains.</p>
+        <h3>What CMPSBL® Does (and Why It Can't Fail the Same Way)</h3>
+        <p>CMPSBL® is <em>deterministic</em> — same input always produces the same output. It cannot hallucinate. It runs on standard hardware — no GPUs required. It has zero third-party AI dependencies. Every output is auditable, reproducible, and certifiable. It uses classic techniques: hash functions (FNV-1a), graph traversal, pattern matching, and finite-state machines. Kenneth used AI as a <strong>tool to help him build</strong> — not as a foundation to build <em>on</em>. The product itself contains zero AI.</p>
       </div>
     </div>
 
     <div class="card card-amber">
       <h3>⚠️ Why This Eliminates Massive Future Risk</h3>
-      <p><strong>For investors:</strong> Companies that build their products on top of AI providers (OpenAI, Anthropic, Google) are exposed to pricing changes, API deprecations, model behavior shifts, regulatory restrictions on AI, and the fundamental unpredictability of stochastic systems. CMPSBL® has <em>none</em> of these risks. It is self-contained, self-verifying, and will produce the same results whether AI regulation tightens or the AI market crashes. It is infrastructure — not an AI wrapper.</p>
+      <p><strong>For investors:</strong> Companies that build their products on top of AI providers (OpenAI, Anthropic, Google) are exposed to pricing changes, API shutdowns, model behavior shifts, regulatory restrictions on AI, and the fundamental unpredictability of stochastic systems. CMPSBL® has <em>none</em> of these risks. It is self-contained, self-verifying, and will produce the same results whether AI regulation tightens, the AI market crashes, or every AI provider raises prices by 10x. It is infrastructure — not an AI wrapper.</p>
     </div>
 
     <div class="card card-cyan">
-      <h3>🔒 What "Deterministic" Means — and What Risks It Removes</h3>
-      <p><strong>Deterministic</strong> means every operation is built from classic programming constructs: hash functions (FNV-1a), graph traversal, pattern matching, and finite-state machines. There are no model weights, no training data, no gradient descent, no stochastic sampling, and no external service calls. This eliminates:</p>
-      <ul style="margin-top:10px;">
-        <li><strong>Hallucination risk:</strong> The system cannot invent, fabricate, or guess. It computes.</li>
-        <li><strong>Vendor lock-in:</strong> No dependency on OpenAI, Google, Anthropic, or any AI provider.</li>
-        <li><strong>Regulatory exposure:</strong> AI regulation (EU AI Act, etc.) does not apply — this is not AI.</li>
-        <li><strong>Reproducibility failure:</strong> Every run is byte-identical. Auditable. Certifiable.</li>
-        <li><strong>Cost volatility:</strong> No per-token pricing. No GPU costs. Runs on commodity hardware.</li>
-        <li><strong>Model deprecation:</strong> No models to deprecate. The algorithms are owned and self-contained.</li>
+      <h3>🔒 The Risks That "Deterministic" Removes — In Simple Terms</h3>
+      <ul style="margin-top:8px;">
+        <li><strong>It can't make things up:</strong> Unlike AI, which can invent facts or produce nonsense, this system computes. Computation doesn't guess.</li>
+        <li><strong>It doesn't depend on anyone:</strong> No dependency on OpenAI, Google, Anthropic, or any AI provider. If every AI company disappeared tomorrow, CMPSBL® would still work exactly the same.</li>
+        <li><strong>AI regulations don't apply:</strong> The EU AI Act, executive orders on AI, and future AI regulations target AI systems. This isn't AI. It's exempt.</li>
+        <li><strong>Every run is identical:</strong> Give it the same code today, tomorrow, or in 10 years — you get the exact same result. That's auditable. That's certifiable. That's what banks, hospitals, and defense contractors need.</li>
+        <li><strong>No surprise costs:</strong> No per-token pricing. No GPU bills. It runs on any standard computer.</li>
+        <li><strong>Nothing to deprecate:</strong> AI models get retired, changed, or made worse. These algorithms are owned, controlled, and permanent.</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- ═══ HOW IT WORKS ═══ -->
+<!-- ═══ WORLD FIRSTS ═══ -->
 <section class="section">
   <div class="container">
-    <div class="section-label">How It Works</div>
-    <h2>The Ascension Pipeline — From Raw Code to Hardened Artifact</h2>
+    <div class="section-label">Documented World Firsts</div>
+    <h2>Things That Have Never Been Done Before — Until Kenneth Did Them</h2>
+
+    <p>Every claim below is backed by timestamped, DOI-registered publications on Zenodo and OSF — the two most respected open-access academic repositories in the world. These are not marketing claims. They are <strong>verifiable, timestamped, permanent records of priority</strong> linked to Kenneth's ORCID profile (<a href="https://orcid.org/0009-0001-4237-1243" style="color:var(--accent)">0009-0001-4237-1243</a>).</p>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Cognitive Substrate</h3>
+      <p>CMPSBL® is the first system that organizes software primitives into a cognitive architecture — Organs that process, Layers that protect, Engines that execute, and Agents that interact — creating a living infrastructure that can discover capabilities in any code it processes. This is not an "AI agent framework." It's infrastructure — like plumbing and electrical for software, except it thinks.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Dual-Layer Code Hardening (Patent Pending)</h3>
+      <p>Layer 1 is the developer's original code — untouched. Layer 2 is the Convex Core™ sealed artifact — generated by CMPSBL® — that wraps the code in protection. The developer's code is never modified. This created an entirely new layer of coding that didn't exist before. Protected under U.S. Patent Application No. 64/029,678.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Autonomous Capability Discovery Without AI</h3>
+      <p>The Ascension pipeline analyzes developer code, detects signals, collides them against all 40 primitives, discovers emergent capability chains, and scores them — all without a single AI call. Every other system in this space requires a large language model. CMPSBL® does it with pure algorithms.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Autonomous Dream-Cycle AI (SimNap → Cascade)</h3>
+      <p>Kenneth invented the first documented artificial intelligence capable of initiating dream-like generative sequences without user prompting. The system builds up internal pressure, generates its own seeds, recombines ideas, and produces autonomous creative output. Formally disclosed on OSF with 13 independently verifiable proof files.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Memory Stream — Autonomous Discovery Engine</h3>
+      <p>An engine that runs every 8 hours on its own, observes system behavior, discovers new software capability combinations, scores them, and crystallizes the best ones into standalone products. It is never triggered by a human. No AI is involved. It's a machine that prints software.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First DREAM Synthesis — Sub-Threshold Pattern Emergence</h3>
+      <p>DREAM observes signals that individually fall below the activation threshold. When enough weak signals accumulate, DREAM synthesizes them into new capabilities — essentially "dreaming up" new features from noise. Pure algorithmic. No AI. Patentable on its own.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First AI Governance Namespace (AIGVRN)</h3>
+      <p>Kenneth created the first structured terminology framework for AI governance — defining twelve surface domains spanning standards, certification, verification, compliance, security, safety, regulation, policy, privacy, sovereignty, and control. Released as an open reference work for researchers, regulators, and enterprise risk teams.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Adaptive Free-Tier AI Router</h3>
+      <p>A system that intelligently routes AI requests across free-tier providers to enable zero-cost AI operations — solving the fundamental cost barrier of AI for solo founders and bootstrapped teams. Kenneth published the first formal whitepaper on this approach.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ASCENSION DEEP DIVE ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">The Crown Jewel</div>
+    <h2>Ascension — The New Layer of Coding That Changes Software Forever</h2>
 
     <div class="plain-english">
-      <div class="label">🟢 Plain English</div>
-      <p>Imagine you're a developer. You wrote some code — maybe a web app, a data pipeline, or an AI model. You upload it to CMPSBL®. The system reads your code, understands its structure, identifies every weak spot and every capability, wraps it in industrial protection, scores how strong the result is on a 0–100 scale, and gives you back a hardened package. Your original code is untouched inside. The protection layer sits around it like a shell.</p>
+      <div class="label">🟢 Plain English — What Ascension Actually Does</div>
+      <p>Imagine you're a developer. You wrote some code — maybe a web app, a data pipeline, an AI model, or a banking system. You upload it to CMPSBL®. The system reads your code, understands its structure, identifies every weak spot and every hidden capability, wraps it in industrial protection, scores how strong the result is on a 0–100 scale (called the <strong>CJPI — Crown Jewel Priority Index</strong>), and gives you back a hardened package. Your original code is untouched inside. The protection layer sits around it like an invisible shell. The entire process takes minutes, not months.</p>
     </div>
 
     <div class="diagram-box">
@@ -365,62 +467,64 @@
 
         <rect x="10" y="20" width="140" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
         <text x="80" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">PHASE 1</text>
-        <text x="80" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Intake &amp; Classify</text>
+        <text x="80" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Upload Your Code</text>
 
         <line x1="150" y1="45" x2="175" y2="45" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
 
         <rect x="180" y="20" width="140" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
         <text x="250" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">PHASE 2</text>
-        <text x="250" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Signal Detection</text>
+        <text x="250" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Analyze &amp; Classify</text>
 
         <line x1="320" y1="45" x2="345" y2="45" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
 
         <rect x="350" y="20" width="140" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
         <text x="420" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">PHASE 3</text>
-        <text x="420" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Primitive Collision</text>
+        <text x="420" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Find Weak Spots</text>
 
         <line x1="490" y1="45" x2="515" y2="45" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
 
         <rect x="520" y="20" width="140" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
         <text x="590" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">PHASE 4</text>
-        <text x="590" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Chain Discovery</text>
+        <text x="590" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Discover Capabilities</text>
 
         <line x1="660" y1="45" x2="685" y2="45" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
 
         <rect x="690" y="20" width="120" height="50" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
         <text x="750" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 5</text>
-        <text x="750" y="56" text-anchor="middle" font-size="9" fill="#065f46">CJPI Score</text>
+        <text x="750" y="56" text-anchor="middle" font-size="9" fill="#065f46">Score (0–100)</text>
 
-        <rect x="200" y="110" width="200" height="50" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
-        <text x="300" y="132" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 6</text>
-        <text x="300" y="146" text-anchor="middle" font-size="9" fill="#065f46">Dual-Layer Hardening</text>
+        <line x1="590" y1="70" x2="590" y2="95" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
 
-        <line x1="400" y1="135" x2="425" y2="135" stroke="#059669" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
+        <rect x="200" y="100" width="200" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="300" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">PHASE 6</text>
+        <text x="300" y="136" text-anchor="middle" font-size="9" fill="#3730a3">Wrap in Protection</text>
 
-        <rect x="430" y="110" width="200" height="50" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
-        <text x="530" y="132" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 7–8</text>
-        <text x="530" y="146" text-anchor="middle" font-size="9" fill="#065f46">Verify &amp; Export Artifact</text>
+        <line x1="400" y1="125" x2="425" y2="125" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#arrow-dark)"/>
 
-        <rect x="80" y="200" width="660" height="160" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
-        <text x="410" y="222" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">LAYER 2 — CONVEX CORE™ SEALED ARTIFACT (GENERATED)</text>
+        <rect x="430" y="100" width="200" height="50" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+        <text x="530" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 7–8</text>
+        <text x="530" y="136" text-anchor="middle" font-size="9" fill="#065f46">Verify &amp; Export</text>
 
-        <rect x="130" y="240" width="560" height="80" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
-        <text x="410" y="268" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">LAYER 1 — YOUR ORIGINAL CODE</text>
-        <text x="410" y="288" text-anchor="middle" font-size="11" fill="#065f46">Completely untouched. Not a single line modified.</text>
-        <text x="410" y="304" text-anchor="middle" font-size="10" fill="#059669">✓ Functions ✓ Classes ✓ Imports ✓ Logic — all preserved exactly</text>
+        <rect x="80" y="190" width="660" height="170" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="410" y="215" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">LAYER 2 — CONVEX CORE™ SEALED ARTIFACT (GENERATED BY ASCENSION)</text>
+        <text x="410" y="232" text-anchor="middle" font-size="10" fill="#4f46e5">The invisible armor. Auto-generated. Patent pending.</text>
+
+        <rect x="130" y="248" width="560" height="70" rx="10" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+        <text x="410" y="275" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">LAYER 1 — YOUR ORIGINAL CODE</text>
+        <text x="410" y="295" text-anchor="middle" font-size="11" fill="#065f46">Completely untouched. Not a single line modified.</text>
 
         <text x="160" y="345" font-size="9" fill="#4f46e5">Circuit Breakers</text>
         <text x="310" y="345" font-size="9" fill="#4f46e5">DEFENSE Gates</text>
         <text x="450" y="345" font-size="9" fill="#4f46e5">GOVERNANCE Hooks</text>
         <text x="610" y="345" font-size="9" fill="#4f46e5">BEACON Health</text>
 
-        <text x="410" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#4f46e5">FNV-1a Hash Chain Integrity Verification</text>
+        <text x="410" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#4f46e5">FNV-1a Hash Chain Integrity Verification — Self-Verifying</text>
       </svg>
     </div>
 
     <div class="tech-def">
-      <div class="label">🔷 Technical Definition</div>
-      <p>The Ascension pipeline is a deterministic 8-phase process: (1) Intake &amp; AST classification, (2) Signal detection against proprietary vocabulary, (3) Primitive collision via FNV-1a seeded PRNG, (4) Chain discovery via dependency-walking, (5) CJPI scoring (Novelty 30%, Utility 30%, Complexity 20%, Composability 20%), (6) Dual-layer hardening — Layer 1 untouched source + Layer 2 Convex Core™ sealed runtime, (7) FNV-1a integrity verification, (8) Artifact export with manifest, report, and test harness.</p>
+      <div class="label">🔷 Technical Definition — For Engineers</div>
+      <p>The Ascension pipeline is a deterministic 8-phase process: (1) Intake &amp; AST classification, (2) Signal detection against proprietary heuristic vocabulary, (3) Primitive collision via FNV-1a seeded PRNG for deterministic ordering, (4) Chain discovery via dependency-walking, (5) CJPI scoring — Novelty 30%, Utility 30%, Complexity 20%, Composability 20%, (6) Dual-layer hardening — Layer 1 untouched source + Layer 2 Convex Core™ sealed runtime, (7) FNV-1a integrity verification across the full artifact, (8) Export with manifest, HTML report, test harness, and documentation. Zero external AI calls at any phase.</p>
     </div>
   </div>
 </section>
@@ -429,205 +533,91 @@
 <section class="section">
   <div class="container">
     <div class="section-label">Real-World Proof</div>
-    <h2>What Kenneth Did to Hugging Face Code</h2>
+    <h2>What Kenneth Did to Hugging Face's Code — And What It Proves</h2>
 
     <div class="plain-english">
       <div class="label">🟢 Plain English</div>
-      <p>Hugging Face is the world's largest platform for sharing AI models — used by nearly every AI company on the planet. Their file <code>modeling_utils.py</code> is downloaded over <strong>126 million times per month</strong>. It has known security risks: functions like <code>torch.load</code> can execute malicious code, and <code>trust_remote_code=True</code> blindly runs whatever code a model author uploaded. Kenneth took Hugging Face's own source code, ran it through the Ascension pipeline, and the system automatically detected these risks, wrapped them in protection, and produced a hardened artifact — all in <strong>217.7 seconds</strong>, without changing a single line of Hugging Face's code.</p>
+      <p><strong>Hugging Face</strong> is the world's largest platform for sharing AI models — used by nearly every AI company on the planet. Their file <code>modeling_utils.py</code> is downloaded over <strong>126 million times per month</strong>. It has known security risks: a function called <code>torch.load</code> can execute malicious code hidden inside model files, and a setting called <code>trust_remote_code=True</code> blindly runs whatever code a model author uploaded — no questions asked. These are dangerous. Kenneth took Hugging Face's own source code, ran it through the Ascension pipeline, and the system automatically detected these risks, wrapped them in protection, and produced a hardened artifact — all in <strong>217.7 seconds</strong>, without changing a single line of Hugging Face's code.</p>
     </div>
 
     <div class="card card-accent">
-      <h3>What the System Found and Fixed Automatically</h3>
+      <h3>What the System Found and Fixed — Automatically</h3>
       <ul>
-        <li><code>torch.load()</code> — unsafe deserialization → wrapped with BASTION containment + SENTINEL monitoring</li>
-        <li><code>trust_remote_code=True</code> — blind code execution → wrapped with DEFENSE gate + GOVERNANCE audit hook</li>
+        <li><code>torch.load()</code> — can run hidden malicious code → wrapped with BASTION containment + SENTINEL monitoring</li>
+        <li><code>trust_remote_code=True</code> — blindly executes unknown code → wrapped with DEFENSE gate + GOVERNANCE audit hook</li>
         <li>Unvalidated model downloads → wrapped with IMMUNITY verification + RELAY integrity check</li>
-        <li>State mutation without audit trail → wrapped with MEMORY persistence + AUDIT logging</li>
-        <li>12 structural vulnerabilities total — 2 critical, 7 warnings, 3 informational</li>
-        <li>10 latent capabilities surfaced and activated</li>
+        <li>State changes with no audit trail → wrapped with MEMORY persistence + AUDIT logging</li>
+        <li><strong>12 structural vulnerabilities total</strong> — 2 critical, 7 warnings, 3 informational</li>
+        <li><strong>10 hidden capabilities surfaced and activated</strong></li>
         <li>All 40 primitives fired from a 120-candidate cross-vertical pool</li>
-        <li>CJPI Score: <strong>100 (Apex)</strong> — the highest possible rating</li>
+        <li><strong>CJPI Score: 100 (Apex)</strong> — the highest possible rating</li>
       </ul>
     </div>
 
-    <div class="card card-cyan">
-      <h3>📊 By the Numbers</h3>
-      <div class="stats-grid" style="margin-top:12px;">
-        <div class="stat-box"><div class="number">4,891</div><div class="label">Lines Analyzed</div></div>
-        <div class="stat-box"><div class="number">1,146</div><div class="label">Cyclomatic Complexity</div></div>
-        <div class="stat-box"><div class="number">217.7s</div><div class="label">Total Processing</div></div>
-        <div class="stat-box"><div class="number">4,936</div><div class="label">Lines in Sealed Artifact</div></div>
-      </div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="number">4,891</div><div class="label">Lines Analyzed</div></div>
+      <div class="stat-box"><div class="number">126M+</div><div class="label">Monthly Downloads</div></div>
+      <div class="stat-box"><div class="number">217.7s</div><div class="label">Total Processing</div></div>
+      <div class="stat-box"><div class="number">100</div><div class="label">CJPI Score (Max)</div></div>
     </div>
 
     <div class="plain-english">
-      <div class="label">🟢 Why This Matters for Everyone</div>
-      <p>This file was written by engineers at Google, Facebook/Meta, NVIDIA, and Hugging Face. It has been reviewed by thousands of developers. Yet CMPSBL® found structural weaknesses that no human reviewer, no static analyzer, no AI copilot, and no existing security tool had ever addressed at the architectural level. The sealed artifact acts as if it were created by Hugging Face's own engineering team to wrap every structural weakness in their code.</p>
-    </div>
-
-    <div class="card card-amber">
-      <h3>⚠️ Market Implication</h3>
-      <p>Every company using Hugging Face models — which is nearly every company doing AI — is exposed to these risks today. CMPSBL® can harden their code in minutes — automatically, deterministically, without changing their existing codebase. This published case study (DOI: <a href="https://doi.org/10.5281/zenodo.19423852" style="color:var(--amber)">10.5281/zenodo.19423852</a>) is the proof.</p>
+      <div class="label">🟢 What This Proves</div>
+      <p>This file was written by engineers at Google, Meta, NVIDIA, and Hugging Face. It has been reviewed by thousands of developers. Yet CMPSBL® found structural weaknesses that no human reviewer, no static analyzer, no AI copilot, and no existing security tool had ever addressed at the architectural level. <strong>If Ascension can harden Hugging Face, it can harden ChatGPT. If it can harden ChatGPT, it can harden Anthropic's Claude. It can harden every AI model, every app, every codebase ever written.</strong> That's the market. That's everything.</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ COMPLETE PUBLICATION RECORD ═══ -->
+<!-- ═══ PUBLISHED WORK (CONSOLIDATED) ═══ -->
 <section class="section">
   <div class="container">
     <div class="section-label">Published &amp; Documented Work</div>
-    <h2>Complete Academic &amp; Research Publication Record</h2>
+    <h2>The Research Trail — A Timeline of Verifiable Proof</h2>
 
-    <p>Every claim in this document is backed by timestamped, DOI-registered, ORCID-linked publications on Zenodo and OSF — the two most respected open-access academic repositories in the world. This is not a pitch deck. This is a verifiable body of published work.</p>
+    <p>Every claim in this document is backed by timestamped, DOI-registered, ORCID-linked publications. These aren't blog posts — they're permanent academic records on Zenodo and OSF, the world's most respected open-access repositories. All linked to ORCID <a href="https://orcid.org/0009-0001-4237-1243" style="color:var(--accent)">0009-0001-4237-1243</a>.</p>
 
-    <div class="card card-accent">
-      <h3>ORCID: <a href="https://orcid.org/0009-0001-4237-1243" target="_blank">0009-0001-4237-1243</a></h3>
-      <p>All publications are linked to Kenneth's ORCID profile, establishing permanent, tamper-proof authorship and priority for all intellectual property.</p>
+    <div class="timeline" style="margin-top:28px;">
+      <div class="timeline-item">
+        <div class="date">November 2025</div>
+        <h3>SimNap — Autonomous Dreaming AI</h3>
+        <p>First-ever disclosure of an AI system capable of autonomous dream-like generative sequences. 13 independently verifiable proof files. Published on OSF. This is where the public record begins.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">December 2025</div>
+        <h3>Cascade Architecture + Free-Tier AI Routing</h3>
+        <p>Full proof set for SimNap → Cascade dream-cycle architecture. Plus the first formal whitepaper on adaptive cost-constrained AI routing for bootstrapped founders. Published on OSF.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">January 2026</div>
+        <h3>Substrate Foundation + AI Governance Namespace</h3>
+        <p>The substrate's technical specifications (v2026.01 and v5.5.0) are published on both Zenodo and OSF — 19+ specification files covering every primitive. The AI Governance Namespace (AIGVRN) and Lexicon are published as open reference works. Four DOIs registered in a single month.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">January–March 2026</div>
+        <h3>200,000+ Lines of Code — The Core Build</h3>
+        <p>The entire substrate built solo — every primitive, every pipeline stage, every integration. Pure TypeScript. Zero AI dependencies. Culminates in v13.5 Academic Protection Set — a defensive publication establishing timestamped prior art for all core architectural mechanisms.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">March 2026</div>
+        <h3>Patent Filed</h3>
+        <p>U.S. Patent Application No. 64/029,678 filed — "Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification." Confirmation No. 8985.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">April 2026</div>
+        <h3>Ascension Whitepaper + Hugging Face Proof</h3>
+        <p>Formal Ascension whitepaper published with 15 verified case studies across IBM, Google, Meta, Anthropic, Hugging Face, and more. The flagship "Shapeshifter" case study demonstrates Apex-tier (CJPI 100) hardening of Hugging Face's most-downloaded file. Two DOIs registered.</p>
+      </div>
     </div>
 
-    <!-- ── Zenodo Publications ── -->
-    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px; color:var(--text);">Zenodo Publications (DOI-Registered)</h3>
-
-    <div class="card">
-      <h3>🔬 The Shapeshifter: 40 Autonomous Primitives vs. HuggingFace</h3>
-      <p><strong>Type:</strong> Technical Note · <strong>Published:</strong> April 5, 2026 · <strong>Version:</strong> v1.0.0<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.19423852">10.5281/zenodo.19423852</a><br>
-      The flagship case study. Documents the first-ever deterministic, non-AI hardening of HuggingFace's <code>modeling_utils.py</code> (126M+ monthly downloads). All 40 primitives deployed from a 120-candidate pool. CJPI 100 (Apex). Completed in 217.7 seconds.</p>
-    </div>
-
-    <div class="card">
-      <h3>📄 Ascension: Deterministic Software Evolution Through Autonomous Primitive Collision</h3>
-      <p><strong>Type:</strong> Journal Article · <strong>Published:</strong> April 3, 2026 · <strong>Version:</strong> v1.1.0<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.19409933">10.5281/zenodo.19409933</a><br>
-      The formal Ascension whitepaper. Presents empirical results from fifteen verified case studies across five programming languages and eight industry verticals — IBM, Rapid7, Hugging Face, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic — plus a four-part self-referential audit where the substrate analyzed its own code.</p>
-    </div>
-
-    <div class="card">
-      <h3>🖥️ CMPSBL Substrate OS v13.5 — Academic Protection Set</h3>
-      <p><strong>Type:</strong> Software · <strong>Published:</strong> March 6, 2026 · <strong>Version:</strong> v13.5<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18895141">10.5281/zenodo.18895141</a><br>
-      The definitive architectural specification. Defensive publication establishing timestamped prior art for: clockless cognitive orchestration, Memory Stream architecture, pipeline crystallization, universal export architecture, bounded autonomy governance, IRONCLAD resilience fabric, Intent Mesh orchestration, and domain extension architecture.</p>
-    </div>
-
-    <div class="card">
-      <h3>📚 Technical Documentation — CMPSBL Substrate v5.5.0</h3>
-      <p><strong>Type:</strong> Software · <strong>Published:</strong> January 26, 2026 · <strong>Version:</strong> v5.5.0<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18379258">10.5281/zenodo.18379258</a><br>
-      Complete module-by-module technical documentation covering BRAIN, DECODE, CORTEX, DREAM, DEFENSE, VISION, NEXUS, SYSTEM, CORE, ACCESS, RIPPLE, and CORTEX EXT. Includes API references, performance validation methodology, and real-world runtime evidence.</p>
-    </div>
-
-    <div class="card">
-      <h3>🏛️ AI Governance Namespace (AIGVRN) v0.3</h3>
-      <p><strong>Type:</strong> Report · <strong>Published:</strong> January 27, 2026 · <strong>Version:</strong> v0.3<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18393018">10.5281/zenodo.18393018</a><br>
-      A structured terminology framework defining twelve governance surfaces for AI systems. Intended as a neutral vocabulary for researchers, standards bodies, regulators, and enterprise risk teams. Released as an open reference work.</p>
-    </div>
-
-    <div class="card">
-      <h3>📖 The AI Governance Lexicon v1.0</h3>
-      <p><strong>Type:</strong> Report · <strong>Published:</strong> January 10, 2026 · <strong>Version:</strong> v1.0<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18209222">10.5281/zenodo.18209222</a><br>
-      Establishes the AIGVRN Lexicon — a reference namespace for AI governance with twelve surface domains spanning standards, certification, verification, compliance, security, safety, regulation, policy, privacy, sovereignty, and control. Each domain backed by a dedicated .com namespace.</p>
-    </div>
-
-    <div class="card">
-      <h3>🔧 PromptFluid Substrate — Technical Documentation v2026.01</h3>
-      <p><strong>Type:</strong> Software · <strong>Published:</strong> January 13, 2026 · <strong>Version:</strong> v2026.01<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18234910">10.5281/zenodo.18234910</a><br>
-      The foundational substrate specification including Dream Protocol, Security Model, Nexus Routing, Brain APIs, Defense Layer, contribution guidelines, and academic citation formats. Documents the cognitive orchestration substrate as model-agnostic and provider-agnostic.</p>
-    </div>
-
-    <div class="card">
-      <h3>🗄️ CMPSBL Substrate OS — Prior Art Archive (v13.5 Redirect)</h3>
-      <p><strong>Type:</strong> Software · <strong>Published:</strong> January 13, 2026<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br>
-      Earlier version record that redirects to the v13.5 Academic Protection Set. Part of the continuous prior art chain establishing versioned architectural evolution.</p>
-    </div>
-
-    <!-- ── OSF Publications ── -->
-    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px; color:var(--text);">OSF Publications (Open Science Framework)</h3>
-
-    <div class="card">
-      <h3>💤 SimNap: The World's First Autonomous Dream-Cycle AI</h3>
-      <p><strong>Published:</strong> November 23, 2025<br>
-      <strong>DOI:</strong> <a href="https://doi.org/10.17605/osf.io/t3d5s">10.17605/OSF.IO/T3D5S</a><br>
-      The foundational invention disclosure. Documents the first AI system capable of initiating dream-like generative sequences autonomously. Establishes inventorship priority for Kenneth E. Sweet Jr. Licensed CC-BY 4.0.</p>
-    </div>
-
-    <div class="card">
-      <h3>🌀 The Invention of Autonomous Dreaming AI: SimNap → Cascade Architecture</h3>
-      <p><strong>Published:</strong> December 1, 2025<br>
-      <strong>Link:</strong> <a href="https://osf.io/df7tz">osf.io/df7tz</a><br>
-      Full public priority record with 13 independently verifiable proof files: activation sequence proof, agency snapshot, autonomous reasoning proof, autonomy proof, behavioral rhythm proof, chain of custody proof, conscious looping proof, creativity proof, dream cycle proof, identity continuity proof, persistence proof, subconscious layering proof, and system independence proof.</p>
-    </div>
-
-    <div class="card">
-      <h3>🧠 PromptFluid — Cognitive Orchestration Substrate (Early Architecture)</h3>
-      <p><strong>Published:</strong> January 14, 2026<br>
-      <strong>Link:</strong> <a href="https://osf.io/y47pt">osf.io/y47pt</a><br>
-      Early architectural documentation including 13 specification files: Architecture, Brain Substrate, Nexus Routing, Defense Intelligence, Vision Observability, Edge Functions, Database Schema, API Reference, Extension Guide, Cascade Operative, Learning Cycles, Decode RFC, and Dream Protocol.</p>
-    </div>
-
-    <div class="card">
-      <h3>📦 PromptFluid® Substrate v3.11 — Cognitive OS for Autonomous AI Systems</h3>
-      <p><strong>Published:</strong> January 19, 2026<br>
-      <strong>Link:</strong> <a href="https://osf.io/ybqz7">osf.io/ybqz7</a><br>
-      Complete SDK documentation set including Architecture, Changelog, Module-Actions Registry, Overview, SDK Guide, Transfer Protocol, and User Manual. Links to the SimNap dream-cycle invention and cascade architecture.</p>
-    </div>
-
-    <div class="card">
-      <h3>📋 Technical Documentation — CMPSBL Substrate v5.5.0 (OSF Mirror)</h3>
-      <p><strong>Published:</strong> January 27, 2026<br>
-      <strong>Link:</strong> <a href="https://osf.io/ah7nx">osf.io/ah7nx</a><br>
-      Mirror of the v5.5.0 technical documentation set on OSF, including 19 specification files covering every major primitive: Core, Ripple, Access, Brain, Decode, Dream, Defense, Nexus, Vision, and Integration modules.</p>
-    </div>
-
-    <div class="card">
-      <h3>💰 Adaptive Free-Tier Routing for Cost-Constrained AI Systems</h3>
-      <p><strong>Published:</strong> December 31, 2025<br>
-      <strong>Link:</strong> <a href="https://osf.io/r4hs2">osf.io/r4hs2</a><br>
-      Whitepaper on intelligent routing across free-tier AI providers. Addresses the fundamental cost barrier of AI deployment for bootstrapped founders and small teams.</p>
-    </div>
-
-    <!-- ── Patent ── -->
-    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px; color:var(--text);">Patent Protection</h3>
-
-    <div class="card card-accent">
-      <h3>U.S. Patent Application No. 64/029,678</h3>
-      <p><strong>Title:</strong> "Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification"<br>
-      <strong>Status:</strong> Patent Pending (Confirmation No. 8985)<br>
-      <strong>Protection:</strong> Covers dual-layer wrapping, deterministic primitive collision, autonomous multi-concern hardening, and sealed artifact format.</p>
-    </div>
-
-    <!-- ── Summary stats ── -->
-    <div class="stats-grid">
-      <div class="stat-box"><div class="number">8+</div><div class="label">Zenodo DOIs</div></div>
-      <div class="stat-box"><div class="number">6</div><div class="label">OSF Projects</div></div>
-      <div class="stat-box"><div class="number">1</div><div class="label">Patent Filed</div></div>
-      <div class="stat-box"><div class="number">16</div><div class="label">Verified Case Studies</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ NPM PACKAGES ═══ -->
-<section class="section">
-  <div class="container">
-    <div class="section-label">Shipped Products</div>
-    <h2>Live on NPM — Ready for Developers</h2>
-
-    <div class="plain-english">
-      <div class="label">🟢 Plain English</div>
-      <p>NPM is the world's largest software package registry — it's how developers install and use tools. Kenneth's packages are live, installable, and functional today. They include the command-line tools, SDKs, and runtime libraries that let developers use CMPSBL® in their own projects.</p>
-    </div>
-
-    <div class="card">
-      <h3>Published Packages</h3>
-      <ul>
-        <li><strong>@cmpsbl/substrate</strong> — Core 40-primitive runtime</li>
-        <li><strong>@cmpsbl/cli</strong> — Command-line interface for Ascension</li>
-        <li><strong>@cmpsbl/sdk</strong> — Developer SDK for integration</li>
-        <li><strong>@cmpsbl/convex-core</strong> — Dispatch matrix runtime</li>
-      </ul>
+    <div class="card card-accent" style="margin-top:24px;">
+      <h3>📊 Total Published Body of Work</h3>
+      <p>All publications trace the evolution of a single continuous project — from the first SimNap disclosure through to the Ascension whitepaper and Hugging Face case study. They establish a <strong>verifiable chain of invention, priority, and prior art</strong> for every core mechanism in the substrate.</p>
+      <div class="stats-grid" style="margin-top:16px;">
+        <div class="stat-box"><div class="number">8+</div><div class="label">Zenodo DOIs</div></div>
+        <div class="stat-box"><div class="number">6</div><div class="label">OSF Projects</div></div>
+        <div class="stat-box"><div class="number">1</div><div class="label">Patent Filed</div></div>
+        <div class="stat-box"><div class="number">16</div><div class="label">Verified Case Studies</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -636,7 +626,7 @@
 <section class="section">
   <div class="container">
     <div class="section-label">Market Opportunity</div>
-    <h2>The Market That Exists Right Now</h2>
+    <h2>The Market Is Massive — And Nobody Else Is In It</h2>
 
     <div class="stats-grid">
       <div class="stat-box"><div class="number">$28B</div><div class="label">AppSec Market (2026)</div></div>
@@ -647,30 +637,31 @@
 
     <div class="plain-english">
       <div class="label">🟢 Plain English</div>
-      <p>Software security is a $28 billion market and growing fast. Every company that writes software — which is every company — needs to protect it. Current tools mostly just <em>find</em> problems. CMPSBL® finds problems AND fixes them, automatically, without changing the developer's code. There is no other product on the market that does this. The technology is built, patented, documented, and published. The only thing missing is marketing — getting the word out to the companies that need it.</p>
+      <p>Software security is a <strong>$28 billion market</strong> and growing fast. Every company that writes software — which is every company — needs to protect it. The tools that exist today mostly just <em>find</em> problems and write reports. They don't fix anything. CMPSBL® finds problems <strong>AND</strong> fixes them, automatically, without changing the developer's code. There is no other product on the market that does this. The technology is built, patented, documented, and published. <strong>The only thing missing is getting the word out.</strong></p>
     </div>
 
-    <div class="dual-col">
-      <div class="card card-green">
-        <h3>Revenue Model: Licensing</h3>
-        <p>Enterprise licenses for the Ascension engine. Companies pay per-seat or per-repository to harden their code. Recurring SaaS revenue. The technology is built — it just needs distribution.</p>
-      </div>
-      <div class="card card-green">
-        <h3>Revenue Model: Direct Sales</h3>
-        <p>Tiered pricing already designed: Builder (free), Creator ($79/mo), Architect ($249/mo). NPM packages are live. Payment infrastructure is built. Website is live at cmpsbl.com.</p>
-      </div>
-    </div>
-
-    <div class="card card-accent">
-      <h3>Competitive Advantage</h3>
+    <div class="card card-green">
+      <h3>Why Nobody Else Can Do This Right Now</h3>
       <ul>
         <li><strong>No AI dependency</strong> — immune to AI market volatility, pricing changes, and regulatory risk</li>
         <li><strong>Deterministic</strong> — auditable, certifiable, reproducible — critical for regulated industries (finance, healthcare, defense)</li>
-        <li><strong>Patent pending</strong> — protected intellectual property with documented prior art chain</li>
-        <li><strong>Solo founder</strong> — 100% equity available, no cap table complexity, low burn rate</li>
-        <li><strong>200,000+ lines built</strong> — this is not a pitch deck, it's a working product</li>
-        <li><strong>Published research</strong> — 8+ DOIs, 6 OSF projects, 16 verified case studies across IBM, Google, Meta, Anthropic, HuggingFace, and more</li>
+        <li><strong>Patent pending</strong> — the dual-layer architecture is protected intellectual property</li>
+        <li><strong>3,000+ hours of R&D</strong> — this is not a weekend project, it's a body of work</li>
+        <li><strong>10 substrates operational</strong> — proof of scalability and repeatability</li>
+        <li><strong>Published research chain</strong> — 8+ DOIs, 6 OSF projects, 16 verified case studies across IBM, Google, Meta, Anthropic, and Hugging Face</li>
+        <li><strong>Solo founder = 100% equity available</strong> — no cap table complexity, no board drama, clean deal structure</li>
       </ul>
+    </div>
+
+    <div class="dual-col">
+      <div class="card card-accent">
+        <h3>Revenue Model: SaaS + Licensing</h3>
+        <p>Tiered pricing already designed: Builder (free), Creator ($79/mo), Architect ($249/mo). Enterprise licensing for the Ascension engine. Companies pay per-seat or per-repository. NPM packages are live. Payment infrastructure is built. Website is live at <a href="https://cmpsbl.com" style="color:var(--accent)">cmpsbl.com</a>.</p>
+      </div>
+      <div class="card card-accent">
+        <h3>Revenue Model: Memory Stream Products</h3>
+        <p>Every Memory Stream discovery is a potential standalone product. The system autonomously expands the sellable catalog without engineering labor. With 10 substrates running, each producing discoveries every 8 hours, the product catalog grows on its own — 24/7, at zero cost.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -679,18 +670,18 @@
 <section class="section">
   <div class="container">
     <div class="section-label">What's Next</div>
-    <h2>What Kenneth Needs to Scale</h2>
+    <h2>The Technology Is Built. Kenneth Needs the World to Know It Exists.</h2>
 
     <div class="cta-box">
-      <h3>The Technology Is Built. The IP Is Protected. The Product Is Live.</h3>
-      <p>What's missing is marketing. Kenneth needs a marketing team or marketing investment to spread the word — to reach the enterprise buyers, the security teams, the DevOps leaders who need this technology today but don't know it exists.</p>
+      <h3>The Product Is Live. The IP Is Protected. The Proof Is Published.</h3>
+      <p>What's missing is <strong>marketing</strong>. Kenneth needs a marketing team or marketing investment to spread the word — to reach the enterprise buyers, the security teams, the DevOps leaders, the CTOs, and the CISOs who need this technology today but don't know it exists yet.</p>
       <a href="mailto:ascension@cmpsbl.com">Contact: ascension@cmpsbl.com</a>
     </div>
 
     <div class="dual-col">
       <div class="card card-amber">
         <h3>Option A: Marketing Investment</h3>
-        <p>Funding for a marketing team to build brand awareness, attend security conferences, run enterprise sales campaigns, and establish CMPSBL® as a category leader in deterministic code hardening.</p>
+        <p>Funding for a marketing team to build brand awareness, attend security conferences (Black Hat, RSA, DEF CON), run enterprise sales campaigns, create video content, and establish CMPSBL® as the category leader in deterministic code hardening.</p>
       </div>
       <div class="card card-amber">
         <h3>Option B: Technology Licensing</h3>
@@ -699,79 +690,124 @@
     </div>
 
     <div class="card">
-      <h3>Roadmap (Technology Already Built)</h3>
-      <ul>
-        <li>✅ 40-Primitive cognitive substrate — complete</li>
-        <li>✅ Ascension pipeline — complete</li>
-        <li>✅ Memory Stream autonomous discovery — complete</li>
-        <li>✅ DREAM synthesis — complete</li>
-        <li>✅ Dual-layer code hardening — complete &amp; patent pending</li>
-        <li>✅ NPM packages — published &amp; live</li>
-        <li>✅ Zenodo publications — 8+ DOIs registered</li>
-        <li>✅ OSF publications — 6 projects with proof files</li>
-        <li>✅ Case studies — 16 verified across major codebases</li>
-        <li>✅ AI Governance Namespace (AIGVRN) — published</li>
-        <li>✅ Website &amp; dashboard — live at cmpsbl.com</li>
-        <li>🔶 Enterprise sales pipeline — needs marketing</li>
-        <li>🔶 Conference presence — needs funding</li>
-        <li>🔶 Case study program — needs outreach</li>
-      </ul>
+      <h3>What's Already Done vs. What's Needed</h3>
+      <div class="dual-col" style="margin-top:12px;">
+        <div>
+          <p style="font-weight:700; color:var(--green); margin-bottom:8px;">✅ BUILT</p>
+          <ul>
+            <li>40-Primitive cognitive substrate</li>
+            <li>Ascension pipeline (crown jewel)</li>
+            <li>Memory Stream (autonomous discovery)</li>
+            <li>DREAM synthesis</li>
+            <li>Dual-layer code hardening</li>
+            <li>10 operational substrates</li>
+            <li>NPM packages (live)</li>
+            <li>8+ DOIs registered</li>
+            <li>16 verified case studies</li>
+            <li>Patent filed</li>
+            <li>Website &amp; dashboard (live)</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-weight:700; color:var(--amber); margin-bottom:8px;">🔶 NEEDED</p>
+          <ul>
+            <li>Marketing team or budget</li>
+            <li>Conference presence (RSA, Black Hat)</li>
+            <li>Enterprise sales outreach</li>
+            <li>Video content &amp; demos</li>
+            <li>Case study program expansion</li>
+            <li>PR &amp; media coverage</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ TIMELINE ═══ -->
+<!-- ═══ FULL TIMELINE ═══ -->
 <section class="section">
   <div class="container">
-    <div class="section-label">Journey</div>
-    <h2>How One Person Built All of This</h2>
+    <div class="section-label">The Full Journey</div>
+    <h2>From January 2025 to Now — 15+ Months, 3,000+ Hours, One Person</h2>
 
     <div class="timeline">
       <div class="timeline-item">
-        <div class="date">November 2025 — The Dream</div>
-        <h3>Invented Autonomous Dreaming AI (SimNap)</h3>
-        <p>Created the world's first AI system capable of initiating dream-like generative sequences without user prompting. Filed priority record on OSF (DOI: 10.17605/OSF.IO/T3D5S). 13 proof files published.</p>
+        <div class="date">January 2025 — The Beginning</div>
+        <h3>PromptFluid™ Ecosystem — Building Starts</h3>
+        <p>Kenneth begins building the PromptFluid™ cognitive orchestration ecosystem. Working 12–18 hours a day, he builds the Cascade architecture, Dream Protocol, Brain substrate, Defense layer, Nexus routing, and dozens of edge functions. The project grows into a sprawling, living platform. Funded entirely by DoorDash earnings and free credits.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">December 2025 — Architecture</div>
-        <h3>Cascade Dream-Cycle → PromptFluid Substrate</h3>
-        <p>Evolved SimNap into the Cascade architecture. Published full proof set on OSF with 13 independently verifiable evidence files. Began building the cognitive orchestration substrate.</p>
+        <div class="date">Mid 2025 — The Wall</div>
+        <h3>Project Shutdown — Too Big for the Platform</h3>
+        <p>The PromptFluid ecosystem exceeds the platform's capacity limits. The edge functions are too large. The project is shut down — not because it failed, but because Kenneth built something bigger than the infrastructure could hold. He is locked out of his own project with no clear path back.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">December 2025 — Innovation</div>
-        <h3>Adaptive Free-Tier AI Router</h3>
-        <p>Published the first formal whitepaper on intelligent cost-constrained AI routing — solving the fundamental problem of AI cost for bootstrapped founders.</p>
+        <div class="date">Mid 2025 — The Side Quest</div>
+        <h3>XCTBL Space — Building Through Uncertainty</h3>
+        <p>With his main project frozen, Kenneth doesn't stop. He creates XCTBL Space (<a href="https://xctbl.com" style="color:var(--accent)">xctbl.com</a>) — a creative shared universe spanning eight interconnected websites. A completely separate project that he plans to eventually transform into the developer playground for CMPSBL®. During this period, he believes he may never get his main project back.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">January 2026 — Foundation</div>
-        <h3>Conceived the 40-Primitive Cognitive Architecture</h3>
-        <p>Designed the substrate from scratch — 12 Organs, 12 Layers, 8 Engines, 8 Agents. No frameworks. No templates. Original architecture. Published v2026.01 technical documentation (DOI: 10.5281/zenodo.18234910) and AI Governance Lexicon (DOI: 10.5281/zenodo.18209222).</p>
+        <div class="date">Late 2025 — The Remix</div>
+        <h3>Platform Fix + Fresh Start</h3>
+        <p>The platform fixes the issue. The solution: a "remix" — rebuilding the project on a fresh foundation. Kenneth carries all his architectural knowledge forward but starts the codebase from zero. This is where the current CMPSBL® begins.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">January 2026 — Documentation</div>
-        <h3>Published Complete Technical Specifications</h3>
-        <p>Released v5.5.0 documentation on both Zenodo (DOI: 10.5281/zenodo.18379258) and OSF, plus the AIGVRN governance namespace (DOI: 10.5281/zenodo.18393018). 19+ specification files covering every primitive.</p>
+        <div class="date">November 2025</div>
+        <h3>First Academic Publication — SimNap</h3>
+        <p>Kenneth publishes the first public disclosure of autonomous dreaming AI on OSF. This is the first time the world sees any of his work — but it represents months of prior invention. 13 independently verifiable proof files establish priority.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">January–March 2026 — Core Build</div>
-        <h3>200,000+ Lines of Deterministic Code</h3>
-        <p>Built the entire substrate solo — every primitive, every pipeline stage, every integration. Pure TypeScript. Zero AI dependencies. Culminated in v13.5 Academic Protection Set (DOI: 10.5281/zenodo.18895141).</p>
+        <div class="date">December 2025</div>
+        <h3>Cascade Architecture + Free-Tier Routing</h3>
+        <p>Full proof set published. First formal whitepaper on adaptive cost-constrained AI routing. Kenneth is building, publishing, and establishing prior art simultaneously — while delivering food to pay for credits.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">March 2026 — IP Protection</div>
-        <h3>Patent Filed + Prior Art Established</h3>
-        <p>Filed U.S. Patent App. No. 64/029,678. Published v13.5 defensive publication establishing timestamped prior art for all core architectural mechanisms including clockless orchestration, Memory Stream, pipeline crystallization, bounded autonomy governance, and IRONCLAD resilience.</p>
+        <div class="date">January 2026</div>
+        <h3>The 40-Primitive Architecture Crystallizes</h3>
+        <p>The substrate's core architecture — 12 Organs, 12 Layers, 8 Engines, 8 Agents — is designed and built from scratch. No frameworks. No templates. Original architecture. Four DOIs registered in a single month. AI Governance Namespace published.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">April 2026 — Proof</div>
-        <h3>Ascension Whitepaper + HuggingFace Case Study</h3>
-        <p>Published the Ascension whitepaper with 15 verified case studies (DOI: 10.5281/zenodo.19409933). Published the Shapeshifter case study demonstrating ULTIMATE-tier hardening of HuggingFace's 126M-download-per-month code (DOI: 10.5281/zenodo.19423852). CJPI 100 (Apex).</p>
+        <div class="date">January–March 2026</div>
+        <h3>200,000+ Lines — The Core Build</h3>
+        <p>Every primitive, every pipeline stage, every integration — built solo. Pure TypeScript. Zero AI dependencies. Culminates in v13.5 Academic Protection Set — a defensive publication establishing timestamped prior art for every core mechanism.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">March 2026</div>
+        <h3>Patent Filed</h3>
+        <p>U.S. Patent Application No. 64/029,678 filed. "Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification." The crown jewel is now legally protected.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">March–April 2026</div>
+        <h3>The Scam</h3>
+        <p>An investment accelerator scams Kenneth, consuming a full month of time and momentum. The operator is later revealed to be running a Reddit scheme that defrauded over 100 people. Kenneth loses a month. He keeps building.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">April 2026</div>
+        <h3>Ascension Whitepaper + Hugging Face Proof</h3>
+        <p>Formal Ascension whitepaper published with 15 verified case studies. The "Shapeshifter" case study demonstrates Apex-tier hardening of Hugging Face's 126M-download code. CJPI 100. Two DOIs registered. The technology is proven.</p>
       </div>
       <div class="timeline-item">
         <div class="date">April 2026 — Now</div>
-        <h3>Ready for Market</h3>
-        <p>Technology built. IP protected. Products live. 8+ DOIs. 6 OSF projects. 16 verified case studies. Seeking marketing investment or licensing partnership to scale.</p>
+        <h3>10 Substrates. Ready for Market.</h3>
+        <p>Kenneth can now spin up a new substrate in ~10 minutes — what originally took 3,000 hours. 10 substrates operational. 10 Ascension engines. 10 Memory Streams running autonomously. The technology is built, proven, patented, and published. All that's left is telling the world it exists.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLOSING ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">In Closing</div>
+    <h2>What Kenneth Proved</h2>
+
+    <div class="story-quote">
+      "Everybody commits to a project for a weekend and tries to sell it in a week. I committed 3,000 hours over 15 months. I went hungry. I got scammed. I hit walls that should have ended the project forever. I kept going. And I built something that has never existed before — a new layer of coding, protected by a patent, proven against the biggest names in tech, and ready for the world. All I need now is for the world to know it's here."
+    </div>
+
+    <div class="plain-english">
+      <div class="label">🟢 The Bottom Line</div>
+      <p>Kenneth E. Sweet Jr. bootstrapped the world's first cognitive substrate from nothing — no funding, no team, no connections. He used AI as a tool to build, not as a foundation to build on. He created a new layer of software engineering that didn't exist before. He proved it works against code from Google, Meta, IBM, Anthropic, and Hugging Face. He published his work on the world's most respected academic platforms. He filed a patent. And he did it all while delivering food to pay for $15 increments of development credits. <strong>The technology is ready. The only thing missing is the marketing to tell the world it exists.</strong></p>
     </div>
   </div>
 </section>
