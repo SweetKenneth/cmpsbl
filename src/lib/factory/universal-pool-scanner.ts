@@ -233,29 +233,58 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — UNRESTRICTED 40-SLOT SELECTION
+// §5 — DYNAMIC SLOT SELECTION (CODE-DRIVEN)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Select the optimal 40 primitives from the entire pool.
- * No category restrictions. No spine lock. No organ/layer quotas.
- * Pure compounding-score ranking with light diversity constraint
- * (max 12 from any single source to prevent total domination).
+ * Minimum compounding score to qualify for selection.
+ * Primitives below this threshold add noise, not value.
  */
-function selectOptimal40(
+const SELECTION_THRESHOLD = 0.10;
+
+/**
+ * The score gap that triggers a natural cutoff.
+ * If the next candidate's score drops by more than 40% relative to the
+ * current candidate, the scanner stops — the code doesn't need more.
+ */
+const DROP_OFF_RATIO = 0.40;
+
+/** Absolute maximum to prevent degenerate cases */
+const MAX_SLOTS = 40;
+
+/** Minimum selection — at least a few primitives for any code */
+const MIN_SLOTS = 8;
+
+/**
+ * Select the optimal primitives for this specific codebase.
+ * The count is DYNAMIC — driven by what the code actually needs.
+ * No category restrictions. No spine lock. No organ/layer quotas.
+ * Light diversity constraint (max 14 from any single source).
+ */
+function selectOptimalPrimitives(
   candidates: PoolCandidate[],
-  maxPerSource: number = 12,
+  maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
-    .filter(c => c.compoundingScore > 0.05)
+    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   const selected: PoolCandidate[] = [];
   const sourceCounts: Record<string, number> = {};
   const usedIds = new Set<string>();
 
-  for (const candidate of sorted) {
-    if (selected.length >= 40) break;
+  for (let i = 0; i < sorted.length; i++) {
+    if (selected.length >= MAX_SLOTS) break;
+
+    const candidate = sorted[i];
+
+    // Natural cutoff: if there's a significant score drop-off after minimum,
+    // stop — the code doesn't benefit from more primitives
+    if (selected.length >= MIN_SLOTS && i > 0) {
+      const prevScore = sorted[i - 1].compoundingScore;
+      const dropOff = (prevScore - candidate.compoundingScore) / prevScore;
+      if (dropOff >= DROP_OFF_RATIO) break;
+    }
 
     // Light diversity: cap per-source to prevent single-vertical domination
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
