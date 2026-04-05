@@ -165,6 +165,7 @@ import { getRoboticsSubstrate } from './robotics';
 import { getQuantumSubstrate } from './quantum';
 import { getLLMSubstrate } from './llm';
 import { getAgencySubstrate } from './agency';
+import { getMediaSubstrate } from './media';
 import { getUltimateSubstrate } from './ultimate';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
