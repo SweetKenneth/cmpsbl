@@ -7,7 +7,7 @@
  */
 
 const WATERMARK_ID = 'cmpsbl-wm';
-const WATERMARK_TEXT = '© 2009–2026 CMPSBL® · PromptFluid™ · All Rights Reserved · Unauthorized reproduction prohibited';
+const WATERMARK_TEXT = '© 2009–2026 CMPSBL® · PromptFluid™ · All Rights Reserved · Patent Pending U.S. App. No. 64/029,678 · Unauthorized reproduction prohibited';
 
 export const InvisibleWatermark = () => {
   // Generate a session fingerprint for tracing

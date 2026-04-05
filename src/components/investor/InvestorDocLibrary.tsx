@@ -656,7 +656,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Registered Agents", "40+", "New agent development, community contributions"],
             ["Premium Engines", "80+", "Engine expansion across all categories"],
             ["Social Media Following", "25,000+", "Brand agency content strategy, founder narrative"],
-            ["IP Filings", "5+ trademarks, 2+ patents", "Legal firm engagement, provisional filings"],
+            ["IP Filings", "5+ trademarks, 1 provisional patent filed (64/029,678)", "Legal firm engagement, additional patent filings"],
           ],
         },
       },
