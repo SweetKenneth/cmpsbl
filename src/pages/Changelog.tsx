@@ -1407,14 +1407,49 @@ const stratumMindgames: Specimen[] = [
   },
 ];
 
+const stratumConvergence: Specimen[] = [
+  {
+    id: "CONV-001",
+    fossilized: "2026-04-05",
+    origin: "architecture",
+    stimulus: "The interpreted runtime model was a replication surface — external observers could reconstruct execution paths from the sequential pipeline. The substrate needed architectural opacity without sacrificing functional transparency",
+    adaptations: [
+      "Processing architecture transitioned from interpreted runtime (Mini-Runtime™ v2) to deterministic processing layer (Convex Core™ v3)",
+      "12-stage sequential pipeline replaced with 5-layer parallel processing model — 7 intermediate stages eliminated",
+      "Dynamic primitive handler registry replaced with pre-compiled dispatch matrices — resolution now happens at artifact-creation time, not invocation time",
+      "Cross-primitive interaction scoring compiled into immutable collision matrices with FNV-1a-derived weights",
+      "Performative opacity engine activated — exported artifacts show verifiable partial architecture while concealing orchestration mechanics",
+      "All export artifacts rebranded: file structure, documentation, error codes, and integration guides updated to Convex Core™ terminology",
+      "NPM package @cmpsbl/runtime v3.0.0 exposes compileDispatch() + resolve() API surface alongside deprecated createRuntime() compatibility layer",
+      "Zenodo-grade technical documentation published at /docs/libraries/convex-core/ — 7 documents covering architecture, dispatch matrices, primitive binding, artifact format, scoring, migration, and security model",
+    ],
+    phenotype: [
+      "The substrate's execution model is no longer reconstructable from exported artifacts — mathematical opacity replaces obscurity",
+      "Paradigm shift from 'runtime engine' to 'processing layer' — fundamentally different mental model for external observers",
+      "Legacy Mini-Runtime™ documentation now positions anyone building from it on a deprecated, dead-end architecture",
+      "Dispatch matrices are provably deterministic but structurally opaque — one-way function applied to orchestration topology",
+    ],
+    affectedNodes: ["CORE Organ", "DEFENSE Layer", "GOVERNANCE Layer", "SHADOW Layer", "EVOLUTION Layer"],
+  },
+];
+
 const STRATA: Stratum[] = [
   {
-    epoch: "REVIVAL",
-    codename: "The substrate shed its old skin and invited the world in",
+    epoch: "CONVERGENCE",
+    codename: "The substrate shed its skin — the world sees a new shape, only the governor knows the skeleton",
     range: "Current epoch",
     color: "bg-primary/10 text-primary",
     borderColor: "border-primary/30",
     dotColor: "bg-primary",
+    specimens: stratumConvergence,
+  },
+  {
+    epoch: "REVIVAL",
+    codename: "The substrate shed its old skin and invited the world in",
+    range: "Prior epoch",
+    color: "bg-neon-cyan/10 text-neon-cyan",
+    borderColor: "border-neon-cyan/30",
+    dotColor: "bg-neon-cyan",
     specimens: stratumRevival,
   },
   {
