@@ -9,6 +9,11 @@
 
 import type { PrimitiveRecommendation } from './scan-team';
 import { detectLanguage } from './code-metrics';
+import {
+  generateCompiledPreamble,
+  generateDecoyPipelineComments,
+  FUNCTIONAL_TRANSFORMS,
+} from '../export/opacity-engine';
 
 // ── Language Syntax Adapters ──
 
