@@ -90,7 +90,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'ultimate') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(270 30% 4%)" }} />}>
-        <UltimateHome />
+        <PinGate pin="4645" storageKey="ultimate_access">
+          <UltimateHome />
+        </PinGate>
       </Suspense>
     );
   }
