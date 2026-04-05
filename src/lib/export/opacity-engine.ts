@@ -83,9 +83,9 @@ export function generateCompiledPreamble(
 
   if (lang === 'rust') {
     return [
-      `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-      `${c} ║ Auto-generated. Do not modify.            ║`,
-      `${c} ╚══════════════════════════════════════════╝`,
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Do not modify.              ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
       '',
       `const _CMPSBL_DT: &[u16] = &[${dispatchTable.join(', ')}];`,
       `const _CMPSBL_CM: &[u16] = &[${collisionMatrix.join(', ')}];`,
