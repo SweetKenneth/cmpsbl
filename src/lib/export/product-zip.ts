@@ -47,7 +47,7 @@ function cjpiFromTier(tier: string): number {
 function generateReadmeMD(product: ProductZipInput): string {
   const kindLabel = product.kind === 'engine' ? 'Composable Engine' : 'Standalone Agent';
   const safeName = product.name.replace(/[^a-zA-Z0-9]/g, '_');
-  return `# ${product.name} — CMPSBL® Sealed Runtime™
+  return `# ${product.name} — CMPSBL® Convex Core™
 
 ## ${product.subtitle}
 
