@@ -161,11 +161,147 @@ const SPINE_LAYERS: VerticalPrimitive[] = [
 ];
 
 /**
+ * Conceptual Spine Extensions
+ * These 7 primitives exist as high-intent signal mappings in the scanner
+ * and are now materialized as selectable candidates for the Universal Pool.
+ * They are NOT part of the 24-spine (12+12) — they are spine-class
+ * primitives available exclusively to the Ultimate scanner's 136+ pool.
+ */
+export const CONCEPTUAL_SPINE_PRIMITIVES: VerticalPrimitive[] = [
+  {
+    id: 'CONSCIENCE',
+    name: 'CONSCIENCE',
+    role: 'organ',
+    description: 'Ethical pre-flight interception and moral boundary enforcement',
+    inherited: false,
+    capabilities: [
+      'ethical_preflight',
+      'bias_detection',
+      'moral_boundary_check',
+      'transparency_audit',
+      'blocked_category_enforcement',
+      'review_gate',
+    ],
+    weight: 0.025,
+    classification: 'active',
+  },
+  {
+    id: 'SOVEREIGN',
+    name: 'SOVEREIGN',
+    role: 'organ',
+    description: 'Policy compliance classification and jurisdictional governance',
+    inherited: false,
+    capabilities: [
+      'policy_classification',
+      'jurisdictional_routing',
+      'consent_management',
+      'data_sovereignty',
+      'regulation_mapping',
+      'compliance_scoring',
+    ],
+    weight: 0.020,
+    classification: 'passive',
+  },
+  {
+    id: 'SHADOW',
+    name: 'SHADOW',
+    role: 'layer',
+    description: 'Canary deployment, A/B comparison, and pre/post-snapshot diffing',
+    inherited: false,
+    capabilities: [
+      'canary_deployment',
+      'ab_comparison',
+      'pre_post_snapshot',
+      'baseline_tracking',
+      'shadow_execution',
+      'zero_downtime_swap',
+    ],
+    weight: 0.020,
+    classification: 'hybrid',
+  },
+  {
+    id: 'REFLEX',
+    name: 'REFLEX',
+    role: 'layer',
+    description: 'Circuit breaker, retry logic, and graceful degradation patterns',
+    inherited: false,
+    capabilities: [
+      'circuit_breaker',
+      'retry_with_backoff',
+      'timeout_management',
+      'graceful_degradation',
+      'fallback_routing',
+      'cooldown_enforcement',
+    ],
+    weight: 0.020,
+    classification: 'active',
+  },
+  {
+    id: 'COMPASS',
+    name: 'COMPASS',
+    role: 'layer',
+    description: 'Priority ranking, severity ordering, and confidence-weighted decision routing',
+    inherited: false,
+    capabilities: [
+      'priority_ranking',
+      'severity_ordering',
+      'confidence_weighting',
+      'threshold_gating',
+      'risk_scoring',
+      'triage_routing',
+    ],
+    weight: 0.015,
+    classification: 'active',
+  },
+  {
+    id: 'EVOLUTION',
+    name: 'EVOLUTION',
+    role: 'layer',
+    description: 'Autonomous mutation, patch generation, and fitness-selected upgrades',
+    inherited: false,
+    capabilities: [
+      'mutation_planning',
+      'fitness_evaluation',
+      'patch_generation',
+      'version_upgrade',
+      'config_evolution',
+      'adaptive_selection',
+    ],
+    weight: 0.015,
+    classification: 'hybrid',
+  },
+  {
+    id: 'BEACON',
+    name: 'BEACON',
+    role: 'layer',
+    description: 'Structured health signals, telemetry emission, and uptime heartbeats',
+    inherited: false,
+    capabilities: [
+      'health_signal_emission',
+      'telemetry_dispatch',
+      'heartbeat_generation',
+      'uptime_tracking',
+      'status_broadcasting',
+      'monitoring_integration',
+    ],
+    weight: 0.015,
+    classification: 'passive',
+  },
+];
+
+/**
  * Get the 24 inherited spine primitives (organs + layers)
  * These are the non-negotiable backbone of every vertical substrate
  */
 export function getSpinePrimitives(): VerticalPrimitive[] {
   return [...SPINE_ORGANS, ...SPINE_LAYERS];
+}
+
+/**
+ * Get the 7 conceptual spine extensions (available to Ultimate pool only)
+ */
+export function getConceptualSpinePrimitives(): VerticalPrimitive[] {
+  return [...CONCEPTUAL_SPINE_PRIMITIVES];
 }
 
 /**

@@ -18,7 +18,7 @@
  */
 
 import type { VerticalPrimitive } from './vertical-substrate';
-import { getSpinePrimitives } from './vertical-substrate';
+import { getSpinePrimitives, getConceptualSpinePrimitives } from './vertical-substrate';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
@@ -171,6 +171,9 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   // Ultimate Universal (16)
   tag(ULTIMATE_ALL_ENGINES, 'ultimate');
   tag(ULTIMATE_ALL_AGENTS, 'ultimate');
+
+  // Conceptual Spine Extensions (7) — materialized from signal mappings
+  tag(getConceptualSpinePrimitives(), 'spine', SPINE_AFFINITY_SIGNALS);
 
   return pool;
 }
