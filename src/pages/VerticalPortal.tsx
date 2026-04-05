@@ -90,6 +90,17 @@ const STATIC_VERTICALS = [
     capabilityCount: '120 pool',
     status: 'Active' as const,
   },
+  {
+    id: 'media',
+    name: 'CMPSBL MEDIA™',
+    tagline: 'Cognitive Media Infrastructure — Content Creates Itself',
+    url: 'https://media.cmpsbl.com',
+    icon: Clapperboard,
+    accentColor: 'hsl(330 85% 60%)',
+    primitiveCount: 16,
+    capabilityCount: '110+',
+    status: 'Active' as const,
+  },
 ];
 
 /** Merge static + dynamic verticals */
