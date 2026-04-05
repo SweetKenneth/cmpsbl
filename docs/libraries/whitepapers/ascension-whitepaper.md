@@ -709,5 +709,6 @@ The findings presented in this paper are the product of deterministic structural
 ---
 
 © 2026 CMPSBL®. All rights reserved.  
+Patent Pending · U.S. Provisional Application No. 64/029,678  
 CMPSBL® is a registered trademark of PromptFluid™.  
 Ascension™, Sealed Runtime™, Memory Stream™, Discovery Engine™, Mini-Runtime Engine™, Crown Jewel Pipeline Index™ (CJPI™), Crown Jewels™, CLM™, Vertical Substrates™, CMPSBL LLM™, CMPSBL Cyber™, CMPSBL Quantum™, and CMPSBL Robotics™ are trademarks of PromptFluid™.
