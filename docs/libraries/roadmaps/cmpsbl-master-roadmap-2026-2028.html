@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CMPSBL® Master Roadmap 2026–2028</title>
+<style>
+@page { size: letter; margin: 0.75in; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a2e; max-width: 8in; margin: 0 auto; padding: 40px 24px; background: #fff; }
+h1 { font-size: 26pt; font-weight: 800; color: #0a0a1a; border-bottom: 3px solid #2563eb; padding-bottom: 8px; margin-bottom: 6px; letter-spacing: -0.5px; }
+h2 { font-size: 18pt; font-weight: 700; color: #1e3a5f; margin-top: 36px; margin-bottom: 12px; padding-bottom: 4px; border-bottom: 1px solid #e2e8f0; }
+h3 { font-size: 13pt; font-weight: 600; color: #334155; margin-top: 20px; margin-bottom: 8px; }
+h4 { font-size: 11pt; font-weight: 600; color: #475569; margin-top: 14px; margin-bottom: 6px; }
+p { margin-bottom: 10px; }
+ul, ol { margin: 8px 0 12px 20px; }
+li { margin-bottom: 4px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 10pt; }
+th, td { border: 1px solid #e2e8f0; padding: 6px 10px; text-align: left; }
+th { background: #f1f5f9; font-weight: 600; color: #1e3a5f; }
+tr:nth-child(even) { background: #f8fafc; }
+.subtitle { font-size: 12pt; color: #64748b; margin-bottom: 4px; }
+.meta { font-size: 9pt; color: #94a3b8; margin-bottom: 20px; }
+blockquote { border-left: 4px solid #2563eb; margin: 16px 0; padding: 12px 16px; background: #eff6ff; color: #1e40af; font-style: italic; font-size: 12pt; border-radius: 0 6px 6px 0; }
+.card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; margin: 14px 0; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.04); break-inside: avoid; }
+.card-blue { border-left: 4px solid #2563eb; }
+.card-green { border-left: 4px solid #16a34a; }
+.card-amber { border-left: 4px solid #d97706; }
+.card-red { border-left: 4px solid #dc2626; }
+.card-purple { border-left: 4px solid #7c3aed; }
+.phase-header { background: #1e3a5f; color: #fff; padding: 12px 20px; border-radius: 8px; margin: 24px 0 12px; }
+.phase-header h2 { color: #fff; border: none; margin: 0; padding: 0; font-size: 16pt; }
+.phase-header .phase-sub { color: #93c5fd; font-size: 10pt; margin-top: 2px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 8pt; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.tag-high { background: #fef2f2; color: #dc2626; }
+.tag-medium { background: #fffbeb; color: #d97706; }
+.tag-low { background: #f0fdf4; color: #16a34a; }
+.tag-done { background: #f0fdf4; color: #16a34a; }
+.tag-progress { background: #eff6ff; color: #2563eb; }
+.tag-planned { background: #faf5ff; color: #7c3aed; }
+.callout { padding: 14px 18px; border-radius: 8px; margin: 14px 0; font-size: 10pt; }
+.callout-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+.callout-green { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+.callout-amber { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+.callout-red { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.timeline { position: relative; padding-left: 30px; margin: 16px 0; }
+.timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #cbd5e1; }
+.timeline-item { position: relative; margin-bottom: 16px; }
+.timeline-item::before { content: ''; position: absolute; left: -24px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: #2563eb; border: 2px solid #fff; box-shadow: 0 0 0 2px #2563eb; }
+.timeline-item.done::before { background: #16a34a; box-shadow: 0 0 0 2px #16a34a; }
+.timeline-item.active::before { background: #d97706; box-shadow: 0 0 0 2px #d97706; }
+code { background: #f1f5f9; padding: 2px 6px; border-radius: 3px; font-size: 9.5pt; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+pre { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; margin: 10px 0; overflow-x: auto; font-size: 9pt; line-height: 1.5; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+.stat-card { text-align: center; padding: 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; }
+.stat-card .number { font-size: 24pt; font-weight: 800; color: #2563eb; }
+.stat-card .label { font-size: 9pt; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+.progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; margin: 6px 0; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; }
+.fill-25 { width: 25%; background: #dc2626; }
+.fill-50 { width: 50%; background: #d97706; }
+.fill-75 { width: 75%; background: #2563eb; }
+.fill-100 { width: 100%; background: #16a34a; }
+.diagram-box { border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; margin: 16px 0; background: #fafbfc; text-align: center; }
+.diagram-title { font-size: 10pt; font-weight: 700; color: #1e3a5f; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.flow-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+.flow-box { padding: 8px 14px; border-radius: 6px; font-size: 9pt; font-weight: 600; text-align: center; min-width: 100px; }
+.flow-blue { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+.flow-green { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.flow-amber { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.flow-purple { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+.flow-red { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.flow-arrow { font-size: 16pt; color: #94a3b8; }
+.toc { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px 24px; margin: 20px 0; }
+.toc h3 { margin-top: 0; }
+.toc ol { margin-left: 18px; }
+.toc li { margin-bottom: 3px; }
+.toc a { color: #2563eb; text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+.schedule-table td:first-child { font-weight: 600; white-space: nowrap; }
+.check { color: #16a34a; }
+.copyright { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #94a3b8; font-size: 9pt; }
+.page-break { break-before: page; }
+@media print {
+  body { padding: 0; }
+  .card { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+
+<h1>CMPSBL® Master Roadmap</h1>
+<p class="subtitle"><strong>2026 – 2028 Strategic Plan</strong></p>
+<p class="meta">
+  Classification: Strategic — Founder & Investor Use<br/>
+  Author: Kenneth E. Sweet Jr., Solo Founder · PromptFluid™ LLC (Texas)<br/>
+  Patent: U.S. App. No. 64/029,678 (Pending) · Version 1.0 — April 2026
+</p>
+
+<blockquote><strong>Mission:</strong> Make CMPSBL the default cognitive infrastructure layer for all production software — as essential as databases are for applications today.</blockquote>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+<h3>Contents</h3>
+<ol>
+  <li><a href="#current">Where We Are Today</a></li>
+  <li><a href="#phase1">Phase 1 — Revenue Engine (Months 1–3)</a></li>
+  <li><a href="#phase2">Phase 2 — Market Proof (Months 4–6)</a></li>
+  <li><a href="#phase3">Phase 3 — Scale & Defend (Months 7–12)</a></li>
+  <li><a href="#phase4">Phase 4 — Enterprise & Expansion (Year 2)</a></li>
+  <li><a href="#phase5">Phase 5 — Market Leadership (Year 3+)</a></li>
+  <li><a href="#technical">Technical Roadmap — Core Systems</a></li>
+  <li><a href="#business">Business Operations</a></li>
+  <li><a href="#legal">Legal & IP</a></li>
+  <li><a href="#infra">Infrastructure & Resilience</a></li>
+  <li><a href="#balance">Founder Work-Life Balance</a></li>
+  <li><a href="#actions">Daily, Weekly & Monthly Actions</a></li>
+  <li><a href="#financial">Financial Model & Targets</a></li>
+  <li><a href="#lovable">Lovable Account Optimization</a></li>
+  <li><a href="#equity">Equity & Corporate Structure</a></li>
+  <li><a href="#risks">Risk Register</a></li>
+  <li><a href="#firsts">World Firsts Still Achievable</a></li>
+</ol>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="current">1. Where We Are Today</h2>
+
+<div class="grid-2">
+  <div class="stat-card"><div class="number">40</div><div class="label">Core Primitives</div></div>
+  <div class="stat-card"><div class="number">10</div><div class="label">Vertical Substrates</div></div>
+  <div class="stat-card"><div class="number">1,600+</div><div class="label">Crown Jewel Capabilities</div></div>
+  <div class="stat-card"><div class="number">3,000+</div><div class="label">Hours Invested</div></div>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-title">The CMPSBL Trifecta</div>
+  <div class="flow-row">
+    <div class="flow-box flow-blue" style="min-width:160px;">
+      <strong>Memory Stream</strong><br/>Autonomous Discovery<br/>8-hour cycles · 24/7
+    </div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box flow-green" style="min-width:160px;">
+      <strong>Ascension</strong><br/>Code Evolution<br/>Crown Jewel · Patent Pending
+    </div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box flow-purple" style="min-width:160px;">
+      <strong>Substrate</strong><br/>Governed Infrastructure<br/>40 Primitives · Deterministic
+    </div>
+  </div>
+  <div style="margin-top:10px; font-size:9pt; color:#64748b;">Every component is pure deterministic code — zero AI dependency</div>
+</div>
+
+<h3>What Exists</h3>
+<table>
+  <tr><th>Asset</th><th>Status</th><th>Strategic Value</th></tr>
+  <tr><td><strong>Core Substrate</strong></td><td><span class="tag tag-done">Live</span></td><td>Foundation — 12 Organs, 12 Layers, 8 Engines, 8 Agents</td></tr>
+  <tr><td><strong>7+ Vertical Substrates</strong></td><td><span class="tag tag-done">Live</span></td><td>Cyber, Robotics, Quantum, LLM, Agency, Media, Ultimate</td></tr>
+  <tr><td><strong>Ascension Engine</strong></td><td><span class="tag tag-done">Live</span></td><td>Crown jewel — patent pending. Every code ever written is a candidate.</td></tr>
+  <tr><td><strong>Memory Stream</strong></td><td><span class="tag tag-done">Live</span></td><td>Autonomous discovery — crystallizes software every 8 hours</td></tr>
+  <tr><td><strong>GENESIS Engine</strong></td><td><span class="tag tag-done">Live</span></td><td>10-minute vertical deployment (was 3,000 hours)</td></tr>
+  <tr><td><strong>1,600+ Crown Jewels</strong></td><td><span class="tag tag-done">Cataloged</span></td><td>S-Tier and A-Tier across all verticals</td></tr>
+  <tr><td><strong>11 NPM Packages</strong></td><td><span class="tag tag-done">Published</span></td><td>@cmpsbl scope — developer distribution</td></tr>
+  <tr><td><strong>Patent Application</strong></td><td><span class="tag tag-progress">Filed</span></td><td>U.S. App. No. 64/029,678</td></tr>
+  <tr><td><strong>Academic Publications</strong></td><td><span class="tag tag-done">Published</span></td><td>Zenodo + OSF — multiple DOIs</td></tr>
+  <tr><td><strong>200,000+ Lines of Code</strong></td><td><span class="tag tag-done">Production</span></td><td>Deterministic — zero AI dependency</td></tr>
+</table>
+
+<div class="callout callout-amber">
+  <strong>What's Missing:</strong> Consistent revenue · Dedicated sales effort · Team (solo founder) · External funding · Marketing beyond academic posts · Business bank account · Enterprise-grade documentation for customers
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="phase-header" id="phase1">
+  <h2>Phase 1 — Revenue Engine</h2>
+  <div class="phase-sub">Months 1–3 · Goal: $5,000/month MRR · Prove the product sells</div>
+</div>
+
+<h3>🎯 Pricing & Packaging</h3>
+<div class="callout callout-blue">
+  <strong>Pricing Philosophy:</strong> Low barrier to entry. High value ceiling. Simple enough for anyone to understand. Cash-heavy enough to fund growth.
+</div>
+
+<table>
+  <tr><th>Tier</th><th>Price</th><th>Includes</th><th>Target Customer</th></tr>
+  <tr><td><strong>Starter</strong></td><td>$49/mo</td><td>1 Ascension run/day, basic Memory Stream, 1 vertical</td><td>Indie developers</td></tr>
+  <tr><td><strong>Professional</strong></td><td>$149/mo</td><td>10 runs/day, full Memory Stream, 3 verticals, exports</td><td>Dev teams, startups</td></tr>
+  <tr><td><strong>Enterprise</strong></td><td>$499/mo</td><td>Unlimited, all verticals, Universal, priority support</td><td>Companies, enterprises</td></tr>
+</table>
+
+<h4>One-Time Products (Memory Stream Discoveries)</h4>
+<table>
+  <tr><th>Tier</th><th>CJPI Score</th><th>Price</th><th>Volume</th></tr>
+  <tr><td>Mint</td><td>30–49</td><td>$29</td><td>High — functional utilities</td></tr>
+  <tr><td>Prime</td><td>50–64</td><td>$79</td><td>Medium — production-viable</td></tr>
+  <tr><td>Relic</td><td>65–79</td><td>$149</td><td>Limited — compound potential</td></tr>
+  <tr><td>Mythic</td><td>80–89</td><td>$499</td><td>Rare — multi-domain synthesis</td></tr>
+  <tr><td>Apex</td><td>90–100</td><td>$1,952</td><td>Serial-numbered — maximum value</td></tr>
+</table>
+
+<div class="card card-green">
+  <h4>🩺 Code Diagnostic Clinic — $149 One-Time</h4>
+  <p>Upload any code in any language. Receive a full Ascension report showing capabilities your code already supports but doesn't use, plus a hardened Convex Core™ export. No subscription needed.</p>
+</div>
+
+<h3>📧 First Sales Motion (Weeks 2–4)</h3>
+<div class="diagram-box">
+  <div class="diagram-title">Outbound Sales Funnel</div>
+  <div class="flow-row">
+    <div class="flow-box flow-blue">Email 20 Companies<br/><small>Free Ascension Reports</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box flow-amber">Show Before/After<br/><small>CJPI Score + Capabilities</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box flow-green">Convert to Diagnostic<br/><small>$149 one-time</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box flow-purple">Upsell to Subscription<br/><small>$49–$499/mo</small></div>
+  </div>
+</div>
+
+<p><strong>Target companies for free reports:</strong> Hugging Face, LangChain, AutoGPT, CrewAI, OpenDevin, Cursor, Vercel, Supabase, Railway, Anthropic tooling</p>
+<p><strong>Subject line:</strong> <em>"We found 12 capabilities your code already supports but doesn't use"</em></p>
+
+<h4>Hacker News Daily Drip Strategy</h4>
+<ul>
+  <li>One free Ascension export per day of popular open-source software</li>
+  <li>GitHub repo collecting all daily drops</li>
+  <li>Each links back to the full diagnostic service</li>
+  <li>Builds awareness through demonstrated value — not marketing claims</li>
+</ul>
+
+<h3>Month 3 Revenue Target</h3>
+<table>
+  <tr><th>Source</th><th>Units</th><th>Price</th><th>Monthly</th></tr>
+  <tr><td>Code Diagnostics</td><td>10</td><td>$149</td><td>$1,490</td></tr>
+  <tr><td>Starter Subscriptions</td><td>15</td><td>$49</td><td>$735</td></tr>
+  <tr><td>Pro Subscriptions</td><td>5</td><td>$149</td><td>$745</td></tr>
+  <tr><td>Discovery Exports</td><td>20</td><td>~$79 avg</td><td>$1,580</td></tr>
+  <tr><th colspan="3">Total</th><th>$4,550</th></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="phase-header" id="phase2">
+  <h2>Phase 2 — Market Proof</h2>
+  <div class="phase-sub">Months 4–6 · Goal: $15,000/month · Case studies · First hire</div>
+</div>
+
+<h3>📊 Case Studies & Demos</h3>
+<p>Run 5 high-profile Ascension case studies. Publish each as a Zenodo paper, blog post, 2-minute video, and free downloadable export.</p>
+<table>
+  <tr><th>#</th><th>Target</th><th>Vertical</th><th>Why</th></tr>
+  <tr><td>1</td><td>Hugging Face <code>modeling_utils.py</code></td><td>LLM</td><td>Already done — polish and publish</td></tr>
+  <tr><td>2</td><td>Next.js or Remix core</td><td>Core</td><td>Web framework — huge audience</td></tr>
+  <tr><td>3</td><td>OWASP ZAP or Snyk CLI</td><td>Cyber</td><td>Security community — high credibility</td></tr>
+  <tr><td>4</td><td>Terraform provider</td><td>Core</td><td>DevOps — enterprise audience</td></tr>
+  <tr><td>5</td><td>CrewAI or AutoGPT</td><td>Agency</td><td>AI agent space — trending</td></tr>
+</table>
+
+<div class="card card-blue">
+  <h4>🔄 Self-Improvement: Ascension on Our Own Code</h4>
+  <p>Run every CMPSBL substrate through Universal Ascension. Document discovered capabilities. Publish the self-improvement report. Marketing proof: <strong>"We trust it enough to run it on ourselves."</strong></p>
+</div>
+
+<h3>NPM Expansion</h3>
+<table>
+  <tr><th>Package</th><th>Purpose</th><th>Timeline</th></tr>
+  <tr><td><code>@cmpsbl/ascension-cli</code></td><td>Standalone CLI for code diagnostics</td><td>Month 2</td></tr>
+  <tr><td><code>@cmpsbl/memory-stream-sdk</code></td><td>API client for Memory Stream access</td><td>Month 3</td></tr>
+  <tr><td><code>@cmpsbl/export-reader</code></td><td>Parse and inspect Convex Core™ artifacts</td><td>Month 4</td></tr>
+  <tr><td><code>@cmpsbl/primitives-core</code></td><td>Open-source primitive component library</td><td>Month 5</td></tr>
+  <tr><td><code>@cmpsbl/governance</code></td><td>Governance hooks for any application</td><td>Month 6</td></tr>
+  <tr><td><code>@cmpsbl/defense</code></td><td>Security primitives — standalone</td><td>Month 7</td></tr>
+</table>
+
+<h3>Growth Advisor</h3>
+<ul>
+  <li>Engage equity-based advisor (0.5–1%) with SaaS/dev-tools GTM experience</li>
+  <li>Must open doors to enterprise prospects and understand technical products</li>
+  <li>Performance-based vesting — 2-year cliff</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="phase-header" id="phase3">
+  <h2>Phase 3 — Scale & Defend</h2>
+  <div class="phase-sub">Months 7–12 · Goal: $50,000/month · Protect IP · Build team</div>
+</div>
+
+<h3>Technical Expansion</h3>
+
+<div class="diagram-box">
+  <div class="diagram-title">Memory Stream Language Expansion</div>
+  <div class="flow-row">
+    <div class="flow-box flow-green">Phase 1<br/><small>Python · Rust · Go</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box flow-blue">Phase 2<br/><small>Java · C++ · C#</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box flow-purple">Phase 3<br/><small>VHDL · Verilog · HDL</small></div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card card-blue">
+    <h4>Memory Stream Enhancements</h4>
+    <ul>
+      <li>Multi-language support (3 phases)</li>
+      <li><strong>Software Compiler</strong> — assemble discoveries into end-to-end products greater than the sum of their parts</li>
+      <li>Configurable cycle frequency (8hr → 4hr → 2hr)</li>
+      <li>Cross-vertical discovery correlation</li>
+    </ul>
+  </div>
+  <div class="card card-green">
+    <h4>Ascension Enhancements</h4>
+    <ul>
+      <li>Multi-file project support</li>
+      <li>Primitive pool expansion (136 → 200+)</li>
+      <li>GitHub Action for CI/CD integration</li>
+      <li>VS Code extension for in-editor use</li>
+    </ul>
+  </div>
+</div>
+
+<h4>New Verticals (10 minutes each via GENESIS)</h4>
+<table>
+  <tr><th>Vertical</th><th>Timeline</th><th>Target Market</th></tr>
+  <tr><td>FinTech</td><td>Month 4</td><td>Banks, payment processors, compliance</td></tr>
+  <tr><td>Healthcare</td><td>Month 5</td><td>MedTech, pharma, HIPAA-aware</td></tr>
+  <tr><td>Gaming</td><td>Month 7</td><td>Game studios, real-time performance</td></tr>
+  <tr><td>Automotive</td><td>Month 9</td><td>Connected vehicles, safety-critical</td></tr>
+  <tr><td>Aerospace</td><td>Month 12</td><td>Defense contractors, avionics</td></tr>
+</table>
+
+<h3>Sales & Marketing</h3>
+
+<div class="grid-2">
+  <div class="card card-amber">
+    <h4>First Hires</h4>
+    <ul>
+      <li><strong>Sales rep</strong> — commission-based (15–20% of closed deals)</li>
+      <li><strong>Marketing contractor</strong> — $2,000/month part-time</li>
+      <li>Social media, weekly newsletter, blog editing</li>
+    </ul>
+  </div>
+  <div class="card card-purple">
+    <h4>Conferences</h4>
+    <ul>
+      <li>KubeCon — "Deterministic Code Evolution"</li>
+      <li>DEF CON — "Autonomous Security Hardening"</li>
+      <li>PyCon/JSConf — "Capabilities You Never Programmed"</li>
+      <li>Budget: $2,000–$5,000 for first event</li>
+    </ul>
+  </div>
+</div>
+
+<h4>Content & Community Cadence</h4>
+<table class="schedule-table">
+  <tr><th>Channel</th><th>Frequency</th><th>Content</th></tr>
+  <tr><td>Twitter/X</td><td>2/day</td><td>Discovery highlights (automate from Memory Stream)</td></tr>
+  <tr><td>LinkedIn</td><td>3/week</td><td>Case studies, professional thought leadership</td></tr>
+  <tr><td>YouTube</td><td>1/week</td><td>Demo videos (&lt; 5 minutes)</td></tr>
+  <tr><td>Email Newsletter</td><td>1/week</td><td>"The Discovery Report" — top finds + free exports</td></tr>
+  <tr><td>Hacker News</td><td>1/week</td><td>Daily Drip repo drops</td></tr>
+  <tr><td>Zenodo</td><td>1/month</td><td>Academic papers with DOI</td></tr>
+</table>
+
+<h3>Enterprise Readiness</h3>
+<ul>
+  <li><strong>Documentation library overhaul</strong> — Getting Started (&lt; 5 min), API reference, architecture overview, security whitepaper</li>
+  <li><strong>Dashboard redesign</strong> — real-time Memory Stream visualization, Ascension history, usage analytics, team management</li>
+  <li><strong>SOC 2 preparation</strong> — begin documentation and controls</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="phase-header" id="phase4">
+  <h2>Phase 4 — Enterprise & Expansion</h2>
+  <div class="phase-sub">Year 2 · Goal: $200,000/month · Series A readiness · Team of 5–8</div>
+</div>
+
+<div class="diagram-box">
+  <div class="diagram-title">Product Expansion Map</div>
+  <div class="flow-row">
+    <div class="flow-box flow-blue">Local Enterprise<br/><small>On-premise installs</small></div>
+    <div class="flow-box flow-green">Integration Primitive<br/><small>API-to-API bidirectional</small></div>
+    <div class="flow-box flow-amber">Accessibility Primitive<br/><small>WCAG scan + auto-repair</small></div>
+  </div>
+  <div class="flow-row" style="margin-top:8px;">
+    <div class="flow-box flow-purple">DREAM as Product<br/><small>Standalone synthesis</small></div>
+    <div class="flow-box flow-red">EVOLUTION as Service<br/><small>Managed code evolution</small></div>
+    <div class="flow-box flow-blue">Marketplace<br/><small>Third-party primitives</small></div>
+  </div>
+</div>
+
+<h3>Team Building</h3>
+<table>
+  <tr><th>Role</th><th>Timeline</th><th>Compensation</th></tr>
+  <tr><td>VP Sales</td><td>Month 14</td><td>$80K + 10% commission</td></tr>
+  <tr><td>Senior Engineer</td><td>Month 15</td><td>$100K + equity</td></tr>
+  <tr><td>DevRel / Community</td><td>Month 16</td><td>$70K + equity</td></tr>
+  <tr><td>Customer Success</td><td>Month 18</td><td>$60K + equity</td></tr>
+  <tr><td>Marketing Lead</td><td>Month 20</td><td>$75K + equity</td></tr>
+</table>
+
+<h3>XCTBL Integration</h3>
+<p>Merge XCTBL Space as the <strong>CMPSBL Developers Playground</strong> — unified authentication, sandbox environment, interactive tutorials, and learning paths for new developers.</p>
+
+<h3>Infrastructure Migration Path</h3>
+<table>
+  <tr><th>Stage</th><th>Trigger</th><th>Setup</th><th>Cost/Month</th></tr>
+  <tr><td>1 (Now)</td><td>—</td><td>Lovable + Lovable Cloud</td><td>~$0</td></tr>
+  <tr><td>2</td><td>$15K MRR</td><td>+ Dedicated database</td><td>$25</td></tr>
+  <tr><td>3</td><td>$50K MRR</td><td>Vercel + managed backend</td><td>$200</td></tr>
+  <tr><td>4</td><td>$100K MRR</td><td>AWS/GCP full deployment</td><td>$500–$2,000</td></tr>
+  <tr><td>5</td><td>$500K MRR</td><td>Dedicated infrastructure / home server</td><td>$5,000–$10,000</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="phase-header" id="phase5">
+  <h2>Phase 5 — Market Leadership</h2>
+  <div class="phase-sub">Year 3+ · Goal: $1M+ ARR · Category definition</div>
+</div>
+
+<ul>
+  <li><strong>Category creation:</strong> "Deterministic Code Evolution" as recognized market category</li>
+  <li><strong>Industry standards:</strong> Submit DPL specification to standards bodies</li>
+  <li><strong>Hardware expansion:</strong> Substrate-to-silicon pipeline productized (VHDL/Verilog exports)</li>
+  <li><strong>Global presence:</strong> EU and APAC market entry</li>
+  <li><strong>Research lab:</strong> Dedicated R&D for next-generation primitives</li>
+  <li><strong>Exit options:</strong> Strategic acquisition or independent scale to $10M+ ARR</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="technical">7. Technical Roadmap — Core Systems</h2>
+
+<h3>Memory Stream</h3>
+<table>
+  <tr><th>Priority</th><th>Enhancement</th><th>Timeline</th><th>Impact</th></tr>
+  <tr><td><span class="tag tag-high">High</span></td><td>Multi-language support (Python, Rust, Go)</td><td>Mo 3–5</td><td>3× addressable market</td></tr>
+  <tr><td><span class="tag tag-high">High</span></td><td>Software Compiler (end-to-end assembly)</td><td>Mo 5–8</td><td>New product category</td></tr>
+  <tr><td><span class="tag tag-medium">Med</span></td><td>Configurable cycle frequency</td><td>Mo 4–6</td><td>Enterprise feature</td></tr>
+  <tr><td><span class="tag tag-medium">Med</span></td><td>Cross-vertical correlation</td><td>Mo 6–9</td><td>Compound discovery value</td></tr>
+  <tr><td><span class="tag tag-low">Low</span></td><td>Real-time streaming dashboard</td><td>Mo 8–12</td><td>UX improvement</td></tr>
+</table>
+
+<h3>Ascension</h3>
+<table>
+  <tr><th>Priority</th><th>Enhancement</th><th>Timeline</th><th>Impact</th></tr>
+  <tr><td><span class="tag tag-high">High</span></td><td>Multi-file project support</td><td>Mo 3–6</td><td>Enterprise readiness</td></tr>
+  <tr><td><span class="tag tag-high">High</span></td><td>GitHub Action CI/CD integration</td><td>Mo 4–6</td><td>Developer adoption</td></tr>
+  <tr><td><span class="tag tag-medium">Med</span></td><td>Primitive pool expansion (136 → 200+)</td><td>Mo 6–12</td><td>Deeper discoveries</td></tr>
+  <tr><td><span class="tag tag-medium">Med</span></td><td>VS Code extension</td><td>Mo 6–9</td><td>Developer experience</td></tr>
+  <tr><td><span class="tag tag-low">Low</span></td><td>Self-healing feedback loop</td><td>Year 2</td><td>Autonomous improvement</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="balance">11. Founder Work-Life Balance</h2>
+
+<div class="callout callout-red">
+  <strong>Current Reality:</strong> 12–18 hour days, 7 days/week, 3,000+ hours, zero vacation in 16 months. <strong>This is unsustainable and must change immediately.</strong>
+</div>
+
+<h3>Transition Schedule</h3>
+
+<div class="grid-2">
+  <div class="card card-red">
+    <h4>Phase 1: Months 1–3</h4>
+    <p><strong>40 hours/week</strong> (down from 84–126)</p>
+    <p>Mon–Wed: 8 AM – 4 PM (8h)<br/>Thu–Fri: 8 AM – 2 PM (6h)<br/>Sat: 10 AM – 2 PM (4h)<br/><strong>Sunday: OFF — non-negotiable</strong></p>
+  </div>
+  <div class="card card-amber">
+    <h4>Phase 2: Months 4–6</h4>
+    <p><strong>32 hours/week</strong> (with contractor help)</p>
+    <p>Mon–Thu: 9 AM – 4 PM (7h)<br/>Fri: 9 AM – 1 PM (4h)<br/><strong>Sat–Sun: OFF</strong></p>
+  </div>
+  <div class="card card-blue">
+    <h4>Phase 3: Months 7–12</h4>
+    <p><strong>24 hours/week</strong> (with team)</p>
+    <p>Mon–Thu: 9 AM – 3 PM (6h)<br/><strong>Fri–Sun: OFF</strong></p>
+  </div>
+  <div class="card card-green">
+    <h4>Phase 4: Year 2+</h4>
+    <p><strong>15 hours/week</strong> (CEO role)</p>
+    <p>Mon–Wed: 10 AM – 3 PM (5h)<br/><strong>Thu–Sun: OFF</strong></p>
+  </div>
+</div>
+
+<h3>Vacation Schedule</h3>
+<table>
+  <tr><th>When</th><th>Duration</th><th>Notes</th></tr>
+  <tr><td>Month 3</td><td>3 days</td><td>First break in 19 months</td></tr>
+  <tr><td>Month 6</td><td>1 full week</td><td>Systems must run without you</td></tr>
+  <tr><td>Month 12</td><td>2 weeks</td><td>Team handles operations</td></tr>
+  <tr><td>Year 2+</td><td>4–6 weeks/year</td><td>Standard founder schedule</td></tr>
+</table>
+
+<h3>Non-Negotiable Health Rules</h3>
+<ol>
+  <li>No coding after 6:00 PM</li>
+  <li>Sunday is always off (starting now)</li>
+  <li>1 hour of non-screen time daily</li>
+  <li>DoorDash only if genuinely needed for income — not as default</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="actions">12. Daily, Weekly & Monthly Actions</h2>
+
+<h3>Daily Habit Stack (2 hours max on non-dev days)</h3>
+<div class="card card-blue">
+  <p><strong>Morning (30 min):</strong> Check Memory Stream discoveries · Review messages · Check analytics</p>
+  <p><strong>Midday (30 min):</strong> Post 1 social media update · Respond to emails</p>
+  <p><strong>Afternoon (60 min — dev days only):</strong> Focused sprint on current priority · Commit and document</p>
+</div>
+
+<h3>Weekly Schedule</h3>
+<table class="schedule-table">
+  <tr><th>Day</th><th>Primary Block</th><th>Secondary Block</th></tr>
+  <tr><td>Monday</td><td>Development: Current sprint</td><td>Marketing: Newsletter draft</td></tr>
+  <tr><td>Tuesday</td><td>Marketing: Content + outreach</td><td>Sales: Follow up leads</td></tr>
+  <tr><td>Wednesday</td><td>Development: Technical roadmap</td><td>Community: Engage + post</td></tr>
+  <tr><td>Thursday</td><td>Business: Operations, legal, finance</td><td>Sales: Cold email batch</td></tr>
+  <tr><td>Friday</td><td>Documentation: Publish + Zenodo</td><td>Review: Week metrics</td></tr>
+  <tr><td>Saturday</td><td>Creative: Brainstorm features</td><td>Light work only</td></tr>
+  <tr><td>Sunday</td><td colspan="2"><strong>OFF — Non-negotiable</strong></td></tr>
+</table>
+
+<h3>Monthly Milestones Checklist</h3>
+<div class="timeline">
+  <div class="timeline-item">
+    <strong>Month 1:</strong> Pricing live · 20 cold emails sent · Daily Drip repo launched · Bank account opened · 40hr/week schedule
+  </div>
+  <div class="timeline-item">
+    <strong>Month 2:</strong> First paying customer · 3 case studies · 2 new NPM packages · Product Hunt launch · Newsletter (50+ subscribers)
+  </div>
+  <div class="timeline-item">
+    <strong>Month 3:</strong> $5K MRR · Growth advisor · SBIR application · First vacation (3 days) · Patent attorney consulted
+  </div>
+  <div class="timeline-item">
+    <strong>Month 4–6:</strong> $15K MRR · Sales rep hired · 5 case studies · 2 new verticals · Marketing contractor · 200+ subscribers
+  </div>
+  <div class="timeline-item">
+    <strong>Month 7–12:</strong> $50K MRR · 3-person team · Enterprise customers · Conference talk · Full patent filed · SOC 2 prep
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="financial">13. Financial Model</h2>
+
+<h3>Revenue Growth Targets</h3>
+<table>
+  <tr><th>Month</th><th>MRR</th><th>Cumulative</th><th>Milestone</th></tr>
+  <tr><td>1</td><td>$500</td><td>$500</td><td>First sales</td></tr>
+  <tr><td>3</td><td>$5,000</td><td>$7,000</td><td>Product-market signal</td></tr>
+  <tr><td>6</td><td>$15,000</td><td>$52,000</td><td>Hire-ready</td></tr>
+  <tr><td>9</td><td>$30,000</td><td>$142,000</td><td>Team building</td></tr>
+  <tr><td>12</td><td>$50,000</td><td>$322,000</td><td>Series A ready</td></tr>
+  <tr><td>18</td><td>$100,000</td><td>$922,000</td><td>Scale mode</td></tr>
+  <tr><td>24</td><td>$200,000</td><td>$2.1M</td><td>Market leader</td></tr>
+</table>
+
+<h3>Funding Decision Framework</h3>
+<pre>
+IF monthly_revenue >= $50,000:
+    → Self-fund growth. Consider strategic investment only.
+ELIF monthly_revenue >= $15,000:
+    → Apply for grants (non-dilutive: SBIR, state programs)
+    → Consider angel round ($250K–$500K at $5M+ valuation)
+ELIF monthly_revenue < $5,000:
+    → Focus 100% on revenue before seeking investment
+    → Grants only (SBIR, Texas Enterprise Fund)
+</pre>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="lovable">14. Lovable Account Optimization</h2>
+
+<div class="card card-green">
+  <h4>Optimal Strategy: 2 Accounts</h4>
+  <p><strong>10 free credits/day = 300/month</strong></p>
+  <p>Account 1 (Primary): Main development, production deployments<br/>
+  Account 2 (Secondary): Experimentation, docs, non-critical work</p>
+  <p><strong>Monthly cost:</strong> $40 (2 subscriptions) + $30–$60 (top-ups) = <strong>$70–$100/month</strong><br/>
+  <strong>vs. heavy single account:</strong> $120–$220/month → <strong>saves $50–$120/month</strong></p>
+</div>
+
+<h4>Credit Efficiency Rules</h4>
+<ol>
+  <li>Batch related changes — never use a credit for a single-line fix</li>
+  <li>Plan before prompting — think through the full change first</li>
+  <li>Use free credits for exploration — save purchased for production</li>
+  <li>Morning development — use daily credits when they refresh</li>
+  <li>Template reuse — create reusable component patterns</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="equity">15. Equity & Corporate Structure</h2>
+
+<table>
+  <tr><th>Holder</th><th>Allocation</th><th>Notes</th></tr>
+  <tr><td><strong>Kenneth E. Sweet Jr.</strong></td><td><strong>70% minimum — NON-NEGOTIABLE</strong></td><td>Sole creator, all IP, 3,000+ hours</td></tr>
+  <tr><td>Friends, Family & Supporters</td><td>5% pool</td><td>Vesting over 2 years</td></tr>
+  <tr><td>Growth Advisor</td><td>0.5–1%</td><td>Performance-based vesting</td></tr>
+  <tr><td>Employee Pool (ESOP)</td><td>10–15%</td><td>4-year vest, 1-year cliff</td></tr>
+  <tr><td>Angel Investors (if needed)</td><td>5–10%</td><td>At fair valuation only</td></tr>
+  <tr><td>Strategic Partners</td><td>2–5%</td><td>Transformative partnerships only</td></tr>
+  <tr><td>Reserve</td><td>5%</td><td>Board discretion</td></tr>
+</table>
+
+<div class="callout callout-red">
+  <strong>Non-Negotiable:</strong> Founder retains 70% minimum through Series A. No equity for services unless truly transformative. All equity vests. Anti-dilution protection. Founder maintains board control through all early rounds.
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="legal">9. Legal & IP Roadmap</h2>
+
+<div class="timeline">
+  <div class="timeline-item active">
+    <strong>Immediate (Month 1–2):</strong> Open business bank account · Engage patent attorney ($5K–$15K) · File trademark registrations ($250–$350 per mark: CMPSBL®, Convex Core™, Ascension™, Memory Stream™)
+  </div>
+  <div class="timeline-item">
+    <strong>Month 3–6:</strong> Legal representation (startup-friendly) · ToS & Privacy Policy · Patent packet design · IP audit — protect crown jewels, consider open-sourcing basic primitives
+  </div>
+  <div class="timeline-item">
+    <strong>Month 6–12:</strong> Continuation patents on specific implementations · International patent considerations (PCT filing) · SOC 2 Type I preparation
+  </div>
+  <div class="timeline-item">
+    <strong>Year 2:</strong> Consider C-Corp conversion if pursuing VC · Full SOC 2 audit · International trademark filings
+  </div>
+</div>
+
+<h4>IP Protection Strategy</h4>
+<table>
+  <tr><th>Always Protect</th><th>Consider Open-Sourcing</th></tr>
+  <tr><td>Ascension engine</td><td>Basic primitive components</td></tr>
+  <tr><td>Memory Stream pipeline</td><td>Governance hooks</td></tr>
+  <tr><td>DREAM synthesis</td><td>Defense patterns</td></tr>
+  <tr><td>CJPI scoring algorithm</td><td>CLI tooling</td></tr>
+  <tr><td>Convex Core™ format</td><td>Export reader</td></tr>
+  <tr><td>GENESIS Engine</td><td>Documentation templates</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="infra">10. Infrastructure & Resilience</h2>
+
+<div class="diagram-box">
+  <div class="diagram-title">Disaster Recovery Architecture</div>
+  <div class="flow-row">
+    <div class="flow-box flow-green">Primary<br/><small>Current Provider</small></div>
+    <div class="flow-arrow">⟷</div>
+    <div class="flow-box flow-amber">Mirror<br/><small>Cold Standby</small></div>
+    <div class="flow-arrow">⟷</div>
+    <div class="flow-box flow-purple">Backup<br/><small>Daily Snapshots</small></div>
+  </div>
+  <div style="margin-top:8px; font-size:9pt; color:#64748b;">Target: RTO &lt; 4 hours · RPO &lt; 1 hour · Monthly fire drills</div>
+</div>
+
+<h4>Operations & Maintenance Schedule</h4>
+<table>
+  <tr><th>Cadence</th><th>Activity</th></tr>
+  <tr><td>Daily (automated)</td><td>Database backup · Health checks every 60 seconds</td></tr>
+  <tr><td>Weekly (Sunday 2–4 AM CT)</td><td>Dependency updates · Security patches · Backup verification</td></tr>
+  <tr><td>Monthly</td><td>Performance benchmarks · Cost optimization · Capacity planning · Security audit</td></tr>
+  <tr><td>Quarterly</td><td>Full disaster recovery drill · Infrastructure review · Migration assessment</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="risks">16. Risk Register</h2>
+
+<table>
+  <tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr>
+  <tr><td>Founder burnout</td><td><span class="tag tag-high">High</span></td><td>Critical</td><td>Enforce work-life schedule</td></tr>
+  <tr><td>Revenue stalls</td><td><span class="tag tag-medium">Med</span></td><td>High</td><td>Diversify channels; grants as backup</td></tr>
+  <tr><td>Patent rejected</td><td><span class="tag tag-low">Low</span></td><td>Medium</td><td>Continuation filings; trade secret backup</td></tr>
+  <tr><td>Competitor emergence</td><td><span class="tag tag-medium">Med</span></td><td>Medium</td><td>Speed moat (10-min deploy) + corpus moat</td></tr>
+  <tr><td>Provider outage</td><td><span class="tag tag-low">Low</span></td><td>High</td><td>Mirror + migration plan</td></tr>
+  <tr><td>Key person risk</td><td><span class="tag tag-high">High</span></td><td>Critical</td><td>Succession plan + documentation</td></tr>
+  <tr><td>Investment scam</td><td><span class="tag tag-low">Low</span></td><td>Medium</td><td>Verified funds only; use attorney</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ -->
+<h2 id="firsts">World Firsts Still Achievable</h2>
+
+<p>The infrastructure already exists for these — pursue as resources allow:</p>
+
+<div class="grid-2">
+  <div class="card card-blue">
+    <h4>1. First Deterministic CI/CD Pipeline</h4>
+    <p>Ascension as a GitHub Action — code evolution on every commit</p>
+  </div>
+  <div class="card card-green">
+    <h4>2. First Autonomous Software Factory</h4>
+    <p>Memory Stream + Ascension loop producing sellable software without human intervention</p>
+  </div>
+  <div class="card card-purple">
+    <h4>3. First Code-to-Silicon Pipeline</h4>
+    <p>Code → Ascension → VHDL export → FPGA deployment</p>
+  </div>
+  <div class="card card-amber">
+    <h4>4. First Self-Evolving Codebase</h4>
+    <p>CMPSBL running Ascension on itself in production</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="copyright">
+  <p><em>This roadmap is a living document. Review weekly. Update monthly. Execute daily.</em></p>
+  <p>© 2025–2026 CMPSBL® · PromptFluid™ LLC · All Rights Reserved</p>
+</div>
+
+</body>
+</html>
