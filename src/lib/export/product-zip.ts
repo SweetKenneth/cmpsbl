@@ -87,9 +87,9 @@ cp -r ${product.slug}/ ./your-project/vendor/cmpsbl/
 \`\`\`typescript
 // Import and use immediately
 import { init } from './vendor/cmpsbl/${product.slug}/src/${product.slug}';
-import { createRuntime } from './vendor/cmpsbl/${product.slug}/_runtime/standalone-runtime';
+import { compileDispatch } from './vendor/cmpsbl/${product.slug}/_runtime/convex-core';
 
-const runtime = createRuntime();
+const matrix = compileDispatch();
 const instance = init();
 \`\`\`
 
