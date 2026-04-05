@@ -129,7 +129,11 @@ export async function runCLMFeedbackLoop(): Promise<CLMFeedbackResult> {
     // 5. High-performing intents → "replicate success patterns"
     const bestIntents = modScores.filter(s => s.overallScore >= 80 && s.sampleSize >= 3);
     if (bestIntents.length > 0) {
-      const domains = [...new Set(bestIntents.flatMap(s => s.intentType.split('_')))];
+      // Compound Signal Preservation: keep full intent type + individual tokens
+      const domains = [...new Set(bestIntents.flatMap(s => {
+        const parts = s.intentType.split('_');
+        return parts.length > 1 ? [s.intentType, ...parts] : parts;
+      }))];
       insights.push({
         module,
         topic: `Strong intent patterns detected in domains [${domains.slice(0, 4).join(', ')}]. Replicate the input/output structure of top-scoring intents for new capabilities.`,

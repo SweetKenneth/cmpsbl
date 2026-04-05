@@ -219,6 +219,9 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
   for (const cap of tagged.primitive.capabilities) {
+    // Compound Signal Preservation: check full capability first
+    if (codeTokens.has(cap)) { capHits++; continue; }
+    // Fallback: check individual tokens for partial match
     const capTokens = cap.split('_');
     for (const t of capTokens) {
       if (codeTokens.has(t)) { capHits++; break; }

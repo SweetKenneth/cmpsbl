@@ -209,14 +209,20 @@ function generateAutoProposal(
     }
   }
 
-  // Infer domains from intent type
+  // Infer domains from intent type — Compound Signal Preservation
+  const KNOWN_DOMAINS = ['security', 'identity', 'session', 'economy', 'memory', 'audit', 'behavior',
+     'threat', 'trust', 'cost', 'analytics', 'pattern', 'context'];
   const intentParts = intentType.split('_');
-  const possibleDomains = intentParts.filter(p =>
-    ['security', 'identity', 'session', 'economy', 'memory', 'audit', 'behavior',
-     'threat', 'trust', 'cost', 'analytics', 'pattern', 'context'].includes(p)
-  );
+  const possibleDomains: string[] = [];
+  // Check compound intent first (e.g. 'threat_detection' as a domain)
+  if (KNOWN_DOMAINS.some(d => intentType.includes(d))) {
+    possibleDomains.push(intentType);
+  }
+  // Then add individual token matches
+  possibleDomains.push(...intentParts.filter(p => KNOWN_DOMAINS.includes(p)));
+  const uniqueDomains = [...new Set(possibleDomains)];
 
-  if (possibleDomains.length === 0 && expectedOutputs.size === 0) return null;
+  if (uniqueDomains.length === 0 && expectedOutputs.size === 0) return null;
 
   const existingDomains = new Set(existingResolvers.flatMap(r => r.domains));
   const newDomains = possibleDomains.filter(d => !existingDomains.has(d));
