@@ -255,7 +255,7 @@ export function runVerticalCollision(
 
   // Overall vertical affinity — reuse cached values (no recomputation)
   let affinitySum = 0;
-  for (const score of affinityCache.values()) affinitySum += score;
+  affinityCache.forEach(score => { affinitySum += score; });
   const avgAffinity = affinitySum / affinityCache.size;
 
   return {
