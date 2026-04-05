@@ -82,7 +82,7 @@ const STATIC_VERTICALS = [
   {
     id: 'ultimate',
     name: 'CMPSBL ULTIMATE™',
-    tagline: '120 Candidates · 40 Open Slots · No Spine Lock · Maximum Compounding',
+    tagline: '120 Candidates · Dynamic Selection · No Spine Lock · Maximum Compounding',
     url: 'https://ultimate.cmpsbl.com',
     icon: Crown,
     accentColor: 'hsl(270 70% 50%)',
