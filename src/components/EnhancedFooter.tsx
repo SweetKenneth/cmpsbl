@@ -181,9 +181,14 @@ export function EnhancedFooter() {
         <div className="border-t border-border/50 bg-gradient-to-b from-muted/20 to-muted/30">
           <div className="container mx-auto max-w-7xl px-4 py-4 sm:py-5 pb-20 sm:pb-5">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
-              <p className="text-[11px] sm:text-xs text-muted-foreground text-center lg:text-left">
-                © 2009-{currentYear} CMPSBL® — All rights reserved
-              </p>
+              <div className="text-center lg:text-left space-y-0.5">
+                <p className="text-[11px] sm:text-xs text-muted-foreground">
+                  © 2009-{currentYear} CMPSBL® — All rights reserved
+                </p>
+                <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wide">
+                  Patent Pending · U.S. App. No. 64/029,678
+                </p>
+              </div>
 
               {/* Legal links — desktop inline */}
               <div className="hidden lg:flex items-center gap-5">

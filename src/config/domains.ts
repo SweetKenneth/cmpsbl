@@ -50,6 +50,18 @@ export const DOMAIN_CONFIG = {
   },
 } as const;
 
+export const PATENT_NOTICE = {
+  status: 'Patent Pending',
+  applicationNumber: '64/029,678',
+  confirmationNumber: '8985',
+  title: 'Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification',
+  type: 'Utility — Provisional Application under 35 USC 111(b)',
+  filingDate: '2026-04-04',
+  inventor: 'Kenneth Earl Sweet Jr.',
+  /** Short inline notice for footers and banners */
+  inline: 'Patent Pending · U.S. App. No. 64/029,678',
+} as const;
+
 export const COPYRIGHT_NOTICE = {
   trademark: '™',
   copyright: '©',
@@ -68,6 +80,7 @@ export const COPYRIGHT_NOTICE = {
   ],
   legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of CMPSBL's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
   enforcementNotice: `This system is protected by CMPSBL DEFENSE™. All access attempts are monitored, logged, and analyzed for security threats.`,
+  patentNotice: `Patent Pending — U.S. Provisional Application No. 64/029,678. Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification.`,
 };
 
 export function isDomain(hostname: string, type: 'backend' | 'frontend'): boolean {

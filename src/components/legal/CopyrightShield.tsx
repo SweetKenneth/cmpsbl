@@ -1,6 +1,6 @@
-import { Shield, AlertTriangle, Lock } from "lucide-react";
+import { Shield, AlertTriangle, Lock, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { COPYRIGHT_NOTICE } from "@/config/domains";
+import { COPYRIGHT_NOTICE, PATENT_NOTICE } from "@/config/domains";
 
 export const CopyrightShield = () => {
   return (
@@ -53,6 +53,17 @@ export const CopyrightShield = () => {
           </p>
           <p className="text-xs text-foreground/80 mt-1">
             {COPYRIGHT_NOTICE.enforcementNotice}
+          </p>
+        </div>
+
+        {/* Patent Notice */}
+        <div className="border-l-4 border-primary pl-4 py-2 bg-primary/10">
+          <p className="text-sm font-medium text-primary flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            PATENT PENDING
+          </p>
+          <p className="text-xs text-foreground/80 mt-1 font-mono">
+            {COPYRIGHT_NOTICE.patentNotice}
           </p>
         </div>
 

@@ -45,7 +45,7 @@ const PHASES = [
     description: "Memory Stream runs autonomous 8-hour discovery cycles — ingesting, classifying, scoring, and surfacing capabilities without human intervention. DREAM synthesis produces pre-conscious pattern emergence with zero AI inside.",
     capabilities: [
       "Memory Stream autonomous discovery pipeline",
-      "DREAM algorithmic synthesis (no AI — patentable)",
+      "DREAM algorithmic synthesis (no AI — Patent Pending, U.S. App. No. 64/029,678)",
       "CJPI scoring with graduated pricing tiers",
       "Foundry open archive for raw discoveries (CJPI < 68)",
       "CLM continuous learning with serialized snapshots",
