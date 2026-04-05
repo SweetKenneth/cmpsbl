@@ -53,3 +53,13 @@ for (let i = 1; i < scores.length; i++) {
   const pct = gap / scores[i-1];
   if (pct > 0.02) console.log(`  rank ${i} → ${i+1}: ${scores[i-1].toFixed(3)} → ${scores[i].toFixed(3)} (drop: ${(pct*100).toFixed(1)}%)`);
 }
+
+// Check MEDIC's actual PoolCandidate score
+import { getSpinePrimitives } from '@/lib/factory/vertical-substrate';
+const spine = getSpinePrimitives();
+const medic = spine.find(p => p.id === 'MEDIC');
+console.log('\n─── MEDIC PRIMITIVE DETAILS ───');
+console.log(JSON.stringify(medic, null, 2));
+console.log(`Capabilities: ${medic?.capabilities.length}`);
+console.log(`BreadthScore would be: ${Math.min((medic?.capabilities.length ?? 0) / 6, 1)}`);
+console.log(`Weight factor: ${Math.min((medic?.weight ?? 0) / 0.03, 1)}`);
