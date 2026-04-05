@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMPSBL® Dual-Layer Architecture — Internal IP Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #3d3d5c;
+      --ink-muted: #6b6b8d;
+      --surface: #fdfcfa;
+      --surface-warm: #f8f6f1;
+      --surface-code: #f0ede6;
+      --accent: #4338ca;
+      --accent-light: #6366f1;
+      --accent-bg: #eef2ff;
+      --gold: #b8860b;
+      --gold-light: #daa520;
+      --gold-bg: #fdf8e8;
+      --red: #991b1b;
+      --red-bg: #fef2f2;
+      --green: #166534;
+      --green-bg: #f0fdf4;
+      --border: #e5e2db;
+      --border-strong: #c9c5bb;
+      --seal-bg: #1e1b4b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--surface);
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Page Container ── */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 60px;
+    }
+
+    /* ── Classification Banner ── */
+    .classification-banner {
+      background: var(--red);
+      color: white;
+      text-align: center;
+      padding: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* ── Document Header ── */
+    .doc-header {
+      border-bottom: 3px double var(--border-strong);
+      padding-bottom: 40px;
+      margin-bottom: 40px;
+    }
+
+    .doc-header .org-line {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 4px;
+    }
+
+    .doc-header .doc-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 24px;
+    }
+
+    .doc-header h1 {
+      font-size: 36px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .doc-header .subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink-light);
+      font-style: italic;
+      margin-bottom: 28px;
+    }
+
+    /* ── Patent Seal ── */
+    .patent-seal {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--gold-bg);
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+
+    .seal-icon {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      background: var(--seal-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 3px solid var(--gold);
+    }
+
+    .seal-icon::after {
+      content: '⚖';
+      font-size: 32px;
+      filter: grayscale(1) brightness(10);
+    }
+
+    .seal-icon .seal-ring {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border: 2px dashed var(--gold-light);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    .seal-info {
+      flex: 1;
+    }
+
+    .seal-info .seal-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .seal-info .patent-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .seal-info .patent-title {
+      font-size: 14px;
+      color: var(--ink-light);
+      font-style: italic;
+    }
+
+    .seal-info .patent-status {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--gold);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 3px;
+    }
+
+    /* ── Author Block ── */
+    .author-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--surface-warm);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .author-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .author-details {
+      flex: 1;
+    }
+
+    .author-details .name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .author-details .role {
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .author-details .orcid {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .author-details .orcid a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── Table of Contents ── */
+    .toc {
+      background: var(--surface-warm);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px 32px;
+      margin: 40px 0;
+    }
+
+    .toc h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+    }
+
+    .toc ol li {
+      counter-increment: toc;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc ol li:last-child { border-bottom: none; }
+
+    .toc ol li a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 15px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .toc ol li a::before {
+      content: counter(toc, decimal-leading-zero);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      min-width: 24px;
+    }
+
+    .toc ol li a:hover { color: var(--accent); }
+
+    /* ── Sections ── */
+    section {
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent-bg);
+    }
+
+    h2 .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 28px 0 12px;
+    }
+
+    h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-light);
+      margin: 20px 0 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    /* ── Call-out Boxes ── */
+    .callout {
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 24px 0;
+      border-left: 4px solid;
+    }
+
+    .callout-key {
+      background: var(--accent-bg);
+      border-color: var(--accent);
+    }
+
+    .callout-warning {
+      background: var(--red-bg);
+      border-color: var(--red);
+    }
+
+    .callout-success {
+      background: var(--green-bg);
+      border-color: var(--green);
+    }
+
+    .callout-gold {
+      background: var(--gold-bg);
+      border-color: var(--gold);
+    }
+
+    .callout-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .callout-key .callout-title { color: var(--accent); }
+    .callout-warning .callout-title { color: var(--red); }
+    .callout-success .callout-title { color: var(--green); }
+    .callout-gold .callout-title { color: var(--gold); }
+
+    .callout p { margin-bottom: 8px; font-size: 15px; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ── Code Blocks ── */
+    pre {
+      background: var(--surface-code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--surface-code);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    /* ── Diagrams ── */
+    .diagram {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      margin: 28px 0;
+      text-align: center;
+    }
+
+    .diagram-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 20px;
+    }
+
+    .diagram svg {
+      max-width: 100%;
+    }
+
+    .diagram-caption {
+      font-size: 13px;
+      color: var(--ink-muted);
+      font-style: italic;
+      margin-top: 16px;
+    }
+
+    /* ── Flowchart Boxes (CSS) ── */
+    .flow-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-box {
+      background: var(--accent-bg);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-align: center;
+      min-width: 260px;
+    }
+
+    .flow-box.gold {
+      background: var(--gold-bg);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .flow-box.dark {
+      background: var(--seal-bg);
+      border-color: var(--seal-bg);
+      color: white;
+    }
+
+    .flow-box.green {
+      background: var(--green-bg);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .flow-arrow {
+      width: 2px;
+      height: 24px;
+      background: var(--border-strong);
+      position: relative;
+    }
+
+    .flow-arrow::after {
+      content: '▼';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: var(--border-strong);
+    }
+
+    /* ── Layer Diagram ── */
+    .layer-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .layer-row {
+      display: flex;
+      align-items: center;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 44px;
+    }
+
+    .layer-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      width: 180px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      color: white;
+    }
+
+    .layer-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      flex: 1;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      color: var(--ink);
+      background: var(--surface-warm);
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    thead th {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--surface-warm);
+      border-bottom: 2px solid var(--border-strong);
+      color: var(--ink-muted);
+    }
+
+    tbody td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:hover {
+      background: var(--surface-warm);
+    }
+
+    /* ── Lists ── */
+    ul, ol {
+      margin: 12px 0 16px 24px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    /* ── Naming Candidates ── */
+    .name-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .name-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      background: white;
+    }
+
+    .name-card .candidate-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .name-card .candidate-rationale {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .name-card.official {
+      border-color: var(--gold);
+      border-width: 2px;
+      background: var(--gold-bg);
+    }
+
+    .name-card.official .candidate-name {
+      color: var(--gold);
+    }
+
+    .name-card .badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .badge-official {
+      background: var(--gold);
+      color: white;
+    }
+
+    .badge-alt {
+      background: var(--accent-bg);
+      color: var(--accent);
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 3px double var(--border-strong);
+      text-align: center;
+    }
+
+    .doc-footer .copyright {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 4px;
+    }
+
+    .doc-footer .legal {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    /* ── Print ── */
+    @media print {
+      .classification-banner { position: static; }
+      .page { padding: 20mm; max-width: none; }
+      .toc ol li a::before { content: counter(toc) '. '; }
+      pre { break-inside: avoid; }
+      .diagram { break-inside: avoid; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .page { padding: 20px; }
+      .doc-header h1 { font-size: 26px; }
+      .patent-seal { flex-direction: column; text-align: center; }
+      .name-grid { grid-template-columns: 1fr; }
+      .layer-label { width: 120px; font-size: 10px; }
+      .layer-desc { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Classification Banner -->
+<div class="classification-banner">
+  CONFIDENTIAL — INTERNAL USE ONLY — PROTECTED INTELLECTUAL PROPERTY — DO NOT DISTRIBUTE
+</div>
+
+<div class="page">
+
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <header class="doc-header">
+    <div class="org-line">CMPSBL® Internal Documentation — PromptFluid™</div>
+    <div class="doc-number">DOC-INT-020 · Rev 1.0 · April 2026</div>
+
+    <h1>The Dual-Layer Architecture</h1>
+    <p class="subtitle">
+      Autonomous Primitive-Based Code Hardening Without Source Modification
+    </p>
+
+    <!-- Patent Seal -->
+    <div class="patent-seal">
+      <div class="seal-icon">
+        <div class="seal-ring"></div>
+      </div>
+      <div class="seal-info">
+        <div class="seal-title">United States Patent &amp; Trademark Office</div>
+        <div class="patent-number">U.S. Provisional Application No. 64/029,678</div>
+        <div class="patent-title">"Autonomous Primitive-Based Code Hardening Without Source Modification"</div>
+        <span class="patent-status">Patent Pending</span>
+      </div>
+    </div>
+
+    <!-- Author -->
+    <div class="author-block">
+      <div class="author-avatar">KS</div>
+      <div class="author-details">
+        <div class="name">Kenneth E. Sweet Jr.</div>
+        <div class="role">Inventor &amp; Sole Creator · Founder, PromptFluid™</div>
+        <div class="orcid">ORCID: <a href="https://orcid.org/0009-0001-4237-1243" target="_blank">0009-0001-4237-1243</a></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════ TABLE OF CONTENTS ═══════════════════ -->
+  <nav class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#plain-english">Plain English — Why This Matters</a></li>
+      <li><a href="#what-is-it">What Is the Dual-Layer Architecture?</a></li>
+      <li><a href="#how-it-works">Exactly How It Works — Step by Step</a></li>
+      <li><a href="#no-source-modification">The "Without Source Modification" Guarantee</a></li>
+      <li><a href="#mini-runtime">The Mini-Runtime™ — The Engine Inside the Shell</a></li>
+      <li><a href="#ascension">Ultimate Ascension &amp; the Discovery Pipeline</a></li>
+      <li><a href="#layer-anatomy">Anatomy of the Two Layers</a></li>
+      <li><a href="#naming">Naming the Architecture — Commercial Terminology</a></li>
+      <li><a href="#diagrams">Architecture Diagrams</a></li>
+      <li><a href="#failure-modes">What Could Go Wrong — Failure Mode Analysis</a></li>
+      <li><a href="#troubleshooting">Troubleshooting Guide</a></li>
+      <li><a href="#future-roadmap">Future Roadmap &amp; Improvements</a></li>
+      <li><a href="#patent-claims">Patent Claim Summary</a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══════════════════ §1 PLAIN ENGLISH ═══════════════════ -->
+  <section id="plain-english">
+    <h2><span class="section-num">01</span> Plain English — Why This Matters</h2>
+
+    <p>
+      Imagine you wrote a piece of software. It works. You're proud of it. Now imagine someone could take that software and make it <em>dramatically more resilient, secure, and intelligent</em> — without changing a single line of your code. Not one character modified. Your original source stays exactly as you wrote it.
+    </p>
+    <p>
+      That's what the Dual-Layer Architecture does.
+    </p>
+    <p>
+      Think of it like putting a car into a protective shell. The car still runs the same engine, still has the same interior, still drives the same way. But now it has an armored exterior, an intelligent co-pilot system, self-healing tires, and a black box recording everything that happens. The car itself was never modified — the intelligence was layered around it.
+    </p>
+
+    <div class="callout callout-key">
+      <div class="callout-title">The Core Idea</div>
+      <p>
+        <strong>Layer 1</strong> is your original code — untouched, unmodified, exactly as you wrote it.<br />
+        <strong>Layer 2</strong> is the CMPSBL® Sealed Runtime™ — a protective intelligence shell that wraps around your code, providing resilience, governance, telemetry, and cognitive capabilities without altering the source.
+      </p>
+    </div>
+
+    <h3>Why Should Anyone Care?</h3>
+    <ul>
+      <li><strong>For developers:</strong> Your code gets battle-hardened without you touching it. Circuit breakers, error recovery, timeout governance, and health monitoring are injected automatically.</li>
+      <li><strong>For enterprises:</strong> You can harden legacy systems, third-party code, or contractor deliverables without the risk and cost of rewriting them.</li>
+      <li><strong>For regulators:</strong> The source code provenance is preserved. You can prove the original code was never tampered with — the hardening layer is a separate, auditable artifact.</li>
+      <li><strong>For investors:</strong> This is a patentable, defensible mechanism that applies to any codebase in any language. The market is every piece of software ever written.</li>
+    </ul>
+
+    <h3>A Real-World Analogy</h3>
+    <p>
+      Consider how a smartphone case works. The phone manufacturer built the hardware and software. A case company produces a protective shell. The shell doesn't modify the phone's circuit board or operating system. It wraps around it, providing drop protection, grip, and sometimes additional features (battery packs, card holders). The phone still works identically — but it's now protected.
+    </p>
+    <p>
+      The Dual-Layer Architecture is a <em>cognitive phone case for software</em>. Except instead of drop protection, it provides circuit breakers, self-healing, telemetry, obfuscation, integrity verification, and an entire 40-primitive cognitive infrastructure.
+    </p>
+  </section>
+
+  <!-- ═══════════════════ §2 WHAT IS IT ═══════════════════ -->
+  <section id="what-is-it">
+    <h2><span class="section-num">02</span> What Is the Dual-Layer Architecture?</h2>
+
+    <p>
+      The Dual-Layer Architecture is the patented core mechanism by which CMPSBL® transforms arbitrary source code into a <strong>Sealed Runtime™</strong> — a production-hardened artifact that combines the developer's original code (Layer 1) with an autonomous cognitive infrastructure shell (Layer 2).
+    </p>
+
+    <h3>Formal Definition</h3>
+    <p>
+      A <em>dual-layer software artifact</em> is a single-file deliverable in which:
+    </p>
+    <ol>
+      <li><strong>Layer 1 (Source Layer)</strong> contains the developer's original source code, unmodified, occupying a defined region of the output file.</li>
+      <li><strong>Layer 2 (Runtime Layer)</strong> contains the CMPSBL® Mini-Runtime™ — an obfuscated, self-contained cognitive engine that wraps, monitors, governs, and protects the Source Layer at execution time.</li>
+    </ol>
+    <p>
+      The two layers are merged into a single artifact during the <strong>Ascension</strong> process. The Runtime Layer intercepts execution entry points, routing all function calls through its governance pipeline before delegating to the original source. The source code is never parsed, rewritten, or transpiled — it is embedded verbatim.
+    </p>
+
+    <div class="callout callout-success">
+      <div class="callout-title">Key Differentiator</div>
+      <p>
+        Unlike traditional code transformation tools (transpilers, optimizers, bundlers) that <em>modify</em> source code, the Dual-Layer Architecture treats source code as a <strong>read-only payload</strong>. All intelligence, governance, and resilience are injected as a separate co-resident layer that operates alongside — never inside — the original code.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ §3 HOW IT WORKS ═══════════════════ -->
+  <section id="how-it-works">
+    <h2><span class="section-num">03</span> Exactly How It Works — Step by Step</h2>
+
+    <h3>Phase 1: Code Ingestion</h3>
+    <p>
+      The developer uploads or submits their source code to the Ascension pipeline. The code is stored temporarily (never used for training, never shared across tenants) and assigned a <strong>Fingerprint ID</strong> — a deterministic hash that uniquely identifies this specific submission.
+    </p>
+
+    <h3>Phase 2: Classification &amp; Analysis</h3>
+    <p>
+      A diagnostic squad of 6 analysis primitives inspects the source code without modifying it:
+    </p>
+    <ul>
+      <li><strong>Cyclomatic Complexity Scanner</strong> — maps decision branching depth</li>
+      <li><strong>Nesting Depth Analyzer</strong> — measures structural complexity</li>
+      <li><strong>Dependency Graph Builder</strong> — identifies import/export topology</li>
+      <li><strong>Error Surface Mapper</strong> — locates unhandled failure points</li>
+      <li><strong>Security Heuristic Scanner</strong> — flags potential vulnerability patterns</li>
+      <li><strong>Pattern Archetype Classifier</strong> — categorizes the code's behavioral archetype (Active, Passive, Hybrid)</li>
+    </ul>
+    <p>
+      This produces a <strong>Depth Score</strong> (0–100) that characterizes the code's structural sophistication.
+    </p>
+
+    <h3>Phase 3: Primitive Collision</h3>
+    <p>
+      The code's characteristics are "collided" against the 40-Primitive matrix (or 120-candidate pool in Ultimate mode). Each primitive's capabilities are scored against the code using the <strong>CJPI (Crown Jewel Performance Index)</strong> algorithm with deterministic FNV-1a seeded variance. This produces a ranked list of which primitives are most relevant to this specific codebase.
+    </p>
+
+    <h3>Phase 4: Capability Selection</h3>
+    <p>
+      Based on collision scores, the engine selects capabilities:
+    </p>
+    <ul>
+      <li><strong>Standard Ascension:</strong> 20 capabilities (10 Spine + 10 Expansion)</li>
+      <li><strong>Ultimate Ascension:</strong> 40 capabilities (unrestricted from 120-candidate pool)</li>
+    </ul>
+
+    <h3>Phase 5: Runtime Assembly</h3>
+    <p>
+      The Mini-Runtime™ is assembled with only the selected primitive handlers activated. Unneeded primitives are excluded to minimize runtime footprint. The runtime is then obfuscated via the WRAITH blackbox engine.
+    </p>
+
+    <h3>Phase 6: Dual-Layer Merge</h3>
+    <p>
+      The original source code (Layer 1) and the assembled runtime (Layer 2) are merged into a single artifact:
+    </p>
+    <pre><code>┌──────────────────────────────────────────────┐
+│  ╔══════════════════════════════════════════╗ │
+│  ║  LAYER 2: CMPSBL® Sealed Runtime™       ║ │
+│  ║                                          ║ │
+│  ║  • Circuit Breakers                      ║ │
+│  ║  • Timeout Governance (5s budget)        ║ │
+│  ║  • Telemetry Compression                 ║ │
+│  ║  • Integrity Verification (FNV-1a)       ║ │
+│  ║  • Primitive Handler Registry            ║ │
+│  ║  • Error Recovery &amp; Graceful Degradation ║ │
+│  ║                                          ║ │
+│  ║  ┌──────────────────────────────────────┐ ║ │
+│  ║  │  LAYER 1: Your Original Source Code  │ ║ │
+│  ║  │                                      │ ║ │
+│  ║  │  (Verbatim. Unmodified. Read-only.)  │ ║ │
+│  ║  │                                      │ ║ │
+│  ║  └──────────────────────────────────────┘ ║ │
+│  ╚══════════════════════════════════════════╝ │
+│                                                │
+│  ═══ End of CMPSBL® Sealed Runtime ═══        │
+└──────────────────────────────────────────────┘</code></pre>
+
+    <h3>Phase 7: Sealing &amp; Packaging</h3>
+    <p>
+      The merged artifact is sealed with an FNV-1a integrity hash computed over the entire primitive registry. This hash is embedded in the artifact and verified on boot — any tampering triggers an immediate integrity failure. The final package is delivered as a ZIP containing:
+    </p>
+    <ul>
+      <li>The sealed single-file artifact (obfuscated)</li>
+      <li>Premium HTML Report (mobile-friendly, word-break: keep-all)</li>
+      <li>Universal User Guide (USER-GUIDE.html)</li>
+      <li>Project meta-files (fingerprint, tier, timestamp)</li>
+    </ul>
+
+    <h3>Phase 8: Runtime Boot Sequence</h3>
+    <p>
+      When the sealed artifact executes:
+    </p>
+    <ol>
+      <li>The Mini-Runtime™ initializes and verifies its own integrity hash</li>
+      <li>Circuit breaker states are restored from persistence (if available)</li>
+      <li>Primitive handlers are registered in the execution registry</li>
+      <li>Telemetry compression engine starts batching events</li>
+      <li>The original source code executes normally — all calls are transparently intercepted by the runtime's governance pipeline</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════ §4 NO SOURCE MODIFICATION ═══════════════════ -->
+  <section id="no-source-modification">
+    <h2><span class="section-num">04</span> The "Without Source Modification" Guarantee</h2>
+
+    <p>
+      This is the architectural claim at the heart of the patent. It requires careful understanding because it sounds too good to be true — and yet it's exactly how the system works.
+    </p>
+
+    <h3>What "No Source Modification" Means</h3>
+    <ul>
+      <li>The developer's original source code bytes are embedded verbatim in the output artifact</li>
+      <li>No AST (Abstract Syntax Tree) transformation is performed on the source</li>
+      <li>No lines are added, removed, or rewritten inside the source region</li>
+      <li>No variables, functions, or imports in the source are renamed or altered</li>
+      <li>The source code occupies a clearly delineated region that can be extracted and diff'd against the original to confirm zero modifications</li>
+    </ul>
+
+    <h3>What Does Change</h3>
+    <ul>
+      <li>The <strong>execution environment</strong> changes. The source code runs inside a governed runtime that intercepts, monitors, and protects execution flows.</li>
+      <li>The <strong>artifact wrapper</strong> is new. Additional code (the Mini-Runtime) is prepended/appended around the source region.</li>
+      <li>The <strong>entry point</strong> may be redirected. Instead of executing the source directly, the runtime boots first and then delegates to the source.</li>
+    </ul>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">Important Distinction</div>
+      <p>
+        The claim is "without source modification," not "without any code addition." New code <em>is</em> added — but it's added <em>alongside</em> the source, not <em>inside</em> it. The source region is a read-only payload within the larger artifact. This is analogous to how a ZIP file contains a file without modifying it — the ZIP container is new, but the contained file is byte-identical.
+      </p>
+    </div>
+
+    <h3>Verifiability</h3>
+    <p>
+      The system provides a verification mechanism: the Fingerprint ID assigned during ingestion can be used to compare the original submission against the source region extracted from the sealed artifact. A byte-for-byte match confirms zero modification. This is critical for:
+    </p>
+    <ul>
+      <li>Regulatory compliance (proving code provenance)</li>
+      <li>Enterprise audit trails (no unauthorized modifications)</li>
+      <li>Legal defensibility (patent claims are verifiable)</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ §5 MINI RUNTIME ═══════════════════ -->
+  <section id="mini-runtime">
+    <h2><span class="section-num">05</span> The Mini-Runtime™ — The Engine Inside the Shell</h2>
+
+    <p>
+      The Mini-Runtime™ (v2.1.0) is the technical core that makes the Dual-Layer Architecture possible. It's a zero-dependency, self-contained JavaScript/TypeScript engine that provides four critical subsystems:
+    </p>
+
+    <h3>5.1 Telemetry Compression Engine</h3>
+    <p>
+      Every primitive execution generates telemetry events. In a naive implementation, this would create significant overhead. The compression engine uses a bounded 500-entry circular buffer to batch events, achieving approximately 85% reduction in telemetry overhead.
+    </p>
+    <pre><code>// Batched telemetry reduces overhead by ~85%
+interface CompressedTelemetryBatch {
+  batchId: string;
+  primitiveId: string;
+  eventCount: number;
+  firstTs / lastTs: number;
+  avgConfidence: number;
+  successCount / failureCount: number;
+  compressedAt: number;
+}</code></pre>
+
+    <h3>5.2 Circuit Breaker State Persistence</h3>
+    <p>
+      Each primitive handler is protected by an independent circuit breaker. When a handler fails repeatedly (threshold: 3 consecutive failures), the breaker opens and blocks further calls for a cooldown period (default: 30 seconds). Critically, breaker states can be exported and imported across runtime restarts:
+    </p>
+    <pre><code>exportCircuitBreakerState(): Record&lt;string, BreakerSnapshot&gt;
+importCircuitBreakerState(state: Record&lt;string, BreakerSnapshot&gt;): void</code></pre>
+    <p>
+      This means if a sealed artifact crashes and restarts, it remembers which primitives were failing and doesn't immediately re-trigger known-bad code paths.
+    </p>
+
+    <h3>5.3 Timeout Governance</h3>
+    <p>
+      Every primitive handler execution is wrapped in a <code>Promise.race</code> against a 5-second timeout budget. If a handler exceeds this budget, the system returns a gracefully degraded result rather than hanging:
+    </p>
+    <pre><code>const result = await Promise.race([
+  handler(data, confidence),        // actual execution
+  timeoutPromise(5000, primitiveId) // 5s governance budget
+]);</code></pre>
+    <p>
+      Timed-out executions return <code>confidence * 0.3</code> — a heavily penalized but non-zero result that allows downstream consumers to make informed decisions about data quality.
+    </p>
+
+    <h3>5.4 Integrity Verification</h3>
+    <p>
+      On boot, the runtime computes an FNV-1a hash of its own primitive registry and compares it against the sealed canonical signature. A mismatch indicates tampering:
+    </p>
+    <pre><code>function verifyRuntimeIntegrity(): {
+  valid: boolean;
+  expected: string;
+  actual: string;
+  registeredCount: number;
+}</code></pre>
+    <p>
+      This prevents adversaries from injecting malicious handlers into the primitive registry after the artifact has been sealed.
+    </p>
+
+    <h3>Why the Runtime Is the Key</h3>
+
+    <div class="callout callout-gold">
+      <div class="callout-title">Architectural Insight</div>
+      <p>
+        Without the Mini-Runtime, the Dual-Layer Architecture would be nothing more than code concatenation. The runtime is what transforms a "file with code wrapped around it" into a <strong>governed, self-healing, tamper-evident cognitive artifact</strong>. It provides the intelligence, the governance, the resilience, and the verification that make the dual-layer concept valuable. Every improvement to the runtime retroactively improves every future sealed artifact.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ §6 ASCENSION ═══════════════════ -->
+  <section id="ascension">
+    <h2><span class="section-num">06</span> Ultimate Ascension &amp; the Discovery Pipeline</h2>
+
+    <h3>Standard Ascension</h3>
+    <p>
+      Standard Ascension processes code through the 40-Primitive matrix (24 Spine + 16 Expansion) and selects 20 optimal capabilities (10 Spine / 10 Expansion). The process is tier-gated to Architect ($249) and above.
+    </p>
+
+    <h3>Ultimate Ascension</h3>
+    <p>
+      CMPSBL ULTIMATE™ removes all category restrictions. Instead of the standard 40-Primitive pool, it draws from a <strong>120-candidate ecosystem-wide pool</strong> spanning all five industry verticals (Cybersecurity, Robotics, Quantum, LLM, Agency) plus the 16 Universal gap-fill primitives. The scanner dynamically selects all 40 slots based on the highest compounding CJPI scores for the specific codebase.
+    </p>
+
+    <h3>Extended Collision Protocol</h3>
+    <p>
+      Ultimate Ascension employs a multi-pass scoring approach:
+    </p>
+    <ol>
+      <li><strong>Pass 1 — Signal Density:</strong> Each of the 120 candidates is scored against the code's characteristic fingerprint</li>
+      <li><strong>Pass 2 — Capability Breadth:</strong> Candidates with overlapping capabilities are de-duplicated, favoring the higher-scored variant</li>
+      <li><strong>Pass 3 — Vertical Bonus:</strong> Expansion primitives receive a deterministic bonus (+10 to +25, capped at 96) to ensure they compete fairly against core Spine primitives</li>
+      <li><strong>Pass 4 — Compounding:</strong> The final 40 are selected by optimizing for complementary capability coverage — maximizing the total unique capability surface</li>
+    </ol>
+    <p>
+      This extended process takes approximately 217 seconds — compared to ~45 seconds for standard Ascension — because every candidate must be evaluated against every other candidate for compounding effects.
+    </p>
+
+    <h3>Deterministic Guarantee</h3>
+    <p>
+      A critical property of the Ascension pipeline is <strong>determinism</strong>. The same input code will always produce the same collision results, the same primitive selections, and the same CJPI scores. This is achieved by replacing all sources of randomness with a seeded FNV-1a PRNG:
+    </p>
+    <pre><code>// Seeded variance replaces Math.random()
+const seed = fnvSeed(`${primitive.id}::${capability}`);
+const variance = 0.7 + deterministicVariance(seed) * 0.3;
+const affinity = baseAffinity * variance;</code></pre>
+    <p>
+      This determinism is essential for the patent claim — it proves the hardening process is reproducible and verifiable, not dependent on random chance.
+    </p>
+
+    <div class="callout callout-key">
+      <div class="callout-title">Access Restriction</div>
+      <p>
+        Ultimate Ascension is restricted to Governor or Enterprise use, secured behind a PIN-protected gate (PIN: 4645). Technical inquiries: <a href="mailto:ascension@cmpsbl.com">ascension@cmpsbl.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ §7 LAYER ANATOMY ═══════════════════ -->
+  <section id="layer-anatomy">
+    <h2><span class="section-num">07</span> Anatomy of the Two Layers</h2>
+
+    <div class="diagram">
+      <div class="diagram-title">Layer Stack — From Outermost to Innermost</div>
+      <div class="layer-stack">
+        <div class="layer-row">
+          <div class="layer-label" style="background: #1e1b4b;">INTEGRITY</div>
+          <div class="layer-desc">FNV-1a hash verification · tampering detection · boot-time validation</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #312e81;">OBFUSCATION</div>
+          <div class="layer-desc">WRAITH blackbox · hex-encoded weights · stripped comments</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #4338ca;">GOVERNANCE</div>
+          <div class="layer-desc">Timeout budgets · circuit breakers · rate limiting · health signals</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #6366f1;">TELEMETRY</div>
+          <div class="layer-desc">Compressed event batching · execution tracing · outcome recording</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #818cf8;">PRIMITIVES</div>
+          <div class="layer-desc">40 registered handlers · capability routing · CJPI-scored execution</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #a5b4fc;">BRIDGE</div>
+          <div class="layer-desc">Entry point redirection · call interception · delegation to source</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #c7d2fe; color: #1e1b4b;">─── BOUNDARY ───</div>
+          <div class="layer-desc" style="font-weight: 600;">Layer 2 (Runtime) ↑ · Layer 1 (Source) ↓</div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-label" style="background: #166534;">YOUR CODE</div>
+          <div class="layer-desc">Original source · verbatim · unmodified · read-only payload</div>
+        </div>
+      </div>
+      <div class="diagram-caption">Figure 1: The 7 sub-layers of Layer 2 (Runtime) wrapping the untouched Layer 1 (Source)</div>
+    </div>
+
+    <h3>Layer 2 Sub-Layer Details</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Sub-Layer</th>
+          <th>Purpose</th>
+          <th>Failure Mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Integrity</strong></td>
+          <td>Verifies the sealed artifact hasn't been tampered with</td>
+          <td>Hash mismatch → boot abort</td>
+        </tr>
+        <tr>
+          <td><strong>Obfuscation</strong></td>
+          <td>Prevents reverse engineering of proprietary CJPI weights</td>
+          <td>Deobfuscation → IP exposure (mitigated by legal protection)</td>
+        </tr>
+        <tr>
+          <td><strong>Governance</strong></td>
+          <td>Enforces execution budgets and prevents runaway handlers</td>
+          <td>Timeout → graceful degradation (confidence × 0.3)</td>
+        </tr>
+        <tr>
+          <td><strong>Telemetry</strong></td>
+          <td>Records execution metrics for observability</td>
+          <td>Buffer overflow → oldest events evicted (bounded at 500)</td>
+        </tr>
+        <tr>
+          <td><strong>Primitives</strong></td>
+          <td>Hosts the 40 cognitive handler functions</td>
+          <td>Handler crash → circuit breaker opens → skip</td>
+        </tr>
+        <tr>
+          <td><strong>Bridge</strong></td>
+          <td>Connects runtime governance to source code execution</td>
+          <td>Bridge failure → source executes ungoverned (fallback)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════ §8 NAMING ═══════════════════ -->
+  <section id="naming">
+    <h2><span class="section-num">08</span> Naming the Architecture — Commercial Terminology</h2>
+
+    <p>
+      The architecture needs a clear, defensible, commercially viable name. Below are candidates analyzed for clarity, memorability, and IP positioning:
+    </p>
+
+    <div class="name-grid">
+      <div class="name-card official">
+        <span class="badge badge-official">PATENT FILING NAME</span>
+        <div class="candidate-name">Autonomous Primitive-Based Code Hardening</div>
+        <div class="candidate-rationale">
+          The exact title used on U.S. App. No. 64/029,678. Maximum legal defensibility. Describes what it does, not how it feels. This is the world-facing official term for legal and academic contexts.
+        </div>
+      </div>
+
+      <div class="name-card official">
+        <span class="badge badge-official">PRODUCT NAME</span>
+        <div class="candidate-name">Sealed Runtime™</div>
+        <div class="candidate-rationale">
+          Already trademarked in marketing materials. Conveys the "sealed, tamper-evident" nature. Short, memorable, explains the output artifact. Best for commercial/customer-facing contexts.
+        </div>
+      </div>
+
+      <div class="name-card">
+        <span class="badge badge-alt">CANDIDATE</span>
+        <div class="candidate-name">CodeShell™</div>
+        <div class="candidate-rationale">
+          Evocative of wrapping/protection. "Shell" is a well-understood computing metaphor. Risk: may be confused with command-line shells (bash, zsh).
+        </div>
+      </div>
+
+      <div class="name-card">
+        <span class="badge badge-alt">CANDIDATE</span>
+        <div class="candidate-name">RuntimeWrap™</div>
+        <div class="candidate-rationale">
+          Directly describes the mechanism — a runtime that wraps code. Clear, technical, self-explanatory. Risk: sounds somewhat generic.
+        </div>
+      </div>
+
+      <div class="name-card">
+        <span class="badge badge-alt">CANDIDATE</span>
+        <div class="candidate-name">Cognitive Armor™</div>
+        <div class="candidate-rationale">
+          Emotionally resonant — implies protection and intelligence. Good for executive/investor presentations. Risk: may sound like security-only, not cognitive infrastructure.
+        </div>
+      </div>
+
+      <div class="name-card">
+        <span class="badge badge-alt">CANDIDATE</span>
+        <div class="candidate-name">DualShield™</div>
+        <div class="candidate-rationale">
+          Directly references the dual-layer structure. "Shield" implies protection. Clean, professional. Risk: may be confused with security-specific products.
+        </div>
+      </div>
+
+      <div class="name-card">
+        <span class="badge badge-alt">CANDIDATE</span>
+        <div class="candidate-name">PrimitiveMesh™</div>
+        <div class="candidate-rationale">
+          References the primitive-based architecture. "Mesh" implies interconnected capability. Risk: "Mesh" is a banned term in CMPSBL governance (per terminology rules).
+        </div>
+      </div>
+
+      <div class="name-card">
+        <span class="badge badge-alt">CANDIDATE</span>
+        <div class="candidate-name">Exoframe™</div>
+        <div class="candidate-rationale">
+          Inspired by exoskeletons — external reinforcement without internal modification. Elegant, technical, unique. Strong imagery. Minimal trademark conflict risk.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-gold">
+      <div class="callout-title">Recommendation</div>
+      <p>
+        Use a three-tier naming strategy:<br />
+        <strong>Legal/Academic:</strong> "Autonomous Primitive-Based Code Hardening Without Source Modification"<br />
+        <strong>Commercial/Product:</strong> Sealed Runtime™<br />
+        <strong>Technical/Internal:</strong> Dual-Layer Architecture (DLA)
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ §9 DIAGRAMS ═══════════════════ -->
+  <section id="diagrams">
+    <h2><span class="section-num">09</span> Architecture Diagrams</h2>
+
+    <!-- Pipeline Flow -->
+    <div class="diagram">
+      <div class="diagram-title">Figure 2: Ascension Pipeline — End to End</div>
+      <div class="flow-container">
+        <div class="flow-box">1. CODE UPLOAD — Source ingested, Fingerprint ID assigned</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box">2. CLASSIFY — 6 diagnostic primitives analyze structure</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box">3. REGISTER — Code assigned Depth Score (0-100)</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box gold">4. COLLIDE — Code vs. 40/120 Primitives (FNV-1a seeded)</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box gold">5. DISCOVER — CJPI scoring, capability selection</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box">6. ASSEMBLE — Mini-Runtime built with selected handlers</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box dark">7. MERGE — Source (Layer 1) + Runtime (Layer 2) combined</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box dark">8. SEAL — FNV-1a integrity hash, WRAITH obfuscation</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box green">9. EXPORT — Sealed ZIP: artifact + report + guide + meta</div>
+      </div>
+      <div class="diagram-caption">Each stage is deterministic — identical input always produces identical output</div>
+    </div>
+
+    <!-- Runtime Boot -->
+    <div class="diagram">
+      <div class="diagram-title">Figure 3: Sealed Runtime Boot Sequence</div>
+      <div class="flow-container">
+        <div class="flow-box dark">BOOT — Artifact execution begins</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box" style="border-color: var(--red); color: var(--red); background: var(--red-bg);">VERIFY — FNV-1a integrity hash check (ABORT if mismatch)</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box">RESTORE — Import circuit breaker states from persistence</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box">REGISTER — Activate primitive handlers in execution registry</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box">TELEMETRY — Start compression engine, begin event batching</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box gold">BRIDGE — Redirect entry points to governance pipeline</div>
+        <div class="flow-arrow"></div>
+        <div class="flow-box green">DELEGATE — Execute original source code through governed path</div>
+      </div>
+      <div class="diagram-caption">If verification fails, the runtime refuses to execute — protecting against tampered artifacts</div>
+    </div>
+
+    <!-- Call Flow -->
+    <div class="diagram">
+      <div class="diagram-title">Figure 4: Function Call Flow Through Dual Layers</div>
+      <pre style="text-align: left; font-size: 12px; background: white; border: none; padding: 0; max-width: 600px; margin: 0 auto;">
+  External Caller
+       │
+       ▼
+  ┌─────────────────────────────────────────┐
+  │  LAYER 2: Sealed Runtime™               │
+  │                                         │
+  │  1. Intercept call                      │
+  │  2. Check circuit breaker state         │
+  │  3. Start timeout governance (5s)       │
+  │  4. Record telemetry event              │
+  │  5. Route to appropriate primitive      │
+  │  6. Primitive pre-processes request     │
+  │     │                                   │
+  │     ▼                                   │
+  │  ┌─────────────────────────────────┐    │
+  │  │  LAYER 1: Original Source Code  │    │
+  │  │                                 │    │
+  │  │  Execute original function      │    │
+  │  │  Return result                  │    │
+  │  └──────────────┬──────────────────┘    │
+  │                 │                       │
+  │  7. Primitive post-processes result     │
+  │  8. Update circuit breaker (success)    │
+  │  9. Compress telemetry into batch       │
+  │ 10. Return governed result              │
+  └──────────────────┬──────────────────────┘
+                     │
+                     ▼
+             External Caller
+         (receives hardened result)</pre>
+      <div class="diagram-caption">The caller never knows Layer 2 exists — the interface is transparent</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ §10 FAILURE MODES ═══════════════════ -->
+  <section id="failure-modes">
+    <h2><span class="section-num">10</span> What Could Go Wrong — Failure Mode Analysis</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Failure Mode</th>
+          <th>Probability</th>
+          <th>Severity</th>
+          <th>Impact</th>
+          <th>Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Integrity Hash Mismatch</strong></td>
+          <td>Low</td>
+          <td>Critical</td>
+          <td>Runtime refuses to boot. Artifact is non-functional.</td>
+          <td>Re-export from Ascension pipeline. Verify ZIP integrity during download.</td>
+        </tr>
+        <tr>
+          <td><strong>Circuit Breaker Cascade</strong></td>
+          <td>Medium</td>
+          <td>High</td>
+          <td>Multiple primitives trip breakers simultaneously, reducing cognitive coverage.</td>
+          <td>Breakers auto-recover after 30s cooldown. Staggered thresholds prevent cascade.</td>
+        </tr>
+        <tr>
+          <td><strong>Timeout Governance False Positive</strong></td>
+          <td>Medium</td>
+          <td>Medium</td>
+          <td>A legitimate long-running handler is terminated early, returning degraded confidence.</td>
+          <td>Increase timeout budget for known-slow primitives. Monitor telemetry for timeout frequency.</td>
+        </tr>
+        <tr>
+          <td><strong>Telemetry Buffer Overflow</strong></td>
+          <td>Low</td>
+          <td>Low</td>
+          <td>Oldest telemetry events evicted when buffer exceeds 500 entries. Historical data lost.</td>
+          <td>Flush events before buffer fills. Increase buffer size for high-throughput applications.</td>
+        </tr>
+        <tr>
+          <td><strong>Bridge Layer Failure</strong></td>
+          <td>Very Low</td>
+          <td>Critical</td>
+          <td>Source code executes without governance — all runtime protections bypassed.</td>
+          <td>Bridge failure triggers BEACON health alert. Source still functions but ungoverned.</td>
+        </tr>
+        <tr>
+          <td><strong>Obfuscation Reversal</strong></td>
+          <td>Low</td>
+          <td>High</td>
+          <td>Adversary reverses WRAITH encoding to extract CJPI weights and proprietary logic.</td>
+          <td>Legal protection (patent, trade secret). Runtime operates correctly even if deobfuscated.</td>
+        </tr>
+        <tr>
+          <td><strong>Source-Runtime Version Mismatch</strong></td>
+          <td>Very Low</td>
+          <td>Medium</td>
+          <td>If source is updated externally after sealing, the sealed artifact becomes stale.</td>
+          <td>Re-run Ascension with updated source. Fingerprint ID detects version drift.</td>
+        </tr>
+        <tr>
+          <td><strong>Primitive Handler Memory Leak</strong></td>
+          <td>Low</td>
+          <td>Medium</td>
+          <td>A handler accumulates state without release, eventually exhausting runtime memory.</td>
+          <td>Bounded buffers on all handlers. Telemetry tracks memory growth patterns.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════ §11 TROUBLESHOOTING ═══════════════════ -->
+  <section id="troubleshooting">
+    <h2><span class="section-num">11</span> Troubleshooting Guide</h2>
+
+    <h3>Problem: Sealed artifact won't execute</h3>
+    <h4>Symptoms</h4>
+    <p>Artifact fails silently on boot or throws an integrity verification error.</p>
+    <h4>Steps</h4>
+    <ol>
+      <li>Check if the ZIP was corrupted during download (re-download and extract again)</li>
+      <li>Verify the file wasn't modified after extraction (check file size against meta-file)</li>
+      <li>Run <code>verifyRuntimeIntegrity()</code> manually — if it returns <code>valid: false</code>, the artifact has been tampered with</li>
+      <li>Re-export from the Ascension pipeline using the same Fingerprint ID</li>
+    </ol>
+
+    <h3>Problem: Circuit breakers keep tripping</h3>
+    <h4>Symptoms</h4>
+    <p>Multiple primitives show "open" breaker state. Cognitive coverage is degraded.</p>
+    <h4>Steps</h4>
+    <ol>
+      <li>Export breaker state: <code>exportCircuitBreakerState()</code></li>
+      <li>Identify which primitives are failing and why (check <code>failCount</code> per handler)</li>
+      <li>The most common cause is a downstream dependency failure (API timeout, database unavailable) — check the source code's external dependencies</li>
+      <li>Breakers auto-recover after 30 seconds. If they keep re-tripping, the underlying issue must be resolved in the source code</li>
+      <li>For emergency recovery, manually reset breaker state: <code>importCircuitBreakerState({})</code></li>
+    </ol>
+
+    <h3>Problem: Unexpectedly low confidence scores</h3>
+    <h4>Symptoms</h4>
+    <p>Handler outputs have confidence values of 0.3 or below when they should be higher.</p>
+    <h4>Steps</h4>
+    <ol>
+      <li>Check telemetry for timeout events — a confidence of exactly <code>input × 0.3</code> indicates timeout governance triggered</li>
+      <li>Identify which handlers are timing out (exceeding 5s budget)</li>
+      <li>Profile the handler: is it doing legitimate heavy computation, or is it blocked on I/O?</li>
+      <li>If legitimate: consider increasing the timeout budget in the runtime config</li>
+      <li>If blocked: fix the I/O bottleneck in the source code</li>
+    </ol>
+
+    <h3>Problem: Telemetry events missing</h3>
+    <h4>Symptoms</h4>
+    <p>Expected telemetry events are not appearing in the batch output.</p>
+    <h4>Steps</h4>
+    <ol>
+      <li>Check if the 500-event buffer is overflowing — high-frequency execution may evict old events before they're flushed</li>
+      <li>Increase flush frequency or buffer size</li>
+      <li>Verify compression is working: <code>flushTelemetry()</code> returns the current batch</li>
+      <li>Check if the primitive in question has its breaker open (open breakers don't generate execution telemetry)</li>
+    </ol>
+
+    <h3>Problem: Deterministic scoring producing unexpected results</h3>
+    <h4>Symptoms</h4>
+    <p>The same input code produces different primitive selections on re-submission.</p>
+    <h4>Steps</h4>
+    <ol>
+      <li>This should <strong>never happen</strong> if the input is truly identical — the FNV-1a seeded PRNG guarantees determinism</li>
+      <li>Verify the input file is byte-identical (check Fingerprint ID)</li>
+      <li>Check if the primitive catalog has been updated between runs (new primitives = different collision results)</li>
+      <li>If the catalog is identical and the input is identical but results differ, this is a critical bug — escalate immediately</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════ §12 ROADMAP ═══════════════════ -->
+  <section id="future-roadmap">
+    <h2><span class="section-num">12</span> Future Roadmap &amp; Improvements</h2>
+
+    <h3>Near-Term (v2.2 — v2.5)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Enhancement</th>
+          <th>Impact</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Adaptive Timeout Budgets</strong></td>
+          <td>High</td>
+          <td>Instead of a flat 5s budget, learn optimal timeouts per handler based on historical execution telemetry. Handlers that consistently finish in 200ms get 1s budgets; handlers that need 4s get 6s.</td>
+        </tr>
+        <tr>
+          <td><strong>Hierarchical Circuit Breakers</strong></td>
+          <td>High</td>
+          <td>Group related primitives under parent breakers. If MEMORY + BRAIN both fail, open a "Cognitive Core" parent breaker that prevents all dependent primitives from executing, reducing cascade noise.</td>
+        </tr>
+        <tr>
+          <td><strong>Telemetry Streaming</strong></td>
+          <td>Medium</td>
+          <td>Stream compressed telemetry batches to an external endpoint in real-time, enabling live monitoring of sealed artifacts in production.</td>
+        </tr>
+        <tr>
+          <td><strong>Multi-File Artifacts</strong></td>
+          <td>High</td>
+          <td>Extend the Dual-Layer Architecture to handle multi-file codebases (not just single files). The runtime would wrap an entire project structure while maintaining the "no source modification" guarantee across all files.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Mid-Term (v3.0 — v3.5)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Enhancement</th>
+          <th>Impact</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Language-Agnostic Runtime</strong></td>
+          <td>Critical</td>
+          <td>Port the Mini-Runtime from TypeScript/JavaScript to a polyglot runtime that can wrap Python, Go, Rust, and Java codebases. This massively expands the addressable market.</td>
+        </tr>
+        <tr>
+          <td><strong>Self-Healing Handlers</strong></td>
+          <td>High</td>
+          <td>When a primitive handler fails, the runtime attempts to automatically repair the input and retry (leveraging the IMMUNE wrapper's repair intelligence) before opening the circuit breaker.</td>
+        </tr>
+        <tr>
+          <td><strong>Runtime Hot-Patching</strong></td>
+          <td>High</td>
+          <td>Allow the runtime layer to be updated without re-sealing the entire artifact. The source layer remains untouched; only the runtime receives patches. Requires versioned runtime manifests.</td>
+        </tr>
+        <tr>
+          <td><strong>Distributed Dual-Layer</strong></td>
+          <td>Medium</td>
+          <td>For microservice architectures, distribute the runtime across multiple sealed artifacts that communicate via a shared governance bus, maintaining holistic circuit breaker and telemetry state.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Long-Term (v4.0+)</h3>
+    <ul>
+      <li><strong>Hardware-Level Sealing:</strong> Leverage TPM/TEE (Trusted Platform Module / Trusted Execution Environment) to enforce integrity verification at the hardware level, making tampering detection cryptographically unbreakable</li>
+      <li><strong>Autonomous Runtime Evolution:</strong> The sealed runtime monitors its own effectiveness and autonomously adjusts primitive weights, timeout budgets, and governance thresholds based on real-world execution patterns — without human intervention</li>
+      <li><strong>Cross-Artifact Learning:</strong> Multiple sealed artifacts in the same organization share anonymized telemetry, enabling fleet-wide pattern recognition (e.g., "70% of our artifacts are timing out on MEMORY handlers — investigate infrastructure")</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ §13 PATENT CLAIMS ═══════════════════ -->
+  <section id="patent-claims">
+    <h2><span class="section-num">13</span> Patent Claim Summary</h2>
+
+    <div class="callout callout-gold">
+      <div class="callout-title">U.S. Provisional Application No. 64/029,678</div>
+      <p><strong>Title:</strong> Autonomous Primitive-Based Code Hardening Without Source Modification</p>
+      <p><strong>Inventor:</strong> Kenneth E. Sweet Jr.</p>
+      <p><strong>ORCID:</strong> <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></p>
+      <p><strong>Assignee:</strong> PromptFluid™</p>
+      <p><strong>Status:</strong> Patent Pending</p>
+      <p><strong>Filing Date:</strong> 2026</p>
+    </div>
+
+    <h3>Core Claims</h3>
+    <ol>
+      <li><strong>A method</strong> for hardening software source code by encapsulating said source code within a cognitive runtime layer, wherein the source code is not modified, transformed, transpiled, or rewritten.</li>
+      <li><strong>A system</strong> comprising a deterministic collision engine that evaluates source code characteristics against a matrix of primitive capabilities using a seeded pseudo-random number generator (FNV-1a) to produce reproducible, verifiable hardening results.</li>
+      <li><strong>An apparatus</strong> for producing sealed software artifacts containing both original source code and a self-verifying runtime layer, wherein the runtime layer performs integrity verification, circuit breaker governance, and telemetry compression without altering the encapsulated source code.</li>
+      <li><strong>A method</strong> for deterministic software specialization in which a pool of cognitive primitives compete for activation slots based on code-specific affinity scores, with expansion primitives receiving bias-corrected bonuses to ensure domain-specific intelligence representation.</li>
+    </ol>
+
+    <h3>Protected Trade Secrets (Non-Disclosed)</h3>
+    <p>
+      The following components are protected under trade secret law and are NOT disclosed in the patent filing or any public documentation:
+    </p>
+    <ul>
+      <li>CJPI scoring weights and threshold values</li>
+      <li>FNV-1a seed derivation algorithm</li>
+      <li>WRAITH obfuscation encoding scheme</li>
+      <li>Primitive capability affinity formulas</li>
+      <li>Discovery engine heuristics</li>
+      <li>DREAM synthesis algorithm</li>
+      <li>Memory Stream autonomous scheduling logic</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="doc-footer">
+    <div class="patent-seal" style="margin-bottom: 20px; justify-content: center;">
+      <div class="seal-icon">
+        <div class="seal-ring"></div>
+      </div>
+      <div class="seal-info" style="flex: none;">
+        <div class="seal-title">Protected Intellectual Property</div>
+        <div class="patent-number">U.S. App. No. 64/029,678 — PATENT PENDING</div>
+        <span class="patent-status">Confidential</span>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 Kenneth E. Sweet Jr. — PromptFluid™ — All Rights Reserved
+    </div>
+    <div class="legal">
+      CMPSBL®, Sealed Runtime™, Mini-Runtime™, Ascension™, Memory Stream™, and DREAM™ are trademarks of PromptFluid™.<br />
+      This document contains confidential and proprietary information. Unauthorized reproduction or distribution is prohibited.
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
