@@ -178,6 +178,7 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['quantum-v1', getQuantumSubstrate],
   ['llm-v1', getLLMSubstrate],
   ['agency-v1', getAgencySubstrate],
+  ['media-v1', getMediaSubstrate],
   ['ultimate-v1', getUltimateSubstrate],
 ]);
 
@@ -188,6 +189,7 @@ const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['quantum', 'quantum-v1'],
   ['llm', 'llm-v1'],
   ['agency', 'agency-v1'],
+  ['media', 'media-v1'],
   ['ultimate', 'ultimate-v1'],
 ]);
 

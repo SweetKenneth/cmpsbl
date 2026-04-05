@@ -154,6 +154,10 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   tag(getAgencyEngines(), 'agency');
   tag(getAgencyAgents(), 'agency');
 
+  // Media (16)
+  tag(getMediaEngines(), 'media');
+  tag(getMediaAgents(), 'media');
+
   // Ultimate Universal (16)
   tag(ULTIMATE_ALL_ENGINES, 'ultimate');
   tag(ULTIMATE_ALL_AGENTS, 'ultimate');
