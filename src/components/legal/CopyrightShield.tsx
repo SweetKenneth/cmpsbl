@@ -56,6 +56,17 @@ export const CopyrightShield = () => {
           </p>
         </div>
 
+        {/* Patent Notice */}
+        <div className="border-l-4 border-primary pl-4 py-2 bg-primary/10">
+          <p className="text-sm font-medium text-primary flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            PATENT PENDING
+          </p>
+          <p className="text-xs text-foreground/80 mt-1 font-mono">
+            {COPYRIGHT_NOTICE.patentNotice}
+          </p>
+        </div>
+
         {/* Footer */}
         <div className="pt-2 border-t border-destructive/20 text-center">
           <p className="text-xs text-muted-foreground font-mono">
