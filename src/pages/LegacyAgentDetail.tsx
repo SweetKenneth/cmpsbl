@@ -114,7 +114,7 @@ export default function LegacyAgentDetail() {
   return (
     <>
       <Helmet>
-        <title>{`${agent.codename} Agent — Sealed Runtime | CMPSBL`}</title>
+        <title>{`${agent.codename} Agent — Convex Core™ Sealed Artifact | CMPSBL`}</title>
         <meta name="description" content={agent.description} />
         <link rel="canonical" href={`https://cmpsbl.com/agents/${agent.slug}`} />
         <script type="application/ld+json">
@@ -180,7 +180,7 @@ export default function LegacyAgentDetail() {
                 { label: "VERSION", value: "v1.0.0" },
                 { label: "TIER", value: tierCfg.label },
                 { label: "LICENSE", value: agent.isFree ? "Free — perpetual" : "Perpetual one-time" },
-                { label: "ARTIFACT TYPE", value: "Sealed Runtime Agent" },
+                { label: "ARTIFACT TYPE", value: "Convex Core™ Sealed Artifact Agent" },
                 { label: "FUSED INTO", value: `${agent.fusedInto} Meta-Agent` },
               ].map(item => (
                 <div key={item.label} className="flex justify-between items-center">

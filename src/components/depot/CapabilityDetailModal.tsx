@@ -172,7 +172,7 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
             )}>
               <Lock className={cn("w-10 h-10 mx-auto", isBlackBoxed && !isGated ? "text-neon-amber" : "text-neon-amber")} />
               <h4 className="text-lg font-bold text-foreground">
-                {isGated ? 'Enterprise Only' : 'Sealed Runtime'}
+                {isGated ? 'Enterprise Only' : 'Convex Core™ Sealed Artifact'}
               </h4>
               <p className="text-sm text-muted-foreground max-w-md mx-auto">
                 {isGated 

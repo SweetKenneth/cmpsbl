@@ -123,7 +123,7 @@ export default function EngineDocsPage() {
                   <h1 className="text-3xl font-black tracking-tight">{engine.codename}</h1>
                   <Badge variant="outline" className="text-[10px] font-mono">{engine.tier}</Badge>
                 </div>
-                <p className="text-muted-foreground">Sealed Runtime Reference & Integration Guide</p>
+                <p className="text-muted-foreground">Convex Core™ Sealed Artifact Reference & Integration Guide</p>
               </div>
             </div>
 

@@ -1,6 +1,6 @@
 /**
  * COMPOSABLE ENGINES Catalog
- * Black-boxed Sealed Runtime software — first-class CMPSBL IP.
+ * Black-boxed Convex Core™ Sealed Artifact software — first-class CMPSBL IP.
  * Tiered pricing: APEX $599 | ELITE $399 | CORE $199 | Free $0
  * Bundle discount: 40% off when bundled with an agent.
  * ARCHITECT uses annual subscription at $999/yr.
@@ -308,7 +308,7 @@ export const ENGINES: Engine[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // S-TIER ENGINES — 10 Supreme Sealed Runtimes ($999 each, $599 bundled)
+  // S-TIER ENGINES — 10 Supreme Convex Core™ Sealed Artifacts ($999 each, $599 bundled)
   // ═══════════════════════════════════════════════════════════════════════════
 
   {
@@ -404,7 +404,7 @@ export const ENGINES: Engine[] = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // S-TIER ENGINES WAVE 2 — 10 More Supreme Sealed Runtimes ($599 each, $359 bundled)
+  // S-TIER ENGINES WAVE 2 — 10 More Supreme Convex Core™ Sealed Artifacts ($599 each, $359 bundled)
   // ═══════════════════════════════════════════════════════════════════════════
 
   {
@@ -640,7 +640,7 @@ export const ENGINES: Engine[] = [
     slug: "failsafe", codename: "FAILSAFE", tagline: "Disaster Recovery & Platform Migration Engine",
     priceStandalone: 0, priceBundled: 0, priceDisplay: "FREE", bundleDisplay: "FREE",
     priceId: "price_1TAFfAQ7FtTiAL4acetUfMuY", icon: Database, color: "150 70% 45%", tier: "CORE",
-    edition: "Edition 001 — Sealed Runtime",
+    edition: "Edition 001 — Convex Core™ Sealed Artifact",
     isFree: true,
     briefing: "One-click disaster recovery for your website, app, or AI system. FAILSAFE generates a complete, portable ZIP backup of your source code, configurations, migrations, and database state — with an AI-readable restore guide so any developer or agent can reconstruct your environment from scratch. Perfect for migrating off Lovable Cloud, Supabase, or any hosted platform to your own infrastructure.",
     capabilities: [

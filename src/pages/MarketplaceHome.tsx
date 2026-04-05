@@ -68,12 +68,12 @@ export default function MarketplaceHome() {
   }, [inventory]);
 
   const handleBuy = useCallback(async (item: MarketplaceItem) => {
-    /** Free items — immediate Sealed Runtime download, no auth required */
+    /** Free items — immediate Convex Core™ Sealed Artifact download, no auth required */
     if (item.priceCents === 0) {
-      toast.info('Generating Sealed Runtime...', { description: `Packaging ${item.title} for download.` });
+      toast.info('Generating Convex Core™ Sealed Artifact...', { description: `Packaging ${item.title} for download.` });
       try {
         await downloadMarketplaceArtifact(item);
-        toast.success('Download complete!', { description: `${item.title} — full Sealed Runtime ZIP with source, docs, and User Guide.` });
+        toast.success('Download complete!', { description: `${item.title} — full Convex Core™ Sealed Artifact ZIP with source, docs, and User Guide.` });
       } catch (err) {
         toast.error('Download failed', { description: err instanceof Error ? err.message : 'Please try again' });
       }
@@ -382,7 +382,7 @@ function MerchantInfoSection() {
               { icon: Eye, label: 'Scans 6 Substrates', desc: 'Every 8 hours' },
               { icon: Shield, label: 'CJPI 75+ Only', desc: 'Quality threshold' },
               { icon: Tag, label: '$10–$50 Range', desc: 'ECONOMY pricing' },
-              { icon: Lock, label: 'Sealed Runtime', desc: 'Plug and play' },
+              { icon: Lock, label: 'Convex Core™ Sealed Artifact', desc: 'Plug and play' },
             ].map(({ icon: Icon, label, desc }) => (
               <div key={label} className="p-4 rounded-xl bg-card border border-border/50 text-center">
                 <Icon className="w-6 h-6 text-primary mx-auto mb-2" />

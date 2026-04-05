@@ -347,7 +347,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["DREAM Engine", "Background Learning", "Autonomous idle-time consolidation, memory synthesis, and cross-agent knowledge sharing — no other platform does this"],
             ["DEFENSE Layer (Security Mesh)", "Enterprise Security", "O(1) Trie-based threat scoring, zone-shielded 40-primitive architecture, circuit breakers with exponential backoff"],
             ["CLM (Constant Learning Mode)", "Continuous Training", "70% system telemetry + 30% scheduled curriculum — autonomous learning pipeline that widens the moat daily"],
-            ["Meta-Agents (20 Sealed Runtimes)", "Agent IP", "Source-blocked, versioned cognitive agents with 3–5 Crown Jewel powers each — sealed runtimes prevent extraction"],
+            ["Meta-Agents (20 Convex Core™ Sealed Artifacts)", "Agent IP", "Source-blocked, versioned cognitive agents with 3–5 Crown Jewel powers each — sealed runtimes prevent extraction"],
             ["Meta-Engines (54 Premium Engines)", "Engine IP", "Compound and synergy engines across META, APEX, ELITE, CORE tiers — 2–8x capability amplification"],
             ["@cmpsbl NPM Packages (11 packages)", "Distribution IP", "4-tier package ecosystem offering never-before-available capabilities: cognitive memory, governed evolution, sealed agents"],
             ["Discovery Engine (CDM)", "Pattern Detection", "Constant Discovery Mode with autonomous pattern detection and CJPI scoring — the system finds what humans can't"],

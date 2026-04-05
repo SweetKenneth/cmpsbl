@@ -37,7 +37,7 @@ const SEALED_FEATURES = [
   { label: "4-Tier Auto Memory", desc: "Automatic hot → warm → cool → cold data lifecycle — no configuration needed", icon: Brain },
   { label: "Task Orchestrator", desc: "Built-in task delegation, workflow routing, and priority queuing", icon: Layers },
   { label: "Always-On Learning", desc: "Continuous self-improvement — even offline, even idle", icon: Radio },
-  { label: "Sealed Runtime", desc: "Source-protected, memory-isolated, tamper-proof execution environment", icon: Shield },
+  { label: "Convex Core™ Sealed Artifact", desc: "Source-protected, memory-isolated, tamper-proof execution environment", icon: Shield },
   { label: "Version Snapshots", desc: "Each purchase creates a unique, immutable version frozen at that moment", icon: Sparkles },
   { label: "Encrypted Comms", desc: "Direct owner-to-agent encrypted communication channel", icon: Eye },
 ];
@@ -234,7 +234,7 @@ export default function Store() {
                 <StoreCollectorDeck items={items} />
               </motion.div>
 
-              {/* Sealed Runtime Features */}
+              {/* Convex Core™ Sealed Artifact Features */}
               <motion.section
                 initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}

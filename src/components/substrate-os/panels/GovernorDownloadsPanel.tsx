@@ -70,7 +70,7 @@ async function generateProductZipForGovernor(product: DownloadableProduct): Prom
     capabilities: [
       product.kind === 'engine' ? 'Composable Engine' : 'Meta-Agent',
       `${product.tier.toUpperCase()} Tier`,
-      'Sealed Runtime',
+      'Convex Core™ Sealed Artifact',
       'Convex Core™ Processing Layer',
     ],
   });
