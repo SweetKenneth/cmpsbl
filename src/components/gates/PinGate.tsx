@@ -36,7 +36,8 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
   const [unlocked, setUnlocked] = useState(() =>
     sessionStorage.getItem(storageKey) === 'unlocked' || checkDebugBypass(debugBypassKey)
   );
-  const [digits, setDigits] = useState<string[]>(Array(6).fill(''));
+  const pinLength = pin.length;
+  const [digits, setDigits] = useState<string[]>(Array(pinLength).fill(''));
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
