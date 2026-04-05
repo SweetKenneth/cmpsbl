@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Patent App. No. 64/029,678 — Dual-Layer Deterministic Software Evolution System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-2: #1a1a26;
+    --surface-3: #222233;
+    --border: #2a2a3d;
+    --border-accent: #3d3d5c;
+    --text: #e8e8f0;
+    --text-muted: #8888aa;
+    --text-dim: #5c5c7a;
+    --accent: #6366f1;
+    --accent-glow: #818cf8;
+    --green: #34d399;
+    --green-dim: #065f46;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --cyan: #22d3ee;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .patent-header {
+    border-bottom: 1px solid var(--border);
+    padding: 60px 0 48px;
+    background: linear-gradient(180deg, #0e0e18 0%, var(--bg) 100%);
+  }
+  .patent-header .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .patent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-glow);
+    margin-bottom: 24px;
+  }
+  .patent-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent-glow);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .patent-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    max-width: 780px;
+    margin-bottom: 28px;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .meta-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+  .meta-item .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .meta-item .value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* ── Main ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 48px 32px 120px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 56px;
+  }
+  .toc h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li {
+    counter-increment: toc;
+    margin-bottom: 8px;
+  }
+  .toc li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color 0.15s;
+    display: flex;
+    gap: 8px;
+  }
+  .toc li a::before {
+    content: counter(toc, decimal-leading-zero);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 22px;
+  }
+  .toc li a:hover { color: #fff; }
+
+  /* ── Sections ── */
+  .section { margin-bottom: 64px; }
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 32px 0 12px;
+  }
+  .section p {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    max-width: 760px;
+  }
+  .section p strong { color: var(--text); font-weight: 600; }
+  .section ul, .section ol { margin: 0 0 16px 20px; }
+  .section li {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .section li strong { color: var(--text); }
+
+  /* ── Callout ── */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .callout.green { border-left-color: var(--green); }
+  .callout.amber { border-left-color: var(--amber); }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead { background: var(--surface-2); }
+  th {
+    text-align: left;
+    padding: 12px 18px;
+    font-weight: 600;
+    color: var(--text-dim);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 12px 18px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  td strong { color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+
+  /* ── Diagrams ── */
+  .diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 28px 0;
+    overflow-x: auto;
+  }
+  .diagram-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-glow);
+    margin-bottom: 20px;
+  }
+  .diagram pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* ── Code ── */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  .code-block pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    white-space: pre;
+  }
+  .code-block .kw { color: var(--accent-glow); }
+  .code-block .cm { color: var(--text-dim); }
+  .code-block .st { color: var(--green); }
+  .code-block .nu { color: var(--amber); }
+
+  /* ── SVG Diagrams ── */
+  .svg-diagram {
+    margin: 28px 0;
+    text-align: center;
+  }
+  .svg-diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── Claims ── */
+  .claim {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .claim::before {
+    content: attr(data-claim);
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .claim h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    margin-top: 4px;
+  }
+  .claim p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ── Glossary ── */
+  .glossary-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .glossary-item:last-child { border-bottom: none; }
+  .glossary-term {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 13px;
+  }
+  .glossary-def { color: var(--text-muted); }
+
+  /* ── Footer ── */
+  .patent-footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    text-align: center;
+  }
+  .patent-footer p {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .patent-footer .brand {
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Phase Cards ── */
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .phase-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+  .phase-card .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-glow);
+    margin-bottom: 6px;
+  }
+  .phase-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .phase-card p, .phase-card ul {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .phase-card ul { margin: 8px 0 0 18px; }
+  .phase-card li { margin-bottom: 4px; }
+
+  /* ── Primitive Grid ── */
+  .prim-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .prim-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .prim-box .prim-cat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .prim-box .prim-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .prim-box .prim-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .prim-box.organs .prim-cat { color: var(--cyan); }
+  .prim-box.layers .prim-cat { color: var(--green); }
+  .prim-box.engines .prim-cat { color: var(--amber); }
+  .prim-box.agents .prim-cat { color: var(--red); }
+
+  /* ── Score Tier ── */
+  .tier-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .tier-bar:last-child { border-bottom: none; }
+  .tier-label {
+    font-weight: 600;
+    min-width: 80px;
+    color: var(--text);
+  }
+  .tier-range {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    min-width: 60px;
+  }
+  .tier-track {
+    flex: 1;
+    height: 6px;
+    background: var(--surface-3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tier-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .patent-header h1 { font-size: 20px; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .toc ol { columns: 1; }
+    .prim-grid { grid-template-columns: 1fr; }
+    .glossary-item { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="patent-header">
+  <div class="container">
+    <div class="patent-badge">
+      <span class="dot"></span>
+      U.S. Patent Application No. 64/029,678
+    </div>
+    <h1>Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification</h1>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="label">Confirmation</div>
+        <div class="value">#8985</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Inventor</div>
+        <div class="value">Kenneth E. Sweet Jr.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Assignee</div>
+        <div class="value">PromptFluid™ (TX)</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Status</div>
+        <div class="value" style="color: var(--green);">Patent Pending</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Classification</div>
+        <div class="value">Cognitive Infrastructure</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Contact</div>
+        <div class="value">ascension@cmpsbl.com</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#plain-language">Plain-Language Summary</a></li>
+      <li><a href="#technical-definition">Technical Definition</a></li>
+      <li><a href="#problem">The Problem Being Solved</a></li>
+      <li><a href="#dual-layer">The Dual-Layer Architecture</a></li>
+      <li><a href="#pipeline">The Deterministic Evolution Pipeline</a></li>
+      <li><a href="#primitive-hardening">Primitive-Based Code Hardening</a></li>
+      <li><a href="#integrity">Integrity Verification</a></li>
+      <li><a href="#export">Artifact Export Structure</a></li>
+      <li><a href="#diagrams">Diagrams</a></li>
+      <li><a href="#claims">Claims Summary</a></li>
+      <li><a href="#glossary">Glossary</a></li>
+    </ol>
+  </nav>
+
+  <!-- ══ SECTION 1: Abstract ══ -->
+  <section class="section" id="abstract">
+    <div class="section-number">Section 01</div>
+    <h2>Abstract</h2>
+    <p>A system and method for autonomously hardening software source code through a deterministic, dual-layer architecture that wraps — but never modifies — the original source. The system ingests developer code, performs algorithmic signal detection against a matrix of functional primitives, discovers emergent capability chains via deterministic collision scoring, and exports a sealed runtime artifact.</p>
+    <p>The entire pipeline operates without external artificial intelligence calls, producing reproducible results: <strong>identical input code always yields identical hardened output.</strong></p>
+    <p>The hardening layer provides circuit breakers, input validation gates, state mutation governance, health telemetry, and cryptographic integrity verification — all without altering a single byte of the developer's original source code.</p>
+  </section>
+
+  <!-- ══ SECTION 2: Plain-Language Summary ══ -->
+  <section class="section" id="plain-language">
+    <div class="section-number">Section 02</div>
+    <h2>Plain-Language Summary</h2>
+    <h3>What It Does (For Non-Technical Readers)</h3>
+    <p>Imagine you write a piece of software — an app, a script, a tool. You hand it to this system. The system:</p>
+    <ol>
+      <li><strong>Reads</strong> your code to understand its structure, dependencies, and potential weak points.</li>
+      <li><strong>Discovers</strong> what protective capabilities your code needs by matching patterns against a library of 40 functional building blocks (called "primitives").</li>
+      <li><strong>Wraps</strong> your code in a protective shell — like putting a phone in a case. Your phone (code) is untouched. The case (the hardening layer) adds drop protection, screen guards, and waterproofing.</li>
+      <li><strong>Gives it back</strong> as a package: your original code + the protective layer + a report of what was discovered and protected.</li>
+    </ol>
+    <div class="callout green">
+      <strong>Key Principle:</strong> Your code is never changed. The system adds protection <em>around</em> it, not <em>inside</em> it. Run it twice on the same code, you get the exact same result — no randomness, no AI guessing.
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3: Technical Definition ══ -->
+  <section class="section" id="technical-definition">
+    <div class="section-number">Section 03</div>
+    <h2>Technical Definition</h2>
+    <div class="callout">
+      A fully algorithmic, zero-external-AI processing pipeline that accepts arbitrary developer source code as input, performs multi-stage structural analysis and signal detection, executes deterministic collision scoring against a fixed matrix of functional primitives, discovers emergent capability chains scored by a composite quality index (CJPI), and exports a dual-layer artifact wherein <strong>Layer 1</strong> is the unmodified original source code and <strong>Layer 2</strong> is a generated sealed runtime providing autonomous circuit breakers, input validation gates, state mutation governance hooks, health telemetry instrumentation, compressed event reporting, and FNV-1a cryptographic integrity verification — all without modifying the original source code.
+    </div>
+
+    <h3>Formal Component Breakdown</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Dual-Layer</strong></td><td>Architecture consisting of Layer 1 (original source, unmodified) and Layer 2 (generated hardening runtime).</td></tr>
+          <tr><td><strong>Deterministic</strong></td><td>Given identical input, the system always produces identical output. Achieved through FNV-1a seeded PRNG for collision ordering.</td></tr>
+          <tr><td><strong>Software Evolution</strong></td><td>The process of discovering and applying protective capabilities to source code, advancing it from "raw" to "hardened" state.</td></tr>
+          <tr><td><strong>Autonomous</strong></td><td>Requires no human intervention during processing. The pipeline runs end-to-end without manual steps.</td></tr>
+          <tr><td><strong>Primitive-Based</strong></td><td>Hardening capabilities are drawn from a fixed library of 40 functional primitives organized in a 12-12-8-8 structural matrix.</td></tr>
+          <tr><td><strong>Code Hardening</strong></td><td>The addition of resilience, security, governance, and observability mechanisms to software.</td></tr>
+          <tr><td><strong>Without Source Modification</strong></td><td>The developer's original source code is included byte-for-byte unchanged in the output artifact. All hardening exists in a separate generated layer.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 4: Problem ══ -->
+  <section class="section" id="problem">
+    <div class="section-number">Section 04</div>
+    <h2>The Problem Being Solved</h2>
+    <h3>Current State of the Art — Limitations</h3>
+    <ol>
+      <li><strong>Source Modification Required</strong> — Tools like linters with auto-fix, transpilers, and security patchers modify the developer's source code directly. This introduces risk: new bugs, broken logic, changed behavior.</li>
+      <li><strong>Non-Deterministic Results</strong> — AI-powered code analysis tools produce different results on each run due to model temperature, context window variations, and stochastic inference.</li>
+      <li><strong>Single-Concern Analysis</strong> — Most tools address one concern (security, performance, or style) in isolation, missing emergent cross-concern interactions.</li>
+      <li><strong>Human-Dependent Workflows</strong> — Traditional code review and hardening requires human experts at every stage, creating bottlenecks and inconsistency.</li>
+    </ol>
+    <h3>What This Invention Provides</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Capability</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Zero source modification</strong></td><td>The original code is never touched.</td></tr>
+          <tr><td><strong>Full determinism</strong></td><td>Same input → same output, always.</td></tr>
+          <tr><td><strong>Multi-concern discovery</strong></td><td>The 40-primitive matrix covers security, resilience, governance, observability, identity, networking, and more.</td></tr>
+          <tr><td><strong>Fully autonomous</strong></td><td>No human intervention required during processing.</td></tr>
+          <tr><td><strong>Zero external AI</strong></td><td>The entire pipeline is pure algorithmic code.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 5: Dual-Layer Architecture ══ -->
+  <section class="section" id="dual-layer">
+    <div class="section-number">Section 05</div>
+    <h2>The Dual-Layer Architecture</h2>
+
+    <h3>Layer 1: Original Source Code</h3>
+    <p>The developer's source code as submitted. Not a copy — the actual file, included byte-for-byte identical in the output artifact. No transformations, no injections, no modifications of any kind.</p>
+
+    <h3>Layer 2: Convex Core™ Sealed Artifact</h3>
+    <p>A generated runtime module that wraps Layer 1 without modifying it. Layer 2 is <strong>generated</strong> algorithmically, <strong>black-boxed</strong> as an obfuscated sealed artifact, and <strong>self-verifying</strong> via FNV-1a integrity hashes.</p>
+
+    <h3>Layer 2 Components</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Circuit Breakers</strong></td><td>Per-primitive fault isolation. If a discovered capability fails at runtime, the circuit opens to prevent cascade failure.</td></tr>
+          <tr><td><strong>DEFENSE Gates</strong></td><td>Input validation injected at function boundaries. Prevents unvalidated data from reaching sensitive operations.</td></tr>
+          <tr><td><strong>GOVERNANCE Hooks</strong></td><td>Audit instrumentation on state mutations. Every state change is logged with before/after values, timestamps, and caller identity.</td></tr>
+          <tr><td><strong>BEACON Health Signals</strong></td><td>Lightweight health markers emitted at configurable intervals. Enables external monitoring without code instrumentation.</td></tr>
+          <tr><td><strong>Telemetry Compression</strong></td><td>Event batching achieving ~85% reduction in telemetry payload size versus raw event streaming.</td></tr>
+          <tr><td><strong>Integrity Verification</strong></td><td>FNV-1a hash chain from boot through runtime, ensuring the artifact has not been tampered with.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SVG: Dual-Layer Architecture -->
+    <div class="svg-diagram">
+      <svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
+        <!-- Outer Runtime -->
+        <rect x="20" y="20" width="760" height="400" rx="16" fill="#12121a" stroke="#2a2a3d" stroke-width="1.5"/>
+        <text x="400" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#5c5c7a" letter-spacing="2">RUNTIME HOST</text>
+
+        <!-- Layer 2 -->
+        <rect x="50" y="68" width="700" height="320" rx="12" fill="#1a1a26" stroke="#6366f1" stroke-width="1" stroke-dasharray="6 3"/>
+        <text x="400" y="96" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#818cf8" letter-spacing="2">LAYER 2 — CONVEX CORE™ (GENERATED)</text>
+
+        <!-- Hardening components -->
+        <rect x="80" y="114" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
+        <text x="177" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">Circuit Breakers</text>
+        <text x="177" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Fault isolation</text>
+
+        <rect x="303" y="114" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
+        <text x="400" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">DEFENSE Gates</text>
+        <text x="400" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Input validation</text>
+
+        <rect x="525" y="114" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
+        <text x="622" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">GOVERNANCE Hooks</text>
+        <text x="622" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">State mutation audit</text>
+
+        <rect x="80" y="180" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
+        <text x="177" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">BEACON Signals</text>
+        <text x="177" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Health telemetry</text>
+
+        <rect x="303" y="180" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
+        <text x="400" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">Telemetry Compress</text>
+        <text x="400" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">~85% reduction</text>
+
+        <rect x="525" y="180" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
+        <text x="622" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">FNV-1a Integrity</text>
+        <text x="622" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Hash chain verify</text>
+
+        <!-- Layer 1 -->
+        <rect x="100" y="260" width="600" height="100" rx="10" fill="#0a0a0f" stroke="#34d399" stroke-width="1.5"/>
+        <text x="400" y="296" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#34d399" letter-spacing="1.5">LAYER 1 — ORIGINAL SOURCE CODE</text>
+        <text x="400" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" fill="#8888aa">Byte-for-byte UNMODIFIED</text>
+        <text x="400" y="340" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5c5c7a">No transformations · No injections · No modifications</text>
+
+        <!-- Arrows -->
+        <line x1="400" y1="170" x2="400" y2="180" stroke="#3d3d5c" stroke-width="1"/>
+        <line x1="400" y1="236" x2="400" y2="260" stroke="#34d399" stroke-width="1" stroke-dasharray="4 2"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 6: Pipeline ══ -->
+  <section class="section" id="pipeline">
+    <div class="section-number">Section 06</div>
+    <h2>The Deterministic Evolution Pipeline</h2>
+    <p>The system processes source code through 8 sequential phases. Each phase is fully algorithmic — no external AI, no stochastic processes.</p>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 01</div>
+      <h4>Intake &amp; Classification</h4>
+      <p>The system builds a complete structural map of the code:</p>
+      <ul>
+        <li>Language detection (file extension + AST analysis)</li>
+        <li>Structure analysis (imports, exports, functions, classes)</li>
+        <li>Dependency graph construction</li>
+        <li>Security surface scan (known vulnerability patterns)</li>
+        <li>Complexity metrics (cyclomatic, cognitive, Halstead)</li>
+      </ul>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 02</div>
+      <h4>Primitive Registration</h4>
+      <p>40 functional primitives register their handlers. Each exposes an input contract, output contract, confidence threshold, and fallback behavior.</p>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 03</div>
+      <h4>Signal Detection</h4>
+      <p>The system analyzes the source code topology and generates <strong>signals</strong> — structural patterns, risk indicators, capability opportunities. Each signal maps to one or more primitives.</p>
+      <div class="callout amber" style="margin-top:12px;">
+        <strong>Trade Secret:</strong> The specific signal detection patterns constitute protected intellectual property and are not disclosed.
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 04</div>
+      <h4>Collision Pass</h4>
+      <p>For each signal × each primitive, the system calculates an affinity score: <code>confidence = base_affinity × context_bonus</code>. Collisions above the primitive's threshold are recorded. Determinism is guaranteed via FNV-1a seeded PRNG.</p>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 05</div>
+      <h4>Chain Discovery</h4>
+      <p>Collisions are grouped into capability chains — sequences of primitives that fire on related signals:</p>
+      <ul>
+        <li><strong>Seed</strong> — Start with highest-confidence collision</li>
+        <li><strong>Walk</strong> — Follow signal dependencies to related collisions</li>
+        <li><strong>Score</strong> — Compound CJPI per chain</li>
+        <li><strong>Prune</strong> — Discard chains below CJPI 68</li>
+        <li><strong>Rank</strong> — Order by compound score</li>
+      </ul>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 06</div>
+      <h4>CJPI Scoring</h4>
+      <p>Each chain is scored using the Crown Jewel Priority Index:</p>
+      <div class="code-block" style="margin-top:10px;">
+        <pre><span class="cm">// CJPI Formula</span>
+CJPI = (
+  Novelty       × <span class="nu">0.30</span>
+  + Utility     × <span class="nu">0.30</span>
+  + Complexity  × <span class="nu">0.20</span>
+  + Composability × <span class="nu">0.20</span>
+)</pre>
+      </div>
+      <!-- Tier bars -->
+      <div style="margin-top:16px;">
+        <div class="tier-bar">
+          <span class="tier-label">Apex</span>
+          <span class="tier-range">96–100</span>
+          <div class="tier-track"><div class="tier-fill" style="width:100%;background:linear-gradient(90deg,#6366f1,#a78bfa);"></div></div>
+        </div>
+        <div class="tier-bar">
+          <span class="tier-label">Mythic</span>
+          <span class="tier-range">90–95</span>
+          <div class="tier-track"><div class="tier-fill" style="width:95%;background:linear-gradient(90deg,#818cf8,#c4b5fd);"></div></div>
+        </div>
+        <div class="tier-bar">
+          <span class="tier-label">Relic</span>
+          <span class="tier-range">80–89</span>
+          <div class="tier-track"><div class="tier-fill" style="width:85%;background:linear-gradient(90deg,#22d3ee,#67e8f9);"></div></div>
+        </div>
+        <div class="tier-bar">
+          <span class="tier-label">Prime</span>
+          <span class="tier-range">68–79</span>
+          <div class="tier-track"><div class="tier-fill" style="width:72%;background:linear-gradient(90deg,#34d399,#6ee7b7);"></div></div>
+        </div>
+        <div class="tier-bar">
+          <span class="tier-label">Mint</span>
+          <span class="tier-range">50–67</span>
+          <div class="tier-track"><div class="tier-fill" style="width:55%;background:linear-gradient(90deg,#fbbf24,#fcd34d);"></div></div>
+        </div>
+        <div class="tier-bar">
+          <span class="tier-label" style="color:var(--text-dim)">Raw</span>
+          <span class="tier-range">0–49</span>
+          <div class="tier-track"><div class="tier-fill" style="width:30%;background:#3d3d5c;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 07</div>
+      <h4>Hardening (Layer 2 Generation)</h4>
+      <p>Based on discovered chains, the system generates Layer 2: circuit breakers, DEFENSE gates, GOVERNANCE hooks, BEACON signals, telemetry compression, and FNV-1a integrity hashes for each segment, assembled into a single sealed artifact.</p>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-num">Phase 08</div>
+      <h4>Export</h4>
+      <p>The final artifact package containing Layer 1 (unmodified), Layer 2 (sealed runtime), discovery report, integration guide, machine-readable manifest, and generated test harness.</p>
+    </div>
+
+    <!-- SVG: Pipeline flow -->
+    <div class="svg-diagram" style="margin-top:32px;">
+      <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" style="max-width:760px">
+        <!-- Phase boxes -->
+        <g transform="translate(18,30)">
+          <rect x="0" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
+          <text x="41" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 1</text>
+          <text x="41" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Intake &amp;</text>
+          <text x="41" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Classify</text>
+
+          <line x1="86" y1="30" x2="96" y2="30" stroke="#3d3d5c" stroke-width="1" marker-end="url(#arrow)"/>
+
+          <rect x="100" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
+          <text x="141" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 2</text>
+          <text x="141" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Primitive</text>
+          <text x="141" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Register</text>
+
+          <line x1="186" y1="30" x2="196" y2="30" stroke="#3d3d5c" stroke-width="1"/>
+
+          <rect x="200" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#fbbf24" stroke-width="1"/>
+          <text x="241" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fbbf24" font-weight="700">PHASE 3</text>
+          <text x="241" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Signal</text>
+          <text x="241" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Detection</text>
+
+          <line x1="286" y1="30" x2="296" y2="30" stroke="#3d3d5c" stroke-width="1"/>
+
+          <rect x="300" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
+          <text x="341" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 4</text>
+          <text x="341" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Collision</text>
+          <text x="341" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Pass</text>
+
+          <line x1="386" y1="30" x2="396" y2="30" stroke="#3d3d5c" stroke-width="1"/>
+
+          <rect x="400" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
+          <text x="441" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 5</text>
+          <text x="441" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Chain</text>
+          <text x="441" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Discovery</text>
+
+          <line x1="486" y1="30" x2="496" y2="30" stroke="#3d3d5c" stroke-width="1"/>
+
+          <rect x="500" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#22d3ee" stroke-width="1"/>
+          <text x="541" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#22d3ee" font-weight="700">PHASE 6</text>
+          <text x="541" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">CJPI</text>
+          <text x="541" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Scoring</text>
+
+          <line x1="586" y1="30" x2="596" y2="30" stroke="#3d3d5c" stroke-width="1"/>
+
+          <rect x="600" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#34d399" stroke-width="1"/>
+          <text x="641" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#34d399" font-weight="700">PHASE 7</text>
+          <text x="641" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Hardening</text>
+          <text x="641" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Layer 2</text>
+
+          <line x1="686" y1="30" x2="696" y2="30" stroke="#3d3d5c" stroke-width="1"/>
+
+          <rect x="700" y="0" width="62" height="60" rx="8" fill="#1a1a26" stroke="#34d399" stroke-width="1.5"/>
+          <text x="731" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#34d399" font-weight="700">PHASE 8</text>
+          <text x="731" y="40" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Export</text>
+        </g>
+
+        <!-- Labels -->
+        <text x="40" y="120" font-family="Inter,sans-serif" font-size="11" fill="#5c5c7a">INPUT: Developer source code</text>
+        <text x="580" y="120" font-family="Inter,sans-serif" font-size="11" fill="#34d399">OUTPUT: Dual-layer artifact</text>
+
+        <!-- Guarantees -->
+        <rect x="80" y="140" width="640" height="50" rx="8" fill="#12121a" stroke="#2a2a3d"/>
+        <text x="400" y="162" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">ZERO external AI calls · Fully deterministic · Same input = same output</text>
+        <text x="400" y="178" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">8-phase sequential pipeline · Pure algorithmic processing</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 7: Primitive-Based Hardening ══ -->
+  <section class="section" id="primitive-hardening">
+    <div class="section-number">Section 07</div>
+    <h2>Primitive-Based Code Hardening</h2>
+    <p>Rather than applying a fixed set of security rules or relying on AI to suggest fixes, this system uses a <strong>matrix of functional primitives</strong> — self-contained capability units that activate when their signal patterns are detected in the source code.</p>
+
+    <h3>The 40-Primitive Matrix</h3>
+    <div class="prim-grid">
+      <div class="prim-box organs">
+        <div class="prim-cat">Organs</div>
+        <div class="prim-count">12</div>
+        <div class="prim-desc">Core processing capabilities (BRAIN, MEMORY, IDENTITY, etc.)</div>
+      </div>
+      <div class="prim-box layers">
+        <div class="prim-cat">Layers</div>
+        <div class="prim-count">12</div>
+        <div class="prim-desc">Cross-cutting concerns (DEFENSE, GOVERNANCE, RELAY, etc.)</div>
+      </div>
+      <div class="prim-box engines">
+        <div class="prim-cat">Engines</div>
+        <div class="prim-count">8</div>
+        <div class="prim-desc">Autonomous processing units (NEXUS, CORTEX, BEACON, etc.)</div>
+      </div>
+      <div class="prim-box agents">
+        <div class="prim-cat">Agents</div>
+        <div class="prim-count">8</div>
+        <div class="prim-desc">Specialized operational actors (WRAITH, OBSIDIAN, RAPTOR, etc.)</div>
+      </div>
+    </div>
+
+    <h3>Hardening Contribution by Primitive</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Primitive</th><th>Hardening Contribution</th></tr></thead>
+        <tbody>
+          <tr><td><strong>DEFENSE</strong></td><td>Input validation gates at function boundaries. Blocks unvalidated data from reaching sensitive operations.</td></tr>
+          <tr><td><strong>GOVERNANCE</strong></td><td>State mutation hooks. Logs every state change with before/after snapshots.</td></tr>
+          <tr><td><strong>BEACON</strong></td><td>Health signal markers. Lightweight probes emitted at intervals for external monitoring.</td></tr>
+          <tr><td><strong>FAILSAFE</strong></td><td>Circuit breaker implementation. Isolates faults to prevent cascade failures.</td></tr>
+          <tr><td><strong>MEMORY</strong></td><td>State persistence guards. Ensures state is recoverable after failures.</td></tr>
+          <tr><td><strong>IDENTITY</strong></td><td>Authentication and authorization checkpoints.</td></tr>
+          <tr><td><strong>RELAY</strong></td><td>Network communication guards. Timeout enforcement, retry logic.</td></tr>
+          <tr><td><strong>SANDBOX</strong></td><td>Execution isolation boundaries. Prevents untrusted code from accessing protected resources.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 8: Integrity ══ -->
+  <section class="section" id="integrity">
+    <div class="section-number">Section 08</div>
+    <h2>Integrity Verification</h2>
+
+    <h3>FNV-1a Hash Chain</h3>
+    <p>The system uses FNV-1a (Fowler–Noll–Vo) hashing to create a tamper-evident integrity chain across four checkpoints:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Checkpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Boot Hash</strong></td><td>Computed over Layer 2 artifact at generation time. Stored in cmpsbl-manifest.json.</td></tr>
+          <tr><td><strong>Segment Hashes</strong></td><td>Each generated component (circuit breaker, gate, hook) has its own FNV-1a hash.</td></tr>
+          <tr><td><strong>Chain Hash</strong></td><td>All segment hashes combined. Any modification to any segment invalidates the chain.</td></tr>
+          <tr><td><strong>Runtime Verification</strong></td><td>At boot, Layer 2 recomputes hashes and compares. Mismatch → HALT + alert.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SVG: Verification flow -->
+    <div class="svg-diagram" style="margin-top:24px;">
+      <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="max-width:640px">
+        <rect x="10" y="30" width="100" height="50" rx="8" fill="#1a1a26" stroke="#6366f1"/>
+        <text x="60" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8e8f0">Boot</text>
+        <text x="60" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#5c5c7a">Start</text>
+
+        <line x1="114" y1="55" x2="140" y2="55" stroke="#3d3d5c"/>
+
+        <rect x="144" y="30" width="120" height="50" rx="8" fill="#1a1a26" stroke="#6366f1"/>
+        <text x="204" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8e8f0">Compute Hashes</text>
+        <text x="204" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#5c5c7a">FNV-1a</text>
+
+        <line x1="268" y1="55" x2="294" y2="55" stroke="#3d3d5c"/>
+
+        <rect x="298" y="30" width="100" height="50" rx="8" fill="#1a1a26" stroke="#fbbf24"/>
+        <text x="348" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8e8f0">Compare</text>
+        <text x="348" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#5c5c7a">Stored vs Live</text>
+
+        <line x1="402" y1="42" x2="440" y2="25" stroke="#34d399"/>
+        <line x1="402" y1="68" x2="440" y2="85" stroke="#f87171"/>
+
+        <rect x="444" y="4" width="100" height="42" rx="8" fill="#065f46" stroke="#34d399"/>
+        <text x="494" y="22" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#34d399">Match</text>
+        <text x="494" y="36" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6ee7b7">Run</text>
+
+        <rect x="444" y="64" width="100" height="42" rx="8" fill="#450a0a" stroke="#f87171"/>
+        <text x="494" y="82" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#f87171">Mismatch</text>
+        <text x="494" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#fca5a5">HALT + Alert</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 9: Export ══ -->
+  <section class="section" id="export">
+    <div class="section-number">Section 09</div>
+    <h2>Artifact Export Structure</h2>
+
+    <div class="diagram">
+      <div class="diagram-title">Final Artifact Package</div>
+      <pre>
+artifact-package/
+│
+├── source/
+│   └── {original-file}.{ext}              ← <span style="color:#34d399">LAYER 1 (UNMODIFIED)</span>
+│
+├── _runtime/
+│   ├── convex-core.{ext}                  ← <span style="color:#818cf8">LAYER 2 (sealed, obfuscated)</span>
+│   ├── chain-executor.{ext}               ← Chain orchestration
+│   └── discovery-engine.{ext}             ← Discovery metadata
+│
+├── REPORT.html                            ← Human-readable discovery report
+├── USER-GUIDE.html                        ← Integration guide
+├── cmpsbl-manifest.json                   ← Machine-readable metadata
+└── test/                                  ← Generated test harness
+      </pre>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 10: Diagrams ══ -->
+  <section class="section" id="diagrams">
+    <div class="section-number">Section 10</div>
+    <h2>Diagrams</h2>
+
+    <h3>Determinism Guarantee</h3>
+
+    <div class="svg-diagram">
+      <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
+        <!-- Run 1 -->
+        <text x="175" y="24" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#818cf8">RUN 1</text>
+        <rect x="60" y="36" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
+        <text x="175" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Input: app.py</text>
+        <line x1="175" y1="80" x2="175" y2="96" stroke="#3d3d5c"/>
+        <rect x="60" y="100" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
+        <text x="175" y="124" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Hash: 0xA7F3B2C1</text>
+        <line x1="175" y1="144" x2="175" y2="160" stroke="#3d3d5c"/>
+        <rect x="60" y="164" width="230" height="56" rx="8" fill="#1a1a26" stroke="#6366f1"/>
+        <text x="175" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Same signals, collisions,</text>
+        <text x="175" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">chains, CJPI, Layer 2</text>
+        <line x1="175" y1="224" x2="175" y2="240" stroke="#34d399"/>
+        <rect x="60" y="244" width="230" height="36" rx="8" fill="#065f46" stroke="#34d399"/>
+        <text x="175" y="267" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#34d399">Output A</text>
+
+        <!-- Equals -->
+        <text x="400" y="267" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="28" font-weight="700" fill="#34d399">===</text>
+        <text x="400" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5c5c7a">IDENTICAL</text>
+
+        <!-- Run 2 -->
+        <text x="615" y="24" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#818cf8">RUN 2</text>
+        <rect x="500" y="36" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
+        <text x="615" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Input: app.py</text>
+        <line x1="615" y1="80" x2="615" y2="96" stroke="#3d3d5c"/>
+        <rect x="500" y="100" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
+        <text x="615" y="124" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Hash: 0xA7F3B2C1</text>
+        <line x1="615" y1="144" x2="615" y2="160" stroke="#3d3d5c"/>
+        <rect x="500" y="164" width="230" height="56" rx="8" fill="#1a1a26" stroke="#6366f1"/>
+        <text x="615" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Same signals, collisions,</text>
+        <text x="615" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">chains, CJPI, Layer 2</text>
+        <line x1="615" y1="224" x2="615" y2="240" stroke="#34d399"/>
+        <rect x="500" y="244" width="230" height="36" rx="8" fill="#065f46" stroke="#34d399"/>
+        <text x="615" y="267" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#34d399">Output B</text>
+      </svg>
+    </div>
+
+    <h3>Collision &amp; Chain Discovery</h3>
+
+    <div class="svg-diagram">
+      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
+        <!-- Source -->
+        <rect x="280" y="10" width="240" height="36" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
+        <text x="400" y="33" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">Source Code Topology</text>
+        <line x1="400" y1="50" x2="400" y2="68" stroke="#3d3d5c"/>
+
+        <!-- Signal Detection -->
+        <rect x="240" y="72" width="320" height="60" rx="10" fill="#1a1a26" stroke="#fbbf24"/>
+        <text x="400" y="94" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#fbbf24">SIGNAL DETECTION</text>
+        <text x="400" y="118" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">unvalidated_input · state_mutation · external_api · crypto_op</text>
+        <line x1="400" y1="136" x2="400" y2="154" stroke="#3d3d5c"/>
+
+        <!-- Collision Pass -->
+        <rect x="120" y="158" width="560" height="80" rx="10" fill="#1a1a26" stroke="#6366f1"/>
+        <text x="400" y="180" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#818cf8">COLLISION PASS</text>
+        <text x="400" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Each signal × 40 primitives → affinity scoring</text>
+        <text x="400" y="218" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#34d399">DEFENSE 0.94 ✓  ·  GOVERNANCE 0.96 ✓  ·  BEACON 0.89 ✓</text>
+        <text x="400" y="230" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5c5c7a">FNV-1a seeded PRNG guarantees determinism</text>
+        <line x1="400" y1="242" x2="400" y2="260" stroke="#3d3d5c"/>
+
+        <!-- Chain Discovery -->
+        <rect x="200" y="264" width="400" height="60" rx="10" fill="#1a1a26" stroke="#34d399"/>
+        <text x="400" y="286" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#34d399">CHAIN DISCOVERY</text>
+        <text x="400" y="306" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Seed → Walk → Score → Prune (CJPI &lt; 68) → Rank</text>
+        <line x1="400" y1="328" x2="400" y2="344" stroke="#3d3d5c"/>
+
+        <!-- Result -->
+        <rect x="240" y="348" width="320" height="28" rx="6" fill="#222233" stroke="#818cf8"/>
+        <text x="400" y="367" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#818cf8">DEFENSE → GOVERNANCE → BEACON  CJPI: 91</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 11: Claims ══ -->
+  <section class="section" id="claims">
+    <div class="section-number">Section 11</div>
+    <h2>Claims Summary</h2>
+
+    <div class="claim" data-claim="Claim 1">
+      <h4>Dual-Layer Architecture</h4>
+      <p>A method for hardening software source code using a dual-layer architecture wherein the first layer is the unmodified original source code and the second layer is a generated runtime artifact that provides hardening capabilities without modifying the first layer.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 2">
+      <h4>Deterministic Primitive Collision</h4>
+      <p>A method for discovering software hardening opportunities through deterministic collision scoring between detected code signals and a fixed matrix of functional primitives, using seeded pseudo-random number generation to ensure identical inputs always produce identical discovery results.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 3">
+      <h4>Zero-External-AI Processing</h4>
+      <p>A fully algorithmic pipeline for code analysis, capability discovery, and artifact generation that operates without any external artificial intelligence calls, model inference, or stochastic processes.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 4">
+      <h4>Signal-to-Primitive Mapping</h4>
+      <p>A resolver/handler pattern wherein code signals — patterns detected in source code structure — are systematically matched against primitive input contracts to determine which hardening capabilities should be activated.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 5">
+      <h4>Self-Verifying Artifacts</h4>
+      <p>A method for producing sealed runtime artifacts that contain embedded FNV-1a integrity hash chains, enabling self-verification at boot and runtime to detect tampering or corruption.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 6">
+      <h4>Autonomous Multi-Concern Hardening</h4>
+      <p>A system that autonomously applies hardening across multiple concerns (security, resilience, governance, observability, identity, networking) in a single processing pass through a unified primitive matrix, without requiring separate tools or manual intervention for each concern.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 7">
+      <h4>Chain Discovery via Compound Scoring</h4>
+      <p>A method for discovering emergent capability chains — ordered sequences of primitives that fire on related signals — and scoring them using a composite quality index (CJPI) that evaluates novelty, utility, complexity, and composability.</p>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 12: Glossary ══ -->
+  <section class="section" id="glossary">
+    <div class="section-number">Section 12</div>
+    <h2>Glossary</h2>
+
+    <div class="glossary-item"><span class="glossary-term">Ascension</span><span class="glossary-def">The commercial name for the complete pipeline (Phases 1–8).</span></div>
+    <div class="glossary-item"><span class="glossary-term">BEACON</span><span class="glossary-def">A primitive providing health signal markers for external monitoring.</span></div>
+    <div class="glossary-item"><span class="glossary-term">CJPI</span><span class="glossary-def">Crown Jewel Priority Index. Composite score (0–100) for rating discovered capability chains.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Circuit Breaker</span><span class="glossary-def">Fault isolation mechanism. Opens on failure to prevent cascade; closes after recovery window.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Collision</span><span class="glossary-def">An event where a detected code signal matches a primitive's input contract above the confidence threshold.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Convex Core™</span><span class="glossary-def">Commercial name for the Layer 2 sealed runtime artifact.</span></div>
+    <div class="glossary-item"><span class="glossary-term">DEFENSE Gate</span><span class="glossary-def">Input validation injected at function boundaries.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Deterministic</span><span class="glossary-def">Producing identical output from identical input, with no randomness.</span></div>
+    <div class="glossary-item"><span class="glossary-term">FNV-1a</span><span class="glossary-def">Fowler–Noll–Vo hash function, variant 1a. Used for integrity verification.</span></div>
+    <div class="glossary-item"><span class="glossary-term">GOVERNANCE Hook</span><span class="glossary-def">Audit instrumentation that logs state mutations with before/after values.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Hardening</span><span class="glossary-def">The process of adding resilience, security, and observability mechanisms to software.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Layer 1</span><span class="glossary-def">The unmodified original source code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Layer 2</span><span class="glossary-def">The generated sealed runtime artifact (Convex Core™).</span></div>
+    <div class="glossary-item"><span class="glossary-term">Primitive</span><span class="glossary-def">A self-contained functional capability unit in the 40-primitive matrix.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Signal</span><span class="glossary-def">A pattern, risk indicator, or structural characteristic detected in source code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Signal Detection</span><span class="glossary-def">The process of analyzing source code to extract signals (protected trade secret).</span></div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="patent-footer">
+  <div style="max-width:900px;margin:0 auto;padding:0 32px;">
+    <p><span class="brand">CMPSBL® / PromptFluid™</span></p>
+    <p>Patent Pending — U.S. Patent Application No. 64/029,678</p>
+    <p>The signal detection patterns, collision scoring heuristics, and internal pipeline mechanics constitute protected trade secrets.</p>
+    <p>This document is prepared for patent filing purposes and authorized legal review only.</p>
+    <p style="margin-top:12px;">© 2025–2026 CMPSBL® / PromptFluid™. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
