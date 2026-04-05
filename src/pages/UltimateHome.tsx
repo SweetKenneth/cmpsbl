@@ -115,8 +115,8 @@ export default function UltimateHome() {
   return (
     <>
       <Helmet>
-        <title>{`CMPSBL ULTIMATE™ — ${poolSize} Candidates · 40 Open Slots · Zero Restrictions`}</title>
-        <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for all 40 slots. No spine lock. No category restrictions. The scanner selects the 40 that maximize compounding for your codebase.`} />
+        <title>{`CMPSBL ULTIMATE™ — ${poolSize} Candidates · Dynamic Selection · Zero Restrictions`}</title>
+        <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for selection. No spine lock. No category restrictions. The scanner selects only the primitives your code actually needs — up to 40.`} />
       </Helmet>
 
       <VerticalReturnBanner verticalName="CMPSBL ULTIMATE™" accentColor={ACCENT} />
@@ -215,13 +215,13 @@ export default function UltimateHome() {
               How Universal Ascension Works
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              No spine lock. No category quotas. All 40 slots are open — the scanner fills every one
+              No spine lock. No category quotas. The scanner selects only what your code needs — no filler
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
               {[
                 { step: "01", title: "Full Pool Assembly", desc: `${poolSize} primitives from every source — Spine organs, layers, Cyber, Robotics, Quantum, LLM, Agency expansion primitives, and 16 Universal gap-fillers — all loaded as equal candidates.` },
-                { step: "02", title: "Extended Collision", desc: "Multi-pass scoring evaluates every candidate against your code using signal matching, capability overlap, breadth analysis, and cross-primitive compounding potential. Extended scan time ensures deep evaluation." },
-                { step: "03", title: "40 Best Selected", desc: "The top 40 are selected by pure compounding score — no forced organs, no locked layers, no engine/agent quotas. The result is the maximum-impact surface for your specific codebase." },
+                { step: "02", title: "Extended Collision", desc: "Multi-pass scoring evaluates every candidate against your code using signal matching, capability overlap, breadth analysis, and cross-primitive compounding potential. Spine primitives receive a structural bonus for their foundational power." },
+                { step: "03", title: "Code-Driven Selection", desc: "The scanner selects only the primitives that exceed the compounding threshold for your code — from 8 to 40. No forced fills, no padding. If your code needs 14 primitives, you get 14. If it needs 38, you get 38." },
               ].map((item, i) => (
                 <motion.div key={item.step} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
@@ -361,7 +361,7 @@ export default function UltimateHome() {
             <div className="grid sm:grid-cols-2 gap-4 mb-8 text-left">
               {[
                 { label: "Standard Vertical", desc: "24 locked spine + 16 fixed expansion primitives. Optimized for one domain.", style: "muted" },
-                { label: "Ultimate Ascension", desc: `${poolSize} candidates. All 40 slots open. No spine lock. No quotas. The scanner picks the 40 primitives that maximize compounding for your code.`, style: "highlight" },
+                { label: "Ultimate Ascension", desc: `${poolSize} candidates. Dynamic selection. No spine lock. No quotas. The scanner picks only the primitives that compound for your code — from 8 to 40.`, style: "highlight" },
               ].map(item => (
                 <div key={item.label} className="p-5 rounded-xl" style={{
                   background: item.style === 'highlight' ? `${ACCENT}08` : BG_CARD,

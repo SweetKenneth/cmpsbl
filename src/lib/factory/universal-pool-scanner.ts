@@ -44,9 +44,9 @@ export interface PoolCandidate {
 }
 
 export interface UniversalScanResult {
-  /** The 40 primitives selected as the optimal surface for this code */
+  /** The primitives selected as the optimal surface for this code (variable count) */
   selectedPrimitives: PoolCandidate[];
-  /** Full 40-primitive surface (the selected primitives, rebalanced) */
+  /** Full primitive surface (the selected primitives, rebalanced) */
   fullSurface: VerticalPrimitive[];
   /** All candidates that were evaluated */
   totalCandidatesEvaluated: number;
@@ -188,7 +188,7 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
     if (lowerCode.includes(signal)) hits++;
   }
   const hitRatio = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const signalAffinity = Math.min(hitRatio / 0.2, 1); // 20% hit threshold for max score
+  const signalAffinity = Math.min(hitRatio / 0.15, 1); // 15% hit threshold — more sensitive to partial matches
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
@@ -205,16 +205,22 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
 
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
-  const roleBonus = tagged.primitive.role === 'engine' || tagged.primitive.role === 'agent' ? 0.05 : 0;
 
-  // Composite: signal affinity (35%) + capability match (25%) + breadth (20%) + weight (15%) + role (5%)
+  // Spine primitives (organs + layers) are the most powerful foundational
+  // primitives — they get a structural bonus because they provide the
+  // core infrastructure that makes expansion primitives effective.
+  const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
+  const structuralBonus = isSpine ? 0.12 : 0;
+
+  // Composite scoring — spine-aware
+  // Signal affinity (30%) + capability match (25%) + breadth (15%) + weight (15%) + structural (15%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.35 +
+    signalAffinity * 0.30 +
     capRatio * 0.25 +
-    breadthScore * 0.20 +
+    breadthScore * 0.15 +
     weightFactor * 0.15 +
-    roleBonus;
+    structuralBonus;
 
   return {
     primitive: tagged.primitive,
@@ -227,29 +233,58 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — UNRESTRICTED 40-SLOT SELECTION
+// §5 — DYNAMIC SLOT SELECTION (CODE-DRIVEN)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Select the optimal 40 primitives from the entire pool.
- * No category restrictions. No spine lock. No organ/layer quotas.
- * Pure compounding-score ranking with light diversity constraint
- * (max 12 from any single source to prevent total domination).
+ * Minimum compounding score to qualify for selection.
+ * Primitives below this threshold add noise, not value.
  */
-function selectOptimal40(
+const SELECTION_THRESHOLD = 0.10;
+
+/**
+ * The score gap that triggers a natural cutoff.
+ * If the next candidate's score drops by more than 40% relative to the
+ * current candidate, the scanner stops — the code doesn't need more.
+ */
+const DROP_OFF_RATIO = 0.40;
+
+/** Absolute maximum to prevent degenerate cases */
+const MAX_SLOTS = 40;
+
+/** Minimum selection — at least a few primitives for any code */
+const MIN_SLOTS = 8;
+
+/**
+ * Select the optimal primitives for this specific codebase.
+ * The count is DYNAMIC — driven by what the code actually needs.
+ * No category restrictions. No spine lock. No organ/layer quotas.
+ * Light diversity constraint (max 14 from any single source).
+ */
+function selectOptimalPrimitives(
   candidates: PoolCandidate[],
-  maxPerSource: number = 12,
+  maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
-    .filter(c => c.compoundingScore > 0.05)
+    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   const selected: PoolCandidate[] = [];
   const sourceCounts: Record<string, number> = {};
   const usedIds = new Set<string>();
 
-  for (const candidate of sorted) {
-    if (selected.length >= 40) break;
+  for (let i = 0; i < sorted.length; i++) {
+    if (selected.length >= MAX_SLOTS) break;
+
+    const candidate = sorted[i];
+
+    // Natural cutoff: if there's a significant score drop-off after minimum,
+    // stop — the code doesn't benefit from more primitives
+    if (selected.length >= MIN_SLOTS && i > 0) {
+      const prevScore = sorted[i - 1].compoundingScore;
+      const dropOff = (prevScore - candidate.compoundingScore) / prevScore;
+      if (dropOff >= DROP_OFF_RATIO) break;
+    }
 
     // Light diversity: cap per-source to prevent single-vertical domination
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
@@ -288,17 +323,17 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   // Score all candidates with extended collision passes
   const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens));
 
-  // Select the optimal 40 — unrestricted
-  const selected = selectOptimal40(scored);
+  // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
+  const selected = selectOptimalPrimitives(scored);
 
-  // Rebalance weights so the 40 selected sum to 1.0
-  const perWeight = selected.length > 0
-    ? Math.round((1.0 / selected.length) * 10000) / 10000
-    : 0;
-
+  // Rebalance weights so selected primitives sum to 1.0
+  // Use compounding score for proportional weighting (stronger primitives get more weight)
+  const totalScore = selected.reduce((sum, c) => sum + c.compoundingScore, 0);
   const fullSurface: VerticalPrimitive[] = selected.map(c => ({
     ...c.primitive,
-    weight: perWeight,
+    weight: totalScore > 0
+      ? Math.round((c.compoundingScore / totalScore) * 10000) / 10000
+      : Math.round((1.0 / selected.length) * 10000) / 10000,
     inherited: false, // In Ultimate, nothing is "inherited" — everything is earned
   }));
 
@@ -314,7 +349,7 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
     selectedPrimitives: selected,
     fullSurface,
     totalCandidatesEvaluated: pool.length,
-    candidatesAboveThreshold: scored.filter(c => c.compoundingScore > 0.05).length,
+    candidatesAboveThreshold: scored.filter(c => c.compoundingScore >= SELECTION_THRESHOLD).length,
     sourceDistribution,
     roleDistribution,
     durationMs: Math.round(performance.now() - start),
