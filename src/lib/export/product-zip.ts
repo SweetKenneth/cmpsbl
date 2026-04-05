@@ -47,7 +47,7 @@ function cjpiFromTier(tier: string): number {
 function generateReadmeMD(product: ProductZipInput): string {
   const kindLabel = product.kind === 'engine' ? 'Composable Engine' : 'Standalone Agent';
   const safeName = product.name.replace(/[^a-zA-Z0-9]/g, '_');
-  return `# ${product.name} — CMPSBL® Sealed Runtime™
+  return `# ${product.name} — CMPSBL® Convex Core™
 
 ## ${product.subtitle}
 
@@ -62,11 +62,11 @@ function generateReadmeMD(product: ProductZipInput): string {
 
 | File / Folder | Purpose |
 |---|---|
-| \`src/${product.slug}.ts\` | Sealed runtime entry point |
-| \`_runtime/standalone-runtime.ts\` | CMPSBL® Mini-Runtime™ Engine (black-boxed) |
-| \`_runtime/chain-executor.ts\` | Portable Chain Executor (40-primitive matrix) |
+| \`src/${product.slug}.ts\` | Sealed processing layer entry point |
+| \`_runtime/convex-core.ts\` | CMPSBL® Convex Core™ Processing Layer (black-boxed) |
+| \`_runtime/chain-executor.ts\` | Portable Chain Executor (dispatch matrix) |
 | \`_runtime/discovery-engine.ts\` | Sealed Discovery Engine (template injection) |
-| \`_runtime/README.md\` | Runtime architecture and network modes |
+| \`_runtime/README.md\` | Processing layer architecture and network modes |
 | \`manifest.json\` | CMPSBL® software manifest |
 | \`DETAILS.html\` | Product specification certificate |
 | \`README.html\` | Formatted documentation |
@@ -87,9 +87,9 @@ cp -r ${product.slug}/ ./your-project/vendor/cmpsbl/
 \`\`\`typescript
 // Import and use immediately
 import { init } from './vendor/cmpsbl/${product.slug}/src/${product.slug}';
-import { createRuntime } from './vendor/cmpsbl/${product.slug}/_runtime/standalone-runtime';
+import { compileDispatch } from './vendor/cmpsbl/${product.slug}/_runtime/convex-core';
 
-const runtime = createRuntime();
+const matrix = compileDispatch();
 const instance = init();
 \`\`\`
 
@@ -119,7 +119,7 @@ cmpsbl status
 
 ## Network Modes
 
-The embedded Mini-Runtime™ is **network-aware**:
+The embedded Convex Core™ processing layer is **network-aware**:
 
 | Mode | Description |
 |---|---|
@@ -128,11 +128,11 @@ The embedded Mini-Runtime™ is **network-aware**:
 | **Offline** | Fully standalone — zero network dependency |
 
 \`\`\`typescript
-import { configureEndpoint, getRuntimeMode } from './_runtime/standalone-runtime';
+import { configureEndpoint, getProcessingMode } from './_runtime/convex-core';
 
 // Force offline mode (fully standalone)
 configureEndpoint(null);
-console.log(getRuntimeMode()); // 'offline'
+console.log(getProcessingMode()); // 'offline'
 \`\`\`
 
 ---
@@ -142,7 +142,7 @@ console.log(getRuntimeMode()); // 'offline'
 | Package | Purpose | Link |
 |---|---|---|
 | \`@cmpsbl/sdk\` | Full SDK — ${product.kind} activation | [npm](https://www.npmjs.com/package/@cmpsbl/sdk) |
-| \`@cmpsbl/runtime\` | Mini-Runtime™ standalone | [npm](https://www.npmjs.com/package/@cmpsbl/runtime) |
+| \`@cmpsbl/runtime\` | Convex Core™ processing layer | [npm](https://www.npmjs.com/package/@cmpsbl/runtime) |
 | \`@cmpsbl/cli\` | Terminal activation & status | [npm](https://www.npmjs.com/package/@cmpsbl/cli) |
 | \`@cmpsbl/types\` | TypeScript type definitions | [npm](https://www.npmjs.com/package/@cmpsbl/types) |
 
@@ -222,7 +222,7 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     files: [
       { name: 'manifest.json', purpose: 'CMPSBL® software manifest' },
       { name: `src/${product.slug}.ts`, purpose: 'Sealed runtime entry point' },
-      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine' },
+      { name: '_runtime/', purpose: 'CMPSBL® Convex Core™ Processing Layer' },
       { name: 'test/', purpose: 'Auto-generated test harness' },
       { name: 'docs/', purpose: 'Full documentation suite (HTML + Markdown)' },
     ],

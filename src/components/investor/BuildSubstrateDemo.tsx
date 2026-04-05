@@ -30,7 +30,7 @@ const CAPABILITIES = [
 
 const EXPORT_FILES = [
   { name: "src/", type: "folder", desc: "Application source code" },
-  { name: "runtime/", type: "folder", desc: "CMPSBL mini-runtime (standalone)" },
+  { name: "runtime/", type: "folder", desc: "CMPSBL convex-core (standalone)" },
   { name: "config.cmpsbl.json", type: "file", desc: "Capability configuration" },
   { name: "package.json", type: "file", desc: "Dependencies & scripts" },
   { name: "README.md", type: "file", desc: "Setup & usage docs" },

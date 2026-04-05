@@ -303,7 +303,7 @@ await cmpsbl.dream.cycle({
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
             {[
               { pkg: '@cmpsbl/types', d: 'Shared TypeScript schemas' },
-              { pkg: '@cmpsbl/runtime', d: 'Mini-Runtime™ engine' },
+              { pkg: '@cmpsbl/runtime', d: 'Convex Core™ engine' },
               { pkg: '@cmpsbl/failsafe', d: 'Zero-dep migration toolkit' },
               { pkg: '@cmpsbl/intent', d: 'Intent router & dispatch' },
               { pkg: '@cmpsbl/mesh', d: 'Mesh telemetry client' },

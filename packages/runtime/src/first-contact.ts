@@ -164,7 +164,7 @@ const TOTAL_NODES = 40;
 const PACKAGE_GREETINGS: Record<string, string> = {
   '@cmpsbl/cli':          'Terminal bridge established. You speak, the mesh listens.',
   '@cmpsbl/sdk':          'SDK bound. Full cognitive surface available.',
-  '@cmpsbl/runtime':      'Runtime initialized. Mini-Runtime™ active.',
+  '@cmpsbl/runtime':      'Runtime initialized. Convex Core™ active.',
   '@cmpsbl/react':        'React hooks connected. UI ↔ Substrate bridge live.',
   '@cmpsbl/intent':       'Intent router online. Every action finds its resolver.',
   '@cmpsbl/mesh':         'Mesh layer active. 40 primitives signaling.',

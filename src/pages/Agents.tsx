@@ -160,7 +160,7 @@ export default function Agents() {
               <div className="max-w-2xl mx-auto mb-4 p-4 rounded-xl border border-border/50 bg-card/50 text-left">
                 <p className="text-sm text-muted-foreground leading-relaxed mb-2">
                   <strong className="text-foreground">Standalone deployment:</strong> Every agent purchase includes a
-                  self-contained ZIP with the embedded <strong className="text-foreground">Mini-Runtime™</strong> —
+                  self-contained ZIP with the embedded <strong className="text-foreground">Convex Core™</strong> —
                   deploy to your own infrastructure, no CMPSBL dependency required. Also activates via{" "}
                   <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@cmpsbl/sdk</a>{" "}
                   and the{" "}

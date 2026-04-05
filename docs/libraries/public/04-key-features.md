@@ -62,7 +62,7 @@
 |---------|-------------|
 | **Ascension Engine** | Upload any code — the substrate evolves it into augmented capabilities |
 | **Universal Export** | Export to 25 target languages (18 software, 7 HDL) |
-| **Mini-Runtime Engine** | Standalone execution environment for exported artifacts |
+| **Convex Core™ Processing Layer** | Standalone execution environment for exported artifacts |
 | **Artifact Packs** | Discovered memory chains bundled with documentation and test harnesses |
 
 ---

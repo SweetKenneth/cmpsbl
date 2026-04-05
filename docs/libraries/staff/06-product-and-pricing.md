@@ -66,7 +66,7 @@ Export — single-file, zero-dependency "drop-in" distribution
 
 ### What the customer gets:
 - A **single file** (e.g., `cmpsbl.ts`, `cmpsbl.py`, `cmpsbl.rs`) containing:
-  - §1 Mini-Runtime™ — Scoring and orchestration
+  - §1 Convex Core™ — Scoring and orchestration
   - §2 Module Effects — Logic for all included primitives
   - §3 Runtime Bridge — Chain execution
   - §4 Capability API — Public interface

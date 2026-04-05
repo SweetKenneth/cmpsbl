@@ -67,7 +67,7 @@ export function assessBridgeCapability(language: string): BridgeHonestyReport {
     return {
       language: lang,
       capability: 'native',
-      reason: 'JS/TS executes natively in the browser via the Mini-Runtime™.',
+      reason: 'JS/TS executes natively in the browser via the Convex Core™.',
       serverRequirement: null,
       instructions: 'No additional setup required. Code runs directly.',
     };
@@ -117,7 +117,7 @@ export function generateHonestyDisclaimer(language: string, commentChar: string)
     `${commentChar} ║  This is a DELEGATION BRIDGE, not a native executor.     ║`,
     `${commentChar} ║                                                           ║`,
     `${commentChar} ║  What runs in-browser:                                    ║`,
-    `${commentChar} ║    ✓ CJPI scoring & tiering (TypeScript Mini-Runtime™)   ║`,
+    `${commentChar} ║    ✓ CJPI scoring & tiering (TypeScript Convex Core™)   ║`,
     `${commentChar} ║    ✓ Module chain validation & integrity checks          ║`,
     `${commentChar} ║    ✓ Manifest generation & metadata                      ║`,
     `${commentChar} ║                                                           ║`,

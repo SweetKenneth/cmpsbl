@@ -657,7 +657,7 @@ export const seoMap: Record<string, PageSEO> = {
     ogTitle: 'Ascension — Zero-LLM Code Transformation',
     ogDescription: 'Upload code, collide against 40 primitives, export enhanced capabilities. No LLM.',
     ogImage: OG_ASCENSION,
-    keywords: ['code transformation', 'zero LLM', 'capability discovery', 'substrate collision', 'CJPI scoring', 'Mini-Runtime', 'software augmentation', 'deterministic AI'],
+    keywords: ['code transformation', 'zero LLM', 'capability discovery', 'substrate collision', 'CJPI scoring', 'Convex Core™', 'software augmentation', 'deterministic AI'],
     schema: 'product',
     intent: 'Feature/Capability',
     primaryKeyword: 'zero LLM code transformation',

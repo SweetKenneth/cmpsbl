@@ -32,7 +32,7 @@ import { validateManifest, formatTestResults } from '@cmpsbl/test-harness';
 const result = validateManifest(JSON.stringify({
   name: 'my-pipeline', cjpi: 85, tier: 'Mythic',
   modules: ['BRAIN', 'MEMORY'], exported: '2026-03-24',
-  runtime: 'cmpsbl-mini-runtime-engine',
+  runtime: 'cmpsbl-convex-core-engine',
   targets: ['typescript'], version: '1.0.0',
 }));
 

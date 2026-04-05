@@ -117,7 +117,7 @@ function generateFileInventory(input: IntegrationGuideInput): string {
 📦 ${input.slug}/
 ├── 📄 manifest.json              ← Export metadata, CJPI score, primitive chain
 ├── 📁 _runtime/
-│   ├── standalone-runtime.ts     ← Mini-Runtime™ (network-aware, offline-capable)
+│   ├── standalone-runtime.ts     ← Convex Core™ (network-aware, offline-capable)
 │   ├── chain-executor.ts         ← Sealed 40-primitive execution matrix
 │   └── discovery-engine.ts       ← Template injection and synthesis reactor
 ├── 📁 src/
@@ -139,7 +139,7 @@ function generateFileInventory(input: IntegrationGuideInput): string {
 ├── 📄 manifest.json              ← Capability metadata, CJPI tier, fingerprint
 ├── 📄 export-tier.json           ← Score, tier, valuation, unlocked languages
 ├── 📁 _runtime/
-│   └── standalone-runtime.ts     ← Mini-Runtime™ (network-aware, offline-capable)
+│   └── standalone-runtime.ts     ← Convex Core™ (network-aware, offline-capable)
 ├── 📁 src/
 │   ├── ${input.slug}.ts          ← Primary capability implementation
 │   └── [language-variants]/      ← Additional language exports (if unlocked)
@@ -154,7 +154,7 @@ function generateFileInventory(input: IntegrationGuideInput): string {
 📦 ${input.slug}/
 ├── 📄 manifest.json              ← ${kindLabel} metadata and configuration
 ├── 📁 _runtime/
-│   ├── standalone-runtime.ts     ← Mini-Runtime™ (network-aware, offline-capable)
+│   ├── standalone-runtime.ts     ← Convex Core™ (network-aware, offline-capable)
 │   ├── chain-executor.ts         ← Sealed 40-primitive execution matrix
 │   └── discovery-engine.ts       ← Template injection and synthesis reactor
 ├── 📁 src/
@@ -617,7 +617,7 @@ const { init, createPipeline } = require('./src/${input.slug}/src/index');
 If your environment uses a proxy or restricts outbound traffic:
 
 \`\`\`bash
-# The Mini-Runtime™ connects to this endpoint (when not in offline mode)
+# The Convex Core™ connects to this endpoint (when not in offline mode)
 # Allow outbound HTTPS to:
 #   https://api.cmpsbl.ai/v1/substrate/primitive
 
@@ -640,7 +640,7 @@ function generateNetworkModes(input: IntegrationGuideInput): string {
 
 ## 10. Network Modes & Offline Execution
 
-The Mini-Runtime™ included in this export supports three execution modes:
+The Convex Core™ included in this export supports three execution modes:
 
 | Mode | Primitives Available | Latency | When to Use |
 |------|---------------------|---------|-------------|
@@ -815,7 +815,7 @@ function generateSealedRuntimeExplainer(_input: IntegrationGuideInput): string {
     '### Why Does Some Code Look Unreadable?',
     '',
 'If you inspect your source files, you will notice that some code appears',
-'obfuscated or uses hex-encoded constants. **This is intentional.** The Sealed Mini-Runtime™',
+'obfuscated or uses hex-encoded constants. **This is intentional.** The Sealed Convex Core™',
 'is merged directly into each source file for single-file drop-in usage. Here is why:',
     '',
     '### What Is Sealed',

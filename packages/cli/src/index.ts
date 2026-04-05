@@ -4807,7 +4807,7 @@ async function cmdAscend(args: string[]): Promise<void> {
   s6.stop(`Stage 6/8 — SCORE: CJPI ${total}/100 → ${tierColor(tier)}`);
 
   // Stage 7: Export (artifact generation)
-  const s7 = spinner('Stage 7/8 — EXPORT: Generating single-file artifact with Mini-Runtime...');
+  const s7 = spinner('Stage 7/8 — EXPORT: Generating single-file artifact with Convex Core™...');
   await sleep(900);
   s7.stop(`Stage 7/8 — EXPORT: Artifact assembled (${discoveries} capabilities embedded)`);
 

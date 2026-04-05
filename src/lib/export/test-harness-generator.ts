@@ -457,7 +457,7 @@ Copyright (c) ${new Date().getFullYear()} CMPSBL®. All rights reserved.
 
 ORIGIN NOTICE — This software was crystallized and exported from the CMPSBL®
 Substrate, a cognitive orchestration platform by promptfluid®. This software
-requires the included CMPSBL® Mini-Runtime™ Engine to function. The runtime
+requires the included CMPSBL® Convex Core™ Processing Layer to function. The runtime
 is proprietary to CMPSBL® and may not be separated, reverse-engineered, or
 redistributed independently of this package.
 
@@ -473,9 +473,9 @@ CONDITIONS:
      location (e.g. README, About screen, license file, or documentation):
 
        "Built with the CMPSBL® Substrate — https://cmpsbl.com
-        Powered by the CMPSBL® Mini-Runtime™ Engine."
+        Powered by the CMPSBL® Convex Core™ Processing Layer."
 
-  2. RUNTIME DEPENDENCY — This software depends on the CMPSBL® Mini-Runtime™
+  2. RUNTIME DEPENDENCY — This software depends on the CMPSBL® Convex Core™
      Engine included in this package. The runtime MUST be included in all
      distributions. It may NOT be replaced, stubbed out, or removed.
 
@@ -486,7 +486,7 @@ CONDITIONS:
      entirely by you or any party other than CMPSBL®. The substrate origin
      must be acknowledged.
 
-RUNTIME LICENSE — The CMPSBL® Mini-Runtime™ Engine (standalone-runtime.ts)
+RUNTIME LICENSE — The CMPSBL® Convex Core™ Processing Layer (standalone-runtime.ts)
 is licensed solely for use with software exported from the CMPSBL® Substrate.
 It may not be used, copied, or distributed for any other purpose. The Discovery
 Engine, Memory Stream, and Ascension Reactor are never distributed.

@@ -1101,7 +1101,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "'Activate Free' replaced with 'Download Free' across all store surfaces — agents, engines, and composable cognitives",
       "Unauthenticated users are prompted to create a free account before any download",
-      "Authenticated downloads generate a full product ZIP with manifest, high-fidelity HTML docs, source stubs, mini-runtime, and test harness",
+      "Authenticated downloads generate a full product ZIP with manifest, high-fidelity HTML docs, source stubs, convex-core, and test harness",
       "Governor panel synchronized with the same shared ZIP generation utility for consistent exports",
     ],
     phenotype: [

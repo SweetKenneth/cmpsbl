@@ -41,10 +41,10 @@ export function generateCompiledPreamble(
 
   if (lang === 'python') {
     return [
-      `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-      `${c} ║ Auto-generated. Tampering invalidates    ║`,
-      `${c} ║ artifact integrity and voids certification║`,
-      `${c} ╚══════════════════════════════════════════╝`,
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Tampering invalidates      ║`,
+      `${c} ║ artifact integrity and voids certification  ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
       '',
       `_CMPSBL_DT = [${dispatchTable.join(', ')}]`,
       `_CMPSBL_CM = [${collisionMatrix.join(', ')}]`,
@@ -65,9 +65,9 @@ export function generateCompiledPreamble(
 
   if (lang === 'go') {
     return [
-      `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-      `${c} ║ Auto-generated. Do not modify.            ║`,
-      `${c} ╚══════════════════════════════════════════╝`,
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Do not modify.              ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
       '',
       `var _cmpsblDT = [...]uint16{${dispatchTable.join(', ')}}`,
       `var _cmpsblCM = [...]uint16{${collisionMatrix.join(', ')}}`,
@@ -83,9 +83,9 @@ export function generateCompiledPreamble(
 
   if (lang === 'rust') {
     return [
-      `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-      `${c} ║ Auto-generated. Do not modify.            ║`,
-      `${c} ╚══════════════════════════════════════════╝`,
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Do not modify.              ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
       '',
       `const _CMPSBL_DT: &[u16] = &[${dispatchTable.join(', ')}];`,
       `const _CMPSBL_CM: &[u16] = &[${collisionMatrix.join(', ')}];`,
@@ -101,10 +101,10 @@ export function generateCompiledPreamble(
 
   // Default: TypeScript/JavaScript
   return [
-    `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-    `${c} ║ Auto-generated. Tampering invalidates    ║`,
-    `${c} ║ artifact integrity and voids certification║`,
-    `${c} ╚══════════════════════════════════════════╝`,
+    `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+    `${c} ║ Auto-generated. Tampering invalidates      ║`,
+    `${c} ║ artifact integrity and voids certification  ║`,
+    `${c} ╚═══════════════════════════════════════════╝`,
     '',
     `const _DT = Object.freeze([${dispatchTable.join(',')}]);`,
     `const _CM = Object.freeze([${collisionMatrix.join(',')}]);`,
@@ -142,7 +142,7 @@ export function generateDecoyPipelineComments(
   const chain = primitiveNames.map(n => n.toUpperCase()).join(' → ');
 
   return [
-    `${c} ═══ Execution Pipeline ═══`,
+    `${c} ═══ Convex Core™ Processing Pipeline ═══`,
     `${c}`,
     `${c} Stage 1/5 — INTAKE`,
     `${c}   Source binding and artifact registration`,

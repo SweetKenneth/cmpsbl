@@ -1,7 +1,7 @@
 /**
- * CMPSBL® Sealed Runtime Generator
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Generates BLACK-BOXED versions of the canonical Mini-Runtime™ and Discovery Engine
+ * CMPSBL® Convex Core™ Sealed Distribution Generator
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Generates BLACK-BOXED versions of the canonical Convex Core™ Processing Layer
  * for inclusion in export ZIPs. All proprietary logic is stripped:
  *   - CJPI weight allocations → opaque scoring function
  *   - Tier thresholds → opaque tiering function
@@ -21,19 +21,22 @@
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §1 — SEALED MINI-RUNTIME (replaces raw standalone-runtime.ts in exports)
+// §1 — CONVEX CORE™ SEALED PROCESSING LAYER (replaces raw standalone-runtime.ts in exports)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateSealedRuntime(): string {
   return `/**
- * CMPSBL® Mini-Runtime™ Engine — Sealed Distribution
+ * CMPSBL® Convex Core™ — Sealed Distribution
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * This is a sealed build of the CMPSBL® Mini-Runtime™ Engine.
- * Internal algorithms, scoring weights, and proprietary logic
+ * This is a sealed build of the CMPSBL® Convex Core™ Processing Layer.
+ * Internal dispatch matrices, scoring weights, and proprietary logic
  * are protected under trade secret law.
  *
  * Public API surface is fully functional.
  * Zero dependencies. Pure TypeScript. Drop-in ready.
+ *
+ * Architecture: Deterministic Processing Layer v3.0
+ * Supersedes: Convex Core™ Processing Layer (deprecated v2.x)
  *
  * © CMPSBL® — All rights reserved.
  * Unauthorized reverse engineering is prohibited.
@@ -396,7 +399,7 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
 
 export function generateSealedDiscoveryEngine(): string {
   return `/**
- * CMPSBL® Mini-Runtime™ Discovery Engine — Sealed Distribution
+ * CMPSBL® Convex Core™ Discovery Engine — Sealed Distribution
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * This is a sealed build. Internal synthesis templates, reactor
  * algorithms, and discovery heuristics are protected trade secrets.
@@ -645,9 +648,9 @@ export function formatReport(result: ChainResult): string {
 
 export function generateSealedRuntimeReadme(): string {
   return [
-    '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
+    '# CMPSBL® Convex Core™ Processing Layer — Sealed Distribution',
     '',
-    'This is a **sealed build** of the CMPSBL® Mini-Runtime™ Engine.',
+    'This is a **sealed build** of the CMPSBL® Convex Core™ Processing Layer.',
     'Internal algorithms and scoring weights are protected.',
     '',
     '## Network-Aware Execution',
@@ -674,7 +677,7 @@ export function generateSealedRuntimeReadme(): string {
     '',
     '## Included Components',
     '',
-     '- **standalone-runtime.ts** — Sealed Mini-Runtime™: CJPI scoring, state machine, memory chain orchestration, network bridge',
+     '- **standalone-runtime.ts** — Sealed Convex Core™: CJPI scoring, state machine, memory chain orchestration, network bridge',
      '- **chain-executor.ts** — Sealed Chain Executor: memory chain playback with labeled primitives (Organs, Layers, Engines, Agents)',
     '',
     '## NOT Included',

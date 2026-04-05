@@ -36,7 +36,7 @@ Ascension introduces a third paradigm: **deterministic software evolution**. The
 3. Registers this surface as a first-class participant ("Primitive #41" or "Auxiliary Primitive Ψ₄₁") in a fixed 40-primitive substrate matrix
 4. Executes multi-chain collisions between the Auxiliary Primitive and all 40 substrate primitives
 5. Scores each discovered combination using the Crown Jewel Pipeline Index (CJPI)
-6. Exports selected discoveries as portable, single-file artifacts with an embedded mini-runtime engine
+6. Exports selected discoveries as portable, single-file artifacts with an embedded convex-core engine
 7. Protects intellectual property through hex-encoded CJPI weights, stripped comments, and genericized naming
 
 The entire process requires **zero external AI API calls**. All discovery is algorithmic, deterministic (given the same input code and substrate version), and auditable through cryptographic fingerprinting.
@@ -53,7 +53,7 @@ This paper discloses the following inventions and methods for the purpose of est
 - The cross-sector synergy matrix and scoring algorithm
 - The chain archetype resolution system with 100+ named archetypes
 - The dual-layer execution model (native execution + cognitive overlay)
-- The Mini-Runtime Engine architecture (standalone-runtime, chain-executor, discovery-engine)
+- The Convex Core™ Processing Layer architecture (standalone-runtime, chain-executor, discovery-engine)
 - The IP protection pipeline (hex-encoding, comment stripping, genericized naming)
 - The Sealed Runtime™ export format
 - The Capability Marketplace interactive selection model
@@ -566,7 +566,7 @@ This architecture provides:
 Exports are packaged as ZIP archives containing:
 
 1. **Original source code** — untouched, in the developer's import language
-2. **`standalone-runtime.ts`** (or language equivalent) — Mini-Runtime Engine
+2. **`standalone-runtime.ts`** (or language equivalent) — Convex Core™ Processing Layer
 3. **`chain-executor.ts`** — Discovers and executes capability chains
 4. **`discovery-engine.ts`** — Substrate discovery logic
 5. **`manifest.json`** — Pack metadata including CJPI scores, fingerprints, and moat signatures
@@ -598,7 +598,7 @@ The result: decompiling an Ascension export reveals functional code but provides
 
 ### 9.5 Portability Guarantee
 
-If CMPSBL ceased to exist, every exported artifact would continue to function. The Mini-Runtime Engine is a standalone execution environment with zero external dependencies. This is the portability guarantee: the export is not a reference to a cloud service but a self-contained software product.
+If CMPSBL ceased to exist, every exported artifact would continue to function. The Convex Core™ Processing Layer is a standalone execution environment with zero external dependencies. This is the portability guarantee: the export is not a reference to a cloud service but a self-contained software product.
 
 ---
 
@@ -702,7 +702,7 @@ The collision sweep produced 5 distinct capability futures:
 | Discovery method | Statistical pattern matching | Manual selection | Deterministic collision against 40-primitive matrix |
 | External AI dependency | ✅ Requires API calls | ⚠️ Often requires API calls | ❌ Zero external AI |
 | Provenance | None | Partial | Full (fingerprints, moat signatures, audit chain) |
-| Platform lock-in | Provider-dependent | Framework-dependent | Zero (Mini-Runtime survives platform loss) |
+| Platform lock-in | Provider-dependent | Framework-dependent | Zero (Convex Core™ survives platform loss) |
 | Cross-language support | Limited | Per-framework | 90+ languages including 7 HDL |
 | IP protection | None | None | Hex-encoded weights, sealed heuristics |
 
@@ -784,11 +784,11 @@ The `epoch` parameter ("SPARTA" in the current implementation) allows for versio
 
 ---
 
-## 15. Mini-Runtime Engine Specifications
+## 15. Convex Core™ Processing Layer Specifications
 
 ### 15.1 Architecture
 
-The Mini-Runtime Engine is the standalone execution environment included in every export. It comprises:
+The Convex Core™ Processing Layer is the standalone execution environment included in every export. It comprises:
 
 | Subsystem | Function |
 |-----------|----------|
@@ -806,7 +806,7 @@ The Mini-Runtime Engine is the standalone execution environment included in ever
 
 ### 15.3 Dependencies
 
-Zero. The Mini-Runtime Engine has no external dependencies. It is a self-contained execution environment that can run on any machine with the appropriate language runtime installed.
+Zero. The Convex Core™ Processing Layer has no external dependencies. It is a self-contained execution environment that can run on any machine with the appropriate language runtime installed.
 
 ---
 
@@ -823,7 +823,7 @@ The complete Ascension lifecycle:
 | 5 | **Discover** | Unique combinations scored and named via archetype resolution |
 | 6 | **Score** | CJPI tier assignment; structural fingerprinting; top-N surfacing |
 | 7 | **Select** | Developer reviews discoveries in Capability Marketplace; selects capabilities for export |
-| 8 | **Export** | Single-file artifact with Mini-Runtime; IP obfuscation; language-locked output |
+| 8 | **Export** | Single-file artifact with Convex Core™; IP obfuscation; language-locked output |
 
 ---
 
@@ -915,7 +915,7 @@ The following is a representative subset of the 100+ registered chain archetypes
 | **CJPI** | Crown Jewel Pipeline Index — composite score (0-99) evaluating discovery quality |
 | **Collision** | The process of testing whether two or more primitives produce a meaningful combination |
 | **Cognitive Overlay** | Layer 2 of the dual-layer execution model; substrate augmentations running after native code |
-| **Mini-Runtime Engine** | Standalone execution environment included in exports; zero dependencies |
+| **Convex Core™ Processing Layer** | Standalone execution environment included in exports; zero dependencies |
 | **Moat Signature** | Cryptographic UUID assigned upon ascension for provenance verification |
 | **Primitive** | One of the 40 substrate nodes, categorized as Organ, Layer, Engine, or Agent |
 | **Sealed Runtime™** | The complete export package format including code, runtime, documentation, and tests |

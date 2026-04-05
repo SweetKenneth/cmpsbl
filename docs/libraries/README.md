@@ -1,17 +1,18 @@
 # CMPSBL® Documentation Libraries
 
-**Version:** v16.7.0 — CONTACT Epoch
+**Version:** v17.0.0 — CONVERGENCE Epoch
 
 ---
 
 ## Organization
 
-All CMPSBL documentation is organized into four audience-specific libraries:
+All CMPSBL documentation is organized into audience-specific libraries:
 
 | Library | Audience | Classification |
 |---------|----------|---------------|
 | [**Public**](public/00-INDEX.md) | Anyone evaluating or learning about CMPSBL | Open |
 | [**Users**](users/00-INDEX.md) | Developers building on CMPSBL, operators running the platform | Open |
+| [**Convex Core™**](convex-core/00-INDEX.md) | Researchers, developers inspecting the processing layer | Open (Zenodo) |
 | [**Staff**](staff/00-INDEX.md) | Team members onboarding to CMPSBL | Internal |
 | [**Investors**](investors/00-INDEX.md) | Investors, advisors, and strategic partners | Confidential |
 | [**Internal**](internal/00-INDEX.md) | System governor, architects, and internal stakeholders | Governor Eyes Only |

@@ -10,7 +10,7 @@
 - **Registered mark**: CMPSBL® (use ® on first mention in any document)
 - **Pronunciation**: "Composable"
 - **Tagline**: Cognitive AI Operating System
-- **Sub-brands**: Mini-Runtime™, Ascension™
+- **Sub-brands**: Convex Core™, Ascension™
 
 ---
 
@@ -56,7 +56,7 @@ Always suffix with category in user-facing content:
 ### Product Names
 - ✅ CMPSBL® (first mention)
 - ✅ CMPSBL (subsequent)
-- ✅ Mini-Runtime™ (first mention)
+- ✅ Convex Core™ (first mention)
 - ✅ Ascension (capitalized, no ™ required after first use)
 
 ---

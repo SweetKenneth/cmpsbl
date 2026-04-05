@@ -246,7 +246,7 @@ function getSealedNotice(lang: string): string {
     `${c} ╔═══════════════════════════════════════════════════════════════════╗`,
     `${c} ║  CMPSBL® SEALED RUNTIME — PROPRIETARY DISTRIBUTION              ║`,
     `${c} ║                                                                   ║`,
-    `${c} ║  This file contains the CMPSBL® Mini-Runtime™ Engine,            ║`,
+    `${c} ║  This file contains the CMPSBL® Convex Core™ Processing Layer,            ║`,
     `${c} ║  Module Effects, Runtime Bridge, and Capability API.              ║`,
     `${c} ║  All components are BUILT INTO this single file.                  ║`,
     `${c} ║  No external runtime installation required.                       ║`,

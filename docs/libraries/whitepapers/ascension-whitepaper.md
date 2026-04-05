@@ -608,7 +608,7 @@ The following components, methods, and systems described or referenced in this w
 
 | Protected IP | Classification |
 |-------------|---------------|
-| Mini-Runtime Engine™ | Trade secret — internal execution architecture |
+| Convex Core™ Processing Layer™ | Trade secret — internal execution architecture |
 | Discovery Engine™ | Trade secret — collision scoring algorithms and weights |
 | CJPI™ scoring weights and thresholds | Trade secret — hex-encoded, obfuscated in exports |
 | Memory Stream™ cycle internals | Trade secret — autonomous discovery pipeline |
@@ -711,4 +711,4 @@ The findings presented in this paper are the product of deterministic structural
 © 2026 CMPSBL®. All rights reserved.  
 Patent Pending · U.S. Provisional Application No. 64/029,678  
 CMPSBL® is a registered trademark of PromptFluid™.  
-Ascension™, Sealed Runtime™, Memory Stream™, Discovery Engine™, Mini-Runtime Engine™, Crown Jewel Pipeline Index™ (CJPI™), Crown Jewels™, CLM™, Vertical Substrates™, CMPSBL LLM™, CMPSBL Cyber™, CMPSBL Quantum™, and CMPSBL Robotics™ are trademarks of PromptFluid™.
+Ascension™, Sealed Runtime™, Memory Stream™, Discovery Engine™, Convex Core™ Processing Layer™, Crown Jewel Pipeline Index™ (CJPI™), Crown Jewels™, CLM™, Vertical Substrates™, CMPSBL LLM™, CMPSBL Cyber™, CMPSBL Quantum™, and CMPSBL Robotics™ are trademarks of PromptFluid™.

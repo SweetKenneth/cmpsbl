@@ -63,7 +63,7 @@
 | **Agency** | A coordinated team of cognitive agents with shared task management |
 | **Sealed Runtime** | Source-blocked, memory-isolated execution environment for agents |
 | **Artifact Pack** | An exported capability bundle containing code, runtime, docs, and tests |
-| **Mini-Runtime** | Standalone execution environment bundled with exported artifacts |
+| **Convex Core™** | Standalone execution environment bundled with exported artifacts |
 
 ---
 

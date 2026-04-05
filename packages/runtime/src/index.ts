@@ -1,5 +1,5 @@
 /**
- * @cmpsbl/runtime — Mini-Runtime™ Engine v2.1.0
+ * @cmpsbl/runtime — Convex Core™ Processing Layer v2.1.0
  * CMPSBL® Core Execution Runtime
  *
  * Zero-dependency CJPI scoring, auto-tiering, manifest parsing,
@@ -164,7 +164,7 @@ export function generateManifest(input: {
     cjpi,
     modules: input.modules ?? ['SYSTEM'],
     exported: new Date().toISOString().slice(0, 10),
-    runtime: 'cmpsbl-mini-runtime-engine',
+    runtime: 'cmpsbl-convex-core-engine',
     targets: input.targets ?? ['typescript'],
     version: input.version ?? '1.0.0',
     ...(input.category ? { category: input.category } : {}),
@@ -622,7 +622,7 @@ export function verifyRuntimeIntegrity(): IntegrityManifest {
 // §9 — Runtime Factory
 // ═══════════════════════════════════════════════════════════════
 
-export interface MiniRuntime {
+export interface ConvexCore {
   computeCJPI: typeof computeCJPI;
   tierFromCJPI: typeof tierFromCJPI;
   productTierFromScore: typeof productTierFromScore;
@@ -644,7 +644,7 @@ export interface MiniRuntime {
   version: string;
 }
 
-export function createRuntime(options?: { autoRegister?: boolean }): MiniRuntime {
+export function createRuntime(options?: { autoRegister?: boolean }): ConvexCore {
   const shouldRegister = options?.autoRegister !== false;
 
   if (shouldRegister) {

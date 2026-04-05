@@ -101,7 +101,7 @@ Point to the "After Ascension" summary.
 
 ### Act 6 — The Export Insight (1 minute)
 
-> "What comes out is a single file — `cmpsbl.ts` or `cmpsbl.py` or `cmpsbl.rs` — containing four sections: a Mini-Runtime for scoring, the primitive effects, a bridge executor, and the public API. Zero dependencies. Zero external calls."
+> "What comes out is a single file — `cmpsbl.ts` or `cmpsbl.py` or `cmpsbl.rs` — containing four sections: a Convex Core™ for scoring, the primitive effects, a bridge executor, and the public API. Zero dependencies. Zero external calls."
 
 > "The proprietary logic — our CJPI weights, tier thresholds — is hex-encoded. The file works perfectly, but reveals nothing about how we discover or score capabilities internally."
 
@@ -133,7 +133,7 @@ Pause.
 > "Those systems generate code from prompts. We evolve existing code. The output isn't a suggestion — it's a portable, executable capability with full provenance. The original code is preserved and runs first."
 
 ### "What does the export actually give me?"
-> "A single file — drop it into your project, zero dependencies. It contains a Mini-Runtime, all included primitive effects, a bridge executor, and a public API. Works in 90+ languages. It's a finished product, not a prototype."
+> "A single file — drop it into your project, zero dependencies. It contains a Convex Core™, all included primitive effects, a bridge executor, and a public API. Works in 90+ languages. It's a finished product, not a prototype."
 
 ### "How do you protect your IP in exports?"
 > "CJPI weights are hex-encoded arrays. Tier thresholds are obfuscated. Internal comments are stripped. Architecture references are genericized. The file works perfectly — but reveals nothing about our discovery heuristics or scoring internals."

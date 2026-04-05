@@ -33,7 +33,7 @@ Tier 1 (install first)          Tier 2 (install after Tier 1)
 | `useIntent()` | Broadcast intents and track resolutions |
 | `useResolver()` | Register a resolver from a component |
 | `useMesh()` | Subscribe to mesh telemetry events |
-| `useRuntime()` | Access the full Mini-Runtime |
+| `useRuntime()` | Access the full Convex Core™ |
 | `useCJPI()` | Compute CJPI scores reactively |
 | `useFirstContact()` | Memory Stream discovery hooks |
 

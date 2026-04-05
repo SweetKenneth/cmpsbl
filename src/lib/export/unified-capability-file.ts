@@ -2,7 +2,7 @@
  * Unified Single-File Capability Generator
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Generates ONE file (~2000 LOC) containing:
- *   §1 — Mini-Runtime™ (CJPI scorer, FSM, Saga, manifest, fingerprint)
+ *   §1 — Convex Core™ (CJPI scorer, FSM, Saga, manifest, fingerprint)
  *   §2 — Module Effects (all 40 primitive handlers)
  *   §3 — Runtime Bridge (pipeline executor, context, trace)
  *   §4 — Capability API (execute, validate, metadata)
@@ -1577,7 +1577,7 @@ ${line}
 ${line}  PORT THIS FILE to ${lang.toUpperCase()} using the TypeScript/Python/PHP versions
 ${line}  as reference implementations. The architecture is identical:
 ${line}
-${line}  §1 — Mini-Runtime™ (CJPI scorer, tier classifier)
+${line}  §1 — Convex Core™ (CJPI scorer, tier classifier)
 ${line}  §2 — Module Effects (handler per primitive, transforms context)
 ${line}  §3 — Runtime Bridge (pipeline executor, sequential chain)
 ${line}  §4 — Capability API (execute, validate, metadata)

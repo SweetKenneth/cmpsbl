@@ -1,9 +1,9 @@
 /**
  * CMPSBL® Canonical Runtime Contract
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Single source of truth for the Mini-Runtime™ execution contract.
+ * Single source of truth for the Convex Core™ execution contract.
  * 
- * ARCHITECTURE RULE: There is exactly ONE canonical Mini Runtime (TypeScript).
+ * ARCHITECTURE RULE: There is exactly ONE canonical Convex Core (TypeScript).
  * All other language exports are thin bridge adapters that:
  *   1. Attempt remote execution via the canonical runtime (network mode)
  *   2. Fall back to deterministic local execution (offline mode)

@@ -18,7 +18,7 @@
 │
 ├── packages/                      # Publishable NPM packages
 │   ├── types/                     # @cmpsbl/types — shared TypeScript definitions
-│   └── runtime/                   # @cmpsbl/runtime — Mini-Runtime™ engine
+│   └── runtime/                   # @cmpsbl/runtime — Convex Core™ engine
 │
 ├── src/                           # Application source
 │   ├── assets/                    # Static assets (images, logos, team photos)

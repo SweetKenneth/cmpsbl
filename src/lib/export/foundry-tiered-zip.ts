@@ -254,7 +254,7 @@ export async function downloadTieredFoundryZip(options: {
         '// CMPSBL® Sealed Artifact — Runtime + Source · Single Drop-In File',
         '// ═══════════════════════════════════════════════════════════════════',
         '',
-        '// ── Sealed Mini-Runtime™ (inlined) ────────────────────────────────',
+        '// ── Sealed Convex Core™ (inlined) ────────────────────────────────',
         '',
         runtimeFiles.runtime,
         '',

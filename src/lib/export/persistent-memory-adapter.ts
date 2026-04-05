@@ -29,7 +29,7 @@ export function generatePersistentMemoryAdapter(): string {
  * CMPSBL® Persistent Memory Adapter
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * File-backed tiered storage for Super Agent memory persistence.
- * Implements the StorageAdapter interface from Mini-Runtime™.
+ * Implements the StorageAdapter interface from Convex Core™.
  *
  * Tiers: HOT (in-memory + disk) → WARM (disk) → COLD (compressed) → Expired (purged)
  *
@@ -316,7 +316,7 @@ const storage = createPersistentStorage({
   sharedMemory: process.env.CMPSBL_MEMORY_SHARED === 'true',
 });
 
-// Pass to Mini-Runtime™ init:
+// Pass to Convex Core™ init:
 // const instance = init({ storage });
 `;
 }

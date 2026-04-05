@@ -141,7 +141,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Constant Learning Mode (CLM)", "Up to 14,400 AI calls/day — 70% system telemetry, 30% scheduled curriculum"],
             ["7-Gate SEBA Evolution", "Every change passes 7 validation gates including TSAC truth arbitration"],
             ["Sealed Agent Marketplace", "20 agents with 3–5 Crown Jewel powers each, source-blocked runtimes"],
-            ["Universal Export", "25 target languages with Mini-Runtime™, single-file zero-dependency distributions"],
+            ["Universal Export", "25 target languages with Convex Core™, single-file zero-dependency distributions"],
           ],
         },
       },
@@ -155,7 +155,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           headers: ["Package", "Tier", "Capability"],
           rows: [
             ["@cmpsbl/types", "Foundation", "Shared TypeScript type definitions and schemas"],
-            ["@cmpsbl/runtime", "Foundation", "Mini-Runtime™ engine — CJPI scoring, manifest parsing, pipeline execution"],
+            ["@cmpsbl/runtime", "Foundation", "Convex Core™ engine — CJPI scoring, manifest parsing, pipeline execution"],
             ["@cmpsbl/failsafe", "Foundation", "Zero-dependency disaster recovery and platform migration"],
             ["@cmpsbl/intent", "Core", "Intent router and dispatch — cross-surface action coordination"],
             ["@cmpsbl/mesh", "Core", "Mesh telemetry client — primitive-to-primitive communication events"],
@@ -785,7 +785,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     sections: [
       {
         heading: "What Ascension Does",
-        content: "Every piece of software has a ceiling — the limits of what its author knew when they wrote it. Ascension removes that ceiling.\n\nUpload any code. Ascension reads its computational signature — not its file type, not its language, not what you named it — and classifies what it actually is at a functional level. It then registers your code as a temporary Primitive inside the 40-Primitive CMPSBL substrate, chains it against every Primitive in the cognitive mesh, and runs the discovery engine. The substrate finds capability combinations that could only emerge from that exact piece of software colliding with that exact architecture. Capabilities your code never had — zero-day defense, immunity mesh, sovereign governance, adaptive routing, auto-healing — get discovered and woven in.\n\nThe export comes back in your original language. Same stack. Drops straight into production. But now it carries a sealed Mini Runtime — a compressed version of the substrate's execution layer bundled directly into the artifact. No CMPSBL dependency required. No internet connection. No configuration. It carries its cognitive infrastructure with it and operates fully standalone in any environment.\n\nYour code doesn't get modified. It ascends.",
+        content: "Every piece of software has a ceiling — the limits of what its author knew when they wrote it. Ascension removes that ceiling.\n\nUpload any code. Ascension reads its computational signature — not its file type, not its language, not what you named it — and classifies what it actually is at a functional level. It then registers your code as a temporary Primitive inside the 40-Primitive CMPSBL substrate, chains it against every Primitive in the cognitive mesh, and runs the discovery engine. The substrate finds capability combinations that could only emerge from that exact piece of software colliding with that exact architecture. Capabilities your code never had — zero-day defense, immunity mesh, sovereign governance, adaptive routing, auto-healing — get discovered and woven in.\n\nThe export comes back in your original language. Same stack. Drops straight into production. But now it carries a sealed Convex Core — a compressed version of the substrate's execution layer bundled directly into the artifact. No CMPSBL dependency required. No internet connection. No configuration. It carries its cognitive infrastructure with it and operates fully standalone in any environment.\n\nYour code doesn't get modified. It ascends.",
       },
       {
         heading: "Live Proof: We Ran It On An AI's Own Code",
@@ -840,14 +840,14 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Chain", "Discovery engine runs — your Primitive collides against all 40 Primitives"],
             ["Discover", "Capability combinations emerge unique to this code + this substrate"],
             ["Score", "CJPI scores each discovery — tier assigned (CORE, ELITE, APEX, MYTHIC)"],
-            ["Export", "Single-file artifact generated in original language with Mini Runtime embedded"],
+            ["Export", "Single-file artifact generated in original language with Convex Core embedded"],
             ["Protect", "IP obfuscated — hex-encoded weights, stripped comments, genericized naming"],
           ],
         },
       },
       {
-        heading: "The Mini Runtime",
-        content: "Every export includes a sealed CMPSBL Mini-Runtime™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 90+ supported languages including hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
+        heading: "The Convex Core",
+        content: "Every export includes a sealed CMPSBL Convex Core™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 90+ supported languages including hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
       },
       {
         heading: "Export Languages",
@@ -870,7 +870,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         bullets: [
           "Code level — CJPI scoring weights are hex-encoded (e.g., [0x1E, 0x1E, 0x14, 0x14]). Tier thresholds are hex-encoded. Internal comments are stripped entirely. Variable and function names are genericized. Discovery heuristics are never included in any export.",
           "Architecture level — The 40-Primitive topology, affinity matrix computations, and CJPI algorithm are Crown Jewel assets that never leave the substrate. Even if an export is fully decompiled, the values appear as opaque byte arrays with no documentation of their meaning.",
-          "Distribution level — Every export ships with a Commercial Distribution License requiring attribution to CMPSBL® and prohibiting extraction of the Mini-Runtime™. The Discovery Engine, Memory Stream, and Ascension Reactor are substrate-exclusive and are never distributed.",
+          "Distribution level — Every export ships with a Commercial Distribution License requiring attribution to CMPSBL® and prohibiting extraction of the Convex Core™. The Discovery Engine, Memory Stream, and Ascension Reactor are substrate-exclusive and are never distributed.",
         ],
         callout: {
           label: "The Moat",
@@ -888,7 +888,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "The Scope of What This Means",
-        content: "Every category of software that has ever been written, or will ever be written, is a candidate for Ascension. There is no class of code this engine cannot process. Every piece of software has a ceiling. Ascension removes it — for all of them.\n\nMemory Stream is Ascension's counterpart running on the substrate itself. While Ascension processes external code, Memory Stream runs autonomously every 8 hours discovering capability combinations from within the substrate's own search space — a space so large it exceeds the number of stars in the observable universe by a factor of a million. Every discovery is exported as standalone, sellable software with the same Certificates of Discovery, the same commercial licenses, the same Mini-Runtime architecture.\n\nThe substrate discovers its own potential. Packages it. And sells it. While you sleep.\n\nTwo engines. One inbound — any code in the world. One internal — the substrate's own infinite search space. Both producing sellable artifacts. Both compounding daily. Both protected by IP architecture that makes the outputs worthless without the substrate that generated them.\n\nThe only limit is imagination. And the substrate is already running.",
+        content: "Every category of software that has ever been written, or will ever be written, is a candidate for Ascension. There is no class of code this engine cannot process. Every piece of software has a ceiling. Ascension removes it — for all of them.\n\nMemory Stream is Ascension's counterpart running on the substrate itself. While Ascension processes external code, Memory Stream runs autonomously every 8 hours discovering capability combinations from within the substrate's own search space — a space so large it exceeds the number of stars in the observable universe by a factor of a million. Every discovery is exported as standalone, sellable software with the same Certificates of Discovery, the same commercial licenses, the same Convex Core™ architecture.\n\nThe substrate discovers its own potential. Packages it. And sells it. While you sleep.\n\nTwo engines. One inbound — any code in the world. One internal — the substrate's own infinite search space. Both producing sellable artifacts. Both compounding daily. Both protected by IP architecture that makes the outputs worthless without the substrate that generated them.\n\nThe only limit is imagination. And the substrate is already running.",
       },
       {
         heading: "Commercial Model",
@@ -900,7 +900,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Exports per run", "Up to 10"],
             ["Example portfolio value", "~$2.6M from one upload (5 exports, March 27, 2026)"],
             ["Export format", "Single-file, zero-dependency, instant download"],
-            ["Runtime requirement", "None — Mini-Runtime™ bundled"],
+            ["Runtime requirement", "None — Convex Core™ bundled"],
             ["Languages", "25 (18 software + 7 hardware)"],
             ["HDL input", "Accepted — hardware code ascends the same as software"],
             ["Substrate replication", "Unlimited — new Primitives, new domains, new capability economies"],
@@ -974,7 +974,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         bullets: [
           "Each discovery includes full metadata, CJPI score breakdown, and provenance chain",
           "Discoveries can be bundled into Crown Jewel packs for agent augmentation",
-          "Export includes Mini-Runtime™ for standalone execution",
+          "Export includes Convex Core™ for standalone execution",
           "Hardware exports enable FPGA/ASIC deployment paths",
         ],
       },
@@ -1303,7 +1303,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           headers: ["Package", "Capability", "What's New to NPM"],
           rows: [
             ["@cmpsbl/types", "Schemas, interfaces, type definitions for the full substrate", "First governed cognitive type system — 40-primitive topology types"],
-            ["@cmpsbl/runtime", "Mini-Runtime™ execution engine", "First embeddable cognitive runtime with CJPI scoring"],
+            ["@cmpsbl/runtime", "Convex Core™ execution engine", "First embeddable cognitive runtime with CJPI scoring"],
             ["@cmpsbl/sdk", "Unified interface to the full substrate", "First single-import cognitive orchestration SDK"],
           ],
         },
@@ -1859,7 +1859,7 @@ function DocViewer({ doc, onBack }: { doc: InvestorDoc; onBack: () => void }) {
                   {/* Footer line */}
                   <div className="flex items-center justify-between mt-4 pt-3 border-t border-dashed border-slate-200">
                     <span className="text-[8px] font-mono text-slate-300">Single-file · Zero-dependency · Standalone</span>
-                    <span className="text-[8px] font-mono text-slate-300">Mini-Runtime™ Embedded</span>
+                    <span className="text-[8px] font-mono text-slate-300">Convex Core™ Embedded</span>
                   </div>
                 </div>
               </div>

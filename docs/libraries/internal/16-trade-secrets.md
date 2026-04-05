@@ -30,7 +30,7 @@ This document indexes the substrate's proprietary algorithms and trade secrets. 
 | Boot sequence hash chain | Self-verifying initialization — proves correct startup |
 | Memory chain orchestration (100) | Multi-primitive coordination patterns |
 | Dual-layer Ascension architecture | Original code + cognitive overlay execution model |
-| Mini-Runtime Engine | Proprietary standalone execution environment |
+| Convex Core™ Processing Layer | Proprietary standalone execution environment |
 
 ## Protection Mechanisms
 

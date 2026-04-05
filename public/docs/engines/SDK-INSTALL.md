@@ -3,7 +3,7 @@
 **Version:** 1.0.0  
 **License:** Per-engine perpetual license  
 **Delivery:** Hosted API + Copy-paste SDK  
-**Runtime:** CMPSBL® Mini-Runtime™ Engine  
+**Runtime:** CMPSBL® Convex Core™ Processing Layer  
 
 ---
 

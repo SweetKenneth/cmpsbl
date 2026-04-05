@@ -60,7 +60,7 @@ Use this framing. We are **infrastructure**, not an application.
 > BYOK architecture — your keys, your data, your infrastructure. Immutable audit trails with chain-of-custody checksums. Row-Level Security on every table. We can't see your data even if we wanted to.
 
 ### "What does the export actually give me?"
-> A single file — drop it into your project, zero dependencies. It contains a Mini-Runtime, all included primitive effects, a bridge executor, and a public API. Works in 90+ languages. It's a finished product, not a prototype.
+> A single file — drop it into your project, zero dependencies. It contains a Convex Core™, all included primitive effects, a bridge executor, and a public API. Works in 90+ languages. It's a finished product, not a prototype.
 
 ---
 

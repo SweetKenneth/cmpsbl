@@ -116,7 +116,7 @@ The substrate is valued across six pillars:
 2. **Dual-layer architecture** — native execution + cognitive overlay
 3. **Universal language support** — software, HDL, GPU, blockchain, quantum & robotics = 25 targets
 4. **Mutual dependency (The Moat)** — exported capabilities depend on both the developer's code AND the substrate's primitives
-5. **Portable output** — exports survive platform loss with Mini Runtime
+5. **Portable output** — exports survive platform loss with Convex Core
 
 **Defensible value:** Ascension transforms CMPSBL from a cognitive orchestration platform into a universal software augmentation layer. This is a new category. The mutual dependency creates a structural flywheel — every upload increases the substrate's discovery corpus while every export ties the developer to the platform's runtime.
 
@@ -141,12 +141,12 @@ The substrate is valued across six pillars:
 | Property | CMPSBL | Unity |
 |----------|--------|-------|
 | Export targets | 90+ languages (software, HDL, GPU, blockchain, quantum & robotics) | 25+ platforms |
-| Runtime included | Mini Runtime™ bundled | Unity Runtime required |
+| Runtime included | Convex Core™ bundled | Unity Runtime required |
 | Documentation | Auto-generated per export | Manual |
 | Portability | Survives platform loss | Platform-dependent |
 | License | Per export | Per seat |
 
-**Defensible value:** Universal Export with bundled Mini Runtime means every exported artifact is a standalone product. This is the only AI system where exports include a full execution environment.
+**Defensible value:** Universal Export with bundled Convex Core means every exported artifact is a standalone product. This is the only AI system where exports include a full execution environment.
 
 ---
 
@@ -312,7 +312,7 @@ Ascension is the single largest value multiplier in the system because it:
 1. **Creates a new category** — no competitor offers software evolution with dual-layer preservation
 2. **Generates mutual dependency** — the structural flywheel that retains developers
 3. **Extends to hardware** — 7 HDL targets (VHDL, Verilog, SystemVerilog, etc.) opens the semiconductor market
-5. **Produces portable assets** — Mini Runtime ensures exports are products, not demos
+5. **Produces portable assets** — Convex Core ensures exports are products, not demos
 6. **Feeds both vaults** — discoveries flow to Memory Stream (users) and S-Tier (governor)
 7. **Runs autonomously** — CDM means the system evolves without operator input
 
