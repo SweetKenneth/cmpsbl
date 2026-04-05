@@ -12,8 +12,8 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../discovery-retirement';
-import { routeDiscovery } from '../foundry-engine';
+import { addDiscovery } from '../../factory/discovery-retirement';
+import { routeDiscovery } from '../../factory/foundry-engine';
 import { getMediaEngines, getMediaAgents } from './media';
 
 // ═══════════════════════════════════════════════════════════════
