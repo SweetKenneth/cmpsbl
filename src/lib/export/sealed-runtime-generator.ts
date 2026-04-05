@@ -26,14 +26,17 @@
 
 export function generateSealedRuntime(): string {
   return `/**
- * CMPSBL® Mini-Runtime™ Engine — Sealed Distribution
+ * CMPSBL® Convex Core™ — Sealed Distribution
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * This is a sealed build of the CMPSBL® Mini-Runtime™ Engine.
- * Internal algorithms, scoring weights, and proprietary logic
+ * This is a sealed build of the CMPSBL® Convex Core™ Processing Layer.
+ * Internal dispatch matrices, scoring weights, and proprietary logic
  * are protected under trade secret law.
  *
  * Public API surface is fully functional.
  * Zero dependencies. Pure TypeScript. Drop-in ready.
+ *
+ * Architecture: Deterministic Processing Layer v3.0
+ * Supersedes: Mini-Runtime™ Engine (deprecated v2.x)
  *
  * © CMPSBL® — All rights reserved.
  * Unauthorized reverse engineering is prohibited.
