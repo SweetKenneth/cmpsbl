@@ -71,6 +71,19 @@ export {
 } from './agency';
 
 export {
+  getMediaSubstrate,
+  getMediaPrimitives,
+  getMediaEngines,
+  getMediaAgents,
+  getAllMediaCapabilities,
+  getMediaCrownJewels,
+  getMediaPrimitiveCrownJewels,
+  getMediaCrownJewelSummary,
+  getMediaCrownJewelCount,
+  getMediaCrownJewelCapabilities,
+} from './media';
+
+export {
   getUltimateSubstrate,
   getUltimatePrimitives,
   getUltimateEngines,
@@ -106,6 +119,19 @@ export {
   type AgencyDiscovery,
   type AgencySeedResult,
 } from './agency-seed';
+
+export {
+  seedMediaDiscoveries,
+  getMediaSeedResult,
+  getMediaSeedSummary,
+  getMediaVault,
+  getMediaVaultCount,
+  getMediaMemoryStreamPool,
+  getMediaMemoryStreamCount,
+  resetMediaSeed,
+  type MediaDiscovery,
+  type MediaSeedResult,
+} from './media-seed';
 export {
   getATierVault,
   getATierByVertical,
@@ -139,6 +165,7 @@ import { getRoboticsSubstrate } from './robotics';
 import { getQuantumSubstrate } from './quantum';
 import { getLLMSubstrate } from './llm';
 import { getAgencySubstrate } from './agency';
+import { getMediaSubstrate } from './media';
 import { getUltimateSubstrate } from './ultimate';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
@@ -151,6 +178,7 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['quantum-v1', getQuantumSubstrate],
   ['llm-v1', getLLMSubstrate],
   ['agency-v1', getAgencySubstrate],
+  ['media-v1', getMediaSubstrate],
   ['ultimate-v1', getUltimateSubstrate],
 ]);
 
@@ -161,6 +189,7 @@ const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['quantum', 'quantum-v1'],
   ['llm', 'llm-v1'],
   ['agency', 'agency-v1'],
+  ['media', 'media-v1'],
   ['ultimate', 'ultimate-v1'],
 ]);
 

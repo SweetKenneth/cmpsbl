@@ -43,6 +43,7 @@ export const DOMAIN_CONFIG = {
     llm: 'llm.cmpsbl.com',
     agency: 'agency.cmpsbl.com',
     ultimate: 'ultimate.cmpsbl.com',
+    media: 'media.cmpsbl.com',
   },
   /** Special-purpose subdomains (not full substrates) */
   services: {

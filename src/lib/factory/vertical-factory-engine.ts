@@ -584,6 +584,6 @@ export function isDynamicVertical(subdomain: string): boolean {
 
 /** Get total count of all verticals (static + dynamic) */
 export function getTotalVerticalCount(): number {
-  // 5 static (cyber, robotics, quantum, llm, agency) + dynamic
-  return 5 + DYNAMIC_VERTICALS.size;
+  // 6 static (cyber, robotics, quantum, llm, agency, media) + dynamic
+  return 6 + DYNAMIC_VERTICALS.size;
 }

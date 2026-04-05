@@ -11,6 +11,7 @@ const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
 const LLMHome = lazy(() => import("@/pages/LLMHome"));
 const AgencyHome = lazy(() => import("@/pages/AgencyHome"));
 const UltimateHome = lazy(() => import("@/pages/UltimateHome"));
+const MediaHome = lazy(() => import("@/pages/MediaHome"));
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 
 /**
@@ -94,6 +95,14 @@ export default function DomainAwareHome() {
         <PinGate pin="4645" storageKey="ultimate_access">
           <UltimateHome />
         </PinGate>
+      </Suspense>
+    );
+  }
+
+  if (verticalKey === 'media') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(330 25% 4%)" }} />}>
+        <MediaHome />
       </Suspense>
     );
   }

@@ -5,7 +5,7 @@
  * Built from patterns learned through Ascension interactions.
  */
 
-export type SpecialtyDomain = 'fintech' | 'healthcare' | 'legal' | 'security' | 'gaming' | 'education' | 'robotics' | 'quantum' | 'llm' | 'agency' | 'ultimate';
+export type SpecialtyDomain = 'fintech' | 'healthcare' | 'legal' | 'security' | 'gaming' | 'education' | 'robotics' | 'quantum' | 'llm' | 'agency' | 'ultimate' | 'media';
 
 export interface SpecialtySubstrate {
   id: string;
@@ -31,6 +31,7 @@ const DOMAIN_CONFIG: Record<SpecialtyDomain, { label: string; description: strin
   llm: { label: 'Large Language Models', description: 'Hallucination detection, prompt injection defense, bias calibration, alignment monitoring' },
   agency: { label: 'Autonomous Agents', description: 'Agent autonomy, tool mastery, research synthesis, team collaboration, governed self-healing' },
   ultimate: { label: 'Universal Ascension', description: 'Full-spectrum hardening, cross-domain synthesis, maximum compounding, every primitive candidate' },
+  media: { label: 'Media & Content', description: 'Music generation, video synthesis, image creation, ad copy, social media campaigns, brand management' },
 };
 
 /**

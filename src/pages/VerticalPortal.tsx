@@ -9,7 +9,7 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, type LucideIcon } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, Clapperboard, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNav } from "@/components/PublicNav";
@@ -20,7 +20,7 @@ import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory
 
 /** Map icon names to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = {
-  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users, Crown,
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock, Atom, Brain, Users, Crown, Clapperboard,
 };
 
 const STATIC_VERTICALS = [
@@ -88,6 +88,17 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(270 70% 50%)',
     primitiveCount: 40,
     capabilityCount: '120 pool',
+    status: 'Active' as const,
+  },
+  {
+    id: 'media',
+    name: 'CMPSBL MEDIA™',
+    tagline: 'Cognitive Media Infrastructure — Content Creates Itself',
+    url: 'https://media.cmpsbl.com',
+    icon: Clapperboard,
+    accentColor: 'hsl(330 85% 60%)',
+    primitiveCount: 16,
+    capabilityCount: '110+',
     status: 'Active' as const,
   },
 ];

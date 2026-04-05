@@ -24,6 +24,7 @@ import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getLLMEngines, getLLMAgents } from './verticals/llm';
 import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
+import { getMediaEngines, getMediaAgents } from './verticals/media';
 import {
   ULTIMATE_ALL_ENGINES,
   ULTIMATE_ALL_AGENTS,
@@ -152,6 +153,10 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   // Agency (16)
   tag(getAgencyEngines(), 'agency');
   tag(getAgencyAgents(), 'agency');
+
+  // Media (16)
+  tag(getMediaEngines(), 'media');
+  tag(getMediaAgents(), 'media');
 
   // Ultimate Universal (16)
   tag(ULTIMATE_ALL_ENGINES, 'ultimate');
