@@ -101,10 +101,10 @@ export function generateCompiledPreamble(
 
   // Default: TypeScript/JavaScript
   return [
-    `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-    `${c} ║ Auto-generated. Tampering invalidates    ║`,
-    `${c} ║ artifact integrity and voids certification║`,
-    `${c} ╚══════════════════════════════════════════╝`,
+    `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+    `${c} ║ Auto-generated. Tampering invalidates      ║`,
+    `${c} ║ artifact integrity and voids certification  ║`,
+    `${c} ╚═══════════════════════════════════════════╝`,
     '',
     `const _DT = Object.freeze([${dispatchTable.join(',')}]);`,
     `const _CM = Object.freeze([${collisionMatrix.join(',')}]);`,
