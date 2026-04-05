@@ -8,7 +8,7 @@
  * packaged for standalone operation outside the substrate.
  *
  * Usage:
- *   import { createRuntime } from './standalone-runtime';
+ *   import { createRuntime } from './convex-core';
  *   import { createDiscoveryEngine } from './standalone-discovery-engine';
  *
  *   const runtime = createRuntime();
@@ -20,12 +20,12 @@
  */
 
 import type {
-  StandaloneRuntime,
+  ConvexCoreLayer,
   CJPIScoreBreakdown,
   DiscoveryCategory,
   CrystallizedTier,
   ErrorStrategy,
-} from './standalone-runtime';
+} from './convex-core';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -162,7 +162,7 @@ const BUILTIN_TEMPLATES: SynthesisTemplate[] = [
 // DISCOVERY ENGINE FACTORY
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export function createDiscoveryEngine(runtime: StandaloneRuntime) {
+export function createDiscoveryEngine(runtime: ConvexCoreLayer) {
   const { storage, computeCJPI, autoAssignTier, computeSynergyMultiplier, computeStableId } = runtime;
 
   /**

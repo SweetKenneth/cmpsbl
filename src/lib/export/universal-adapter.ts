@@ -2549,7 +2549,7 @@ Mode transitions are recorded, inspectable, and never hidden.
 
 | File | Purpose |
 |------|---------|
-| \`standalone-runtime.ts\` | CMPSBL® Convex Core™ Processing Layer — the single canonical runtime |
+| \`convex-core.ts\` | CMPSBL® Convex Core™ Processing Layer — the single canonical runtime |
 | \`*.py / *.go / *.rs / etc\` | Bridge adapters — metadata + integrity + remote-first + fallback |
 | \`Makefile\` | Build & test commands for every included language |
 | \`LICENSE\` | CMPSBL® Proprietary License |
@@ -2594,7 +2594,7 @@ result = engine.execute({"key": "value"})
 
 ### Using the CMPSBL® Convex Core™ Processing Layer (Advanced)
 \`\`\`typescript
-import { createRuntime } from './standalone-runtime';
+import { createRuntime } from './convex-core';
 
 const runtime = createRuntime();
 // Use the runtime for CJPI scoring, FSM, and pipeline orchestration

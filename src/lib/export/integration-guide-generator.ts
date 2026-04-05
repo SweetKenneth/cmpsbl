@@ -68,7 +68,7 @@ function generateHeader(input: IntegrationGuideInput): string {
 
 > **Export Type:** ${kindLabel}
 > **Generated:** ${new Date().toISOString().split('T')[0]}
-> **Runtime:** CMPSBL® Sealed Runtime™
+> **Runtime:** CMPSBL® Convex Core™ Sealed Artifact
 > **Zero Dependencies Required:** Yes — this export is fully self-contained.
 
 This guide walks you through exactly how to place this ${kindLabel.toLowerCase()} into your existing stack, configure it for your environment, and verify it works correctly.`;
@@ -117,7 +117,7 @@ function generateFileInventory(input: IntegrationGuideInput): string {
 📦 ${input.slug}/
 ├── 📄 manifest.json              ← Export metadata, CJPI score, primitive chain
 ├── 📁 _runtime/
-│   ├── standalone-runtime.ts     ← Convex Core™ (network-aware, offline-capable)
+│   ├── convex-core.ts     ← Convex Core™ (network-aware, offline-capable)
 │   ├── chain-executor.ts         ← Sealed 40-primitive execution matrix
 │   └── discovery-engine.ts       ← Template injection and synthesis reactor
 ├── 📁 src/
@@ -139,7 +139,7 @@ function generateFileInventory(input: IntegrationGuideInput): string {
 ├── 📄 manifest.json              ← Capability metadata, CJPI tier, fingerprint
 ├── 📄 export-tier.json           ← Score, tier, valuation, unlocked languages
 ├── 📁 _runtime/
-│   └── standalone-runtime.ts     ← Convex Core™ (network-aware, offline-capable)
+│   └── convex-core.ts     ← Convex Core™ (network-aware, offline-capable)
 ├── 📁 src/
 │   ├── ${input.slug}.ts          ← Primary capability implementation
 │   └── [language-variants]/      ← Additional language exports (if unlocked)
@@ -154,7 +154,7 @@ function generateFileInventory(input: IntegrationGuideInput): string {
 📦 ${input.slug}/
 ├── 📄 manifest.json              ← ${kindLabel} metadata and configuration
 ├── 📁 _runtime/
-│   ├── standalone-runtime.ts     ← Convex Core™ (network-aware, offline-capable)
+│   ├── convex-core.ts     ← Convex Core™ (network-aware, offline-capable)
 │   ├── chain-executor.ts         ← Sealed 40-primitive execution matrix
 │   └── discovery-engine.ts       ← Template injection and synthesis reactor
 ├── 📁 src/
@@ -177,7 +177,7 @@ ${fileTree}
 | File | Purpose | Do You Edit It? |
 |------|---------|----------------|
 | \`manifest.json\` | Describes the export, its CJPI score, and primitive chain | ❌ No — read-only reference |
-| \`_runtime/standalone-runtime.ts\` | Self-contained runtime engine | ❌ No — sealed artifact |
+| \`_runtime/convex-core.ts\` | Self-contained runtime engine | ❌ No — sealed artifact |
 | \`src/index.ts\` or \`src/${input.slug}.ts\` | Your entry point for using this capability | ✅ Yes — import from here |
 | \`tests/\` | Pre-built verification suite | ✅ Yes — extend with your own tests |`;
 }
@@ -266,7 +266,7 @@ console.log(result.output);
 **Step 4: Verify the runtime loads**
 
 \`\`\`typescript
-import { getRuntimeMode } from './src/${targetDir}/_runtime/standalone-runtime';
+import { getRuntimeMode } from './src/${targetDir}/_runtime/convex-core';
 
 // Should print 'offline' or 'hybrid' depending on network
 console.log('Runtime mode:', getRuntimeMode());
@@ -431,7 +431,7 @@ def execute_capability(input_data: dict) -> dict:
     """Execute the CMPSBL capability via the Node.js bridge."""
     result = subprocess.run(
         ['node', '-e', f"""
-          const {{ init, createPipeline }} = require('./_runtime/standalone-runtime');
+          const {{ init, createPipeline }} = require('./_runtime/convex-core');
           const instance = init({{ offline: true }});
           const pipeline = createPipeline(instance);
           pipeline.execute({json.dumps(input_data)}).then(r => {{
@@ -540,7 +540,7 @@ describe('${input.name} Integration', () => {
 ### Runtime Mode Verification
 
 \`\`\`typescript
-import { getRuntimeMode, configureEndpoint } from './_runtime/standalone-runtime';
+import { getRuntimeMode, configureEndpoint } from './_runtime/convex-core';
 
 // Test each mode
 console.log('Current mode:', getRuntimeMode()); // 'hybrid'
@@ -651,7 +651,7 @@ The Convex Core™ included in this export supports three execution modes:
 ### Configuring the Mode
 
 \`\`\`typescript
-import { configureEndpoint, getRuntimeMode } from './_runtime/standalone-runtime';
+import { configureEndpoint, getRuntimeMode } from './_runtime/convex-core';
 
 // Hybrid (default) — tries network, falls back to local
 // No configuration needed
@@ -699,14 +699,14 @@ CMPSBL exports use TypeScript as the **canonical runtime** — all CJPI scoring,
 
 \`\`\`
 ┌──────────────────────────┐     HTTP/stdin      ┌────────────────────────┐
-│  Your ${hasNonTs ? 'native' : 'application'} code         │ ──────────────────→ │  CMPSBL Sealed Runtime │
+│  Your ${hasNonTs ? 'native' : 'application'} code         │ ──────────────────→ │  CMPSBL Convex Core™ Sealed Artifact │
 │  (Python, Go, Java, etc) │ ←────────────────── │  (Node.js / Bun)       │
 └──────────────────────────┘     JSON result      └────────────────────────┘
 \`\`\`
 
 ### Why Not Native Execution?
 
-The Sealed Runtime™ contains the 40-primitive execution matrix, CJPI scoring engine, and discovery synthesis. These are **TypeScript-native** — they cannot be transpiled to Python or Go without losing fidelity. The bridge adapter ensures:
+The Convex Core™ Sealed Artifact contains the 40-primitive execution matrix, CJPI scoring engine, and discovery synthesis. These are **TypeScript-native** — they cannot be transpiled to Python or Go without losing fidelity. The bridge adapter ensures:
 
 - ✅ **Exact same scoring** as the canonical runtime
 - ✅ **Same primitive chain** execution order
@@ -724,7 +724,7 @@ RUNTIME_DIR = os.path.join(os.path.dirname(__file__), '_runtime')
 def execute(input_data: dict, offline: bool = True) -> dict:
     """Execute a CMPSBL capability via the TypeScript bridge."""
     script = f"""
-      import {{ init, createPipeline }} from './standalone-runtime.ts';
+      import {{ init, createPipeline }} from './convex-core.ts';
       const instance = init({{ offline: {str(offline).lower()} }});
       const pipeline = createPipeline(instance);
       const result = await pipeline.execute({json.dumps(input_data)});
@@ -758,7 +758,7 @@ import (
 func Execute(input map[string]interface{}, runtimeDir string) (map[string]interface{}, error) {
     inputJSON, _ := json.Marshal(input)
     script := \`
-      import { init, createPipeline } from './standalone-runtime.ts';
+      import { init, createPipeline } from './convex-core.ts';
       const instance = init({ offline: true });
       const pipeline = createPipeline(instance);
       const result = await pipeline.execute(\` + string(inputJSON) + \`);
@@ -780,7 +780,7 @@ For production, run the runtime as a persistent microservice instead of spawning
 
 \`\`\`bash
 # Start the bridge server (included in the export)
-npx tsx _runtime/standalone-runtime.ts --serve --port 3141
+npx tsx _runtime/convex-core.ts --serve --port 3141
 
 # Then call from any language via HTTP
 curl -X POST http://localhost:3141/execute \\
@@ -803,14 +803,14 @@ When you see execution traces, each primitive reports its status honestly:
 > (e.g., Python ML pipelines, Rust FFI) require your native runtime to handle.`;
 }
 
-// ─── Sealed Runtime Explainer ────────────────────────────────────────────────
+// ─── Convex Core™ Sealed Artifact Explainer ────────────────────────────────────────────────
 
 function generateSealedRuntimeExplainer(_input: IntegrationGuideInput): string {
   const cb = '```'; // code block delimiter
   return [
     '---',
     '',
-    '## 6. Understanding the Sealed Runtime™ (Black Box)',
+    '## 6. Understanding the Convex Core™ Sealed Artifact (Black Box)',
     '',
     '### Why Does Some Code Look Unreadable?',
     '',
@@ -834,7 +834,7 @@ function generateSealedRuntimeExplainer(_input: IntegrationGuideInput): string {
     '',
     cb + 'typescript',
     '// These all work exactly as documented:',
-    "import { init, createPipeline, getRuntimeMode } from './_runtime/standalone-runtime';",
+    "import { init, createPipeline, getRuntimeMode } from './_runtime/convex-core';",
     '',
     'const instance = init({ offline: true });',
     "console.log(instance.mode);          // 'offline' — transparent",
@@ -926,7 +926,7 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '',
     '> **What does the test harness check?**',
     '> - `manifest.json` structure and required fields',
-    '> - Sealed Runtime loads and initializes without errors',
+    '> - Convex Core™ Sealed Artifact loads and initializes without errors',
     '> - All primitives in the chain respond (executed or delegated)',
     '> - Offline mode functions without any network calls',
     '> - CJPI scoring produces deterministic results',
@@ -1085,12 +1085,12 @@ The sealed components ensure consistent behavior across all deployments.
 | **CJPI** | Composable Joint Performance Index — scores artifacts on novelty, utility, complexity, and composability (0–100) |
 | **Primitive** | One of the 40 foundational capabilities in the CMPSBL substrate |
 | **Primitive Chain** | The sequence of primitives that execute for a given capability |
-| **Sealed Runtime™** | The self-contained TypeScript engine bundled with every export |
+| **Convex Core™ Sealed Artifact** | The self-contained TypeScript engine bundled with every export |
 | **Tier** | Score-based classification: Raw (0+), Mint (68+), Prime (80+), Relic (90+), Mythic (94+) |
 | **Bridge Adapter** | A pattern for calling the TypeScript runtime from non-JS/TS languages |
 | **Cognitive Overlay** | Layer 2 in Ascension exports — discovered primitive augmentations applied on top of your original code |
 | **Execution Trace** | The log of which primitives ran and their status (executed, delegated, unavailable) |
-| **Offline Mode** | Run the Sealed Runtime with zero network calls — all scoring happens locally |
+| **Offline Mode** | Run the Convex Core™ Sealed Artifact with zero network calls — all scoring happens locally |
 | **Hybrid Mode** | Default — tries network for deep effects, falls back to local if unavailable |
 | **Memory Stream** | Autonomous 8-hour discovery cycle that surfaces new capabilities |
 | **Ascension** | The process of enriching your code with discovered substrate capabilities |
@@ -1113,7 +1113,7 @@ The sealed components ensure consistent behavior across all deployments.
 ---
 
 © 2025–2026 PromptFluid®. All rights reserved.
-CMPSBL® and Sealed Runtime™ are trademarks of PromptFluid.
+CMPSBL® and Convex Core™ Sealed Artifact are trademarks of PromptFluid.
 `;
 }
 

@@ -55,7 +55,7 @@ export function generateUniversalUserGuide(input: UserGuideInput): string {
   <div class="section-title"><span class="dot"></span> About This Software</div>
   <div class="card">
     <p><strong>${esc(name)}</strong> is a <strong>${esc(label)}</strong> from the CMPSBL® Substrate${substrate ? ` (${esc(substrate)} vertical)` : ''}.</p>
-    <p>This is a <strong>Sealed Runtime</strong> — a production-grade, zero-dependency artifact that runs standalone in any TypeScript/JavaScript environment. The Convex Core™ Processing Layer is embedded directly in the source file. No additional packages required.</p>
+    <p>This is a <strong>Convex Core™ Sealed Artifact</strong> — a production-grade, zero-dependency artifact that runs standalone in any TypeScript/JavaScript environment. The Convex Core™ Processing Layer is embedded directly in the source file. No additional packages required.</p>
     ${cjpi != null ? `<p><strong>CJPI Score:</strong> ${cjpi}/100 · <strong>Tier:</strong> ${esc(tier)} · <strong>Version:</strong> ${esc(version)}</p>` : ''}
     ${modules.length > 0 ? `<p><strong>Primitive Chain:</strong> ${esc(modList)}</p>` : ''}
   </div>
@@ -253,7 +253,7 @@ npx cmpsbl-test --config ./test-harness.config.json --verify-sealed
       <tr><td><strong>Offline</strong></td><td>Fully standalone, zero network dependency</td><td>Air-gapped, local, embedded</td></tr>
     </tbody>
   </table>
-  <pre><code>import { configureEndpoint, getRuntimeMode } from './_runtime/standalone-runtime';
+  <pre><code>import { configureEndpoint, getRuntimeMode } from './_runtime/convex-core';
 
 // Force offline (fully standalone)
 configureEndpoint(null);

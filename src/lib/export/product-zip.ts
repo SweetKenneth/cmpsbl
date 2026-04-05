@@ -167,7 +167,7 @@ function generateLicenseTxt(): string {
 
 Version 1.0 — Effective ${new Date().toISOString().slice(0, 10)}
 
-This software is provided as a Sealed Runtime™ artifact by PromptFluid®.
+This software is provided as a Convex Core™ Sealed Artifact artifact by PromptFluid®.
 
 GRANT OF LICENSE:
 You are granted a non-exclusive, non-transferable, perpetual license to
@@ -191,7 +191,7 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
   const folderName = `cmpsbl-${product.kind}-${product.slug}`;
   const folder = zip.folder(folderName)!;
   const kindLabel = product.kind === 'engine' ? 'Composable Engine' : 'Standalone Agent';
-  const caps = product.capabilities || [kindLabel, `${product.tier.toUpperCase()} Tier`, 'Sealed Runtime'];
+  const caps = product.capabilities || [kindLabel, `${product.tier.toUpperCase()} Tier`, 'Convex Core™ Sealed Artifact'];
   const cjpi = cjpiFromTier(product.tier);
 
   // ── Manifest ──────────────────────────────────────────────────────────────

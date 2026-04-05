@@ -167,7 +167,7 @@ ${body}
 // ─── Individual HTML generators ──────────────────────────────────────────────
 
 export function generateErrorCodesHTML(): string {
-  return htmlShell('Error Code Reference', 'CMPSBL® Sealed Runtime™ Diagnostic Codes', `
+  return htmlShell('Error Code Reference', 'CMPSBL® Convex Core™ Sealed Artifact Diagnostic Codes', `
   <h2>Runtime Initialization Errors</h2>
   <table>
     <thead><tr><th>Code</th><th>Message</th><th>Cause</th><th>Fix</th></tr></thead>
@@ -205,7 +205,7 @@ export function generateErrorCodesHTML(): string {
   <table>
     <thead><tr><th>Code</th><th>Message</th><th>Cause</th><th>Fix</th></tr></thead>
     <tbody>
-      <tr><td><code>CMPSBL_E030</code></td><td>Bridge connection refused</td><td>Service not running</td><td>Start: <code>npx tsx _runtime/standalone-runtime.ts --serve</code></td></tr>
+      <tr><td><code>CMPSBL_E030</code></td><td>Bridge connection refused</td><td>Service not running</td><td>Start: <code>npx tsx _runtime/convex-core.ts --serve</code></td></tr>
       <tr><td><code>CMPSBL_E031</code></td><td>Bridge timeout</td><td>Service too slow</td><td>Check Node.js process health</td></tr>
       <tr><td><code>CMPSBL_E032</code></td><td>Subprocess failed</td><td><code>npx tsx</code> not found</td><td>Install: <code>npm install -g tsx</code></td></tr>
     </tbody>
@@ -290,7 +290,7 @@ export function generateBundleInfoHTML(name: string): string {
   <table>
     <thead><tr><th>Component</th><th>Raw Size</th><th>Minified + Gzipped</th></tr></thead>
     <tbody>
-      <tr><td><code>standalone-runtime.ts</code></td><td>~35 KB</td><td>~8 KB</td></tr>
+      <tr><td><code>convex-core.ts</code></td><td>~35 KB</td><td>~8 KB</td></tr>
       <tr><td><code>chain-executor.ts</code></td><td>~25 KB</td><td>~6 KB</td></tr>
       <tr><td><code>discovery-engine.ts</code></td><td>~15 KB</td><td>~4 KB</td></tr>
       <tr><td>Your capability code</td><td>Varies</td><td>Varies</td></tr>
@@ -329,7 +329,7 @@ export function generateMonitoringHTML(name: string, slug: string): string {
   <pre>app.get('/health/cmpsbl', async (req, res) =&gt; {
   const start = Date.now();
   try {
-    const { init, createPipeline } = await import('./_runtime/standalone-runtime');
+    const { init, createPipeline } = await import('./_runtime/convex-core');
     const instance = init({ offline: true });
     const pipeline = createPipeline(instance);
     const result = await pipeline.execute({ healthcheck: true });
@@ -380,8 +380,8 @@ export function generateLicenseFaqHTML(): string {
   <h2>Can I include this in an open-source project?</h2>
   <p><strong>Yes, with conditions:</strong></p>
   <ul>
-    <li>The <code>_runtime/</code> directory (Sealed Runtime™) remains sealed and unmodified</li>
-    <li>You may NOT redistribute the Sealed Runtime as a standalone component</li>
+    <li>The <code>_runtime/</code> directory (Convex Core™ Sealed Artifact) remains sealed and unmodified</li>
+    <li>You may NOT redistribute the Convex Core™ Sealed Artifact as a standalone component</li>
     <li>You may include it as part of your larger application</li>
     <li>Credit CMPSBL® in your project's acknowledgments</li>
   </ul>
@@ -411,7 +411,7 @@ export function generateRemovalHTML(name: string, slug: string, kind: string): s
   </div>
 
   <h2>Step 1: Find Integration Points</h2>
-  <pre>grep -r "cmpsbl\\|@cmpsbl\\|standalone-runtime\\|createPipeline" ./src/ --include="*.ts" --include="*.tsx" --include="*.js"</pre>
+  <pre>grep -r "cmpsbl\\|@cmpsbl\\|convex-core\\|createPipeline" ./src/ --include="*.ts" --include="*.tsx" --include="*.js"</pre>
 
   <h2>Step 2: Remove Imports</h2>
   <pre>// BEFORE (with CMPSBL)
@@ -469,7 +469,7 @@ export function generateChangelogHTML(name: string, version: string, kind: strin
 
   <h3>What's Included</h3>
   <ul>
-    <li>Sealed Runtime™ v1.x.x (standalone, offline-capable)</li>
+    <li>Convex Core™ Sealed Artifact v1.x.x (standalone, offline-capable)</li>
     <li>Full primitive chain executor</li>
     <li>Integration guide with framework examples</li>
     <li>Pre-built test suite</li>

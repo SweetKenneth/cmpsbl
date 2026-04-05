@@ -1,5 +1,5 @@
 /**
- * Marketplace Export — Generates Sealed Runtime ZIP for marketplace purchases
+ * Marketplace Export — Generates Convex Core™ Sealed Artifact ZIP for marketplace purchases
  * 
  * Reuses the universal export infrastructure to deliver the full artifact package:
  * source code variants, HTML report, User Guide, Integration Guide, LICENSE, README,
@@ -27,7 +27,7 @@ function toExportArtifact(item: MarketplaceItem): TieredFoundryExportArtifact {
 }
 
 /**
- * Download a single marketplace item as a full Sealed Runtime ZIP.
+ * Download a single marketplace item as a full Convex Core™ Sealed Artifact ZIP.
  * Works for both paid purchases (post-checkout) and free drops (no auth).
  */
 export async function downloadMarketplaceArtifact(item: MarketplaceItem): Promise<void> {
