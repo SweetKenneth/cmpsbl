@@ -25,7 +25,7 @@ import {
   createSaga,
   type CJPIScoreBreakdown,
   type StandaloneRuntime,
-} from '@/lib/export/standalone-runtime';
+} from '@/lib/export/convex-core';
 
 // Standalone discovery engine
 import {

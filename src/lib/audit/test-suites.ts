@@ -160,7 +160,7 @@ async function memoryStreamTests(): Promise<Array<[string, TestFn]>> {
     computeSynergyMultiplier, computeStableId, djb2Hash, canonicalize,
     createStateMachine, createDependencyGraph: createDepGraph,
     createSaga,
-  } = await import('@/lib/export/standalone-runtime');
+  } = await import('@/lib/export/convex-core');
 
   const { createDiscoveryEngine } = await import('@/lib/export/standalone-discovery-engine');
 
