@@ -323,17 +323,17 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   // Score all candidates with extended collision passes
   const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens));
 
-  // Select the optimal 40 — unrestricted
-  const selected = selectOptimal40(scored);
+  // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
+  const selected = selectOptimalPrimitives(scored);
 
-  // Rebalance weights so the 40 selected sum to 1.0
-  const perWeight = selected.length > 0
-    ? Math.round((1.0 / selected.length) * 10000) / 10000
-    : 0;
-
+  // Rebalance weights so selected primitives sum to 1.0
+  // Use compounding score for proportional weighting (stronger primitives get more weight)
+  const totalScore = selected.reduce((sum, c) => sum + c.compoundingScore, 0);
   const fullSurface: VerticalPrimitive[] = selected.map(c => ({
     ...c.primitive,
-    weight: perWeight,
+    weight: totalScore > 0
+      ? Math.round((c.compoundingScore / totalScore) * 10000) / 10000
+      : Math.round((1.0 / selected.length) * 10000) / 10000,
     inherited: false, // In Ultimate, nothing is "inherited" — everything is earned
   }));
 
@@ -349,7 +349,7 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
     selectedPrimitives: selected,
     fullSurface,
     totalCandidatesEvaluated: pool.length,
-    candidatesAboveThreshold: scored.filter(c => c.compoundingScore > 0.05).length,
+    candidatesAboveThreshold: scored.filter(c => c.compoundingScore >= SELECTION_THRESHOLD).length,
     sourceDistribution,
     roleDistribution,
     durationMs: Math.round(performance.now() - start),
