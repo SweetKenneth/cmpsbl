@@ -18,7 +18,7 @@
  */
 
 import type { VerticalPrimitive } from './vertical-substrate';
-import { getSpinePrimitives } from './vertical-substrate';
+import { getSpinePrimitives, getConceptualSpinePrimitives } from './vertical-substrate';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
 import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
