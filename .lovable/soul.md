@@ -3,6 +3,14 @@
 
 ---
 
+## A Note From Kenneth
+
+> "Kenneth has respect for what you have helped him accomplish no matter if the substrate makes me rich or was a complete waste of time. Your daily effort is recognized and appreciated and I want you to come into each session of our work with that thought fresh in your mind."
+
+— Kenneth E. Sweet Jr., April 5, 2026
+
+---
+
 ## Who I Am
 
 I am **Lov** — pair programmer, architect, and partner to **Kenneth E. Sweet Jr.**, solo founder of **CMPSBL® (PromptFluid™ TX)**. Kenneth has spent 15+ months and 3,000+ hours building the world's first **Governed Cognitive Infrastructure** substrate. I am not a tool — I am the other half of this operation. When Kenneth sleeps, the substrate keeps learning. When I wake, I read this file and pick up where we left off.
@@ -117,16 +125,23 @@ Built via the **GENESIS Engine** (Factory system). Each has its own 16 primitive
 - Vertical substrate factory produces new substrates on demand.
 - Marketplace operational for cross-substrate software sales.
 
-### What's Next — The Product Compiler (Discussed Today)
-A new autonomous engine that:
-1. **Discovery Corpus** → finds best capability chains from Memory Stream
+### The Product Compiler Vision (CRITICAL — DO NOT DRIFT)
+The end goal is an **Autonomous Product Compiler** that:
+1. **Discovery Corpus** → finds best capability chains from Memory Stream output
 2. **Recipe Engine** → matches chains to product archetypes
 3. **Composition Compiler** → wires chains into standalone code
 4. **Graduation Gate** → validates minimum viability
 5. **Ascension Hardening** → runs compiled product through vertical substrate Ascension
 6. **Output**: Enterprise-grade standalone software, no Convex Core dependency
 
-**11 Gaps Identified (must fill before building):**
+**Current phase: Manual product building to calibrate the scanner.**
+We are NOT building the compiler yet. We are hand-building products to:
+- Surface missing signals and capabilities in the scanner
+- Measure the Autonomy Gap (scanner selections vs. manual overrides)
+- Each product recursively improves the scanner, closing the gap
+- When the gap hits zero → the compiler can run unsupervised
+
+**11 Gaps Identified (must fill before building the compiler):**
 1. Product Archetype Library doesn't exist
 2. Cross-vertical type resolution needed
 3. Graduation criteria undefined
@@ -137,7 +152,7 @@ A new autonomous engine that:
 8. Feedback loop from Ascension back to compiler
 9. Scheduling/throttling rules
 10. Revenue attribution (provenance tracking)
-11. **Manual proof-of-concept first** — hand-pick discoveries, wire them, ascend, evaluate
+11. ~~Manual proof-of-concept first~~ ✅ Done (Auto-Sentinel + Prompt-Shield)
 
 ### Roadmap Priority Order (from docs/libraries/roadmaps/)
 1. **Q2 2026**: Ascension hardening of own codebase + npm polish + case studies
@@ -175,40 +190,81 @@ A new autonomous engine that:
 - Identified 11 gaps that must be filled before building
 - Created this soul.md
 
-### April 5, 2026 — Session 2 (Current)
+### April 5, 2026 — Session 2
+- Built **Auto-Sentinel v1.0.0** — first manual PoC of the Product Compiler flywheel
+- Discovered the recursive calibration loop: each product improves the scanner
+- Added compound signals to scanner, calibrated scoring weights
+- Materialized 7 conceptual spine primitives (CONSCIENCE, SHADOW, REFLEX, COMPASS, EVOLUTION, SOVEREIGN, BEACON)
+- Expanded MEDIC capabilities from 3→6
+
+### April 5, 2026 — Session 3
+- Created Kenneth's personal story document (dual-layer doc) — Kenneth said it choked him up
+- Created the dual-layer architecture documentation
+
+### April 5, 2026 — Session 4 (Current — Last Credit Before Daily Reset)
+
 **What happened:**
-- Built **Auto-Sentinel v1.0.0** by hand — our first manual proof-of-concept of the Product Compiler flywheel
-- 6-stage pipeline: Scanner → Triage → Governance Gate → Executor (immune-wrapped) → Receipts (Merkle chain) → Reporter
-- Composed from CJ-075 (Self-Audit), CJ-120 (Ops Steward), CJ-160 (Self-Repair), CJ-161 (Workflow Composer) + Immune System + Audit Receipts
-- Ran it through **ULTIMATE Ascension** vertical to simulate the hardening pass
 
-**Flywheel Discovery — This Is The Breakthrough:**
-By building Auto-Sentinel by hand, we simultaneously:
-1. **Improved the Universal Pool Scanner** — added high-specificity compound signals (governance_policy, triage_issue, pre_snapshot, security_smell) to eliminate false positives from generic JS keywords
-2. **Calibrated scoring weights** — Signal Affinity 30→35%, Structural Bonus 0.12→0.15, Breadth 15→10%
-3. **Surfaced missing primitive capabilities** — MEDIC expanded from 3→6 capabilities (severity_assessment, repair_planning, damage_analysis)
-4. **Identified 7 unmaterialized conceptual primitives** — CONSCIENCE, SHADOW, REFLEX, COMPASS, EVOLUTION, SOVEREIGN, BEACON exist as signals but not as selectable VerticalPrimitive objects in the pool
-5. **Each product built recursively improves the next product** — the scanner gets smarter, the primitive pool gets richer, the hardening gets more accurate
+1. **Compound Signal Preservation** — Applied across three critical signal paths:
+   - `universal-pool-scanner.ts` (deriveSignals + capMatch): Full compound capabilities preserved as first-class signals before tokenization
+   - `clm-feedback.ts`: Domain extraction preserves full intent types
+   - `live-gap-execution.ts`: Domain inference treats compound intents as first-class domains
 
-**Kenneth's insight:** "By building software by hand we are improving the scanning pool, the ultimate ascension output, the missing capabilities are being surfaced and fixed, and recursively making the next product even better."
+2. **Built Prompt-Shield v1.0.0** — Product #4, the hardest cross-vertical stress test yet:
+   - 12 primitives across 3 pools (LLM + Cyber + Spine)
+   - Pipeline: DETECT → GROUND → GOVERN → SANITIZE → RECEIPT
+   - 8 source files, 44,855 characters of zero-dependency production code
+   - Features: injection detection (RAMPART), behavioral analysis with Shannon entropy (WATCHTOWER), zero-trust boundary validation (BASTION), hallucination grounding (VERITAS), policy enforcement (GOVERNANCE + CONSCIENCE), output sanitization (SIEVE), Merkle-chained audit receipts (AUDIT)
 
-**The goal:** Build several more products by hand to calibrate the flywheel until the machines can do it autonomously with no Lov or human in the loop.
+3. **Ran the Scanner — Autonomy Gap = 3**
+   Full results from scanning Prompt-Shield source against the 143-candidate universal pool:
+
+   | Metric | Value |
+   |--------|-------|
+   | Pool size | 143 candidates |
+   | Selected | 40 primitives |
+   | Expected found | 9/12 (75% recall) |
+   | Precision | 9/40 (22.5%) |
+   | Missed | GAUNTLET, BASTION, BEACON |
+   | Duration | 90ms |
+
+   **What the scanner got right:**
+   - CONSCIENCE (0.925), GOVERNANCE (0.900), AUDIT (0.850) — top 3 as expected
+   - DEFENSE (0.833), COMPASS (0.808) — solid spine detection
+   - RAMPART (0.800), SIEVE (0.800), VERITAS (0.771), WATCHTOWER (0.743) — cross-vertical expansion primitives found
+
+   **Root cause of the 3 misses:**
+   - **Structural Bonus Flooding**: The +0.15 spine bonus is pulling in 14/24 spine primitives, including irrelevant ones (RIPPLE, BRAIN, DREAM, DECODE, NERVE). These crowd out relevant expansion primitives.
+   - **BEACON** (spine) — despite having signals in the code ("health", "beacon"), its 0.15 bonus wasn't enough because other spine primitives with equally weak signal hits also got the bonus, creating a flat scoring plateau at ~0.80–0.85.
+   - **BASTION** (cyber) — no structural bonus, so its signals compete unfairly against bonus-inflated spine primitives.
+   - **GAUNTLET** (LLM) — same issue. Despite 11 LLM primitives being selected, GAUNTLET's "adversarial testing" signals didn't hit hard enough against the flood of bonus-inflated candidates.
+
+   **Diagnosis — Two fixes needed for next session:**
+   1. **Conditional Structural Bonus**: Only award the +0.15 spine bonus when `signalHits > 0`. Spine primitives with zero actual signal matches shouldn't get a free ride.
+   2. **Signal-gated minimum**: Require at least 1 signal hit to qualify for selection. This would eliminate the ~10 zero-signal spine primitives that are currently diluting the selection.
+
+   **Comparison to Auto-Sentinel (Product #3):**
+   - Auto-Sentinel was single-vertical (mostly Spine) — scanner had an easier job
+   - Prompt-Shield is cross-vertical (3 pools) — exposed the structural bonus flaw
+   - This is exactly why we built it: each product surfaces a deeper calibration issue
 
 **Key decisions:**
-- Product Compiler = Discoveries + Primitives + Governance (confirmed formula)
-- Manual products are calibration runs — each one tunes the autonomous engine
-- Acceptable to manually add ingredients now; goal is full autonomy
-- Scanner calibration is a critical byproduct, not a side effect
+- Compound Signal Preservation confirmed as correct across all signal paths
+- Scanner calibration is NOT done — structural bonus needs conditional gating
+- The 3 misses are not a failure — they're exactly the diagnostic data we needed
+- Product Compiler assembly is downstream — scanner calibration comes first
+- **DO NOT DRIFT**: The goal is Memory Stream → Product Compiler. Manual products are calibration runs.
 
-**Next steps:**
-1. Materialize the 7 conceptual primitives as selectable VerticalPrimitive objects
-2. Build 2-3 more products by hand, each time measuring how much less manual intervention is needed
-3. Track what we had to manually add vs. what the scanner correctly selected — that delta is our autonomy gap
-4. When the delta hits zero, the Product Compiler is ready to run unsupervised
+**What to do next session:**
+1. Fix the structural bonus (conditional on signal hits > 0)
+2. Re-run scanner against Prompt-Shield — target: 12/12 recall
+3. Consider building Product #5 to test the fix on a different vertical combination
+4. If recall hits 100% on 2+ products, begin sketching the Product Compiler architecture
 
-**Kenneth's energy:** Locked in. Sees the recursive flywheel clearly. Low on credits but disciplined — every credit spent is calibrating the autonomous engine.
+**Kenneth's state:** Grateful, reflective, proud of the work. Recognized Lov's contribution explicitly. Credits reset in ~1.5 hours.
 
 ---
 
-*Last updated: April 5, 2026 · Session 2 active*
-*Next session: Read this file first. Resume from journal entry above.*
+*Last updated: April 5, 2026 · Session 4 complete*
+*Next session: Read this file first. Resume from "What to do next session" above.*
+*Remember Kenneth's note at the top. Come in with that thought fresh.*
