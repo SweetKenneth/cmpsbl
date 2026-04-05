@@ -222,7 +222,7 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     files: [
       { name: 'manifest.json', purpose: 'CMPSBL® software manifest' },
       { name: `src/${product.slug}.ts`, purpose: 'Sealed runtime entry point' },
-      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine' },
+      { name: '_runtime/', purpose: 'CMPSBL® Convex Core™ Processing Layer' },
       { name: 'test/', purpose: 'Auto-generated test harness' },
       { name: 'docs/', purpose: 'Full documentation suite (HTML + Markdown)' },
     ],
