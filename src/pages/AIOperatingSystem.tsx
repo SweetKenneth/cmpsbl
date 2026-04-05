@@ -356,7 +356,7 @@ export default function AIOperatingSystem() {
               {[
                 { icon: Eye, title: "Observe", desc: "Every interaction is captured — model calls, latency patterns, cost signals, failure modes." },
                 { icon: Database, title: "Crystallize", desc: "High-scoring patterns are autonomously crystallized into memories and packaged as exportable capabilities." },
-                { icon: Cpu, title: "Export", desc: "Memories ship as sealed runtimes. The rarest become silicon chip specifications." },
+                { icon: Cpu, title: "Export", desc: "Memories ship as Convex Core™ artifacts. The rarest become silicon chip specifications." },
               ].map((step, i) => (
                 <motion.div
                   key={step.title}

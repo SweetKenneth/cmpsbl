@@ -97,7 +97,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What's included in the free PRIMITIVE agent?",
-    a: "PRIMITIVE is a four-runtime fusion (Hybrid + Educator + Writer + Translator) with the same core sealed runtime, DREAM Synthesis, and persistent memory as paid agents. No credit card required.",
+    a: "PRIMITIVE is a four-runtime fusion (Hybrid + Educator + Writer + Translator) with the same core Convex Core™ artifact, DREAM Synthesis, and persistent memory as paid agents. No credit card required.",
   },
   {
     q: "What original agents are fused into each Meta-Agent?",
@@ -176,16 +176,16 @@ export default function ComposableCognitives() {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Meta-Agents — 5 Fused Runtime Agents | CMPSBL®</title>
-        <meta name="description" content="5 fused Meta-Agents with sealed runtimes, DREAM synthesis, and persistent memory. Each is a fusion of multiple specialized AI runtimes. Own forever from free to $249." />
+        <meta name="description" content="5 fused Meta-Agents with Convex Core™ artifacts, DREAM synthesis, and persistent memory. Each is a fusion of multiple specialized AI runtimes. Own forever from free to $249." />
         <link rel="canonical" href="https://cmpsbl.com/composable-cognitives" />
         <meta property="og:title" content="Meta-Agents — 5 Fused Runtime Agents | CMPSBL®" />
-        <meta property="og:description" content="5 fused Meta-Agents with sealed runtimes, DREAM synthesis, and persistent memory. Own forever from free to $249." />
+        <meta property="og:description" content="5 fused Meta-Agents with Convex Core™ artifacts, DREAM synthesis, and persistent memory. Own forever from free to $249." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/composable-cognitives" />
         <meta property="og:image" content="https://cmpsbl.com/og/cognitives.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Meta-Agents — 5 Fused Runtime Agents | CMPSBL®" />
-        <meta name="twitter:description" content="5 fused Meta-Agents with sealed runtimes, DREAM synthesis, and persistent memory." />
+        <meta name="twitter:description" content="5 fused Meta-Agents with Convex Core™ artifacts, DREAM synthesis, and persistent memory." />
         <meta name="twitter:image" content="https://cmpsbl.com/og/cognitives.jpg" />
       </Helmet>
 

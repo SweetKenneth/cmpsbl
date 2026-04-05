@@ -121,7 +121,7 @@ function s(n,u,c,p){return(n*W[0]+u*W[1]+c*W[2]+p*W[3])/100}
 
 ## 7. IP Protection Strategy
 
-CMPSBL's core IP is currently protected as trade secrets — architecturally enforced through hex encoding, sealed runtimes, and stripped exports. Patent applications for Crown Jewel algorithms and engine architectures are planned as part of the next funding deployment.
+CMPSBL's core IP is currently protected as trade secrets — architecturally enforced through hex encoding, Convex Core™ artifacts, and stripped exports. Patent applications for Crown Jewel algorithms and engine architectures are planned as part of the next funding deployment.
 
 ---
 

@@ -5,7 +5,7 @@
  *   1. Renaming internal variables/functions to opaque identifiers
  *   2. Obfuscating proprietary constants (CJPI weights, tier thresholds)
  *   3. Stripping internal implementation comments
- *   4. Adding sealed runtime notice + integrity hash
+ *   4. Adding Convex Core™ artifact notice + integrity hash
  *   5. Encoding scoring formula as computed constants
  *
  * PUBLIC API surface (execute, executeChain, validate, selfTest, etc.)
@@ -175,7 +175,7 @@ var _T = [4]int{0x5C, 0x50, 0x41, 0x2D}
 // Section markers that should NOT be stripped
 const PRESERVED_PATTERNS = [
   '§1', '§2', '§3', '§4',
-  'MINI-RUNTIME', 'MODULE EFFECTS', 'RUNTIME BRIDGE', 'CAPABILITY API',
+  'CONVEX CORE', 'MODULE EFFECTS', 'RUNTIME BRIDGE', 'CAPABILITY API',
   'SEALED', 'CMPSBL®', '© 2025', '© 2026',
   'DO NOT MODIFY', 'REDISTRIBUTION PROHIBITED',
   'DROP-IN DISTRIBUTION',
@@ -193,7 +193,7 @@ const PRESERVED_PATTERNS = [
 export function blackboxFile(source: string, lang: string): string {
   let result = source;
 
-  // 1. Add sealed runtime header
+  // 1. Add Convex Core™ artifact header
   const sealedNotice = getSealedNotice(lang);
   const headerEndIdx = findHeaderEnd(result, lang);
   if (headerEndIdx > 0) {
@@ -227,7 +227,7 @@ export function blackboxFile(source: string, lang: string): string {
   // 6. Add integrity seal at the bottom
   const integrityHash = computeSimpleHash(result);
   const commentPrefix = getCommentPrefix(lang);
-  result += `\n${commentPrefix} ═══ SEALED RUNTIME INTEGRITY ═══\n`;
+  result += `\n${commentPrefix} ═══ CONVEX CORE™ INTEGRITY ═══\n`;
   result += `${commentPrefix} Hash: ${integrityHash}\n`;
   result += `${commentPrefix} Sealed: ${new Date().toISOString().slice(0, 10)}\n`;
   result += `${commentPrefix} CMPSBL® runtime — built into this file. Redistribution as standalone product prohibited.\n`;
@@ -244,7 +244,7 @@ function getSealedNotice(lang: string): string {
   const c = getCommentPrefix(lang);
   return [
     `${c} ╔═══════════════════════════════════════════════════════════════════╗`,
-    `${c} ║  CMPSBL® SEALED RUNTIME — PROPRIETARY DISTRIBUTION              ║`,
+    `${c} ║  CMPSBL® CONVEX CORE™ — PROPRIETARY DISTRIBUTION              ║`,
     `${c} ║                                                                   ║`,
     `${c} ║  This file contains the CMPSBL® Convex Core™ Processing Layer,            ║`,
     `${c} ║  Module Effects, Runtime Bridge, and Capability API.              ║`,

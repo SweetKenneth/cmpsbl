@@ -53,7 +53,7 @@ cmpsbl ascend --input ./my-project --output ./discovered
 - A CJPI score (Crown Jewel Performance Index)
 - Discovered capabilities unique to YOUR code
 - A collision report showing which primitives your code activated
-- A certified artifact with a sealed runtime
+- A certified artifact with a Convex Core™ artifact
 
 **This is where talent shows.** Two developers can upload different codebases and get wildly different discovery results. The quality, structure, and architecture of your input code directly determines what the substrate finds.
 
@@ -78,9 +78,9 @@ cmpsbl config set DEFENSE.alert_level elevated
 
 ---
 
-### 4. PACKAGE — Export Sealed Runtimes
+### 4. PACKAGE — Export Convex Core™ Artifacts
 
-A finished creation is a **sealed runtime artifact** — a portable, self-contained package that runs independently.
+A finished creation is a **Convex Core™ artifact artifact** — a portable, self-contained package that runs independently.
 
 ```bash
 cmpsbl export --name "threat-analyst-v2" --format zip --targets typescript,python
@@ -103,7 +103,7 @@ cmpsbl export --name "threat-analyst-v2" --format zip --targets typescript,pytho
 
 ### 5. PUBLISH — List on the Marketplace
 
-Your sealed runtime can be listed on the internal marketplace where other developers can purchase, fork, or build on top of it.
+Your Convex Core™ artifact can be listed on the internal marketplace where other developers can purchase, fork, or build on top of it.
 
 ```bash
 cmpsbl publish --artifact ./threat-analyst-v2.zip --price 79
@@ -151,7 +151,7 @@ Week 3: DISCOVER
   └─ Identify unique capabilities
 
 Week 4: PACKAGE & PUBLISH
-  └─ Export your first sealed runtime
+  └─ Export your first Convex Core™ artifact
   └─ List it on the marketplace
   └─ Get feedback from other developers
 ```
@@ -165,7 +165,7 @@ A finished CMPSBL product is a **cognitive artifact** — a loadout that has bee
 1. ✅ Composed from specific primitives
 2. ✅ Configured with intentional parameters
 3. ✅ Validated through Ascension (CJPI scored)
-4. ✅ Exported as a sealed runtime
+4. ✅ Exported as a Convex Core™ artifact
 5. ✅ Documented with use cases and integration guides
 
 **Examples of products developers could build and sell:**

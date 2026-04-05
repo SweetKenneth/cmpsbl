@@ -71,7 +71,7 @@ export function generateUnifiedTypeScript(
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §1 — MINI-RUNTIME™ ENGINE                                                  ║
+// ║  §1 — CONVEX CORE™ DPL                                                  ║
 // ║  CJPI Scorer · Saga Orchestrator · FSM Engine · Manifest · Fingerprint       ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -830,7 +830,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Callable, Tuple
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  §1 — MINI-RUNTIME™ ENGINE                                                  ║
+# ║  §1 — CONVEX CORE™ DPL                                                  ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 def compute_cjpi(novelty: float, utility: float, complexity: float, composability: float) -> dict:
@@ -1208,7 +1208,7 @@ export function generateUnifiedPhp(
 ${requireBlock}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §1 — MINI-RUNTIME™ ENGINE                                                  ║
+// ║  §1 — CONVEX CORE™ DPL                                                  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 function cmpsbl_compute_cjpi(float $novelty, float $utility, float $complexity, float $composability): array

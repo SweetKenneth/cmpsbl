@@ -207,4 +207,4 @@ See `public/docs/engines/failsafe/RESTORE.md` for the complete AI-agent restore 
 ---
 
 © 2025–2026 CMPSBL®. All rights reserved.  
-FAILSAFE is a sealed runtime. Redistribution prohibited.
+FAILSAFE is a Convex Core™ artifact. Redistribution prohibited.

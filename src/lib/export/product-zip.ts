@@ -151,7 +151,7 @@ console.log(getProcessingMode()); // 'offline'
 ## License
 
 CMPSBL® Proprietary License — Single-seat perpetual license.
-This software is a sealed runtime. Source inspection, decompilation,
+This software is a Convex Core™ artifact. Source inspection, decompilation,
 redistribution, and reverse engineering are prohibited.
 
 ---

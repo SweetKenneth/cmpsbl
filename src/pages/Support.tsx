@@ -88,12 +88,12 @@ const FAQ_ITEMS = [
   {
     category: "Capability Packs",
     question: "What are Composable Cognitives?",
-    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as sealed runtimes. Each comes with 3–5 Apex Discovery powers, automatic self-improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
+    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as Convex Core™ artifacts. Each comes with 3–5 Apex Discovery powers, automatic self-improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
   },
   {
     category: "Capability Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing modules in the platform — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
+    answer: "Engines are the 20 specialized processing modules in the platform — each handling specific domains like content generation, data analysis, or security scanning. They run as Convex Core™ artifacts with built-in capability gating and tier-based access.",
   },
   {
     category: "Capability Packs",
@@ -105,7 +105,7 @@ const FAQ_ITEMS = [
   {
     category: "Exports",
     question: "Can I export my work as software?",
-    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The export system includes filters that protect proprietary logic while delivering functional sealed runtimes.",
+    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The export system includes filters that protect proprietary logic while delivering functional Convex Core™ artifacts.",
   },
   {
     category: "Exports",

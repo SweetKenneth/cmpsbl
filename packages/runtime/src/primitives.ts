@@ -5,7 +5,7 @@
  * across the CMPSBL® ecosystem: 24 Spine + 80 Vertical + 16 Ultimate.
  *
  * Each handler provides domain-appropriate execution behavior
- * for sealed runtime chains. Zero dependencies.
+ * for Convex Core™ artifact chains. Zero dependencies.
  *
  * © CMPSBL® — All rights reserved.
  */

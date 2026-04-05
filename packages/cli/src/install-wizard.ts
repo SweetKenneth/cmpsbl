@@ -179,7 +179,7 @@ async function stepInstall(state: WizardState): Promise<void> {
   const runtimeDir = path.join(state.exportDir, '_runtime');
   if (fs.existsSync(runtimeDir)) {
     copyDirSync(runtimeDir, path.join(state.projectDir, '_runtime'));
-    say(`  ${color.green('✓')} Copied sealed runtime`);
+    say(`  ${color.green('✓')} Copied Convex Core™ artifact`);
   }
 
   // Copy manifest

@@ -16,9 +16,9 @@
 
 ## Abstract
 
-We introduce **Ascension™**, a deterministic software evolution engine that identifies, scores, and hardens latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index™ (CJPI), and exporting hardened artifacts as self-contained Sealed Runtimes™. We present empirical results from fifteen verified case studies spanning five programming languages and eight industry verticals, including critical findings in code from IBM, Rapid7, Hugging Face, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic — and a four-part self-referential audit where the substrate analyzed its own internal systems and discovered weak cryptographic randomness, unhandled async rejections, and missing error handling in production code. Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension™ as the foundation for a new discipline: **post-authorship software evolution**, where code improvement occurs structurally rather than generatively.
+We introduce **Ascension™**, a deterministic software evolution engine that identifies, scores, and hardens latent architectural capabilities in arbitrary source code — without invoking external artificial intelligence. The engine operates by colliding uploaded code against a fixed matrix of 40 computational primitives organized across four taxonomic categories (Organs, Layers, Engines, and Agents), scoring emergent combinations via the Crown Jewel Pipeline Index™ (CJPI), and exporting hardened artifacts as self-contained Convex Core™ Artifacts™. We present empirical results from fifteen verified case studies spanning five programming languages and eight industry verticals, including critical findings in code from IBM, Rapid7, Hugging Face, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic — and a four-part self-referential audit where the substrate analyzed its own internal systems and discovered weak cryptographic randomness, unhandled async rejections, and missing error handling in production code. Our findings demonstrate that deterministic primitive collision reliably surfaces structural deficiencies invisible to conventional static analysis, linting, and AI-assisted code review. We propose Ascension™ as the foundation for a new discipline: **post-authorship software evolution**, where code improvement occurs structurally rather than generatively.
 
-**Keywords:** software evolution · deterministic analysis · code hardening · primitive collision · sealed runtime · cognitive infrastructure · structural vulnerability · post-authorship engineering
+**Keywords:** software evolution · deterministic analysis · code hardening · primitive collision · Convex Core™ artifact · cognitive infrastructure · structural vulnerability · post-authorship engineering
 
 ---
 
@@ -146,9 +146,9 @@ These metrics produce a 0–100 **depth score** that calibrates subsequent colli
 
 Scores range from 0–100. Candidates scoring ≥ 85 are classified **S-Tier**. The highest-scoring discovery in a session may achieve **APEX** or **MYTHIC** classification.
 
-**Stage 7: Export.** Hardened artifacts are packaged as a **Sealed Runtime™** — a self-contained archive containing the original source (unmodified), refurbished source with structural augmentations, auto-generated documentation, and a test harness with validation suite. The internal execution environment and cognitive layer are proprietary components (see Section 11: Protected Intellectual Property).
+**Stage 7: Export.** Hardened artifacts are packaged as a **Convex Core™ Sealed Artifact** — a self-contained archive containing the original source (unmodified), refurbished source with structural augmentations, auto-generated documentation, and a test harness with validation suite. The internal execution environment and cognitive layer are proprietary components (see Section 11: Protected Intellectual Property).
 
-**Stage 8: Protect.** DEFENSE Layer shielding is applied. GOVERNANCE checks validate export integrity. BEACON health signals confirm the Sealed Runtime™ is production-ready. The portability guarantee is enforced: if CMPSBL® ceased to exist, the export would still execute independently.
+**Stage 8: Protect.** DEFENSE Layer shielding is applied. GOVERNANCE checks validate export integrity. BEACON health signals confirm the Convex Core™ Sealed Artifact is production-ready. The portability guarantee is enforced: if CMPSBL® ceased to exist, the export would still execute independently.
 
 ### 4.3 Determinism Guarantee
 
@@ -469,11 +469,11 @@ We present fifteen verified case studies spanning five programming languages, ei
 
 ---
 
-## 6. The Sealed Runtime™ Architecture
+## 6. The Convex Core™ Sealed Artifact Architecture
 
 ### 6.1 Portability Guarantee
 
-Every Ascension™ export is delivered as a Sealed Runtime™ — a self-contained archive that executes independently of the CMPSBL® substrate. This guarantee is structural, not contractual: the export contains its own execution environment, cognitive augmentations, and test harness.
+Every Ascension™ export is delivered as a Convex Core™ Sealed Artifact — a self-contained archive that executes independently of the CMPSBL® substrate. This guarantee is structural, not contractual: the export contains its own execution environment, cognitive augmentations, and test harness.
 
 ### 6.2 Composition
 
@@ -624,7 +624,7 @@ The following components, methods, and systems described or referenced in this w
 | DEFENSE Layer threat scoring model | Trade secret — cognitive security matrix |
 | Boot sequencer and module lifecycle | Trade secret — 12-stage DAG-ordered kernel |
 
-**No part of this whitepaper grants license to reproduce, reverse-engineer, or derive implementations from the protected components listed above.** The Sealed Runtime™ export format intentionally obscures these internals while preserving full runtime functionality for the end user.
+**No part of this whitepaper grants license to reproduce, reverse-engineer, or derive implementations from the protected components listed above.** The Convex Core™ Sealed Artifact export format intentionally obscures these internals while preserving full runtime functionality for the end user.
 
 For licensing inquiries: founder@cmpsbl.com
 
@@ -711,4 +711,4 @@ The findings presented in this paper are the product of deterministic structural
 © 2026 CMPSBL®. All rights reserved.  
 Patent Pending · U.S. Provisional Application No. 64/029,678  
 CMPSBL® is a registered trademark of PromptFluid™.  
-Ascension™, Sealed Runtime™, Memory Stream™, Discovery Engine™, Convex Core™ Processing Layer™, Crown Jewel Pipeline Index™ (CJPI™), Crown Jewels™, CLM™, Vertical Substrates™, CMPSBL LLM™, CMPSBL Cyber™, CMPSBL Quantum™, and CMPSBL Robotics™ are trademarks of PromptFluid™.
+Ascension™, Convex Core™ Sealed Artifact, Memory Stream™, Discovery Engine™, Convex Core™ Processing Layer™, Crown Jewel Pipeline Index™ (CJPI™), Crown Jewels™, CLM™, Vertical Substrates™, CMPSBL LLM™, CMPSBL Cyber™, CMPSBL Quantum™, and CMPSBL Robotics™ are trademarks of PromptFluid™.

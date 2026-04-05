@@ -302,7 +302,7 @@ export default function Store() {
                 className="mt-16 sm:mt-20 text-center pb-8"
               >
                 <p className="text-xs text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
-                  Every agent and engine runs on the CMPSBL sealed runtime — secure, self-improving, and yours to own
+                  Every agent and engine runs on the CMPSBL Convex Core™ artifact — secure, self-improving, and yours to own
                 </p>
                 <div className="flex items-center justify-center gap-3 flex-wrap">
                   <Button

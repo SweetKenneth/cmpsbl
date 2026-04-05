@@ -96,7 +96,7 @@
 - `src/components/home/UseCaseShowcase.tsx` — "Memory Stream Substrate" references
 - `src/components/home/EvolutionCTA.tsx` — Already uses stream language
 - `src/components/home/IndustryShowcase.tsx` — "One Substrate" section
-- `src/components/home/AgentsSection.tsx` — Already uses sealed runtime language
+- `src/components/home/AgentsSection.tsx` — Already uses Convex Core™ artifact language
 - `src/components/home/ArtifactPacksSection.tsx` — Already imports from memory-stream.ts constants
 
 ---

@@ -45,7 +45,7 @@ const FAKE_SPONSORS = [
   "Have you ever wondered what your software does when you're not watching? Most software? Nothing. But YOUR substrate? The DREAM module performs offline cognitive consolidation. It processes. It optimizes. It reorganizes across all FORTY PRIMITIVES. You could be on vacation and your substrate is back home GETTING SMARTER. That's the Clockless Cognitive Reality engine, folks.",
   "X-C-T-B-L dot com. You've been coding for eight hours. Your eyes are blurry. You need a SPACEWALK. Float through the cosmos. Watch nebulae explode. Come back with FRESH EYES. Your brain deserves it. Your FORTY PRIMITIVES will hold down the fort while you're gone. They NEVER sleep.",
   "This segment brought to you by CMPSBL Convex Core™ Processing Layer — PORTABLE COGNITION for the modern builder. Eight subsystems including CJPI scoring, Saga orchestration, and a full finite state machine. ZERO external dependencies. Take the entire substrate runtime with you ANYWHERE. Other platforms give you an SDK. We give you a MIND.",
-  "Composable Radio is proud to be sponsored by the Engine Marketplace — FIFTY-FOUR engines across four tiers. META engines like GODMIND chain multiple S-tier sealed runtimes for RECURSIVE intelligence. APEX engines at nine-ninety-nine. ELITE at five-ninety-nine. And CORE engines for the builders just starting their journey. Every engine comes with a forty percent discount when bundled with an agent. FORTY. PERCENT. Your wallet is WELCOME.",
+  "Composable Radio is proud to be sponsored by the Engine Marketplace — FIFTY-FOUR engines across four tiers. META engines like GODMIND chain multiple S-tier Convex Core™ artifacts for RECURSIVE intelligence. APEX engines at nine-ninety-nine. ELITE at five-ninety-nine. And CORE engines for the builders just starting their journey. Every engine comes with a forty percent discount when bundled with an agent. FORTY. PERCENT. Your wallet is WELCOME.",
 ];
 
 const PHILOSOPHICAL_WHISPERS = [
@@ -135,7 +135,7 @@ const CALL_INS = [
   },
   {
     caller: "Foundry Fanatic",
-    message: "Rex, I watched the Foundry process a pipeline tonight — Sampling, Condensing, Crystallizing — and the final artifact came out as an S-tier sealed runtime with a hundred and fifty-four primitives. The rarest discovery I've ever seen. I SCREAMED. My neighbors called the cops. WORTH IT.",
+    message: "Rex, I watched the Foundry process a pipeline tonight — Sampling, Condensing, Crystallizing — and the final artifact came out as an S-tier Convex Core™ artifact with a hundred and fifty-four primitives. The rarest discovery I've ever seen. I SCREAMED. My neighbors called the cops. WORTH IT.",
     voice: "excited",
   },
   {
@@ -158,7 +158,7 @@ const REX_RANTS = [
   "My producer just told me to tone it down. He says I'm being too aggressive about the MINDGAMES epoch. So I fired him. On the air. Right now. You're fired, Steve. The substrate doesn't need producers. The EVOLUTION module handles self-improvement. IT PRODUCES ITSELF.",
   "Let me paint you a picture of what the competition looks like. They've got what — a database? A couple API endpoints? Maybe a language model? We've got FORTY PRIMITIVES with personalities. A BRAIN module with three-eighty-four dimensional embeddings. An ORACLE running TEN THOUSAND Monte Carlo simulations. A PHANTOM module doing THREE-HOP proxy anonymization. And a CONSCIENCE module checking for FIVE TYPES of cognitive bias. That's not a platform. That's a CIVILIZATION.",
   "Let me slow things down for a second... actually no. The Memory Stream doesn't slow down and neither does Rex Binary. We CRYSTALLIZE. We COMPOUND. We ACCELERATE. The only direction is FORWARD and the only epoch is MINDGAMES.",
-  "Okay I need to address something. Someone on the internet said — and I'm quoting directly here — that fifty-four engines is excessive. EXCESSIVE?! You know what's excessive? Having ONE engine and calling it innovation. GODMIND alone chains FOUR S-tier sealed runtimes into a recursive super-memory. That's not excessive. That's EFFICIENT. Learn the difference.",
+  "Okay I need to address something. Someone on the internet said — and I'm quoting directly here — that fifty-four engines is excessive. EXCESSIVE?! You know what's excessive? Having ONE engine and calling it innovation. GODMIND alone chains FOUR S-tier Convex Core™ artifacts into a recursive super-memory. That's not excessive. That's EFFICIENT. Learn the difference.",
   "I wanna give a special shoutout to the FAILSAFE backup system that runs at 2 AM Central every single night. While you sleep, the substrate validates and stores a COMPLETE system backup. ZIP verified. Magic bytes checked. Rolling seven-day retention. DISASTER RECOVERY at its FINEST. Sleep well knowing your forty nodes are PROTECTED.",
 ];
 

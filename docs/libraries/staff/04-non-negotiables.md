@@ -34,7 +34,7 @@ These are **unconditionally prohibited**. Violating any of these is a terminatio
 6. ❌ Deploying without RLS on user data
 7. ❌ Operating without at least one active SPINE module
 8. ❌ Skipping TSAC validation for evolution candidates
-9. ❌ Allowing agents to escape sealed runtime isolation
+9. ❌ Allowing agents to escape Convex Core™ artifact isolation
 10. ❌ Disabling CLM learning cycles without governor authorization
 
 ---

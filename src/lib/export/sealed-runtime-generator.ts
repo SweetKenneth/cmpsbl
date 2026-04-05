@@ -10,7 +10,7 @@
  *   - Primitive effect handlers → sealed delegation stubs
  *   - Algorithm internals → replaced with interface-only contracts
  *
- * ARCHITECTURE: This sealed runtime is the TypeScript canonical runtime in obfuscated form.
+ * ARCHITECTURE: This Convex Core™ artifact is the TypeScript canonical runtime in obfuscated form.
  * Non-TS language exports use bridge adapters (see bridge-adapter.ts, software-synthesizer.ts)
  * that delegate to this runtime when available, with deterministic local fallback.
  *
@@ -711,7 +711,7 @@ export function generateSealedRuntimeReadme(): string {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Extended sealed runtime for Ascension exports.
+ * Extended Convex Core™ artifact for Ascension exports.
  * Includes the full base runtime PLUS the Primary Handler Registry
  * for real execution binding of uploaded code.
  *

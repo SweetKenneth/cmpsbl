@@ -1015,7 +1015,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "Unified Collector Store launched with three tabs: Store (Meta-Agents & Engines), Plans (subscriptions), and Memories (capability slots)",
       "Five-tier pricing ladder ($0–$249) established across all product categories with Stripe-backed checkout for paid items",
-      "Free items require authentication and trigger client-side ZIP generation with sealed runtime bundles, documentation, and test harnesses",
+      "Free items require authentication and trigger client-side ZIP generation with Convex Core™ artifact bundles, documentation, and test harnesses",
       "SEO-optimized detail pages created for every engine and every meta-agent with JSON-LD Product schema and canonical URLs",
     ],
     phenotype: [
@@ -1033,12 +1033,12 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "FAILSAFE engine made free for all authenticated users with instant download access",
       "Guest visitors see a $39 Stripe checkout as fallback — authenticated users bypass payment entirely",
-      "Download bundle includes a sealed runtime package with manifest, documentation, source stubs, and a test harness",
+      "Download bundle includes a Convex Core™ artifact package with manifest, documentation, source stubs, and a test harness",
       "Dedicated /engines/failsafe detail page with full product description and JSON-LD schema markup",
     ],
     phenotype: [
       "Every authenticated user has access to the substrate's recovery engine at zero cost",
-      "FAILSAFE is the first engine to ship as a complete downloadable sealed runtime",
+      "FAILSAFE is the first engine to ship as a complete downloadable Convex Core™ artifact",
       "The engine detail page is a standalone SEO surface — discoverable independently from the store",
     ],
     affectedNodes: ["CORE Organ", "FORGE Engine", "DEFENSE Layer"],
@@ -1414,7 +1414,7 @@ const stratumConvergence: Specimen[] = [
     origin: "architecture",
     stimulus: "The interpreted runtime model was a replication surface — external observers could reconstruct execution paths from the sequential pipeline. The substrate needed architectural opacity without sacrificing functional transparency",
     adaptations: [
-      "Processing architecture transitioned from interpreted runtime (Mini-Runtime™ v2) to deterministic processing layer (Convex Core™ v3)",
+      "Processing architecture transitioned from interpreted runtime (Convex Core™ v2) to deterministic processing layer (Convex Core™ v3)",
       "12-stage sequential pipeline replaced with 5-layer parallel processing model — 7 intermediate stages eliminated",
       "Dynamic primitive handler registry replaced with pre-compiled dispatch matrices — resolution now happens at artifact-creation time, not invocation time",
       "Cross-primitive interaction scoring compiled into immutable collision matrices with FNV-1a-derived weights",
@@ -1426,7 +1426,7 @@ const stratumConvergence: Specimen[] = [
     phenotype: [
       "The substrate's execution model is no longer reconstructable from exported artifacts — mathematical opacity replaces obscurity",
       "Paradigm shift from 'runtime engine' to 'processing layer' — fundamentally different mental model for external observers",
-      "Legacy Mini-Runtime™ documentation now positions anyone building from it on a deprecated, dead-end architecture",
+      "Legacy Convex Core™ documentation now positions anyone building from it on a deprecated, dead-end architecture",
       "Dispatch matrices are provably deterministic but structurally opaque — one-way function applied to orchestration topology",
     ],
     affectedNodes: ["CORE Organ", "DEFENSE Layer", "GOVERNANCE Layer", "SHADOW Layer", "EVOLUTION Layer"],

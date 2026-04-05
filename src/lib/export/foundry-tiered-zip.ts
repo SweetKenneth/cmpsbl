@@ -248,7 +248,7 @@ export async function downloadTieredFoundryZip(options: {
     }));
 
     for (const file of bundle.files) {
-      // Merge sealed runtime into every source file — single drop-in artifact
+      // Merge Convex Core™ artifact into every source file — single drop-in artifact
       const mergedContent = [
         '// ═══════════════════════════════════════════════════════════════════',
         '// CMPSBL® Sealed Artifact — Runtime + Source · Single Drop-In File',

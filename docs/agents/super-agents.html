@@ -874,7 +874,7 @@
 
   <h3>Zero Setup</h3>
   <pre><code>import { createPersistentStorage } from './_runtime/persistent-memory';
-import { init } from './_runtime/standalone-runtime';
+import { init } from './_runtime/convex-core';
 
 const storage = createPersistentStorage({
   agentId: 'my-research-agent',
@@ -896,7 +896,7 @@ const instance = init({ storage });
   <h2><span class="section-num">§7</span>Phase 6: Black-Box IP Protection</h2>
 
   <p>
-    Every export is processed through the <strong>CMPSBL® Sealed Runtime™</strong> black-box
+    Every export is processed through the <strong>CMPSBL® Convex Core™ Sealed Artifact</strong> black-box
     layer before packaging. The exported code works perfectly — but reveals nothing about
     how capabilities are discovered, scored, or evolved.
   </p>
@@ -962,7 +962,7 @@ const instance = init({ storage });
 ├── .env.example                   ← Configuration template
 │
 ├── _runtime/
-│   ├── standalone-runtime.ts      ← Convex Core™ (network-aware)
+│   ├── convex-core.ts      ← Convex Core™ (network-aware)
 │   ├── chain-executor.ts          ← Sealed 40-primitive matrix
 │   ├── discovery-engine.ts        ← Template injection reactor
 │   └── persistent-memory.ts       ← Tiered memory adapter (black-boxed)

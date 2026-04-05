@@ -39,7 +39,7 @@ function generateEngineDoc(engine: Engine): string {
     ``,
     `  import { ${engine.codename.toLowerCase()} } from '@cmpsbl/sdk/engines/${engine.slug}';`,
     ``,
-    `  // Initialize the sealed runtime`,
+    `  // Initialize the Convex Core™ artifact`,
     `  const engine = ${engine.codename.toLowerCase()}.init({`,
     `    mode: 'production',`,
     `    persistence: true,`,
@@ -102,7 +102,7 @@ export default function EngineDocsPage() {
     <>
       <Helmet>
         <title>{`${engine.codename} Documentation — CMPSBL`}</title>
-        <meta name="description" content={`Integration guide and reference for the ${engine.codename} sealed runtime engine.`} />
+        <meta name="description" content={`Integration guide and reference for the ${engine.codename} Convex Core™ artifact engine.`} />
       </Helmet>
 
       <div className="min-h-screen bg-background pt-24 pb-20 px-4">
