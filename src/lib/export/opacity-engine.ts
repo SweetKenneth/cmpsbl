@@ -41,10 +41,10 @@ export function generateCompiledPreamble(
 
   if (lang === 'python') {
     return [
-      `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-      `${c} ║ Auto-generated. Tampering invalidates    ║`,
-      `${c} ║ artifact integrity and voids certification║`,
-      `${c} ╚══════════════════════════════════════════╝`,
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Tampering invalidates      ║`,
+      `${c} ║ artifact integrity and voids certification  ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
       '',
       `_CMPSBL_DT = [${dispatchTable.join(', ')}]`,
       `_CMPSBL_CM = [${collisionMatrix.join(', ')}]`,
