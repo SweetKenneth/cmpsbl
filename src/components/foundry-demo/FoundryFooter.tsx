@@ -140,7 +140,7 @@ export function FoundryFooter() {
           </div>
           <div className="text-xs font-mono text-muted-foreground/30 uppercase tracking-wider text-center md:text-right space-y-1">
             <div>All data sourced from production database · RLS enforced · Independently verifiable</div>
-            <div>© {new Date().getFullYear()} CMPSBL. All rights reserved.</div>
+            <div>© {new Date().getFullYear()} CMPSBL. All rights reserved. · Patent Pending · U.S. App. No. 64/029,678</div>
           </div>
         </div>
       </div>
