@@ -768,13 +768,13 @@ export default function STierVault() {
     const zip = new JSZip();
     const root = zip.folder(filename.replace('.zip', ''))!;
 
-    // Include the sealed Mini-Runtime™ only — Discovery Engine is substrate-only
+    // Include the sealed Convex Core™ only — Discovery Engine is substrate-only
     const coreFolder = root.folder('_runtime')!;
     coreFolder.file('standalone-runtime.ts', (runtimeMod as any).default);
     coreFolder.file('README.md', [
-      '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
+      '# CMPSBL® Convex Core™ Processing Layer — Sealed Distribution',
       '',
-      'This directory contains the sealed CMPSBL® Mini-Runtime™ Engine.',
+      'This directory contains the sealed CMPSBL® Convex Core™ Processing Layer.',
       'It requires **zero external dependencies** — no substrate, no database, no infrastructure.',
       '',
       '## Components',
@@ -955,7 +955,7 @@ export default function STierVault() {
       },
       instructions: {
         howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
-        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries. The Mini-Runtime™ Engine (included in ZIP exports) provides CJPI scoring and pipeline orchestration.',
+        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries. The Convex Core™ Processing Layer (included in ZIP exports) provides CJPI scoring and pipeline orchestration.',
         howToExport: 'Each discovery can be exported to any of 90+ languages (18 software + 7 hardware/HDL) using the CMPSBL® Substrate.',
       },
     };

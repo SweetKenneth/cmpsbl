@@ -78,7 +78,7 @@ const priorArtClaims = [
   "Modular AI orchestration with weighted integrity scoring",
   "Memory stream architecture with pattern discovery and composition",
   "Capability crystallization with structural fingerprinting and replay verification",
-  "Universal cross-language export with embedded mini-runtime",
+  "Universal cross-language export with embedded convex-core",
   "Verification-based governance with bounded autonomy tiers",
   "Resilience framework with per-module circuit breaker isolation",
   "Intent mesh for cross-module semantic routing",

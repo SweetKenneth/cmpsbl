@@ -50,7 +50,7 @@ const BEFORE_AFTER = [
   { before: "No error recovery", after: "Circuit breaker + graceful degradation" },
   { before: "Single-point failures", after: "DEFENSE Layer shielding" },
   { before: "No health monitoring", after: "BEACON health signals" },
-  { before: "Unprotected IP", after: "Sealed Mini-Runtime™" },
+  { before: "Unprotected IP", after: "Sealed Convex Core™" },
   { before: "Manual testing", after: "@cmpsbl/test-harness auto-generated" },
 ] as const;
 

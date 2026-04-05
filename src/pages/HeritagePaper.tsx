@@ -570,7 +570,7 @@ const HeritagePaper = () => {
               </div>
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">MINDGAMES Epoch (v14.0–v14.2.0)</h4>
-                <p className="text-xs text-muted-foreground">40-primitive matrix. 4 categories. 54 engines. Mini-Runtime™. 3-phase Reality Protocol. 42-page knowledge base.</p>
+                <p className="text-xs text-muted-foreground">40-primitive matrix. 4 categories. 54 engines. Convex Core™. 3-phase Reality Protocol. 42-page knowledge base.</p>
               </div>
             </div>
           </section>
@@ -646,7 +646,7 @@ const HeritagePaper = () => {
               { title: "Clockless Cognitive Orchestration", origin: "SimNap's autonomous scheduling (Sept–Nov 2025), operating on memory pressure rather than timers.", evolution: "Event-driven signal propagation with weighted integrity scoring, no shared global clock." },
               { title: "Memory Stream Crystallization", origin: "SimNap's Memory Core with episodic, long-term, and meta-memory tiers.", evolution: "Four-stage pipeline (Signal → Observation → Discovery → Crystallization) with CJPI scoring." },
               { title: "Structural Fingerprinting", origin: "AetherionShield's browser fingerprinting + Cascade's chain-of-custody proofs.", evolution: "Content-addressable identification for deduplication, lineage tracking, and replay verification." },
-              { title: "Universal Cross-Language Export", origin: "SimNap's morning reports — packaging cognitive outputs as deliverables.", evolution: "25-language export with embedded Mini-Runtime™ engines and auto-generated test harnesses." },
+              { title: "Universal Cross-Language Export", origin: "SimNap's morning reports — packaging cognitive outputs as deliverables.", evolution: "25-language export with embedded Convex Core™ engines and auto-generated test harnesses." },
               { title: "IRONCLAD Resilience Fabric", origin: "AetherionShield's bulkhead isolation and stealth→shield inversion.", evolution: "Additive hardening wrapping all 40 primitives without modifying core engine logic." },
               { title: "Three-Tier Bounded Autonomy", origin: "SimNap's sandboxed dream mode + Dream Privacy.", evolution: "Supervised → Bounded → Full with policy evaluation, shadow verification, and audit chains." },
               { title: "Intent Mesh", origin: "Cascade's orchestration layer + Conversational Administrator.", evolution: "Decentralized coordination with DAG-based action plans and 3-phase reality protocol." },

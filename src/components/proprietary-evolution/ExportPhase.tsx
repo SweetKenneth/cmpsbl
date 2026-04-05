@@ -438,7 +438,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/20">
           <Shield className="w-3 h-3 text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">
-            Includes Mini-Runtime™ Engine • License • README • Memory Chain Details • Valuation • Manifest
+            Includes Convex Core™ Processing Layer • License • README • Memory Chain Details • Valuation • Manifest
           </span>
         </div>
 
@@ -475,7 +475,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
               </div>
             </div>
             <p className="text-[9px] text-muted-foreground">
-              Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
+              Includes: capability modules, Convex Core™, README, manifest, license, memory chain details
               {verticalResult && verticalResult.discoveries.length > 0 && ` — each capability enhanced with ${verticalResult.verticalName} agent persona`}
             </p>
           </div>

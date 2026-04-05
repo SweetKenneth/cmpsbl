@@ -1300,7 +1300,7 @@ const data = await res.json();`}</CodeBlock>
           {[
             { pkg: '@cmpsbl/sdk', desc: 'Authenticated Substrate API client' },
             { pkg: '@cmpsbl/types', desc: 'Shared TypeScript schemas' },
-            { pkg: '@cmpsbl/runtime', desc: 'Mini-Runtime™ engine' },
+            { pkg: '@cmpsbl/runtime', desc: 'Convex Core™ engine' },
             { pkg: '@cmpsbl/cli', desc: 'CLI developer tools' },
             { pkg: '@cmpsbl/failsafe', desc: 'Zero-dep migration toolkit' },
           ].map(p => (

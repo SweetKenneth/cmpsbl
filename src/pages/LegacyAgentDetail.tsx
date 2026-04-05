@@ -222,7 +222,7 @@ export default function LegacyAgentDetail() {
                 <h2 className="text-xs font-mono text-muted-foreground tracking-[0.2em] uppercase mb-4">STANDALONE DEPLOYMENT</h2>
                 <div className="space-y-3">
                   {[
-                    { icon: Download, title: "Download ZIP", desc: "Self-contained bundle with Mini-Runtime™, docs, and manifest. Deploy anywhere." },
+                    { icon: Download, title: "Download ZIP", desc: "Self-contained bundle with Convex Core™, docs, and manifest. Deploy anywhere." },
                     { icon: Package, title: "NPM / SDK Activation", desc: "Import via @cmpsbl/sdk — agent activates automatically in your project." },
                     { icon: Terminal, title: "CLI Activation", desc: "Run `cmpsbl agents activate " + agent.slug + "` to enable via terminal." },
                     { icon: Code, title: "Zero Dependencies", desc: "Embedded Mini-Runtime ensures standalone execution without external services." },
@@ -335,7 +335,7 @@ export default function LegacyAgentDetail() {
                   <div className="pt-4 border-t border-border/30 space-y-2.5 text-xs text-muted-foreground">
                     {[
                       "Instant delivery after purchase",
-                      "Full ZIP bundle with Mini-Runtime™",
+                      "Full ZIP bundle with Convex Core™",
                       "SDK + CLI activation included",
                       "Secure checkout via Stripe",
                     ].map(t => (

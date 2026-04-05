@@ -1820,7 +1820,7 @@ serve(async (req: Request) => {
       if (action === 'capability-pack') {
         const capability_ids = validateStringArray(input.capability_ids, 100, 100);
         const target_language = validateString(input.target_language, 30) || 'typescript';
-        const include_mini_runtime = input.include_mini_runtime !== false;
+        const include_convex_core = input.include_convex_core !== false;
 
         if (capability_ids.length === 0) {
           return jsonResponse({ success: false, error: 'No valid capability_ids provided' }, 400);
@@ -1869,7 +1869,7 @@ serve(async (req: Request) => {
           version: '1.0.0',
           target_language,
           created_at: new Date().toISOString(),
-          includes_mini_runtime: include_mini_runtime,
+          includes_convex_core: include_convex_core,
           capabilities: capabilities.map((c: any) => {
             const meta = (c.metadata as Record<string, unknown>) || {};
             return {
@@ -1886,8 +1886,8 @@ serve(async (req: Request) => {
               candidate_surface: meta.candidate_surface || null,
             };
           }),
-          mini_runtime: include_mini_runtime ? {
-            engine: 'CMPSBL® Mini-Runtime™ Engine',
+          convex_core: include_convex_core ? {
+            engine: 'CMPSBL® Convex Core™ Processing Layer',
             lines: target_language === 'typescript' ? 700 : 900,
             subsystems: ['cjpi_scorer', 'saga_orchestrator', 'fsm_engine', 'manifest_parser'],
           } : null,
@@ -1917,7 +1917,7 @@ serve(async (req: Request) => {
             details: {
               target_language,
               capability_count: capabilities.length,
-              include_mini_runtime,
+              include_convex_core,
             },
           });
         } catch (_) { /* non-blocking audit */ }

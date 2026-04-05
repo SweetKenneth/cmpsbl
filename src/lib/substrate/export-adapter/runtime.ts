@@ -79,7 +79,7 @@ function readmeFile(manifest: ExportManifest, lang: string, buildCmd: string, te
       ``,
       `## Execution Model`,
       ``,
-      `CJPI scoring and tiering run via the bundled TypeScript Mini-Runtime™.`,
+      `CJPI scoring and tiering run via the bundled TypeScript Convex Core™.`,
       `Native ${lang} execution requires a server-side ${lang} runtime.`,
       `See the honesty notice in the source files for details.`,
       ``,
@@ -164,7 +164,7 @@ function scaffoldTS(manifest: ExportManifest): ExportFile[] {
       path: 'src/runtime.ts',
       type: 'runtime',
       content: [
-        `// Mini-Runtime™ connector`,
+        `// Convex Core™ connector`,
         `export const MODULES = ${JSON.stringify(manifest.sourceModules)};`,
         `export const CAPABILITIES = ${JSON.stringify(manifest.capabilities)};`,
         `export const MANIFEST_ID = '${manifest.id}';`,

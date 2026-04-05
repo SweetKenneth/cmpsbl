@@ -71,7 +71,7 @@ async function generateProductZipForGovernor(product: DownloadableProduct): Prom
       product.kind === 'engine' ? 'Composable Engine' : 'Meta-Agent',
       `${product.tier.toUpperCase()} Tier`,
       'Sealed Runtime',
-      'Mini-Runtime™ Engine',
+      'Convex Core™ Processing Layer',
     ],
   });
 }
