@@ -556,10 +556,15 @@
       <li><a href="#problem">The Problem Being Solved</a></li>
       <li><a href="#dual-layer">The Dual-Layer Architecture</a></li>
       <li><a href="#pipeline">The Deterministic Evolution Pipeline</a></li>
+      <li><a href="#capability-discovery">Autonomous Capability Discovery</a></li>
       <li><a href="#primitive-hardening">Primitive-Based Code Hardening</a></li>
+      <li><a href="#hot-swap">Hot-Swap Vertical Specialization</a></li>
+      <li><a href="#combinatorial">The Combinatorial Space</a></li>
+      <li><a href="#huggingface">Case Study: HuggingFace Apex 100</a></li>
       <li><a href="#integrity">Integrity Verification</a></li>
       <li><a href="#export">Artifact Export Structure</a></li>
-      <li><a href="#diagrams">Diagrams</a></li>
+      <li><a href="#future">What This Means for All Software</a></li>
+      <li><a href="#zero-ai">This Is Not AI</a></li>
       <li><a href="#claims">Claims Summary</a></li>
       <li><a href="#glossary">Glossary</a></li>
     </ol>
@@ -571,7 +576,7 @@
     <h2>Abstract</h2>
     <p>A system and method for autonomously hardening software source code through a deterministic, dual-layer architecture that wraps — but never modifies — the original source. The system ingests developer code, performs algorithmic signal detection against a matrix of functional primitives, discovers emergent capability chains via deterministic collision scoring, and exports a sealed runtime artifact.</p>
     <p>The entire pipeline operates without external artificial intelligence calls, producing reproducible results: <strong>identical input code always yields identical hardened output.</strong></p>
-    <p>The hardening layer provides circuit breakers, input validation gates, state mutation governance, health telemetry, and cryptographic integrity verification — all without altering a single byte of the developer's original source code.</p>
+    <p>Beyond fixing vulnerabilities, the system <strong>discovers and grants capabilities the developer never wrote</strong> — self-healing, stateful persistence, autonomous decision loops, policy enforcement, and more. These are not suggestions. They are functional code that ships in the sealed artifact and works immediately.</p>
   </section>
 
   <!-- ══ SECTION 2: Plain-Language Summary ══ -->
@@ -582,12 +587,13 @@
     <p>Imagine you write a piece of software — an app, a script, a tool. You hand it to this system. The system:</p>
     <ol>
       <li><strong>Reads</strong> your code to understand its structure, dependencies, and potential weak points.</li>
-      <li><strong>Discovers</strong> what protective capabilities your code needs by matching patterns against a library of 40 functional building blocks (called "primitives").</li>
+      <li><strong>Discovers</strong> what protective capabilities your code needs — and what <em>new abilities</em> it can support that you never even thought to build.</li>
       <li><strong>Wraps</strong> your code in a protective shell — like putting a phone in a case. Your phone (code) is untouched. The case (the hardening layer) adds drop protection, screen guards, and waterproofing.</li>
-      <li><strong>Gives it back</strong> as a package: your original code + the protective layer + a report of what was discovered and protected.</li>
+      <li><strong>Grants new abilities</strong> your code never had. If it detects your program manages data, it might give it self-healing — the ability to recover from crashes on its own. If it detects network calls, it might add circuit breakers so one failing service doesn't take down the whole system.</li>
+      <li><strong>Gives it back</strong> as a package: your original code + the protective layer + all new capabilities + a report of what was discovered.</li>
     </ol>
     <div class="callout green">
-      <strong>Key Principle:</strong> Your code is never changed. The system adds protection <em>around</em> it, not <em>inside</em> it. Run it twice on the same code, you get the exact same result — no randomness, no AI guessing.
+      <strong>Key Principle:</strong> Your code is never changed. The system adds protection <em>and new abilities</em> around it, not inside it. Run it twice on the same code, you get the exact same result — no randomness, no AI guessing. The system understands code at a level that humans cannot — it sees structural patterns, dependency chains, and capability opportunities that even the original developer doesn't know exist.
     </div>
   </section>
 
@@ -596,7 +602,7 @@
     <div class="section-number">Section 03</div>
     <h2>Technical Definition</h2>
     <div class="callout">
-      A fully algorithmic, zero-external-AI processing pipeline that accepts arbitrary developer source code as input, performs multi-stage structural analysis and signal detection, executes deterministic collision scoring against a fixed matrix of functional primitives, discovers emergent capability chains scored by a composite quality index (CJPI), and exports a dual-layer artifact wherein <strong>Layer 1</strong> is the unmodified original source code and <strong>Layer 2</strong> is a generated sealed runtime providing autonomous circuit breakers, input validation gates, state mutation governance hooks, health telemetry instrumentation, compressed event reporting, and FNV-1a cryptographic integrity verification — all without modifying the original source code.
+      A fully algorithmic, zero-external-AI processing pipeline that accepts arbitrary developer source code as input, performs multi-stage structural analysis and signal detection, executes deterministic collision scoring against a fixed matrix of functional primitives, discovers emergent capability chains scored by a composite quality index (CJPI), and exports a dual-layer artifact wherein <strong>Layer 1</strong> is the unmodified original source code and <strong>Layer 2</strong> is a generated sealed runtime providing autonomous circuit breakers, input validation gates, state mutation governance hooks, health telemetry instrumentation, compressed event reporting, FNV-1a cryptographic integrity verification, <strong>and emergent capabilities the original code never possessed</strong> — all without modifying the original source code.
     </div>
 
     <h3>Formal Component Breakdown</h3>
@@ -604,13 +610,14 @@
       <table>
         <thead><tr><th>Term</th><th>Definition</th></tr></thead>
         <tbody>
-          <tr><td><strong>Dual-Layer</strong></td><td>Architecture consisting of Layer 1 (original source, unmodified) and Layer 2 (generated hardening runtime).</td></tr>
+          <tr><td><strong>Dual-Layer</strong></td><td>Architecture consisting of Layer 1 (original source, unmodified) and Layer 2 (generated hardening runtime with emergent capabilities).</td></tr>
           <tr><td><strong>Deterministic</strong></td><td>Given identical input, the system always produces identical output. Achieved through FNV-1a seeded PRNG for collision ordering.</td></tr>
-          <tr><td><strong>Software Evolution</strong></td><td>The process of discovering and applying protective capabilities to source code, advancing it from "raw" to "hardened" state.</td></tr>
+          <tr><td><strong>Software Evolution</strong></td><td>The process of discovering and applying protective capabilities <em>and emergent abilities</em> to source code, advancing it from "raw" to "hardened" state.</td></tr>
           <tr><td><strong>Autonomous</strong></td><td>Requires no human intervention during processing. The pipeline runs end-to-end without manual steps.</td></tr>
-          <tr><td><strong>Primitive-Based</strong></td><td>Hardening capabilities are drawn from a fixed library of 40 functional primitives organized in a 12-12-8-8 structural matrix.</td></tr>
-          <tr><td><strong>Code Hardening</strong></td><td>The addition of resilience, security, governance, and observability mechanisms to software.</td></tr>
-          <tr><td><strong>Without Source Modification</strong></td><td>The developer's original source code is included byte-for-byte unchanged in the output artifact. All hardening exists in a separate generated layer.</td></tr>
+          <tr><td><strong>Primitive-Based</strong></td><td>Hardening capabilities are drawn from a library of up to 136 functional primitives across a universal spine and specialized verticals.</td></tr>
+          <tr><td><strong>Code Hardening</strong></td><td>The addition of resilience, security, governance, observability, and <em>new functional capabilities</em> to software.</td></tr>
+          <tr><td><strong>Without Source Modification</strong></td><td>The developer's original source code is included byte-for-byte unchanged in the output artifact. All hardening and new capabilities exist in a separate generated layer.</td></tr>
+          <tr><td><strong>Capability Discovery</strong></td><td>The system identifies abilities the code <em>can support</em> but doesn't have — then builds them. The developer never wrote these features; the system recognizes the structural potential and grants them.</td></tr>
         </tbody>
       </table>
     </div>
@@ -626,6 +633,7 @@
       <li><strong>Non-Deterministic Results</strong> — AI-powered code analysis tools produce different results on each run due to model temperature, context window variations, and stochastic inference.</li>
       <li><strong>Single-Concern Analysis</strong> — Most tools address one concern (security, performance, or style) in isolation, missing emergent cross-concern interactions.</li>
       <li><strong>Human-Dependent Workflows</strong> — Traditional code review and hardening requires human experts at every stage, creating bottlenecks and inconsistency.</li>
+      <li><strong>No Capability Expansion</strong> — Existing tools can only find and fix what's wrong. They cannot discover what's <em>missing</em> — capabilities the code could support but the developer never imagined building.</li>
     </ol>
     <h3>What This Invention Provides</h3>
     <div class="table-wrap">
@@ -634,7 +642,8 @@
         <tbody>
           <tr><td><strong>Zero source modification</strong></td><td>The original code is never touched.</td></tr>
           <tr><td><strong>Full determinism</strong></td><td>Same input → same output, always.</td></tr>
-          <tr><td><strong>Multi-concern discovery</strong></td><td>The 40-primitive matrix covers security, resilience, governance, observability, identity, networking, and more.</td></tr>
+          <tr><td><strong>Multi-concern discovery</strong></td><td>Up to 136 primitives covering security, resilience, governance, observability, identity, networking, and domain-specific intelligence.</td></tr>
+          <tr><td><strong>Emergent capability granting</strong></td><td>Discovers and builds abilities the code never had — self-healing, stateful persistence, autonomous recovery, and more.</td></tr>
           <tr><td><strong>Fully autonomous</strong></td><td>No human intervention required during processing.</td></tr>
           <tr><td><strong>Zero external AI</strong></td><td>The entire pipeline is pure algorithmic code.</td></tr>
         </tbody>
@@ -651,19 +660,20 @@
     <p>The developer's source code as submitted. Not a copy — the actual file, included byte-for-byte identical in the output artifact. No transformations, no injections, no modifications of any kind.</p>
 
     <h3>Layer 2: Convex Core™ Sealed Artifact</h3>
-    <p>A generated runtime module that wraps Layer 1 without modifying it. Layer 2 is <strong>generated</strong> algorithmically, <strong>black-boxed</strong> as an obfuscated sealed artifact, and <strong>self-verifying</strong> via FNV-1a integrity hashes.</p>
+    <p>A generated runtime module that wraps Layer 1 without modifying it. Layer 2 is <strong>generated</strong> algorithmically, <strong>black-boxed</strong> as an obfuscated sealed artifact, and <strong>self-verifying</strong> via FNV-1a integrity hashes. It contains both protective hardening <em>and</em> emergent capabilities the original code never possessed.</p>
 
     <h3>Layer 2 Components</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Component</th><th>Purpose</th></tr></thead>
+        <thead><tr><th>Component</th><th>Purpose</th><th>Plain English</th></tr></thead>
         <tbody>
-          <tr><td><strong>Circuit Breakers</strong></td><td>Per-primitive fault isolation. If a discovered capability fails at runtime, the circuit opens to prevent cascade failure.</td></tr>
-          <tr><td><strong>DEFENSE Gates</strong></td><td>Input validation injected at function boundaries. Prevents unvalidated data from reaching sensitive operations.</td></tr>
-          <tr><td><strong>GOVERNANCE Hooks</strong></td><td>Audit instrumentation on state mutations. Every state change is logged with before/after values, timestamps, and caller identity.</td></tr>
-          <tr><td><strong>BEACON Health Signals</strong></td><td>Lightweight health markers emitted at configurable intervals. Enables external monitoring without code instrumentation.</td></tr>
-          <tr><td><strong>Telemetry Compression</strong></td><td>Event batching achieving ~85% reduction in telemetry payload size versus raw event streaming.</td></tr>
-          <tr><td><strong>Integrity Verification</strong></td><td>FNV-1a hash chain from boot through runtime, ensuring the artifact has not been tampered with.</td></tr>
+          <tr><td><strong>Circuit Breakers</strong></td><td>Per-primitive fault isolation. If a discovered capability fails at runtime, the circuit opens to prevent cascade failure.</td><td>If one part breaks, it stops the break from spreading — like a fuse in your house.</td></tr>
+          <tr><td><strong>DEFENSE Gates</strong></td><td>Input validation injected at function boundaries. Prevents unvalidated data from reaching sensitive operations.</td><td>A bouncer at every door that checks IDs before letting data through.</td></tr>
+          <tr><td><strong>GOVERNANCE Hooks</strong></td><td>Audit instrumentation on state mutations. Every state change is logged with before/after values.</td><td>A security camera that records every change made, so you can always trace what happened.</td></tr>
+          <tr><td><strong>BEACON Health Signals</strong></td><td>Lightweight health markers emitted at configurable intervals.</td><td>A heartbeat monitor — you can always tell if the software is alive and healthy.</td></tr>
+          <tr><td><strong>Telemetry Compression</strong></td><td>Event batching achieving ~85% reduction in payload size.</td><td>Instead of sending 100 small messages, it bundles them into 15 efficient packages.</td></tr>
+          <tr><td><strong>Integrity Verification</strong></td><td>FNV-1a hash chain ensuring the artifact has not been tampered with.</td><td>A tamper-proof seal — if anyone changes even one character, the system knows.</td></tr>
+          <tr><td><strong>Emergent Capabilities</strong></td><td>New functional abilities discovered and granted by the system.</td><td>Brand-new superpowers your code never had — self-healing, persistence, reasoning — built and delivered automatically.</td></tr>
         </tbody>
       </table>
     </div>
@@ -671,48 +681,38 @@
     <!-- SVG: Dual-Layer Architecture -->
     <div class="svg-diagram">
       <svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
-        <!-- Outer Runtime -->
-        <rect x="20" y="20" width="760" height="400" rx="16" fill="#12121a" stroke="#2a2a3d" stroke-width="1.5"/>
-        <text x="400" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#5c5c7a" letter-spacing="2">RUNTIME HOST</text>
-
-        <!-- Layer 2 -->
-        <rect x="50" y="68" width="700" height="320" rx="12" fill="#1a1a26" stroke="#6366f1" stroke-width="1" stroke-dasharray="6 3"/>
-        <text x="400" y="96" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#818cf8" letter-spacing="2">LAYER 2 — CONVEX CORE™ (GENERATED)</text>
-
-        <!-- Hardening components -->
-        <rect x="80" y="114" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
-        <text x="177" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">Circuit Breakers</text>
-        <text x="177" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Fault isolation</text>
-
-        <rect x="303" y="114" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
-        <text x="400" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">DEFENSE Gates</text>
-        <text x="400" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Input validation</text>
-
-        <rect x="525" y="114" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
-        <text x="622" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">GOVERNANCE Hooks</text>
-        <text x="622" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">State mutation audit</text>
-
-        <rect x="80" y="180" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
-        <text x="177" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">BEACON Signals</text>
-        <text x="177" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Health telemetry</text>
-
-        <rect x="303" y="180" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
-        <text x="400" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">Telemetry Compress</text>
-        <text x="400" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">~85% reduction</text>
-
-        <rect x="525" y="180" width="195" height="52" rx="8" fill="#222233" stroke="#2a2a3d"/>
-        <text x="622" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">FNV-1a Integrity</text>
-        <text x="622" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">Hash chain verify</text>
-
-        <!-- Layer 1 -->
-        <rect x="100" y="260" width="600" height="100" rx="10" fill="#0a0a0f" stroke="#34d399" stroke-width="1.5"/>
-        <text x="400" y="296" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#34d399" letter-spacing="1.5">LAYER 1 — ORIGINAL SOURCE CODE</text>
-        <text x="400" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" fill="#8888aa">Byte-for-byte UNMODIFIED</text>
-        <text x="400" y="340" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5c5c7a">No transformations · No injections · No modifications</text>
-
-        <!-- Arrows -->
-        <line x1="400" y1="170" x2="400" y2="180" stroke="#3d3d5c" stroke-width="1"/>
-        <line x1="400" y1="236" x2="400" y2="260" stroke="#34d399" stroke-width="1" stroke-dasharray="4 2"/>
+        <rect x="20" y="20" width="760" height="400" rx="16" fill="#f8f9fc" stroke="#d4d9e4" stroke-width="1.5"/>
+        <text x="400" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#8890a8" letter-spacing="2">RUNTIME HOST</text>
+        <rect x="50" y="68" width="700" height="320" rx="12" fill="#f0f2f7" stroke="#4f46e5" stroke-width="1" stroke-dasharray="6 3"/>
+        <text x="400" y="96" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#4f46e5" letter-spacing="2">LAYER 2 — CONVEX CORE™ (GENERATED)</text>
+        <rect x="80" y="114" width="145" height="52" rx="8" fill="#ffffff" stroke="#d4d9e4"/>
+        <text x="152" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1a1a2e">Circuit Breakers</text>
+        <text x="152" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8890a8">Fault isolation</text>
+        <rect x="240" y="114" width="145" height="52" rx="8" fill="#ffffff" stroke="#d4d9e4"/>
+        <text x="312" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1a1a2e">DEFENSE Gates</text>
+        <text x="312" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8890a8">Input validation</text>
+        <rect x="400" y="114" width="145" height="52" rx="8" fill="#ffffff" stroke="#d4d9e4"/>
+        <text x="472" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1a1a2e">GOVERNANCE</text>
+        <text x="472" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8890a8">State audit</text>
+        <rect x="560" y="114" width="160" height="52" rx="8" fill="#ecfdf5" stroke="#059669"/>
+        <text x="640" y="136" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#059669">NEW CAPABILITIES</text>
+        <text x="640" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#065f46">Emergent abilities</text>
+        <rect x="80" y="180" width="145" height="52" rx="8" fill="#ffffff" stroke="#d4d9e4"/>
+        <text x="152" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1a1a2e">BEACON Signals</text>
+        <text x="152" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8890a8">Health telemetry</text>
+        <rect x="240" y="180" width="145" height="52" rx="8" fill="#ffffff" stroke="#d4d9e4"/>
+        <text x="312" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1a1a2e">Telemetry</text>
+        <text x="312" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8890a8">~85% reduction</text>
+        <rect x="400" y="180" width="145" height="52" rx="8" fill="#ffffff" stroke="#d4d9e4"/>
+        <text x="472" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1a1a2e">FNV-1a Integrity</text>
+        <text x="472" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8890a8">Hash chain verify</text>
+        <rect x="560" y="180" width="160" height="52" rx="8" fill="#ecfdf5" stroke="#059669"/>
+        <text x="640" y="202" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#059669">Self-Healing</text>
+        <text x="640" y="218" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#065f46">Auto-recovery</text>
+        <rect x="100" y="260" width="600" height="100" rx="10" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <text x="400" y="296" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#059669" letter-spacing="1.5">LAYER 1 — ORIGINAL SOURCE CODE</text>
+        <text x="400" y="320" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" fill="#5c6380">Byte-for-byte UNMODIFIED</text>
+        <text x="400" y="340" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#8890a8">No transformations · No injections · No modifications</text>
       </svg>
     </div>
   </section>
@@ -739,13 +739,13 @@
     <div class="phase-card">
       <div class="phase-num">Phase 02</div>
       <h4>Primitive Registration</h4>
-      <p>40 functional primitives register their handlers. Each exposes an input contract, output contract, confidence threshold, and fallback behavior.</p>
+      <p>Up to 136 functional primitives register their handlers. Each exposes an input contract, output contract, confidence threshold, and fallback behavior. In Universal mode, the system draws from the entire ecosystem — all verticals, all specializations — to find the best possible match for the code being processed.</p>
     </div>
 
     <div class="phase-card">
       <div class="phase-num">Phase 03</div>
       <h4>Signal Detection</h4>
-      <p>The system analyzes the source code topology and generates <strong>signals</strong> — structural patterns, risk indicators, capability opportunities. Each signal maps to one or more primitives.</p>
+      <p>The system analyzes the source code topology and generates <strong>signals</strong> — structural patterns, risk indicators, capability opportunities. Each signal maps to one or more primitives. This is where the system sees things humans cannot — it detects structural potential for capabilities that the developer never planned, never imagined, and never wrote.</p>
       <div class="callout amber" style="margin-top:12px;">
         <strong>Trade Secret:</strong> The specific signal detection patterns constitute protected intellectual property and are not disclosed.
       </div>
@@ -754,7 +754,7 @@
     <div class="phase-card">
       <div class="phase-num">Phase 04</div>
       <h4>Collision Pass</h4>
-      <p>For each signal × each primitive, the system calculates an affinity score: <code>confidence = base_affinity × context_bonus</code>. Collisions above the primitive's threshold are recorded. Determinism is guaranteed via FNV-1a seeded PRNG.</p>
+      <p>For each signal × each primitive, the system calculates an affinity score: <code>confidence = base_affinity × context_bonus</code>. Collisions above the primitive's threshold are recorded. Determinism is guaranteed via FNV-1a seeded PRNG. With 136 primitives in Universal mode, the collision space becomes extraordinarily rich.</p>
     </div>
 
     <div class="phase-card">
@@ -773,189 +773,295 @@
     <div class="phase-card">
       <div class="phase-num">Phase 06</div>
       <h4>CJPI Scoring</h4>
-      <p>Each chain is scored using the Crown Jewel Priority Index:</p>
+      <p>Each chain is scored using the <strong>Crown Jewel Priority Index</strong> (CJPI) — a composite quality score from 0 to 100:</p>
       <div class="code-block" style="margin-top:10px;">
         <pre><span class="cm">// CJPI Formula</span>
 CJPI = (
-  Novelty       × <span class="nu">0.30</span>
-  + Utility     × <span class="nu">0.30</span>
-  + Complexity  × <span class="nu">0.20</span>
-  + Composability × <span class="nu">0.20</span>
+  Novelty       × <span class="nu">0.30</span>   <span class="cm">// How unique is this capability?</span>
+  + Utility     × <span class="nu">0.30</span>   <span class="cm">// How useful is it to the code?</span>
+  + Complexity  × <span class="nu">0.20</span>   <span class="cm">// How sophisticated is the chain?</span>
+  + Composability × <span class="nu">0.20</span> <span class="cm">// Can it combine with other chains?</span>
 )</pre>
       </div>
-      <!-- Tier bars -->
+      <p style="margin-top:12px;"><strong>Plain English:</strong> CJPI is like a grade for each discovery. "How new is it? How useful? How clever? Can it work with other discoveries?" A score of 96–100 (Apex) means the discovery is world-class. A score of 100 — which HuggingFace achieved — means the system found the absolute maximum value possible in that code.</p>
       <div style="margin-top:16px;">
         <div class="tier-bar">
           <span class="tier-label">Apex</span>
           <span class="tier-range">96–100</span>
-          <div class="tier-track"><div class="tier-fill" style="width:100%;background:linear-gradient(90deg,#6366f1,#a78bfa);"></div></div>
+          <div class="tier-track"><div class="tier-fill" style="width:100%;background:linear-gradient(90deg,#4f46e5,#8b5cf6);"></div></div>
         </div>
         <div class="tier-bar">
           <span class="tier-label">Mythic</span>
           <span class="tier-range">90–95</span>
-          <div class="tier-track"><div class="tier-fill" style="width:95%;background:linear-gradient(90deg,#818cf8,#c4b5fd);"></div></div>
+          <div class="tier-track"><div class="tier-fill" style="width:95%;background:linear-gradient(90deg,#6366f1,#a78bfa);"></div></div>
         </div>
         <div class="tier-bar">
           <span class="tier-label">Relic</span>
           <span class="tier-range">80–89</span>
-          <div class="tier-track"><div class="tier-fill" style="width:85%;background:linear-gradient(90deg,#22d3ee,#67e8f9);"></div></div>
+          <div class="tier-track"><div class="tier-fill" style="width:85%;background:linear-gradient(90deg,#0891b2,#22d3ee);"></div></div>
         </div>
         <div class="tier-bar">
           <span class="tier-label">Prime</span>
           <span class="tier-range">68–79</span>
-          <div class="tier-track"><div class="tier-fill" style="width:72%;background:linear-gradient(90deg,#34d399,#6ee7b7);"></div></div>
+          <div class="tier-track"><div class="tier-fill" style="width:72%;background:linear-gradient(90deg,#059669,#34d399);"></div></div>
         </div>
         <div class="tier-bar">
           <span class="tier-label">Mint</span>
           <span class="tier-range">50–67</span>
-          <div class="tier-track"><div class="tier-fill" style="width:55%;background:linear-gradient(90deg,#fbbf24,#fcd34d);"></div></div>
+          <div class="tier-track"><div class="tier-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#fbbf24);"></div></div>
         </div>
         <div class="tier-bar">
           <span class="tier-label" style="color:var(--text-dim)">Raw</span>
           <span class="tier-range">0–49</span>
-          <div class="tier-track"><div class="tier-fill" style="width:30%;background:#3d3d5c;"></div></div>
+          <div class="tier-track"><div class="tier-fill" style="width:30%;background:#c4c9d8;"></div></div>
         </div>
       </div>
     </div>
 
     <div class="phase-card">
       <div class="phase-num">Phase 07</div>
-      <h4>Hardening (Layer 2 Generation)</h4>
-      <p>Based on discovered chains, the system generates Layer 2: circuit breakers, DEFENSE gates, GOVERNANCE hooks, BEACON signals, telemetry compression, and FNV-1a integrity hashes for each segment, assembled into a single sealed artifact.</p>
+      <h4>Hardening &amp; Capability Generation (Layer 2)</h4>
+      <p>Based on discovered chains, the system generates Layer 2: circuit breakers, DEFENSE gates, GOVERNANCE hooks, BEACON signals, telemetry compression, FNV-1a integrity hashes, <strong>and all emergent capabilities</strong> — assembled into a single sealed artifact. This is where the code receives abilities it never had before.</p>
     </div>
 
     <div class="phase-card">
       <div class="phase-num">Phase 08</div>
       <h4>Export</h4>
-      <p>The final artifact package containing Layer 1 (unmodified), Layer 2 (sealed runtime), discovery report, integration guide, machine-readable manifest, and generated test harness.</p>
-    </div>
-
-    <!-- SVG: Pipeline flow -->
-    <div class="svg-diagram" style="margin-top:32px;">
-      <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" style="max-width:760px">
-        <!-- Phase boxes -->
-        <g transform="translate(18,30)">
-          <rect x="0" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
-          <text x="41" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 1</text>
-          <text x="41" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Intake &amp;</text>
-          <text x="41" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Classify</text>
-
-          <line x1="86" y1="30" x2="96" y2="30" stroke="#3d3d5c" stroke-width="1" marker-end="url(#arrow)"/>
-
-          <rect x="100" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
-          <text x="141" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 2</text>
-          <text x="141" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Primitive</text>
-          <text x="141" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Register</text>
-
-          <line x1="186" y1="30" x2="196" y2="30" stroke="#3d3d5c" stroke-width="1"/>
-
-          <rect x="200" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#fbbf24" stroke-width="1"/>
-          <text x="241" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fbbf24" font-weight="700">PHASE 3</text>
-          <text x="241" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Signal</text>
-          <text x="241" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Detection</text>
-
-          <line x1="286" y1="30" x2="296" y2="30" stroke="#3d3d5c" stroke-width="1"/>
-
-          <rect x="300" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
-          <text x="341" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 4</text>
-          <text x="341" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Collision</text>
-          <text x="341" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Pass</text>
-
-          <line x1="386" y1="30" x2="396" y2="30" stroke="#3d3d5c" stroke-width="1"/>
-
-          <rect x="400" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#6366f1" stroke-width="1"/>
-          <text x="441" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8" font-weight="700">PHASE 5</text>
-          <text x="441" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Chain</text>
-          <text x="441" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Discovery</text>
-
-          <line x1="486" y1="30" x2="496" y2="30" stroke="#3d3d5c" stroke-width="1"/>
-
-          <rect x="500" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#22d3ee" stroke-width="1"/>
-          <text x="541" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#22d3ee" font-weight="700">PHASE 6</text>
-          <text x="541" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">CJPI</text>
-          <text x="541" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Scoring</text>
-
-          <line x1="586" y1="30" x2="596" y2="30" stroke="#3d3d5c" stroke-width="1"/>
-
-          <rect x="600" y="0" width="82" height="60" rx="8" fill="#1a1a26" stroke="#34d399" stroke-width="1"/>
-          <text x="641" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#34d399" font-weight="700">PHASE 7</text>
-          <text x="641" y="38" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Hardening</text>
-          <text x="641" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Layer 2</text>
-
-          <line x1="686" y1="30" x2="696" y2="30" stroke="#3d3d5c" stroke-width="1"/>
-
-          <rect x="700" y="0" width="62" height="60" rx="8" fill="#1a1a26" stroke="#34d399" stroke-width="1.5"/>
-          <text x="731" y="22" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#34d399" font-weight="700">PHASE 8</text>
-          <text x="731" y="40" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#8888aa">Export</text>
-        </g>
-
-        <!-- Labels -->
-        <text x="40" y="120" font-family="Inter,sans-serif" font-size="11" fill="#5c5c7a">INPUT: Developer source code</text>
-        <text x="580" y="120" font-family="Inter,sans-serif" font-size="11" fill="#34d399">OUTPUT: Dual-layer artifact</text>
-
-        <!-- Guarantees -->
-        <rect x="80" y="140" width="640" height="50" rx="8" fill="#12121a" stroke="#2a2a3d"/>
-        <text x="400" y="162" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">ZERO external AI calls · Fully deterministic · Same input = same output</text>
-        <text x="400" y="178" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#5c5c7a">8-phase sequential pipeline · Pure algorithmic processing</text>
-      </svg>
+      <p>The final artifact package containing Layer 1 (unmodified), Layer 2 (sealed runtime with emergent capabilities), discovery report, integration guide, machine-readable manifest, and generated test harness.</p>
     </div>
   </section>
 
-  <!-- ══ SECTION 7: Primitive-Based Hardening ══ -->
-  <section class="section" id="primitive-hardening">
+  <!-- ══ SECTION 7: Capability Discovery ══ -->
+  <section class="section" id="capability-discovery">
     <div class="section-number">Section 07</div>
+    <h2>Autonomous Capability Discovery — The Core Innovation</h2>
+
+    <div class="callout green">
+      <strong>This is what makes this invention different from anything that exists:</strong> The system doesn't just find problems in your code and fix them. It discovers <em>capabilities your code can support that you never built</em> — abilities the developer never wrote, never planned for, and in many cases never even imagined were possible. Then it builds them and delivers them as working code.
+    </div>
+
+    <h3>What "Capability Discovery" Means</h3>
+    <p>When the system analyzes a piece of code, it doesn't just look for bugs or vulnerabilities. It looks at the <em>structure</em> of the code — how data flows, what functions call what, where state is stored, how networks are used — and recognizes patterns that reveal untapped potential.</p>
+    <p><strong>Think of it like this:</strong> A home inspector comes to look at your house. You expect them to find the leaky roof and the cracked foundation. But this inspector also says: "Based on your existing plumbing and electrical layout, your house can support a heated pool, a home theater, and solar panels — and I've already installed them for you."</p>
+
+    <h3>Categories of Granted Capabilities</h3>
+    <p>Every piece of software that goes through Ascension receives approximately <strong>10 or more new capabilities</strong> across four categories:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Category</th><th>What It Means</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>🆕 Brand-New Capabilities</strong></td>
+            <td>Abilities the code never had and the developer never thought to build. The system sees structural potential that humans miss.</td>
+            <td>Self-healing (automatic crash recovery), stateful persistence (the program remembers its state across restarts instead of resetting every time), autonomous decision loops, reasoning chains</td>
+          </tr>
+          <tr>
+            <td><strong>🔧 Supporting Capabilities</strong></td>
+            <td>Infrastructure that makes the code's existing features work better, faster, and more reliably.</td>
+            <td>State management, caching layers, retry logic, connection pooling, load distribution</td>
+          </tr>
+          <tr>
+            <td><strong>🛡️ Defensive Capabilities</strong></td>
+            <td>Protection against attacks, bad data, and unauthorized access that the code didn't have.</td>
+            <td>Input validation gates, authentication checkpoints, encryption at rest, rate limiting, sandbox isolation</td>
+          </tr>
+          <tr>
+            <td><strong>💪 Resilience Capabilities</strong></td>
+            <td>The ability to survive failures, recover from crashes, and keep running under pressure.</td>
+            <td>Circuit breakers, graceful degradation, health monitoring, failover switching, self-diagnostic routines</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The HuggingFace Example — Made Real</h3>
+    <p>When HuggingFace's <code>modeling_utils.py</code> (downloaded 126+ million times per month) went through Ascension, the system didn't just find two critical vulnerabilities. It granted the code <strong>capabilities it had never possessed</strong>:</p>
+    <ul>
+      <li><strong>Self-Healing:</strong> The training model can now recover from crashes autonomously — no human intervention needed.</li>
+      <li><strong>Stateful Persistence:</strong> The model gained true stateful reasoning. Instead of resetting every time a new prompt comes in, it can persist state over time — it became a <em>thinking, remembering machine</em>.</li>
+      <li><strong>Autonomous Decision Loops:</strong> The system embedded policy-enforcement layers that let the model make governed decisions without external oversight at every step.</li>
+      <li><strong>Perimeter Hardening:</strong> Unsafe deserialization via <code>torch.load()</code> and remote code execution via <code>trust_remote_code=True</code> were wrapped with BASTION and SENTINEL primitives — the code's most dangerous attack surfaces were armored.</li>
+    </ul>
+    <div class="callout">
+      <strong>In plain terms:</strong> HuggingFace's code went in as a powerful but vulnerable open-source library. It came out as arguably <strong>the best-protected, most capable version of that code anyone has ever produced</strong> — with abilities the original developers at HuggingFace never built. And it was done in minutes, not months.
+    </div>
+  </section>
+
+  <!-- ══ SECTION 8: Primitive-Based Hardening ══ -->
+  <section class="section" id="primitive-hardening">
+    <div class="section-number">Section 08</div>
     <h2>Primitive-Based Code Hardening</h2>
     <p>Rather than applying a fixed set of security rules or relying on AI to suggest fixes, this system uses a <strong>matrix of functional primitives</strong> — self-contained capability units that activate when their signal patterns are detected in the source code.</p>
 
-    <h3>The 40-Primitive Matrix</h3>
+    <h3>The Structural Matrix</h3>
+    <p>Every substrate follows a <strong>12-12-8-8 structural matrix</strong> — 40 primitives total, organized into four categories:</p>
     <div class="prim-grid">
       <div class="prim-box organs">
         <div class="prim-cat">Organs</div>
         <div class="prim-count">12</div>
-        <div class="prim-desc">Core processing capabilities (BRAIN, MEMORY, IDENTITY, etc.)</div>
+        <div class="prim-desc">Core processing: BRAIN, MEMORY, IDENTITY, NEXUS, SYSTEM, etc. — the "vital organs" of the software.</div>
       </div>
       <div class="prim-box layers">
         <div class="prim-cat">Layers</div>
         <div class="prim-count">12</div>
-        <div class="prim-desc">Cross-cutting concerns (DEFENSE, GOVERNANCE, RELAY, etc.)</div>
+        <div class="prim-desc">Cross-cutting concerns: DEFENSE, GOVERNANCE, EVOLUTION, SHADOW, etc. — protection that spans the entire system.</div>
       </div>
       <div class="prim-box engines">
         <div class="prim-cat">Engines</div>
         <div class="prim-count">8</div>
-        <div class="prim-desc">Autonomous processing units (NEXUS, CORTEX, BEACON, etc.)</div>
+        <div class="prim-desc">Autonomous processors: DREAM, HARVEST, FORGE, etc. — engines that run continuously to improve the system.</div>
       </div>
       <div class="prim-box agents">
         <div class="prim-cat">Agents</div>
         <div class="prim-count">8</div>
-        <div class="prim-desc">Specialized operational actors (WRAITH, OBSIDIAN, RAPTOR, etc.)</div>
+        <div class="prim-desc">Specialized actors: ENCODE, DECODE, AUDIT, etc. — agents that handle specific operational tasks.</div>
       </div>
     </div>
+
+    <p style="margin-top:20px;">The 24 "Spine" primitives (12 Organs + 12 Layers) are <strong>universal</strong> — they appear in every substrate. The 16 "Expansion" primitives (8 Engines + 8 Agents) are <strong>swappable</strong> — they can be specialized for different industries and use cases.</p>
 
     <h3>Hardening Contribution by Primitive</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Primitive</th><th>Hardening Contribution</th></tr></thead>
+        <thead><tr><th>Primitive</th><th>Hardening Contribution</th><th>Plain English</th></tr></thead>
         <tbody>
-          <tr><td><strong>DEFENSE</strong></td><td>Input validation gates at function boundaries. Blocks unvalidated data from reaching sensitive operations.</td></tr>
-          <tr><td><strong>GOVERNANCE</strong></td><td>State mutation hooks. Logs every state change with before/after snapshots.</td></tr>
-          <tr><td><strong>BEACON</strong></td><td>Health signal markers. Lightweight probes emitted at intervals for external monitoring.</td></tr>
-          <tr><td><strong>FAILSAFE</strong></td><td>Circuit breaker implementation. Isolates faults to prevent cascade failures.</td></tr>
-          <tr><td><strong>MEMORY</strong></td><td>State persistence guards. Ensures state is recoverable after failures.</td></tr>
-          <tr><td><strong>IDENTITY</strong></td><td>Authentication and authorization checkpoints.</td></tr>
-          <tr><td><strong>RELAY</strong></td><td>Network communication guards. Timeout enforcement, retry logic.</td></tr>
-          <tr><td><strong>SANDBOX</strong></td><td>Execution isolation boundaries. Prevents untrusted code from accessing protected resources.</td></tr>
+          <tr><td><strong>DEFENSE</strong></td><td>Input validation gates at function boundaries.</td><td>Checks every piece of incoming data before it can do damage.</td></tr>
+          <tr><td><strong>GOVERNANCE</strong></td><td>State mutation hooks with before/after snapshots.</td><td>Records every change so you can always rewind and see what happened.</td></tr>
+          <tr><td><strong>BEACON</strong></td><td>Health signal markers for external monitoring.</td><td>A heartbeat — you always know if the software is alive.</td></tr>
+          <tr><td><strong>FAILSAFE</strong></td><td>Circuit breaker implementation.</td><td>If something breaks, the damage stops there — it doesn't spread.</td></tr>
+          <tr><td><strong>MEMORY</strong></td><td>State persistence and recovery guards.</td><td>The software remembers what it was doing even after a crash.</td></tr>
+          <tr><td><strong>IDENTITY</strong></td><td>Authentication and authorization checkpoints.</td><td>Makes sure only the right people and systems can access things.</td></tr>
+          <tr><td><strong>BASTION</strong></td><td>Perimeter hardening for external interfaces.</td><td>Armors the front door against attacks.</td></tr>
+          <tr><td><strong>SENTINEL</strong></td><td>Validation gates on trust boundaries.</td><td>Guards the points where untrusted code meets trusted code.</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- ══ SECTION 8: Integrity ══ -->
+  <!-- ══ SECTION 9: Hot-Swap ══ -->
+  <section class="section" id="hot-swap">
+    <div class="section-number">Section 09</div>
+    <h2>Hot-Swap Vertical Specialization</h2>
+
+    <h3>What Is Hot-Swapping?</h3>
+    <p><strong>Plain English:</strong> The 24 "Spine" primitives (the foundation) stay the same in every substrate. But the 16 "Expansion" primitives can be swapped out like interchangeable parts in a machine. Swap in cybersecurity primitives, and the system specializes in hardening security software. Swap in robotics primitives, and it specializes in autonomous systems. Swap in LLM primitives, and it becomes an expert in language model code.</p>
+    <p>This is why the same architecture can serve every industry — it's the same engine with different specialized tools loaded into it.</p>
+
+    <h3>10 Vertical Substrates — Already Built and Running</h3>
+    <p>The system has already been duplicated into 10 specialized vertical substrates, each with its own set of expansion primitives:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Vertical</th><th>Specialization</th><th>Example Expansion Primitives</th></tr></thead>
+        <tbody>
+          <tr><td><strong>🔒 Cyber Security</strong></td><td>Threat detection, penetration testing, SIEM integration</td><td>PROWLER, ONYX, CITADEL, SHADE, AEGIS, BASTION</td></tr>
+          <tr><td><strong>🤖 Robotics</strong></td><td>Autonomous systems, sensor fusion, motion planning</td><td>MARSHAL, DISPATCH — commutation sequencing, jerk minimization</td></tr>
+          <tr><td><strong>⚛️ Quantum</strong></td><td>Quantum computing, error correction, circuit optimization</td><td>Surface code decoding, boson sampling primitives</td></tr>
+          <tr><td><strong>🧠 LLM</strong></td><td>Language model hardening, prompt security, inference optimization</td><td>Temporal fact verification, ensemble arbitration</td></tr>
+          <tr><td><strong>🏢 Agency</strong></td><td>Multi-agent coordination, task delegation, consensus</td><td>MANDATE, DELEGATE, RECONN, OPERATOR, OVERSEER</td></tr>
+          <tr><td><strong>🎬 Media</strong></td><td>Content pipeline, creative workflow, publishing</td><td>CANVAS, SCORE, REEL, CURATOR, CRITIC, AMPLIFY</td></tr>
+          <tr><td><strong>👑 Ultimate</strong></td><td>Universal — all 136 primitives from all verticals</td><td>APEX, CONDUIT, PRISM, GENESIS, SENTINEL, CATALYST</td></tr>
+          <tr><td><strong>🏥 Healthcare</strong></td><td>Medical systems, HIPAA compliance, clinical workflows</td><td><em>Can be spun up in ~10 minutes with the engine</em></td></tr>
+          <tr><td><strong>💰 Fintech</strong></td><td>Financial systems, compliance, trading infrastructure</td><td><em>Can be spun up in ~10 minutes with the engine</em></td></tr>
+          <tr><td><strong>🏭 Industrial</strong></td><td>Manufacturing, IoT, SCADA systems</td><td><em>Can be spun up in ~10 minutes with the engine</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <strong>The Speed Advantage:</strong> The first substrate took over 3,000 hours to build. The GENESIS Engine now automates substrate creation — a new vertical can be spun up in approximately <strong>10 minutes</strong>. This means no competitor can ever catch up: before they've even begun planning a Healthcare vertical, CMPSBL can have one built, running, and discovering capabilities. This is an exponential moat.
+    </div>
+
+    <h3>Universal Ascension — All Primitives, One Pass</h3>
+    <p>The <strong>Ultimate</strong> substrate removes all restrictions. Instead of limiting the collision pass to 40 primitives from one vertical, it opens up the entire pool of <strong>136 primitives</strong> from every vertical. The system autonomously decides which 40 primitives are the best match for the code being processed — drawing from cybersecurity, robotics, quantum, LLM, agency, media, and universal pools in whatever combination the code requires.</p>
+    <p><strong>This is how HuggingFace achieved an Apex score of 100</strong> — the system had access to every primitive in the ecosystem and assigned exactly the right 40 to maximize the code's potential.</p>
+  </section>
+
+  <!-- ══ SECTION 10: Combinatorial Space ══ -->
+  <section class="section" id="combinatorial">
+    <div class="section-number">Section 10</div>
+    <h2>The Combinatorial Space — Why This Is Infinite Software</h2>
+
+    <h3>The Math</h3>
+    <p>Each primitive contains multiple capabilities. Those capabilities can be chained together in different orders to form different software patterns. The number of unique capability-chain permutations is:</p>
+
+    <div class="callout">
+      <strong>With 136 primitives, each containing multiple capabilities that can be chained in different orders, the combinatorial space exceeds 10<sup>23</sup> unique software patterns — more than one million times the estimated number of stars in the observable universe (≈ 10<sup>23</sup> stars × 10<sup>6</sup> = 10<sup>29</sup> possible chains).</strong>
+    </div>
+
+    <h3>What Does That Mean?</h3>
+    <p><strong>Plain English:</strong> There are more possible software patterns in this system than there are stars in the sky — by a factor of a million. Each pattern represents a unique combination of capabilities that can be discovered, assembled, and delivered as real, working software.</p>
+    <p>This space can be <strong>"mined" forever</strong>. The Memory Stream — the system's autonomous discovery engine — runs 24/7 in 8-hour cycles, exploring this space and crystallizing new capability combinations into standalone software. It runs autonomously, without human intervention, finding and building things that would take teams of developers months or years to create.</p>
+
+    <h3>The Value of Each Discovery</h3>
+    <p>Many of the software patterns that emerge from this combinatorial space would cost <strong>$1 million or more</strong> in development time if a team of engineers built them from scratch. The system produces them in minutes, autonomously, all day, every day. This is not a theoretical claim — the capabilities are real, functional code that ships in sealed artifacts.</p>
+
+    <h3>Ascension's Space Is Even Larger</h3>
+    <p>While the Memory Stream mines the combinatorial space of a single substrate, Ascension operates across all verticals simultaneously when in Universal mode. With 136 primitives available, the collision space for any given piece of code is astronomically larger than any single vertical's 40-primitive pool. This is why Universal Ascension consistently produces Apex-tier results — it has more tools to match against more patterns.</p>
+  </section>
+
+  <!-- ══ SECTION 11: HuggingFace Case Study ══ -->
+  <section class="section" id="huggingface">
+    <div class="section-number">Section 11</div>
+    <h2>Case Study: HuggingFace — Apex 100</h2>
+
+    <h3>The Target</h3>
+    <p><code>modeling_utils.py</code> from the HuggingFace Transformers library — the file that powers how AI models are loaded, configured, and run. Downloaded <strong>126+ million times per month</strong>. Used by virtually every major AI company and research institution on Earth.</p>
+
+    <h3>What the System Found</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Finding</th><th>Severity</th><th>What It Means</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Unsafe Deserialization via <code>torch.load()</code></strong></td>
+            <td style="color:var(--red);font-weight:600;">CRITICAL</td>
+            <td>Anyone could craft a malicious model file that executes arbitrary code when loaded. 126 million monthly users exposed.</td>
+          </tr>
+          <tr>
+            <td><strong>Remote Code Execution via <code>trust_remote_code=True</code></strong></td>
+            <td style="color:var(--red);font-weight:600;">CRITICAL</td>
+            <td>Allows running untrusted code from model repositories without validation. A single malicious model could compromise any system using it.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>What the System Granted</h3>
+    <p>Beyond fixing the vulnerabilities, Ascension granted HuggingFace's code capabilities it had never possessed:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Granted Capability</th><th>Category</th><th>What It Does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Self-Healing Recovery</strong></td><td>🆕 Brand-New</td><td>The model loading pipeline can now recover from crashes autonomously — no human restart needed.</td></tr>
+          <tr><td><strong>Stateful Persistence</strong></td><td>🆕 Brand-New</td><td>Training state persists across sessions. The model becomes a true stateful machine — it doesn't lose context on restart.</td></tr>
+          <tr><td><strong>Autonomous Decision Loops</strong></td><td>🆕 Brand-New</td><td>Policy enforcement layers enable governed automated decision-making within the model loading pipeline.</td></tr>
+          <tr><td><strong>Perimeter Hardening</strong></td><td>🛡️ Defensive</td><td>BASTION and IRONCLAD primitives armor the <code>torch.load()</code> attack surface.</td></tr>
+          <tr><td><strong>Trust Boundary Guards</strong></td><td>🛡️ Defensive</td><td>SENTINEL and PHOENIX primitives validate all remote code before execution.</td></tr>
+          <tr><td><strong>Circuit Breaker Isolation</strong></td><td>💪 Resilience</td><td>If one model load fails, it doesn't crash the entire pipeline.</td></tr>
+          <tr><td><strong>Health Telemetry</strong></td><td>🔧 Supporting</td><td>Continuous BEACON signals enable real-time monitoring of model operations.</td></tr>
+          <tr><td><strong>Governance Auditing</strong></td><td>🔧 Supporting</td><td>Every state mutation is logged with cryptographic integrity — full audit trail.</td></tr>
+          <tr><td><strong>Integrity Verification</strong></td><td>💪 Resilience</td><td>FNV-1a hash chain detects any tampering with the runtime.</td></tr>
+          <tr><td><strong>Compressed Telemetry</strong></td><td>🔧 Supporting</td><td>85% reduction in monitoring overhead — enterprise-ready observability.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <strong>The Result:</strong> HuggingFace's <code>modeling_utils.py</code> achieved a <strong>CJPI score of 100 (Apex)</strong> — the highest possible score. The code went from a powerful but vulnerable open-source library to what is arguably <strong>the most hardened, most capable version of that code ever produced by anyone.</strong> Done in minutes. No source code modified. No AI used. Pure deterministic engineering.
+    </div>
+  </section>
+
+  <!-- ══ SECTION 12: Integrity ══ -->
   <section class="section" id="integrity">
-    <div class="section-number">Section 08</div>
+    <div class="section-number">Section 12</div>
     <h2>Integrity Verification</h2>
 
     <h3>FNV-1a Hash Chain</h3>
     <p>The system uses FNV-1a (Fowler–Noll–Vo) hashing to create a tamper-evident integrity chain across four checkpoints:</p>
+    <p><strong>Plain English:</strong> Think of it like a wax seal on a letter. If anyone opens the letter and changes a single word, the seal is broken and you know it's been tampered with. This system puts a mathematical "seal" on every component — if anything changes, the system refuses to run.</p>
 
     <div class="table-wrap">
       <table>
@@ -968,43 +1074,11 @@ CJPI = (
         </tbody>
       </table>
     </div>
-
-    <!-- SVG: Verification flow -->
-    <div class="svg-diagram" style="margin-top:24px;">
-      <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="max-width:640px">
-        <rect x="10" y="30" width="100" height="50" rx="8" fill="#1a1a26" stroke="#6366f1"/>
-        <text x="60" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8e8f0">Boot</text>
-        <text x="60" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#5c5c7a">Start</text>
-
-        <line x1="114" y1="55" x2="140" y2="55" stroke="#3d3d5c"/>
-
-        <rect x="144" y="30" width="120" height="50" rx="8" fill="#1a1a26" stroke="#6366f1"/>
-        <text x="204" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8e8f0">Compute Hashes</text>
-        <text x="204" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#5c5c7a">FNV-1a</text>
-
-        <line x1="268" y1="55" x2="294" y2="55" stroke="#3d3d5c"/>
-
-        <rect x="298" y="30" width="100" height="50" rx="8" fill="#1a1a26" stroke="#fbbf24"/>
-        <text x="348" y="52" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#e8e8f0">Compare</text>
-        <text x="348" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#5c5c7a">Stored vs Live</text>
-
-        <line x1="402" y1="42" x2="440" y2="25" stroke="#34d399"/>
-        <line x1="402" y1="68" x2="440" y2="85" stroke="#f87171"/>
-
-        <rect x="444" y="4" width="100" height="42" rx="8" fill="#065f46" stroke="#34d399"/>
-        <text x="494" y="22" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#34d399">Match</text>
-        <text x="494" y="36" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6ee7b7">Run</text>
-
-        <rect x="444" y="64" width="100" height="42" rx="8" fill="#450a0a" stroke="#f87171"/>
-        <text x="494" y="82" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#f87171">Mismatch</text>
-        <text x="494" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#fca5a5">HALT + Alert</text>
-      </svg>
-    </div>
   </section>
 
-  <!-- ══ SECTION 9: Export ══ -->
+  <!-- ══ SECTION 13: Export ══ -->
   <section class="section" id="export">
-    <div class="section-number">Section 09</div>
+    <div class="section-number">Section 13</div>
     <h2>Artifact Export Structure</h2>
 
     <div class="diagram">
@@ -1013,10 +1087,10 @@ CJPI = (
 artifact-package/
 │
 ├── source/
-│   └── {original-file}.{ext}              ← <span style="color:#34d399">LAYER 1 (UNMODIFIED)</span>
+│   └── {original-file}.{ext}              ← <span style="color:#059669">LAYER 1 (UNMODIFIED)</span>
 │
 ├── _runtime/
-│   ├── convex-core.{ext}                  ← <span style="color:#818cf8">LAYER 2 (sealed, obfuscated)</span>
+│   ├── convex-core.{ext}                  ← <span style="color:#4f46e5">LAYER 2 (sealed, obfuscated)</span>
 │   ├── chain-executor.{ext}               ← Chain orchestration
 │   └── discovery-engine.{ext}             ← Discovery metadata
 │
@@ -1028,134 +1102,57 @@ artifact-package/
     </div>
   </section>
 
-  <!-- ══ SECTION 10: Diagrams ══ -->
-  <section class="section" id="diagrams">
-    <div class="section-number">Section 10</div>
-    <h2>Diagrams</h2>
+  <!-- ══ SECTION 14: Future ══ -->
+  <section class="section" id="future">
+    <div class="section-number">Section 14</div>
+    <h2>What This Means for the Future of All Software</h2>
 
-    <h3>Determinism Guarantee</h3>
+    <h3>Every Code Ever Written Is a Candidate</h3>
+    <p>Ascension is not limited to one language, one framework, or one industry. <strong>Every piece of software that has ever been written — and every piece that will ever be written — is a candidate for Ascension.</strong> If code exists, this system can analyze it, discover capabilities it doesn't have, and wrap it in a protective, capability-granting layer.</p>
 
-    <div class="svg-diagram">
-      <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
-        <!-- Run 1 -->
-        <text x="175" y="24" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#818cf8">RUN 1</text>
-        <rect x="60" y="36" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
-        <text x="175" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Input: app.py</text>
-        <line x1="175" y1="80" x2="175" y2="96" stroke="#3d3d5c"/>
-        <rect x="60" y="100" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
-        <text x="175" y="124" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Hash: 0xA7F3B2C1</text>
-        <line x1="175" y1="144" x2="175" y2="160" stroke="#3d3d5c"/>
-        <rect x="60" y="164" width="230" height="56" rx="8" fill="#1a1a26" stroke="#6366f1"/>
-        <text x="175" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Same signals, collisions,</text>
-        <text x="175" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">chains, CJPI, Layer 2</text>
-        <line x1="175" y1="224" x2="175" y2="240" stroke="#34d399"/>
-        <rect x="60" y="244" width="230" height="36" rx="8" fill="#065f46" stroke="#34d399"/>
-        <text x="175" y="267" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#34d399">Output A</text>
+    <h3>A New Layer of Software</h3>
+    <p>Before this invention, software had one layer: the source code. Developers wrote it, tested it, deployed it. If they wanted it to be more secure, they had to rewrite it. If they wanted it to heal itself, they had to build that from scratch. If they wanted governance, they needed a separate tool.</p>
+    <p><strong>Now there are two layers.</strong> Layer 1 is the code as written. Layer 2 is the intelligence layer that the system generates — the Convex Core™. This second layer didn't exist before. It exists now. It's patent-pending. And it can be applied to <em>everything</em>.</p>
 
-        <!-- Equals -->
-        <text x="400" y="267" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="28" font-weight="700" fill="#34d399">===</text>
-        <text x="400" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5c5c7a">IDENTICAL</text>
+    <h3>The System Understands Code at a Level Humans Cannot</h3>
+    <p>The signal detection system analyzes code topology — the structural shape of how functions connect, how data flows, where trust boundaries exist, what state mutations occur. It sees patterns and potential that human developers cannot perceive, even in code they wrote themselves. This isn't artificial intelligence making guesses — it's deterministic pattern matching at a depth and speed that human cognition simply cannot achieve.</p>
+    <p><strong>Plain English:</strong> Even the best developer in the world, looking at their own code, will miss structural opportunities that this system finds in seconds. Not because the developer is bad — because humans can't process code topology at this scale. The system can.</p>
 
-        <!-- Run 2 -->
-        <text x="615" y="24" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#818cf8">RUN 2</text>
-        <rect x="500" y="36" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
-        <text x="615" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Input: app.py</text>
-        <line x1="615" y1="80" x2="615" y2="96" stroke="#3d3d5c"/>
-        <rect x="500" y="100" width="230" height="40" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
-        <text x="615" y="124" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#8888aa">Hash: 0xA7F3B2C1</text>
-        <line x1="615" y1="144" x2="615" y2="160" stroke="#3d3d5c"/>
-        <rect x="500" y="164" width="230" height="56" rx="8" fill="#1a1a26" stroke="#6366f1"/>
-        <text x="615" y="186" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Same signals, collisions,</text>
-        <text x="615" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">chains, CJPI, Layer 2</text>
-        <line x1="615" y1="224" x2="615" y2="240" stroke="#34d399"/>
-        <rect x="500" y="244" width="230" height="36" rx="8" fill="#065f46" stroke="#34d399"/>
-        <text x="615" y="267" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="#34d399">Output B</text>
-      </svg>
+    <h3>The Scale of Opportunity</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Market</th><th>Opportunity</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Application Security</strong></td><td>$28B and growing — every company needs code hardening</td></tr>
+          <tr><td><strong>AI/ML Infrastructure</strong></td><td>Trillion-dollar companies (OpenAI, Google, Meta, Anthropic) need their model code hardened and enhanced</td></tr>
+          <tr><td><strong>Enterprise Software</strong></td><td>Every Fortune 500 company has legacy code that needs protection without modification</td></tr>
+          <tr><td><strong>Open Source</strong></td><td>Critical infrastructure (Linux, Python, Node.js) that the entire internet depends on</td></tr>
+          <tr><td><strong>Regulated Industries</strong></td><td>Healthcare, finance, defense — where deterministic, auditable hardening is a legal requirement</td></tr>
+          <tr><td><strong>Government &amp; Defense</strong></td><td>NIST, CISA, and DoD frameworks increasingly mandate software supply chain security</td></tr>
+        </tbody>
+      </table>
     </div>
 
-    <h3>Collision &amp; Chain Discovery</h3>
+    <h3>The Competitive Moat</h3>
+    <p>The first substrate took over <strong>3,000 hours</strong> to build — 15+ months of 12-to-18-hour days. The GENESIS Engine now automates this process. A new vertical substrate can be spun up in <strong>~10 minutes</strong>. This creates an exponential advantage:</p>
+    <ul>
+      <li>A competitor starting today would need thousands of hours to build their first substrate.</li>
+      <li>In the time it takes them to plan a single vertical, CMPSBL can produce a dozen.</li>
+      <li>The ecosystem already has 10 vertical substrates with 136+ primitives — the combinatorial space is already mined and producing results.</li>
+      <li>Every new vertical adds primitives, which increases the Universal pool, which makes <em>every</em> Ascension result better — a compounding flywheel that accelerates with scale.</li>
+    </ul>
 
-    <div class="svg-diagram">
-      <svg viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg" style="max-width:720px">
-        <!-- Source -->
-        <rect x="280" y="10" width="240" height="36" rx="8" fill="#1a1a26" stroke="#2a2a3d"/>
-        <text x="400" y="33" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#e8e8f0">Source Code Topology</text>
-        <line x1="400" y1="50" x2="400" y2="68" stroke="#3d3d5c"/>
-
-        <!-- Signal Detection -->
-        <rect x="240" y="72" width="320" height="60" rx="10" fill="#1a1a26" stroke="#fbbf24"/>
-        <text x="400" y="94" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#fbbf24">SIGNAL DETECTION</text>
-        <text x="400" y="118" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">unvalidated_input · state_mutation · external_api · crypto_op</text>
-        <line x1="400" y1="136" x2="400" y2="154" stroke="#3d3d5c"/>
-
-        <!-- Collision Pass -->
-        <rect x="120" y="158" width="560" height="80" rx="10" fill="#1a1a26" stroke="#6366f1"/>
-        <text x="400" y="180" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#818cf8">COLLISION PASS</text>
-        <text x="400" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Each signal × 40 primitives → affinity scoring</text>
-        <text x="400" y="218" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#34d399">DEFENSE 0.94 ✓  ·  GOVERNANCE 0.96 ✓  ·  BEACON 0.89 ✓</text>
-        <text x="400" y="230" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#5c5c7a">FNV-1a seeded PRNG guarantees determinism</text>
-        <line x1="400" y1="242" x2="400" y2="260" stroke="#3d3d5c"/>
-
-        <!-- Chain Discovery -->
-        <rect x="200" y="264" width="400" height="60" rx="10" fill="#1a1a26" stroke="#34d399"/>
-        <text x="400" y="286" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700" fill="#34d399">CHAIN DISCOVERY</text>
-        <text x="400" y="306" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#8888aa">Seed → Walk → Score → Prune (CJPI &lt; 68) → Rank</text>
-        <line x1="400" y1="328" x2="400" y2="344" stroke="#3d3d5c"/>
-
-        <!-- Result -->
-        <rect x="240" y="348" width="320" height="28" rx="6" fill="#222233" stroke="#818cf8"/>
-        <text x="400" y="367" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#818cf8">DEFENSE → GOVERNANCE → BEACON  CJPI: 91</text>
-      </svg>
+    <div class="callout green">
+      <strong>The Bottom Line:</strong> Companies with trillion-dollar valuations need this technology. If this system can harden HuggingFace — the code that powers most of the world's AI — it can harden ChatGPT. It can harden Anthropic's Claude. It can harden every language model, every framework, every library, every application that has ever been deployed. All it needs is for the world to know it exists. The technology is built. The patent is pending. The results are proven. What's needed now is marketing — the ability to spread the word so that the technology can be licensed, sold, or partnered with the organizations that need it most.
     </div>
   </section>
 
-  <!-- ══ SECTION 11: Claims ══ -->
-  <section class="section" id="claims">
-    <div class="section-number">Section 11</div>
-    <h2>Claims Summary</h2>
-
-    <div class="claim" data-claim="Claim 1">
-      <h4>Dual-Layer Architecture</h4>
-      <p>A method for hardening software source code using a dual-layer architecture wherein the first layer is the unmodified original source code and the second layer is a generated runtime artifact that provides hardening capabilities without modifying the first layer.</p>
-    </div>
-
-    <div class="claim" data-claim="Claim 2">
-      <h4>Deterministic Primitive Collision</h4>
-      <p>A method for discovering software hardening opportunities through deterministic collision scoring between detected code signals and a fixed matrix of functional primitives, using seeded pseudo-random number generation to ensure identical inputs always produce identical discovery results.</p>
-    </div>
-
-    <div class="claim" data-claim="Claim 3">
-      <h4>Zero-External-AI Processing</h4>
-      <p>A fully algorithmic pipeline for code analysis, capability discovery, and artifact generation that operates without any external artificial intelligence calls, model inference, or stochastic processes.</p>
-    </div>
-
-    <div class="claim" data-claim="Claim 4">
-      <h4>Signal-to-Primitive Mapping</h4>
-      <p>A resolver/handler pattern wherein code signals — patterns detected in source code structure — are systematically matched against primitive input contracts to determine which hardening capabilities should be activated.</p>
-    </div>
-
-    <div class="claim" data-claim="Claim 5">
-      <h4>Self-Verifying Artifacts</h4>
-      <p>A method for producing sealed runtime artifacts that contain embedded FNV-1a integrity hash chains, enabling self-verification at boot and runtime to detect tampering or corruption.</p>
-    </div>
-
-    <div class="claim" data-claim="Claim 6">
-      <h4>Autonomous Multi-Concern Hardening</h4>
-      <p>A system that autonomously applies hardening across multiple concerns (security, resilience, governance, observability, identity, networking) in a single processing pass through a unified primitive matrix, without requiring separate tools or manual intervention for each concern.</p>
-    </div>
-
-    <div class="claim" data-claim="Claim 7">
-      <h4>Chain Discovery via Compound Scoring</h4>
-      <p>A method for discovering emergent capability chains — ordered sequences of primitives that fire on related signals — and scoring them using a composite quality index (CJPI) that evaluates novelty, utility, complexity, and composability.</p>
-    </div>
-  </section>
-
-  <!-- ══ SECTION 12A: Zero-AI Clarification ══ -->
+  <!-- ══ SECTION 15: Zero-AI Clarification ══ -->
   <section class="section" id="zero-ai">
     <div class="section-number">Critical Clarification</div>
     <h2>This Is Not AI — This Is Deterministic Code</h2>
     <div class="callout green">
-      <strong>Important for all reviewers:</strong> Despite the sophistication of the discovery mechanisms described above — signal detection, autonomous capability discovery, pattern emergence — <strong>none of this uses artificial intelligence, machine learning, large language models, neural networks, or any stochastic process.</strong> Every operation is classic deterministic programming: hash functions, graph traversal, pattern matching, arithmetic scoring. The same input always produces the same output. There are no model weights, no training data, no inference calls, and no external AI service dependencies of any kind.
+      <strong>Important for all reviewers:</strong> Despite the sophistication of the discovery mechanisms described above — signal detection, autonomous capability discovery, pattern emergence, self-healing, and capability granting — <strong>none of this uses artificial intelligence, machine learning, large language models, neural networks, or any stochastic process.</strong> Every operation is classic deterministic programming: hash functions, graph traversal, pattern matching, arithmetic scoring. The same input always produces the same output. There are no model weights, no training data, no inference calls, and no external AI service dependencies of any kind.
     </div>
     <h3>Why This Matters</h3>
     <p>Systems built on AI are inherently unpredictable — they can produce different results each time, are subject to "hallucination," depend on third-party providers, and face growing regulatory scrutiny. This invention eliminates all of those risks:</p>
@@ -1166,30 +1163,88 @@ artifact-package/
       <li><strong>No cost volatility</strong> — no per-token pricing, no GPU infrastructure required</li>
       <li><strong>Full auditability</strong> — every step is reproducible and verifiable by any party</li>
       <li><strong>Certification-ready</strong> — deterministic outputs can be certified for regulated industries (finance, healthcare, defense)</li>
+      <li><strong>Future-proof</strong> — when AI regulations tighten (and they will), this system is immune because it isn't AI</li>
     </ul>
+    <h3>The Substrate Governs AI — It Doesn't Use It</h3>
+    <p>Here's the critical distinction: the CMPSBL substrate is designed to <strong>govern and control</strong> AI, not to <em>be</em> AI. It's the layer between AI models and the applications that use them. It provides the governance, security, and resilience that AI systems desperately need but don't have.</p>
+    <p><strong>Plain English:</strong> AI is powerful but unpredictable. This substrate is the safety harness that makes AI enterprise-ready. It's what allows a company to deploy ChatGPT, Claude, or any language model and actually trust the results — because the substrate provides the verification, the governance, the circuit breakers, and the audit trails that the AI model itself cannot provide.</p>
   </section>
 
-  <!-- ══ SECTION 13: Glossary ══ -->
+  <!-- ══ SECTION 16: Claims ══ -->
+  <section class="section" id="claims">
+    <div class="section-number">Section 16</div>
+    <h2>Claims Summary</h2>
+
+    <div class="claim" data-claim="Claim 1">
+      <h4>Dual-Layer Architecture</h4>
+      <p>A method for hardening software source code using a dual-layer architecture wherein the first layer is the unmodified original source code and the second layer is a generated runtime artifact that provides hardening capabilities and emergent functional abilities without modifying the first layer.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 2">
+      <h4>Deterministic Primitive Collision</h4>
+      <p>A method for discovering software hardening opportunities and emergent capabilities through deterministic collision scoring between detected code signals and a matrix of up to 136 functional primitives, using seeded pseudo-random number generation to ensure identical inputs always produce identical discovery results.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 3">
+      <h4>Zero-External-AI Processing</h4>
+      <p>A fully algorithmic pipeline for code analysis, capability discovery, capability granting, and artifact generation that operates without any external artificial intelligence calls, model inference, or stochastic processes.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 4">
+      <h4>Autonomous Capability Discovery &amp; Granting</h4>
+      <p>A method for autonomously discovering functional capabilities that source code can structurally support but does not currently implement, and generating those capabilities as functional code delivered in a sealed runtime artifact — without modifying the original source.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 5">
+      <h4>Hot-Swap Vertical Specialization</h4>
+      <p>A modular primitive matrix architecture wherein a fixed universal "Spine" of 24 primitives is combined with interchangeable "Expansion" sets of 16 primitives to create industry-specialized processing pipelines, enabling rapid vertical substrate creation.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 6">
+      <h4>Self-Verifying Artifacts</h4>
+      <p>A method for producing sealed runtime artifacts that contain embedded FNV-1a integrity hash chains, enabling self-verification at boot and runtime to detect tampering or corruption.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 7">
+      <h4>Autonomous Multi-Concern Hardening</h4>
+      <p>A system that autonomously applies hardening and grants emergent capabilities across multiple concerns (security, resilience, governance, observability, identity, networking, domain-specific intelligence) in a single processing pass through a unified primitive matrix, without requiring separate tools or manual intervention.</p>
+    </div>
+
+    <div class="claim" data-claim="Claim 8">
+      <h4>Chain Discovery via Compound Scoring</h4>
+      <p>A method for discovering emergent capability chains — ordered sequences of primitives that fire on related signals — and scoring them using a composite quality index (CJPI) that evaluates novelty, utility, complexity, and composability to produce reproducible quality rankings.</p>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 17: Glossary ══ -->
   <section class="section" id="glossary">
-    <div class="section-number">Section 13</div>
+    <div class="section-number">Section 17</div>
     <h2>Glossary</h2>
 
-    <div class="glossary-item"><span class="glossary-term">Ascension</span><span class="glossary-def">The commercial name for the complete pipeline (Phases 1–8).</span></div>
-    <div class="glossary-item"><span class="glossary-term">BEACON</span><span class="glossary-def">A primitive providing health signal markers for external monitoring.</span></div>
-    <div class="glossary-item"><span class="glossary-term">CJPI</span><span class="glossary-def">Crown Jewel Priority Index. Composite score (0–100) for rating discovered capability chains.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Circuit Breaker</span><span class="glossary-def">Fault isolation mechanism. Opens on failure to prevent cascade; closes after recovery window.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Collision</span><span class="glossary-def">An event where a detected code signal matches a primitive's input contract above the confidence threshold.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Convex Core™</span><span class="glossary-def">Commercial name for the Layer 2 sealed runtime artifact.</span></div>
-    <div class="glossary-item"><span class="glossary-term">DEFENSE Gate</span><span class="glossary-def">Input validation injected at function boundaries.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Deterministic</span><span class="glossary-def">Producing identical output from identical input, with no randomness.</span></div>
-    <div class="glossary-item"><span class="glossary-term">FNV-1a</span><span class="glossary-def">Fowler–Noll–Vo hash function, variant 1a. Used for integrity verification.</span></div>
-    <div class="glossary-item"><span class="glossary-term">GOVERNANCE Hook</span><span class="glossary-def">Audit instrumentation that logs state mutations with before/after values.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Hardening</span><span class="glossary-def">The process of adding resilience, security, and observability mechanisms to software.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Layer 1</span><span class="glossary-def">The unmodified original source code.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Layer 2</span><span class="glossary-def">The generated sealed runtime artifact (Convex Core™).</span></div>
-    <div class="glossary-item"><span class="glossary-term">Primitive</span><span class="glossary-def">A self-contained functional capability unit in the 40-primitive matrix.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Signal</span><span class="glossary-def">A pattern, risk indicator, or structural characteristic detected in source code.</span></div>
-    <div class="glossary-item"><span class="glossary-term">Signal Detection</span><span class="glossary-def">The process of analyzing source code to extract signals (protected trade secret).</span></div>
+    <div class="glossary-item"><span class="glossary-term">Ascension</span><span class="glossary-def">The commercial name for the complete pipeline (Phases 1–8). The system that analyzes code, discovers what it can become, and makes it happen.</span></div>
+    <div class="glossary-item"><span class="glossary-term">BASTION</span><span class="glossary-def">An expansion primitive that specializes in perimeter hardening — armoring the outer boundaries of software against attack.</span></div>
+    <div class="glossary-item"><span class="glossary-term">BEACON</span><span class="glossary-def">A primitive providing health signal markers. Think of it as a heartbeat monitor for software.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Capability Discovery</span><span class="glossary-def">The process by which the system identifies abilities that code can support but doesn't currently have — then builds and grants those abilities.</span></div>
+    <div class="glossary-item"><span class="glossary-term">CJPI</span><span class="glossary-def">Crown Jewel Priority Index. A composite score from 0 to 100 that rates the quality of each discovered capability. 96–100 is "Apex" (world-class). 100 is the maximum possible score.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Circuit Breaker</span><span class="glossary-def">Fault isolation mechanism. Like a fuse in your house — if one thing breaks, it stops the damage from spreading.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Collision</span><span class="glossary-def">An event where a detected code signal matches a primitive's input contract above the confidence threshold. The moment the system "recognizes" something in the code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Convex Core™</span><span class="glossary-def">Commercial name for the Layer 2 sealed runtime artifact — the protective and capability-granting shell that wraps the original code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">DEFENSE Gate</span><span class="glossary-def">Input validation at function boundaries. A bouncer that checks every piece of data before letting it through.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Deterministic</span><span class="glossary-def">Producing identical output from identical input, with no randomness. The opposite of AI, which can give different answers each time.</span></div>
+    <div class="glossary-item"><span class="glossary-term">FNV-1a</span><span class="glossary-def">Fowler–Noll–Vo hash function, variant 1a. A mathematical "fingerprint" used to detect if anything has been changed or tampered with.</span></div>
+    <div class="glossary-item"><span class="glossary-term">GENESIS Engine</span><span class="glossary-def">The automated factory that creates new vertical substrates. Reduced creation time from 3,000+ hours to ~10 minutes.</span></div>
+    <div class="glossary-item"><span class="glossary-term">GOVERNANCE Hook</span><span class="glossary-def">Audit instrumentation that logs every state change. A security camera that records what happened, when, and who did it.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Hardening</span><span class="glossary-def">The process of making software more secure, resilient, and capable — without changing the original code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Hot-Swap</span><span class="glossary-def">The ability to swap out the 16 Expansion primitives for industry-specific ones, instantly specializing the substrate for a new vertical.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Layer 1</span><span class="glossary-def">The unmodified original source code — your code, exactly as you wrote it, byte for byte.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Layer 2</span><span class="glossary-def">The generated sealed runtime artifact (Convex Core™) that wraps Layer 1 with protection and new capabilities.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Memory Stream</span><span class="glossary-def">The autonomous discovery engine that runs 24/7 in 8-hour cycles, mining the combinatorial space for new software patterns and capabilities.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Primitive</span><span class="glossary-def">A self-contained functional capability unit. Like a specialized tool in a toolbox — each one does something specific, and they can be combined in different ways.</span></div>
+    <div class="glossary-item"><span class="glossary-term">SENTINEL</span><span class="glossary-def">An expansion primitive that guards trust boundaries — the critical points where untrusted code meets trusted code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Signal</span><span class="glossary-def">A pattern, risk indicator, or capability opportunity detected in source code. What the system "sees" when it reads your code.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Spine</span><span class="glossary-def">The 24 universal primitives (12 Organs + 12 Layers) that appear in every substrate. The foundation.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Substrate</span><span class="glossary-def">The complete 40-primitive cognitive infrastructure that processes code. Not a framework, not a platform — a substrate: the foundational layer that everything else runs on.</span></div>
+    <div class="glossary-item"><span class="glossary-term">Vertical</span><span class="glossary-def">An industry-specialized version of the substrate (e.g., Cyber, Robotics, Quantum, LLM, Agency, Media).</span></div>
   </section>
 
 </main>
@@ -1198,9 +1253,10 @@ artifact-package/
 <footer class="patent-footer">
   <div style="max-width:900px;margin:0 auto;padding:0 32px;">
     <p><span class="brand">CMPSBL® / PromptFluid™</span></p>
-    <p>Patent Pending — U.S. Patent Application No. 64/029,678</p>
+    <p>Patent Pending — U.S. Patent Application No. 64/029,678 · Confirmation #8985</p>
     <p>The signal detection patterns, collision scoring heuristics, and internal pipeline mechanics constitute protected trade secrets.</p>
-    <p>This document is prepared for patent filing purposes and authorized legal review only.</p>
+    <p>This document is prepared for patent filing purposes, authorized legal review, and investor due diligence.</p>
+    <p>Contact: ascension@cmpsbl.com</p>
     <p style="margin-top:12px;">© 2025–2026 CMPSBL® / PromptFluid™. All rights reserved.</p>
   </div>
 </footer>
