@@ -36,7 +36,8 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
   const [unlocked, setUnlocked] = useState(() =>
     sessionStorage.getItem(storageKey) === 'unlocked' || checkDebugBypass(debugBypassKey)
   );
-  const [digits, setDigits] = useState<string[]>(Array(6).fill(''));
+  const pinLength = pin.length;
+  const [digits, setDigits] = useState<string[]>(Array(pinLength).fill(''));
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -52,7 +53,7 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
     setDigits(next);
     setError(false);
 
-    if (value && index < 5) {
+    if (value && index < pinLength - 1) {
       inputRefs.current[index + 1]?.focus();
     }
 
@@ -67,7 +68,7 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
         setShake(true);
         setTimeout(() => {
           setShake(false);
-          setDigits(Array(6).fill(''));
+          setDigits(Array(pinLength).fill(''));
           inputRefs.current[0]?.focus();
         }, 600);
       }
@@ -95,7 +96,7 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
 
         <div className="text-center space-y-1">
           <h1 className="text-lg font-semibold text-foreground">Restricted Access</h1>
-          <p className="text-xs text-muted-foreground font-mono">Enter 6-digit PIN to continue</p>
+          <p className="text-xs text-muted-foreground font-mono">Enter {pinLength}-digit PIN to continue</p>
         </div>
 
         <div className="flex gap-2">
