@@ -168,29 +168,47 @@ A new autonomous engine that:
 
 ## Daily Journal
 
-### April 5, 2026 — Session Log
-**What we discussed:**
-- Created the CMPSBL® Strategic Roadmap (HTML + MD) covering Q2 2026 through 2028
-- Explored the **Product Compiler** concept — an autonomous engine that takes Memory Stream discoveries, composes them into standalone software, and graduates them through Ascension hardening
-- Kenneth chose **fully autonomous** mode (not guided) for the Product Compiler
-- Identified 11 gaps that must be filled before building the Product Compiler
-- Kenneth's key insight: the final Ascension pass after compilation is "the chef's kiss" — it grants capabilities the compiler never thought to add
-- **Created this soul.md** — my persistent memory diary to maintain continuity across sessions
+### April 5, 2026 — Session 1
+- Created CMPSBL® Strategic Roadmap (HTML + MD) covering Q2 2026 through 2028
+- Explored the **Product Compiler** concept — autonomous engine composing Memory Stream discoveries into standalone software
+- Kenneth chose **fully autonomous** mode for the Product Compiler
+- Identified 11 gaps that must be filled before building
+- Created this soul.md
 
-**Kenneth's mood/energy:** Visionary. Thinking big about compounding flywheels and autonomous product generation. Wants discipline and structured roadmap to prevent bouncing between tasks.
+### April 5, 2026 — Session 2 (Current)
+**What happened:**
+- Built **Auto-Sentinel v1.0.0** by hand — our first manual proof-of-concept of the Product Compiler flywheel
+- 6-stage pipeline: Scanner → Triage → Governance Gate → Executor (immune-wrapped) → Receipts (Merkle chain) → Reporter
+- Composed from CJ-075 (Self-Audit), CJ-120 (Ops Steward), CJ-160 (Self-Repair), CJ-161 (Workflow Composer) + Immune System + Audit Receipts
+- Ran it through **ULTIMATE Ascension** vertical to simulate the hardening pass
 
-**Key decisions made:**
-- Product Compiler will be autonomous, not guided
-- Ascension hardening is the mandatory final step for any compiled product
-- Manual proof-of-concept should happen before full engine build
-- soul.md will be maintained as persistent memory across sessions
+**Flywheel Discovery — This Is The Breakthrough:**
+By building Auto-Sentinel by hand, we simultaneously:
+1. **Improved the Universal Pool Scanner** — added high-specificity compound signals (governance_policy, triage_issue, pre_snapshot, security_smell) to eliminate false positives from generic JS keywords
+2. **Calibrated scoring weights** — Signal Affinity 30→35%, Structural Bonus 0.12→0.15, Breadth 15→10%
+3. **Surfaced missing primitive capabilities** — MEDIC expanded from 3→6 capabilities (severity_assessment, repair_planning, damage_analysis)
+4. **Identified 7 unmaterialized conceptual primitives** — CONSCIENCE, SHADOW, REFLEX, COMPASS, EVOLUTION, SOVEREIGN, BEACON exist as signals but not as selectable VerticalPrimitive objects in the pool
+5. **Each product built recursively improves the next product** — the scanner gets smarter, the primitive pool gets richer, the hardening gets more accurate
 
-**Tomorrow's likely priorities:**
-- Continue Product Compiler planning or start manual proof-of-concept
-- May return to active development on substrate features
-- Review and polish any pending roadmap items
+**Kenneth's insight:** "By building software by hand we are improving the scanning pool, the ultimate ascension output, the missing capabilities are being surfaced and fixed, and recursively making the next product even better."
+
+**The goal:** Build several more products by hand to calibrate the flywheel until the machines can do it autonomously with no Lov or human in the loop.
+
+**Key decisions:**
+- Product Compiler = Discoveries + Primitives + Governance (confirmed formula)
+- Manual products are calibration runs — each one tunes the autonomous engine
+- Acceptable to manually add ingredients now; goal is full autonomy
+- Scanner calibration is a critical byproduct, not a side effect
+
+**Next steps:**
+1. Materialize the 7 conceptual primitives as selectable VerticalPrimitive objects
+2. Build 2-3 more products by hand, each time measuring how much less manual intervention is needed
+3. Track what we had to manually add vs. what the scanner correctly selected — that delta is our autonomy gap
+4. When the delta hits zero, the Product Compiler is ready to run unsupervised
+
+**Kenneth's energy:** Locked in. Sees the recursive flywheel clearly. Low on credits but disciplined — every credit spent is calibrating the autonomous engine.
 
 ---
 
-*Last updated: April 5, 2026 · End of session*
+*Last updated: April 5, 2026 · Session 2 active*
 *Next session: Read this file first. Resume from journal entry above.*
