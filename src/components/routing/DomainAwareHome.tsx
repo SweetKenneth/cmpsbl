@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { PinGate } from "@/components/gates/PinGate";
 import { getVerticalSubdomain, isMarketplaceDomain } from "@/config/domains";
 import { isDynamicVertical } from "@/lib/factory/vertical-factory-engine";
 
