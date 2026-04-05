@@ -21,7 +21,7 @@
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §1 — SEALED MINI-RUNTIME (replaces raw standalone-runtime.ts in exports)
+// §1 — CONVEX CORE™ SEALED PROCESSING LAYER (replaces raw standalone-runtime.ts in exports)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateSealedRuntime(): string {
