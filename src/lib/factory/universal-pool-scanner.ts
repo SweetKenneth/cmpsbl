@@ -172,6 +172,9 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   tag(ULTIMATE_ALL_ENGINES, 'ultimate');
   tag(ULTIMATE_ALL_AGENTS, 'ultimate');
 
+  // Conceptual Spine Extensions (7) — materialized from signal mappings
+  tag(getConceptualSpinePrimitives(), 'spine', SPINE_AFFINITY_SIGNALS);
+
   return pool;
 }
 
