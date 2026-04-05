@@ -188,7 +188,7 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
     if (lowerCode.includes(signal)) hits++;
   }
   const hitRatio = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const signalAffinity = Math.min(hitRatio / 0.2, 1); // 20% hit threshold for max score
+  const signalAffinity = Math.min(hitRatio / 0.15, 1); // 15% hit threshold — more sensitive to partial matches
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
@@ -205,16 +205,22 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
 
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
-  const roleBonus = tagged.primitive.role === 'engine' || tagged.primitive.role === 'agent' ? 0.05 : 0;
 
-  // Composite: signal affinity (35%) + capability match (25%) + breadth (20%) + weight (15%) + role (5%)
+  // Spine primitives (organs + layers) are the most powerful foundational
+  // primitives — they get a structural bonus because they provide the
+  // core infrastructure that makes expansion primitives effective.
+  const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
+  const structuralBonus = isSpine ? 0.12 : 0;
+
+  // Composite scoring — spine-aware
+  // Signal affinity (30%) + capability match (25%) + breadth (15%) + weight (15%) + structural (15%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.35 +
+    signalAffinity * 0.30 +
     capRatio * 0.25 +
-    breadthScore * 0.20 +
+    breadthScore * 0.15 +
     weightFactor * 0.15 +
-    roleBonus;
+    structuralBonus;
 
   return {
     primitive: tagged.primitive,
