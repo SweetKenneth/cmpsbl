@@ -71,7 +71,15 @@ export interface UniversalScanResult {
 function deriveSignals(p: VerticalPrimitive): string[] {
   const signals: string[] = [];
   for (const cap of p.capabilities) {
-    signals.push(...cap.split('_'));
+    // Compound Signal Preservation: keep the full capability as a signal
+    // so high-intent expansion terms like 'copyright_detection' match
+    // as a unit instead of being diluted into generic 'copyright' + 'detection'
+    signals.push(cap);
+    // Also push individual tokens for partial matching
+    const parts = cap.split('_');
+    if (parts.length > 1) {
+      signals.push(...parts);
+    }
   }
   const descWords = p.description.toLowerCase().split(/\W+/).filter(w => w.length > 3);
   signals.push(...descWords);
