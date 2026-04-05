@@ -121,6 +121,21 @@ export default function UltimateHome() {
       <VerticalReturnBanner verticalName="CMPSBL ULTIMATE™" accentColor={ACCENT} />
       <PublicNav />
 
+      {/* Enterprise-only notice */}
+      <div className="w-full border-b" style={{ borderColor: `${ACCENT}30`, background: `${ACCENT}08` }}>
+        <div className="max-w-4xl mx-auto px-4 py-3 text-center">
+          <p className="text-xs font-mono tracking-wider" style={{ color: GOLD }}>
+            FOR ENTERPRISE USE ONLY
+          </p>
+          <p className="text-xs mt-1" style={{ color: TEXT_SECONDARY }}>
+            For more info please contact{' '}
+            <a href="mailto:ascension@cmpsbl.com" className="underline hover:no-underline" style={{ color: ACCENT }}>
+              ascension@cmpsbl.com
+            </a>
+          </p>
+        </div>
+      </div>
+
       <div className="min-h-screen" style={{ background: BG_DEEP }}>
         {/* Hero */}
         <section className="relative overflow-hidden px-4 sm:px-6 pt-20 pb-24">
