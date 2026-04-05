@@ -27,7 +27,7 @@ Discoveries that match real architectural patterns become **portable capabilitie
 Export as a ZIP archive containing:
 
 1. **Original source code** — untouched
-2. **Mini-Runtime Engine** — standalone execution environment
+2. **Convex Core™ Processing Layer** — standalone execution environment
 3. **Cognitive layer** — the substrate's augmentations
 4. **Documentation** — auto-generated
 5. **Test bench** — validation harness
@@ -54,7 +54,7 @@ VHDL, Verilog, SystemVerilog, Chisel, SpinalHDL, Amaranth, FIRRTL
 | Replace original logic | Preserve and augment original logic |
 | Output is a suggestion | Output is executable, portable software |
 | No provenance | Full execution trace and scoring |
-| Platform-locked | Survives platform loss (Mini-Runtime) |
+| Platform-locked | Survives platform loss (Convex Core™) |
 
 ---
 

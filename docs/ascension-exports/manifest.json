@@ -29,7 +29,7 @@
     "NEXUS"
   ],
   "exported": "2026-03-28",
-  "runtime": "cmpsbl-mini-runtime-engine",
+  "runtime": "cmpsbl-convex-core-engine",
   "targets": [
     "php"
   ],

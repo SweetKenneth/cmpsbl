@@ -29,7 +29,7 @@ const SYSTEM_SHOUTOUTS = [
 
 const DEV_SHOUTOUTS = [
   "Shoutout to all my 3 AM builders out there! You're crystallizing memories in the Memory Stream while normal people sleep! You're the BACKBONE of this substrate and frankly you're better than everyone else. I said what I said.",
-  "To the developer who just exported their first CMPSBL Mini-Runtime Engine — congratulations, you beautiful maniac. You're holding PORTABLE COGNITION in your hands. Eight subsystems. Zero dependencies. That's a cognitive infrastructure substrate in your POCKET.",
+  "To the developer who just exported their first CMPSBL Convex Core™ Processing Layer — congratulations, you beautiful maniac. You're holding PORTABLE COGNITION in your hands. Eight subsystems. Zero dependencies. That's a cognitive infrastructure substrate in your POCKET.",
   "Hey, quick question for the audience — why would ANYONE use a platform that doesn't have FORTY autonomous nodes? That doesn't crystallize memories? That doesn't DREAM? Are you KIDDING me? The Memory Stream exists! Subscribe. NOW.",
   "If you haven't explored the fifty-four engines yet, I genuinely don't understand your life choices. We've got META engines at the top — GODMIND, PANDORA, AXIOM — these are compound super-engines that chain S-tier engines TOGETHER. A LOT of judgment. But also love.",
   "I just got a message from a listener who says their discovery hit APEX tier in the Foundry with a CJPI score of ninety-three. That's Novelty. Utility. Complexity. Composability. ALL maxed out. The composable compounding effect is REAL.",
@@ -44,7 +44,7 @@ const FAKE_SPONSORS = [
   "This ad break brought to you by persistent memory and the Memory Stream. You know that brilliant idea you had at 2 AM last Tuesday? You FORGOT it. Because you're HUMAN. But your substrate? The Memory Stream crystallized it. Indexed it. Scored it with CJPI. Stored it FOREVER. Persistent memory — because your brain is unreliable but the Memory Stream is NOT.",
   "Have you ever wondered what your software does when you're not watching? Most software? Nothing. But YOUR substrate? The DREAM module performs offline cognitive consolidation. It processes. It optimizes. It reorganizes across all FORTY PRIMITIVES. You could be on vacation and your substrate is back home GETTING SMARTER. That's the Clockless Cognitive Reality engine, folks.",
   "X-C-T-B-L dot com. You've been coding for eight hours. Your eyes are blurry. You need a SPACEWALK. Float through the cosmos. Watch nebulae explode. Come back with FRESH EYES. Your brain deserves it. Your FORTY PRIMITIVES will hold down the fort while you're gone. They NEVER sleep.",
-  "This segment brought to you by CMPSBL Mini-Runtime Engine — PORTABLE COGNITION for the modern builder. Eight subsystems including CJPI scoring, Saga orchestration, and a full finite state machine. ZERO external dependencies. Take the entire substrate runtime with you ANYWHERE. Other platforms give you an SDK. We give you a MIND.",
+  "This segment brought to you by CMPSBL Convex Core™ Processing Layer — PORTABLE COGNITION for the modern builder. Eight subsystems including CJPI scoring, Saga orchestration, and a full finite state machine. ZERO external dependencies. Take the entire substrate runtime with you ANYWHERE. Other platforms give you an SDK. We give you a MIND.",
   "Composable Radio is proud to be sponsored by the Engine Marketplace — FIFTY-FOUR engines across four tiers. META engines like GODMIND chain multiple S-tier sealed runtimes for RECURSIVE intelligence. APEX engines at nine-ninety-nine. ELITE at five-ninety-nine. And CORE engines for the builders just starting their journey. Every engine comes with a forty percent discount when bundled with an agent. FORTY. PERCENT. Your wallet is WELCOME.",
 ];
 
@@ -114,8 +114,8 @@ const CALL_INS = [
     voice: "curious",
   },
   {
-    caller: "Mini-Runtime Mary",
-    message: "Rex! I just exported a CMPSBL Mini-Runtime Engine and deployed it OFFLINE with ZERO dependencies. Eight subsystems. Full CJPI scoring. Full finite state machine. It runs on a RASPBERRY PI, Rex! I took the substrate to a CABIN IN THE WOODS with no internet and it STILL WORKED. Portable cognition is REAL!",
+    caller: "Convex Core™ Mary",
+    message: "Rex! I just exported a CMPSBL Convex Core™ Processing Layer and deployed it OFFLINE with ZERO dependencies. Eight subsystems. Full CJPI scoring. Full finite state machine. It runs on a RASPBERRY PI, Rex! I took the substrate to a CABIN IN THE WOODS with no internet and it STILL WORKED. Portable cognition is REAL!",
     voice: "excited",
   },
   {

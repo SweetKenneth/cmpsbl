@@ -54,7 +54,7 @@ cmpsbl ascension export <discovery-id> --format zip
 
 The export contains:
 1. Original source code (untouched)
-2. Mini-Runtime Engine
+2. Convex Core™ Processing Layer
 3. Cognitive layer (substrate augmentations)
 4. Auto-generated documentation
 5. Test bench

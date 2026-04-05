@@ -1,7 +1,7 @@
 /**
  * Legacy Agent Detail — Full product page for standalone legacy agents.
  * Mirrors EngineDetail: download ZIP + Stripe checkout + SDK activation info.
- * Black-boxed Mini-Runtime embedded in every export.
+ * Black-boxed Convex Core™ embedded in every export.
  */
 
 import { useParams, Link, Navigate } from "react-router-dom";
@@ -225,7 +225,7 @@ export default function LegacyAgentDetail() {
                     { icon: Download, title: "Download ZIP", desc: "Self-contained bundle with Convex Core™, docs, and manifest. Deploy anywhere." },
                     { icon: Package, title: "NPM / SDK Activation", desc: "Import via @cmpsbl/sdk — agent activates automatically in your project." },
                     { icon: Terminal, title: "CLI Activation", desc: "Run `cmpsbl agents activate " + agent.slug + "` to enable via terminal." },
-                    { icon: Code, title: "Zero Dependencies", desc: "Embedded Mini-Runtime ensures standalone execution without external services." },
+                    { icon: Code, title: "Zero Dependencies", desc: "Embedded Convex Core™ ensures standalone execution without external services." },
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl bg-card border border-border/30">
                       <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">

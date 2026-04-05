@@ -25,7 +25,7 @@ The name reflects the mathematical foundation: primitive interactions are modele
 | 03 | [Primitive Binding](03-primitive-binding.md) | How primitives attach to source graphs, guard contracts, effect injection |
 | 04 | [Artifact Format](04-artifact-format.md) | Single-file sealed artifact specification, portability guarantees |
 | 05 | [Scoring & Certification](05-scoring.md) | CJPI v3 scoring, tier classification, deterministic weight application |
-| 06 | [Migration from Mini-Runtime](06-migration.md) | Deprecation guide, breaking changes, compatibility notes |
+| 06 | [Migration from Convex Core™](06-migration.md) | Deprecation guide, breaking changes, compatibility notes |
 | 07 | [Security Model](07-security.md) | Integrity verification, tamper detection, IP protection boundaries |
 
 ---

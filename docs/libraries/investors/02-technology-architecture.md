@@ -41,7 +41,7 @@ Every production change passes 7 validation gates including **Truth Shadow Arbit
 Full system state captured as a single portable archive. Includes all data, schema, storage manifest, and AI-ready restoration guide.
 
 ### Universal Export Adapter
-Export to 25 target languages (18 software, 7 HDL) with Mini-Runtime Engine, test harnesses, and ZIP bundling.
+Export to 25 target languages (18 software, 7 HDL) with Convex Core™ Processing Layer, test harnesses, and ZIP bundling.
 
 ---
 

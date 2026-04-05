@@ -36,7 +36,7 @@ Deterministic scoring              Artifact certification
 
 Layers 1–3 execute in parallel. The **convergence barrier** between Layer 3 and Layer 4 ensures all primitive bindings are resolved before scoring begins. This is a hard synchronization point — no partial results propagate past the barrier.
 
-This architecture replaced the Mini-Runtime's 12-stage sequential pipeline, which executed stages in a fixed order with cascading dependencies. The parallel model eliminates 7 intermediate stages that existed solely to manage inter-stage state.
+This architecture replaced the Convex Core™'s 12-stage sequential pipeline, which executed stages in a fixed order with cascading dependencies. The parallel model eliminates 7 intermediate stages that existed solely to manage inter-stage state.
 
 ---
 
@@ -84,7 +84,7 @@ Convex Core™ initializes in a single pass:
 4. **Collision matrix generation** — Cross-primitive interaction weights
 5. **Integrity verification** — Chain hash across all matrix entries
 
-This replaces the Mini-Runtime's `createRuntime()` → `registerAllPrimitives()` → `executePrimitive()` three-phase boot sequence. Convex Core has no "boot" — the processing layer is compiled, not started.
+This replaces the Convex Core™'s `createRuntime()` → `registerAllPrimitives()` → `executePrimitive()` three-phase boot sequence. Convex Core has no "boot" — the processing layer is compiled, not started.
 
 ---
 
@@ -107,7 +107,7 @@ The key insight is that cognitive infrastructure does not need to be interpreted
 
 The 40-primitive substrate matrix (12 Organs · 12 Layers · 8 Engines · 8 Agents) remains the architectural foundation. Convex Core™ does not change what primitives do — it changes **how they are dispatched**.
 
-In the Mini-Runtime model, primitives were registered as handlers and invoked through a lookup chain. In Convex Core™, primitive effects are **compiled into the dispatch matrix** during the BIND layer. The matrix entries encode not just which primitive to invoke, but the complete interaction weight with every other bound primitive.
+In the Convex Core™ model, primitives were registered as handlers and invoked through a lookup chain. In Convex Core™, primitive effects are **compiled into the dispatch matrix** during the BIND layer. The matrix entries encode not just which primitive to invoke, but the complete interaction weight with every other bound primitive.
 
 This means cross-primitive effects (e.g., DEFENSE + GOVERNANCE combined behavior) are resolved at compile time, not negotiated at runtime.
 

@@ -55,7 +55,7 @@ export function generateUniversalUserGuide(input: UserGuideInput): string {
   <div class="section-title"><span class="dot"></span> About This Software</div>
   <div class="card">
     <p><strong>${esc(name)}</strong> is a <strong>${esc(label)}</strong> from the CMPSBL® Substrate${substrate ? ` (${esc(substrate)} vertical)` : ''}.</p>
-    <p>This is a <strong>Sealed Runtime</strong> — a production-grade, zero-dependency artifact that runs standalone in any TypeScript/JavaScript environment. The Mini-Runtime Engine is embedded directly in the source file. No additional packages required.</p>
+    <p>This is a <strong>Sealed Runtime</strong> — a production-grade, zero-dependency artifact that runs standalone in any TypeScript/JavaScript environment. The Convex Core™ Processing Layer is embedded directly in the source file. No additional packages required.</p>
     ${cjpi != null ? `<p><strong>CJPI Score:</strong> ${cjpi}/100 · <strong>Tier:</strong> ${esc(tier)} · <strong>Version:</strong> ${esc(version)}</p>` : ''}
     ${modules.length > 0 ? `<p><strong>Primitive Chain:</strong> ${esc(modList)}</p>` : ''}
   </div>
@@ -211,7 +211,7 @@ console.log(formatTestResults(result));
   <div class="section-title"><span class="dot"></span> 6. About Black-Boxed Components</div>
   <div class="callout">
     <p><strong>Why is some code sealed?</strong></p>
-    <p>The <code>_runtime/</code> directory contains the CMPSBL® Mini-Runtime Engine — a proprietary scoring, tiering, and orchestration engine protected under trade secret law. The internal algorithms (CJPI weight allocations, tier thresholds, synergy formulas, discovery templates) are sealed to protect the intellectual property that makes this software unique.</p>
+    <p>The <code>_runtime/</code> directory contains the CMPSBL® Convex Core™ Processing Layer — a proprietary scoring, tiering, and orchestration engine protected under trade secret law. The internal algorithms (CJPI weight allocations, tier thresholds, synergy formulas, discovery templates) are sealed to protect the intellectual property that makes this software unique.</p>
   </div>
 
   <h3>What is sealed</h3>
@@ -244,7 +244,7 @@ npx cmpsbl-test --config ./test-harness.config.json --verify-sealed
 
 <div class="section">
   <div class="section-title"><span class="dot"></span> 7. Network Modes</div>
-  <p>The embedded Mini-Runtime operates in three modes:</p>
+  <p>The embedded Convex Core™ operates in three modes:</p>
   <table>
     <thead><tr><th>Mode</th><th>Description</th><th>When to Use</th></tr></thead>
     <tbody>
@@ -272,7 +272,7 @@ console.log(getRuntimeMode()); // 'network'</code></pre>
     <p><strong>NPM Packages:</strong></p>
     <ul>
       <li><code>@cmpsbl/sdk</code> — Full SDK for runtime activation</li>
-      <li><code>@cmpsbl/runtime</code> — Mini-Runtime standalone package</li>
+      <li><code>@cmpsbl/runtime</code> — Convex Core™ standalone package</li>
       <li><code>@cmpsbl/cli</code> — Terminal activation and status</li>
       <li><code>@cmpsbl/test-harness</code> — Validation and testing</li>
       <li><code>@cmpsbl/types</code> — TypeScript type definitions</li>

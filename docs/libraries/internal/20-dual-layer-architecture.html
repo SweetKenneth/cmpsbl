@@ -728,7 +728,7 @@
       <li><a href="#what-is-it">What Is the Dual-Layer Architecture?</a></li>
       <li><a href="#how-it-works">Exactly How It Works — Step by Step</a></li>
       <li><a href="#no-source-modification">The "Without Source Modification" Guarantee</a></li>
-      <li><a href="#mini-runtime">The Mini-Runtime™ — The Engine Inside the Shell</a></li>
+      <li><a href="#convex-core">The Convex Core™ — The Engine Inside the Shell</a></li>
       <li><a href="#ascension">Ultimate Ascension &amp; the Discovery Pipeline</a></li>
       <li><a href="#layer-anatomy">Anatomy of the Two Layers</a></li>
       <li><a href="#naming">Naming the Architecture — Commercial Terminology</a></li>
@@ -793,7 +793,7 @@
     </p>
     <ol>
       <li><strong>Layer 1 (Source Layer)</strong> contains the developer's original source code, unmodified, occupying a defined region of the output file.</li>
-      <li><strong>Layer 2 (Runtime Layer)</strong> contains the CMPSBL® Mini-Runtime™ — an obfuscated, self-contained cognitive engine that wraps, monitors, governs, and protects the Source Layer at execution time.</li>
+      <li><strong>Layer 2 (Runtime Layer)</strong> contains the CMPSBL® Convex Core™ — an obfuscated, self-contained cognitive engine that wraps, monitors, governs, and protects the Source Layer at execution time.</li>
     </ol>
     <p>
       The two layers are merged into a single artifact during the <strong>Ascension</strong> process. The Runtime Layer intercepts execution entry points, routing all function calls through its governance pipeline before delegating to the original source. The source code is never parsed, rewritten, or transpiled — it is embedded verbatim.
@@ -848,7 +848,7 @@
 
     <h3>Phase 5: Runtime Assembly</h3>
     <p>
-      The Mini-Runtime™ is assembled with only the selected primitive handlers activated. Unneeded primitives are excluded to minimize runtime footprint. The runtime is then obfuscated via the WRAITH blackbox engine.
+      The Convex Core™ is assembled with only the selected primitive handlers activated. Unneeded primitives are excluded to minimize runtime footprint. The runtime is then obfuscated via the WRAITH blackbox engine.
     </p>
 
     <h3>Phase 6: Dual-Layer Merge</h3>
@@ -893,7 +893,7 @@
       When the sealed artifact executes:
     </p>
     <ol>
-      <li>The Mini-Runtime™ initializes and verifies its own integrity hash</li>
+      <li>The Convex Core™ initializes and verifies its own integrity hash</li>
       <li>Circuit breaker states are restored from persistence (if available)</li>
       <li>Primitive handlers are registered in the execution registry</li>
       <li>Telemetry compression engine starts batching events</li>
@@ -921,7 +921,7 @@
     <h3>What Does Change</h3>
     <ul>
       <li>The <strong>execution environment</strong> changes. The source code runs inside a governed runtime that intercepts, monitors, and protects execution flows.</li>
-      <li>The <strong>artifact wrapper</strong> is new. Additional code (the Mini-Runtime) is prepended/appended around the source region.</li>
+      <li>The <strong>artifact wrapper</strong> is new. Additional code (the Convex Core™) is prepended/appended around the source region.</li>
       <li>The <strong>entry point</strong> may be redirected. Instead of executing the source directly, the runtime boots first and then delegates to the source.</li>
     </ul>
 
@@ -944,11 +944,11 @@
   </section>
 
   <!-- ═══════════════════ §5 MINI RUNTIME ═══════════════════ -->
-  <section id="mini-runtime">
-    <h2><span class="section-num">05</span> The Mini-Runtime™ — The Engine Inside the Shell</h2>
+  <section id="convex-core">
+    <h2><span class="section-num">05</span> The Convex Core™ — The Engine Inside the Shell</h2>
 
     <p>
-      The Mini-Runtime™ (v2.1.0) is the technical core that makes the Dual-Layer Architecture possible. It's a zero-dependency, self-contained JavaScript/TypeScript engine that provides four critical subsystems:
+      The Convex Core™ (v2.1.0) is the technical core that makes the Dual-Layer Architecture possible. It's a zero-dependency, self-contained JavaScript/TypeScript engine that provides four critical subsystems:
     </p>
 
     <h3>5.1 Telemetry Compression Engine</h3>
@@ -1007,7 +1007,7 @@ importCircuitBreakerState(state: Record&lt;string, BreakerSnapshot&gt;): void</c
     <div class="callout callout-gold">
       <div class="callout-title">Architectural Insight</div>
       <p>
-        Without the Mini-Runtime, the Dual-Layer Architecture would be nothing more than code concatenation. The runtime is what transforms a "file with code wrapped around it" into a <strong>governed, self-healing, tamper-evident cognitive artifact</strong>. It provides the intelligence, the governance, the resilience, and the verification that make the dual-layer concept valuable. Every improvement to the runtime retroactively improves every future sealed artifact.
+        Without the Convex Core™, the Dual-Layer Architecture would be nothing more than code concatenation. The runtime is what transforms a "file with code wrapped around it" into a <strong>governed, self-healing, tamper-evident cognitive artifact</strong>. It provides the intelligence, the governance, the resilience, and the verification that make the dual-layer concept valuable. Every improvement to the runtime retroactively improves every future sealed artifact.
       </p>
     </div>
   </section>
@@ -1250,7 +1250,7 @@ const affinity = baseAffinity * variance;</code></pre>
         <div class="flow-arrow"></div>
         <div class="flow-box gold">5. DISCOVER — CJPI scoring, capability selection</div>
         <div class="flow-arrow"></div>
-        <div class="flow-box">6. ASSEMBLE — Mini-Runtime built with selected handlers</div>
+        <div class="flow-box">6. ASSEMBLE — Convex Core™ built with selected handlers</div>
         <div class="flow-arrow"></div>
         <div class="flow-box dark">7. MERGE — Source (Layer 1) + Runtime (Layer 2) combined</div>
         <div class="flow-arrow"></div>
@@ -1507,7 +1507,7 @@ const affinity = baseAffinity * variance;</code></pre>
         <tr>
           <td><strong>Language-Agnostic Runtime</strong></td>
           <td>Critical</td>
-          <td>Port the Mini-Runtime from TypeScript/JavaScript to a polyglot runtime that can wrap Python, Go, Rust, and Java codebases. This massively expands the addressable market.</td>
+          <td>Port the Convex Core™ from TypeScript/JavaScript to a polyglot runtime that can wrap Python, Go, Rust, and Java codebases. This massively expands the addressable market.</td>
         </tr>
         <tr>
           <td><strong>Self-Healing Handlers</strong></td>
@@ -1588,7 +1588,7 @@ const affinity = baseAffinity * variance;</code></pre>
       © 2026 Kenneth E. Sweet Jr. — PromptFluid™ — All Rights Reserved
     </div>
     <div class="legal">
-      CMPSBL®, Sealed Runtime™, Mini-Runtime™, Ascension™, Memory Stream™, and DREAM™ are trademarks of PromptFluid™.<br />
+      CMPSBL®, Sealed Runtime™, Convex Core™, Ascension™, Memory Stream™, and DREAM™ are trademarks of PromptFluid™.<br />
       This document contains confidential and proprietary information. Unauthorized reproduction or distribution is prohibited.
     </div>
   </footer>

@@ -83,7 +83,7 @@ const THREAT_PATTERNS = [
   { pattern: /\$\{[^}]*\}/i, name: 'template_injection' },
 ];
 
-// ═══ Primitive Handlers (translated from PHP Mini-Runtime) ═══════════════
+// ═══ Primitive Handlers (translated from PHP Convex Core™) ═══════════════
 
 type PrimitiveHandler = (serialized: string, signals: PrimitiveSignal[], meta: CapabilityMeta) => EnrichmentResult;
 
