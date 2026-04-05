@@ -48,6 +48,7 @@ export const DOMAIN_CONFIG = {
   /** Special-purpose subdomains (not full substrates) */
   services: {
     marketplace: 'marketplace.cmpsbl.com',
+    control: 'control.cmpsbl.com',
   },
 } as const;
 
