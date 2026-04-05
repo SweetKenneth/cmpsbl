@@ -685,27 +685,27 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   governance: {
     imports: "import { GovernancePolicy, ComplianceAuditor } from '@cmpsbl/runtime/governance';",
     guard: "GovernancePolicy.enforce({\n  maxConcurrency: 100,\n  auditAllMutations: true,\n  requireApprovalAbove: 'high-risk',\n});\nComplianceAuditor.start({ logDestination: 'structured' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.governance ?? ((code) => code),
   },
   beacon: {
     imports: "import { HealthBeacon, MetricsCollector } from '@cmpsbl/runtime/beacon';",
     guard: "HealthBeacon.start({ interval: 15_000, endpoints: ['/_health', '/_ready'] });\nMetricsCollector.init({ exportFormat: 'prometheus' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.beacon ?? ((code) => code),
   },
   brain: {
     imports: "import { LearningEngine, InsightAccumulator } from '@cmpsbl/runtime/brain';",
     guard: "LearningEngine.init({ mode: 'passive', retentionDays: 90 });\nInsightAccumulator.observe({ trackPatterns: true, autoOptimize: false });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.brain ?? ((code) => code),
   },
   memory: {
     imports: "import { PersistentMemory, StateRecovery } from '@cmpsbl/runtime/memory';",
     guard: "PersistentMemory.init({ adapter: 'filesystem', snapshotOnCrash: true });\nStateRecovery.enable({ strategy: 'last-known-good' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.memory ?? ((code) => code),
   },
   identity: {
     imports: "import { IdentityResolver, SessionBinder } from '@cmpsbl/runtime/identity';",
     guard: "IdentityResolver.init({ multiFactorRequired: true, sessionTtlMs: 3_600_000 });\nSessionBinder.enforce({ bindToDevice: true, maxConcurrentSessions: 3 });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.identity ?? ((code) => code),
   },
   conscience: {
     imports: "import { EthicalGate, AlignmentMonitor } from '@cmpsbl/runtime/conscience';",
@@ -750,7 +750,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   shadow: {
     imports: "import { ShadowMirror, CanaryOrchestrator } from '@cmpsbl/runtime/shadow';",
     guard: "ShadowMirror.init({ mirrorPercent: 5, compareOutputs: true });\nCanaryOrchestrator.enable({ autoRollback: true, anomalyThreshold: 0.05 });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.shadow ?? ((code) => code),
   },
   sovereign: {
     imports: "import { AuthorityResolver, PolicyEnforcer } from '@cmpsbl/runtime/sovereign';",
@@ -760,7 +760,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   treaty: {
     imports: "import { ContractValidator, SchemaEnforcer } from '@cmpsbl/runtime/treaty';",
     guard: "ContractValidator.init({ strictMode: true, breakingChangeAlert: true });\nSchemaEnforcer.enable({ validateRequests: true, validateResponses: true });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.treaty ?? ((code) => code),
   },
   relay: {
     imports: "import { MessageRelay, DeliveryGuarantee } from '@cmpsbl/runtime/relay';",
@@ -790,7 +790,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   compass: {
     imports: "import { ModuleNavigator, DependencyMapper } from '@cmpsbl/runtime/compass';",
     guard: "ModuleNavigator.init({ autoIndex: true, resolveAliases: true });\nDependencyMapper.generate({ outputPath: './architecture-map.json' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.compass ?? ((code) => code),
   },
   reflex: {
     imports: "import { ReflexHandler, FallbackChain } from '@cmpsbl/runtime/reflex';",
@@ -827,7 +827,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   nerve: {
     imports: "import { EventBus, SignalPropagator } from '@cmpsbl/runtime/nerve';",
     guard: "EventBus.init({ delivery: 'exactly-once', ordering: 'causal' });\nSignalPropagator.enable({ partitionTolerant: true, retryPolicy: 'bounded' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.nerve ?? ((code) => code),
   },
   primitive: {
     imports: "import { RuntimeKernel, BaseHardening } from '@cmpsbl/runtime/primitive';",
@@ -867,12 +867,12 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   access: {
     imports: "import { BoundaryGuard, PayloadValidator } from '@cmpsbl/runtime/access';",
     guard: "BoundaryGuard.init({ validateAll: true, rejectUnknownFields: true });\nPayloadValidator.enforce({ maxSizeBytes: 10_485_760, sanitize: true });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.access ?? ((code) => code),
   },
   atlas: {
     imports: "import { TopologyMapper, ServiceDiscovery } from '@cmpsbl/runtime/atlas';",
     guard: "TopologyMapper.init({ autoDiscover: true, refreshIntervalMs: 30_000 });\nServiceDiscovery.enable({ protocol: 'dns', fallback: 'static-config' });",
-    wrapper: (code) => code,
+    wrapper: FUNCTIONAL_TRANSFORMS.atlas ?? ((code) => code),
   },
 };
 
