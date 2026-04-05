@@ -1,7 +1,7 @@
 /**
- * CMPSBL® Sealed Runtime Generator
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Generates BLACK-BOXED versions of the canonical Mini-Runtime™ and Discovery Engine
+ * CMPSBL® Convex Core™ Sealed Distribution Generator
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Generates BLACK-BOXED versions of the canonical Convex Core™ Processing Layer
  * for inclusion in export ZIPs. All proprietary logic is stripped:
  *   - CJPI weight allocations → opaque scoring function
  *   - Tier thresholds → opaque tiering function
