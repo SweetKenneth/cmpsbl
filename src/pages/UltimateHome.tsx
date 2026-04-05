@@ -215,13 +215,13 @@ export default function UltimateHome() {
               How Universal Ascension Works
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              No spine lock. No category quotas. All 40 slots are open — the scanner fills every one
+              No spine lock. No category quotas. The scanner selects only what your code needs — no filler
             </p>
             <div className="grid sm:grid-cols-3 gap-4">
               {[
                 { step: "01", title: "Full Pool Assembly", desc: `${poolSize} primitives from every source — Spine organs, layers, Cyber, Robotics, Quantum, LLM, Agency expansion primitives, and 16 Universal gap-fillers — all loaded as equal candidates.` },
-                { step: "02", title: "Extended Collision", desc: "Multi-pass scoring evaluates every candidate against your code using signal matching, capability overlap, breadth analysis, and cross-primitive compounding potential. Extended scan time ensures deep evaluation." },
-                { step: "03", title: "40 Best Selected", desc: "The top 40 are selected by pure compounding score — no forced organs, no locked layers, no engine/agent quotas. The result is the maximum-impact surface for your specific codebase." },
+                { step: "02", title: "Extended Collision", desc: "Multi-pass scoring evaluates every candidate against your code using signal matching, capability overlap, breadth analysis, and cross-primitive compounding potential. Spine primitives receive a structural bonus for their foundational power." },
+                { step: "03", title: "Code-Driven Selection", desc: "The scanner selects only the primitives that exceed the compounding threshold for your code — from 8 to 40. No forced fills, no padding. If your code needs 14 primitives, you get 14. If it needs 38, you get 38." },
               ].map((item, i) => (
                 <motion.div key={item.step} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
