@@ -68,7 +68,7 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
         setShake(true);
         setTimeout(() => {
           setShake(false);
-          setDigits(Array(6).fill(''));
+          setDigits(Array(pinLength).fill(''));
           inputRefs.current[0]?.focus();
         }, 600);
       }
