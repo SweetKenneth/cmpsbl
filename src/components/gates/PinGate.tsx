@@ -53,7 +53,7 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
     setDigits(next);
     setError(false);
 
-    if (value && index < 5) {
+    if (value && index < pinLength - 1) {
       inputRefs.current[index + 1]?.focus();
     }
 
