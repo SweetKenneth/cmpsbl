@@ -1,7 +1,6 @@
 import { Shield, AlertTriangle, Lock, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { COPYRIGHT_NOTICE, PATENT_NOTICE } from "@/config/domains";
-import { COPYRIGHT_NOTICE } from "@/config/domains";
 
 export const CopyrightShield = () => {
   return (
