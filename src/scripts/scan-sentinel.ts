@@ -1,7 +1,9 @@
 import { runUniversalPoolScan, getUniversalPoolSize } from '@/lib/factory/universal-pool-scanner';
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const sentinelDir = path.resolve(__dirname, '../products/auto-sentinel');
 const files = fs.readdirSync(sentinelDir).filter(f => f.endsWith('.ts'));
 const fullSource = files.map(f => fs.readFileSync(path.join(sentinelDir, f), 'utf-8')).join('\n');
