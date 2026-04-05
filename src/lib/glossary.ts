@@ -70,6 +70,21 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     short: "The foundational cognitive runtime beneath all CMPSBL operations.",
     detail: "A self-evolving platform layer between AI models and applications, managing memory, orchestration, and governance.",
   },
+  "convex-core": {
+    term: "Convex Core™",
+    short: "The deterministic processing layer that powers all CMPSBL exports.",
+    detail: "Pre-compiles primitive relationships into dispatch matrices at initialization time, achieving O(1) resolution. Replaced the interpreted v2 runtime in the CONVERGENCE epoch.",
+  },
+  "dispatch-matrix": {
+    term: "Dispatch Matrix",
+    short: "A pre-computed resolution table for primitive interactions.",
+    detail: "Generated at initialization from primitive topology. Enables deterministic, environment-independent artifact behavior.",
+  },
+  "dpl": {
+    term: "DPL",
+    short: "Deterministic Processing Layer — the Convex Core™ architecture class.",
+    detail: "Unlike interpreted runtimes, a DPL compiles all resolution paths at initialization, guaranteeing identical behavior across environments.",
+  },
   "nexus": {
     term: "NEXUS Routing",
     short: "Intelligent multi-provider AI routing.",
