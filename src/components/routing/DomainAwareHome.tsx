@@ -99,6 +99,14 @@ export default function DomainAwareHome() {
     );
   }
 
+  if (verticalKey === 'media') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(330 25% 4%)" }} />}>
+        <MediaHome />
+      </Suspense>
+    );
+  }
+
   // Dynamic verticals from the factory engine + generic fallback
   if (verticalKey) {
     const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
