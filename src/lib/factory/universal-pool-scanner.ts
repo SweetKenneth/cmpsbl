@@ -44,9 +44,9 @@ export interface PoolCandidate {
 }
 
 export interface UniversalScanResult {
-  /** The 40 primitives selected as the optimal surface for this code */
+  /** The primitives selected as the optimal surface for this code (variable count) */
   selectedPrimitives: PoolCandidate[];
-  /** Full 40-primitive surface (the selected primitives, rebalanced) */
+  /** Full primitive surface (the selected primitives, rebalanced) */
   fullSurface: VerticalPrimitive[];
   /** All candidates that were evaluated */
   totalCandidatesEvaluated: number;
