@@ -27,6 +27,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { getUniversalPoolSize, getUniversalPoolBreakdown } from "@/lib/factory/universal-pool-scanner";
 import { getUltimateSubstrate } from "@/lib/factory/verticals/ultimate";
+import { PATENT_NOTICE } from "@/config/domains";
 
 /* ─── Theme Constants ─── */
 const ACCENT = 'hsl(270 80% 65%)';
@@ -125,7 +126,10 @@ export default function UltimateHome() {
       <div className="w-full border-b" style={{ borderColor: `${ACCENT}30`, background: `${ACCENT}08` }}>
         <div className="max-w-4xl mx-auto px-4 py-3 text-center">
           <p className="text-xs font-mono tracking-wider" style={{ color: GOLD }}>
-            FOR ENTERPRISE USE ONLY
+            FOR ENTERPRISE USE ONLY · {PATENT_NOTICE.status.toUpperCase()}
+          </p>
+          <p className="text-[10px] mt-1 font-mono" style={{ color: `${ACCENT}90` }}>
+            {PATENT_NOTICE.inline}
           </p>
           <p className="text-xs mt-1" style={{ color: TEXT_SECONDARY }}>
             For more info please contact{' '}

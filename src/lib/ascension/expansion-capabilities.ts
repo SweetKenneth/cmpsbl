@@ -23,9 +23,24 @@ import {
 } from '../factory/verticals/ultimate';
 
 /**
+ * Deterministic vertical bonus (+10 to +25) seeded from primitive ID.
+ * Ensures vertical expansion primitives compete fairly with core
+ * capabilities during Ultimate mode scoring.
+ */
+function verticalBonus(primitiveId: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < primitiveId.length; i++) {
+    h ^= primitiveId.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return 10 + ((h >>> 0) % 16); // 10–25 range
+}
+
+/**
  * Convert a VerticalPrimitive into SubstrateCapability entries.
- * Each primitive generates one capability entry per 2 capabilities
- * (grouped for density) plus one headline capability.
+ * Each primitive generates one headline capability with a vertical
+ * bonus applied to baseWeight so expansion primitives compete
+ * fairly in the Ultimate 120-candidate pool.
  */
 function primitiveToCapabilities(
   p: VerticalPrimitive,
@@ -35,14 +50,17 @@ function primitiveToCapabilities(
     : p.classification === 'passive' ? 'passive'
     : 'universal';
 
-  // One headline capability per primitive
+  // Base weight from primitive weight + vertical specialization bonus
+  const base = Math.round(p.weight * 2500);
+  const bonus = verticalBonus(p.id);
+
   return [{
     id: `${vertical}-${p.id}`.toLowerCase(),
     primitive: p.name,
     name: `${p.name} — ${vertical.charAt(0).toUpperCase() + vertical.slice(1)} Expansion`,
     description: p.description,
     styles: [style, 'universal'],
-    baseWeight: Math.round(p.weight * 2500), // Convert 0.025 → 62.5, scaled to CJPI range
+    baseWeight: Math.min(96, base + bonus), // Capped at 96 to not exceed core DEFENSE ceiling
     investorValue: `${vertical} vertical intelligence — ${p.capabilities.length} specialized capabilities.`,
   }];
 }
