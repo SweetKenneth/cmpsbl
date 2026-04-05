@@ -187,6 +187,25 @@
   ul { padding-left: 20px; }
   ul li { margin-bottom: 8px; }
 
+  /* ── Publication table ── */
+  .pub-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+  .pub-table th {
+    background: var(--surface-2); border: 1px solid var(--border);
+    padding: 10px 14px; text-align: left; font-weight: 700;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+  }
+  .pub-table td {
+    border: 1px solid var(--border); padding: 10px 14px;
+    vertical-align: top; color: var(--text-muted);
+  }
+  .pub-table td a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .pub-table tr:nth-child(even) { background: var(--surface); }
+  .pub-table .pub-title { font-weight: 600; color: var(--text); }
+
+  /* ── Three col ── */
+  .tri-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0; }
+  @media (max-width: 768px) { .tri-col { grid-template-columns: 1fr; } }
+
   @media print {
     body { font-size: 12px; }
     .section { page-break-inside: avoid; }
@@ -202,7 +221,7 @@
     <h1>Kenneth E. Sweet Jr.</h1>
     <p class="subtitle">Solo founder of CMPSBL® — the world's first cognitive substrate. 200,000+ lines of pure deterministic code. Patent pending. Zero AI dependency. Built entirely by one person.</p>
     <div class="meta-row">
-      <span><strong>ORCID:</strong> <a href="https://orcid.org/0009-0001-2044-269X" target="_blank">0009-0001-2044-269X</a></span>
+      <span><strong>ORCID:</strong> <a href="https://orcid.org/0009-0001-4237-1243" target="_blank">0009-0001-4237-1243</a></span>
       <span><strong>Parent Company:</strong> PromptFluid™ (TX)</span>
       <span><strong>Patent:</strong> U.S. App. No. 64/029,678</span>
       <span><strong>Contact:</strong> <a href="mailto:ascension@cmpsbl.com">ascension@cmpsbl.com</a></span>
@@ -257,6 +276,11 @@
     </div>
 
     <div class="card card-green">
+      <h3>🌍 World's First Autonomous Dream-Cycle AI (SimNap → Cascade)</h3>
+      <p>Kenneth invented the first documented artificial intelligence capable of initiating dream-like generative sequences without user prompting. The SimNap → Cascade Dream-Cycle Architecture uses latent-drift buildup, internal seed generation, subconscious recombination, and multi-stage reflection to produce autonomous creative output. This invention is formally disclosed with timestamped priority at OSF (DOI: <a href="https://doi.org/10.17605/osf.io/t3d5s" style="color:var(--green)">10.17605/OSF.IO/T3D5S</a>) and includes 13 independently verifiable proof files.</p>
+    </div>
+
+    <div class="card card-green">
       <h3>🌍 World's First Memory Stream — Autonomous Learning Without AI</h3>
       <p>Memory Stream runs on an autonomous 8-hour cycle, observing patterns across the substrate, discovering new capability combinations, scoring them, and crystallizing the best ones into permanent knowledge. It runs on its own — it is never triggered by a user. No AI is involved.</p>
     </div>
@@ -264,6 +288,16 @@
     <div class="card card-green">
       <h3>🌍 World's First DREAM Synthesis — Sub-Threshold Pattern Emergence</h3>
       <p>DREAM observes signals that individually fall below the activation threshold. When enough sub-threshold signals accumulate, DREAM synthesizes them into new heuristics — essentially "dreaming up" new capabilities from noise. Pure algorithmic. No AI. Patentable on its own.</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First AI Governance Namespace (AIGVRN)</h3>
+      <p>Kenneth created the first structured terminology framework for AI governance — defining twelve surface domains spanning standards, certification, verification, compliance, security, safety, regulation, policy, privacy, sovereignty, and control. Each domain is represented by a dedicated namespace, published as an open reference work for researchers, regulators, and enterprise risk teams (DOI: <a href="https://doi.org/10.5281/zenodo.18393018" style="color:var(--green)">10.5281/zenodo.18393018</a>).</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>🌍 World's First Adaptive Free-Tier AI Router</h3>
+      <p>Kenneth authored the first formal whitepaper on cost-constrained AI routing — a system that intelligently routes AI requests across free-tier providers to enable zero-cost AI operations. This addresses the fundamental barrier of AI cost for startups and individual developers (OSF: <a href="https://osf.io/r4hs2" style="color:var(--green)">osf.io/r4hs2</a>).</p>
     </div>
   </div>
 </section>
@@ -294,6 +328,19 @@
       <h3>⚠️ Why This Eliminates Massive Future Risk</h3>
       <p><strong>For investors:</strong> Companies that build their products on top of AI providers (OpenAI, Anthropic, Google) are exposed to pricing changes, API deprecations, model behavior shifts, regulatory restrictions on AI, and the fundamental unpredictability of stochastic systems. CMPSBL® has <em>none</em> of these risks. It is self-contained, self-verifying, and will produce the same results whether AI regulation tightens or the AI market crashes. It is infrastructure — not an AI wrapper.</p>
     </div>
+
+    <div class="card card-cyan">
+      <h3>🔒 What "Deterministic" Means — and What Risks It Removes</h3>
+      <p><strong>Deterministic</strong> means every operation is built from classic programming constructs: hash functions (FNV-1a), graph traversal, pattern matching, and finite-state machines. There are no model weights, no training data, no gradient descent, no stochastic sampling, and no external service calls. This eliminates:</p>
+      <ul style="margin-top:10px;">
+        <li><strong>Hallucination risk:</strong> The system cannot invent, fabricate, or guess. It computes.</li>
+        <li><strong>Vendor lock-in:</strong> No dependency on OpenAI, Google, Anthropic, or any AI provider.</li>
+        <li><strong>Regulatory exposure:</strong> AI regulation (EU AI Act, etc.) does not apply — this is not AI.</li>
+        <li><strong>Reproducibility failure:</strong> Every run is byte-identical. Auditable. Certifiable.</li>
+        <li><strong>Cost volatility:</strong> No per-token pricing. No GPU costs. Runs on commodity hardware.</li>
+        <li><strong>Model deprecation:</strong> No models to deprecate. The algorithms are owned and self-contained.</li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -310,14 +357,12 @@
 
     <div class="diagram-box">
       <svg viewBox="0 0 820 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
-        <!-- Pipeline steps -->
         <defs>
           <marker id="arrow-dark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="#4f46e5"/>
           </marker>
         </defs>
 
-        <!-- Step boxes -->
         <rect x="10" y="20" width="140" height="50" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
         <text x="80" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">PHASE 1</text>
         <text x="80" y="56" text-anchor="middle" font-size="9" fill="#3730a3">Intake &amp; Classify</text>
@@ -346,7 +391,6 @@
         <text x="750" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 5</text>
         <text x="750" y="56" text-anchor="middle" font-size="9" fill="#065f46">CJPI Score</text>
 
-        <!-- Second row -->
         <rect x="200" y="110" width="200" height="50" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
         <text x="300" y="132" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 6</text>
         <text x="300" y="146" text-anchor="middle" font-size="9" fill="#065f46">Dual-Layer Hardening</text>
@@ -357,7 +401,6 @@
         <text x="530" y="132" text-anchor="middle" font-size="10" font-weight="700" fill="#059669">PHASE 7–8</text>
         <text x="530" y="146" text-anchor="middle" font-size="9" fill="#065f46">Verify &amp; Export Artifact</text>
 
-        <!-- Dual layer diagram -->
         <rect x="80" y="200" width="660" height="160" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
         <text x="410" y="222" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">LAYER 2 — CONVEX CORE™ SEALED ARTIFACT (GENERATED)</text>
 
@@ -390,7 +433,7 @@
 
     <div class="plain-english">
       <div class="label">🟢 Plain English</div>
-      <p>Hugging Face is the world's largest platform for sharing AI models — used by nearly every AI company on the planet. Their code has known security risks: functions like <code>torch.load</code> can execute malicious code, and <code>trust_remote_code=True</code> blindly runs whatever code a model author uploaded. Kenneth took Hugging Face's own source code, ran it through the Ascension pipeline, and the system automatically detected these risks, wrapped them in protection, and produced a hardened artifact — all without changing a single line of Hugging Face's code. The original code still works exactly the same way. It's just armored now.</p>
+      <p>Hugging Face is the world's largest platform for sharing AI models — used by nearly every AI company on the planet. Their file <code>modeling_utils.py</code> is downloaded over <strong>126 million times per month</strong>. It has known security risks: functions like <code>torch.load</code> can execute malicious code, and <code>trust_remote_code=True</code> blindly runs whatever code a model author uploaded. Kenneth took Hugging Face's own source code, ran it through the Ascension pipeline, and the system automatically detected these risks, wrapped them in protection, and produced a hardened artifact — all in <strong>217.7 seconds</strong>, without changing a single line of Hugging Face's code.</p>
     </div>
 
     <div class="card card-accent">
@@ -400,53 +443,168 @@
         <li><code>trust_remote_code=True</code> — blind code execution → wrapped with DEFENSE gate + GOVERNANCE audit hook</li>
         <li>Unvalidated model downloads → wrapped with IMMUNITY verification + RELAY integrity check</li>
         <li>State mutation without audit trail → wrapped with MEMORY persistence + AUDIT logging</li>
+        <li>12 structural vulnerabilities total — 2 critical, 7 warnings, 3 informational</li>
+        <li>10 latent capabilities surfaced and activated</li>
+        <li>All 40 primitives fired from a 120-candidate cross-vertical pool</li>
+        <li>CJPI Score: <strong>100 (Apex)</strong> — the highest possible rating</li>
       </ul>
     </div>
 
+    <div class="card card-cyan">
+      <h3>📊 By the Numbers</h3>
+      <div class="stats-grid" style="margin-top:12px;">
+        <div class="stat-box"><div class="number">4,891</div><div class="label">Lines Analyzed</div></div>
+        <div class="stat-box"><div class="number">1,146</div><div class="label">Cyclomatic Complexity</div></div>
+        <div class="stat-box"><div class="number">217.7s</div><div class="label">Total Processing</div></div>
+        <div class="stat-box"><div class="number">4,936</div><div class="label">Lines in Sealed Artifact</div></div>
+      </div>
+    </div>
+
+    <div class="plain-english">
+      <div class="label">🟢 Why This Matters for Everyone</div>
+      <p>This file was written by engineers at Google, Facebook/Meta, NVIDIA, and Hugging Face. It has been reviewed by thousands of developers. Yet CMPSBL® found structural weaknesses that no human reviewer, no static analyzer, no AI copilot, and no existing security tool had ever addressed at the architectural level. The sealed artifact acts as if it were created by Hugging Face's own engineering team to wrap every structural weakness in their code.</p>
+    </div>
+
     <div class="card card-amber">
-      <h3>⚠️ Why This Matters</h3>
-      <p>Every company using Hugging Face models is exposed to these risks today. CMPSBL® can harden their code in minutes — automatically, deterministically, without changing their existing codebase. This is a multi-billion dollar market that doesn't even know this solution exists yet.</p>
+      <h3>⚠️ Market Implication</h3>
+      <p>Every company using Hugging Face models — which is nearly every company doing AI — is exposed to these risks today. CMPSBL® can harden their code in minutes — automatically, deterministically, without changing their existing codebase. This published case study (DOI: <a href="https://doi.org/10.5281/zenodo.19423852" style="color:var(--amber)">10.5281/zenodo.19423852</a>) is the proof.</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ PUBLISHED WORK ═══ -->
+<!-- ═══ COMPLETE PUBLICATION RECORD ═══ -->
 <section class="section">
   <div class="container">
     <div class="section-label">Published &amp; Documented Work</div>
-    <h2>Verifiable Public Record</h2>
+    <h2>Complete Academic &amp; Research Publication Record</h2>
 
-    <p>All of Kenneth's work is documented, timestamped, and linked to his ORCID profile. This is not vaporware — it is published, peer-addressable, and citable.</p>
+    <p>Every claim in this document is backed by timestamped, DOI-registered, ORCID-linked publications on Zenodo and OSF — the two most respected open-access academic repositories in the world. This is not a pitch deck. This is a verifiable body of published work.</p>
+
+    <div class="card card-accent">
+      <h3>ORCID: <a href="https://orcid.org/0009-0001-4237-1243" target="_blank">0009-0001-4237-1243</a></h3>
+      <p>All publications are linked to Kenneth's ORCID profile, establishing permanent, tamper-proof authorship and priority for all intellectual property.</p>
+    </div>
+
+    <!-- ── Zenodo Publications ── -->
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px; color:var(--text);">Zenodo Publications (DOI-Registered)</h3>
 
     <div class="card">
-      <h3>ORCID: 0009-0001-2044-269X</h3>
-      <p>Linked to all Zenodo publications, establishing timestamped authorship and priority for all intellectual property.</p>
+      <h3>🔬 The Shapeshifter: 40 Autonomous Primitives vs. HuggingFace</h3>
+      <p><strong>Type:</strong> Technical Note · <strong>Published:</strong> April 5, 2026 · <strong>Version:</strong> v1.0.0<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.19423852">10.5281/zenodo.19423852</a><br>
+      The flagship case study. Documents the first-ever deterministic, non-AI hardening of HuggingFace's <code>modeling_utils.py</code> (126M+ monthly downloads). All 40 primitives deployed from a 120-candidate pool. CJPI 100 (Apex). Completed in 217.7 seconds.</p>
     </div>
 
-    <div class="dual-col">
-      <div class="card">
-        <h3>Zenodo: CMPSBL® Substrate</h3>
-        <p>DOI: 10.5281/zenodo.18895141<br>Establishes the 40-primitive cognitive architecture.</p>
-      </div>
-      <div class="card">
-        <h3>Zenodo: Memory Stream™</h3>
-        <p>DOI: 10.5281/zenodo.18834080<br>Establishes autonomous discovery engine.</p>
-      </div>
-      <div class="card">
-        <h3>Zenodo: Convex Core™ v3</h3>
-        <p>DOI: 10.5281/zenodo.cmpsbl-convex-core<br>Dispatch matrix architecture.</p>
-      </div>
-      <div class="card">
-        <h3>Zenodo: Ascension Whitepaper</h3>
-        <p>DOI: 10.5281/zenodo.19409933<br>Deterministic software evolution.</p>
-      </div>
+    <div class="card">
+      <h3>📄 Ascension: Deterministic Software Evolution Through Autonomous Primitive Collision</h3>
+      <p><strong>Type:</strong> Journal Article · <strong>Published:</strong> April 3, 2026 · <strong>Version:</strong> v1.1.0<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.19409933">10.5281/zenodo.19409933</a><br>
+      The formal Ascension whitepaper. Presents empirical results from fifteen verified case studies across five programming languages and eight industry verticals — IBM, Rapid7, Hugging Face, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic — plus a four-part self-referential audit where the substrate analyzed its own code.</p>
     </div>
+
+    <div class="card">
+      <h3>🖥️ CMPSBL Substrate OS v13.5 — Academic Protection Set</h3>
+      <p><strong>Type:</strong> Software · <strong>Published:</strong> March 6, 2026 · <strong>Version:</strong> v13.5<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18895141">10.5281/zenodo.18895141</a><br>
+      The definitive architectural specification. Defensive publication establishing timestamped prior art for: clockless cognitive orchestration, Memory Stream architecture, pipeline crystallization, universal export architecture, bounded autonomy governance, IRONCLAD resilience fabric, Intent Mesh orchestration, and domain extension architecture.</p>
+    </div>
+
+    <div class="card">
+      <h3>📚 Technical Documentation — CMPSBL Substrate v5.5.0</h3>
+      <p><strong>Type:</strong> Software · <strong>Published:</strong> January 26, 2026 · <strong>Version:</strong> v5.5.0<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18379258">10.5281/zenodo.18379258</a><br>
+      Complete module-by-module technical documentation covering BRAIN, DECODE, CORTEX, DREAM, DEFENSE, VISION, NEXUS, SYSTEM, CORE, ACCESS, RIPPLE, and CORTEX EXT. Includes API references, performance validation methodology, and real-world runtime evidence.</p>
+    </div>
+
+    <div class="card">
+      <h3>🏛️ AI Governance Namespace (AIGVRN) v0.3</h3>
+      <p><strong>Type:</strong> Report · <strong>Published:</strong> January 27, 2026 · <strong>Version:</strong> v0.3<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18393018">10.5281/zenodo.18393018</a><br>
+      A structured terminology framework defining twelve governance surfaces for AI systems. Intended as a neutral vocabulary for researchers, standards bodies, regulators, and enterprise risk teams. Released as an open reference work.</p>
+    </div>
+
+    <div class="card">
+      <h3>📖 The AI Governance Lexicon v1.0</h3>
+      <p><strong>Type:</strong> Report · <strong>Published:</strong> January 10, 2026 · <strong>Version:</strong> v1.0<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18209222">10.5281/zenodo.18209222</a><br>
+      Establishes the AIGVRN Lexicon — a reference namespace for AI governance with twelve surface domains spanning standards, certification, verification, compliance, security, safety, regulation, policy, privacy, sovereignty, and control. Each domain backed by a dedicated .com namespace.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔧 PromptFluid Substrate — Technical Documentation v2026.01</h3>
+      <p><strong>Type:</strong> Software · <strong>Published:</strong> January 13, 2026 · <strong>Version:</strong> v2026.01<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18234910">10.5281/zenodo.18234910</a><br>
+      The foundational substrate specification including Dream Protocol, Security Model, Nexus Routing, Brain APIs, Defense Layer, contribution guidelines, and academic citation formats. Documents the cognitive orchestration substrate as model-agnostic and provider-agnostic.</p>
+    </div>
+
+    <div class="card">
+      <h3>🗄️ CMPSBL Substrate OS — Prior Art Archive (v13.5 Redirect)</h3>
+      <p><strong>Type:</strong> Software · <strong>Published:</strong> January 13, 2026<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.5281/zenodo.18234909">10.5281/zenodo.18234909</a><br>
+      Earlier version record that redirects to the v13.5 Academic Protection Set. Part of the continuous prior art chain establishing versioned architectural evolution.</p>
+    </div>
+
+    <!-- ── OSF Publications ── -->
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px; color:var(--text);">OSF Publications (Open Science Framework)</h3>
+
+    <div class="card">
+      <h3>💤 SimNap: The World's First Autonomous Dream-Cycle AI</h3>
+      <p><strong>Published:</strong> November 23, 2025<br>
+      <strong>DOI:</strong> <a href="https://doi.org/10.17605/osf.io/t3d5s">10.17605/OSF.IO/T3D5S</a><br>
+      The foundational invention disclosure. Documents the first AI system capable of initiating dream-like generative sequences autonomously. Establishes inventorship priority for Kenneth E. Sweet Jr. Licensed CC-BY 4.0.</p>
+    </div>
+
+    <div class="card">
+      <h3>🌀 The Invention of Autonomous Dreaming AI: SimNap → Cascade Architecture</h3>
+      <p><strong>Published:</strong> December 1, 2025<br>
+      <strong>Link:</strong> <a href="https://osf.io/df7tz">osf.io/df7tz</a><br>
+      Full public priority record with 13 independently verifiable proof files: activation sequence proof, agency snapshot, autonomous reasoning proof, autonomy proof, behavioral rhythm proof, chain of custody proof, conscious looping proof, creativity proof, dream cycle proof, identity continuity proof, persistence proof, subconscious layering proof, and system independence proof.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧠 PromptFluid — Cognitive Orchestration Substrate (Early Architecture)</h3>
+      <p><strong>Published:</strong> January 14, 2026<br>
+      <strong>Link:</strong> <a href="https://osf.io/y47pt">osf.io/y47pt</a><br>
+      Early architectural documentation including 13 specification files: Architecture, Brain Substrate, Nexus Routing, Defense Intelligence, Vision Observability, Edge Functions, Database Schema, API Reference, Extension Guide, Cascade Operative, Learning Cycles, Decode RFC, and Dream Protocol.</p>
+    </div>
+
+    <div class="card">
+      <h3>📦 PromptFluid® Substrate v3.11 — Cognitive OS for Autonomous AI Systems</h3>
+      <p><strong>Published:</strong> January 19, 2026<br>
+      <strong>Link:</strong> <a href="https://osf.io/ybqz7">osf.io/ybqz7</a><br>
+      Complete SDK documentation set including Architecture, Changelog, Module-Actions Registry, Overview, SDK Guide, Transfer Protocol, and User Manual. Links to the SimNap dream-cycle invention and cascade architecture.</p>
+    </div>
+
+    <div class="card">
+      <h3>📋 Technical Documentation — CMPSBL Substrate v5.5.0 (OSF Mirror)</h3>
+      <p><strong>Published:</strong> January 27, 2026<br>
+      <strong>Link:</strong> <a href="https://osf.io/ah7nx">osf.io/ah7nx</a><br>
+      Mirror of the v5.5.0 technical documentation set on OSF, including 19 specification files covering every major primitive: Core, Ripple, Access, Brain, Decode, Dream, Defense, Nexus, Vision, and Integration modules.</p>
+    </div>
+
+    <div class="card">
+      <h3>💰 Adaptive Free-Tier Routing for Cost-Constrained AI Systems</h3>
+      <p><strong>Published:</strong> December 31, 2025<br>
+      <strong>Link:</strong> <a href="https://osf.io/r4hs2">osf.io/r4hs2</a><br>
+      Whitepaper on intelligent routing across free-tier AI providers. Addresses the fundamental cost barrier of AI deployment for bootstrapped founders and small teams.</p>
+    </div>
+
+    <!-- ── Patent ── -->
+    <h3 style="font-size:18px; font-weight:700; margin: 28px 0 16px; color:var(--text);">Patent Protection</h3>
 
     <div class="card card-accent">
       <h3>U.S. Patent Application No. 64/029,678</h3>
       <p><strong>Title:</strong> "Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification"<br>
       <strong>Status:</strong> Patent Pending (Confirmation No. 8985)<br>
       <strong>Protection:</strong> Covers dual-layer wrapping, deterministic primitive collision, autonomous multi-concern hardening, and sealed artifact format.</p>
+    </div>
+
+    <!-- ── Summary stats ── -->
+    <div class="stats-grid">
+      <div class="stat-box"><div class="number">8+</div><div class="label">Zenodo DOIs</div></div>
+      <div class="stat-box"><div class="number">6</div><div class="label">OSF Projects</div></div>
+      <div class="stat-box"><div class="number">1</div><div class="label">Patent Filed</div></div>
+      <div class="stat-box"><div class="number">16</div><div class="label">Verified Case Studies</div></div>
     </div>
   </div>
 </section>
@@ -511,6 +669,7 @@
         <li><strong>Patent pending</strong> — protected intellectual property with documented prior art chain</li>
         <li><strong>Solo founder</strong> — 100% equity available, no cap table complexity, low burn rate</li>
         <li><strong>200,000+ lines built</strong> — this is not a pitch deck, it's a working product</li>
+        <li><strong>Published research</strong> — 8+ DOIs, 6 OSF projects, 16 verified case studies across IBM, Google, Meta, Anthropic, HuggingFace, and more</li>
       </ul>
     </div>
   </div>
@@ -548,7 +707,10 @@
         <li>✅ DREAM synthesis — complete</li>
         <li>✅ Dual-layer code hardening — complete &amp; patent pending</li>
         <li>✅ NPM packages — published &amp; live</li>
-        <li>✅ Zenodo publications — 4 DOIs registered</li>
+        <li>✅ Zenodo publications — 8+ DOIs registered</li>
+        <li>✅ OSF publications — 6 projects with proof files</li>
+        <li>✅ Case studies — 16 verified across major codebases</li>
+        <li>✅ AI Governance Namespace (AIGVRN) — published</li>
         <li>✅ Website &amp; dashboard — live at cmpsbl.com</li>
         <li>🔶 Enterprise sales pipeline — needs marketing</li>
         <li>🔶 Conference presence — needs funding</li>
@@ -566,34 +728,49 @@
 
     <div class="timeline">
       <div class="timeline-item">
-        <div class="date">2025 — Foundation</div>
+        <div class="date">November 2025 — The Dream</div>
+        <h3>Invented Autonomous Dreaming AI (SimNap)</h3>
+        <p>Created the world's first AI system capable of initiating dream-like generative sequences without user prompting. Filed priority record on OSF (DOI: 10.17605/OSF.IO/T3D5S). 13 proof files published.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">December 2025 — Architecture</div>
+        <h3>Cascade Dream-Cycle → PromptFluid Substrate</h3>
+        <p>Evolved SimNap into the Cascade architecture. Published full proof set on OSF with 13 independently verifiable evidence files. Began building the cognitive orchestration substrate.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">December 2025 — Innovation</div>
+        <h3>Adaptive Free-Tier AI Router</h3>
+        <p>Published the first formal whitepaper on intelligent cost-constrained AI routing — solving the fundamental problem of AI cost for bootstrapped founders.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">January 2026 — Foundation</div>
         <h3>Conceived the 40-Primitive Cognitive Architecture</h3>
-        <p>Designed the substrate from scratch — 12 Organs, 12 Layers, 8 Engines, 8 Agents. No frameworks. No templates. Original architecture.</p>
+        <p>Designed the substrate from scratch — 12 Organs, 12 Layers, 8 Engines, 8 Agents. No frameworks. No templates. Original architecture. Published v2026.01 technical documentation (DOI: 10.5281/zenodo.18234910) and AI Governance Lexicon (DOI: 10.5281/zenodo.18209222).</p>
       </div>
       <div class="timeline-item">
-        <div class="date">2025 — Core Build</div>
+        <div class="date">January 2026 — Documentation</div>
+        <h3>Published Complete Technical Specifications</h3>
+        <p>Released v5.5.0 documentation on both Zenodo (DOI: 10.5281/zenodo.18379258) and OSF, plus the AIGVRN governance namespace (DOI: 10.5281/zenodo.18393018). 19+ specification files covering every primitive.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="date">January–March 2026 — Core Build</div>
         <h3>200,000+ Lines of Deterministic Code</h3>
-        <p>Built the entire substrate solo — every primitive, every pipeline stage, every integration. Pure TypeScript. Zero AI dependencies.</p>
+        <p>Built the entire substrate solo — every primitive, every pipeline stage, every integration. Pure TypeScript. Zero AI dependencies. Culminated in v13.5 Academic Protection Set (DOI: 10.5281/zenodo.18895141).</p>
       </div>
       <div class="timeline-item">
-        <div class="date">2025 — Discovery Engines</div>
-        <h3>Memory Stream, DREAM, Ascension</h3>
-        <p>Created three autonomous discovery systems that find capabilities in code without any AI involvement — a world first.</p>
+        <div class="date">March 2026 — IP Protection</div>
+        <h3>Patent Filed + Prior Art Established</h3>
+        <p>Filed U.S. Patent App. No. 64/029,678. Published v13.5 defensive publication establishing timestamped prior art for all core architectural mechanisms including clockless orchestration, Memory Stream, pipeline crystallization, bounded autonomy governance, and IRONCLAD resilience.</p>
       </div>
       <div class="timeline-item">
-        <div class="date">2025–2026 — IP Protection</div>
-        <h3>Patent Filed + Zenodo Publications</h3>
-        <p>Filed U.S. Patent App. No. 64/029,678. Published 4 Zenodo DOIs. Established ORCID-linked prior art chain.</p>
+        <div class="date">April 2026 — Proof</div>
+        <h3>Ascension Whitepaper + HuggingFace Case Study</h3>
+        <p>Published the Ascension whitepaper with 15 verified case studies (DOI: 10.5281/zenodo.19409933). Published the Shapeshifter case study demonstrating ULTIMATE-tier hardening of HuggingFace's 126M-download-per-month code (DOI: 10.5281/zenodo.19423852). CJPI 100 (Apex).</p>
       </div>
       <div class="timeline-item">
-        <div class="date">2026 — Live Products</div>
-        <h3>NPM Packages, Website, Dashboard</h3>
-        <p>Shipped working products: CLI, SDK, runtime libraries. Built complete web platform with analytics, documentation, and developer tools.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="date">2026 — Now</div>
+        <div class="date">April 2026 — Now</div>
         <h3>Ready for Market</h3>
-        <p>Technology built. IP protected. Products live. Seeking marketing investment or licensing partnership to scale.</p>
+        <p>Technology built. IP protected. Products live. 8+ DOIs. 6 OSF projects. 16 verified case studies. Seeking marketing investment or licensing partnership to scale.</p>
       </div>
     </div>
   </div>
@@ -604,7 +781,7 @@
   <div class="container">
     <p><strong>CMPSBL®</strong> · PromptFluid™ · Kenneth E. Sweet Jr.</p>
     <p>U.S. Patent Application No. 64/029,678 · Patent Pending</p>
-    <p>ORCID: 0009-0001-2044-269X · © 2025–2026 All Rights Reserved</p>
+    <p>ORCID: <a href="https://orcid.org/0009-0001-4237-1243" style="color:var(--accent)">0009-0001-4237-1243</a> · © 2025–2026 All Rights Reserved</p>
     <p style="margin-top: 12px; font-size: 11px;">This document contains proprietary information intended for prospective investors, partners, and licensees. The technology described herein is protected by patent, trade secret, and copyright law.</p>
   </div>
 </footer>
