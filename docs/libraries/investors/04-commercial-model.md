@@ -48,7 +48,7 @@ Ascension is included in Architect tier and above. Exports produce IP-protected 
 | **Elite** | $159 | Advanced capabilities, priority support |
 | **Apex** | $249 | Maximum capability, custom integration |
 
-All products include sealed runtime isolation, DREAM synthesis, and version-stamped identity. **Purchases are perpetual** — no ongoing subscription per agent.
+All products include Convex Core™ artifact isolation, DREAM synthesis, and version-stamped identity. **Purchases are perpetual** — no ongoing subscription per agent.
 
 ---
 

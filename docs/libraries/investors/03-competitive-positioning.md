@@ -24,7 +24,7 @@ CMPSBL addresses all four gaps simultaneously.
 | Persistent memory | 4-tier, governed, CLM-compounded | Stateless or session-only | — |
 | Governance | Architectural, immutable, 4-mode | Optional, configurable | — |
 | Evolution | 7-gate SEBA with TSAC truth preservation | Manual deployment | — |
-| Multi-agent | 20 agents, sealed runtime, DREAM synthesis | Task distribution only | — |
+| Multi-agent | 20 agents, Convex Core™ artifact, DREAM synthesis | Task distribution only | — |
 | Security | Defense-in-depth, 40-primitive zone-shielded | Perimeter only | — |
 | Observability | Weighted health matrix, INTEL pipeline | Basic logs and metrics | — |
 | Audit | Tamper-evident Merkle chains | Append-only logs | — |

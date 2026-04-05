@@ -4988,7 +4988,7 @@ async function cmdCrown(args: string[]): Promise<void> {
     },
     {
       name: 'ASCENSION ENGINE', tier: 'Architect ($249)', icon: '◈',
-      capabilities: ['Primitive Collision', 'CJPI Scoring', 'Archetype Classification', 'IP Obfuscation', 'Sealed Runtimes'],
+      capabilities: ['Primitive Collision', 'CJPI Scoring', 'Archetype Classification', 'IP Obfuscation', 'Convex Core™ Artifacts'],
       locked: true,
     },
     {

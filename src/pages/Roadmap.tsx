@@ -58,7 +58,7 @@ const PHASES = [
     name: "REFURBISHMENT",
     tagline: "Ascension Pipeline & Code Assembly",
     status: "Shipped",
-    description: "The Software Refurbishment Center is live. Users upload code, receive a full diagnostic, select primitives for hardening, and receive a sealed runtime with an HTML refurbishment report — all without replacing their original codebase.",
+    description: "The Software Refurbishment Center is live. Users upload code, receive a full diagnostic, select primitives for hardening, and receive a Convex Core™ artifact with an HTML refurbishment report — all without replacing their original codebase.",
     capabilities: [
       "5-step Ascension pipeline (Upload → Diagnostic → Select → Queue → Debrief)",
       "Adaptive Limited Rates Engine for queue management",

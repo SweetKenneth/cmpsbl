@@ -198,7 +198,7 @@ export default function Agents() {
               </div>
 
               <p className="text-xs text-muted-foreground/60 font-mono">
-                {LEGACY_AGENTS.length} sealed runtimes · Perpetual license · From free to $79
+                {LEGACY_AGENTS.length} Convex Core™ artifacts · Perpetual license · From free to $79
               </p>
             </motion.div>
           </div>
@@ -291,7 +291,7 @@ export default function Agents() {
           <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8 text-center">
             <h2 className="text-2xl font-black mb-2">Want more power?</h2>
             <p className="text-muted-foreground mb-4">
-              These 20 agents were fused into 5 Meta-Agents — each combining 4-5 originals into one sealed runtime with DREAM Synthesis.
+              These 20 agents were fused into 5 Meta-Agents — each combining 4-5 originals into one Convex Core™ artifact with DREAM Synthesis.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Button asChild>

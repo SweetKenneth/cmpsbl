@@ -53,9 +53,9 @@ This paper discloses the following inventions and methods for the purpose of est
 - The cross-sector synergy matrix and scoring algorithm
 - The chain archetype resolution system with 100+ named archetypes
 - The dual-layer execution model (native execution + cognitive overlay)
-- The Convex Core™ Processing Layer architecture (standalone-runtime, chain-executor, discovery-engine)
+- The Convex Core™ Processing Layer architecture (convex-core, chain-executor, discovery-engine)
 - The IP protection pipeline (hex-encoding, comment stripping, genericized naming)
-- The Sealed Runtime™ export format
+- The Convex Core™ Sealed Artifact export format
 - The Capability Marketplace interactive selection model
 
 ---
@@ -561,12 +561,12 @@ This architecture provides:
 
 ## 9. Export and IP Protection
 
-### 9.1 The CMPSBL® Sealed Runtime™
+### 9.1 The CMPSBL® Convex Core™ Sealed Artifact
 
 Exports are packaged as ZIP archives containing:
 
 1. **Original source code** — untouched, in the developer's import language
-2. **`standalone-runtime.ts`** (or language equivalent) — Convex Core™ Processing Layer
+2. **`convex-core.ts`** (or language equivalent) — Convex Core™ Processing Layer
 3. **`chain-executor.ts`** — Discovers and executes capability chains
 4. **`discovery-engine.ts`** — Substrate discovery logic
 5. **`manifest.json`** — Pack metadata including CJPI scores, fingerprints, and moat signatures
@@ -835,7 +835,7 @@ Ascension is included in the Architect subscription tier ($249/month) and above.
 
 ## 18. Conclusion
 
-Ascension represents a novel approach to software evolution: deterministic, preservative, and portable. By treating uploaded code as a first-class participant in a fixed cognitive substrate matrix, the system discovers emergent capabilities that neither the original code nor the substrate primitives exhibit individually. The deterministic nature of the collision engine ensures reproducibility; the dual-layer execution model ensures preservation; and the Sealed Runtime export ensures portability beyond the platform's existence.
+Ascension represents a novel approach to software evolution: deterministic, preservative, and portable. By treating uploaded code as a first-class participant in a fixed cognitive substrate matrix, the system discovers emergent capabilities that neither the original code nor the substrate primitives exhibit individually. The deterministic nature of the collision engine ensures reproducibility; the dual-layer execution model ensures preservation; and the Convex Core™ Artifact export ensures portability beyond the platform's existence.
 
 This paper establishes the priority date of March 30, 2026 for all methods, algorithms, data structures, and architectural patterns described herein.
 
@@ -918,7 +918,7 @@ The following is a representative subset of the 100+ registered chain archetypes
 | **Convex Core™ Processing Layer** | Standalone execution environment included in exports; zero dependencies |
 | **Moat Signature** | Cryptographic UUID assigned upon ascension for provenance verification |
 | **Primitive** | One of the 40 substrate nodes, categorized as Organ, Layer, Engine, or Agent |
-| **Sealed Runtime™** | The complete export package format including code, runtime, documentation, and tests |
+| **Convex Core™ Sealed Artifact** | The complete export package format including code, runtime, documentation, and tests |
 | **Sector** | One of 12 functional domains in the substrate topology |
 | **Structural Fingerprint** | SHA-256 hash of a discovery's chain composition |
 | **Synergy** | Bonus score awarded for cross-sector primitive combinations |

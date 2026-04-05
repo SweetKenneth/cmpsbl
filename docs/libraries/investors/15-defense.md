@@ -18,7 +18,7 @@ DEFENSE is CMPSBL's autonomous security layer — a cognitive firewall that asse
 | **Perimeter** | Inbound threat assessment | Real-time scoring of every request before routing |
 | **Zone** | 40-primitive zone shielding | Independent circuit breakers per zone — zone failure doesn't cascade |
 | **Tenant** | Data isolation | Row-Level Security (RLS) at the database level — cross-tenant access impossible |
-| **Agent** | Runtime isolation | Source-blocked, memory-isolated sealed runtimes |
+| **Agent** | Runtime isolation | Source-blocked, memory-isolated Convex Core™ artifacts |
 | **Audit** | Tamper-evident provenance | Merkle chain SHA-256 — every action cryptographically chained |
 | **Encryption** | Data protection | AES-256 at rest, TLS 1.3 in transit, AES-GCM for secrets |
 
@@ -29,7 +29,7 @@ DEFENSE is CMPSBL's autonomous security layer — a cognitive firewall that asse
 - **Prompt injection** — cognitive firewall scores and blocks adversarial inputs
 - **Privilege escalation** — Crown Jewel capabilities structurally isolated from all external tiers
 - **Data exfiltration** — tenant isolation enforced at database level, not application level
-- **Agent escape** — sealed runtimes with source blocking prevent agents from accessing system internals
+- **Agent escape** — Convex Core™ artifacts with source blocking prevent agents from accessing system internals
 - **Audit tampering** — Merkle chain integrity means retroactive modification is cryptographically detectable
 - **Cascade failure** — Ironclad hardening fabric with zone-independent circuit breakers
 

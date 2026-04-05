@@ -218,7 +218,7 @@ export const AGENTS_WITH_POWERS: AgentWithPowers[] = [
     id: "wraith",
     name: "WRAITH",
     subtitle: "FORGE · PHANTOM · BEACON · CONDUCTOR · SENTINEL",
-    description: "Silent. Lethal. Invisible. A fused engineering meta-agent that generates production-grade code, designs component systems, orchestrates CI/CD pipelines, and builds self-healing data flows — all from one sealed runtime.",
+    description: "Silent. Lethal. Invisible. A fused engineering meta-agent that generates production-grade code, designs component systems, orchestrates CI/CD pipelines, and builds self-healing data flows — all from one Convex Core™ artifact.",
     bio: "You never see it work — only the results. WRAITH writes code, designs systems, deploys pipelines, and moves data — a four-runtime fusion that ships faster than any team.",
     fusedFrom: ["CODING", "AURORA", "DEPLOYER", "MERIDIAN"],
     icon: Code,

@@ -122,7 +122,7 @@ export const ENGINES: Engine[] = [
     priceStandalone: 3900, priceBundled: 3900, priceDisplay: "$39/yr", bundleDisplay: "$39/yr",
     priceId: "price_1T6KAuQ7FtTiAL4aA6ziEyyh", icon: Cpu, color: "210 100% 60%", tier: "APEX",
     edition: "Edition APEX — Unlimited",
-    briefing: "ARCHITECT orchestrates all 8 core pipelines into a single sealed runtime. Parse, Route, Execute, Heal, Defend, Learn, Observe, Audit — in one import.",
+    briefing: "ARCHITECT orchestrates all 8 core pipelines into a single Convex Core™ artifact. Parse, Route, Execute, Heal, Defend, Learn, Observe, Audit — in one import.",
     capabilities: ["Unified 8-stage cognitive pipeline", "Self-healing with automatic recovery", "Built-in security and anomaly defense", "Real-time observability and audit trail", "Intelligent multi-path routing", "Continuous learning from every execution"],
     threatLevel: "CLASSIFIED — APEX TIER", clearance: "LEVEL 10 — UNRESTRICTED",
     isSubscription: true, subscriptionLabel: "Annual License", externalPath: "/cmpsbl-engine",

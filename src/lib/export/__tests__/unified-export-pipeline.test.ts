@@ -82,7 +82,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
   // ─── Black-Box Obfuscation ───
 
   describe('Black-Box Obfuscation', () => {
-    it('adds sealed runtime header to TypeScript output', () => {
+    it('adds Convex Core™ artifact header to TypeScript output', () => {
       const result = generateUnifiedCapabilityFile(MOCK_CAPABILITIES, PACK_NAME, 'typescript');
       expect(result).toContain('SEALED RUNTIME');
       expect(result).toContain('PROPRIETARY DISTRIBUTION');
@@ -91,7 +91,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
 
     it('adds integrity hash seal to output', () => {
       const result = generateUnifiedCapabilityFile(MOCK_CAPABILITIES, PACK_NAME, 'typescript');
-      expect(result).toContain('SEALED RUNTIME INTEGRITY');
+      expect(result).toContain('CONVEX CORE™ INTEGRITY');
       expect(result).toContain('Hash:');
     });
 
@@ -123,7 +123,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
     it('blackboxFile is idempotent on sealed notice', () => {
       const raw = 'function test() { return 1; }';
       const boxed = blackboxFile(raw, 'typescript');
-      expect(boxed).toContain('SEALED RUNTIME INTEGRITY');
+      expect(boxed).toContain('CONVEX CORE™ INTEGRITY');
       expect(boxed).toContain('Hash:');
     });
   });

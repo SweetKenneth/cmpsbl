@@ -424,7 +424,7 @@
   <h2>Abstract</h2>
   <p>We present the first documented case of a deterministic, non-AI software evolution engine — <strong>Ascension™</strong> — autonomously selecting and deploying 40 computational primitives from a 120-candidate cross-vertical pool to structurally harden HuggingFace's <code>modeling_utils.py</code>, the foundational training model utility layer of the Transformers library, which receives over <strong>126 million downloads per month</strong> (126,779,252 verified via PyPI as of April 4, 2026) and underpins virtually every major large language model in production today.</p>
   <p>The CMPSBL ULTIMATE™ substrate — operating without human guidance, without machine learning, and without prior knowledge of the target codebase — identified 12 structural dependency gaps (2 critical, 7 warnings, 3 informational), surfaced 10 latent capabilities, and wrapped every known architectural weakness in protective primitive guards that provide observability, statefulness, resilience, and governance to a codebase that was never designed to have them. The entire transformation completed in <strong>217.7 seconds</strong>. Every primitive fired with a distinct, verifiable purpose. Every known flaw was wrapped — not fixed, but <em>protected</em> — in a way that no existing tool, framework, or AI system has ever attempted.</p>
-  <div class="keywords"><strong>Keywords:</strong> software evolution · deterministic hardening · primitive collision · HuggingFace Transformers · modeling_utils · sealed runtime · structural protection · post-authorship engineering · CMPSBL ULTIMATE</div>
+  <div class="keywords"><strong>Keywords:</strong> software evolution · deterministic hardening · primitive collision · HuggingFace Transformers · modeling_utils · Convex Core™ artifact · structural protection · post-authorship engineering · CMPSBL ULTIMATE</div>
 </div>
 
 <!-- ═══════════════════════════════════════ 1. INTRODUCTION ═══ -->
@@ -471,7 +471,7 @@
   <li><strong>Chain</strong> — 120 candidates evaluated; top 40 selected by collision score</li>
   <li><strong>Discover</strong> — Signal matching against structural patterns</li>
   <li><strong>Score</strong> — CJPI (Crown Jewel Pipeline Index™) computation</li>
-  <li><strong>Export</strong> — Sealed Runtime™ artifact generation</li>
+  <li><strong>Export</strong> — Convex Core™ Sealed Artifact artifact generation</li>
   <li><strong>Protect</strong> — Obfuscation and IP encapsulation</li>
 </ol>
 
@@ -676,7 +676,7 @@
 <h2><span class="section-num">7.</span> Testing and Verification</h2>
 
 <h3>7.1 Verification Architecture</h3>
-<p>All primitive hardening in a Sealed Runtime™ artifact can be independently verified using the <code>@cmpsbl/runtime</code> npm package (v2.0.0) and the <code>@cmpsbl/test-harness</code>. The verification architecture is designed to <strong>prove that primitives function correctly without exposing how they function internally</strong>.</p>
+<p>All primitive hardening in a Convex Core™ Sealed Artifact artifact can be independently verified using the <code>@cmpsbl/runtime</code> npm package (v2.0.0) and the <code>@cmpsbl/test-harness</code>. The verification architecture is designed to <strong>prove that primitives function correctly without exposing how they function internally</strong>.</p>
 
 <h3>7.2 Test Harness Setup</h3>
 <pre><code>npm install @cmpsbl/test-harness

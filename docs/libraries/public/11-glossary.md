@@ -61,7 +61,7 @@
 |------|-----------|
 | **Cognitive Agent** | A sealed-runtime AI worker with specialized Crown Jewel powers |
 | **Agency** | A coordinated team of cognitive agents with shared task management |
-| **Sealed Runtime** | Source-blocked, memory-isolated execution environment for agents |
+| **Convex Core™ Artifact** | Source-blocked, memory-isolated execution environment for agents |
 | **Artifact Pack** | An exported capability bundle containing code, runtime, docs, and tests |
 | **Convex Core™** | Standalone execution environment bundled with exported artifacts |
 

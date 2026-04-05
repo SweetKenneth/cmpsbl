@@ -618,7 +618,7 @@ Ascension is the Software Refurbishment Center — the mechanism that transforms
 4. Chain      → Primitive dependency graph built
 5. Discover   → 20 capabilities recommended (10 Spine + 10 Expansion)
 6. Score      → CJPI 0-100 per capability
-7. Export     → Sealed Runtime with HTML report
+7. Export     → Convex Core™ Artifact with HTML report
 8. Protect    → DEFENSE shield applied
 ```
 

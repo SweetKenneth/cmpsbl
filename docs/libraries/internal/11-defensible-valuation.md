@@ -72,7 +72,7 @@ The substrate is valued across six pillars:
 
 **Defensible value:** Every day the system runs, it becomes more valuable. CLM creates compound intellectual property that increases the switching cost for any user or operator.
 
-### 3.4 Agent Marketplace & Sealed Runtimes
+### 3.4 Agent Marketplace & Convex Core™ Artifacts
 
 **Parallel:** Salesforce AppExchange — $7B+ annual ecosystem revenue.
 

@@ -202,7 +202,7 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 
 | Layer | Protection |
 |-------|-----------|
-| **Sealed Runtime™** | CJPI scoring weights as hex-encoded arrays. Internal comments stripped. Generic naming. |
+| **Convex Core™ Sealed Artifact** | CJPI scoring weights as hex-encoded arrays. Internal comments stripped. Generic naming. |
 | **Moat Signatures** | Cryptographic UUID at ascension. Cannot be derived from discovery parameters. |
 | **Structural Fingerprints** | SHA-256 hash of chain composition. Tamper-evident from discovery to deployment. |
 | **Zenodo Prior Art** | Three independent records on CERN infrastructure. Three priority dates. |

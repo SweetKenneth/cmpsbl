@@ -33,7 +33,7 @@
 | **Professional** | $129/agent | MEMORY, GUARDIAN, ROUTER |
 | **Elite** | $159/agent | CODING, ANALYST, SECURITY |
 
-All purchases are **perpetual** — no ongoing subscription per agent. Each agent includes sealed runtime isolation, DREAM Engine synthesis, and a unique version ID.
+All purchases are **perpetual** — no ongoing subscription per agent. Each agent includes Convex Core™ artifact isolation, DREAM Engine synthesis, and a unique version ID.
 
 ---
 

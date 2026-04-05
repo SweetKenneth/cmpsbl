@@ -312,7 +312,7 @@ export default function RoboticsHome() {
             </h2>
             <p className="text-sm max-w-lg mx-auto" style={{ color: "hsl(215 15% 50%)" }}>
               Every capability is a discrete, testable robotics function — auto-discovered, 
-              CJPI-scored, and deployable as a sealed runtime.
+              CJPI-scored, and deployable as a Convex Core™ artifact.
             </p>
           </div>
 

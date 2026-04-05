@@ -24,7 +24,7 @@
 
 We present the first documented case of a deterministic, non-AI software evolution engine — **Ascension™** — autonomously selecting and deploying 40 computational primitives from a 120-candidate cross-vertical pool to structurally harden HuggingFace's `modeling_utils.py`, the foundational training model utility layer of the Transformers library, which receives over **126 million downloads per month** (126,779,252 verified via PyPI as of April 4, 2026) and underpins virtually every major large language model in production today. The CMPSBL ULTIMATE™ substrate — operating without human guidance, without machine learning, and without prior knowledge of the target codebase — identified 12 structural vulnerabilities (2 critical, 7 warnings, 3 informational), surfaced 10 latent capabilities, and wrapped every known architectural weakness in protective primitive guards that provide observability, statefulness, resilience, and governance to a codebase that was never designed to have them. The entire transformation completed in **217.7 seconds**. Every primitive fired with a distinct, verifiable purpose. Every known flaw that HuggingFace has battled for years was immediately wrapped — not fixed, but *protected* — in a way that no existing tool, framework, or AI system has ever attempted. The result is a 4,936-line sealed artifact that acts as if it were literally created by HuggingFace's own engineering team to put a bandaid on every structural weakness in their code.
 
-**Keywords:** software evolution · deterministic hardening · primitive collision · HuggingFace Transformers · modeling_utils · sealed runtime · structural protection · post-authorship engineering · CMPSBL ULTIMATE
+**Keywords:** software evolution · deterministic hardening · primitive collision · HuggingFace Transformers · modeling_utils · Convex Core™ artifact · structural protection · post-authorship engineering · CMPSBL ULTIMATE
 
 ---
 
@@ -80,7 +80,7 @@ The transformation follows an 8-stage deterministic pipeline:
 4. **Chain** — 120 candidates evaluated; top 40 selected by collision score
 5. **Discover** — Signal matching against structural patterns
 6. **Score** — CJPI (Crown Jewel Pipeline Index™) computation
-7. **Export** — Sealed Runtime™ artifact generation
+7. **Export** — Convex Core™ Sealed Artifact artifact generation
 8. **Protect** — Obfuscation and IP encapsulation
 
 ### 2.2 What "Collision" Means
@@ -345,7 +345,7 @@ No human told the scanner to look at Quantum primitives for a machine learning f
 
 ### 7.1 Verification Architecture
 
-All primitive hardening in a Sealed Runtime™ artifact can be independently verified using the `@cmpsbl/runtime` npm package (v2.0.0) and the `@cmpsbl/test-harness`. The verification architecture is designed to **prove that primitives function correctly without exposing how they function internally**.
+All primitive hardening in a Convex Core™ Sealed Artifact artifact can be independently verified using the `@cmpsbl/runtime` npm package (v2.0.0) and the `@cmpsbl/test-harness`. The verification architecture is designed to **prove that primitives function correctly without exposing how they function internally**.
 
 ### 7.2 Test Harness Setup
 

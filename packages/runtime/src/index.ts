@@ -5,7 +5,7 @@
  * Zero-dependency CJPI scoring, auto-tiering, manifest parsing,
  * state machine, saga orchestration, pipeline execution,
  * telemetry compression, circuit breaker persistence,
- * timeout governance, and sealed runtime integrity verification.
+ * timeout governance, and Convex Core™ artifact integrity verification.
  *
  * Patent Pending — U.S. App. No. 64/029,678
  * © CMPSBL® — All rights reserved.
@@ -564,7 +564,7 @@ export function importCircuitBreakerState(state: CircuitBreaker[]): number {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// §8 — Sealed Runtime Integrity Verification
+// §8 — Convex Core™ Artifact Integrity Verification
 // ═══════════════════════════════════════════════════════════════
 
 function fnv1aHash(input: string): string {

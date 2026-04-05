@@ -205,7 +205,7 @@ export function getUpgradeTierLabel(id: string, name: string = '', difficulty?: 
 /**
  * Check if source code preview should be blocked for this item.
  * Architecture jewels: always blocked (item hidden anyway).
- * Experience jewels: always blocked — sealed runtime only.
+ * Experience jewels: always blocked — Convex Core™ artifact only.
  */
 export function isSourcePreviewBlocked(id: string, name: string = ''): boolean {
   return isCrownJewelExtended(id, name) || isExperienceCrownJewel(id);
@@ -237,7 +237,7 @@ export function getBlackBoxMessage(id: string, name: string = ''): string {
     return 'This architecture artifact is restricted to CMPSBL core. Not available at any tier.';
   }
   if (isExperienceCrownJewel(id)) {
-    return 'This artifact is delivered as a sealed runtime. Source code, export, and cloning are disabled to protect proprietary architecture.';
+    return 'This artifact is delivered as a Convex Core™ artifact. Source code, export, and cloning are disabled to protect proprietary architecture.';
   }
   return '';
 }

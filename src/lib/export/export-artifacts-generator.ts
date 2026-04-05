@@ -488,7 +488,7 @@ function generateArchitectureDiagram(input: ExportArtifactsInput): string {
 │            └──────────┬───────────────┘                      │
 │                       ▼                                      │
 │            ┌─────────────────────┐                           │
-│            │  SEALED RUNTIME™    │                           │
+│            │  CONVEX CORE™ SEALED ARTIFACT    │                           │
 │            │  ┌───────────────┐  │                           │
 │            │  │ 40 Primitives │  │  ← Sealed (black-boxed)  │
 │            │  │ CJPI Engine   │  │  ← Deterministic scoring │
@@ -612,7 +612,7 @@ and internal. You paid for it (or received it free-tier) — it's yours to deplo
 **Yes.** Your export can be used by anyone in your organization. It's tied
 to your account/subscription, not to an individual machine.
 
-## Can I modify the sealed runtime files?
+## Can I modify the Convex Core™ artifact files?
 **No.** Files in \`_runtime/\` are sealed artifacts. Modifying them will:
 - Break integrity checks
 - Produce incorrect CJPI scores

@@ -176,7 +176,7 @@ const STORE_ENGINES: StoreItem[] = [
     kind: "engine",
     name: "ARCHITECT",
     subtitle: "The Unified Mega-Engine",
-    bio: "Orchestrates all 8 core pipelines into a single sealed runtime. Parse, Route, Execute, Heal, Defend, Learn, Observe, Audit — one import.",
+    bio: "Orchestrates all 8 core pipelines into a single Convex Core™ artifact. Parse, Route, Execute, Heal, Defend, Learn, Observe, Audit — one import.",
     description: "ARCHITECT is the apex of the engine catalog. Unified 8-stage cognitive pipeline with self-healing, built-in security, real-time observability, intelligent routing, and continuous learning from every execution.",
     image: architectImg,
     icon: Cpu,

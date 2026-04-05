@@ -250,7 +250,7 @@ export function generateArchitectureHTML(name: string, kind: string): string {
 │            └──────────┬───────────────┘                      │
 │                       ▼                                      │
 │            ┌─────────────────────┐                           │
-│            │  SEALED RUNTIME™    │                           │
+│            │  CONVEX CORE™ SEALED ARTIFACT    │                           │
 │            │  40 Primitives      │  ← Sealed (black-boxed)  │
 │            │  CJPI Engine        │  ← Deterministic scoring │
 │            │  Chain Executor     │  ← IP-protected          │
@@ -386,7 +386,7 @@ export function generateLicenseFaqHTML(): string {
     <li>Credit CMPSBL® in your project's acknowledgments</li>
   </ul>
 
-  <h2>Can I modify the sealed runtime files?</h2>
+  <h2>Can I modify the Convex Core™ artifact files?</h2>
   <p><strong>No.</strong> Files in <code>_runtime/</code> are sealed artifacts. Modifying them will break integrity checks, produce incorrect scores, and void support guarantees.</p>
   <div class="info-box">
     <strong>You CAN modify:</strong> Your own source code (always), test files, and configuration (<code>.env</code>, <code>package.json</code>).

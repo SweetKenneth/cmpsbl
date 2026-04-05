@@ -70,7 +70,7 @@ use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH, Instant};
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §1 — MINI-RUNTIME™ ENGINE                                                  ║
+// ║  §1 — CONVEX CORE™ DPL                                                  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 #[derive(Debug, Clone)]
@@ -415,7 +415,7 @@ import (
 )
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §1 — MINI-RUNTIME™ ENGINE                                                  ║
+// ║  §1 — CONVEX CORE™ DPL                                                  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CJPIResult struct {
@@ -689,7 +689,7 @@ import java.time.Instant;
 
 public class Cmpsbl {
 
-    // §1 — MINI-RUNTIME™
+    // §1 — CONVEX CORE™ DPL
     public static int computeCJPI(double novelty, double utility, double complexity, double composability) {
         double raw = novelty * 0.30 + utility * 0.30 + complexity * 0.20 + composability * 0.20;
         return (int) Math.round(Math.max(0, Math.min(100, raw)));
@@ -904,7 +904,7 @@ using System.Linq;
 
 namespace Cmpsbl
 {
-    // §1 — MINI-RUNTIME™
+    // §1 — CONVEX CORE™ DPL
     public static class Runtime
     {
         public static int ComputeCJPI(double novelty, double utility, double complexity, double composability) {
@@ -1065,7 +1065,7 @@ function generateSwift(ctx: GeneratorContext): string {
 
 import Foundation
 
-// §1 — MINI-RUNTIME™
+// §1 — CONVEX CORE™ DPL
 
 struct CJPIResult { let score: Int; let tier: String }
 
@@ -1225,7 +1225,7 @@ function generateKotlin(ctx: GeneratorContext): string {
 
 import kotlin.math.*
 
-// §1 — MINI-RUNTIME™
+// §1 — CONVEX CORE™ DPL
 fun computeCJPI(n: Double, u: Double, cx: Double, co: Double): Int =
     (n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20).coerceIn(0.0, 100.0).roundToInt()
 
@@ -1295,7 +1295,7 @@ function generateRuby(ctx: GeneratorContext): string {
 # ═══════════════════════════════════════════════════════════════════════════════
 
 module Cmpsbl
-  # §1 — MINI-RUNTIME™
+  # §1 — CONVEX CORE™ DPL
   def self.compute_cjpi(novelty, utility, complexity, composability)
     raw = novelty * 0.30 + utility * 0.30 + complexity * 0.20 + composability * 0.20
     score = [[0, raw].max, 100].min.round
@@ -1398,7 +1398,7 @@ function generateC(ctx: GeneratorContext): string {
 #include <time.h>
 #include <math.h>
 
-/* §1 — MINI-RUNTIME™ */
+/* §1 — CONVEX CORE™ DPL */
 typedef struct { int score; const char* tier; } CJPIResult;
 
 const char* cmpsbl_tier(int score) {
@@ -1531,7 +1531,7 @@ function generateCpp(ctx: GeneratorContext): string {
 
 namespace cmpsbl {
 
-// §1 — MINI-RUNTIME™
+// §1 — CONVEX CORE™ DPL
 inline int compute_cjpi(double n, double u, double cx, double co) {
     return static_cast<int>(std::round(std::max(0.0, std::min(100.0, n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20))));
 }
@@ -1634,7 +1634,7 @@ function generateLua(ctx: GeneratorContext): string {
 
 local cmpsbl = {}
 
--- §1 — MINI-RUNTIME™
+-- §1 — CONVEX CORE™ DPL
 function cmpsbl.compute_cjpi(n, u, cx, co)
     local raw = n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20
     local score = math.floor(math.max(0, math.min(100, raw)) + 0.5)
@@ -1720,7 +1720,7 @@ function generateDart(ctx: GeneratorContext): string {
 
 import 'dart:math';
 
-// §1 — MINI-RUNTIME™
+// §1 — CONVEX CORE™ DPL
 int computeCJPI(double n, double u, double cx, double co) =>
     (n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20).clamp(0, 100).round();
 
@@ -1803,7 +1803,7 @@ function generateScala(ctx: GeneratorContext): string {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 object Cmpsbl {
-  // §1 — MINI-RUNTIME™
+  // §1 — CONVEX CORE™ DPL
   def computeCJPI(n: Double, u: Double, cx: Double, co: Double): Int =
     math.round(math.max(0, math.min(100, n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20))).toInt
 
@@ -1870,7 +1870,7 @@ function generateElixir(ctx: GeneratorContext): string {
 # ═══════════════════════════════════════════════════════════════════════════════
 
 defmodule Cmpsbl do
-  # §1 — MINI-RUNTIME™
+  # §1 — CONVEX CORE™ DPL
   def compute_cjpi(n, u, cx, co) do
     raw = n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20
     score = max(0, min(100, round(raw)))
@@ -1937,7 +1937,7 @@ function generateR(ctx: GeneratorContext): string {
 #  © 2025–2026 CMPSBL®. All rights reserved.
 # ═══════════════════════════════════════════════════════════════════════════════
 
-# §1 — MINI-RUNTIME™
+# §1 — CONVEX CORE™ DPL
 cmpsbl_compute_cjpi <- function(n, u, cx, co) {
   score <- round(max(0, min(100, n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20)))
   list(score = score, tier = cmpsbl_tier_from_cjpi(score))
@@ -2020,7 +2020,7 @@ import qualified Data.Map.Strict as Map
 import Data.Char (toLower)
 import Data.List (intercalate)
 
--- §1 — MINI-RUNTIME™
+-- §1 — CONVEX CORE™ DPL
 computeCJPI :: Double -> Double -> Double -> Double -> Int
 computeCJPI n u cx co = round $ max 0 $ min 100 $ n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20
 
@@ -2082,7 +2082,7 @@ function generateZig(ctx: GeneratorContext): string {
 
 const std = @import("std");
 
-// §1 — MINI-RUNTIME™
+// §1 — CONVEX CORE™ DPL
 pub fn computeCJPI(n: f64, u: f64, cx: f64, co: f64) u32 {
     const raw = n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20;
     return @intFromFloat(@max(0.0, @min(100.0, @round(raw))));

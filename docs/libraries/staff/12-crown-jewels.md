@@ -249,7 +249,7 @@ These are released to customers as **sealed, black-boxed** capabilities. They ru
 **Protection mechanisms:**
 1. `blackbox.ts` — hex-encodes CJPI weights (e.g., `[0x1E, 0x1E, 0x14, 0x14]`)
 2. Internal comment stripping
-3. Sealed Runtime™ wrapper — execution-only, no source access
+3. Convex Core™ Sealed Artifact wrapper — execution-only, no source access
 4. Tier-gated entitlement resolution
 
 ---

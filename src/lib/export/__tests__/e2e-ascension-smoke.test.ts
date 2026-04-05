@@ -346,7 +346,7 @@ describe('Phase 5 — Black-Box Obfuscation', () => {
   it('blackboxFile adds integrity hash', () => {
     const raw = 'function test() { return 42; }';
     const boxed = blackboxFile(raw, 'typescript');
-    expect(boxed).toContain('SEALED RUNTIME INTEGRITY');
+    expect(boxed).toContain('CONVEX CORE™ INTEGRITY');
     expect(boxed).toContain('Hash:');
   });
 

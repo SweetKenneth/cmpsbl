@@ -1,7 +1,7 @@
 /**
  * Legacy Agents Catalog — The Original 20 Standalone Runtime Agents
  * These are the individual agents that were later fused into 5 Meta-Agents.
- * Priced from Free → $79. Perpetual license, sealed runtime.
+ * Priced from Free → $79. Perpetual license, Convex Core™ artifact.
  */
 
 import {

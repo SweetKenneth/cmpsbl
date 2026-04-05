@@ -107,7 +107,7 @@ cmpsbl status</code></pre>
   <table>
     <thead><tr><th>CLI Command</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>cmpsbl activate &lt;slug&gt;</code></td><td>Activate a sealed runtime in your project</td></tr>
+      <tr><td><code>cmpsbl activate &lt;slug&gt;</code></td><td>Activate a Convex Core™ artifact in your project</td></tr>
       <tr><td><code>cmpsbl status</code></td><td>Show all active runtimes and their health</td></tr>
       <tr><td><code>cmpsbl test</code></td><td>Run the bundled test harness</td></tr>
       <tr><td><code>cmpsbl upgrade</code></td><td>Check for and apply runtime updates</td></tr>

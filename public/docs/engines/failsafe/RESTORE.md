@@ -272,4 +272,4 @@ Check `manifest.json` → `tables` to see exactly which tables were exported vs 
 ---
 
 © 2025–2026 CMPSBL®. All rights reserved.  
-FAILSAFE is a sealed runtime. Redistribution prohibited.
+FAILSAFE is a Convex Core™ artifact. Redistribution prohibited.

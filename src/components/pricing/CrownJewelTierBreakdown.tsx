@@ -229,7 +229,7 @@ export function CrownJewelTierBreakdown() {
                 SDK &amp; NPM Packages
               </div>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                Crown Jewels are embedded inside the <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl</a> sealed runtime. When you install <code className="text-[10px] bg-muted px-1 rounded">@cmpsbl/sdk</code> or <code className="text-[10px] bg-muted px-1 rounded">@cmpsbl/runtime</code>, your tier's capabilities activate automatically — no configuration needed.
+                Crown Jewels are embedded inside the <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl</a> Convex Core™ artifact. When you install <code className="text-[10px] bg-muted px-1 rounded">@cmpsbl/sdk</code> or <code className="text-[10px] bg-muted px-1 rounded">@cmpsbl/runtime</code>, your tier's capabilities activate automatically — no configuration needed.
               </p>
             </div>
             <div className="space-y-1.5">

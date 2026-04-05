@@ -1241,7 +1241,7 @@ export function generateTradeSecretsDoc(): string {
   <h3>Experience Crown Jewels</h3>
   <table>
     <tr><th>Secret</th><th>Protection Level</th></tr>
-    <tr><td>Composable Cognitives reasoning prompts</td><td>Black-boxed, sealed runtime</td></tr>
+    <tr><td>Composable Cognitives reasoning prompts</td><td>Black-boxed, Convex Core™ artifact</td></tr>
     <tr><td>SEBA/CORTEX recursive self-improvement</td><td>Permanently hidden from all tiers</td></tr>
     <tr><td>Memory graph embedding strategies</td><td>Service-role write only, authenticated read</td></tr>
     <tr><td>Foundry reactor source</td><td><strong style="color:var(--rose);">Trade secret — never exposed</strong></td></tr>

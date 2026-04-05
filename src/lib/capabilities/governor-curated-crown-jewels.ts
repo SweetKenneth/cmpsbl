@@ -142,7 +142,7 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
     'Detects user emotional state from interaction patterns — adjusts response tone, verbosity, and complexity in real-time. Prevents tone-deaf responses during frustration.',
     'Systems that read emotion outperform systems that read text.',
     [90, 88, 80, 75], 'architect', 'activate',
-    'UX quality differentiator — sealed runtime, calibration weights protected',
+    'UX quality differentiator — Convex Core™ artifact, calibration weights protected',
     false),
 
   // ── ENCODE ────────────────────────────────────────────────────────────────
@@ -183,7 +183,7 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
     'Generates hypothetical attack vectors by analyzing system topology, then pre-builds defenses before threats materialize. Offensive-informed defense.',
     'Offense informs defense. Anticipates attacks that haven\'t been invented yet.',
     [95, 90, 92, 75], 'architect', 'activate',
-    'Enterprise security differentiator — sealed runtime hides threat modeling',
+    'Enterprise security differentiator — Convex Core™ artifact hides threat modeling',
     false, true), // S-TIER: novelty 95
   jewel('gov-defense-behavioral-biometrics', 'DEFENSE',
     'Behavioral Biometric Engine',
@@ -493,7 +493,7 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
     '4-mechanism privacy (Laplacian/Gaussian/Exponential/Randomized Response) with epsilon budget tracking, per-query consumption, and synthetic data generation',
     'Mathematically proven privacy — not heuristic-based.',
     [92, 90, 92, 78], 'architect', 'activate',
-    'Enterprise privacy with mathematical guarantees — sealed runtime',
+    'Enterprise privacy with mathematical guarantees — Convex Core™ artifact',
     false),
   jewel('gov-phantom-pii-anonymizer', 'PHANTOM',
     'PII Detection & Anonymization Pipeline',
@@ -539,7 +539,7 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
     'EMA-weighted fidelity profile learning per format pair with CUSUM regression detection and automatic bridge degradation',
     'Translation that gets better with use. Self-improving fidelity.',
     [92, 88, 88, 82], 'architect', 'activate',
-    'Self-improving translation — sealed runtime, EMA weights hex-encoded',
+    'Self-improving translation — Convex Core™ artifact, EMA weights hex-encoded',
     false),
   jewel('gov-lingua-transitive-bridge-mesh', 'LINGUA',
     'Transitive Protocol Bridge Mesh',

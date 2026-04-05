@@ -40,7 +40,7 @@ const TIER_CONFIG = [
   {
     id: "APEX" as const,
     label: "APEX",
-    subtitle: "Supreme sealed runtimes",
+    subtitle: "Supreme Convex Core™ artifacts",
     price: "$39–$49",
     bg: "bg-destructive/10",
     text: "text-destructive",
@@ -260,7 +260,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>54 Engines — META to CORE Tier Arsenal | CMPSBL</title>
-        <meta name="description" content="Browse CMPSBL's 54 composable engines across 4 tiers: META compound super-engines like GODMIND, APEX and ELITE sealed runtimes, and CORE building blocks. 40 primitives, 40% agent bundle discount." />
+        <meta name="description" content="Browse CMPSBL's 54 composable engines across 4 tiers: META compound super-engines like GODMIND, APEX and ELITE Convex Core™ artifacts, and CORE building blocks. 40 primitives, 40% agent bundle discount." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -331,7 +331,7 @@ export default function Engines() {
               </div>
 
               <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-                {ENGINES.length} sealed runtimes · 40% off bundled with agent
+                {ENGINES.length} Convex Core™ artifacts · 40% off bundled with agent
               </p>
             </motion.div>
           </div>
@@ -475,7 +475,7 @@ export default function Engines() {
               <div className="inline-flex flex-col items-center gap-3 p-5 sm:p-8 rounded-2xl border border-border/40 bg-card/50 glass-edge">
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-lg">
                   Every license includes a numbered Ownership Certificate, full documentation,
-                  and lifetime access to the sealed runtime binary. 3 engines are completely free.
+                  and lifetime access to the Convex Core™ artifact binary. 3 engines are completely free.
                 </p>
                 {/* Tier legend */}
                 <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
@@ -501,7 +501,7 @@ export default function Engines() {
         <RelatedCapabilities />
         <PageSEOBlock path="/engines" title="54 Composable Engines" faq={[
           { question: "What are CMPSBL engines?", answer: "Engines are sealed cognitive runtimes within the CMPSBL substrate. 54 engines across 4 tiers (META, APEX, ELITE, CORE) handle specific AI workloads from reasoning to code generation." },
-          { question: "How do engine tiers work?", answer: "Engines are organized into META (compound super-engines), APEX (flagship sealed runtimes), ELITE (professional-grade engines), and CORE (essential building blocks). Higher tiers unlock more advanced capabilities." },
+          { question: "How do engine tiers work?", answer: "Engines are organized into META (compound super-engines), APEX (flagship Convex Core™ artifacts), ELITE (professional-grade engines), and CORE (essential building blocks). Higher tiers unlock more advanced capabilities." },
           { question: "Can I use engines without a paid plan?", answer: "Yes. The free Builder tier includes 3 memory slots and access to baseline engine capabilities. Premium engine tiers unlock with Studio, Creator, and Architect plans." },
         ]} />
         <EnhancedFooter />

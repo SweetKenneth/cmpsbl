@@ -982,7 +982,7 @@ function AgentsSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Multi-Agent Orchestration</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Create and coordinate AI agents using five built-in orchestration patterns. Each agent has its own
-          persistent memory, continuous learning, and sealed runtime environment.
+          persistent memory, continuous learning, and Convex Core™ artifact environment.
         </p>
       </div>
 
