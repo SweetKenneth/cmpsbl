@@ -596,7 +596,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         bullets: [
           "File trademark registrations for CMPSBL®, Ascension™, SEBA™, Memory Stream™, and DREAM Engine™",
           "Copyright registration for the full substrate codebase (200,000+ lines)",
-          "Provisional patent filings on core innovations: CJPI scoring algorithm, hex-encoded black-box export method, 7-gate evolution pipeline",
+          "Provisional patent filed: U.S. App. No. 64/029,678 — Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification (filed April 4, 2026)",
           "Trade secret documentation and NDA framework for future hires and partners",
         ],
       },
