@@ -1050,7 +1050,7 @@ const result = await fetch(GATEWAY, {
             { label: "RIPPLE Orchestrator", desc: "Internal event bus for coordination between agents" },
             { label: "Version Minting", desc: "Purchase an agent and receive a unique snapshot of its learned state" },
             { label: "DECODE Channel", desc: "Natural language interface for direct agent interaction" },
-            { label: "Sealed Runtime", desc: "Black-box execution — agent internals are tamper-proof" },
+            { label: "Convex Core™ Sealed Artifact", desc: "Black-box execution — agent internals are tamper-proof" },
           ].map(f => (
             <div key={f.label} className="p-3 rounded-xl border border-border/50 bg-card/30">
               <h4 className="font-semibold text-xs mb-1">{f.label}</h4>

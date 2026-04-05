@@ -40,7 +40,7 @@ export function generatePersistentMemoryAdapter(): string {
 import { mkdirSync, readFileSync, writeFileSync, readdirSync, existsSync, unlinkSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 import { gzipSync, gunzipSync } from 'zlib';
-import type { StorageAdapter } from './standalone-runtime';
+import type { StorageAdapter } from './convex-core';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — CONFIGURATION

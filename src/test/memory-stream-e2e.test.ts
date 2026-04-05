@@ -24,8 +24,8 @@ import {
   createPipelineComposer,
   createSaga,
   type CJPIScoreBreakdown,
-  type StandaloneRuntime,
-} from '@/lib/export/standalone-runtime';
+  type ConvexCoreLayer,
+} from '@/lib/export/convex-core';
 
 // Standalone discovery engine
 import {
@@ -362,7 +362,7 @@ describe('§9 — Saga Orchestrator', () => {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 describe('§10 — Standalone Discovery Engine', () => {
-  let runtime: StandaloneRuntime;
+  let runtime: ConvexCoreLayer;
 
   beforeEach(() => { runtime = createRuntime(); });
 

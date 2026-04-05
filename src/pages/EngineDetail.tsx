@@ -256,7 +256,7 @@ export default function EngineDetail() {
   return (
     <>
       <Helmet>
-        <title>{`${engine.codename} Engine — Sealed Runtime | CMPSBL`}</title>
+        <title>{`${engine.codename} Engine — Convex Core™ Sealed Artifact | CMPSBL`}</title>
         <meta name="description" content={engine.briefing} />
         <link rel="canonical" href={`https://cmpsbl.com/engines/${engine.slug}`} />
         <script type="application/ld+json">
@@ -325,7 +325,7 @@ export default function EngineDetail() {
                 { label: "VERSION", value: `v${engine.version || '1.0.0'}` },
                 { label: "CLASSIFICATION", value: engine.threatLevel, accent: true },
                 { label: "CLEARANCE REQUIRED", value: engine.clearance },
-                { label: "ARTIFACT TYPE", value: "Sealed Runtime Binary" },
+                { label: "ARTIFACT TYPE", value: "Convex Core™ Sealed Artifact Binary" },
                 { label: "EDITION", value: engine.edition },
               ].map(item => (
                 <div key={item.label} className="flex justify-between items-center">

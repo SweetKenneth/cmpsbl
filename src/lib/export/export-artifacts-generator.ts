@@ -73,7 +73,7 @@ function generateQuickstart(input: ExportArtifactsInput): string {
  * © CMPSBL® · PromptFluid™
  */
 
-import { init, createPipeline } from './_runtime/standalone-runtime';
+import { init, createPipeline } from './_runtime/convex-core';
 
 async function main() {
   console.log('');
@@ -83,7 +83,7 @@ async function main() {
   console.log('');
 
   // Step 1: Initialize (offline — no network needed)
-  console.log('  [1/4] Initializing Sealed Runtime™...');
+  console.log('  [1/4] Initializing Convex Core™ Sealed Artifact...');
   const instance = init({ offline: true });
   console.log(\`        Mode: \${instance.mode}\`);
   console.log(\`        Version: \${instance.version}\`);
@@ -222,7 +222,7 @@ All notable changes to this export are documented here.
 - **Artifacts:** ${input.artifactCount ?? 1}
 
 ### What's Included
-- Sealed Runtime™ v1.x.x (standalone, offline-capable)
+- Convex Core™ Sealed Artifact v1.x.x (standalone, offline-capable)
 - Full primitive chain executor
 - Integration guide with framework examples
 - Pre-built test suite
@@ -250,7 +250,7 @@ reflect the new state. Keep your previous CHANGELOG.md to track evolution.
 // ─── 5. Error Codes ─────────────────────────────────────────────────────────
 
 function generateErrorCodes(): string {
-  return `# Error Code Reference — CMPSBL® Sealed Runtime™
+  return `# Error Code Reference — CMPSBL® Convex Core™ Sealed Artifact
 
 When the runtime encounters an issue, it throws errors with specific codes.
 Use this reference to diagnose and resolve them.
@@ -286,7 +286,7 @@ Use this reference to diagnose and resolve them.
 
 | Code | Message | Cause | Fix |
 |------|---------|-------|-----|
-| \`CMPSBL_E030\` | Bridge connection refused | Bridge microservice not running | Start: \`npx tsx _runtime/standalone-runtime.ts --serve\` |
+| \`CMPSBL_E030\` | Bridge connection refused | Bridge microservice not running | Start: \`npx tsx _runtime/convex-core.ts --serve\` |
 | \`CMPSBL_E031\` | Bridge timeout | Microservice too slow | Check Node.js process health |
 | \`CMPSBL_E032\` | Subprocess failed | \`npx tsx\` not available | Install: \`npm install -g tsx\` |
 
@@ -321,7 +321,7 @@ function generateBundleInfo(input: ExportArtifactsInput): string {
 
 | Component | Approximate Size | Minified + Gzipped |
 |-----------|-----------------|-------------------|
-| \`standalone-runtime.ts\` | ~35 KB | ~8 KB |
+| \`convex-core.ts\` | ~35 KB | ~8 KB |
 | \`chain-executor.ts\` | ~25 KB | ~6 KB |
 | \`discovery-engine.ts\` | ~15 KB | ~4 KB |
 | Your ${kindLabel.toLowerCase()} code | Varies | Varies |
@@ -338,7 +338,7 @@ function generateBundleInfo(input: ExportArtifactsInput): string {
 
 ## Tree-Shaking
 
-The Sealed Runtime is a single cohesive unit and **cannot be tree-shaken** —
+The Convex Core™ Sealed Artifact is a single cohesive unit and **cannot be tree-shaken** —
 all 40 primitives are required for deterministic scoring. However:
 
 - The runtime **lazy-loads** primitives on first use
@@ -349,13 +349,13 @@ all 40 primitives are required for deterministic scoring. However:
 
 \`\`\`typescript
 // Full pipeline (most common)
-import { init, createPipeline } from './_runtime/standalone-runtime';
+import { init, createPipeline } from './_runtime/convex-core';
 
 // Just the scoring engine (if you only need CJPI scores)
-import { computeScore } from './_runtime/standalone-runtime';
+import { computeScore } from './_runtime/convex-core';
 
 // Just the runtime mode checker
-import { getRuntimeMode, configureEndpoint } from './_runtime/standalone-runtime';
+import { getRuntimeMode, configureEndpoint } from './_runtime/convex-core';
 \`\`\`
 
 ## Build Tool Compatibility
@@ -389,7 +389,7 @@ If you decide to stop using this ${kindLabel.toLowerCase()}, here's how to clean
 Search your codebase for CMPSBL imports:
 
 \`\`\`bash
-grep -r "cmpsbl\\|@cmpsbl\\|standalone-runtime\\|createPipeline" ./src/ --include="*.ts" --include="*.tsx" --include="*.js"
+grep -r "cmpsbl\\|@cmpsbl\\|convex-core\\|createPipeline" ./src/ --include="*.ts" --include="*.tsx" --include="*.js"
 \`\`\`
 
 ## Step 2: Remove Imports and Usage
@@ -516,7 +516,7 @@ function generateArchitectureDiagram(input: ExportArtifactsInput): string {
 │                                                          │
 │   ┌──────────────┐     ┌───────────────────────────┐    │
 │   │  Your Code    │────→│  CMPSBL ${kindLabel.padEnd(17)}│    │
-│   │  (calls API)  │     │  (Sealed Runtime™)         │    │
+│   │  (calls API)  │     │  (Convex Core™ Sealed Artifact)         │    │
 │   └──────────────┘     └───────────────────────────┘    │
 │                                    │                      │
 │                                    ▼                      │
@@ -603,8 +603,8 @@ and internal. You paid for it (or received it free-tier) — it's yours to deplo
 
 ## Can I include this in an open-source project?
 **Yes, with conditions:**
-- The \`_runtime/\` directory (Sealed Runtime™) remains sealed and unmodified
-- You may NOT redistribute the Sealed Runtime as a standalone component
+- The \`_runtime/\` directory (Convex Core™ Sealed Artifact) remains sealed and unmodified
+- You may NOT redistribute the Convex Core™ Sealed Artifact as a standalone component
 - You may include it as part of your larger open-source application
 - Credit CMPSBL® in your project's acknowledgments
 
@@ -658,7 +658,7 @@ in production.
 app.get('/health/cmpsbl', async (req, res) => {
   const start = Date.now();
   try {
-    const { init, createPipeline } = await import('./_runtime/standalone-runtime');
+    const { init, createPipeline } = await import('./_runtime/convex-core');
     const instance = init({ offline: true });
     const pipeline = createPipeline(instance);
     const result = await pipeline.execute({ healthcheck: true });
@@ -754,7 +754,7 @@ Need help setting up monitoring? support@cmpsbl.com
 
 function generateDeclarationFile(_input: ExportArtifactsInput): string {
   return `/**
- * CMPSBL® Sealed Runtime™ — Type Declarations
+ * CMPSBL® Convex Core™ Sealed Artifact — Type Declarations
  * These types provide autocomplete and documentation for non-TypeScript users.
  * © CMPSBL® · PromptFluid™
  */
@@ -808,7 +808,7 @@ export interface Pipeline {
   formatReport(result: PipelineResult): string;
 }
 
-/** Initialize the Sealed Runtime */
+/** Initialize the Convex Core™ Sealed Artifact */
 export declare function init(options?: InitOptions): RuntimeInstance;
 
 /** Create an execution pipeline from an initialized runtime */
@@ -867,7 +867,7 @@ the crystallization threshold.`}
 
 ## Verifying the Discovery
 
-This discovery uses the same Sealed Runtime™ as all CMPSBL exports:
+This discovery uses the same Convex Core™ Sealed Artifact as all CMPSBL exports:
 
 \`\`\`bash
 # Verify integrity

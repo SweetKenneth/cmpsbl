@@ -1095,7 +1095,7 @@ file-backed storage engine that gives every agent cross-session memory out of th
 
 \`\`\`typescript
 import { createPersistentStorage } from './_runtime/persistent-memory';
-import { init } from './_runtime/standalone-runtime';
+import { init } from './_runtime/convex-core';
 
 const storage = createPersistentStorage({
   agentId: '${agentId}',

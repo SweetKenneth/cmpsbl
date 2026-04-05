@@ -1448,7 +1448,7 @@ export function generateVaultDoc(): string {
   <pre><code>cmpsbl-vault-export-{timestamp}/
 ├── manifest.json                    # Complete discovery data
 ├── _runtime/
-│   ├── standalone-runtime.ts        # CMPSBL® Convex Core™ Processing Layer (sealed)
+│   ├── convex-core.ts        # CMPSBL® Convex Core™ Processing Layer (sealed)
 │   └── README.md
 └── metadata.json                    # Export metadata + fingerprint</code></pre>
 

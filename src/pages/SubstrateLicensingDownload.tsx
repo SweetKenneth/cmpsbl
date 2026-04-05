@@ -234,7 +234,7 @@ export default function SubstrateLicensingDownload() {
             </div>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               {[
-                { icon: Shield, title: "Sealed Runtime", desc: "Full execution capability with zero source visibility — power without the blueprint." },
+                { icon: Shield, title: "Convex Core™ Sealed Artifact", desc: "Full execution capability with zero source visibility — power without the blueprint." },
                 { icon: Code, title: "Local Execution", desc: "Everything runs on your infrastructure. No internet dependency, no data leaves your servers." },
                 { icon: Lock, title: "IP Protection", desc: "No config exposure, no export, no cloning. Your competitive advantage stays sealed." },
               ].map((item, i) => {

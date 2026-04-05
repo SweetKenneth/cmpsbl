@@ -894,7 +894,7 @@ export function generateRefurbishedCode(
   const imports: string[] = [];
   const guards: string[] = [];
   // Strip any existing sealed-runtime footers from prior passes to prevent duplication
-  const cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Sealed Runtime ═══.*\n?/g, '\n').trimEnd();
+  const cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
   let transformedCode = cleanedSource;
 
   for (const p of selectedPrimitives) {
@@ -912,7 +912,7 @@ export function generateRefurbishedCode(
 
   const headerLines = [
     '═══════════════════════════════════════════════════════════',
-    'CMPSBL® Sealed Runtime™ — Refurbished Artifact',
+    'CMPSBL® Convex Core™ Sealed Artifact — Refurbished Artifact',
     `Language: ${detected} (Bridge Adapter)`,
     '═══════════════════════════════════════════════════════════',
     `Fingerprint: ${fingerprint}`,
@@ -980,7 +980,7 @@ export function generateRefurbishedCode(
     '',
     transformedCode,
     '',
-    adapter.comment('═══ End of CMPSBL® Sealed Runtime ═══'),
+    adapter.comment('═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══'),
   ].join('\n');
 }
 

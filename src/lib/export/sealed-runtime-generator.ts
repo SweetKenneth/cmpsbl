@@ -21,7 +21,7 @@
  */
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §1 — CONVEX CORE™ SEALED PROCESSING LAYER (replaces raw standalone-runtime.ts in exports)
+// §1 — CONVEX CORE™ SEALED PROCESSING LAYER (replaces raw convex-core.ts in exports)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateSealedRuntime(): string {
@@ -286,7 +286,7 @@ export function createLockManager() {
 // §12 — RUNTIME FACTORY
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export interface StandaloneRuntime {
+export interface ConvexCoreLayer {
   storage: StorageAdapter;
   graph: ReturnType<typeof createDependencyGraph>;
   pipelines: ReturnType<typeof createPipelineComposer>;
@@ -379,7 +379,7 @@ export async function executePrimitive(
   return { data: out, confidence_delta: 0.01, signal: name.toLowerCase() + '_fallback' };
 }
 
-export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
+export function createRuntime(storage?: StorageAdapter): ConvexCoreLayer {
   const s = storage ?? createMemoryStorage();
   return {
     storage: s, graph: createDependencyGraph(), pipelines: createPipelineComposer(),
@@ -411,7 +411,7 @@ export function generateSealedDiscoveryEngine(): string {
  * Unauthorized reverse engineering is prohibited.
  */
 
-import type { StandaloneRuntime, CJPIScoreBreakdown, DiscoveryCategory, CrystallizedTier, ErrorStrategy } from './standalone-runtime';
+import type { ConvexCoreLayer, CJPIScoreBreakdown, DiscoveryCategory, CrystallizedTier, ErrorStrategy } from './convex-core';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES (public)
@@ -483,7 +483,7 @@ export interface DiscoveryRunResult {
  * templates. Inject your own templates via DiscoveryConfig.injectedTemplates
  * or connect to the full CMPSBL® Substrate for autonomous discovery.
  */
-export function createDiscoveryEngine(runtime: StandaloneRuntime) {
+export function createDiscoveryEngine(runtime: ConvexCoreLayer) {
   const { storage, computeCJPI, autoAssignTier, computeSynergyMultiplier, computeStableId } = runtime;
 
   async function run(config: DiscoveryConfig): Promise<DiscoveryRunResult> {
@@ -677,7 +677,7 @@ export function generateSealedRuntimeReadme(): string {
     '',
     '## Included Components',
     '',
-     '- **standalone-runtime.ts** — Sealed Convex Core™: CJPI scoring, state machine, memory chain orchestration, network bridge',
+     '- **convex-core.ts** — Sealed Convex Core™: CJPI scoring, state machine, memory chain orchestration, network bridge',
      '- **chain-executor.ts** — Sealed Chain Executor: memory chain playback with labeled primitives (Organs, Layers, Engines, Agents)',
     '',
     '## NOT Included',

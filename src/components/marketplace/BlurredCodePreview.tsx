@@ -137,7 +137,7 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlac
             </div>
             <div className="space-y-2">
               <h4 className="text-lg font-bold text-white">
-                Sealed Runtime
+                Convex Core™ Sealed Artifact
               </h4>
               <p className="text-sm text-zinc-400 max-w-xs mx-auto">
                 This capability is delivered as a black-boxed runtime. Source code is permanently sealed to protect proprietary architecture.

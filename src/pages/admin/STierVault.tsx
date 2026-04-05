@@ -762,7 +762,7 @@ export default function STierVault() {
     if (discoveries.length === 0) return;
     const [JSZipMod, runtimeMod] = await Promise.all([
       import('jszip'),
-      import('@/lib/export/standalone-runtime?raw'),
+      import('@/lib/export/convex-core?raw'),
     ]);
     const JSZip = JSZipMod.default;
     const zip = new JSZip();
@@ -770,7 +770,7 @@ export default function STierVault() {
 
     // Include the sealed Convex Core™ only — Discovery Engine is substrate-only
     const coreFolder = root.folder('_runtime')!;
-    coreFolder.file('standalone-runtime.ts', (runtimeMod as any).default);
+    coreFolder.file('convex-core.ts', (runtimeMod as any).default);
     coreFolder.file('README.md', [
       '# CMPSBL® Convex Core™ Processing Layer — Sealed Distribution',
       '',
@@ -779,7 +779,7 @@ export default function STierVault() {
       '',
       '## Components',
       '',
-      '- **standalone-runtime.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
+      '- **convex-core.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
       '',
       '## ⚠️ Discovery Engine Not Included',
       '',

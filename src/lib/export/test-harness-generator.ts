@@ -486,7 +486,7 @@ CONDITIONS:
      entirely by you or any party other than CMPSBL®. The substrate origin
      must be acknowledged.
 
-RUNTIME LICENSE — The CMPSBL® Convex Core™ Processing Layer (standalone-runtime.ts)
+RUNTIME LICENSE — The CMPSBL® Convex Core™ Processing Layer (convex-core.ts)
 is licensed solely for use with software exported from the CMPSBL® Substrate.
 It may not be used, copied, or distributed for any other purpose. The Discovery
 Engine, Memory Stream, and Ascension Reactor are never distributed.

@@ -85,7 +85,7 @@ export function NpmPackagesGrid() {
 const HIGHLIGHTS = [
   { icon: Zap, title: "Intent Routing", desc: "DAG-based action plan sequencing across 40 primitives" },
   { icon: Layers, title: "Matrix Telemetry", desc: "Real-time primitive communication and health signals" },
-  { icon: Shield, title: "Sealed Runtime", desc: "Proprietary logic protection with bridge adapters" },
+  { icon: Shield, title: "Convex Core™ Sealed Artifact", desc: "Proprietary logic protection with bridge adapters" },
   { icon: Code, title: "24 Languages", desc: "Polyglot bridges — TypeScript core, any language client" },
 ];
 

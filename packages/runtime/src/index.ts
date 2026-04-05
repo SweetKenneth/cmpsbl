@@ -619,7 +619,86 @@ export function verifyRuntimeIntegrity(): IntegrityManifest {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// §9 — Runtime Factory
+// §9 — Convex Core™ Processing Layer (v3 API)
+// ═══════════════════════════════════════════════════════════════
+
+/** Dispatch matrix — pre-compiled primitive resolution table */
+export interface DispatchMatrix {
+  dt: readonly number[];
+  cm: readonly number[];
+  iv: number;
+  ep: number;
+  primitives: readonly string[];
+  integrity: number;
+}
+
+/** FNV-1a hash — deterministic, fast */
+function fnv1a(str: string): number {
+  let hash = 0x811C9DC5;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash = (hash * 0x01000193) >>> 0;
+  }
+  return hash;
+}
+
+/**
+ * Compile a dispatch matrix from primitive names and artifact fingerprint.
+ * This is the v3 Convex Core™ API — replaces createRuntime().
+ */
+export function compileDispatch(
+  primitives: string[],
+  fingerprint: string,
+): DispatchMatrix {
+  const base = fnv1a(fingerprint);
+  const iv = base & 0xFFFF;
+  const ep = (base >>> 16) & 0xFF;
+
+  const offsets = primitives.map((_, i) => fnv1a(`${fingerprint}:${i}`) & 0xFFFF);
+  const dt = Object.freeze(primitives.map((name, i) => ((fnv1a(name) ^ (offsets[i] ?? 0)) & 0xFFFF)));
+
+  const size = Math.max(primitives.length, 8);
+  const cmArr: number[] = [];
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < Math.min(size, 4); j++) {
+      cmArr.push(fnv1a(`${primitives[i % primitives.length]}:${primitives[j % primitives.length]}:${iv}`) & 0xFFF);
+    }
+  }
+  const cm = Object.freeze(cmArr);
+
+  // Compute integrity hash
+  const integrity = dt.reduce((acc, _, i) => {
+    const v = (dt[i % dt.length]! ^ iv) & 0xFFFF;
+    return (acc + ((cm[v % cm.length]! + acc) >> 2)) & 0xFFFFFF;
+  }, 0);
+
+  return { dt, cm, iv, ep, primitives: Object.freeze([...primitives]), integrity };
+}
+
+/** Resolve a dispatch path from the compiled matrix */
+export function resolve(matrix: DispatchMatrix, index: number, context = 0): number {
+  const v = (matrix.dt[index % matrix.dt.length]! ^ matrix.iv) & 0xFFFF;
+  return (matrix.cm[v % matrix.cm.length]! + context) >> 2;
+}
+
+/** Gate function — applies epoch threshold */
+export function gate(matrix: DispatchMatrix, stage: number, payload: Record<string, unknown>): Record<string, unknown> {
+  const seq = resolve(matrix, stage, Object.keys(payload).length);
+  if (seq < matrix.ep) return payload;
+  return { ...payload, _sealed: true, _seq: seq };
+}
+
+/** Verify dispatch matrix integrity */
+export function verifyMatrix(matrix: DispatchMatrix): boolean {
+  const computed = matrix.dt.reduce((acc, _, i) => {
+    const v = (matrix.dt[i % matrix.dt.length]! ^ matrix.iv) & 0xFFFF;
+    return (acc + ((matrix.cm[v % matrix.cm.length]! + acc) >> 2)) & 0xFFFFFF;
+  }, 0);
+  return computed === matrix.integrity;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// §9b — Legacy Compatibility (deprecated — will be removed in v4)
 // ═══════════════════════════════════════════════════════════════
 
 export interface ConvexCore {
@@ -644,6 +723,7 @@ export interface ConvexCore {
   version: string;
 }
 
+/** @deprecated Use compileDispatch() + resolve() instead. Compatibility layer — will be removed in v4. */
 export function createRuntime(options?: { autoRegister?: boolean }): ConvexCore {
   const shouldRegister = options?.autoRegister !== false;
 
@@ -670,7 +750,7 @@ export function createRuntime(options?: { autoRegister?: boolean }): ConvexCore 
     importCircuitBreakerState,
     getTelemetryBuffer,
     configureCircuitBreakers,
-    version: '2.1.0',
+    version: '3.0.0',
   };
 }
 

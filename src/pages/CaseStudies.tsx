@@ -693,7 +693,7 @@ export default function CaseStudies() {
               </p>
 
               <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                All code is a candidate for Ascension. When code is done being written, Ascension hardens it, improves it, and delivers it as a Sealed Runtime — with full provenance, zero dependency on us, and domain-specific intelligence that no linter, formatter, or AI copilot can replicate.
+                All code is a candidate for Ascension. When code is done being written, Ascension hardens it, improves it, and delivers it as a Convex Core™ Sealed Artifact — with full provenance, zero dependency on us, and domain-specific intelligence that no linter, formatter, or AI copilot can replicate.
               </p>
             </div>
 
@@ -729,13 +729,13 @@ export default function CaseStudies() {
                   <strong className="text-foreground">1. Every codebase has structural vulnerabilities.</strong> IBM's quantum transpiler, Rapid7's pen test engine, Hugging Face's tokenizer core — maintained by world-class engineers, and Ascension still found critical issues in every one. Not bugs. Structural architectural weaknesses that static analysis, AI copilots, and code review miss entirely.
                 </p>
                 <p>
-                  <strong className="text-foreground">2. Domain-specific hardening changes everything.</strong> The same OpenAI agent file received four completely different Sealed Runtimes from four different verticals — CYBER added forensic audit trails, ROBOTICS injected motion planning, QUANTUM applied state isolation. Generic tools produce generic results. Ascension produces <em>specialized cognitive infrastructure</em>.
+                  <strong className="text-foreground">2. Domain-specific hardening changes everything.</strong> The same OpenAI agent file received four completely different Convex Core™ Sealed Artifacts from four different verticals — CYBER added forensic audit trails, ROBOTICS injected motion planning, QUANTUM applied state isolation. Generic tools produce generic results. Ascension produces <em>specialized cognitive infrastructure</em>.
                 </p>
                 <p>
                   <strong className="text-foreground">3. Full vertical substrates are buildable for any category on Earth.</strong> We built CMPSBL LLM™ with 16 domain-specific primitives targeting hallucination, prompt injection, bias, and alignment — then immediately ran HuggingFace's tokenizer core through it and found a critical error. Any industry can have its own Ascension vertical with its own Memory Stream, software factory, and specialized hardening.
                 </p>
                 <p>
-                  <strong className="text-foreground">4. This is the future of code.</strong> Ascension doesn't replace developers. It does what no developer can: systematically collide finished code against 40 Primitives to surface architectural weaknesses, inject domain-aware guards, and deliver a Sealed Runtime that survives platform loss. All in ~10 seconds. All purely algorithmic. All verifiable.
+                  <strong className="text-foreground">4. This is the future of code.</strong> Ascension doesn't replace developers. It does what no developer can: systematically collide finished code against 40 Primitives to surface architectural weaknesses, inject domain-aware guards, and deliver a Convex Core™ Sealed Artifact that survives platform loss. All in ~10 seconds. All purely algorithmic. All verifiable.
                 </p>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">
@@ -874,7 +874,7 @@ export default function CaseStudies() {
                     — hallucination, prompt injection, bias, context poisoning, and supply chain vulnerabilities. The expansion primitives aren't generic: LEXICON understands tokenizer security and adversarial input sanitization. SKEPTIC validates output consistency. TETHER manages context windows. SIEVE filters harmful content.
                   </p>
                   <p>
-                    This case study validates the entire vertical substrate architecture: we designed 16 LLM-specific primitives, activated 80 S-Tier Crown Jewels, wired it into the Ascension pipeline, and ran the most-downloaded tokenization library on Earth through it — all in a single session. The result is a <strong className="text-foreground">tokenizer that understands its own vulnerabilities</strong>, wrapped in an LLM-aware Sealed Runtime with provenance, portability, and domain-specific intelligence that no generic tool can provide.
+                    This case study validates the entire vertical substrate architecture: we designed 16 LLM-specific primitives, activated 80 S-Tier Crown Jewels, wired it into the Ascension pipeline, and ran the most-downloaded tokenization library on Earth through it — all in a single session. The result is a <strong className="text-foreground">tokenizer that understands its own vulnerabilities</strong>, wrapped in an LLM-aware Convex Core™ Sealed Artifact with provenance, portability, and domain-specific intelligence that no generic tool can provide.
                   </p>
                 </div>
               </div>
@@ -933,7 +933,7 @@ export default function CaseStudies() {
                   HuggingFace Tokenizers is downloaded <strong className="text-foreground">73+ million times per month</strong>. It is the tokenization layer beneath GPT, BERT, LLaMA, Mistral, and essentially every transformer model in the world. Despite being maintained by one of the most respected AI companies on Earth, the core entry point had a <strong className="text-destructive">critical vulnerability</strong> — zero error handling — that Ascension's diagnostic squad identified in seconds.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  CMPSBL LLM™ then applied 20 primitives purpose-built for LLM infrastructure. LEXICON hardened the tokenizer against adversarial inputs. SKEPTIC added fact-checking patterns. HERALD monitors for output drift. TRIBUNAL validates cross-reference consistency. The result: the library that every LLM depends on is now wrapped in an <strong className="text-foreground">LLM-aware Sealed Runtime</strong> — a tokenizer that has been hardened by a substrate that understands tokenizer-specific attack surfaces. Processed in ~10 seconds with zero AI.
+                  CMPSBL LLM™ then applied 20 primitives purpose-built for LLM infrastructure. LEXICON hardened the tokenizer against adversarial inputs. SKEPTIC added fact-checking patterns. HERALD monitors for output drift. TRIBUNAL validates cross-reference consistency. The result: the library that every LLM depends on is now wrapped in an <strong className="text-foreground">LLM-aware Convex Core™ Sealed Artifact</strong> — a tokenizer that has been hardened by a substrate that understands tokenizer-specific attack surfaces. Processed in ~10 seconds with zero AI.
                 </p>
               </div>
 
@@ -1139,7 +1139,7 @@ export default function CaseStudies() {
               <div className="bg-primary/[0.04] border border-primary/15 rounded-xl p-5">
                 <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  This 283-line Python file — used in production autonomous navigation worldwide — was analyzed, classified, registered as artifact #41, collided against all 40 Primitives, scored CJPI 100 (Apex tier), and delivered as a Sealed Runtime in <strong className="text-foreground">approximately 10 seconds</strong>. No AI was used at any stage of the Ascension pipeline.
+                  This 283-line Python file — used in production autonomous navigation worldwide — was analyzed, classified, registered as artifact #41, collided against all 40 Primitives, scored CJPI 100 (Apex tier), and delivered as a Convex Core™ Sealed Artifact in <strong className="text-foreground">approximately 10 seconds</strong>. No AI was used at any stage of the Ascension pipeline.
                 </p>
               </div>
 
@@ -1409,7 +1409,7 @@ export default function CaseStudies() {
               <div className="bg-violet-500/[0.04] border border-violet-500/15 rounded-xl p-5">
                 <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  IBM's ConsolidateBlocks runs on every Qiskit circuit compiled at <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level≥2</code>. Despite being authored by IBM Research, Ascension found <strong className="text-foreground">3 actionable vulnerabilities</strong> and wrapped it with quantum-physically aware primitives like CRYOGEN, FERMION, and BOSON — creating a <strong className="text-foreground">quantum-aware Sealed Runtime</strong> in ~10 seconds with zero AI.
+                  IBM's ConsolidateBlocks runs on every Qiskit circuit compiled at <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level≥2</code>. Despite being authored by IBM Research, Ascension found <strong className="text-foreground">3 actionable vulnerabilities</strong> and wrapped it with quantum-physically aware primitives like CRYOGEN, FERMION, and BOSON — creating a <strong className="text-foreground">quantum-aware Convex Core™ Sealed Artifact</strong> in ~10 seconds with zero AI.
                 </p>
               </div>
 
@@ -1545,7 +1545,7 @@ export default function CaseStudies() {
               <div className="bg-red-500/[0.04] border border-red-500/15 rounded-xl p-5">
                 <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Metasploit's TCP mixin — the foundation of every remote exploit in the world's most-used pen test framework — had <strong className="text-foreground">9 structural vulnerabilities</strong> including the highest cyclomatic complexity (49) of any case study. CMPSBL CYBER™ applied CIPHER, BASTION, SPECTER, and NOCTURNE to create a <strong className="text-foreground">security-hardened Sealed Runtime</strong> — the penetration testing tool secured by a security substrate.
+                  Metasploit's TCP mixin — the foundation of every remote exploit in the world's most-used pen test framework — had <strong className="text-foreground">9 structural vulnerabilities</strong> including the highest cyclomatic complexity (49) of any case study. CMPSBL CYBER™ applied CIPHER, BASTION, SPECTER, and NOCTURNE to create a <strong className="text-foreground">security-hardened Convex Core™ Sealed Artifact</strong> — the penetration testing tool secured by a security substrate.
                 </p>
               </div>
 
@@ -1729,7 +1729,7 @@ export default function CaseStudies() {
                   OpenSSL's TLS 1.3 encryption engine — the most audited security codebase on earth, reviewed by hundreds of world-class cryptographers — had a <strong className="text-foreground">structural dependency gap</strong> that Ascension identified in seconds. The timeout delegation pattern is an intentional design choice, but the substrate recognized that it creates a failure mode that the majority of real-world deployments do not handle. This is not a vulnerability in OpenSSL — it is a <strong className="text-foreground">structural gap between design intent and production reality</strong> that only structural analysis can surface.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Ascension™ wrapped the network-adjacent operations with BEACON health signals, circuit-breaker timeout enforcement, graceful shutdown handlers, and DEFENSE Layer shielding — the protections the file delegates to callers but callers rarely implement. Processed in ~10 seconds with zero AI. The code that secures 66% of the internet is now wrapped in a <strong className="text-foreground">Cyber-aware Sealed Runtime</strong>.
+                  Ascension™ wrapped the network-adjacent operations with BEACON health signals, circuit-breaker timeout enforcement, graceful shutdown handlers, and DEFENSE Layer shielding — the protections the file delegates to callers but callers rarely implement. Processed in ~10 seconds with zero AI. The code that secures 66% of the internet is now wrapped in a <strong className="text-foreground">Cyber-aware Convex Core™ Sealed Artifact</strong>.
                 </p>
               </div>
 
