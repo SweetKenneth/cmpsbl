@@ -142,7 +142,7 @@ console.log(getProcessingMode()); // 'offline'
 | Package | Purpose | Link |
 |---|---|---|
 | \`@cmpsbl/sdk\` | Full SDK — ${product.kind} activation | [npm](https://www.npmjs.com/package/@cmpsbl/sdk) |
-| \`@cmpsbl/runtime\` | Mini-Runtime™ standalone | [npm](https://www.npmjs.com/package/@cmpsbl/runtime) |
+| \`@cmpsbl/runtime\` | Convex Core™ processing layer | [npm](https://www.npmjs.com/package/@cmpsbl/runtime) |
 | \`@cmpsbl/cli\` | Terminal activation & status | [npm](https://www.npmjs.com/package/@cmpsbl/cli) |
 | \`@cmpsbl/types\` | TypeScript type definitions | [npm](https://www.npmjs.com/package/@cmpsbl/types) |
 
