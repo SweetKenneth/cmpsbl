@@ -96,7 +96,7 @@ export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGatePr
 
         <div className="text-center space-y-1">
           <h1 className="text-lg font-semibold text-foreground">Restricted Access</h1>
-          <p className="text-xs text-muted-foreground font-mono">Enter 6-digit PIN to continue</p>
+          <p className="text-xs text-muted-foreground font-mono">Enter {pinLength}-digit PIN to continue</p>
         </div>
 
         <div className="flex gap-2">
