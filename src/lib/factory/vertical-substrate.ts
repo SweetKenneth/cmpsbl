@@ -157,7 +157,7 @@ const SPINE_LAYERS: VerticalPrimitive[] = [
   { id: 'ECONOMY', name: 'ECONOMY', role: 'layer', description: 'Cost optimization and resource allocation', inherited: true, capabilities: ['cost_tracking', 'resource_allocation', 'roi_calculation'], weight: 0.015, classification: 'passive' },
   { id: 'SANDBOX', name: 'SANDBOX', role: 'layer', description: 'Isolated execution environment', inherited: true, capabilities: ['isolated_execution', 'safe_eval', 'containment'], weight: 0.010, classification: 'passive' },
   { id: 'INCLUSIVE', name: 'INCLUSIVE', role: 'layer', description: 'Accessibility and adaptation', inherited: true, capabilities: ['a11y_enforcement', 'adaptive_interface', 'universal_design'], weight: 0.010, classification: 'passive' },
-  { id: 'MEDIC', name: 'MEDIC', role: 'layer', description: 'Diagnostic and recovery', inherited: true, capabilities: ['health_diagnostic', 'recovery_protocol', 'system_triage'], weight: 0.010, classification: 'hybrid' },
+  { id: 'MEDIC', name: 'MEDIC', role: 'layer', description: 'Diagnostic triage and autonomous repair assessment', inherited: true, capabilities: ['health_diagnostic', 'recovery_protocol', 'system_triage', 'severity_assessment', 'repair_planning', 'damage_analysis'], weight: 0.015, classification: 'hybrid' },
 ];
 
 /**

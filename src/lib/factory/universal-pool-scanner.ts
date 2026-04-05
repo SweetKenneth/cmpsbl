@@ -225,15 +225,16 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
   // primitives — they get a structural bonus because they provide the
   // core infrastructure that makes expansion primitives effective.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
-  const structuralBonus = isSpine ? 0.12 : 0;
+  const structuralBonus = isSpine ? 0.15 : 0;
 
   // Composite scoring — spine-aware
-  // Signal affinity (30%) + capability match (25%) + breadth (15%) + weight (15%) + structural (15%)
+  // Signal affinity (35%) + capability match (20%) + breadth (10%) + weight (15%) + structural (20%)
+  // Higher signal weight rewards genuine keyword alignment over broad capability lists
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.30 +
-    capRatio * 0.25 +
-    breadthScore * 0.15 +
+    signalAffinity * 0.35 +
+    capRatio * 0.20 +
+    breadthScore * 0.10 +
     weightFactor * 0.15 +
     structuralBonus;
 
