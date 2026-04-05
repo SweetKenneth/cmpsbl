@@ -119,7 +119,7 @@ cmpsbl status
 
 ## Network Modes
 
-The embedded Mini-Runtime™ is **network-aware**:
+The embedded Convex Core™ processing layer is **network-aware**:
 
 | Mode | Description |
 |---|---|
@@ -128,11 +128,11 @@ The embedded Mini-Runtime™ is **network-aware**:
 | **Offline** | Fully standalone — zero network dependency |
 
 \`\`\`typescript
-import { configureEndpoint, getRuntimeMode } from './_runtime/standalone-runtime';
+import { configureEndpoint, getProcessingMode } from './_runtime/convex-core';
 
 // Force offline mode (fully standalone)
 configureEndpoint(null);
-console.log(getRuntimeMode()); // 'offline'
+console.log(getProcessingMode()); // 'offline'
 \`\`\`
 
 ---
