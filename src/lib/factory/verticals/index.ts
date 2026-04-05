@@ -119,6 +119,19 @@ export {
   type AgencyDiscovery,
   type AgencySeedResult,
 } from './agency-seed';
+
+export {
+  seedMediaDiscoveries,
+  getMediaSeedResult,
+  getMediaSeedSummary,
+  getMediaVault,
+  getMediaVaultCount,
+  getMediaMemoryStreamPool,
+  getMediaMemoryStreamCount,
+  resetMediaSeed,
+  type MediaDiscovery,
+  type MediaSeedResult,
+} from './media-seed';
 export {
   getATierVault,
   getATierByVertical,
