@@ -48,6 +48,7 @@ export const DOMAIN_CONFIG = {
   /** Special-purpose subdomains (not full substrates) */
   services: {
     marketplace: 'marketplace.cmpsbl.com',
+    control: 'control.cmpsbl.com',
   },
 } as const;
 
@@ -140,4 +141,14 @@ export function isMarketplaceDomain(): boolean {
   const hostname = window.location.hostname.toLowerCase();
   return hostname === DOMAIN_CONFIG.services.marketplace
     || hostname === `www.${DOMAIN_CONFIG.services.marketplace}`;
+}
+
+/**
+ * Detect if current hostname is the control center subdomain
+ */
+export function isControlDomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname.toLowerCase();
+  return hostname === DOMAIN_CONFIG.services.control
+    || hostname === `www.${DOMAIN_CONFIG.services.control}`;
 }
