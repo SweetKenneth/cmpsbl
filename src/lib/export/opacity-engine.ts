@@ -65,9 +65,9 @@ export function generateCompiledPreamble(
 
   if (lang === 'go') {
     return [
-      `${c} ╔══ CMPSBL® Sealed Orchestration Matrix ══╗`,
-      `${c} ║ Auto-generated. Do not modify.            ║`,
-      `${c} ╚══════════════════════════════════════════╝`,
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Do not modify.              ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
       '',
       `var _cmpsblDT = [...]uint16{${dispatchTable.join(', ')}}`,
       `var _cmpsblCM = [...]uint16{${collisionMatrix.join(', ')}}`,
