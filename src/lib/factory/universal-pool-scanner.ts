@@ -893,6 +893,7 @@ function scoreCandidate(
   signalDocFreq: Record<string, number>,
   poolSize: number,
   mode: AscensionMode = 'ascension',
+  structuralBoosts?: Map<string, number>,
 ): PoolCandidate {
   // Pass 1 — IDF-weighted signal hit density
   // Rare signals (appearing in few candidates) count more than common ones.
