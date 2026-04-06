@@ -5357,6 +5357,137 @@ export type Database = {
         }
         Relationships: []
       }
+      compiled_products: {
+        Row: {
+          cdm_cycle_id: string | null
+          coherence_score: number
+          combined_chain: string[]
+          compatibility_score: number
+          component_count: number
+          created_at: string
+          description: string | null
+          discovery_ids: string[]
+          estimated_value_cents: number
+          id: string
+          name: string
+          notes: string | null
+          rated_at: string | null
+          rating: number | null
+          status: string
+          updated_at: string
+          vertical: string
+        }
+        Insert: {
+          cdm_cycle_id?: string | null
+          coherence_score?: number
+          combined_chain?: string[]
+          compatibility_score?: number
+          component_count?: number
+          created_at?: string
+          description?: string | null
+          discovery_ids?: string[]
+          estimated_value_cents?: number
+          id?: string
+          name: string
+          notes?: string | null
+          rated_at?: string | null
+          rating?: number | null
+          status?: string
+          updated_at?: string
+          vertical?: string
+        }
+        Update: {
+          cdm_cycle_id?: string | null
+          coherence_score?: number
+          combined_chain?: string[]
+          compatibility_score?: number
+          component_count?: number
+          created_at?: string
+          description?: string | null
+          discovery_ids?: string[]
+          estimated_value_cents?: number
+          id?: string
+          name?: string
+          notes?: string | null
+          rated_at?: string | null
+          rating?: number | null
+          status?: string
+          updated_at?: string
+          vertical?: string
+        }
+        Relationships: []
+      }
+      compiler_feedback: {
+        Row: {
+          coherence_score: number
+          combined_chain: string[]
+          compatibility_score: number
+          compilation_id: string
+          created_at: string
+          discovery_ids: string[]
+          id: string
+          notes: string | null
+          rating: number
+        }
+        Insert: {
+          coherence_score?: number
+          combined_chain?: string[]
+          compatibility_score?: number
+          compilation_id: string
+          created_at?: string
+          discovery_ids?: string[]
+          id?: string
+          notes?: string | null
+          rating: number
+        }
+        Update: {
+          coherence_score?: number
+          combined_chain?: string[]
+          compatibility_score?: number
+          compilation_id?: string
+          created_at?: string
+          discovery_ids?: string[]
+          id?: string
+          notes?: string | null
+          rating?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compiler_feedback_compilation_id_fkey"
+            columns: ["compilation_id"]
+            isOneToOne: false
+            referencedRelation: "compiled_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      compiler_weights: {
+        Row: {
+          id: string
+          last_updated: string
+          negative_signals: number
+          positive_signals: number
+          primitive_pair: string
+          weight: number
+        }
+        Insert: {
+          id?: string
+          last_updated?: string
+          negative_signals?: number
+          positive_signals?: number
+          primitive_pair: string
+          weight?: number
+        }
+        Update: {
+          id?: string
+          last_updated?: string
+          negative_signals?: number
+          positive_signals?: number
+          primitive_pair?: string
+          weight?: number
+        }
+        Relationships: []
+      }
       control_plane_state: {
         Row: {
           created_at: string
