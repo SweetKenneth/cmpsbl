@@ -6546,12 +6546,14 @@ export type Database = {
           cjpi_breakdown: Json | null
           components: Json
           created_at: string
+          crown_jewel_capabilities: Json | null
           description: string | null
           discovered_by: string | null
           discovery_count: number | null
           engine_candidate: boolean | null
           error_strategy: string | null
           id: string
+          is_crown_jewel: boolean | null
           last_discovered_at: string | null
           max_execution_ms: number | null
           module_chain: string[]
@@ -6561,8 +6563,10 @@ export type Database = {
           provenance: string | null
           rationale: string | null
           run_id: string
+          status: string | null
           synergy_multiplier: number | null
           tier: string | null
+          vertical: string | null
           written_to_registry: boolean | null
         }
         Insert: {
@@ -6571,12 +6575,14 @@ export type Database = {
           cjpi_breakdown?: Json | null
           components?: Json
           created_at?: string
+          crown_jewel_capabilities?: Json | null
           description?: string | null
           discovered_by?: string | null
           discovery_count?: number | null
           engine_candidate?: boolean | null
           error_strategy?: string | null
           id: string
+          is_crown_jewel?: boolean | null
           last_discovered_at?: string | null
           max_execution_ms?: number | null
           module_chain?: string[]
@@ -6586,8 +6592,10 @@ export type Database = {
           provenance?: string | null
           rationale?: string | null
           run_id: string
+          status?: string | null
           synergy_multiplier?: number | null
           tier?: string | null
+          vertical?: string | null
           written_to_registry?: boolean | null
         }
         Update: {
@@ -6596,12 +6604,14 @@ export type Database = {
           cjpi_breakdown?: Json | null
           components?: Json
           created_at?: string
+          crown_jewel_capabilities?: Json | null
           description?: string | null
           discovered_by?: string | null
           discovery_count?: number | null
           engine_candidate?: boolean | null
           error_strategy?: string | null
           id?: string
+          is_crown_jewel?: boolean | null
           last_discovered_at?: string | null
           max_execution_ms?: number | null
           module_chain?: string[]
@@ -6611,8 +6621,10 @@ export type Database = {
           provenance?: string | null
           rationale?: string | null
           run_id?: string
+          status?: string | null
           synergy_multiplier?: number | null
           tier?: string | null
+          vertical?: string | null
           written_to_registry?: boolean | null
         }
         Relationships: [
