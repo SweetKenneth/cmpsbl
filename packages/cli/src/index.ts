@@ -1485,11 +1485,25 @@ async function cmdConfig(args: string[]) {
 }
 
 async function cmdWhoami() {
-  const session = getSafeFirstContactSession();
+  let session = getSafeFirstContactSession();
   const storedCredentials = loadStoredCredentials();
   const apiKey = resolveApiKey();
   const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
+
+  if (hasKey && (!session || !session.memoryBound || session.userId.startsWith('local-'))) {
+    try {
+      CLI_CONFIG.apiKey = apiKey;
+      session = await initFirstContact({
+        ...CLI_CONFIG,
+        apiKey,
+        autoDiscover: false,
+        silent: true,
+      });
+    } catch {
+      // Keep the existing session state if rebind fails
+    }
+  }
 
   // Resolve developer name: stored → API → git → fallback
   let developerName = storedCredentials?.displayName ?? null;
