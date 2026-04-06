@@ -19,6 +19,7 @@
 
 import { getAllVerticalJewels } from '@/crownjewels/expansion-jewels/index';
 import { getATierVault } from '@/crownjewels/a-tier/index';
+import { supabase } from '@/integrations/supabase/client';
 import type { STierEntry } from '@/crownjewels/types';
 import {
   getAvailableDiscoveries,
