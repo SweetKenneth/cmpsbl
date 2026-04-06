@@ -229,12 +229,7 @@ function scoreCandidate(
     idfWeightedTotal += idf;
     if (lowerCode.includes(signal)) {
       hits++;
-      // Code-frequency boost: signals that appear many times in the code
-      // are central to its purpose. Apply a mild log-boost to counteract
-      // IDF penalty for common-but-important signals like "safe" (83x).
-      const codeFreq = codeFreqMap[signal] ?? 0;
-      const freqBoost = codeFreq > 1 ? 1 + Math.log2(Math.min(codeFreq, 100)) / 10 : 1;
-      idfWeightedHits += idf * freqBoost;
+      idfWeightedHits += idf;
     }
   }
   const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
