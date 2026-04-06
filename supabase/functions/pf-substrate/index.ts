@@ -912,14 +912,16 @@ serve(async (req) => {
     // ═══ API Key → userId resolution ═══
     // CLI sends Authorization: Bearer <api_key> — resolve to userId via access_api_keys
     let resolvedUserId: string | undefined;
+    const engineKeyHeader = req.headers.get('x-engine-key')?.trim() || '';
     const authHeader = req.headers.get('authorization') || '';
     const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+    const credentialToken = engineKeyHeader || bearerToken;
     
-    if (bearerToken && !bearerToken.startsWith('eyJ')) {
+    if (credentialToken && !credentialToken.startsWith('eyJ')) {
       // Non-JWT token — treat as API key, hash and look up
       try {
         const enc = new TextEncoder();
-        const hb = await crypto.subtle.digest('SHA-256', enc.encode(bearerToken));
+        const hb = await crypto.subtle.digest('SHA-256', enc.encode(credentialToken));
         const apiKeyHash = Array.from(new Uint8Array(hb)).map(b => b.toString(16).padStart(2, '0')).join('');
         
         const { data: keyRecord } = await supabase

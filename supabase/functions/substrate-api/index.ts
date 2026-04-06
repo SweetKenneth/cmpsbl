@@ -31,7 +31,12 @@ async function proxyToPfSubstrate(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(authToken
+        ? {
+            Authorization: `Bearer ${authToken}`,
+            "X-Engine-Key": authToken,
+          }
+        : {}),
     },
     body: JSON.stringify(body),
   });
