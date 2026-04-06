@@ -532,20 +532,8 @@ export default function STierVault() {
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
   const [promoting, setPromoting] = useState(false);
 
-  // Live registry count from discoveries table (replaces hardcoded 233)
-  const [liveRegistryCount, setLiveRegistryCount] = useState<number>(entries.length);
-
-  const loadRegistryCount = useCallback(async () => {
-    try {
-      const { count, error } = await supabase
-        .from('discoveries')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'registry');
-      if (!error && count !== null) setLiveRegistryCount(count);
-    } catch {
-      // Fallback to static count
-    }
-  }, []);
+  // Live discovery counts from the discoveries table (replaces all hardcoded counts)
+  const { counts: liveCounts, refresh: refreshLiveCounts } = useDiscoveryCounts();
 
   // A-Tier vault state
   const [aTierVerticalFilter, setATierVerticalFilter] = useState<string | null>(null);
