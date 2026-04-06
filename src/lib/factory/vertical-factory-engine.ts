@@ -26,6 +26,12 @@ import { assembleVerticalPrimitives, validateVerticalConfig } from './vertical-s
 import { isPrimitiveNameTaken, registerDynamicName, type PrimitiveNameEntry } from './primitive-name-registry';
 import type { SpecialtyDomain } from './specialty-substrates';
 import type { STierEntry } from '@/crownjewels/types';
+import {
+  registerExpansionPrimitives,
+  registerDomainVocabulary,
+  registerActiveVertical,
+} from '@/lib/ascension/federated-scanner';
+import { runGenesisSeed, inferCategories, type GenesisSeedResult } from './genesis-seed-engine';
 
 /* ─────────────────────────────────────────────────
    INPUT SPECIFICATION
