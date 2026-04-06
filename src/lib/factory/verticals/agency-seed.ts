@@ -300,6 +300,24 @@ export function seedAgencyDiscoveries(): AgencySeedResult {
     completedAt: new Date().toISOString(),
   };
 
+  // Persist all discoveries to the unified database table (fire-and-forget)
+  const seedRunId = `ag-seed-${Date.now().toString(36)}`;
+  ensureSeedRun(seedRunId, 'agency', TOTAL_DISCOVERIES).then(() => {
+    const rows = discoveries.map(d => ({
+      id: d.id,
+      name: d.name,
+      description: d.description,
+      cjpiScore: d.cjpiScore,
+      primitiveChain: d.primitiveChain,
+      tier: d.tier,
+      route: d.route,
+      category: d.category,
+      vertical: 'agency',
+      runId: seedRunId,
+    }));
+    persistSeedDiscoveries(rows, 'agency', seedRunId);
+  });
+
   return _seedResult;
 }
 
