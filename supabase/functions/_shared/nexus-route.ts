@@ -82,6 +82,35 @@ interface NexusStreamOptions {
   priority?: string;
 }
 
+function buildConversationPrompt(
+  messages: Array<{ role: string; content: string }>,
+  fallbackPrompt: string,
+): string {
+  const conversationalTurns = messages
+    .filter((message) => message.role !== "system")
+    .filter((message) => typeof message.content === "string" && message.content.trim().length > 0);
+
+  if (conversationalTurns.length === 0) return fallbackPrompt;
+
+  const transcript = conversationalTurns
+    .slice(-24)
+    .map((message) => {
+      const speaker = message.role === "assistant"
+        ? "Assistant"
+        : message.role === "user"
+          ? "User"
+          : "Context";
+      return `${speaker}: ${message.content}`;
+    })
+    .join("\n\n");
+
+  return [
+    "Continue this ongoing conversation without restarting or losing context.",
+    "Use the transcript below as authoritative context for earlier turns, then reply with the next assistant message only.",
+    transcript,
+  ].join("\n\n");
+}
+
 export function nexusStreamRoute(
   _prompt: string,
   options: NexusStreamOptions = {},
@@ -93,15 +122,13 @@ export function nexusStreamRoute(
     temperature = 0.7,
   } = options;
 
-  // Extract system prompt from messages array
   const systemMsg = messages.find(m => m.role === "system");
-  const userMessages = messages.filter(m => m.role !== "system");
-  const lastUserMsg = userMessages[userMessages.length - 1]?.content || _prompt;
+  const conversationPrompt = buildConversationPrompt(messages, _prompt);
 
   return new ReadableStream({
     async start(controller) {
       try {
-        const result = await nexusRoute(lastUserMsg, {
+        const result = await nexusRoute(conversationPrompt, {
           systemPrompt: systemMsg?.content || "You are an expert AI assistant.",
           taskType,
           maxTokens,
