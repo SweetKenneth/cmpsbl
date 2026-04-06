@@ -95,6 +95,20 @@ export interface UniversalScanResult {
   confidenceBands: BandedResult[];
   /** Band summary counts */
   bandDistribution: Record<ConfidenceBand, number>;
+  /** Detected ecosystem of the scanned code */
+  ecosystem: string;
+  /** Semantic drift detections (cross-language synonym matches) */
+  driftDetections: DriftDetection[];
+  /** Interface contract extracted from the code */
+  contract: InterfaceContract;
+  /** Environment profile of the target codebase */
+  environmentProfile: EnvironmentProfile;
+  /** 4-axis compatibility reports per selected primitive */
+  compatibilityReports: CompatibilityReport[];
+  /** Merge simulation results */
+  mergeReport: MergeReport;
+  /** Ecosystem registry suggestions for identified gaps */
+  registrySuggestions: RegistrySuggestion[];
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
