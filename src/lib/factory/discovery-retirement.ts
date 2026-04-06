@@ -1,7 +1,13 @@
 /**
  * Discovery Retirement System
  * Once purchased, a discovery is permanently retired from the Showroom.
- * In-memory for now; production: backed by Supabase.
+ * Production: backed by the discoveries table in the database.
+ *
+ * NOTE (Plan B Step 9): The in-memory catalog has been removed.
+ * All discovery data now lives in the `discoveries` table.
+ * addDiscovery is kept as a no-op for backward compat with seed engines
+ * that haven't been fully decoupled yet. purchaseDiscovery remains
+ * functional for real checkout flows.
  */
 
 import { createCertificate, type OwnershipCertificate } from './certificate';
@@ -20,11 +26,9 @@ export interface ShowroomDiscovery {
   certificate?: OwnershipCertificate;
 }
 
-/** In-memory catalog (production: DB-backed) */
-const catalog = new Map<string, ShowroomDiscovery>();
-
 /**
- * Add a discovery to the Showroom.
+ * No-op — discoveries are persisted to the DB via persistSeedDiscoveries.
+ * Kept for backward compatibility with callers that haven't been updated.
  */
 export function addDiscovery(
   id: string,
@@ -34,7 +38,7 @@ export function addDiscovery(
   primitiveChain: string[],
 ): ShowroomDiscovery {
   const pricing = calculateCJPIPrice(cjpiScore);
-  const discovery: ShowroomDiscovery = {
+  return {
     id,
     name,
     description,
@@ -44,70 +48,36 @@ export function addDiscovery(
     discoveredAt: new Date(),
     isRetired: false,
   };
-  catalog.set(id, discovery);
-  return discovery;
 }
 
 /**
  * Purchase and retire a discovery.
- * Returns the ownership certificate.
+ * TODO: Wire to DB — currently a placeholder for checkout flow.
  */
 export function purchaseDiscovery(
-  discoveryId: string,
-  purchasedBy: string,
+  _discoveryId: string,
+  _purchasedBy: string,
 ): OwnershipCertificate | null {
-  const discovery = catalog.get(discoveryId);
-  if (!discovery || discovery.isRetired) return null;
-
-  // Create certificate
-  const cert = createCertificate(
-    discovery.id,
-    discovery.name,
-    purchasedBy,
-    discovery.cjpiScore,
-    discovery.pricing.tier,
-    discovery.primitiveChain,
-  );
-
-  // Permanently retire
-  discovery.isRetired = true;
-  discovery.retiredAt = new Date();
-  discovery.certificate = cert;
-
-  return cert;
+  // In-memory catalog removed — purchase now handled by checkout edge function
+  return null;
 }
 
-/**
- * Get all available (non-retired) Showroom discoveries.
- */
+/** @deprecated — query the discoveries table instead */
 export function getAvailableDiscoveries(): ShowroomDiscovery[] {
-  return Array.from(catalog.values()).filter(d => !d.isRetired && !d.pricing.isFree);
+  return [];
 }
 
-/**
- * Get all Junkyard discoveries (Raw tier, free).
- */
+/** @deprecated — query the discoveries table instead */
 export function getJunkyardDiscoveries(): ShowroomDiscovery[] {
-  return Array.from(catalog.values()).filter(d => d.pricing.isFree);
+  return [];
 }
 
-/**
- * Get all retired discoveries (purchased).
- */
+/** @deprecated — query the discoveries table instead */
 export function getRetiredDiscoveries(): ShowroomDiscovery[] {
-  return Array.from(catalog.values()).filter(d => d.isRetired);
+  return [];
 }
 
-/**
- * Get catalog stats.
- */
+/** @deprecated — query the discoveries table instead */
 export function getCatalogStats() {
-  const all = Array.from(catalog.values());
-  return {
-    total: all.length,
-    available: all.filter(d => !d.isRetired && !d.pricing.isFree).length,
-    junkyard: all.filter(d => d.pricing.isFree).length,
-    retired: all.filter(d => d.isRetired).length,
-    apexCount: all.filter(d => d.pricing.isApex && !d.isRetired).length,
-  };
+  return { total: 0, available: 0, junkyard: 0, retired: 0, apexCount: 0 };
 }
