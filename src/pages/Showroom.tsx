@@ -28,6 +28,7 @@ import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
 import { SHOWROOM_CATALOG, getShowroomPriceDisplay, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { supabase } from '@/integrations/supabase/client';
+import { useDiscoveryCounts } from '@/hooks/useDiscoveryCounts';
 import { toast } from 'sonner';
 
 // Category images
