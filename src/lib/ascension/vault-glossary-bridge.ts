@@ -63,6 +63,7 @@ export interface VaultBridgeResult {
     showroom: number;
     junkyard: number;
     retired: number;
+    dbDiscoveries: number;
   };
   /** Feedback stats after bridge run */
   feedbackStats: { totalSignals: number; uniquePrimitives: number };
