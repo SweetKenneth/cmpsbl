@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { IntentMeshGraph } from "@/components/substrate/IntentMeshGraph";
+import { useDiscoveryCounts } from "@/hooks/useDiscoveryCounts";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
