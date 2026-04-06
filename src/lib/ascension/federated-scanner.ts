@@ -430,7 +430,7 @@ export function getFederatedStats(): {
   const verticals: Record<string, VerticalScannerStats> = {};
   let totalExpansion = 0;
 
-  for (const verticalId of ACTIVE_VERTICAL_IDS) {
+  for (const verticalId of getAllActiveVerticalIds()) {
     const stats = getVerticalScanner(verticalId).getStats();
     verticals[verticalId] = stats;
     totalExpansion += stats.expansionSignals;
