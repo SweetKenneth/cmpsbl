@@ -1,12 +1,12 @@
 /**
  * Service Worker — CMPSBL Substrate
  * Item #25: Scan result caching for offline/slow connections
- * v7: Force fresh content on deploy
+ * v9: DECODE shared mesh memory fix — fingerprint lookup flow
  */
 
-const CACHE_NAME = 'cmpsbl-v8';
-const SCAN_CACHE = 'cmpsbl-scans-v8';
-const STATIC_CACHE = 'cmpsbl-static-v8';
+const CACHE_NAME = 'cmpsbl-v9';
+const SCAN_CACHE = 'cmpsbl-scans-v9';
+const STATIC_CACHE = 'cmpsbl-static-v9';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [
