@@ -222,7 +222,7 @@ class MeshAutoScheduler {
    * Runs the full reactor with auto-generated 2-12 node depth templates.
    * Feeds S-Tier Vault (95+ CJPI) and Memory Stream (all accepted).
    */
-  async runCdmReactorCycle(): Promise<{ accepted: number; sTierPromoted: number }> {
+  async runCdmReactorCycle(): Promise<{ accepted: number; sTierPromoted: number; scannerDiscoveries: number }> {
     try {
       // Get current user for reactor context — fall back to system user ID for autonomous CDM
       const { data: { user } } = await supabase.auth.getUser();
@@ -254,10 +254,87 @@ class MeshAutoScheduler {
       const sTierCount = result.discoveries.filter(d => d.cjpi >= 95).length;
       console.log(`[CDM] Reactor complete: ${result.acceptedCount} accepted, ${sTierCount} promoted to S-Tier Vault, all fed to Memory Stream`);
 
-      return { accepted: result.acceptedCount, sTierPromoted: sTierCount };
+      // ── Scanner pass: profile any framework files Ascension is processing ──
+      const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
+
+      return { accepted: result.acceptedCount, sTierPromoted: sTierCount, scannerDiscoveries };
     } catch (err) {
       console.warn('[CDM] Reactor cycle failed (non-fatal):', err);
-      return { accepted: 0, sTierPromoted: 0 };
+      return { accepted: 0, sTierPromoted: 0, scannerDiscoveries: 0 };
+    }
+  }
+
+  /**
+   * Fetch active Ascension nodes, extract their source files,
+   * run batchScanCapabilities(), and feed CJPI discoveries into the ledger.
+   */
+  private async runScannerOnAscensionNodes(userId: string): Promise<number> {
+    try {
+      // Fetch recently active/candidate nodes with source code
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase as any)
+        .from('artifact_registry')
+        .select('id, name, metadata')
+        .eq('category', 'proprietary-evolution')
+        .order('updated_at', { ascending: false })
+        .limit(20);
+
+      if (error || !data || data.length === 0) {
+        console.log('[CDM/Scanner] No Ascension nodes to scan');
+        return 0;
+      }
+
+      // Extract source files from node metadata
+      const filesToScan: Array<{ code: string; filename: string }> = [];
+      for (const row of data as Array<{ id: string; name: string; metadata: Record<string, unknown> }>) {
+        try {
+          const meta = migrateMetadata(row.metadata || {});
+          for (const sf of meta.identity.source_files) {
+            if (sf.content && sf.content.length >= 50) {
+              filesToScan.push({ code: sf.content, filename: sf.name });
+            }
+          }
+        } catch {
+          // Skip nodes with malformed metadata
+        }
+      }
+
+      if (filesToScan.length === 0) {
+        console.log('[CDM/Scanner] No source files found in Ascension nodes');
+        return 0;
+      }
+
+      console.log(`[CDM/Scanner] Scanning ${filesToScan.length} framework files from ${data.length} Ascension nodes`);
+
+      // Run batch capability scan
+      const scanResult = batchScanCapabilities(filesToScan);
+
+      // Feed capability and drift discoveries into the discovery ledger
+      let ledgerCount = 0;
+      for (const discovery of scanResult.aggregatedDiscoveries) {
+        if (discovery.discoveryType === 'gap') continue; // Gaps are informational, not ledger entries
+        if (discovery.cjpiScore < 30) continue; // Below minimum viable threshold
+
+        try {
+          addDiscovery(
+            `scanner-${discovery.archetypeId}-${Date.now()}`,
+            `Scanner: ${discovery.description}`,
+            `Capability detected by structural scanner during CDM cycle. Archetype: ${discovery.archetypeId}. Primitives: ${discovery.primitives.join(', ')}.`,
+            discovery.cjpiScore,
+            discovery.primitives,
+          );
+          routeDiscovery(discovery.cjpiScore);
+          ledgerCount++;
+        } catch {
+          // Non-fatal — individual discovery routing failure
+        }
+      }
+
+      console.log(`[CDM/Scanner] ${ledgerCount} discoveries fed to ledger (${scanResult.totalDurationMs}ms scan, ${scanResult.aggregatedDiscoveries.length} total)`);
+      return ledgerCount;
+    } catch (err) {
+      console.warn('[CDM/Scanner] Scanner pass failed (non-fatal):', err);
+      return 0;
     }
   }
 
