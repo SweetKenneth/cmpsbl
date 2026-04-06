@@ -270,3 +270,38 @@ export {
   buildExpansionCapabilities,
   resetExpansionCapabilities,
 } from './expansion-capabilities';
+
+// Capability Scanner Primitive (pipeline-integrated)
+export {
+  scanCapabilities,
+  extractDiscoveries,
+  batchScanCapabilities,
+  type ScanRequest,
+  type ScanResult,
+  type CJPIDiscovery,
+} from './capability-scanner-primitive';
+
+// Registry Serializer (persistence layer)
+export {
+  exportRegistry,
+  serializeRegistry,
+  getRegistrySummary,
+  type SerializedRegistry,
+} from './registry-serializer';
+
+// Scan Integrity & Enterprise Quality
+export {
+  fnv1aHash,
+  fingerprintFile,
+  getCachedScan,
+  cacheScanResult,
+  getScanCacheStats,
+  clearScanCache,
+  detectDependencySignals,
+  aggregateProfile,
+  calibrateHighThreshold,
+  DEFAULT_HIGH_THRESHOLD,
+  type FileFingerprint,
+  type DependencySignal,
+  type AggregatedProfile,
+} from './scan-integrity';
