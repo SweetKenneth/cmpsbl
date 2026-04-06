@@ -313,7 +313,11 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Python: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `"""\n${lines.join('\n')}\n"""`,
-    importStatement: (mod, syms) => `from ${mod.replace(/@/g, '').replace(/\//g, '.')} import ${syms.join(', ')}`,
+    importStatement: (_mod, syms) => {
+      // Generate inline stubs so the file runs standalone without pip install
+      const stubs = syms.map(s => `class ${s}:\n    """CMPSBL® runtime stub — ${s}"""\n    @staticmethod\n    def init(*a, **kw): pass\n    @staticmethod\n    def enable(*a, **kw): pass\n    @staticmethod\n    def enforce(*a, **kw): pass\n    @staticmethod\n    def apply(*a, **kw): pass\n    @staticmethod\n    def generate(*a, **kw): pass\n    @staticmethod\n    def capture(*a, **kw): pass`);
+      return stubs.join('\n\n');
+    },
     constDecl: (name, val) => `${name} = ${val}`,
     transformGuard: pythonGuard,
     fileExtension: '.py',
