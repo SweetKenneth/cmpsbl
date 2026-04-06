@@ -20,7 +20,7 @@ export interface DiscoveryCounts {
   total: number;
   /** Registry (Crown Jewels + promoted items, status = 'registry') */
   registry: number;
-  /** Showroom pool (status = 'showroom', not Crown Jewels) */
+  /** Showroom pool (status = 'showroom') */
   showroom: number;
   /** Junkyard (status = 'junkyard') */
   junkyard: number;
@@ -52,39 +52,41 @@ export interface LiveDiscoveryData {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// §2 — QUERY HELPERS
+// §2 — QUERY HELPER (avoids deep TS inference chains)
 // ═══════════════════════════════════════════════════════════════
 
-async function countWhere(
-  filters: Record<string, unknown>,
-  gte?: { col: string; val: number },
-  lte?: { col: string; val: number },
-): Promise<number> {
-  let query = supabase.from('discoveries').select('*', { count: 'exact', head: true });
-  for (const [key, val] of Object.entries(filters)) {
-    query = query.eq(key, val);
-  }
-  if (gte) query = query.gte(gte.col, gte.val);
-  if (lte) query = query.lte(lte.col, lte.val);
-  const { count, error } = await query;
-  if (error) return 0;
-  return count ?? 0;
+async function dbCount(rpcName: string, params: Record<string, unknown> = {}): Promise<number> {
+  // Use raw PostgREST count queries to avoid deep type chains
+  return 0; // Fallback — actual implementation below
 }
 
-async function countIn(
-  col: string,
-  values: string[],
-  extras?: Record<string, unknown>,
+/**
+ * Simple count using .select with head: true.
+ * We cast early to avoid TS depth explosion from chained .eq().
+ */
+async function simpleCount(
+  filters: Array<[string, unknown]>,
+  rangeFilters?: Array<['gte' | 'lte', string, number]>,
+  inFilters?: Array<[string, string[]]>,
 ): Promise<number> {
-  let query = supabase.from('discoveries').select('*', { count: 'exact', head: true }).in(col, values);
-  if (extras) {
-    for (const [key, val] of Object.entries(extras)) {
-      query = query.eq(key, val);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let q: any = supabase.from('discoveries').select('id', { count: 'exact', head: true });
+  for (const [col, val] of filters) {
+    q = q.eq(col, val);
+  }
+  if (rangeFilters) {
+    for (const [op, col, val] of rangeFilters) {
+      q = op === 'gte' ? q.gte(col, val) : q.lte(col, val);
     }
   }
-  const { count, error } = await query;
+  if (inFilters) {
+    for (const [col, vals] of inFilters) {
+      q = q.in(col, vals);
+    }
+  }
+  const { count, error } = await q;
   if (error) return 0;
-  return count ?? 0;
+  return (count as number) ?? 0;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -111,7 +113,6 @@ export function useDiscoveryCounts(): LiveDiscoveryData {
       setLoading(true);
       setError(null);
 
-      // Global counts — fire all in parallel
       const [
         total,
         registry,
@@ -122,40 +123,35 @@ export function useDiscoveryCounts(): LiveDiscoveryData {
         mutations,
         memoryStreamPool,
       ] = await Promise.all([
-        countWhere({}),
-        countWhere({ status: 'registry' }),
-        countWhere({ status: 'showroom' }),
-        countWhere({ status: 'junkyard' }),
-        countWhere({ is_crown_jewel: true }),
-        countWhere(
-          { status: 'registry' },
-          { col: 'cjpi', val: 85 },
-          { col: 'cjpi', val: 91 },
+        simpleCount([]),
+        simpleCount([['status', 'registry']]),
+        simpleCount([['status', 'showroom']]),
+        simpleCount([['status', 'junkyard']]),
+        simpleCount([['is_crown_jewel', true]]),
+        simpleCount(
+          [['status', 'registry']],
+          [['gte', 'cjpi', 85], ['lte', 'cjpi', 91]],
         ),
-        countWhere({}, { col: 'generation', val: 1 }),
-        countIn('status', ['showroom', 'discovered'], { is_crown_jewel: false }),
+        simpleCount([], [['gte', 'generation', 1]]),
+        simpleCount(
+          [['is_crown_jewel', false]],
+          undefined,
+          [['status', ['showroom', 'discovered']]],
+        ),
       ]);
 
       setCounts({ total, registry, showroom, junkyard, memoryStreamPool, crownJewels, aTier, mutations });
 
-      // Per-vertical counts — fire all in parallel
       const verticalResults = await Promise.all(
         ALL_VERTICALS.map(async (vertical) => {
           const [vTotal, vRegistry, vShowroom, vJunkyard, vCJ] = await Promise.all([
-            countWhere({ vertical }),
-            countWhere({ vertical, status: 'registry' }),
-            countWhere({ vertical, status: 'showroom' }),
-            countWhere({ vertical, status: 'junkyard' }),
-            countWhere({ vertical, is_crown_jewel: true }),
+            simpleCount([['vertical', vertical]]),
+            simpleCount([['vertical', vertical], ['status', 'registry']]),
+            simpleCount([['vertical', vertical], ['status', 'showroom']]),
+            simpleCount([['vertical', vertical], ['status', 'junkyard']]),
+            simpleCount([['vertical', vertical], ['is_crown_jewel', true]]),
           ]);
-          return {
-            vertical,
-            total: vTotal,
-            registry: vRegistry,
-            showroom: vShowroom,
-            junkyard: vJunkyard,
-            crownJewels: vCJ,
-          };
+          return { vertical, total: vTotal, registry: vRegistry, showroom: vShowroom, junkyard: vJunkyard, crownJewels: vCJ };
         }),
       );
 
@@ -167,9 +163,7 @@ export function useDiscoveryCounts(): LiveDiscoveryData {
     }
   }, []);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  useEffect(() => { refresh(); }, [refresh]);
 
   return { counts, verticals, loading, error, refresh };
 }
@@ -191,10 +185,10 @@ export function useVerticalCounts(vertical: string): {
   const refresh = useCallback(async () => {
     setLoading(true);
     const [total, crownJewels, showroom, junkyard] = await Promise.all([
-      countWhere({ vertical }),
-      countWhere({ vertical, is_crown_jewel: true }),
-      countWhere({ vertical, status: 'showroom' }),
-      countWhere({ vertical, status: 'junkyard' }),
+      simpleCount([['vertical', vertical]]),
+      simpleCount([['vertical', vertical], ['is_crown_jewel', true]]),
+      simpleCount([['vertical', vertical], ['status', 'showroom']]),
+      simpleCount([['vertical', vertical], ['status', 'junkyard']]),
     ]);
     setData({ total, crownJewels, showroom, junkyard });
     setLoading(false);
@@ -204,3 +198,6 @@ export function useVerticalCounts(vertical: string): {
 
   return { ...data, loading, refresh };
 }
+
+// Re-export for convenience in non-hook contexts
+export { simpleCount as queryDiscoveryCount };
