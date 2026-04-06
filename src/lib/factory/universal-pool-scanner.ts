@@ -50,6 +50,12 @@ import {
   type BandedResult,
   type ConfidenceBand,
 } from '../ascension/confidence-banding';
+import { detectEcosystem, detectDrift, type DriftDetection } from '../ascension/semantic-drift';
+import { extractContract, profileEnvironment, type InterfaceContract, type EnvironmentProfile } from '../ascension/contract-extractor';
+import { batchCompatibility, type CompatibilityReport } from '../ascension/compatibility-scoring';
+import { runMergeSimulation, type MergeReport } from '../ascension/merge-simulation';
+import { extractContext, recordConfirmedMatch } from '../ascension/feedback-loop';
+import { suggestForGaps, type RegistrySuggestion } from '../ascension/ecosystem-registry';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
