@@ -350,7 +350,7 @@ export interface CrossPollinationResult {
  * Call this during CDM cycles to ensure all verticals benefit
  * from the latest Spine discoveries.
  */
-export function runCrossPollinationCycle(): CrossPollinationResult {
+export async function runCrossPollinationCycle(): Promise<CrossPollinationResult> {
   const start = performance.now();
   let totalSpine = 0;
   let totalExpansion = 0;
@@ -358,7 +358,7 @@ export function runCrossPollinationCycle(): CrossPollinationResult {
 
   for (const verticalId of ACTIVE_VERTICAL_IDS) {
     const scanner = getVerticalScanner(verticalId);
-    const primeResult = scanner.prime();
+    const primeResult = await scanner.prime();
     const stats = scanner.getStats();
 
     perVertical[verticalId] = {
