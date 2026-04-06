@@ -440,6 +440,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /constructor\s*\([\s\S]{0,300}(private|readonly)\s+\w+:\s*\w+/i,
       // container registration: container.register, bind, provide
       /(container|injector|provider)\s*\.\s*(register|bind|provide)\s*\(/i,
+      // definition-side: DI container/injector/provider/registry classes
+      /(class\s+\w*(Container|Injector|Provider|Registry)|@Injectable|@Inject|@Component)/i,
       // factory pattern: createXxx, buildXxx, makeXxx
       /(create|build|make|factory)\s*(Service|Repository|Handler|Client)\s*\(/i,
       // interface-based: implements, interface + class
