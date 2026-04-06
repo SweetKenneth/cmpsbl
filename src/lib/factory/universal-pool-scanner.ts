@@ -62,6 +62,8 @@ export interface PoolCandidate {
   signalHits: number;
   totalSignals: number;
   compoundingScore: number;
+  /** Structural archetype boost applied to this candidate (0–1) */
+  structuralBoost: number;
 }
 
 export interface UniversalScanResult {
@@ -81,6 +83,12 @@ export interface UniversalScanResult {
   durationMs: number;
   /** Number of collision passes performed */
   collisionPasses: number;
+  /** Structural archetype matches (tristate: present/partial/absent) */
+  structuralMatches: StructuralMatch[];
+  /** Confidence band distribution across selected primitives */
+  confidenceBands: BandedResult[];
+  /** Band summary counts */
+  bandDistribution: Record<ConfidenceBand, number>;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
