@@ -96,6 +96,10 @@ export interface VerticalFactoryInput {
   iconName: string;
   /** Accent color for portal card (HSL string) */
   portalAccentColor: string;
+  /** Domain vocabulary — regex patterns for the federated scanner (optional, auto-derived if omitted) */
+  domainVocabulary?: Record<string, RegExp>;
+  /** Discovery categories for the seed engine (optional, auto-inferred if omitted) */
+  discoveryCategories?: string[];
 }
 
 /* ─────────────────────────────────────────────────
