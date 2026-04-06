@@ -34,6 +34,10 @@ import {
   ULTIMATE_ALL_AGENTS,
   ULTIMATE_AFFINITY_SIGNALS,
 } from './verticals/ultimate';
+import {
+  computeAscensionBoost,
+  type AscensionMode,
+} from '../ascension/ascension-weights';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
