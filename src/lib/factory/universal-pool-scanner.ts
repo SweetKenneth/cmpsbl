@@ -213,14 +213,29 @@ const COLLISION_PASSES = 3;
  *   Pass 2: Capability breadth and composability potential
  *   Pass 3: Cross-candidate synergy estimation
  */
-function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: Set<string>): PoolCandidate {
-  // Pass 1 — Signal hit density
+function scoreCandidate(
+  tagged: TaggedPrimitive,
+  lowerCode: string,
+  codeTokens: Set<string>,
+  signalDocFreq: Record<string, number>,
+  poolSize: number,
+): PoolCandidate {
+  // Pass 1 — IDF-weighted signal hit density
+  // Rare signals (appearing in few candidates) count more than common ones.
   let hits = 0;
+  let idfWeightedHits = 0;
+  let idfWeightedTotal = 0;
   for (const signal of tagged.signals) {
-    if (lowerCode.includes(signal)) hits++;
+    const df = signalDocFreq[signal] ?? 1;
+    const idf = Math.log(poolSize / df); // higher = rarer = more valuable
+    idfWeightedTotal += idf;
+    if (lowerCode.includes(signal)) {
+      hits++;
+      idfWeightedHits += idf;
+    }
   }
-  const hitRatio = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const signalAffinity = Math.min(hitRatio / 0.15, 1); // 15% hit threshold — more sensitive to partial matches
+  const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
+  const signalAffinity = Math.min(hitRatio / 0.15, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
