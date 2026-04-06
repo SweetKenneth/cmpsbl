@@ -304,7 +304,7 @@ function selectOptimalPrimitives(
   maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
-    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 3)
+    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 2)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   const selected: PoolCandidate[] = [];
