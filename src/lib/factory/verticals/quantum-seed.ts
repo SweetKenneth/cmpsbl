@@ -202,31 +202,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §6 — VAULT (Architecture-class gating)
-// ═══════════════════════════════════════════════════════════════
-
-/** Architecture-class discoveries gated in the vault (CJPI ≥ 95) */
-const QUANTUM_VAULT = new Map<string, QuantumDiscovery>();
-
-/** Memory Stream pool for non-vault discoveries */
-const QUANTUM_MEMORY_STREAM_POOL: QuantumDiscovery[] = [];
-
-export function getQuantumVault(): QuantumDiscovery[] {
-  return Array.from(QUANTUM_VAULT.values());
-}
-
-export function getQuantumVaultCount(): number {
-  return QUANTUM_VAULT.size;
-}
-
-export function getQuantumMemoryStreamPool(): QuantumDiscovery[] {
-  return [...QUANTUM_MEMORY_STREAM_POOL];
-}
-
-export function getQuantumMemoryStreamCount(): number {
-  return QUANTUM_MEMORY_STREAM_POOL.length;
-}
+// §6 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §7 — MAIN SEED ENGINE
