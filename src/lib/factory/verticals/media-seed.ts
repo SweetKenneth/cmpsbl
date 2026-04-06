@@ -260,21 +260,7 @@ export function getMediaSeedSummary() {
   };
 }
 
-export function getMediaVault(): MediaDiscovery[] {
-  return seedMediaDiscoveries().discoveries.filter(d => d.route === 'vault');
-}
-
-export function getMediaVaultCount(): number {
-  return getMediaVault().length;
-}
-
-export function getMediaMemoryStreamPool(): MediaDiscovery[] {
-  return seedMediaDiscoveries().discoveries.filter(d => d.route !== 'vault');
-}
-
-export function getMediaMemoryStreamCount(): number {
-  return getMediaMemoryStreamPool().length;
-}
+// (Plan B Step 9: In-memory vault & pool getters removed — DB is source of truth)
 
 export function resetMediaSeed(): void {
   _cachedResult = null;
