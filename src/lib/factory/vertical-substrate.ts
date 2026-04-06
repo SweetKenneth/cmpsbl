@@ -289,6 +289,50 @@ export const CONCEPTUAL_SPINE_PRIMITIVES: VerticalPrimitive[] = [
   },
 ];
 
+/* ─── Expansion Slot Placeholders ─── */
+
+/**
+ * 16 pre-wired expansion slots (8 engines + 8 agents).
+ * These exist in the matrix with placeholder IDs and zero capabilities.
+ * GENESIS renames and fills them — no replacement logic, no collision checks.
+ * Ascension sees them immediately as part of the 40-primitive topology.
+ */
+const EXPANSION_ENGINE_SLOTS: VerticalPrimitive[] = Array.from({ length: 8 }, (_, i) => ({
+  id: `SLOT_E${i + 1}`,
+  name: `Engine Slot ${i + 1}`,
+  role: 'engine' as const,
+  description: 'Unassigned expansion engine slot',
+  inherited: false,
+  capabilities: [],
+  weight: 0.025,
+  classification: 'passive' as const,
+}));
+
+const EXPANSION_AGENT_SLOTS: VerticalPrimitive[] = Array.from({ length: 8 }, (_, i) => ({
+  id: `SLOT_A${i + 1}`,
+  name: `Agent Slot ${i + 1}`,
+  role: 'agent' as const,
+  description: 'Unassigned expansion agent slot',
+  inherited: false,
+  capabilities: [],
+  weight: 0.025,
+  classification: 'passive' as const,
+}));
+
+/**
+ * Get the 16 blank expansion slots (for inspection / debugging)
+ */
+export function getExpansionSlots(): { engines: VerticalPrimitive[]; agents: VerticalPrimitive[] } {
+  return { engines: [...EXPANSION_ENGINE_SLOTS], agents: [...EXPANSION_AGENT_SLOTS] };
+}
+
+/**
+ * Check if a primitive ID is a placeholder slot
+ */
+export function isSlotPlaceholder(id: string): boolean {
+  return /^SLOT_[EA]\d+$/.test(id);
+}
+
 /**
  * Get the 24 inherited spine primitives (organs + layers)
  * These are the non-negotiable backbone of every vertical substrate
@@ -305,8 +349,11 @@ export function getConceptualSpinePrimitives(): VerticalPrimitive[] {
 }
 
 /**
- * Assemble a complete vertical substrate primitive set
- * Spine (24) + custom engines (up to 8) + custom agents (up to 8) = 40
+ * Assemble a complete vertical substrate primitive set.
+ *
+ * When called with empty arrays: returns 24 spine + 16 placeholder slots = 40.
+ * When called with custom primitives: fills the placeholder slots in-place,
+ * preserving matrix topology. No overwrite, no collision — just slot assignment.
  */
 export function assembleVerticalPrimitives(
   customEngines: VerticalPrimitive[],
@@ -319,11 +366,28 @@ export function assembleVerticalPrimitives(
     throw new Error(`Maximum 8 agents per vertical substrate, got ${customAgents.length}`);
   }
 
+  // Start with placeholder slots
+  const engines = EXPANSION_ENGINE_SLOTS.map((slot, i) => {
+    if (i < customEngines.length) {
+      // Fill the slot — keep the matrix position, assign the real primitive
+      return { ...customEngines[i], inherited: false };
+    }
+    // Leave as placeholder
+    return { ...slot };
+  });
+
+  const agents = EXPANSION_AGENT_SLOTS.map((slot, i) => {
+    if (i < customAgents.length) {
+      return { ...customAgents[i], inherited: false };
+    }
+    return { ...slot };
+  });
+
   return [
     ...SPINE_ORGANS,
     ...SPINE_LAYERS,
-    ...customEngines,
-    ...customAgents,
+    ...engines,
+    ...agents,
   ];
 }
 
