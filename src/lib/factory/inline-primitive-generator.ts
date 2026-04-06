@@ -1321,16 +1321,126 @@ function generateClojure(name: string, spec: PrimitiveSpec): string {
 ${methods}`;
 }
 
+function generateVhdl(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const ports = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    const ty = v === 'true' || v === 'false' ? 'std_logic' : isNaN(Number(v)) ? 'std_logic_vector(7 downto 0)' : 'integer';
+    return `        ${k} : inout ${ty}`;
+  });
+  ports.unshift('        clk : in std_logic', '        rst : in std_logic', '        enable : in std_logic');
+  const portStr = ports.join(';\n');
+  const signals = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `    signal s_${k} : std_logic := '${v === 'true' ? '1' : '0'}';`;
+    if (!isNaN(Number(v))) return `    signal s_${k} : integer := ${v};`;
+    return `    signal s_${k} : std_logic_vector(7 downto 0) := (others => '0');`;
+  }).join('\n');
+  return `-- CMPSBL® Convex Core™ — ${spec.description}
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity ${snakeName} is
+    port (
+${portStr}
+    );
+end entity ${snakeName};
+
+architecture behavioral of ${snakeName} is
+${signals}
+begin
+    process(clk, rst)
+    begin
+        if rst = '1' then
+            -- Reset state
+            enable <= '0';
+        elsif rising_edge(clk) then
+            if enable = '1' then
+                -- Active processing
+                null;
+            end if;
+        end if;
+    end process;
+end architecture behavioral;`;
+}
+
+function generateVerilog(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const regs = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `    reg ${k} = ${v === 'true' ? "1'b1" : "1'b0"};`;
+    if (!isNaN(Number(v))) return `    reg [31:0] ${k} = 32'd${v};`;
+    return `    reg [7:0] ${k} = 8'd0;`;
+  }).join('\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+module ${snakeName} (
+    input wire clk,
+    input wire rst,
+    input wire enable
+);
+
+${regs}
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            // Reset state
+        end else if (enable) begin
+            // Active processing
+        end
+    end
+
+endmodule`;
+}
+
 function generateHdlComment(name: string, spec: PrimitiveSpec): string {
   const methods = spec.methods.map(m => `--   ${m.name}: ${m.description}`).join('\n');
   return `-- ═══════════════════════════════════════════════════════════
 -- CMPSBL® Convex Core™ — ${name}
 -- ${spec.description}
 --
--- This primitive operates at the behavioral modeling layer.
+-- Behavioral model — requires target-specific synthesis adaptation.
 -- Available methods:
 ${methods}
 -- ═══════════════════════════════════════════════════════════`;
+}
+
+function generateGlsl(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const uniforms = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `uniform bool u_${k};`;
+    if (!isNaN(Number(v))) return `uniform float u_${k};`;
+    return `uniform int u_${k};`;
+  }).join('\n');
+  const functions = spec.methods.map(m =>
+    `// ${m.description}\nfloat ${snakeName}_${m.name}(float input_val) {\n    return input_val;\n}`
+  ).join('\n\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+${uniforms}
+
+${functions}`;
+}
+
+function generateWgsl(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const structFields = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `    ${k}: u32,`;
+    if (!isNaN(Number(v))) return `    ${k}: f32,`;
+    return `    ${k}: u32,`;
+  }).join('\n');
+  const functions = spec.methods.map(m =>
+    `// ${m.description}\nfn ${snakeName}_${m.name}(input_val: f32) -> f32 {\n    return input_val;\n}`
+  ).join('\n\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+struct ${name}State {
+${structFields}
+}
+
+@group(0) @binding(0) var<uniform> state: ${name}State;
+
+${functions}`;
 }
 
 function generateShaderComment(name: string, spec: PrimitiveSpec): string {
@@ -1339,7 +1449,7 @@ function generateShaderComment(name: string, spec: PrimitiveSpec): string {
 // CMPSBL® Convex Core™ — ${name}
 // ${spec.description}
 //
-// This primitive operates at the behavioral modeling layer.
+// Behavioral model — requires target-specific shader adaptation.
 // Available methods:
 ${methods}
 // ═══════════════════════════════════════════════════════════`;
