@@ -208,11 +208,10 @@ export function seedRoboticsDiscoveries(): RoboticsSeedResult {
     };
 
     discoveries.push(discovery);
-    if (route === 'vault') { ROBOTICS_VAULT.set(discovery.id, discovery); vaultCount++; }
+    if (route === 'vault') { vaultCount++; }
     else {
-      addDiscovery(discovery.id, discovery.name, discovery.description, discovery.cjpiScore, discovery.primitiveChain);
       if (route === 'showroom') showroomCount++; else junkyardCount++;
-      ROBOTICS_MEMORY_STREAM_POOL.push(discovery); memoryStreamCount++;
+      memoryStreamCount++;
     }
   }
 
