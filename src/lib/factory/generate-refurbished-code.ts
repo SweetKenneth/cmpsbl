@@ -2906,7 +2906,7 @@ export function generateRefurbishedCode(
     fingerprint,
     primitiveCount: selectedPrimitives.length,
     generatedAt: new Date().toISOString(),
-    runtimeVersion: '2.5.0',
+    runtimeVersion: '3.0.0',
     sourceLanguage: detected,
     orchestrationVersion: '3.0.0',
     pipelineStages: 5,
