@@ -6552,11 +6552,13 @@ export type Database = {
           discovery_count: number | null
           engine_candidate: boolean | null
           error_strategy: string | null
+          generation: number | null
           id: string
           is_crown_jewel: boolean | null
           last_discovered_at: string | null
           max_execution_ms: number | null
           module_chain: string[]
+          mutation_source: string | null
           name: string
           pipeline_fingerprint: string | null
           pipeline_steps: Json | null
@@ -6581,11 +6583,13 @@ export type Database = {
           discovery_count?: number | null
           engine_candidate?: boolean | null
           error_strategy?: string | null
+          generation?: number | null
           id: string
           is_crown_jewel?: boolean | null
           last_discovered_at?: string | null
           max_execution_ms?: number | null
           module_chain?: string[]
+          mutation_source?: string | null
           name: string
           pipeline_fingerprint?: string | null
           pipeline_steps?: Json | null
@@ -6610,11 +6614,13 @@ export type Database = {
           discovery_count?: number | null
           engine_candidate?: boolean | null
           error_strategy?: string | null
+          generation?: number | null
           id?: string
           is_crown_jewel?: boolean | null
           last_discovered_at?: string | null
           max_execution_ms?: number | null
           module_chain?: string[]
+          mutation_source?: string | null
           name?: string
           pipeline_fingerprint?: string | null
           pipeline_steps?: Json | null
