@@ -11,7 +11,7 @@
 Every 8 hours, the substrate autonomously:
 1. Generates 30 fresh discovery templates (2–12 primitives deep)
 2. Runs the Reactor to produce and score new discoveries
-3. Ingests the **entire vault backlog** (1,600+ Crown Jewels, Showroom, Junkyard, Retired) as scanner training data
+3. Ingests the **entire vault backlog** — Crown Jewels (1,600+), Showroom, Junkyard, Retired, **AND all 4,000+ DB-stored discoveries** — as scanner training data
 4. Feeds 126 memory chain templates as behavioral ground truth
 5. Cross-pollinates intelligence across all 6 vertical substrates
 6. Scans the 20 most recent Ascension node uploads for hidden capabilities
