@@ -374,6 +374,32 @@ function generateSignalMap(
 }
 
 /* ─────────────────────────────────────────────────
+   DOMAIN VOCABULARY AUTO-DERIVATION
+   Builds regex patterns from primitive capabilities
+   when no manual vocabulary is provided.
+   ───────────────────────────────────────────────── */
+
+function deriveDomainVocabulary(
+  engines: VerticalPrimitive[],
+  agents: VerticalPrimitive[],
+): Record<string, RegExp> {
+  const vocab: Record<string, RegExp> = {};
+
+  for (const p of [...engines, ...agents]) {
+    if (p.capabilities.length < 2) continue;
+
+    // Group capabilities into a regex per primitive
+    const terms = p.capabilities
+      .map(c => c.replace(/_/g, '.?'))
+      .join('|');
+
+    vocab[`${p.id.toLowerCase()}-detection`] = new RegExp(`\\b(${terms})\\b`, 'i');
+  }
+
+  return vocab;
+}
+
+/* ─────────────────────────────────────────────────
    INSTANTIATION — The Main Factory Method
    ───────────────────────────────────────────────── */
 
