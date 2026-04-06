@@ -305,3 +305,9 @@ export {
   type DependencySignal,
   type AggregatedProfile,
 } from './scan-integrity';
+
+// Vault-to-Glossary Bridge (ecosystem-wide learning)
+export {
+  runVaultBridge,
+  type VaultBridgeResult,
+} from './vault-glossary-bridge';
