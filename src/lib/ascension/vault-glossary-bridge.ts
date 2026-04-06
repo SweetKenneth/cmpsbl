@@ -23,6 +23,10 @@ import {
   type ShowroomDiscovery,
 } from '@/lib/factory/discovery-retirement';
 import {
+  SYNTHESIS_TEMPLATES,
+  type SynthesisTemplate,
+} from '@/lib/discovery/reactor';
+import {
   recordConfirmedMatch,
   getFeedbackStats,
   type FeedbackExtraction,
