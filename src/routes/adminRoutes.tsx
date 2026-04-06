@@ -22,6 +22,7 @@ const EmailListPanel = lazy(() => import("@/pages/admin/EmailListPanel"));
 const GovernorNodeDashboard = lazy(() => import("@/pages/admin/GovernorNodeDashboard"));
 const EvolutionCycleReport = lazy(() => import("@/components/evolution/EvolutionCycleReport"));
 const AscensionObservatory = lazy(() => import("@/pages/admin/AscensionObservatory"));
+const ProductCompilerDashboard = lazy(() => import("@/pages/admin/ProductCompilerDashboard"));
 
 export const adminRoutes = (
   <>
@@ -46,6 +47,7 @@ export const adminRoutes = (
     <Route path="/admin/email-list" element={<AdminRoute><EmailListPanel /></AdminRoute>} />
     <Route path="/admin/ascension-nodes" element={<AdminRoute><GovernorNodeDashboard /></AdminRoute>} />
     <Route path="/admin/ascension-observatory" element={<AdminRoute><AscensionObservatory /></AdminRoute>} />
+    <Route path="/admin/compiler" element={<AdminRoute><ProductCompilerDashboard /></AdminRoute>} />
     <Route path="/audit" element={<Navigate to="/admin/audit-center" replace />} />
   </>
 );
