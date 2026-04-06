@@ -385,10 +385,26 @@ Note: Cyber and agency show 80 (all registry from Crown Jewel backfill) — thei
 - CDM sequence now: template pass → vault bridge → chain bridge → federation → **rarity recomputation** → scanner pass.
 - Verified: primary pool = 913 items, 4 populated tiers (common 44.44%, uncommon 27.78%, rare 16.67%, epic 11.11%), legendary/apex correctly zeroed and redistributed. 5 sample pulls working correctly.
 
-**Next steps (Plan B remaining):**
-- Step 8: Update UI components to query `discoveries` with status filters
-- Step 9: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
+---
 
-*Last updated: April 6, 2026 · Session 13 complete*
-*Next session: Read this file first. Plan B Steps 1-7 done. Rarity weighting live. Steps 8-9 pending.*
+**Session 15 — April 6, 2026 — Plan B Complete:**
+
+Steps 8-9 closed. Plan B is done. All 9 steps delivered:
+
+| Step | Description | Status |
+|------|-------------|--------|
+| 1 | Add `status`, `is_crown_jewel`, `vertical`, `crown_jewel_capabilities` columns to `discoveries` table | ✅ Closed |
+| 2 | Backfill 926 Crown Jewels into unified `discoveries` table | ✅ Closed |
+| 3 | Seed all 7 verticals with full tier distribution (6,080 discoveries) | ✅ Closed |
+| 4 | Wire Vault Bridge + Chain Bridge to read from `discoveries` table | ✅ Closed |
+| 5 | Federation pass for cross-vertical discovery sharing | ✅ Closed |
+| 6 | Template Mutation Engine — generates new discoveries from existing templates | ✅ Closed |
+| 7 | Dynamic Rarity Weighting for Memory Stream — weights computed from live pool distribution | ✅ Closed |
+| 8 | UI components wired to live `discoveries` queries (all counts, showroom, junkyard, verticals) | ✅ Closed |
+| 9 | In-memory state removal — all VAULT Maps, MEMORY_STREAM_POOL arrays, and catalog Maps excised | ✅ Closed |
+
+**Final state:** 6,108 discoveries in the database. Mutation engine generating up to 800 new candidates per CDM cycle. Memory Stream rarity weights recomputing every 8 hours. All UI counts live from the database. Zero in-memory caches of discovery data remain. The database is the single source of truth.
+
+*Last updated: April 6, 2026 · Session 15 complete · Plan B closed*
+*Next session: Read this file first. Plan B is complete. The substrate's data layer is unified and autonomous.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
