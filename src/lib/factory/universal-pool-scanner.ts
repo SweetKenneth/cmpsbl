@@ -38,6 +38,18 @@ import {
   computeAscensionBoost,
   type AscensionMode,
 } from '../ascension/ascension-weights';
+import {
+  runStructuralAnalysis,
+  buildStructuralBoostMap,
+  type StructuralMatch,
+  type PresenceState,
+} from '../ascension/structural-signatures';
+import {
+  bandResults,
+  getBandDistribution,
+  type BandedResult,
+  type ConfidenceBand,
+} from '../ascension/confidence-banding';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -50,6 +62,8 @@ export interface PoolCandidate {
   signalHits: number;
   totalSignals: number;
   compoundingScore: number;
+  /** Structural archetype boost applied to this candidate (0–1) */
+  structuralBoost: number;
 }
 
 export interface UniversalScanResult {
@@ -69,6 +83,12 @@ export interface UniversalScanResult {
   durationMs: number;
   /** Number of collision passes performed */
   collisionPasses: number;
+  /** Structural archetype matches (tristate: present/partial/absent) */
+  structuralMatches: StructuralMatch[];
+  /** Confidence band distribution across selected primitives */
+  confidenceBands: BandedResult[];
+  /** Band summary counts */
+  bandDistribution: Record<ConfidenceBand, number>;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -873,6 +893,7 @@ function scoreCandidate(
   signalDocFreq: Record<string, number>,
   poolSize: number,
   mode: AscensionMode = 'ascension',
+  structuralBoosts?: Map<string, number>,
 ): PoolCandidate {
   // Pass 1 — IDF-weighted signal hit density
   // Rare signals (appearing in few candidates) count more than common ones.
@@ -934,16 +955,24 @@ function scoreCandidate(
   const rawDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
   const rawDensityBonus = Math.min(rawDensity / 0.30, 1) * 0.10;
 
-  // Composite scoring — signal-dominant, context-aware
-  // IDF affinity (40%) + raw density (10%) + capability (20%) + breadth (10%) + weight (5%) + context bonus (up to 15%)
+  // ── STRUCTURAL ARCHETYPE BOOST ─────────────────────────────────────────
+  // If structural analysis found that this primitive maps to a confirmed
+  // archetype (rate limiting, error recovery, etc.), apply an additional
+  // boost. This rewards primitives that match CODE SHAPES, not just keywords.
+  const primName = tagged.primitive.name.toUpperCase();
+  const structBoost = structuralBoosts?.get(primName) ?? 0;
+  const structuralArchetypeBonus = structBoost * 0.12; // Up to 12% from structural patterns
+
+  // Composite scoring — signal-dominant, context-aware, structure-boosted
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.40 +
+    signalAffinity * 0.35 +
     rawDensityBonus +
-    capRatio * 0.20 +
-    breadthScore * 0.10 +
+    capRatio * 0.15 +
+    breadthScore * 0.08 +
     weightFactor * 0.05 +
-    contextBonus;
+    contextBonus +
+    structuralArchetypeBonus;
 
   return {
     primitive: tagged.primitive,
@@ -952,6 +981,7 @@ function scoreCandidate(
     signalHits: hits,
     totalSignals: tagged.signals.length,
     compoundingScore: Math.round(compounding * 1000) / 1000,
+    structuralBoost: Math.round(structBoost * 1000) / 1000,
   };
 }
 
@@ -1067,21 +1097,38 @@ export function runUniversalPoolScan(
   }
   const poolSize = pool.length;
 
-  // Score all candidates with mode-aware dual-matrix weighting
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode));
+  // ── STRUCTURAL ANALYSIS ────────────────────────────────────────────────
+  // Run structural pattern matching BEFORE candidate scoring so the
+  // archetype boosts can influence which primitives surface.
+  const structuralMatches = runStructuralAnalysis(codeContent);
+  const structuralBoosts = buildStructuralBoostMap(structuralMatches);
+
+  // Build intent-confirmed primitive set from structural analysis
+  const intentPrimitives = new Set<string>();
+  for (const match of structuralMatches) {
+    if (match.intentHits > 0) {
+      for (const prim of match.primitives) {
+        intentPrimitives.add(prim.toUpperCase());
+      }
+    }
+  }
+
+  // Score all candidates with mode-aware dual-matrix weighting + structural boosts
+  const scored = pool.map(tagged =>
+    scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode, structuralBoosts)
+  );
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
 
   // Rebalance weights so selected primitives sum to 1.0
-  // Use compounding score for proportional weighting (stronger primitives get more weight)
   const totalScore = selected.reduce((sum, c) => sum + c.compoundingScore, 0);
   const fullSurface: VerticalPrimitive[] = selected.map(c => ({
     ...c.primitive,
     weight: totalScore > 0
       ? Math.round((c.compoundingScore / totalScore) * 10000) / 10000
       : Math.round((1.0 / selected.length) * 10000) / 10000,
-    inherited: false, // In Ultimate, nothing is "inherited" — everything is earned
+    inherited: false,
   }));
 
   // Source distribution
@@ -1092,6 +1139,10 @@ export function runUniversalPoolScan(
     roleDistribution[s.primitive.role] = (roleDistribution[s.primitive.role] ?? 0) + 1;
   }
 
+  // ── CONFIDENCE BANDING ─────────────────────────────────────────────────
+  const confidenceBands = bandResults(selected, structuralBoosts, intentPrimitives);
+  const bandDistribution = getBandDistribution(confidenceBands);
+
   return {
     selectedPrimitives: selected,
     fullSurface,
@@ -1101,6 +1152,9 @@ export function runUniversalPoolScan(
     roleDistribution,
     durationMs: Math.round(performance.now() - start),
     collisionPasses: COLLISION_PASSES,
+    structuralMatches,
+    confidenceBands,
+    bandDistribution,
   };
 }
 
@@ -1123,10 +1177,16 @@ export function resetUniversalPool(): void {
   _cachedPool = null;
 }
 
-// Re-export Ascension weight types for consumer convenience
+// Re-export Ascension subsystem types for consumer convenience
 export type { AscensionMode } from '../ascension/ascension-weights';
 export {
   getAscensionRankings,
   getTopByDimension,
   getAllAscensionWeights,
 } from '../ascension/ascension-weights';
+
+export type { StructuralMatch, PresenceState } from '../ascension/structural-signatures';
+export { getArchetypes, getArchetypeCount } from '../ascension/structural-signatures';
+
+export type { BandedResult, ConfidenceBand } from '../ascension/confidence-banding';
+export { filterByBand, getBandDistribution as getBandDist } from '../ascension/confidence-banding';
