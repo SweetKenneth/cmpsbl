@@ -27,7 +27,7 @@ import {
   recordImplementation,
   type RegistryEntry,
 } from './ecosystem-registry';
-import { runVaultBridge, runReactorChainBridge } from './vault-glossary-bridge';
+import { runVaultBridgeWithDB, runReactorChainBridge } from './vault-glossary-bridge';
 import type { VaultBridgeResult, ReactorChainBridgeResult } from './vault-glossary-bridge';
 
 // ═══════════════════════════════════════════════════════════════════════════════
