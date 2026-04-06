@@ -1033,7 +1033,7 @@ export default function STierVault() {
         </div>
 
         {/* Analytics Summary */}
-        {showAnalytics && <AnalyticsSummary registryEntries={entries} promoted={promoted} />}
+        {showAnalytics && <AnalyticsSummary registryEntries={entries} promoted={promoted} liveCounts={liveCounts} />}
 
         {/* Search */}
         <div className="relative">
