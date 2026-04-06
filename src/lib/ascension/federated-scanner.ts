@@ -347,8 +347,24 @@ export function getVerticalScanner(verticalId: string): VerticalScannerInstance 
 }
 
 /** All active vertical IDs with scanner instances */
-const ACTIVE_VERTICAL_IDS = ['cyber', 'robotics', 'quantum', 'llm', 'agency', 'media'] as const;
-export type ActiveVerticalId = typeof ACTIVE_VERTICAL_IDS[number];
+const STATIC_VERTICAL_IDS = ['cyber', 'robotics', 'quantum', 'llm', 'agency', 'media'] as const;
+export type ActiveVerticalId = typeof STATIC_VERTICAL_IDS[number] | string;
+
+/** Dynamic verticals registered at runtime by GENESIS */
+const dynamicVerticalIds = new Set<string>();
+
+/**
+ * Register a dynamic vertical into the cross-pollination cycle.
+ * Called by GENESIS during vertical instantiation.
+ */
+export function registerActiveVertical(verticalId: string): void {
+  dynamicVerticalIds.add(verticalId);
+}
+
+/** Get all active vertical IDs (static + dynamic) */
+function getAllActiveVerticalIds(): string[] {
+  return [...STATIC_VERTICAL_IDS, ...dynamicVerticalIds];
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §7 — CROSS-POLLINATION ENGINE
