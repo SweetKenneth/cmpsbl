@@ -1,7 +1,7 @@
 /**
  * Service Worker — CMPSBL Substrate
  * Item #25: Scan result caching for offline/slow connections
- * v9: DECODE shared mesh memory fix — fingerprint lookup flow
+ * v10: DECODE persistent session context — full record injection for follow-ups
  */
 
 const CACHE_NAME = 'cmpsbl-v9';

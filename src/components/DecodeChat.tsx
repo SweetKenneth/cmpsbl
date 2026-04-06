@@ -139,6 +139,13 @@ export function DecodeChat() {
           if (result.source === 'restoration') {
             const s = result.session;
             const primList = s.selectedPrimitives.join(', ');
+            const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprint}]\n` +
+              `Source: Refurbishment Center\nFingerprint: ${s.fingerprint}\nSerial: ${s.serialNumber}\n` +
+              `CJPI: ${s.cjpiScore}/100 (${s.cjpiTier})\nLanguage: ${s.originalLanguage ?? 'Unknown'}\n` +
+              `Primitives: ${primList}\nDate: ${new Date(s.createdAt).toLocaleDateString()}\n` +
+              `Report: ${JSON.stringify(s.report).slice(0, 2000)}\n` +
+              `Scan Result: ${JSON.stringify(s.scanResult).slice(0, 1000)}\n[END SESSION CONTEXT]`;
+
             lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
               `**Fingerprint:** \`${s.fingerprint}\`\n` +
               `**Serial:** \`${s.serialNumber}\`\n` +
@@ -148,6 +155,10 @@ export function DecodeChat() {
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
               `I have your full original code, scan results, and refurbishment report on file. ` +
               `What would you like to know? I can explain any primitive that was applied, walk you through the findings, or help with next steps.`;
+
+            setMessages(prev => [...prev, { role: 'assistant', content: contextBlock }, { role: 'assistant', content: lookupReply }]);
+            setIsLoading(false);
+            return;
           } else {
             const s = result.session;
             const primList = s.primitivesApplied.length > 0 ? s.primitivesApplied.join(', ') : 'See metadata';
@@ -155,28 +166,60 @@ export function DecodeChat() {
             const cjpiDisplay = s.finalCjpi != null
               ? `${s.originalCjpi ?? '—'} → **${s.finalCjpi}**/100`
               : s.originalCjpi != null ? `${s.originalCjpi}/100` : 'N/A';
+
+            const meta = s.metadata ?? {};
+            const fileName = (meta.file as string) ?? null;
+            const source = (meta.source as string) ?? null;
+            const findings = (meta.findings as string[]) ?? [];
+            const monthlyDownloads = (meta.monthly_downloads as string) ?? null;
+
+            const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprintId}]\n` +
+              `Source: Vertical Ascension (${s.verticalName ?? s.verticalId})\nFingerprint: ${s.fingerprintId}\n` +
+              `CJPI: ${s.originalCjpi ?? 'N/A'} → ${s.finalCjpi ?? 'N/A'}\nStatus: ${s.status}\n` +
+              `Primitives: ${primList}\nCapabilities: ${capList}\n` +
+              `Archetypes: ${s.enhancementArchetypes.join(', ') || 'N/A'}\n` +
+              (fileName ? `File: ${fileName}\n` : '') +
+              (source ? `Source Project: ${source}\n` : '') +
+              (findings.length > 0 ? `Findings: ${findings.join('; ')}\n` : '') +
+              (monthlyDownloads ? `Downloads: ${monthlyDownloads}\n` : '') +
+              `Full Metadata: ${JSON.stringify(meta).slice(0, 1500)}\n[END SESSION CONTEXT]`;
+
             lookupReply = `Found it! 🔍 This is a **Vertical Ascension** record from **${s.verticalName ?? s.verticalId}**:\n\n` +
               `**Fingerprint:** \`${s.fingerprintId}\`\n` +
               `**CJPI:** ${cjpiDisplay}\n` +
               `**Status:** ${s.status}\n` +
               `**Primitives Applied:** ${primList}\n` +
               `**Capabilities Added:** ${capList}\n` +
+              (fileName ? `**File:** ${fileName}\n` : '') +
+              (source ? `**Source:** ${source}\n` : '') +
+              (findings.length > 0 ? `**Findings:** ${findings.join(', ')}\n` : '') +
+              (monthlyDownloads ? `**Downloads:** ${monthlyDownloads}\n` : '') +
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}` +
               (s.completedAt ? ` — completed ${new Date(s.completedAt).toLocaleDateString()}` : '') +
               `\n\nThis ascension was processed through the **${s.verticalName ?? s.verticalId}** substrate. ` +
               `I can explain what was discovered, how the primitives interacted, or what the CJPI score means. What would you like to know?`;
-          }
 
-          setMessages(prev => [...prev, { role: 'assistant', content: lookupReply }]);
-          setIsLoading(false);
-          return;
+            setMessages(prev => [...prev, { role: 'assistant', content: contextBlock }, { role: 'assistant', content: lookupReply }]);
+            setIsLoading(false);
+            return;
+          }
         }
       } catch {
-        // Not a fingerprint or lookup failed — fall through to normal flow
+        // Lookup failed — tell user, don't fall through
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: `⚠️ I attempted to look up fingerprint \`${possibleFp}\` but encountered a database error. Please try again in a moment.`
+        }]);
+        setIsLoading(false);
+        return;
       }
+      // No record found
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: `🔍 I searched both the **Refurbishment Center** and all **Vertical Ascension** records for fingerprint \`${possibleFp}\`, but no matching record was found.\n\nDouble-check the ID and try again, or ask me anything else about the substrate.`
+      }]);
       setIsLoading(false);
-      // Remove the user message we just added so the normal flow can re-add it
-      setMessages(prev => prev.slice(0, -1));
+      return;
     }
 
     // ─── Terminal Command Layer ───
@@ -423,7 +466,7 @@ export function DecodeChat() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 font-inter">
-        {messages.map((msg, idx) => (
+        {messages.filter(msg => !msg.content.startsWith('[DECODE SESSION CONTEXT')).map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${
               msg.role === 'user'

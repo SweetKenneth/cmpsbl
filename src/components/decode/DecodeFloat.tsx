@@ -358,6 +358,19 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           if (result.source === 'restoration') {
             const s = result.session;
             const primList = s.selectedPrimitives.join(', ');
+            // Build a hidden context block the LLM can reference for follow-ups
+            const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprint}]\n` +
+              `Source: Refurbishment Center\n` +
+              `Fingerprint: ${s.fingerprint}\n` +
+              `Serial: ${s.serialNumber}\n` +
+              `CJPI: ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
+              `Language: ${s.originalLanguage ?? 'Unknown'}\n` +
+              `Primitives: ${primList}\n` +
+              `Date: ${new Date(s.createdAt).toLocaleDateString()}\n` +
+              `Report: ${JSON.stringify(s.report).slice(0, 2000)}\n` +
+              `Scan Result: ${JSON.stringify(s.scanResult).slice(0, 1000)}\n` +
+              `[END SESSION CONTEXT]`;
+
             lookupReply = `✅ **Verified** — Fingerprint found in the Refurbishment Center.\n\n` +
               `**Fingerprint:** \`${s.fingerprint}\`\n` +
               `**Serial:** \`${s.serialNumber}\`\n` +
@@ -366,6 +379,13 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
               `**Language:** ${s.originalLanguage ?? 'Unknown'}\n` +
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
               `This is a verified Ascension record. What would you like to know about this refurbishment?`;
+
+            // Inject context block as a hidden assistant message so the LLM has the data for follow-ups
+            setMessages(prev => [
+              ...prev,
+              { role: 'assistant', content: contextBlock },
+              { role: 'assistant', content: lookupReply },
+            ]);
           } else {
             const s = result.session;
             const primList = s.primitivesApplied.length > 0 ? s.primitivesApplied.join(', ') : 'See metadata';
@@ -373,17 +393,51 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
             const cjpiDisplay = s.finalCjpi != null
               ? `${s.originalCjpi ?? '—'} → **${s.finalCjpi}**/100`
               : s.originalCjpi != null ? `${s.originalCjpi}/100` : 'N/A';
+
+            // Extract metadata fields for richer display
+            const meta = s.metadata ?? {};
+            const fileName = (meta.file as string) ?? null;
+            const source = (meta.source as string) ?? null;
+            const findings = (meta.findings as string[]) ?? [];
+            const monthlyDownloads = (meta.monthly_downloads as string) ?? null;
+
+            const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprintId}]\n` +
+              `Source: Vertical Ascension (${s.verticalName ?? s.verticalId})\n` +
+              `Fingerprint: ${s.fingerprintId}\n` +
+              `CJPI: ${s.originalCjpi ?? 'N/A'} → ${s.finalCjpi ?? 'N/A'}\n` +
+              `Status: ${s.status}\n` +
+              `Primitives Applied: ${primList}\n` +
+              `Capabilities Added: ${capList}\n` +
+              `Enhancement Archetypes: ${s.enhancementArchetypes.join(', ') || 'N/A'}\n` +
+              (fileName ? `File: ${fileName}\n` : '') +
+              (source ? `Source Project: ${source}\n` : '') +
+              (findings.length > 0 ? `Security Findings: ${findings.join('; ')}\n` : '') +
+              (monthlyDownloads ? `Monthly Downloads: ${monthlyDownloads}\n` : '') +
+              `Date: ${new Date(s.createdAt).toLocaleDateString()}` +
+              (s.completedAt ? ` — completed ${new Date(s.completedAt).toLocaleDateString()}` : '') + '\n' +
+              `Full Metadata: ${JSON.stringify(meta).slice(0, 1500)}\n` +
+              `[END SESSION CONTEXT]`;
+
             lookupReply = `✅ **Verified** — This is a **Vertical Ascension** record from **${s.verticalName ?? s.verticalId}**.\n\n` +
               `**Fingerprint:** \`${s.fingerprintId}\`\n` +
               `**CJPI:** ${cjpiDisplay}\n` +
               `**Status:** ${s.status}\n` +
               `**Primitives Applied:** ${primList}\n` +
               `**Capabilities Added:** ${capList}\n` +
+              (fileName ? `**File:** ${fileName}\n` : '') +
+              (source ? `**Source:** ${source}\n` : '') +
+              (findings.length > 0 ? `**Findings:** ${findings.join(', ')}\n` : '') +
+              (monthlyDownloads ? `**Downloads:** ${monthlyDownloads}\n` : '') +
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}` +
               (s.completedAt ? ` — completed ${new Date(s.completedAt).toLocaleDateString()}` : '') +
               `\n\nThis ascension was processed through the **${s.verticalName ?? s.verticalId}** substrate. What would you like to know?`;
+
+            setMessages(prev => [
+              ...prev,
+              { role: 'assistant', content: contextBlock },
+              { role: 'assistant', content: lookupReply },
+            ]);
           }
-          setMessages(prev => [...prev, { role: 'assistant', content: lookupReply }]);
         } else {
           // No record found — tell the user directly, do NOT fall through to AI
           setMessages(prev => [...prev, {
@@ -694,7 +748,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-hide">
-            {messages.map((msg, idx) => (
+            {messages.filter(msg => !msg.content.startsWith('[DECODE SESSION CONTEXT')).map((msg, idx) => (
               <div key={idx} className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}>
                 <div className={cn("max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed", {
                   "bg-primary text-primary-foreground": msg.role === "user",
