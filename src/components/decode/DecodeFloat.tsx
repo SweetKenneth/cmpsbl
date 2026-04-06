@@ -10,6 +10,7 @@ import { isCommand, routeCommand } from "@/lib/decode/command-router";
 import { isGovernorCommand, routeGovernorCommand } from "@/lib/decode/governor-commands";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { lookupAnyFingerprint } from "@/lib/factory/restoration-session";
 
 type Props = {
   anchorId?: string;
