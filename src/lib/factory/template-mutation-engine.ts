@@ -444,7 +444,7 @@ export async function runMutationCycle(
   vertical: string,
   cycleSeed?: number,
 ): Promise<MutationCycleResult> {
-  const seed = cycleSeed ?? (Date.now() ^ 0xMUT8);
+  const seed = cycleSeed ?? (Date.now() ^ 0xAE08CAFE);
   const rand = seedRng(seed);
   const pool = VERTICAL_POOLS[vertical] ?? VERTICAL_POOLS['primary'];
 
