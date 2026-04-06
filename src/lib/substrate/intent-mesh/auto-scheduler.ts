@@ -26,6 +26,7 @@ import { generateTemplateBatch } from '@/lib/discovery/template-generator';
 import { supabase } from '@/integrations/supabase/client';
 import { batchScanCapabilities, type CJPIDiscovery } from '@/lib/ascension/capability-scanner-primitive';
 import { runVaultBridge, runReactorChainBridge } from '@/lib/ascension/vault-glossary-bridge';
+import { runCrossPollinationCycle } from '@/lib/ascension/federated-scanner';
 import { addDiscovery } from '@/lib/factory/discovery-retirement';
 import { routeDiscovery } from '@/lib/factory/foundry-engine';
 import { migrateMetadata, type NodeMetadata } from '@/lib/ascension/types';
@@ -262,6 +263,10 @@ class MeshAutoScheduler {
       // ── Reactor chain bridge: feed 126 memory chain templates as ground truth ──
       const chainResult = runReactorChainBridge();
       console.log(`[CDM/ChainBridge] Processed ${chainResult.templatesProcessed} reactor chains → ${chainResult.signalsInjected} signals, ${chainResult.archetypeMappings} archetype mappings, ${chainResult.uniquePrimitives} unique primitives (${chainResult.durationMs}ms)`);
+
+      // ── Federated cross-pollination: propagate intelligence to all vertical substrates ──
+      const pollinationResult = runCrossPollinationCycle();
+      console.log(`[CDM/Federation] Cross-pollinated ${pollinationResult.verticalsProcessed} verticals → ${pollinationResult.totalSpineSignals} spine signals, ${pollinationResult.totalExpansionSignals} expansion signals (${pollinationResult.durationMs}ms)`);
 
       // ── Scanner pass: profile any framework files Ascension is processing ──
       const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
