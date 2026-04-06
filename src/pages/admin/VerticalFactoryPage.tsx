@@ -208,7 +208,7 @@ export default function VerticalFactoryPage() {
 
       {/* Manifest Summary */}
       {manifest && manifest.validation.valid && (
-        <Card className="border-green-500/30">
+        <Card className="border-primary/30">
           <CardHeader>
             <CardTitle className="text-sm flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-green-500" />
