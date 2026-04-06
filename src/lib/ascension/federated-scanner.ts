@@ -86,6 +86,17 @@ export function getExpansionPrimitives(verticalId: string): Set<string> {
   return VERTICAL_EXPANSION_PRIMITIVES[verticalId] ?? new Set();
 }
 
+/**
+ * Register expansion primitives for a dynamically instantiated vertical.
+ * Called by GENESIS during vertical instantiation.
+ */
+export function registerExpansionPrimitives(
+  verticalId: string,
+  primitiveIds: string[],
+): void {
+  VERTICAL_EXPANSION_PRIMITIVES[verticalId] = new Set(primitiveIds);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — VERTICAL DOMAIN VOCABULARY
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -126,6 +137,17 @@ const VERTICAL_DOMAIN_VOCABULARY: Record<string, Record<string, RegExp>> = {
     'asset-management': /\b(asset|catalog|metadata|tag|archive|version|publish|distribute|cdn)\b/i,
   },
 };
+
+/**
+ * Register domain vocabulary for a dynamically instantiated vertical.
+ * Called by GENESIS during vertical instantiation.
+ */
+export function registerDomainVocabulary(
+  verticalId: string,
+  vocabulary: Record<string, RegExp>,
+): void {
+  VERTICAL_DOMAIN_VOCABULARY[verticalId] = vocabulary;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §4 — FEDERATED SIGNAL STORE
@@ -325,8 +347,24 @@ export function getVerticalScanner(verticalId: string): VerticalScannerInstance 
 }
 
 /** All active vertical IDs with scanner instances */
-const ACTIVE_VERTICAL_IDS = ['cyber', 'robotics', 'quantum', 'llm', 'agency', 'media'] as const;
-export type ActiveVerticalId = typeof ACTIVE_VERTICAL_IDS[number];
+const STATIC_VERTICAL_IDS = ['cyber', 'robotics', 'quantum', 'llm', 'agency', 'media'] as const;
+export type ActiveVerticalId = typeof STATIC_VERTICAL_IDS[number] | string;
+
+/** Dynamic verticals registered at runtime by GENESIS */
+const dynamicVerticalIds = new Set<string>();
+
+/**
+ * Register a dynamic vertical into the cross-pollination cycle.
+ * Called by GENESIS during vertical instantiation.
+ */
+export function registerActiveVertical(verticalId: string): void {
+  dynamicVerticalIds.add(verticalId);
+}
+
+/** Get all active vertical IDs (static + dynamic) */
+function getAllActiveVerticalIds(): string[] {
+  return [...STATIC_VERTICAL_IDS, ...dynamicVerticalIds];
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §7 — CROSS-POLLINATION ENGINE
@@ -356,7 +394,7 @@ export async function runCrossPollinationCycle(): Promise<CrossPollinationResult
   let totalExpansion = 0;
   const perVertical: Record<string, { spine: number; expansion: number; primeMs: number }> = {};
 
-  for (const verticalId of ACTIVE_VERTICAL_IDS) {
+  for (const verticalId of getAllActiveVerticalIds()) {
     const scanner = getVerticalScanner(verticalId);
     const primeResult = await scanner.prime();
     const stats = scanner.getStats();
@@ -372,7 +410,7 @@ export async function runCrossPollinationCycle(): Promise<CrossPollinationResult
   }
 
   return {
-    verticalsProcessed: ACTIVE_VERTICAL_IDS.length,
+    verticalsProcessed: getAllActiveVerticalIds().length,
     totalSpineSignals: totalSpine,
     totalExpansionSignals: totalExpansion,
     perVertical,
@@ -392,7 +430,7 @@ export function getFederatedStats(): {
   const verticals: Record<string, VerticalScannerStats> = {};
   let totalExpansion = 0;
 
-  for (const verticalId of ACTIVE_VERTICAL_IDS) {
+  for (const verticalId of getAllActiveVerticalIds()) {
     const stats = getVerticalScanner(verticalId).getStats();
     verticals[verticalId] = stats;
     totalExpansion += stats.expansionSignals;
