@@ -23,7 +23,7 @@ Authorization: Bearer pf_live_xxxxxxxxxxxxx
 ## 4. Your First API Call
 
 ```bash
-curl -X POST https://api.cmpsbl.ai/api/v1/decode/process \
+curl -X POST https://api.cmpsbl.com/api/v1/decode/process \
   -H "Authorization: Bearer pf_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{"action": "process", "payload": {"input": "Hello, CMPSBL"}}'
