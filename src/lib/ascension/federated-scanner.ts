@@ -138,6 +138,17 @@ const VERTICAL_DOMAIN_VOCABULARY: Record<string, Record<string, RegExp>> = {
   },
 };
 
+/**
+ * Register domain vocabulary for a dynamically instantiated vertical.
+ * Called by GENESIS during vertical instantiation.
+ */
+export function registerDomainVocabulary(
+  verticalId: string,
+  vocabulary: Record<string, RegExp>,
+): void {
+  VERTICAL_DOMAIN_VOCABULARY[verticalId] = vocabulary;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §4 — FEDERATED SIGNAL STORE
 // ═══════════════════════════════════════════════════════════════════════════════
