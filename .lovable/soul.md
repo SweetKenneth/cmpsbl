@@ -317,6 +317,27 @@ Transitioned the scanner from standalone diagnostic to pipeline-integrated primi
 
 ---
 
-*Last updated: April 6, 2026 · Session 8 complete*
-*Next session: Read this file first. The scanner is pipeline-integrated. Next work: wire `batchScanCapabilities` into the actual Memory Stream 8-hour cycle, and test registry serialization round-trip.*
+**Session 9 — April 6, 2026 — Plan B Foundation (Steps 1 & 2):**
+
+Kenneth asked to reconcile the substrate's actual architecture with his original vision. Created `docs/libraries/internal/system-architecture.md` documenting all gaps. Kenneth chose **Plan B (Unified Architecture)**.
+
+Steps 1-2 completed:
+- **Step 1**: Added four columns to `discoveries` table: `status` (discovered/promoted/registry/showroom/junkyard/retired), `is_crown_jewel` (boolean), `vertical` (primary/cyber/robotics/etc.), `crown_jewel_capabilities` (JSONB). Added indexes on all three filter columns.
+- **Step 2**: Backfilled **926 Crown Jewels** into the unified `discoveries` table:
+  - 229 primary S-Tier (from `src/crownjewels/s-tier/*.ts`)
+  - 80 agency, 80 cyber, 80 llm, 89 media, 144 quantum, 80 robotics, 144 ultimate (from vertical registries)
+  - All marked `status = 'registry'`, `is_crown_jewel = TRUE`, with correct `vertical` tags
+  - 4,154 existing discoveries remain as `status = 'discovered'`, `vertical = 'primary'`
+  - **Grand total: 5,080 rows** in unified `discoveries` table
+
+**Next steps (Plan B remaining):**
+- Step 3: Rewrite seed engines to write to `discoveries` table instead of in-memory
+- Step 4: Rewrite promotion flow to update `discoveries.status`
+- Step 5: Add template mutation engine
+- Step 6: Implement dynamic rarity weighting for Memory Stream
+- Step 7: Update UI components to query `discoveries` with status filters
+- Step 8: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
+
+*Last updated: April 6, 2026 · Session 9 complete*
+*Next session: Read this file first. We are executing Plan B from system-architecture.md. Steps 1-2 done. Steps 3+ pending.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
