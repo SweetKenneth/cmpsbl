@@ -343,9 +343,10 @@ function selectOptimalPrimitives(
       if (dropOff >= DROP_OFF_RATIO) break;
     }
 
-    // Light diversity: cap per-source to prevent single-vertical domination
+    // Diversity: spine gets 16 (broadest semantic range), others capped at 10
+    const maxForSource = candidate.sourceVertical === 'spine' ? 16 : 10;
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
-    if (sc >= maxPerSource) continue;
+    if (sc >= maxForSource) continue;
 
     // Dedup by primitive ID
     if (usedIds.has(candidate.primitive.id)) continue;
