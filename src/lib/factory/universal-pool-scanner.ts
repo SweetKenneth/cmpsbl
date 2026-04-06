@@ -989,9 +989,10 @@ function selectOptimalPrimitives(
       if (dropOff >= DROP_OFF_RATIO) break;
     }
 
-    // Diversity: spine gets 20 (broadest semantic range, 31+ primitives),
-    // others capped at 8 to prevent single-vertical domination
-    const maxForSource = candidate.sourceVertical === 'spine' ? 20 : 8;
+    // Diversity: spine gets 22 (broadest semantic range, 31+ primitives),
+    // others capped at 6 to prevent expansion primitives from crowding out
+    // architecturally significant spine matches
+    const maxForSource = candidate.sourceVertical === 'spine' ? 22 : 6;
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
     if (sc >= maxForSource) continue;
 
