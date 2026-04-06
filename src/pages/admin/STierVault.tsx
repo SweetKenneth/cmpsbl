@@ -33,6 +33,7 @@ import {
 } from "@/lib/export/universal-adapter";
 import { contextFromDiscovery, type SynthesisContext } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
+import { useDiscoveryCounts } from "@/hooks/useDiscoveryCounts";
 import { toast } from "sonner";
 import { usePricingEngine } from "@/hooks/usePricingEngine";
 import { formatPrice } from "@/lib/foundry/pricing-engine";
@@ -134,7 +135,7 @@ interface PromotedDiscovery {
 
 // ─── Analytics Summary Panel ────────────────────────────────────────
 
-function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STierEntry[]; promoted: PromotedDiscovery[] }) {
+function AnalyticsSummary({ registryEntries, promoted, liveCounts }: { registryEntries: STierEntry[]; promoted: PromotedDiscovery[]; liveCounts?: { total: number; registry: number; showroom: number; junkyard: number; crownJewels: number; aTier: number; memoryStreamPool: number; mutations: number } }) {
   const stats = useMemo(() => {
     // Registry stats
     const byModule: Record<string, number> = {};
@@ -180,14 +181,14 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
       <Card className="border-border/50 hover:border-primary/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{registryEntries.length + promoted.length}</div>
-          <div className="text-[10px] text-muted-foreground">Total Capabilities</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-foreground">{liveCounts?.total ?? (registryEntries.length + promoted.length)}</div>
+          <div className="text-[10px] text-muted-foreground">Total Discoveries</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-neon-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold font-mono tabular-nums text-neon-amber">{promoted.length}</div>
-          <div className="text-[10px] text-muted-foreground">Discovered</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-neon-amber">{liveCounts?.memoryStreamPool ?? promoted.length}</div>
+          <div className="text-[10px] text-muted-foreground">Memory Stream Pool</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-neon-green/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
@@ -532,20 +533,8 @@ export default function STierVault() {
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
   const [promoting, setPromoting] = useState(false);
 
-  // Live registry count from discoveries table (replaces hardcoded 233)
-  const [liveRegistryCount, setLiveRegistryCount] = useState<number>(entries.length);
-
-  const loadRegistryCount = useCallback(async () => {
-    try {
-      const { count, error } = await supabase
-        .from('discoveries')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'registry');
-      if (!error && count !== null) setLiveRegistryCount(count);
-    } catch {
-      // Fallback to static count
-    }
-  }, []);
+  // Live discovery counts from the discoveries table (replaces all hardcoded counts)
+  const { counts: liveCounts, refresh: refreshLiveCounts } = useDiscoveryCounts();
 
   // A-Tier vault state
   const [aTierVerticalFilter, setATierVerticalFilter] = useState<string | null>(null);
@@ -613,7 +602,7 @@ export default function STierVault() {
   const [discTierFilter, setDiscTierFilter] = useState<string | null>(null);
   const [discModuleFilter, setDiscModuleFilter] = useState<string | null>(null);
 
-  useEffect(() => { loadPromoted(); loadRegistryCount(); }, [loadRegistryCount]);
+  useEffect(() => { loadPromoted(); }, []);
 
   const loadPromoted = async () => {
     setLoadingPromoted(true);
@@ -779,7 +768,7 @@ export default function STierVault() {
 
       toast.success(`"${d.name}" promoted to registry — live count updated`);
       await loadPromoted();
-      await loadRegistryCount();
+      await refreshLiveCounts();
     } catch (err: any) {
       toast.error(`Promotion failed: ${err.message}`);
     } finally {
@@ -1018,7 +1007,7 @@ export default function STierVault() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">Crown Jewel Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {liveRegistryCount + promoted.length + aTierVault.totalArtifacts} total capabilities • {liveRegistryCount} S-Tier registry • {promoted.length} discovered • {aTierVault.totalArtifacts} A-Tier • 24 export languages
+                {liveCounts.total} total capabilities • {liveCounts.registry} registry • {liveCounts.showroom} showroom • {liveCounts.crownJewels} Crown Jewels • {liveCounts.aTier} A-Tier
               </p>
             </div>
           </div>
@@ -1044,7 +1033,7 @@ export default function STierVault() {
         </div>
 
         {/* Analytics Summary */}
-        {showAnalytics && <AnalyticsSummary registryEntries={entries} promoted={promoted} />}
+        {showAnalytics && <AnalyticsSummary registryEntries={entries} promoted={promoted} liveCounts={liveCounts} />}
 
         {/* Search */}
         <div className="relative">

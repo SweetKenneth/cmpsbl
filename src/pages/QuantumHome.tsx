@@ -22,13 +22,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-
-const Q_STATS = [
-  { label: "Quantum Algorithms Loaded", value: "860", icon: Atom },
-  { label: "Entanglement Channels", value: "16", icon: Orbit },
-  { label: "Custom Primitives", value: "16", icon: CircuitBoard },
-  { label: "Capabilities Active", value: "85+", icon: Layers },
-];
+import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
 const ENGINE_DATA = [
   { id: "HADRON", name: "HADRON", desc: "Particle collision simulation — Monte Carlo integration, Feynman diagram evaluation, jet clustering", icon: Atom, color: "hsl(270 90% 60%)" },
@@ -63,6 +57,13 @@ const CROWN_JEWEL_HIGHLIGHTS = [
 export default function QuantumHome() {
   useSSORelay();
   const navigate = useNavigate();
+  const { total, crownJewels } = useVerticalCounts('quantum');
+  const Q_STATS = [
+    { label: "Quantum Algorithms Loaded", value: "860", icon: Atom },
+    { label: "Entanglement Channels", value: "16", icon: Orbit },
+    { label: "Custom Primitives", value: "16", icon: CircuitBoard },
+    { label: "Capabilities Active", value: String(total || '85+'), icon: Layers },
+  ];
 
   return (
     <>

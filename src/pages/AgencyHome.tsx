@@ -23,6 +23,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
 /* ─── Theme Constants ─── */
 const ACCENT = 'hsl(35 90% 55%)';
@@ -33,13 +34,6 @@ const BORDER = 'hsl(30 15% 14%)';
 const TEXT_PRIMARY = 'hsl(35 10% 92%)';
 const TEXT_SECONDARY = 'hsl(30 15% 45%)';
 const WARM = 'hsl(40 100% 55%)';
-
-const AGENCY_STATS = [
-  { label: "Agent Capabilities Active", value: "100+", icon: Activity },
-  { label: "Agency Primitives", value: "16", icon: Layers },
-  { label: "Crown Jewels Deployed", value: "80", icon: Sparkles },
-  { label: "Core Competencies", value: "8", icon: Target },
-];
 
 const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
   { id: "MANDATE", name: "MANDATE", desc: "Mission decomposition — recursive goal breakdown, dependency graphing, priority scoring, deadline-aware scheduling, autonomous replanning", icon: Target, color: "hsl(35 90% 55%)" },
@@ -85,6 +79,13 @@ const CROWN_JEWEL_HIGHLIGHTS = [
 export default function AgencyHome() {
   useSSORelay();
   const navigate = useNavigate();
+  const { total, crownJewels } = useVerticalCounts('agency');
+  const AGENCY_STATS = [
+    { label: "Agent Capabilities Active", value: String(total || '100+'), icon: Activity },
+    { label: "Agency Primitives", value: "16", icon: Layers },
+    { label: "Crown Jewels Deployed", value: String(crownJewels || '80'), icon: Sparkles },
+    { label: "Core Competencies", value: "8", icon: Target },
+  ];
 
   return (
     <>
