@@ -187,8 +187,8 @@ function AnalyticsSummary({ registryEntries, promoted, liveCounts }: { registryE
       </Card>
       <Card className="border-border/50 hover:border-neon-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold font-mono tabular-nums text-neon-amber">{promoted.length}</div>
-          <div className="text-[10px] text-muted-foreground">Discovered</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-neon-amber">{liveCounts?.memoryStreamPool ?? promoted.length}</div>
+          <div className="text-[10px] text-muted-foreground">Memory Stream Pool</div>
         </CardContent>
       </Card>
       <Card className="border-border/50 hover:border-neon-green/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
