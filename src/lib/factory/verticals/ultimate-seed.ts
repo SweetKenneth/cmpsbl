@@ -293,4 +293,4 @@ export function getUltimateSeedSummary() {
   if (!_seedResult) return { total: 0, vault: 0, showroom: 0, junkyard: 0, memoryStream: 0 };
   return { total: _seedResult.totalDiscoveries, vault: _seedResult.vaultCount, showroom: _seedResult.showroomCount, junkyard: _seedResult.junkyardCount, memoryStream: _seedResult.memoryStreamCount };
 }
-export function resetUltimateSeed(): void { _seedResult = null; ULTIMATE_VAULT.clear(); ULTIMATE_MEMORY_STREAM_POOL.length = 0; }
+export function resetUltimateSeed(): void { _seedResult = null; }

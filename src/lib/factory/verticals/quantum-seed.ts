@@ -350,6 +350,4 @@ export function getQuantumSeedSummary(): {
  */
 export function resetQuantumSeed(): void {
   _seedResult = null;
-  QUANTUM_VAULT.clear();
-  QUANTUM_MEMORY_STREAM_POOL.length = 0;
 }

@@ -12,7 +12,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../../factory/discovery-retirement';
+import { routeDiscovery } from '../../factory/foundry-engine';
 import { routeDiscovery } from '../../factory/foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 import { getMediaEngines, getMediaAgents } from './media';
