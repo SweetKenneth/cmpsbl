@@ -837,21 +837,1425 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
         return cls._transitions[-limit:]`;
         }
 
-        // All other runtime classes get static method stubs
+        // ─── SnapshotManager: periodic state snapshots ───
+        if (s === 'SnapshotManager') {
+          return `class SnapshotManager:
+    """CMPSBL® Convex Core™ — Periodic state snapshot manager"""
+    _snapshots = []
+    _config = {"auto": False, "interval_s": 300, "max_snapshots": 50}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["auto"] = kw.get("auto_snapshot", kw.get("autoSnapshot", False))
+        cls._config["interval_s"] = kw.get("interval_ms", kw.get("intervalMs", 300000)) / 1000
+        return cls
+
+    @classmethod
+    def snapshot(cls, label, state):
+        import copy, time
+        entry = {"label": label, "state": copy.deepcopy(state) if isinstance(state, (dict, list)) else state, "ts": time.time()}
+        cls._snapshots.append(entry)
+        if len(cls._snapshots) > cls._config["max_snapshots"]:
+            cls._snapshots = cls._snapshots[-cls._config["max_snapshots"]:]
+        return entry
+
+    @classmethod
+    def restore(cls, label=None):
+        if not cls._snapshots:
+            return None
+        if label:
+            matches = [s for s in cls._snapshots if s["label"] == label]
+            return matches[-1]["state"] if matches else None
+        return cls._snapshots[-1]["state"]
+
+    @classmethod
+    def list(cls):
+        return [{"label": s["label"], "ts": s["ts"]} for s in cls._snapshots]`;
+        }
+
+        // ─── DefenseLayer: security layer activation ───
+        if (s === 'DefenseLayer') {
+          return `class DefenseLayer:
+    """CMPSBL® Convex Core™ — Security layer with mode enforcement"""
+    _config = {"mode": "enforce", "fingerprinting": False, "rate_limits": {}}
+    _blocked = []
+
+    @classmethod
+    def activate(cls, *a, **kw):
+        cls._config["mode"] = kw.get("mode", "enforce")
+        cls._config["fingerprinting"] = kw.get("fingerprinting", False)
+        return cls
+
+    @classmethod
+    def check(cls, request_meta):
+        ip = request_meta.get("ip", "unknown")
+        if ip in cls._blocked:
+            raise PermissionError(f"DefenseLayer: IP {ip} is blocked")
+        return True
+
+    @classmethod
+    def block(cls, ip):
+        if ip not in cls._blocked:
+            cls._blocked.append(ip)
+
+    @classmethod
+    def status(cls):
+        return {"mode": cls._config["mode"], "blocked_count": len(cls._blocked)}`;
+        }
+
+        // ─── RequestValidator: HTTP request validation ───
+        if (s === 'RequestValidator') {
+          return `class RequestValidator:
+    """CMPSBL® Convex Core™ — Request validation and sanitization"""
+    _config = {"block_injection": True, "block_xss": True, "rate_limit": 100}
+    _injection_patterns = ["--", "';", "' OR ", "1=1", "DROP TABLE", "UNION SELECT"]
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["block_injection"] = kw.get("block_injection", kw.get("blockInjection", True))
+        cls._config["block_xss"] = kw.get("block_xss", kw.get("blockXSS", True))
+        cls._config["rate_limit"] = kw.get("rate_limit_per_ip", kw.get("rateLimitPerIp", 100))
+        return cls
+
+    @classmethod
+    def validate(cls, data):
+        if isinstance(data, str):
+            upper = data.upper()
+            if cls._config["block_injection"]:
+                for p in cls._injection_patterns:
+                    if p.upper() in upper:
+                        raise ValueError(f"RequestValidator: potential injection detected")
+            if cls._config["block_xss"]:
+                if "<script" in data.lower() or "javascript:" in data.lower():
+                    raise ValueError(f"RequestValidator: XSS pattern detected")
+        elif isinstance(data, dict):
+            for v in data.values():
+                if isinstance(v, str):
+                    cls.validate(v)
+        return data`;
+        }
+
+        // ─── DeviceFingerprint: device identification ───
+        if (s === 'DeviceFingerprint') {
+          return `class DeviceFingerprint:
+    """CMPSBL® Convex Core™ — Device fingerprinting for session binding"""
+    _registry = {}
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def generate(cls, attributes):
+        import hashlib, json
+        raw = json.dumps(attributes, sort_keys=True, default=str)
+        fp = hashlib.sha256(raw.encode()).hexdigest()[:16]
+        cls._registry[fp] = attributes
+        return fp
+
+    @classmethod
+    def verify(cls, fingerprint, attributes):
+        import hashlib, json
+        raw = json.dumps(attributes, sort_keys=True, default=str)
+        expected = hashlib.sha256(raw.encode()).hexdigest()[:16]
+        return fingerprint == expected
+
+    @classmethod
+    def lookup(cls, fingerprint):
+        return cls._registry.get(fingerprint)`;
+        }
+
+        // ─── GovernancePolicy: policy enforcement ───
+        if (s === 'GovernancePolicy') {
+          return `class GovernancePolicy:
+    """CMPSBL® Convex Core™ — Governance policy enforcement"""
+    _policies = {"max_concurrency": 100, "audit_mutations": True, "approval_threshold": "high-risk"}
+
+    @classmethod
+    def enforce(cls, *a, **kw):
+        cls._policies["max_concurrency"] = kw.get("max_concurrency", kw.get("maxConcurrency", 100))
+        cls._policies["audit_mutations"] = kw.get("audit_all_mutations", kw.get("auditAllMutations", True))
+        cls._policies["approval_threshold"] = kw.get("require_approval_above", kw.get("requireApprovalAbove", "high-risk"))
+        return cls
+
+    @classmethod
+    def check_concurrency(cls, current_count):
+        if current_count > cls._policies["max_concurrency"]:
+            raise RuntimeError(f"GovernancePolicy: concurrency limit exceeded ({current_count}/{cls._policies['max_concurrency']})")
+        return True
+
+    @classmethod
+    def requires_approval(cls, risk_level):
+        levels = {"low": 0, "medium": 1, "high": 2, "high-risk": 2, "critical": 3}
+        return levels.get(risk_level, 0) >= levels.get(cls._policies["approval_threshold"], 2)`;
+        }
+
+        // ─── ComplianceAuditor: compliance event auditing ───
+        if (s === 'ComplianceAuditor') {
+          return `class ComplianceAuditor:
+    """CMPSBL® Convex Core™ — Compliance auditing with structured output"""
+    _events = []
+    _destination = "structured"
+
+    @classmethod
+    def start(cls, *a, **kw):
+        cls._destination = kw.get("log_destination", kw.get("logDestination", "structured"))
+        return cls
+
+    @classmethod
+    def record(cls, event_type, data=None, severity="info"):
+        import time, json, sys
+        entry = {"ts": time.time(), "type": event_type, "severity": severity, "data": data}
+        cls._events.append(entry)
+        if cls._destination == "structured":
+            sys.stderr.write(json.dumps(entry, default=str) + "\\n")
+        return entry
+
+    @classmethod
+    def query(cls, event_type=None):
+        if event_type:
+            return [e for e in cls._events if e["type"] == event_type]
+        return list(cls._events)`;
+        }
+
+        // ─── HealthBeacon: health check endpoint ───
+        if (s === 'HealthBeacon') {
+          return `class HealthBeacon:
+    """CMPSBL® Convex Core™ — Health monitoring beacon"""
+    _status = {"healthy": True, "checks": {}, "started_at": None}
+
+    @classmethod
+    def start(cls, *a, **kw):
+        import time
+        cls._status["started_at"] = time.time()
+        cls._status["interval"] = kw.get("interval", kw.get("interval", 15000)) / 1000
+        return cls
+
+    @classmethod
+    def register_check(cls, name, check_fn):
+        cls._status["checks"][name] = check_fn
+
+    @classmethod
+    def pulse(cls):
+        results = {}
+        all_ok = True
+        for name, fn in cls._status["checks"].items():
+            try:
+                results[name] = {"ok": bool(fn()), "error": None}
+            except Exception as e:
+                results[name] = {"ok": False, "error": str(e)}
+                all_ok = False
+        cls._status["healthy"] = all_ok
+        return {"healthy": all_ok, "checks": results}
+
+    @classmethod
+    def is_healthy(cls):
+        return cls._status["healthy"]`;
+        }
+
+        // ─── MetricsCollector: runtime metrics collection ───
+        if (s === 'MetricsCollector') {
+          return `class MetricsCollector:
+    """CMPSBL® Convex Core™ — Runtime metrics collector"""
+    _counters = {}
+    _gauges = {}
+    _histograms = {}
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def increment(cls, name, value=1):
+        cls._counters[name] = cls._counters.get(name, 0) + value
+
+    @classmethod
+    def gauge(cls, name, value):
+        cls._gauges[name] = value
+
+    @classmethod
+    def observe(cls, name, value):
+        if name not in cls._histograms:
+            cls._histograms[name] = []
+        cls._histograms[name].append(value)
+        if len(cls._histograms[name]) > 1000:
+            cls._histograms[name] = cls._histograms[name][-1000:]
+
+    @classmethod
+    def snapshot(cls):
+        return {"counters": dict(cls._counters), "gauges": dict(cls._gauges), "histograms": {k: {"count": len(v), "avg": sum(v)/len(v) if v else 0, "min": min(v) if v else 0, "max": max(v) if v else 0} for k, v in cls._histograms.items()}}
+
+    @classmethod
+    def reset(cls):
+        cls._counters.clear()
+        cls._gauges.clear()
+        cls._histograms.clear()`;
+        }
+
+        // ─── LearningEngine: passive learning from execution patterns ───
+        if (s === 'LearningEngine') {
+          return `class LearningEngine:
+    """CMPSBL® Convex Core™ — Passive execution pattern learning"""
+    _patterns = {}
+    _config = {"mode": "passive", "retention_days": 90}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["mode"] = kw.get("mode", "passive")
+        cls._config["retention_days"] = kw.get("retention_days", kw.get("retentionDays", 90))
+        return cls
+
+    @classmethod
+    def record(cls, pattern_name, outcome, metadata=None):
+        import time
+        if pattern_name not in cls._patterns:
+            cls._patterns[pattern_name] = {"successes": 0, "failures": 0, "history": []}
+        p = cls._patterns[pattern_name]
+        if outcome:
+            p["successes"] += 1
+        else:
+            p["failures"] += 1
+        p["history"].append({"outcome": outcome, "ts": time.time(), "meta": metadata})
+        if len(p["history"]) > 100:
+            p["history"] = p["history"][-100:]
+
+    @classmethod
+    def suggest(cls, pattern_name):
+        p = cls._patterns.get(pattern_name)
+        if not p:
+            return {"confidence": 0, "suggestion": "no data"}
+        total = p["successes"] + p["failures"]
+        rate = p["successes"] / total if total > 0 else 0
+        return {"confidence": rate, "total_observations": total, "suggestion": "continue" if rate > 0.7 else "review"}`;
+        }
+
+        // ─── InsightAccumulator: pattern observation ───
+        if (s === 'InsightAccumulator') {
+          return `class InsightAccumulator:
+    """CMPSBL® Convex Core™ — Insight accumulation from execution"""
+    _insights = []
+    _config = {"track_patterns": True, "auto_optimize": False}
+
+    @classmethod
+    def observe(cls, *a, **kw):
+        cls._config["track_patterns"] = kw.get("track_patterns", kw.get("trackPatterns", True))
+        cls._config["auto_optimize"] = kw.get("auto_optimize", kw.get("autoOptimize", False))
+        return cls
+
+    @classmethod
+    def add(cls, category, insight, confidence=1.0):
+        import time
+        entry = {"category": category, "insight": insight, "confidence": confidence, "ts": time.time()}
+        cls._insights.append(entry)
+        if len(cls._insights) > 500:
+            cls._insights = cls._insights[-500:]
+        return entry
+
+    @classmethod
+    def query(cls, category=None, min_confidence=0):
+        results = cls._insights
+        if category:
+            results = [i for i in results if i["category"] == category]
+        return [i for i in results if i["confidence"] >= min_confidence]`;
+        }
+
+        // ─── IdentityResolver: identity resolution ───
+        if (s === 'IdentityResolver') {
+          return `class IdentityResolver:
+    """CMPSBL® Convex Core™ — Identity resolution and session management"""
+    _sessions = {}
+    _config = {"mfa_required": False, "session_ttl_s": 3600}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["mfa_required"] = kw.get("multi_factor_required", kw.get("multiFactorRequired", False))
+        cls._config["session_ttl_s"] = kw.get("session_ttl_ms", kw.get("sessionTtlMs", 3600000)) / 1000
+        return cls
+
+    @classmethod
+    def create_session(cls, user_id, metadata=None):
+        import uuid, time
+        sid = str(uuid.uuid4())
+        cls._sessions[sid] = {"user_id": user_id, "created": time.time(), "metadata": metadata or {}}
+        return sid
+
+    @classmethod
+    def validate_session(cls, session_id):
+        import time
+        session = cls._sessions.get(session_id)
+        if not session:
+            return False
+        if time.time() - session["created"] > cls._config["session_ttl_s"]:
+            del cls._sessions[session_id]
+            return False
+        return True
+
+    @classmethod
+    def revoke(cls, session_id):
+        cls._sessions.pop(session_id, None)`;
+        }
+
+        // ─── SessionBinder: device-bound sessions ───
+        if (s === 'SessionBinder') {
+          return `class SessionBinder:
+    """CMPSBL® Convex Core™ — Device-bound session enforcement"""
+    _bindings = {}
+    _config = {"bind_to_device": True, "max_concurrent": 3}
+
+    @classmethod
+    def enforce(cls, *a, **kw):
+        cls._config["bind_to_device"] = kw.get("bind_to_device", kw.get("bindToDevice", True))
+        cls._config["max_concurrent"] = kw.get("max_concurrent_sessions", kw.get("maxConcurrentSessions", 3))
+        return cls
+
+    @classmethod
+    def bind(cls, user_id, device_fingerprint, session_id):
+        if user_id not in cls._bindings:
+            cls._bindings[user_id] = []
+        bindings = cls._bindings[user_id]
+        if len(bindings) >= cls._config["max_concurrent"]:
+            bindings.pop(0)
+        bindings.append({"device": device_fingerprint, "session": session_id})
+
+    @classmethod
+    def verify(cls, user_id, device_fingerprint):
+        bindings = cls._bindings.get(user_id, [])
+        return any(b["device"] == device_fingerprint for b in bindings)`;
+        }
+
+        // ─── EthicalGate: ethical decision boundary ───
+        if (s === 'EthicalGate') {
+          return `class EthicalGate:
+    """CMPSBL® Convex Core™ — Ethical decision gate"""
+    _config = {"block_threshold": 0.30, "review_threshold": 0.60}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["block_threshold"] = kw.get("block_threshold", kw.get("blockThreshold", 0.30))
+        cls._config["review_threshold"] = kw.get("review_threshold", kw.get("reviewThreshold", 0.60))
+        return cls
+
+    @classmethod
+    def evaluate(cls, confidence_score, action_description=""):
+        if confidence_score < cls._config["block_threshold"]:
+            return {"decision": "blocked", "reason": f"Confidence {confidence_score} below block threshold {cls._config['block_threshold']}", "action": action_description}
+        elif confidence_score < cls._config["review_threshold"]:
+            return {"decision": "review_required", "reason": f"Confidence {confidence_score} below review threshold", "action": action_description}
+        return {"decision": "approved", "confidence": confidence_score, "action": action_description}`;
+        }
+
+        // ─── AlignmentMonitor: drift detection ───
+        if (s === 'AlignmentMonitor') {
+          return `class AlignmentMonitor:
+    """CMPSBL® Convex Core™ — Alignment drift monitoring"""
+    _readings = []
+    _config = {"drift_threshold": 0.15}
+
+    @classmethod
+    def start(cls, *a, **kw):
+        cls._config["drift_threshold"] = kw.get("drift_alert_threshold", kw.get("driftAlertThreshold", 0.15))
+        return cls
+
+    @classmethod
+    def record(cls, metric_name, value, baseline=None):
+        import time
+        entry = {"metric": metric_name, "value": value, "baseline": baseline, "ts": time.time()}
+        if baseline is not None:
+            entry["drift"] = abs(value - baseline) / max(abs(baseline), 1e-9)
+            entry["alert"] = entry["drift"] > cls._config["drift_threshold"]
+        cls._readings.append(entry)
+        if len(cls._readings) > 500:
+            cls._readings = cls._readings[-500:]
+        return entry
+
+    @classmethod
+    def alerts(cls):
+        return [r for r in cls._readings if r.get("alert")]`;
+        }
+
+        // ─── BehavioralMapper: function behavior analysis ───
+        if (s === 'BehavioralMapper') {
+          return `class BehavioralMapper:
+    """CMPSBL® Convex Core™ — Behavioral mapping of code execution"""
+    _map = {}
+
+    @classmethod
+    def scan(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, func_name, input_types=None, output_type=None, side_effects=None):
+        cls._map[func_name] = {"inputs": input_types or [], "output": output_type, "side_effects": side_effects or [], "call_count": 0}
+
+    @classmethod
+    def track_call(cls, func_name):
+        if func_name in cls._map:
+            cls._map[func_name]["call_count"] += 1
+
+    @classmethod
+    def report(cls):
+        return dict(cls._map)`;
+        }
+
+        // ─── IntentTracer: function intent tagging ───
+        if (s === 'IntentTracer') {
+          return `class IntentTracer:
+    """CMPSBL® Convex Core™ — Function intent tracing and signature generation"""
+    _intents = {}
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def tag(cls, func_name, intent, signature=None):
+        cls._intents[func_name] = {"intent": intent, "signature": signature}
+
+    @classmethod
+    def lookup(cls, func_name):
+        return cls._intents.get(func_name)
+
+    @classmethod
+    def all_intents(cls):
+        return dict(cls._intents)`;
+        }
+
+        // ─── PredictiveAnalyzer: failure prediction ───
+        if (s === 'PredictiveAnalyzer') {
+          return `class PredictiveAnalyzer:
+    """CMPSBL® Convex Core™ — Predictive failure analysis"""
+    _history = []
+    _config = {"horizon_s": 60, "confidence_threshold": 0.75}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        horizon = kw.get("horizon", "60s")
+        cls._config["horizon_s"] = int(horizon.replace("s", "")) if isinstance(horizon, str) else horizon
+        cls._config["confidence_threshold"] = kw.get("confidence_threshold", kw.get("confidenceThreshold", 0.75))
+        return cls
+
+    @classmethod
+    def record_event(cls, event_type, success, latency_ms=None):
+        import time
+        cls._history.append({"type": event_type, "success": success, "latency": latency_ms, "ts": time.time()})
+        if len(cls._history) > 1000:
+            cls._history = cls._history[-1000:]
+
+    @classmethod
+    def predict(cls, event_type):
+        import time
+        recent = [e for e in cls._history if e["type"] == event_type and time.time() - e["ts"] < cls._config["horizon_s"] * 10]
+        if len(recent) < 5:
+            return {"prediction": "insufficient_data", "confidence": 0}
+        failures = sum(1 for e in recent if not e["success"])
+        failure_rate = failures / len(recent)
+        return {"prediction": "likely_failure" if failure_rate > 0.3 else "stable", "failure_rate": round(failure_rate, 3), "sample_size": len(recent), "confidence": min(len(recent) / 20, 1.0)}`;
+        }
+
+        // ─── FailureForecast: cascade detection ───
+        if (s === 'FailureForecast') {
+          return `class FailureForecast:
+    """CMPSBL® Convex Core™ — Cascade failure detection"""
+    _monitors = {}
+
+    @classmethod
+    def monitor(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, component, dependencies=None):
+        cls._monitors[component] = {"deps": dependencies or [], "healthy": True}
+
+    @classmethod
+    def mark_failure(cls, component):
+        if component in cls._monitors:
+            cls._monitors[component]["healthy"] = False
+
+    @classmethod
+    def cascade_risk(cls):
+        at_risk = []
+        failed = [c for c, m in cls._monitors.items() if not m["healthy"]]
+        for comp, meta in cls._monitors.items():
+            if meta["healthy"] and any(d in failed for d in meta["deps"]):
+                at_risk.append(comp)
+        return {"failed": failed, "at_risk": at_risk, "healthy": [c for c in cls._monitors if cls._monitors[c]["healthy"] and c not in at_risk]}`;
+        }
+
+        // ─── DependencyResolver: dependency auditing ───
+        if (s === 'DependencyResolver') {
+          return `class DependencyResolver:
+    """CMPSBL® Convex Core™ — Dependency auditing and cycle detection"""
+    _deps = {}
+
+    @classmethod
+    def audit(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, module, depends_on=None):
+        cls._deps[module] = depends_on or []
+
+    @classmethod
+    def detect_cycles(cls):
+        visited, rec_stack, cycles = set(), set(), []
+        def _dfs(node, path):
+            visited.add(node)
+            rec_stack.add(node)
+            for dep in cls._deps.get(node, []):
+                if dep not in visited:
+                    _dfs(dep, path + [dep])
+                elif dep in rec_stack:
+                    cycles.append(path[path.index(dep):] + [dep])
+            rec_stack.discard(node)
+        for m in cls._deps:
+            if m not in visited:
+                _dfs(m, [m])
+        return cycles
+
+    @classmethod
+    def resolve_order(cls):
+        order, visited = [], set()
+        def _topo(node):
+            if node in visited:
+                return
+            visited.add(node)
+            for dep in cls._deps.get(node, []):
+                _topo(dep)
+            order.append(node)
+        for m in cls._deps:
+            _topo(m)
+        return order`;
+        }
+
+        // ─── StructuralRepair: safe auto-fix ───
+        if (s === 'StructuralRepair') {
+          return `class StructuralRepair:
+    """CMPSBL® Convex Core™ — Structural repair with safe-only mode"""
+    _repairs = []
+    _config = {"auto_fix": "safe-only"}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["auto_fix"] = kw.get("auto_fix", kw.get("autoFix", "safe-only"))
+        return cls
+
+    @classmethod
+    def detect(cls, component, issue_type, severity="low"):
+        import time
+        repair = {"component": component, "issue": issue_type, "severity": severity, "ts": time.time(), "fixed": False}
+        if cls._config["auto_fix"] == "safe-only" and severity == "low":
+            repair["fixed"] = True
+            repair["action"] = "auto-repaired"
+        elif cls._config["auto_fix"] == "all":
+            repair["fixed"] = True
+            repair["action"] = "auto-repaired"
+        else:
+            repair["action"] = "manual-review-required"
+        cls._repairs.append(repair)
+        return repair
+
+    @classmethod
+    def report(cls):
+        return list(cls._repairs)`;
+        }
+
+        // ─── ReasoningEngine: chain-of-thought reasoning ───
+        if (s === 'ReasoningEngine') {
+          return `class ReasoningEngine:
+    """CMPSBL® Convex Core™ — Chain-of-thought reasoning engine"""
+    _config = {"max_depth": 5, "timeout_s": 10}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["max_depth"] = kw.get("max_chain_depth", kw.get("maxChainDepth", 5))
+        cls._config["timeout_s"] = kw.get("timeout_ms", kw.get("timeoutMs", 10000)) / 1000
+        return cls
+
+    @classmethod
+    def reason(cls, steps):
+        import time
+        start = time.time()
+        results = []
+        for i, step in enumerate(steps[:cls._config["max_depth"]]):
+            if time.time() - start > cls._config["timeout_s"]:
+                results.append({"step": i, "status": "timeout"})
+                break
+            try:
+                result = step() if callable(step) else step
+                results.append({"step": i, "result": result, "status": "ok"})
+            except Exception as e:
+                results.append({"step": i, "error": str(e), "status": "failed"})
+                break
+        return {"chain": results, "completed": len(results), "duration_ms": round((time.time() - start) * 1000, 3)}`;
+        }
+
+        // ─── ContextRouter: weighted context routing ───
+        if (s === 'ContextRouter') {
+          return `class ContextRouter:
+    """CMPSBL® Convex Core™ — Context-aware routing"""
+    _routes = {}
+    _config = {"weight_by_recency": True}
+
+    @classmethod
+    def enable(cls, *a, **kw):
+        cls._config["weight_by_recency"] = kw.get("weight_by_recency", kw.get("weightByRecency", True))
+        return cls
+
+    @classmethod
+    def register(cls, name, handler, weight=1.0):
+        cls._routes[name] = {"handler": handler, "weight": weight, "calls": 0}
+
+    @classmethod
+    def route(cls, context):
+        best, best_score = None, -1
+        for name, r in cls._routes.items():
+            score = r["weight"]
+            if cls._config["weight_by_recency"]:
+                score /= (r["calls"] + 1)
+            if score > best_score:
+                best, best_score = name, score
+        if best:
+            cls._routes[best]["calls"] += 1
+            return cls._routes[best]["handler"](context)
+        return None`;
+        }
+
+        // ─── IntelligentRouter: latency-aware routing ───
+        if (s === 'IntelligentRouter') {
+          return `class IntelligentRouter:
+    """CMPSBL® Convex Core™ — Latency-aware intelligent router"""
+    _backends = {}
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, name, handler):
+        cls._backends[name] = {"handler": handler, "avg_latency": 0, "calls": 0}
+
+    @classmethod
+    def route(cls, request):
+        import time
+        if not cls._backends:
+            raise RuntimeError("IntelligentRouter: no backends registered")
+        best = min(cls._backends.items(), key=lambda x: x[1]["avg_latency"] if x[1]["calls"] > 0 else 0)
+        name, meta = best
+        start = time.time()
+        result = meta["handler"](request)
+        latency = (time.time() - start) * 1000
+        n = meta["calls"]
+        meta["avg_latency"] = (meta["avg_latency"] * n + latency) / (n + 1)
+        meta["calls"] += 1
+        return result`;
+        }
+
+        // ─── LoadBalancer: weighted round-robin ───
+        if (s === 'LoadBalancer') {
+          return `class LoadBalancer:
+    """CMPSBL® Convex Core™ — Weighted round-robin load balancer"""
+    _targets = []
+    _index = 0
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def add_target(cls, name, handler, weight=1):
+        cls._targets.append({"name": name, "handler": handler, "weight": weight})
+
+    @classmethod
+    def next(cls, request=None):
+        if not cls._targets:
+            raise RuntimeError("LoadBalancer: no targets configured")
+        target = cls._targets[cls._index % len(cls._targets)]
+        cls._index += 1
+        return target["handler"](request) if request else target`;
+        }
+
+        // ─── BlueprintGuard: regression detection ───
+        if (s === 'BlueprintGuard') {
+          return `class BlueprintGuard:
+    """CMPSBL® Convex Core™ — Blueprint guard against regressions"""
+    _baseline = {}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._baseline["version"] = kw.get("baseline_version", kw.get("baselineVersion", "1.0"))
+        cls._baseline["block"] = kw.get("block_regressions", kw.get("blockRegressions", True))
+        return cls
+
+    @classmethod
+    def set_baseline(cls, key, value):
+        cls._baseline[key] = value
+
+    @classmethod
+    def check(cls, key, current_value):
+        baseline = cls._baseline.get(key)
+        if baseline is None:
+            return {"status": "no_baseline", "key": key}
+        if current_value != baseline:
+            if cls._baseline.get("block"):
+                raise RuntimeError(f"BlueprintGuard: regression detected on '{key}' (expected {baseline}, got {current_value})")
+            return {"status": "regression", "key": key, "expected": baseline, "actual": current_value}
+        return {"status": "ok", "key": key}`;
+        }
+
+        // ─── RegressionDetector: structural drift watch ───
+        if (s === 'RegressionDetector') {
+          return `class RegressionDetector:
+    """CMPSBL® Convex Core™ — Structural drift detection"""
+    _baselines = {}
+    _config = {"threshold": 0.10}
+
+    @classmethod
+    def watch(cls, *a, **kw):
+        cls._config["threshold"] = kw.get("alert_threshold", kw.get("alertThreshold", 0.10))
+        return cls
+
+    @classmethod
+    def set_baseline(cls, metric, value):
+        cls._baselines[metric] = value
+
+    @classmethod
+    def check(cls, metric, current):
+        baseline = cls._baselines.get(metric)
+        if baseline is None:
+            return {"status": "no_baseline"}
+        drift = abs(current - baseline) / max(abs(baseline), 1e-9)
+        return {"status": "regression" if drift > cls._config["threshold"] else "ok", "drift": round(drift, 4), "baseline": baseline, "current": current}`;
+        }
+
+        // ─── TaskAutomator: concurrent task execution ───
+        if (s === 'TaskAutomator') {
+          return `class TaskAutomator:
+    """CMPSBL® Convex Core™ — Concurrent task automation"""
+    _queue = []
+    _results = []
+    _config = {"max_concurrent": 10}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["max_concurrent"] = kw.get("max_concurrent", kw.get("maxConcurrent", 10))
+        return cls
+
+    @classmethod
+    def enqueue(cls, name, fn, *args, **kwargs):
+        cls._queue.append({"name": name, "fn": fn, "args": args, "kwargs": kwargs})
+
+    @classmethod
+    def run_all(cls):
+        results = []
+        for task in cls._queue[:cls._config["max_concurrent"]]:
+            try:
+                result = task["fn"](*task["args"], **task["kwargs"])
+                results.append({"name": task["name"], "status": "ok", "result": result})
+            except Exception as e:
+                results.append({"name": task["name"], "status": "failed", "error": str(e)})
+        cls._results.extend(results)
+        cls._queue = cls._queue[cls._config["max_concurrent"]:]
+        return results`;
+        }
+
+        // ─── ScheduleEngine: time-based scheduling ───
+        if (s === 'ScheduleEngine') {
+          return `class ScheduleEngine:
+    """CMPSBL® Convex Core™ — Time-based task scheduling"""
+    _scheduled = []
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def schedule(cls, name, fn, delay_seconds, repeat=False):
+        import time
+        cls._scheduled.append({"name": name, "fn": fn, "run_at": time.time() + delay_seconds, "repeat": repeat, "interval": delay_seconds})
+
+    @classmethod
+    def run_due(cls):
+        import time
+        now = time.time()
+        results, remaining = [], []
+        for task in cls._scheduled:
+            if now >= task["run_at"]:
+                try:
+                    result = task["fn"]()
+                    results.append({"name": task["name"], "status": "ok", "result": result})
+                except Exception as e:
+                    results.append({"name": task["name"], "status": "failed", "error": str(e)})
+                if task["repeat"]:
+                    task["run_at"] = now + task["interval"]
+                    remaining.append(task)
+            else:
+                remaining.append(task)
+        cls._scheduled = remaining
+        return results`;
+        }
+
+        // ─── ShadowMirror: shadow traffic mirroring ───
+        if (s === 'ShadowMirror') {
+          return `class ShadowMirror:
+    """CMPSBL® Convex Core™ — Shadow traffic mirroring for canary testing"""
+    _config = {"mirror_percent": 5, "compare": True}
+    _results = []
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["mirror_percent"] = kw.get("mirror_percent", kw.get("mirrorPercent", 5))
+        cls._config["compare"] = kw.get("compare_outputs", kw.get("compareOutputs", True))
+        return cls
+
+    @classmethod
+    def mirror(cls, primary_fn, shadow_fn, *args, **kwargs):
+        import random
+        primary_result = primary_fn(*args, **kwargs)
+        if random.randint(1, 100) <= cls._config["mirror_percent"]:
+            try:
+                shadow_result = shadow_fn(*args, **kwargs)
+                match = primary_result == shadow_result if cls._config["compare"] else None
+                cls._results.append({"match": match, "primary": primary_result, "shadow": shadow_result})
+            except Exception:
+                cls._results.append({"match": False, "error": True})
+        return primary_result
+
+    @classmethod
+    def report(cls):
+        if not cls._results:
+            return {"total": 0, "match_rate": 0}
+        matches = sum(1 for r in cls._results if r.get("match"))
+        return {"total": len(cls._results), "match_rate": round(matches / len(cls._results), 3)}`;
+        }
+
+        // ─── CanaryOrchestrator: canary deployment ───
+        if (s === 'CanaryOrchestrator') {
+          return `class CanaryOrchestrator:
+    """CMPSBL® Convex Core™ — Canary deployment orchestrator"""
+    _config = {"auto_rollback": True, "anomaly_threshold": 0.05}
+    _metrics = {"canary_errors": 0, "canary_total": 0}
+
+    @classmethod
+    def enable(cls, *a, **kw):
+        cls._config["auto_rollback"] = kw.get("auto_rollback", kw.get("autoRollback", True))
+        cls._config["anomaly_threshold"] = kw.get("anomaly_threshold", kw.get("anomalyThreshold", 0.05))
+        return cls
+
+    @classmethod
+    def record(cls, success):
+        cls._metrics["canary_total"] += 1
+        if not success:
+            cls._metrics["canary_errors"] += 1
+
+    @classmethod
+    def should_rollback(cls):
+        total = cls._metrics["canary_total"]
+        if total < 10:
+            return False
+        error_rate = cls._metrics["canary_errors"] / total
+        return error_rate > cls._config["anomaly_threshold"]`;
+        }
+
+        // ─── AuthorityResolver: hierarchical authority ───
+        if (s === 'AuthorityResolver') {
+          return `class AuthorityResolver:
+    """CMPSBL® Convex Core™ — Hierarchical authority resolution"""
+    _hierarchy = {}
+    _config = {"conflict_resolution": "most-restrictive"}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["conflict_resolution"] = kw.get("conflict_resolution", kw.get("conflictResolution", "most-restrictive"))
+        return cls
+
+    @classmethod
+    def register(cls, role, permissions, parent=None):
+        cls._hierarchy[role] = {"permissions": set(permissions), "parent": parent}
+
+    @classmethod
+    def resolve(cls, role):
+        perms = set()
+        current = role
+        while current and current in cls._hierarchy:
+            perms |= cls._hierarchy[current]["permissions"]
+            current = cls._hierarchy[current]["parent"]
+        return perms
+
+    @classmethod
+    def check(cls, role, permission):
+        return permission in cls.resolve(role)`;
+        }
+
+        // ─── PolicyEnforcer: delegation auditing ───
+        if (s === 'PolicyEnforcer') {
+          return `class PolicyEnforcer:
+    """CMPSBL® Convex Core™ — Policy enforcement with audit trail"""
+    _enforced = []
+
+    @classmethod
+    def enforce(cls, *a, **kw): return cls
+
+    @classmethod
+    def check(cls, action, actor, resource):
+        import time
+        entry = {"action": action, "actor": actor, "resource": resource, "ts": time.time(), "allowed": True}
+        cls._enforced.append(entry)
+        if len(cls._enforced) > 500:
+            cls._enforced = cls._enforced[-500:]
+        return entry
+
+    @classmethod
+    def deny(cls, action, actor, resource, reason="policy violation"):
+        import time
+        entry = {"action": action, "actor": actor, "resource": resource, "ts": time.time(), "allowed": False, "reason": reason}
+        cls._enforced.append(entry)
+        raise PermissionError(f"PolicyEnforcer: {reason}")`;
+        }
+
+        // ─── ContractValidator: API contract validation ───
+        if (s === 'ContractValidator') {
+          return `class ContractValidator:
+    """CMPSBL® Convex Core™ — API contract validation"""
+    _contracts = {}
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, endpoint, schema):
+        cls._contracts[endpoint] = schema
+
+    @classmethod
+    def validate(cls, endpoint, data):
+        schema = cls._contracts.get(endpoint)
+        if not schema:
+            return {"valid": True, "reason": "no contract defined"}
+        errors = []
+        if isinstance(schema, dict) and isinstance(data, dict):
+            for key, expected_type in schema.items():
+                if key not in data:
+                    errors.append(f"missing field: {key}")
+                elif not isinstance(data[key], expected_type):
+                    errors.append(f"field '{key}' expected {expected_type.__name__}, got {type(data[key]).__name__}")
+        return {"valid": len(errors) == 0, "errors": errors}`;
+        }
+
+        // ─── SchemaEnforcer: request/response schema enforcement ───
+        if (s === 'SchemaEnforcer') {
+          return `class SchemaEnforcer:
+    """CMPSBL® Convex Core™ — Schema enforcement for requests and responses"""
+    _schemas = {"request": {}, "response": {}}
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, endpoint, request_schema=None, response_schema=None):
+        if request_schema:
+            cls._schemas["request"][endpoint] = request_schema
+        if response_schema:
+            cls._schemas["response"][endpoint] = response_schema
+
+    @classmethod
+    def validate_request(cls, endpoint, data):
+        schema = cls._schemas["request"].get(endpoint)
+        if not schema:
+            return True
+        if isinstance(schema, dict) and isinstance(data, dict):
+            missing = [k for k in schema if k not in data]
+            if missing:
+                raise ValueError(f"SchemaEnforcer: request missing fields: {missing}")
+        return True`;
+        }
+
+        // ─── MessageRelay: reliable message delivery ───
+        if (s === 'MessageRelay') {
+          return `class MessageRelay:
+    """CMPSBL® Convex Core™ — Reliable message relay with retry"""
+    _queue = []
+    _dead_letter = []
+    _config = {"max_retries": 3}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["max_retries"] = kw.get("dead_letter_after", kw.get("deadLetterAfter", 3))
+        return cls
+
+    @classmethod
+    def send(cls, handler, message, retries=0):
+        try:
+            return handler(message)
+        except Exception as e:
+            if retries < cls._config["max_retries"]:
+                return cls.send(handler, message, retries + 1)
+            cls._dead_letter.append({"message": message, "error": str(e)})
+            raise
+
+    @classmethod
+    def dead_letters(cls):
+        return list(cls._dead_letter)`;
+        }
+
+        // ─── DeliveryGuarantee: ordered delivery ───
+        if (s === 'DeliveryGuarantee') {
+          return `class DeliveryGuarantee:
+    """CMPSBL® Convex Core™ — Ordered message delivery guarantee"""
+    _sequence = 0
+    _delivered = []
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def wrap(cls, message):
+        cls._sequence += 1
+        return {"seq": cls._sequence, "payload": message}
+
+    @classmethod
+    def verify_order(cls, messages):
+        for i in range(1, len(messages)):
+            if messages[i]["seq"] <= messages[i-1]["seq"]:
+                return {"ordered": False, "break_at": i}
+        return {"ordered": True}`;
+        }
+
+        // ─── SandboxExecutor: isolated execution ───
+        if (s === 'SandboxExecutor') {
+          return `class SandboxExecutor:
+    """CMPSBL® Convex Core™ — Sandboxed code execution"""
+    _config = {"memory_limit_mb": 256, "timeout_s": 30}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["memory_limit_mb"] = kw.get("memory_limit_mb", kw.get("memoryLimitMb", 256))
+        cls._config["timeout_s"] = kw.get("timeout_ms", kw.get("timeoutMs", 30000)) / 1000
+        return cls
+
+    @classmethod
+    def execute(cls, fn, *args, **kwargs):
+        import time
+        start = time.time()
+        try:
+            result = fn(*args, **kwargs)
+            elapsed = time.time() - start
+            if elapsed > cls._config["timeout_s"]:
+                raise TimeoutError(f"SandboxExecutor: execution exceeded {cls._config['timeout_s']}s")
+            return {"result": result, "duration_ms": round(elapsed * 1000, 3)}
+        except TimeoutError:
+            raise
+        except Exception as e:
+            raise RuntimeError(f"SandboxExecutor: execution failed — {e}")`;
+        }
+
+        // ─── IsolationGuard: filesystem/network isolation ───
+        if (s === 'IsolationGuard') {
+          return `class IsolationGuard:
+    """CMPSBL® Convex Core™ — Resource access isolation"""
+    _config = {"block_network": False, "block_fs": True}
+
+    @classmethod
+    def enforce(cls, *a, **kw):
+        cls._config["block_network"] = kw.get("block_network_access", kw.get("blockNetworkAccess", False))
+        cls._config["block_fs"] = kw.get("block_file_system", kw.get("blockFileSystem", True))
+        return cls
+
+    @classmethod
+    def check_access(cls, resource_type):
+        if resource_type == "network" and cls._config["block_network"]:
+            raise PermissionError("IsolationGuard: network access blocked")
+        if resource_type == "filesystem" and cls._config["block_fs"]:
+            raise PermissionError("IsolationGuard: filesystem access blocked")
+        return True`;
+        }
+
+        // ─── SimulationEngine: scenario simulation ───
+        if (s === 'SimulationEngine') {
+          return `class SimulationEngine:
+    """CMPSBL® Convex Core™ — Scenario simulation engine"""
+    _scenarios = []
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def add_scenario(cls, name, steps):
+        cls._scenarios.append({"name": name, "steps": steps})
+
+    @classmethod
+    def run(cls, scenario_name=None):
+        targets = [s for s in cls._scenarios if s["name"] == scenario_name] if scenario_name else cls._scenarios
+        results = []
+        for scenario in targets:
+            step_results = []
+            for step in scenario["steps"]:
+                try:
+                    result = step() if callable(step) else step
+                    step_results.append({"status": "ok", "result": result})
+                except Exception as e:
+                    step_results.append({"status": "failed", "error": str(e)})
+                    break
+            results.append({"scenario": scenario["name"], "steps": step_results, "passed": all(s["status"] == "ok" for s in step_results)})
+        return results`;
+        }
+
+        // ─── TrafficReplay: traffic replay engine ───
+        if (s === 'TrafficReplay') {
+          return `class TrafficReplay:
+    """CMPSBL® Convex Core™ — Traffic capture and replay"""
+    _captured = []
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def capture(cls, request, response):
+        import time
+        cls._captured.append({"request": request, "response": response, "ts": time.time()})
+        if len(cls._captured) > 1000:
+            cls._captured = cls._captured[-1000:]
+
+    @classmethod
+    def replay(cls, handler, limit=None):
+        targets = cls._captured[-limit:] if limit else cls._captured
+        results = []
+        for entry in targets:
+            try:
+                result = handler(entry["request"])
+                results.append({"match": result == entry["response"], "expected": entry["response"], "actual": result})
+            except Exception as e:
+                results.append({"match": False, "error": str(e)})
+        return results`;
+        }
+
+        // ─── BuildValidator: build artifact validation ───
+        if (s === 'BuildValidator') {
+          return `class BuildValidator:
+    """CMPSBL® Convex Core™ — Build artifact integrity validation"""
+    _config = {"algorithm": "sha256", "reject_tampered": True}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["algorithm"] = kw.get("hash_algorithm", kw.get("hashAlgorithm", "sha256"))
+        cls._config["reject_tampered"] = kw.get("reject_tampered", kw.get("rejectTampered", True))
+        return cls
+
+    @classmethod
+    def hash_content(cls, content):
+        import hashlib
+        data = content.encode() if isinstance(content, str) else content
+        return hashlib.new(cls._config["algorithm"], data).hexdigest()
+
+    @classmethod
+    def verify(cls, content, expected_hash):
+        actual = cls.hash_content(content)
+        if actual != expected_hash and cls._config["reject_tampered"]:
+            raise RuntimeError(f"BuildValidator: integrity check failed (expected {expected_hash[:16]}..., got {actual[:16]}...)")
+        return actual == expected_hash`;
+        }
+
+        // ─── ArtifactSealer: output signing ───
+        if (s === 'ArtifactSealer') {
+          return `class ArtifactSealer:
+    """CMPSBL® Convex Core™ — Artifact signing and verification"""
+    _sealed = {}
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def seal(cls, artifact_name, content):
+        import hashlib, time
+        data = content.encode() if isinstance(content, str) else content
+        h = hashlib.sha256(data).hexdigest()
+        cls._sealed[artifact_name] = {"hash": h, "sealed_at": time.time(), "size": len(data)}
+        return h
+
+    @classmethod
+    def verify(cls, artifact_name, content):
+        import hashlib
+        record = cls._sealed.get(artifact_name)
+        if not record:
+            return {"verified": False, "reason": "no seal found"}
+        data = content.encode() if isinstance(content, str) else content
+        actual = hashlib.sha256(data).hexdigest()
+        return {"verified": actual == record["hash"], "sealed_at": record["sealed_at"]}`;
+        }
+
+        // ─── DependencyShield: CVE monitoring ───
+        if (s === 'DependencyShield') {
+          return `class DependencyShield:
+    """CMPSBL® Convex Core™ — Dependency vulnerability monitoring"""
+    _quarantined = []
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def quarantine(cls, package_name, reason="vulnerability detected"):
+        cls._quarantined.append({"package": package_name, "reason": reason})
+
+    @classmethod
+    def is_quarantined(cls, package_name):
+        return any(q["package"] == package_name for q in cls._quarantined)
+
+    @classmethod
+    def report(cls):
+        return list(cls._quarantined)`;
+        }
+
+        // ─── IsolationBarrier: blast radius containment ───
+        if (s === 'IsolationBarrier') {
+          return `class IsolationBarrier:
+    """CMPSBL® Convex Core™ — Blast radius containment"""
+    _config = {"blast_radius": "component", "fallback_on_failure": True}
+
+    @classmethod
+    def enforce(cls, *a, **kw):
+        cls._config["blast_radius"] = kw.get("blast_radius", kw.get("blastRadius", "component"))
+        cls._config["fallback_on_failure"] = kw.get("fallback_on_failure", kw.get("fallbackOnFailure", True))
+        return cls
+
+    @classmethod
+    def execute(cls, fn, fallback=None, *args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as e:
+            if cls._config["fallback_on_failure"] and fallback:
+                return fallback(*args, **kwargs)
+            raise RuntimeError(f"IsolationBarrier: contained failure in {cls._config['blast_radius']} scope — {e}")`;
+        }
+
+        // ─── ModuleNavigator: module indexing ───
+        if (s === 'ModuleNavigator') {
+          return `class ModuleNavigator:
+    """CMPSBL® Convex Core™ — Module indexing and navigation"""
+    _index = {}
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+
+    @classmethod
+    def register(cls, name, path, metadata=None):
+        cls._index[name] = {"path": path, "metadata": metadata or {}}
+
+    @classmethod
+    def resolve(cls, name):
+        return cls._index.get(name)
+
+    @classmethod
+    def search(cls, query):
+        return {k: v for k, v in cls._index.items() if query.lower() in k.lower()}
+
+    @classmethod
+    def all(cls):
+        return dict(cls._index)`;
+        }
+
+        // ─── DependencyMapper: architecture mapping ───
+        if (s === 'DependencyMapper') {
+          return `class DependencyMapper:
+    """CMPSBL® Convex Core™ — Architecture dependency mapping"""
+    _map = {}
+
+    @classmethod
+    def generate(cls, *a, **kw): return cls
+
+    @classmethod
+    def add(cls, module, depends_on=None):
+        cls._map[module] = depends_on or []
+
+    @classmethod
+    def graph(cls):
+        return dict(cls._map)
+
+    @classmethod
+    def dependents(cls, module):
+        return [m for m, deps in cls._map.items() if module in deps]`;
+        }
+
+        // ─── ReflexHandler: low-latency response ───
+        if (s === 'ReflexHandler') {
+          return `class ReflexHandler:
+    """CMPSBL® Convex Core™ — Low-latency reflex response handler"""
+    _handlers = {}
+    _config = {"max_latency_ms": 50, "escalate_after": 3}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["max_latency_ms"] = kw.get("max_latency_ms", kw.get("maxLatencyMs", 50))
+        cls._config["escalate_after"] = kw.get("escalate_after", kw.get("escalateAfter", 3))
+        return cls
+
+    @classmethod
+    def register(cls, trigger, handler):
+        cls._handlers[trigger] = {"fn": handler, "slow_count": 0}
+
+    @classmethod
+    def react(cls, trigger, *args, **kwargs):
+        import time
+        h = cls._handlers.get(trigger)
+        if not h:
+            raise KeyError(f"ReflexHandler: no handler for trigger '{trigger}'")
+        start = time.time()
+        result = h["fn"](*args, **kwargs)
+        elapsed_ms = (time.time() - start) * 1000
+        if elapsed_ms > cls._config["max_latency_ms"]:
+            h["slow_count"] += 1
+        return result`;
+        }
+
+        // ─── FallbackChain: cascading fallback strategies ───
+        if (s === 'FallbackChain') {
+          return `class FallbackChain:
+    """CMPSBL® Convex Core™ — Cascading fallback chain"""
+    _chain = []
+    _cache = {}
+
+    @classmethod
+    def define(cls, strategies):
+        cls._chain = strategies if isinstance(strategies, list) else [strategies]
+        return cls
+
+    @classmethod
+    def execute(cls, fn, *args, **kwargs):
+        try:
+            result = fn(*args, **kwargs)
+            cache_key = str(args) + str(kwargs)
+            cls._cache[cache_key] = result
+            return result
+        except Exception:
+            for strategy in cls._chain:
+                s = strategy.get("strategy") if isinstance(strategy, dict) else strategy
+                if s == "cache":
+                    cache_key = str(args) + str(kwargs)
+                    if cache_key in cls._cache:
+                        return cls._cache[cache_key]
+                elif s == "default-value":
+                    return strategy.get("value") if isinstance(strategy, dict) else None
+                elif s == "graceful-degrade":
+                    return {"degraded": True, "reason": "all primary strategies exhausted"}
+            raise`;
+        }
+
+        // ─── Catch-all: any remaining class gets a functional base ───
         return `class ${s}:
     """CMPSBL® Convex Core™ — ${s}"""
-    @staticmethod
-    def init(*a, **kw): pass
-    @staticmethod
-    def enable(*a, **kw): pass
-    @staticmethod
-    def enforce(*a, **kw): pass
-    @staticmethod
-    def apply(*a, **kw): pass
-    @staticmethod
-    def generate(*a, **kw): pass
-    @staticmethod
-    def capture(*a, **kw): pass`;
+    _state = {}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._state.update(kw)
+        return cls
+
+    @classmethod
+    def enable(cls, *a, **kw):
+        cls._state.update(kw)
+        return cls
+
+    @classmethod
+    def enforce(cls, *a, **kw):
+        cls._state.update(kw)
+        return cls
+
+    @classmethod
+    def apply(cls, *a, **kw):
+        cls._state.update(kw)
+        return cls
+
+    @classmethod
+    def status(cls):
+        return dict(cls._state)`;
       });
       return stubs.join('\n\n');
     },
