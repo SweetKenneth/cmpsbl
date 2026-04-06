@@ -657,7 +657,7 @@ export async function runMutationDiagnostic(
   const lines: string[] = [`Mutation Diagnostic — ${vertical} (${parents.length} parents)`];
   lines.push('─'.repeat(80));
 
-  for (const parent of parents as ParentDiscovery[]) {
+  for (const parent of parents as unknown as ParentDiscovery[]) {
     const chain = Array.isArray(parent.module_chain) ? parent.module_chain : [];
     if (chain.length < 2) continue;
 
