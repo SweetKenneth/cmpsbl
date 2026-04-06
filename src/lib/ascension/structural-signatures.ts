@@ -835,6 +835,7 @@ const ARCHETYPES: StructuralSignature[] = [
     ],
     weight: 0.65,
   },
+];
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — SCANNING ENGINE
