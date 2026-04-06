@@ -564,15 +564,23 @@ const ARCHETYPES: StructuralSignature[] = [
       /(role\s*=\s*['"]?(button|navigation|banner|main|complementary|dialog|alert))/i,
       // skip navigation / skip links
       /(skip.?nav|skip.?link|skip.?to.?content|skip.?main)/i,
+      // Audit/Rule/Check classes used in a11y tooling (axe-core etc.)
+      /class\s+\w*(Audit|Rule|Check)[\s\S]{0,200}(rules?|checks?|violations?|passes)/i,
+      // axe-core or lighthouse a11y patterns
+      /(axe|lighthouse|pa11y|deque)\s*[\.\(]/i,
+      // WCAG level references: Level A, AA, AAA
+      /(level\s*[=:]\s*['"]?AA?A?['"]?|wcag\s*\d)/i,
     ],
     coSignals: [
       'accessibility', 'a11y', 'aria', 'wcag', 'screen_reader',
       'keyboard', 'focus', 'contrast', 'alt_text', 'semantic',
       'landmark', 'heading_level', 'skip_link', 'caption',
+      'audit', 'rule', 'check', 'violation', 'axe', 'deque',
     ],
     intentSignals: [
       'accessibility', 'a11y', 'WCAG', 'screen reader', 'TODO: a11y',
       'FIXME: not accessible', 'keyboard navigation', 'color contrast',
+      'audit', 'violation', 'rule', 'check',
     ],
     weight: 0.75,
   },
