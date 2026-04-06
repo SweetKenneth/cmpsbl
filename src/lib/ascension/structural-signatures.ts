@@ -115,6 +115,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /(fallback|alternate|backup|secondary)\s*[=:][\s\S]{0,200}(catch|except|fail|error)/i,
       // retry with max attempts
       /(retries?|attempts?|tries)\s*[<>=!]+\s*(max|MAX|\d+)/i,
+      // rescue/except blocks with error class handling (Ruby/Python)
+      /(rescue|except)\s+(\w+Error|\w+Exception|StandardError|RuntimeError)/i,
+      // failure/error handler method definitions
+      /(on_?failure|handle_?error|error_?handler|fail_?safe)\s*[\(=:def]/i,
+      // begin/ensure or try/finally patterns
+      /(ensure|finally)\s*[{:\n][\s\S]{0,200}(close|cleanup|release|disconnect)/i,
     ],
     coSignals: [
       'retry', 'circuit_breaker', 'backoff', 'exponential', 'fallback',
