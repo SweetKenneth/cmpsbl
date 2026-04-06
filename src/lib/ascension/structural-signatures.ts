@@ -86,6 +86,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(rate|duration|period|window)\s*[=:]\s*['"]?\d+\s*\/?\s*(second|minute|hour|day|sec|min|hr)/i,
       // allow/deny based on rate: allow_request, check_throttle, is_throttled
       /(allow_?request|check_?throttl|is_?throttl|get_?rate|parse_?rate)\s*\(/i,
+      // definition-side: class/function definitions for limiters
+      /(def\s+allow_request|func\s+New\w*Limiter|class\s+\w*(Throttle|RateLimit|Limiter))/i,
     ],
     coSignals: [
       'throttle', 'rate_limit', 'ratelimit', 'backoff', 'cooldown',
