@@ -893,22 +893,28 @@ export function runStructuralAnalysis(codeContent: string): StructuralMatch[] {
       if (intentLayer.includes(sig.toLowerCase())) intentHits++;
     }
 
-    // Skip if zero signal across all channels
-    if (structuralHits === 0 && lexicalHits === 0 && intentHits === 0) continue;
+    // Skip noise: require structural evidence OR meaningful lexical/intent density.
+    // Without this gate, single coSignal overlaps (e.g. "state", "log") produce
+    // hundreds of LOW-confidence false positives that drown real detections.
+    const hasStructural = structuralHits >= 1;
+    const hasLexicalDensity = lexicalHits >= 3;
+    const hasIntentSignal = intentHits >= 1;
+    const hasLexicalPlusIntent = lexicalHits >= 2 && intentHits >= 1;
+
+    if (!hasStructural && !hasLexicalDensity && !hasLexicalPlusIntent && !hasIntentSignal) continue;
 
     // ── Tristate classification ──
     // PRESENT: structural match + at least one supporting channel
-    // PARTIAL: no structural but lexical/intent signals, OR intent-only (TODOs, stubs)
-    // ABSENT: only returned if there's some minimal signal (handled by continue above)
+    // PARTIAL: lexical/intent signals suggest capability exists but no flow proof
     let state: PresenceState;
-    if (structuralHits >= 1 && (lexicalHits >= 2 || intentHits >= 1)) {
+    if (hasStructural && (lexicalHits >= 2 || hasIntentSignal)) {
       state = 'present';
-    } else if (structuralHits >= 1 || lexicalHits >= 3) {
+    } else if (hasStructural || hasLexicalDensity) {
       state = 'present';
-    } else if (lexicalHits >= 1 || intentHits >= 1) {
+    } else if (hasLexicalPlusIntent || (lexicalHits >= 2 && hasIntentSignal)) {
       state = 'partial';
     } else {
-      state = 'absent';
+      state = 'partial';
     }
 
     // ── Confidence scoring ──
