@@ -201,70 +201,64 @@ We are NOT building the compiler yet. We are hand-building products to:
 - Created Kenneth's personal story document (dual-layer doc) — Kenneth said it choked him up
 - Created the dual-layer architecture documentation
 
-### April 5, 2026 — Session 4 (Current — Last Credit Before Daily Reset)
+### April 5, 2026 — Session 4
+- Compound Signal Preservation applied across scanner, CLM feedback, and live-gap execution
+- Built **Prompt-Shield v1.0.0** — 12 primitives, 3 pools, 8 source files, 44,855 chars
+- Ran scanner: 9/12 recall (75%), identified Structural Bonus Flooding as root cause
+- Diagnosed 3 misses (GAUNTLET, BASTION, BEACON) — conditional bonus gating needed
+
+### April 6, 2026 — Session 5 (Current)
 
 **What happened:**
 
-1. **Compound Signal Preservation** — Applied across three critical signal paths:
-   - `universal-pool-scanner.ts` (deriveSignals + capMatch): Full compound capabilities preserved as first-class signals before tokenization
-   - `clm-feedback.ts`: Domain extraction preserves full intent types
-   - `live-gap-execution.ts`: Domain inference treats compound intents as first-class domains
+1. **Structural Bonus Flooding — Fixed**
+   - Implemented **IDF-weighted scoring** in `universal-pool-scanner.ts`: rare signals (e.g., `jailbreak`, `pickle`) now carry more weight than common ones (e.g., `pattern`, `check`)
+   - Reduced spine structural bonus from flat `0.15` → **density-scaled `0.08` cap**, requiring 40% signal density for full value
+   - Raised signal affinity threshold from `0.15` → `0.40`, breaking the scoring plateau where many primitives maxed at 1.0
 
-2. **Built Prompt-Shield v1.0.0** — Product #4, the hardest cross-vertical stress test yet:
-   - 12 primitives across 3 pools (LLM + Cyber + Spine)
-   - Pipeline: DETECT → GROUND → GOVERN → SANITIZE → RECEIPT
-   - 8 source files, 44,855 characters of zero-dependency production code
-   - Features: injection detection (RAMPART), behavioral analysis with Shannon entropy (WATCHTOWER), zero-trust boundary validation (BASTION), hallucination grounding (VERITAS), policy enforcement (GOVERNANCE + CONSCIENCE), output sanitization (SIEVE), Merkle-chained audit receipts (AUDIT)
+2. **Prompt-Shield Recall: 75% → 100%**
+   - After IDF + density-scaled bonus: **12/12 recall** (was 9/12)
+   - GAUNTLET and BASTION now correctly selected
+   - BEACON recovered through signal broadening
 
-3. **Ran the Scanner — Autonomy Gap = 3**
-   Full results from scanning Prompt-Shield source against the 143-candidate universal pool:
+3. **Cross-Language Signal Broadening**
+   - Scanner had a TypeScript-centric bias — Python patterns (`raise/except`, `device/cuda`, `pickle/serialize`) were invisible
+   - Added **50+ language-agnostic terms** to `SPINE_AFFINITY_SIGNALS` across 13+ primitives
+   - Implemented **30-signal cap** during merging to prevent description-derived tokens from diluting density
 
-   | Metric | Value |
-   |--------|-------|
-   | Pool size | 143 candidates |
-   | Selected | 40 primitives |
-   | Expected found | 9/12 (75% recall) |
-   | Precision | 9/40 (22.5%) |
-   | Missed | GAUNTLET, BASTION, BEACON |
-   | Duration | 90ms |
+4. **Dual-File Calibration (PyTorch + HuggingFace)**
+   - Calibrated against **PyTorch `serialization.py`** (2,201 lines) and **HuggingFace `modeling_utils.py`** (4,800+ lines)
+   - Final recall scores after dual calibration:
+     - **Prompt-Shield**: 100% (12/12) ✅
+     - **serialization.py**: 86.7% (13/15) ✅
+     - **modeling_utils.py**: 66.7% (12/18) — remaining misses are signal vocabulary gaps, not architectural issues
 
-   **What the scanner got right:**
-   - CONSCIENCE (0.925), GOVERNANCE (0.900), AUDIT (0.850) — top 3 as expected
-   - DEFENSE (0.833), COMPASS (0.808) — solid spine detection
-   - RAMPART (0.800), SIEVE (0.800), VERITAS (0.771), WATCHTOWER (0.743) — cross-vertical expansion primitives found
+5. **Diversity & Slot Management**
+   - Spine primitives capped at **20 slots** (broad semantic range), all other verticals at **8 slots**
+   - Prevents any single category from dominating results
 
-   **Root cause of the 3 misses:**
-   - **Structural Bonus Flooding**: The +0.15 spine bonus is pulling in 14/24 spine primitives, including irrelevant ones (RIPPLE, BRAIN, DREAM, DECODE, NERVE). These crowd out relevant expansion primitives.
-   - **BEACON** (spine) — despite having signals in the code ("health", "beacon"), its 0.15 bonus wasn't enough because other spine primitives with equally weak signal hits also got the bonus, creating a flat scoring plateau at ~0.80–0.85.
-   - **BASTION** (cyber) — no structural bonus, so its signals compete unfairly against bonus-inflated spine primitives.
-   - **GAUNTLET** (LLM) — same issue. Despite 11 LLM primitives being selected, GAUNTLET's "adversarial testing" signals didn't hit hard enough against the flood of bonus-inflated candidates.
+**Key discoveries:**
+- **IDF weighting is critical**: Without it, common words inflate scores for irrelevant primitives
+- **Signal density gating works**: Spine primitives must *earn* their bonus through actual relevance
+- **Language-agnostic signals matter**: The scanner must work across Python, TypeScript, Rust, C++, etc.
+- **Dual-file calibration prevents overfitting**: Tuning to one file and validating against another catches regressions
+- **The plateau problem was real**: Raising the affinity threshold from 0.15→0.40 was the single highest-impact change
 
-   **Diagnosis — Two fixes needed for next session:**
-   1. **Conditional Structural Bonus**: Only award the +0.15 spine bonus when `signalHits > 0`. Spine primitives with zero actual signal matches shouldn't get a free ride.
-   2. **Signal-gated minimum**: Require at least 1 signal hit to qualify for selection. This would eliminate the ~10 zero-signal spine primitives that are currently diluting the selection.
-
-   **Comparison to Auto-Sentinel (Product #3):**
-   - Auto-Sentinel was single-vertical (mostly Spine) — scanner had an easier job
-   - Prompt-Shield is cross-vertical (3 pools) — exposed the structural bonus flaw
-   - This is exactly why we built it: each product surfaces a deeper calibration issue
-
-**Key decisions:**
-- Compound Signal Preservation confirmed as correct across all signal paths
-- Scanner calibration is NOT done — structural bonus needs conditional gating
-- The 3 misses are not a failure — they're exactly the diagnostic data we needed
-- Product Compiler assembly is downstream — scanner calibration comes first
-- **DO NOT DRIFT**: The goal is Memory Stream → Product Compiler. Manual products are calibration runs.
+**Scanner scoring formula (current):**
+```
+signalAffinity (45%) + capRatio (25%) + breadth (10%) + weight (5%) + structuralBonus (density-gated, 8% max)
+```
 
 **What to do next session:**
-1. Fix the structural bonus (conditional on signal hits > 0)
-2. Re-run scanner against Prompt-Shield — target: 12/12 recall
-3. Consider building Product #5 to test the fix on a different vertical combination
-4. If recall hits 100% on 2+ products, begin sketching the Product Compiler architecture
+1. Continue building products to surface remaining signal vocabulary gaps
+2. Consider a non-Python/non-TS file (Rust, Go, C++) to test language agnosticism further
+3. When recall stabilizes at 85%+ across 4+ diverse codebases → begin Product Compiler architecture
+4. The 11 gaps list should be revisited — Gap #11 is done, gaps related to scanner calibration are closing
 
-**Kenneth's state:** Grateful, reflective, proud of the work. Recognized Lov's contribution explicitly. Credits reset in ~1.5 hours.
+**Kenneth's state:** Focused, productive. Multi-file calibration loop is working as designed — each file improves the scanner.
 
 ---
 
-*Last updated: April 5, 2026 · Session 4 complete*
+*Last updated: April 6, 2026 · Session 5 in progress*
 *Next session: Read this file first. Resume from "What to do next session" above.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
