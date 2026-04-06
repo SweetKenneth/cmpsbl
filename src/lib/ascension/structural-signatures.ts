@@ -86,6 +86,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(rate|duration|period|window)\s*[=:]\s*['"]?\d+\s*\/?\s*(second|minute|hour|day|sec|min|hr)/i,
       // allow/deny based on rate: allow_request, check_throttle, is_throttled
       /(allow_?request|check_?throttl|is_?throttl|get_?rate|parse_?rate)\s*\(/i,
+      // definition-side: class/function definitions for limiters
+      /(def\s+allow_request|func\s+New\w*Limiter|class\s+\w*(Throttle|RateLimit|Limiter))/i,
     ],
     coSignals: [
       'throttle', 'rate_limit', 'ratelimit', 'backoff', 'cooldown',
@@ -295,6 +297,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(aes|rsa|hmac|ecdsa|ed25519|chacha)\s*[-_.]?\s*(encrypt|sign|verify|256|128|512)/i,
       // TLS/SSL configuration
       /(tls|ssl)\s*[=:.\[]\s*[\s\S]{0,100}(cert|key|ca|verify)/i,
+      // definition-side: cipher/encrypt class and function definitions
+      /(class\s+\w*(Cipher|Encrypt|Crypt)|def\s+(encrypt|decrypt)|fn\s+(encrypt|decrypt))/i,
+      // NaCl/libsodium specific patterns
+      /(NaCl|nacl|secretbox|crypto_box|seal\s*\()/i,
     ],
     coSignals: [
       'encrypt', 'decrypt', 'cipher', 'aes', 'rsa', 'hmac', 'hash',
@@ -353,6 +359,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /(dedupe|deduplicate|distinct|unique)\s*\(/i,
       // data validation + cleaning
       /(clean|normalize|standardize)\s*\([\s\S]{0,200}(data|record|row|entry)/i,
+      // definition-side: DAG/Task/Flow/Op class definitions (Airflow, Prefect, Dagster, Luigi)
+      /(class\s+\w*(DAG|Task|Flow|Pipeline|Op)|def\s+(run|execute|extract|transform|load)\s*\(self)/i,
+      // task dependency: upstream/downstream, requires, depends_on
+      /(upstream|downstream|requires|depends_on|set_upstream|set_downstream|>>|<<)\s*/i,
+      // @task, @op, @flow decorators
+      /@(task|op|flow|pipeline|dag)\s*[\(\n]/i,
     ],
     coSignals: [
       'pipeline', 'etl', 'extract', 'transform', 'load', 'ingest',
@@ -372,8 +384,10 @@ const ARCHETYPES: StructuralSignature[] = [
     name: 'Testing & Safe Execution',
     primitives: ['SANDBOX', 'ECHO', 'SHADOW'],
     patterns: [
-      // test framework: describe/it/test/expect
-      /(describe|it|test)\s*\(\s*['"][\s\S]{0,200}(expect|assert|should)/i,
+      // test framework: describe/it/test block declarations
+      /(describe|it|test)\s*\(\s*['"]/i,
+      // assertion patterns (independent from describe)
+      /(expect|assert|should)\s*\(/i,
       // mock/stub/spy
       /(mock|stub|spy|fake)\s*\(\s*\w+[\s\S]{0,200}(returns?|resolves?|rejects?|callsFake)/i,
       // snapshot testing
@@ -432,6 +446,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /constructor\s*\([\s\S]{0,300}(private|readonly)\s+\w+:\s*\w+/i,
       // container registration: container.register, bind, provide
       /(container|injector|provider)\s*\.\s*(register|bind|provide)\s*\(/i,
+      // definition-side: DI container/injector/provider/registry classes
+      /(class\s+\w*(Container|Injector|Provider|Registry)|@Injectable|@Inject|@Component)/i,
       // factory pattern: createXxx, buildXxx, makeXxx
       /(create|build|make|factory)\s*(Service|Repository|Handler|Client)\s*\(/i,
       // interface-based: implements, interface + class
@@ -639,6 +655,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(plural|Plural|_one|_other|_few|_many)\s*[=:]/i,
       // number/date formatting: Intl.NumberFormat, Intl.DateTimeFormat
       /Intl\s*\.\s*(NumberFormat|DateTimeFormat|RelativeTimeFormat|Collator)/i,
+      // definition-side: translator/localizer/i18n classes and gettext
+      /(class\s+\w*(Translator|Localizer|I18n)|gettext\s*\(|ngettext\s*\(|_\s*\(\s*['"])/i,
     ],
     coSignals: [
       'i18n', 'l10n', 'locale', 'translate', 'translation', 'language',
@@ -662,6 +680,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(mean|median|std|variance|correlation|covariance)\s*\(/i,
       // bayesian: prior, posterior, likelihood, bayes
       /(prior|posterior|likelihood|bayesian|bayes_?theorem)/i,
+      // definition-side: model/forecaster/detector/classifier classes + fit/predict
+      /(class\s+\w*(Model|Forecaster|Detector|Classifier)|\.fit\s*\(|\.score\s*\(|\.predict\s*\()/i,
       // monte carlo: simulation, random sampling
       /(monte_?carlo|simulation|random_?sample|bootstrap)\s*\(/i,
       // time series: forecast, seasonal, trend, arima
@@ -691,6 +711,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(learn|adapt|evolve|improve)\s*\([\s\S]{0,300}(feedback|reward|outcome|score)/i,
       // genetic/evolutionary: mutate, crossover, fitness, select
       /(mutate|crossover|fitness|selection|generation)\s*\(/i,
+      // definition-side: agent/policy/environment/learner classes
+      /(class\s+\w*(Agent|Policy|Environment|Learner)|def\s+(fit|train|update)\s*\(self)/i,
       // reinforcement: reward, policy, action, state, q_value
       /(reward|policy|q_?value|action_?space|state_?space)\s*[=:]/i,
       // consolidation / knowledge distillation
@@ -720,6 +742,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(simulate|tick|step|advance)\s*\([\s\S]{0,200}(state|world|environment|model)/i,
       // scenario replay: replay, playback, rewind
       /(replay|playback|rewind|reconstruct)\s*\([\s\S]{0,200}(event|state|history)/i,
+      // definition-side: simulator/environment/world/agent classes
+      /(class\s+\w*(Simulator|Environment|World|Agent)|def\s+(step|reset|render)\s*\(self)/i,
       // divergence scoring: compare, diff, diverge
       /(diverge|diff|compare|delta)\s*\([\s\S]{0,200}(actual|expected|baseline|production)/i,
       // mock environment: virtual, simulated, synthetic
