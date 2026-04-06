@@ -23,17 +23,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-
-/* ═══════════════════════════════════════════════════════════════ */
-/* DATA                                                          */
-/* ═══════════════════════════════════════════════════════════════ */
-
-const ROBO_STATS = [
-  { label: "Motion Algorithms Loaded", value: "1,420", icon: Navigation },
-  { label: "Sensor Fusion Channels", value: "24", icon: Eye },
-  { label: "Custom Primitives", value: "16", icon: Cpu },
-  { label: "Capabilities Active", value: "130+", icon: Layers },
-];
+import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
 const ENGINE_DATA = [
   { id: "SERVO", name: "SERVO", desc: "Motor control & actuator orchestration — PID tuning, torque profiling, multi-axis servo loop execution", icon: Cog, color: "hsl(200 100% 55%)" },
@@ -74,6 +64,13 @@ export default function RoboticsHome() {
   useSSORelay();
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
+  const { total, crownJewels } = useVerticalCounts('robotics');
+  const ROBO_STATS = [
+    { label: "Motion Algorithms Loaded", value: "1,420", icon: Navigation },
+    { label: "Sensor Fusion Channels", value: "24", icon: Eye },
+    { label: "Custom Primitives", value: "16", icon: Cpu },
+    { label: "Capabilities Active", value: String(total || '130+'), icon: Layers },
+  ];
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 1], [0, -80]);

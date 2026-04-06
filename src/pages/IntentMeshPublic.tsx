@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { IntentMeshGraph } from "@/components/substrate/IntentMeshGraph";
+import { useDiscoveryCounts } from "@/hooks/useDiscoveryCounts";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -17,8 +18,7 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-const CAPABILITY_STATS = {
-  totalCapabilities: 34,
+const CAPABILITY_STATS_STATIC = {
   discoveryMethods: 7,
   dashboardViews: 6,
   terminalCommands: 26,
@@ -127,6 +127,11 @@ const SELF_IMPROVEMENT_FEATURES = [
 ];
 
 export default function IntentMeshPublic() {
+  const { counts } = useDiscoveryCounts();
+  const CAPABILITY_STATS = {
+    totalCapabilities: counts.total || 34,
+    ...CAPABILITY_STATS_STATIC,
+  };
   return (
     <>
       <SEO

@@ -28,6 +28,7 @@ import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
 import { SHOWROOM_CATALOG, getShowroomPriceDisplay, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { supabase } from '@/integrations/supabase/client';
+import { useDiscoveryCounts } from '@/hooks/useDiscoveryCounts';
 import { toast } from 'sonner';
 
 // Category images
@@ -289,6 +290,8 @@ export default function Showroom() {
   const showSuccess = searchParams.get('success') === 'true';
   const successItem = searchParams.get('item');
 
+  const { counts: liveCounts } = useDiscoveryCounts();
+
   // Static catalog — no database calls
   const catalog = SHOWROOM_CATALOG;
   const catalogLoading = false;
@@ -408,7 +411,7 @@ export default function Showroom() {
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-4 text-sm text-muted-foreground">
-                <span className="font-mono">{catalog.length} discoveries</span>
+                <span className="font-mono">{liveCounts.showroom || catalog.length} discoveries</span>
                 <span className="text-border">·</span>
                 <span>{TIER_CONFIG.filter(t => itemsByTier[t.id]?.length).length} tiers</span>
                 <span className="text-border">·</span>

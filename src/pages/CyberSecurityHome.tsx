@@ -29,17 +29,7 @@ import {
   type VerticalSubstrateConfig,
   type VerticalPrimitive,
 } from "@/lib/factory/verticals";
-
-/* ═══════════════════════════════════════════════════════════════ */
-/* DATA                                                          */
-/* ═══════════════════════════════════════════════════════════════ */
-
-const THREAT_STATS = [
-  { label: "Zero-Day Patterns Tracked", value: "2,847", icon: Bug },
-  { label: "Threat Vectors Monitored", value: "16", icon: Radar },
-  { label: "Custom Primitives", value: "16", icon: Cpu },
-  { label: "Capabilities Loaded", value: "130+", icon: Layers },
-];
+import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
 const ENGINE_DATA = [
   { id: "SENTINEL", name: "SENTINEL", desc: "Real-time threat detection & IOC correlation with behavioral heuristics and MITRE ATT&CK mapping", icon: Eye, color: "hsl(0 85% 60%)" },
@@ -80,6 +70,13 @@ export default function CyberSecurityHome() {
   useSSORelay();
   const navigate = useNavigate();
   const heroRef = useRef<HTMLDivElement>(null);
+  const { total, crownJewels } = useVerticalCounts('cyber');
+  const THREAT_STATS = [
+    { label: "Zero-Day Patterns Tracked", value: "2,847", icon: Bug },
+    { label: "Threat Vectors Monitored", value: "16", icon: Radar },
+    { label: "Custom Primitives", value: "16", icon: Cpu },
+    { label: "Capabilities Loaded", value: String(total || '130+'), icon: Layers },
+  ];
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 1], [0, -80]);
