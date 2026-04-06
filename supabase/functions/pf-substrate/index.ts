@@ -909,6 +909,60 @@ serve(async (req) => {
 
     console.log(`⚡ substrate v${SUBSTRATE_VERSION} | ${module}/${action}`);
 
+    // ═══ API Key → userId resolution ═══
+    // CLI sends Authorization: Bearer <api_key> — resolve to userId via access_api_keys
+    let resolvedUserId: string | undefined;
+    const authHeader = req.headers.get('authorization') || '';
+    const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+    
+    if (bearerToken && !bearerToken.startsWith('eyJ')) {
+      // Non-JWT token — treat as API key, hash and look up
+      try {
+        const enc = new TextEncoder();
+        const hb = await crypto.subtle.digest('SHA-256', enc.encode(bearerToken));
+        const apiKeyHash = Array.from(new Uint8Array(hb)).map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        const { data: keyRecord } = await supabase
+          .from('access_api_keys')
+          .select('developer_id, is_active')
+          .eq('key_hash', apiKeyHash)
+          .maybeSingle();
+        
+        if (keyRecord?.is_active && keyRecord.developer_id) {
+          // Resolve developer → user_id
+          const { data: dev } = await supabase
+            .from('access_developers')
+            .select('user_id')
+            .eq('id', keyRecord.developer_id)
+            .maybeSingle();
+          
+          if (dev?.user_id) {
+            resolvedUserId = dev.user_id;
+          }
+          
+          // Update last_used_at
+          await supabase.from('access_api_keys').update({
+            last_used_at: new Date().toISOString(),
+          }).eq('developer_id', keyRecord.developer_id).eq('key_hash', apiKeyHash);
+        }
+      } catch (e) {
+        // API key resolution failed — continue without userId
+      }
+    } else if (bearerToken.startsWith('eyJ')) {
+      // JWT token — try to resolve user from Supabase auth
+      try {
+        const userSupabase = createClient(supabaseUrl!, supabaseKey!, {
+          global: { headers: { Authorization: `Bearer ${bearerToken}` } }
+        });
+        const { data: { user } } = await userSupabase.auth.getUser();
+        if (user?.id) {
+          resolvedUserId = user.id;
+        }
+      } catch {
+        // JWT resolution failed — continue without userId  
+      }
+    }
+
     // Check circuit breaker
     if (isCircuitOpen(module)) {
       console.log(`🔴 Circuit OPEN for ${module}, returning fallback`);
@@ -967,7 +1021,7 @@ serve(async (req) => {
             return await handleRipple(supabase, action, params, corsHeaders);
           
           case "access":
-            return await handleAccess(supabase, action, params, corsHeaders, undefined);
+            return await handleAccess(supabase, action, params, corsHeaders, resolvedUserId);
           
           case "integration":
             return await handleIntegration(supabase, action, params, corsHeaders);
