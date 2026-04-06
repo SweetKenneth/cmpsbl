@@ -270,11 +270,10 @@ export function seedUltimateDiscoveries(): UltimateSeedResult {
     };
 
     discoveries.push(discovery);
-    if (route === 'vault') { ULTIMATE_VAULT.set(discovery.id, discovery); vaultCount++; }
+    if (route === 'vault') { vaultCount++; }
     else {
-      addDiscovery(discovery.id, discovery.name, discovery.description, discovery.cjpiScore, discovery.primitiveChain);
       if (route === 'showroom') showroomCount++; else junkyardCount++;
-      ULTIMATE_MEMORY_STREAM_POOL.push(discovery); memoryStreamCount++;
+      memoryStreamCount++;
     }
   }
 
