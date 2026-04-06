@@ -532,6 +532,21 @@ export default function STierVault() {
   const [sortMode, setSortMode] = useState<SortMode>('market_value');
   const [promoting, setPromoting] = useState(false);
 
+  // Live registry count from discoveries table (replaces hardcoded 233)
+  const [liveRegistryCount, setLiveRegistryCount] = useState<number>(entries.length);
+
+  const loadRegistryCount = useCallback(async () => {
+    try {
+      const { count, error } = await supabase
+        .from('discoveries')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'registry');
+      if (!error && count !== null) setLiveRegistryCount(count);
+    } catch {
+      // Fallback to static count
+    }
+  }, []);
+
   // A-Tier vault state
   const [aTierVerticalFilter, setATierVerticalFilter] = useState<string | null>(null);
   const [aTierPrimitiveFilter, setATierPrimitiveFilter] = useState<string | null>(null);
@@ -598,7 +613,7 @@ export default function STierVault() {
   const [discTierFilter, setDiscTierFilter] = useState<string | null>(null);
   const [discModuleFilter, setDiscModuleFilter] = useState<string | null>(null);
 
-  useEffect(() => { loadPromoted(); }, []);
+  useEffect(() => { loadPromoted(); loadRegistryCount(); }, [loadRegistryCount]);
 
   const loadPromoted = async () => {
     setLoadingPromoted(true);
@@ -723,7 +738,22 @@ export default function STierVault() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { toast.error('Authentication required'); return; }
 
-      // Log the promotion as an audit event
+      // 1. Update the unified discoveries table — this is the source of truth
+      const isCrownJewel = d.cjpi >= 95;
+      await supabase
+        .from('discoveries')
+        .update({
+          status: 'registry',
+          is_crown_jewel: isCrownJewel,
+          crown_jewel_capabilities: d.module_chain?.map(p => ({
+            primitive: p,
+            capability: d.name,
+            cjpi: d.cjpi,
+          })) ?? [],
+        } as any)
+        .eq('id', d.discovery_id);
+
+      // 2. Log the promotion as an audit event (kept for backward compat)
       await supabase.from('audit_logs').insert({
         action: 'vault_promotion',
         entity_type: 'discovery',
@@ -741,14 +771,15 @@ export default function STierVault() {
         },
       });
 
-      // Update vault_promotions status
+      // 3. Update vault_promotions status (kept for backward compat)
       await supabase
         .from('vault_promotions')
         .update({ status: 'registry_promoted' })
         .eq('id', d.id);
 
-      toast.success(`"${d.name}" promoted to registry with audit trail`);
+      toast.success(`"${d.name}" promoted to registry — live count updated`);
       await loadPromoted();
+      await loadRegistryCount();
     } catch (err: any) {
       toast.error(`Promotion failed: ${err.message}`);
     } finally {
@@ -987,7 +1018,7 @@ export default function STierVault() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">Crown Jewel Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {entries.length + promoted.length + aTierVault.totalArtifacts} total capabilities • {entries.length} S-Tier registry • {promoted.length} discovered • {aTierVault.totalArtifacts} A-Tier • 24 export languages
+                {liveRegistryCount + promoted.length + aTierVault.totalArtifacts} total capabilities • {liveRegistryCount} S-Tier registry • {promoted.length} discovered • {aTierVault.totalArtifacts} A-Tier • 24 export languages
               </p>
             </div>
           </div>

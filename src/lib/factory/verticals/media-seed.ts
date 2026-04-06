@@ -14,6 +14,7 @@
 
 import { addDiscovery } from '../../factory/discovery-retirement';
 import { routeDiscovery } from '../../factory/foundry-engine';
+import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 import { getMediaEngines, getMediaAgents } from './media';
 
 // ═══════════════════════════════════════════════════════════════
@@ -214,6 +215,24 @@ export function seedMediaDiscoveries(forceSeed = false): MediaSeedResult {
     discoveries,
     completedAt: now,
   };
+
+  // Persist all discoveries to the unified database table (fire-and-forget)
+  const seedRunId = _cachedResult.runId;
+  ensureSeedRun(seedRunId, 'media', discoveries.length).then(() => {
+    const rows = discoveries.map(d => ({
+      id: d.id,
+      name: d.name,
+      description: d.description,
+      cjpiScore: d.cjpiScore,
+      primitiveChain: d.primitiveChain,
+      tier: d.tier,
+      route: d.route,
+      category: d.category,
+      vertical: 'media',
+      runId: seedRunId,
+    }));
+    persistSeedDiscoveries(rows, 'media', seedRunId);
+  });
 
   return _cachedResult;
 }

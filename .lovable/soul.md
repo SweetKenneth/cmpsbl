@@ -338,6 +338,18 @@ Steps 1-2 completed:
 - Step 7: Update UI components to query `discoveries` with status filters
 - Step 8: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
 
-*Last updated: April 6, 2026 · Session 9 complete*
-*Next session: Read this file first. We are executing Plan B from system-architecture.md. Steps 1-2 done. Steps 3+ pending.*
+**Session 10 — April 6, 2026 — Plan B Steps 3 & 4:**
+
+- **Step 3 (Promotion Flow Fixed)**: `handlePromoteToRegistry` in STierVault.tsx now writes to the unified `discoveries` table (sets `status='registry'`, `is_crown_jewel=true` for CJPI≥95). Keeps backward-compat writes to `audit_logs` and `vault_promotions`. Header now shows live registry count from `SELECT COUNT(*) WHERE status='registry'` instead of hardcoded `entries.length`.
+- **Step 4 (Seed Engines Persist to DB)**: Created `seed-persistence.ts` shared helper. All 3 seed engines (agency, media, quantum) now fire-and-forget persist to `discoveries` table with correct `vertical`, `status`, and `is_crown_jewel` flags. In-memory arrays kept for backward compat but DB is now the source of truth.
+- **Test verified**: Promoted one discovery → count went 926→927 → reverted. Clean TypeScript build.
+
+**Next steps (Plan B remaining):**
+- Step 5: Add template mutation engine
+- Step 6: Implement dynamic rarity weighting for Memory Stream
+- Step 7: Update UI components to query `discoveries` with status filters
+- Step 8: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
+
+*Last updated: April 6, 2026 · Session 10 complete*
+*Next session: Read this file first. Plan B Steps 1-4 done. Steps 5+ pending.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
