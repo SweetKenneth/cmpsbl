@@ -250,11 +250,11 @@ signalAffinity (45%) + capRatio (25%) + breadth (10%) + weight (5%) + structural
 ```
 
 **What to do next session:**
-1. Remaining 4 zero-HIGH archetypes: dependency-injection (0.433), i18n (0.417), heuristic-synthesis (0.383), simulation (0.333) — need canonical corpus files, not more pattern work
-2. HIGH band at 11% overall, but **21/25 archetypes** now have ≥1 HIGH hit — the floor metric is what matters
-3. Overall HIGH% is dragged down by cross-talk (472 matches across 56 files). Consider filtering: only count each file's TOP match per archetype
-4. The 4 remaining archetypes need 2 canonical files each (8 files total) to close the gap
-5. When floor hits 25/25 → production-ready for per-archetype detection. Overall HIGH% target becomes secondary
+1. **25/25 archetype floor achieved** — all archetypes have ≥1 HIGH hit. Per-archetype detection is production-ready
+2. Overall HIGH% is 10.8% (60/555 matches) — this is a cross-talk metric, not a quality metric. Consider: only scoring each file's top match per archetype, or filtering to top-3 matches per file
+3. Corpus is 64 files across 33 domain rounds — the broadest cross-language training set the scanner has ever seen
+4. Next optimization: reduce LOW-band noise (354 matches) by tightening the noise gate further, or by implementing per-file top-N filtering
+5. The structural signature library is feature-complete for all 25 archetypes with both call-site and definition-site pattern matching
 
 **Session 6 — April 6, 2026 — Journal Entry:**
 
