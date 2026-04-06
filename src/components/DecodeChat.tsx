@@ -348,7 +348,7 @@ export function DecodeChat() {
         { icon: "👤", title: "Talk to a Human", description: "Escalate to support", prompt: "I'd like to escalate this to a human support agent." },
       ]
     : [
-        { icon: "🔍", title: "Look Up Fingerprint", description: "Retrieve past work", prompt: "I have a fingerprint ID from a previous refurbishment. Let me look it up." },
+        { icon: "🔍", title: "Ascension Lookup", description: "Verify a fingerprint", prompt: "I have a fingerprint ID from an Ascension run. Can you verify it?" },
         { icon: "🏗️", title: "Start Refurbishment", description: "Upgrade my code", prompt: "I want to refurbish my code. How do I get started with the Refurbishment Lab?" },
         { icon: "🛡️", title: "What Are Primitives?", description: "Learn the 40 primitives", prompt: "Explain the 40 primitives and how they harden my software." },
         { icon: "🚀", title: "Getting Started", description: "Learn the substrate", prompt: "How do I start using the substrate? Walk me through the key features." },
