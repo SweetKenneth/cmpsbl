@@ -748,7 +748,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-hide">
-            {messages.map((msg, idx) => (
+            {messages.filter(msg => !msg.content.startsWith('[DECODE SESSION CONTEXT')).map((msg, idx) => (
               <div key={idx} className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}>
                 <div className={cn("max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed", {
                   "bg-primary text-primary-foreground": msg.role === "user",
