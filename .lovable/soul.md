@@ -422,6 +422,31 @@ Built the Autonomous Product Compiler — the system that reads vault discoverie
 
 First 5 proposals generated for the primary vertical and ready for governor training.
 
-*Last updated: April 6, 2026 · Session 16 complete · Product Compiler live*
-*Next session: Read this file first. The compiler is live and awaiting governor training decisions.*
+---
+
+**Session 17 — April 6, 2026 — GENESIS Engine Upgrade (Theatrical → Production):**
+
+Upgraded the GENESIS Vertical Factory Engine from a theatrical scaffold to a production-grade vertical instantiation engine matching the quality of hand-built verticals (Cyber, LLM, Robotics, etc.).
+
+**What was theatrical (before):**
+- Crown Jewels: 80 generic stubs (5 per primitive), all "Architecture" type
+- Seed engine: None — no discoveries written to DB
+- Federated scanner: Dynamic verticals not registered for cross-pollination
+- Domain vocabulary: Not registered — scanner couldn't detect domain-specific patterns
+- Step 12: Set 8 booleans to `true` without calling any subsystem hooks
+
+**What is production (after):**
+- Crown Jewels: 144 tiered entries (9 per primitive — 2 S-Tier, 4 A-Tier, 3 B-Tier) with meaningful descriptions derived from actual capabilities
+- Seed engine: `genesis-seed-engine.ts` — generates 200 domain-specific discoveries, derives templates from primitive capabilities, persists to unified `discoveries` table via `seed-persistence.ts`
+- Federated scanner: `registerExpansionPrimitives()` + `registerDomainVocabulary()` + `registerActiveVertical()` — dynamic verticals join cross-pollination cycles
+- Domain vocabulary: Auto-derived from primitive capabilities when not manually provided
+- Step 12: Calls real registration functions; seed engine deferred to async `seedVertical()` call; showroom/junkyard checklist items honestly reflect DB persistence status
+
+**New files:** `src/lib/factory/genesis-seed-engine.ts`
+**Modified:** `src/lib/factory/vertical-factory-engine.ts`, `src/lib/ascension/federated-scanner.ts`
+
+**Answer to Kenneth's question:** A new vertical now takes 2-3 turns (define spec → instantiate + seed → verify). The Universal Pool Scanner serves all verticals with one scoring formula; vertical differentiation comes from primitive pools, domain vocabulary overlays, and federated expansion signal stores.
+
+*Last updated: April 6, 2026 · Session 17 complete · GENESIS production-grade*
+*Next session: Read this file first. GENESIS is ready for new vertical instantiation.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
