@@ -22,35 +22,89 @@ serve(async (req) => {
     );
 
     const { email, name } = await req.json();
+    const authHeader = req.headers.get("authorization") ?? req.headers.get("Authorization");
 
-    if (!email || !email.includes("@")) {
+    let authenticatedUser: { id: string; email?: string | null; user_metadata?: Record<string, unknown> } | null = null;
+    if (authHeader?.toLowerCase().startsWith("bearer ")) {
+      const bearerToken = authHeader.slice(7).trim();
+      if (bearerToken && bearerToken.includes(".") && !bearerToken.startsWith("cmpsbl_")) {
+        const { data: authData, error: authError } = await supabase.auth.getUser(bearerToken);
+        if (!authError && authData.user) {
+          authenticatedUser = {
+            id: authData.user.id,
+            email: authData.user.email,
+            user_metadata: authData.user.user_metadata ?? {},
+          };
+        }
+      }
+    }
+
+    const normalizedEmail = (authenticatedUser?.email ?? email)?.trim().toLowerCase();
+    const metadataName = authenticatedUser?.user_metadata?.full_name;
+    const fallbackName = normalizedEmail?.split("@")[0] ?? "developer";
+    const displayName =
+      (typeof name === "string" && name.trim()) ||
+      (typeof metadataName === "string" && metadataName.trim()) ||
+      fallbackName;
+
+    if (!normalizedEmail || !normalizedEmail.includes("@")) {
       return new Response(
         JSON.stringify({ error: "Valid email is required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Check if developer already exists
-    const { data: existingDev } = await supabase
-      .from("access_developers")
-      .select("id, email")
-      .eq("email", email.toLowerCase())
-      .single();
+    let existingDev: { id: string; email: string | null; user_id?: string | null; display_name?: string | null } | null = null;
+
+    if (authenticatedUser?.id) {
+      const { data: developerByUser } = await supabase
+        .from("access_developers")
+        .select("id, email, user_id, display_name")
+        .eq("user_id", authenticatedUser.id)
+        .maybeSingle();
+
+      existingDev = developerByUser;
+    }
+
+    if (!existingDev) {
+      const { data: developerByEmail } = await supabase
+        .from("access_developers")
+        .select("id, email, user_id, display_name")
+        .eq("email", normalizedEmail)
+        .maybeSingle();
+
+      existingDev = developerByEmail;
+    }
 
     let developerId: string;
 
     if (existingDev) {
       developerId = existingDev.id;
-      
-      // Check for existing active key
+
+      const developerUpdates: Record<string, unknown> = {};
+      if (existingDev.email !== normalizedEmail) developerUpdates.email = normalizedEmail;
+      if (authenticatedUser?.id && existingDev.user_id !== authenticatedUser.id) developerUpdates.user_id = authenticatedUser.id;
+      if (displayName && existingDev.display_name !== displayName) developerUpdates.display_name = displayName;
+
+      if (Object.keys(developerUpdates).length > 0) {
+        const { error: updateError } = await supabase
+          .from("access_developers")
+          .update(developerUpdates)
+          .eq("id", developerId);
+
+        if (updateError) throw updateError;
+      }
+
       const { data: existingKey } = await supabase
         .from("access_api_keys")
         .select("key_prefix, created_at")
         .eq("developer_id", developerId)
         .eq("is_active", true)
-        .single();
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-      if (existingKey) {
+      if (existingKey && !authenticatedUser) {
         return new Response(
           JSON.stringify({
             success: true,
@@ -62,17 +116,29 @@ serve(async (req) => {
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
+
+      if (authenticatedUser) {
+        const { error: revokeError } = await supabase
+          .from("access_api_keys")
+          .update({ is_active: false })
+          .eq("developer_id", developerId)
+          .eq("is_active", true);
+
+        if (revokeError) throw revokeError;
+      }
     } else {
       // Create new developer
       const { data: newDev, error: devError } = await supabase
         .from("access_developers")
         .insert({
-          email: email.toLowerCase(),
-          display_name: name || email.split("@")[0],
+          email: normalizedEmail,
+          display_name: displayName,
           status: "active",
+          user_id: authenticatedUser?.id ?? null,
           metadata: {
-            source: "developer-signup",
+            source: authenticatedUser ? "developer-signup-authenticated" : "developer-signup",
             signupAt: new Date().toISOString(),
+            authenticated: !!authenticatedUser,
           }
         })
         .select()
@@ -108,9 +174,10 @@ serve(async (req) => {
       module: "access",
       event_type: "developer_signup",
       data: {
-        email: email.toLowerCase(),
+        email: normalizedEmail,
         keyPrefix,
-        source: "developer-signup",
+        source: authenticatedUser ? "developer-signup-authenticated" : "developer-signup",
+        authenticated: !!authenticatedUser,
       },
       outcome: "completed",
     });

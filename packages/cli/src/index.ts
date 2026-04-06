@@ -603,7 +603,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Primitives
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '2.5.0' as const;
+const CLI_VERSION = '2.5.1' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -5689,7 +5689,7 @@ const ECOSYSTEM_PACKAGES = {
     { name: '@cmpsbl/failsafe',  version: '3.4.0',  deps: [] as string[] },
   ],
   tier2: [
-    { name: '@cmpsbl/cli',          version: '2.5.0',  deps: ['@cmpsbl/runtime'] },
+    { name: '@cmpsbl/cli',          version: '2.5.1',  deps: ['@cmpsbl/runtime'] },
     { name: '@cmpsbl/test-harness', version: '1.4.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
     { name: '@cmpsbl/react',        version: '1.4.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
   ],
