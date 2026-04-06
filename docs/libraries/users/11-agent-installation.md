@@ -140,7 +140,7 @@ Any language that can make HTTP requests can use a CMPSBL export. Deploy the exp
 
 ```bash
 # Health check
-curl -X POST https://api.cmpsbl.ai/api/v1/substrate \
+curl -X POST https://api.cmpsbl.com/api/v1/substrate \
   -H "Authorization: Bearer pf_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{"module": "brain", "action": "query", "payload": {"input": "Hello"}}'
@@ -148,7 +148,7 @@ curl -X POST https://api.cmpsbl.ai/api/v1/substrate \
 
 **Go example:**
 ```go
-resp, err := http.Post("https://api.cmpsbl.ai/api/v1/substrate",
+resp, err := http.Post("https://api.cmpsbl.com/api/v1/substrate",
     "application/json",
     strings.NewReader(`{"module":"brain","action":"query","payload":{"input":"Hello"}}`))
 ```
@@ -156,7 +156,7 @@ resp, err := http.Post("https://api.cmpsbl.ai/api/v1/substrate",
 **Java example:**
 ```java
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("https://api.cmpsbl.ai/api/v1/substrate"))
+    .uri(URI.create("https://api.cmpsbl.com/api/v1/substrate"))
     .header("Authorization", "Bearer " + apiKey)
     .POST(HttpRequest.BodyPublishers.ofString(payload))
     .build();

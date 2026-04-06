@@ -4,7 +4,7 @@
 
 ## 1. Create an Account
 
-Sign up at cmpsbl.ai. Free tier gives you immediate access to core primitives.
+Sign up at cmpsbl.com. Free tier gives you immediate access to core primitives.
 
 ## 2. Get Your API Key
 
@@ -23,7 +23,7 @@ Authorization: Bearer pf_live_xxxxxxxxxxxxx
 ## 4. Your First API Call
 
 ```bash
-curl -X POST https://api.cmpsbl.ai/api/v1/decode/process \
+curl -X POST https://api.cmpsbl.com/api/v1/decode/process \
   -H "Authorization: Bearer pf_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{"action": "process", "payload": {"input": "Hello, CMPSBL"}}'
@@ -61,7 +61,7 @@ curl -X POST https://api.cmpsbl.ai/api/v1/decode/process \
 ## 6. Check Your Usage
 
 ```bash
-curl -X POST https://api.cmpsbl.ai/api/v1/economy/usage \
+curl -X POST https://api.cmpsbl.com/api/v1/economy/usage \
   -H "Authorization: Bearer pf_live_xxx"
 ```
 

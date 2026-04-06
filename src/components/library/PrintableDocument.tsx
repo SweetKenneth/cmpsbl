@@ -166,7 +166,7 @@ export const PrintableDocument = forwardRef<HTMLDivElement, PrintableDocumentPro
             © {new Date().getFullYear()} CMPSBL® — Cognitive Infrastructure Layer for AI
           </div>
           <div className="mt-1 text-xs text-gray-400 font-sans">
-            cmpsbl.ai • Confidential
+            cmpsbl.com • Confidential
           </div>
         </footer>
       </div>

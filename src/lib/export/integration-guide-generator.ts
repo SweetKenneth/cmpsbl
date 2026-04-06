@@ -619,7 +619,7 @@ If your environment uses a proxy or restricts outbound traffic:
 \`\`\`bash
 # The Convex Core™ connects to this endpoint (when not in offline mode)
 # Allow outbound HTTPS to:
-#   https://api.cmpsbl.ai/v1/substrate/primitive
+#   https://api.cmpsbl.com/v1/substrate/primitive
 
 # Or force offline mode (no network needed)
 export CMPSBL_OFFLINE=true

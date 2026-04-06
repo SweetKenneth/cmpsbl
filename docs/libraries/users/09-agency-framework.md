@@ -15,7 +15,7 @@ An agency is a coordinated team of **cognitive agents** — specialized AI worke
 cmpsbl agency create --template "research-team" --name "Market Analysis"
 
 # Via API
-curl -X POST https://api.cmpsbl.ai/api/v1/agency/create \
+curl -X POST https://api.cmpsbl.com/api/v1/agency/create \
   -H "Authorization: Bearer pf_live_xxx" \
   -H "Content-Type: application/json" \
   -d '{"template": "research-team", "name": "Market Analysis"}'
