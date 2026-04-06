@@ -351,6 +351,7 @@ export function runVaultBridge(): VaultBridgeResult {
     showroom: 0,
     junkyard: 0,
     retired: 0,
+    dbDiscoveries: 0,
   };
 
   // ── Source 1: S-Tier Expansion Jewels (1,008 entries across 7 verticals) ──
@@ -418,6 +419,135 @@ export function runVaultBridge(): VaultBridgeResult {
     archetypeMappings: totalMappings,
     durationMs: Math.round(performance.now() - start),
     breakdown,
+    feedbackStats: {
+      totalSignals: feedbackStats.totalSignals,
+      uniquePrimitives: feedbackStats.uniquePrimitives,
+    },
+    registryStats: {
+      totalEntries: registryStats.totalEntries,
+      avgQuality: registryStats.avgQuality,
+    },
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §6b — DB-BACKED DISCOVERY BRIDGE
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// Fetches ALL discoveries from the `discoveries` table (the 4,000+ backlog)
+// and processes them as ground-truth training data. This closes the gap
+// where manually-discovered items were never fed into the scanner.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Page size for DB fetches — avoids the 1000-row default limit */
+const DB_PAGE_SIZE = 500;
+
+interface DBDiscoveryRow {
+  id: string;
+  name: string;
+  description: string | null;
+  cjpi: number | null;
+  module_chain: string[] | null;
+  category: string | null;
+}
+
+/**
+ * Fetch all discoveries from the database in pages.
+ * Returns a flat array of all rows.
+ */
+async function fetchAllDBDiscoveries(): Promise<DBDiscoveryRow[]> {
+  const all: DBDiscoveryRow[] = [];
+  let offset = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const { data, error } = await supabase
+      .from('discoveries')
+      .select('id, name, description, cjpi, module_chain, category')
+      .range(offset, offset + DB_PAGE_SIZE - 1)
+      .order('cjpi', { ascending: false });
+
+    if (error || !data || data.length === 0) {
+      hasMore = false;
+      break;
+    }
+
+    all.push(...(data as DBDiscoveryRow[]));
+    offset += DB_PAGE_SIZE;
+    if (data.length < DB_PAGE_SIZE) hasMore = false;
+  }
+
+  return all;
+}
+
+/**
+ * Run the full vault-to-glossary bridge WITH database-backed discoveries.
+ * This is the production version that includes all 4,000+ manually
+ * discovered capabilities from the `discoveries` table.
+ *
+ * Call this instead of `runVaultBridge()` during autonomous cycles
+ * to ensure the complete discovery backlog trains the scanner.
+ */
+export async function runVaultBridgeWithDB(): Promise<VaultBridgeResult> {
+  // First run the synchronous bridge (S-Tier, A-Tier, in-memory catalog)
+  const syncResult = runVaultBridge();
+
+  // Then layer on the DB discoveries
+  const dbStart = performance.now();
+  const dbRows = await fetchAllDBDiscoveries();
+
+  let dbSignals = 0;
+  let dbImplementations = 0;
+  let dbMappings = 0;
+
+  for (const row of dbRows) {
+    if (!row.name || row.cjpi == null) continue;
+
+    const primaryPrimitive = row.module_chain?.[0] || 'SYSTEM';
+    const result = processVaultEntry(
+      row.name,
+      row.description || '',
+      primaryPrimitive,
+      row.cjpi,
+      row.module_chain || [],
+      'db-discoveries',
+    );
+
+    dbSignals += result.signals;
+    dbImplementations += result.implementations;
+    dbMappings += result.mappings;
+
+    // Inject each non-primary primitive for co-firing pattern learning
+    if (row.module_chain && row.module_chain.length > 1) {
+      for (let i = 1; i < Math.min(row.module_chain.length, 6); i++) {
+        const secondaryResult = processVaultEntry(
+          row.name,
+          row.description || '',
+          row.module_chain[i],
+          row.cjpi,
+          row.module_chain,
+          'db-discoveries',
+        );
+        dbSignals += secondaryResult.signals;
+        dbMappings += secondaryResult.mappings;
+      }
+    }
+  }
+
+  const dbDuration = Math.round(performance.now() - dbStart);
+  const feedbackStats = getFeedbackStats();
+  const registryStats = getRegistryStats();
+
+  return {
+    totalProcessed: syncResult.totalProcessed + dbRows.length,
+    signalsInjected: syncResult.signalsInjected + dbSignals,
+    implementationsRegistered: syncResult.implementationsRegistered + dbImplementations,
+    archetypeMappings: syncResult.archetypeMappings + dbMappings,
+    durationMs: syncResult.durationMs + dbDuration,
+    breakdown: {
+      ...syncResult.breakdown,
+      dbDiscoveries: dbRows.length,
+    },
     feedbackStats: {
       totalSignals: feedbackStats.totalSignals,
       uniquePrimitives: feedbackStats.uniquePrimitives,
