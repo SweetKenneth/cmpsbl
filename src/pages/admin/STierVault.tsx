@@ -33,6 +33,7 @@ import {
 } from "@/lib/export/universal-adapter";
 import { contextFromDiscovery, type SynthesisContext } from "@/lib/export/logic-synthesizer";
 import { supabase } from "@/integrations/supabase/client";
+import { useDiscoveryCounts } from "@/hooks/useDiscoveryCounts";
 import { toast } from "sonner";
 import { usePricingEngine } from "@/hooks/usePricingEngine";
 import { formatPrice } from "@/lib/foundry/pricing-engine";
