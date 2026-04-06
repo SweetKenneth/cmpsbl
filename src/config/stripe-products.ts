@@ -57,10 +57,10 @@ export const DEFENSE_PRODUCTS = {
 } as const;
 
 export const CONTACT_INFO = {
-  email: 'support@cmpsbl.ai',
+  email: 'support@cmpsbl.com',
   phone: '(214) 548-0883',
   phoneFormatted: '(214) 548-0883',
-  website: 'https://cmpsbl.ai'
+  website: 'https://cmpsbl.com'
 } as const;
 
 export const TRIAL_DAYS = 7;

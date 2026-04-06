@@ -1883,7 +1883,7 @@ function DocViewer({ doc, onBack }: { doc: InvestorDoc; onBack: () => void }) {
             <span>Confidential — Investor Use Only</span>
           </div>
           <p className="text-[9px] text-slate-300 mt-2 text-center">
-            cmpsbl.ai · Cognitive Infrastructure Layer for AI
+            cmpsbl.com · Governed Cognitive Infrastructure
           </p>
         </footer>
       </article>

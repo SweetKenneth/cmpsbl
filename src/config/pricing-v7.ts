@@ -421,9 +421,9 @@ export const GENERATOR_PRICING = {
 // CONTACT INFO
 // ============================================
 export const CONTACT_INFO = {
-  email: 'licensing@cmpsbl.ai',
-  sales: 'sales@cmpsbl.ai',
-  support: 'support@cmpsbl.ai',
+  email: 'licensing@cmpsbl.com',
+  sales: 'sales@cmpsbl.com',
+  support: 'support@cmpsbl.com',
   phone: '(214) 548-0883',
 } as const;
 

@@ -342,7 +342,7 @@ export function usePrintDocument() {
       © ${new Date().getFullYear()} CMPSBL® — Cognitive Infrastructure Layer for AI
     </div>
     <div class="footer-text" style="margin-top: 4px;">
-      cmpsbl.ai • Confidential
+      cmpsbl.com • Confidential
     </div>
   </footer>
 </body>

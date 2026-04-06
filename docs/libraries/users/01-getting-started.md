@@ -61,7 +61,7 @@ curl -X POST https://api.cmpsbl.com/api/v1/decode/process \
 ## 6. Check Your Usage
 
 ```bash
-curl -X POST https://api.cmpsbl.ai/api/v1/economy/usage \
+curl -X POST https://api.cmpsbl.com/api/v1/economy/usage \
   -H "Authorization: Bearer pf_live_xxx"
 ```
 
