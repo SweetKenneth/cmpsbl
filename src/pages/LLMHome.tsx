@@ -22,23 +22,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-
-/* ─── Theme Constants ─── */
-const ACCENT = 'hsl(160 90% 45%)';
-const ACCENT_GLOW = 'hsl(160 90% 55%)';
-const BG_DEEP = 'hsl(170 30% 3%)';
-const BG_CARD = 'hsl(170 25% 6%)';
-const BORDER = 'hsl(170 20% 12%)';
-const TEXT_PRIMARY = 'hsl(170 10% 92%)';
-const TEXT_SECONDARY = 'hsl(170 15% 45%)';
-const CYAN = 'hsl(180 100% 50%)';
-
-const LLM_STATS = [
-  { label: "OWASP LLM Risks Covered", value: "10/10", icon: Shield },
-  { label: "LLM Primitives Active", value: "16", icon: Layers },
-  { label: "Crown Jewels Deployed", value: "80", icon: Sparkles },
-  { label: "Capabilities Online", value: "100+", icon: Activity },
-];
+import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
 const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
   { id: "VERITAS", name: "VERITAS", desc: "Hallucination detection — multi-source grounding, claim decomposition, entropy-based confabulation detection, temporal fact decay tracking", icon: Eye, color: "hsl(160 90% 45%)" },

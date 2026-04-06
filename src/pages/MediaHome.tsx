@@ -24,22 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
-
-/* ─── Theme Constants ─── */
-const ACCENT = 'hsl(330 85% 60%)';
-const ACCENT_GLOW = 'hsl(290 100% 70%)';
-const BG_DEEP = 'hsl(330 25% 4%)';
-const BG_CARD = 'hsl(330 20% 7%)';
-const BORDER = 'hsl(330 15% 14%)';
-const TEXT_PRIMARY = 'hsl(330 10% 92%)';
-const TEXT_SECONDARY = 'hsl(330 15% 45%)';
-
-const MEDIA_STATS = [
-  { label: "Content Capabilities Active", value: "110+", icon: Activity },
-  { label: "Media Primitives", value: "16", icon: Layers },
-  { label: "Crown Jewels Deployed", value: "89", icon: Sparkles },
-  { label: "Creative Domains", value: "8", icon: Target },
-];
+import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
 const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
   { id: "CANVAS", name: "CANVAS", desc: "Visual generation — image synthesis, style transfer, thumbnails, graphic layout, brand-consistent visuals, batch processing", icon: Image, color: "hsl(330 85% 60%)" },
