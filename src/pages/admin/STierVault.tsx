@@ -767,7 +767,7 @@ export default function STierVault() {
 
       toast.success(`"${d.name}" promoted to registry — live count updated`);
       await loadPromoted();
-      await loadRegistryCount();
+      await refreshLiveCounts();
     } catch (err: any) {
       toast.error(`Promotion failed: ${err.message}`);
     } finally {
