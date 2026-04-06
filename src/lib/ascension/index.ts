@@ -313,3 +313,20 @@ export {
   type VaultBridgeResult,
   type ReactorChainBridgeResult,
 } from './vault-glossary-bridge';
+
+// Federated Scanner (cross-vertical intelligence)
+export {
+  createVerticalScanner,
+  getVerticalScanner,
+  runCrossPollinationCycle,
+  getFederatedStats,
+  isSpinePrimitive,
+  getExpansionPrimitives,
+  recordFederatedMatch,
+  resetFederatedStores,
+  type VerticalScannerInstance,
+  type VerticalPrimeResult,
+  type VerticalScannerStats,
+  type CrossPollinationResult,
+  type ActiveVerticalId,
+} from './federated-scanner';
