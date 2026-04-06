@@ -345,7 +345,55 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     setInput("");
     setShowMenu(false);
 
-    // ─── Governor Command Layer (async, real DB queries) ───
+    // ─── Fingerprint Detection Layer (Cross-Table Shared Memory) ───
+    const fingerprintMatch = userMessage.match(/\b([a-f0-9]{8,})\b/i);
+    if (fingerprintMatch && userMessage.length < 120) {
+      const possibleFp = fingerprintMatch[1];
+      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+      setIsLoading(true);
+      try {
+        const result = await lookupAnyFingerprint(possibleFp);
+        if (result) {
+          let lookupReply: string;
+          if (result.source === 'restoration') {
+            const s = result.session;
+            const primList = s.selectedPrimitives.join(', ');
+            lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
+              `**Fingerprint:** \`${s.fingerprint}\`\n` +
+              `**Serial:** \`${s.serialNumber}\`\n` +
+              `**CJPI Score:** ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
+              `**Primitives Applied:** ${primList}\n` +
+              `**Language:** ${s.originalLanguage ?? 'Unknown'}\n` +
+              `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
+              `I have your full record on file. What would you like to know?`;
+          } else {
+            const s = result.session;
+            const primList = s.primitivesApplied.length > 0 ? s.primitivesApplied.join(', ') : 'See metadata';
+            const capList = s.capabilitiesAdded.length > 0 ? s.capabilitiesAdded.join(', ') : 'N/A';
+            const cjpiDisplay = s.finalCjpi != null
+              ? `${s.originalCjpi ?? '—'} → **${s.finalCjpi}**/100`
+              : s.originalCjpi != null ? `${s.originalCjpi}/100` : 'N/A';
+            lookupReply = `Found it! 🔍 This is a **Vertical Ascension** record from **${s.verticalName ?? s.verticalId}**:\n\n` +
+              `**Fingerprint:** \`${s.fingerprintId}\`\n` +
+              `**CJPI:** ${cjpiDisplay}\n` +
+              `**Status:** ${s.status}\n` +
+              `**Primitives Applied:** ${primList}\n` +
+              `**Capabilities Added:** ${capList}\n` +
+              `**Date:** ${new Date(s.createdAt).toLocaleDateString()}` +
+              (s.completedAt ? ` — completed ${new Date(s.completedAt).toLocaleDateString()}` : '') +
+              `\n\nThis ascension was processed through the **${s.verticalName ?? s.verticalId}** substrate. What would you like to know?`;
+          }
+          setMessages(prev => [...prev, { role: 'assistant', content: lookupReply }]);
+          setIsLoading(false);
+          return;
+        }
+      } catch {
+        // Not a fingerprint or lookup failed — fall through
+      }
+      setIsLoading(false);
+      setMessages(prev => prev.slice(0, -1));
+    }
+
     if (isCommand(userMessage) && identityRole === 'governor' && isGovernorCommand(userMessage)) {
       setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
       setIsLoading(true);
