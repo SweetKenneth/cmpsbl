@@ -321,6 +321,24 @@ export function seedQuantumDiscoveries(): QuantumSeedResult {
     completedAt: new Date().toISOString(),
   };
 
+  // Persist all discoveries to the unified database table (fire-and-forget)
+  const seedRunId = runId;
+  ensureSeedRun(seedRunId, 'quantum', TOTAL_DISCOVERIES).then(() => {
+    const rows = discoveries.map(d => ({
+      id: d.id,
+      name: d.name,
+      description: d.description,
+      cjpiScore: d.cjpiScore,
+      primitiveChain: d.primitiveChain,
+      tier: d.tier,
+      route: d.route,
+      category: d.category,
+      vertical: 'quantum',
+      runId: seedRunId,
+    }));
+    persistSeedDiscoveries(rows, 'quantum', seedRunId);
+  });
+
   return _seedResult;
 }
 
