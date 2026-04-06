@@ -401,6 +401,442 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     def enable(*a, **kw):
         return StateRecovery(**kw)`;
         }
+        // ─── CircuitBreaker: real circuit breaker with failure tracking ───
+        if (s === 'CircuitBreaker') {
+          return `class CircuitBreaker:
+    """CMPSBL® Convex Core™ — Circuit breaker with open/half-open/closed states"""
+    _instances = {}
+
+    def __init__(self, name="default", threshold=5, reset_timeout=30):
+        self._name = name
+        self._threshold = threshold
+        self._reset_timeout = reset_timeout
+        self._failures = 0
+        self._state = "closed"
+        self._last_failure = 0
+
+    @classmethod
+    def init(cls, *a, **kw):
+        name = kw.get("name", kw.get("scope", "default"))
+        inst = cls(name=name, threshold=kw.get("max_failures", kw.get("threshold", 5)), reset_timeout=kw.get("reset_timeout_seconds", kw.get("resetMs", 30000)) / 1000 if "resetMs" in kw else kw.get("reset_timeout", 30))
+        cls._instances[name] = inst
+        return inst
+
+    @classmethod
+    def get(cls, name="default"):
+        return cls._instances.get(name)
+
+    def execute(self, fn, *args, **kwargs):
+        import time
+        if self._state == "open":
+            if time.time() - self._last_failure > self._reset_timeout:
+                self._state = "half-open"
+            else:
+                raise RuntimeError(f"CircuitBreaker [{self._name}] is OPEN — call rejected")
+        try:
+            result = fn(*args, **kwargs)
+            if self._state == "half-open":
+                self._state = "closed"
+                self._failures = 0
+            return result
+        except Exception as e:
+            self._failures += 1
+            self._last_failure = time.time()
+            if self._failures >= self._threshold:
+                self._state = "open"
+            raise
+
+    @property
+    def state(self):
+        return self._state
+
+    def reset(self):
+        self._failures = 0
+        self._state = "closed"`;
+        }
+
+        // ─── FailoverManager: automatic retry with exponential backoff ───
+        if (s === 'FailoverManager') {
+          return `class FailoverManager:
+    """CMPSBL® Convex Core™ — Retry with exponential backoff and fallback"""
+    _config = {"max_retries": 3, "backoff_base": 0.5, "fallback": None}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._config["max_retries"] = kw.get("max_retries", kw.get("maxRetries", 3))
+        cls._config["backoff_base"] = kw.get("backoff_base", kw.get("backoffMs", 500)) / 1000 if "backoffMs" in kw else kw.get("backoff_base", 0.5)
+        return cls
+
+    @classmethod
+    def enable(cls, *a, **kw):
+        if "fallback" in kw:
+            cls._config["fallback"] = kw["fallback"]
+        return cls
+
+    @classmethod
+    def execute(cls, fn, *args, **kwargs):
+        import time
+        last_err = None
+        for attempt in range(cls._config["max_retries"] + 1):
+            try:
+                return fn(*args, **kwargs)
+            except Exception as e:
+                last_err = e
+                if attempt < cls._config["max_retries"]:
+                    time.sleep(cls._config["backoff_base"] * (2 ** attempt))
+        if cls._config["fallback"] and callable(cls._config["fallback"]):
+            return cls._config["fallback"](*args, **kwargs)
+        raise last_err`;
+        }
+
+        // ─── DefenseGate: real input validation ───
+        if (s === 'DefenseGate') {
+          return `class DefenseGate:
+    """CMPSBL® Convex Core™ — Input validation and boundary enforcement"""
+    _rules = {"max_size": 10_485_760, "reject_unknown": True, "sanitize": True, "allowed_types": None}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._rules["reject_unknown"] = kw.get("validate_all", kw.get("rejectUnknownFields", True))
+        cls._rules["sanitize"] = kw.get("sanitize", True)
+        return cls
+
+    @classmethod
+    def enforce(cls, *a, **kw):
+        cls._rules["max_size"] = kw.get("max_size_bytes", kw.get("maxSizeBytes", 10_485_760))
+        cls._rules["sanitize"] = kw.get("sanitize", cls._rules["sanitize"])
+        return cls
+
+    @classmethod
+    def validate(cls, data, schema=None):
+        import sys
+        size = sys.getsizeof(data) if data is not None else 0
+        if size > cls._rules["max_size"]:
+            raise ValueError(f"DefenseGate: payload exceeds max size ({size} > {cls._rules['max_size']})")
+        if schema and isinstance(data, dict):
+            for key in data:
+                if key not in schema and cls._rules["reject_unknown"]:
+                    raise ValueError(f"DefenseGate: unknown field '{key}' rejected")
+        if cls._rules["sanitize"] and isinstance(data, str):
+            data = data.replace("<script", "&lt;script").replace("javascript:", "")
+        return data
+
+    @classmethod
+    def apply(cls, *a, **kw): return cls.init(*a, **kw)`;
+        }
+
+        // ─── InputValidator: type-safe input checking ───
+        if (s === 'InputValidator') {
+          return `class InputValidator:
+    """CMPSBL® Convex Core™ — Type-safe input validation"""
+    @staticmethod
+    def check(value, expected_type, name="input"):
+        if not isinstance(value, expected_type):
+            raise TypeError(f"InputValidator: '{name}' expected {expected_type.__name__}, got {type(value).__name__}")
+        return value
+
+    @staticmethod
+    def require(data, *keys):
+        if not isinstance(data, dict):
+            raise TypeError("InputValidator: expected dict")
+        missing = [k for k in keys if k not in data]
+        if missing:
+            raise ValueError(f"InputValidator: missing required keys: {missing}")
+        return data
+
+    @staticmethod
+    def init(*a, **kw): pass
+    @staticmethod
+    def enforce(*a, **kw): pass`;
+        }
+
+        // ─── AuditChain: tamper-evident file-based audit log ───
+        if (s === 'AuditChain') {
+          return `class AuditChain:
+    """CMPSBL® Convex Core™ — Tamper-evident audit log with hash chain"""
+    _instance = None
+
+    def __init__(self, path=None):
+        import os
+        self._path = path or os.path.join(os.path.expanduser("~"), ".cmpsbl", "audit.log")
+        os.makedirs(os.path.dirname(self._path), exist_ok=True)
+        self._prev_hash = "0" * 64
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._instance = cls(path=kw.get("path"))
+        return cls._instance
+
+    def record(self, action, details=None):
+        import hashlib, json, time
+        entry = {"ts": time.time(), "action": action, "details": details, "prev": self._prev_hash}
+        raw = json.dumps(entry, sort_keys=True, default=str)
+        entry["hash"] = hashlib.sha256(raw.encode()).hexdigest()
+        self._prev_hash = entry["hash"]
+        with open(self._path, "a") as f:
+            f.write(json.dumps(entry, default=str) + "\\n")
+        return entry["hash"]
+
+    def verify(self):
+        import hashlib, json
+        with open(self._path, "r") as f:
+            lines = [l.strip() for l in f if l.strip()]
+        prev = "0" * 64
+        for line in lines:
+            entry = json.loads(line)
+            stored_hash = entry.pop("hash")
+            entry["prev"] = prev
+            raw = json.dumps(entry, sort_keys=True, default=str)
+            expected = hashlib.sha256(raw.encode()).hexdigest()
+            if stored_hash != expected:
+                return False
+            prev = stored_hash
+        return True
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls.init(*a, **kw)`;
+        }
+
+        // ─── ComplianceLogger: structured compliance logging ───
+        if (s === 'ComplianceLogger') {
+          return `class ComplianceLogger:
+    """CMPSBL® Convex Core™ — Compliance event logger"""
+    _log = []
+    _max = 1000
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._max = kw.get("max_entries", kw.get("retainCount", 1000))
+        return cls
+
+    @classmethod
+    def log(cls, event_type, data=None, severity="info"):
+        import time
+        entry = {"ts": time.time(), "type": event_type, "severity": severity, "data": data}
+        cls._log.append(entry)
+        if len(cls._log) > cls._max:
+            cls._log = cls._log[-cls._max:]
+        return entry
+
+    @classmethod
+    def query(cls, event_type=None, severity=None):
+        results = cls._log
+        if event_type:
+            results = [e for e in results if e["type"] == event_type]
+        if severity:
+            results = [e for e in results if e["severity"] == severity]
+        return results
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls.init(*a, **kw)`;
+        }
+
+        // ─── StructuredLogger: real JSON structured logging ───
+        if (s === 'StructuredLogger') {
+          return `class StructuredLogger:
+    """CMPSBL® Convex Core™ — JSON structured logger with correlation IDs"""
+    _config = {"format": "json", "level": "info", "correlation_id": None}
+    _levels = {"debug": 0, "info": 1, "warn": 2, "error": 3}
+
+    @classmethod
+    def init(cls, *a, **kw):
+        import uuid
+        cls._config["format"] = kw.get("format", "json")
+        cls._config["level"] = kw.get("level", "info")
+        if kw.get("correlation_id", kw.get("correlationId")):
+            cls._config["correlation_id"] = str(uuid.uuid4())
+        return cls
+
+    @classmethod
+    def _emit(cls, level, msg, **extra):
+        import json, time, sys
+        if cls._levels.get(level, 1) < cls._levels.get(cls._config["level"], 1):
+            return
+        entry = {"ts": time.time(), "level": level, "msg": msg}
+        if cls._config["correlation_id"]:
+            entry["cid"] = cls._config["correlation_id"]
+        entry.update(extra)
+        sys.stderr.write(json.dumps(entry, default=str) + "\\n")
+
+    @classmethod
+    def log(cls, msg, **kw): cls._emit("info", msg, **kw)
+    @classmethod
+    def info(cls, msg, **kw): cls._emit("info", msg, **kw)
+    @classmethod
+    def warn(cls, msg, **kw): cls._emit("warn", msg, **kw)
+    @classmethod
+    def error(cls, msg, **kw): cls._emit("error", msg, **kw)
+    @classmethod
+    def debug(cls, msg, **kw): cls._emit("debug", msg, **kw)`;
+        }
+
+        // ─── EventCorrelator: event correlation tracking ───
+        if (s === 'EventCorrelator') {
+          return `class EventCorrelator:
+    """CMPSBL® Convex Core™ — Event correlation and trace context"""
+    _traces = {}
+    _max_depth = 10
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._max_depth = kw.get("span_depth", kw.get("spanDepth", 10))
+        return cls
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls.init(*a, **kw)
+
+    @classmethod
+    def start_trace(cls, name):
+        import uuid, time
+        tid = str(uuid.uuid4())[:8]
+        cls._traces[tid] = {"name": name, "start": time.time(), "spans": []}
+        return tid
+
+    @classmethod
+    def add_span(cls, trace_id, label, data=None):
+        import time
+        trace = cls._traces.get(trace_id)
+        if trace and len(trace["spans"]) < cls._max_depth:
+            trace["spans"].append({"label": label, "ts": time.time(), "data": data})
+
+    @classmethod
+    def end_trace(cls, trace_id):
+        import time
+        trace = cls._traces.pop(trace_id, None)
+        if trace:
+            trace["end"] = time.time()
+            trace["duration_ms"] = round((trace["end"] - trace["start"]) * 1000, 3)
+        return trace`;
+        }
+
+        // ─── GovernanceGate: policy enforcement ───
+        if (s === 'GovernanceGate') {
+          return `class GovernanceGate:
+    """CMPSBL® Convex Core™ — Policy-based governance enforcement"""
+    _policies = {}
+    _mode = "enforce"
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._mode = kw.get("mode", "enforce")
+        return cls
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls.init(*a, **kw)
+
+    @classmethod
+    def add_policy(cls, name, check_fn, action="block"):
+        cls._policies[name] = {"check": check_fn, "action": action}
+
+    @classmethod
+    def evaluate(cls, context):
+        violations = []
+        for name, policy in cls._policies.items():
+            try:
+                if not policy["check"](context):
+                    violations.append({"policy": name, "action": policy["action"]})
+            except Exception as e:
+                violations.append({"policy": name, "action": "error", "error": str(e)})
+        if violations and cls._mode == "enforce":
+            blocked = [v for v in violations if v["action"] == "block"]
+            if blocked:
+                raise PermissionError(f"GovernanceGate: blocked by policies: {[v['policy'] for v in blocked]}")
+        return {"passed": len(violations) == 0, "violations": violations}`;
+        }
+
+        // ─── PolicyEngine: configurable rule engine ───
+        if (s === 'PolicyEngine') {
+          return `class PolicyEngine:
+    """CMPSBL® Convex Core™ — Configurable rule engine"""
+    _rules = []
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+    @classmethod
+    def enable(cls, *a, **kw): return cls
+
+    @classmethod
+    def add_rule(cls, name, condition_fn, priority=0):
+        cls._rules.append({"name": name, "condition": condition_fn, "priority": priority})
+        cls._rules.sort(key=lambda r: r["priority"], reverse=True)
+
+    @classmethod
+    def evaluate(cls, data):
+        results = []
+        for rule in cls._rules:
+            try:
+                passed = rule["condition"](data)
+                results.append({"rule": rule["name"], "passed": passed})
+            except Exception as e:
+                results.append({"rule": rule["name"], "passed": False, "error": str(e)})
+        return results`;
+        }
+
+        // ─── StateObserver: state snapshot and diff tracking ───
+        if (s === 'StateObserver') {
+          return `class StateObserver:
+    """CMPSBL® Convex Core™ — State observation with snapshot diffs"""
+    _snapshots = []
+    _max = 100
+
+    @classmethod
+    def init(cls, *a, **kw):
+        cls._max = kw.get("retain_history", kw.get("retainHistory", 100))
+        return cls
+
+    @classmethod
+    def enable(cls, *a, **kw): return cls.init(*a, **kw)
+
+    @classmethod
+    def snapshot(cls, label, state):
+        import copy, time
+        entry = {"label": label, "state": copy.deepcopy(state) if isinstance(state, (dict, list)) else state, "ts": time.time()}
+        cls._snapshots.append(entry)
+        if len(cls._snapshots) > cls._max:
+            cls._snapshots = cls._snapshots[-cls._max:]
+        return entry
+
+    @classmethod
+    def diff(cls, idx_a=-2, idx_b=-1):
+        if len(cls._snapshots) < 2:
+            return None
+        a, b = cls._snapshots[idx_a]["state"], cls._snapshots[idx_b]["state"]
+        if isinstance(a, dict) and isinstance(b, dict):
+            added = {k: b[k] for k in b if k not in a}
+            removed = {k: a[k] for k in a if k not in b}
+            changed = {k: {"from": a[k], "to": b[k]} for k in a if k in b and a[k] != b[k]}
+            return {"added": added, "removed": removed, "changed": changed}
+        return {"from": a, "to": b}`;
+        }
+
+        // ─── TransitionTracker: state transition event tracking ───
+        if (s === 'TransitionTracker') {
+          return `class TransitionTracker:
+    """CMPSBL® Convex Core™ — State transition event tracker"""
+    _transitions = []
+    _max = 100
+
+    @classmethod
+    def init(cls, *a, **kw): return cls
+    @classmethod
+    def enable(cls, *a, **kw):
+        cls._max = kw.get("retain_history", kw.get("retainHistory", 100))
+        return cls
+
+    @classmethod
+    def record(cls, from_state, to_state, trigger=None):
+        import time
+        entry = {"from": from_state, "to": to_state, "trigger": trigger, "ts": time.time()}
+        cls._transitions.append(entry)
+        if len(cls._transitions) > cls._max:
+            cls._transitions = cls._transitions[-cls._max:]
+        return entry
+
+    @classmethod
+    def history(cls, limit=20):
+        return cls._transitions[-limit:]`;
+        }
+
         // All other runtime classes get static method stubs
         return `class ${s}:
     """CMPSBL® Convex Core™ — ${s}"""
