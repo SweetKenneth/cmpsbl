@@ -141,10 +141,16 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   const tag = (prims: VerticalPrimitive[], source: string, signalMap?: Record<string, string[]>) => {
     for (const p of prims) {
       const explicitSignals = signalMap?.[p.id] ?? ULTIMATE_AFFINITY_SIGNALS[p.id];
+      // Merge explicit signals WITH derived signals so spine primitives
+      // benefit from both curated keywords and capability/description tokens
+      const derived = deriveSignals(p);
+      const merged = explicitSignals
+        ? [...new Set([...explicitSignals, ...derived])]
+        : derived;
       pool.push({
         primitive: p,
         sourceVertical: source,
-        signals: explicitSignals ?? deriveSignals(p),
+        signals: merged,
       });
     }
   };
