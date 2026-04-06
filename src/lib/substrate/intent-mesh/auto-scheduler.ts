@@ -274,6 +274,10 @@ class MeshAutoScheduler {
       const rarityResult = await recomputeMemoryStreamWeights();
       console.log(`[CDM/Rarity] Recomputed Memory Stream weights for ${rarityResult.verticals} verticals, pool size ${rarityResult.totalPoolSize} (${rarityResult.durationMs}ms)`);
 
+      // ── Product Compiler: generate compiled product proposals for governor review ──
+      const compilerResult = await runCompilerCycle();
+      console.log(`[CDM/Compiler] Generated ${compilerResult.proposalsGenerated} product proposals across ${compilerResult.verticals.length} verticals (${compilerResult.durationMs}ms)`);
+
       // ── Scanner pass: profile any framework files Ascension is processing ──
       const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
 
