@@ -502,15 +502,26 @@ const ARCHETYPES: StructuralSignature[] = [
       /@(gdpr|hipaa|compliance|protected_data|data_protection)/i,
       // data retention/expiry policies
       /(retention_?policy|data_?retention|expire_?after|purge_?after|right_?to_?forget)\s*[=:\(]/i,
+      // Authorization/Forbidden exceptions (Java/Go patterns)
+      /(AuthorizationException|ForbiddenException|AccessDenied|Unauthorized)\s*/i,
+      // Disclosed/credential/attribute-based access (IRMA, SSI patterns)
+      /(Disclosed|DisclosedAttribute|credential|attribute_?based|verifiable_?credential)\s*[=:\[{]/i,
+      // Session result with disclosure (privacy-preserving identity)
+      /(SessionResult|SessionHandler|SessionPackage)\s*/i,
+      // Privacy policy / terms / legal basis references
+      /(legal_?basis|lawful_?basis|legitimate_?interest|data_?subject|data_?controller)\s*[=:]/i,
     ],
     coSignals: [
       'gdpr', 'hipaa', 'ccpa', 'compliance', 'consent', 'privacy',
       'sovereignty', 'jurisdiction', 'anonymize', 'pseudonymize',
       'erasure', 'retention', 'data_subject', 'controller', 'processor',
+      'authorization', 'forbidden', 'unauthorized', 'disclosed',
+      'credential', 'attribute', 'verifiable', 'session_result',
     ],
     intentSignals: [
       'GDPR', 'HIPAA', 'compliance', 'data protection', 'privacy',
       'TODO: GDPR', 'FIXME: no consent', 'data sovereignty', 'PII',
+      'authorization', 'forbidden', 'access denied', 'disclosure',
     ],
     weight: 0.85,
   },
