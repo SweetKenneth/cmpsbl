@@ -359,6 +359,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /(dedupe|deduplicate|distinct|unique)\s*\(/i,
       // data validation + cleaning
       /(clean|normalize|standardize)\s*\([\s\S]{0,200}(data|record|row|entry)/i,
+      // definition-side: DAG/Task/Flow/Op class definitions (Airflow, Prefect, Dagster, Luigi)
+      /(class\s+\w*(DAG|Task|Flow|Pipeline|Op)|def\s+(run|execute|extract|transform|load)\s*\(self)/i,
+      // task dependency: upstream/downstream, requires, depends_on
+      /(upstream|downstream|requires|depends_on|set_upstream|set_downstream|>>|<<)\s*/i,
+      // @task, @op, @flow decorators
+      /@(task|op|flow|pipeline|dag)\s*[\(\n]/i,
     ],
     coSignals: [
       'pipeline', 'etl', 'extract', 'transform', 'load', 'ingest',
