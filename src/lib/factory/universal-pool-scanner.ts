@@ -141,22 +141,15 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   const tag = (prims: VerticalPrimitive[], source: string, signalMap?: Record<string, string[]>) => {
     for (const p of prims) {
       const explicitSignals = signalMap?.[p.id] ?? ULTIMATE_AFFINITY_SIGNALS[p.id];
-      // For primitives WITH curated signals: merge with capability tokens only
-      // (skip description-derived words which add noise and dilute density).
-      // For primitives WITHOUT curated signals: use full deriveSignals().
-      let signals: string[];
-      if (explicitSignals) {
-        const capTokens: string[] = [];
-        for (const cap of p.capabilities) {
-          capTokens.push(cap);
-          const parts = cap.split('_');
-          if (parts.length > 1) capTokens.push(...parts);
-        }
-        signals = [...new Set([...explicitSignals, ...capTokens])];
-      } else {
-        signals = deriveSignals(p);
-      }
-      pool.push({ primitive: p, sourceVertical: source, signals });
+      const derived = deriveSignals(p);
+      // Merge explicit + derived, but cap total signals to prevent
+      // density dilution. Explicit signals get priority (listed first).
+      const merged = explicitSignals
+        ? [...new Set([...explicitSignals, ...derived])]
+        : derived;
+      // Cap at 30 signals — enough for broad matching without diluting density
+      const capped = merged.length > 30 ? merged.slice(0, 30) : merged;
+      pool.push({ primitive: p, sourceVertical: source, signals: capped });
     }
   };
 
