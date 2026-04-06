@@ -235,15 +235,14 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
-  // Spine primitives (organs + layers) are the most powerful foundational
-  // primitives — they get a structural bonus because they provide the
-  // core infrastructure that makes expansion primitives effective.
+  // Spine primitives (organs + layers) get a structural bonus ONLY when
+  // they have at least one actual signal hit. This prevents irrelevant
+  // spine primitives from crowding out expansion matches via a free ride.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
-  const structuralBonus = isSpine ? 0.15 : 0;
+  const structuralBonus = (isSpine && hits > 0) ? 0.15 : 0;
 
-  // Composite scoring — spine-aware
+  // Composite scoring — spine-aware, signal-gated
   // Signal affinity (35%) + capability match (20%) + breadth (10%) + weight (15%) + structural (20%)
-  // Higher signal weight rewards genuine keyword alignment over broad capability lists
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
     signalAffinity * 0.35 +
@@ -296,7 +295,7 @@ function selectOptimalPrimitives(
   maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
-    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD)
+    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits > 0)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   const selected: PoolCandidate[] = [];
