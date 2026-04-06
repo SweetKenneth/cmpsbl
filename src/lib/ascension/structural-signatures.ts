@@ -502,15 +502,26 @@ const ARCHETYPES: StructuralSignature[] = [
       /@(gdpr|hipaa|compliance|protected_data|data_protection)/i,
       // data retention/expiry policies
       /(retention_?policy|data_?retention|expire_?after|purge_?after|right_?to_?forget)\s*[=:\(]/i,
+      // Authorization/Forbidden exceptions (Java/Go patterns)
+      /(AuthorizationException|ForbiddenException|AccessDenied|Unauthorized)\s*/i,
+      // Disclosed/credential/attribute-based access (IRMA, SSI patterns)
+      /(Disclosed|DisclosedAttribute|credential|attribute_?based|verifiable_?credential)\s*[=:\[{]/i,
+      // Session result with disclosure (privacy-preserving identity)
+      /(SessionResult|SessionHandler|SessionPackage)\s*/i,
+      // Privacy policy / terms / legal basis references
+      /(legal_?basis|lawful_?basis|legitimate_?interest|data_?subject|data_?controller)\s*[=:]/i,
     ],
     coSignals: [
       'gdpr', 'hipaa', 'ccpa', 'compliance', 'consent', 'privacy',
       'sovereignty', 'jurisdiction', 'anonymize', 'pseudonymize',
       'erasure', 'retention', 'data_subject', 'controller', 'processor',
+      'authorization', 'forbidden', 'unauthorized', 'disclosed',
+      'credential', 'attribute', 'verifiable', 'session_result',
     ],
     intentSignals: [
       'GDPR', 'HIPAA', 'compliance', 'data protection', 'privacy',
       'TODO: GDPR', 'FIXME: no consent', 'data sovereignty', 'PII',
+      'authorization', 'forbidden', 'access denied', 'disclosure',
     ],
     weight: 0.85,
   },
@@ -564,15 +575,23 @@ const ARCHETYPES: StructuralSignature[] = [
       /(role\s*=\s*['"]?(button|navigation|banner|main|complementary|dialog|alert))/i,
       // skip navigation / skip links
       /(skip.?nav|skip.?link|skip.?to.?content|skip.?main)/i,
+      // Audit/Rule/Check classes used in a11y tooling (axe-core etc.)
+      /class\s+\w*(Audit|Rule|Check)[\s\S]{0,200}(rules?|checks?|violations?|passes)/i,
+      // axe-core or lighthouse a11y patterns
+      /(axe|lighthouse|pa11y|deque)\s*[\.\(]/i,
+      // WCAG level references: Level A, AA, AAA
+      /(level\s*[=:]\s*['"]?AA?A?['"]?|wcag\s*\d)/i,
     ],
     coSignals: [
       'accessibility', 'a11y', 'aria', 'wcag', 'screen_reader',
       'keyboard', 'focus', 'contrast', 'alt_text', 'semantic',
       'landmark', 'heading_level', 'skip_link', 'caption',
+      'audit', 'rule', 'check', 'violation', 'axe', 'deque',
     ],
     intentSignals: [
       'accessibility', 'a11y', 'WCAG', 'screen reader', 'TODO: a11y',
       'FIXME: not accessible', 'keyboard navigation', 'color contrast',
+      'audit', 'violation', 'rule', 'check',
     ],
     weight: 0.75,
   },
@@ -724,8 +743,10 @@ const ARCHETYPES: StructuralSignature[] = [
     name: 'Deception & Counter-Intelligence',
     primitives: ['PHANTOM', 'DEFENSE', 'SHADOW'],
     patterns: [
-      // honeypot: trap, decoy, canary
+      // honeypot: trap, decoy, canary — class or variable naming
       /(honeypot|decoy|canary|trap)\s*[=:.\(]/i,
+      // Honeypot class/object definition (Glastopf, Cowrie, etc.)
+      /class\s+\w*(Honeypot|Honeynet|HoneyTrap|Cowrie|Glastopf)/i,
       // token/watermark: watermark, fingerprint, canary_token
       /(watermark|canary_?token|beacon_?url|tracking_?pixel)\s*[=:]/i,
       // obfuscation: obfuscate, mangle, minify
@@ -736,15 +757,21 @@ const ARCHETYPES: StructuralSignature[] = [
       /(anti_?debug|anti_?tamper|integrity_?check|code_?sign|checksum_?verify)\s*[\(=:]/i,
       // steganography / hidden channel patterns
       /(stegan|hidden_?channel|covert_?channel|embed_?payload|encode_?payload)\s*[\(=:]/i,
+      // emulator-based deception: emulators, vulnerability emulation, dork
+      /(emulat|vuln_?emulat|dork|sandbox_?escape|lure)\s*[=:\(_.]/i,
+      // SSH/telnet honeypot protocol keywords
+      /(cowrie|kippo|dionaea|conpot|thug|mailoney)\s*/i,
     ],
     coSignals: [
       'honeypot', 'decoy', 'canary', 'trap', 'deception', 'watermark',
       'obfuscate', 'mangle', 'disguise', 'counter_intelligence',
       'tar_pit', 'beacon', 'bait', 'lure', 'steganography',
+      'emulator', 'dork', 'glastopf', 'cowrie', 'kippo',
     ],
     intentSignals: [
       'honeypot', 'deception', 'canary token', 'counter-intelligence',
       'TODO: add decoy', 'trap', 'bait', 'misdirect',
+      'emulate', 'vulnerability emulation', 'fake service',
     ],
     weight: 0.70,
   },
@@ -774,6 +801,39 @@ const ARCHETYPES: StructuralSignature[] = [
       'equity', 'responsible AI', 'explainability', 'FIXME: biased',
     ],
     weight: 0.80,
+  },
+
+  // ── 25. EMBEDDED / HARDWARE ABSTRACTION ───────────────────────────────────
+  {
+    id: 'embedded-hal',
+    name: 'Embedded Systems & Hardware Abstraction',
+    primitives: ['CORE', 'REFLEX', 'NERVE'],
+    patterns: [
+      // HAL / peripheral singletons
+      /(HAL|hal|Peripherals?|peripheral_?driver)\s*[=:\.<{]/i,
+      // GPIO / pin control
+      /(gpio|pin|GPIO|digital_?write|digital_?read|set_?high|set_?low)\s*[\(=:.]/i,
+      // Interrupt handling
+      /(interrupt|irq|ISR|isr_?handler|critical_?section|disable_?interrupt)\s*[\(=:]/i,
+      // Clock / timer configuration
+      /(clock|timer|watchdog|systick|prescaler)\s*[\(=:.]/i,
+      // no_std / bare-metal markers
+      /(no_?std|bare.?metal|embedded.?hal|cortex.?m|riscv|xtensa)\s*/i,
+      // Register-level access
+      /(register|mmio|volatile|read_?reg|write_?reg|bitfield)\s*[\(=:.]/i,
+      // DMA / bus configuration
+      /(dma|spi|i2c|uart|usart|can_?bus|adc|dac|pwm)\s*[\(=:.]/i,
+    ],
+    coSignals: [
+      'peripheral', 'gpio', 'interrupt', 'register', 'hal', 'embedded',
+      'bare_metal', 'no_std', 'cortex', 'riscv', 'dma', 'spi', 'i2c',
+      'uart', 'watchdog', 'timer', 'clock', 'pin', 'singleton',
+    ],
+    intentSignals: [
+      'hardware abstraction', 'HAL', 'peripheral', 'embedded',
+      'bare-metal', 'no_std', 'microcontroller', 'GPIO', 'interrupt',
+    ],
+    weight: 0.65,
   },
 ];
 
