@@ -732,6 +732,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(simulate|tick|step|advance)\s*\([\s\S]{0,200}(state|world|environment|model)/i,
       // scenario replay: replay, playback, rewind
       /(replay|playback|rewind|reconstruct)\s*\([\s\S]{0,200}(event|state|history)/i,
+      // definition-side: simulator/environment/world/agent classes
+      /(class\s+\w*(Simulator|Environment|World|Agent)|def\s+(step|reset|render)\s*\(self)/i,
       // divergence scoring: compare, diff, diverge
       /(diverge|diff|compare|delta)\s*\([\s\S]{0,200}(actual|expected|baseline|production)/i,
       // mock environment: virtual, simulated, synthetic
