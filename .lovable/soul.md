@@ -281,10 +281,42 @@ The overall HIGH% (10.8%) remains below the 35% target, but this metric is now u
 
 **Lesson learned**: Markdown-fetched files have escape artifacts (`\_` instead of `_`) that break regex patterns. Always use raw curl for corpus ingestion.
 
-**Kenneth's state:** Credits constrained but maximizing every turn. The 8-file expansion he prescribed was exactly right — 4 of the files immediately promoted their archetypes, and the optimizer pattern fix for the last one was a 1-line change.
+**Session 8 — April 6, 2026 — Pipeline Integration & Enterprise Quality:**
+
+Transitioned the scanner from standalone diagnostic to pipeline-integrated primitive. Four deliverables shipped:
+
+1. **Capability Scanner Primitive** (`capability-scanner-primitive.ts`):
+   - `scanCapabilities()` — single-file scan returning structural matches, confidence bands, gaps, and suggestions
+   - `extractDiscoveries()` — converts scan results to CJPI-scored discoveries for Memory Stream consumption
+   - `batchScanCapabilities()` — multi-file batch scan with deduplication for Memory Stream cycles
+   - Fully wired into feedback loop (auto-learns from HIGH/MEDIUM matches)
+
+2. **Registry Serializer** (`registry-serializer.ts`):
+   - `exportRegistry()` / `serializeRegistry()` — persists the learned glossary, ecosystem implementations, synonym clusters, and archetype coverage to JSON
+   - Schema-versioned (v1.0.0) for forward compatibility
+   - Tracks session count across exports so the glossary compounds
+
+3. **Scan Integrity & Enterprise Quality** (`scan-integrity.ts`):
+   - **File Integrity**: FNV-1a fingerprinting for dedup and tamper detection
+   - **Scan Caching**: LRU cache with 30-minute TTL prevents re-scanning unchanged files
+   - **Supply Chain Detection**: Identifies package managers, dependencies, and security signals (CVE refs, integrity checks, version pinning)
+   - **Cross-File Aggregation**: `aggregateProfile()` rolls up individual file scans into a codebase-level maturity score (0-100)
+   - **Confidence Calibration**: `DEFAULT_HIGH_THRESHOLD` set to 0.40 (down from 0.45), with adaptive `calibrateHighThreshold()` for corpus density
+
+4. **Barrel exports updated** in `index.ts` — all new APIs are accessible from `@/lib/ascension`
+
+**Enterprise gaps identified and filled:**
+- ❌ Had no file dedup → ✅ FNV-1a fingerprinting
+- ❌ Had no scan caching → ✅ LRU cache with TTL
+- ❌ Had no supply chain awareness → ✅ Dependency manifest detection
+- ❌ Had no cross-file aggregation → ✅ Codebase maturity profiling
+- ❌ Had no adaptive thresholds → ✅ Corpus-density calibration
+- ❌ Scanner was standalone → ✅ Callable primitive with CJPI output
+
+**Kenneth's state:** Credits constrained. Maximizing every turn. The system is now pipeline-ready — the scanner can run autonomously in Memory Stream cycles and produce CJPI-scored discoveries.
 
 ---
 
-*Last updated: April 6, 2026 · Session 7 complete*
-*Next session: Read this file first. Resume from "What to do next session" above.*
+*Last updated: April 6, 2026 · Session 8 complete*
+*Next session: Read this file first. The scanner is pipeline-integrated. Next work: wire `batchScanCapabilities` into the actual Memory Stream 8-hour cycle, and test registry serialization round-trip.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
