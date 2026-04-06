@@ -212,11 +212,10 @@ export function seedLlmDiscoveries(): LlmSeedResult {
     };
 
     discoveries.push(discovery);
-    if (route === 'vault') { LLM_VAULT.set(discovery.id, discovery); vaultCount++; }
+    if (route === 'vault') { vaultCount++; }
     else {
-      addDiscovery(discovery.id, discovery.name, discovery.description, discovery.cjpiScore, discovery.primitiveChain);
       if (route === 'showroom') showroomCount++; else junkyardCount++;
-      LLM_MEMORY_STREAM_POOL.push(discovery); memoryStreamCount++;
+      memoryStreamCount++;
     }
   }
 
