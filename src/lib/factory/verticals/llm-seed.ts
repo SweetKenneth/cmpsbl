@@ -6,7 +6,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../discovery-retirement';
+import { routeDiscovery } from '../foundry-engine';
 import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 
