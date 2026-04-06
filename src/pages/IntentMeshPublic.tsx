@@ -127,6 +127,11 @@ const SELF_IMPROVEMENT_FEATURES = [
 ];
 
 export default function IntentMeshPublic() {
+  const { counts } = useDiscoveryCounts();
+  const CAPABILITY_STATS = {
+    totalCapabilities: counts.total || 34,
+    ...CAPABILITY_STATS_STATIC,
+  };
   return (
     <>
       <SEO
