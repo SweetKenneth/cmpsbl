@@ -713,6 +713,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(mutate|crossover|fitness|selection|generation)\s*\(/i,
       // definition-side: agent/policy/environment/learner classes
       /(class\s+\w*(Agent|Policy|Environment|Learner)|def\s+(fit|train|update)\s*\(self)/i,
+      // optimizer/learning functions: learning_rate, weight_decay, momentum, adam, sgd
+      /(learning_?rate|weight_?decay|momentum|gradient_?transform|GradientTransformation)\s*[=:\(]/i,
       // reinforcement: reward, policy, action, state, q_value
       /(reward|policy|q_?value|action_?space|state_?space)\s*[=:]/i,
       // consolidation / knowledge distillation
