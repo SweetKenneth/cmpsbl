@@ -1462,8 +1462,10 @@ const FAMILY_GENERATORS: Record<string, (name: string, spec: PrimitiveSpec) => s
   go: generateGo,
   java: generateJava,
   csharp: generateCSharp,
+  fsharp: generateFSharp,
   kotlin: generateKotlin,
   swift: generateSwift,
+  dart: generateDart,
   cpp: generateCpp,
   ruby: generateRuby,
   elixir: generateElixir,
@@ -1480,7 +1482,11 @@ const FAMILY_GENERATORS: Record<string, (name: string, spec: PrimitiveSpec) => s
   nim: generateNim,
   haskell: generateHaskell,
   clojure: generateClojure,
+  vhdl: generateVhdl,
+  verilog: generateVerilog,
   hdl: generateHdlComment,
+  glsl: generateGlsl,
+  wgsl: generateWgsl,
   shader: generateShaderComment,
 };
 
