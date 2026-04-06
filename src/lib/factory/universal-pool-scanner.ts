@@ -1097,21 +1097,38 @@ export function runUniversalPoolScan(
   }
   const poolSize = pool.length;
 
-  // Score all candidates with mode-aware dual-matrix weighting
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode));
+  // ── STRUCTURAL ANALYSIS ────────────────────────────────────────────────
+  // Run structural pattern matching BEFORE candidate scoring so the
+  // archetype boosts can influence which primitives surface.
+  const structuralMatches = runStructuralAnalysis(codeContent);
+  const structuralBoosts = buildStructuralBoostMap(structuralMatches);
+
+  // Build intent-confirmed primitive set from structural analysis
+  const intentPrimitives = new Set<string>();
+  for (const match of structuralMatches) {
+    if (match.intentHits > 0) {
+      for (const prim of match.primitives) {
+        intentPrimitives.add(prim.toUpperCase());
+      }
+    }
+  }
+
+  // Score all candidates with mode-aware dual-matrix weighting + structural boosts
+  const scored = pool.map(tagged =>
+    scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode, structuralBoosts)
+  );
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
 
   // Rebalance weights so selected primitives sum to 1.0
-  // Use compounding score for proportional weighting (stronger primitives get more weight)
   const totalScore = selected.reduce((sum, c) => sum + c.compoundingScore, 0);
   const fullSurface: VerticalPrimitive[] = selected.map(c => ({
     ...c.primitive,
     weight: totalScore > 0
       ? Math.round((c.compoundingScore / totalScore) * 10000) / 10000
       : Math.round((1.0 / selected.length) * 10000) / 10000,
-    inherited: false, // In Ultimate, nothing is "inherited" — everything is earned
+    inherited: false,
   }));
 
   // Source distribution
@@ -1122,6 +1139,10 @@ export function runUniversalPoolScan(
     roleDistribution[s.primitive.role] = (roleDistribution[s.primitive.role] ?? 0) + 1;
   }
 
+  // ── CONFIDENCE BANDING ─────────────────────────────────────────────────
+  const confidenceBands = bandResults(selected, structuralBoosts, intentPrimitives);
+  const bandDistribution = getBandDistribution(confidenceBands);
+
   return {
     selectedPrimitives: selected,
     fullSurface,
@@ -1131,6 +1152,9 @@ export function runUniversalPoolScan(
     roleDistribution,
     durationMs: Math.round(performance.now() - start),
     collisionPasses: COLLISION_PASSES,
+    structuralMatches,
+    confidenceBands,
+    bandDistribution,
   };
 }
 
