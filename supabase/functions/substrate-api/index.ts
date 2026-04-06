@@ -22,6 +22,30 @@ function json(data: unknown, status = 200) {
   });
 }
 
+async function proxyToPfSubstrate(
+  supabaseUrl: string,
+  authToken: string,
+  body: Record<string, unknown>,
+): Promise<{ data?: Record<string, unknown>; error?: string; status: number }> {
+  const response = await fetch(`${supabaseUrl}/functions/v1/pf-substrate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(body),
+  });
+
+  const raw = await response.text();
+  const parsed = raw ? JSON.parse(raw) as Record<string, unknown> : {};
+
+  return {
+    data: parsed,
+    error: response.ok ? undefined : String(parsed.error ?? `pf-substrate request failed (${response.status})`),
+    status: response.status,
+  };
+}
+
 // ═══════════════════════════════════════════════════════════════
 // API Key Validation
 // ═══════════════════════════════════════════════════════════════
@@ -281,10 +305,12 @@ serve(async (req) => {
       const { module, action } = body as { module?: string; action?: string };
       if (module && action) {
         // Proxy to pf-substrate
-        const { data, error } = await supabase.functions.invoke("pf-substrate", {
-          body: { module, action, payload: body.payload ?? body.data ?? {} },
+        const { data, error, status } = await proxyToPfSubstrate(supabaseUrl, apiKey, {
+          module,
+          action,
+          payload: body.payload ?? body.data ?? {},
         });
-        if (error) return json({ success: false, error: error.message }, 500);
+        if (error) return json({ success: false, error }, status >= 400 ? status : 500);
         return json(data);
       }
 
@@ -314,14 +340,16 @@ serve(async (req) => {
         return json({ success: false, error: "Missing engine, action, or input" }, 400);
       }
       // Proxy to pf-substrate with engine routing
-      const { data: engineData, error: engineError } = await supabase.functions.invoke("pf-substrate", {
-        body: { module: String(engine), action: String(action), payload: { input, context, options } },
+      const { data: engineData, error: engineError, status } = await proxyToPfSubstrate(supabaseUrl, apiKey, {
+        module: String(engine),
+        action: String(action),
+        payload: { input, context, options },
       });
       if (engineError) {
         return json({
           success: false, engine: String(engine), action: String(action),
-          error: engineError.message,
-        }, 500);
+          error: engineError,
+        }, status >= 400 ? status : 500);
       }
       return json({
         success: true, engine: String(engine), action: String(action),
@@ -346,16 +374,14 @@ serve(async (req) => {
     }
 
     // All other routes → proxy to pf-substrate
-    const { data, error } = await supabase.functions.invoke("pf-substrate", {
-      body: {
-        module: route.module,
-        action: route.action,
-        payload: body,
-      },
+    const { data, error, status } = await proxyToPfSubstrate(supabaseUrl, apiKey, {
+      module: route.module,
+      action: route.action,
+      payload: body,
     });
 
     if (error) {
-      return json({ success: false, error: error.message }, 500);
+      return json({ success: false, error }, status >= 400 ? status : 500);
     }
 
     // Wrap response with metadata

@@ -324,6 +324,44 @@ const SUBSTRATE_ENDPOINT_FALLBACK = `https://bxodolqqczjuahwdrswy.supabase.co/fu
 const REGISTRATION_ENDPOINT = `https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate`;
 function getSubstrateEndpoint(): string { try { return CLI_CONFIG?.endpoint ?? SUBSTRATE_ENDPOINT_FALLBACK; } catch { return SUBSTRATE_ENDPOINT_FALLBACK; } }
 
+function getAccessValidationEndpoint(): string {
+  const endpoint = getSubstrateEndpoint();
+  if (endpoint.includes('/substrate-api')) return endpoint.replace('/substrate-api', '/pf-substrate');
+  if (endpoint.includes('/pf-substrate')) return endpoint;
+  return SUBSTRATE_ENDPOINT_FALLBACK;
+}
+
+async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boolean; error?: string }> {
+  const normalized = normalizeApiKey(apiKey);
+  if (!normalized || normalized.startsWith('local-')) {
+    return { valid: false, error: 'Invalid API key' };
+  }
+
+  try {
+    const res = await fetch(getAccessValidationEndpoint(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        module: 'access',
+        action: 'validate_key',
+        payload: { api_key: normalized },
+      }),
+    });
+
+    const result = await res.json() as Record<string, unknown>;
+    if (result.success === true && result.valid === true) {
+      return { valid: true };
+    }
+
+    return {
+      valid: false,
+      error: typeof result.error === 'string' ? result.error : 'Invalid API key',
+    };
+  } catch {
+    return { valid: false, error: 'Unable to verify API key' };
+  }
+}
+
 /**
  * Live Mesh Demo — shows primitives communicating before any auth.
  * This gives users a "wow moment" so they see value before registering.
@@ -443,7 +481,32 @@ async function inlineRegister(): Promise<string | null> {
  */
 async function requireApiKey(): Promise<string> {
   const existing = resolveApiKey();
-  if (existing) return existing;
+  if (existing) {
+    const source = getApiKeySource();
+    const validation = await validateApiKeyWithBackend(existing);
+
+    if (validation.valid) return existing;
+
+    if (source === 'credentials') {
+      clearStoredKey();
+      if (!JSON_MODE) {
+        blank();
+        sayErr('Saved API key is invalid. Please authenticate again.');
+        blank();
+      }
+    } else if (source === 'env') {
+      const message = 'CMPSBL_API_KEY is set, but it is not a valid full API key.';
+      if (JSON_MODE) {
+        jsonOut({ error: 'invalid_api_key', message });
+      } else {
+        blank();
+        sayErr(message);
+        say('Unset it with `unset CMPSBL_API_KEY`, then run `cmpsbl login`, or replace it with the full secret key.');
+        blank();
+      }
+      process.exit(1);
+    }
+  }
 
   // No key found — interactive auth flow
   if (JSON_MODE) {
@@ -509,6 +572,18 @@ async function requireApiKey(): Promise<string> {
   if (key.length < 10) {
     say(pick(V.err));
     say('Invalid API key. Run `cmpsbl login` to try again.');
+    blank();
+    process.exit(1);
+  }
+
+  const validation = await validateApiKeyWithBackend(key);
+  if (!validation.valid) {
+    say(pick(V.err));
+    say(
+      validation.error === 'Invalid API key'
+        ? 'That key is not valid. If you pasted a visible prefix or label, use the full secret API key instead.'
+        : validation.error || 'Invalid API key. Run `cmpsbl login` to try again.'
+    );
     blank();
     process.exit(1);
   }
@@ -1485,11 +1560,26 @@ async function cmdConfig(args: string[]) {
 }
 
 async function cmdWhoami() {
-  const session = getSafeFirstContactSession();
+  let session = getSafeFirstContactSession();
   const storedCredentials = loadStoredCredentials();
   const apiKey = resolveApiKey();
   const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
+  let invalidKey = false;
+
+  if (hasKey && (!session || !session.memoryBound || session.userId.startsWith('local-'))) {
+    try {
+      CLI_CONFIG.apiKey = apiKey;
+      session = await initFirstContact({
+        ...CLI_CONFIG,
+        apiKey,
+        autoDiscover: false,
+        silent: true,
+      });
+    } catch {
+      // Keep the existing session state if rebind fails
+    }
+  }
 
   // Resolve developer name: stored → API → git → fallback
   let developerName = storedCredentials?.displayName ?? null;
@@ -1506,11 +1596,13 @@ async function cmdWhoami() {
         developerName = result.developer.display_name;
         // Persist for future calls
         saveStoredKey(apiKey!, developerName!);
+      } else if (result.success === false && typeof result.error === 'string' && /invalid or missing api key/i.test(result.error)) {
+        invalidKey = true;
       }
     } catch { /* API unavailable — continue with fallback */ }
   }
 
-  if (!developerName) {
+  if (!developerName && !invalidKey) {
     try {
       const gitName = require('child_process').execSync('git config user.name', { encoding: 'utf-8' }).trim();
       if (gitName) developerName = gitName;
@@ -1522,7 +1614,8 @@ async function cmdWhoami() {
     developer: developerName,
     endpoint: process.env.CMPSBL_ENDPOINT ?? 'substrate-api (live)',
     session: session?.sessionId ?? null,
-    memoryBound: session?.memoryBound ?? false,
+    memoryBound: invalidKey ? false : (session?.memoryBound ?? false),
+    invalidKey,
     version: CLI_VERSION,
   };
 
@@ -1533,8 +1626,9 @@ async function cmdWhoami() {
   say(`Developer:  ${data.developer ?? 'Unknown'}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
-  say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
+  say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : data.invalidKey ? '○ Local (invalid key)' : '○ Local'}`);
   say(`Package:    @cmpsbl/cli v${CLI_VERSION}`);
+  if (data.invalidKey) sayErr('Configured key is invalid — use the full secret API key, not just the visible prefix.');
   div();
   say(pick(V.idle));
   blank();
@@ -1550,6 +1644,18 @@ async function cmdLogin(args: string[] = []) {
   const existing = force ? normalizeApiKey(process.env.CMPSBL_API_KEY) : resolveApiKey();
   const apiKeySource = getApiKeySource();
   if (existing) {
+    const validation = await validateApiKeyWithBackend(existing);
+    if (!validation.valid) {
+      if (apiKeySource === 'credentials') {
+        clearStoredKey();
+        say('Stored credentials were invalid and have been cleared.');
+      } else if (apiKeySource === 'env') {
+        sayErr('CMPSBL_API_KEY is set, but it is not a valid full API key.');
+        say('Unset it with `unset CMPSBL_API_KEY`, then run `cmpsbl login`, or replace it with the full secret key.');
+        blank();
+        return;
+      }
+    } else {
     if (JSON_MODE) { jsonOut({ authenticated: true, source: apiKeySource === 'none' ? null : apiKeySource }); return; }
     say(`● Already authenticated (${maskApiKey(existing)})`);
     say(`  Source: ${apiKeySource === 'env' ? 'CMPSBL_API_KEY env var' : '~/.cmpsbl/credentials'}`);
@@ -1558,6 +1664,7 @@ async function cmdLogin(args: string[] = []) {
     say(pick(V.ok));
     blank();
     return;
+    }
   }
 
   // Delegate to the shared auth gate
