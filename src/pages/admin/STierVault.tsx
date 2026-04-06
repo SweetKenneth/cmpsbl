@@ -135,7 +135,7 @@ interface PromotedDiscovery {
 
 // ─── Analytics Summary Panel ────────────────────────────────────────
 
-function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STierEntry[]; promoted: PromotedDiscovery[] }) {
+function AnalyticsSummary({ registryEntries, promoted, liveCounts }: { registryEntries: STierEntry[]; promoted: PromotedDiscovery[]; liveCounts?: { total: number; registry: number; showroom: number; junkyard: number; crownJewels: number; aTier: number; memoryStreamPool: number; mutations: number } }) {
   const stats = useMemo(() => {
     // Registry stats
     const byModule: Record<string, number> = {};
