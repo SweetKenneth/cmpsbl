@@ -217,7 +217,6 @@ function scoreCandidate(
   codeTokens: Set<string>,
   signalDocFreq: Record<string, number>,
   poolSize: number,
-  codeFreqMap: Record<string, number>,
 ): PoolCandidate {
   // Pass 1 — IDF-weighted signal hit density
   // Rare signals (appearing in few candidates) count more than common ones.
