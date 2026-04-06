@@ -479,7 +479,7 @@ export async function runMutationCycle(
   ];
 
   // 2. Generate mutations for each parent
-  for (const parent of parents as ParentDiscovery[]) {
+  for (const parent of parents as unknown as ParentDiscovery[]) {
     const parentChain = Array.isArray(parent.module_chain)
       ? parent.module_chain
       : [];
