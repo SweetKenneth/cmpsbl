@@ -26,6 +26,15 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
+/* ─── Theme Constants ─── */
+const ACCENT = 'hsl(330 85% 60%)';
+const ACCENT_GLOW = 'hsl(290 100% 70%)';
+const BG_DEEP = 'hsl(330 25% 4%)';
+const BG_CARD = 'hsl(330 20% 7%)';
+const BORDER = 'hsl(330 15% 14%)';
+const TEXT_PRIMARY = 'hsl(330 10% 92%)';
+const TEXT_SECONDARY = 'hsl(330 15% 45%)';
+
 const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
   { id: "CANVAS", name: "CANVAS", desc: "Visual generation — image synthesis, style transfer, thumbnails, graphic layout, brand-consistent visuals, batch processing", icon: Image, color: "hsl(330 85% 60%)" },
   { id: "SCORE", name: "SCORE", desc: "Music composition — audio synthesis, sound design, genre-aware composition, beat matching, vocal processing, mastering", icon: Music, color: "hsl(270 85% 60%)" },

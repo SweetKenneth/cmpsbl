@@ -25,6 +25,16 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useVerticalCounts } from "@/hooks/useDiscoveryCounts";
 
+/* ─── Theme Constants ─── */
+const ACCENT = 'hsl(35 90% 55%)';
+const ACCENT_GLOW = 'hsl(35 100% 65%)';
+const BG_DEEP = 'hsl(30 20% 4%)';
+const BG_CARD = 'hsl(30 15% 7%)';
+const BORDER = 'hsl(30 15% 14%)';
+const TEXT_PRIMARY = 'hsl(35 10% 92%)';
+const TEXT_SECONDARY = 'hsl(30 15% 45%)';
+const WARM = 'hsl(40 100% 55%)';
+
 const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
   { id: "MANDATE", name: "MANDATE", desc: "Mission decomposition — recursive goal breakdown, dependency graphing, priority scoring, deadline-aware scheduling, autonomous replanning", icon: Target, color: "hsl(35 90% 55%)" },
   { id: "DELEGATE", name: "DELEGATE", desc: "Task routing — competency-based matching, workload balancing, escalation routing, parallel dispatch, bottleneck detection", icon: Users, color: "hsl(200 85% 55%)" },
