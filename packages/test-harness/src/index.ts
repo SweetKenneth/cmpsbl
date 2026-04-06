@@ -1,6 +1,7 @@
 /**
  * @cmpsbl/test-harness — Test Utilities
- * Validate exported pipelines, manifests, bridge adapters, and first-contact flows.
+ * Validate exported pipelines, manifests, bridge adapters, first-contact flows,
+ * and Ascension fingerprint verification.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -109,6 +110,121 @@ export interface TestSuiteResult {
   failed: number;
   results: TestResult[];
   durationMs: number;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Fingerprint Verification (Shared Mesh Memory)
+// ═══════════════════════════════════════════════════════════════
+
+export interface FingerprintRecord {
+  found: boolean;
+  source: 'restoration' | 'vertical_ascension' | null;
+  fingerprint: string;
+  cjpi: number | null;
+  status: string | null;
+  primitivesApplied: string[];
+  capabilitiesAdded: string[];
+  verticalName: string | null;
+  file: string | null;
+  date: string | null;
+}
+
+const DEFAULT_SUBSTRATE_ENDPOINT = 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4b2RvbHFxY3pqdWFod2Ryc3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3OTA2MTMsImV4cCI6MjA4MDM2NjYxM30.-YWlnszid8aODq2Zv2EvxWcY2sTsRikPcNsMWpZ7lHc';
+
+/**
+ * Verify an Ascension fingerprint against the substrate's shared mesh memory.
+ * Searches both restoration_sessions and vertical_ascension_sessions.
+ *
+ * @example
+ * ```ts
+ * import { verifyFingerprint } from '@cmpsbl/test-harness';
+ * const record = await verifyFingerprint('504ac991648533ac');
+ * if (record.found) {
+ *   console.log(`CJPI: ${record.cjpi}, Source: ${record.source}`);
+ * }
+ * ```
+ */
+export async function verifyFingerprint(
+  fingerprintId: string,
+  options?: { endpoint?: string; apiKey?: string },
+): Promise<FingerprintRecord> {
+  const endpoint = options?.endpoint ?? DEFAULT_SUBSTRATE_ENDPOINT;
+  const key = options?.apiKey ?? ANON_KEY;
+
+  const notFound: FingerprintRecord = {
+    found: false, source: null, fingerprint: fingerprintId,
+    cjpi: null, status: null, primitivesApplied: [], capabilitiesAdded: [],
+    verticalName: null, file: null, date: null,
+  };
+
+  try {
+    // Try restoration_sessions via RPC
+    const restorationRes = await fetch(
+      `${endpoint.replace('/functions/v1/substrate-api', '')}/rest/v1/rpc/lookup_restoration_by_fingerprint`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+        },
+        body: JSON.stringify({ p_fingerprint: fingerprintId }),
+      },
+    );
+
+    if (restorationRes.ok) {
+      const rows = await restorationRes.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        const row = rows[0];
+        return {
+          found: true, source: 'restoration', fingerprint: row.fingerprint,
+          cjpi: Number(row.cjpi_score), status: 'completed',
+          primitivesApplied: row.selected_primitives ?? [],
+          capabilitiesAdded: [],
+          verticalName: null,
+          file: row.original_language ?? null,
+          date: row.created_at,
+        };
+      }
+    }
+
+    // Try vertical_ascension_sessions via RPC
+    const ascensionRes = await fetch(
+      `${endpoint.replace('/functions/v1/substrate-api', '')}/rest/v1/rpc/lookup_vertical_ascension_by_fingerprint`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+        },
+        body: JSON.stringify({ p_fingerprint: fingerprintId }),
+      },
+    );
+
+    if (ascensionRes.ok) {
+      const rows = await ascensionRes.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        const row = rows[0];
+        const meta = row.metadata ?? {};
+        return {
+          found: true, source: 'vertical_ascension', fingerprint: row.fingerprint_id,
+          cjpi: row.final_cjpi != null ? Number(row.final_cjpi) : Number(row.original_cjpi),
+          status: row.status,
+          primitivesApplied: row.primitives_applied ?? [],
+          capabilitiesAdded: row.capabilities_added ?? [],
+          verticalName: row.vertical_id,
+          file: meta.file ?? null,
+          date: row.created_at,
+        };
+      }
+    }
+
+    return notFound;
+  } catch {
+    return notFound;
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -256,7 +372,7 @@ export function createTestHarnessFirstContact(apiKey?: string): FirstContactConf
     package: '@cmpsbl/test-harness',
     domain: 'test-harness',
     apiKey,
-    endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
+    endpoint: DEFAULT_SUBSTRATE_ENDPOINT,
     autoDiscover: true,
   };
 }
