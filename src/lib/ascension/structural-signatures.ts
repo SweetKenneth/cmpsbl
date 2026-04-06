@@ -802,7 +802,39 @@ const ARCHETYPES: StructuralSignature[] = [
     ],
     weight: 0.80,
   },
-];
+
+  // ── 25. EMBEDDED / HARDWARE ABSTRACTION ───────────────────────────────────
+  {
+    id: 'embedded-hal',
+    name: 'Embedded Systems & Hardware Abstraction',
+    primitives: ['CORE', 'REFLEX', 'NERVE'],
+    patterns: [
+      // HAL / peripheral singletons
+      /(HAL|hal|Peripherals?|peripheral_?driver)\s*[=:\.<{]/i,
+      // GPIO / pin control
+      /(gpio|pin|GPIO|digital_?write|digital_?read|set_?high|set_?low)\s*[\(=:.]/i,
+      // Interrupt handling
+      /(interrupt|irq|ISR|isr_?handler|critical_?section|disable_?interrupt)\s*[\(=:]/i,
+      // Clock / timer configuration
+      /(clock|timer|watchdog|systick|prescaler)\s*[\(=:.]/i,
+      // no_std / bare-metal markers
+      /(no_?std|bare.?metal|embedded.?hal|cortex.?m|riscv|xtensa)\s*/i,
+      // Register-level access
+      /(register|mmio|volatile|read_?reg|write_?reg|bitfield)\s*[\(=:.]/i,
+      // DMA / bus configuration
+      /(dma|spi|i2c|uart|usart|can_?bus|adc|dac|pwm)\s*[\(=:.]/i,
+    ],
+    coSignals: [
+      'peripheral', 'gpio', 'interrupt', 'register', 'hal', 'embedded',
+      'bare_metal', 'no_std', 'cortex', 'riscv', 'dma', 'spi', 'i2c',
+      'uart', 'watchdog', 'timer', 'clock', 'pin', 'singleton',
+    ],
+    intentSignals: [
+      'hardware abstraction', 'HAL', 'peripheral', 'embedded',
+      'bare-metal', 'no_std', 'microcontroller', 'GPIO', 'interrupt',
+    ],
+    weight: 0.65,
+  },
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — SCANNING ENGINE
