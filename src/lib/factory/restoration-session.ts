@@ -77,6 +77,87 @@ export async function lookupBySerial(serialNumber: string): Promise<RestorationS
   return mapRow(row);
 }
 
+/** Vertical ascension session shape (different table, different schema) */
+export interface VerticalAscensionSession {
+  id: string;
+  fingerprintId: string;
+  verticalId: string;
+  verticalName: string | null;
+  primitivesApplied: string[];
+  capabilitiesAdded: string[];
+  enhancementArchetypes: string[];
+  originalCjpi: number | null;
+  finalCjpi: number | null;
+  status: string;
+  createdAt: string;
+  completedAt: string | null;
+  metadata: Record<string, unknown> | null;
+}
+
+/**
+ * Look up a vertical ascension session by fingerprint.
+ * This searches the vertical_ascension_sessions table — separate from restoration_sessions.
+ * Enables cross-table "shared mesh memory" so DECODE can verify any fingerprint
+ * regardless of which substrate it originated from.
+ */
+export async function lookupVerticalAscensionByFingerprint(
+  fingerprint: string,
+): Promise<VerticalAscensionSession | null> {
+  const { data, error } = await supabase
+    .rpc('lookup_vertical_ascension_by_fingerprint', { p_fingerprint: fingerprint });
+
+  const row = (data as unknown as Record<string, unknown>[] | null)?.[0];
+  if (error || !row) return null;
+
+  // Resolve vertical name from vertical_id
+  let verticalName: string | null = null;
+  const verticalId = row.vertical_id as string;
+  if (verticalId) {
+    const { data: vData } = await supabase
+      .from('vertical_substrates')
+      .select('name')
+      .eq('vertical_id', verticalId)
+      .single();
+    verticalName = (vData as { name: string } | null)?.name ?? verticalId;
+  }
+
+  return {
+    id: row.id as string,
+    fingerprintId: row.fingerprint_id as string,
+    verticalId,
+    verticalName,
+    primitivesApplied: (row.primitives_applied as string[]) ?? [],
+    capabilitiesAdded: (row.capabilities_added as string[]) ?? [],
+    enhancementArchetypes: (row.enhancement_archetypes as string[]) ?? [],
+    originalCjpi: row.original_cjpi as number | null,
+    finalCjpi: row.final_cjpi as number | null,
+    status: row.status as string,
+    createdAt: row.created_at as string,
+    completedAt: (row.completed_at as string) ?? null,
+    metadata: row.metadata as Record<string, unknown> | null,
+  };
+}
+
+/**
+ * Universal fingerprint lookup — checks BOTH tables.
+ * Returns whichever record matches, with a discriminator field.
+ */
+export type UnifiedLookupResult =
+  | { source: 'restoration'; session: RestorationSession }
+  | { source: 'vertical_ascension'; session: VerticalAscensionSession };
+
+export async function lookupAnyFingerprint(fingerprint: string): Promise<UnifiedLookupResult | null> {
+  // Try restoration_sessions first (most common)
+  const restoration = await lookupByFingerprint(fingerprint);
+  if (restoration) return { source: 'restoration', session: restoration };
+
+  // Fallback: check vertical_ascension_sessions
+  const ascension = await lookupVerticalAscensionByFingerprint(fingerprint);
+  if (ascension) return { source: 'vertical_ascension', session: ascension };
+
+  return null;
+}
+
 function mapRow(row: Record<string, unknown>): RestorationSession {
   return {
     id: row.id as string,
