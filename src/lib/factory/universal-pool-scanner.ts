@@ -400,8 +400,18 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   }
   const poolSize = pool.length;
 
-  // Score all candidates with IDF-weighted signal matching
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize));
+  // Build code-frequency map: how many times each signal word appears in the code.
+  // Signals appearing many times are central to the code's purpose.
+  const allSignals = new Set<string>();
+  for (const tagged of pool) for (const s of tagged.signals) allSignals.add(s);
+  const codeFreqMap: Record<string, number> = {};
+  for (const signal of allSignals) {
+    const matches = lowerCode.match(new RegExp(signal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'));
+    codeFreqMap[signal] = matches ? matches.length : 0;
+  }
+
+  // Score all candidates with IDF-weighted + code-frequency-boosted signal matching
+  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, codeFreqMap));
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
