@@ -309,5 +309,7 @@ export {
 // Vault-to-Glossary Bridge (ecosystem-wide learning)
 export {
   runVaultBridge,
+  runReactorChainBridge,
   type VaultBridgeResult,
+  type ReactorChainBridgeResult,
 } from './vault-glossary-bridge';
