@@ -16,9 +16,11 @@ type LanguageFamily =
   | 'rust'       // Rust — struct + impl
   | 'go'         // Go — struct + methods
   | 'java'       // Java, Groovy — class with static methods
-  | 'csharp'     // C#, F# — class with static methods
+  | 'csharp'     // C# — class with static methods
+  | 'fsharp'     // F# — module with let bindings
   | 'kotlin'     // Kotlin — object singleton
-  | 'swift'      // Swift, Dart — class with static methods
+  | 'swift'      // Swift — class with static methods
+  | 'dart'       // Dart — class with static methods (no @discardableResult)
   | 'cpp'        // C, C++, CUDA, Metal, D — struct + functions
   | 'ruby'       // Ruby, Crystal — module/class
   | 'elixir'     // Elixir, Erlang — module with functions
@@ -33,8 +35,12 @@ type LanguageFamily =
   | 'fortran'    // Fortran — module
   | 'objc'       // Objective-C — @interface/@implementation
   | 'nim'        // Nim — type + procs
-  | 'hdl'        // VHDL, Verilog, SystemVerilog, Bluespec, FIRRTL, SPICE — comment-only
-  | 'shader'     // GLSL, WGSL — comment-only
+  | 'vhdl'       // VHDL — entity/architecture blocks
+  | 'verilog'    // Verilog, SystemVerilog — module blocks
+  | 'hdl'        // Bluespec, FIRRTL, SPICE, Chisel HDL — behavioral comment blocks
+  | 'glsl'       // GLSL — struct + functions
+  | 'wgsl'       // WGSL — struct + functions
+  | 'shader'     // Other shaders (HLSL, OpenCL, Metal shader) — comment blocks
   | 'haskell'    // Haskell, OCaml — type + functions
   | 'clojure'    // Clojure — defrecord
   | 'functional' // Generic functional fallback
