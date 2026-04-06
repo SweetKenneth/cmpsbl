@@ -1033,10 +1033,18 @@ function selectOptimalPrimitives(
 
 /**
  * Run the Universal Pool Scanner against uploaded code.
- * Evaluates every primitive in the ecosystem and selects the 40
- * that produce the maximum compounding effect. No restrictions.
+ * Evaluates every primitive in the ecosystem and selects the optimal
+ * set that produces the maximum compounding effect.
+ *
+ * @param codeContent  Raw source code to analyze
+ * @param mode         Scoring context — 'ascension' uses gap-closure + wow-factor
+ *                     weights; 'substrate' uses boot-order structural bonuses.
+ *                     Defaults to 'ascension' for code augmentation runs.
  */
-export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
+export function runUniversalPoolScan(
+  codeContent: string,
+  mode: AscensionMode = 'ascension',
+): UniversalScanResult {
   const start = performance.now();
   const pool = getPool();
   const lowerCode = codeContent.toLowerCase();
@@ -1047,10 +1055,6 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   );
 
   // Compute signal IDF (Inverse Document Frequency) across the pool.
-  // Signals that appear in fewer candidates are more discriminating and
-  // should contribute more to scoring. This prevents common words like
-  // "pattern", "boundary", "status" from inflating irrelevant primitives
-  // while rewarding specific terms like "jailbreak", "zero_trust", "merkle".
   const signalDocFreq: Record<string, number> = {};
   for (const tagged of pool) {
     const seen = new Set<string>();
@@ -1063,8 +1067,8 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   }
   const poolSize = pool.length;
 
-  // Score all candidates with IDF-weighted signal matching
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize));
+  // Score all candidates with mode-aware dual-matrix weighting
+  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode));
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
