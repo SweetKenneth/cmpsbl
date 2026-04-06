@@ -201,7 +201,6 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
         archMatch.lexicalHits >= 2,
         archMatch.intentHits > 0,
         archMatch.confidence,
-        threshold
       );
       if (band === 'high') archetypeHighIds.push(arch.id);
     }
