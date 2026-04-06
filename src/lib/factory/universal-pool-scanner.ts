@@ -358,8 +358,25 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
     lowerCode.split(/\W+/).filter(w => w.length > 2)
   );
 
-  // Score all candidates with extended collision passes
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens));
+  // Compute signal IDF (Inverse Document Frequency) across the pool.
+  // Signals that appear in fewer candidates are more discriminating and
+  // should contribute more to scoring. This prevents common words like
+  // "pattern", "boundary", "status" from inflating irrelevant primitives
+  // while rewarding specific terms like "jailbreak", "zero_trust", "merkle".
+  const signalDocFreq: Record<string, number> = {};
+  for (const tagged of pool) {
+    const seen = new Set<string>();
+    for (const signal of tagged.signals) {
+      if (!seen.has(signal)) {
+        signalDocFreq[signal] = (signalDocFreq[signal] ?? 0) + 1;
+        seen.add(signal);
+      }
+    }
+  }
+  const poolSize = pool.length;
+
+  // Score all candidates with IDF-weighted signal matching
+  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize));
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
