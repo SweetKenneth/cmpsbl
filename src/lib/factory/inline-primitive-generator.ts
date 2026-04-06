@@ -16,9 +16,11 @@ type LanguageFamily =
   | 'rust'       // Rust — struct + impl
   | 'go'         // Go — struct + methods
   | 'java'       // Java, Groovy — class with static methods
-  | 'csharp'     // C#, F# — class with static methods
+  | 'csharp'     // C# — class with static methods
+  | 'fsharp'     // F# — module with let bindings
   | 'kotlin'     // Kotlin — object singleton
-  | 'swift'      // Swift, Dart — class with static methods
+  | 'swift'      // Swift — class with static methods
+  | 'dart'       // Dart — class with static methods (no @discardableResult)
   | 'cpp'        // C, C++, CUDA, Metal, D — struct + functions
   | 'ruby'       // Ruby, Crystal — module/class
   | 'elixir'     // Elixir, Erlang — module with functions
@@ -33,8 +35,12 @@ type LanguageFamily =
   | 'fortran'    // Fortran — module
   | 'objc'       // Objective-C — @interface/@implementation
   | 'nim'        // Nim — type + procs
-  | 'hdl'        // VHDL, Verilog, SystemVerilog, Bluespec, FIRRTL, SPICE — comment-only
-  | 'shader'     // GLSL, WGSL — comment-only
+  | 'vhdl'       // VHDL — entity/architecture blocks
+  | 'verilog'    // Verilog, SystemVerilog — module blocks
+  | 'hdl'        // Bluespec, FIRRTL, SPICE, Chisel HDL — behavioral comment blocks
+  | 'glsl'       // GLSL — struct + functions
+  | 'wgsl'       // WGSL — struct + functions
+  | 'shader'     // Other shaders (HLSL, OpenCL, Metal shader) — comment blocks
   | 'haskell'    // Haskell, OCaml — type + functions
   | 'clojure'    // Clojure — defrecord
   | 'functional' // Generic functional fallback
@@ -46,9 +52,11 @@ const LANGUAGE_FAMILY_MAP: Record<string, LanguageFamily> = {
   Rust: 'rust',
   Go: 'go',
   Java: 'java', Groovy: 'java',
-  'C#': 'csharp', 'F#': 'csharp',
+  'C#': 'csharp',
+  'F#': 'fsharp',
   Kotlin: 'kotlin',
-  Swift: 'swift', Dart: 'swift',
+  Swift: 'swift',
+  Dart: 'dart',
   C: 'cpp', 'C++': 'cpp', CUDA: 'cpp', Metal: 'cpp', D: 'cpp',
   Ruby: 'ruby', Crystal: 'ruby',
   Elixir: 'elixir', Erlang: 'elixir',
@@ -63,8 +71,12 @@ const LANGUAGE_FAMILY_MAP: Record<string, LanguageFamily> = {
   Fortran: 'fortran',
   'Objective-C': 'objc',
   Nim: 'nim',
-  VHDL: 'hdl', Verilog: 'hdl', SystemVerilog: 'hdl', Bluespec: 'hdl', FIRRTL: 'hdl',
-  GLSL: 'shader', WGSL: 'shader',
+  VHDL: 'vhdl',
+  Verilog: 'verilog', SystemVerilog: 'verilog',
+  Bluespec: 'hdl', FIRRTL: 'hdl', SPICE: 'hdl',
+  GLSL: 'glsl',
+  WGSL: 'wgsl',
+  HLSL: 'shader', OpenCL: 'shader',
   Haskell: 'haskell', OCaml: 'haskell',
   Clojure: 'clojure',
 };
@@ -1011,6 +1023,47 @@ ${methods}
 }`;
 }
 
+function generateDart(name: string, spec: PrimitiveSpec): string {
+  const fields = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    const ty = v === 'map' ? 'Map<String, dynamic>' : v === 'list' ? 'List<dynamic>' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'String' : 'int';
+    const def = v === 'map' ? '{}' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `'${v}'` : v;
+    return { k, ty, def };
+  });
+  const fieldDecls = fields.map(f => `  static ${f.ty} _${f.k} = ${f.def};`).join('\n');
+  const methods = spec.methods.map(m => {
+    const dartName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+    return `  /// ${m.description}\n  static ${name} ${dartName}() => ${name}();`;
+  }).join('\n\n');
+  return `/// CMPSBL® Convex Core™ — ${spec.description}
+class ${name} {
+${fieldDecls}
+
+${methods}
+}`;
+}
+
+function generateFSharp(name: string, spec: PrimitiveSpec): string {
+  const fields = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    const ty = v === 'map' ? 'Map<string, obj>' : v === 'list' ? 'obj list' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'string' : 'int';
+    const def = v === 'map' ? 'Map.empty' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `"${v}"` : v;
+    return { k, ty, def };
+  });
+  const stateRecord = fields.length > 0
+    ? `type ${name}State =\n    { ${fields.map(f => `${f.k}: ${f.ty}`).join('; ')} }\n\nlet defaultState = { ${fields.map(f => `${f.k} = ${f.def}`).join('; ')} }\n`
+    : `type ${name}State = { config: Map<string, obj> }\n\nlet defaultState = { config = Map.empty }\n`;
+  const methods = spec.methods.map(m => {
+    const fsName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+    return `/// ${m.description}\nlet ${fsName} (state: ${name}State) =\n    state`;
+  }).join('\n\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+module ${name} =
+
+${stateRecord}
+${methods}`;
+}
+
 function generateCpp(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
     const [k, v] = f.split(':');
@@ -1268,16 +1321,126 @@ function generateClojure(name: string, spec: PrimitiveSpec): string {
 ${methods}`;
 }
 
+function generateVhdl(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const ports = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    const ty = v === 'true' || v === 'false' ? 'std_logic' : isNaN(Number(v)) ? 'std_logic_vector(7 downto 0)' : 'integer';
+    return `        ${k} : inout ${ty}`;
+  });
+  ports.unshift('        clk : in std_logic', '        rst : in std_logic', '        enable : in std_logic');
+  const portStr = ports.join(';\n');
+  const signals = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `    signal s_${k} : std_logic := '${v === 'true' ? '1' : '0'}';`;
+    if (!isNaN(Number(v))) return `    signal s_${k} : integer := ${v};`;
+    return `    signal s_${k} : std_logic_vector(7 downto 0) := (others => '0');`;
+  }).join('\n');
+  return `-- CMPSBL® Convex Core™ — ${spec.description}
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity ${snakeName} is
+    port (
+${portStr}
+    );
+end entity ${snakeName};
+
+architecture behavioral of ${snakeName} is
+${signals}
+begin
+    process(clk, rst)
+    begin
+        if rst = '1' then
+            -- Reset state
+            enable <= '0';
+        elsif rising_edge(clk) then
+            if enable = '1' then
+                -- Active processing
+                null;
+            end if;
+        end if;
+    end process;
+end architecture behavioral;`;
+}
+
+function generateVerilog(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const regs = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `    reg ${k} = ${v === 'true' ? "1'b1" : "1'b0"};`;
+    if (!isNaN(Number(v))) return `    reg [31:0] ${k} = 32'd${v};`;
+    return `    reg [7:0] ${k} = 8'd0;`;
+  }).join('\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+module ${snakeName} (
+    input wire clk,
+    input wire rst,
+    input wire enable
+);
+
+${regs}
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            // Reset state
+        end else if (enable) begin
+            // Active processing
+        end
+    end
+
+endmodule`;
+}
+
 function generateHdlComment(name: string, spec: PrimitiveSpec): string {
   const methods = spec.methods.map(m => `--   ${m.name}: ${m.description}`).join('\n');
   return `-- ═══════════════════════════════════════════════════════════
 -- CMPSBL® Convex Core™ — ${name}
 -- ${spec.description}
 --
--- This primitive operates at the behavioral modeling layer.
+-- Behavioral model — requires target-specific synthesis adaptation.
 -- Available methods:
 ${methods}
 -- ═══════════════════════════════════════════════════════════`;
+}
+
+function generateGlsl(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const uniforms = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `uniform bool u_${k};`;
+    if (!isNaN(Number(v))) return `uniform float u_${k};`;
+    return `uniform int u_${k};`;
+  }).join('\n');
+  const functions = spec.methods.map(m =>
+    `// ${m.description}\nfloat ${snakeName}_${m.name}(float input_val) {\n    return input_val;\n}`
+  ).join('\n\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+${uniforms}
+
+${functions}`;
+}
+
+function generateWgsl(name: string, spec: PrimitiveSpec): string {
+  const snakeName = name.replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
+  const structFields = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    if (v === 'true' || v === 'false') return `    ${k}: u32,`;
+    if (!isNaN(Number(v))) return `    ${k}: f32,`;
+    return `    ${k}: u32,`;
+  }).join('\n');
+  const functions = spec.methods.map(m =>
+    `// ${m.description}\nfn ${snakeName}_${m.name}(input_val: f32) -> f32 {\n    return input_val;\n}`
+  ).join('\n\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+struct ${name}State {
+${structFields}
+}
+
+@group(0) @binding(0) var<uniform> state: ${name}State;
+
+${functions}`;
 }
 
 function generateShaderComment(name: string, spec: PrimitiveSpec): string {
@@ -1286,7 +1449,7 @@ function generateShaderComment(name: string, spec: PrimitiveSpec): string {
 // CMPSBL® Convex Core™ — ${name}
 // ${spec.description}
 //
-// This primitive operates at the behavioral modeling layer.
+// Behavioral model — requires target-specific shader adaptation.
 // Available methods:
 ${methods}
 // ═══════════════════════════════════════════════════════════`;
@@ -1299,8 +1462,10 @@ const FAMILY_GENERATORS: Record<string, (name: string, spec: PrimitiveSpec) => s
   go: generateGo,
   java: generateJava,
   csharp: generateCSharp,
+  fsharp: generateFSharp,
   kotlin: generateKotlin,
   swift: generateSwift,
+  dart: generateDart,
   cpp: generateCpp,
   ruby: generateRuby,
   elixir: generateElixir,
@@ -1317,7 +1482,11 @@ const FAMILY_GENERATORS: Record<string, (name: string, spec: PrimitiveSpec) => s
   nim: generateNim,
   haskell: generateHaskell,
   clojure: generateClojure,
+  vhdl: generateVhdl,
+  verilog: generateVerilog,
   hdl: generateHdlComment,
+  glsl: generateGlsl,
+  wgsl: generateWgsl,
   shader: generateShaderComment,
 };
 
