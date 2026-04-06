@@ -1122,3 +1122,11 @@ export function getUniversalPoolBreakdown(): Record<string, number> {
 export function resetUniversalPool(): void {
   _cachedPool = null;
 }
+
+// Re-export Ascension weight types for consumer convenience
+export type { AscensionMode } from '../ascension/ascension-weights';
+export {
+  getAscensionRankings,
+  getTopByDimension,
+  getAllAscensionWeights,
+} from '../ascension/ascension-weights';
