@@ -603,6 +603,21 @@ export function instantiateVertical(input: VerticalFactoryInput): VerticalManife
   };
 }
 
+/**
+ * Seed a dynamic vertical with 200 discoveries persisted to the database.
+ * Call this after instantiateVertical() — it's async because it writes to DB.
+ *
+ * Returns the seed result and updates the manifest's activation checklist.
+ */
+export async function seedVertical(verticalId: string): Promise<GenesisSeedResult | null> {
+  const rv = DYNAMIC_VERTICALS.get(verticalId);
+  if (!rv) return null;
+
+  const categories = inferCategories(rv.engines, rv.agents);
+  const result = await runGenesisSeed(verticalId, rv.engines, rv.agents, categories);
+  return result;
+}
+
 function createEmptyChecklist(): VerticalActivationChecklist {
   return {
     primitivesAssembled: false,
