@@ -235,13 +235,16 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
-  // Spine primitives (organs + layers) get a structural bonus ONLY when
-  // they have at least one actual signal hit. This prevents irrelevant
-  // spine primitives from crowding out expansion matches via a free ride.
+  // Spine primitives (organs + layers) get a structural bonus scaled by
+  // their signal density. Primitives with zero signal hits get nothing.
+  // Primitives with weak/incidental hits (low density) get a fraction.
+  // This prevents generic-word overlaps (e.g. RIPPLE matching "boundary")
+  // from crowding out genuinely relevant expansion primitives.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
-  const structuralBonus = (isSpine && hits > 0) ? 0.15 : 0;
+  const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
+  const structuralBonus = (isSpine && hits > 0) ? 0.15 * Math.min(signalDensity / 0.25, 1) : 0;
 
-  // Composite scoring — spine-aware, signal-gated
+  // Composite scoring — spine-aware, density-scaled
   // Signal affinity (35%) + capability match (20%) + breadth (10%) + weight (15%) + structural (20%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
