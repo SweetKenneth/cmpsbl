@@ -324,7 +324,7 @@ function generateCrownJewels(
               : `Standalone ${capName.replace(/_/g, ' ')} utility suitable for direct integration or Memory Stream discovery.`
         }`,
         dependencyFootprint: [],
-        exportMode: i < 4 ? 'PureStandalone' : 'Composable',
+        exportMode: 'PureStandalone',
         signatureHash: `${verticalId}-${primitive.id}-${i + 1}`,
         version: '1.0.0',
         approved: true,
