@@ -674,6 +674,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(mean|median|std|variance|correlation|covariance)\s*\(/i,
       // bayesian: prior, posterior, likelihood, bayes
       /(prior|posterior|likelihood|bayesian|bayes_?theorem)/i,
+      // definition-side: model/forecaster/detector/classifier classes + fit/predict
+      /(class\s+\w*(Model|Forecaster|Detector|Classifier)|\.fit\s*\(|\.score\s*\(|\.predict\s*\()/i,
       // monte carlo: simulation, random sampling
       /(monte_?carlo|simulation|random_?sample|bootstrap)\s*\(/i,
       // time series: forecast, seasonal, trend, arima
