@@ -190,10 +190,9 @@ export function seedMediaDiscoveries(forceSeed = false): MediaSeedResult {
     });
   }
 
-  // Route discoveries into the foundry system
+  // Route discoveries into the foundry system (DB persistence happens below)
   for (const d of discoveries) {
     try {
-      addDiscovery(d.id, d.name, d.description, d.cjpiScore, d.primitiveChain);
       routeDiscovery(d.cjpiScore);
     } catch {
       // Foundry routing is best-effort during seeding
