@@ -86,42 +86,689 @@ function deriveSignals(p: VerticalPrimitive): string[] {
   return [...new Set(signals)];
 }
 
-// Spine-specific affinity signals for deeper matching
+// Spine-specific affinity signals for deeper matching.
+// Each primitive has a broad, language-agnostic vocabulary covering
+// Python, TypeScript, Rust, Go, C/C++, Java, Ruby, Swift, Kotlin,
+// Solidity, VHDL, SystemVerilog, shell scripts, config files, and more.
+// Organized by semantic domain so additions are easy to audit.
 const SPINE_AFFINITY_SIGNALS: Record<string, string[]> = {
-  CORE: ['kernel', 'boot', 'init', 'startup', 'main', 'entry', 'lifecycle', 'heartbeat', 'orchestrat', 'pipeline', 'cadence', 'load', 'runtime', 'process'],
-  SYSTEM: ['config', 'environment', 'env', 'setting', 'lifecycle', 'setup', 'init', 'configur', 'platform', 'backend', 'default', 'option', 'global'],
-  BRAIN: ['reason', 'pattern', 'knowledge', 'inference', 'classify', 'predict', 'neural', 'cognitive', 'think', 'model', 'logic', 'heuristic'],
-  MEMORY: ['cache', 'store', 'persist', 'state', 'session', 'storage', 'retain', 'archive', 'database', 'redis', 'buffer', 'serialize', 'deserialize', 'pickle', 'mmap', 'checkpoint'],
-  DREAM: ['synthesis', 'emerge', 'heuristic', 'creative', 'fragment', 'subconscious', 'discover'],
-  NERVE: ['signal', 'event', 'dispatch', 'route', 'bus', 'emit', 'subscribe', 'publish', 'trigger', 'callback', 'hook', 'register', 'handler', 'listener'],
-  IDENTITY: ['auth', 'login', 'user', 'session', 'token', 'jwt', 'oauth', 'identity', 'credential', 'device', 'cuda', 'location', 'context'],
-  RELAY: ['message', 'queue', 'relay', 'forward', 'webhook', 'notification', 'pubsub'],
-  AUDIT: ['log', 'audit', 'trail', 'compliance', 'tamper', 'immutable', 'chain', 'record', 'receipt', 'provenance', 'merkle', 'hash', 'warn', 'warning', 'track', 'trace'],
-  RIPPLE: ['cascade', 'propagat', 'boundary', 'enforce', 'contain'],
-  ACCESS: ['permission', 'role', 'rbac', 'authorize', 'scope', 'grant', 'deny', 'acl'],
-  GOVERNANCE: ['govern', 'approve', 'gate', 'legitimacy', 'supervisor', 'oversight', 'policy', 'verdict', 'deny', 'review', 'decision', 'authorize', 'governance_policy', 'auto_fix', 'validate', 'check', 'verify', 'restrict', 'allow'],
-  DEFENSE: ['security', 'threat', 'firewall', 'encrypt', 'protect', 'shield', 'perimeter', 'ssl', 'tls', 'risk', 'guard', 'vulnerability', 'scan', 'security_smell', 'blocked', 'safe', 'unsafe', 'trust', 'untrust', 'sanitize', 'malicious'],
-  IMMUNITY: ['heal', 'recover', 'quarantine', 'anomaly', 'resilient', 'immune', 'adapt', 'rollback', 'envelope', 'wrapper', 'rollbackavailable', 'pre_snapshot', 'post_snapshot', 'restore', 'backup', 'checkpoint'],
-  CONSCIENCE: ['ethic', 'bias', 'fair', 'moral', 'boundary', 'responsible', 'transparent', 'preflight', 'conscience', 'ethical', 'review_required', 'blocked_categories', 'safe', 'unsafe', 'trust', 'harm', 'danger'],
-  INTENT: ['intent', 'purpose', 'goal', 'action', 'resolve', 'interpret', 'parse', 'understand'],
-  ATLAS: ['topology', 'capability', 'registry', 'catalog', 'service_discovery', 'dependency_graph'],
-  ENGINEER: ['maintain', 'patch', 'fix', 'repair', 'drift', 'upgrade', 'refactor', 'debt', 'maintenance', 'remediat', 'autofix', 'detect', 'auto_fix', 'stale', 'version', 'compat', 'deprecat', 'legacy', 'migration'],
-  DECODE: ['language', 'nlp', 'chat', 'conversation', 'text', 'parse', 'interpret', 'prompt'],
-  ENCODE: ['generate', 'code', 'compile', 'build', 'blueprint', 'scaffold', 'write', 'encode', 'struct', 'pack', 'format'],
-  VISION: ['image', 'visual', 'ocr', 'picture', 'screenshot', 'video', 'camera', 'canvas'],
-  ECONOMY: ['cost', 'budget', 'price', 'billing', 'meter', 'quota', 'spend', 'roi'],
-  SANDBOX: ['isolat', 'sandbox', 'contain', 'eval', 'playground', 'docker', 'restrict', 'unpickl', 'weights_only'],
-  INCLUSIVE: ['accessible', 'a11y', 'wcag', 'aria', 'screen_reader', 'disability', 'inclusive'],
-  MEDIC: ['diagnos', 'triage', 'assess', 'repair', 'severity', 'damage', 'triageissue', 'triageall', 'riskscore', 'autofixable'],
-  SOVEREIGN: ['policy', 'compliance', 'classify', 'regulation', 'jurisdiction', 'consent', 'data_class', 'blockedcategories', 'governancepolicy'],
-  COMPASS: ['direction', 'priority', 'weight', 'rank', 'sort', 'order', 'threshold', 'severity_order', 'confidence', 'riskscore'],
-  SHADOW: ['canary', 'shadow', 'trace', 'monitor', 'snapshot', 'baseline', 'compare', 'observe', 'pre_snapshot', 'post_snapshot', 'presnapshot', 'postsnapshot'],
-  EVOLUTION: ['evolve', 'mutate', 'generation', 'adapt', 'select', 'fitness', 'population', 'upgrade', 'patch', 'update', 'updateconfig', 'version', 'compat', 'migrate'],
-  REFLEX: ['retry', 'circuit', 'breaker', 'timeout', 'backoff', 'fallback', 'degrade', 'cooldown', 'graceful', 'circuit_breaker', 'degradation', 'error', 'exception', 'raise', 'catch', 'recover', 'fail'],
-  INTEGRATION: ['adapter', 'bridge', 'transform', 'protocol', 'format', 'normalize'],
-  TREATY: ['contract', 'agreement', 'sla', 'obligation', 'terms', 'binding'],
-  NEXUS: ['router', 'balance', 'failover', 'provider', 'endpoint', 'gateway', 'proxy'],
-  BEACON: ['beacon', 'heartbeat', 'health_signal', 'healthsignal', 'telemetry', 'uptime', 'emithealthsignal', 'beaconhealthsignal', 'health', 'status', 'monitor', 'alive'],
+
+  // ── CORE — kernel, bootstrap, lifecycle, orchestration ──
+  CORE: [
+    // Bootstrap & entry
+    'kernel', 'boot', 'init', 'startup', 'main', 'entry', 'entrypoint', 'bootstrap',
+    'setup', 'teardown', 'shutdown', 'cleanup', 'finalize', 'dispose',
+    // Lifecycle
+    'lifecycle', 'heartbeat', 'tick', 'loop', 'poll', 'schedule', 'cron', 'daemon',
+    'supervisor', 'orchestrat', 'coordinator', 'conductor', 'cadence',
+    // Runtime
+    'runtime', 'process', 'subprocess', 'spawn', 'fork', 'exec', 'pid', 'signal',
+    'interrupt', 'sigterm', 'sigint', 'sighup',
+    // Pipeline
+    'pipeline', 'stage', 'phase', 'step', 'chain', 'sequence', 'workflow',
+    // Loading
+    'load', 'preload', 'lazy', 'eager', 'prefetch', 'warmup',
+    // File patterns
+    'main.py', 'index.ts', 'app.py', 'server.py', 'run.py', 'manage.py',
+    '__main__', '__init__', 'mod.rs', 'main.go', 'main.rs', 'program.cs',
+  ],
+
+  // ── SYSTEM — configuration, environment, platform ──
+  SYSTEM: [
+    // Config
+    'config', 'configuration', 'environment', 'env', 'setting', 'preference',
+    'option', 'flag', 'toggle', 'feature_flag', 'dotenv', 'toml', 'yaml', 'json',
+    'ini', 'properties', 'plist',
+    // Setup
+    'lifecycle', 'setup', 'init', 'configur', 'reconfigur', 'provision',
+    // Platform
+    'platform', 'backend', 'frontend', 'client', 'server', 'host', 'hostname',
+    'port', 'socket', 'bind', 'listen',
+    // Defaults
+    'default', 'fallback', 'override', 'global', 'singleton', 'instance',
+    // OS / system
+    'os', 'arch', 'cpu', 'memory', 'disk', 'filesystem', 'path', 'tempdir',
+    'homedir', 'cwd', 'environ', 'sysctl', 'uname', 'locale', 'timezone',
+    // File patterns
+    'config.ts', 'config.py', 'settings.py', 'constants.ts', 'env.d.ts',
+    '.env', 'docker-compose', 'dockerfile', 'makefile', 'cmake',
+    'cargo.toml', 'pyproject.toml', 'package.json', 'go.mod', 'build.gradle',
+  ],
+
+  // ── BRAIN — reasoning, classification, inference ──
+  BRAIN: [
+    // Reasoning
+    'reason', 'infer', 'inference', 'deduce', 'conclude', 'hypothesis',
+    'heuristic', 'cognitive', 'think', 'decide', 'evaluate', 'assess',
+    // Classification
+    'classify', 'classif', 'categorize', 'label', 'tag', 'annotate',
+    'predict', 'forecast', 'estimate', 'probability', 'likelihood',
+    // ML / AI patterns
+    'model', 'neural', 'network', 'layer', 'weight', 'bias', 'activation',
+    'tensor', 'gradient', 'backprop', 'optimizer', 'loss', 'epoch', 'batch',
+    'train', 'training', 'finetune', 'pretrain', 'embedding', 'tokenizer',
+    'attention', 'transformer', 'encoder', 'decoder', 'softmax', 'relu',
+    'sigmoid', 'dropout', 'normalization', 'convolution', 'pooling',
+    'lstm', 'recurrent', 'diffusion',
+    // Knowledge
+    'knowledge', 'pattern', 'feature', 'extraction', 'recognition',
+    'detection', 'similarity', 'distance', 'cluster', 'centroid',
+    // Logic
+    'logic', 'rule', 'condition', 'predicate', 'assert', 'axiom',
+  ],
+
+  // ── MEMORY — storage, persistence, caching, serialization ──
+  MEMORY: [
+    // Cache
+    'cache', 'lru', 'ttl', 'expir', 'invalidat', 'evict', 'memo', 'memoiz',
+    // Storage
+    'store', 'persist', 'save', 'load', 'read', 'write', 'flush', 'sync',
+    'storage', 'retain', 'archive', 'snapshot', 'dump', 'restore',
+    // State
+    'state', 'session', 'context', 'scope', 'stack', 'heap', 'arena',
+    'pool', 'slab', 'allocat', 'dealloc', 'malloc', 'free', 'gc',
+    'garbage', 'reference_count', 'weak_ref', 'strong_ref',
+    // Database
+    'database', 'db', 'sql', 'query', 'select', 'insert', 'update', 'delete',
+    'transaction', 'commit', 'rollback', 'savepoint', 'cursor', 'prepared',
+    'connection_pool', 'orm', 'migration', 'schema', 'index', 'constraint',
+    'foreign_key', 'primary_key', 'join', 'aggregate',
+    // Serialization
+    'serialize', 'deserialize', 'marshal', 'unmarshal', 'pickle', 'unpickle',
+    'protobuf', 'msgpack', 'avro', 'thrift', 'flatbuffer', 'cbor',
+    // Memory-mapped
+    'mmap', 'shared_memory', 'shm', 'memoryview', 'bytearray', 'bytebuffer',
+    // Checkpoint
+    'checkpoint', 'ckpt', 'safetensors', 'statedict', 'state_dict',
+    // Key-value
+    'redis', 'memcached', 'leveldb', 'rocksdb', 'sqlite', 'etcd',
+    // Buffer
+    'buffer', 'ring_buffer', 'circular', 'fifo', 'lifo',
+  ],
+
+  // ── DREAM — synthesis, emergence, creativity ──
+  DREAM: [
+    'synthesis', 'synthesize', 'emerge', 'emergent', 'heuristic', 'creative',
+    'fragment', 'subconscious', 'discover', 'insight', 'intuition',
+    'serendipity', 'novel', 'unexpect', 'latent', 'subliminal',
+    'recombine', 'mutate', 'evolve', 'generate', 'imagine', 'dream',
+    'hallucinate', 'interpolat', 'extrapolat', 'blend', 'morph',
+  ],
+
+  // ── NERVE — signals, events, messaging, pub/sub ──
+  NERVE: [
+    // Event system
+    'signal', 'event', 'dispatch', 'emit', 'fire', 'trigger', 'raise',
+    'publish', 'subscribe', 'unsubscribe', 'observe', 'notify', 'broadcast',
+    // Routing
+    'route', 'router', 'bus', 'eventbus', 'messagebus', 'mediator',
+    // Callbacks
+    'callback', 'hook', 'handler', 'listener', 'delegate', 'closure',
+    'promise', 'future', 'deferred', 'observable', 'subject', 'stream',
+    // Registration
+    'register', 'unregister', 'bind', 'unbind', 'attach', 'detach',
+    'addEventListener', 'removeEventListener', 'on_', 'once',
+    // Async patterns
+    'async', 'await', 'coroutine', 'goroutine', 'channel', 'chan',
+    'select', 'yield', 'generator', 'iterator', 'next',
+    // Concurrency
+    'mutex', 'semaphore', 'lock', 'unlock', 'rwlock', 'atomic',
+    'thread', 'spawn', 'join', 'wait', 'notify_all', 'condition_variable',
+    'barrier', 'latch', 'countdown',
+    // File patterns
+    'events.ts', 'emitter.py', 'signals.py', 'pubsub', 'broker',
+  ],
+
+  // ── IDENTITY — authentication, users, context, devices ──
+  IDENTITY: [
+    // Auth
+    'auth', 'authenticat', 'login', 'logout', 'signin', 'signup', 'register',
+    'credential', 'password', 'passphrase', 'passkey', 'biometric',
+    // Tokens
+    'token', 'jwt', 'bearer', 'refresh_token', 'access_token', 'api_key',
+    'oauth', 'oauth2', 'oidc', 'saml', 'sso', 'mfa', 'totp', 'otp',
+    // User
+    'user', 'profile', 'account', 'tenant', 'organization', 'workspace',
+    'principal', 'subject', 'claim', 'assertion',
+    // Session
+    'session', 'cookie', 'fingerprint', 'device_id', 'user_agent',
+    // Device / context
+    'device', 'cuda', 'gpu', 'tpu', 'accelerator', 'hardware',
+    'location', 'geolocation', 'ip_address', 'locale',
+    // Identity providers
+    'ldap', 'active_directory', 'cognito', 'auth0', 'firebase_auth',
+    'supabase_auth', 'keycloak', 'okta',
+  ],
+
+  // ── RELAY — messaging, queues, forwarding ──
+  RELAY: [
+    // Messaging
+    'message', 'msg', 'packet', 'datagram', 'frame', 'payload', 'envelope',
+    'queue', 'dequeue', 'enqueue', 'topic', 'subscription', 'consumer',
+    'producer', 'publisher', 'subscriber',
+    // Forward
+    'relay', 'forward', 'proxy', 'redirect', 'passthrough', 'pipe',
+    // Webhooks & notifications
+    'webhook', 'notification', 'push', 'alert', 'sms', 'email',
+    // Protocols
+    'pubsub', 'amqp', 'mqtt', 'kafka', 'rabbitmq', 'nats', 'zeromq',
+    'grpc', 'websocket', 'sse', 'long_poll',
+    // Middleware
+    'middleware', 'interceptor', 'filter', 'chain', 'pipeline',
+    // File patterns
+    'queue.py', 'worker.py', 'consumer.py', 'producer.py', 'broker.py',
+  ],
+
+  // ── AUDIT — logging, compliance, immutable records ──
+  AUDIT: [
+    // Logging
+    'log', 'logger', 'logging', 'syslog', 'journal', 'logfile',
+    'debug', 'info', 'warn', 'warning', 'error', 'critical', 'fatal',
+    'verbose', 'trace', 'span', 'correlation_id', 'request_id',
+    // Audit
+    'audit', 'audit_log', 'audit_trail', 'tamper', 'immutable',
+    'append_only', 'write_once', 'ledger',
+    // Compliance
+    'compliance', 'regulation', 'gdpr', 'hipaa', 'sox', 'pci', 'fedramp',
+    // Chain / integrity
+    'chain', 'hash_chain', 'merkle', 'merkle_tree', 'hash', 'digest',
+    'checksum', 'crc', 'sha256', 'sha512', 'md5', 'blake2',
+    // Record
+    'record', 'receipt', 'provenance', 'lineage', 'changelog',
+    'track', 'trace', 'breadcrumb', 'telemetry', 'metric',
+    // Observability
+    'opentelemetry', 'jaeger', 'zipkin', 'prometheus', 'grafana',
+    'datadog', 'newrelic', 'sentry', 'bugsnag',
+    // File patterns
+    'audit.py', 'logger.ts', 'logging.conf', 'log4j', 'winston',
+  ],
+
+  // ── RIPPLE — cascading effects, propagation, containment ──
+  RIPPLE: [
+    'cascade', 'cascading', 'propagat', 'ripple', 'spread', 'fanout',
+    'broadcast', 'multicast', 'flood', 'diffuse',
+    'boundary', 'perimeter', 'fence', 'barrier', 'bulkhead',
+    'enforce', 'contain', 'isolat', 'quarantine', 'blast_radius',
+    'impact', 'downstream', 'upstream', 'transitive', 'dependency',
+    'domino', 'chain_reaction', 'side_effect', 'spillover',
+  ],
+
+  // ── ACCESS — permissions, RBAC, authorization ──
+  ACCESS: [
+    // Core
+    'permission', 'permiss', 'role', 'privilege', 'entitlement',
+    'rbac', 'abac', 'pbac', 'acl', 'capability',
+    // Actions
+    'authorize', 'authoriz', 'grant', 'revoke', 'deny', 'allow',
+    'restrict', 'forbid', 'block', 'whitelist', 'blacklist',
+    'allowlist', 'denylist', 'blocklist',
+    // Scope
+    'scope', 'claim', 'policy', 'rule', 'constraint',
+    'tenant', 'multi_tenant', 'row_level', 'column_level',
+    // Guards
+    'guard', 'canactivate', 'middleware', 'interceptor', 'decorator',
+    'before_action', 'before_filter', 'policy_class',
+    // File patterns
+    'permissions.py', 'policies.ts', 'guards.ts', 'authorize.rb',
+    'access_control', 'iam', 'security_group',
+  ],
+
+  // ── GOVERNANCE — approval, oversight, policy enforcement ──
+  GOVERNANCE: [
+    // Core
+    'govern', 'governance', 'approve', 'reject', 'deny', 'veto',
+    'gate', 'checkpoint', 'review', 'oversight', 'supervisor',
+    // Policy
+    'policy', 'rule', 'constraint', 'regulation', 'compliance',
+    'enforce', 'verdict', 'decision', 'adjudicat', 'arbitrat',
+    // Validation
+    'validate', 'validation', 'verify', 'verification', 'certify',
+    'check', 'assert', 'ensure', 'confirm', 'require',
+    'schema_valid', 'type_check', 'lint', 'linter',
+    // Restriction
+    'restrict', 'allow', 'permit', 'limit', 'quota', 'throttle',
+    'rate_limit', 'circuit_break', 'kill_switch', 'feature_gate',
+    // Workflow
+    'workflow', 'approval_flow', 'sign_off', 'stakeholder',
+    'auto_fix', 'auto_approve', 'manual_review',
+    'governance_policy', 'legitimacy',
+    // File patterns
+    'validators.py', 'rules.ts', 'policies', 'governance',
+  ],
+
+  // ── DEFENSE — security, encryption, threat protection ──
+  DEFENSE: [
+    // Core security
+    'security', 'secure', 'insecure', 'threat', 'attack', 'exploit',
+    'vulnerability', 'vuln', 'cve', 'patch', 'remediat',
+    // Firewall & perimeter
+    'firewall', 'waf', 'ids', 'ips', 'perimeter', 'dmz',
+    'ingress', 'egress', 'allowlist', 'denylist', 'blocklist',
+    // Encryption
+    'encrypt', 'decrypt', 'cipher', 'aes', 'rsa', 'ecdsa', 'ed25519',
+    'tls', 'ssl', 'https', 'certificate', 'cert', 'pki', 'x509',
+    'keystore', 'truststore', 'vault', 'seal', 'unseal',
+    // Hashing & signing
+    'hmac', 'digest', 'sign', 'signature', 'nonce', 'salt', 'pepper',
+    'bcrypt', 'scrypt', 'argon2', 'pbkdf2',
+    // Web security
+    'csrf', 'xss', 'sqli', 'injection', 'sanitize', 'escape', 'encode',
+    'cors', 'csp', 'hsts', 'referrer_policy', 'x_frame',
+    // Trust
+    'protect', 'shield', 'guard', 'defend', 'safe', 'unsafe',
+    'trust', 'untrust', 'malicious', 'suspicious', 'anomal',
+    // Secrets
+    'secret', 'credential', 'rotation', 'expiry', 'revoke', 'revocation',
+    // Network
+    'scan', 'probe', 'pentest', 'fuzz', 'brute_force',
+    'intrusion', 'detection', 'prevention', 'quarantine',
+    'risk', 'severity', 'critical', 'high', 'medium', 'low',
+    // File patterns
+    'security.py', 'crypto.ts', 'auth.py', 'firewall.conf',
+    'security_smell', 'blocked', 'deny_all', 'allow_all',
+  ],
+
+  // ── IMMUNITY — self-healing, recovery, resilience ──
+  IMMUNITY: [
+    // Healing
+    'heal', 'self_heal', 'auto_heal', 'recover', 'recovery', 'repair',
+    'restore', 'resurrect', 'revive', 'regenerat',
+    // Quarantine
+    'quarantine', 'isolat', 'contain', 'sandbox', 'jail',
+    // Anomaly
+    'anomaly', 'anomalous', 'outlier', 'deviation', 'drift',
+    'corrupt', 'corrupted', 'integrity_check', 'consistency_check',
+    // Resilience
+    'resilient', 'resilience', 'redundant', 'redundancy', 'failover',
+    'replica', 'replicat', 'standby', 'hot_spare', 'cold_spare',
+    // Immune
+    'immune', 'immun', 'adapt', 'adaptive', 'antibody',
+    // Rollback
+    'rollback', 'undo', 'revert', 'snapshot', 'checkpoint',
+    'pre_snapshot', 'post_snapshot', 'backup', 'archive',
+    // Wrapper
+    'envelope', 'wrapper', 'shim', 'proxy', 'interceptor',
+    'rollbackavailable', 'restore_point', 'safe_mode',
+  ],
+
+  // ── CONSCIENCE — ethics, bias detection, safety ──
+  CONSCIENCE: [
+    // Ethics
+    'ethic', 'ethical', 'moral', 'virtue', 'principle', 'value',
+    'fair', 'fairness', 'equity', 'justice', 'impartial',
+    // Bias
+    'bias', 'biased', 'unbias', 'skew', 'discriminat', 'disparity',
+    'demographic', 'parity', 'equalized_odds',
+    // Safety
+    'safe', 'safety', 'unsafe', 'harm', 'harmful', 'toxic', 'toxicity',
+    'danger', 'dangerous', 'abuse', 'abusive', 'offensive',
+    // Boundaries
+    'boundary', 'limit', 'guardrail', 'redline', 'constraint',
+    'content_filter', 'moderat', 'censor', 'flag', 'report',
+    // Trust
+    'responsible', 'accountab', 'transparent', 'transparen', 'explainab',
+    'interpretab', 'audit_trail',
+    // Review
+    'preflight', 'review_required', 'human_in_loop', 'oversight',
+    'blocked_categories', 'conscience', 'trust_score',
+  ],
+
+  // ── INTENT — purpose, goal, action resolution ──
+  INTENT: [
+    'intent', 'intention', 'purpose', 'goal', 'objective', 'target',
+    'action', 'command', 'directive', 'instruction', 'request',
+    'resolve', 'resolv', 'interpret', 'interpret', 'parse', 'extract',
+    'understand', 'comprehend', 'disambiguat', 'classify',
+    'slot', 'entity', 'ner', 'named_entity', 'utterance',
+    'dialog', 'dialogue', 'conversation', 'turn', 'context',
+    'plan', 'planner', 'scheduler', 'task', 'subtask',
+    'dispatch', 'route', 'delegate', 'assign', 'allocat',
+  ],
+
+  // ── ATLAS — topology, service registry, dependency graph ──
+  ATLAS: [
+    'topology', 'graph', 'tree', 'dag', 'dependency_graph',
+    'capability', 'registry', 'catalog', 'inventory', 'manifest',
+    'service_discovery', 'consul', 'eureka', 'zookeeper',
+    'namespace', 'domain', 'subdomain', 'bounded_context',
+    'map', 'mapping', 'schema', 'blueprint', 'diagram',
+    'node', 'edge', 'vertex', 'link', 'adjacen', 'neighbor',
+    'traverse', 'walk', 'bfs', 'dfs', 'shortest_path',
+    'cluster', 'partition', 'shard', 'segment', 'zone', 'region',
+  ],
+
+  // ── ENGINEER — maintenance, patching, technical debt ──
+  ENGINEER: [
+    // Maintenance
+    'maintain', 'maintenance', 'patch', 'hotfix', 'bugfix',
+    'fix', 'repair', 'remediat', 'workaround', 'hack',
+    // Drift & debt
+    'drift', 'debt', 'tech_debt', 'technical_debt', 'code_smell',
+    'refactor', 'restructur', 'rewrite', 'cleanup', 'tidy',
+    // Upgrade
+    'upgrade', 'downgrade', 'migration', 'migrat', 'backward_compat',
+    'forward_compat', 'breaking_change', 'semver',
+    // Version
+    'version', 'compat', 'compatib', 'deprecat', 'deprecated',
+    'legacy', 'obsolete', 'sunset', 'end_of_life', 'eol',
+    // Detection
+    'detect', 'scan', 'lint', 'linter', 'static_analysis',
+    'code_review', 'autofix', 'auto_fix', 'suggestion',
+    'stale', 'unused', 'dead_code', 'unreachable',
+    // Build
+    'compile', 'build', 'link', 'bundle', 'minify', 'transpile',
+    'polyfill', 'shim', 'vendor', 'lockfile',
+    // File patterns
+    'renovate', 'dependabot', 'changelog', 'release_notes',
+  ],
+
+  // ── DECODE — language processing, NLP, parsing ──
+  DECODE: [
+    // NLP
+    'language', 'nlp', 'natural_language', 'linguist', 'semantic',
+    'syntax', 'grammar', 'lexer', 'lexical', 'tokenize', 'tokenizer',
+    'stemm', 'lemmatiz', 'stopword', 'ngram', 'tfidf', 'bpe',
+    'wordpiece', 'sentencepiece', 'vocab', 'vocabulary',
+    // Chat
+    'chat', 'chatbot', 'conversation', 'dialog', 'dialogue',
+    'message', 'prompt', 'completion', 'response', 'reply',
+    // Parse
+    'parse', 'parser', 'ast', 'abstract_syntax', 'cst',
+    'interpret', 'compiler', 'transpiler', 'visitor', 'walker',
+    // Text
+    'text', 'string', 'unicode', 'utf8', 'encoding', 'decoding',
+    'regex', 'regexp', 'pattern', 'match', 'search', 'replace',
+    'split', 'join', 'strip', 'trim', 'normalize',
+    // Formats
+    'markdown', 'html', 'xml', 'json', 'csv', 'tsv', 'yaml',
+  ],
+
+  // ── ENCODE — code generation, compilation, scaffolding ──
+  ENCODE: [
+    // Generation
+    'generate', 'generator', 'scaffold', 'template', 'boilerplate',
+    'codegen', 'code_gen', 'metaprogram', 'macro', 'preprocessor',
+    // Compilation
+    'code', 'compile', 'compiler', 'build', 'link', 'linker',
+    'assemble', 'assembler', 'bytecode', 'ir', 'llvm', 'wasm',
+    // Blueprint
+    'blueprint', 'schema', 'spec', 'specification', 'definition',
+    'interface', 'protocol', 'contract', 'abi',
+    // Output
+    'write', 'output', 'render', 'emit', 'produce', 'synthesize',
+    // Encoding
+    'encode', 'encoding', 'base64', 'hex', 'binary', 'ascii',
+    'struct', 'pack', 'unpack', 'format', 'formatter',
+    'serializ', 'marshal', 'stringify', 'dump',
+    // HDL
+    'vhdl', 'verilog', 'systemverilog', 'rtl', 'fpga', 'asic',
+    'netlist', 'synthesis', 'bitstream',
+  ],
+
+  // ── VISION — image, video, visual processing ──
+  VISION: [
+    // Image
+    'image', 'img', 'photo', 'picture', 'bitmap', 'raster', 'vector',
+    'pixel', 'rgb', 'rgba', 'hsv', 'hsl', 'grayscale',
+    // Formats
+    'png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'avif', 'tiff', 'bmp',
+    // Processing
+    'resize', 'crop', 'rotate', 'flip', 'blur', 'sharpen', 'threshold',
+    'contour', 'edge', 'segment', 'mask', 'overlay', 'composite',
+    // OCR & recognition
+    'ocr', 'tesseract', 'recognition', 'detection', 'classification',
+    'bounding_box', 'annotation', 'label',
+    // Video
+    'video', 'frame', 'fps', 'codec', 'transcode', 'stream',
+    'camera', 'webcam', 'capture', 'record',
+    // Canvas
+    'canvas', 'webgl', 'opengl', 'vulkan', 'directx', 'shader',
+    'render', 'rasteriz', 'texture', 'mesh', 'geometry',
+    // Screenshot
+    'screenshot', 'thumbnail', 'preview', 'viewport',
+  ],
+
+  // ── ECONOMY — cost, billing, metering, pricing ──
+  ECONOMY: [
+    // Cost
+    'cost', 'price', 'pricing', 'fee', 'charge', 'bill', 'billing',
+    'invoice', 'receipt', 'payment', 'pay', 'checkout', 'cart',
+    // Budget
+    'budget', 'spend', 'expenditure', 'allocation', 'forecast',
+    // Metering
+    'meter', 'metering', 'usage', 'consumption', 'quota', 'limit',
+    'overage', 'throttle', 'rate_limit',
+    // Revenue
+    'revenue', 'profit', 'margin', 'roi', 'roi_calculat',
+    'subscription', 'recurring', 'mrr', 'arr', 'churn',
+    // Currency
+    'currency', 'cents', 'dollar', 'stripe', 'paypal', 'braintree',
+    'tax', 'vat', 'discount', 'coupon', 'promo',
+    // Credits
+    'credit', 'debit', 'balance', 'ledger', 'account',
+    'token_usage', 'compute_cost', 'api_call_cost',
+  ],
+
+  // ── SANDBOX — isolation, containment, eval safety ──
+  SANDBOX: [
+    // Isolation
+    'isolat', 'sandbox', 'sandboxed', 'contain', 'container',
+    'docker', 'podman', 'lxc', 'chroot', 'jail', 'namespace',
+    'cgroup', 'seccomp', 'apparmor', 'selinux',
+    // Eval
+    'eval', 'exec', 'execute', 'interpret', 'repl', 'playground',
+    'notebook', 'jupyter', 'colab',
+    // Restriction
+    'restrict', 'confine', 'limit', 'cap', 'ceiling',
+    'read_only', 'readonly', 'immutable', 'frozen',
+    // Security context
+    'unpickl', 'weights_only', 'safe_load', 'trusted', 'untrusted',
+    'allowlist', 'denylist', 'permit', 'forbid',
+    // Virtualization
+    'vm', 'virtual_machine', 'hypervisor', 'emulat', 'simulat',
+    'wasm', 'webassembly', 'v8', 'isolate',
+  ],
+
+  // ── INCLUSIVE — accessibility, a11y, universal design ──
+  INCLUSIVE: [
+    'accessible', 'accessibility', 'a11y', 'wcag', 'aria',
+    'screen_reader', 'screenreader', 'voiceover', 'talkback', 'nvda', 'jaws',
+    'disability', 'inclusive', 'universal_design',
+    'alt_text', 'alt', 'label', 'caption', 'subtitle', 'transcript',
+    'keyboard', 'focus', 'tabindex', 'skip_link', 'landmark',
+    'contrast', 'color_blind', 'dyslexia', 'cognitive',
+    'i18n', 'l10n', 'internationalization', 'localization',
+    'rtl', 'ltr', 'bidi', 'translation', 'locale',
+  ],
+
+  // ── MEDIC — diagnostics, triage, severity assessment ──
+  MEDIC: [
+    'diagnos', 'diagnostic', 'triage', 'assess', 'assessment',
+    'repair', 'fix', 'patch', 'remedy', 'prescription',
+    'severity', 'priority', 'critical', 'major', 'minor', 'trivial',
+    'damage', 'impact', 'blast_radius', 'scope',
+    'symptom', 'root_cause', 'postmortem', 'incident', 'outage',
+    'triageissue', 'triageall', 'riskscore', 'autofixable',
+    'health_check', 'healthcheck', 'status_page', 'uptime',
+    'slo', 'sla', 'sli', 'error_budget', 'mttr', 'mttf', 'mtbf',
+    'runbook', 'playbook', 'escalat', 'on_call', 'pager',
+  ],
+
+  // ── SOVEREIGN — data classification, jurisdiction, compliance ──
+  SOVEREIGN: [
+    // Policy
+    'policy', 'compliance', 'regulation', 'regulatory', 'statute',
+    'ordinance', 'mandate', 'requirement',
+    // Classification
+    'classify', 'classification', 'label', 'tier', 'level',
+    'confidential', 'secret', 'top_secret', 'public', 'internal',
+    'sensitive', 'pii', 'phi', 'pci', 'spii',
+    // Jurisdiction
+    'jurisdiction', 'territory', 'region', 'sovereign', 'sovereignty',
+    'data_residency', 'data_locality', 'cross_border',
+    // Consent
+    'consent', 'opt_in', 'opt_out', 'preference', 'notice',
+    'gdpr', 'ccpa', 'hipaa', 'ferpa', 'coppa', 'pipeda',
+    // Governance
+    'data_class', 'data_owner', 'data_steward', 'retention',
+    'blockedcategories', 'governancepolicy', 'embargo', 'sanction',
+  ],
+
+  // ── COMPASS — direction, priority, ranking, scoring ──
+  COMPASS: [
+    'direction', 'priority', 'prioritiz', 'weight', 'rank', 'ranking',
+    'sort', 'order', 'sequence', 'position',
+    'threshold', 'cutoff', 'baseline', 'benchmark', 'target',
+    'severity_order', 'confidence', 'score', 'rating',
+    'riskscore', 'risk_score', 'trust_score',
+    'top_k', 'top_n', 'percentile', 'quantile', 'median',
+    'gradient', 'direction', 'vector', 'heading', 'bearing',
+    'north_star', 'kpi', 'metric', 'indicator', 'signal',
+    'heatmap', 'distribution', 'histogram', 'sparkline',
+  ],
+
+  // ── SHADOW — canary, tracing, monitoring, A/B testing ──
+  SHADOW: [
+    // Canary & shadow
+    'canary', 'shadow', 'dark_launch', 'feature_flag', 'toggle',
+    'a_b_test', 'ab_test', 'experiment', 'variant', 'cohort',
+    'blue_green', 'rolling', 'progressive', 'gradual',
+    // Tracing
+    'trace', 'tracing', 'span', 'context_propagat',
+    'distributed_trac', 'correlation', 'request_id', 'trace_id',
+    // Monitoring
+    'monitor', 'monitoring', 'watch', 'watchdog', 'sentinel',
+    'observe', 'observ', 'instrument', 'profil', 'sampl',
+    // Snapshot & diff
+    'snapshot', 'baseline', 'compare', 'diff', 'delta', 'drift',
+    'pre_snapshot', 'post_snapshot', 'presnapshot', 'postsnapshot',
+    'before', 'after', 'regression',
+  ],
+
+  // ── EVOLUTION — mutation, versioning, adaptation ──
+  EVOLUTION: [
+    // Mutation
+    'evolve', 'evolution', 'mutate', 'mutation', 'transform',
+    'generation', 'genetic', 'crossover', 'selection', 'fitness',
+    'population', 'chromosome', 'allele', 'gene',
+    // Adaptation
+    'adapt', 'adaptive', 'learn', 'improve', 'optim', 'tuning',
+    // Version
+    'upgrade', 'patch', 'update', 'hotfix', 'release',
+    'version', 'semver', 'changelog', 'release_notes',
+    'compat', 'backward', 'forward', 'breaking',
+    // Migration
+    'migrate', 'migration', 'transition', 'convert', 'transform',
+    'updateconfig', 'reconfigur',
+    // CI/CD
+    'deploy', 'deployment', 'rollout', 'rollback', 'promote',
+    'staging', 'production', 'canary', 'blue_green',
+    'ci', 'cd', 'pipeline', 'github_actions', 'gitlab_ci', 'jenkins',
+  ],
+
+  // ── REFLEX — resilience, circuit breakers, error handling ──
+  REFLEX: [
+    // Circuit breaker
+    'retry', 'retries', 'circuit', 'breaker', 'circuit_breaker',
+    'open', 'closed', 'half_open', 'trip', 'reset',
+    // Timeout
+    'timeout', 'deadline', 'cancel', 'abort', 'abort_controller',
+    'context_deadline', 'context_cancel',
+    // Backoff
+    'backoff', 'exponential', 'jitter', 'delay', 'cooldown', 'debounce',
+    'throttle', 'rate_limit',
+    // Fallback
+    'fallback', 'default', 'degrade', 'degradation', 'graceful',
+    'best_effort', 'partial', 'eventual',
+    // Error handling
+    'error', 'exception', 'panic', 'recover', 'rescue',
+    'raise', 'throw', 'catch', 'try', 'finally', 'ensure',
+    'result', 'option', 'maybe', 'either', 'unwrap',
+    'fail', 'failure', 'fault', 'toleran',
+    // Resilience patterns
+    'bulkhead', 'shed', 'load_shed', 'backpressure',
+    'health_check', 'liveness', 'readiness',
+  ],
+
+  // ── INTEGRATION — adapters, bridges, protocol translation ──
+  INTEGRATION: [
+    // Patterns
+    'adapter', 'bridge', 'facade', 'wrapper', 'shim', 'polyfill',
+    'decorator', 'proxy', 'mediator', 'translator',
+    // Transform
+    'transform', 'convert', 'map', 'translate', 'normalize', 'denormalize',
+    'serialize', 'deserialize', 'marshal', 'unmarshal',
+    // Protocol
+    'protocol', 'format', 'codec', 'transcode', 'interop', 'compat',
+    'api', 'rest', 'graphql', 'grpc', 'soap', 'xmlrpc', 'jsonrpc',
+    // Data formats
+    'json', 'xml', 'csv', 'protobuf', 'avro', 'parquet', 'orc',
+    'msgpack', 'bson', 'cbor', 'toml', 'yaml', 'ini',
+    // Connectors
+    'connector', 'driver', 'client', 'sdk', 'library', 'plugin',
+    'extension', 'addon', 'module', 'package', 'crate', 'gem',
+    // ETL
+    'etl', 'extract', 'transform', 'load', 'ingest', 'pipeline',
+    // File patterns
+    'adapter.ts', 'bridge.py', 'connector.go', 'driver.rs',
+  ],
+
+  // ── TREATY — contracts, SLA, agreements ──
+  TREATY: [
+    'contract', 'agreement', 'sla', 'slo', 'sli',
+    'obligation', 'terms', 'binding', 'enforce', 'breach',
+    'guarantee', 'warranty', 'promise', 'pledge', 'commitment',
+    'interface', 'protocol', 'spec', 'specification', 'schema',
+    'precondition', 'postcondition', 'invariant', 'assert',
+    'expect', 'require', 'ensure', 'satisfy', 'fulfill',
+    'handshake', 'negotiate', 'accept', 'reject', 'counter',
+    'version', 'revision', 'amendment', 'addendum',
+  ],
+
+  // ── NEXUS — routing, load balancing, failover ──
+  NEXUS: [
+    // Routing
+    'router', 'routing', 'route', 'dispatch', 'forward',
+    'gateway', 'api_gateway', 'ingress', 'egress',
+    // Load balancing
+    'balance', 'balancer', 'load_balanc', 'round_robin',
+    'least_connect', 'weighted', 'consistent_hash',
+    // Failover
+    'failover', 'fallback', 'redundan', 'backup', 'standby',
+    'primary', 'secondary', 'replica', 'mirror',
+    // Provider
+    'provider', 'endpoint', 'upstream', 'downstream',
+    'service', 'microservice', 'mesh', 'sidecar', 'envoy', 'istio',
+    // Proxy
+    'proxy', 'reverse_proxy', 'nginx', 'haproxy', 'caddy', 'traefik',
+    // DNS
+    'dns', 'resolve', 'resolver', 'lookup', 'cname', 'a_record',
+    // CDN
+    'cdn', 'edge', 'cache', 'origin', 'distribution',
+  ],
+
+  // ── BEACON — health signals, uptime, telemetry ──
+  BEACON: [
+    // Health
+    'beacon', 'heartbeat', 'ping', 'pong', 'keepalive', 'keep_alive',
+    'health', 'healthy', 'unhealthy', 'health_check', 'healthcheck',
+    'health_signal', 'healthsignal',
+    // Status
+    'status', 'state', 'condition', 'readiness', 'liveness',
+    'available', 'unavailable', 'degraded', 'operational',
+    // Monitoring
+    'monitor', 'watchdog', 'sentinel', 'probe', 'check',
+    'alive', 'dead', 'zombie', 'orphan', 'stale',
+    // Telemetry
+    'telemetry', 'metric', 'counter', 'gauge', 'histogram',
+    'uptime', 'downtime', 'latency', 'throughput', 'bandwidth',
+    'p50', 'p95', 'p99', 'percentile',
+    // Signals
+    'emithealthsignal', 'beaconhealthsignal',
+    'alert', 'alarm', 'threshold', 'anomaly', 'spike', 'drop',
+    // File patterns
+    'health.ts', 'healthcheck.py', 'status.go', 'monitor.rs',
+  ],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -147,8 +794,8 @@ function assembleUniversalPool(): TaggedPrimitive[] {
       const merged = explicitSignals
         ? [...new Set([...explicitSignals, ...derived])]
         : derived;
-      // Cap at 30 signals — enough for broad matching without diluting density
-      const capped = merged.length > 30 ? merged.slice(0, 30) : merged;
+      // Cap at 50 signals — enough for broad matching without diluting density
+      const capped = merged.length > 50 ? merged.slice(0, 50) : merged;
       pool.push({ primitive: p, sourceVertical: source, signals: capped });
     }
   };
@@ -233,9 +880,10 @@ function scoreCandidate(
     }
   }
   const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
-  // 40% threshold creates meaningful spread — primitives need substantial
-  // rare-signal coverage to max out, preventing the flat plateau problem
-  const signalAffinity = Math.min(hitRatio / 0.40, 1);
+  // With larger vocabularies (50 signals), the IDF ratio naturally trends lower.
+  // A 25% threshold balances discrimination with recognition — primitives need
+  // meaningful rare-signal coverage but aren't penalized for having broad vocabularies.
+  const signalAffinity = Math.min(hitRatio / 0.25, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
@@ -257,22 +905,28 @@ function scoreCandidate(
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
   // Spine primitives (organs + layers) get a modest structural bonus
-  // that scales with signal density. The bonus is capped at 0.08 (not 0.15)
-  // and requires 40%+ signal density for full value. This ensures spine
+  // that scales with signal density. With 50-signal vocabularies, 20%
+  // density (10/50 hits) earns the full bonus. This ensures spine
   // primitives earn their rank through genuine signal relevance, not
   // architectural privilege.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
   const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.40, 1) : 0;
+  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
+
+  // Raw hit density bonus — rewards primitives with high absolute hit counts
+  // regardless of IDF weighting. This prevents primitives like AUDIT (whose
+  // signals are common across many candidates) from being IDF-penalized when
+  // they genuinely match the code strongly.
+  const rawDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
+  const rawDensityBonus = Math.min(rawDensity / 0.30, 1) * 0.10;
 
   // Composite scoring — signal-dominant, spine-aware
-  // Signal affinity (45%) + capability match (25%) + breadth (10%) + weight (5%) + structural (15%)
-  // Signal affinity is the primary discriminator — weight is intentionally low
-  // to prevent high-weight but low-relevance primitives from consuming slots.
+  // IDF affinity (40%) + raw density (10%) + capability match (20%) + breadth (10%) + weight (5%) + structural (up to 8%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.45 +
-    capRatio * 0.25 +
+    signalAffinity * 0.40 +
+    rawDensityBonus +
+    capRatio * 0.20 +
     breadthScore * 0.10 +
     weightFactor * 0.05 +
     structuralBonus;
@@ -341,9 +995,10 @@ function selectOptimalPrimitives(
       if (dropOff >= DROP_OFF_RATIO) break;
     }
 
-    // Diversity: spine gets 20 (broadest semantic range, 31+ primitives),
-    // others capped at 8 to prevent single-vertical domination
-    const maxForSource = candidate.sourceVertical === 'spine' ? 20 : 8;
+    // Diversity: spine gets 24 (broadest semantic range, 31+ primitives),
+    // others capped at 5 to ensure expansion primitives don't crowd out
+    // architecturally significant spine matches
+    const maxForSource = candidate.sourceVertical === 'spine' ? 24 : 5;
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
     if (sc >= maxForSource) continue;
 
