@@ -955,16 +955,24 @@ function scoreCandidate(
   const rawDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
   const rawDensityBonus = Math.min(rawDensity / 0.30, 1) * 0.10;
 
-  // Composite scoring — signal-dominant, context-aware
-  // IDF affinity (40%) + raw density (10%) + capability (20%) + breadth (10%) + weight (5%) + context bonus (up to 15%)
+  // ── STRUCTURAL ARCHETYPE BOOST ─────────────────────────────────────────
+  // If structural analysis found that this primitive maps to a confirmed
+  // archetype (rate limiting, error recovery, etc.), apply an additional
+  // boost. This rewards primitives that match CODE SHAPES, not just keywords.
+  const primName = tagged.primitive.name.toUpperCase();
+  const structBoost = structuralBoosts?.get(primName) ?? 0;
+  const structuralArchetypeBonus = structBoost * 0.12; // Up to 12% from structural patterns
+
+  // Composite scoring — signal-dominant, context-aware, structure-boosted
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.40 +
+    signalAffinity * 0.35 +
     rawDensityBonus +
-    capRatio * 0.20 +
-    breadthScore * 0.10 +
+    capRatio * 0.15 +
+    breadthScore * 0.08 +
     weightFactor * 0.05 +
-    contextBonus;
+    contextBonus +
+    structuralArchetypeBonus;
 
   return {
     primitive: tagged.primitive,
@@ -973,6 +981,7 @@ function scoreCandidate(
     signalHits: hits,
     totalSignals: tagged.signals.length,
     compoundingScore: Math.round(compounding * 1000) / 1000,
+    structuralBoost: Math.round(structBoost * 1000) / 1000,
   };
 }
 
