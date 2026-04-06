@@ -86,6 +86,17 @@ export function getExpansionPrimitives(verticalId: string): Set<string> {
   return VERTICAL_EXPANSION_PRIMITIVES[verticalId] ?? new Set();
 }
 
+/**
+ * Register expansion primitives for a dynamically instantiated vertical.
+ * Called by GENESIS during vertical instantiation.
+ */
+export function registerExpansionPrimitives(
+  verticalId: string,
+  primitiveIds: string[],
+): void {
+  VERTICAL_EXPANSION_PRIMITIVES[verticalId] = new Set(primitiveIds);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — VERTICAL DOMAIN VOCABULARY
 // ═══════════════════════════════════════════════════════════════════════════════
