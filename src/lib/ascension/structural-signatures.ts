@@ -436,6 +436,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /(create|build|make|factory)\s*(Service|Repository|Handler|Client)\s*\(/i,
       // interface-based: implements, interface + class
       /(implements|interface)\s+\w+[\s\S]{0,500}class\s+\w+\s+implements/i,
+      // module/plugin registration: register_module, add_plugin, use()
+      /(register_?module|add_?plugin|include\s+\w+|extend\s+\w+Module)\s*/i,
+      // require/import + instantiate pattern (Node/Python/Ruby)
+      /(require|import)\s*\(?['"][\w\/.-]+['"]\)?\s*[\n;][\s\S]{0,200}new\s+\w+/i,
+      // Go wire/fx/dig style injection
+      /(fx\.Provide|dig\.Provide|wire\.Build|wire\.NewSet)\s*\(/i,
     ],
     coSignals: [
       'inject', 'container', 'provider', 'factory', 'singleton',
