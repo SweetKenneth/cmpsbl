@@ -98,10 +98,12 @@ export function extractContext(
     const idMatches = window.match(/\b[a-zA-Z_][a-zA-Z0-9_]{3,}\b/g);
     if (idMatches) {
       for (const id of idMatches) {
-        // Skip common noise words
-        if (!NOISE_WORDS.has(id.toLowerCase())) {
-          identifiers.add(id.toLowerCase());
-        }
+        const lower = id.toLowerCase();
+        // Skip common noise words and overly short fragments
+        if (NOISE_WORDS.has(lower)) continue;
+        // Skip words that are too generic (all lowercase, < 6 chars, no underscore)
+        if (lower.length < 6 && !lower.includes('_') && /^[a-z]+$/.test(lower)) continue;
+        identifiers.add(lower);
       }
     }
 
