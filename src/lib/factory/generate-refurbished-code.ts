@@ -314,8 +314,109 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `"""\n${lines.join('\n')}\n"""`,
     importStatement: (_mod, syms) => {
-      // Generate inline stubs so the file runs standalone without pip install
-      const stubs = syms.map(s => `class ${s}:\n    """CMPSBL® runtime stub — ${s}"""\n    @staticmethod\n    def init(*a, **kw): pass\n    @staticmethod\n    def enable(*a, **kw): pass\n    @staticmethod\n    def enforce(*a, **kw): pass\n    @staticmethod\n    def apply(*a, **kw): pass\n    @staticmethod\n    def generate(*a, **kw): pass\n    @staticmethod\n    def capture(*a, **kw): pass`);
+      // Generate functional inline classes so the file runs standalone with real persistence
+      const stubs = syms.map(s => {
+        // PersistentMemory gets a real file-backed implementation
+        if (s === 'PersistentMemory') {
+          return `class PersistentMemory:
+    """CMPSBL® Convex Core™ — File-backed persistent memory"""
+    def __init__(self, namespace="cmpsbl", path=None):
+        import os, json
+        self._ns = namespace
+        self._path = path or os.path.join(os.path.expanduser("~"), ".cmpsbl", f"{namespace}.memory.json")
+        os.makedirs(os.path.dirname(self._path), exist_ok=True)
+        self._store = {}
+        if os.path.exists(self._path):
+            try:
+                with open(self._path, "r") as f:
+                    self._store = json.load(f)
+            except Exception:
+                self._store = {}
+
+    def _save(self):
+        import json
+        with open(self._path, "w") as f:
+            json.dump(self._store, f, indent=2, default=str)
+
+    def get(self, key, default=None):
+        return self._store.get(key, default)
+
+    def set(self, key, value):
+        self._store[key] = value
+        self._save()
+        return self
+
+    def delete(self, key):
+        self._store.pop(key, None)
+        self._save()
+        return self
+
+    def keys(self):
+        return list(self._store.keys())
+
+    def all(self):
+        return dict(self._store)
+
+    def clear(self):
+        self._store = {}
+        self._save()
+
+    @staticmethod
+    def init(*a, **kw):
+        return PersistentMemory(**kw)`;
+        }
+        // StateRecovery gets a real checkpoint implementation
+        if (s === 'StateRecovery') {
+          return `class StateRecovery:
+    """CMPSBL® Convex Core™ — Checkpoint-based state recovery"""
+    def __init__(self, memory=None):
+        self._memory = memory or PersistentMemory(namespace="cmpsbl_recovery")
+        self._checkpoints = self._memory.get("_checkpoints", [])
+
+    def checkpoint(self, label, state):
+        import time, copy
+        entry = {"label": label, "state": copy.deepcopy(state) if isinstance(state, (dict, list)) else state, "ts": time.time()}
+        self._checkpoints.append(entry)
+        if len(self._checkpoints) > 50:
+            self._checkpoints = self._checkpoints[-50:]
+        self._memory.set("_checkpoints", self._checkpoints)
+        return self
+
+    def recover(self, label=None):
+        if not self._checkpoints:
+            return None
+        if label:
+            matches = [c for c in self._checkpoints if c["label"] == label]
+            return matches[-1]["state"] if matches else None
+        return self._checkpoints[-1]["state"]
+
+    def list_checkpoints(self):
+        return [{"label": c["label"], "ts": c["ts"]} for c in self._checkpoints]
+
+    @staticmethod
+    def init(*a, **kw):
+        return StateRecovery(**kw)
+
+    @staticmethod
+    def enable(*a, **kw):
+        return StateRecovery(**kw)`;
+        }
+        // All other runtime classes get static method stubs
+        return `class ${s}:
+    """CMPSBL® Convex Core™ — ${s}"""
+    @staticmethod
+    def init(*a, **kw): pass
+    @staticmethod
+    def enable(*a, **kw): pass
+    @staticmethod
+    def enforce(*a, **kw): pass
+    @staticmethod
+    def apply(*a, **kw): pass
+    @staticmethod
+    def generate(*a, **kw): pass
+    @staticmethod
+    def capture(*a, **kw): pass`;
+      });
       return stubs.join('\n\n');
     },
     constDecl: (name, val) => `${name} = ${val}`,
