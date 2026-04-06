@@ -313,7 +313,11 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Python: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `"""\n${lines.join('\n')}\n"""`,
-    importStatement: (mod, syms) => `from ${mod.replace(/@/g, '').replace(/\//g, '.')} import ${syms.join(', ')}`,
+    importStatement: (_mod, syms) => {
+      // Generate inline stubs so the file runs standalone without pip install
+      const stubs = syms.map(s => `class ${s}:\n    """CMPSBL® runtime stub — ${s}"""\n    @staticmethod\n    def init(*a, **kw): pass\n    @staticmethod\n    def enable(*a, **kw): pass\n    @staticmethod\n    def enforce(*a, **kw): pass\n    @staticmethod\n    def apply(*a, **kw): pass\n    @staticmethod\n    def generate(*a, **kw): pass\n    @staticmethod\n    def capture(*a, **kw): pass`);
+      return stubs.join('\n\n');
+    },
     constDecl: (name, val) => `${name} = ${val}`,
     transformGuard: pythonGuard,
     fileExtension: '.py',
@@ -894,7 +898,18 @@ export function generateRefurbishedCode(
   const imports: string[] = [];
   const guards: string[] = [];
   // Strip any existing sealed-runtime footers from prior passes to prevent duplication
-  const cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
+  let cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
+
+  // For Python: convert relative imports to absolute so file runs standalone
+  if (detected === 'Python') {
+    cleanedSource = cleanedSource
+      // `from . import X as Y` → `import X as Y`
+      .replace(/^from\s+\.\s+import\s+/gm, 'import ')
+      // `from .foo import X` → `from foo import X`
+      .replace(/^from\s+\.(\w)/gm, 'from $1')
+      // `from cmpsbl.runtime.X import Y` → stub (already handled by adapter, but catch originals)
+      .replace(/^from\s+cmpsbl\.runtime\.\w+\s+import\s+.+$/gm, (line) => `# ${line}  # stubbed for standalone`);
+  }
   let transformedCode = cleanedSource;
 
   for (const p of selectedPrimitives) {
