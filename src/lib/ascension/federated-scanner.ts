@@ -410,7 +410,7 @@ export async function runCrossPollinationCycle(): Promise<CrossPollinationResult
   }
 
   return {
-    verticalsProcessed: ACTIVE_VERTICAL_IDS.length,
+    verticalsProcessed: getAllActiveVerticalIds().length,
     totalSpineSignals: totalSpine,
     totalExpansionSignals: totalExpansion,
     perVertical,
