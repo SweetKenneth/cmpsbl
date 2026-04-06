@@ -10,6 +10,10 @@
  * entry is governor-curated, CJPI-scored, and already classified by
  * primitive — the highest-quality training data available.
  *
+ * § DB Bridge: Also ingests all discoveries from the `discoveries` table
+ * (the 2,800+ manually and autonomously discovered capabilities) to
+ * close the backlog learning gap.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
