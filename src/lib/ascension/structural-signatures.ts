@@ -732,6 +732,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(obfuscate|mangle|scramble|disguise)\s*\(/i,
       // deception response: fake data, misleading, redirect attacker
       /(fake_?data|mislead|redirect_?attacker|tar_?pit)\s*[=:\(]/i,
+      // code obfuscation / anti-reverse-engineering markers
+      /(anti_?debug|anti_?tamper|integrity_?check|code_?sign|checksum_?verify)\s*[\(=:]/i,
+      // steganography / hidden channel patterns
+      /(stegan|hidden_?channel|covert_?channel|embed_?payload|encode_?payload)\s*[\(=:]/i,
     ],
     coSignals: [
       'honeypot', 'decoy', 'canary', 'trap', 'deception', 'watermark',
