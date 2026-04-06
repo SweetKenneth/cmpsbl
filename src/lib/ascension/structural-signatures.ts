@@ -724,8 +724,10 @@ const ARCHETYPES: StructuralSignature[] = [
     name: 'Deception & Counter-Intelligence',
     primitives: ['PHANTOM', 'DEFENSE', 'SHADOW'],
     patterns: [
-      // honeypot: trap, decoy, canary
+      // honeypot: trap, decoy, canary — class or variable naming
       /(honeypot|decoy|canary|trap)\s*[=:.\(]/i,
+      // Honeypot class/object definition (Glastopf, Cowrie, etc.)
+      /class\s+\w*(Honeypot|Honeynet|HoneyTrap|Cowrie|Glastopf)/i,
       // token/watermark: watermark, fingerprint, canary_token
       /(watermark|canary_?token|beacon_?url|tracking_?pixel)\s*[=:]/i,
       // obfuscation: obfuscate, mangle, minify
@@ -736,15 +738,21 @@ const ARCHETYPES: StructuralSignature[] = [
       /(anti_?debug|anti_?tamper|integrity_?check|code_?sign|checksum_?verify)\s*[\(=:]/i,
       // steganography / hidden channel patterns
       /(stegan|hidden_?channel|covert_?channel|embed_?payload|encode_?payload)\s*[\(=:]/i,
+      // emulator-based deception: emulators, vulnerability emulation, dork
+      /(emulat|vuln_?emulat|dork|sandbox_?escape|lure)\s*[=:\(_.]/i,
+      // SSH/telnet honeypot protocol keywords
+      /(cowrie|kippo|dionaea|conpot|thug|mailoney)\s*/i,
     ],
     coSignals: [
       'honeypot', 'decoy', 'canary', 'trap', 'deception', 'watermark',
       'obfuscate', 'mangle', 'disguise', 'counter_intelligence',
       'tar_pit', 'beacon', 'bait', 'lure', 'steganography',
+      'emulator', 'dork', 'glastopf', 'cowrie', 'kippo',
     ],
     intentSignals: [
       'honeypot', 'deception', 'canary token', 'counter-intelligence',
       'TODO: add decoy', 'trap', 'bait', 'misdirect',
+      'emulate', 'vulnerability emulation', 'fake service',
     ],
     weight: 0.70,
   },
