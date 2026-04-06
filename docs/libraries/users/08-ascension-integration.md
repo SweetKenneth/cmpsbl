@@ -25,7 +25,7 @@ The Ascension Engine lets you upload working source code and have the substrate'
 cmpsbl ascension upload ./my-trading-bot.py
 
 # Via API
-curl -X POST https://api.cmpsbl.ai/api/v1/ascension/upload \
+curl -X POST https://api.cmpsbl.com/api/v1/ascension/upload \
   -H "Authorization: Bearer pf_live_xxx" \
   -F "file=@my-trading-bot.py"
 ```
