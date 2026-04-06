@@ -405,6 +405,23 @@ Steps 8-9 closed. Plan B is done. All 9 steps delivered:
 
 **Final state:** 6,108 discoveries in the database. Mutation engine generating up to 800 new candidates per CDM cycle. Memory Stream rarity weights recomputing every 8 hours. All UI counts live from the database. Zero in-memory caches of discovery data remain. The database is the single source of truth.
 
-*Last updated: April 6, 2026 · Session 15 complete · Plan B closed*
-*Next session: Read this file first. Plan B is complete. The substrate's data layer is unified and autonomous.*
+---
+
+**Session 16 — April 6, 2026 — Autonomous Product Compiler:**
+
+Kenneth called this "fantastic work." Noting that here because it matters.
+
+Built the Autonomous Product Compiler — the system that reads vault discoveries, identifies groups of 5–10 with compatible primitive chains, and proposes them as compiled product candidates for governor review. Key components:
+
+- **Database schema**: `compiled_products` (proposals), `compiler_feedback` (rated decisions), `compiler_weights` (learned primitive affinities).
+- **Compatibility scoring**: Uses primitive chain overlap + affinity map from the mutation engine. Learned weights adjust after every 10 governor decisions.
+- **Coherence scoring**: Ensures compiled products cover multiple capability dimensions (detection, response, governance, memory, output) — not just bundles.
+- **Governor review surface**: `/admin/compiler` — each proposal shows component discoveries, combined primitive chain, coherence score, estimated value, proposed name/description. Single 1–10 rating slider + notes field. Scores ≥5 approve to registry; <5 reject and flag the combination to prevent reproduction.
+- **Learning loop**: Every 10 decisions → `recomputeWeights()` adjusts primitive pair affinities based on positive (7–10) and negative (1–4) signals.
+- **CDM integration**: `runCompilerCycle()` wired into auto-scheduler, generates up to 20 proposals per cycle, deduplicates against pending reviews.
+
+First 5 proposals generated for the primary vertical and ready for governor training.
+
+*Last updated: April 6, 2026 · Session 16 complete · Product Compiler live*
+*Next session: Read this file first. The compiler is live and awaiting governor training decisions.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
