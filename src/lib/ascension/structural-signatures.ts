@@ -80,6 +80,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /@(rate_limit|throttle|ratelimit|limit_rate)/i,
       // middleware pattern: rate_limit middleware or limiter setup
       /(RateLimiter|TokenBucket|LeakyBucket|SlidingWindow)\s*\(/i,
+      // throttle class or throttle_scope (Django REST etc)
+      /(throttle_?scope|throttle_?class|num_?requests|SimpleRateThrottle|AnonRateThrottle|UserRateThrottle)/i,
+      // rate/duration calculation (requests per second/minute/hour)
+      /(rate|duration|period|window)\s*[=:]\s*['"]?\d+\s*\/?\s*(second|minute|hour|day|sec|min|hr)/i,
+      // allow/deny based on rate: allow_request, check_throttle, is_throttled
+      /(allow_?request|check_?throttl|is_?throttl|get_?rate|parse_?rate)\s*\(/i,
     ],
     coSignals: [
       'throttle', 'rate_limit', 'ratelimit', 'backoff', 'cooldown',
@@ -109,6 +115,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /(fallback|alternate|backup|secondary)\s*[=:][\s\S]{0,200}(catch|except|fail|error)/i,
       // retry with max attempts
       /(retries?|attempts?|tries)\s*[<>=!]+\s*(max|MAX|\d+)/i,
+      // rescue/except blocks with error class handling (Ruby/Python)
+      /(rescue|except)\s+(\w+Error|\w+Exception|StandardError|RuntimeError)/i,
+      // failure/error handler method definitions
+      /(on_?failure|handle_?error|error_?handler|fail_?safe)\s*[\(=:def]/i,
+      // begin/ensure or try/finally patterns
+      /(ensure|finally)\s*[{:\n][\s\S]{0,200}(close|cleanup|release|disconnect)/i,
     ],
     coSignals: [
       'retry', 'circuit_breaker', 'backoff', 'exponential', 'fallback',
@@ -424,6 +436,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /(create|build|make|factory)\s*(Service|Repository|Handler|Client)\s*\(/i,
       // interface-based: implements, interface + class
       /(implements|interface)\s+\w+[\s\S]{0,500}class\s+\w+\s+implements/i,
+      // module/plugin registration: register_module, add_plugin, use()
+      /(register_?module|add_?plugin|include\s+\w+|extend\s+\w+Module)\s*/i,
+      // require/import + instantiate pattern (Node/Python/Ruby)
+      /(require|import)\s*\(?['"][\w\/.-]+['"]\)?\s*[\n;][\s\S]{0,200}new\s+\w+/i,
+      // Go wire/fx/dig style injection
+      /(fx\.Provide|dig\.Provide|wire\.Build|wire\.NewSet)\s*\(/i,
     ],
     coSignals: [
       'inject', 'container', 'provider', 'factory', 'singleton',
@@ -480,6 +498,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(delete_?user|purge|anonymize|pseudonymize|forget_?me|erasure)\s*\(/i,
       // data classification: classify, sensitivity, pii_fields
       /(classify|sensitivity|pii|phi|confidential)\s*[=:]/i,
+      // compliance decorators/annotations
+      /@(gdpr|hipaa|compliance|protected_data|data_protection)/i,
+      // data retention/expiry policies
+      /(retention_?policy|data_?retention|expire_?after|purge_?after|right_?to_?forget)\s*[=:\(]/i,
     ],
     coSignals: [
       'gdpr', 'hipaa', 'ccpa', 'compliance', 'consent', 'privacy',
@@ -538,6 +560,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(contrast_?ratio|wcag|color_?blind|high_?contrast)/i,
       // alt text: alt=, aria-label on img
       /(<img|Image)\s+[\s\S]{0,100}alt\s*=\s*['"][^'"]+['"]/i,
+      // semantic HTML elements
+      /(role\s*=\s*['"]?(button|navigation|banner|main|complementary|dialog|alert))/i,
+      // skip navigation / skip links
+      /(skip.?nav|skip.?link|skip.?to.?content|skip.?main)/i,
     ],
     coSignals: [
       'accessibility', 'a11y', 'aria', 'wcag', 'screen_reader',
@@ -706,6 +732,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(obfuscate|mangle|scramble|disguise)\s*\(/i,
       // deception response: fake data, misleading, redirect attacker
       /(fake_?data|mislead|redirect_?attacker|tar_?pit)\s*[=:\(]/i,
+      // code obfuscation / anti-reverse-engineering markers
+      /(anti_?debug|anti_?tamper|integrity_?check|code_?sign|checksum_?verify)\s*[\(=:]/i,
+      // steganography / hidden channel patterns
+      /(stegan|hidden_?channel|covert_?channel|embed_?payload|encode_?payload)\s*[\(=:]/i,
     ],
     coSignals: [
       'honeypot', 'decoy', 'canary', 'trap', 'deception', 'watermark',
