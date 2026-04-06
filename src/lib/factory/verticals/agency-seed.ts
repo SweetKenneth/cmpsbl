@@ -310,6 +310,4 @@ export function getAgencySeedSummary(): { total: number; vault: number; showroom
 /** Reset — useful for testing */
 export function resetAgencySeed(): void {
   _seedResult = null;
-  AGENCY_VAULT.clear();
-  AGENCY_MEMORY_STREAM_POOL.length = 0;
 }
