@@ -80,6 +80,12 @@ const ARCHETYPES: StructuralSignature[] = [
       /@(rate_limit|throttle|ratelimit|limit_rate)/i,
       // middleware pattern: rate_limit middleware or limiter setup
       /(RateLimiter|TokenBucket|LeakyBucket|SlidingWindow)\s*\(/i,
+      // throttle class or throttle_scope (Django REST etc)
+      /(throttle_?scope|throttle_?class|num_?requests|SimpleRateThrottle|AnonRateThrottle|UserRateThrottle)/i,
+      // rate/duration calculation (requests per second/minute/hour)
+      /(rate|duration|period|window)\s*[=:]\s*['"]?\d+\s*\/?\s*(second|minute|hour|day|sec|min|hr)/i,
+      // allow/deny based on rate: allow_request, check_throttle, is_throttled
+      /(allow_?request|check_?throttl|is_?throttl|get_?rate|parse_?rate)\s*\(/i,
     ],
     coSignals: [
       'throttle', 'rate_limit', 'ratelimit', 'backoff', 'cooldown',

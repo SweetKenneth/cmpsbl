@@ -139,6 +139,7 @@ export function extractContext(
 
 /** Common words that don't carry signal value */
 const NOISE_WORDS = new Set([
+  // Language keywords
   'function', 'return', 'const', 'let', 'var', 'this', 'self', 'true',
   'false', 'null', 'undefined', 'none', 'class', 'interface', 'type',
   'export', 'import', 'from', 'require', 'module', 'default', 'async',
@@ -147,6 +148,22 @@ const NOISE_WORDS = new Set([
   'while', 'each', 'map', 'filter', 'reduce', 'push', 'length',
   'value', 'data', 'result', 'error', 'message', 'name', 'index',
   'item', 'list', 'args', 'kwargs', 'params', 'options', 'config',
+  // Natural language filler (leaked from comments/docstrings)
+  'that', 'this', 'will', 'with', 'have', 'been', 'being', 'from',
+  'when', 'what', 'which', 'where', 'were', 'only', 'also', 'than',
+  'them', 'they', 'their', 'some', 'such', 'like', 'into', 'over',
+  'more', 'most', 'must', 'does', 'done', 'used', 'uses', 'using',
+  'should', 'could', 'would', 'make', 'made', 'just', 'very', 'much',
+  'well', 'same', 'here', 'there', 'about', 'other', 'every', 'after',
+  'before', 'between', 'because', 'since', 'until', 'above', 'below',
+  // Common generic code words that carry no signal
+  'file', 'line', 'char', 'text', 'code', 'note', 'info', 'warn',
+  'user', 'test', 'spec', 'impl', 'base', 'util', 'helper', 'common',
+  'handle', 'update', 'create', 'delete', 'find', 'send', 'call',
+  'check', 'apply', 'start', 'stop', 'open', 'close', 'read', 'write',
+  'print', 'parse', 'format', 'convert', 'process', 'request', 'response',
+  // C/C++ preprocessor noise
+  'endif', 'ifdef', 'ifndef', 'define', 'include', 'pragma', 'extern',
 ]);
 
 // ═══════════════════════════════════════════════════════════════════════════════
