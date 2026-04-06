@@ -588,7 +588,13 @@ export function instantiateVertical(input: VerticalFactoryInput): VerticalManife
   // 12f: Failsafe — BEACON health signal registration
   checklist.failsafeBackupReady = true;
 
-  // 12g: Seed engine is deferred — call seedVertical() after instantiation
+  // 12g: Theme injection — if we're on this vertical's subdomain, apply theme now
+  const currentVertical = getVerticalSubdomain();
+  if (currentVertical === input.subdomain) {
+    injectVerticalTheme(input.theme);
+  }
+
+  // 12h: Seed engine is deferred — call seedVertical() after instantiation
   // This is async and needs DB access, so we don't block instantiation
   checklist.showroomSeeded = false;
   checklist.junkyardSeeded = false;
