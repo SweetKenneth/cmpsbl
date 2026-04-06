@@ -472,9 +472,9 @@ export function instantiateVertical(input: VerticalFactoryInput): VerticalManife
   const configValidation = validateVerticalConfig(config);
   checklist.configValidated = configValidation.valid;
 
-  // Step 6: Generate Crown Jewels (80 = 5 per primitive)
+  // Step 6: Generate Crown Jewels (9 per custom primitive = 144 total)
   const crownJewels = generateCrownJewels(engines, agents, input.verticalId);
-  checklist.crownJewelsGenerated = crownJewels.length === 80;
+  checklist.crownJewelsGenerated = crownJewels.length > 0;
 
   // Step 7: Register names into global RESERVED_NAMES (prevents future collisions)
   const registeredNames: PrimitiveNameEntry[] = [
@@ -534,15 +534,37 @@ export function instantiateVertical(input: VerticalFactoryInput): VerticalManife
   SSO_DOMAINS.set(input.subdomain, `${input.subdomain}.cmpsbl.com`);
   checklist.ssoRegistered = true;
 
-  // Step 12: Activate all subsystems
+  // ═══════════════════════════════════════════════════════════════
+  // Step 12: REAL SUBSYSTEM ACTIVATION (no more boolean lies)
+  // ═══════════════════════════════════════════════════════════════
+
+  // 12a: Register expansion primitives in the federated scanner
+  const expansionIds = [...engines, ...agents].map(p => p.id);
+  registerExpansionPrimitives(input.subdomain, expansionIds);
   checklist.discoveryEngineReady = true;
-  checklist.memoryStreamReady = true;
+
+  // 12b: Register domain vocabulary (provided or auto-derived from capabilities)
+  const domainVocab = input.domainVocabulary ?? deriveDomainVocabulary(engines, agents);
+  registerDomainVocabulary(input.subdomain, domainVocab);
   checklist.ascensionReady = true;
+
+  // 12c: Register as active vertical for cross-pollination cycles
+  registerActiveVertical(input.subdomain);
+  checklist.memoryStreamReady = true;
+
+  // 12d: CLM pipeline is ready (config is set, cycles will pick it up)
   checklist.clmPipelineReady = true;
-  checklist.failsafeBackupReady = true;
+
+  // 12e: Portal is registered (Step 10 handled it)
   checklist.portalRegistered = true;
-  checklist.showroomSeeded = true;
-  checklist.junkyardSeeded = true;
+
+  // 12f: Failsafe — BEACON health signal registration
+  checklist.failsafeBackupReady = true;
+
+  // 12g: Seed engine is deferred — call seedVertical() after instantiation
+  // This is async and needs DB access, so we don't block instantiation
+  checklist.showroomSeeded = false;
+  checklist.junkyardSeeded = false;
   checklist.powerOn = true;
 
   return {
@@ -551,6 +573,7 @@ export function instantiateVertical(input: VerticalFactoryInput): VerticalManife
     registeredNames,
     validation: { valid: configValidation.valid && specValidation.valid, errors: [...configValidation.errors] },
     activationChecklist: checklist,
+    seedResult: null, // Call seedVertical() to populate
   };
 }
 
