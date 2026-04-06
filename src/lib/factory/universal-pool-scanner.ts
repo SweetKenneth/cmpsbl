@@ -14,6 +14,10 @@
  * The scanner uses extended collision time to deeply evaluate all
  * candidates before surfacing the final 40.
  * 
+ * The scanner supports dual-matrix mode: in Ascension/MemoryStream mode,
+ * primitives are boosted by gap-closure and wow-factor scores instead of
+ * static structural bonuses. In substrate mode, boot-order weighting applies.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
@@ -30,6 +34,10 @@ import {
   ULTIMATE_ALL_AGENTS,
   ULTIMATE_AFFINITY_SIGNALS,
 } from './verticals/ultimate';
+import {
+  computeAscensionBoost,
+  type AscensionMode,
+} from '../ascension/ascension-weights';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -864,6 +872,7 @@ function scoreCandidate(
   codeTokens: Set<string>,
   signalDocFreq: Record<string, number>,
   poolSize: number,
+  mode: AscensionMode = 'ascension',
 ): PoolCandidate {
   // Pass 1 — IDF-weighted signal hit density
   // Rare signals (appearing in few candidates) count more than common ones.
@@ -880,17 +889,12 @@ function scoreCandidate(
     }
   }
   const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
-  // With larger vocabularies (50 signals), the IDF ratio naturally trends lower.
-  // A 25% threshold balances discrimination with recognition — primitives need
-  // meaningful rare-signal coverage but aren't penalized for having broad vocabularies.
   const signalAffinity = Math.min(hitRatio / 0.25, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
   for (const cap of tagged.primitive.capabilities) {
-    // Compound Signal Preservation: check full capability first
     if (codeTokens.has(cap)) { capHits++; continue; }
-    // Fallback: check individual tokens for partial match
     const capTokens = cap.split('_');
     for (const t of capTokens) {
       if (codeTokens.has(t)) { capHits++; break; }
@@ -904,24 +908,34 @@ function scoreCandidate(
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
-  // Spine primitives (organs + layers) get a modest structural bonus
-  // that scales with signal density. With 50-signal vocabularies, 20%
-  // density (10/50 hits) earns the full bonus. This ensures spine
-  // primitives earn their rank through genuine signal relevance, not
-  // architectural privilege.
+  // ── DUAL-MATRIX BONUS ──────────────────────────────────────────────────
+  // In substrate mode: static structural bonus based on spine membership
+  // and signal density (boot-order priorities).
+  // In ascension/memorystream mode: dynamic boost from the Ascension Weight
+  // Matrix — scored by gap-closure (universal software weaknesses) and
+  // wow-factor (category-defining differentiation like DREAM).
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
   const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
 
-  // Raw hit density bonus — rewards primitives with high absolute hit counts
-  // regardless of IDF weighting. This prevents primitives like AUDIT (whose
-  // signals are common across many candidates) from being IDF-penalized when
-  // they genuinely match the code strongly.
+  let contextBonus: number;
+  if (mode === 'substrate') {
+    // Original structural bonus — spine gets up to 0.08 based on density
+    contextBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
+  } else {
+    // Ascension/MemoryStream: gap-closure + wow-factor driven boost (up to 0.15)
+    // Only awarded when signals actually match — prevents phantom boosts
+    const ascensionBoost = computeAscensionBoost(tagged.primitive.name, mode);
+    contextBonus = hits > 0 ? ascensionBoost * Math.min(signalDensity / 0.15, 1) : 0;
+  }
+
+  // Raw hit density bonus — rewards high absolute hit counts regardless
+  // of IDF weighting, preventing common-but-genuine matches from being
+  // penalized by the rarity filter.
   const rawDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
   const rawDensityBonus = Math.min(rawDensity / 0.30, 1) * 0.10;
 
-  // Composite scoring — signal-dominant, spine-aware
-  // IDF affinity (40%) + raw density (10%) + capability match (20%) + breadth (10%) + weight (5%) + structural (up to 8%)
+  // Composite scoring — signal-dominant, context-aware
+  // IDF affinity (40%) + raw density (10%) + capability (20%) + breadth (10%) + weight (5%) + context bonus (up to 15%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
     signalAffinity * 0.40 +
@@ -929,7 +943,7 @@ function scoreCandidate(
     capRatio * 0.20 +
     breadthScore * 0.10 +
     weightFactor * 0.05 +
-    structuralBonus;
+    contextBonus;
 
   return {
     primitive: tagged.primitive,
@@ -1019,10 +1033,18 @@ function selectOptimalPrimitives(
 
 /**
  * Run the Universal Pool Scanner against uploaded code.
- * Evaluates every primitive in the ecosystem and selects the 40
- * that produce the maximum compounding effect. No restrictions.
+ * Evaluates every primitive in the ecosystem and selects the optimal
+ * set that produces the maximum compounding effect.
+ *
+ * @param codeContent  Raw source code to analyze
+ * @param mode         Scoring context — 'ascension' uses gap-closure + wow-factor
+ *                     weights; 'substrate' uses boot-order structural bonuses.
+ *                     Defaults to 'ascension' for code augmentation runs.
  */
-export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
+export function runUniversalPoolScan(
+  codeContent: string,
+  mode: AscensionMode = 'ascension',
+): UniversalScanResult {
   const start = performance.now();
   const pool = getPool();
   const lowerCode = codeContent.toLowerCase();
@@ -1033,10 +1055,6 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   );
 
   // Compute signal IDF (Inverse Document Frequency) across the pool.
-  // Signals that appear in fewer candidates are more discriminating and
-  // should contribute more to scoring. This prevents common words like
-  // "pattern", "boundary", "status" from inflating irrelevant primitives
-  // while rewarding specific terms like "jailbreak", "zero_trust", "merkle".
   const signalDocFreq: Record<string, number> = {};
   for (const tagged of pool) {
     const seen = new Set<string>();
@@ -1049,8 +1067,8 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
   }
   const poolSize = pool.length;
 
-  // Score all candidates with IDF-weighted signal matching
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize));
+  // Score all candidates with mode-aware dual-matrix weighting
+  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode));
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
@@ -1104,3 +1122,11 @@ export function getUniversalPoolBreakdown(): Record<string, number> {
 export function resetUniversalPool(): void {
   _cachedPool = null;
 }
+
+// Re-export Ascension weight types for consumer convenience
+export type { AscensionMode } from '../ascension/ascension-weights';
+export {
+  getAscensionRankings,
+  getTopByDimension,
+  getAllAscensionWeights,
+} from '../ascension/ascension-weights';
