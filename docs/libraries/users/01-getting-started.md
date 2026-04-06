@@ -4,7 +4,7 @@
 
 ## 1. Create an Account
 
-Sign up at cmpsbl.ai. Free tier gives you immediate access to core primitives.
+Sign up at cmpsbl.com. Free tier gives you immediate access to core primitives.
 
 ## 2. Get Your API Key
 
