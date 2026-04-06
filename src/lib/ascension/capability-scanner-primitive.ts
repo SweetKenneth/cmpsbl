@@ -33,11 +33,10 @@ import {
 } from './feedback-loop';
 import {
   suggestForGaps,
-  getRegistryStats,
   type RegistrySuggestion,
 } from './ecosystem-registry';
 import { detectEcosystem, detectDrift, type DriftDetection } from './semantic-drift';
-import { fingerprintFile, getCachedScan, cacheScanResult, calibrateHighThreshold } from './scan-integrity';
+import { fingerprintFile, getCachedScan, cacheScanResult } from './scan-integrity';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
