@@ -211,7 +211,7 @@ export default function VerticalFactoryPage() {
         <Card className="border-primary/30">
           <CardHeader>
             <CardTitle className="text-sm flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-primary" />
               Manifest
             </CardTitle>
           </CardHeader>
