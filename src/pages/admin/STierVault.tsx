@@ -601,7 +601,7 @@ export default function STierVault() {
   const [discTierFilter, setDiscTierFilter] = useState<string | null>(null);
   const [discModuleFilter, setDiscModuleFilter] = useState<string | null>(null);
 
-  useEffect(() => { loadPromoted(); loadRegistryCount(); }, [loadRegistryCount]);
+  useEffect(() => { loadPromoted(); }, []);
 
   const loadPromoted = async () => {
     setLoadingPromoted(true);
