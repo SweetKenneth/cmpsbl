@@ -14,6 +14,7 @@ import {
   generateDecoyPipelineComments,
   FUNCTIONAL_TRANSFORMS,
 } from '../export/opacity-engine';
+import { generateInlinePrimitives } from './inline-primitive-generator';
 
 // ── Language Syntax Adapters ──
 
