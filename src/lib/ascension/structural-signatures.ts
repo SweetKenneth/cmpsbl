@@ -498,6 +498,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(delete_?user|purge|anonymize|pseudonymize|forget_?me|erasure)\s*\(/i,
       // data classification: classify, sensitivity, pii_fields
       /(classify|sensitivity|pii|phi|confidential)\s*[=:]/i,
+      // compliance decorators/annotations
+      /@(gdpr|hipaa|compliance|protected_data|data_protection)/i,
+      // data retention/expiry policies
+      /(retention_?policy|data_?retention|expire_?after|purge_?after|right_?to_?forget)\s*[=:\(]/i,
     ],
     coSignals: [
       'gdpr', 'hipaa', 'ccpa', 'compliance', 'consent', 'privacy',
