@@ -148,7 +148,7 @@ curl -X POST https://api.cmpsbl.com/api/v1/substrate \
 
 **Go example:**
 ```go
-resp, err := http.Post("https://api.cmpsbl.ai/api/v1/substrate",
+resp, err := http.Post("https://api.cmpsbl.com/api/v1/substrate",
     "application/json",
     strings.NewReader(`{"module":"brain","action":"query","payload":{"input":"Hello"}}`))
 ```
