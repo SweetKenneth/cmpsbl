@@ -259,6 +259,10 @@ class MeshAutoScheduler {
       const vaultResult = runVaultBridge();
       console.log(`[CDM/VaultBridge] Processed ${vaultResult.totalProcessed} vault entries → ${vaultResult.signalsInjected} signals, ${vaultResult.archetypeMappings} archetype mappings (${vaultResult.durationMs}ms)`);
 
+      // ── Reactor chain bridge: feed 126 memory chain templates as ground truth ──
+      const chainResult = runReactorChainBridge();
+      console.log(`[CDM/ChainBridge] Processed ${chainResult.templatesProcessed} reactor chains → ${chainResult.signalsInjected} signals, ${chainResult.archetypeMappings} archetype mappings, ${chainResult.uniquePrimitives} unique primitives (${chainResult.durationMs}ms)`);
+
       // ── Scanner pass: profile any framework files Ascension is processing ──
       const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
 
