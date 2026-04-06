@@ -27,7 +27,7 @@ import {
   recordImplementation,
   type RegistryEntry,
 } from './ecosystem-registry';
-import { runVaultBridge, runReactorChainBridge } from './vault-glossary-bridge';
+import { runVaultBridgeWithDB, runReactorChainBridge } from './vault-glossary-bridge';
 import type { VaultBridgeResult, ReactorChainBridgeResult } from './vault-glossary-bridge';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -210,7 +210,7 @@ export function recordFederatedMatch(
 export interface VerticalScannerInstance {
   verticalId: string;
   /** Prime this vertical's scanner with shared Spine intelligence + domain vocabulary */
-  prime(): VerticalPrimeResult;
+  prime(): Promise<VerticalPrimeResult>;
   /** Record a confirmed match (auto-routes Spine vs Expansion) */
   recordMatch(extraction: FeedbackExtraction): { spineSignals: number; expansionSignals: number };
   /** Get combined signals: shared Spine + vertical-local expansion */
@@ -250,12 +250,12 @@ export function createVerticalScanner(verticalId: string): VerticalScannerInstan
   const expansionSet = getExpansionPrimitives(verticalId);
   const domainVocab = VERTICAL_DOMAIN_VOCABULARY[verticalId] ?? {};
 
-  const prime = (): VerticalPrimeResult => {
+  const prime = async (): Promise<VerticalPrimeResult> => {
     const start = performance.now();
 
-    // Shared intelligence: vault bridge + reactor chain bridge
+    // Shared intelligence: vault bridge (with DB backlog) + reactor chain bridge
     // These prime the universal Spine glossary that all verticals share
-    const vaultResult: VaultBridgeResult = runVaultBridge();
+    const vaultResult: VaultBridgeResult = await runVaultBridgeWithDB();
     const chainResult: ReactorChainBridgeResult = runReactorChainBridge();
 
     return {
@@ -350,7 +350,7 @@ export interface CrossPollinationResult {
  * Call this during CDM cycles to ensure all verticals benefit
  * from the latest Spine discoveries.
  */
-export function runCrossPollinationCycle(): CrossPollinationResult {
+export async function runCrossPollinationCycle(): Promise<CrossPollinationResult> {
   const start = performance.now();
   let totalSpine = 0;
   let totalExpansion = 0;
@@ -358,7 +358,7 @@ export function runCrossPollinationCycle(): CrossPollinationResult {
 
   for (const verticalId of ACTIVE_VERTICAL_IDS) {
     const scanner = getVerticalScanner(verticalId);
-    const primeResult = scanner.prime();
+    const primeResult = await scanner.prime();
     const stats = scanner.getStats();
 
     perVertical[verticalId] = {
