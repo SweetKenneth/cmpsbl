@@ -23,6 +23,10 @@ import {
   type ShowroomDiscovery,
 } from '@/lib/factory/discovery-retirement';
 import {
+  SYNTHESIS_TEMPLATES,
+  type SynthesisTemplate,
+} from '@/lib/discovery/reactor';
+import {
   recordConfirmedMatch,
   getFeedbackStats,
   type FeedbackExtraction,
@@ -417,6 +421,115 @@ export function runVaultBridge(): VaultBridgeResult {
       avgQuality: registryStats.avgQuality,
     },
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §7 — REACTOR CHAIN BRIDGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export interface ReactorChainBridgeResult {
+  /** Total reactor templates processed */
+  templatesProcessed: number;
+  /** Signals injected into the feedback loop */
+  signalsInjected: number;
+  /** Implementations registered */
+  implementationsRegistered: number;
+  /** Archetype mappings discovered */
+  archetypeMappings: number;
+  /** Processing time */
+  durationMs: number;
+  /** Categories covered */
+  categoriesCovered: number;
+  /** Unique primitives seen across all chains */
+  uniquePrimitives: number;
+}
+
+/**
+ * Run the Reactor Chain Bridge.
+ * Processes all 126 SynthesisTemplates from the discovery reactor
+ * as ground-truth training data. Each template contains:
+ *   - namePattern + descriptionPattern → vocabulary signals
+ *   - modulePattern → primitive co-firing chains (behavioral ground truth)
+ *   - category → domain mapping
+ *   - rationale → intent-layer vocabulary
+ *
+ * This is higher-quality than vault entries because templates encode
+ * behavioral relationships between primitives, not just static classifications.
+ */
+export function runReactorChainBridge(): ReactorChainBridgeResult {
+  const start = performance.now();
+  let totalSignals = 0;
+  let totalImplementations = 0;
+  let totalMappings = 0;
+  const categories = new Set<string>();
+  const allPrimitives = new Set<string>();
+
+  for (const template of SYNTHESIS_TEMPLATES) {
+    categories.add(template.category);
+    for (const m of template.modulePattern) allPrimitives.add(m.toUpperCase());
+
+    // Each template acts as a confirmed ground-truth entry:
+    // name + description + rationale provide vocabulary,
+    // modulePattern provides primitive co-firing data
+    const combinedDescription = `${template.descriptionPattern}. ${template.rationale}`;
+    const primaryPrimitive = template.modulePattern[0] || 'SYSTEM';
+
+    const result = processVaultEntry(
+      template.namePattern,
+      combinedDescription,
+      primaryPrimitive,
+      computeTemplateCjpi(template),
+      template.modulePattern, // Primitive chain as "deps" — feeds vocabulary extraction
+      'reactor-chains',
+    );
+
+    totalSignals += result.signals;
+    totalImplementations += result.implementations;
+    totalMappings += result.mappings;
+
+    // Additionally, inject each non-primary primitive as a separate
+    // confirmed signal to capture co-firing patterns the primary misses
+    for (let i = 1; i < template.modulePattern.length; i++) {
+      const secondaryResult = processVaultEntry(
+        template.namePattern,
+        combinedDescription,
+        template.modulePattern[i],
+        computeTemplateCjpi(template),
+        template.modulePattern,
+        'reactor-chains',
+      );
+      totalSignals += secondaryResult.signals;
+      // Don't double-count implementations — only one per template
+      totalMappings += secondaryResult.mappings;
+    }
+  }
+
+  return {
+    templatesProcessed: SYNTHESIS_TEMPLATES.length,
+    signalsInjected: totalSignals,
+    implementationsRegistered: totalImplementations,
+    archetypeMappings: totalMappings,
+    durationMs: Math.round(performance.now() - start),
+    categoriesCovered: categories.size,
+    uniquePrimitives: allPrimitives.size,
+  };
+}
+
+/**
+ * Compute effective CJPI from a template's baseBreakdown.
+ * Uses the same weighted formula as the reactor.
+ */
+function computeTemplateCjpi(template: SynthesisTemplate): number {
+  const b = template.baseBreakdown;
+  // Weighted average matching reactor scoring
+  return Math.round(
+    b.strategicLeverage * 0.20 +
+    b.recursionPotential * 0.15 +
+    b.crossNodeImpact * 0.20 +
+    b.composability * 0.15 +
+    b.governanceInfluence * 0.15 +
+    b.moatSensitivity * 0.15
+  );
 }
 
 /**

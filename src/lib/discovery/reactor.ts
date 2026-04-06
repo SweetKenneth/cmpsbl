@@ -99,7 +99,7 @@ export interface SynthesisTemplate {
   rationale: string;
 }
 
-const SYNTHESIS_TEMPLATES: SynthesisTemplate[] = [
+export const SYNTHESIS_TEMPLATES: SynthesisTemplate[] = [
   // === COGNITIVE ===
   { namePattern: 'Adaptive Working Memory Controller', descriptionPattern: 'Dynamic working memory allocation based on task complexity and cognitive load estimation', category: 'cognitive', modulePattern: ['BRAIN', 'CORTEX', 'MEMORY'], entryPattern: 'working-memory-allocator', exitPattern: 'memory-controlled', errorStrategy: 'fallback', maxExecutionMs: 2000, baseBreakdown: { strategicLeverage: 90, recursionPotential: 88, crossNodeImpact: 85, composability: 88, governanceInfluence: 62, moatSensitivity: 90 }, discoveredBy: 'reactor', rationale: 'Working memory is the bottleneck for complex reasoning — adaptive allocation directly improves output quality' },
   { namePattern: 'Concept Drift Corrector', descriptionPattern: 'Detects and corrects semantic concept drift in long-running cognitive sessions', category: 'cognitive', modulePattern: ['BRAIN', 'VISION', 'CORTEX'], entryPattern: 'drift-monitor', exitPattern: 'drift-corrected', errorStrategy: 'retry', maxExecutionMs: 3000, baseBreakdown: { strategicLeverage: 88, recursionPotential: 82, crossNodeImpact: 80, composability: 82, governanceInfluence: 65, moatSensitivity: 88 }, discoveredBy: 'reactor', rationale: 'Concept drift degrades output quality over time — early detection prevents compounding errors' },

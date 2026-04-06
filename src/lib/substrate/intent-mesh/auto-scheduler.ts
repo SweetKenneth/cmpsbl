@@ -25,7 +25,7 @@ import { runReactor, type ReactorRunResult } from '@/lib/discovery/reactor';
 import { generateTemplateBatch } from '@/lib/discovery/template-generator';
 import { supabase } from '@/integrations/supabase/client';
 import { batchScanCapabilities, type CJPIDiscovery } from '@/lib/ascension/capability-scanner-primitive';
-import { runVaultBridge } from '@/lib/ascension/vault-glossary-bridge';
+import { runVaultBridge, runReactorChainBridge } from '@/lib/ascension/vault-glossary-bridge';
 import { addDiscovery } from '@/lib/factory/discovery-retirement';
 import { routeDiscovery } from '@/lib/factory/foundry-engine';
 import { migrateMetadata, type NodeMetadata } from '@/lib/ascension/types';
@@ -258,6 +258,10 @@ class MeshAutoScheduler {
       // ── Vault bridge: prime glossary from ecosystem vaults before scanning ──
       const vaultResult = runVaultBridge();
       console.log(`[CDM/VaultBridge] Processed ${vaultResult.totalProcessed} vault entries → ${vaultResult.signalsInjected} signals, ${vaultResult.archetypeMappings} archetype mappings (${vaultResult.durationMs}ms)`);
+
+      // ── Reactor chain bridge: feed 126 memory chain templates as ground truth ──
+      const chainResult = runReactorChainBridge();
+      console.log(`[CDM/ChainBridge] Processed ${chainResult.templatesProcessed} reactor chains → ${chainResult.signalsInjected} signals, ${chainResult.archetypeMappings} archetype mappings, ${chainResult.uniquePrimitives} unique primitives (${chainResult.durationMs}ms)`);
 
       // ── Scanner pass: profile any framework files Ascension is processing ──
       const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
