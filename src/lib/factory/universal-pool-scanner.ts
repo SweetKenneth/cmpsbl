@@ -14,6 +14,10 @@
  * The scanner uses extended collision time to deeply evaluate all
  * candidates before surfacing the final 40.
  * 
+ * The scanner supports dual-matrix mode: in Ascension/MemoryStream mode,
+ * primitives are boosted by gap-closure and wow-factor scores instead of
+ * static structural bonuses. In substrate mode, boot-order weighting applies.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
