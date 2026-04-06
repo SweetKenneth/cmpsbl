@@ -1007,7 +1007,7 @@ export default function STierVault() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">Crown Jewel Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {liveRegistryCount + promoted.length + aTierVault.totalArtifacts} total capabilities • {liveRegistryCount} S-Tier registry • {promoted.length} discovered • {aTierVault.totalArtifacts} A-Tier • 24 export languages
+                {liveCounts.total} total capabilities • {liveCounts.registry} registry • {liveCounts.showroom} showroom • {liveCounts.crownJewels} Crown Jewels • {liveCounts.aTier} A-Tier
               </p>
             </div>
           </div>
