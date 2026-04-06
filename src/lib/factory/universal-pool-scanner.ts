@@ -235,7 +235,9 @@ function scoreCandidate(
     }
   }
   const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
-  const signalAffinity = Math.min(hitRatio / 0.15, 1);
+  // 40% threshold creates meaningful spread — primitives need substantial
+  // rare-signal coverage to max out, preventing the flat plateau problem
+  const signalAffinity = Math.min(hitRatio / 0.40, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
