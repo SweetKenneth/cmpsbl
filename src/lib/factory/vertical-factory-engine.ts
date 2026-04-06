@@ -32,7 +32,8 @@ import {
   registerActiveVertical,
 } from '@/lib/ascension/federated-scanner';
 import { runGenesisSeed, inferCategories, type GenesisSeedResult } from './genesis-seed-engine';
-
+import { injectVerticalTheme } from './vertical-theme-injector';
+import { getVerticalSubdomain } from '@/config/domains';
 /* ─────────────────────────────────────────────────
    INPUT SPECIFICATION
    ───────────────────────────────────────────────── */
