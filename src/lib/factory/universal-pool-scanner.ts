@@ -141,10 +141,16 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   const tag = (prims: VerticalPrimitive[], source: string, signalMap?: Record<string, string[]>) => {
     for (const p of prims) {
       const explicitSignals = signalMap?.[p.id] ?? ULTIMATE_AFFINITY_SIGNALS[p.id];
+      // Merge explicit signals WITH derived signals so spine primitives
+      // benefit from both curated keywords and capability/description tokens
+      const derived = deriveSignals(p);
+      const merged = explicitSignals
+        ? [...new Set([...explicitSignals, ...derived])]
+        : derived;
       pool.push({
         primitive: p,
         sourceVertical: source,
-        signals: explicitSignals ?? deriveSignals(p),
+        signals: merged,
       });
     }
   };
@@ -207,14 +213,31 @@ const COLLISION_PASSES = 3;
  *   Pass 2: Capability breadth and composability potential
  *   Pass 3: Cross-candidate synergy estimation
  */
-function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: Set<string>): PoolCandidate {
-  // Pass 1 — Signal hit density
+function scoreCandidate(
+  tagged: TaggedPrimitive,
+  lowerCode: string,
+  codeTokens: Set<string>,
+  signalDocFreq: Record<string, number>,
+  poolSize: number,
+): PoolCandidate {
+  // Pass 1 — IDF-weighted signal hit density
+  // Rare signals (appearing in few candidates) count more than common ones.
   let hits = 0;
+  let idfWeightedHits = 0;
+  let idfWeightedTotal = 0;
   for (const signal of tagged.signals) {
-    if (lowerCode.includes(signal)) hits++;
+    const df = signalDocFreq[signal] ?? 1;
+    const idf = Math.log(poolSize / df); // higher = rarer = more valuable
+    idfWeightedTotal += idf;
+    if (lowerCode.includes(signal)) {
+      hits++;
+      idfWeightedHits += idf;
+    }
   }
-  const hitRatio = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const signalAffinity = Math.min(hitRatio / 0.15, 1); // 15% hit threshold — more sensitive to partial matches
+  const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
+  // 40% threshold creates meaningful spread — primitives need substantial
+  // rare-signal coverage to max out, preventing the flat plateau problem
+  const signalAffinity = Math.min(hitRatio / 0.40, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
@@ -235,20 +258,25 @@ function scoreCandidate(tagged: TaggedPrimitive, lowerCode: string, codeTokens: 
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
-  // Spine primitives (organs + layers) get a structural bonus ONLY when
-  // they have at least one actual signal hit. This prevents irrelevant
-  // spine primitives from crowding out expansion matches via a free ride.
+  // Spine primitives (organs + layers) get a modest structural bonus
+  // that scales with signal density. The bonus is capped at 0.08 (not 0.15)
+  // and requires 40%+ signal density for full value. This ensures spine
+  // primitives earn their rank through genuine signal relevance, not
+  // architectural privilege.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
-  const structuralBonus = (isSpine && hits > 0) ? 0.15 : 0;
+  const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
+  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.40, 1) : 0;
 
-  // Composite scoring — spine-aware, signal-gated
-  // Signal affinity (35%) + capability match (20%) + breadth (10%) + weight (15%) + structural (20%)
+  // Composite scoring — signal-dominant, spine-aware
+  // Signal affinity (45%) + capability match (25%) + breadth (10%) + weight (5%) + structural (15%)
+  // Signal affinity is the primary discriminator — weight is intentionally low
+  // to prevent high-weight but low-relevance primitives from consuming slots.
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.35 +
-    capRatio * 0.20 +
+    signalAffinity * 0.45 +
+    capRatio * 0.25 +
     breadthScore * 0.10 +
-    weightFactor * 0.15 +
+    weightFactor * 0.05 +
     structuralBonus;
 
   return {
@@ -295,7 +323,7 @@ function selectOptimalPrimitives(
   maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
-    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits > 0)
+    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 2)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   const selected: PoolCandidate[] = [];
@@ -349,8 +377,25 @@ export function runUniversalPoolScan(codeContent: string): UniversalScanResult {
     lowerCode.split(/\W+/).filter(w => w.length > 2)
   );
 
-  // Score all candidates with extended collision passes
-  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens));
+  // Compute signal IDF (Inverse Document Frequency) across the pool.
+  // Signals that appear in fewer candidates are more discriminating and
+  // should contribute more to scoring. This prevents common words like
+  // "pattern", "boundary", "status" from inflating irrelevant primitives
+  // while rewarding specific terms like "jailbreak", "zero_trust", "merkle".
+  const signalDocFreq: Record<string, number> = {};
+  for (const tagged of pool) {
+    const seen = new Set<string>();
+    for (const signal of tagged.signals) {
+      if (!seen.has(signal)) {
+        signalDocFreq[signal] = (signalDocFreq[signal] ?? 0) + 1;
+        seen.add(signal);
+      }
+    }
+  }
+  const poolSize = pool.length;
+
+  // Score all candidates with IDF-weighted signal matching
+  const scored = pool.map(tagged => scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize));
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
   const selected = selectOptimalPrimitives(scored);
