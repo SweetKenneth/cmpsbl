@@ -231,17 +231,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §7 — VAULT & MEMORY STREAM POOL
-// ═══════════════════════════════════════════════════════════════
-
-const ULTIMATE_VAULT = new Map<string, UltimateDiscovery>();
-const ULTIMATE_MEMORY_STREAM_POOL: UltimateDiscovery[] = [];
-
-export function getUltimateVault(): UltimateDiscovery[] { return Array.from(ULTIMATE_VAULT.values()); }
-export function getUltimateVaultCount(): number { return ULTIMATE_VAULT.size; }
-export function getUltimateMemoryStreamPool(): UltimateDiscovery[] { return [...ULTIMATE_MEMORY_STREAM_POOL]; }
-export function getUltimateMemoryStreamCount(): number { return ULTIMATE_MEMORY_STREAM_POOL.length; }
+// §7 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §8 — MAIN SEED ENGINE (GENESIS)
