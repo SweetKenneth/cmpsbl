@@ -23,6 +23,7 @@ const GovernorNodeDashboard = lazy(() => import("@/pages/admin/GovernorNodeDashb
 const EvolutionCycleReport = lazy(() => import("@/components/evolution/EvolutionCycleReport"));
 const AscensionObservatory = lazy(() => import("@/pages/admin/AscensionObservatory"));
 const ProductCompilerDashboard = lazy(() => import("@/pages/admin/ProductCompilerDashboard"));
+const VerticalFactoryPage = lazy(() => import("@/pages/admin/VerticalFactoryPage"));
 
 export const adminRoutes = (
   <>
