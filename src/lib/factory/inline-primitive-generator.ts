@@ -1023,6 +1023,47 @@ ${methods}
 }`;
 }
 
+function generateDart(name: string, spec: PrimitiveSpec): string {
+  const fields = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    const ty = v === 'map' ? 'Map<String, dynamic>' : v === 'list' ? 'List<dynamic>' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'String' : 'int';
+    const def = v === 'map' ? '{}' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? "'${v}'" : v;
+    return { k, ty, def };
+  });
+  const fieldDecls = fields.map(f => `  static ${f.ty} _${f.k} = ${f.def};`).join('\n');
+  const methods = spec.methods.map(m => {
+    const dartName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+    return `  /// ${m.description}\n  static ${name} ${dartName}() => ${name}();`;
+  }).join('\n\n');
+  return `/// CMPSBL® Convex Core™ — ${spec.description}
+class ${name} {
+${fieldDecls}
+
+${methods}
+}`;
+}
+
+function generateFSharp(name: string, spec: PrimitiveSpec): string {
+  const fields = spec.stateFields.map(f => {
+    const [k, v] = f.split(':');
+    const ty = v === 'map' ? 'Map<string, obj>' : v === 'list' ? 'obj list' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'string' : 'int';
+    const def = v === 'map' ? 'Map.empty' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `"${v}"` : v;
+    return { k, ty, def };
+  });
+  const stateRecord = fields.length > 0
+    ? `type ${name}State =\n    { ${fields.map(f => `${f.k}: ${f.ty}`).join('; ')} }\n\nlet defaultState = { ${fields.map(f => `${f.k} = ${f.def}`).join('; ')} }\n`
+    : `type ${name}State = { config: Map<string, obj> }\n\nlet defaultState = { config = Map.empty }\n`;
+  const methods = spec.methods.map(m => {
+    const fsName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+    return `/// ${m.description}\nlet ${fsName} (state: ${name}State) =\n    state`;
+  }).join('\n\n');
+  return `// CMPSBL® Convex Core™ — ${spec.description}
+module ${name} =
+
+${stateRecord}
+${methods}`;
+}
+
 function generateCpp(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
     const [k, v] = f.split(':');
