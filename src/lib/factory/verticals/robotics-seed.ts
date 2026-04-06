@@ -169,17 +169,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §6 — VAULT & MEMORY STREAM POOL
-// ═══════════════════════════════════════════════════════════════
-
-const ROBOTICS_VAULT = new Map<string, RoboticsDiscovery>();
-const ROBOTICS_MEMORY_STREAM_POOL: RoboticsDiscovery[] = [];
-
-export function getRoboticsVault(): RoboticsDiscovery[] { return Array.from(ROBOTICS_VAULT.values()); }
-export function getRoboticsVaultCount(): number { return ROBOTICS_VAULT.size; }
-export function getRoboticsMemoryStreamPool(): RoboticsDiscovery[] { return [...ROBOTICS_MEMORY_STREAM_POOL]; }
-export function getRoboticsMemoryStreamCount(): number { return ROBOTICS_MEMORY_STREAM_POOL.length; }
+// §6 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §7 — MAIN SEED ENGINE (GENESIS)
