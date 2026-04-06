@@ -265,14 +265,16 @@ function scoreCandidate(
   const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
   const structuralBonus = (isSpine && hits > 0) ? 0.15 * Math.min(signalDensity / 0.25, 1) : 0;
 
-  // Composite scoring — spine-aware, density-scaled
-  // Signal affinity (35%) + capability match (20%) + breadth (10%) + weight (15%) + structural (20%)
+  // Composite scoring — signal-dominant, spine-aware
+  // Signal affinity (45%) + capability match (25%) + breadth (10%) + weight (5%) + structural (15%)
+  // Signal affinity is the primary discriminator — weight is intentionally low
+  // to prevent high-weight but low-relevance primitives from consuming slots.
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.35 +
-    capRatio * 0.20 +
+    signalAffinity * 0.45 +
+    capRatio * 0.25 +
     breadthScore * 0.10 +
-    weightFactor * 0.15 +
+    weightFactor * 0.05 +
     structuralBonus;
 
   return {
