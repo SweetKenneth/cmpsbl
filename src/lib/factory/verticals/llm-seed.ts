@@ -235,4 +235,4 @@ export function getLlmSeedSummary() {
   if (!_seedResult) return { total: 0, vault: 0, showroom: 0, junkyard: 0, memoryStream: 0 };
   return { total: _seedResult.totalDiscoveries, vault: _seedResult.vaultCount, showroom: _seedResult.showroomCount, junkyard: _seedResult.junkyardCount, memoryStream: _seedResult.memoryStreamCount };
 }
-export function resetLlmSeed(): void { _seedResult = null; LLM_VAULT.clear(); LLM_MEMORY_STREAM_POOL.length = 0; }
+export function resetLlmSeed(): void { _seedResult = null; }
