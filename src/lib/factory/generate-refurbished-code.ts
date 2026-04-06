@@ -2601,30 +2601,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     fileExtension: '.hs',
   },
   // ── Missing Language Adapters (gap fill) ──
-  'Objective-C': {
-    comment: (t) => `// ${t}`,
-    blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Objective-C'),
-    constDecl: (name, val) => `static NSString *const ${name} = @"${val}";`,
-    transformGuard: objcGuard,
-    fileExtension: '.m',
-  },
-  Groovy: {
-    comment: (t) => `// ${t}`,
-    blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Groovy'),
-    constDecl: (name, val) => `def ${name} = ${val}`,
-    transformGuard: namedArgGuard,
-    fileExtension: '.groovy',
-  },
-  Crystal: {
-    comment: (t) => `# ${t}`,
-    blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
-    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Crystal'),
-    constDecl: (name, val) => `${name.toUpperCase()} = ${val}`,
-    transformGuard: rubyGuard,
-    fileExtension: '.cr',
-  },
   SPICE: {
     comment: (t) => `* ${t}`,
     blockComment: (lines) => lines.map(l => `* ${l}`).join('\n'),
