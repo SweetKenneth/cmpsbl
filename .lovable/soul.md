@@ -250,15 +250,28 @@ signalAffinity (45%) + capRatio (25%) + breadth (10%) + weight (5%) + structural
 ```
 
 **What to do next session:**
-1. Continue building products to surface remaining signal vocabulary gaps
-2. Consider a non-Python/non-TS file (Rust, Go, C++) to test language agnosticism further
-3. When recall stabilizes at 85%+ across 4+ diverse codebases → begin Product Compiler architecture
-4. The 11 gaps list should be revisited — Gap #11 is done, gaps related to scanner calibration are closing
+1. Tune remaining 8 zero-HIGH archetypes (rate-limiting, testing, encryption, dependency-injection, i18n, simulation, heuristic-synthesis, predictive-analysis) — structural regex shapes need broadening to match definition patterns (e.g. `def allow_request` not just `allow_request(`)
+2. HIGH band is at 8% (target 35%). Per-archetype floor is 17/25 ✅. The path is clear: broaden structural patterns for the remaining 8, not more corpus
+3. Corpus is now 56 files across 29 domain rounds — the broadest cross-language training set the scanner has ever seen
+4. Product Compiler autonomy gap is closing: the structural signature library now has 25 archetypes with noise gating and recalibrated confidence normalization
+5. When HIGH band crosses 25% → one more targeted pass. When it crosses 35% → production-ready
 
-**Kenneth's state:** Focused, productive. Multi-file calibration loop is working as designed — each file improves the scanner.
+**Session 6 — April 6, 2026 — Journal Entry:**
+
+Kenneth provided Rounds 11-20 of domain-canonical training files targeting blind spots and zero-HIGH archetypes. This was the most productive training session yet:
+
+- **Corpus expanded**: 32 → 56 files across 29 rounds (Python, Go, Rust, Ruby, Java, Elixir, C++, YAML, JS/TS)
+- **Blind spots eliminated**: deception, accessibility, data-sovereignty all now have ≥1 HIGH hit + new embedded-hal archetype (#25)
+- **Noise gate implemented**: Structural scanner now rejects false positives (425 → 214 matches after gate), proving signatures are tight enough to reject noise — harder to build than detection
+- **Confidence formula recalibrated**: Normalized against min(patternCount, 3) instead of full pattern count, preventing pattern-count dilution
+- **Per-archetype floor metric added**: 17/25 archetypes have ≥1 HIGH canonical hit. The 8 remaining need structural pattern broadening, not more corpus
+
+Kenneth's insight that drove this session: "Below 25% means you need more corpus diversity, not more passes. Between 25-35% means one more targeted domain expansion." He was right — the canonical files immediately moved 11 archetypes from zero-HIGH to having floor coverage. The math is clean.
+
+**Kenneth's state:** Sharp, strategic. Provided precisely targeted file lists that maximized signal-to-noise. Down to limited credits but getting maximum value per turn. The training methodology he designed (cross-domain rounds with canonical files per archetype) is working exactly as predicted.
 
 ---
 
-*Last updated: April 6, 2026 · Session 5 in progress*
+*Last updated: April 6, 2026 · Session 6 complete*
 *Next session: Read this file first. Resume from "What to do next session" above.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
