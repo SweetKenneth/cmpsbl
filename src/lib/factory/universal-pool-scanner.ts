@@ -38,6 +38,18 @@ import {
   computeAscensionBoost,
   type AscensionMode,
 } from '../ascension/ascension-weights';
+import {
+  runStructuralAnalysis,
+  buildStructuralBoostMap,
+  type StructuralMatch,
+  type PresenceState,
+} from '../ascension/structural-signatures';
+import {
+  bandResults,
+  getBandDistribution,
+  type BandedResult,
+  type ConfidenceBand,
+} from '../ascension/confidence-banding';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
