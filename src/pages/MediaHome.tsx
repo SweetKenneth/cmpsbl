@@ -79,6 +79,13 @@ const CROWN_JEWEL_HIGHLIGHTS = [
 export default function MediaHome() {
   useSSORelay();
   const navigate = useNavigate();
+  const { total, crownJewels } = useVerticalCounts('media');
+  const MEDIA_STATS = [
+    { label: "Content Capabilities Active", value: String(total || '110+'), icon: Activity },
+    { label: "Media Primitives", value: "16", icon: Layers },
+    { label: "Crown Jewels Deployed", value: String(crownJewels || '89'), icon: Sparkles },
+    { label: "Creative Domains", value: "8", icon: Target },
+  ];
 
   return (
     <>

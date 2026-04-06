@@ -57,6 +57,13 @@ const CROWN_JEWEL_HIGHLIGHTS = [
 export default function QuantumHome() {
   useSSORelay();
   const navigate = useNavigate();
+  const { total, crownJewels } = useVerticalCounts('quantum');
+  const Q_STATS = [
+    { label: "Quantum Algorithms Loaded", value: "860", icon: Atom },
+    { label: "Entanglement Channels", value: "16", icon: Orbit },
+    { label: "Custom Primitives", value: "16", icon: CircuitBoard },
+    { label: "Capabilities Active", value: String(total || '85+'), icon: Layers },
+  ];
 
   return (
     <>

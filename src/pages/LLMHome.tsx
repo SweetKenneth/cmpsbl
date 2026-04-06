@@ -80,6 +80,13 @@ const CROWN_JEWEL_HIGHLIGHTS = [
 export default function LLMHome() {
   useSSORelay();
   const navigate = useNavigate();
+  const { total, crownJewels } = useVerticalCounts('llm');
+  const LLM_STATS = [
+    { label: "OWASP LLM Risks Covered", value: "10/10", icon: Shield },
+    { label: "LLM Primitives Active", value: "16", icon: Layers },
+    { label: "Crown Jewels Deployed", value: String(crownJewels || '80'), icon: Sparkles },
+    { label: "Capabilities Online", value: String(total || '100+'), icon: Activity },
+  ];
 
   return (
     <>

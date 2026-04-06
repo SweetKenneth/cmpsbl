@@ -79,6 +79,13 @@ const CROWN_JEWEL_HIGHLIGHTS = [
 export default function AgencyHome() {
   useSSORelay();
   const navigate = useNavigate();
+  const { total, crownJewels } = useVerticalCounts('agency');
+  const AGENCY_STATS = [
+    { label: "Agent Capabilities Active", value: String(total || '100+'), icon: Activity },
+    { label: "Agency Primitives", value: "16", icon: Layers },
+    { label: "Crown Jewels Deployed", value: String(crownJewels || '80'), icon: Sparkles },
+    { label: "Core Competencies", value: "8", icon: Target },
+  ];
 
   return (
     <>
