@@ -193,10 +193,10 @@ export default function VerticalFactoryPage() {
             <div className="space-y-1 font-mono text-xs max-h-80 overflow-y-auto">
               {logs.map((log, i) => (
                 <div key={i} className="flex items-start gap-2">
-                  {log.status === 'success' && <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mt-0.5 shrink-0" />}
+                  {log.status === 'success' && <CheckCircle2 className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />}
                   {log.status === 'error' && <XCircle className="h-3.5 w-3.5 text-destructive mt-0.5 shrink-0" />}
                   {log.status === 'info' && <Loader2 className="h-3.5 w-3.5 text-muted-foreground mt-0.5 shrink-0 animate-spin" />}
-                  <span className={log.status === 'error' ? 'text-destructive' : log.status === 'success' ? 'text-green-500' : 'text-muted-foreground'}>
+                  <span className={log.status === 'error' ? 'text-destructive' : log.status === 'success' ? 'text-primary' : 'text-muted-foreground'}>
                     {log.message}
                   </span>
                 </div>
