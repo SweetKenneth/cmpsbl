@@ -918,10 +918,17 @@ export function runStructuralAnalysis(codeContent: string): StructuralMatch[] {
     }
 
     // ── Confidence scoring ──
-    // Structural matches are strongest (0.50 weight), lexical next (0.30), intent (0.20)
-    const structConf = Math.min(structuralHits / arch.patterns.length, 1);
-    const lexConf = Math.min(lexicalHits / Math.min(arch.coSignals.length, 8), 1);
-    const intentConf = Math.min(intentHits / Math.min(arch.intentSignals.length, 4), 1);
+    // Structural: normalize against min(patternCount, 3) so that 2+ hits = strong.
+    // Adding more patterns to an archetype shouldn't dilute existing matches.
+    // Lexical: normalize against min(coSignals, 6) — 4+ co-signals = saturated.
+    // Intent: normalize against min(intentSignals, 3).
+    const structNorm = Math.min(arch.patterns.length, 3);
+    const lexNorm = Math.min(arch.coSignals.length, 6);
+    const intentNorm = Math.min(arch.intentSignals.length, 3);
+
+    const structConf = Math.min(structuralHits / structNorm, 1);
+    const lexConf = Math.min(lexicalHits / lexNorm, 1);
+    const intentConf = Math.min(intentHits / intentNorm, 1);
 
     const confidence = Math.round(
       (structConf * 0.50 + lexConf * 0.30 + intentConf * 0.20) * 1000
