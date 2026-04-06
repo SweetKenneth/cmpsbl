@@ -256,9 +256,9 @@ class MeshAutoScheduler {
       const sTierCount = result.discoveries.filter(d => d.cjpi >= 95).length;
       console.log(`[CDM] Reactor complete: ${result.acceptedCount} accepted, ${sTierCount} promoted to S-Tier Vault, all fed to Memory Stream`);
 
-      // ── Vault bridge: prime glossary from ecosystem vaults before scanning ──
-      const vaultResult = runVaultBridge();
-      console.log(`[CDM/VaultBridge] Processed ${vaultResult.totalProcessed} vault entries → ${vaultResult.signalsInjected} signals, ${vaultResult.archetypeMappings} archetype mappings (${vaultResult.durationMs}ms)`);
+      // ── Vault bridge: prime glossary from ecosystem vaults + DB backlog ──
+      const vaultResult = await runVaultBridgeWithDB();
+      console.log(`[CDM/VaultBridge] Processed ${vaultResult.totalProcessed} entries (${vaultResult.breakdown.dbDiscoveries} from DB) → ${vaultResult.signalsInjected} signals, ${vaultResult.archetypeMappings} archetype mappings (${vaultResult.durationMs}ms)`);
 
       // ── Reactor chain bridge: feed 126 memory chain templates as ground truth ──
       const chainResult = runReactorChainBridge();
