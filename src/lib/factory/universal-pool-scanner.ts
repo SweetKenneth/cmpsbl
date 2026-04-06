@@ -794,8 +794,8 @@ function assembleUniversalPool(): TaggedPrimitive[] {
       const merged = explicitSignals
         ? [...new Set([...explicitSignals, ...derived])]
         : derived;
-      // Cap at 30 signals — enough for broad matching without diluting density
-      const capped = merged.length > 30 ? merged.slice(0, 30) : merged;
+      // Cap at 50 signals — enough for broad matching without diluting density
+      const capped = merged.length > 50 ? merged.slice(0, 50) : merged;
       pool.push({ primitive: p, sourceVertical: source, signals: capped });
     }
   };
