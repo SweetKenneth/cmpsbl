@@ -29,6 +29,7 @@ import { runVaultBridgeWithDB, runReactorChainBridge } from '@/lib/ascension/vau
 import { runCrossPollinationCycle } from '@/lib/ascension/federated-scanner';
 import { addDiscovery } from '@/lib/factory/discovery-retirement';
 import { routeDiscovery } from '@/lib/factory/foundry-engine';
+import { recomputeMemoryStreamWeights } from '@/lib/factory/memory-stream-rarity';
 import { migrateMetadata, type NodeMetadata } from '@/lib/ascension/types';
 
 // ─── Types ───
