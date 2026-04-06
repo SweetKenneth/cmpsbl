@@ -109,7 +109,7 @@ export interface VerticalFactoryInput {
 export interface VerticalManifest {
   /** Fully assembled substrate config */
   config: VerticalSubstrateConfig;
-  /** 80 Crown Jewel stubs (5 per custom primitive) */
+  /** Crown Jewel entries (9 per custom primitive = 144 total) */
   crownJewels: STierEntry[];
   /** Names registered in the global registry */
   registeredNames: PrimitiveNameEntry[];
@@ -117,6 +117,8 @@ export interface VerticalManifest {
   validation: { valid: boolean; errors: string[] };
   /** Checklist of what was activated */
   activationChecklist: VerticalActivationChecklist;
+  /** Seed engine result (null until seedVertical is called) */
+  seedResult: GenesisSeedResult | null;
 }
 
 export interface VerticalActivationChecklist {
