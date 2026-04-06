@@ -880,9 +880,10 @@ function scoreCandidate(
     }
   }
   const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
-  // 40% threshold creates meaningful spread — primitives need substantial
-  // rare-signal coverage to max out, preventing the flat plateau problem
-  const signalAffinity = Math.min(hitRatio / 0.40, 1);
+  // With larger vocabularies (50 signals), the IDF ratio naturally trends lower.
+  // A 25% threshold balances discrimination with recognition — primitives need
+  // meaningful rare-signal coverage but aren't penalized for having broad vocabularies.
+  const signalAffinity = Math.min(hitRatio / 0.25, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
@@ -904,13 +905,13 @@ function scoreCandidate(
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
   // Spine primitives (organs + layers) get a modest structural bonus
-  // that scales with signal density. The bonus is capped at 0.08 (not 0.15)
-  // and requires 40%+ signal density for full value. This ensures spine
+  // that scales with signal density. With 50-signal vocabularies, 20%
+  // density (10/50 hits) earns the full bonus. This ensures spine
   // primitives earn their rank through genuine signal relevance, not
   // architectural privilege.
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
   const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.40, 1) : 0;
+  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
 
   // Composite scoring — signal-dominant, spine-aware
   // Signal affinity (45%) + capability match (25%) + breadth (10%) + weight (5%) + structural (15%)
