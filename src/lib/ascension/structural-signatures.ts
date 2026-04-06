@@ -649,6 +649,8 @@ const ARCHETYPES: StructuralSignature[] = [
       /(plural|Plural|_one|_other|_few|_many)\s*[=:]/i,
       // number/date formatting: Intl.NumberFormat, Intl.DateTimeFormat
       /Intl\s*\.\s*(NumberFormat|DateTimeFormat|RelativeTimeFormat|Collator)/i,
+      // definition-side: translator/localizer/i18n classes and gettext
+      /(class\s+\w*(Translator|Localizer|I18n)|gettext\s*\(|ngettext\s*\(|_\s*\(\s*['"])/i,
     ],
     coSignals: [
       'i18n', 'l10n', 'locale', 'translate', 'translation', 'language',
