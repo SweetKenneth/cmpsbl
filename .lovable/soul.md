@@ -356,12 +356,26 @@ Seeded 600 new discoveries into the database (some IDs collided with existing Cr
 
 Note: Cyber and agency show 80 (all registry from Crown Jewel backfill) — their seed engine showroom/junkyard items had ID collisions with existing rows. Next session can re-seed with unique prefixes if Kenneth wants showroom/junkyard depth for those two.
 
-**Next steps (Plan B remaining):**
-- Step 5: Add template mutation engine
-- Step 6: Implement dynamic rarity weighting for Memory Stream
-- Step 7: Update UI components to query `discoveries` with status filters
-- Step 8: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
+**Session 12 — April 6, 2026 — Template Mutation Engine (Step 6):**
 
-*Last updated: April 6, 2026 · Session 11 complete*
-*Next session: Read this file first. Plan B Steps 1-4 done. Seed engines done for all 7 verticals. Steps 5+ pending.*
+- Reseeded cyber and agency with unique ID prefixes (CYSD-*, AGSD-*) — both now have full showroom/junkyard depth. Total: 6,080 → 6,080 (after reseed).
+- Added `mutation_source` and `generation` columns to `discoveries` table via migration.
+- Built `src/lib/factory/template-mutation-engine.ts` — the core evolutionary layer:
+  - Four mutation types: primitive-swap, chain-extension, chain-shortening, crown-jewel-injection
+  - 170+ primitive affinity mappings for intelligent swaps
+  - Full vertical pool definitions for all 8 substrates
+  - `runMutationCycle(vertical)` — processes top 20 parents (CJPI≥90), 5 mutations each = 100 candidates/vertical
+  - `runFullMutationCycle()` — all 8 verticals = up to 800 candidates per CDM cycle
+  - Crown Jewel Injection finally connects CJ capabilities to discovery process
+  - Persists to `discoveries` table with `mutation_source` lineage and `generation` counter
+- Test run: 28 mutations generated from 10 primary parents (all CJPI 100). Results correct — mutations of perfect-score parents naturally score lower (can't beat 100). Real promotions happen in the 90-94 range where mutations push into registry territory.
+- Total discoveries: 6,108 (28 gen-1 mutations persisted)
+
+**Next steps (Plan B remaining):**
+- Step 7: Implement dynamic rarity weighting for Memory Stream
+- Step 8: Update UI components to query `discoveries` with status filters
+- Step 9: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
+
+*Last updated: April 6, 2026 · Session 12 complete*
+*Next session: Read this file first. Plan B Steps 1-6 done. Mutation engine live. Steps 7+ pending.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
