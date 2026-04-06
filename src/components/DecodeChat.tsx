@@ -466,7 +466,7 @@ export function DecodeChat() {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 font-inter">
-        {messages.map((msg, idx) => (
+        {messages.filter(msg => !msg.content.startsWith('[DECODE SESSION CONTEXT')).map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${
               msg.role === 'user'
