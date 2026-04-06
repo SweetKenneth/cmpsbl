@@ -178,7 +178,6 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
         match.lexicalHits >= 2,
         match.intentHits > 0,
         match.confidence,
-        threshold
       );
       if (band === 'high' || band === 'medium') {
         const extraction = extractContext(
