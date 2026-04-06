@@ -112,35 +112,45 @@ Vault (1,600+ entries) ──▶ Feedback Loop ──▶ Glossary (1,200+ terms)
                                 │
 Reactor Chains (126) ──────────┘
                                 │
+DB Discoveries (4,000+) ───────┘
+                                │
 New Scan Results ──────────────┘
 ```
 
-#### Three learning sources:
+#### Four learning sources:
 
-**Source 1 — Vault Bridge** (`vault-glossary-bridge.ts`):
-- Processes the **entire vault** every cycle: S-Tier, A-Tier, Showroom, Junkyard, Retired
-- Currently ~1,600+ Crown Jewels + all Showroom/Junkyard/Retired discoveries
-- Each entry is governor-curated and CJPI-scored — the highest-quality training data
+**Source 1 — Vault Bridge: Static Registries** (`vault-glossary-bridge.ts`):
+- Processes S-Tier (1,008), A-Tier (400), and in-memory Showroom/Junkyard/Retired entries
+- Each entry is governor-curated and CJPI-scored — high-quality training data
 - Extracts names, descriptions, and primitive associations as confirmed signals
 - Maps vocabulary to 25 scanner archetypes (rate-limiting, error-recovery, etc.)
-- **This IS how the backlog gets processed** — every existing discovery in the vault is fed to the scanner as ground truth every 8 hours
 
-**Source 2 — Reactor Chain Bridge** (`vault-glossary-bridge.ts`):
+**Source 2 — Vault Bridge: DB Discovery Backlog** (NEW — `runVaultBridgeWithDB()`):
+- Fetches ALL discoveries from the `discoveries` database table (currently 4,154 rows)
+- These are the discoveries from the **Discovered tab** — the $4.49B backlog you ran manually
+- Paginated fetch (500 per page) to bypass the 1,000-row default limit
+- Processes every row through the same term extraction → archetype mapping → feedback injection pipeline
+- Includes co-firing pattern learning for multi-primitive chains (up to 6 deep)
+- **This is the fix**: previously, these DB discoveries were never being ingested by the scanner
+
+**Source 3 — Reactor Chain Bridge** (`vault-glossary-bridge.ts`):
 - Processes all 126 `SynthesisTemplates` from the Reactor
 - Teaches behavioral co-firing patterns (e.g., DEFENSE → BRAIN → GOVERNANCE always appear together)
 - Injects signals for every primitive in a chain, not just the primary
 - Derives confidence scores from template breakdown weights
 
-**Source 3 — Live scan results**:
+**Source 4 — Live scan results**:
 - Every scan result feeds back into the feedback loop
 - Confirmed matches strengthen signal confidence (EMA smoothing)
 - The scanner literally gets smarter with each cycle
 
-### Answering your question directly:
+### The backlog question — resolved:
 
-> "What about the 3,000+ discovered memory chains?"
+> "What about the 4,000+ discoveries in the Discovered tab?"
 
-**Yes, they're already being processed.** The Vault Bridge iterates all `getAvailableDiscoveries()`, `getJunkyardDiscoveries()`, and `getRetiredDiscoveries()` every cycle. If a discovery exists in the ledger, it's being used as scanner training data. The 126 Reactor chain templates cover the behavioral patterns. The scanner doesn't need to "catch up" — it ingests the full backlog every 8 hours.
+**Previously**: The Vault Bridge only processed in-memory catalog entries (populated by vertical seed files at boot time) and static Crown Jewel registries. The 4,154 discoveries stored in the `discoveries` database table — including everything you ran manually — were **never** being fed to the scanner. The code comment literally said "In-memory for now; production: DB-backed" but the DB wire was never completed.
+
+**Now**: `runVaultBridgeWithDB()` fetches all rows from the `discoveries` table in paginated batches and processes each one through the full learning pipeline. Every CDM cycle (8hr) and every cross-pollination cycle (4hr) now ingests the complete backlog automatically.
 
 ---
 
