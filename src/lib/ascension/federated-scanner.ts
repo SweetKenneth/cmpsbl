@@ -394,7 +394,7 @@ export async function runCrossPollinationCycle(): Promise<CrossPollinationResult
   let totalExpansion = 0;
   const perVertical: Record<string, { spine: number; expansion: number; primeMs: number }> = {};
 
-  for (const verticalId of ACTIVE_VERTICAL_IDS) {
+  for (const verticalId of getAllActiveVerticalIds()) {
     const scanner = getVerticalScanner(verticalId);
     const primeResult = await scanner.prime();
     const stats = scanner.getStats();
