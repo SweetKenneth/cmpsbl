@@ -723,7 +723,22 @@ export default function STierVault() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { toast.error('Authentication required'); return; }
 
-      // Log the promotion as an audit event
+      // 1. Update the unified discoveries table — this is the source of truth
+      const isCrownJewel = d.cjpi >= 95;
+      await supabase
+        .from('discoveries')
+        .update({
+          status: 'registry',
+          is_crown_jewel: isCrownJewel,
+          crown_jewel_capabilities: d.module_chain?.map(p => ({
+            primitive: p,
+            capability: d.name,
+            cjpi: d.cjpi,
+          })) ?? [],
+        } as any)
+        .eq('id', d.discovery_id);
+
+      // 2. Log the promotion as an audit event (kept for backward compat)
       await supabase.from('audit_logs').insert({
         action: 'vault_promotion',
         entity_type: 'discovery',
@@ -741,14 +756,15 @@ export default function STierVault() {
         },
       });
 
-      // Update vault_promotions status
+      // 3. Update vault_promotions status (kept for backward compat)
       await supabase
         .from('vault_promotions')
         .update({ status: 'registry_promoted' })
         .eq('id', d.id);
 
-      toast.success(`"${d.name}" promoted to registry with audit trail`);
+      toast.success(`"${d.name}" promoted to registry — live count updated`);
       await loadPromoted();
+      await loadRegistryCount();
     } catch (err: any) {
       toast.error(`Promotion failed: ${err.message}`);
     } finally {
