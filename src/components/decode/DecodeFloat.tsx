@@ -202,9 +202,9 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "❓", title: "Gov Help", prompt: "/gov-help" },
   ];
   return [
+    { icon: "🔍", title: "Ascension Lookup", prompt: "I have a fingerprint ID from an Ascension run. Can you verify it?" },
     { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },
     { icon: "🧠", title: "What Do You Know?", prompt: "What do you know about me? Show me everything you've learned." },
-    { icon: "🛡️", title: "Defense Update", prompt: "Give me a defense status update. Any threats detected recently?" },
     { icon: "🚀", title: "Getting Started", prompt: "How do I start using the substrate? Walk me through the key features." },
   ];
 }

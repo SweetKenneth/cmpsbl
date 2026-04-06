@@ -4,9 +4,9 @@
  * v7: Force fresh content on deploy
  */
 
-const CACHE_NAME = 'cmpsbl-v7';
-const SCAN_CACHE = 'cmpsbl-scans-v7';
-const STATIC_CACHE = 'cmpsbl-static-v7';
+const CACHE_NAME = 'cmpsbl-v8';
+const SCAN_CACHE = 'cmpsbl-scans-v8';
+const STATIC_CACHE = 'cmpsbl-static-v8';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [
