@@ -374,8 +374,10 @@ const ARCHETYPES: StructuralSignature[] = [
     name: 'Testing & Safe Execution',
     primitives: ['SANDBOX', 'ECHO', 'SHADOW'],
     patterns: [
-      // test framework: describe/it/test/expect
-      /(describe|it|test)\s*\(\s*['"][\s\S]{0,200}(expect|assert|should)/i,
+      // test framework: describe/it/test block declarations
+      /(describe|it|test)\s*\(\s*['"]/i,
+      // assertion patterns (independent from describe)
+      /(expect|assert|should)\s*\(/i,
       // mock/stub/spy
       /(mock|stub|spy|fake)\s*\(\s*\w+[\s\S]{0,200}(returns?|resolves?|rejects?|callsFake)/i,
       // snapshot testing
