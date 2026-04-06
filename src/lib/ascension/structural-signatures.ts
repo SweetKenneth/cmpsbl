@@ -893,29 +893,42 @@ export function runStructuralAnalysis(codeContent: string): StructuralMatch[] {
       if (intentLayer.includes(sig.toLowerCase())) intentHits++;
     }
 
-    // Skip if zero signal across all channels
-    if (structuralHits === 0 && lexicalHits === 0 && intentHits === 0) continue;
+    // Skip noise: require structural evidence OR meaningful lexical/intent density.
+    // Without this gate, single coSignal overlaps (e.g. "state", "log") produce
+    // hundreds of LOW-confidence false positives that drown real detections.
+    const hasStructural = structuralHits >= 1;
+    const hasLexicalDensity = lexicalHits >= 3;
+    const hasIntentSignal = intentHits >= 1;
+    const hasLexicalPlusIntent = lexicalHits >= 2 && intentHits >= 1;
+
+    if (!hasStructural && !hasLexicalDensity && !hasLexicalPlusIntent && !hasIntentSignal) continue;
 
     // ── Tristate classification ──
     // PRESENT: structural match + at least one supporting channel
-    // PARTIAL: no structural but lexical/intent signals, OR intent-only (TODOs, stubs)
-    // ABSENT: only returned if there's some minimal signal (handled by continue above)
+    // PARTIAL: lexical/intent signals suggest capability exists but no flow proof
     let state: PresenceState;
-    if (structuralHits >= 1 && (lexicalHits >= 2 || intentHits >= 1)) {
+    if (hasStructural && (lexicalHits >= 2 || hasIntentSignal)) {
       state = 'present';
-    } else if (structuralHits >= 1 || lexicalHits >= 3) {
+    } else if (hasStructural || hasLexicalDensity) {
       state = 'present';
-    } else if (lexicalHits >= 1 || intentHits >= 1) {
+    } else if (hasLexicalPlusIntent || (lexicalHits >= 2 && hasIntentSignal)) {
       state = 'partial';
     } else {
-      state = 'absent';
+      state = 'partial';
     }
 
     // ── Confidence scoring ──
-    // Structural matches are strongest (0.50 weight), lexical next (0.30), intent (0.20)
-    const structConf = Math.min(structuralHits / arch.patterns.length, 1);
-    const lexConf = Math.min(lexicalHits / Math.min(arch.coSignals.length, 8), 1);
-    const intentConf = Math.min(intentHits / Math.min(arch.intentSignals.length, 4), 1);
+    // Structural: normalize against min(patternCount, 3) so that 2+ hits = strong.
+    // Adding more patterns to an archetype shouldn't dilute existing matches.
+    // Lexical: normalize against min(coSignals, 6) — 4+ co-signals = saturated.
+    // Intent: normalize against min(intentSignals, 3).
+    const structNorm = Math.min(arch.patterns.length, 3);
+    const lexNorm = Math.min(arch.coSignals.length, 6);
+    const intentNorm = Math.min(arch.intentSignals.length, 3);
+
+    const structConf = Math.min(structuralHits / structNorm, 1);
+    const lexConf = Math.min(lexicalHits / lexNorm, 1);
+    const intentConf = Math.min(intentHits / intentNorm, 1);
 
     const confidence = Math.round(
       (structConf * 0.50 + lexConf * 0.30 + intentConf * 0.20) * 1000
