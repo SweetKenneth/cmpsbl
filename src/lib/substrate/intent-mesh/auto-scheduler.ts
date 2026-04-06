@@ -264,6 +264,10 @@ class MeshAutoScheduler {
       const chainResult = runReactorChainBridge();
       console.log(`[CDM/ChainBridge] Processed ${chainResult.templatesProcessed} reactor chains → ${chainResult.signalsInjected} signals, ${chainResult.archetypeMappings} archetype mappings, ${chainResult.uniquePrimitives} unique primitives (${chainResult.durationMs}ms)`);
 
+      // ── Federated cross-pollination: propagate intelligence to all vertical substrates ──
+      const pollinationResult = runCrossPollinationCycle();
+      console.log(`[CDM/Federation] Cross-pollinated ${pollinationResult.verticalsProcessed} verticals → ${pollinationResult.totalSpineSignals} spine signals, ${pollinationResult.totalExpansionSignals} expansion signals (${pollinationResult.durationMs}ms)`);
+
       // ── Scanner pass: profile any framework files Ascension is processing ──
       const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
 
