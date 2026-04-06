@@ -235,7 +235,6 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
 
 export function extractDiscoveries(result: ScanResult): CJPIDiscovery[] {
   const discoveries: CJPIDiscovery[] = [];
-  const threshold = calibrateHighThreshold(1); // Default calibration for extraction
 
   for (const match of result.matches) {
     const band = classifyBand(
@@ -243,7 +242,6 @@ export function extractDiscoveries(result: ScanResult): CJPIDiscovery[] {
       match.lexicalHits >= 2,
       match.intentHits > 0,
       match.confidence,
-      threshold
     );
 
     if (band === 'high' || band === 'medium') {
