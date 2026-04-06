@@ -371,11 +371,24 @@ Note: Cyber and agency show 80 (all registry from Crown Jewel backfill) — thei
 - Test run: 28 mutations generated from 10 primary parents (all CJPI 100). Results correct — mutations of perfect-score parents naturally score lower (can't beat 100). Real promotions happen in the 90-94 range where mutations push into registry territory.
 - Total discoveries: 6,108 (28 gen-1 mutations persisted)
 
+**Session 13 — April 6, 2026 — Dynamic Rarity Weighting (Step 7):**
+
+- Reclassified 4,154 primary "discovered" → proper showroom/junkyard/registry tiers via migration.
+- Seeded media (200) and quantum (200) with showroom/junkyard depth. All 8 verticals now have full tier distribution.
+- Created `memory_stream_config` table (vertical, tier_label, cjpi range, target/computed weights, item counts).
+- Built `src/lib/factory/memory-stream-rarity.ts`:
+  - `computeRarityWeights(vertical)` — queries actual pool distribution, redistributes empty-tier weight proportionally
+  - `pullFromMemoryStream(vertical)` — weighted random tier selection with fallback cascade
+  - `recomputeMemoryStreamWeights()` — persists weights for all 8 verticals to `memory_stream_config`
+  - `getPersistedWeights(vertical)` — reads cached weights for governor inspection
+- Wired `recomputeMemoryStreamWeights()` into CDM cycle after federation step (auto-scheduler.ts).
+- CDM sequence now: template pass → vault bridge → chain bridge → federation → **rarity recomputation** → scanner pass.
+- Verified: primary pool = 913 items, 4 populated tiers (common 44.44%, uncommon 27.78%, rare 16.67%, epic 11.11%), legendary/apex correctly zeroed and redistributed. 5 sample pulls working correctly.
+
 **Next steps (Plan B remaining):**
-- Step 7: Implement dynamic rarity weighting for Memory Stream
 - Step 8: Update UI components to query `discoveries` with status filters
 - Step 9: Remove in-memory state (AGENCY_VAULT, MEMORY_STREAM_POOL, etc.)
 
-*Last updated: April 6, 2026 · Session 12 complete*
-*Next session: Read this file first. Plan B Steps 1-6 done. Mutation engine live. Steps 7+ pending.*
+*Last updated: April 6, 2026 · Session 13 complete*
+*Next session: Read this file first. Plan B Steps 1-7 done. Rarity weighting live. Steps 8-9 pending.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
