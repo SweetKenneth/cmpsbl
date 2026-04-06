@@ -341,8 +341,8 @@ function selectOptimalPrimitives(
       if (dropOff >= DROP_OFF_RATIO) break;
     }
 
-    // Diversity: spine gets 16 (broadest semantic range), others capped at 10
-    const maxForSource = candidate.sourceVertical === 'spine' ? 16 : 10;
+    // Diversity: spine gets 16 (broadest semantic range), others capped at 8
+    const maxForSource = candidate.sourceVertical === 'spine' ? 16 : 8;
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
     if (sc >= maxForSource) continue;
 
