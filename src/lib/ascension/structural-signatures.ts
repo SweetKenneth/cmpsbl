@@ -297,6 +297,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(aes|rsa|hmac|ecdsa|ed25519|chacha)\s*[-_.]?\s*(encrypt|sign|verify|256|128|512)/i,
       // TLS/SSL configuration
       /(tls|ssl)\s*[=:.\[]\s*[\s\S]{0,100}(cert|key|ca|verify)/i,
+      // definition-side: cipher/encrypt class and function definitions
+      /(class\s+\w*(Cipher|Encrypt|Crypt)|def\s+(encrypt|decrypt)|fn\s+(encrypt|decrypt))/i,
+      // NaCl/libsodium specific patterns
+      /(NaCl|nacl|secretbox|crypto_box|seal\s*\()/i,
     ],
     coSignals: [
       'encrypt', 'decrypt', 'cipher', 'aes', 'rsa', 'hmac', 'hash',
