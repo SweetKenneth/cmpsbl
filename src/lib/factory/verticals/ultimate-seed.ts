@@ -14,7 +14,6 @@
  */
 
 import { routeDiscovery } from '../foundry-engine';
-import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 
 // ═══════════════════════════════════════════════════════════════

@@ -13,7 +13,6 @@
  */
 
 import { routeDiscovery } from '../../factory/foundry-engine';
-import { routeDiscovery } from '../../factory/foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 import { getMediaEngines, getMediaAgents } from './media';
 
