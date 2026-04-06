@@ -99,10 +99,14 @@ export function extractContext(
     if (idMatches) {
       for (const id of idMatches) {
         const lower = id.toLowerCase();
-        // Skip common noise words and overly short fragments
+        // Skip common noise words
         if (NOISE_WORDS.has(lower)) continue;
-        // Skip words that are too generic (all lowercase, < 6 chars, no underscore)
+        // Skip words < 6 chars without underscores (too generic)
         if (lower.length < 6 && !lower.includes('_') && /^[a-z]+$/.test(lower)) continue;
+        // Skip words that contain punctuation artifacts
+        if (/[^a-z0-9_]/.test(lower)) continue;
+        // Must start with a letter
+        if (!/^[a-z]/.test(lower)) continue;
         identifiers.add(lower);
       }
     }
