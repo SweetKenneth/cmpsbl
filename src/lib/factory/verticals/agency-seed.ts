@@ -247,24 +247,13 @@ export function seedAgencyDiscoveries(): AgencySeedResult {
     discoveries.push(discovery);
 
     if (route === 'vault') {
-      AGENCY_VAULT.set(discovery.id, discovery);
       vaultCount++;
     } else {
-      addDiscovery(
-        discovery.id,
-        discovery.name,
-        discovery.description,
-        discovery.cjpiScore,
-        discovery.primitiveChain,
-      );
-
       if (route === 'showroom') {
         showroomCount++;
       } else {
         junkyardCount++;
       }
-
-      AGENCY_MEMORY_STREAM_POOL.push(discovery);
       memoryStreamCount++;
     }
   }
