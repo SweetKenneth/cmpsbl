@@ -156,7 +156,7 @@ resp, err := http.Post("https://api.cmpsbl.com/api/v1/substrate",
 **Java example:**
 ```java
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("https://api.cmpsbl.ai/api/v1/substrate"))
+    .uri(URI.create("https://api.cmpsbl.com/api/v1/substrate"))
     .header("Authorization", "Bearer " + apiKey)
     .POST(HttpRequest.BodyPublishers.ofString(payload))
     .build();
