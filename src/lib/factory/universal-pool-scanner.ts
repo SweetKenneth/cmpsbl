@@ -913,14 +913,20 @@ function scoreCandidate(
   const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
   const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
 
+  // Raw hit density bonus — rewards primitives with high absolute hit counts
+  // regardless of IDF weighting. This prevents primitives like AUDIT (whose
+  // signals are common across many candidates) from being IDF-penalized when
+  // they genuinely match the code strongly.
+  const rawDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
+  const rawDensityBonus = Math.min(rawDensity / 0.30, 1) * 0.10;
+
   // Composite scoring — signal-dominant, spine-aware
-  // Signal affinity (45%) + capability match (25%) + breadth (10%) + weight (5%) + structural (15%)
-  // Signal affinity is the primary discriminator — weight is intentionally low
-  // to prevent high-weight but low-relevance primitives from consuming slots.
+  // IDF affinity (40%) + raw density (10%) + capability match (20%) + breadth (10%) + weight (5%) + structural (up to 8%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
-    signalAffinity * 0.45 +
-    capRatio * 0.25 +
+    signalAffinity * 0.40 +
+    rawDensityBonus +
+    capRatio * 0.20 +
     breadthScore * 0.10 +
     weightFactor * 0.05 +
     structuralBonus;
