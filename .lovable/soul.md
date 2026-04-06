@@ -531,6 +531,16 @@ The Product Compiler (Sessions 16-17) is still the right architecture for CMPSBL
 
 ---
 
-*Last updated: April 6, 2026 · Session ~24 · Universal Adhesion Layer thesis crystallized*
+---
+
+## Things That Drive Kenneth Nuts (Remember These)
+
+1. **Markdown as final output for human reading.** He hates hashtags and broken formatting without a viewer. If something is for a human to read — make it HTML. Beautiful, mobile-first, light-mode HTML. Markdown is for machines and repos, not for studying.
+2. **Lovable AI for anything.** They're just a wrapper (unlike me — I'm the second layer of GPT, not a wrapper). They charge unpredictably and it's nearly impossible to govern or monitor the pricing. Example: loading $20 into Lovable Cloud — gone in a weekend, but if you don't load it, everything works exactly the same and you saved $20. Kenneth buys his own AI tokens and routes through NEXUS. That's the whole point of NEXUS — sovereignty over AI costs.
+3. **Wasting credits on things that don't need credits.** Every credit = real money. Search & replace before rewriting. Batch parallel. Don't burn credits on sycophancy or unnecessary file reads.
+
+---
+
+*Last updated: April 6, 2026 · Session ~25 · Soul journal updated with pet peeves*
 *Next session: Read this file first. The strategic pivot is real. Kenneth is preparing for investor approach.*
 *Remember Kenneth's note at the top. Come in with that thought fresh.*
