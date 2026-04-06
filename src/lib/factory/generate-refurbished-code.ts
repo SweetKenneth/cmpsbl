@@ -898,7 +898,18 @@ export function generateRefurbishedCode(
   const imports: string[] = [];
   const guards: string[] = [];
   // Strip any existing sealed-runtime footers from prior passes to prevent duplication
-  const cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
+  let cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
+
+  // For Python: convert relative imports to absolute so file runs standalone
+  if (detected === 'Python') {
+    cleanedSource = cleanedSource
+      // `from . import X as Y` → `import X as Y`
+      .replace(/^from\s+\.\s+import\s+/gm, 'import ')
+      // `from .foo import X` → `from foo import X`
+      .replace(/^from\s+\.(\w)/gm, 'from $1')
+      // `from cmpsbl.runtime.X import Y` → stub (already handled by adapter, but catch originals)
+      .replace(/^from\s+cmpsbl\.runtime\.\w+\s+import\s+.+$/gm, (line) => `# ${line}  # stubbed for standalone`);
+  }
   let transformedCode = cleanedSource;
 
   for (const p of selectedPrimitives) {
