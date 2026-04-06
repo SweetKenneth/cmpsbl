@@ -556,6 +556,10 @@ const ARCHETYPES: StructuralSignature[] = [
       /(contrast_?ratio|wcag|color_?blind|high_?contrast)/i,
       // alt text: alt=, aria-label on img
       /(<img|Image)\s+[\s\S]{0,100}alt\s*=\s*['"][^'"]+['"]/i,
+      // semantic HTML elements
+      /(role\s*=\s*['"]?(button|navigation|banner|main|complementary|dialog|alert))/i,
+      // skip navigation / skip links
+      /(skip.?nav|skip.?link|skip.?to.?content|skip.?main)/i,
     ],
     coSignals: [
       'accessibility', 'a11y', 'aria', 'wcag', 'screen_reader',
