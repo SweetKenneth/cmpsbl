@@ -18,8 +18,7 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-const CAPABILITY_STATS = {
-  totalCapabilities: 34,
+const CAPABILITY_STATS_STATIC = {
   discoveryMethods: 7,
   dashboardViews: 6,
   terminalCommands: 26,
