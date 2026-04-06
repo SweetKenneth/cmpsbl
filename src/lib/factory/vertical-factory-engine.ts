@@ -399,6 +399,7 @@ export function instantiateVertical(input: VerticalFactoryInput): VerticalManife
       registeredNames: [],
       validation: specValidation,
       activationChecklist: createEmptyChecklist(),
+      seedResult: null,
     };
   }
 
