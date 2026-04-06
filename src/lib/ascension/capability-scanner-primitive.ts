@@ -148,10 +148,6 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
 
   // ── Step 4: Gap detection ──
   const archetypes = getArchetypes();
-  const registryStats = getRegistryStats();
-  
-  // Calibrate threshold based on registry density
-  const threshold = calibrateHighThreshold(registryStats.totalEntries / archetypes.length);
 
   const highOrMediumArchetypes = new Set(
     matches
@@ -161,7 +157,6 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
           m.lexicalHits >= 2,
           m.intentHits > 0,
           m.confidence,
-          threshold
         );
         return band === 'high' || band === 'medium';
       })
