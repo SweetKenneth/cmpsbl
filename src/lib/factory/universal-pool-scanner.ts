@@ -872,6 +872,7 @@ function scoreCandidate(
   codeTokens: Set<string>,
   signalDocFreq: Record<string, number>,
   poolSize: number,
+  mode: AscensionMode = 'ascension',
 ): PoolCandidate {
   // Pass 1 — IDF-weighted signal hit density
   // Rare signals (appearing in few candidates) count more than common ones.
@@ -888,17 +889,12 @@ function scoreCandidate(
     }
   }
   const hitRatio = idfWeightedTotal > 0 ? idfWeightedHits / idfWeightedTotal : 0;
-  // With larger vocabularies (50 signals), the IDF ratio naturally trends lower.
-  // A 25% threshold balances discrimination with recognition — primitives need
-  // meaningful rare-signal coverage but aren't penalized for having broad vocabularies.
   const signalAffinity = Math.min(hitRatio / 0.25, 1);
 
   // Pass 2 — Capability breadth and structural matching
   let capHits = 0;
   for (const cap of tagged.primitive.capabilities) {
-    // Compound Signal Preservation: check full capability first
     if (codeTokens.has(cap)) { capHits++; continue; }
-    // Fallback: check individual tokens for partial match
     const capTokens = cap.split('_');
     for (const t of capTokens) {
       if (codeTokens.has(t)) { capHits++; break; }
@@ -912,24 +908,34 @@ function scoreCandidate(
   // Pass 3 — Weight-based importance and composability
   const weightFactor = Math.min(tagged.primitive.weight / 0.03, 1);
 
-  // Spine primitives (organs + layers) get a modest structural bonus
-  // that scales with signal density. With 50-signal vocabularies, 20%
-  // density (10/50 hits) earns the full bonus. This ensures spine
-  // primitives earn their rank through genuine signal relevance, not
-  // architectural privilege.
+  // ── DUAL-MATRIX BONUS ──────────────────────────────────────────────────
+  // In substrate mode: static structural bonus based on spine membership
+  // and signal density (boot-order priorities).
+  // In ascension/memorystream mode: dynamic boost from the Ascension Weight
+  // Matrix — scored by gap-closure (universal software weaknesses) and
+  // wow-factor (category-defining differentiation like DREAM).
   const isSpine = tagged.primitive.role === 'organ' || tagged.primitive.role === 'layer';
   const signalDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
-  const structuralBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
 
-  // Raw hit density bonus — rewards primitives with high absolute hit counts
-  // regardless of IDF weighting. This prevents primitives like AUDIT (whose
-  // signals are common across many candidates) from being IDF-penalized when
-  // they genuinely match the code strongly.
+  let contextBonus: number;
+  if (mode === 'substrate') {
+    // Original structural bonus — spine gets up to 0.08 based on density
+    contextBonus = (isSpine && hits > 0) ? 0.08 * Math.min(signalDensity / 0.20, 1) : 0;
+  } else {
+    // Ascension/MemoryStream: gap-closure + wow-factor driven boost (up to 0.15)
+    // Only awarded when signals actually match — prevents phantom boosts
+    const ascensionBoost = computeAscensionBoost(tagged.primitive.name, mode);
+    contextBonus = hits > 0 ? ascensionBoost * Math.min(signalDensity / 0.15, 1) : 0;
+  }
+
+  // Raw hit density bonus — rewards high absolute hit counts regardless
+  // of IDF weighting, preventing common-but-genuine matches from being
+  // penalized by the rarity filter.
   const rawDensity = tagged.signals.length > 0 ? hits / tagged.signals.length : 0;
   const rawDensityBonus = Math.min(rawDensity / 0.30, 1) * 0.10;
 
-  // Composite scoring — signal-dominant, spine-aware
-  // IDF affinity (40%) + raw density (10%) + capability match (20%) + breadth (10%) + weight (5%) + structural (up to 8%)
+  // Composite scoring — signal-dominant, context-aware
+  // IDF affinity (40%) + raw density (10%) + capability (20%) + breadth (10%) + weight (5%) + context bonus (up to 15%)
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
     signalAffinity * 0.40 +
@@ -937,7 +943,7 @@ function scoreCandidate(
     capRatio * 0.20 +
     breadthScore * 0.10 +
     weightFactor * 0.05 +
-    structuralBonus;
+    contextBonus;
 
   return {
     primitive: tagged.primitive,
