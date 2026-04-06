@@ -141,17 +141,15 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   const tag = (prims: VerticalPrimitive[], source: string, signalMap?: Record<string, string[]>) => {
     for (const p of prims) {
       const explicitSignals = signalMap?.[p.id] ?? ULTIMATE_AFFINITY_SIGNALS[p.id];
-      // Merge explicit signals WITH derived signals so spine primitives
-      // benefit from both curated keywords and capability/description tokens
       const derived = deriveSignals(p);
+      // Merge explicit + derived, but cap total signals to prevent
+      // density dilution. Explicit signals get priority (listed first).
       const merged = explicitSignals
         ? [...new Set([...explicitSignals, ...derived])]
         : derived;
-      pool.push({
-        primitive: p,
-        sourceVertical: source,
-        signals: merged,
-      });
+      // Cap at 30 signals — enough for broad matching without diluting density
+      const capped = merged.length > 30 ? merged.slice(0, 30) : merged;
+      pool.push({ primitive: p, sourceVertical: source, signals: capped });
     }
   };
 
@@ -227,7 +225,7 @@ function scoreCandidate(
   let idfWeightedTotal = 0;
   for (const signal of tagged.signals) {
     const df = signalDocFreq[signal] ?? 1;
-    const idf = Math.log(poolSize / df); // higher = rarer = more valuable
+    const idf = Math.log(poolSize / df);
     idfWeightedTotal += idf;
     if (lowerCode.includes(signal)) {
       hits++;
@@ -316,11 +314,11 @@ const MIN_SLOTS = 8;
  * Select the optimal primitives for this specific codebase.
  * The count is DYNAMIC — driven by what the code actually needs.
  * No category restrictions. No spine lock. No organ/layer quotas.
- * Light diversity constraint (max 14 from any single source).
+ * Diversity constraint: max 10 from any single non-spine source,
+ * max 16 from spine (since spine has the most semantic breadth).
  */
 function selectOptimalPrimitives(
   candidates: PoolCandidate[],
-  maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
     .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 2)
@@ -343,9 +341,11 @@ function selectOptimalPrimitives(
       if (dropOff >= DROP_OFF_RATIO) break;
     }
 
-    // Light diversity: cap per-source to prevent single-vertical domination
+    // Diversity: spine gets 20 (broadest semantic range, 31+ primitives),
+    // others capped at 8 to prevent single-vertical domination
+    const maxForSource = candidate.sourceVertical === 'spine' ? 20 : 8;
     const sc = sourceCounts[candidate.sourceVertical] ?? 0;
-    if (sc >= maxPerSource) continue;
+    if (sc >= maxForSource) continue;
 
     // Dedup by primitive ID
     if (usedIds.has(candidate.primitive.id)) continue;
