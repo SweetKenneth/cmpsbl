@@ -10310,6 +10310,42 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_stream_config: {
+        Row: {
+          cjpi_max: number
+          cjpi_min: number
+          computed_weight: number
+          id: string
+          item_count: number
+          target_weight: number
+          tier_label: string
+          updated_at: string
+          vertical: string
+        }
+        Insert: {
+          cjpi_max: number
+          cjpi_min: number
+          computed_weight: number
+          id?: string
+          item_count?: number
+          target_weight: number
+          tier_label: string
+          updated_at?: string
+          vertical: string
+        }
+        Update: {
+          cjpi_max?: number
+          cjpi_min?: number
+          computed_weight?: number
+          id?: string
+          item_count?: number
+          target_weight?: number
+          tier_label?: string
+          updated_at?: string
+          vertical?: string
+        }
+        Relationships: []
+      }
       memory_tier_receipts: {
         Row: {
           actor: string
