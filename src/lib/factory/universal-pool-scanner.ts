@@ -316,11 +316,11 @@ const MIN_SLOTS = 8;
  * Select the optimal primitives for this specific codebase.
  * The count is DYNAMIC — driven by what the code actually needs.
  * No category restrictions. No spine lock. No organ/layer quotas.
- * Light diversity constraint (max 14 from any single source).
+ * Diversity constraint: max 10 from any single non-spine source,
+ * max 16 from spine (since spine has the most semantic breadth).
  */
 function selectOptimalPrimitives(
   candidates: PoolCandidate[],
-  maxPerSource: number = 14,
 ): PoolCandidate[] {
   const sorted = [...candidates]
     .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 2)
