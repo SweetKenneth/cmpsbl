@@ -262,26 +262,13 @@ export function seedQuantumDiscoveries(): QuantumSeedResult {
 
     // Route the discovery
     if (route === 'vault') {
-      QUANTUM_VAULT.set(discovery.id, discovery);
       vaultCount++;
     } else {
-      // Register in the showroom/junkyard catalog
-      addDiscovery(
-        discovery.id,
-        discovery.name,
-        discovery.description,
-        discovery.cjpiScore,
-        discovery.primitiveChain,
-      );
-
       if (route === 'showroom') {
         showroomCount++;
       } else {
         junkyardCount++;
       }
-
-      // All non-vault discoveries go into the Memory Stream pool
-      QUANTUM_MEMORY_STREAM_POOL.push(discovery);
       memoryStreamCount++;
     }
   }
