@@ -1123,6 +1123,16 @@ export function runUniversalPoolScan(
   const structuralMatches = runStructuralAnalysis(codeContent);
   const structuralBoosts = buildStructuralBoostMap(structuralMatches);
 
+  // ── ECOSYSTEM DETECTION ─────────────────────────────────────────────
+  const ecosystem = detectEcosystem(codeContent);
+
+  // ── SEMANTIC DRIFT DETECTION ───────────────────────────────────────
+  const driftDetections = detectDrift(codeContent, ecosystem);
+
+  // ── INTERFACE CONTRACT & ENVIRONMENT PROFILE ───────────────────────
+  const contract = extractContract(codeContent);
+  const environmentProfile = profileEnvironment(codeContent, ecosystem);
+
   // Build intent-confirmed primitive set from structural analysis
   const intentPrimitives = new Set<string>();
   for (const match of structuralMatches) {
@@ -1159,9 +1169,39 @@ export function runUniversalPoolScan(
     roleDistribution[s.primitive.role] = (roleDistribution[s.primitive.role] ?? 0) + 1;
   }
 
-  // ── CONFIDENCE BANDING ─────────────────────────────────────────────────
+  // ── CONFIDENCE BANDING ─────────────────────────────────────────────
   const confidenceBands = bandResults(selected, structuralBoosts, intentPrimitives);
   const bandDistribution = getBandDistribution(confidenceBands);
+
+  // ── 4-AXIS COMPATIBILITY SCORING ───────────────────────────────────
+  const compatibilityReports = batchCompatibility(
+    selected.map(c => ({ name: c.primitive.name, signalScore: c.affinityScore })),
+    contract,
+    environmentProfile,
+    structuralMatches,
+  );
+
+  // ── MERGE SIMULATION ──────────────────────────────────────────────
+  const selectedSet = new Set(selected.map(c => c.primitive.name.toUpperCase()));
+  const mergeReport = runMergeSimulation(compatibilityReports, structuralMatches, selectedSet);
+
+  // ── ECOSYSTEM REGISTRY SUGGESTIONS ─────────────────────────────────
+  const allGaps = compatibilityReports.flatMap(r => r.closedGaps);
+  const uniqueGaps = [...new Set(allGaps)];
+  const registrySuggestions = suggestForGaps(uniqueGaps, ecosystem);
+
+  // ── FEEDBACK LOOP — teach the scanner from HIGH/MEDIUM matches ─────
+  for (const banded of confidenceBands) {
+    if (banded.band === 'high' || banded.band === 'medium') {
+      const matchTerms = structuralMatches
+        .filter(m => m.primitives.includes(banded.primitive))
+        .flatMap(m => m.primitives);
+      if (matchTerms.length > 0) {
+        const extraction = extractContext(codeContent, banded.primitive, matchTerms[0], matchTerms);
+        recordConfirmedMatch(extraction);
+      }
+    }
+  }
 
   return {
     selectedPrimitives: selected,
@@ -1175,6 +1215,13 @@ export function runUniversalPoolScan(
     structuralMatches,
     confidenceBands,
     bandDistribution,
+    ecosystem,
+    driftDetections,
+    contract,
+    environmentProfile,
+    compatibilityReports,
+    mergeReport,
+    registrySuggestions,
   };
 }
 
