@@ -290,6 +290,8 @@ export default function Showroom() {
   const showSuccess = searchParams.get('success') === 'true';
   const successItem = searchParams.get('item');
 
+  const { counts: liveCounts } = useDiscoveryCounts();
+
   // Static catalog — no database calls
   const catalog = SHOWROOM_CATALOG;
   const catalogLoading = false;
