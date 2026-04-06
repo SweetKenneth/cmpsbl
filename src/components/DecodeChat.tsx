@@ -123,26 +123,50 @@ export function DecodeChat() {
     setInput('');
     setShowMenu(false);
 
-    // ─── Fingerprint Detection Layer ───
+    // ─── Fingerprint Detection Layer (Cross-Table Shared Memory) ───
     // Detect if user pasted a fingerprint ID (hex-like string, 8+ chars)
+    // Searches BOTH restoration_sessions AND vertical_ascension_sessions
     const fingerprintMatch = userMessage.match(/\b([a-f0-9]{8,})\b/i);
     if (fingerprintMatch && userMessage.length < 120) {
       const possibleFp = fingerprintMatch[1];
       setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
       setIsLoading(true);
       try {
-        const session = await lookupByFingerprint(possibleFp);
-        if (session) {
-          const primList = session.selectedPrimitives.join(', ');
-          const lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
-            `**Fingerprint:** \`${session.fingerprint}\`\n` +
-            `**Serial:** \`${session.serialNumber}\`\n` +
-            `**CJPI Score:** ${session.cjpiScore}/100 (${session.cjpiTier})\n` +
-            `**Primitives Applied:** ${primList}\n` +
-            `**Language:** ${session.originalLanguage ?? 'Unknown'}\n` +
-            `**Date:** ${new Date(session.createdAt).toLocaleDateString()}\n\n` +
-            `I have your full original code, scan results, and refurbishment report on file. ` +
-            `What would you like to know? I can explain any primitive that was applied, walk you through the findings, or help with next steps.`;
+        const result = await lookupAnyFingerprint(possibleFp);
+        if (result) {
+          let lookupReply: string;
+
+          if (result.source === 'restoration') {
+            const s = result.session;
+            const primList = s.selectedPrimitives.join(', ');
+            lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
+              `**Fingerprint:** \`${s.fingerprint}\`\n` +
+              `**Serial:** \`${s.serialNumber}\`\n` +
+              `**CJPI Score:** ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
+              `**Primitives Applied:** ${primList}\n` +
+              `**Language:** ${s.originalLanguage ?? 'Unknown'}\n` +
+              `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
+              `I have your full original code, scan results, and refurbishment report on file. ` +
+              `What would you like to know? I can explain any primitive that was applied, walk you through the findings, or help with next steps.`;
+          } else {
+            const s = result.session;
+            const primList = s.primitivesApplied.length > 0 ? s.primitivesApplied.join(', ') : 'See metadata';
+            const capList = s.capabilitiesAdded.length > 0 ? s.capabilitiesAdded.join(', ') : 'N/A';
+            const cjpiDisplay = s.finalCjpi != null
+              ? `${s.originalCjpi ?? '—'} → **${s.finalCjpi}**/100`
+              : s.originalCjpi != null ? `${s.originalCjpi}/100` : 'N/A';
+            lookupReply = `Found it! 🔍 This is a **Vertical Ascension** record from **${s.verticalName ?? s.verticalId}**:\n\n` +
+              `**Fingerprint:** \`${s.fingerprintId}\`\n` +
+              `**CJPI:** ${cjpiDisplay}\n` +
+              `**Status:** ${s.status}\n` +
+              `**Primitives Applied:** ${primList}\n` +
+              `**Capabilities Added:** ${capList}\n` +
+              `**Date:** ${new Date(s.createdAt).toLocaleDateString()}` +
+              (s.completedAt ? ` — completed ${new Date(s.completedAt).toLocaleDateString()}` : '') +
+              `\n\nThis ascension was processed through the **${s.verticalName ?? s.verticalId}** substrate. ` +
+              `I can explain what was discovered, how the primitives interacted, or what the CJPI score means. What would you like to know?`;
+          }
+
           setMessages(prev => [...prev, { role: 'assistant', content: lookupReply }]);
           setIsLoading(false);
           return;
