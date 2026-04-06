@@ -14,6 +14,7 @@ import {
   generateDecoyPipelineComments,
   FUNCTIONAL_TRANSFORMS,
 } from '../export/opacity-engine';
+import { generateInlinePrimitives } from './inline-primitive-generator';
 
 // ── Language Syntax Adapters ──
 
@@ -2266,7 +2267,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Rust: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, syms) => `use ${mod.replace(/@/g, '').replace(/\//g, '::')}::{${syms.join(', ')}};`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Rust'),
     constDecl: (name, val) => `const ${name.toUpperCase()}: &str = r#"${val}"#;`,
     transformGuard: rustGuard,
     fileExtension: '.rs',
@@ -2274,7 +2275,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Go: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `import "${mod}"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Go'),
     constDecl: (name, val) => `var ${name} = ${val}`,
     transformGuard: goGuard,
     fileExtension: '.go',
@@ -2282,7 +2283,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Java: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s};`).join('\n'),
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Java'),
     constDecl: (name, val) => `static final String ${name} = ${val};`,
     transformGuard: javaGuard,
     fileExtension: '.java',
@@ -2290,7 +2291,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   'C#': {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/// <summary>\n${lines.map(l => `/// ${l}`).join('\n')}\n/// </summary>`,
-    importStatement: (mod, _syms) => `using ${mod.replace(/@/g, '').replace(/\//g, '.')};`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'C#'),
     constDecl: (name, val) => `static readonly string ${name} = @"${val}";`,
     transformGuard: csharpGuard,
     fileExtension: '.cs',
@@ -2298,7 +2299,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   C: {
     comment: (t) => `/* ${t} */`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `#include "${mod}.h"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'C'),
     constDecl: (name, val) => `static const char* ${name} = "${val}";`,
     transformGuard: cStructGuard,
     fileExtension: '.c',
@@ -2306,7 +2307,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   'C++': {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `#include "${mod}.hpp"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'C++'),
     constDecl: (name, val) => `constexpr auto ${name} = R"(${val})";`,
     transformGuard: cStructGuard,
     fileExtension: '.cpp',
@@ -2314,7 +2315,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Ruby: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `=begin\n${lines.join('\n')}\n=end`,
-    importStatement: (mod, _syms) => `require '${mod}'`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Ruby'),
     constDecl: (name, val) => `${name.toUpperCase()} = ${val}.freeze`,
     transformGuard: rubyGuard,
     fileExtension: '.rb',
@@ -2322,7 +2323,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Swift: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Swift'),
     constDecl: (name, val) => `let ${name} = ${val}`,
     transformGuard: swiftGuard,
     fileExtension: '.swift',
@@ -2330,7 +2331,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Kotlin: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s}`).join('\n'),
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Kotlin'),
     constDecl: (name, val) => `val ${name} = ${val}`,
     transformGuard: namedArgGuard,
     fileExtension: '.kt',
@@ -2338,7 +2339,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   PHP: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `use ${mod.replace(/@/g, '').replace(/\//g, '\\\\')};`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'PHP'),
     constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
     transformGuard: phpGuard,
     fileExtension: '.php',
@@ -2346,7 +2347,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Scala: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, syms) => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.{${syms.join(', ')}}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Scala'),
     constDecl: (name, val) => `val ${name} = ${val}`,
     transformGuard: namedArgGuard,
     fileExtension: '.scala',
@@ -2354,7 +2355,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Lua: {
     comment: (t) => `-- ${t}`,
     blockComment: (lines) => `--[[\n${lines.join('\n')}\n]]`,
-    importStatement: (mod, _syms) => `local ${mod.split('/').pop()} = require("${mod}")`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Lua'),
     constDecl: (name, val) => `local ${name} = ${val}`,
     transformGuard: luaGuard,
     fileExtension: '.lua',
@@ -2362,7 +2363,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   R: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `library(${mod.split('/').pop()})`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'R'),
     constDecl: (name, val) => `${name} <- ${val}`,
     transformGuard: rGuard,
     fileExtension: '.R',
@@ -2370,7 +2371,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Dart: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `import 'package:${mod.replace(/@/g, '')}';`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Dart'),
     constDecl: (name, val) => `const ${name} = ${val};`,
     transformGuard: dartGuard,
     fileExtension: '.dart',
@@ -2378,16 +2379,15 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Elixir: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `@moduledoc """\n${lines.join('\n')}\n"""`,
-    importStatement: (mod, _syms) => `import ${mod.split('/').pop()?.replace(/-/g, '_') ?? mod}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Elixir'),
     constDecl: (name, val) => `@${name} ${val}`,
     transformGuard: elixirGuard,
     fileExtension: '.ex',
   },
-  // HDL adapters
   VHDL: {
     comment: (t) => `-- ${t}`,
     blockComment: (lines) => lines.map(l => `-- ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `library ${mod.split('/').pop()};\nuse ${mod.split('/').pop()}.all;`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'VHDL'),
     constDecl: (name, val) => `constant ${name} : string := "${val}";`,
     transformGuard: stripSemicolons,
     fileExtension: '.vhd',
@@ -2395,7 +2395,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Verilog: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `\`include "${mod}.v"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Verilog'),
     constDecl: (name, val) => `localparam ${name} = "${val}";`,
     transformGuard: identityGuard,
     fileExtension: '.v',
@@ -2403,16 +2403,15 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   SystemVerilog: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `import ${mod.split('/').pop()}::*;`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'SystemVerilog'),
     constDecl: (name, val) => `localparam string ${name} = "${val}";`,
     transformGuard: identityGuard,
     fileExtension: '.sv',
   },
-  // Extended languages
   Perl: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `=pod\n${lines.join('\n')}\n=cut`,
-    importStatement: (mod, _syms) => `use ${mod.replace(/\//g, '::')};`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Perl'),
     constDecl: (name, val) => `use constant ${name} => ${val};`,
     transformGuard: perlGuard,
     fileExtension: '.pl',
@@ -2420,7 +2419,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Julia: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `#=\n${lines.join('\n')}\n=#`,
-    importStatement: (mod, _syms) => `using ${mod.split('/').pop()}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Julia'),
     constDecl: (name, val) => `const ${name} = ${val}`,
     transformGuard: juliaGuard,
     fileExtension: '.jl',
@@ -2428,7 +2427,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   'F#': {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `(*\n${lines.join('\n')}\n*)`,
-    importStatement: (mod, _syms) => `open ${mod.replace(/\//g, '.')}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'F#'),
     constDecl: (name, val) => `let [<Literal>] ${name} = ${val}`,
     transformGuard: fsharpGuard,
     fileExtension: '.fs',
@@ -2436,7 +2435,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Clojure: {
     comment: (t) => `;; ${t}`,
     blockComment: (lines) => lines.map(l => `;; ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `(require '[${mod.split('/').pop()}])`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Clojure'),
     constDecl: (name, val) => `(def ${name} ${val})`,
     transformGuard: clojureGuard,
     fileExtension: '.clj',
@@ -2444,7 +2443,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Erlang: {
     comment: (t) => `% ${t}`,
     blockComment: (lines) => lines.map(l => `% ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `-include("${mod.split('/').pop()}.hrl").`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Erlang'),
     constDecl: (name, val) => `-define(${name.toUpperCase()}, ${val}).`,
     transformGuard: erlangGuard,
     fileExtension: '.erl',
@@ -2452,7 +2451,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   OCaml: {
     comment: (t) => `(* ${t} *)`,
     blockComment: (lines) => `(*\n${lines.join('\n')}\n*)`,
-    importStatement: (mod, _syms) => `open ${mod.split('/').pop()?.charAt(0).toUpperCase()}${mod.split('/').pop()?.slice(1)}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'OCaml'),
     constDecl: (name, val) => `let ${name} = ${val}`,
     transformGuard: ocamlGuard,
     fileExtension: '.ml',
@@ -2460,7 +2459,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Nim: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `#[\n${lines.join('\n')}\n]#`,
-    importStatement: (mod, _syms) => `import ${mod.split('/').pop()}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Nim'),
     constDecl: (name, val) => `const ${name} = ${val}`,
     transformGuard: nimGuard,
     fileExtension: '.nim',
@@ -2468,7 +2467,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Crystal: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `require "${mod}"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Crystal'),
     constDecl: (name, val) => `${name.toUpperCase()} = ${val}`,
     transformGuard: rubyGuard,
     fileExtension: '.cr',
@@ -2476,7 +2475,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Groovy: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, syms) => syms.map(s => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.${s}`).join('\n'),
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Groovy'),
     constDecl: (name, val) => `final ${name} = ${val}`,
     transformGuard: namedArgGuard,
     fileExtension: '.groovy',
@@ -2484,7 +2483,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Fortran: {
     comment: (t) => `! ${t}`,
     blockComment: (lines) => lines.map(l => `! ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `use ${mod.split('/').pop()}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Fortran'),
     constDecl: (name, val) => `character(len=*), parameter :: ${name} = "${val}"`,
     transformGuard: fortranGuard,
     fileExtension: '.f90',
@@ -2492,7 +2491,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   'Objective-C': {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `#import "${mod}.h"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Objective-C'),
     constDecl: (name, val) => `static NSString *const ${name} = @"${val}";`,
     transformGuard: objcGuard,
     fileExtension: '.m',
@@ -2500,7 +2499,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   D: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/+\n${lines.join('\n')}\n+/`,
-    importStatement: (mod, _syms) => `import ${mod.replace(/\//g, '.')};`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'D'),
     constDecl: (name, val) => `enum ${name} = ${val};`,
     transformGuard: identityGuard,
     fileExtension: '.d',
@@ -2508,7 +2507,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Shell: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `source "${mod}"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Shell'),
     constDecl: (name, val) => `readonly ${name}="${val}"`,
     transformGuard: shellGuard,
     fileExtension: '.sh',
@@ -2516,7 +2515,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Bash: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => lines.map(l => `# ${l}`).join('\n'),
-    importStatement: (mod, _syms) => `source "${mod}"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Bash'),
     constDecl: (name, val) => `readonly ${name}="${val}"`,
     transformGuard: shellGuard,
     fileExtension: '.sh',
@@ -2524,7 +2523,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   PowerShell: {
     comment: (t) => `# ${t}`,
     blockComment: (lines) => `<#\n${lines.join('\n')}\n#>`,
-    importStatement: (mod, _syms) => `Import-Module ${mod.split('/').pop()}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'PowerShell'),
     constDecl: (name, val) => `Set-Variable -Name "${name}" -Value "${val}" -Option Constant`,
     transformGuard: powershellGuard,
     fileExtension: '.ps1',
@@ -2532,7 +2531,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Solidity: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `import "${mod}.sol";`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Solidity'),
     constDecl: (name, val) => `string constant ${name} = "${val}";`,
     transformGuard: identityGuard,
     fileExtension: '.sol',
@@ -2540,7 +2539,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   CUDA: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `#include "${mod}.cuh"`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'CUDA'),
     constDecl: (name, val) => `__constant__ const char* ${name} = "${val}";`,
     transformGuard: cStructGuard,
     fileExtension: '.cu',
@@ -2548,7 +2547,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   GLSL: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: () => '',
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'GLSL'),
     constDecl: (name, val) => `const int ${name} = ${val};`,
     transformGuard: identityGuard,
     fileExtension: '.glsl',
@@ -2556,7 +2555,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Metal: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: () => '#include <metal_stdlib>',
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Metal'),
     constDecl: (name, val) => `constant auto ${name} = ${val};`,
     transformGuard: cStructGuard,
     fileExtension: '.metal',
@@ -2564,7 +2563,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   WGSL: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => lines.map(l => `// ${l}`).join('\n'),
-    importStatement: () => '',
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'WGSL'),
     constDecl: (name, val) => `const ${name}: u32 = ${val}u;`,
     transformGuard: identityGuard,
     fileExtension: '.wgsl',
@@ -2572,7 +2571,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Bluespec: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/*\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, _syms) => `import ${mod.split('/').pop()}::*;`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Bluespec'),
     constDecl: (name, val) => `String ${name} = "${val}";`,
     transformGuard: identityGuard,
     fileExtension: '.bsv',
@@ -2580,7 +2579,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   FIRRTL: {
     comment: (t) => `; ${t}`,
     blockComment: (lines) => lines.map(l => `; ${l}`).join('\n'),
-    importStatement: () => '',
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'FIRRTL'),
     constDecl: (name, val) => `; const ${name} = ${val}`,
     transformGuard: identityGuard,
     fileExtension: '.fir',
@@ -2588,10 +2587,18 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   Chisel: {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
-    importStatement: (mod, syms) => `import ${mod.replace(/@/g, '').replace(/\//g, '.')}.{${syms.join(', ')}}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Chisel'),
     constDecl: (name, val) => `val ${name} = ${val}`,
     transformGuard: namedArgGuard,
     fileExtension: '.scala',
+  },
+  Haskell: {
+    comment: (t) => `-- ${t}`,
+    blockComment: (lines) => `{-\n${lines.join('\n')}\n-}`,
+    importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'Haskell'),
+    constDecl: (name, val) => `${name} = ${val}`,
+    transformGuard: identityGuard,
+    fileExtension: '.hs',
   },
 };
 
