@@ -269,6 +269,10 @@ class MeshAutoScheduler {
       const pollinationResult = await runCrossPollinationCycle();
       console.log(`[CDM/Federation] Cross-pollinated ${pollinationResult.verticalsProcessed} verticals → ${pollinationResult.totalSpineSignals} spine signals, ${pollinationResult.totalExpansionSignals} expansion signals (${pollinationResult.durationMs}ms)`);
 
+      // ── Memory Stream rarity recomputation: dynamic weights based on actual pool distribution ──
+      const rarityResult = await recomputeMemoryStreamWeights();
+      console.log(`[CDM/Rarity] Recomputed Memory Stream weights for ${rarityResult.verticals} verticals, pool size ${rarityResult.totalPoolSize} (${rarityResult.durationMs}ms)`);
+
       // ── Scanner pass: profile any framework files Ascension is processing ──
       const scannerDiscoveries = await this.runScannerOnAscensionNodes(userId);
 
