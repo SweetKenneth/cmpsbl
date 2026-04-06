@@ -1177,10 +1177,16 @@ export function resetUniversalPool(): void {
   _cachedPool = null;
 }
 
-// Re-export Ascension weight types for consumer convenience
+// Re-export Ascension subsystem types for consumer convenience
 export type { AscensionMode } from '../ascension/ascension-weights';
 export {
   getAscensionRankings,
   getTopByDimension,
   getAllAscensionWeights,
 } from '../ascension/ascension-weights';
+
+export type { StructuralMatch, PresenceState } from '../ascension/structural-signatures';
+export { getArchetypes, getArchetypeCount } from '../ascension/structural-signatures';
+
+export type { BandedResult, ConfidenceBand } from '../ascension/confidence-banding';
+export { filterByBand, getBandDistribution as getBandDist } from '../ascension/confidence-banding';
