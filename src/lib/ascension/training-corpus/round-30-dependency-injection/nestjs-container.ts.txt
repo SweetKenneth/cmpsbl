@@ -1,369 +1,369 @@
-# Content from https://raw.githubusercontent.com/nestjs/nest/master/packages/core/injector/container.ts
-
-import { DynamicModule, Provider } from '@nestjs/common';
-import {
- EnhancerSubtype,
- GLOBAL\_MODULE\_METADATA,
-} from '@nestjs/common/constants';
-import { Injectable, Type } from '@nestjs/common/interfaces';
-import { NestApplicationContextOptions } from '@nestjs/common/interfaces/nest-application-context-options.interface';
-import { ApplicationConfig } from '../application-config';
-import { DiscoverableMetaHostCollection } from '../discovery/discoverable-meta-host-collection';
-import {
- CircularDependencyException,
- UndefinedForwardRefException,
- UnknownModuleException,
-} from '../errors/exceptions';
-import { InitializeOnPreviewAllowlist } from '../inspector/initialize-on-preview.allowlist';
-import { SerializedGraph } from '../inspector/serialized-graph';
-import { REQUEST } from '../router/request/request-constants';
-import { ModuleCompiler, ModuleFactory } from './compiler';
-import { ContextId } from './instance-wrapper';
-import { InternalCoreModule } from './internal-core-module/internal-core-module';
-import { InternalProvidersStorage } from './internal-providers-storage';
-import { Module } from './module';
-import { ModulesContainer } from './modules-container';
-import { ByReferenceModuleOpaqueKeyFactory } from './opaque-key-factory/by-reference-module-opaque-key-factory';
-import { DeepHashedModuleOpaqueKeyFactory } from './opaque-key-factory/deep-hashed-module-opaque-key-factory';
-import { ModuleOpaqueKeyFactory } from './opaque-key-factory/interfaces/module-opaque-key-factory.interface';
-
-type ModuleMetatype = Type \| DynamicModule \| Promise;
-type ModuleScope = Type\[\];
-
-export class NestContainer {
- private readonly globalModules = new Set();
- private readonly modules = new ModulesContainer();
- private readonly dynamicModulesMetadata = new Map<
- string,
- Partial
- >();
- private readonly internalProvidersStorage = new InternalProvidersStorage();
- private readonly \_serializedGraph = new SerializedGraph();
- private moduleCompiler: ModuleCompiler;
- private internalCoreModule: Module;
-
- constructor(
- private readonly \_applicationConfig:
- \| ApplicationConfig
- \| undefined = undefined,
- private readonly \_contextOptions:
- \| NestApplicationContextOptions
- \| undefined = undefined,
- ) {
- const moduleOpaqueKeyFactory =
- this.\_contextOptions?.moduleIdGeneratorAlgorithm === 'deep-hash'
- ? new DeepHashedModuleOpaqueKeyFactory()
- : new ByReferenceModuleOpaqueKeyFactory({
- keyGenerationStrategy: this.\_contextOptions?.snapshot
- ? 'shallow'
- : 'random',
- });
- this.moduleCompiler = new ModuleCompiler(moduleOpaqueKeyFactory);
- }
-
- get serializedGraph(): SerializedGraph {
- return this.\_serializedGraph;
- }
-
- get applicationConfig(): ApplicationConfig \| undefined {
- return this.\_applicationConfig;
- }
-
- get contextOptions(): NestApplicationContextOptions \| undefined {
- return this.\_contextOptions;
- }
-
- public setHttpAdapter(httpAdapter: any) {
- this.internalProvidersStorage.httpAdapter = httpAdapter;
-
- if (!this.internalProvidersStorage.httpAdapterHost) {
- return;
- }
- const host = this.internalProvidersStorage.httpAdapterHost;
- host.httpAdapter = httpAdapter;
- }
-
- public getHttpAdapterRef() {
- return this.internalProvidersStorage.httpAdapter;
- }
-
- public getHttpAdapterHostRef() {
- return this.internalProvidersStorage.httpAdapterHost;
- }
-
- public async addModule(
- metatype: ModuleMetatype,
- scope: ModuleScope,
- ): Promise<
- \| {
- moduleRef: Module;
- inserted: boolean;
- }
- \| undefined
- \> {
- // In DependenciesScanner#scanForModules we already check for undefined or invalid modules
- // We still need to catch the edge-case of \`forwardRef(() => undefined)\`
- if (!metatype) {
- throw new UndefinedForwardRefException(scope);
- }
- const { type, dynamicMetadata, token } =
- await this.moduleCompiler.compile(metatype);
- if (this.modules.has(token)) {
- return {
- moduleRef: this.modules.get(token)!,
- inserted: true,
- };
- }
-
- return {
- moduleRef: await this.setModule(
- {
- token,
- type,
- dynamicMetadata,
- },
- scope,
- ),
- inserted: true,
- };
- }
-
- public async replaceModule(
- metatypeToReplace: ModuleMetatype,
- newMetatype: ModuleMetatype,
- scope: ModuleScope,
- ): Promise<
- \| {
- moduleRef: Module;
- inserted: boolean;
- }
- \| undefined
- \> {
- // In DependenciesScanner#scanForModules we already check for undefined or invalid modules
- // We still need to catch the edge-case of \`forwardRef(() => undefined)\`
- if (!metatypeToReplace \|\| !newMetatype) {
- throw new UndefinedForwardRefException(scope);
- }
-
- const { token } = await this.moduleCompiler.compile(metatypeToReplace);
- const { type, dynamicMetadata } =
- await this.moduleCompiler.compile(newMetatype);
-
- return {
- moduleRef: await this.setModule(
- {
- token,
- type,
- dynamicMetadata,
- },
- scope,
- ),
- inserted: false,
- };
- }
-
- private async setModule(
- { token, dynamicMetadata, type }: ModuleFactory,
- scope: ModuleScope,
- ): Promise {
- const moduleRef = new Module(type, this);
- moduleRef.token = token;
- moduleRef.initOnPreview = this.shouldInitOnPreview(type);
- this.modules.set(token, moduleRef);
-
- const updatedScope = (\[\] as ModuleScope).concat(scope, type);
- await this.addDynamicMetadata(token, dynamicMetadata!, updatedScope);
-
- if (this.isGlobalModule(type, dynamicMetadata)) {
- moduleRef.isGlobal = true;
-
- // Set global module distance to MAX\_VALUE to ensure their lifecycle hooks
- // are always executed first (when initializing the application)
- moduleRef.distance = Number.MAX\_VALUE;
- this.addGlobalModule(moduleRef);
- }
-
- return moduleRef;
- }
-
- public async addDynamicMetadata(
- token: string,
- dynamicModuleMetadata: Partial,
- scope: Type\[\],
- ) {
- if (!dynamicModuleMetadata) {
- return;
- }
- this.dynamicModulesMetadata.set(token, dynamicModuleMetadata);
-
- const { imports } = dynamicModuleMetadata;
- await this.addDynamicModules(imports!, scope);
- }
-
- public async addDynamicModules(modules: any\[\], scope: Type\[\]) {
- if (!modules) {
- return;
- }
- await Promise.all(modules.map(module => this.addModule(module, scope)));
- }
-
- public isGlobalModule(
- metatype: Type,
- dynamicMetadata?: Partial,
- ): boolean {
- if (dynamicMetadata && dynamicMetadata.global) {
- return true;
- }
- return !!Reflect.getMetadata(GLOBAL\_MODULE\_METADATA, metatype);
- }
-
- public addGlobalModule(module: Module) {
- this.globalModules.add(module);
- }
-
- public getModules(): ModulesContainer {
- return this.modules;
- }
-
- public getModuleCompiler(): ModuleCompiler {
- return this.moduleCompiler;
- }
-
- public getModuleByKey(moduleKey: string): Module \| undefined {
- return this.modules.get(moduleKey);
- }
-
- public getInternalCoreModuleRef(): Module \| undefined {
- return this.internalCoreModule;
- }
-
- public async addImport(
- relatedModule: Type \| DynamicModule,
- token: string,
- ) {
- if (!this.modules.has(token)) {
- return;
- }
- const moduleRef = this.modules.get(token)!;
- const { token: relatedModuleToken } =
- await this.moduleCompiler.compile(relatedModule);
- const related = this.modules.get(relatedModuleToken)!;
- moduleRef.addImport(related);
- }
-
- public addProvider(
- provider: Provider,
- token: string,
- enhancerSubtype?: EnhancerSubtype,
- ): string \| symbol \| Function {
- const moduleRef = this.modules.get(token);
- if (!provider) {
- throw new CircularDependencyException(moduleRef?.metatype.name);
- }
- if (!moduleRef) {
- throw new UnknownModuleException();
- }
- const providerKey = moduleRef.addProvider(provider, enhancerSubtype!);
- const providerRef = moduleRef.getProviderByKey(providerKey);
-
- DiscoverableMetaHostCollection.inspectProvider(this.modules, providerRef);
-
- return providerKey as Function;
- }
-
- public addInjectable(
- injectable: Provider,
- token: string,
- enhancerSubtype: EnhancerSubtype,
- host?: Type,
- ) {
- if (!this.modules.has(token)) {
- throw new UnknownModuleException();
- }
- const moduleRef = this.modules.get(token)!;
- return moduleRef.addInjectable(injectable, enhancerSubtype, host);
- }
-
- public addExportedProviderOrModule(
- toExport: Type \| DynamicModule,
- token: string,
- ) {
- if (!this.modules.has(token)) {
- throw new UnknownModuleException();
- }
- const moduleRef = this.modules.get(token)!;
- moduleRef.addExportedProviderOrModule(toExport);
- }
-
- public addController(controller: Type, token: string) {
- if (!this.modules.has(token)) {
- throw new UnknownModuleException();
- }
- const moduleRef = this.modules.get(token)!;
- moduleRef.addController(controller);
-
- const controllerRef = moduleRef.controllers.get(controller)!;
- DiscoverableMetaHostCollection.inspectController(
- this.modules,
- controllerRef,
- );
- }
-
- public clear() {
- this.modules.clear();
- }
-
- public replace(toReplace: any, options: { scope: any\[\] \| null }) {
- this.modules.forEach(moduleRef => moduleRef.replace(toReplace, options));
- }
-
- public bindGlobalScope() {
- this.modules.forEach(moduleRef => this.bindGlobalsToImports(moduleRef));
- }
-
- public bindGlobalsToImports(moduleRef: Module) {
- this.globalModules.forEach(globalModule =>
- this.bindGlobalModuleToModule(moduleRef, globalModule),
- );
- }
-
- public bindGlobalModuleToModule(target: Module, globalModule: Module) {
- if (target === globalModule \|\| target === this.internalCoreModule) {
- return;
- }
- target.addImport(globalModule);
- }
-
- public getDynamicMetadataByToken(token: string): Partial;
- public getDynamicMetadataByToken<
- K extends Exclude,
- >(token: string, metadataKey: K): DynamicModule\[K\];
- public getDynamicMetadataByToken(
- token: string,
- metadataKey?: Exclude,
- ) {
- const metadata = this.dynamicModulesMetadata.get(token);
- return metadataKey ? (metadata?.\[metadataKey\] ?? \[\]) : metadata;
- }
-
- public registerCoreModuleRef(moduleRef: Module) {
- this.internalCoreModule = moduleRef;
- this.modules\[InternalCoreModule.name\] = moduleRef;
- }
-
- public getModuleTokenFactory(): ModuleOpaqueKeyFactory {
- return this.moduleCompiler.moduleOpaqueKeyFactory;
- }
-
- public registerRequestProvider(request: T, contextId: ContextId) {
- const wrapper = this.internalCoreModule.getProviderByKey(REQUEST);
- wrapper.setInstanceByContextId(contextId, {
- instance: request,
- isResolved: true,
- });
- }
-
- private shouldInitOnPreview(type: Type) {
- return InitializeOnPreviewAllowlist.has(type);
- }
-}
+*#* *C*o*n*t*e*n*t* *f*r*o*m* *h*t*t*p*s*:*/*/*r*a*w*.*g*i*t*h*u*b*u*s*e*r*c*o*n*t*e*n*t*.*c*o*m*/*n*e*s*t*j*s*/*n*e*s*t*/*m*a*s*t*e*r*/*p*a*c*k*a*g*e*s*/*c*o*r*e*/*i*n*j*e*c*t*o*r*/*c*o*n*t*a*i*n*e*r*.*t*s*
+*
+*i*m*p*o*r*t* *{* *D*y*n*a*m*i*c*M*o*d*u*l*e*,* *P*r*o*v*i*d*e*r* *}* *f*r*o*m* *'*@*n*e*s*t*j*s*/*c*o*m*m*o*n*'*;*
+*i*m*p*o*r*t* *{*
+* *E*n*h*a*n*c*e*r*S*u*b*t*y*p*e*,*
+* *G*L*O*B*A*L*_*M*O*D*U*L*E*_*M*E*T*A*D*A*T*A*,*
+*}* *f*r*o*m* *'*@*n*e*s*t*j*s*/*c*o*m*m*o*n*/*c*o*n*s*t*a*n*t*s*'*;*
+*i*m*p*o*r*t* *{* *I*n*j*e*c*t*a*b*l*e*,* *T*y*p*e* *}* *f*r*o*m* *'*@*n*e*s*t*j*s*/*c*o*m*m*o*n*/*i*n*t*e*r*f*a*c*e*s*'*;*
+*i*m*p*o*r*t* *{* *N*e*s*t*A*p*p*l*i*c*a*t*i*o*n*C*o*n*t*e*x*t*O*p*t*i*o*n*s* *}* *f*r*o*m* *'*@*n*e*s*t*j*s*/*c*o*m*m*o*n*/*i*n*t*e*r*f*a*c*e*s*/*n*e*s*t*-*a*p*p*l*i*c*a*t*i*o*n*-*c*o*n*t*e*x*t*-*o*p*t*i*o*n*s*.*i*n*t*e*r*f*a*c*e*'*;*
+*i*m*p*o*r*t* *{* *A*p*p*l*i*c*a*t*i*o*n*C*o*n*f*i*g* *}* *f*r*o*m* *'*.*.*/*a*p*p*l*i*c*a*t*i*o*n*-*c*o*n*f*i*g*'*;*
+*i*m*p*o*r*t* *{* *D*i*s*c*o*v*e*r*a*b*l*e*M*e*t*a*H*o*s*t*C*o*l*l*e*c*t*i*o*n* *}* *f*r*o*m* *'*.*.*/*d*i*s*c*o*v*e*r*y*/*d*i*s*c*o*v*e*r*a*b*l*e*-*m*e*t*a*-*h*o*s*t*-*c*o*l*l*e*c*t*i*o*n*'*;*
+*i*m*p*o*r*t* *{*
+* *C*i*r*c*u*l*a*r*D*e*p*e*n*d*e*n*c*y*E*x*c*e*p*t*i*o*n*,*
+* *U*n*d*e*f*i*n*e*d*F*o*r*w*a*r*d*R*e*f*E*x*c*e*p*t*i*o*n*,*
+* *U*n*k*n*o*w*n*M*o*d*u*l*e*E*x*c*e*p*t*i*o*n*,*
+*}* *f*r*o*m* *'*.*.*/*e*r*r*o*r*s*/*e*x*c*e*p*t*i*o*n*s*'*;*
+*i*m*p*o*r*t* *{* *I*n*i*t*i*a*l*i*z*e*O*n*P*r*e*v*i*e*w*A*l*l*o*w*l*i*s*t* *}* *f*r*o*m* *'*.*.*/*i*n*s*p*e*c*t*o*r*/*i*n*i*t*i*a*l*i*z*e*-*o*n*-*p*r*e*v*i*e*w*.*a*l*l*o*w*l*i*s*t*'*;*
+*i*m*p*o*r*t* *{* *S*e*r*i*a*l*i*z*e*d*G*r*a*p*h* *}* *f*r*o*m* *'*.*.*/*i*n*s*p*e*c*t*o*r*/*s*e*r*i*a*l*i*z*e*d*-*g*r*a*p*h*'*;*
+*i*m*p*o*r*t* *{* *R*E*Q*U*E*S*T* *}* *f*r*o*m* *'*.*.*/*r*o*u*t*e*r*/*r*e*q*u*e*s*t*/*r*e*q*u*e*s*t*-*c*o*n*s*t*a*n*t*s*'*;*
+*i*m*p*o*r*t* *{* *M*o*d*u*l*e*C*o*m*p*i*l*e*r*,* *M*o*d*u*l*e*F*a*c*t*o*r*y* *}* *f*r*o*m* *'*.*/*c*o*m*p*i*l*e*r*'*;*
+*i*m*p*o*r*t* *{* *C*o*n*t*e*x*t*I*d* *}* *f*r*o*m* *'*.*/*i*n*s*t*a*n*c*e*-*w*r*a*p*p*e*r*'*;*
+*i*m*p*o*r*t* *{* *I*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e* *}* *f*r*o*m* *'*.*/*i*n*t*e*r*n*a*l*-*c*o*r*e*-*m*o*d*u*l*e*/*i*n*t*e*r*n*a*l*-*c*o*r*e*-*m*o*d*u*l*e*'*;*
+*i*m*p*o*r*t* *{* *I*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e* *}* *f*r*o*m* *'*.*/*i*n*t*e*r*n*a*l*-*p*r*o*v*i*d*e*r*s*-*s*t*o*r*a*g*e*'*;*
+*i*m*p*o*r*t* *{* *M*o*d*u*l*e* *}* *f*r*o*m* *'*.*/*m*o*d*u*l*e*'*;*
+*i*m*p*o*r*t* *{* *M*o*d*u*l*e*s*C*o*n*t*a*i*n*e*r* *}* *f*r*o*m* *'*.*/*m*o*d*u*l*e*s*-*c*o*n*t*a*i*n*e*r*'*;*
+*i*m*p*o*r*t* *{* *B*y*R*e*f*e*r*e*n*c*e*M*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y* *}* *f*r*o*m* *'*.*/*o*p*a*q*u*e*-*k*e*y*-*f*a*c*t*o*r*y*/*b*y*-*r*e*f*e*r*e*n*c*e*-*m*o*d*u*l*e*-*o*p*a*q*u*e*-*k*e*y*-*f*a*c*t*o*r*y*'*;*
+*i*m*p*o*r*t* *{* *D*e*e*p*H*a*s*h*e*d*M*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y* *}* *f*r*o*m* *'*.*/*o*p*a*q*u*e*-*k*e*y*-*f*a*c*t*o*r*y*/*d*e*e*p*-*h*a*s*h*e*d*-*m*o*d*u*l*e*-*o*p*a*q*u*e*-*k*e*y*-*f*a*c*t*o*r*y*'*;*
+*i*m*p*o*r*t* *{* *M*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y* *}* *f*r*o*m* *'*.*/*o*p*a*q*u*e*-*k*e*y*-*f*a*c*t*o*r*y*/*i*n*t*e*r*f*a*c*e*s*/*m*o*d*u*l*e*-*o*p*a*q*u*e*-*k*e*y*-*f*a*c*t*o*r*y*.*i*n*t*e*r*f*a*c*e*'*;*
+*
+*t*y*p*e* *M*o*d*u*l*e*M*e*t*a*t*y*p*e* *=* *T*y*p*e* *|* *D*y*n*a*m*i*c*M*o*d*u*l*e* *|* *P*r*o*m*i*s*e*;*
+*t*y*p*e* *M*o*d*u*l*e*S*c*o*p*e* *=* *T*y*p*e*[*]*;*
+*
+*e*x*p*o*r*t* *c*l*a*s*s* *N*e*s*t*C*o*n*t*a*i*n*e*r* *{*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *g*l*o*b*a*l*M*o*d*u*l*e*s* *=* *n*e*w* *S*e*t*(*)*;*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *m*o*d*u*l*e*s* *=* *n*e*w* *M*o*d*u*l*e*s*C*o*n*t*a*i*n*e*r*(*)*;*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *d*y*n*a*m*i*c*M*o*d*u*l*e*s*M*e*t*a*d*a*t*a* *=* *n*e*w* *M*a*p*<*
+* *s*t*r*i*n*g*,*
+* *P*a*r*t*i*a*l*
+* *>*(*)*;*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *i*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e* *=* *n*e*w* *I*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e*(*)*;*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *_*s*e*r*i*a*l*i*z*e*d*G*r*a*p*h* *=* *n*e*w* *S*e*r*i*a*l*i*z*e*d*G*r*a*p*h*(*)*;*
+* *p*r*i*v*a*t*e* *m*o*d*u*l*e*C*o*m*p*i*l*e*r*:* *M*o*d*u*l*e*C*o*m*p*i*l*e*r*;*
+* *p*r*i*v*a*t*e* *i*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e*:* *M*o*d*u*l*e*;*
+*
+* *c*o*n*s*t*r*u*c*t*o*r*(*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *_*a*p*p*l*i*c*a*t*i*o*n*C*o*n*f*i*g*:*
+* *|* *A*p*p*l*i*c*a*t*i*o*n*C*o*n*f*i*g*
+* *|* *u*n*d*e*f*i*n*e*d* *=* *u*n*d*e*f*i*n*e*d*,*
+* *p*r*i*v*a*t*e* *r*e*a*d*o*n*l*y* *_*c*o*n*t*e*x*t*O*p*t*i*o*n*s*:*
+* *|* *N*e*s*t*A*p*p*l*i*c*a*t*i*o*n*C*o*n*t*e*x*t*O*p*t*i*o*n*s*
+* *|* *u*n*d*e*f*i*n*e*d* *=* *u*n*d*e*f*i*n*e*d*,*
+* *)* *{*
+* *c*o*n*s*t* *m*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y* *=*
+* *t*h*i*s*.*_*c*o*n*t*e*x*t*O*p*t*i*o*n*s*?*.*m*o*d*u*l*e*I*d*G*e*n*e*r*a*t*o*r*A*l*g*o*r*i*t*h*m* *=*=*=* *'*d*e*e*p*-*h*a*s*h*'*
+* *?* *n*e*w* *D*e*e*p*H*a*s*h*e*d*M*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y*(*)*
+* *:* *n*e*w* *B*y*R*e*f*e*r*e*n*c*e*M*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y*(*{*
+* *k*e*y*G*e*n*e*r*a*t*i*o*n*S*t*r*a*t*e*g*y*:* *t*h*i*s*.*_*c*o*n*t*e*x*t*O*p*t*i*o*n*s*?*.*s*n*a*p*s*h*o*t*
+* *?* *'*s*h*a*l*l*o*w*'*
+* *:* *'*r*a*n*d*o*m*'*,*
+* *}*)*;*
+* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r* *=* *n*e*w* *M*o*d*u*l*e*C*o*m*p*i*l*e*r*(*m*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y*)*;*
+* *}*
+*
+* *g*e*t* *s*e*r*i*a*l*i*z*e*d*G*r*a*p*h*(*)*:* *S*e*r*i*a*l*i*z*e*d*G*r*a*p*h* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*_*s*e*r*i*a*l*i*z*e*d*G*r*a*p*h*;*
+* *}*
+*
+* *g*e*t* *a*p*p*l*i*c*a*t*i*o*n*C*o*n*f*i*g*(*)*:* *A*p*p*l*i*c*a*t*i*o*n*C*o*n*f*i*g* *|* *u*n*d*e*f*i*n*e*d* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*_*a*p*p*l*i*c*a*t*i*o*n*C*o*n*f*i*g*;*
+* *}*
+*
+* *g*e*t* *c*o*n*t*e*x*t*O*p*t*i*o*n*s*(*)*:* *N*e*s*t*A*p*p*l*i*c*a*t*i*o*n*C*o*n*t*e*x*t*O*p*t*i*o*n*s* *|* *u*n*d*e*f*i*n*e*d* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*_*c*o*n*t*e*x*t*O*p*t*i*o*n*s*;*
+* *}*
+*
+* *p*u*b*l*i*c* *s*e*t*H*t*t*p*A*d*a*p*t*e*r*(*h*t*t*p*A*d*a*p*t*e*r*:* *a*n*y*)* *{*
+* *t*h*i*s*.*i*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e*.*h*t*t*p*A*d*a*p*t*e*r* *=* *h*t*t*p*A*d*a*p*t*e*r*;*
+*
+* *i*f* *(*!*t*h*i*s*.*i*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e*.*h*t*t*p*A*d*a*p*t*e*r*H*o*s*t*)* *{*
+* *r*e*t*u*r*n*;*
+* *}*
+* *c*o*n*s*t* *h*o*s*t* *=* *t*h*i*s*.*i*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e*.*h*t*t*p*A*d*a*p*t*e*r*H*o*s*t*;*
+* *h*o*s*t*.*h*t*t*p*A*d*a*p*t*e*r* *=* *h*t*t*p*A*d*a*p*t*e*r*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*H*t*t*p*A*d*a*p*t*e*r*R*e*f*(*)* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*i*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e*.*h*t*t*p*A*d*a*p*t*e*r*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*H*t*t*p*A*d*a*p*t*e*r*H*o*s*t*R*e*f*(*)* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*i*n*t*e*r*n*a*l*P*r*o*v*i*d*e*r*s*S*t*o*r*a*g*e*.*h*t*t*p*A*d*a*p*t*e*r*H*o*s*t*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*s*y*n*c* *a*d*d*M*o*d*u*l*e*(*
+* *m*e*t*a*t*y*p*e*:* *M*o*d*u*l*e*M*e*t*a*t*y*p*e*,*
+* *s*c*o*p*e*:* *M*o*d*u*l*e*S*c*o*p*e*,*
+* *)*:* *P*r*o*m*i*s*e*<*
+* *|* *{*
+* *m*o*d*u*l*e*R*e*f*:* *M*o*d*u*l*e*;*
+* *i*n*s*e*r*t*e*d*:* *b*o*o*l*e*a*n*;*
+* *}*
+* *|* *u*n*d*e*f*i*n*e*d*
+* *>* *{*
+* */*/* *I*n* *D*e*p*e*n*d*e*n*c*i*e*s*S*c*a*n*n*e*r*#*s*c*a*n*F*o*r*M*o*d*u*l*e*s* *w*e* *a*l*r*e*a*d*y* *c*h*e*c*k* *f*o*r* *u*n*d*e*f*i*n*e*d* *o*r* *i*n*v*a*l*i*d* *m*o*d*u*l*e*s*
+* */*/* *W*e* *s*t*i*l*l* *n*e*e*d* *t*o* *c*a*t*c*h* *t*h*e* *e*d*g*e*-*c*a*s*e* *o*f* *`*f*o*r*w*a*r*d*R*e*f*(*(*)* *=*>* *u*n*d*e*f*i*n*e*d*)*`*
+* *i*f* *(*!*m*e*t*a*t*y*p*e*)* *{*
+* *t*h*r*o*w* *n*e*w* *U*n*d*e*f*i*n*e*d*F*o*r*w*a*r*d*R*e*f*E*x*c*e*p*t*i*o*n*(*s*c*o*p*e*)*;*
+* *}*
+* *c*o*n*s*t* *{* *t*y*p*e*,* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*,* *t*o*k*e*n* *}* *=*
+* *a*w*a*i*t* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r*.*c*o*m*p*i*l*e*(*m*e*t*a*t*y*p*e*)*;*
+* *i*f* *(*t*h*i*s*.*m*o*d*u*l*e*s*.*h*a*s*(*t*o*k*e*n*)*)* *{*
+* *r*e*t*u*r*n* *{*
+* *m*o*d*u*l*e*R*e*f*:* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*t*o*k*e*n*)*!*,*
+* *i*n*s*e*r*t*e*d*:* *t*r*u*e*,*
+* *}*;*
+* *}*
+*
+* *r*e*t*u*r*n* *{*
+* *m*o*d*u*l*e*R*e*f*:* *a*w*a*i*t* *t*h*i*s*.*s*e*t*M*o*d*u*l*e*(*
+* *{*
+* *t*o*k*e*n*,*
+* *t*y*p*e*,*
+* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*,*
+* *}*,*
+* *s*c*o*p*e*,*
+* *)*,*
+* *i*n*s*e*r*t*e*d*:* *t*r*u*e*,*
+* *}*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*s*y*n*c* *r*e*p*l*a*c*e*M*o*d*u*l*e*(*
+* *m*e*t*a*t*y*p*e*T*o*R*e*p*l*a*c*e*:* *M*o*d*u*l*e*M*e*t*a*t*y*p*e*,*
+* *n*e*w*M*e*t*a*t*y*p*e*:* *M*o*d*u*l*e*M*e*t*a*t*y*p*e*,*
+* *s*c*o*p*e*:* *M*o*d*u*l*e*S*c*o*p*e*,*
+* *)*:* *P*r*o*m*i*s*e*<*
+* *|* *{*
+* *m*o*d*u*l*e*R*e*f*:* *M*o*d*u*l*e*;*
+* *i*n*s*e*r*t*e*d*:* *b*o*o*l*e*a*n*;*
+* *}*
+* *|* *u*n*d*e*f*i*n*e*d*
+* *>* *{*
+* */*/* *I*n* *D*e*p*e*n*d*e*n*c*i*e*s*S*c*a*n*n*e*r*#*s*c*a*n*F*o*r*M*o*d*u*l*e*s* *w*e* *a*l*r*e*a*d*y* *c*h*e*c*k* *f*o*r* *u*n*d*e*f*i*n*e*d* *o*r* *i*n*v*a*l*i*d* *m*o*d*u*l*e*s*
+* */*/* *W*e* *s*t*i*l*l* *n*e*e*d* *t*o* *c*a*t*c*h* *t*h*e* *e*d*g*e*-*c*a*s*e* *o*f* *`*f*o*r*w*a*r*d*R*e*f*(*(*)* *=*>* *u*n*d*e*f*i*n*e*d*)*`*
+* *i*f* *(*!*m*e*t*a*t*y*p*e*T*o*R*e*p*l*a*c*e* *|*|* *!*n*e*w*M*e*t*a*t*y*p*e*)* *{*
+* *t*h*r*o*w* *n*e*w* *U*n*d*e*f*i*n*e*d*F*o*r*w*a*r*d*R*e*f*E*x*c*e*p*t*i*o*n*(*s*c*o*p*e*)*;*
+* *}*
+*
+* *c*o*n*s*t* *{* *t*o*k*e*n* *}* *=* *a*w*a*i*t* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r*.*c*o*m*p*i*l*e*(*m*e*t*a*t*y*p*e*T*o*R*e*p*l*a*c*e*)*;*
+* *c*o*n*s*t* *{* *t*y*p*e*,* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a* *}* *=*
+* *a*w*a*i*t* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r*.*c*o*m*p*i*l*e*(*n*e*w*M*e*t*a*t*y*p*e*)*;*
+*
+* *r*e*t*u*r*n* *{*
+* *m*o*d*u*l*e*R*e*f*:* *a*w*a*i*t* *t*h*i*s*.*s*e*t*M*o*d*u*l*e*(*
+* *{*
+* *t*o*k*e*n*,*
+* *t*y*p*e*,*
+* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*,*
+* *}*,*
+* *s*c*o*p*e*,*
+* *)*,*
+* *i*n*s*e*r*t*e*d*:* *f*a*l*s*e*,*
+* *}*;*
+* *}*
+*
+* *p*r*i*v*a*t*e* *a*s*y*n*c* *s*e*t*M*o*d*u*l*e*(*
+* *{* *t*o*k*e*n*,* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*,* *t*y*p*e* *}*:* *M*o*d*u*l*e*F*a*c*t*o*r*y*,*
+* *s*c*o*p*e*:* *M*o*d*u*l*e*S*c*o*p*e*,*
+* *)*:* *P*r*o*m*i*s*e* *{*
+* *c*o*n*s*t* *m*o*d*u*l*e*R*e*f* *=* *n*e*w* *M*o*d*u*l*e*(*t*y*p*e*,* *t*h*i*s*)*;*
+* *m*o*d*u*l*e*R*e*f*.*t*o*k*e*n* *=* *t*o*k*e*n*;*
+* *m*o*d*u*l*e*R*e*f*.*i*n*i*t*O*n*P*r*e*v*i*e*w* *=* *t*h*i*s*.*s*h*o*u*l*d*I*n*i*t*O*n*P*r*e*v*i*e*w*(*t*y*p*e*)*;*
+* *t*h*i*s*.*m*o*d*u*l*e*s*.*s*e*t*(*t*o*k*e*n*,* *m*o*d*u*l*e*R*e*f*)*;*
+*
+* *c*o*n*s*t* *u*p*d*a*t*e*d*S*c*o*p*e* *=* *(*[*]* *a*s* *M*o*d*u*l*e*S*c*o*p*e*)*.*c*o*n*c*a*t*(*s*c*o*p*e*,* *t*y*p*e*)*;*
+* *a*w*a*i*t* *t*h*i*s*.*a*d*d*D*y*n*a*m*i*c*M*e*t*a*d*a*t*a*(*t*o*k*e*n*,* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*!*,* *u*p*d*a*t*e*d*S*c*o*p*e*)*;*
+*
+* *i*f* *(*t*h*i*s*.*i*s*G*l*o*b*a*l*M*o*d*u*l*e*(*t*y*p*e*,* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*)*)* *{*
+* *m*o*d*u*l*e*R*e*f*.*i*s*G*l*o*b*a*l* *=* *t*r*u*e*;*
+*
+* */*/* *S*e*t* *g*l*o*b*a*l* *m*o*d*u*l*e* *d*i*s*t*a*n*c*e* *t*o* *M*A*X*_*V*A*L*U*E* *t*o* *e*n*s*u*r*e* *t*h*e*i*r* *l*i*f*e*c*y*c*l*e* *h*o*o*k*s*
+* */*/* *a*r*e* *a*l*w*a*y*s* *e*x*e*c*u*t*e*d* *f*i*r*s*t* *(*w*h*e*n* *i*n*i*t*i*a*l*i*z*i*n*g* *t*h*e* *a*p*p*l*i*c*a*t*i*o*n*)*
+* *m*o*d*u*l*e*R*e*f*.*d*i*s*t*a*n*c*e* *=* *N*u*m*b*e*r*.*M*A*X*_*V*A*L*U*E*;*
+* *t*h*i*s*.*a*d*d*G*l*o*b*a*l*M*o*d*u*l*e*(*m*o*d*u*l*e*R*e*f*)*;*
+* *}*
+*
+* *r*e*t*u*r*n* *m*o*d*u*l*e*R*e*f*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*s*y*n*c* *a*d*d*D*y*n*a*m*i*c*M*e*t*a*d*a*t*a*(*
+* *t*o*k*e*n*:* *s*t*r*i*n*g*,*
+* *d*y*n*a*m*i*c*M*o*d*u*l*e*M*e*t*a*d*a*t*a*:* *P*a*r*t*i*a*l*,*
+* *s*c*o*p*e*:* *T*y*p*e*[*]*,*
+* *)* *{*
+* *i*f* *(*!*d*y*n*a*m*i*c*M*o*d*u*l*e*M*e*t*a*d*a*t*a*)* *{*
+* *r*e*t*u*r*n*;*
+* *}*
+* *t*h*i*s*.*d*y*n*a*m*i*c*M*o*d*u*l*e*s*M*e*t*a*d*a*t*a*.*s*e*t*(*t*o*k*e*n*,* *d*y*n*a*m*i*c*M*o*d*u*l*e*M*e*t*a*d*a*t*a*)*;*
+*
+* *c*o*n*s*t* *{* *i*m*p*o*r*t*s* *}* *=* *d*y*n*a*m*i*c*M*o*d*u*l*e*M*e*t*a*d*a*t*a*;*
+* *a*w*a*i*t* *t*h*i*s*.*a*d*d*D*y*n*a*m*i*c*M*o*d*u*l*e*s*(*i*m*p*o*r*t*s*!*,* *s*c*o*p*e*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*s*y*n*c* *a*d*d*D*y*n*a*m*i*c*M*o*d*u*l*e*s*(*m*o*d*u*l*e*s*:* *a*n*y*[*]*,* *s*c*o*p*e*:* *T*y*p*e*[*]*)* *{*
+* *i*f* *(*!*m*o*d*u*l*e*s*)* *{*
+* *r*e*t*u*r*n*;*
+* *}*
+* *a*w*a*i*t* *P*r*o*m*i*s*e*.*a*l*l*(*m*o*d*u*l*e*s*.*m*a*p*(*m*o*d*u*l*e* *=*>* *t*h*i*s*.*a*d*d*M*o*d*u*l*e*(*m*o*d*u*l*e*,* *s*c*o*p*e*)*)*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *i*s*G*l*o*b*a*l*M*o*d*u*l*e*(*
+* *m*e*t*a*t*y*p*e*:* *T*y*p*e*,*
+* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*?*:* *P*a*r*t*i*a*l*,*
+* *)*:* *b*o*o*l*e*a*n* *{*
+* *i*f* *(*d*y*n*a*m*i*c*M*e*t*a*d*a*t*a* *&*&* *d*y*n*a*m*i*c*M*e*t*a*d*a*t*a*.*g*l*o*b*a*l*)* *{*
+* *r*e*t*u*r*n* *t*r*u*e*;*
+* *}*
+* *r*e*t*u*r*n* *!*!*R*e*f*l*e*c*t*.*g*e*t*M*e*t*a*d*a*t*a*(*G*L*O*B*A*L*_*M*O*D*U*L*E*_*M*E*T*A*D*A*T*A*,* *m*e*t*a*t*y*p*e*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*d*d*G*l*o*b*a*l*M*o*d*u*l*e*(*m*o*d*u*l*e*:* *M*o*d*u*l*e*)* *{*
+* *t*h*i*s*.*g*l*o*b*a*l*M*o*d*u*l*e*s*.*a*d*d*(*m*o*d*u*l*e*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*M*o*d*u*l*e*s*(*)*:* *M*o*d*u*l*e*s*C*o*n*t*a*i*n*e*r* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*m*o*d*u*l*e*s*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*M*o*d*u*l*e*C*o*m*p*i*l*e*r*(*)*:* *M*o*d*u*l*e*C*o*m*p*i*l*e*r* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*M*o*d*u*l*e*B*y*K*e*y*(*m*o*d*u*l*e*K*e*y*:* *s*t*r*i*n*g*)*:* *M*o*d*u*l*e* *|* *u*n*d*e*f*i*n*e*d* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*m*o*d*u*l*e*K*e*y*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*I*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e*R*e*f*(*)*:* *M*o*d*u*l*e* *|* *u*n*d*e*f*i*n*e*d* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*i*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*s*y*n*c* *a*d*d*I*m*p*o*r*t*(*
+* *r*e*l*a*t*e*d*M*o*d*u*l*e*:* *T*y*p*e* *|* *D*y*n*a*m*i*c*M*o*d*u*l*e*,*
+* *t*o*k*e*n*:* *s*t*r*i*n*g*,*
+* *)* *{*
+* *i*f* *(*!*t*h*i*s*.*m*o*d*u*l*e*s*.*h*a*s*(*t*o*k*e*n*)*)* *{*
+* *r*e*t*u*r*n*;*
+* *}*
+* *c*o*n*s*t* *m*o*d*u*l*e*R*e*f* *=* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*t*o*k*e*n*)*!*;*
+* *c*o*n*s*t* *{* *t*o*k*e*n*:* *r*e*l*a*t*e*d*M*o*d*u*l*e*T*o*k*e*n* *}* *=*
+* *a*w*a*i*t* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r*.*c*o*m*p*i*l*e*(*r*e*l*a*t*e*d*M*o*d*u*l*e*)*;*
+* *c*o*n*s*t* *r*e*l*a*t*e*d* *=* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*r*e*l*a*t*e*d*M*o*d*u*l*e*T*o*k*e*n*)*!*;*
+* *m*o*d*u*l*e*R*e*f*.*a*d*d*I*m*p*o*r*t*(*r*e*l*a*t*e*d*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*d*d*P*r*o*v*i*d*e*r*(*
+* *p*r*o*v*i*d*e*r*:* *P*r*o*v*i*d*e*r*,*
+* *t*o*k*e*n*:* *s*t*r*i*n*g*,*
+* *e*n*h*a*n*c*e*r*S*u*b*t*y*p*e*?*:* *E*n*h*a*n*c*e*r*S*u*b*t*y*p*e*,*
+* *)*:* *s*t*r*i*n*g* *|* *s*y*m*b*o*l* *|* *F*u*n*c*t*i*o*n* *{*
+* *c*o*n*s*t* *m*o*d*u*l*e*R*e*f* *=* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*t*o*k*e*n*)*;*
+* *i*f* *(*!*p*r*o*v*i*d*e*r*)* *{*
+* *t*h*r*o*w* *n*e*w* *C*i*r*c*u*l*a*r*D*e*p*e*n*d*e*n*c*y*E*x*c*e*p*t*i*o*n*(*m*o*d*u*l*e*R*e*f*?*.*m*e*t*a*t*y*p*e*.*n*a*m*e*)*;*
+* *}*
+* *i*f* *(*!*m*o*d*u*l*e*R*e*f*)* *{*
+* *t*h*r*o*w* *n*e*w* *U*n*k*n*o*w*n*M*o*d*u*l*e*E*x*c*e*p*t*i*o*n*(*)*;*
+* *}*
+* *c*o*n*s*t* *p*r*o*v*i*d*e*r*K*e*y* *=* *m*o*d*u*l*e*R*e*f*.*a*d*d*P*r*o*v*i*d*e*r*(*p*r*o*v*i*d*e*r*,* *e*n*h*a*n*c*e*r*S*u*b*t*y*p*e*!*)*;*
+* *c*o*n*s*t* *p*r*o*v*i*d*e*r*R*e*f* *=* *m*o*d*u*l*e*R*e*f*.*g*e*t*P*r*o*v*i*d*e*r*B*y*K*e*y*(*p*r*o*v*i*d*e*r*K*e*y*)*;*
+*
+* *D*i*s*c*o*v*e*r*a*b*l*e*M*e*t*a*H*o*s*t*C*o*l*l*e*c*t*i*o*n*.*i*n*s*p*e*c*t*P*r*o*v*i*d*e*r*(*t*h*i*s*.*m*o*d*u*l*e*s*,* *p*r*o*v*i*d*e*r*R*e*f*)*;*
+*
+* *r*e*t*u*r*n* *p*r*o*v*i*d*e*r*K*e*y* *a*s* *F*u*n*c*t*i*o*n*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*d*d*I*n*j*e*c*t*a*b*l*e*(*
+* *i*n*j*e*c*t*a*b*l*e*:* *P*r*o*v*i*d*e*r*,*
+* *t*o*k*e*n*:* *s*t*r*i*n*g*,*
+* *e*n*h*a*n*c*e*r*S*u*b*t*y*p*e*:* *E*n*h*a*n*c*e*r*S*u*b*t*y*p*e*,*
+* *h*o*s*t*?*:* *T*y*p*e*,*
+* *)* *{*
+* *i*f* *(*!*t*h*i*s*.*m*o*d*u*l*e*s*.*h*a*s*(*t*o*k*e*n*)*)* *{*
+* *t*h*r*o*w* *n*e*w* *U*n*k*n*o*w*n*M*o*d*u*l*e*E*x*c*e*p*t*i*o*n*(*)*;*
+* *}*
+* *c*o*n*s*t* *m*o*d*u*l*e*R*e*f* *=* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*t*o*k*e*n*)*!*;*
+* *r*e*t*u*r*n* *m*o*d*u*l*e*R*e*f*.*a*d*d*I*n*j*e*c*t*a*b*l*e*(*i*n*j*e*c*t*a*b*l*e*,* *e*n*h*a*n*c*e*r*S*u*b*t*y*p*e*,* *h*o*s*t*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*d*d*E*x*p*o*r*t*e*d*P*r*o*v*i*d*e*r*O*r*M*o*d*u*l*e*(*
+* *t*o*E*x*p*o*r*t*:* *T*y*p*e* *|* *D*y*n*a*m*i*c*M*o*d*u*l*e*,*
+* *t*o*k*e*n*:* *s*t*r*i*n*g*,*
+* *)* *{*
+* *i*f* *(*!*t*h*i*s*.*m*o*d*u*l*e*s*.*h*a*s*(*t*o*k*e*n*)*)* *{*
+* *t*h*r*o*w* *n*e*w* *U*n*k*n*o*w*n*M*o*d*u*l*e*E*x*c*e*p*t*i*o*n*(*)*;*
+* *}*
+* *c*o*n*s*t* *m*o*d*u*l*e*R*e*f* *=* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*t*o*k*e*n*)*!*;*
+* *m*o*d*u*l*e*R*e*f*.*a*d*d*E*x*p*o*r*t*e*d*P*r*o*v*i*d*e*r*O*r*M*o*d*u*l*e*(*t*o*E*x*p*o*r*t*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *a*d*d*C*o*n*t*r*o*l*l*e*r*(*c*o*n*t*r*o*l*l*e*r*:* *T*y*p*e*,* *t*o*k*e*n*:* *s*t*r*i*n*g*)* *{*
+* *i*f* *(*!*t*h*i*s*.*m*o*d*u*l*e*s*.*h*a*s*(*t*o*k*e*n*)*)* *{*
+* *t*h*r*o*w* *n*e*w* *U*n*k*n*o*w*n*M*o*d*u*l*e*E*x*c*e*p*t*i*o*n*(*)*;*
+* *}*
+* *c*o*n*s*t* *m*o*d*u*l*e*R*e*f* *=* *t*h*i*s*.*m*o*d*u*l*e*s*.*g*e*t*(*t*o*k*e*n*)*!*;*
+* *m*o*d*u*l*e*R*e*f*.*a*d*d*C*o*n*t*r*o*l*l*e*r*(*c*o*n*t*r*o*l*l*e*r*)*;*
+*
+* *c*o*n*s*t* *c*o*n*t*r*o*l*l*e*r*R*e*f* *=* *m*o*d*u*l*e*R*e*f*.*c*o*n*t*r*o*l*l*e*r*s*.*g*e*t*(*c*o*n*t*r*o*l*l*e*r*)*!*;*
+* *D*i*s*c*o*v*e*r*a*b*l*e*M*e*t*a*H*o*s*t*C*o*l*l*e*c*t*i*o*n*.*i*n*s*p*e*c*t*C*o*n*t*r*o*l*l*e*r*(*
+* *t*h*i*s*.*m*o*d*u*l*e*s*,*
+* *c*o*n*t*r*o*l*l*e*r*R*e*f*,*
+* *)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *c*l*e*a*r*(*)* *{*
+* *t*h*i*s*.*m*o*d*u*l*e*s*.*c*l*e*a*r*(*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *r*e*p*l*a*c*e*(*t*o*R*e*p*l*a*c*e*:* *a*n*y*,* *o*p*t*i*o*n*s*:* *{* *s*c*o*p*e*:* *a*n*y*[*]* *|* *n*u*l*l* *}*)* *{*
+* *t*h*i*s*.*m*o*d*u*l*e*s*.*f*o*r*E*a*c*h*(*m*o*d*u*l*e*R*e*f* *=*>* *m*o*d*u*l*e*R*e*f*.*r*e*p*l*a*c*e*(*t*o*R*e*p*l*a*c*e*,* *o*p*t*i*o*n*s*)*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *b*i*n*d*G*l*o*b*a*l*S*c*o*p*e*(*)* *{*
+* *t*h*i*s*.*m*o*d*u*l*e*s*.*f*o*r*E*a*c*h*(*m*o*d*u*l*e*R*e*f* *=*>* *t*h*i*s*.*b*i*n*d*G*l*o*b*a*l*s*T*o*I*m*p*o*r*t*s*(*m*o*d*u*l*e*R*e*f*)*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *b*i*n*d*G*l*o*b*a*l*s*T*o*I*m*p*o*r*t*s*(*m*o*d*u*l*e*R*e*f*:* *M*o*d*u*l*e*)* *{*
+* *t*h*i*s*.*g*l*o*b*a*l*M*o*d*u*l*e*s*.*f*o*r*E*a*c*h*(*g*l*o*b*a*l*M*o*d*u*l*e* *=*>*
+* *t*h*i*s*.*b*i*n*d*G*l*o*b*a*l*M*o*d*u*l*e*T*o*M*o*d*u*l*e*(*m*o*d*u*l*e*R*e*f*,* *g*l*o*b*a*l*M*o*d*u*l*e*)*,*
+* *)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *b*i*n*d*G*l*o*b*a*l*M*o*d*u*l*e*T*o*M*o*d*u*l*e*(*t*a*r*g*e*t*:* *M*o*d*u*l*e*,* *g*l*o*b*a*l*M*o*d*u*l*e*:* *M*o*d*u*l*e*)* *{*
+* *i*f* *(*t*a*r*g*e*t* *=*=*=* *g*l*o*b*a*l*M*o*d*u*l*e* *|*|* *t*a*r*g*e*t* *=*=*=* *t*h*i*s*.*i*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e*)* *{*
+* *r*e*t*u*r*n*;*
+* *}*
+* *t*a*r*g*e*t*.*a*d*d*I*m*p*o*r*t*(*g*l*o*b*a*l*M*o*d*u*l*e*)*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*D*y*n*a*m*i*c*M*e*t*a*d*a*t*a*B*y*T*o*k*e*n*(*t*o*k*e*n*:* *s*t*r*i*n*g*)*:* *P*a*r*t*i*a*l*;*
+* *p*u*b*l*i*c* *g*e*t*D*y*n*a*m*i*c*M*e*t*a*d*a*t*a*B*y*T*o*k*e*n*<*
+* *K* *e*x*t*e*n*d*s* *E*x*c*l*u*d*e*,*
+* *>*(*t*o*k*e*n*:* *s*t*r*i*n*g*,* *m*e*t*a*d*a*t*a*K*e*y*:* *K*)*:* *D*y*n*a*m*i*c*M*o*d*u*l*e*[*K*]*;*
+* *p*u*b*l*i*c* *g*e*t*D*y*n*a*m*i*c*M*e*t*a*d*a*t*a*B*y*T*o*k*e*n*(*
+* *t*o*k*e*n*:* *s*t*r*i*n*g*,*
+* *m*e*t*a*d*a*t*a*K*e*y*?*:* *E*x*c*l*u*d*e*,*
+* *)* *{*
+* *c*o*n*s*t* *m*e*t*a*d*a*t*a* *=* *t*h*i*s*.*d*y*n*a*m*i*c*M*o*d*u*l*e*s*M*e*t*a*d*a*t*a*.*g*e*t*(*t*o*k*e*n*)*;*
+* *r*e*t*u*r*n* *m*e*t*a*d*a*t*a*K*e*y* *?* *(*m*e*t*a*d*a*t*a*?*.*[*m*e*t*a*d*a*t*a*K*e*y*]* *?*?* *[*]*)* *:* *m*e*t*a*d*a*t*a*;*
+* *}*
+*
+* *p*u*b*l*i*c* *r*e*g*i*s*t*e*r*C*o*r*e*M*o*d*u*l*e*R*e*f*(*m*o*d*u*l*e*R*e*f*:* *M*o*d*u*l*e*)* *{*
+* *t*h*i*s*.*i*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e* *=* *m*o*d*u*l*e*R*e*f*;*
+* *t*h*i*s*.*m*o*d*u*l*e*s*[*I*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e*.*n*a*m*e*]* *=* *m*o*d*u*l*e*R*e*f*;*
+* *}*
+*
+* *p*u*b*l*i*c* *g*e*t*M*o*d*u*l*e*T*o*k*e*n*F*a*c*t*o*r*y*(*)*:* *M*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y* *{*
+* *r*e*t*u*r*n* *t*h*i*s*.*m*o*d*u*l*e*C*o*m*p*i*l*e*r*.*m*o*d*u*l*e*O*p*a*q*u*e*K*e*y*F*a*c*t*o*r*y*;*
+* *}*
+*
+* *p*u*b*l*i*c* *r*e*g*i*s*t*e*r*R*e*q*u*e*s*t*P*r*o*v*i*d*e*r*(*r*e*q*u*e*s*t*:* *T*,* *c*o*n*t*e*x*t*I*d*:* *C*o*n*t*e*x*t*I*d*)* *{*
+* *c*o*n*s*t* *w*r*a*p*p*e*r* *=* *t*h*i*s*.*i*n*t*e*r*n*a*l*C*o*r*e*M*o*d*u*l*e*.*g*e*t*P*r*o*v*i*d*e*r*B*y*K*e*y*(*R*E*Q*U*E*S*T*)*;*
+* *w*r*a*p*p*e*r*.*s*e*t*I*n*s*t*a*n*c*e*B*y*C*o*n*t*e*x*t*I*d*(*c*o*n*t*e*x*t*I*d*,* *{*
+* *i*n*s*t*a*n*c*e*:* *r*e*q*u*e*s*t*,*
+* *i*s*R*e*s*o*l*v*e*d*:* *t*r*u*e*,*
+* *}*)*;*
+* *}*
+*
+* *p*r*i*v*a*t*e* *s*h*o*u*l*d*I*n*i*t*O*n*P*r*e*v*i*e*w*(*t*y*p*e*:* *T*y*p*e*)* *{*
+* *r*e*t*u*r*n* *I*n*i*t*i*a*l*i*z*e*O*n*P*r*e*v*i*e*w*A*l*l*o*w*l*i*s*t*.*h*a*s*(*t*y*p*e*)*;*
+* *}*
+*}*
