@@ -1027,7 +1027,7 @@ function generateDart(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
     const [k, v] = f.split(':');
     const ty = v === 'map' ? 'Map<String, dynamic>' : v === 'list' ? 'List<dynamic>' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'String' : 'int';
-    const def = v === 'map' ? '{}' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? "'${v}'" : v;
+    const def = v === 'map' ? '{}' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `'${v}'` : v;
     return { k, ty, def };
   });
   const fieldDecls = fields.map(f => `  static ${f.ty} _${f.k} = ${f.def};`).join('\n');
