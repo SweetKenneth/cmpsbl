@@ -197,7 +197,7 @@ export function seedLlmDiscoveries(): LlmSeedResult {
   if (_seedResult) return _seedResult;
 
   const runId = 'lm-seed-' + Date.now().toString(36);
-  const rand = seedRng(0xL1M0_CAFE);
+  const rand = seedRng(0xA1E0_CAFE);
   const discoveries: LlmDiscovery[] = [];
   let vaultCount = 0, showroomCount = 0, junkyardCount = 0, memoryStreamCount = 0;
   let templateIdx = 0;

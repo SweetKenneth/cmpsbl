@@ -255,7 +255,7 @@ export function seedUltimateDiscoveries(): UltimateSeedResult {
   if (_seedResult) return _seedResult;
 
   const runId = 'ul-seed-' + Date.now().toString(36);
-  const rand = seedRng(0xULT1_CAFE);
+  const rand = seedRng(0xA1F1_CAFE);
   const discoveries: UltimateDiscovery[] = [];
   let vaultCount = 0, showroomCount = 0, junkyardCount = 0, memoryStreamCount = 0;
   let templateIdx = 0;

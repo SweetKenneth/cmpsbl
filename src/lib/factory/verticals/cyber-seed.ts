@@ -204,7 +204,7 @@ export function seedCyberDiscoveries(): CyberSeedResult {
   if (_seedResult) return _seedResult;
 
   const runId = 'cy-seed-' + Date.now().toString(36);
-  const rand = seedRng(0xCYBE_CAFE);
+  const rand = seedRng(0xC78E_CAFE);
   const discoveries: CyberDiscovery[] = [];
   let vaultCount = 0, showroomCount = 0, junkyardCount = 0, memoryStreamCount = 0;
   let templateIdx = 0;

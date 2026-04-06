@@ -193,7 +193,7 @@ export function seedRoboticsDiscoveries(): RoboticsSeedResult {
   if (_seedResult) return _seedResult;
 
   const runId = 'rb-seed-' + Date.now().toString(36);
-  const rand = seedRng(0xR0B0_CAFE);
+  const rand = seedRng(0xB0B0_CAFE);
   const discoveries: RoboticsDiscovery[] = [];
   let vaultCount = 0, showroomCount = 0, junkyardCount = 0, memoryStreamCount = 0;
   let templateIdx = 0;
