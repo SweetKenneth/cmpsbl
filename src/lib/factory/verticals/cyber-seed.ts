@@ -10,7 +10,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../discovery-retirement';
 import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 
@@ -180,17 +179,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §6 — VAULT & MEMORY STREAM POOL
-// ═══════════════════════════════════════════════════════════════
-
-const CYBER_VAULT = new Map<string, CyberDiscovery>();
-const CYBER_MEMORY_STREAM_POOL: CyberDiscovery[] = [];
-
-export function getCyberVault(): CyberDiscovery[] { return Array.from(CYBER_VAULT.values()); }
-export function getCyberVaultCount(): number { return CYBER_VAULT.size; }
-export function getCyberMemoryStreamPool(): CyberDiscovery[] { return [...CYBER_MEMORY_STREAM_POOL]; }
-export function getCyberMemoryStreamCount(): number { return CYBER_MEMORY_STREAM_POOL.length; }
+// §6 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §7 — MAIN SEED ENGINE (GENESIS)
@@ -229,11 +218,10 @@ export function seedCyberDiscoveries(): CyberSeedResult {
     };
 
     discoveries.push(discovery);
-    if (route === 'vault') { CYBER_VAULT.set(discovery.id, discovery); vaultCount++; }
+    if (route === 'vault') { vaultCount++; }
     else {
-      addDiscovery(discovery.id, discovery.name, discovery.description, discovery.cjpiScore, discovery.primitiveChain);
       if (route === 'showroom') showroomCount++; else junkyardCount++;
-      CYBER_MEMORY_STREAM_POOL.push(discovery); memoryStreamCount++;
+      memoryStreamCount++;
     }
   }
 
@@ -253,4 +241,4 @@ export function getCyberSeedSummary() {
   if (!_seedResult) return { total: 0, vault: 0, showroom: 0, junkyard: 0, memoryStream: 0 };
   return { total: _seedResult.totalDiscoveries, vault: _seedResult.vaultCount, showroom: _seedResult.showroomCount, junkyard: _seedResult.junkyardCount, memoryStream: _seedResult.memoryStreamCount };
 }
-export function resetCyberSeed(): void { _seedResult = null; CYBER_VAULT.clear(); CYBER_MEMORY_STREAM_POOL.length = 0; }
+export function resetCyberSeed(): void { _seedResult = null; }

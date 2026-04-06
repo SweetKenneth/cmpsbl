@@ -12,7 +12,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../../factory/discovery-retirement';
 import { routeDiscovery } from '../../factory/foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 import { getMediaEngines, getMediaAgents } from './media';
@@ -191,10 +190,9 @@ export function seedMediaDiscoveries(forceSeed = false): MediaSeedResult {
     });
   }
 
-  // Route discoveries into the foundry system
+  // Route discoveries into the foundry system (DB persistence happens below)
   for (const d of discoveries) {
     try {
-      addDiscovery(d.id, d.name, d.description, d.cjpiScore, d.primitiveChain);
       routeDiscovery(d.cjpiScore);
     } catch {
       // Foundry routing is best-effort during seeding
@@ -262,21 +260,7 @@ export function getMediaSeedSummary() {
   };
 }
 
-export function getMediaVault(): MediaDiscovery[] {
-  return seedMediaDiscoveries().discoveries.filter(d => d.route === 'vault');
-}
-
-export function getMediaVaultCount(): number {
-  return getMediaVault().length;
-}
-
-export function getMediaMemoryStreamPool(): MediaDiscovery[] {
-  return seedMediaDiscoveries().discoveries.filter(d => d.route !== 'vault');
-}
-
-export function getMediaMemoryStreamCount(): number {
-  return getMediaMemoryStreamPool().length;
-}
+// (Plan B Step 9: In-memory vault & pool getters removed — DB is source of truth)
 
 export function resetMediaSeed(): void {
   _cachedResult = null;

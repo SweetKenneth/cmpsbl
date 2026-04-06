@@ -12,7 +12,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery, type ShowroomDiscovery } from '../discovery-retirement';
 import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 import { getQuantumEngines, getQuantumAgents } from './quantum';
@@ -202,31 +201,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §6 — VAULT (Architecture-class gating)
-// ═══════════════════════════════════════════════════════════════
-
-/** Architecture-class discoveries gated in the vault (CJPI ≥ 95) */
-const QUANTUM_VAULT = new Map<string, QuantumDiscovery>();
-
-/** Memory Stream pool for non-vault discoveries */
-const QUANTUM_MEMORY_STREAM_POOL: QuantumDiscovery[] = [];
-
-export function getQuantumVault(): QuantumDiscovery[] {
-  return Array.from(QUANTUM_VAULT.values());
-}
-
-export function getQuantumVaultCount(): number {
-  return QUANTUM_VAULT.size;
-}
-
-export function getQuantumMemoryStreamPool(): QuantumDiscovery[] {
-  return [...QUANTUM_MEMORY_STREAM_POOL];
-}
-
-export function getQuantumMemoryStreamCount(): number {
-  return QUANTUM_MEMORY_STREAM_POOL.length;
-}
+// §6 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §7 — MAIN SEED ENGINE
@@ -286,26 +261,13 @@ export function seedQuantumDiscoveries(): QuantumSeedResult {
 
     // Route the discovery
     if (route === 'vault') {
-      QUANTUM_VAULT.set(discovery.id, discovery);
       vaultCount++;
     } else {
-      // Register in the showroom/junkyard catalog
-      addDiscovery(
-        discovery.id,
-        discovery.name,
-        discovery.description,
-        discovery.cjpiScore,
-        discovery.primitiveChain,
-      );
-
       if (route === 'showroom') {
         showroomCount++;
       } else {
         junkyardCount++;
       }
-
-      // All non-vault discoveries go into the Memory Stream pool
-      QUANTUM_MEMORY_STREAM_POOL.push(discovery);
       memoryStreamCount++;
     }
   }
@@ -387,6 +349,4 @@ export function getQuantumSeedSummary(): {
  */
 export function resetQuantumSeed(): void {
   _seedResult = null;
-  QUANTUM_VAULT.clear();
-  QUANTUM_MEMORY_STREAM_POOL.length = 0;
 }

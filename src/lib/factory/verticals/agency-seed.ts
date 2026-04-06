@@ -12,7 +12,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../discovery-retirement';
 import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 import { getAgencyEngines, getAgencyAgents } from './agency';
@@ -188,27 +187,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
 }
 
 // ═══════════════════════════════════════════════════════════════
-// §6 — VAULT & MEMORY STREAM POOL
-// ═══════════════════════════════════════════════════════════════
-
-const AGENCY_VAULT = new Map<string, AgencyDiscovery>();
-const AGENCY_MEMORY_STREAM_POOL: AgencyDiscovery[] = [];
-
-export function getAgencyVault(): AgencyDiscovery[] {
-  return Array.from(AGENCY_VAULT.values());
-}
-
-export function getAgencyVaultCount(): number {
-  return AGENCY_VAULT.size;
-}
-
-export function getAgencyMemoryStreamPool(): AgencyDiscovery[] {
-  return [...AGENCY_MEMORY_STREAM_POOL];
-}
-
-export function getAgencyMemoryStreamCount(): number {
-  return AGENCY_MEMORY_STREAM_POOL.length;
-}
+// §6 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §7 — MAIN SEED ENGINE (GENESIS)
@@ -267,24 +246,13 @@ export function seedAgencyDiscoveries(): AgencySeedResult {
     discoveries.push(discovery);
 
     if (route === 'vault') {
-      AGENCY_VAULT.set(discovery.id, discovery);
       vaultCount++;
     } else {
-      addDiscovery(
-        discovery.id,
-        discovery.name,
-        discovery.description,
-        discovery.cjpiScore,
-        discovery.primitiveChain,
-      );
-
       if (route === 'showroom') {
         showroomCount++;
       } else {
         junkyardCount++;
       }
-
-      AGENCY_MEMORY_STREAM_POOL.push(discovery);
       memoryStreamCount++;
     }
   }
@@ -341,6 +309,4 @@ export function getAgencySeedSummary(): { total: number; vault: number; showroom
 /** Reset — useful for testing */
 export function resetAgencySeed(): void {
   _seedResult = null;
-  AGENCY_VAULT.clear();
-  AGENCY_MEMORY_STREAM_POOL.length = 0;
 }

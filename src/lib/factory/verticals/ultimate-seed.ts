@@ -13,7 +13,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../discovery-retirement';
 import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 
@@ -231,17 +230,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §7 — VAULT & MEMORY STREAM POOL
-// ═══════════════════════════════════════════════════════════════
-
-const ULTIMATE_VAULT = new Map<string, UltimateDiscovery>();
-const ULTIMATE_MEMORY_STREAM_POOL: UltimateDiscovery[] = [];
-
-export function getUltimateVault(): UltimateDiscovery[] { return Array.from(ULTIMATE_VAULT.values()); }
-export function getUltimateVaultCount(): number { return ULTIMATE_VAULT.size; }
-export function getUltimateMemoryStreamPool(): UltimateDiscovery[] { return [...ULTIMATE_MEMORY_STREAM_POOL]; }
-export function getUltimateMemoryStreamCount(): number { return ULTIMATE_MEMORY_STREAM_POOL.length; }
+// §7 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §8 — MAIN SEED ENGINE (GENESIS)
@@ -280,11 +269,10 @@ export function seedUltimateDiscoveries(): UltimateSeedResult {
     };
 
     discoveries.push(discovery);
-    if (route === 'vault') { ULTIMATE_VAULT.set(discovery.id, discovery); vaultCount++; }
+    if (route === 'vault') { vaultCount++; }
     else {
-      addDiscovery(discovery.id, discovery.name, discovery.description, discovery.cjpiScore, discovery.primitiveChain);
       if (route === 'showroom') showroomCount++; else junkyardCount++;
-      ULTIMATE_MEMORY_STREAM_POOL.push(discovery); memoryStreamCount++;
+      memoryStreamCount++;
     }
   }
 
@@ -304,4 +292,4 @@ export function getUltimateSeedSummary() {
   if (!_seedResult) return { total: 0, vault: 0, showroom: 0, junkyard: 0, memoryStream: 0 };
   return { total: _seedResult.totalDiscoveries, vault: _seedResult.vaultCount, showroom: _seedResult.showroomCount, junkyard: _seedResult.junkyardCount, memoryStream: _seedResult.memoryStreamCount };
 }
-export function resetUltimateSeed(): void { _seedResult = null; ULTIMATE_VAULT.clear(); ULTIMATE_MEMORY_STREAM_POOL.length = 0; }
+export function resetUltimateSeed(): void { _seedResult = null; }

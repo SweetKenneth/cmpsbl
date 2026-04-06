@@ -6,7 +6,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { addDiscovery } from '../discovery-retirement';
 import { routeDiscovery } from '../foundry-engine';
 import { persistSeedDiscoveries, ensureSeedRun } from './seed-persistence';
 
@@ -169,17 +168,7 @@ function generateVariantName(base: string, index: number, rand: () => number): s
   return `${prefix} ${core} ${suffix}`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §6 — VAULT & MEMORY STREAM POOL
-// ═══════════════════════════════════════════════════════════════
-
-const ROBOTICS_VAULT = new Map<string, RoboticsDiscovery>();
-const ROBOTICS_MEMORY_STREAM_POOL: RoboticsDiscovery[] = [];
-
-export function getRoboticsVault(): RoboticsDiscovery[] { return Array.from(ROBOTICS_VAULT.values()); }
-export function getRoboticsVaultCount(): number { return ROBOTICS_VAULT.size; }
-export function getRoboticsMemoryStreamPool(): RoboticsDiscovery[] { return [...ROBOTICS_MEMORY_STREAM_POOL]; }
-export function getRoboticsMemoryStreamCount(): number { return ROBOTICS_MEMORY_STREAM_POOL.length; }
+// §6 — (Plan B Step 9: In-memory vault & pool removed — DB is source of truth)
 
 // ═══════════════════════════════════════════════════════════════
 // §7 — MAIN SEED ENGINE (GENESIS)
@@ -218,11 +207,10 @@ export function seedRoboticsDiscoveries(): RoboticsSeedResult {
     };
 
     discoveries.push(discovery);
-    if (route === 'vault') { ROBOTICS_VAULT.set(discovery.id, discovery); vaultCount++; }
+    if (route === 'vault') { vaultCount++; }
     else {
-      addDiscovery(discovery.id, discovery.name, discovery.description, discovery.cjpiScore, discovery.primitiveChain);
       if (route === 'showroom') showroomCount++; else junkyardCount++;
-      ROBOTICS_MEMORY_STREAM_POOL.push(discovery); memoryStreamCount++;
+      memoryStreamCount++;
     }
   }
 
@@ -242,4 +230,4 @@ export function getRoboticsSeedSummary() {
   if (!_seedResult) return { total: 0, vault: 0, showroom: 0, junkyard: 0, memoryStream: 0 };
   return { total: _seedResult.totalDiscoveries, vault: _seedResult.vaultCount, showroom: _seedResult.showroomCount, junkyard: _seedResult.junkyardCount, memoryStream: _seedResult.memoryStreamCount };
 }
-export function resetRoboticsSeed(): void { _seedResult = null; ROBOTICS_VAULT.clear(); ROBOTICS_MEMORY_STREAM_POOL.length = 0; }
+export function resetRoboticsSeed(): void { _seedResult = null; }
