@@ -210,7 +210,7 @@ export function recordFederatedMatch(
 export interface VerticalScannerInstance {
   verticalId: string;
   /** Prime this vertical's scanner with shared Spine intelligence + domain vocabulary */
-  prime(): VerticalPrimeResult;
+  prime(): Promise<VerticalPrimeResult>;
   /** Record a confirmed match (auto-routes Spine vs Expansion) */
   recordMatch(extraction: FeedbackExtraction): { spineSignals: number; expansionSignals: number };
   /** Get combined signals: shared Spine + vertical-local expansion */
