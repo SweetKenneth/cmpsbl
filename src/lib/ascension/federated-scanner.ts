@@ -250,12 +250,12 @@ export function createVerticalScanner(verticalId: string): VerticalScannerInstan
   const expansionSet = getExpansionPrimitives(verticalId);
   const domainVocab = VERTICAL_DOMAIN_VOCABULARY[verticalId] ?? {};
 
-  const prime = (): VerticalPrimeResult => {
+  const prime = async (): Promise<VerticalPrimeResult> => {
     const start = performance.now();
 
-    // Shared intelligence: vault bridge + reactor chain bridge
+    // Shared intelligence: vault bridge (with DB backlog) + reactor chain bridge
     // These prime the universal Spine glossary that all verticals share
-    const vaultResult: VaultBridgeResult = runVaultBridge();
+    const vaultResult: VaultBridgeResult = await runVaultBridgeWithDB();
     const chainResult: ReactorChainBridgeResult = runReactorChainBridge();
 
     return {
