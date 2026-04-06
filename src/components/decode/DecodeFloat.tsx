@@ -347,7 +347,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
     // ─── Fingerprint Detection Layer (Cross-Table Shared Memory) ───
     const fingerprintMatch = userMessage.match(/\b([a-f0-9]{8,})\b/i);
-    if (fingerprintMatch && userMessage.length < 120) {
+    if (fingerprintMatch && userMessage.length < 200) {
       const possibleFp = fingerprintMatch[1];
       setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
       setIsLoading(true);
@@ -358,14 +358,14 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           if (result.source === 'restoration') {
             const s = result.session;
             const primList = s.selectedPrimitives.join(', ');
-            lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
+            lookupReply = `✅ **Verified** — Fingerprint found in the Refurbishment Center.\n\n` +
               `**Fingerprint:** \`${s.fingerprint}\`\n` +
               `**Serial:** \`${s.serialNumber}\`\n` +
               `**CJPI Score:** ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
               `**Primitives Applied:** ${primList}\n` +
               `**Language:** ${s.originalLanguage ?? 'Unknown'}\n` +
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
-              `I have your full record on file. What would you like to know?`;
+              `This is a verified Ascension record. What would you like to know about this refurbishment?`;
           } else {
             const s = result.session;
             const primList = s.primitivesApplied.length > 0 ? s.primitivesApplied.join(', ') : 'See metadata';
@@ -373,7 +373,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
             const cjpiDisplay = s.finalCjpi != null
               ? `${s.originalCjpi ?? '—'} → **${s.finalCjpi}**/100`
               : s.originalCjpi != null ? `${s.originalCjpi}/100` : 'N/A';
-            lookupReply = `Found it! 🔍 This is a **Vertical Ascension** record from **${s.verticalName ?? s.verticalId}**:\n\n` +
+            lookupReply = `✅ **Verified** — This is a **Vertical Ascension** record from **${s.verticalName ?? s.verticalId}**.\n\n` +
               `**Fingerprint:** \`${s.fingerprintId}\`\n` +
               `**CJPI:** ${cjpiDisplay}\n` +
               `**Status:** ${s.status}\n` +
@@ -384,14 +384,22 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
               `\n\nThis ascension was processed through the **${s.verticalName ?? s.verticalId}** substrate. What would you like to know?`;
           }
           setMessages(prev => [...prev, { role: 'assistant', content: lookupReply }]);
-          setIsLoading(false);
-          return;
+        } else {
+          // No record found — tell the user directly, do NOT fall through to AI
+          setMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `🔍 I searched both the **Refurbishment Center** and all **Vertical Ascension** records for fingerprint \`${possibleFp}\`, but no matching record was found.\n\nThis could mean:\n- The fingerprint hasn't been processed yet\n- It may have been entered incorrectly\n- The Ascension session may not have completed\n\nDouble-check the ID and try again, or ask me anything else about the substrate.`
+          }]);
         }
-      } catch {
-        // Not a fingerprint or lookup failed — fall through
+      } catch (err) {
+        // Lookup failed — tell the user, do NOT fall through to AI
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: `⚠️ I attempted to look up fingerprint \`${possibleFp}\` but encountered a database error. Please try again in a moment.\n\nIf the issue persists, contact **support@cmpsbl.com** with your fingerprint ID.`
+        }]);
       }
       setIsLoading(false);
-      setMessages(prev => prev.slice(0, -1));
+      return; // ALWAYS return — never fall through to generic AI for fingerprint queries
     }
 
     if (isCommand(userMessage) && identityRole === 'governor' && isGovernorCommand(userMessage)) {
