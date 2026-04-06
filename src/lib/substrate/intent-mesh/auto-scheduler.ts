@@ -452,7 +452,7 @@ class MeshAutoScheduler {
    * Run a single full cycle manually (all phases)
    */
   async runOnce(): Promise<{
-    cdmReactor: { accepted: number; sTierPromoted: number };
+    cdmReactor: { accepted: number; sTierPromoted: number; scannerDiscoveries: number };
     moduleDiscovery: number;
     gapAnalysis: { gaps: number; recommendations: number };
     intentScoring: number;
