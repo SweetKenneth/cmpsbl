@@ -52,7 +52,11 @@ export function DeveloperSignupForm({ className }: { className?: string }) {
     setResult(null);
 
     try {
+      const { data: authData } = await supabase.auth.getSession();
       const { data, error } = await supabase.functions.invoke('developer-signup', {
+        headers: authData.session?.access_token
+          ? { Authorization: `Bearer ${authData.session.access_token}` }
+          : undefined,
         body: { email, name }
       });
 
