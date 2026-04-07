@@ -24,6 +24,10 @@ import {
   Cpu,
   Mail,
   Award,
+  Search,
+  Link2,
+  CheckCircle,
+  Unlink,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -31,6 +35,9 @@ import heroWrap from "@/assets/mana/hero-wrap.jpg";
 import dualLayer from "@/assets/mana/dual-layer.jpg";
 import defenseGate from "@/assets/mana/defense-gate.jpg";
 import rfc1Timeline from "@/assets/mana/rfc1-timeline.jpg";
+import lifecyclePhases from "@/assets/mana/lifecycle-phases.jpg";
+import proxyMechanism from "@/assets/mana/proxy-mechanism.jpg";
+import shadowRuleIntercept from "@/assets/mana/shadow-rule-intercept.jpg";
 
 const PATENT_APP_NO = "64/031,637";
 
