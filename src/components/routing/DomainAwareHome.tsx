@@ -14,6 +14,7 @@ const UltimateHome = lazy(() => import("@/pages/UltimateHome"));
 const MediaHome = lazy(() => import("@/pages/MediaHome"));
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 const ControlCenterHome = lazy(() => import("@/pages/ControlCenterHome"));
+const ManaHome = lazy(() => import("@/pages/ManaHome"));
 
 /**
  * Domain-aware routing:
