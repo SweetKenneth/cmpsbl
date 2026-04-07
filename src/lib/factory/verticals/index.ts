@@ -95,6 +95,19 @@ export {
 } from './ultimate';
 
 export {
+  getFintechSubstrate,
+  getFintechPrimitives,
+  getFintechEngines,
+  getFintechAgents,
+  getAllFintechCapabilities,
+  getFintechCrownJewels,
+  getFintechPrimitiveCrownJewels,
+  getFintechCrownJewelSummary,
+  getFintechCrownJewelCount,
+  getFintechCrownJewelCapabilities,
+} from './fintech';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
