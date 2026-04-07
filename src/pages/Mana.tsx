@@ -239,7 +239,7 @@ export default function Mana() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                    className="p-3 sm:p-4 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10"
+                    className="p-3 sm:p-4 rounded-xl bg-black/70 backdrop-blur-md border border-white/15"
                   >
                     <phase.icon className="w-5 h-5 text-primary mx-auto mb-2" />
                     <p className="text-xs sm:text-sm font-black text-white tracking-wider">{phase.label}</p>
