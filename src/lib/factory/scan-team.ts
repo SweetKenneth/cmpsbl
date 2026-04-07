@@ -383,7 +383,7 @@ export async function runScanTeam(codeSnippet: string, fileName?: string): Promi
   const startTime = Date.now();
   const rand = seededRandom(codeSeed(codeSnippet));
   const metrics = analyzeCodeMetrics(codeSnippet, fileName);
-  const isUltimateSurface = getVerticalSubdomain() === 'ultimate';
+  
 
   // Six-primitive scan squad
   const encodeFindings = analyzeWithEncode(codeSnippet, metrics);
