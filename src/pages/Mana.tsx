@@ -213,6 +213,33 @@ export default function Mana() {
                 <Link to="/case-studies">View Case Studies</Link>
               </Button>
             </motion.div>
+
+            {/* ── RFC 1 Anniversary ── */}
+            <motion.div
+              variants={fadeUp}
+              custom={5}
+              className="mt-14 max-w-2xl mx-auto"
+            >
+              <Card className="border-primary/20 bg-primary/[0.03]">
+                <CardContent className="p-6 sm:p-8">
+                  <p className="text-xs font-bold tracking-widest uppercase text-primary mb-3">
+                    April 7 — A Day That Changed Computing. Twice.
+                  </p>
+                  <p className="text-base text-muted-foreground leading-relaxed mb-4">
+                    On April 7, 1969 — exactly 57 years ago today — <strong className="text-foreground">RFC 1</strong> was
+                    published, establishing the foundational protocol layer that became the internet.
+                    A new category of infrastructure was born: an invisible layer that every application
+                    would eventually depend on, without ever needing to understand how it worked.
+                  </p>
+                  <p className="text-base text-muted-foreground leading-relaxed">
+                    On April 7, 2026, we filed the patent for <strong className="text-foreground">Mana</strong> — a new
+                    foundational layer for software itself. Where RFC 1 gave applications a universal
+                    communication protocol, Mana gives them a universal capability and governance protocol.
+                    We chose this date deliberately. The parallel is exact. The ambition is the same.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
           </motion.div>
         </section>
 
