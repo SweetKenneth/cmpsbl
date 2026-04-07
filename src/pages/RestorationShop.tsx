@@ -311,7 +311,7 @@ export default function RestorationShop() {
         });
       });
     });
-  }, [report, code, refurbishedCode, identityRole]);
+  }, [report, code, refurbishedCode, identityRole, selectedPrims, fileName, detectedLang]);
 
   const resetFlow = useCallback(() => {
     setPhase('upload');
