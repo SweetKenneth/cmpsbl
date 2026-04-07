@@ -49,6 +49,7 @@ export const DOMAIN_CONFIG = {
   services: {
     marketplace: 'marketplace.cmpsbl.com',
     control: 'control.cmpsbl.com',
+    mana: 'mana.cmpsbl.com',
   },
 } as const;
 
