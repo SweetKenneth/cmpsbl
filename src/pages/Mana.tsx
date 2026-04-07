@@ -101,8 +101,8 @@ export default function Mana() {
                 custom={1}
                 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8"
               >
-                <span className="block text-foreground">Wrap anything.</span>
-                <span className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent">
+                <span className="block text-white drop-shadow-lg">Wrap anything.</span>
+                <span className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan,190_100%_60%))] to-primary bg-clip-text text-transparent drop-shadow-lg">
                   Modify nothing.
                 </span>
               </motion.h1>
@@ -110,7 +110,7 @@ export default function Mana() {
               <motion.p
                 variants={fadeUp}
                 custom={2}
-                className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
+                className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed drop-shadow-md"
               >
                 Mana silently attaches capabilities to any existing software — security, telemetry,
                 governance — without changing a single line of source code.
