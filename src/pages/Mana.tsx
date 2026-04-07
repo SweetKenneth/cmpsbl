@@ -123,7 +123,7 @@ export default function Mana() {
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-xl h-14 px-10 text-lg font-semibold backdrop-blur-sm bg-background/50">
+                <Button asChild variant="outline" size="lg" className="rounded-xl h-14 px-10 text-lg font-semibold backdrop-blur-sm bg-white/10 border-white/30 text-white hover:bg-white/20">
                   <Link to="/ascension">Experience Ascension</Link>
                 </Button>
               </motion.div>
