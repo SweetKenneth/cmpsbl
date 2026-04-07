@@ -95,6 +95,19 @@ export {
 } from './ultimate';
 
 export {
+  getFintechSubstrate,
+  getFintechPrimitives,
+  getFintechEngines,
+  getFintechAgents,
+  getAllFintechCapabilities,
+  getFintechCrownJewels,
+  getFintechPrimitiveCrownJewels,
+  getFintechCrownJewelSummary,
+  getFintechCrownJewelCount,
+  getFintechCrownJewelCapabilities,
+} from './fintech';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
@@ -155,6 +168,7 @@ import { getLLMSubstrate } from './llm';
 import { getAgencySubstrate } from './agency';
 import { getMediaSubstrate } from './media';
 import { getUltimateSubstrate } from './ultimate';
+import { getFintechSubstrate } from './fintech';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
@@ -168,6 +182,7 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['agency-v1', getAgencySubstrate],
   ['media-v1', getMediaSubstrate],
   ['ultimate-v1', getUltimateSubstrate],
+  ['fintech-v1', getFintechSubstrate],
 ]);
 
 /** Domain to vertical ID mapping (static) */
@@ -179,6 +194,7 @@ const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['agency', 'agency-v1'],
   ['media', 'media-v1'],
   ['ultimate', 'ultimate-v1'],
+  ['fintech', 'fintech-v1'],
 ]);
 
 /**

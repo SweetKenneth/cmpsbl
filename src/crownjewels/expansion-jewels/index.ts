@@ -14,6 +14,7 @@ import { AGENCY_CROWN_JEWELS } from '../agency-vertical-registry';
 import { MEDIA_CROWN_JEWELS } from '../media-vertical-registry';
 import { QUANTUM_CROWN_JEWELS } from '../quantum-vertical-registry';
 import { ULTIMATE_CROWN_JEWELS } from '../ultimate-vertical-registry';
+import { FINTECH_CROWN_JEWELS } from '../fintech-vertical-registry';
 import type { STierEntry } from '../types';
 
 export interface VerticalRegistrySummary {
@@ -32,6 +33,7 @@ const REGISTRIES: Record<string, STierEntry[]> = {
   media: MEDIA_CROWN_JEWELS,
   quantum: QUANTUM_CROWN_JEWELS,
   ultimate: ULTIMATE_CROWN_JEWELS,
+  fintech: FINTECH_CROWN_JEWELS,
 };
 
 /** Get all S-Tier jewels for a specific vertical */
