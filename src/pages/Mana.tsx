@@ -190,7 +190,56 @@ export default function Mana() {
           </motion.div>
         </section>
 
-        {/* ═══ DUAL LAYER IMAGE ═══ */}
+        {/* ═══ LIFECYCLE PHASES — FULL BLEED ═══ */}
+        <section className="relative w-full mb-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+          <img
+            src={lifecyclePhases}
+            alt="Mana's four-phase lifecycle: Scan, Attach, Proof, Detach"
+            width={1920}
+            height={900}
+            loading="lazy"
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+          />
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center px-4 max-w-4xl mx-auto"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 drop-shadow-md">
+                The Four Phases
+              </p>
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-6 drop-shadow-lg">
+                Scan. Attach. Proof. Detach.
+              </h2>
+              <p className="text-lg text-white/80 max-w-2xl mx-auto drop-shadow-md mb-10">
+                Every operation is reversible. Every step is audited. The host returns to its pristine state.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                {[
+                  { icon: Search, label: "SCAN", detail: "Map function boundaries" },
+                  { icon: Link2, label: "ATTACH", detail: "Proxy-wrap each export" },
+                  { icon: CheckCircle, label: "PROOF", detail: "SHA-256 verification" },
+                  { icon: Unlink, label: "DETACH", detail: "Clean restoration" },
+                ].map((phase, i) => (
+                  <motion.div
+                    key={phase.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+                    className="p-4 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10"
+                  >
+                    <phase.icon className="w-5 h-5 text-primary mx-auto mb-2" />
+                    <p className="text-sm font-black text-white tracking-wider">{phase.label}</p>
+                    <p className="text-xs text-white/60 mt-1">{phase.detail}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         <section className="relative w-full mb-32 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
           <img
