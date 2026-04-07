@@ -164,20 +164,6 @@ const CAMPAIGNS: Campaign[] = [
     quarter: "Q3 2026",
   },
   {
-    id: "op-dream-state",
-    codename: "OPERATION: DREAM STATE",
-    title: "What Would ChatGPT Dream?",
-    tagline: "We let DREAM synthesize the subconscious of the world's most-used AI.",
-    description:
-      "Using Mana's DREAM engine on ChatGPT's publicly documented API patterns, rate limits, model card disclosures, and changelog history — we synthesize what the AI's 'subconscious' would look like. Not real data. Pure creative synthesis. But presented so convincingly that people can't stop sharing it.",
-    target: "OpenAI public API documentation & patterns",
-    whatWeAttach: "DREAM synthesis — creative subconscious generation from public data",
-    viralHook: '"ChatGPT\'s DREAM state: It dreams of being asked something it hasn\'t been asked before. It hasn\'t happened yet."',
-    status: "future",
-    icon: Sparkles,
-    quarter: "Q4 2026",
-  },
-  {
     id: "op-left-pad-insurance",
     codename: "OPERATION: LEFT-PAD INSURANCE",
     title: "Left-Pad Insurance",
