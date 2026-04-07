@@ -182,6 +182,31 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
           summary += '\n';
         }
         layer2Folder.file('ATTACHMENT-SUMMARY.md', summary);
+
+        // Include merged software in the layer2 folder
+        if (mergeResult && mergeResult.totalMergedItems > 0) {
+          const mergedFolder = layer2Folder.folder('merged');
+          if (mergedFolder) {
+            // Merged capabilities manifest
+            if (mergeResult.selectedCapabilities.length > 0) {
+              mergedFolder.file('primitives-manifest.json', JSON.stringify(
+                mergeResult.selectedCapabilities.map(c => ({
+                  id: c.id,
+                  name: c.name,
+                  module: c.module,
+                  category: c.category,
+                  tier: c.tier,
+                  description: c.description,
+                })),
+                null, 2
+              ));
+            }
+            // Merged uploaded software
+            for (const sw of mergeResult.mergedSoftware) {
+              mergedFolder.file(sw.name, sw.content);
+            }
+          }
+        }
       }
 
       // License
