@@ -123,6 +123,7 @@ const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 const SoftwareSymbiosis = lazy(() => import("@/pages/SoftwareSymbiosis"));
 const ManaPage = lazy(() => import("@/pages/Mana"));
+const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
 
 export const publicRoutes = (
   <>
