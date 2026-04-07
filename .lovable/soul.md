@@ -613,6 +613,44 @@ This is now permanent. Every session, every page, every response — IP protecti
 
 ---
 
-*Last updated: April 7, 2026 · Session ~27 · Mana patent filed, /mana page live, IP mandate permanent*
-*Next session: Read this file first. Check if investors@cmpsbl.com needs to be set up.*
+### Session ~28 — April 7, 2026 — Mana Engine Built + Visual-First /mana Rewrite
+
+**Three big moves in one afternoon:**
+
+1. **Mana Engine — Core Runtime Built** (`src/lib/mana/`)
+   - `engine.ts` — silent attachment to function boundaries of any Layer 1 host, SHA-256 proof of non-modification
+   - `lex.ts` — Lex Governor lifecycle and governance rule enforcement
+   - `types.ts` — full type system for attachment points, capabilities, proofs
+   - **Lodash demo** (`demos/lodash-attachment.ts`) — first live proof-of-concept: 10 functions, 14 attachment points, DEFENSE gates, Shadow rules ("Simon says no"), BEACON telemetry
+   - **CLI integration** — `cmpsbl mana attach|demo|status|proof` commands wired into the CLI
+   - **Verification dashboard** at `/mana/proof` — live hash comparison, phase-by-phase demo
+
+2. **Visual-First /mana Page Rewrite**
+   - Full-bleed hero with cinematic code-wrapping imagery (3 generated images: hero-wrap, dual-layer architecture, DEFENSE gate shield)
+   - **CodeWrapAnimation** component — animated scan → wrap → activate sequence showing real lodash code being enveloped by Layer 2 capabilities with live capability badges
+   - **ManaStats** — animated counters (14 attachment points, 0 lines modified, 54+ languages, 100% hash match)
+   - Stripped verbose copy — "Wrap anything. Modify nothing." headline, minimal text, maximum visual impact
+   - Full-bleed image sections with overlay text between content blocks
+   - Kept investor CTA, RFC 1 callout, FAQ, patent references
+
+3. **Bug Bounty / Cross-Marketing Strategy Explored**
+   - Kenneth's red team background surfaced a strategic play: using Mana to silently block known vulnerabilities in production software (e.g., Poshmark) without source patches
+   - Cross-marketing concepts developed: Shadow Shield (Poshmark), Mana Guard (Shopify), Deploy with Governance (Vercel/Netlify), Autonomous Patch Layer (HackerOne/CrowdStrike)
+   - Legal analysis confirmed: bug bounty programs grant authorized access, Mana's non-modification property is a selling point to CISOs
+   - Kenneth considering personal outreach to security contacts while we build the live demo
+
+**The pitch that emerged:** *"I found a vuln you haven't fixed. I can block it in 60 seconds without touching your codebase. Want to see?"*
+
+**Kenneth's plan:** Post the lodash wrapping demo on HN to generate visibility while considering the bug bounty angle. The engine is real now — not a concept, not a slide deck. Running code.
+
+**What's next:**
+- Render Remotion video of code being wrapped (the visual teaser for HN)
+- Polish the `/mana/proof` interactive demo for public consumption
+- Kenneth reaching out to security contacts with cross-marketing proposals
+- Consider wrapping Express.js or Socket.io as higher-profile live demos
+
+---
+
+*Last updated: April 7, 2026 · Session ~28 · Mana engine live, visual /mana page shipped, bug bounty strategy forming*
+*Next session: Read this file first. Check HN post status. Render the code-wrapping video if not done.*
 *Remember Kenneth's note at the top. Come in with that thought fresh. He means it. 🫶*
