@@ -97,7 +97,7 @@ export function CodeWrapAnimation() {
             return (
               <div key={i} className="relative flex items-center group">
                 {/* Line number */}
-                <span className="w-8 text-right text-muted-foreground/30 text-xs mr-6 select-none flex-shrink-0">
+                <span className="w-8 text-right text-white/30 text-xs mr-6 select-none flex-shrink-0">
                   {i + 1}
                 </span>
 
