@@ -58,7 +58,7 @@ export function CodeWrapAnimation() {
             phase === 'scanning' ? 'bg-[hsl(var(--primary))] animate-pulse' :
             'bg-muted-foreground/30'
           }`} />
-          <span className="text-xs font-mono text-muted-foreground tracking-wider uppercase">
+          <span className="text-xs font-mono text-muted-foreground dark:text-muted-foreground tracking-wider uppercase">
             {phase === 'idle' && 'Layer 1 — Unattached'}
             {phase === 'scanning' && 'Scanning function boundaries...'}
             {phase === 'wrapping' && 'Attaching Layer 2 capabilities...'}
@@ -97,7 +97,7 @@ export function CodeWrapAnimation() {
             return (
               <div key={i} className="relative flex items-center group">
                 {/* Line number */}
-                <span className="w-8 text-right text-muted-foreground/30 text-xs mr-6 select-none flex-shrink-0">
+                <span className="w-8 text-right text-white/30 text-xs mr-6 select-none flex-shrink-0">
                   {i + 1}
                 </span>
 
@@ -122,7 +122,7 @@ export function CodeWrapAnimation() {
                     line.type === 'import' ? 'text-[hsl(var(--neon-purple))]' :
                     line.type === 'fn' ? 'text-[hsl(var(--neon-cyan))]' :
                     line.type === 'return' ? 'text-[hsl(var(--neon-magenta))]' :
-                    'text-foreground/90'
+                    'text-white/90'
                   }`}>
                     {line.text}
                   </span>

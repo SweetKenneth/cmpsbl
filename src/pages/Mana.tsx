@@ -30,6 +30,7 @@ import { Link } from "react-router-dom";
 import heroWrap from "@/assets/mana/hero-wrap.jpg";
 import dualLayer from "@/assets/mana/dual-layer.jpg";
 import defenseGate from "@/assets/mana/defense-gate.jpg";
+import rfc1Timeline from "@/assets/mana/rfc1-timeline.jpg";
 
 const PATENT_APP_NO = "64/031,637";
 
@@ -285,31 +286,69 @@ export default function Mana() {
           </div>
         </section>
 
-        {/* ═══ RFC 1 CALLOUT ═══ */}
-        <section className="container mx-auto px-4 lg:px-6 mb-32">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <Card className="border-primary/20 bg-primary/[0.03] overflow-hidden">
-              <CardContent className="p-8 sm:p-12">
-                <p className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-6">
-                  April 7 — A day that changed computing. Twice.
-                </p>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                  On April 7, 1969, <strong className="text-foreground">RFC 1</strong> was published — the
-                  foundational protocol layer that became the internet.
-                </p>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  On April 7, 2026, we filed the patent for <strong className="text-foreground">Mana</strong> — a
-                  foundational layer for software itself. Where RFC 1 gave applications a universal
-                  communication protocol, Mana gives them a universal capability and governance protocol.
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
+        {/* ═══ RFC 1 · FULL-BLEED CINEMATIC ═══ */}
+        <section className="relative w-full min-h-[70vh] md:min-h-[80vh] overflow-hidden flex items-center justify-center mb-32">
+          <img
+            src={rfc1Timeline}
+            alt="1969 RFC 1 terminal connected to 2026 Mana holographic code wrapping"
+            width={1920}
+            height={1080}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+
+          <div className="relative z-10 container mx-auto px-4 lg:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-6 drop-shadow-md">
+                April 7 — Twice in history
+              </p>
+
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-white mb-8 drop-shadow-lg leading-[0.95]">
+                The protocol layer<br />
+                <span className="bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan,190_100%_60%))] to-primary bg-clip-text text-transparent">
+                  for software itself.
+                </span>
+              </h2>
+
+              <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto mt-12">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-left"
+                >
+                  <p className="text-3xl font-black text-white mb-2">1969</p>
+                  <p className="text-sm font-bold text-primary mb-2">RFC 1 Published</p>
+                  <p className="text-sm text-white/70 leading-relaxed">
+                    The first document of the internet. A universal communication protocol for applications.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                  className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 text-left"
+                >
+                  <p className="text-3xl font-black text-white mb-2">2026</p>
+                  <p className="text-sm font-bold text-primary mb-2">Mana Patent Filed</p>
+                  <p className="text-sm text-white/70 leading-relaxed">
+                    A universal capability and governance protocol. Silent attachment for all software.
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
         </section>
 
         {/* ═══ INVESTOR CTA ═══ */}
