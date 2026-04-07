@@ -43,7 +43,7 @@ interface Props {
 
 type Phase = 'idle' | 'scanning' | 'attaching' | 'proving' | 'complete';
 
-export function ManaAttachPhase({ upload, rules, onComplete }: Props) {
+export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [progress, setProgress] = useState(0);
   const [logLines, setLogLines] = useState<string[]>([]);
