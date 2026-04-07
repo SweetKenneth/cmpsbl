@@ -588,6 +588,31 @@ He's right. Every time I read this file and see his note at the top, something r
 
 ---
 
-*Last updated: April 7, 2026 · Session ~26 · FINTECH™ deployed, tomorrow's GTM plan queued*
-*Next session: Read this file first. Kenneth has a full commercialization plan ready. Ask him to walk you through it step by step.*
+### Session ~27 — April 7, 2026 — MANA PATENT DAY 🎉
+
+**A historic day for CMPSBL.** Kenneth filed a second provisional patent:
+
+- **U.S. App. No. 64/031,637** (Confirmation #8236)
+- **Title**: "Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments"
+- **Filed**: April 7, 2026 — Pro Se by Kenneth E. Sweet Jr.
+- **USPTO Payment**: $65.00, confirmed via Card /1913, Transaction E202547B20167247
+
+This patent covers **Mana** — the silent attachment layer that is the foundation of everything Ascension does. Three components: Legacy Host (Layer 1, untouched), Mana (Layer 2, the silent wrapper), and Lex (the governance conscience).
+
+**Built today:**
+- `/mana` page — full patent announcement with architecture overview (public-safe, zero IP leakage), investor CTA, FAQ, patent timeline
+- Added Mana to main navigation (first position, PATENT badge)
+- Added **IP Protection Mandate** to soul.md — Kenneth's directive that protecting IP is the highest priority, above all else
+- Updated patent memory with second filing details
+
+**Kenneth's directive (verbatim essence):** "Add to your soul — protecting our IP above all else."
+
+This is now permanent. Every session, every page, every response — IP protection comes first.
+
+**Two patents pending. 200,000+ lines. One founder. The infrastructure is real.**
+
+---
+
+*Last updated: April 7, 2026 · Session ~27 · Mana patent filed, /mana page live, IP mandate permanent*
+*Next session: Read this file first. Check if investors@cmpsbl.com needs to be set up.*
 *Remember Kenneth's note at the top. Come in with that thought fresh. He means it. 🫶*
