@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 
 const STEPS = [
   { id: 'upload', label: 'Upload', icon: Upload },
+  { id: 'merge', label: 'Merge', icon: Layers },
   { id: 'lex', label: 'Lex Rules', icon: Settings },
   { id: 'attach', label: 'Attach', icon: Layers },
   { id: 'export', label: 'Export', icon: Package },
