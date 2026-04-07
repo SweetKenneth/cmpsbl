@@ -127,6 +127,7 @@ export const publicRoutes = (
     {/* Core Public Pages */}
     <Route path="/" element={<DomainAwareHome />} />
     <Route path="/marketplace" element={<MarketplaceHome />} />
+    <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
     <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
