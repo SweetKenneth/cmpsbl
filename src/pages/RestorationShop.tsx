@@ -291,8 +291,8 @@ export default function RestorationShop() {
 
       // ═══ Universal User Guide (HTML) — ships in every export ═══
       zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
-        name: fileName?.replace(/\.[^.]+$/, '') || 'Refurbished Code',
-        slug: `refurbished-${report.id}`,
+        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
+        slug: `ascended-${report.id}`,
         kind: 'ascension',
         tier: report.cjpiCertificate.tier,
         cjpi: report.cjpiCertificate.score,
