@@ -233,8 +233,8 @@ export default function RestorationShop() {
       // ═══ CJPI Certificate ═══
       zip.file('docs/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
 
-      // ═══ HTML Refurbishment Report (styled, self-contained) ═══
-      zip.file('refurbishment-report.html', generateHtmlReport(report));
+      // ═══ HTML Ascension Report (styled, self-contained) ═══
+      zip.file('ascension-report.html', generateHtmlReport(report));
 
       // ═══ Error Codes (styled HTML) ═══
       const errorHtml = report.errorCodes.map(
