@@ -239,7 +239,10 @@ export default function Mana() {
                 ))}
               </div>
             </motion.div>
-          </div>
+           </div>
+        </section>
+
+        {/* ═══ DUAL LAYER IMAGE ═══ */}
         <section className="relative w-full mb-32 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
           <img
