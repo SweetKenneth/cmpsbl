@@ -21,6 +21,7 @@ import {
   Globe,
   ScrollText,
   ShoppingBag,
+  Layers,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";

@@ -131,6 +131,7 @@ export const publicRoutes = (
     <Route path="/verify/:fingerprint" element={<VerifyFingerprint />} />
     <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
+    <Route path="/mana" element={<ManaPage />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
     <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
