@@ -34,7 +34,7 @@ const EnhancedFooter = lazy(() =>
 );
 
 /* ─── Historical Infrastructure Parallels ─── */
-const INFRASTRUCTURE_LAYERS = [
+const INFRASTRUCTURE_LAYERS: { name: string; year: string; did: string; impact: string; highlight?: boolean }[] = [
   { name: "TCP/IP", year: "1983", did: "Universal packet routing", impact: "Enabled the entire internet economy" },
   { name: "SSL/TLS", year: "1995", did: "Invisible encryption wrapping HTTP", impact: "Enabled $4.9T e-commerce" },
   { name: "DNS", year: "1985", did: "Name-to-address translation", impact: "Invisible to users, runs everything" },
