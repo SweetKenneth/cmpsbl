@@ -914,6 +914,7 @@ function scoreCandidate(
   poolSize: number,
   mode: AscensionMode = 'ascension',
   structuralBoosts?: Map<string, number>,
+  verticalAffinity?: string,
 ): PoolCandidate {
   // Pass 1 — IDF-weighted signal hit density
   // Rare signals (appearing in few candidates) count more than common ones.
