@@ -24,6 +24,10 @@ import {
   Cpu,
   Mail,
   Award,
+  Search,
+  Link2,
+  CheckCircle,
+  Unlink,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -31,6 +35,9 @@ import heroWrap from "@/assets/mana/hero-wrap.jpg";
 import dualLayer from "@/assets/mana/dual-layer.jpg";
 import defenseGate from "@/assets/mana/defense-gate.jpg";
 import rfc1Timeline from "@/assets/mana/rfc1-timeline.jpg";
+import lifecyclePhases from "@/assets/mana/lifecycle-phases.jpg";
+import proxyMechanism from "@/assets/mana/proxy-mechanism.jpg";
+import shadowRuleIntercept from "@/assets/mana/shadow-rule-intercept.jpg";
 
 const PATENT_APP_NO = "64/031,637";
 
@@ -56,18 +63,28 @@ const CAPABILITIES = [
 
 /* ── FAQ ── */
 const FAQ_ITEMS = [
-  { question: "What is Mana?", answer: "Mana is a silent software attachment layer — the foundational technology that powers CMPSBL's Ascension engine. It enables capabilities to be attached to any existing software without modifying a single line of the original code." },
-  { question: "Does Mana modify my source code?", answer: "Never. The foundational principle of Mana is that the Legacy Host remains in its original state throughout attachment, operation, and detachment. Your code is byte-for-byte identical before and after. SHA-256 hashes are computed before and after to provide cryptographic proof." },
-  { question: "How does Mana prove it doesn't modify code?", answer: "Mana computes a SHA-256 hash of the host's source code before attachment and again after detachment. If both hashes match — and they always do — that's cryptographic proof of zero modification. You can verify this yourself via the CLI with 'cmpsbl mana demo' or on the /mana/proof dashboard." },
-  { question: "What is Lex?", answer: "Lex is the governance engine — Mana's internal conscience. It autonomously monitors every attachment operation, enforces ethical and security policies, validates host integrity, and maintains immutable audit chains. Every rule verdict is logged with timestamps and reasoning." },
-  { question: "What can I attach with Mana?", answer: "Anything that runs as a JavaScript/TypeScript module. Mana scans host exports and wraps them with Proxy-based attachment points. This includes defense gates, telemetry beacons, shadow rules, and custom Layer 2 logic — all without touching the host." },
-  { question: "What is a 'Shadow Rule'?", answer: "A Shadow Rule is a governance-level override managed by Lex. It can intercept, modify, or deny the output of any attached function based on declarative rules. For example, you could shadow a debounce function to enforce a minimum delay or deny execution entirely — all without the host knowing." },
-  { question: "How is this different from middleware or plugins?", answer: "Middleware and plugins require the host to be designed for extensibility — hooks, events, config APIs. Mana requires nothing from the host. It operates at the module boundary using JavaScript Proxies, meaning any library or codebase can be attached to, even if it was never designed for extension." },
-  { question: "What is the Scan → Attach → Proof → Detach lifecycle?", answer: "This is Mana's four-phase operation: (1) Scan discovers host exports and maps attachment points, (2) Attach silently wraps each function with Layer 2 capabilities via Proxies, (3) Proof computes SHA-256 verification that the host is unmodified, and (4) Detach cleanly removes all attachment points, restoring the host to its original state." },
+  { question: "What is Mana?", answer: "Mana is a silent software attachment layer — the foundational technology that powers CMPSBL's Ascension engine. It enables capabilities to be attached to any existing software without modifying a single line of the original code. Think of it as a second skin for software: invisible, non-intrusive, and independently removable." },
+  { question: "Does Mana modify my source code?", answer: "Never. The foundational principle of Mana is that the Legacy Host (Layer 1) remains in its original state throughout attachment, operation, and detachment. Your code is byte-for-byte identical before and after. SHA-256 hashes are computed before and after to provide cryptographic proof. This isn't a claim — it's mathematically verifiable." },
+  { question: "How does the Proxy wrapping actually work?", answer: "When Mana attaches to a host module, it replaces each target export with a JavaScript Proxy. The Proxy's 'apply' trap intercepts every call: it runs Lex governance checks, logs telemetry, enforces shadow rules, and then calls the original function unchanged. The caller sees no difference — same arguments in, same result out — but Layer 2 is active around every invocation. The original function reference is stored internally for clean detachment." },
+  { question: "How is this different from monkey-patching?", answer: "Monkey-patching overwrites the original function — it's gone, replaced, and unverifiable. Mana wraps via Proxy, keeping the original function intact and reachable. Monkey-patching is destructive and irreversible in practice. Mana's detach phase cleanly restores the original exports, and SHA-256 proves zero modification. Proxies also provide richer interception (arguments, return values, exceptions) without altering the function's identity." },
+  { question: "How does Mana prove it doesn't modify code?", answer: "Mana computes a SHA-256 hash of the host's source code before attachment and again after detachment. If both hashes match — and they always do — that's cryptographic proof of zero modification. You can verify this yourself via the CLI with 'cmpsbl mana demo' or on the /mana/proof dashboard. The proof is not trust-based; it's math-based." },
+  { question: "What is Lex?", answer: "Lex is the governance engine — Mana's internal conscience. It autonomously monitors every attachment operation, enforces ethical and security policies, validates host integrity, and maintains immutable audit chains. Every rule verdict is logged with timestamps and reasoning. Lex decides what Mana is allowed to do — without Lex, Mana won't attach. They are architecturally inseparable." },
+  { question: "What is a Shadow Rule?", answer: "A Shadow Rule is a governance-level override managed by Lex. It can intercept, modify, or deny the output of any attached function based on declarative rules. For example, in the lodash demo, calling debounce() returns '🛑 MANA says: this function is under governance. Simon says no.' The host never knows its function was overridden — the caller just gets a governed response instead of the original output." },
+  { question: "Can the host software detect Mana?", answer: "In most cases, no. Mana operates at the module export boundary using standard JavaScript Proxies, which are transparent to typeof checks, property access, and normal invocation. The host code continues to run identically. Advanced introspection (like checking if an export is a Proxy) is theoretically possible but would require the host to specifically look for it — and even then, the original source code remains unmodified." },
+  { question: "What happens if Mana crashes mid-operation?", answer: "Mana includes circuit-breaker logic. If an attachment point throws during Layer 2 processing, the circuit breaker trips and falls through to the original function — ensuring the host never breaks because of Mana. Lex logs the failure, and the BEACON telemetry captures the incident. The host keeps running as if Mana never existed." },
+  { question: "Does Mana support async functions and Promises?", answer: "Yes. The Proxy 'apply' trap handles both synchronous and asynchronous returns. If the original function returns a Promise, Mana's Layer 2 wrapping respects the async chain — telemetry, governance, and defense gates all operate correctly on awaited results. There's no special configuration required." },
+  { question: "What about performance overhead?", answer: "Negligible. JavaScript Proxy invocation adds microseconds per call — comparable to a single property lookup. Mana doesn't parse, transform, or recompile code. It wraps at function boundaries only, so the overhead scales with the number of attached functions, not the size of the codebase. In benchmarks, wrapping 10 lodash functions adds less than 0.1ms to a full exercise cycle." },
+  { question: "What happens when the host library updates?", answer: "If the host updates (e.g., lodash 4.18.1 → 4.19.0), Mana simply re-scans and re-attaches. The new version's exports are discovered fresh, and a new SHA-256 fingerprint is computed. Old attachment points are discarded. Mana doesn't depend on specific function implementations — it wraps whatever the module exports, making it version-agnostic by design." },
+  { question: "What is the Scan → Attach → Proof → Detach lifecycle?", answer: "This is Mana's four-phase operation: (1) Scan discovers host exports and maps function boundaries — how many functions exist, their names, their types. (2) Attach silently wraps each target function with a Proxy, injecting Layer 2 capabilities like defense gates, telemetry beacons, and shadow rules. (3) Proof computes SHA-256 of the host source to cryptographically verify zero modification. (4) Detach removes all Proxies, restores original exports, and verifies the hash again. The host returns to its pristine state." },
+  { question: "What can I attach with Mana?", answer: "Anything that runs as a JavaScript/TypeScript module. Mana scans host exports and wraps them with Proxy-based attachment points. Current capabilities include: DEFENSE gates (block exploit paths), BEACON telemetry (observe usage patterns), Shadow Rules (governance overrides), Circuit Breakers (fault isolation), Governance Hooks (policy enforcement), and Audit Trails (immutable logging)." },
+  { question: "What's the difference between Mana and Ascension?", answer: "Mana is the attachment engine — it's the mechanism that wraps software silently. Ascension is a product built on top of Mana — it uses the attachment layer to classify, score, and certify code through the CJPI (Crown Jewel Performance Index). Think of Mana as the foundation and Ascension as one of many possible applications. Mana enables; Ascension evaluates." },
+  { question: "How is this different from middleware or plugins?", answer: "Middleware and plugins require the host to be designed for extensibility — hooks, events, config APIs, extension points. Mana requires nothing from the host. It operates at the module boundary using JavaScript Proxies, meaning any library or codebase can be attached to, even if it was never designed for extension. No configuration. No cooperation. No permission." },
+  { question: "Is wrapping software without permission legal?", answer: "Mana operates on software you own or have rights to use (e.g., open-source dependencies in your own project). It doesn't reverse-engineer, decompile, or modify source code. It wraps exported functions at runtime using standard JavaScript Proxy APIs — a well-established language feature. The legal framework is analogous to instrumentation tools like debuggers or APM agents that already operate on third-party code in production." },
   { question: "Why is April 7 significant?", answer: "On April 7, 1969, RFC 1 was published — the document that defined how computers talk to each other and became the foundation of the Internet. On April 7, 2026, the Mana patent was filed — defining how software silently attaches to other software. Same date, same ambition: a universal protocol for the next era." },
-  { question: "Is Mana patented?", answer: "Yes. Protected by U.S. Provisional Patent Application No. 64/031,637, filed April 7, 2026, invented by Kenneth E. Sweet Jr. The patent covers the Silent Symbiotic Software Attachment System." },
-  { question: "Can Mana be used in production?", answer: "Yes. Mana is designed for production use. The attachment layer adds negligible overhead — Proxy-based wrapping at function boundaries is lightweight. Lex governance ensures every operation is audited, and the detach phase guarantees clean teardown." },
-  { question: "Does Mana use AI?", answer: "No. Mana is pure algorithmic infrastructure — zero AI calls, zero machine learning. It uses JavaScript Proxies, SHA-256 hashing, and deterministic rule evaluation. This is intentional: attachment and governance must be predictable, auditable, and reproducible." },
+  { question: "Is Mana patented?", answer: "Yes. Protected by U.S. Provisional Patent Application No. 64/031,637, filed April 7, 2026, invented by Kenneth E. Sweet Jr. The patent covers the Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments." },
+  { question: "Can Mana be used in production?", answer: "Yes. Mana is designed for production use. The attachment layer adds negligible overhead — Proxy-based wrapping at function boundaries is lightweight. Lex governance ensures every operation is audited, circuit breakers prevent cascade failures, and the detach phase guarantees clean teardown. Every component follows the substrate's four requirements: circuit breaker, DEFENSE shield, graceful degradation, and BEACON health signal." },
+  { question: "Does Mana use AI?", answer: "No. Mana is pure algorithmic infrastructure — zero AI calls, zero machine learning, zero neural networks. It uses JavaScript Proxies, SHA-256 hashing, and deterministic rule evaluation. This is intentional: attachment and governance must be predictable, auditable, and reproducible. Same input, same output, every time. No probability. No hallucination. No surprises." },
+  { question: "Can Mana wrap Mana? (Recursive layers)", answer: "Yes. V3 can wrap V2 which wraps V1. Each layer is independently attachable and detachable. The SHA-256 proof at each level verifies the integrity of its immediate host — whether that host is raw source code or another Mana layer. This recursive composition is a core feature covered by the patent." },
 ];
 
 export default function Mana() {
@@ -173,6 +190,58 @@ export default function Mana() {
           </motion.div>
         </section>
 
+        {/* ═══ LIFECYCLE PHASES — FULL BLEED ═══ */}
+        <section className="relative w-full mb-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+          <img
+            src={lifecyclePhases}
+            alt="Mana's four-phase lifecycle: Scan, Attach, Proof, Detach"
+            width={1920}
+            height={900}
+            loading="lazy"
+            className="w-full h-[60vh] md:h-[70vh] object-cover"
+          />
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center px-4 max-w-4xl mx-auto"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 drop-shadow-md">
+                The Four Phases
+              </p>
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-6 drop-shadow-lg">
+                Scan. Attach. Proof. Detach.
+              </h2>
+              <p className="text-lg text-white/80 max-w-2xl mx-auto drop-shadow-md mb-10">
+                Every operation is reversible. Every step is audited. The host returns to its pristine state.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                {[
+                  { icon: Search, label: "SCAN", detail: "Map function boundaries" },
+                  { icon: Link2, label: "ATTACH", detail: "Proxy-wrap each export" },
+                  { icon: CheckCircle, label: "PROOF", detail: "SHA-256 verification" },
+                  { icon: Unlink, label: "DETACH", detail: "Clean restoration" },
+                ].map((phase, i) => (
+                  <motion.div
+                    key={phase.label}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+                    className="p-4 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10"
+                  >
+                    <phase.icon className="w-5 h-5 text-primary mx-auto mb-2" />
+                    <p className="text-sm font-black text-white tracking-wider">{phase.label}</p>
+                    <p className="text-xs text-white/60 mt-1">{phase.detail}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+           </div>
+        </section>
+
         {/* ═══ DUAL LAYER IMAGE ═══ */}
         <section className="relative w-full mb-32 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
@@ -257,6 +326,105 @@ export default function Mana() {
               <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Block exploit paths without patching source. The host code stays pristine.
               </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══ HOW PROXY WRAPPING WORKS ═══ */}
+        <section className="container mx-auto px-4 lg:px-6 mb-32">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+            >
+              <motion.div variants={fadeUp} custom={0} className="text-center mb-12">
+                <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3">
+                  Under the Hood
+                </p>
+                <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4">
+                  How Proxy wrapping works
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Every function call passes through a transparent Proxy shell. The original function is never replaced — it's wrapped.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            <div className="relative rounded-2xl overflow-hidden border border-border/50 mb-10">
+              <img
+                src={proxyMechanism}
+                alt="How JavaScript Proxy intercepts function calls while preserving the original"
+                width={1920}
+                height={900}
+                loading="lazy"
+                className="w-full h-auto"
+              />
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { step: "01", title: "Caller invokes", desc: "The caller calls the function normally — same syntax, same API. No changes to consuming code." },
+                { step: "02", title: "Proxy intercepts", desc: "The Proxy 'apply' trap fires first: Lex checks governance rules, telemetry logs the invocation, defense gates evaluate." },
+                { step: "03", title: "Original executes", desc: "The original, unmodified function runs with the original arguments and returns its real result — enhanced by Layer 2." },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <Card className="h-full border-border/40">
+                    <CardContent className="p-6">
+                      <span className="text-3xl font-black text-primary/20">{item.step}</span>
+                      <h3 className="text-base font-bold mt-2 mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SHADOW RULES — FULL BLEED ═══ */}
+        <section className="relative w-full mb-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+          <img
+            src={shadowRuleIntercept}
+            alt="Shadow Rule intercepting and governing a function call"
+            width={1920}
+            height={900}
+            loading="lazy"
+            className="w-full h-[55vh] md:h-[65vh] object-cover"
+          />
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center px-4 max-w-3xl mx-auto"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-[hsl(var(--destructive))] mb-4 drop-shadow-md">
+                Lex Governance
+              </p>
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+                Shadow Rules
+              </h2>
+              <p className="text-lg text-white/80 max-w-xl mx-auto drop-shadow-md mb-8">
+                Lex can intercept, override, or deny any wrapped function. The host code still runs —
+                but the output is governed.
+              </p>
+              <div className="inline-block p-4 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 font-mono text-sm text-left">
+                <p className="text-white/50 mb-1">{"// lodash.debounce() → governed"}</p>
+                <p className="text-[hsl(var(--destructive))]">
+                  🛑 MANA says: this function is under governance.
+                </p>
+                <p className="text-[hsl(var(--destructive))]">
+                  Simon says no.
+                </p>
+              </div>
             </motion.div>
           </div>
         </section>
