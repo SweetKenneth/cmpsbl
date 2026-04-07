@@ -208,8 +208,8 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+          <div className="absolute inset-0 bg-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
           <div className="relative z-20 py-16 px-4 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
