@@ -164,7 +164,7 @@ export default function RestorationShop() {
     const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator' || identityRole === 'studio';
 
     if (!isSubscribed) {
-      toast.error('To export your refurbished code, please subscribe to a paid plan.', {
+      toast.error('To export your ascended code, please subscribe to a paid plan.', {
         action: {
           label: 'View Plans',
           onClick: () => window.location.href = '/plans',
@@ -174,7 +174,7 @@ export default function RestorationShop() {
     }
 
     if (!report) return;
-    toast.success('Preparing your refurbished code package for download...');
+    toast.success('Preparing your ascended code package for download...');
 
     import('jszip').then(({ default: JSZip }) => {
       const zip = new JSZip();
@@ -193,7 +193,7 @@ export default function RestorationShop() {
       // ═══ Dual-Layer Source ═══
       const refExt = getRefurbishedExtension(detectedLang);
       zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file(`src/refurbished-source${refExt}`, freshRefurbished || '// Refurbished code not generated');
+      zip.file(`src/ascended-source${refExt}`, freshRefurbished || '// Ascended code not generated');
 
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
@@ -256,7 +256,7 @@ export default function RestorationShop() {
 
       // ═══ README ═══
       const readmeMd = [
-        `# CMPSBL® Refurbished Code Package`,
+        `# CMPSBL® Ascended Code Package`,
         ``,
         `**Serial:** \`${report.id}\``,
         `**Fingerprint:** \`${fingerprint}\``,
@@ -267,7 +267,7 @@ export default function RestorationShop() {
         `## Contents`,
         ``,
         `- \`src/original-source.txt\` — Your original code`,
-        `- \`src/refurbished-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
+        `- \`src/ascended-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
         `- \`restoration-report.json\` — Full machine-readable report`,
         `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
         `- \`LICENSE.html\` — Usage license`,
