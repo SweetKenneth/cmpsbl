@@ -127,6 +127,7 @@ export const publicRoutes = (
   <>
     {/* Core Public Pages */}
     <Route path="/" element={<DomainAwareHome />} />
+    <Route path="/verify/:fingerprint" element={<VerifyFingerprint />} />
     <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
