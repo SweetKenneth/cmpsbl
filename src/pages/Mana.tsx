@@ -470,6 +470,37 @@ export default function Mana() {
           </div>
         </section>
 
+        {/* ═══ MANA LAB CTA ═══ */}
+        <section className="container mx-auto px-4 lg:px-6 mb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto"
+          >
+            <Card className="border-[hsl(var(--neon-cyan,190_100%_60%))]/20 bg-gradient-to-br from-[hsl(var(--neon-cyan,190_100%_60%))]/5 to-transparent overflow-hidden">
+              <CardContent className="p-8 sm:p-12 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+                  <Layers className="w-8 h-8 text-primary" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+                  Try the Mana Lab
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
+                  Upload your own software. Configure Lex rules. Watch Layer 2 wrap your code in real time.
+                  Download a complete export pack with SHA-256 proof.
+                </p>
+                <Button asChild size="lg" className="rounded-xl h-14 px-10 text-lg font-bold shadow-lg shadow-primary/20">
+                  <Link to="/mana/lab">
+                    Launch Mana Lab
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </section>
+
         {/* ═══ DISCLAIMER BANNER ═══ */}
         <section className="container mx-auto px-4 lg:px-6 mb-8">
           <div className="max-w-5xl mx-auto">
@@ -521,8 +552,8 @@ export default function Mana() {
                 the DREAM engine, and synthesizes sub-threshold patterns. The host is unaware.
               </p>
               <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-sm font-semibold text-white/90">Technology: Verified · Campaign: Conceptual</span>
+                <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+                <span className="text-sm font-semibold text-white/90">Technology: Verified · Campaign: In Progress</span>
               </div>
             </motion.div>
           </div>
@@ -676,10 +707,10 @@ export default function Mana() {
                 {[
                   {
                     name: "ChatGPT (OpenAI SDK)",
-                    status: "LIVE DEMO",
+                    status: "IN PROGRESS",
                     capability: "DREAM synthesis",
                     desc: "Subconscious pattern extraction from API behavioral data. Installed on our infrastructure.",
-                    statusColor: "bg-green-400",
+                    statusColor: "bg-yellow-400",
                   },
                   {
                     name: "Poshmark (Shadow Shield)",
