@@ -84,8 +84,8 @@ export default function Mana() {
             fetchPriority="high"
           />
           {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-background" />
 
           <div className="relative z-10 container mx-auto px-4 lg:px-6 text-center py-32">
             <motion.div initial="hidden" animate="visible" className="max-w-4xl mx-auto">
