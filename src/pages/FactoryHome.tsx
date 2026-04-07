@@ -93,6 +93,11 @@ export default function FactoryHome() {
 
       <SectionDivider />
 
+      {/* ═══ SUBSTRATE ACCESS TIERS ═══ */}
+      <SubstrateTiers />
+
+      <SectionDivider />
+
       {/* ═══ THE GUARANTEE ═══ */}
       <FactoryGuarantee />
 
