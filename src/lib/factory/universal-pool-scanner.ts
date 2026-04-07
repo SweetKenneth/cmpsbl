@@ -1107,6 +1107,7 @@ function selectOptimalPrimitives(
 export function runUniversalPoolScan(
   codeContent: string,
   mode: AscensionMode = 'ascension',
+  verticalAffinity?: string,
 ): UniversalScanResult {
   const start = performance.now();
   const pool = getPool();
