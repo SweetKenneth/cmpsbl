@@ -676,10 +676,10 @@ export default function Mana() {
                 {[
                   {
                     name: "ChatGPT (OpenAI SDK)",
-                    status: "LIVE DEMO",
+                    status: "IN PROGRESS",
                     capability: "DREAM synthesis",
                     desc: "Subconscious pattern extraction from API behavioral data. Installed on our infrastructure.",
-                    statusColor: "bg-green-400",
+                    statusColor: "bg-yellow-400",
                   },
                   {
                     name: "Poshmark (Shadow Shield)",
