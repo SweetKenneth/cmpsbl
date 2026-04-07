@@ -120,12 +120,14 @@ const MemberHub = lazy(() => import("@/pages/MemberHub"));
 const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
+const SoftwareSymbiosis = lazy(() => import("@/pages/SoftwareSymbiosis"));
 
 export const publicRoutes = (
   <>
     {/* Core Public Pages */}
     <Route path="/" element={<DomainAwareHome />} />
     <Route path="/marketplace" element={<MarketplaceHome />} />
+    <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
     <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />

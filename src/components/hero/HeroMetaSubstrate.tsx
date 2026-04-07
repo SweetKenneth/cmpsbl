@@ -16,6 +16,7 @@ import {
   ChevronDown,
   Search,
   Wrench,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -281,6 +282,17 @@ export function HeroMetaSubstrate() {
               <Link to="/showroom">
                 <Search className="w-4 h-4" />
                 Browse the Showroom
+              </Link>
+            </Button>
+            <Button 
+              asChild 
+              variant="ghost" 
+              size="lg" 
+              className="w-full sm:w-auto gap-2 px-6 h-12 text-sm font-medium rounded-xl hover:bg-[hsl(var(--neon-purple)/0.08)] hover:text-[hsl(var(--neon-purple))] transition-all duration-300 active:scale-[0.98]"
+            >
+              <Link to="/software-symbiosis">
+                <Layers className="w-4 h-4" />
+                The Layer Below All Software
               </Link>
             </Button>
           </FadeIn>
