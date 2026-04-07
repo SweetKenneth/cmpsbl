@@ -251,7 +251,7 @@ export default function Mana() {
         </section>
 
         {/* ═══ DUAL LAYER IMAGE ═══ */}
-        <section className="relative w-full mb-32 overflow-hidden">
+        <section className="relative w-full mb-32 overflow-hidden min-h-[50vh] md:min-h-[60vh] flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
           <img
             src={dualLayer}
@@ -259,19 +259,18 @@ export default function Mana() {
             width={1920}
             height={800}
             loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 Two layers. Zero intrusion.
               </h2>
-              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
+              <p className="text-base sm:text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Layer 1 runs untouched. Layer 2 wraps at function boundaries. The host never knows.
               </p>
             </motion.div>
