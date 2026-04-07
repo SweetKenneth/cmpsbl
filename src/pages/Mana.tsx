@@ -30,6 +30,7 @@ import { Link } from "react-router-dom";
 import heroWrap from "@/assets/mana/hero-wrap.jpg";
 import dualLayer from "@/assets/mana/dual-layer.jpg";
 import defenseGate from "@/assets/mana/defense-gate.jpg";
+import rfc1Timeline from "@/assets/mana/rfc1-timeline.jpg";
 
 const PATENT_APP_NO = "64/031,637";
 
