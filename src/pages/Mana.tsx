@@ -38,6 +38,9 @@ import rfc1Timeline from "@/assets/mana/rfc1-timeline.jpg";
 import lifecyclePhases from "@/assets/mana/lifecycle-phases.jpg";
 import proxyMechanism from "@/assets/mana/proxy-mechanism.jpg";
 import shadowRuleIntercept from "@/assets/mana/shadow-rule-intercept.jpg";
+import operationDreamstate from "@/assets/mana/operation-dreamstate.jpg";
+import chatgptLayer2Wrap from "@/assets/mana/chatgpt-layer2-wrap.jpg";
+import campaignTargets from "@/assets/mana/campaign-targets.jpg";
 
 const PATENT_APP_NO = "64/031,637";
 
