@@ -199,33 +199,34 @@ export default function Mana() {
         </section>
 
         {/* ═══ LIFECYCLE PHASES — FULL BLEED ═══ */}
-        <section className="relative w-full mb-32 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+        <section className="relative w-full mb-32 overflow-hidden min-h-[80vh] md:min-h-[70vh] flex items-center justify-center">
           <img
             src={lifecyclePhases}
             alt="Mana's four-phase lifecycle: Scan, Attach, Proof, Detach"
             width={1920}
             height={900}
             loading="lazy"
-            className="w-full h-[60vh] md:h-[70vh] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
+          <div className="relative z-20 py-16 px-4 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center px-4 max-w-4xl mx-auto"
+              className="text-center"
             >
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 drop-shadow-md">
                 The Four Phases
               </p>
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-6 drop-shadow-lg">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-6 drop-shadow-lg">
                 Scan. Attach. Proof. Detach.
               </h2>
-              <p className="text-lg text-white/80 max-w-2xl mx-auto drop-shadow-md mb-10">
+              <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto drop-shadow-md mb-10">
                 Every operation is reversible. Every step is audited. The host returns to its pristine state.
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-3xl mx-auto">
                 {[
                   { icon: Search, label: "SCAN", detail: "Map function boundaries" },
                   { icon: Link2, label: "ATTACH", detail: "Proxy-wrap each export" },
@@ -238,40 +239,40 @@ export default function Mana() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                    className="p-4 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10"
+                    className="p-3 sm:p-4 rounded-xl bg-black/70 backdrop-blur-md border border-white/15"
                   >
                     <phase.icon className="w-5 h-5 text-primary mx-auto mb-2" />
-                    <p className="text-sm font-black text-white tracking-wider">{phase.label}</p>
-                    <p className="text-xs text-white/60 mt-1">{phase.detail}</p>
+                    <p className="text-xs sm:text-sm font-black text-white tracking-wider">{phase.label}</p>
+                    <p className="text-[10px] sm:text-xs text-white/60 mt-1">{phase.detail}</p>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
-           </div>
+          </div>
         </section>
 
         {/* ═══ DUAL LAYER IMAGE ═══ */}
-        <section className="relative w-full mb-32 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+        <section className="relative w-full mb-32 overflow-hidden min-h-[50vh] md:min-h-[60vh] flex items-center justify-center">
           <img
             src={dualLayer}
             alt="Two-layer architecture: pristine host below, luminous Mana layer above"
             width={1920}
             height={800}
             loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
+          <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 Two layers. Zero intrusion.
               </h2>
-              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
+              <p className="text-base sm:text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Layer 1 runs untouched. Layer 2 wraps at function boundaries. The host never knows.
               </p>
             </motion.div>
@@ -311,27 +312,27 @@ export default function Mana() {
         </section>
 
         {/* ═══ DEFENSE GATE IMAGE ═══ */}
-        <section className="relative w-full mb-32 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+        <section className="relative w-full mb-32 overflow-hidden min-h-[50vh] md:min-h-[60vh] flex items-center justify-center">
           <img
             src={defenseGate}
             alt="DEFENSE Gate forming a protective shield around source code"
             width={1920}
             height={900}
             loading="lazy"
-            className="w-full h-[50vh] md:h-[60vh] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
+          <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 DEFENSE gates. Silently.
               </h2>
-              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
+              <p className="text-base sm:text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Block exploit paths without patching source. The host code stays pristine.
               </p>
             </motion.div>
@@ -397,34 +398,34 @@ export default function Mana() {
         </section>
 
         {/* ═══ SHADOW RULES — FULL BLEED ═══ */}
-        <section className="relative w-full mb-32 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+        <section className="relative w-full mb-32 overflow-hidden min-h-[70vh] md:min-h-[65vh] flex items-center justify-center">
           <img
             src={shadowRuleIntercept}
             alt="Shadow Rule intercepting and governing a function call"
             width={1920}
             height={900}
             loading="lazy"
-            className="w-full h-[55vh] md:h-[65vh] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
+          <div className="relative z-20 py-16 px-4 max-w-3xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center px-4 max-w-3xl mx-auto"
             >
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-[hsl(var(--destructive))] mb-4 drop-shadow-md">
                 Lex Governance
               </p>
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 Shadow Rules
               </h2>
-              <p className="text-lg text-white/80 max-w-xl mx-auto drop-shadow-md mb-8">
+              <p className="text-base sm:text-lg text-white/80 max-w-xl mx-auto drop-shadow-md mb-8">
                 Lex can intercept, override, or deny any wrapped function. The host code still runs —
                 but the output is governed.
               </p>
-              <div className="inline-block p-4 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 font-mono text-sm text-left">
+              <div className="inline-block p-3 sm:p-4 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 font-mono text-xs sm:text-sm text-left max-w-full overflow-x-auto">
                 <p className="text-white/50 mb-1">{"// lodash.debounce() → governed"}</p>
                 <p className="text-[hsl(var(--destructive))]">
                   🛑 MANA says: this function is under governance.
@@ -526,7 +527,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
 
           <div className="relative z-10 container mx-auto px-4 lg:px-6">
@@ -785,7 +786,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
 
           <div className="relative z-10 container mx-auto px-4 lg:px-6">
