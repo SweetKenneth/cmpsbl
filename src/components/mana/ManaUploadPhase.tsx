@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback, useRef } from 'react';
-import { Upload, FileCode2, Loader2, ClipboardPaste } from 'lucide-react';
+import { Upload, FileCode2, Loader2, ClipboardPaste, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
