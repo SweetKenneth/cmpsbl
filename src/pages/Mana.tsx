@@ -262,7 +262,7 @@ export default function Mana() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/75" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
           <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -322,7 +322,7 @@ export default function Mana() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/75" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
           <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -408,7 +408,7 @@ export default function Mana() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/75" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 pointer-events-none" />
           <div className="relative z-20 py-16 px-4 max-w-3xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
