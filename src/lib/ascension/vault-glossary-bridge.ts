@@ -180,6 +180,23 @@ const PRIMITIVE_ARCHETYPE_AFFINITY: Record<string, string[]> = {
   'REASON': ['ml-inference', 'heuristic-synthesis'],
   'OVERSEER': ['observability', 'cost-governance'],
   'WARDEN': ['auth-control', 'deception'],
+  // Expansion primitives — Fintech
+  'LEDGER': ['event-sourcing', 'state-persistence'],
+  'VAULT_FIN': ['encryption', 'auth-control'],
+  'TICKER': ['data-pipeline', 'observability'],
+  'CLEARING': ['event-sourcing', 'concurrency'],
+  'RISKCORE': ['predictive-analysis', 'simulation'],
+  'PAYRAIL': ['api-design', 'concurrency'],
+  'TAXENGINE': ['data-pipeline', 'cost-governance'],
+  'MATCHBOOK': ['concurrency', 'rate-limiting'],
+  'SENTINEL_FIN': ['input-validation', 'observability'],
+  'REGULATOR': ['auth-control', 'ethical-assessment'],
+  'ARBITER': ['event-sourcing', 'observability'],
+  'UNDERWRITER': ['predictive-analysis', 'ml-inference'],
+  'TREASURER': ['cost-governance', 'state-persistence'],
+  'AUDITOR': ['observability', 'event-sourcing'],
+  'PORTFOLIO': ['predictive-analysis', 'heuristic-synthesis'],
+  'COMPLIANCE': ['auth-control', 'rate-limiting'],
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
