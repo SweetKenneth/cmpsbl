@@ -3,7 +3,7 @@
  * Reuses pattern from AscensionStepper
  */
 
-import { Upload, Settings, Layers, Package, Check } from 'lucide-react';
+import { Upload, Settings, Layers, Package, Check, GitMerge } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const STEPS = [
