@@ -220,8 +220,19 @@ function toRecommendationCategory(
   }
 }
 
+/** Map vertical subdomain to scanner source label */
+const SUBDOMAIN_TO_SOURCE: Record<string, string> = {
+  security: 'cyber', robotics: 'robotics', quantum: 'quantum',
+  llm: 'llm', agency: 'agency', media: 'media', ultimate: '',
+};
+
 function buildUltimateRecommendations(code: string): PrimitiveRecommendation[] {
-  const scan = runUniversalPoolScan(code);
+  const subdomain = getVerticalSubdomain();
+  // Resolve vertical affinity — Ultimate gets no boost (it's the universal tier)
+  const verticalAffinity = subdomain
+    ? (SUBDOMAIN_TO_SOURCE[subdomain] ?? subdomain) || undefined
+    : undefined;
+  const scan = runUniversalPoolScan(code, 'ascension', verticalAffinity);
 
   return scan.selectedPrimitives
     .map((candidate) => {
