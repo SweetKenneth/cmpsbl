@@ -58,7 +58,7 @@ export function CodeWrapAnimation() {
             phase === 'scanning' ? 'bg-[hsl(var(--primary))] animate-pulse' :
             'bg-muted-foreground/30'
           }`} />
-          <span className="text-xs font-mono text-muted-foreground tracking-wider uppercase">
+          <span className="text-xs font-mono text-muted-foreground dark:text-muted-foreground tracking-wider uppercase">
             {phase === 'idle' && 'Layer 1 — Unattached'}
             {phase === 'scanning' && 'Scanning function boundaries...'}
             {phase === 'wrapping' && 'Attaching Layer 2 capabilities...'}
