@@ -233,8 +233,8 @@ export default function RestorationShop() {
       // ═══ CJPI Certificate ═══
       zip.file('docs/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
 
-      // ═══ HTML Refurbishment Report (styled, self-contained) ═══
-      zip.file('refurbishment-report.html', generateHtmlReport(report));
+      // ═══ HTML Ascension Report (styled, self-contained) ═══
+      zip.file('ascension-report.html', generateHtmlReport(report));
 
       // ═══ Error Codes (styled HTML) ═══
       const errorHtml = report.errorCodes.map(
@@ -283,7 +283,7 @@ export default function RestorationShop() {
         `## Support`,
         ``,
         `Visit https://cmpsbl.com and use your fingerprint ID (\`${fingerprint}\`)`,
-        `to have DECODE pull up this refurbishment for customer support.`,
+        `to have DECODE pull up this ascension for customer support.`,
         ``,
         `© ${new Date().getFullYear()} PromptFluid™ · CMPSBL®`,
       ].join('\n');
@@ -291,8 +291,8 @@ export default function RestorationShop() {
 
       // ═══ Universal User Guide (HTML) — ships in every export ═══
       zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
-        name: fileName?.replace(/\.[^.]+$/, '') || 'Refurbished Code',
-        slug: `refurbished-${report.id}`,
+        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
+        slug: `ascended-${report.id}`,
         kind: 'ascension',
         tier: report.cjpiCertificate.tier,
         cjpi: report.cjpiCertificate.score,
