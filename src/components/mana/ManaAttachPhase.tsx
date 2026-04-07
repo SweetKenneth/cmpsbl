@@ -31,11 +31,13 @@ export interface AttachmentResult {
   functionNames: string[];
   sourceContent: string;
   files: Array<{ name: string; content: string; language: string }>;
+  mergeResult?: ManaMergeResult | null;
 }
 
 interface Props {
   upload: ManaUploadResult;
   rules: LexRuleConfig[];
+  mergeResult?: ManaMergeResult | null;
   onComplete: (result: AttachmentResult) => void;
 }
 
