@@ -395,7 +395,7 @@ export default function Mana() {
         </section>
 
         {/* ═══ SHADOW RULES — FULL BLEED ═══ */}
-        <section className="relative w-full mb-32 overflow-hidden">
+        <section className="relative w-full mb-32 overflow-hidden min-h-[70vh] md:min-h-[65vh] flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
           <img
             src={shadowRuleIntercept}
@@ -403,26 +403,25 @@ export default function Mana() {
             width={1920}
             height={900}
             loading="lazy"
-            className="w-full h-[55vh] md:h-[65vh] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="relative z-20 py-16 px-4 max-w-3xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center px-4 max-w-3xl mx-auto"
             >
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-[hsl(var(--destructive))] mb-4 drop-shadow-md">
                 Lex Governance
               </p>
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 Shadow Rules
               </h2>
-              <p className="text-lg text-white/80 max-w-xl mx-auto drop-shadow-md mb-8">
+              <p className="text-base sm:text-lg text-white/80 max-w-xl mx-auto drop-shadow-md mb-8">
                 Lex can intercept, override, or deny any wrapped function. The host code still runs —
                 but the output is governed.
               </p>
-              <div className="inline-block p-4 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 font-mono text-sm text-left">
+              <div className="inline-block p-3 sm:p-4 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 font-mono text-xs sm:text-sm text-left max-w-full overflow-x-auto">
                 <p className="text-white/50 mb-1">{"// lodash.debounce() → governed"}</p>
                 <p className="text-[hsl(var(--destructive))]">
                   🛑 MANA says: this function is under governance.
