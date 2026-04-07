@@ -54,6 +54,7 @@ const ClocklessWorldEngine = lazy(() => import("@/pages/ClocklessWorldEngine"));
 const SubstrateCapabilitiesDocs = lazy(() => import("@/pages/SubstrateCapabilitiesDocs"));
 const SystemIntelligenceFeed = lazy(() => import("@/pages/SystemIntelligenceFeed"));
 const CheckoutRedirect = lazy(() => import("@/pages/CheckoutRedirect"));
+const VerifyFingerprint = lazy(() => import("@/pages/VerifyFingerprint"));
 
 const Engines = lazy(() => import("@/pages/Engines"));
 const EngineDetail = lazy(() => import("@/pages/EngineDetail"));
