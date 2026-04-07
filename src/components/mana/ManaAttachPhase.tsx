@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ManaCapability, ManaProof, ManaManifest } from '@/lib/mana/types';
+import type { ManaMergeResult } from './ManaMergePhase';
 import type { LexRuleConfig } from './LexRuleSelector';
 import type { ManaUploadResult } from './ManaUploadPhase';
 
