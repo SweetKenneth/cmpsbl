@@ -56,7 +56,7 @@ const SSL_COMPARISON = [
 ] as const;
 
 /* ─── Case Studies ─── */
-const CASE_STUDIES = [
+const CASE_STUDIES: { name: string; serial: string; lang: string; domain: string; badge: string; stat?: string; desc: string }[] = [
   { name: "HuggingFace modeling_utils.py", serial: "CMPSBL-MNKQ1LXE-X0ZD", lang: "Python", domain: "AI/ML", badge: "APEX · CJPI 100", stat: "126M+ downloads/month", desc: "The most-downloaded AI model loading utility on Earth. Layer 2 identified critical vulnerabilities (torch.load, trust_remote_code) and wrapped them — without changing a single line." },
   { name: "OpenSSL TLS 1.3 Engine", serial: "CMPSBL-MNJB00F5-626R", lang: "C", domain: "Cryptography", badge: "Critical Infra", desc: "The encryption engine that secures most of the internet. Layer 2 wrapped the handshake and cipher functions — adding a meta-layer around the layer that already secures HTTP." },
   { name: "IBM Qiskit ConsolidateBlocks", serial: "CMPSBL-MNJ4Y3JG-CQOW", lang: "Python", domain: "Quantum", badge: "IBM", desc: "Quantum computing transpiler pass. Layer 2 wrapped circuit optimization without affecting gate consolidation. Quantum infrastructure accepts the layer." },
