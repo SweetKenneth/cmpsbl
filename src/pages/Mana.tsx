@@ -521,8 +521,8 @@ export default function Mana() {
                 the DREAM engine, and synthesizes sub-threshold patterns. The host is unaware.
               </p>
               <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-sm font-semibold text-white/90">Technology: Verified · Campaign: Conceptual</span>
+                <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" />
+                <span className="text-sm font-semibold text-white/90">Technology: Verified · Campaign: In Progress</span>
               </div>
             </motion.div>
           </div>
