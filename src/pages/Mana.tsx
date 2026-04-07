@@ -313,7 +313,6 @@ export default function Mana() {
 
         {/* ═══ DEFENSE GATE IMAGE ═══ */}
         <section className="relative w-full mb-32 overflow-hidden min-h-[50vh] md:min-h-[60vh] flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
           <img
             src={defenseGate}
             alt="DEFENSE Gate forming a protective shield around source code"
@@ -322,6 +321,8 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
           <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
