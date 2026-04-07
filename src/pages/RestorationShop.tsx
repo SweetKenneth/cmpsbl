@@ -164,7 +164,7 @@ export default function RestorationShop() {
     const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator' || identityRole === 'studio';
 
     if (!isSubscribed) {
-      toast.error('To export your refurbished code, please subscribe to a paid plan.', {
+      toast.error('To export your ascended code, please subscribe to a paid plan.', {
         action: {
           label: 'View Plans',
           onClick: () => window.location.href = '/plans',
