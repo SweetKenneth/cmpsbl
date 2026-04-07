@@ -2915,7 +2915,10 @@ export function generateRefurbishedCode(
   const imports: string[] = [];
   const guards: string[] = [];
   // Strip any existing sealed-runtime footers from prior passes to prevent duplication
-  let cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
+  let cleanedSource = originalCode
+    .replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n')
+    .replace(/\n?.*End of CMPSBL® Convex Core™ Sealed Artifact.*\n?/g, '\n')
+    .trimEnd();
 
   // For Python: convert relative imports to absolute so file runs standalone
   if (detected === 'Python') {
