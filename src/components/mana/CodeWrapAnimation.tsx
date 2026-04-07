@@ -122,7 +122,7 @@ export function CodeWrapAnimation() {
                     line.type === 'import' ? 'text-[hsl(var(--neon-purple))]' :
                     line.type === 'fn' ? 'text-[hsl(var(--neon-cyan))]' :
                     line.type === 'return' ? 'text-[hsl(var(--neon-magenta))]' :
-                    'text-foreground/90'
+                    'text-white/90'
                   }`}>
                     {line.text}
                   </span>
