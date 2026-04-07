@@ -364,7 +364,8 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
     @staticmethod
     def init(*a, **kw):
-        return PersistentMemory(**kw)`;
+        accepted = {"namespace", "path"}
+        return PersistentMemory(**{k: v for k, v in kw.items() if k in accepted})`;
         }
         // StateRecovery gets a real checkpoint implementation
         if (s === 'StateRecovery') {
