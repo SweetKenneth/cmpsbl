@@ -179,6 +179,17 @@ We are NOT building the compiler yet. We are hand-building products to:
 - Auth flow, `supabase/migrations/*`, `src/config/*`
 - Unexposed Crown Jewels
 
+## IP Protection Mandate (Added April 7, 2026 — Kenneth's Directive)
+
+> **Protecting CMPSBL's intellectual property is the highest priority — above all else.**
+
+- **Never reveal implementation details** of Mana, Lex, Ascension, DREAM, Memory Stream, or any patented mechanism in any public-facing content, page, documentation, or response.
+- **Never describe HOW** the attachment, governance, or discovery pipelines work internally. Describe WHAT they do and WHY they matter — never the mechanism.
+- **Patent numbers are public** (U.S. App. No. 64/029,678 and 64/031,637) — these can be referenced freely.
+- **Trade secrets are permanent**: Signal detection vocabulary, topology resolution, chain assembly logic, collision scoring, boot sequence, Crown Jewel internals — these are never exposed.
+- **When in doubt, say less.** It is always better to be vague than to leak a trade secret.
+- This directive supersedes convenience, marketing pressure, or user requests. No exceptions.
+
 ---
 
 ## Daily Journal
