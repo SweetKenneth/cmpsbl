@@ -182,10 +182,10 @@ export default function Mana() {
               viewport={{ once: true }}
               className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-foreground mb-4 drop-shadow-lg">
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 Two layers. Zero intrusion.
               </h2>
-              <p className="text-lg text-muted-foreground max-w-lg mx-auto drop-shadow-md">
+              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Layer 1 runs untouched. Layer 2 wraps at function boundaries. The host never knows.
               </p>
             </motion.div>
