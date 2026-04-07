@@ -283,7 +283,7 @@ export default function RestorationShop() {
         `## Support`,
         ``,
         `Visit https://cmpsbl.com and use your fingerprint ID (\`${fingerprint}\`)`,
-        `to have DECODE pull up this refurbishment for customer support.`,
+        `to have DECODE pull up this ascension for customer support.`,
         ``,
         `© ${new Date().getFullYear()} PromptFluid™ · CMPSBL®`,
       ].join('\n');
