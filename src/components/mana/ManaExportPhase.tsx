@@ -11,10 +11,12 @@ import { cn } from '@/lib/utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import type { AttachmentResult } from './ManaAttachPhase';
+import type { ManaMergeResult } from './ManaMergePhase';
 import { PATENT_NOTICE, MANA_PATENT_NOTICE, COPYRIGHT_NOTICE } from '@/config/domains';
 
 interface Props {
   result: AttachmentResult;
+  mergeResult?: ManaMergeResult | null;
 }
 
 function generateManaReadme(result: AttachmentResult): string {
