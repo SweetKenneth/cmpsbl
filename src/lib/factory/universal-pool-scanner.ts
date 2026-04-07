@@ -1157,9 +1157,9 @@ export function runUniversalPoolScan(
     }
   }
 
-  // Score all candidates with mode-aware dual-matrix weighting + structural boosts
+  // Score all candidates with mode-aware dual-matrix weighting + structural boosts + vertical affinity
   const scored = pool.map(tagged =>
-    scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode, structuralBoosts)
+    scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode, structuralBoosts, verticalAffinity)
   );
 
   // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
