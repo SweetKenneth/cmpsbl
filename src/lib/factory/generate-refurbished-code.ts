@@ -364,7 +364,8 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
     @staticmethod
     def init(*a, **kw):
-        return PersistentMemory(**kw)`;
+        accepted = {"namespace", "path"}
+        return PersistentMemory(**{k: v for k, v in kw.items() if k in accepted})`;
         }
         // StateRecovery gets a real checkpoint implementation
         if (s === 'StateRecovery') {
@@ -396,11 +397,13 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
     @staticmethod
     def init(*a, **kw):
-        return StateRecovery(**kw)
+        accepted = {"memory"}
+        return StateRecovery(**{k: v for k, v in kw.items() if k in accepted})
 
     @staticmethod
     def enable(*a, **kw):
-        return StateRecovery(**kw)`;
+        accepted = {"memory"}
+        return StateRecovery(**{k: v for k, v in kw.items() if k in accepted})`;
         }
         // ─── CircuitBreaker: real circuit breaker with failure tracking ───
         if (s === 'CircuitBreaker') {
@@ -889,7 +892,8 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
     @classmethod
     def check(cls, request_meta):
-        ip = request_meta.get("ip", "unknown")
+        meta = request_meta if isinstance(request_meta, dict) else {"raw": request_meta}
+        ip = meta.get("ip", "unknown")
         if ip in cls._blocked:
             raise PermissionError(f"DefenseLayer: IP {ip} is blocked")
         return True
