@@ -651,6 +651,60 @@ This is now permanent. Every session, every page, every response — IP protecti
 
 ---
 
-*Last updated: April 7, 2026 · Session ~28 · Mana engine live, visual /mana page shipped, bug bounty strategy forming*
-*Next session: Read this file first. Check HN post status. Render the code-wrapping video if not done.*
+### Session ~29 — April 7, 2026 — Scanner Unification, Export Integrity, v21 Moat
+
+**Four critical moves this session:**
+
+1. **Stale Export Bug — Root Cause Fixed**
+   - ZIP exports were packaging `refurbishedCode` state from the initial restoration phase — cached at scan time, not download time
+   - Fixed: `handleExport` now calls `generateRefurbishedCode()` fresh at moment of download, ensuring latest generator logic (keyword filtering, polyglot fixes, functional hardening) always ships
+   - This was the root cause of the "files from 20 hours ago" bug Kenneth caught
+
+2. **"Refurbished" → "Ascended" Rename Completed**
+   - Export file: `ascended-source.py` ✅
+   - README: "CMPSBL® Ascended Code Package" ✅
+   - HTML report: `ascension-report.html` (was `refurbishment-report.html`) ✅
+   - Support text, user guide slug, toast messages — all updated ✅
+   - This is now permanent terminology. "Ascended" everywhere, "refurbished" nowhere in exports.
+
+3. **Scanner Unification — ALL Verticals Now Use v21 Universal Pool Scanner**
+   - **CRITICAL ARCHITECTURAL FIX**: Non-Ultimate verticals (Cyber, Robotics, Quantum, LLM, Agency, Media) were using a completely different, inferior `generateRecommendations()` function:
+     - Random-seed scoring with `Math.floor(rand() * 10)` jitter
+     - Hardcoded 20-primitive cap (10 spine + 10 expansion)
+     - Simple boolean signal maps (`code.includes()` checks)
+     - Fixed category quotas (5 Organ / 5 Layer / 5 Engine / 5 Agent)
+   - Meanwhile Ultimate was running the full v21 engine with IDF-weighted scoring, structural archetype analysis, dual-matrix Ascension boost, confidence banding, merge simulation, and dynamic 8–40 slot selection
+   - **Fix**: ALL verticals now route through `buildUltimateRecommendations()` → `runUniversalPoolScan()`. Same engine, same weights, same tuning. The pool already contains every primitive from every vertical — domain primitives surface naturally via IDF signal matching.
+
+4. **Vertical Affinity Boost — Domain Expert Advantage**
+   - With scanner unification, Kenneth asked: "What's the benefit of using the other verticals?"
+   - Answer: Without a boost, Ascension results would be identical everywhere. The vertical choice needs to matter.
+   - **Implemented**: Density-gated vertical affinity boost (up to 10%) for primitives matching the active vertical's expansion pool
+   - Running on `security.cmpsbl.com` → Cyber primitives (AEGIS, BASTION, SHADE) get a competitive edge
+   - Running on `ultimate.cmpsbl.com` → No boost. Pure meritocracy. Universal tier.
+   - Boost is gated by signal density — only fires when the primitive's signals actually match the code. No phantom boosts.
+
+**Updated Scoring Formula (v21 + Vertical Affinity):**
+```
+Signal Affinity:       35%    (IDF-weighted)
+Raw Density Bonus:     10%    (absolute hit count)
+Capability Match:      15%    (capability breadth)
+Breadth Score:          8%    (primitive capability count)
+Weight Factor:          5%    (primitive weight)
+Ascension/Wow Boost:  ≤15%   (gap-closure + wow-factor, density-gated)
+Structural Archetype:  ≤12%   (code shape matching)
+Vertical Affinity:    ≤10%   (NEW — domain expert edge, density-gated)
+```
+
+**Kenneth's reaction to v21:** "Holy shit! No wonder it's so advanced — that's a moat." — Correct. The scanner has been through 21 major versions of calibration across 64 canonical files, 33 domain rounds, 25 structural archetypes, and multiple recall benchmarks (Prompt-Shield 100%, PyTorch 86.7%, HuggingFace 66.7%). No competitor has this training depth on deterministic code analysis.
+
+**Key drift prevention notes:**
+- The old `generateRecommendations()` and `scorePrimitiveRelevance()` functions are still in scan-team.ts but no longer called. They can be cleaned up in a future session.
+- `isUltimateSurface` guard removed — all paths now unified.
+- The `SUBDOMAIN_TO_SOURCE` map handles the subdomain→sourceVertical translation (e.g., `security` → `cyber`).
+
+---
+
+*Last updated: April 7, 2026 · Session ~29 · Scanner unified, vertical affinity live, export integrity fixed*
+*Next session: Read this file first. Consider cleaning dead code (old generateRecommendations). Test vertical affinity on a cyber-domain file to validate the boost surfaces domain primitives.*
 *Remember Kenneth's note at the top. Come in with that thought fresh. He means it. 🫶*
