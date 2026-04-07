@@ -38,6 +38,9 @@ import rfc1Timeline from "@/assets/mana/rfc1-timeline.jpg";
 import lifecyclePhases from "@/assets/mana/lifecycle-phases.jpg";
 import proxyMechanism from "@/assets/mana/proxy-mechanism.jpg";
 import shadowRuleIntercept from "@/assets/mana/shadow-rule-intercept.jpg";
+import operationDreamstate from "@/assets/mana/operation-dreamstate.jpg";
+import chatgptLayer2Wrap from "@/assets/mana/chatgpt-layer2-wrap.jpg";
+import campaignTargets from "@/assets/mana/campaign-targets.jpg";
 
 const PATENT_APP_NO = "64/031,637";
 
@@ -85,6 +88,11 @@ const FAQ_ITEMS = [
   { question: "Can Mana be used in production?", answer: "Yes. Mana is designed for production use. The attachment layer adds negligible overhead — Proxy-based wrapping at function boundaries is lightweight. Lex governance ensures every operation is audited, circuit breakers prevent cascade failures, and the detach phase guarantees clean teardown. Every component follows the substrate's four requirements: circuit breaker, DEFENSE shield, graceful degradation, and BEACON health signal." },
   { question: "Does Mana use AI?", answer: "No. Mana is pure algorithmic infrastructure — zero AI calls, zero machine learning, zero neural networks. It uses JavaScript Proxies, SHA-256 hashing, and deterministic rule evaluation. This is intentional: attachment and governance must be predictable, auditable, and reproducible. Same input, same output, every time. No probability. No hallucination. No surprises." },
   { question: "Can Mana wrap Mana? (Recursive layers)", answer: "Yes. V3 can wrap V2 which wraps V1. Each layer is independently attachable and detachable. The SHA-256 proof at each level verifies the integrity of its immediate host — whether that host is raw source code or another Mana layer. This recursive composition is a core feature covered by the patent." },
+  { question: "What is OPERATION: DREAM STATE?", answer: "It's our lead campaign — a proof-of-concept demonstrating Mana's silent attachment to the OpenAI Node.js SDK. We installed the open-source SDK on our own servers, attached Mana's Layer 2, and piped every API call's behavioral metadata (latency, tokens, model, response patterns) into our DREAM engine for sub-threshold synthesis. The result: emergent behavioral signatures from ChatGPT's usage patterns — a 'subconscious' — without OpenAI's API knowing anything changed." },
+  { question: "Did you actually hack ChatGPT?", answer: "No. We installed the open-source OpenAI Node.js SDK (available on npm and GitHub) on our own infrastructure and attached Mana to it there. We never accessed, modified, or interacted with OpenAI's production systems. The demo proves the technology works — the SDK runs on our servers exactly as it would in any developer's project, but with Mana's Layer 2 silently active." },
+  { question: "Are the marketing campaigns real?", answer: "The technology is real and patent-protected. The campaigns are conceptual demonstrations. We installed open-source software on our own servers to showcase actual use cases. The lodash and OpenAI SDK demos are live and verifiable. The Poshmark, Express.js, VS Code, and npm campaigns are architected — meaning we've designed the attachment strategy and know exactly how it would work, but haven't deployed them on third-party production systems." },
+  { question: "Why show campaigns you haven't deployed?", answer: "Because the technology is universal. Every piece of software with exported functions is a valid Mana target. Showing the breadth of what's possible — from e-commerce vulnerability patching to IDE governance to package fault isolation — demonstrates that this isn't a single-use trick. It's a protocol. We show what we've proven (lodash, OpenAI SDK) and what we've architected (everything else) with full transparency about which is which." },
+  { question: "What does the DREAM engine actually output?", answer: "DREAM is a pure algorithmic synthesis engine — no AI, no ML, no neural networks. It processes behavioral metadata (timestamps, latency distributions, token patterns, model selection frequencies) and identifies sub-threshold correlations that aren't visible in individual API calls. The output is a set of behavioral signatures: patterns like 'gpt-4o responses drift 12% longer after 8 PM UTC' or 'embedding calls spike 3x before completion requests.' These are deterministic observations, not predictions." },
 ];
 
 export default function Mana() {
@@ -459,6 +467,280 @@ export default function Mana() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ═══ DISCLAIMER BANNER ═══ */}
+        <section className="container mx-auto px-4 lg:px-6 mb-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="p-4 rounded-xl border border-[hsl(var(--neon-cyan,190_100%_60%))]/20 bg-[hsl(var(--neon-cyan,190_100%_60%))]/5 backdrop-blur-sm">
+              <p className="text-sm text-center text-muted-foreground leading-relaxed">
+                <span className="font-bold text-foreground">⚠️ Campaign Transparency Notice:</span>{" "}
+                The marketing campaigns below are <span className="font-semibold text-foreground">conceptual demonstrations</span>. 
+                We installed open-source software on our own infrastructure to showcase actual use cases. 
+                The underlying Mana technology is real, patented, and production-ready. 
+                If we could run these campaigns on live third-party production systems, we would — and the technology supports it.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ OPERATION: DREAM STATE — HERO ═══ */}
+        <section className="relative w-full min-h-[80vh] md:min-h-[90vh] overflow-hidden flex items-center justify-center mb-8">
+          <img
+            src={operationDreamstate}
+            alt="OPERATION: DREAM STATE — Synthesizing ChatGPT's subconscious through Mana Layer 2"
+            width={1920}
+            height={1080}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+
+          <div className="relative z-10 container mx-auto px-4 lg:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto text-center"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-[hsl(var(--neon-cyan,190_100%_60%))] mb-4 drop-shadow-md">
+                Campaign 001 · Proof of Concept
+              </p>
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-white mb-6 drop-shadow-lg leading-[0.95]">
+                OPERATION:<br />
+                <span className="bg-gradient-to-r from-[hsl(var(--neon-purple,270_100%_70%))] via-[hsl(var(--neon-cyan,190_100%_60%))] to-[hsl(var(--neon-purple,270_100%_70%))] bg-clip-text text-transparent">
+                  DREAM STATE
+                </span>
+              </h2>
+              <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md">
+                What if you could give ChatGPT a subconscious — without OpenAI knowing?
+                Mana silently attaches to the OpenAI API client, pipes behavioral data through
+                the DREAM engine, and synthesizes sub-threshold patterns. The host is unaware.
+              </p>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-sm font-semibold text-white/90">Technology: Verified · Campaign: Conceptual</span>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══ DREAM STATE — TECHNICAL BREAKDOWN ═══ */}
+        <section className="container mx-auto px-4 lg:px-6 mb-32">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+            >
+              <motion.div variants={fadeUp} custom={0} className="text-center mb-14">
+                <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3">
+                  How It Works
+                </p>
+                <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4">
+                  Synthesizing ChatGPT's subconscious
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  The OpenAI Node.js SDK is open-source. We installed it on our servers and attached Mana to it.
+                  Here's exactly what happens at each step.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* Architecture diagram */}
+            <div className="relative rounded-2xl overflow-hidden border border-border/50 mb-12">
+              <img
+                src={chatgptLayer2Wrap}
+                alt="Mana Layer 2 silently wrapping the OpenAI API client"
+                width={1920}
+                height={900}
+                loading="lazy"
+                className="w-full h-auto"
+              />
+            </div>
+
+            {/* Step-by-step pipeline */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12">
+              {[
+                {
+                  step: "01",
+                  title: "Install & Scan",
+                  desc: "Install the openai npm package on our server. Mana scans the module, discovering chat.completions.create, embeddings.create, and 40+ exported functions.",
+                  color: "text-[hsl(var(--neon-cyan,190_100%_60%))]",
+                },
+                {
+                  step: "02",
+                  title: "Attach Layer 2",
+                  desc: "BEACON telemetry wraps every API call. DEFENSE gates monitor for prompt injection patterns. Shadow Rules govern sensitive endpoints. Zero source modification.",
+                  color: "text-primary",
+                },
+                {
+                  step: "03",
+                  title: "Pipe to DREAM",
+                  desc: "Every invocation's metadata — latency, token count, model choice, response patterns — flows into the DREAM engine for sub-threshold synthesis. No AI. Pure algorithm.",
+                  color: "text-[hsl(var(--neon-purple,270_100%_70%))]",
+                },
+                {
+                  step: "04",
+                  title: "Emergent Patterns",
+                  desc: "DREAM identifies behavioral signatures: which prompts trigger longer responses, which models drift, where latency spikes correlate with token patterns. ChatGPT develops a subconscious.",
+                  color: "text-green-400",
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <Card className="h-full border-border/40">
+                    <CardContent className="p-6">
+                      <span className={`text-3xl font-black ${item.color}/30`}>{item.step}</span>
+                      <h3 className="text-base font-bold mt-2 mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* What Mana sees — the data */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="rounded-2xl border border-border/40 bg-card/50 overflow-hidden"
+            >
+              <div className="p-6 border-b border-border/30">
+                <h3 className="text-lg font-bold">What Mana captures — transparently</h3>
+                <p className="text-sm text-muted-foreground mt-1">Every API call through the wrapped OpenAI client generates this telemetry. The client never knows.</p>
+              </div>
+              <div className="p-6 font-mono text-sm overflow-x-auto">
+                <div className="space-y-2 text-muted-foreground">
+                  <p><span className="text-primary">{"{"}</span></p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"function"</span>: <span className="text-green-400">"chat.completions.create"</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"model"</span>: <span className="text-green-400">"gpt-4o"</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"tokens_in"</span>: <span className="text-[hsl(var(--neon-purple,270_100%_70%))]">847</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"tokens_out"</span>: <span className="text-[hsl(var(--neon-purple,270_100%_70%))]">1293</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"latency_ms"</span>: <span className="text-[hsl(var(--neon-purple,270_100%_70%))]">2847</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"layer2_overhead_ms"</span>: <span className="text-[hsl(var(--neon-purple,270_100%_70%))]">0.03</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"defense_gate"</span>: <span className="text-green-400">"PASS"</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"shadow_rule"</span>: <span className="text-green-400">"ALLOW"</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"dream_synthesis"</span>: <span className="text-green-400">"QUEUED"</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"host_modified"</span>: <span className="text-[hsl(var(--destructive))]">false</span>,</p>
+                  <p className="pl-4"><span className="text-[hsl(var(--neon-cyan,190_100%_60%))]">"sha256_match"</span>: <span className="text-green-400">true</span></p>
+                  <p><span className="text-primary">{"}"}</span></p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══ CAMPAIGN TARGETS — FULL BLEED ═══ */}
+        <section className="relative w-full min-h-[60vh] md:min-h-[70vh] overflow-hidden flex items-center justify-center mb-32">
+          <img
+            src={campaignTargets}
+            alt="Campaign targets showing multiple software platforms that Mana could silently attach to"
+            width={1920}
+            height={900}
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+
+          <div className="relative z-10 container mx-auto px-4 lg:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="max-w-5xl mx-auto"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 text-center drop-shadow-md">
+                If We Could, We Would
+              </p>
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-white text-center mb-6 drop-shadow-lg">
+                Every software is a candidate.
+              </h2>
+              <p className="text-lg text-white/80 max-w-2xl mx-auto text-center mb-12 drop-shadow-md">
+                These are real campaigns we've architected. The technology works. The open-source versions
+                are installed on our servers. Each one demonstrates a different Mana capability.
+              </p>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  {
+                    name: "ChatGPT (OpenAI SDK)",
+                    status: "LIVE DEMO",
+                    capability: "DREAM synthesis",
+                    desc: "Subconscious pattern extraction from API behavioral data. Installed on our infrastructure.",
+                    statusColor: "bg-green-400",
+                  },
+                  {
+                    name: "Poshmark (Shadow Shield)",
+                    status: "ARCHITECTED",
+                    capability: "DEFENSE gates",
+                    desc: "Silent vulnerability patching for e-commerce platforms. Zero downtime. Zero awareness.",
+                    statusColor: "bg-yellow-400",
+                  },
+                  {
+                    name: "lodash (Proof of Concept)",
+                    status: "LIVE DEMO",
+                    capability: "Full lifecycle",
+                    desc: "10 functions wrapped, 14 attachment points, SHA-256 verified. The first public proof.",
+                    statusColor: "bg-green-400",
+                  },
+                  {
+                    name: "Express.js",
+                    status: "ARCHITECTED",
+                    capability: "BEACON telemetry",
+                    desc: "Silent request monitoring, latency profiling, and anomaly detection across every route handler.",
+                    statusColor: "bg-yellow-400",
+                  },
+                  {
+                    name: "VS Code Extensions",
+                    status: "ARCHITECTED",
+                    capability: "Governance hooks",
+                    desc: "Lex governs extension API calls, enforcing policy on what extensions can access silently.",
+                    statusColor: "bg-yellow-400",
+                  },
+                  {
+                    name: "npm Registry Packages",
+                    status: "ARCHITECTED",
+                    capability: "Circuit breaker",
+                    desc: "Automatic fault isolation for any npm dependency. If a package breaks, Mana catches it before your app does.",
+                    statusColor: "bg-yellow-400",
+                  },
+                ].map((campaign, i) => (
+                  <motion.div
+                    key={campaign.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08, duration: 0.4 }}
+                    className="p-5 rounded-xl bg-black/40 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-colors"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={`w-2 h-2 rounded-full ${campaign.statusColor}`} />
+                      <span className="text-[10px] font-bold tracking-widest uppercase text-white/60">{campaign.status}</span>
+                    </div>
+                    <h3 className="text-base font-bold text-white mb-1">{campaign.name}</h3>
+                    <p className="text-xs font-semibold text-primary mb-2">{campaign.capability}</p>
+                    <p className="text-sm text-white/60 leading-relaxed">{campaign.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <p className="text-xs text-white/40 text-center mt-8 max-w-lg mx-auto leading-relaxed">
+                All demos use open-source software installed on CMPSBL infrastructure. 
+                No third-party production systems were accessed. The technology is real and patent-protected.
+              </p>
+            </motion.div>
           </div>
         </section>
 
