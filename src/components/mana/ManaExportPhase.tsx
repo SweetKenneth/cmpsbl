@@ -11,10 +11,12 @@ import { cn } from '@/lib/utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import type { AttachmentResult } from './ManaAttachPhase';
+import type { ManaMergeResult } from './ManaMergePhase';
 import { PATENT_NOTICE, MANA_PATENT_NOTICE, COPYRIGHT_NOTICE } from '@/config/domains';
 
 interface Props {
   result: AttachmentResult;
+  mergeResult?: ManaMergeResult | null;
 }
 
 function generateManaReadme(result: AttachmentResult): string {
@@ -125,7 +127,7 @@ ${border}
 `;
 }
 
-export function ManaExportPhase({ result }: Props) {
+export function ManaExportPhase({ result, mergeResult }: Props) {
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState(false);
 
@@ -180,6 +182,31 @@ export function ManaExportPhase({ result }: Props) {
           summary += '\n';
         }
         layer2Folder.file('ATTACHMENT-SUMMARY.md', summary);
+
+        // Include merged software in the layer2 folder
+        if (mergeResult && mergeResult.totalMergedItems > 0) {
+          const mergedFolder = layer2Folder.folder('merged');
+          if (mergedFolder) {
+            // Merged capabilities manifest
+            if (mergeResult.selectedCapabilities.length > 0) {
+              mergedFolder.file('primitives-manifest.json', JSON.stringify(
+                mergeResult.selectedCapabilities.map(c => ({
+                  id: c.id,
+                  name: c.name,
+                  module: c.module,
+                  category: c.category,
+                  tier: c.tier,
+                  description: c.description,
+                })),
+                null, 2
+              ));
+            }
+            // Merged uploaded software
+            for (const sw of mergeResult.mergedSoftware) {
+              mergedFolder.file(sw.name, sw.content);
+            }
+          }
+        }
       }
 
       // License

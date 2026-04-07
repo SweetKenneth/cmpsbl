@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ManaCapability, ManaProof, ManaManifest } from '@/lib/mana/types';
+import type { ManaMergeResult } from './ManaMergePhase';
 import type { LexRuleConfig } from './LexRuleSelector';
 import type { ManaUploadResult } from './ManaUploadPhase';
 
@@ -30,17 +31,19 @@ export interface AttachmentResult {
   functionNames: string[];
   sourceContent: string;
   files: Array<{ name: string; content: string; language: string }>;
+  mergeResult?: ManaMergeResult | null;
 }
 
 interface Props {
   upload: ManaUploadResult;
   rules: LexRuleConfig[];
+  mergeResult?: ManaMergeResult | null;
   onComplete: (result: AttachmentResult) => void;
 }
 
 type Phase = 'idle' | 'scanning' | 'attaching' | 'proving' | 'complete';
 
-export function ManaAttachPhase({ upload, rules, onComplete }: Props) {
+export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [progress, setProgress] = useState(0);
   const [logLines, setLogLines] = useState<string[]>([]);
@@ -165,6 +168,17 @@ export function ManaAttachPhase({ upload, rules, onComplete }: Props) {
     addLog(`Proof: ${proof.verified ? 'VERIFIED' : 'FAILED'} · ${proof.fingerprintId}`);
     addLog('═══════════════════════════════════════════');
 
+    // Log merged software if present
+    if (mergeResult && mergeResult.totalMergedItems > 0) {
+      addLog(`Layer 2 Merge: ${mergeResult.totalMergedItems} items embedded`);
+      for (const cap of mergeResult.selectedCapabilities) {
+        addLog(`  ⊕ ${cap.name} (${cap.category}) — ${cap.module}`);
+      }
+      for (const sw of mergeResult.mergedSoftware) {
+        addLog(`  ⊕ ${sw.name} (${sw.language}) — ${(sw.content.length / 1024).toFixed(1)}KB`);
+      }
+    }
+
     const attachResult: AttachmentResult = {
       manifest,
       proof,
@@ -173,6 +187,7 @@ export function ManaAttachPhase({ upload, rules, onComplete }: Props) {
       functionNames,
       sourceContent: upload.sourceContent,
       files: upload.files,
+      mergeResult,
     };
     setResult(attachResult);
   };

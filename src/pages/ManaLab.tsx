@@ -1,6 +1,6 @@
 /**
  * ManaLab — Interactive Mana Layer 2 Attachment Lab
- * Upload → Configure Lex → Attach → Export
+ * Upload → Merge → Configure Lex → Attach → Export
  * 
  * Patent Pending: U.S. App. No. 64/031,637
  */
@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import { PublicNav } from '@/components/PublicNav';
 import { ManaLabStepper } from '@/components/mana/ManaLabStepper';
 import { ManaUploadPhase, type ManaUploadResult } from '@/components/mana/ManaUploadPhase';
+import { ManaMergePhase, type ManaMergeResult } from '@/components/mana/ManaMergePhase';
 import { LexRuleSelector, type LexRuleConfig } from '@/components/mana/LexRuleSelector';
 import { ManaAttachPhase, type AttachmentResult } from '@/components/mana/ManaAttachPhase';
 import { ManaExportPhase } from '@/components/mana/ManaExportPhase';
@@ -21,6 +22,7 @@ const PATENT_APP_NO = '64/031,637';
 export default function ManaLab() {
   const [step, setStep] = useState(0);
   const [upload, setUpload] = useState<ManaUploadResult | null>(null);
+  const [mergeResult, setMergeResult] = useState<ManaMergeResult | null>(null);
   const [lexRules, setLexRules] = useState<LexRuleConfig[] | null>(null);
   const [attachResult, setAttachResult] = useState<AttachmentResult | null>(null);
 
@@ -29,14 +31,19 @@ export default function ManaLab() {
     setStep(1);
   };
 
+  const handleMergeComplete = (result: ManaMergeResult) => {
+    setMergeResult(result);
+    setStep(2);
+  };
+
   const handleLexComplete = (rules: LexRuleConfig[]) => {
     setLexRules(rules);
-    setStep(2);
+    setStep(3);
   };
 
   const handleAttachComplete = (result: AttachmentResult) => {
     setAttachResult(result);
-    setStep(3);
+    setStep(4);
   };
 
   const handleStepClick = (index: number) => {
@@ -47,7 +54,7 @@ export default function ManaLab() {
     <>
       <Helmet>
         <title>Mana Lab — Layer 2 Attachment Engine | CMPSBL®</title>
-        <meta name="description" content="Upload software, configure Lex governance rules, and attach Mana's Layer 2. Download a complete export pack with SHA-256 proof." />
+        <meta name="description" content="Upload software, merge substrate capabilities, configure Lex governance rules, and attach Mana's Layer 2. Download a complete export pack with SHA-256 proof." />
       </Helmet>
 
       <PublicNav />
@@ -71,7 +78,7 @@ export default function ManaLab() {
               Mana Lab
             </h1>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              Upload any software. Configure Lex governance. Attach Layer 2.
+              Upload any software. Merge capabilities. Configure Lex governance. Attach Layer 2.
               Download a complete export pack with cryptographic proof.
             </p>
           </motion.div>
@@ -97,6 +104,13 @@ export default function ManaLab() {
               )}
 
               {step === 1 && upload && (
+                <ManaMergePhase
+                  hostName={upload.name}
+                  onComplete={handleMergeComplete}
+                />
+              )}
+
+              {step === 2 && upload && (
                 <LexRuleSelector
                   functionCount={upload.functionCount}
                   hostName={upload.name}
@@ -104,16 +118,17 @@ export default function ManaLab() {
                 />
               )}
 
-              {step === 2 && upload && lexRules && (
+              {step === 3 && upload && lexRules && (
                 <ManaAttachPhase
                   upload={upload}
                   rules={lexRules}
+                  mergeResult={mergeResult}
                   onComplete={handleAttachComplete}
                 />
               )}
 
-              {step === 3 && attachResult && (
-                <ManaExportPhase result={attachResult} />
+              {step === 4 && attachResult && (
+                <ManaExportPhase result={attachResult} mergeResult={mergeResult} />
               )}
             </div>
           </motion.div>

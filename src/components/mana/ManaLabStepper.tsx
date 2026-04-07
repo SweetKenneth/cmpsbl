@@ -3,11 +3,12 @@
  * Reuses pattern from AscensionStepper
  */
 
-import { Upload, Settings, Layers, Package, Check } from 'lucide-react';
+import { Upload, Settings, Layers, Package, Check, GitMerge } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const STEPS = [
   { id: 'upload', label: 'Upload', icon: Upload },
+  { id: 'merge', label: 'Merge', icon: GitMerge },
   { id: 'lex', label: 'Lex Rules', icon: Settings },
   { id: 'attach', label: 'Attach', icon: Layers },
   { id: 'export', label: 'Export', icon: Package },
