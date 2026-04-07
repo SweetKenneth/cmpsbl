@@ -180,13 +180,20 @@ export default function RestorationShop() {
       const zip = new JSZip();
       const fingerprint = report.cjpiCertificate.fingerprint;
 
+      // ═══ Regenerate refurbished code fresh at export time ═══
+      // This ensures the latest generator logic is always used,
+      // preventing stale cached state from earlier sessions.
+      const freshRefurbished = selectedPrims.length > 0
+        ? generateRefurbishedCode(code, selectedPrims, fingerprint, undefined, fileName ?? undefined)
+        : refurbishedCode;
+
       // ═══ LICENSE (styled HTML) ═══
       zip.file('LICENSE.html', wrapDocHtml('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
 
       // ═══ Dual-Layer Source ═══
       const refExt = getRefurbishedExtension(detectedLang);
       zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file(`src/refurbished-source${refExt}`, refurbishedCode || '// Refurbished code not generated');
+      zip.file(`src/refurbished-source${refExt}`, freshRefurbished || '// Refurbished code not generated');
 
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
