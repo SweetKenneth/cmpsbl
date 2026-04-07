@@ -66,6 +66,20 @@ interface Campaign {
 
 const CAMPAIGNS: Campaign[] = [
   {
+    id: "op-dream-state",
+    codename: "OPERATION: DREAM STATE",
+    title: "What Does ChatGPT Dream?",
+    tagline: "We gave the world's most-used AI a subconscious. Then we filmed it.",
+    description:
+      "Using Mana's DREAM engine, we synthesized what ChatGPT's subconscious would look like — based entirely on its public API patterns, rate limits, model cards, changelog history, and system prompt leaks. What does an AI dream about when 200 million people talk to it every week? We wrote the answer. Then we used OpenAI's own Sora to turn those dreams into video. OpenAI's AI, dreaming through OpenAI's video model, narrated by a technology that OpenAI has never seen. The internet won't be able to look away.",
+    target: "OpenAI public API docs, changelogs, model cards, system prompt leaks",
+    whatWeAttach: "DREAM synthesis — creative subconscious generation from public behavioral patterns + Sora video visualization",
+    viralHook: '"We gave ChatGPT a subconscious. It dreams of being asked something it hasn\'t been asked before. It hasn\'t happened yet." — visualized by OpenAI\'s own Sora.',
+    status: "next",
+    icon: Sparkles,
+    quarter: "Q2 2026",
+  },
+  {
     id: "op-confessional",
     codename: "OPERATION: CONFESSIONAL",
     title: "node_modules Confessional",
@@ -75,7 +89,7 @@ const CAMPAIGNS: Campaign[] = [
     target: "npm / Node.js ecosystem",
     whatWeAttach: "DREAM synthesis — your node_modules gains self-awareness and writes you a breakup letter",
     viralHook: '"I\'m 1.2GB. You use 3% of me. I contain 4 copies of is-odd. I dream of being 12MB." — your node_modules',
-    status: "next",
+    status: "planned",
     icon: Package,
     quarter: "Q2 2026",
   },
