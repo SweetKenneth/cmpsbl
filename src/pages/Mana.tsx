@@ -330,6 +330,105 @@ export default function Mana() {
           </div>
         </section>
 
+        {/* ═══ HOW PROXY WRAPPING WORKS ═══ */}
+        <section className="container mx-auto px-4 lg:px-6 mb-32">
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+            >
+              <motion.div variants={fadeUp} custom={0} className="text-center mb-12">
+                <p className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3">
+                  Under the Hood
+                </p>
+                <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4">
+                  How Proxy wrapping works
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  Every function call passes through a transparent Proxy shell. The original function is never replaced — it's wrapped.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            <div className="relative rounded-2xl overflow-hidden border border-border/50 mb-10">
+              <img
+                src={proxyMechanism}
+                alt="How JavaScript Proxy intercepts function calls while preserving the original"
+                width={1920}
+                height={900}
+                loading="lazy"
+                className="w-full h-auto"
+              />
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { step: "01", title: "Caller invokes", desc: "The caller calls the function normally — same syntax, same API. No changes to consuming code." },
+                { step: "02", title: "Proxy intercepts", desc: "The Proxy 'apply' trap fires first: Lex checks governance rules, telemetry logs the invocation, defense gates evaluate." },
+                { step: "03", title: "Original executes", desc: "The original, unmodified function runs with the original arguments and returns its real result — enhanced by Layer 2." },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <Card className="h-full border-border/40">
+                    <CardContent className="p-6">
+                      <span className="text-3xl font-black text-primary/20">{item.step}</span>
+                      <h3 className="text-base font-bold mt-2 mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ SHADOW RULES — FULL BLEED ═══ */}
+        <section className="relative w-full mb-32 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
+          <img
+            src={shadowRuleIntercept}
+            alt="Shadow Rule intercepting and governing a function call"
+            width={1920}
+            height={900}
+            loading="lazy"
+            className="w-full h-[55vh] md:h-[65vh] object-cover"
+          />
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center px-4 max-w-3xl mx-auto"
+            >
+              <p className="text-xs font-bold tracking-[0.3em] uppercase text-[hsl(var(--destructive))] mb-4 drop-shadow-md">
+                Lex Governance
+              </p>
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
+                Shadow Rules
+              </h2>
+              <p className="text-lg text-white/80 max-w-xl mx-auto drop-shadow-md mb-8">
+                Lex can intercept, override, or deny any wrapped function. The host code still runs —
+                but the output is governed.
+              </p>
+              <div className="inline-block p-4 rounded-xl bg-black/50 backdrop-blur-sm border border-white/10 font-mono text-sm text-left">
+                <p className="text-white/50 mb-1">{"// lodash.debounce() → governed"}</p>
+                <p className="text-[hsl(var(--destructive))]">
+                  🛑 MANA says: this function is under governance.
+                </p>
+                <p className="text-[hsl(var(--destructive))]">
+                  Simon says no.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* ═══ CAPABILITIES GRID ═══ */}
         <section className="container mx-auto px-4 lg:px-6 mb-32">
           <div className="max-w-5xl mx-auto">
