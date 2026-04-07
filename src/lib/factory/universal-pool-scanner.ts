@@ -984,7 +984,18 @@ function scoreCandidate(
   const structBoost = structuralBoosts?.get(primName) ?? 0;
   const structuralArchetypeBonus = structBoost * 0.12; // Up to 12% from structural patterns
 
-  // Composite scoring — signal-dominant, context-aware, structure-boosted
+  // ── VERTICAL AFFINITY BOOST ──────────────────────────────────────────
+  // When running on a specific vertical substrate (e.g. security.cmpsbl.com),
+  // primitives from that vertical's expansion pool receive a density-gated
+  // bonus. This makes the vertical choice matter — a domain expert substrate
+  // gives its own primitives a competitive edge, while still using the full
+  // v21 engine quality. Capped at 0.10 and gated by signal density to prevent
+  // phantom boosts for irrelevant primitives.
+  const verticalAffinityBonus = (verticalAffinity && tagged.sourceVertical === verticalAffinity && hits > 0)
+    ? 0.10 * Math.min(rawDensity / 0.15, 1)
+    : 0;
+
+  // Composite scoring — signal-dominant, context-aware, structure-boosted, vertical-aware
   const affinity = Math.min(signalAffinity * 0.5 + capRatio * 0.5, 1);
   const compounding =
     signalAffinity * 0.35 +
@@ -993,7 +1004,8 @@ function scoreCandidate(
     breadthScore * 0.08 +
     weightFactor * 0.05 +
     contextBonus +
-    structuralArchetypeBonus;
+    structuralArchetypeBonus +
+    verticalAffinityBonus;
 
   return {
     primitive: tagged.primitive,
