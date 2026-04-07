@@ -399,7 +399,6 @@ export default function Mana() {
 
         {/* ═══ SHADOW RULES — FULL BLEED ═══ */}
         <section className="relative w-full mb-32 overflow-hidden min-h-[70vh] md:min-h-[65vh] flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10 pointer-events-none" />
           <img
             src={shadowRuleIntercept}
             alt="Shadow Rule intercepting and governing a function call"
@@ -408,6 +407,8 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
           <div className="relative z-20 py-16 px-4 max-w-3xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
