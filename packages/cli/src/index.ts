@@ -918,6 +918,8 @@ export async function run(args: string[]): Promise<void> {
         await cmdLogin(args.slice(1)); break;
       case 'activate':
         await cmdLoadout(['activate', ...args.slice(1)]); break;
+      // ── Mana Engine ──
+      case 'mana':        await cmdMana(args.slice(1)); break;
       case 'stabilize': case 'recover':
         await cmdGateway('system.heal', args.slice(1)); break;
       case 'search': case 'find':
