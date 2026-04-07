@@ -164,3 +164,13 @@ export function isControlDomain(): boolean {
   return hostname === DOMAIN_CONFIG.services.control
     || hostname === `www.${DOMAIN_CONFIG.services.control}`;
 }
+
+/**
+ * Detect if current hostname is the Mana subdomain
+ */
+export function isManaDomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname.toLowerCase();
+  return hostname === DOMAIN_CONFIG.services.mana
+    || hostname === `www.${DOMAIN_CONFIG.services.mana}`;
+}
