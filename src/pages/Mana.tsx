@@ -90,7 +90,7 @@ export default function Mana() {
           <div className="relative z-10 container mx-auto px-4 lg:px-6 text-center py-32">
             <motion.div initial="hidden" animate="visible" className="max-w-4xl mx-auto">
               <motion.div variants={fadeUp} custom={0} className="flex items-center justify-center gap-2 mb-8">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/40 bg-primary/10 text-sm font-bold text-primary backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 bg-white/10 text-sm font-bold text-white backdrop-blur-sm">
                   <Award className="w-4 h-4" />
                   Patent Pending · U.S. App. No. {PATENT_APP_NO}
                 </span>
