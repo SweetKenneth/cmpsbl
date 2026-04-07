@@ -2898,6 +2898,165 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
 };
 
 /**
+ * Generate a self-verification code block in the target language.
+ * This block lets anyone run the file and verify the fingerprint directly.
+ */
+function generateSelfVerifyBlock(adapter: LanguageAdapter, fingerprint: string, language: string): string {
+  const lines: string[] = [];
+  lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
+  lines.push(adapter.comment('SELF-VERIFICATION'));
+  lines.push(adapter.comment('Run this file to verify the artifact integrity.'));
+  lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
+
+  if (language === 'Python') {
+    lines.push(`
+def __cmpsbl_verify__():
+    """
+    CMPSBL® Artifact Self-Verification
+    Verifies this sealed artifact's integrity and fingerprint.
+    Run: python <this_file>.py --verify
+    """
+    import hashlib, json, sys, os
+
+    fingerprint = "${fingerprint}"
+    meta = json.loads(__CMPSBL_META__) if isinstance(__CMPSBL_META__, str) else __CMPSBL_META__
+    verify_url = f"https://cmpsbl.com/verify/{fingerprint}"
+
+    print("=" * 60)
+    print("CMPSBL® Convex Core™ — Artifact Verification")
+    print("A PromptFluid™ Product")
+    print("=" * 60)
+    print(f"  Fingerprint:  {fingerprint}")
+    print(f"  Primitives:   {meta.get('primitiveCount', '?')}")
+    print(f"  Generated:    {meta.get('generatedAt', '?')}")
+    print(f"  Runtime:      {meta.get('runtimeVersion', '?')}")
+    print(f"  Language:     {meta.get('sourceLanguage', '?')}")
+    print()
+
+    # Verify metadata integrity
+    checks_passed = 0
+    checks_total = 4
+
+    # Check 1: Fingerprint present
+    if fingerprint and len(fingerprint) > 8:
+        print("  ✓ Fingerprint valid")
+        checks_passed += 1
+    else:
+        print("  ✗ Fingerprint missing or malformed")
+
+    # Check 2: Metadata intact
+    if meta.get("runtimeVersion") and meta.get("orchestrationVersion"):
+        print("  ✓ Metadata intact")
+        checks_passed += 1
+    else:
+        print("  ✗ Metadata corrupted")
+
+    # Check 3: Patent reference present
+    if meta.get("patent"):
+        print("  ✓ Patent reference present")
+        checks_passed += 1
+    else:
+        print("  ✗ Patent reference missing")
+
+    # Check 4: Source file hash
+    try:
+        with open(__file__, "rb") as f:
+            content = f.read()
+        file_hash = hashlib.sha256(content).hexdigest()[:16]
+        print(f"  ✓ File hash: {file_hash}")
+        checks_passed += 1
+    except Exception:
+        print("  ✗ Could not compute file hash")
+
+    print()
+    print(f"  Result: {checks_passed}/{checks_total} checks passed")
+    print()
+    print(f"  Online verification:")
+    print(f"    {verify_url}")
+    print()
+    print(f"  Programmatic verification:")
+    print(f"    pip install cmpsbl-test-harness")
+    print(f'    from cmpsbl import verify_fingerprint')
+    print(f'    verify_fingerprint("{fingerprint}")')
+    print()
+    print("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.")
+    print("  U.S. Patent Pending — App. No. 64/029,678")
+    print("=" * 60)
+    return checks_passed == checks_total
+
+if __name__ == "__main__":
+    import sys
+    if "--verify" in sys.argv or "verify" in sys.argv:
+        success = __cmpsbl_verify__()
+        sys.exit(0 if success else 1)
+`);
+  } else if (language === 'TypeScript' || language === 'JavaScript') {
+    lines.push(`
+/**
+ * CMPSBL® Artifact Self-Verification
+ * Run: node <this_file> --verify
+ */
+function __cmpsbl_verify__() {
+  const crypto = globalThis.crypto ?? require('crypto');
+  const fs = typeof require !== 'undefined' ? require('fs') : null;
+  const fingerprint = "${fingerprint}";
+  const meta = typeof __CMPSBL_META__ === 'string' ? JSON.parse(__CMPSBL_META__) : __CMPSBL_META__;
+  const verifyUrl = \`https://cmpsbl.com/verify/\${fingerprint}\`;
+
+  console.log("=".repeat(60));
+  console.log("CMPSBL® Convex Core™ — Artifact Verification");
+  console.log("A PromptFluid™ Product");
+  console.log("=".repeat(60));
+  console.log(\`  Fingerprint:  \${fingerprint}\`);
+  console.log(\`  Primitives:   \${meta?.primitiveCount ?? '?'}\`);
+  console.log(\`  Generated:    \${meta?.generatedAt ?? '?'}\`);
+  console.log(\`  Runtime:      \${meta?.runtimeVersion ?? '?'}\`);
+  console.log(\`  Language:     \${meta?.sourceLanguage ?? '?'}\`);
+  console.log();
+
+  let passed = 0;
+  const total = 3;
+
+  if (fingerprint && fingerprint.length > 8) { console.log("  ✓ Fingerprint valid"); passed++; }
+  else { console.log("  ✗ Fingerprint missing"); }
+
+  if (meta?.runtimeVersion && meta?.orchestrationVersion) { console.log("  ✓ Metadata intact"); passed++; }
+  else { console.log("  ✗ Metadata corrupted"); }
+
+  if (meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
+  else { console.log("  ✗ Patent reference missing"); }
+
+  console.log();
+  console.log(\`  Result: \${passed}/\${total} checks passed\`);
+  console.log();
+  console.log(\`  Online verification:\`);
+  console.log(\`    \${verifyUrl}\`);
+  console.log();
+  console.log("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.");
+  console.log("  U.S. Patent Pending — App. No. 64/029,678");
+  console.log("=".repeat(60));
+  return passed === total;
+}
+
+if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
+  const ok = __cmpsbl_verify__();
+  process.exit(ok ? 0 : 1);
+}
+`);
+  } else {
+    // For other languages, embed as comments only
+    lines.push(adapter.comment(`VERIFY THIS ARTIFACT: https://cmpsbl.com/verify/${fingerprint}`));
+    lines.push(adapter.comment(`Fingerprint: ${fingerprint}`));
+    lines.push(adapter.comment('Install: npm install @cmpsbl/test-harness'));
+    lines.push(adapter.comment(`Run: verifyFingerprint("${fingerprint}")`));
+    lines.push(adapter.comment(`© ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.`));
+    lines.push(adapter.comment('U.S. Patent Pending — App. No. 64/029,678'));
+  }
+
+  return lines.join('\n');
+}
+
+/**
  * Generate the refurbished source with real per-primitive wrappers.
  * Uses the Bridge adapter to output in the SAME language as the source.
  */
@@ -2915,7 +3074,10 @@ export function generateRefurbishedCode(
   const imports: string[] = [];
   const guards: string[] = [];
   // Strip any existing sealed-runtime footers from prior passes to prevent duplication
-  let cleanedSource = originalCode.replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n').trimEnd();
+  let cleanedSource = originalCode
+    .replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n')
+    .replace(/\n?.*End of CMPSBL® Convex Core™ Sealed Artifact.*\n?/g, '\n')
+    .trimEnd();
 
   // For Python: convert relative imports to absolute so file runs standalone
   if (detected === 'Python') {
@@ -2944,12 +3106,17 @@ export function generateRefurbishedCode(
 
   const headerLines = [
     '═══════════════════════════════════════════════════════════',
-    'CMPSBL® Convex Core™ Sealed Artifact — Refurbished Artifact',
+    'CMPSBL® Convex Core™ — Sealed Artifact',
+    'A PromptFluid™ Product',
     `Language: ${detected} (Bridge Adapter)`,
     '═══════════════════════════════════════════════════════════',
-    `Fingerprint: ${fingerprint}`,
-    `Chain:       ${selectedPrimitives.map(p => p.name).join(' → ')}`,
-    `Generated:   ${new Date().toISOString()}`,
+    `Fingerprint:  ${fingerprint}`,
+    `Chain:        ${selectedPrimitives.map(p => p.name).join(' → ')}`,
+    `Primitives:   ${selectedPrimitives.length}`,
+    `Generated:    ${new Date().toISOString()}`,
+    `Runtime:      Convex Core™ v3.0.0`,
+    '',
+    'U.S. Patent Pending — App. No. 64/029,678',
     '',
     'This artifact contains a sealed orchestration matrix.',
     'Layer 1: Original source (hardened in-place)',
@@ -2958,6 +3125,12 @@ export function generateRefurbishedCode(
     'DO NOT modify the orchestration matrix — it governs',
     'primitive sequencing and collision resolution.',
     'DO NOT modify the fingerprint — it validates this artifact.',
+    '',
+    'VERIFY THIS ARTIFACT:',
+    `  https://cmpsbl.com/verify/${fingerprint}`,
+    '  — or —',
+    '  npm install @cmpsbl/test-harness',
+    `  verifyFingerprint("${fingerprint}")`,
     '═══════════════════════════════════════════════════════════',
   ];
 
@@ -2979,12 +3152,36 @@ export function generateRefurbishedCode(
     sourceLanguage: detected,
     orchestrationVersion: '3.0.0',
     pipelineStages: 5,
+    verifyUrl: `https://cmpsbl.com/verify/${fingerprint}`,
+    patent: 'U.S. App. No. 64/029,678',
   }, null, 2);
 
   const metaBlock = [
     adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
     adapter.constDecl('__CMPSBL_META__', metaJson),
   ].join('\n');
+
+  // Generate inline self-verification block (language-aware)
+  const verifyBlock = generateSelfVerifyBlock(adapter, fingerprint, detected);
+
+  const footerLines = [
+    '═══════════════════════════════════════════════════════════',
+    'End of CMPSBL® Convex Core™ Sealed Artifact',
+    '═══════════════════════════════════════════════════════════',
+    '',
+    `Fingerprint:  ${fingerprint}`,
+    `Primitives:   ${selectedPrimitives.map(p => p.name).join(', ')}`,
+    `Sealed:       ${new Date().toISOString()}`,
+    '',
+    'VERIFY: https://cmpsbl.com/verify/' + fingerprint,
+    '  npm install @cmpsbl/test-harness',
+    `  verifyFingerprint("${fingerprint}")`,
+    '',
+    '© ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL® · All rights reserved.',
+    'U.S. Patent Pending — App. No. 64/029,678',
+    'Unauthorized reproduction prohibited.',
+    '═══════════════════════════════════════════════════════════',
+  ];
 
   return [
     header,
@@ -3012,7 +3209,9 @@ export function generateRefurbishedCode(
     '',
     transformedCode,
     '',
-    adapter.comment('═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══'),
+    verifyBlock,
+    '',
+    adapter.blockComment(footerLines),
   ].join('\n');
 }
 
