@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { PinGate } from "@/components/gates/PinGate";
-import { getVerticalSubdomain, isMarketplaceDomain, isControlDomain } from "@/config/domains";
+import { getVerticalSubdomain, isMarketplaceDomain, isControlDomain, isManaDomain } from "@/config/domains";
 import { isDynamicVertical } from "@/lib/factory/vertical-factory-engine";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
@@ -14,6 +14,7 @@ const UltimateHome = lazy(() => import("@/pages/UltimateHome"));
 const MediaHome = lazy(() => import("@/pages/MediaHome"));
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 const ControlCenterHome = lazy(() => import("@/pages/ControlCenterHome"));
+const ManaHome = lazy(() => import("@/pages/ManaHome"));
 
 /**
  * Domain-aware routing:
@@ -33,6 +34,14 @@ function isPromptFluidDomain(): boolean {
 
 export default function DomainAwareHome() {
   const verticalKey = getVerticalSubdomain();
+
+  if (isManaDomain()) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-background" />}>
+        <ManaHome />
+      </Suspense>
+    );
+  }
 
   if (isControlDomain()) {
     return (

@@ -49,6 +49,7 @@ export const DOMAIN_CONFIG = {
   services: {
     marketplace: 'marketplace.cmpsbl.com',
     control: 'control.cmpsbl.com',
+    mana: 'mana.cmpsbl.com',
   },
 } as const;
 
@@ -62,6 +63,17 @@ export const PATENT_NOTICE = {
   inventor: 'Kenneth Earl Sweet Jr.',
   /** Short inline notice for footers and banners */
   inline: 'Patent Pending · U.S. App. No. 64/029,678',
+} as const;
+
+export const MANA_PATENT_NOTICE = {
+  status: 'Patent Pending',
+  applicationNumber: '64/031,637',
+  confirmationNumber: '8236',
+  title: 'Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments',
+  type: 'Utility — Provisional Application under 35 USC 111(b)',
+  filingDate: '2026-04-07',
+  inventor: 'Kenneth Earl Sweet Jr.',
+  inline: 'Patent Pending · U.S. App. No. 64/031,637',
 } as const;
 
 export const COPYRIGHT_NOTICE = {
@@ -151,4 +163,14 @@ export function isControlDomain(): boolean {
   const hostname = window.location.hostname.toLowerCase();
   return hostname === DOMAIN_CONFIG.services.control
     || hostname === `www.${DOMAIN_CONFIG.services.control}`;
+}
+
+/**
+ * Detect if current hostname is the Mana subdomain
+ */
+export function isManaDomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const hostname = window.location.hostname.toLowerCase();
+  return hostname === DOMAIN_CONFIG.services.mana
+    || hostname === `www.${DOMAIN_CONFIG.services.mana}`;
 }
