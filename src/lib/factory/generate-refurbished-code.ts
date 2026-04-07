@@ -892,7 +892,8 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
     @classmethod
     def check(cls, request_meta):
-        ip = request_meta.get("ip", "unknown")
+        meta = request_meta if isinstance(request_meta, dict) else {"raw": request_meta}
+        ip = meta.get("ip", "unknown")
         if ip in cls._blocked:
             raise PermissionError(f"DefenseLayer: IP {ip} is blocked")
         return True
