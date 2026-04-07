@@ -6,6 +6,7 @@
 import { lazy, Suspense } from "react";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
+import { SubstrateTiers } from "@/components/home/SubstrateTiers";
 import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
