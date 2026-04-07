@@ -2944,12 +2944,17 @@ export function generateRefurbishedCode(
 
   const headerLines = [
     '═══════════════════════════════════════════════════════════',
-    'CMPSBL® Convex Core™ Sealed Artifact — Refurbished Artifact',
+    'CMPSBL® Convex Core™ — Sealed Artifact',
+    'A PromptFluid™ Product',
     `Language: ${detected} (Bridge Adapter)`,
     '═══════════════════════════════════════════════════════════',
-    `Fingerprint: ${fingerprint}`,
-    `Chain:       ${selectedPrimitives.map(p => p.name).join(' → ')}`,
-    `Generated:   ${new Date().toISOString()}`,
+    `Fingerprint:  ${fingerprint}`,
+    `Chain:        ${selectedPrimitives.map(p => p.name).join(' → ')}`,
+    `Primitives:   ${selectedPrimitives.length}`,
+    `Generated:    ${new Date().toISOString()}`,
+    `Runtime:      Convex Core™ v3.0.0`,
+    '',
+    'U.S. Patent Pending — App. No. 64/029,678',
     '',
     'This artifact contains a sealed orchestration matrix.',
     'Layer 1: Original source (hardened in-place)',
@@ -2958,6 +2963,12 @@ export function generateRefurbishedCode(
     'DO NOT modify the orchestration matrix — it governs',
     'primitive sequencing and collision resolution.',
     'DO NOT modify the fingerprint — it validates this artifact.',
+    '',
+    'VERIFY THIS ARTIFACT:',
+    `  https://cmpsbl.com/verify/${fingerprint}`,
+    '  — or —',
+    '  npm install @cmpsbl/test-harness',
+    `  verifyFingerprint("${fingerprint}")`,
     '═══════════════════════════════════════════════════════════',
   ];
 
@@ -2979,12 +2990,36 @@ export function generateRefurbishedCode(
     sourceLanguage: detected,
     orchestrationVersion: '3.0.0',
     pipelineStages: 5,
+    verifyUrl: `https://cmpsbl.com/verify/${fingerprint}`,
+    patent: 'U.S. App. No. 64/029,678',
   }, null, 2);
 
   const metaBlock = [
     adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
     adapter.constDecl('__CMPSBL_META__', metaJson),
   ].join('\n');
+
+  // Generate inline self-verification block (language-aware)
+  const verifyBlock = generateSelfVerifyBlock(adapter, fingerprint, detected);
+
+  const footerLines = [
+    '═══════════════════════════════════════════════════════════',
+    'End of CMPSBL® Convex Core™ Sealed Artifact',
+    '═══════════════════════════════════════════════════════════',
+    '',
+    `Fingerprint:  ${fingerprint}`,
+    `Primitives:   ${selectedPrimitives.map(p => p.name).join(', ')}`,
+    `Sealed:       ${new Date().toISOString()}`,
+    '',
+    'VERIFY: https://cmpsbl.com/verify/' + fingerprint,
+    '  npm install @cmpsbl/test-harness',
+    `  verifyFingerprint("${fingerprint}")`,
+    '',
+    '© ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL® · All rights reserved.',
+    'U.S. Patent Pending — App. No. 64/029,678',
+    'Unauthorized reproduction prohibited.',
+    '═══════════════════════════════════════════════════════════',
+  ];
 
   return [
     header,
@@ -3012,7 +3047,9 @@ export function generateRefurbishedCode(
     '',
     transformedCode,
     '',
-    adapter.comment('═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══'),
+    verifyBlock,
+    '',
+    adapter.blockComment(footerLines),
   ].join('\n');
 }
 
