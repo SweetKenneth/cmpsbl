@@ -174,7 +174,7 @@ export default function RestorationShop() {
     }
 
     if (!report) return;
-    toast.success('Preparing your refurbished code package for download...');
+    toast.success('Preparing your ascended code package for download...');
 
     import('jszip').then(({ default: JSZip }) => {
       const zip = new JSZip();

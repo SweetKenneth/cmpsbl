@@ -231,7 +231,7 @@ function getContextualResponse(
 
   // Code / source / original
   if (/code|source|original|refurbished|dual.?layer/i.test(q)) {
-    return `Your export contains dual-layer source: \`src/original-source.txt\` (your unchanged code) and \`src/refurbished-source.ts\` (hardened code with @cmpsbl/runtime imports and primitive guard activations). The refurbished version wraps your original logic — nothing was removed, only reinforced.`;
+    return `Your export contains dual-layer source: \`src/original-source.txt\` (your unchanged code) and \`src/ascended-source.ts\` (hardened code with @cmpsbl/runtime imports and primitive guard activations). The ascended version wraps your original logic — nothing was removed, only reinforced.`;
   }
 
   // Price / plan
