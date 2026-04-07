@@ -168,6 +168,17 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
     addLog(`Proof: ${proof.verified ? 'VERIFIED' : 'FAILED'} · ${proof.fingerprintId}`);
     addLog('═══════════════════════════════════════════');
 
+    // Log merged software if present
+    if (mergeResult && mergeResult.totalMergedItems > 0) {
+      addLog(`Layer 2 Merge: ${mergeResult.totalMergedItems} items embedded`);
+      for (const cap of mergeResult.selectedCapabilities) {
+        addLog(`  ⊕ ${cap.name} (${cap.category}) — ${cap.module}`);
+      }
+      for (const sw of mergeResult.mergedSoftware) {
+        addLog(`  ⊕ ${sw.name} (${sw.language}) — ${(sw.content.length / 1024).toFixed(1)}KB`);
+      }
+    }
+
     const attachResult: AttachmentResult = {
       manifest,
       proof,
@@ -176,6 +187,7 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
       functionNames,
       sourceContent: upload.sourceContent,
       files: upload.files,
+      mergeResult,
     };
     setResult(attachResult);
   };

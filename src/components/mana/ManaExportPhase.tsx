@@ -127,7 +127,7 @@ ${border}
 `;
 }
 
-export function ManaExportPhase({ result }: Props) {
+export function ManaExportPhase({ result, mergeResult }: Props) {
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState(false);
 
