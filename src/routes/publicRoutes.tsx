@@ -124,6 +124,7 @@ const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 const SoftwareSymbiosis = lazy(() => import("@/pages/SoftwareSymbiosis"));
 const ManaPage = lazy(() => import("@/pages/Mana"));
 const ManaProofPage = lazy(() => import("@/pages/ManaProof"));
+const ManaLabPage = lazy(() => import("@/pages/ManaLab"));
 const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
 
 export const publicRoutes = (
