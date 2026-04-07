@@ -397,11 +397,13 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
     @staticmethod
     def init(*a, **kw):
-        return StateRecovery(**kw)
+        accepted = {"memory"}
+        return StateRecovery(**{k: v for k, v in kw.items() if k in accepted})
 
     @staticmethod
     def enable(*a, **kw):
-        return StateRecovery(**kw)`;
+        accepted = {"memory"}
+        return StateRecovery(**{k: v for k, v in kw.items() if k in accepted})`;
         }
         // ─── CircuitBreaker: real circuit breaker with failure tracking ───
         if (s === 'CircuitBreaker') {
