@@ -499,6 +499,7 @@ export default function Mana() {
               </CardContent>
             </Card>
           </motion.div>
+        </section>
 
         {/* ═══ DISCLAIMER BANNER ═══ */}
         <section className="container mx-auto px-4 lg:px-6 mb-8">
