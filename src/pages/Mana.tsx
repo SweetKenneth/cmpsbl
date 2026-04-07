@@ -84,13 +84,13 @@ export default function Mana() {
             fetchPriority="high"
           />
           {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-background" />
 
           <div className="relative z-10 container mx-auto px-4 lg:px-6 text-center py-32">
             <motion.div initial="hidden" animate="visible" className="max-w-4xl mx-auto">
               <motion.div variants={fadeUp} custom={0} className="flex items-center justify-center gap-2 mb-8">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/40 bg-primary/10 text-sm font-bold text-primary backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 bg-white/10 text-sm font-bold text-white backdrop-blur-sm">
                   <Award className="w-4 h-4" />
                   Patent Pending · U.S. App. No. {PATENT_APP_NO}
                 </span>
@@ -101,8 +101,8 @@ export default function Mana() {
                 custom={1}
                 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8"
               >
-                <span className="block text-foreground">Wrap anything.</span>
-                <span className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent">
+                <span className="block text-white drop-shadow-lg">Wrap anything.</span>
+                <span className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan,190_100%_60%))] to-primary bg-clip-text text-transparent drop-shadow-lg">
                   Modify nothing.
                 </span>
               </motion.h1>
@@ -110,7 +110,7 @@ export default function Mana() {
               <motion.p
                 variants={fadeUp}
                 custom={2}
-                className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
+                className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed drop-shadow-md"
               >
                 Mana silently attaches capabilities to any existing software — security, telemetry,
                 governance — without changing a single line of source code.
@@ -123,7 +123,7 @@ export default function Mana() {
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-xl h-14 px-10 text-lg font-semibold backdrop-blur-sm bg-background/50">
+                <Button asChild variant="outline" size="lg" className="rounded-xl h-14 px-10 text-lg font-semibold backdrop-blur-sm bg-white/10 border-white/30 text-white hover:bg-white/20">
                   <Link to="/ascension">Experience Ascension</Link>
                 </Button>
               </motion.div>
@@ -182,10 +182,10 @@ export default function Mana() {
               viewport={{ once: true }}
               className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-foreground mb-4 drop-shadow-lg">
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 Two layers. Zero intrusion.
               </h2>
-              <p className="text-lg text-muted-foreground max-w-lg mx-auto drop-shadow-md">
+              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Layer 1 runs untouched. Layer 2 wraps at function boundaries. The host never knows.
               </p>
             </motion.div>
@@ -242,10 +242,10 @@ export default function Mana() {
               viewport={{ once: true }}
               className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-foreground mb-4 drop-shadow-lg">
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 DEFENSE gates. Silently.
               </h2>
-              <p className="text-lg text-muted-foreground max-w-lg mx-auto drop-shadow-md">
+              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Block exploit paths without patching source. The host code stays pristine.
               </p>
             </motion.div>
