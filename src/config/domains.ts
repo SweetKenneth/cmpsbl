@@ -65,6 +65,17 @@ export const PATENT_NOTICE = {
   inline: 'Patent Pending · U.S. App. No. 64/029,678',
 } as const;
 
+export const MANA_PATENT_NOTICE = {
+  status: 'Patent Pending',
+  applicationNumber: '64/031,637',
+  confirmationNumber: '8236',
+  title: 'Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments',
+  type: 'Utility — Provisional Application under 35 USC 111(b)',
+  filingDate: '2026-04-07',
+  inventor: 'Kenneth Earl Sweet Jr.',
+  inline: 'Patent Pending · U.S. App. No. 64/031,637',
+} as const;
+
 export const COPYRIGHT_NOTICE = {
   trademark: '™',
   copyright: '©',
