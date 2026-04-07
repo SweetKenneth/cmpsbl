@@ -193,7 +193,7 @@ export default function RestorationShop() {
       // ═══ Dual-Layer Source ═══
       const refExt = getRefurbishedExtension(detectedLang);
       zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file(`src/refurbished-source${refExt}`, freshRefurbished || '// Refurbished code not generated');
+      zip.file(`src/ascended-source${refExt}`, freshRefurbished || '// Ascended code not generated');
 
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
