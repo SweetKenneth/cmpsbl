@@ -256,7 +256,7 @@ export default function RestorationShop() {
 
       // ═══ README ═══
       const readmeMd = [
-        `# CMPSBL® Refurbished Code Package`,
+        `# CMPSBL® Ascended Code Package`,
         ``,
         `**Serial:** \`${report.id}\``,
         `**Fingerprint:** \`${fingerprint}\``,
