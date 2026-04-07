@@ -145,7 +145,7 @@ export default function RestorationShop() {
     const hardened = generateRefurbishedCode(code, selected, fingerprint, undefined, fileName ?? undefined);
     setRefurbishedCode(hardened);
 
-    saveRestorationSession({
+    await saveRestorationSession({
       fingerprint,
       originalCode: code,
       originalLanguage: fileName?.split('.').pop() ?? undefined,

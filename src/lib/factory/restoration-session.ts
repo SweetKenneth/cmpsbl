@@ -42,17 +42,18 @@ export async function saveRestorationSession(params: {
     serial_number: params.report.id,
   };
 
-  const { data, error } = await supabase
+  // Insert without .select() — the SELECT RLS policy is restrictive
+  // (mediated via RPC for lookups), so chaining .select() after insert
+  // would fail and could roll back the entire operation.
+  const { error } = await supabase
     .from('restoration_sessions')
-    .insert([row] as never[])
-    .select('id')
-    .single();
+    .insert([row] as never[]);
 
   if (error) {
-    console.error('Failed to save restoration session:', error.message);
+    console.error('[Ascension] Failed to persist session:', error.message);
     return null;
   }
-  return data?.id ?? null;
+  return params.fingerprint;
 }
 
 /** Look up a restoration session by fingerprint (via security definer RPC) */
