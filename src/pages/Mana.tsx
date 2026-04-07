@@ -242,10 +242,10 @@ export default function Mana() {
               viewport={{ once: true }}
               className="text-center px-4"
             >
-              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-foreground mb-4 drop-shadow-lg">
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter text-white mb-4 drop-shadow-lg">
                 DEFENSE gates. Silently.
               </h2>
-              <p className="text-lg text-muted-foreground max-w-lg mx-auto drop-shadow-md">
+              <p className="text-lg text-white/80 max-w-lg mx-auto drop-shadow-md">
                 Block exploit paths without patching source. The host code stays pristine.
               </p>
             </motion.div>
