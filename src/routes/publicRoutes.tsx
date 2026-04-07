@@ -123,6 +123,7 @@ const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
 const SoftwareSymbiosis = lazy(() => import("@/pages/SoftwareSymbiosis"));
 const ManaPage = lazy(() => import("@/pages/Mana"));
+const ManaProofPage = lazy(() => import("@/pages/ManaProof"));
 const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
 
 export const publicRoutes = (
@@ -133,6 +134,7 @@ export const publicRoutes = (
     <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/mana" element={<ManaPage />} />
+    <Route path="/mana/proof" element={<ManaProofPage />} />
     <Route path="/dreams" element={<DreamStatePage />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
