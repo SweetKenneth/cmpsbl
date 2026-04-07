@@ -120,6 +120,7 @@ const MemberHub = lazy(() => import("@/pages/MemberHub"));
 const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 
 const MarketplaceHome = lazy(() => import("@/pages/MarketplaceHome"));
+const SoftwareSymbiosis = lazy(() => import("@/pages/SoftwareSymbiosis"));
 
 export const publicRoutes = (
   <>
