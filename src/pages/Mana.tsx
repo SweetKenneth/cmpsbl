@@ -261,7 +261,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
           <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
@@ -321,7 +321,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
           <div className="relative z-20 py-16 px-4 text-center">
             <motion.div
@@ -407,7 +407,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
           <div className="relative z-20 py-16 px-4 max-w-3xl mx-auto text-center">
             <motion.div
@@ -527,7 +527,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
 
           <div className="relative z-10 container mx-auto px-4 lg:px-6">
@@ -786,7 +786,7 @@ export default function Mana() {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
 
           <div className="relative z-10 container mx-auto px-4 lg:px-6">
