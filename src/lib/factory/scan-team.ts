@@ -402,11 +402,12 @@ export async function runScanTeam(codeSnippet: string, fileName?: string): Promi
     ...failsafeFindings,
   ];
 
-  // Ultimate runs the unrestricted 40-slot pool scan.
-  // All other substrates keep the standard recommendation pass.
-  const recommendations = isUltimateSurface
-    ? buildUltimateRecommendations(codeSnippet)
-    : generateRecommendations(allFindings, codeSnippet, rand);
+  // All verticals now route through the Universal Pool Scanner (v21)
+  // for consistent IDF-weighted scoring, structural analysis, confidence
+  // banding, and dynamic slot selection. The pool contains primitives
+  // from every vertical — each vertical's expansion primitives surface
+  // naturally when the code matches their domain signals.
+  const recommendations = buildUltimateRecommendations(codeSnippet);
 
   const criticalCount = allFindings.filter(f => f.severity === 'critical').length;
   const warningCount = allFindings.filter(f => f.severity === 'warning').length;
