@@ -188,6 +188,3 @@ export function ManaUploadPhase({ onComplete }: Props) {
     </div>
   );
 }
-
-// Need this import for the button icon
-import { Layers } from 'lucide-react';
