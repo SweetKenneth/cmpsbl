@@ -196,10 +196,18 @@ export const FUNCTIONAL_TRANSFORMS: Record<string, (code: string) => string> = {
   },
 
   // GOVERNANCE: Add audit trails to state mutations
+  // Only instrument method-style calls (.set(), .push(), etc.) and known
+  // framework verbs (setState, dispatch, commit, emit, send, update).
+  // Standalone builtins like Python's set() / frozenset() are excluded
+  // by requiring either a dot-prefix or the full compound name.
   governance: (code) => {
     return code.replace(
-      /\b(setState|dispatch|commit|emit|send|push|update|set)\s*\(/g,
-      '_G(0x03, { op: "$1" }), $1('
+      /(?:\.(set|push|update|send|emit)\s*\(|\b(setState|dispatch|commit)\s*\()/g,
+      (match, dotVerb, frameworkVerb) => {
+        const verb = dotVerb || frameworkVerb;
+        if (dotVerb) return `._G(0x03, { op: "${verb}" }), .${verb}(`;
+        return `_G(0x03, { op: "${verb}" }), ${verb}(`;
+      }
     );
   },
 
