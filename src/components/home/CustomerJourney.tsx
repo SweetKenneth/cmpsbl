@@ -1,5 +1,5 @@
 /**
- * CustomerJourney — The refurbishment experience in 6 clear steps
+ * CustomerJourney — The ascension experience in 6 clear steps
  * Timeline-style with connecting lines and staggered entrance
  */
 
