@@ -44,14 +44,14 @@ export function PatentTrustStrip() {
                   <Award className="w-5 h-5 text-primary" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-mono text-muted-foreground mb-1">
-                    U.S. Patent App. No. {p.number}
-                  </p>
-                  <p className="text-sm font-semibold text-foreground leading-tight">
+                  <p className="text-sm font-bold text-foreground leading-tight">
                     {p.shortTitle}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  <p className="text-xs font-medium text-muted-foreground mt-1 leading-relaxed">
                     {p.title}
+                  </p>
+                  <p className="text-[10px] font-mono font-medium text-muted-foreground mt-2">
+                    U.S. Patent App. No. {p.number} · Filed {p.filed}
                   </p>
                 </div>
               </div>
