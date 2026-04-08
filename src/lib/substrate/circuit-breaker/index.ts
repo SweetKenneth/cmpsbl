@@ -77,6 +77,8 @@ export function recordSuccess(module: string): void {
   const b = getBreaker(module);
   const cfg = getConfig(module);
 
+  b.everSucceeded = true;
+
   if (b.state === 'half_open') {
     b.successes++;
     if (b.successes >= cfg.halfOpenMaxAttempts) {
@@ -85,7 +87,6 @@ export function recordSuccess(module: string): void {
       transition(b, 'closed');
     }
   } else if (b.state === 'closed') {
-    // Reset failure count on success within window
     b.failures = Math.max(0, b.failures - 1);
   }
 }
