@@ -22,6 +22,11 @@ import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 import { PublicNav } from "@/components/PublicNav";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
+import { TrustVisual } from "@/components/home/TrustVisual";
+
+import trustInfrastructure from "@/assets/trust-infrastructure.jpg";
+import trustEngineering from "@/assets/trust-engineering.jpg";
+import trustCognitive from "@/assets/trust-cognitive.jpg";
 
 // Below-fold: lazy loaded to reduce initial JS and improve FCP
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
