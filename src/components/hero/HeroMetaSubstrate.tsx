@@ -251,10 +251,13 @@ export function HeroMetaSubstrate() {
           {/* Value prop */}
           <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
             <p className="text-base sm:text-lg text-muted-foreground font-semibold leading-relaxed mb-2.5">
-              Upload code in <span className="text-foreground font-extrabold">90+ languages</span>. Get back <span className="text-foreground font-extrabold">hardened, certified</span> software — in&nbsp;minutes.
+              Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code without changing&nbsp;it.
             </p>
-            <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed">
-              <span className="text-foreground font-bold">Dual-patent protected.</span> Free accounts are <span className="text-foreground font-bold">first-class members</span>. Your code gains <span className="text-foreground font-bold">security</span>, <span className="text-foreground font-bold">governance</span>, and <span className="text-foreground font-bold">resilience</span>&nbsp;— without modifying the&nbsp;original.
+            <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed mb-2.5">
+              A secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>&nbsp;— enhancing your software while your original code remains&nbsp;untouched.
+            </p>
+            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed">
+              Works across <span className="text-foreground font-extrabold">90+ languages</span>. Runs in&nbsp;minutes.
             </p>
           </FadeIn>
           
