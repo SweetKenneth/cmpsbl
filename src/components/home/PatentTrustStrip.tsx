@@ -10,11 +10,13 @@ const PATENTS = [
     number: "64/029,678",
     title: "Dual-Layer Deterministic Software Evolution",
     shortTitle: "Layer 2 Architecture",
+    filed: "March 2026",
   },
   {
     number: "64/031,637",
     title: "Silent Symbiotic Software Attachment",
     shortTitle: "Universal Adhesion",
+    filed: "April 7, 2026",
   },
 ];
 
