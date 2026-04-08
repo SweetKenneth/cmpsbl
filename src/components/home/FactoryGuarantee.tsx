@@ -10,9 +10,9 @@ import { ArrowRight, Shield, Clock, Lock, Wrench } from "lucide-react";
 
 const GUARANTEES = [
   {
-    icon: Clock,
-    title: "3-Day Evaluation",
-    description: "Hot-swap architecture. Zero-friction trial. Don't like it? Swap it out.",
+    icon: Shield,
+    title: "Sealed Runtime",
+    description: "Your ascended code runs independently. No callbacks. No subscriptions. Runs forever.",
   },
   {
     icon: Lock,

@@ -41,7 +41,7 @@ const STEPS: OnboardingStep[] = [
     tag: 'Ascension',
     title: 'Your Code, Elevated',
     body: 'Upload your working code. The 40-primitive matrix scans for vulnerabilities, hidden capabilities, and structural limits — then hardens it with up to 20 primitives.\n\nYou get back production-ready, certified software. Your original code remains unchanged.',
-    footer: '3-day evaluation · No lock-in · Runs across 90+ languages',
+    footer: 'No lock-in · Sealed runtime · Runs across 90+ languages',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },

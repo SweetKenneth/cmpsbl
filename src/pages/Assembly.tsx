@@ -89,7 +89,7 @@ const TIERS: Array<{
     price: "$499–799",
     description: "Major reconstruction",
     scope: "Full reconstruction from fragments, backups, or partial code",
-    includes: ["Structural analysis", "Missing code reconstruction", "Full test suite", "Ascension report", "3-day evaluation"],
+    includes: ["Structural analysis", "Missing code reconstruction", "Full test suite", "Ascension report", "Sealed runtime"],
     featured: true,
   },
   {

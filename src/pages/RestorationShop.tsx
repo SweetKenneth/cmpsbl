@@ -399,7 +399,7 @@ export default function RestorationShop() {
     <div className="min-h-screen bg-background relative">
       <SEO
         title="The Ascension Lab | CMPSBL® — Code Ascension with 40 Primitives"
-        description="Upload your code. Our three-primitive scan team identifies vulnerabilities. Select up to 20 primitives to harden it. 3-day evaluation period included."
+        description="Upload your code. Our three-primitive scan team identifies vulnerabilities. Select up to 20 primitives to harden it. Sealed runtime included."
         canonical="https://cmpsbl.com/ascension"
       />
 
