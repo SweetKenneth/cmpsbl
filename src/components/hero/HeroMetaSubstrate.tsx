@@ -264,17 +264,19 @@ export function HeroMetaSubstrate() {
           
           {/* CTA — single focused action */}
           <FadeIn delay={0.4} className="flex justify-center max-w-md mx-auto">
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 px-8 text-sm font-bold rounded-xl border border-border/40 bg-card/50 backdrop-blur-sm text-foreground hover:bg-card/80 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/[0.08]"
-            >
-              <Link to="/ascension">
-                <Wrench className="w-4 h-4 shrink-0 text-primary" />
-                Ascend Your Code
-                <ArrowRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-              </Link>
-            </Button>
+            <div className="relative group rounded-xl p-[1.5px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" style={{ background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--primary)))" }}>
+              <Button 
+                asChild 
+                size="lg" 
+                className="gap-2 h-12 px-8 w-full text-sm font-bold rounded-[10px] bg-background hover:bg-card/90 text-foreground transition-all duration-300 shadow-lg shadow-primary/[0.06]"
+              >
+                <Link to="/ascension">
+                  <Wrench className="w-4 h-4 shrink-0 text-primary" />
+                  Ascend Your Code
+                  <ArrowRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                </Link>
+              </Button>
+            </div>
           </FadeIn>
 
           {/* Trust line */}
