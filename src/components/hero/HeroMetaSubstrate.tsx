@@ -306,7 +306,7 @@ export function HeroMetaSubstrate() {
 
           {/* Trust line */}
           <FadeIn delay={0.45} className="mt-4 mb-2">
-            <p className="text-[10px] sm:text-xs text-muted-foreground/40 font-medium tracking-wide">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
               Diagnostic in seconds · Restoration in minutes · Your code is never stored or reused
             </p>
           </FadeIn>
