@@ -157,7 +157,7 @@ export const CombinedAscensionVisual = memo(function CombinedAscensionVisual() {
               Layer 1 — Original Source
             </span>
           </div>
-          <span className="text-[10px] font-mono font-semibold text-muted-foreground/60">modeling_utils.py</span>
+          <span className="text-[10px] font-mono font-semibold text-muted-foreground/60">server.js</span>
         </div>
 
         {/* Main container */}
