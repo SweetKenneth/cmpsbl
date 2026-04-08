@@ -249,14 +249,13 @@ export function HeroMetaSubstrate() {
             </FadeIn>
           </h1>
 
-          {/* One-liner value prop */}
-          <FadeIn delay={0.3} className="max-w-xl mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
-            <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-2">
-              Upload your code. In minutes, see what it can become.
+          {/* Value prop */}
+          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
+            <p className="text-base sm:text-lg text-muted-foreground font-medium leading-relaxed mb-2.5">
+              Upload code in <span className="text-foreground font-bold">90+ languages</span>. Get back <span className="text-foreground font-bold">hardened, certified</span> software — in&nbsp;minutes.
             </p>
-            <p className="text-xs sm:text-sm text-muted-foreground/60 leading-relaxed">
-              We scan for vulnerabilities, unlock new capabilities, and return upgraded code with full documentation.{' '}
-              <span className="text-foreground/90 font-medium">AI as a tool, not a foundation.</span>
+            <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
+              <span className="text-foreground font-semibold">Dual-patent protected.</span> Zero external AI in the output. Your code gains <span className="text-foreground font-semibold">security</span>, <span className="text-foreground font-semibold">governance</span>, and <span className="text-foreground font-semibold">resilience</span>&nbsp;— without modifying the&nbsp;original.
             </p>
           </FadeIn>
           
