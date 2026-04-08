@@ -248,6 +248,15 @@ export async function downloadTieredFoundryZip(options: {
         : undefined,
     }));
 
+    // ═══ PROOF.txt — Cryptographic Provenance Certificate ═══
+    artifactFolder.file('PROOF.txt', generateProofCertificate({
+      tier: item.publicTier || getTierFromScore(item.score),
+      cjpi: item.score,
+      primitives: item.systemChain || ['SYSTEM'],
+      source: options.sourceLabel || 'CMPSBL® Memory Stream',
+      fingerprint: item.fingerprint || undefined,
+    }));
+
     for (const file of bundle.files) {
       // Merge Convex Core™ artifact into every source file — single drop-in artifact
       const mergedContent = [
