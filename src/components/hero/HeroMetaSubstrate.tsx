@@ -331,10 +331,10 @@ export function HeroMetaSubstrate() {
           </FadeIn>
         </div>
         
-        {/* ─── Memory River + context cards ─── */}
+        {/* ─── DREAM Ascension Visual ─── */}
         <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-8 sm:mb-12">
           <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
-            <MemoryRiverLazy autoCrystallize hideTagline />
+            <HeroAscensionVisualLazy />
           </Suspense>
         </FadeIn>
 
