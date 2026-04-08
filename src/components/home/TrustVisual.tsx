@@ -17,7 +17,7 @@ export function TrustVisual({ src, alt, caption, date, className }: TrustVisualP
   return (
     <div className={cn("relative w-full max-w-5xl mx-auto px-3 sm:px-4", className)}>
       <div className="relative rounded-2xl overflow-hidden border border-border/20 shadow-2xl shadow-primary/[0.06]">
-        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-background/30 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 z-10 pointer-events-none" />
         <img
           src={src}
           alt={alt}
