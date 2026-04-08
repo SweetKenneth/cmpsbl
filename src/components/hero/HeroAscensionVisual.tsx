@@ -158,7 +158,7 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
               style={{ background: "hsl(var(--neon-cyan))", boxShadow: "0 0 6px hsl(var(--neon-cyan) / 0.4)" }}
             />
             <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
-              Layer 1 — Original Source
+              Layer 1 — Legacy Host
             </span>
           </div>
           <span className="text-[9px] font-mono font-semibold text-muted-foreground/40 tracking-wider">life.js</span>
