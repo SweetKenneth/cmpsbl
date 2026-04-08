@@ -332,7 +332,7 @@ export function HeroMetaSubstrate() {
         </div>
         
         {/* ─── DREAM Ascension Visual ─── */}
-        <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-8 sm:mb-12">
+        <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-6 sm:mb-12">
           <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
             <HeroAscensionVisualLazy />
           </Suspense>
