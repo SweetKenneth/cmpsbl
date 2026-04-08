@@ -135,6 +135,14 @@ export default {
         float: "float 3s ease-in-out infinite",
         "spin-slow": "spin-slow 8s linear infinite",
         shake: "shake 0.5s ease-in-out",
+        marquee: "marquee 60s linear infinite",
+      },
+      keyframes: {
+        ...({} as Record<string, Record<string, Record<string, string>>>),
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
     },
   },
