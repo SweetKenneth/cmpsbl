@@ -249,7 +249,7 @@ export function HeroMetaSubstrate() {
           </h1>
 
           {/* Value prop */}
-          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
+          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
             <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-2.5">
               Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code without changing&nbsp;it.
             </p>
