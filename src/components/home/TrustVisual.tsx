@@ -27,7 +27,7 @@ export function TrustVisual({ src, alt, caption, date, className }: TrustVisualP
           className="w-full h-auto object-cover"
         />
         {caption && (
-          <div className="absolute bottom-0 left-0 right-0 z-20 px-4 pb-3 pt-6 bg-gradient-to-t from-background/80 to-transparent">
+          <div className="absolute bottom-0 left-0 right-0 z-20 px-4 pb-3 pt-6 bg-gradient-to-t from-black/90 to-transparent">
             <p className="text-xs sm:text-sm font-bold text-white text-center">
               {caption}
               {date && (
