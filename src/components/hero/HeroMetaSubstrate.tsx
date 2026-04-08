@@ -322,10 +322,10 @@ export function HeroMetaSubstrate() {
             className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge max-w-3xl mx-auto"
           >
             <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
-            <AnimatedStat value={40} label="Primitives" delay={0} />
-            <AnimatedStat value={25} label="Export Languages" delay={1} />
-            <AnimatedStat value={8} label="Hour Cycles" suffix="hr" delay={2} />
-            <AnimatedStat value={3} label="Zenodo DOIs" delay={3} />
+            <AnimatedStat value={40} label="Primitives" sublabel="core system modules" delay={0} />
+            <AnimatedStat value={25} label="Export Languages" sublabel="deployment targets" delay={1} />
+            <AnimatedStat value={8} label="Hour Cycles" sublabel="autonomous processing loop" suffix="hr" delay={2} />
+            <AnimatedStat value={6} label="ORCID Works" sublabel="academic lineage" delay={3} />
           </div>
         </FadeIn>
       </div>
