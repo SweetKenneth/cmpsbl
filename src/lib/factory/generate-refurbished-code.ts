@@ -3192,19 +3192,28 @@ export function generateRefurbishedCode(
 
   const layer2Code = layer2Parts.join('\n');
 
-  // ── AST-aware Layer 2 Validation ───────────────────────────────────
+  // ── AST-aware Layer 2 Validation (HARD GATE) ────────────────────────
   // Structurally validate our generated code before combining with L1.
+  // If validation fails, throw to prevent malformed artifacts from shipping.
   const validation = validateLayer2(layer2Code, detected);
   if (!validation.valid) {
-    const errorSummary = validation.errors
-      .filter(e => e.severity === 'error')
+    const criticalErrors = validation.errors.filter(e => e.severity === 'error');
+    if (criticalErrors.length > 0) {
+      const errorSummary = criticalErrors
+        .map(e => `  L${e.line}: ${e.message}`)
+        .join('\n');
+      throw new Error(
+        `Layer 2 structural validation failed — ${criticalErrors.length} error(s) detected. ` +
+        `Export blocked to protect artifact integrity.\n${errorSummary}`
+      );
+    }
+    // Warnings only — annotate but allow export
+    const warnSummary = validation.errors
       .map(e => `  L${e.line}: ${e.message}`)
       .join('\n');
-    // Emit as structured warning in the artifact — do not block export,
-    // but surface the issue for debugging.
     layer2Parts.push('');
-    layer2Parts.push(adapter.comment(`⚠ LAYER 2 VALIDATION: ${validation.errors.length} issue(s) detected`));
-    layer2Parts.push(adapter.comment(errorSummary));
+    layer2Parts.push(adapter.comment(`⚠ LAYER 2 VALIDATION: ${validation.errors.length} warning(s)`));
+    layer2Parts.push(adapter.comment(warnSummary));
   }
 
   // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
@@ -3243,10 +3252,10 @@ Licensor: CMPSBL® — a PromptFluid™ product
 
 1. GRANT OF LICENSE
    This license grants the holder the right to use, modify, and deploy
-   the refurbished code contained in this package for any lawful purpose.
+   the ascended code contained in this package for any lawful purpose.
 
 2. OWNERSHIP
-   The refurbished code and all hardening applied by CMPSBL primitives
+   The ascended code and all hardening applied by CMPSBL primitives
    remain the intellectual property of the licensee. CMPSBL retains
    ownership of the primitive runtime libraries (@cmpsbl/*).
 
@@ -3254,17 +3263,17 @@ Licensor: CMPSBL® — a PromptFluid™ product
    - You may not redistribute the @cmpsbl/runtime libraries separately.
    - You may not remove or bypass primitive guard activations.
    - You may not claim CMPSBL certification for code not processed
-     through the official Refurbishment Lab.
+     through the official Ascension Lab.
 
 4. WARRANTY
    This code has been scanned, analyzed, and hardened by the CMPSBL
    six-primitive scan team (ENCODE, ORACLE, ENGINEER, MEDIC, DEFENSE,
    FAILSAFE). The CJPI score and tier reflect the state at time of
-   refurbishment.
+   ascension.
 
 5. SUPPORT
    Visit https://cmpsbl.com/support or use your fingerprint ID
-   (${fingerprint}) to access DECODE support for this refurbishment.
+   (${fingerprint}) to access DECODE support for this ascension.
 
 © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.
 `;

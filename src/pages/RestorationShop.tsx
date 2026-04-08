@@ -180,12 +180,23 @@ export default function RestorationShop() {
       const zip = new JSZip();
       const fingerprint = report.cjpiCertificate.fingerprint;
 
-      // ═══ Regenerate refurbished code fresh at export time ═══
+      // ═══ Regenerate ascended code fresh at export time ═══
       // This ensures the latest generator logic is always used,
       // preventing stale cached state from earlier sessions.
-      const freshRefurbished = selectedPrims.length > 0
-        ? generateRefurbishedCode(code, selectedPrims, fingerprint, undefined, fileName ?? undefined)
-        : refurbishedCode;
+      // The generator now THROWS on L2 validation failure — catch it.
+      let freshRefurbished: string;
+      try {
+        freshRefurbished = selectedPrims.length > 0
+          ? generateRefurbishedCode(code, selectedPrims, fingerprint, undefined, fileName ?? undefined)
+          : refurbishedCode;
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        toast.error('Export blocked — Layer 2 validation failed. Your code is safe.', {
+          description: msg.slice(0, 200),
+          duration: 10000,
+        });
+        return;
+      }
 
       // ═══ LICENSE (styled HTML) ═══
       zip.file('LICENSE.html', wrapDocHtml('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
@@ -307,7 +318,7 @@ export default function RestorationShop() {
       zip.generateAsync({ type: 'blob' }).then(blob => {
         import('file-saver').then(({ saveAs }) => {
           saveAs(blob, `cmpsbl-${safeName}-${report.cjpiCertificate.tier.toLowerCase()}.zip`);
-          toast.success('Export complete. Your refurbished code has been downloaded.');
+          toast.success('Export complete. Your ascended code package has been downloaded.');
         });
       });
     });

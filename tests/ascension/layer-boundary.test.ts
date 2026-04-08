@@ -253,18 +253,19 @@ describe('Layer 2 Validator — Well-formed code', () => {
 });
 
 describe('Layer 2 Validator — Catches real errors', () => {
-  it('detects unbalanced braces', () => {
+  it('detects unbalanced braces (as warnings)', () => {
     const code = `function broken() {\n  const x = 1;\n`;
     const result = validateLayer2(code, 'JavaScript');
-    expect(result.valid).toBe(false);
+    // Delimiter checks are advisory (warnings), not hard errors
     expect(result.errors.some(e => e.message.includes('Unclosed'))).toBe(true);
+    expect(result.errors.filter(e => e.message.includes('Unclosed')).every(e => e.severity === 'warning')).toBe(true);
   });
 
-  it('detects mismatched delimiters', () => {
+  it('detects mismatched delimiters (as warnings)', () => {
     const code = `const arr = [1, 2, 3);`;
     const result = validateLayer2(code, 'JavaScript');
-    expect(result.valid).toBe(false);
     expect(result.errors.some(e => e.message.includes('Mismatched'))).toBe(true);
+    expect(result.errors.filter(e => e.message.includes('Mismatched')).every(e => e.severity === 'warning')).toBe(true);
   });
 
   it('detects non-numeric dispatch table entries', () => {

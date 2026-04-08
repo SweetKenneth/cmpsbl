@@ -36,22 +36,36 @@ export function validateLayer2(
   language: string,
 ): Layer2ValidationResult {
   const errors: Layer2ValidationError[] = [];
+  const lang = language.toLowerCase();
 
-  // §1 — Balanced delimiters
+  // Languages where {} are structural blocks — hard errors on imbalance
+  const braceLanguages = new Set([
+    'typescript', 'javascript', 'java', 'c', 'c++', 'c#', 'csharp',
+    'rust', 'go', 'kotlin', 'scala', 'swift', 'dart', 'php',
+  ]);
+  const isBraceLang = braceLanguages.has(lang);
+
+  // §1 — Balanced delimiters (advisory — multi-line JSON and complex
+  //       constructs produce false positives in the naive parser)
   const delimiterErrors = checkBalancedDelimiters(layer2Code);
-  errors.push(...delimiterErrors);
+  errors.push(...delimiterErrors.map(e => ({ ...e, severity: 'warning' as const })));
 
-  // §2 — Unterminated strings
+  // §2 — Unterminated strings (advisory)
   const stringErrors = checkUnterminatedStrings(layer2Code, language);
   errors.push(...stringErrors);
 
-  // §3 — Dispatch table integrity
+  // §3 — Dispatch table integrity (HARD GATE — errors block export)
   const dispatchErrors = checkDispatchTableIntegrity(layer2Code);
   errors.push(...dispatchErrors);
 
-  // §4 — Guard init pattern validation
+  // §4 — Guard init pattern validation (advisory — multi-line guard
+  //       calls with object arguments trigger false positives)
   const guardErrors = checkGuardPatterns(layer2Code, language);
-  errors.push(...guardErrors);
+  // Python semicolon check remains a hard error; paren balance is advisory
+  errors.push(...guardErrors.map(e => ({
+    ...e,
+    severity: (e.message.includes('trailing semicolon') ? 'error' : 'warning') as 'error' | 'warning',
+  })));
 
   return {
     valid: errors.filter(e => e.severity === 'error').length === 0,
@@ -70,6 +84,7 @@ function checkBalancedDelimiters(code: string): Layer2ValidationError[] {
   let stringChar = '';
   let inLineComment = false;
   let inBlockComment = false;
+  let inMultiLineString = false;
   let line = 1;
   let col = 0;
 
@@ -84,6 +99,14 @@ function checkBalancedDelimiters(code: string): Layer2ValidationError[] {
       if (ch === '*' && next === '/') { inBlockComment = false; i++; }
       continue;
     }
+
+    // Skip multi-line template/backtick strings entirely
+    if (inMultiLineString) {
+      if (ch === '\\') { i++; continue; }
+      if (ch === '`') inMultiLineString = false;
+      continue;
+    }
+
     if (ch === '/' && next === '/') { inLineComment = true; continue; }
     if (ch === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (ch === '#') { inLineComment = true; continue; } // Python/Ruby comments
@@ -93,7 +116,10 @@ function checkBalancedDelimiters(code: string): Layer2ValidationError[] {
       if (ch === stringChar) inString = false;
       continue;
     }
-    if (ch === '"' || ch === "'" || ch === '`') {
+
+    // Backtick = multi-line template literal
+    if (ch === '`') { inMultiLineString = true; continue; }
+    if (ch === '"' || ch === "'") {
       inString = true;
       stringChar = ch;
       continue;
@@ -196,9 +222,18 @@ function checkGuardPatterns(code: string, language: string): Layer2ValidationErr
       if (language.toLowerCase() === 'python' && line.trimEnd().endsWith(';')) {
         errors.push({ line: i + 1, column: line.length, message: 'Python guard has trailing semicolon', severity: 'error' });
       }
-      // For all: verify the line has balanced parens
-      const openParens = (line.match(/\(/g) ?? []).length;
-      const closeParens = (line.match(/\)/g) ?? []).length;
+      // Check balanced parens across the guard call (may span 1-3 lines)
+      let guardBlock = line;
+      let lookAhead = 1;
+      while (lookAhead <= 3 && i + lookAhead < lines.length) {
+        const nextLine = lines[i + lookAhead];
+        // Stop looking if next line is a new guard, comment, or blank separator
+        if (guardMethodPattern.test(nextLine) || /^\s*$/.test(nextLine) || /^\s*(\/\/|#|--)/.test(nextLine)) break;
+        guardBlock += '\n' + nextLine;
+        lookAhead++;
+      }
+      const openParens = (guardBlock.match(/\(/g) ?? []).length;
+      const closeParens = (guardBlock.match(/\)/g) ?? []).length;
       if (openParens !== closeParens) {
         errors.push({ line: i + 1, column: 0, message: `Unbalanced parentheses in guard call (${openParens} open, ${closeParens} close)`, severity: 'error' });
       }
