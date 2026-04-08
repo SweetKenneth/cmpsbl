@@ -39,8 +39,8 @@ const STEPS = [
   },
   {
     number: "05",
-    title: "3-Day Evaluation",
-    description: "Hot-swap architecture. Zero-friction trial. Try before you commit.",
+    title: "Verify",
+    description: "Run your ascended code side-by-side. Confirm every primitive. Zero friction.",
     accent: "--neon-purple",
     icon: TestTube2,
   },

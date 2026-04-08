@@ -84,7 +84,7 @@ export default function AgentPowerUp() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Agent Power-Up | CMPSBL® — Wrap Your Agent in Production Armor"
-        description="Stop rebuilding your agent. Upload it. We scan, harden, and return it with up to 20 cognitive primitives. First export free. Three-day test drive."
+        description="Stop rebuilding your agent. Upload it. We scan, harden, and return it with up to 20 cognitive primitives. First export free. Sealed runtime."
         canonical="https://cmpsbl.com/agent-power-up"
         keywords={['agent hardening', 'AI agent', 'code restoration', 'cognitive primitives', 'agent governance']}
       />
