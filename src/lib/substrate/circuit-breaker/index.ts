@@ -25,6 +25,7 @@ export interface CircuitBreaker {
   lastFailure: number | null;
   lastStateChange: number;
   totalTrips: number;
+  everSucceeded: boolean; // cold-start guard: no tripping until first success
 }
 
 const DEFAULT_CONFIG: CircuitBreakerConfig = {
@@ -49,6 +50,7 @@ export function getBreaker(module: string): CircuitBreaker {
       lastFailure: null,
       lastStateChange: Date.now(),
       totalTrips: 0,
+      everSucceeded: false,
     });
   }
   return breakers.get(module)!;
@@ -75,6 +77,8 @@ export function recordSuccess(module: string): void {
   const b = getBreaker(module);
   const cfg = getConfig(module);
 
+  b.everSucceeded = true;
+
   if (b.state === 'half_open') {
     b.successes++;
     if (b.successes >= cfg.halfOpenMaxAttempts) {
@@ -83,7 +87,6 @@ export function recordSuccess(module: string): void {
       transition(b, 'closed');
     }
   } else if (b.state === 'closed') {
-    // Reset failure count on success within window
     b.failures = Math.max(0, b.failures - 1);
   }
 }
@@ -94,6 +97,9 @@ export function recordFailure(module: string): void {
 
   b.failures++;
   b.lastFailure = Date.now();
+
+  // Cold-start guard: never trip a breaker that has never succeeded
+  if (!b.everSucceeded) return;
 
   if (b.state === 'half_open') {
     b.successes = 0;
@@ -160,6 +166,7 @@ export function resetBreaker(module: string): void {
   const b = getBreaker(module);
   b.failures = 0;
   b.successes = 0;
+  b.everSucceeded = false;
   transition(b, 'closed');
 }
 
