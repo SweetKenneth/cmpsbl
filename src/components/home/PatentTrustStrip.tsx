@@ -45,10 +45,10 @@ export function PatentTrustStrip() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-foreground leading-tight">
-                    {p.shortTitle}
+                    {p.title}
                   </p>
                   <p className="text-xs font-medium text-muted-foreground mt-1 leading-relaxed">
-                    {p.title}
+                    {p.shortTitle}
                   </p>
                   <p className="text-[10px] font-mono font-medium text-muted-foreground mt-2">
                     U.S. Patent App. No. {p.number} · Filed {p.filed}
