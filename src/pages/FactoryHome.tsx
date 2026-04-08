@@ -137,7 +137,7 @@ export default function FactoryHome() {
           src={trustCognitive}
           alt="Protected cognitive architecture with secure pathways and persistent software memory"
           caption="Autonomous Memory Stream completes first 8-hour cycle"
-          date="Mar 2025"
+          date="Dec 2025"
         />
 
         <SectionDivider />

@@ -149,7 +149,7 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" caption="Autonomous Memory Stream completes first 8-hour cycle" date="Mar 2025" />
+        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" caption="Autonomous Memory Stream completes first 8-hour cycle" date="Dec 2025" />
         <SectionDivider />
         <HowCmpsblWorks />
 
