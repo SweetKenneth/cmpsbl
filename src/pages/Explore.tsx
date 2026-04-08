@@ -131,8 +131,7 @@ export default function Explore() {
         <BuiltForSection />
 
         <SectionDivider />
-
-        {/* ═══ ACTIVATION MODEL ═══ */}
+        <TrustVisual src={trustEngineering} alt="Enterprise-grade engineering environment powered by CMPSBL substrate" />
         <ArtifactPacksSection />
 
         <SectionDivider />
