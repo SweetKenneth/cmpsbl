@@ -200,17 +200,17 @@ export function HeroMetaSubstrate() {
   return (
     <section 
       aria-label="CMPSBL hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-6 sm:pt-8 pb-8 sm:pb-12 overflow-x-clip overflow-y-visible"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-4 sm:pt-8 pb-6 sm:pb-12 overflow-x-clip overflow-y-visible"
     >
       <HeroBackground />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         {/* ─── Stacked hero content ─── */}
-        <div className="text-center mb-10 sm:mb-14">
+        <div className="text-center mb-6 sm:mb-14">
           
           {/* Software Refurbishment Center banner */}
           <FadeIn delay={0.05}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
           >
             <Wrench className="w-3.5 h-3.5 text-primary" />
             <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Reimagined</span>
@@ -221,7 +221,7 @@ export function HeroMetaSubstrate() {
           </FadeIn>
 
           {/* CMPSBL Logo — the star */}
-          <FadeIn delay={0.1} className="mb-4 sm:mb-6">
+          <FadeIn delay={0.1} className="mb-3 sm:mb-6">
             <CmpsblWordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl" />
           </FadeIn>
           
@@ -249,7 +249,7 @@ export function HeroMetaSubstrate() {
           </h1>
 
           {/* Value prop */}
-          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
+          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
             <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-2.5">
               Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code without changing&nbsp;it.
             </p>
@@ -308,14 +308,14 @@ export function HeroMetaSubstrate() {
           </FadeIn>
 
           {/* Trust line */}
-          <FadeIn delay={0.45} className="mt-4 mb-2">
+          <FadeIn delay={0.45} className="mt-3 mb-1">
             <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
-              Diagnostic in seconds · Restoration in minutes · Your code is never stored or reused
+              Diagnostic in seconds · Restoration in minutes · Your code is never stored or&nbsp;reused
             </p>
           </FadeIn>
 
           {/* Zenodo — bold & prominent */}
-          <FadeIn delay={0.5} className="flex justify-center mt-4">
+          <FadeIn delay={0.5} className="flex justify-center mt-3">
             <a
               href="https://zenodo.org/records/18895141"
               target="_blank"
@@ -332,7 +332,7 @@ export function HeroMetaSubstrate() {
         </div>
         
         {/* ─── DREAM Ascension Visual ─── */}
-        <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-8 sm:mb-12">
+        <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-6 sm:mb-12">
           <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
             <HeroAscensionVisualLazy />
           </Suspense>
