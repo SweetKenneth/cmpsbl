@@ -4,9 +4,9 @@
  * v10: DECODE persistent session context — full record injection for follow-ups
  */
 
-const CACHE_NAME = 'cmpsbl-v9';
-const SCAN_CACHE = 'cmpsbl-scans-v9';
-const STATIC_CACHE = 'cmpsbl-static-v9';
+const CACHE_NAME = 'cmpsbl-v10';
+const SCAN_CACHE = 'cmpsbl-scans-v10';
+const STATIC_CACHE = 'cmpsbl-static-v10';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [
