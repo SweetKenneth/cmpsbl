@@ -75,28 +75,30 @@ const KEYFRAMES = `
 `;
 
 const L1_LINES = [
-  { indent: 0, kw: "class", text: " ModelProcessor:" },
-  { indent: 1, kw: "def", text: " __init__(self, config):" },
-  { indent: 2, kw: "", text: "self.config = config" },
-  { indent: 2, kw: "", text: "self.weights = load_weights()" },
-  { indent: 2, kw: "", text: "self.device = detect_device()" },
+  { indent: 0, kw: "const", text: " express = require('express');" },
+  { indent: 0, kw: "const", text: " app = express();" },
   { indent: 0, kw: "", text: "" },
-  { indent: 1, kw: "def", text: " forward(self, x):" },
-  { indent: 2, kw: "", text: "x = self.normalize(x)" },
-  { indent: 2, kw: "return", text: " self.predict(x)" },
+  { indent: 0, kw: "", text: "app.use(express.json());" },
   { indent: 0, kw: "", text: "" },
-  { indent: 1, kw: "def", text: " predict(self, tensor):" },
-  { indent: 2, kw: "", text: "logits = self.model(tensor)" },
-  { indent: 2, kw: "return", text: " softmax(logits)" },
+  { indent: 0, kw: "", text: "app.post('/api/login', (req, res) => {" },
+  { indent: 1, kw: "const", text: " { email, password } = req.body;" },
+  { indent: 1, kw: "const", text: " user = db.findUser(email);" },
+  { indent: 1, kw: "if", text: " (!user) return res.status(401).json({ error: 'Not found' });" },
+  { indent: 1, kw: "const", text: " token = jwt.sign({ id: user.id });" },
+  { indent: 1, kw: "return", text: " res.json({ token });" },
+  { indent: 0, kw: "", text: "});" },
+  { indent: 0, kw: "", text: "" },
+  { indent: 0, kw: "", text: "app.listen(3000);" },
 ];
 
 const L2_INJECTIONS = [
-  { line: 1, label: "DEFENSE gate", color: "var(--neon-magenta)", delayPct: 15 },
-  { line: 4, label: "BEACON signal", color: "var(--neon-cyan)", delayPct: 22 },
-  { line: 6, label: "GOVERNANCE hook", color: "var(--neon-purple)", delayPct: 29 },
-  { line: 8, label: "circuit breaker", color: "var(--primary)", delayPct: 36 },
-  { line: 11, label: "WRAITH mask", color: "var(--neon-magenta)", delayPct: 43 },
-  { line: 12, label: "telemetry tap", color: "var(--neon-cyan)", delayPct: 50 },
+  { line: 3,  label: "rate limiter", color: "var(--neon-magenta)", delayPct: 15 },
+  { line: 5,  label: "input validation", color: "var(--neon-cyan)", delayPct: 22 },
+  { line: 7,  label: "SQL injection guard", color: "var(--neon-magenta)", delayPct: 29 },
+  { line: 8,  label: "brute-force detection", color: "var(--neon-purple)", delayPct: 36 },
+  { line: 9,  label: "token expiry + refresh", color: "var(--primary)", delayPct: 43 },
+  { line: 11, label: "audit log", color: "var(--neon-cyan)", delayPct: 50 },
+  { line: 13, label: "health check endpoint", color: "var(--neon-purple)", delayPct: 57 },
 ];
 
 const RUNES = ["◇", "△", "⬡", "◈", "⟡", "✦"];
