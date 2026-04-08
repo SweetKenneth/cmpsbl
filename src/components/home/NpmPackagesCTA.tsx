@@ -91,7 +91,6 @@ const HIGHLIGHTS = [
 
 /** Compact CTA version — used on homepage */
 export function NpmPackagesCTA() {
-  const featured = NPM_PACKAGES.slice(0, 6);
   return (
     <section className="relative z-10 px-3 sm:px-4 py-16 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[hsl(var(--neon-purple)/0.02)] to-transparent pointer-events-none" />
@@ -106,13 +105,13 @@ export function NpmPackagesCTA() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.2)] text-xs font-bold text-[hsl(var(--neon-cyan))] mb-5 tracking-wide uppercase">
             <Package className="w-3.5 h-3.5" />
-            Now on NPM — 11 Packages
+            Now on NPM
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
             Build What{" "}
             <span className="text-[hsl(var(--neon-purple))]">Evolves</span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8">
             Install the{" "}
             <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-1.5 py-0.5 rounded">@cmpsbl/cli</code>{" "}
             to scaffold projects and run Ascension from your terminal. Pair&nbsp;it with the{" "}
@@ -135,65 +134,55 @@ export function NpmPackagesCTA() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10 sm:mb-14">
-          {HIGHLIGHTS.map((h, i) => (
-            <motion.div
-              key={h.title}
-              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border/40 bg-[hsl(var(--stream-slate))] text-center"
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
-            >
-              <h.icon className={cn("w-5 h-5", i % 3 === 0 ? "text-[hsl(var(--neon-cyan))]" : i % 3 === 1 ? "text-[hsl(var(--neon-purple))]" : "text-[hsl(var(--neon-magenta))]")} />
-              <span className="text-sm font-semibold text-foreground">{h.title}</span>
-              <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-10 sm:mb-14"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+        >
+          {/* CLI Card */}
+          <Link 
+            to="/documentation" 
+            className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-cyan)/0.25)] bg-[hsl(var(--neon-cyan)/0.04)] hover:border-[hsl(var(--neon-cyan)/0.5)] hover:bg-[hsl(var(--neon-cyan)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-cyan)/0.05)]"
+          >
+            <Terminal className="w-8 h-8 text-[hsl(var(--neon-cyan))]" />
+            <code className="text-base font-mono font-bold text-foreground">@cmpsbl/cli</code>
+            <p className="text-sm text-muted-foreground text-center leading-relaxed">
+              Scaffold projects, run Ascension, and validate manifests — all from your terminal.
+            </p>
+            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[hsl(var(--neon-cyan))] group-hover:gap-2.5 transition-all">
+              View Docs <ArrowRight className="w-4 h-4" />
+            </span>
+          </Link>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mb-10 sm:mb-12">
-          {featured.map((pkg, i) => (
-            <motion.div
-              key={pkg.name}
-              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-[hsl(var(--stream-slate))] hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-300"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
-            >
-              <Package className="w-4 h-4 text-[hsl(var(--neon-cyan))] mt-0.5 shrink-0" />
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <code className="text-xs font-mono font-semibold text-foreground">{pkg.name}</code>
-                  <Badge variant="outline" className={cn("text-[10px]", TIER_COLORS[pkg.tier])}>
-                    {pkg.tier}
-                  </Badge>
-                </div>
-                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{pkg.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+          {/* SDK Card */}
+          <Link 
+            to="/documentation" 
+            className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-purple)/0.25)] bg-[hsl(var(--neon-purple)/0.04)] hover:border-[hsl(var(--neon-purple)/0.5)] hover:bg-[hsl(var(--neon-purple)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-purple)/0.05)]"
+          >
+            <Code className="w-8 h-8 text-[hsl(var(--neon-purple))]" />
+            <code className="text-base font-mono font-bold text-foreground">@cmpsbl/sdk</code>
+            <p className="text-sm text-muted-foreground text-center leading-relaxed">
+              Embed persistent memory, cognitive scoring, and governed orchestration into any&nbsp;project.
+            </p>
+            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[hsl(var(--neon-purple))] group-hover:gap-2.5 transition-all">
+              View Docs <ArrowRight className="w-4 h-4" />
+            </span>
+          </Link>
+        </motion.div>
 
         <motion.div 
-          className="flex flex-col sm:flex-row gap-3 justify-center"
+          className="flex justify-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          <Button asChild size="lg" className="font-semibold text-base px-8">
-            <Link to="/documentation">
-              <Package className="w-4 h-4 mr-2" />
-              Explore All 11 Packages
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </Button>
           <Button asChild size="lg" variant="outline" className="font-semibold text-foreground border-border hover:text-primary">
             <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
               <ExternalLink className="w-4 h-4 mr-2" />
-              View on NPM
+              View All Packages on NPM
             </a>
           </Button>
         </motion.div>
