@@ -1043,9 +1043,34 @@ const MATRIX_QUOTAS: Record<string, number> = {
 const MAX_SLOTS = 40;
 
 /**
+ * Mandatory primitives — these ALWAYS appear in scan results regardless of
+ * signal detection. A file with zero security keywords must still receive
+ * DEFENSE hardening. A file with no caching still benefits from MEMORY
+ * tiering awareness. These are architectural non-negotiables.
+ *
+ * The scanner will force-select these primitives and apply a score floor
+ * so they rank competitively even when the source code has no direct signals.
+ */
+const MANDATORY_PRIMITIVES: ReadonlySet<string> = new Set([
+  'DEFENSE',     // Security hardening — ALWAYS (Invariant #3: DEFENSE is terminal)
+  'MEMORY',      // Storage/persistence awareness — ALWAYS
+  'AUDIT',       // Immutable logging — ALWAYS (Invariant #1: AUDIT is immutable)
+  'GOVERNANCE',  // Policy enforcement — ALWAYS (Invariant #2: GOVERNANCE cannot be bypassed)
+  'FAILSAFE',    // Circuit breakers — ALWAYS
+  'BEACON',      // Health signals — ALWAYS
+  'IMMUNITY',    // Threat resistance — ALWAYS
+  'INTENT',      // Purpose alignment — ALWAYS
+]);
+
+/** Minimum score floor for mandatory primitives to ensure competitive ranking */
+const MANDATORY_SCORE_FLOOR = 0.25;
+
+/**
  * Select the optimal 40 primitives enforcing the 12/12/8/8 matrix.
  *
- * Phase 1: Score-rank all candidates and greedily fill each role quota
+ * Phase 0: Force-select mandatory primitives (DEFENSE, MEMORY, AUDIT, etc.)
+ *          with a score floor so they always appear in every scan result.
+ * Phase 1: Score-rank remaining candidates and greedily fill each role quota
  *          with the highest-scoring primitives of that role.
  * Phase 2: If any role is under-filled (code didn't trigger enough signals),
  *          backfill from the remaining candidates of that role, relaxing
@@ -1074,11 +1099,34 @@ function selectOptimalPrimitives(
   const selected: PoolCandidate[] = [];
   const usedIds = new Set<string>();
 
+  // Phase 0: Force-select mandatory primitives
+  // These are architectural invariants — every scan MUST include them.
+  // Apply score floor so they rank competitively even with zero signal hits.
+  const roleCounters: Record<string, number> = { organ: 0, layer: 0, engine: 0, agent: 0 };
+
+  for (const c of sorted) {
+    if (!MANDATORY_PRIMITIVES.has(c.primitive.name)) continue;
+    if (usedIds.has(c.primitive.id)) continue;
+
+    const role = c.primitive.role;
+    const quota = MATRIX_QUOTAS[role] ?? 0;
+    if (roleCounters[role] >= quota) continue;
+
+    // Enforce score floor — mandatory primitives never score below the floor
+    if (c.compoundingScore < MANDATORY_SCORE_FLOOR) {
+      c.compoundingScore = MANDATORY_SCORE_FLOOR;
+    }
+
+    selected.push(c);
+    usedIds.add(c.primitive.id);
+    roleCounters[role]++;
+  }
+
   // Phase 1: Fill each role quota with highest-scoring candidates
   // that meet the quality threshold (score >= threshold AND signalHits >= 2)
   for (const [role, quota] of Object.entries(MATRIX_QUOTAS)) {
     const roleCandidates = byRole[role] ?? [];
-    let filled = 0;
+    let filled = selected.filter(s => s.primitive.role === role).length;
     for (const c of roleCandidates) {
       if (filled >= quota) break;
       if (usedIds.has(c.primitive.id)) continue;
