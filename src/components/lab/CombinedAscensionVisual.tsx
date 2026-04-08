@@ -191,7 +191,7 @@ export const CombinedAscensionVisual = memo(function CombinedAscensionVisual() {
 
           {/* Code block */}
           <div
-            className="relative rounded-lg border border-border bg-background/80 backdrop-blur-sm overflow-hidden"
+            className="relative rounded-lg border-2 border-foreground/20 bg-background/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-primary/[0.08]"
             style={{ animation: "ca-glow 4s ease-in-out infinite" }}
           >
             {/* Terminal header */}
