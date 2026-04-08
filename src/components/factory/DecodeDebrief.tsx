@@ -197,7 +197,7 @@ function getContextualResponse(
 
   // Fingerprint / return / support
   if (/fingerprint|return|come back|support|lookup|pull up/i.test(q)) {
-    return `Your fingerprint ID is \`${fingerprint}\`. Save it — you can return to cmpsbl.com anytime and provide this ID to DECODE. I'll pull up your full refurbishment history including the original code, what was applied, your CJPI score, and every primitive's contribution. It's your permanent reference for this refurbishment.`;
+    return `Your fingerprint ID is \`${fingerprint}\`. Save it — you can return to cmpsbl.com anytime and provide this ID to DECODE. I'll pull up your full ascension history including the original code, what was applied, your CJPI score, and every primitive's contribution. It's your permanent reference.`;
   }
 
   // CJPI / score / tier
