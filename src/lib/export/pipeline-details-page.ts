@@ -215,7 +215,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
     html += `<div style="margin: 1rem 0; padding: 1rem 1.25rem; background: white; border: 1px solid var(--rule); border-radius: 4px;">`;
     html += `<div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem;">`;
     html += `<span style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em;">Stage ${i + 1}</span>`;
-    html += `<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.1rem; font-weight: 600; color: var(--ink);">${escapeHtml(cap.name)}</span>`;
+    html += `<span style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink);">${escapeHtml(cap.name)}</span>`;
     html += `<span style="font-size: 0.75rem; color: var(--ink-muted);">— ${escapeHtml(cap.role)}</span>`;
     html += `</div>`;
     html += `<p style="font-size: 0.88rem; margin-bottom: 0.5rem;">${escapeHtml(cap.whatItDoes)}</p>`;
@@ -421,17 +421,17 @@ function generateSealSVG(score: number, tier: string): string {
       return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2" fill="${tierColor}" opacity="0.5"/>`;
     }).join('\n    ')}
     <!-- Center text -->
-    <text x="100" y="72" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="9" fill="${tierColor}" letter-spacing="3" font-weight="600" text-transform="uppercase">CMPSBL®</text>
-    <text x="100" y="108" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" fill="${tierColor}" font-weight="700">${score}</text>
-    <text x="100" y="125" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="8" fill="${tierColor}" letter-spacing="2" opacity="0.8">CJPI SCORE</text>
-    <text x="100" y="148" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" fill="${tierColor}" letter-spacing="4" font-weight="600">${tier.toUpperCase()}</text>
+    <text x="100" y="72" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="9" fill="${tierColor}" letter-spacing="3" font-weight="700" text-transform="uppercase">CMPSBL®</text>
+    <text x="100" y="108" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="32" fill="${tierColor}" font-weight="800">${score}</text>
+    <text x="100" y="125" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="8" fill="${tierColor}" letter-spacing="2" opacity="0.8">CJPI SCORE</text>
+    <text x="100" y="148" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="11" fill="${tierColor}" letter-spacing="4" font-weight="700">${tier.toUpperCase()}</text>
     <!-- Circular text path -->
     <path id="topArc" d="M 30,100 a 70,70 0 0,1 140,0" fill="none"/>
-    <text font-family="Georgia, serif" font-size="7" fill="${tierColor}" letter-spacing="2.5" opacity="0.55">
+    <text font-family="Inter, sans-serif" font-size="7" fill="${tierColor}" letter-spacing="2.5" opacity="0.55">
       <textPath href="#topArc" startOffset="50%" text-anchor="middle">VERIFIED PIPELINE ARTIFACT</textPath>
     </text>
     <path id="bottomArc" d="M 30,100 a 70,70 0 0,0 140,0" fill="none"/>
-    <text font-family="Georgia, serif" font-size="7" fill="${tierColor}" letter-spacing="2" opacity="0.55">
+    <text font-family="Inter, sans-serif" font-size="7" fill="${tierColor}" letter-spacing="2" opacity="0.55">
       <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">MEMORY STREAM DISCOVERY</textPath>
     </text>
   </svg>`;
@@ -458,20 +458,25 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(input.name)} — Memory Chain Certificate</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
     :root {
-      --ink: #1a1a1f;
-      --ink-light: #3a3a42;
-      --ink-muted: #6b6b78;
-      --ink-faint: #9b9baa;
-      --cream: #faf9f6;
-      --cream-warm: #f5f3ee;
-      --parchment: #edeae3;
+      --ink: hsl(220 15% 15%);
+      --ink-light: hsl(220 10% 35%);
+      --ink-muted: hsl(220 10% 50%);
+      --ink-faint: hsl(220 10% 65%);
+      --cream: hsl(220 10% 97%);
+      --cream-warm: hsl(220 10% 94%);
+      --parchment: hsl(220 10% 92%);
       --accent: ${tierAccent};
       --accent-dim: ${tierAccentDim};
-      --rule: rgba(26, 26, 31, 0.12);
-      --rule-strong: rgba(26, 26, 31, 0.25);
+      --primary: hsl(210 60% 45%);
+      --primary-bg: hsl(210 60% 45% / 0.06);
+      --primary-border: hsl(210 60% 45% / 0.15);
+      --neon-cyan: hsl(185 100% 40%);
+      --neon-purple: hsl(280 100% 55%);
+      --rule: hsl(220 10% 88%);
+      --rule-strong: hsl(220 10% 80%);
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -483,23 +488,21 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--cream);
+      background: white;
       color: var(--ink);
       line-height: 1.7;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       overflow-wrap: break-word;
     }
 
     .page {
-      max-width: 820px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 3.5rem 4rem;
+      padding: 2.5rem 2rem;
       background: white;
       min-height: 100vh;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 20px 60px rgba(0,0,0,0.06);
     }
 
     @media print {
@@ -509,44 +512,40 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     }
 
     @media (max-width: 680px) {
-      .page { padding: 2rem 1.5rem; }
+      .page { padding: 1.25rem 1rem; }
     }
 
     /* ─── Typography ─── */
 
-    .serif { font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; }
-    .mono { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace; font-size: 0.85em; }
+    .mono { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.85em; }
 
     h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2rem;
-      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
       line-height: 1.2;
       letter-spacing: -0.02em;
       color: var(--ink);
       margin-bottom: 0.3rem;
       word-break: break-word;
       overflow-wrap: break-word;
-      hyphens: auto;
-      max-width: 100%;
     }
 
     h2 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.35rem;
-      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 700;
       color: var(--ink);
-      margin: 2.8rem 0 1rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid var(--rule);
-      letter-spacing: 0.01em;
+      margin: 2.5rem 0 0.75rem;
+      padding-bottom: 0.625rem;
+      border-bottom: 2px solid var(--rule);
     }
 
     h3 {
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       color: var(--ink-muted);
       margin-bottom: 0.6rem;
     }
@@ -554,8 +553,18 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     p {
       margin-bottom: 1rem;
       color: var(--ink-light);
-      font-size: 0.925rem;
+      font-size: 0.9375rem;
       line-height: 1.75;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      background: var(--primary-bg);
+      color: var(--primary);
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--primary-border);
     }
 
     /* ─── Header / Certificate Top ─── */
@@ -564,31 +573,44 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 2rem;
-      padding-bottom: 2.5rem;
-      border-bottom: 2px solid var(--ink);
+      gap: 1.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--rule);
       margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .certificate-header::before {
+      content: '';
+      position: absolute;
+      top: -2.5rem; left: -2rem; right: -2rem;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--primary), var(--neon-purple));
+      border-radius: 2px;
+    }
+
+    @media (max-width: 680px) {
+      .certificate-header::before { left: -1rem; right: -1rem; top: -1.25rem; }
     }
 
     .certificate-header .meta {
       flex: 1;
+      min-width: 0;
     }
 
     .certificate-issuer {
       font-family: 'Inter', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 600;
+      font-size: 0.6875rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.2em;
       color: var(--ink-muted);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
 
     .certificate-subtitle {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1rem;
+      font-size: 0.9375rem;
       font-weight: 400;
-      font-style: italic;
       color: var(--ink-muted);
       line-height: 1.65;
       margin-top: 0.6rem;
@@ -601,6 +623,11 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       opacity: 0.85;
     }
 
+    @media (max-width: 580px) {
+      .certificate-header { flex-direction: column; align-items: center; text-align: center; }
+      .seal-container { order: -1; }
+    }
+
     .seal-container svg {
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
     }
@@ -609,10 +636,14 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     .certificate-meta-line {
       display: flex;
       flex-wrap: wrap;
-      gap: 2rem;
+      gap: 1.5rem;
       padding: 0.9rem 0;
       border-bottom: 1px solid var(--rule);
       margin-bottom: 2rem;
+    }
+
+    @media (max-width: 580px) {
+      .certificate-meta-line { gap: 0.75rem; }
     }
 
     .meta-item {
@@ -622,16 +653,16 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     }
 
     .meta-label {
-      font-size: 0.6rem;
-      font-weight: 600;
+      font-size: 0.625rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.15em;
       color: var(--ink-faint);
     }
 
     .meta-value {
-      font-size: 0.85rem;
-      font-weight: 500;
+      font-size: 0.875rem;
+      font-weight: 600;
       color: var(--ink);
     }
 
@@ -640,16 +671,19 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     .section-card {
       background: var(--cream);
       border: 1px solid var(--rule);
-      border-radius: 6px;
-      padding: 1.5rem 1.75rem;
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
       margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 580px) {
+      .section-card { padding: 1rem; }
     }
 
     .section-card p:last-child { margin-bottom: 0; }
 
     .description-lead {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: 400;
       line-height: 1.7;
       color: var(--ink);
@@ -676,14 +710,14 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     .module-tag {
       display: inline-block;
       padding: 0.25rem 0.7rem;
-      border: 1px solid var(--rule-strong);
-      border-radius: 3px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      border: 1px solid var(--primary-border);
+      border-radius: 0.375rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--ink-muted);
-      background: white;
+      color: var(--primary);
+      background: var(--primary-bg);
     }
 
     /* ─── Use cases ─── */
@@ -711,7 +745,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       transform: translateY(-50%);
       width: 6px;
       height: 6px;
-      border: 1.5px solid var(--accent);
+      border: 2px solid var(--accent);
       border-radius: 50%;
     }
 
@@ -720,40 +754,40 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     .quality-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
+      gap: 0.75rem;
     }
 
     @media (max-width: 580px) { .quality-grid { grid-template-columns: 1fr; } }
 
     .quality-card {
-      background: white;
+      background: var(--cream);
       border: 1px solid var(--rule);
-      border-radius: 6px;
-      padding: 1.5rem;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
     }
 
     .quality-score {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2.6rem;
-      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
       color: var(--accent);
       line-height: 1;
     }
 
     .quality-tier {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.6rem;
-      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
       color: var(--ink);
     }
 
     /* ─── Valuation ─── */
 
     .valuation-disclaimer {
-      background: #fef9ee;
-      border: 1px solid #e8d5a8;
-      border-left: 4px solid #c9a84c;
-      border-radius: 4px;
+      background: hsl(38 92% 50% / 0.06);
+      border: 1px solid hsl(38 92% 50% / 0.2);
+      border-left: 3px solid hsl(38 92% 50%);
+      border-radius: 0.5rem;
       padding: 1.25rem 1.5rem;
       margin-bottom: 1.5rem;
     }
@@ -763,13 +797,13 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #92722a;
+      color: hsl(38 70% 35%);
       margin-bottom: 0.5rem;
     }
 
     .valuation-disclaimer p {
       font-size: 0.82rem;
-      color: #7a6324;
+      color: hsl(38 50% 30%);
       line-height: 1.65;
       margin-bottom: 0.5rem;
     }
@@ -793,9 +827,9 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     .valuation-table td:last-child { text-align: right; font-weight: 600; color: var(--ink); }
 
     .valuation-total {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2rem;
-      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
       color: var(--accent);
     }
 
@@ -817,20 +851,20 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
 
     .lang-tag {
       display: inline-block;
-      padding: 0.2rem 0.55rem;
-      background: var(--cream-warm);
-      border: 1px solid var(--rule);
-      border-radius: 3px;
+      padding: 0.25rem 0.6rem;
+      background: var(--primary-bg);
+      border: 1px solid var(--primary-border);
+      border-radius: 0.375rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.7rem;
       font-weight: 500;
-      color: var(--ink-muted);
+      color: var(--primary);
     }
 
     .export-meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
+      gap: 0.75rem;
     }
 
     @media (max-width: 580px) { .export-meta-grid { grid-template-columns: 1fr; } }
@@ -838,14 +872,18 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     /* ─── Footer / Colophon ─── */
 
     .colophon {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 2px solid var(--ink);
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--rule);
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       flex-wrap: wrap;
       gap: 1.5rem;
+    }
+
+    @media (max-width: 580px) {
+      .colophon { flex-direction: column; align-items: center; text-align: center; }
     }
 
     .colophon-text {
@@ -855,11 +893,11 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     }
 
     .colophon-mark {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
       color: var(--ink-faint);
-      letter-spacing: 0.05em;
+      letter-spacing: -0.01em;
     }
 
     /* ─── Decorative rules ─── */
