@@ -160,8 +160,10 @@ export function NpmPackagesCTA() {
           </a>
 
           {/* SDK Card */}
-          <Link 
-            to="/documentation" 
+          <a 
+            href="https://www.npmjs.com/package/@cmpsbl/sdk" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-purple)/0.25)] bg-[hsl(var(--neon-purple)/0.04)] hover:border-[hsl(var(--neon-purple)/0.5)] hover:bg-[hsl(var(--neon-purple)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-purple)/0.05)]"
           >
             <Code className="w-8 h-8 text-[hsl(var(--neon-purple))]" />
@@ -170,9 +172,9 @@ export function NpmPackagesCTA() {
               Embed persistent memory, cognitive scoring, and governed orchestration into any&nbsp;project.
             </p>
             <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[hsl(var(--neon-purple))] group-hover:gap-2.5 transition-all">
-              View Docs <ArrowRight className="w-4 h-4" />
+              View on NPM <ArrowRight className="w-4 h-4" />
             </span>
-          </Link>
+          </a>
         </motion.div>
 
         <motion.div 
