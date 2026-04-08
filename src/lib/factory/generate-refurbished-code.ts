@@ -2945,7 +2945,7 @@ def __cmpsbl_verify__():
         print("  ✗ Metadata corrupted")
 
     # Check 3: Patent reference present
-    if meta.get("patent"):
+    if meta.get("patents") or meta.get("patent"):
         print("  ✓ Patent reference present")
         checks_passed += 1
     else:
