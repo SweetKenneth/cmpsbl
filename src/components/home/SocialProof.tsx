@@ -1,6 +1,5 @@
 /**
  * Social Proof / Testimonials
- * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
 import { motion } from 'framer-motion';
@@ -50,11 +49,11 @@ export function SocialProof() {
             <span className="text-xs font-semibold">Builders on the Substrate</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
-            What Teams Are{" "}
-            <span className="text-[hsl(var(--neon-cyan))]">Building</span>
+            Real Teams.{" "}
+            <span className="text-[hsl(var(--neon-cyan))]">Real&nbsp;Results.</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Teams using the substrate and Memory Stream to build intelligence that compounds.
+          <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed">
+            Teams using the substrate and Memory Stream to build intelligence that compounds over&nbsp;time.
           </p>
         </motion.div>
 

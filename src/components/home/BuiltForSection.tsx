@@ -1,6 +1,6 @@
 /**
  * Built For Section — Shows who CMPSBL is designed for
- * Color palette: Cyan / Purple / Magenta — solid accents, gradients only on primary CTAs
+ * Color palette: Cyan / Purple / Magenta
  */
 
 import { Link } from "react-router-dom";
@@ -29,7 +29,7 @@ const audiences = [
     badge: "For Game Devs",
     title: "NPCs That Dream",
     tagline: "Give your characters a soul",
-    description: "Build NPCs with persistent memory, background processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
+    description: "Persistent memory, background processing, and emotional evolution. Characters that remember every player, adapt behavior, and grow between sessions.",
     features: [
       { icon: Brain, text: "4-tier NPC memory" },
       { icon: Moon, text: "Background processing" },
@@ -47,7 +47,7 @@ const audiences = [
     badge: "For Developers",
     title: "Apps That Evolve",
     tagline: "Infrastructure that improves itself",
-    description: "Build with persistent memory, governed routing, and continuous self-improvement. Your apps adapt and get smarter the more they run.",
+    description: "Persistent memory, governed routing, and continuous self-improvement. Your apps adapt and get smarter the more they run.",
     features: [
       { icon: Zap, text: "Governed routing" },
       { icon: Brain, text: "Memory persistence" },
@@ -65,7 +65,7 @@ const audiences = [
     badge: "For Enterprise",
     title: "Operations That Learn",
     tagline: "Governed evolution at scale",
-    description: "Deploy on your infrastructure with background processing for pattern discovery, governed adaptation for compliance, and continuous improvement — all auditable.",
+    description: "Deploy on your infrastructure with pattern discovery, governed adaptation for compliance, and continuous improvement — fully auditable.",
     features: [
       { icon: Shield, text: "Governed adaptation" },
       { icon: Brain, text: "Institutional memory" },
@@ -125,10 +125,8 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           "hover:shadow-2xl",
         )}
       >
-        {/* Solid color top bar */}
         <div className="h-1 w-full" style={{ background: audience.accentColor }} />
         
-        {/* Solid hover overlay */}
         <motion.div
           className="absolute inset-0 rounded-3xl pointer-events-none"
           style={{ background: audience.accentColor }}
@@ -237,7 +235,6 @@ export function BuiltForSection() {
           className="absolute bottom-0 right-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-3 hidden sm:block"
           style={{ background: "hsl(var(--neon-cyan) / 0.07)" }}
         />
-        {/* Cross glow for depth */}
         <div 
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-[200px] animate-hero-orb-2 hidden sm:block opacity-50"
           style={{ background: "hsl(var(--neon-magenta) / 0.04)" }}
@@ -257,15 +254,14 @@ export function BuiltForSection() {
             <span className="text-xs">Built For Builders</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
-            Build What{" "}
-            <span className="text-[hsl(var(--neon-cyan))]">Evolves</span>
+            Your Industry.{" "}
+            <span className="text-[hsl(var(--neon-cyan))]">Our Substrate.</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The platform gives your systems background processing, governed adaptation, and persistent memory. 
-            Build for{" "}
+          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Background processing, governed adaptation, and persistent memory — built for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}
-            <span className="text-foreground font-medium">development</span>, or{" "}
-            <span className="text-foreground font-medium">enterprise</span> — and watch them improve themselves.
+            <span className="text-foreground font-medium">development</span>, and{" "}
+            <span className="text-foreground font-medium">enterprise</span>.
           </p>
         </motion.div>
         

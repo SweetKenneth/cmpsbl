@@ -83,10 +83,10 @@ export function NpmPackagesGrid() {
 }
 
 const HIGHLIGHTS = [
-  { icon: Zap, title: "Intent Routing", desc: "DAG-based action plan sequencing across 40 primitives" },
-  { icon: Layers, title: "Matrix Telemetry", desc: "Real-time primitive communication and health signals" },
-  { icon: Shield, title: "Convex Core™ Sealed Artifact", desc: "Proprietary logic protection with bridge adapters" },
-  { icon: Code, title: "24 Languages", desc: "Polyglot bridges — TypeScript core, any language client" },
+  { icon: Zap, title: "Intent Routing", desc: "DAG-based sequencing across all 40 primitives" },
+  { icon: Layers, title: "Matrix Telemetry", desc: "Real-time primitive health and communication" },
+  { icon: Shield, title: "Convex Core™", desc: "Sealed artifact with proprietary logic protection" },
+  { icon: Code, title: "24 Languages", desc: "Polyglot bridges from TypeScript to any runtime" },
 ];
 
 /** Compact CTA version — used on homepage */
@@ -112,11 +112,12 @@ export function NpmPackagesCTA() {
             Build What{" "}
             <span className="text-[hsl(var(--neon-purple))]">Evolves</span>
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Install the <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl/cli</code> to 
-            scaffold projects, deploy agents, and run Ascension discoveries from your terminal. Pair it with the{" "}
-            <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl/sdk</code> to 
-            embed persistent memory, cognitive scoring, and governed orchestration into any TypeScript or JavaScript project — your code ships with infrastructure that learns.
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+            Install the{" "}
+            <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-1.5 py-0.5 rounded">@cmpsbl/cli</code>{" "}
+            to scaffold projects and run Ascension from your terminal. Pair&nbsp;it with the{" "}
+            <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-1.5 py-0.5 rounded">@cmpsbl/sdk</code>{" "}
+            to embed persistent memory, cognitive scoring, and governed orchestration into any&nbsp;project.
           </p>
         </motion.div>
 
@@ -146,7 +147,7 @@ export function NpmPackagesCTA() {
             >
               <h.icon className={cn("w-5 h-5", i % 3 === 0 ? "text-[hsl(var(--neon-cyan))]" : i % 3 === 1 ? "text-[hsl(var(--neon-purple))]" : "text-[hsl(var(--neon-magenta))]")} />
               <span className="text-sm font-semibold text-foreground">{h.title}</span>
-              <span className="text-xs sm:text-sm text-muted-foreground leading-snug">{h.desc}</span>
+              <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
             </motion.div>
           ))}
         </div>

@@ -1,6 +1,5 @@
 /**
  * FreeValueProposition — Shows what free users get + clear upgrade path
- * Designed to convert browsers into sign-ups and free users into paid.
  */
 
 import { Link } from "react-router-dom";
@@ -51,11 +50,11 @@ export function FreeValueProposition() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-3">
             Start with{" "}
             <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
-              Everything You Need
+              Everything You&nbsp;Need
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
-            No credit card. No trial limits. The SDK, CLI, and core substrate are free — permanently.
+          <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
+            No credit card. No trial limits. The SDK, CLI, and core substrate are free&nbsp;— permanently.
           </p>
         </div>
 
@@ -133,10 +132,9 @@ export function FreeValueProposition() {
 
             <div className="rounded-xl border border-border bg-card/30 p-4 mt-2">
               <p className="text-xs text-muted-foreground leading-relaxed">
-                <span className="font-semibold text-foreground">Enterprise</span> — $999+/mo.
-                White-label deployments, custom domains, custom primitives, and dedicated discovery pipelines.{" "}
+                <span className="font-semibold text-foreground">Enterprise</span> — $999+/mo. White-label deployments, custom domains, custom primitives, and dedicated discovery&nbsp;pipelines.{" "}
                 <Link to="/enterprise" className="text-primary hover:underline">
-                  Learn more →
+                  Learn&nbsp;more&nbsp;→
                 </Link>
               </p>
             </div>
