@@ -6,16 +6,16 @@
 import { useRef } from "react";
 
 const QUOTES = [
-  { text: "The Internet is becoming the town square for the global village of tomorrow.", author: "Bill Gates" },
   { text: "Information wants to be free.", author: "Stewart Brand" },
-  { text: "The Web does not just connect machines, it connects people.", author: "Tim Berners-Lee" },
-  { text: "Move fast and break things. Unless you are breaking stuff, you are not moving fast enough.", author: "Mark Zuckerberg" },
-  { text: "The best way to predict the future is to invent it.", author: "Alan Kay" },
+  { text: "The Web connects people.", author: "Tim Berners-Lee" },
+  { text: "Move fast and break things.", author: "Mark Zuckerberg" },
+  { text: "Predict the future — invent it.", author: "Alan Kay" },
   { text: "Software is eating the world.", author: "Marc Andreessen" },
-  { text: "Any sufficiently advanced technology is indistinguishable from magic.", author: "Arthur C. Clarke" },
   { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
-  { text: "We are all now connected by the Internet, like neurons in a giant brain.", author: "Stephen Hawking" },
-  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+  { text: "Connected like neurons.", author: "Stephen Hawking" },
+  { text: "Technology is indistinguishable from magic.", author: "Arthur C. Clarke" },
+  { text: "The network is the computer.", author: "John Gage" },
+  { text: "Code is law.", author: "Lawrence Lessig" },
 ] as const;
 
 // Duplicate for seamless loop
