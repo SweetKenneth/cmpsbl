@@ -260,12 +260,13 @@ export function HeroMetaSubstrate() {
             </p>
           </FadeIn>
           
-          {/* CTAs — 2×2 grid */}
+          {/* CTAs — 2×2 neon grid */}
           <FadeIn delay={0.4} className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
             <Button 
               asChild 
               size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-magenta)/0.3)] hover:shadow-[hsl(var(--neon-magenta)/0.5)]"
+              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))" }}
             >
               <Link to="/ascension">
                 <Wrench className="w-4 h-4 shrink-0" />
@@ -274,9 +275,9 @@ export function HeroMetaSubstrate() {
             </Button>
             <Button 
               asChild 
-              variant="outline" 
               size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-cyan)/0.3)] hover:shadow-[hsl(var(--neon-cyan)/0.5)]"
+              style={{ background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))" }}
             >
               <Link to="/verticals">
                 <Search className="w-4 h-4 shrink-0" />
@@ -285,9 +286,8 @@ export function HeroMetaSubstrate() {
             </Button>
             <Button 
               asChild 
-              variant="ghost" 
               size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl hover:bg-[hsl(var(--neon-purple)/0.08)] hover:text-[hsl(var(--neon-purple))] transition-all duration-300 active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] hover:bg-[hsl(var(--neon-purple)/0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-purple)/0.15)]"
             >
               <Link to="/software-symbiosis">
                 <Layers className="w-4 h-4 shrink-0" />
@@ -296,9 +296,8 @@ export function HeroMetaSubstrate() {
             </Button>
             <Button 
               asChild 
-              variant="ghost" 
               size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl hover:bg-[hsl(var(--neon-cyan)/0.08)] hover:text-[hsl(var(--neon-cyan))] transition-all duration-300 active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border border-[hsl(var(--neon-cyan)/0.4)] bg-[hsl(var(--neon-cyan)/0.1)] text-[hsl(var(--neon-cyan))] hover:bg-[hsl(var(--neon-cyan)/0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-cyan)/0.15)]"
             >
               <Link to="/plans">
                 <ArrowRight className="w-4 h-4 shrink-0" />
@@ -314,19 +313,19 @@ export function HeroMetaSubstrate() {
             </p>
           </FadeIn>
 
-          {/* Zenodo */}
+          {/* Zenodo — bold & prominent */}
           <FadeIn delay={0.5} className="flex justify-center mt-4">
             <a
               href="https://zenodo.org/records/18895141"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-card/20 backdrop-blur-sm hover:border-primary/30 hover:bg-card/40 transition-all duration-300 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.08)] backdrop-blur-sm hover:border-[hsl(var(--neon-purple)/0.6)] hover:bg-[hsl(var(--neon-purple)/0.14)] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-[hsl(var(--neon-purple)/0.1)]"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-purple))] opacity-70 group-hover:opacity-100 transition-opacity" />
-              <span className="text-xs font-medium text-muted-foreground/70 group-hover:text-foreground/80 transition-colors tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-[hsl(var(--neon-purple))] animate-pulse" />
+              <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-[hsl(var(--neon-purple))] transition-colors tracking-wide">
                 Academic Prior Art — Zenodo v13.5
               </span>
-              <ArrowRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
+              <ArrowRight className="w-3.5 h-3.5 text-[hsl(var(--neon-purple)/0.6)] group-hover:text-[hsl(var(--neon-purple))] transition-colors" />
             </a>
           </FadeIn>
         </div>
