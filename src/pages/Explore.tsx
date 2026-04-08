@@ -42,6 +42,7 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 const DiscoveryDualCards = lazy(() => import("@/components/home/DiscoveryDualCards").then(m => ({ default: m.DiscoveryDualCards })));
+const PatentTrustStrip = lazy(() => import("@/components/home/PatentTrustStrip").then(m => ({ default: m.PatentTrustStrip })));
 
 // Clean section divider — animated diamond with cross-glow
 function SectionDivider() {
@@ -148,7 +149,8 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-        
+        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" />
+        <SectionDivider />
         <HowCmpsblWorks />
 
         <SectionDivider />
@@ -220,33 +222,10 @@ export default function Explore() {
           </div>
         </div>
       </section>
-      {/* ═══ PROTECTED INNOVATION — anchor image ═══ */}
-      <section className="relative z-10 px-3 sm:px-4 py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-3">
-            Protected{" "}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--neon-cyan)))" }}>
-              Innovation
-            </span>
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto font-medium">
-            <span className="text-foreground font-bold">Dual-patent protected</span> cognitive architecture. Your intellectual property, governed and secured at every layer.
-          </p>
-        </div>
-        <div className="max-w-6xl mx-auto">
-          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[hsl(var(--neon-magenta)/0.2)] shadow-2xl shadow-[hsl(var(--neon-magenta)/0.1)]">
-            <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-background/20 z-10 pointer-events-none" />
-            <img
-              src={trustCognitive}
-              alt="Protected cognitive architecture — governed data flows across dual-patent secured pathways"
-              loading="lazy"
-              width={1920}
-              height={768}
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        </div>
-      </section>
+      {/* ═══ PROTECTED INNOVATION — Patent Trust ═══ */}
+      <Suspense fallback={<div className="min-h-[100px]" />}>
+        <PatentTrustStrip />
+      </Suspense>
 
       <Suspense fallback={<div className="min-h-[100px]" />}>
         <EnhancedFooter />
