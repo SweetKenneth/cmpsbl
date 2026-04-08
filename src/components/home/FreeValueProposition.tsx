@@ -73,7 +73,7 @@ export function FreeValueProposition() {
             <div className="rounded-lg bg-background border border-border p-3 mb-5 font-mono text-xs">
               <span className="text-muted-foreground">$</span>{" "}
               <span className="text-[hsl(var(--neon-cyan))]">npm install</span>{" "}
-              <span className="text-foreground">@cmpsbl/sdk @cmpsbl/cli</span>
+              <span className="text-foreground font-semibold">@cmpsbl/sdk @cmpsbl/cli</span>
             </div>
 
             <ul className="space-y-3">
