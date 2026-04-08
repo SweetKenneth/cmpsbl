@@ -46,9 +46,9 @@ export function ManaShowcase() {
               Adhesion&nbsp;Layer
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-            Mana attaches capabilities to any software — payments, security, telemetry, governance — without the developer ever knowing. The host stays pristine.
-          </p>
+           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-medium">
+             Mana attaches capabilities to any software — payments, security, telemetry, governance — without the developer ever knowing. The host stays pristine.
+           </p>
         </div>
 
         {/* Capability grid */}
