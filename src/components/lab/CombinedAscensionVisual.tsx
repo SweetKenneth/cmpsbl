@@ -80,12 +80,17 @@ const L1_LINES = [
   { indent: 0, kw: "", text: "" },
   { indent: 0, kw: "", text: "app.use(express.json());" },
   { indent: 0, kw: "", text: "" },
+  { indent: 0, kw: "", text: "" },
   { indent: 0, kw: "", text: "app.post('/api/login', (req, res) => {" },
+  { indent: 0, kw: "", text: "" },
   { indent: 1, kw: "const", text: " { email, password } = req.body;" },
   { indent: 1, kw: "const", text: " user = db.findUser(email);" },
-  { indent: 1, kw: "if", text: " (!user) return res.status(401).json({ error: 'Not found' });" },
+  { indent: 0, kw: "", text: "" },
+  { indent: 1, kw: "if", text: " (!user) return res.status(401);" },
+  { indent: 0, kw: "", text: "" },
   { indent: 1, kw: "const", text: " token = jwt.sign({ id: user.id });" },
   { indent: 1, kw: "return", text: " res.json({ token });" },
+  { indent: 0, kw: "", text: "" },
   { indent: 0, kw: "", text: "});" },
   { indent: 0, kw: "", text: "" },
   { indent: 0, kw: "", text: "app.listen(3000);" },
@@ -93,12 +98,10 @@ const L1_LINES = [
 
 const L2_INJECTIONS = [
   { line: 3,  label: "rate limiter", color: "var(--neon-magenta)", delayPct: 15 },
-  { line: 5,  label: "input validation", color: "var(--neon-cyan)", delayPct: 22 },
-  { line: 7,  label: "SQL injection guard", color: "var(--neon-magenta)", delayPct: 29 },
-  { line: 8,  label: "brute-force detection", color: "var(--neon-purple)", delayPct: 36 },
-  { line: 9,  label: "token expiry + refresh", color: "var(--primary)", delayPct: 43 },
-  { line: 11, label: "audit log", color: "var(--neon-cyan)", delayPct: 50 },
-  { line: 13, label: "health check endpoint", color: "var(--neon-purple)", delayPct: 57 },
+  { line: 7,  label: "input validation", color: "var(--neon-cyan)", delayPct: 25 },
+  { line: 11, label: "SQL injection guard", color: "var(--neon-magenta)", delayPct: 35 },
+  { line: 14, label: "token expiry + refresh", color: "var(--neon-purple)", delayPct: 45 },
+  { line: 18, label: "health check endpoint", color: "var(--neon-cyan)", delayPct: 55 },
 ];
 
 const RUNES = ["◇", "△", "⬡", "◈", "⟡", "✦"];
