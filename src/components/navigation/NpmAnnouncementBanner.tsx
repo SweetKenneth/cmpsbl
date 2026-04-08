@@ -36,9 +36,9 @@ export function NpmAnnouncementBanner() {
         {ITEMS.map((q, i) => (
           <span
             key={`${q.author}-${i}`}
-            className="inline-flex items-center gap-1 mx-6 sm:mx-10 text-[11px] sm:text-xs text-white/90 font-medium shrink-0"
+            className="inline-flex items-center gap-1.5 mx-8 sm:mx-12 text-xs sm:text-sm text-white/90 font-semibold shrink-0"
           >
-            <span className="italic text-white/70">"{q.text}"</span>
+            <span className="italic text-white/80">"{q.text}"</span>
             <span className="text-white font-bold ml-1">— {q.author}</span>
           </span>
         ))}
