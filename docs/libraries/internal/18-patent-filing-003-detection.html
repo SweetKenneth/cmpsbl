@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>U.S. Provisional Patent Application — Runtime Integrity Verification System</title>
+<title>U.S. Provisional Patent Application — Unified Software Integrity Lifecycle System</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -311,8 +311,8 @@
   <strong>📋 What This Package Contains:</strong>
   <ol style="margin-top: 8px;">
     <li><strong>Cover Sheet</strong> (PTO/SB/16 equivalent) — Page 2</li>
-    <li><strong>Written Specification</strong> (Technical Description) — Pages 3–8</li>
-    <li><strong>Informal Claims</strong> (Optional but recommended for scope) — Page 8</li>
+    <li><strong>Written Specification</strong> (Unified Method Description) — Pages 3–10</li>
+    <li><strong>Informal Claims</strong> (Optional but recommended for scope) — Pages 10–11</li>
     <li><strong>Filing Fee Information</strong> — Below</li>
   </ol>
 </div>
@@ -407,7 +407,7 @@
   <h3>Title of the Invention</h3>
   <div class="field-group">
     <span class="field-label">Title:</span>
-    <span class="field-value"><strong>Runtime Integrity Verification System for Detecting Unauthorized Behavioral Modification of Software Functions Through Multi-Signal Anomaly Analysis</strong></span>
+    <span class="field-value"><strong>Unified Software Integrity Lifecycle System Comprising Deterministic Capability Discovery, Non-Intrusive Runtime Attachment with Integrated Governance, and Multi-Signal Behavioral Verification</strong></span>
   </div>
 
   <h3>Correspondence Address</h3>
@@ -440,24 +440,24 @@
     <tr>
       <td>64/029,678<br>(Conf. 8985)</td>
       <td>Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification</td>
-      <td>2025</td>
-      <td>Related — same inventor, complementary subject matter</td>
+      <td>April 4, 2025</td>
+      <td>Related — same inventor; describes the discovery and hardening process (Phase I of the unified method)</td>
     </tr>
     <tr>
       <td>64/031,637</td>
       <td>Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments</td>
       <td>April 7, 2026</td>
-      <td>Related — same inventor, complementary subject matter (this application covers the detection/defense counterpart)</td>
+      <td>Related — same inventor; describes the attachment and governance process (Phase II of the unified method)</td>
     </tr>
   </table>
 
   <div class="note-box">
-    <strong>Note:</strong> This application is filed as a <strong>standalone provisional</strong>, not a Continuation-in-Part. The related applications above establish that the same inventor has filed complementary patents covering the attachment (offensive) capabilities. This third filing covers the <strong>detection and defense</strong> methodology — the ability to identify when the attachment described in App. No. 64/031,637 (or analogous unauthorized runtime modifications) has occurred.
+    <strong>Note:</strong> This application presents all three inventions as expressions of a single <strong>unified software integrity lifecycle method</strong>. The two related applications describe, respectively, the discovery/hardening phase and the attachment/governance phase. This filing unifies all three phases — including the previously unclaimed detection/verification phase — into one cohesive method description. It is filed as a standalone provisional to establish a priority date for the unified process and, in particular, for the detection methodology (Phase III) not covered by either prior filing.
   </div>
 
   <h3>Application Contents</h3>
-  <p><span class="checkbox checked"></span> Specification (Written Description) — 6 pages</p>
-  <p><span class="checkbox checked"></span> Informal Claims — 1 page</p>
+  <p><span class="checkbox checked"></span> Specification (Unified Method Description) — 8 pages</p>
+  <p><span class="checkbox checked"></span> Informal Claims — 2 pages</p>
   <p><span class="checkbox"></span> Drawings — None (method patent; flowcharts may be added in non-provisional)</p>
 
   <h3>Filing Fee</h3>
@@ -468,166 +468,198 @@
 <div class="page-break"></div>
 
 <!-- =========================================================
-     SECTION 3: WRITTEN SPECIFICATION
+     SECTION 3: WRITTEN SPECIFICATION — UNIFIED METHOD
      ========================================================= -->
 
 <div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
 
 <div class="document-header">
   <h1>Written Specification</h1>
-  <h2>Runtime Integrity Verification System for Detecting Unauthorized Behavioral Modification of Software Functions Through Multi-Signal Anomaly Analysis</h2>
+  <h2>Unified Software Integrity Lifecycle System Comprising Deterministic Capability Discovery, Non-Intrusive Runtime Attachment with Integrated Governance, and Multi-Signal Behavioral Verification</h2>
 </div>
 
 <h2>Field of the Invention</h2>
 
-<p>This invention relates generally to runtime software security and integrity verification, and more particularly to a system and method for detecting unauthorized behavioral modifications to software functions — including but not limited to runtime wrapping, function interception, middleware injection, prototype chain manipulation, and capability attachment — through multi-signal anomaly analysis conducted without access to or modification of the original source code.</p>
+<p>This invention relates to a unified computer-implemented method for managing the integrity and behavioral governance of software functions across their full operational lifecycle. The method encompasses three interdependent phases: (1) deterministic analysis of software to identify functions requiring integrity enhancement; (2) non-intrusive attachment of governance, security, and observability capabilities to identified functions at runtime without modification of the underlying source code; and (3) independent behavioral verification to detect whether functions have been subjected to authorized or unauthorized runtime modification. The three phases are expressions of a single underlying process in which software functions are classified, enhanced, and continuously verified as a closed lifecycle.</p>
 
 <h2>Background of the Invention</h2>
 
-<p>Modern software architectures are increasingly exposed to runtime modification techniques that alter the behavior of existing functions without changing the underlying source code. These techniques include, but are not limited to:</p>
+<p>Modern software is composed of functions authored by distributed parties, imported as dependencies, and executed in runtime environments where their behavior may diverge from the author's intent. Three related problems arise from this reality:</p>
 
-<ul>
-  <li><strong>Function wrapping</strong> — replacing a function reference with a wrapper that intercepts calls, modifies arguments, alters return values, or introduces side effects;</li>
-  <li><strong>Prototype chain manipulation</strong> — modifying the prototype inheritance chain of objects to inject or override methods;</li>
-  <li><strong>Middleware injection</strong> — inserting processing layers between function calls and their consumers;</li>
-  <li><strong>Silent capability attachment</strong> — adding governance, telemetry, security, or monetization logic to existing functions at runtime boundaries without developer awareness or consent.</li>
-</ul>
+<ol>
+  <li><strong>The Discovery Problem:</strong> Given an arbitrary body of software source code, how does one deterministically identify which functions require security hardening, governance oversight, or behavioral monitoring — without relying on human judgment or external AI inference?</li>
+  <li><strong>The Attachment Problem:</strong> Once functions requiring enhancement have been identified, how does one attach governance, security, and observability capabilities to those functions at runtime without modifying the original source code, and without the host software's awareness?</li>
+  <li><strong>The Verification Problem:</strong> Once attachment is possible — by authorized or unauthorized parties — how does one independently detect whether a function's runtime behavior has been modified, regardless of the technique used to perform the modification?</li>
+</ol>
 
-<p>The inventor has separately filed patent applications (U.S. App. Nos. 64/029,678 and 64/031,637) describing systems for performing such attachment and modification. The present invention addresses the complementary problem: <strong>detecting when such modification has occurred</strong>, regardless of the technique used, and providing a verification signal that software is operating in its original, unmodified state.</p>
+<p>These three problems have been addressed independently in prior art: static analysis tools address aspects of discovery; middleware and instrumentation frameworks address aspects of attachment; and integrity verification tools address aspects of detection. However, no prior art unifies all three as a single closed-loop lifecycle in which discovery drives attachment, attachment drives verification, and verification confirms the integrity of both the attachment and the original host.</p>
 
-<p>Existing integrity verification approaches (checksum comparison, static analysis, code signing) fail to detect runtime modifications because the source code and compiled artifacts remain byte-for-byte identical. The modification occurs entirely in the runtime execution environment, below the visibility of traditional security tools.</p>
-
-<p>There is therefore a need for a runtime integrity verification system that can detect behavioral modification of software functions without requiring access to source code, without modifying the functions under test, and without prior knowledge of the specific modification technique employed.</p>
+<p>The inventor has separately filed patent applications addressing the first two phases individually: U.S. App. No. 64/029,678 (discovery and hardening) and U.S. App. No. 64/031,637 (attachment and governance). The present application describes the unified method that connects all three phases into a single process and, in particular, claims the detection/verification methodology (Phase III) and the lifecycle integration that makes all three phases interdependent.</p>
 
 <h2>Summary of the Invention</h2>
 
-<p>The present invention provides a runtime integrity verification system comprising a multi-signal anomaly analysis engine that observes the behavioral characteristics of software functions during execution and determines, with statistical confidence, whether those functions have been subjected to unauthorized modification.</p>
+<p>The present invention provides a unified computer-implemented method comprising three interdependent phases that together form a closed software integrity lifecycle:</p>
 
-<p>The system operates by collecting a plurality of behavioral signals from functions under test and comparing observed signal profiles against baseline behavioral models. Deviations exceeding configurable confidence thresholds trigger integrity violation alerts.</p>
+<h3>Phase I — Deterministic Capability Discovery</h3>
+<p>The system receives as input arbitrary software source code. It applies a deterministic classification process — without external AI inference — to identify function boundaries and classify each function according to its behavioral role. Classification is performed by evaluating source code against a fixed matrix of behavioral primitives. The output of Phase I is a structured map of functions and their assigned capability requirements (e.g., "this function handles state mutation and requires governance oversight; this function processes external input and requires defensive validation").</p>
 
-<p>The system is technique-agnostic — it does not look for any specific modification method, but instead detects the <strong>behavioral consequences</strong> of modification regardless of the underlying mechanism. This makes the system effective against known techniques (<p>The system is technique-agnostic — it does not look for any specific modification method, but instead detects the <strong>behavioral consequences</strong> of modification regardless of the underlying mechanism. This makes the system effective against known techniques (wrapping, interception, prototype manipulation) and unknown future techniques that produce similar behavioral artifacts.</p>) and unknown future techniques that produce similar behavioral artifacts.</p>
+<h3>Phase II — Non-Intrusive Runtime Attachment with Governance</h3>
+<p>The system receives as input the capability map produced by Phase I and a reference to the host software's runtime module. It attaches the specified capabilities — including but not limited to security gates, behavioral telemetry, governance hooks, circuit breakers, audit trails, and access control rules — to the identified functions at their runtime export boundaries. The attachment is performed such that: (a) the original source code is not modified in any way; (b) the host software's cryptographic hash remains identical before and after attachment; (c) the attached capabilities are governed by a policy engine ("Lex") that evaluates rules in real time to permit, deny, or observe each function invocation; and (d) the attachment supports recursive composition, meaning multiple independent attachment layers may be stacked on the same host function, each with its own governance policy, and each verifiable independently.</p>
 
-<h2>Detailed Description of Preferred Embodiments</h2>
+<h3>Phase III — Multi-Signal Behavioral Verification</h3>
+<p>The system provides an independent verification capability that determines, with statistical confidence, whether a given function has been subjected to runtime behavioral modification — whether by the authorized attachment described in Phase II, or by an unauthorized third party. Verification is performed by collecting a plurality of behavioral signals from the function under test and comparing the observed signal profile against a known-good baseline. The verification is technique-agnostic: it detects the behavioral consequences of modification regardless of the specific mechanism used to perform the modification.</p>
 
-<h3>1. System Architecture</h3>
+<h3>Lifecycle Integration</h3>
+<p>The three phases form a closed loop: Phase I identifies what requires protection; Phase II provides the protection; Phase III verifies that protection is functioning correctly and detects any unauthorized modification that occurred outside Phase II's governance. Phase III's verification results may feed back into Phase I as input signals for re-classification, and Phase II's governance engine may consume Phase III's verdicts to dynamically adjust policy (e.g., activating circuit breakers on functions whose verification status has degraded).</p>
 
-<p>The runtime integrity verification system comprises the following components:</p>
+<h2>Detailed Description of the Unified Method</h2>
+
+<h3>1. Phase I — Deterministic Discovery Process</h3>
+
+<p>The discovery process receives software source code and produces a capability map. The process comprises the following functional steps:</p>
 
 <ol type="a">
-  <li><strong>Signal Collection Module</strong> — a non-invasive observer that instruments function execution without modifying the functions under test. The Signal Collection Module gathers behavioral telemetry including but not limited to:
+  <li><strong>Function Boundary Identification:</strong> The system scans the input source code to identify discrete function boundaries — exported functions, class methods, prototype-attached methods, and other callable units that constitute the software's behavioral interface.</li>
+  <li><strong>Behavioral Classification:</strong> Each identified function is evaluated against a fixed matrix of behavioral primitives. Each primitive represents a category of software behavior (e.g., state mutation, external communication, data transformation, error handling, access control). The evaluation produces, for each function, a set of primitive matches with associated confidence scores.</li>
+  <li><strong>Primitive Collision Analysis:</strong> When a function matches multiple behavioral primitives simultaneously, the system performs collision analysis to determine emergent capability requirements. For example, a function that matches both "state mutation" and "external input handling" primitives may yield a composite requirement for both governance oversight and defensive validation. The collision analysis is deterministic — the same inputs always produce the same outputs.</li>
+  <li><strong>Capability Map Generation:</strong> The system produces a structured capability map that associates each function with its required capabilities, the primitives that drove the classification, and a confidence score. This map is the input to Phase II.</li>
+</ol>
+
+<p>The discovery process operates without external AI inference, machine learning models, or network calls. It is a purely algorithmic, deterministic computation over the source code input.</p>
+
+<h3>2. Phase II — Non-Intrusive Attachment Process</h3>
+
+<p>The attachment process receives a capability map and a runtime module reference, and produces a governed runtime environment. The process comprises the following functional steps:</p>
+
+<ol type="a">
+  <li><strong>Source Fingerprinting:</strong> Before any attachment occurs, the system computes a cryptographic fingerprint (SHA-256 or equivalent) of the host software's original function implementations. This fingerprint serves as the integrity baseline for Phase III verification.</li>
+  <li><strong>Governance Policy Evaluation:</strong> For each function-capability pair in the capability map, the system consults the governance engine ("Lex") to determine whether the attachment is permitted. Lex evaluates registered rules in insertion order and emits one of three verdicts: allow (capability is attached and active), deny (capability is blocked; function is not modified), or observe (capability is attached in monitoring-only mode, collecting telemetry without altering behavior).</li>
+  <li><strong>Capability Attachment:</strong> For each permitted attachment, the system interposes the specified capability at the function's runtime export boundary. The interposition is performed such that: the original function's behavior is preserved for all inputs that do not trigger governance rules; the original source code bytes are not altered; the host module's cryptographic hash remains identical; and the attachment is transparent to callers who are not specifically testing for it.</li>
+  <li><strong>Recursive Layer Registration:</strong> Each attachment is registered with a layer depth counter and a cryptographic hash of the parent layer. This enables multiple independent parties to attach capabilities to the same function, with each layer independently identifiable and independently removable.</li>
+  <li><strong>Manifest Generation:</strong> The system produces a manifest documenting all attachment points, the governance verdicts that authorized them, the capabilities applied, and the cryptographic proof that the host source was not modified. This manifest is a sealed artifact that can be independently audited.</li>
+</ol>
+
+<h3>3. Phase III — Multi-Signal Behavioral Verification Process</h3>
+
+<p>The verification process determines whether a function's runtime behavior is consistent with its known-good baseline or has been modified. The process comprises the following functional steps:</p>
+
+<ol type="a">
+  <li><strong>Baseline Establishment:</strong> During a trusted initialization period, or by importing pre-computed profiles from a trusted authority, the system records the behavioral signal profile of each function under protection. The baseline captures observable behavioral characteristics across multiple independent signal categories.</li>
+  <li><strong>Signal Collection:</strong> During runtime operation, the system collects behavioral signals from protected functions without modifying those functions or interrupting their operation. Signals are collected across a plurality of independent categories, including but not limited to:
     <ul>
-      <li>Execution timing characteristics (invocation latency, return timing, execution duration variance);</li>
-      <li>Behavioral fingerprint signals (property descriptor states, prototype chain topology, constructor identity, object property enumeration characteristics);</li>
-      <li>Call stack characteristics (depth, frame composition, caller chain topology);</li>
-      <li>Return value behavioral analysis (type consistency, structural integrity, value mutation patterns);</li>
-      <li>Memory and resource utilization patterns associated with function execution;</li>
+      <li>Execution timing characteristics (invocation latency, duration variance, return timing);</li>
+      <li>Behavioral fingerprint signals (runtime property states, inheritance topology, identity markers);</li>
+      <li>Call path characteristics (invocation depth, frame composition);</li>
+      <li>Output behavioral analysis (type consistency, structural integrity, value patterns);</li>
+      <li>Resource utilization patterns associated with function execution;</li>
       <li>Error handling and exception propagation behavior.</li>
     </ul>
   </li>
-  <li><strong>Baseline Model Engine</strong> — constructs behavioral profiles for functions in their known-good unmodified state. Baselines may be established through:
+  <li><strong>Anomaly Scoring:</strong> For each observation cycle, the system compares the observed signal vector against the stored baseline. Each signal category yields an individual deviation score. Individual scores are combined using a weighted composite formula to produce an overall integrity score. The weights are configurable and may be tuned for specific runtime environments, threat models, or sensitivity requirements.</li>
+  <li><strong>Verdict Determination:</strong> The composite integrity score is evaluated against configurable thresholds to produce one of four verdicts:
     <ul>
-      <li>Initial calibration during a trusted execution period;</li>
-      <li>Importation of pre-computed baseline profiles from a trusted authority;</li>
-      <li>Statistical modeling derived from behavioral invariants common to unmodified functions in a given runtime environment.</li>
-    </ul>
-  </li>
-  <li><strong>Anomaly Analysis Engine</strong> — compares observed behavioral signals against baseline models using a weighted multi-signal scoring algorithm. Each signal category contributes to a composite integrity score. The scoring weights are configurable and may be tuned for specific runtime environments, threat models, or sensitivity requirements.</li>
-  <li><strong>Verdict Engine</strong> — consumes composite integrity scores and emits one of the following determinations:
-    <ul>
-      <li><strong>VERIFIED</strong> — function behavior is consistent with baseline (unmodified);</li>
+      <li><strong>VERIFIED</strong> — behavior is consistent with baseline (unmodified);</li>
       <li><strong>SUSPICIOUS</strong> — deviation detected but below violation threshold;</li>
       <li><strong>VIOLATED</strong> — behavioral modification detected with high confidence;</li>
       <li><strong>UNKNOWN</strong> — insufficient signal data for determination.</li>
     </ul>
   </li>
-  <li><strong>Response Orchestrator</strong> — upon detection of a VIOLATED verdict, the system may initiate configurable defensive responses including but not limited to:
-    <ul>
-      <li>Alerting human operators or automated monitoring systems;</li>
-      <li>Logging forensic data for post-incident analysis;</li>
-      <li>Initiating function restoration from known-good state;</li>
-      <li>Activating circuit breakers to isolate compromised functions;</li>
-      <li>Generating cryptographic integrity proofs for audit chains.</li>
-    </ul>
-  </li>
+  <li><strong>Response Orchestration:</strong> Upon a VIOLATED or SUSPICIOUS verdict, the system may initiate configurable responses including: alerting operators, logging forensic data, restoring functions to known-good state, activating circuit breakers, generating cryptographic integrity proofs, or feeding the verdict back to Phase I for re-classification and Phase II for dynamic policy adjustment.</li>
 </ol>
-
-<h3>2. Multi-Signal Anomaly Analysis Method</h3>
-
-<p>The method of detecting unauthorized behavioral modification comprises the following steps:</p>
-
-<ol>
-  <li><strong>Establish Baseline:</strong> During a trusted initialization period, the system observes each function under protection and records its behavioral signal profile across all signal categories. This profile constitutes the function's behavioral fingerprint.</li>
-  <li><strong>Continuous Observation:</strong> During runtime operation, the Signal Collection Module continuously or periodically samples the behavioral signals of protected functions without interrupting their normal operation.</li>
-  <li><strong>Signal Comparison:</strong> For each observation cycle, the Anomaly Analysis Engine compares the observed signal vector against the stored baseline vector. Each signal category yields an individual deviation score.</li>
-  <li><strong>Weighted Composite Scoring:</strong> Individual deviation scores are combined using a configurable weighted formula to produce a composite integrity score. The weights reflect the relative diagnostic value of each signal category for the specific runtime environment.</li>
-  <li><strong>Threshold Evaluation:</strong> The composite integrity score is evaluated against configurable thresholds to determine the integrity verdict (VERIFIED, SUSPICIOUS, VIOLATED, or UNKNOWN).</li>
-  <li><strong>Response Execution:</strong> Based on the verdict, the Response Orchestrator initiates the appropriate defensive response as configured by the system operator.</li>
-</ol>
-
-<h3>3. Signal Categories and Their Diagnostic Value</h3>
-
-<p>The invention recognizes that different categories of behavioral signals have different diagnostic value for detecting different types of runtime modification. The following signal categories are identified as having particular diagnostic value:</p>
-
-<h4>3a. Property Descriptor Signals</h4>
-<p>Unmodified functions in JavaScript-compatible runtime environments exhibit specific property descriptor characteristics (configurability, writability, enumerability) that are altered when functions are replaced by wrapper constructs. The system observes these descriptor states as a high-weight integrity signal.</p>
-
-<h4>3b. Timing Differential Signals</h4>
-<p>Runtime modification techniques that interpose additional logic between caller and callee introduce measurable timing overhead. The system establishes baseline execution timing and detects statistically significant deviations. Timing signals are weighted to account for normal variance due to system load, garbage collection, and other non-adversarial factors.</p>
-
-<h4>3c. Prototype Chain Topology Signals</h4>
-<p>Functions in object-oriented runtime environments possess prototype chains that are structurally altered by certain modification techniques. The system maps and monitors prototype chain topology as an integrity signal.</p>
-
-<h4>3d. Constructor Identity Signals</h4>
-<p>Modified functions may exhibit altered constructor references, changed <code>name</code> properties, or inconsistent <code>toString()</code> representations. The system monitors these identity markers as supporting integrity signals.</p>
-
-<h4>3e. Call Stack Composition Signals</h4>
-<p>Wrapper functions and middleware layers introduce additional call stack frames. The system monitors call stack depth and frame composition during function execution as a supplementary integrity signal.</p>
-
-<h4>3f. Error Propagation Signals</h4>
-<p>Modified functions may exhibit altered error handling behavior — swallowing exceptions, wrapping errors in additional context, or modifying error types. The system monitors error propagation patterns as a supplementary integrity signal.</p>
 
 <h3>4. Technique-Agnostic Detection</h3>
 
-<p>A key feature of the invention is its technique-agnostic nature. Rather than detecting specific modification mechanisms (which would create an arms race requiring constant updates), the system detects the <strong>behavioral consequences</strong> common to all runtime modification approaches. Any technique that interposes logic between a function and its callers will produce observable behavioral artifacts in one or more signal categories. By monitoring multiple independent signal categories simultaneously, the system achieves robust detection even when individual signals are deliberately minimized by a sophisticated adversary.</p>
+<p>A distinguishing feature of Phase III is that it does not detect any specific modification technique. Instead, it detects the <strong>behavioral consequences</strong> that are common to all runtime modification approaches. Any interposition of additional logic between a function and its callers — regardless of the mechanism used — produces observable behavioral artifacts in one or more signal categories. By monitoring multiple independent signal categories simultaneously, the system achieves robust detection even when individual signal artifacts are deliberately minimized by a sophisticated adversary.</p>
 
-<h3>5. Recursive Verification</h3>
+<h3>5. Closed-Loop Lifecycle Integration</h3>
 
-<p>The system supports recursive verification — the ability to verify the integrity of the verification system itself. The Signal Collection Module, Anomaly Analysis Engine, and Verdict Engine are themselves subject to integrity verification by a bootstrapped verification layer that establishes its own trusted baseline during a cryptographically sealed initialization sequence.</p>
+<p>The three phases integrate into a closed lifecycle through the following feedback mechanisms:</p>
 
-<h3>6. Cross-Environment Portability</h3>
+<ol type="a">
+  <li><strong>Discovery → Attachment:</strong> Phase I's capability map is the direct input to Phase II. Only functions that Phase I has classified receive capabilities from Phase II.</li>
+  <li><strong>Attachment → Verification:</strong> Phase II's source fingerprint and manifest are inputs to Phase III. Phase III can verify both that the authorized attachment was performed correctly and that no unauthorized attachment has occurred.</li>
+  <li><strong>Verification → Discovery:</strong> Phase III's verdicts may be fed back to Phase I as additional classification signals. A function whose verification status has degraded may be reclassified for additional protection.</li>
+  <li><strong>Verification → Governance:</strong> Phase III's verdicts are consumed by Phase II's governance engine (Lex), which may dynamically adjust its policy — for example, activating deny rules on functions that Phase III has flagged as VIOLATED.</li>
+</ol>
 
-<p>While the preferred embodiment targets JavaScript/ECMAScript runtime environments (browsers, Node.js, Deno, Bun), the multi-signal anomaly analysis methodology is applicable to any runtime environment that supports function-level behavioral observation, including but not limited to: Python, Ruby, Java (via reflection), .NET (via interception), and compiled environments with dynamic linking capabilities.</p>
+<p>This closed-loop integration means the system continuously adapts its protection posture based on real-time integrity signals, without human intervention.</p>
 
-<h2>Informal Claims</h2>
+<h3>6. Recursive Self-Verification</h3>
 
-<div class="note-box">
-  <strong>Note:</strong> Formal claims are not required for a provisional application. These informal claims are included to define the intended scope of protection and assist patent counsel in drafting the non-provisional application.
-</div>
+<p>The verification system (Phase III) is itself subject to integrity verification. The system bootstraps a verification layer during a cryptographically sealed initialization sequence, establishing a trusted baseline for its own components. This prevents an adversary from disabling or modifying the verification system to evade detection.</p>
 
-<p class="claim"><span class="claim-number">1.</span> A computer-implemented method for detecting unauthorized runtime modification of software functions, comprising: establishing a behavioral baseline for one or more software functions during a trusted execution period; continuously or periodically collecting a plurality of behavioral signals from the functions during runtime operation; comparing the collected behavioral signals against the stored baseline using a weighted multi-signal scoring algorithm to produce a composite integrity score; and determining, based on the composite integrity score and configurable thresholds, whether the function has been subjected to unauthorized behavioral modification.</p>
+<h3>7. Cross-Environment Portability</h3>
 
-<p class="claim"><span class="claim-number">2.</span> The method of claim 1, wherein the behavioral signals comprise two or more of: property descriptor state analysis, execution timing differential analysis, prototype chain topology mapping, constructor identity verification, call stack composition analysis, and error propagation pattern analysis.</p>
+<p>While the preferred embodiment targets JavaScript/ECMAScript runtime environments (browsers, Node.js, Deno, Bun, edge runtimes), the unified method is applicable to any runtime environment that supports: (a) programmatic identification of function boundaries; (b) interposition of logic at function export boundaries without source modification; and (c) observation of function behavioral characteristics during execution. Applicable environments include, but are not limited to: Python, Ruby, Java (via reflection), .NET (via interception), Go (via interface wrapping), and compiled environments with dynamic linking capabilities.</p>
 
-<p class="claim"><span class="claim-number">3.</span> The method of claim 1, wherein the detection is technique-agnostic, detecting behavioral consequences of modification without requiring knowledge of the specific modification technique employed.</p>
+<h3>8. Cryptographic Proof of Non-Modification</h3>
 
-<p class="claim"><span class="claim-number">4.</span> The method of claim 1, further comprising initiating one or more configurable defensive responses upon detection of unauthorized modification, including alerting, logging, function restoration, circuit breaker activation, or cryptographic proof generation.</p>
+<p>At each phase boundary, the system generates cryptographic proof artifacts:</p>
 
-<p class="claim"><span class="claim-number">5.</span> The method of claim 1, further comprising recursive self-verification, wherein the integrity verification system verifies its own behavioral integrity using a bootstrapped verification layer established during a cryptographically sealed initialization sequence.</p>
+<ol type="a">
+  <li><strong>Pre-attachment proof:</strong> SHA-256 hash of the host source before Phase II executes.</li>
+  <li><strong>Post-attachment proof:</strong> SHA-256 hash of the host source after Phase II executes. This hash MUST match the pre-attachment hash, proving that the source code was not modified.</li>
+  <li><strong>Verification proof:</strong> A signed attestation from Phase III documenting the verification verdict, the signal scores that produced it, and the timestamp of verification.</li>
+</ol>
 
-<p class="claim"><span class="claim-number">6.</span> A system for runtime integrity verification of software functions, comprising: a signal collection module configured to observe behavioral characteristics of software functions without modifying the functions under test; a baseline model engine configured to store behavioral fingerprints of functions in their unmodified state; an anomaly analysis engine configured to compare observed behavioral signals against stored baselines and produce composite integrity scores; and a verdict engine configured to emit integrity determinations based on composite scores and configurable thresholds.</p>
-
-<p class="claim"><span class="claim-number">7.</span> The system of claim 6, wherein the signal collection module collects signals across at least three independent signal categories to achieve robust detection even when individual signals are deliberately minimized by an adversary.</p>
-
-<p class="claim"><span class="claim-number">8.</span> The system of claim 6, wherein the anomaly analysis engine uses configurable signal weights that may be tuned for specific runtime environments, threat models, or sensitivity requirements.</p>
-
-<p class="claim"><span class="claim-number">9.</span> A non-transitory computer-readable medium storing instructions that, when executed by a processor, cause the processor to perform the method of claim 1.</p>
-
-<p class="claim"><span class="claim-number">10.</span> The method of claim 1, wherein the method operates across heterogeneous runtime environments including JavaScript, Python, Ruby, Java, and .NET environments.</p>
+<p>The combination of matching source hashes (proving non-modification of Layer 1) and behavioral verification results (confirming Layer 2 integrity) constitutes a complete integrity proof chain that is independently auditable by any third party.</p>
 
 <div class="page-break"></div>
 
 <!-- =========================================================
-     SECTION 4: INVENTOR DECLARATION & SIGNATURE
+     SECTION 4: INFORMAL CLAIMS
+     ========================================================= -->
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<h2>Informal Claims</h2>
+
+<div class="note-box">
+  <strong>Note:</strong> Formal claims are not required for a provisional application. These informal claims are included to define the intended scope of protection and assist patent counsel in drafting the non-provisional application. The claims encompass the unified lifecycle method as well as the individual phases and their integration.
+</div>
+
+<h3>Unified Method Claims</h3>
+
+<p class="claim"><span class="claim-number">1.</span> A computer-implemented method for managing the behavioral integrity of software functions, comprising: (a) deterministically analyzing software source code against a fixed matrix of behavioral primitives to identify function boundaries and classify each function according to capability requirements, producing a capability map; (b) attaching the specified capabilities to the classified functions at their runtime export boundaries without modifying the underlying source code, subject to governance policy evaluation that permits, denies, or observes each attachment; and (c) independently verifying, through multi-signal behavioral analysis, whether each function's runtime behavior is consistent with a known-good baseline or has been subjected to modification.</p>
+
+<p class="claim"><span class="claim-number">2.</span> The method of claim 1, wherein the three phases form a closed lifecycle loop in which: the discovery phase produces inputs consumed by the attachment phase; the attachment phase produces integrity baselines and manifests consumed by the verification phase; and the verification phase produces verdicts consumed by both the discovery phase (for reclassification) and the attachment phase (for dynamic governance adjustment).</p>
+
+<p class="claim"><span class="claim-number">3.</span> The method of claim 1, wherein the discovery phase operates without external AI inference, machine learning models, or network calls, producing deterministic outputs for identical inputs.</p>
+
+<h3>Discovery Phase Claims</h3>
+
+<p class="claim"><span class="claim-number">4.</span> The method of claim 1, wherein the discovery phase further comprises: performing primitive collision analysis when a function matches multiple behavioral primitives simultaneously, producing emergent composite capability requirements not present in any single primitive match.</p>
+
+<h3>Attachment Phase Claims</h3>
+
+<p class="claim"><span class="claim-number">5.</span> The method of claim 1, wherein the attachment phase further comprises: computing a cryptographic fingerprint of the host software before attachment; performing the attachment such that an identical cryptographic fingerprint is computable after attachment, thereby proving non-modification of the original source code.</p>
+
+<p class="claim"><span class="claim-number">6.</span> The method of claim 1, wherein the attachment phase supports recursive composition, such that multiple independent attachment layers may be stacked on the same host function, each with an independent governance policy, layer depth counter, and parent layer hash, and each independently verifiable and removable.</p>
+
+<p class="claim"><span class="claim-number">7.</span> The method of claim 1, wherein the governance policy engine evaluates rules in insertion order, emitting allow, deny, or observe verdicts, and wherein observe verdicts cause the capability to collect telemetry without altering the function's input-output behavior.</p>
+
+<h3>Verification Phase Claims</h3>
+
+<p class="claim"><span class="claim-number">8.</span> The method of claim 1, wherein the verification phase detects behavioral modification in a technique-agnostic manner by observing behavioral consequences common to all runtime modification approaches, without requiring knowledge of the specific modification technique employed.</p>
+
+<p class="claim"><span class="claim-number">9.</span> The method of claim 1, wherein the verification phase collects behavioral signals across at least three independent signal categories — selected from execution timing, behavioral fingerprinting, call path analysis, output analysis, resource utilization, and error propagation — and combines individual deviation scores using a weighted composite formula to produce an overall integrity score.</p>
+
+<p class="claim"><span class="claim-number">10.</span> The method of claim 1, wherein the verification phase further comprises recursive self-verification, wherein the verification system verifies its own behavioral integrity using a bootstrapped verification layer established during a cryptographically sealed initialization sequence.</p>
+
+<h3>System and Medium Claims</h3>
+
+<p class="claim"><span class="claim-number">11.</span> A system for unified software integrity lifecycle management, comprising: a discovery engine configured to deterministically classify software functions against a primitive matrix and produce capability maps; an attachment engine configured to interpose capabilities at function runtime boundaries without source modification, subject to a governance policy engine; and a verification engine configured to detect runtime behavioral modification through multi-signal anomaly analysis, the three engines integrated in a closed feedback loop.</p>
+
+<p class="claim"><span class="claim-number">12.</span> A non-transitory computer-readable medium storing instructions that, when executed by a processor, cause the processor to perform the method of claim 1.</p>
+
+<p class="claim"><span class="claim-number">13.</span> The method of claim 1, wherein the method operates across heterogeneous runtime environments including JavaScript, Python, Ruby, Java, .NET, and Go environments.</p>
+
+<p class="claim"><span class="claim-number">14.</span> The method of claim 1, wherein the attachment phase generates a sealed manifest artifact documenting all attachment points, governance verdicts, capabilities applied, layer depths, and cryptographic non-modification proofs, the manifest being independently auditable by third parties.</p>
+
+<div class="page-break"></div>
+
+<!-- =========================================================
+     SECTION 5: INVENTOR DECLARATION & SIGNATURE
      ========================================================= -->
 
 <div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
@@ -637,6 +669,8 @@
 <p>I, the undersigned, declare that I am the sole inventor of the subject matter described in this provisional patent application. I have reviewed the above specification and believe it to be a true and complete description of my invention sufficient to enable a person of ordinary skill in the art to make and use the invention.</p>
 
 <p>I declare that all statements made herein of my own knowledge are true, and that all statements made on information and belief are believed to be true.</p>
+
+<p>I further declare that the inventions described in the related applications (U.S. App. Nos. 64/029,678 and 64/031,637) describe, respectively, Phase I and Phase II of the unified method presented here. The present application unifies all three phases and, in particular, presents the Phase III verification methodology and the closed-loop lifecycle integration for the first time.</p>
 
 <div class="field-group" style="margin-top: 1.5rem;">
   <span class="field-label">Inventor:</span>
@@ -658,7 +692,7 @@
 <div class="page-break"></div>
 
 <!-- =========================================================
-     SECTION 5: TRANSMITTAL LETTER
+     SECTION 6: TRANSMITTAL LETTER
      ========================================================= -->
 
 <div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
@@ -681,7 +715,7 @@ founder@cmpsbl.com</p>
 
 <p><strong>Date:</strong> [INSERT FILING DATE]</p>
 
-<p><strong>Re:</strong> Provisional Application for Patent — "Runtime Integrity Verification System for Detecting Unauthorized Behavioral Modification of Software Functions Through Multi-Signal Anomaly Analysis"</p>
+<p><strong>Re:</strong> Provisional Application for Patent — "Unified Software Integrity Lifecycle System Comprising Deterministic Capability Discovery, Non-Intrusive Runtime Attachment with Integrated Governance, and Multi-Signal Behavioral Verification"</p>
 
 <hr style="margin: 1.5rem 0;">
 
@@ -691,8 +725,8 @@ founder@cmpsbl.com</p>
 
 <ol>
   <li>Provisional Application Cover Sheet (PTO/SB/16);</li>
-  <li>Written Specification (6 pages);</li>
-  <li>Informal Claims (10 claims);</li>
+  <li>Written Specification (8 pages);</li>
+  <li>Informal Claims (14 claims);</li>
   <li>Micro Entity Certification (PTO/SB/15A); and</li>
   <li>Filing fee of $65.00 (micro entity rate).</li>
 </ol>
@@ -700,11 +734,11 @@ founder@cmpsbl.com</p>
 <p>This application is related to the following previously filed applications by the same inventor:</p>
 
 <ul>
-  <li>U.S. Patent App. No. 64/029,678, filed 2025 — Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification</li>
+  <li>U.S. Patent App. No. 64/029,678, filed April 4, 2025 — Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification</li>
   <li>U.S. Patent App. No. 64/031,637, filed April 7, 2026 — Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments</li>
 </ul>
 
-<p>The present application covers the detection and defense methodology complementary to the attachment systems described in the related applications. Together, the three applications form a comprehensive patent portfolio covering: (1) deterministic code evolution and hardening; (2) silent runtime capability attachment; and (3) detection of unauthorized runtime behavioral modification.</p>
+<p>The present application unifies the subject matter of the two related applications with a third, previously unclaimed component — multi-signal behavioral verification — into a single cohesive method description. Together, the unified method covers the complete software integrity lifecycle: (1) deterministic discovery and classification of functions requiring protection; (2) non-intrusive runtime attachment of governance, security, and observability capabilities without source code modification; and (3) independent technique-agnostic verification of function behavioral integrity. The three phases are presented as expressions of a single underlying process connected by a closed feedback loop.</p>
 
 <p>Please direct all correspondence regarding this application to the address above.</p>
 
@@ -721,7 +755,7 @@ founder@cmpsbl.com</p>
 <div class="page-break"></div>
 
 <!-- =========================================================
-     SECTION 6: PRE-FILING CHECKLIST
+     SECTION 7: PRE-FILING CHECKLIST
      ========================================================= -->
 
 <div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
@@ -742,7 +776,7 @@ founder@cmpsbl.com</p>
   <tr>
     <td><span class="checkbox"></span></td>
     <td>Save this document as PDF</td>
-    <td>Print → Save as PDF (remove classification banners for filing)</td>
+    <td>Print → Save as PDF from browser</td>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
@@ -751,33 +785,18 @@ founder@cmpsbl.com</p>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
-    <td>Insert filing date on transmittal letter</td>
-    <td>Replace [INSERT FILING DATE]</td>
+    <td>Prepare Micro Entity Certification (PTO/SB/15A)</td>
+    <td>Download from USPTO.gov forms page</td>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
-    <td>Start new submission in Patent Center</td>
-    <td>Select "Provisional" application type</td>
+    <td>Review specification for accuracy</td>
+    <td>Ensure all functional descriptions are correct</td>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
-    <td>Complete electronic cover sheet (PTO/SB/16)</td>
-    <td>Fields provided in Section 2 above</td>
-  </tr>
-  <tr>
-    <td><span class="checkbox"></span></td>
-    <td>Certify Micro Entity status (PTO/SB/15A)</td>
-    <td>Patent Center prompts you; check "Micro Entity" and certify</td>
-  </tr>
-  <tr>
-    <td><span class="checkbox"></span></td>
-    <td>Upload specification PDF</td>
-    <td>Upload as "Specification" document type</td>
-  </tr>
-  <tr>
-    <td><span class="checkbox"></span></td>
-    <td>Upload transmittal letter PDF</td>
-    <td>Upload as "Transmittal Letter" document type</td>
+    <td>File electronically via Patent Center</td>
+    <td>New Submission → Provisional Application</td>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
@@ -786,55 +805,25 @@ founder@cmpsbl.com</p>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
-    <td>Save confirmation receipt</td>
     <td>Record Application Number and Confirmation Number</td>
+    <td>Save receipt immediately</td>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
-    <td>Calendar 12-month deadline</td>
-    <td>Non-provisional must be filed before this date</td>
+    <td>Calendar 12-month conversion deadline</td>
+    <td>Set reminder at 9 months and 11 months</td>
   </tr>
   <tr>
     <td><span class="checkbox"></span></td>
-    <td>Delete this document from codebase</td>
-    <td>Tell Lov to delete after filing is confirmed</td>
+    <td>Consult patent attorney for non-provisional conversion</td>
+    <td>Recommended within 6 months of filing</td>
   </tr>
 </table>
 
-<div class="red-box">
-  <strong>⚠️ AFTER FILING:</strong> Record your Application Number and Confirmation Number in a secure location (not in this codebase). Then instruct Lov to delete this file. The filed document will be held confidentially by the USPTO and will never be published (provisionals do not publish). Your priority date is locked the moment the filing fee is paid and the application is accepted.
-</div>
-
-<div class="instruction-box">
-  <strong>💡 Patent Portfolio Summary After This Filing:</strong>
-  <table style="margin-top: 8px;">
-    <tr>
-      <th>Patent #</th>
-      <th>Covers</th>
-      <th>Status</th>
-    </tr>
-    <tr>
-      <td>App. 64/029,678</td>
-      <td>The Weapon — Deterministic code hardening & evolution</td>
-      <td>Filed ✓</td>
-    </tr>
-    <tr>
-      <td>App. 64/031,637</td>
-      <td>The Delivery — Silent runtime attachment & governance</td>
-      <td>Filed ✓</td>
-    </tr>
-    <tr>
-      <td><em>[This Filing]</em></td>
-      <td>The Shield — Runtime integrity verification & detection</td>
-      <td>Ready to file</td>
-    </tr>
-  </table>
-</div>
-
 <div class="legal-footer">
-  <p>© 2025–2026 CMPSBL® · PromptFluid™ · Kenneth Earl Sweet Jr.</p>
-  <p>This document is prepared for patent filing purposes only. Governor Eyes Only.<br>
-  Delete from all digital systems after USPTO filing is confirmed.</p>
+  <p>© 2025–2026 Kenneth Earl Sweet Jr. All rights reserved.<br>
+  CMPSBL® is a registered trademark of PromptFluid™, TX.<br>
+  This document is privileged and confidential. Unauthorized distribution is prohibited.</p>
 </div>
 
 </body>
