@@ -115,7 +115,7 @@ export default function Explore() {
         <DiscoveryDualCards />
 
         <SectionDivider />
-        <TrustVisual src={trustInfrastructure} alt="Cognitive infrastructure — 40 Primitives connected across governed layers" />
+        <TrustVisual src={trustInfrastructure} alt="Cognitive infrastructure — 40 Primitives connected across governed layers" caption="First recorded offline DREAM synthesis" date="Nov 2024" />
         <SubstrateAliveSection />
 
         <SectionDivider />
@@ -132,7 +132,7 @@ export default function Explore() {
         <BuiltForSection />
 
         <SectionDivider />
-        <TrustVisual src={trustEngineering} alt="Enterprise-grade engineering environment powered by CMPSBL substrate" />
+        <TrustVisual src={trustEngineering} alt="Enterprise-grade engineering environment powered by CMPSBL substrate" caption="40-Primitive substrate reaches full orchestration" date="Jan 2025" />
         <ArtifactPacksSection />
 
         <SectionDivider />
@@ -149,7 +149,7 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" />
+        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" caption="Autonomous Memory Stream completes first 8-hour cycle" date="Mar 2025" />
         <SectionDivider />
         <HowCmpsblWorks />
 

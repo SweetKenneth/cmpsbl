@@ -100,6 +100,8 @@ export default function FactoryHome() {
         <TrustVisual
           src={trustInfrastructure}
           alt="Modern software teams building on trusted governed infrastructure"
+          caption="First recorded offline DREAM synthesis"
+          date="Nov 2024"
         />
 
         <SectionDivider />
@@ -116,6 +118,8 @@ export default function FactoryHome() {
         <TrustVisual
           src={trustEngineering}
           alt="Professional engineering environment with secure governed software workflows"
+          caption="40-Primitive substrate reaches full orchestration"
+          date="Jan 2025"
         />
 
         <SectionDivider />
@@ -132,6 +136,8 @@ export default function FactoryHome() {
         <TrustVisual
           src={trustCognitive}
           alt="Protected cognitive architecture with secure pathways and persistent software memory"
+          caption="Autonomous Memory Stream completes first 8-hour cycle"
+          date="Mar 2025"
         />
 
         <SectionDivider />
