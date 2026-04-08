@@ -139,7 +139,7 @@ export default {
         float: "float 3s ease-in-out infinite",
         "spin-slow": "spin-slow 8s linear infinite",
         shake: "shake 0.5s ease-in-out",
-        marquee: "marquee 60s linear infinite",
+        marquee: "marquee 30s linear infinite",
       },
     },
   },
