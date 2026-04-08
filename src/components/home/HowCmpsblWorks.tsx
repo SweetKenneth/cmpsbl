@@ -33,7 +33,7 @@ export function HowCmpsblWorks() {
               <Lightbulb className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">
               How{" "}
               <span className="text-[hsl(var(--neon-cyan))]">CMPSBL</span>{" "}
               Works
@@ -76,7 +76,7 @@ export function HowCmpsblWorks() {
 
           {/* What the OS manages */}
           <div className="text-center mb-4">
-            <p className="text-base sm:text-lg text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               The platform coordinates intelligence across your application:
             </p>
           </div>

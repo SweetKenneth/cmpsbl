@@ -74,12 +74,12 @@ export function DifferentiationSection() {
             <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-magenta)/0.6)] animate-pulse" />
             <span className="text-xs font-semibold">Why Build Here</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
             Systems That
             <br />
             <span className="text-[hsl(var(--neon-purple))]">Dream · Adapt · Evolve</span>
           </h2>
-           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
              Most AI platforms process and forget. CMPSBL runs continuously — your systems
              operate in the background, adapt under governance, and compound intelligence with every interaction.
            </p>
@@ -115,7 +115,7 @@ export function DifferentiationSection() {
                   </span>
                 </div>
 
-                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">
+                <h3 className="text-base sm:text-lg font-bold text-foreground mb-2">
                   {pillar.headline}
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-5">

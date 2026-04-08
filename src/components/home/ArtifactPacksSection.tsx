@@ -51,11 +51,11 @@ export function ArtifactPacksSection() {
             <Package className="w-3 h-3 mr-1.5 text-[hsl(var(--neon-magenta))]" />
             <span className="text-xs font-semibold">{PIPELINE_PACKS_LABEL}</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
             Activate What You{" "}
             <span className="text-[hsl(var(--neon-magenta))]">Need</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Memory Packs are domain-specific cognitive bundles that plug directly into your runtime. Each pack occupies one slot — activate it and the capabilities are live instantly. Swap packs anytime to match your workload. Your tier determines capacity: Builder gets 3 slots, Studio 6, Creator 9, Architect 12.{" "}
             <Link to="/packs" className="text-primary hover:underline font-medium inline-flex items-center gap-1">
               Browse all 24 packs <ArrowRight className="w-3.5 h-3.5" />
@@ -84,7 +84,7 @@ export function ArtifactPacksSection() {
                   <span className={cn("text-2xl font-black font-mono opacity-30", colors.color)}>{number}</span>
                   <Icon className={cn("w-5 h-5", colors.color)} />
                 </div>
-                <h3 className="font-bold text-lg sm:text-xl text-foreground mb-1.5">{step.title}</h3>
+                <h3 className="font-bold text-base sm:text-lg text-foreground mb-1.5">{step.title}</h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{step.description}</p>
               </motion.div>
             );

@@ -107,13 +107,13 @@ export function UseCaseShowcase() {
             <Sparkles className="w-3 h-3 text-[hsl(var(--neon-magenta))]" />
             <span className="text-xs font-semibold">What You Can Build</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
             From{" "}
             <span className="text-[hsl(var(--neon-cyan))]">Today</span>
             {" "}to{" "}
             <span className="text-[hsl(var(--neon-magenta))]">Tomorrow</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Production-ready applications crystallized from the Memory Stream today — and entirely new categories emerging tomorrow.
           </p>
         </motion.div>
@@ -166,7 +166,7 @@ export function UseCaseShowcase() {
                     </Badge>
                   </div>
                   
-                  <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-current transition-colors">
+                  <h3 className="font-bold text-base sm:text-lg text-foreground mb-2 group-hover:text-current transition-colors">
                     {useCase.title}
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-4">
