@@ -372,8 +372,6 @@ export default function RestorationShop() {
       }));
 
       // Dynamic ZIP naming: use the source file name, not generic serial
-      const safeName = (fileName?.replace(/\.[^.]+$/, '') || 'refurbished')
-        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
       zip.generateAsync({ type: 'blob' }).then(blob => {
         import('file-saver').then(({ saveAs }) => {
