@@ -4,7 +4,7 @@
  * Horizontal-scroll carousels grouped by CJPI tier with Stripe checkout.
  */
 
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { lazy, Suspense, useState, useMemo, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
