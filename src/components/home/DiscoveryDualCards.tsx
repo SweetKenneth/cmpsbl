@@ -127,10 +127,10 @@ export function DiscoveryDualCards() {
                 </div>
 
                 {/* Summary — using dangerouslySetInnerHTML for &nbsp; */}
-                <p
-                  className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-5"
-                  dangerouslySetInnerHTML={{ __html: card.summary }}
-                />
+                 <p
+                   className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed mb-5"
+                   dangerouslySetInnerHTML={{ __html: card.summary }}
+                 />
 
                 {/* Bullets */}
                 <ul className="space-y-2.5 mb-6">
