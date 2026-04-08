@@ -33,6 +33,7 @@ import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
 import { generateUniversalUserGuide } from "@/lib/export/universal-user-guide";
+import { generateProofCertificate } from "@/lib/export/proof-certificate";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
@@ -267,24 +268,45 @@ export default function RestorationShop() {
       }</tbody></table>`;
       zip.file('docs/primitive-manifest.html', wrapDocHtml('Primitive Manifest', manifestHtml));
 
+      // ═══ PROOF.txt — Cryptographic Provenance Certificate ═══
+      zip.file('PROOF.txt', generateProofCertificate({
+        serial: report.id,
+        fingerprint,
+        tier: report.cjpiCertificate.tier,
+        cjpi: report.cjpiCertificate.score,
+        primitives: report.primitiveManifest.map(p => p.name),
+        source: 'CMPSBL® Ascension Lab',
+        language: detectedLang || undefined,
+      }));
+
       // ═══ README ═══
+      const year = new Date().getFullYear();
       const readmeMd = [
         `# CMPSBL® Ascended Code Package`,
         ``,
-        `**Serial:** \`${report.id}\``,
-        `**Fingerprint:** \`${fingerprint}\``,
-        `**CJPI Score:** ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier})`,
-        `**Primitives Applied:** ${report.primitiveManifest.map(p => p.name).join(', ')}`,
-        `**Generated:** ${new Date().toISOString()}`,
+        `> Governed Cognitive Infrastructure · A PromptFluid™ Product`,
         ``,
-        `## Contents`,
+        `| Field | Value |`,
+        `|-------|-------|`,
+        `| **Serial** | \`${report.id}\` |`,
+        `| **Fingerprint** | \`${fingerprint}\` |`,
+        `| **CJPI Score** | ${report.cjpiCertificate.score}/100 (${report.cjpiCertificate.tier}) |`,
+        `| **Primitives** | ${report.primitiveManifest.length} applied |`,
+        `| **Language** | ${detectedLang || 'N/A'} |`,
+        `| **Generated** | ${new Date().toISOString()} |`,
         ``,
-        `- \`src/original-source.txt\` — Your original code`,
-        `- \`src/ascended-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
-        `- \`restoration-report.json\` — Full machine-readable report`,
-        `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
-        `- \`LICENSE.html\` — Usage license`,
-        `- \`docs/\` — Pipeline details, capabilities, testing guide, error codes, CJPI cert`,
+        `## What's Inside`,
+        ``,
+        `| File | Purpose |`,
+        `|------|---------|`,
+        `| \`src/original-source.txt\` | Your original code (unmodified Layer 1) |`,
+        `| \`src/ascended-source${getRefurbishedExtension(detectedLang)}\` | Hardened code with primitive guards (Layer 2) |`,
+        `| \`PROOF.txt\` | Cryptographic provenance certificate |`,
+        `| \`ascension-report.html\` | Branded Ascension report |`,
+        `| \`docs/USER-GUIDE.html\` | Deployment and testing guide |`,
+        `| \`docs/\` | Pipeline details, capabilities, error codes, CJPI cert |`,
+        `| \`restoration-report.json\` | Machine-readable report |`,
+        `| \`test-harness.config.json\` | Config for @cmpsbl/test-harness |`,
         ``,
         `## Quick Start`,
         ``,
@@ -293,12 +315,23 @@ export default function RestorationShop() {
         `npx cmpsbl-test --config ./restoration-report.json`,
         `\`\`\``,
         ``,
+        `## Verify This Artifact`,
+        ``,
+        `**Online:** https://cmpsbl.com/verify/${fingerprint}`,
+        `**Local:** Run the ascended source with \`--verify\` flag`,
+        ``,
+        `## Intellectual Property`,
+        ``,
+        `Inventor: Kenneth E. Sweet Jr.`,
+        `U.S. Patent App. No. 64/029,678 · No. 64/031,637`,
+        ``,
         `## Support`,
         ``,
-        `Visit https://cmpsbl.com and use your fingerprint ID (\`${fingerprint}\`)`,
-        `to have DECODE pull up this ascension for customer support.`,
+        `Visit https://cmpsbl.com · Dev@CMPSBL.com · (760) FLUID-AI`,
+        `Use your fingerprint ID (\`${fingerprint}\`) for instant lookup.`,
         ``,
-        `© ${new Date().getFullYear()} PromptFluid™ · CMPSBL®`,
+        `---`,
+        `© ${year} PromptFluid™ · CMPSBL® · All rights reserved.`,
       ].join('\n');
       zip.file('README.md', readmeMd);
 

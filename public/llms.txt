@@ -1,7 +1,7 @@
 # CMPSBL® — Machine-Readable AI Context
 # 40-Primitive / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-04-02
+# Updated: 2026-04-08
 
 ## STANDARD CLAIM
 
@@ -141,7 +141,7 @@ The Memory Stream is CMPSBL's autonomous software production experience:
 ## ASCENSION — ZERO-LLM CODE TRANSFORMATION
 
 Ascension is CMPSBL's code transformation engine:
-- Upload source code in 25 languages (including 7 HDLs: VHDL, Verilog, SystemVerilog)
+- Upload source code in 54+ languages (including 7 HDLs: VHDL, Verilog, SystemVerilog)
 - Code becomes Primitive #41 — collides against 40 substrate primitives
 - Capabilities discovered via deterministic collision cycles (chain depth 2–8)
 - Zero external AI/LLM calls — pure internal cording
@@ -149,6 +149,8 @@ Ascension is CMPSBL's code transformation engine:
 - Exports include sealed Mini-Runtime™ for zero-dependency deployment
 - Governed by circuit breakers, rate limits (120/min), and FNV-1a/DJB2 audit chain
 - Counterpart to Memory Stream: Memory Stream discovers, Ascension transforms
+- Protected by dual patents: U.S. App. No. 64/029,678 & No. 64/031,637
+- Inventor: Kenneth E. Sweet Jr.
 - Page: https://cmpsbl.com/ascension
 
 ---
@@ -188,7 +190,7 @@ Ascension is CMPSBL's code transformation engine:
 - Intent Mesh: https://cmpsbl.com/intent-mesh
 - Scanner: https://cmpsbl.com/scan
 - Code Assembly: https://cmpsbl.com/assembly
-- Refurbishment Lab: https://cmpsbl.com/restoration-shop
+- Ascension Lab: https://cmpsbl.com/ascension
 - Agent Forge: https://cmpsbl.com/agent-forge
 - Agent Power-Up: https://cmpsbl.com/agent-power-up
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CMPSBL® Substrate Sitemap — Auto-generated 2026-04-02 -->
+<!-- CMPSBL® Substrate Sitemap — Auto-generated 2026-04-08 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <!-- HOMEPAGE -->
   <url>
     <loc>https://cmpsbl.com/</loc>
-    <lastmod>2026-04-02</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cmpsbl.com/" />
@@ -33,7 +33,9 @@
   <url><loc>https://cmpsbl.com/verticals</loc><lastmod>2026-04-04</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://cmpsbl.com/case-studies</loc><lastmod>2026-04-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
   <url><loc>https://cmpsbl.com/try</loc><lastmod>2026-04-04</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>
-  <url><loc>https://cmpsbl.com/marketplace</loc><lastmod>2026-04-04</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/marketplace</loc><lastmod>2026-04-08</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/mana</loc><lastmod>2026-04-08</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/software-symbiosis</loc><lastmod>2026-04-08</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
   <url><loc>https://cmpsbl.com/developers</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://cmpsbl.com/namespace</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
   <url><loc>https://cmpsbl.com/roadmap</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>

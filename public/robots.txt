@@ -1,6 +1,6 @@
 # CMPSBL® Substrate — robots.txt
 # https://cmpsbl.com/robots.txt
-# Auto-generated: 2026-04-02
+# Auto-generated: 2026-04-08
 
 # =============================================================
 # DEFAULT: Allow all crawlers
@@ -79,6 +79,9 @@ Allow: /projects
 Allow: /support
 Allow: /heritage-paper
 Allow: /promptfluid
+Allow: /mana
+Allow: /software-symbiosis
+Allow: /marketplace
 Allow: /privacy
 Allow: /terms
 

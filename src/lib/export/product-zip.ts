@@ -18,6 +18,7 @@ import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 import { generateUniversalUserGuide } from '@/lib/export/universal-user-guide';
+import { generateProofCertificate } from '@/lib/export/proof-certificate';
 
 export interface ProductZipInput {
   id: string;
@@ -304,6 +305,14 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     version: product.version,
     capabilities: caps,
     modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
+  }));
+
+  // ═══ PROOF.txt — Cryptographic Provenance Certificate ═══
+  folder.file('PROOF.txt', generateProofCertificate({
+    tier: product.tier,
+    cjpi: cjpi,
+    primitives: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
+    source: `CMPSBL® Store · ${product.tier} Tier`,
   }));
 
   return zip.generateAsync({ type: 'blob' });

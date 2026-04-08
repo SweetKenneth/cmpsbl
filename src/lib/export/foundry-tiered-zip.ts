@@ -19,6 +19,7 @@ import { generateExportArtifacts, generateDiscoveryContext, generateTierMigratio
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { generateUniversalUserGuide } from './universal-user-guide';
+import { generateProofCertificate } from './proof-certificate';
 
 export interface TieredFoundryExportArtifact {
   id: string;
@@ -245,6 +246,15 @@ export async function downloadTieredFoundryZip(options: {
         : item.source?.includes('llm') ? 'llm'
         : item.source?.includes('agency') ? 'agency'
         : undefined,
+    }));
+
+    // ═══ PROOF.txt — Cryptographic Provenance Certificate ═══
+    artifactFolder.file('PROOF.txt', generateProofCertificate({
+      tier: item.publicTier || getTierFromScore(item.score),
+      cjpi: item.score,
+      primitives: item.systemChain || ['SYSTEM'],
+      source: options.sourceLabel || 'CMPSBL® Memory Stream',
+      fingerprint: item.fingerprint || undefined,
     }));
 
     for (const file of bundle.files) {
