@@ -173,7 +173,7 @@ function getContextualResponse(
   if (/what.*change|what.*upgrade|what.*different|what.*happen|what.*did you do/i.test(q)) {
     const primList = primNames.join(', ');
     const vulnCount = report.vulnerabilityAssessment.length;
-    return `I applied ${primNames.length} primitives to your code: ${primList}. The scan team identified ${vulnCount} issues — ${report.vulnerabilityAssessment.filter(v => v.severity === 'critical').length} critical and ${report.vulnerabilityAssessment.filter(v => v.severity === 'warning').length} warnings — all of which have been addressed. Your CJPI score is ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier} tier). The refurbished code includes guard activations for each primitive, meaning they're actively protecting your runtime.`;
+    return `I applied ${primNames.length} primitives to your code: ${primList}. The scan team identified ${vulnCount} issues — ${report.vulnerabilityAssessment.filter(v => v.severity === 'critical').length} critical and ${report.vulnerabilityAssessment.filter(v => v.severity === 'warning').length} warnings — all of which have been addressed. Your CJPI score is ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier} tier). The ascended code includes guard activations for each primitive, meaning they're actively protecting your runtime.`;
   }
 
   // Questions about a specific primitive
