@@ -75,33 +75,27 @@ const KEYFRAMES = `
 `;
 
 const L1_LINES = [
-  { indent: 0, kw: "const", text: " express = require('express');" },
-  { indent: 0, kw: "const", text: " app = express();" },
+  { indent: 0, kw: "function", text: " secretOfLife() {" },
   { indent: 0, kw: "", text: "" },
-  { indent: 0, kw: "", text: "app.use(express.json());" },
+  { indent: 1, kw: "const", text: " work = doHardThings();" },
+  { indent: 1, kw: "const", text: " crew = peopleYouLove();" },
   { indent: 0, kw: "", text: "" },
+  { indent: 1, kw: "const", text: " impact = buildFor(crew, {" },
+  { indent: 2, kw: "", text: "scope: 'the world'," },
+  { indent: 2, kw: "", text: "duration: 'decades'," },
+  { indent: 1, kw: "", text: "});" },
   { indent: 0, kw: "", text: "" },
-  { indent: 0, kw: "", text: "app.post('/api/login', (req, res) => {" },
+  { indent: 1, kw: "", text: "forgetEverythingElse();" },
   { indent: 0, kw: "", text: "" },
-  { indent: 1, kw: "const", text: " { email, password } = req.body;" },
-  { indent: 1, kw: "const", text: " user = db.findUser(email);" },
-  { indent: 0, kw: "", text: "" },
-  { indent: 1, kw: "if", text: " (!user) return res.status(401);" },
-  { indent: 0, kw: "", text: "" },
-  { indent: 1, kw: "const", text: " token = jwt.sign({ id: user.id });" },
-  { indent: 1, kw: "return", text: " res.json({ token });" },
-  { indent: 0, kw: "", text: "" },
-  { indent: 0, kw: "", text: "});" },
-  { indent: 0, kw: "", text: "" },
-  { indent: 0, kw: "", text: "app.listen(3000);" },
+  { indent: 1, kw: "return", text: " impact;" },
+  { indent: 0, kw: "", text: "}" },
 ];
 
 const L2_INJECTIONS = [
-  { line: 3,  label: "rate limiter", color: "var(--neon-magenta)", delayPct: 15 },
-  { line: 7,  label: "input validation", color: "var(--neon-cyan)", delayPct: 25 },
-  { line: 11, label: "SQL injection guard", color: "var(--neon-magenta)", delayPct: 35 },
-  { line: 14, label: "token expiry + refresh", color: "var(--neon-purple)", delayPct: 45 },
-  { line: 18, label: "health check endpoint", color: "var(--neon-cyan)", delayPct: 55 },
+  { line: 2,  label: "resilience",  color: "var(--neon-magenta)", delayPct: 15 },
+  { line: 5,  label: "trust layer", color: "var(--neon-cyan)",    delayPct: 30 },
+  { line: 10, label: "clarity",     color: "var(--neon-purple)",  delayPct: 45 },
+  { line: 12, label: "conviction",  color: "var(--neon-magenta)", delayPct: 60 },
 ];
 
 const RUNES = ["◇", "△", "⬡", "◈", "⟡", "✦"];
@@ -160,7 +154,7 @@ export const CombinedAscensionVisual = memo(function CombinedAscensionVisual() {
               Layer 1 — Original Source
             </span>
           </div>
-          <span className="text-[10px] font-mono font-semibold text-muted-foreground/60">server.js</span>
+          <span className="text-[10px] font-mono font-semibold text-muted-foreground/60">life.js</span>
         </div>
 
         {/* Main container */}
