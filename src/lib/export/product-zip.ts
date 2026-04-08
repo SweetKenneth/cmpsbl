@@ -18,6 +18,7 @@ import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 import { generateUniversalUserGuide } from '@/lib/export/universal-user-guide';
+import { generateProofCertificate } from '@/lib/export/proof-certificate';
 
 export interface ProductZipInput {
   id: string;
