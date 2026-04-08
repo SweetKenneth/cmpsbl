@@ -2973,7 +2973,7 @@ def __cmpsbl_verify__():
     print(f'    verify_fingerprint("{fingerprint}")')
     print()
     print("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.")
-    print("  U.S. Patent Pending — App. No. 64/029,678")
+    print("  U.S. Patent App. No. 64/029,678 · No. 64/031,637")
     print("=" * 60)
     return checks_passed == checks_total
 
