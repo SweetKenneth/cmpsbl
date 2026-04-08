@@ -14,9 +14,7 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
   ChevronDown,
-  Search,
   Wrench,
-  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -114,8 +112,8 @@ function TypedText({ texts, gradientColors, className }: {
 }
 
 // ─── Animated Stat (CSS-only, no framer-motion) ─────────────────
-function AnimatedStat({ value, label, suffix = "", delay = 0 }: { 
-  value: number; label: string; suffix?: string; delay?: number;
+function AnimatedStat({ value, label, sublabel, suffix = "", delay = 0 }: { 
+  value: number; label: string; sublabel?: string; suffix?: string; delay?: number;
 }) {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -166,7 +164,10 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
       <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[10px] sm:text-xs text-muted-foreground/70 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground transition-colors duration-300">{label}</div>
+      <div className="text-[10px] sm:text-xs text-foreground/80 font-bold mt-1 tracking-[0.12em] uppercase group-hover:text-foreground transition-colors duration-300">{label}</div>
+      {sublabel && (
+        <div className="text-[8px] sm:text-[9px] text-muted-foreground/50 font-medium mt-0.5 tracking-[0.08em]">{sublabel}</div>
+      )}
     </div>
   );
 }
@@ -250,59 +251,29 @@ export function HeroMetaSubstrate() {
 
           {/* Value prop */}
           <FadeIn delay={0.3} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
-            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-2.5">
-              Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code without changing&nbsp;it.
+            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-3">
+              Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code — a secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>.
             </p>
-            <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed mb-2.5">
-              A secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>&nbsp;— enhancing your software while your original code remains&nbsp;untouched.
+            <p className="text-base sm:text-lg md:text-xl font-black text-foreground tracking-tight leading-snug mb-3" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              Your code remains unchanged.
             </p>
             <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed">
               Works across <span className="text-foreground font-extrabold">90+ languages</span>. Runs in&nbsp;minutes.
             </p>
           </FadeIn>
           
-          {/* CTAs — 2×2 neon grid */}
-          <FadeIn delay={0.4} className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
+          {/* CTA — single focused action */}
+          <FadeIn delay={0.4} className="flex justify-center max-w-md mx-auto">
             <Button 
               asChild 
               size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-magenta)/0.3)] hover:shadow-[hsl(var(--neon-magenta)/0.5)]"
+              className="gap-2.5 h-14 px-10 text-sm sm:text-base font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] shadow-xl shadow-[hsl(var(--neon-magenta)/0.35)] hover:shadow-[hsl(var(--neon-magenta)/0.55)]"
               style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))" }}
             >
               <Link to="/ascension">
-                <Wrench className="w-4 h-4 shrink-0" />
-                Ascend Software
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-cyan)/0.3)] hover:shadow-[hsl(var(--neon-cyan)/0.5)]"
-              style={{ background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))" }}
-            >
-              <Link to="/verticals">
-                <Search className="w-4 h-4 shrink-0" />
-                Explore Verticals
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] hover:bg-[hsl(var(--neon-purple)/0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-purple)/0.15)]"
-            >
-              <Link to="/software-symbiosis">
-                <Layers className="w-4 h-4 shrink-0" />
-                Software Symbiosis
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border border-[hsl(var(--neon-cyan)/0.4)] bg-[hsl(var(--neon-cyan)/0.1)] text-[hsl(var(--neon-cyan))] hover:bg-[hsl(var(--neon-cyan)/0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-cyan)/0.15)]"
-            >
-              <Link to="/plans">
+                <Wrench className="w-4.5 h-4.5 shrink-0" />
+                Ascend Your Code
                 <ArrowRight className="w-4 h-4 shrink-0" />
-                View Plans
               </Link>
             </Button>
           </FadeIn>
@@ -333,6 +304,9 @@ export function HeroMetaSubstrate() {
         
         {/* ─── DREAM Ascension Visual ─── */}
         <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-6 sm:mb-12">
+          <p className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-3 sm:mb-4">
+            This is what ascension looks like
+          </p>
           <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
             <HeroAscensionVisualLazy />
           </Suspense>
@@ -346,10 +320,10 @@ export function HeroMetaSubstrate() {
             className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge max-w-3xl mx-auto"
           >
             <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
-            <AnimatedStat value={40} label="Primitives" delay={0} />
-            <AnimatedStat value={25} label="Export Languages" delay={1} />
-            <AnimatedStat value={8} label="Hour Cycles" suffix="hr" delay={2} />
-            <AnimatedStat value={3} label="Zenodo DOIs" delay={3} />
+            <AnimatedStat value={40} label="Primitives" sublabel="core system modules" delay={0} />
+            <AnimatedStat value={25} label="Export Languages" sublabel="deployment targets" delay={1} />
+            <AnimatedStat value={8} label="Hour Cycles" sublabel="autonomous processing loop" suffix="hr" delay={2} />
+            <AnimatedStat value={6} label="ORCID Works" sublabel="academic lineage" delay={3} />
           </div>
         </FadeIn>
       </div>
