@@ -97,7 +97,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'cjpi',
     role: 'decode',
-    content: `Your code scored **CJPI ${cert.score}** — placing it in the **${cert.tier}** tier. ${cert.score >= 94 ? "That's exceptional." : cert.score >= 80 ? "Solid foundation." : "Room to grow."} Your fingerprint ID is \`${cert.fingerprint}\` — save this to pull up your refurbishment anytime.`,
+    content: `Your code scored **CJPI ${cert.score}** — placing it in the **${cert.tier}** tier. ${cert.score >= 94 ? "That's exceptional." : cert.score >= 80 ? "Solid foundation." : "Room to grow."} Your fingerprint ID is \`${cert.fingerprint}\` — save this to pull up your ascension anytime.`,
     icon: Sparkles,
     highlight: cert.score >= 90,
   });
