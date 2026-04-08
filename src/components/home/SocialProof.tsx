@@ -53,9 +53,9 @@ export function SocialProof() {
             <br />
             <span className="text-[hsl(var(--neon-cyan))]">Real&nbsp;Results.</span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-            Teams using the substrate and Memory Stream to build intelligence that compounds over&nbsp;time.
-          </p>
+           <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed font-medium">
+             Teams using the substrate and Memory Stream to build intelligence that compounds over&nbsp;time.
+           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto">
@@ -96,7 +96,7 @@ export function SocialProof() {
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] flex items-center justify-center text-[10px] font-bold text-[hsl(var(--neon-purple))]">{t.author.charAt(0)}</div>
                 <div>
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
-                  {t.role && <span className="text-xs text-muted-foreground/60">{t.role}</span>}
+                  {t.role && <span className="text-xs text-muted-foreground/70 font-medium">{t.role}</span>}
                 </div>
               </div>
             </motion.div>

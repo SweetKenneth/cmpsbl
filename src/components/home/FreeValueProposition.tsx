@@ -54,9 +54,9 @@ export function FreeValueProposition() {
               Everything You&nbsp;Need
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
-            No credit card. No trial limits. The SDK, CLI, and core substrate are free&nbsp;— permanently.
-          </p>
+           <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto font-medium">
+             No credit card. No trial limits. The SDK, CLI, and core substrate are free&nbsp;— permanently.
+           </p>
         </div>
 
         {/* Two-column layout */}
@@ -82,7 +82,7 @@ export function FreeValueProposition() {
                   <div className="shrink-0 w-5 h-5 rounded-full bg-[hsl(var(--neon-cyan)/0.15)] flex items-center justify-center mt-0.5">
                     <Check className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
                   </div>
-                  <span className="text-sm text-muted-foreground">{f.text}</span>
+                  <span className="text-sm text-muted-foreground font-medium">{f.text}</span>
                 </li>
               ))}
             </ul>
@@ -124,7 +124,7 @@ export function FreeValueProposition() {
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">{t.unlock}</p>
+                    <p className="text-xs text-muted-foreground mt-1 font-medium">{t.unlock}</p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                 </div>

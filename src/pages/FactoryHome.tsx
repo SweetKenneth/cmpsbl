@@ -181,9 +181,9 @@ export default function FactoryHome() {
                 <br />
                 <span className="text-white/80">Build Something Real.</span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
-                40 primitives. Dual patents. Zero AI tricks. The substrate is free&nbsp;— start building today.
-              </p>
+               <p className="text-white/80 text-base sm:text-lg max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed font-medium">
+                 40 primitives. Dual patents. Zero AI tricks. The substrate is free&nbsp;— start building today.
+               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">

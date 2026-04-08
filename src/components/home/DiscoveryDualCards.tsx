@@ -75,11 +75,11 @@ export function DiscoveryDualCards() {
               Zero&nbsp;LLM.
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-xl mx-auto leading-relaxed">
-            No large-language model sits between you and your results. Both systems run on{" "}
-            <span className="text-foreground/90 font-medium">pure internal cording</span>{" "}
-            — deterministic, auditable, and governed by the 40-Primitive&nbsp;substrate.
-          </p>
+           <p className="text-sm sm:text-base text-muted-foreground font-medium max-w-xl mx-auto leading-relaxed">
+             No large-language model sits between you and your results. Both systems run on{" "}
+             <span className="text-foreground font-semibold">pure internal cording</span>{" "}
+             — deterministic, auditable, and governed by the 40-Primitive&nbsp;substrate.
+           </p>
         </div>
 
         {/* Dual cards */}
@@ -127,15 +127,15 @@ export function DiscoveryDualCards() {
                 </div>
 
                 {/* Summary — using dangerouslySetInnerHTML for &nbsp; */}
-                <p
-                  className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-5"
-                  dangerouslySetInnerHTML={{ __html: card.summary }}
-                />
+                 <p
+                   className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed mb-5"
+                   dangerouslySetInnerHTML={{ __html: card.summary }}
+                 />
 
                 {/* Bullets */}
                 <ul className="space-y-2.5 mb-6">
                   {card.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground/75">
+                    <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground font-medium">
                       <span
                         className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ring-2 ring-offset-1 ring-offset-transparent"
                         style={{
@@ -174,8 +174,8 @@ export function DiscoveryDualCards() {
         </div>
 
         {/* Bottom note */}
-        <p className="text-center text-xs text-muted-foreground/50 mt-6 sm:mt-8">
-          Both systems share the same governed substrate. Memory Stream <em>discovers</em>&nbsp;— Ascension <em>transforms</em>. Neither touches an&nbsp;LLM.
+         <p className="text-center text-xs text-muted-foreground/70 font-medium mt-6 sm:mt-8">
+           Both systems share the same governed substrate. Memory Stream <em>discovers</em>&nbsp;— Ascension <em>transforms</em>. Neither touches an&nbsp;LLM.
         </p>
       </div>
     </section>

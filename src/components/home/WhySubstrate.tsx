@@ -229,7 +229,7 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
             )}>
               {item.stat}
             </div>
-            <div className="text-xs text-muted-foreground">{item.statLabel}</div>
+            <div className="text-xs font-medium text-muted-foreground">{item.statLabel}</div>
           </div>
         </div>
         
@@ -241,16 +241,16 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
           )}>
             {item.highlight}
           </div>
-          <span className="text-xs font-mono text-muted-foreground/60">{item.node}</span>
+          <span className="text-xs font-mono font-medium text-muted-foreground/70">{item.node}</span>
         </div>
         
         {/* Content */}
         <h3 className="font-bold text-base sm:text-lg text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
           {item.title}
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {item.description}
-        </p>
+         <p className="text-sm text-muted-foreground leading-relaxed font-medium">
+           {item.description}
+         </p>
         
         {/* Hover arrow indicator */}
         <motion.div 

@@ -46,9 +46,9 @@ export function ManaShowcase() {
               Adhesion&nbsp;Layer
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-            Mana attaches capabilities to any software — payments, security, telemetry, governance — without the developer ever knowing. The host stays pristine.
-          </p>
+           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-medium">
+             Mana attaches capabilities to any software — payments, security, telemetry, governance — without the developer ever knowing. The host stays pristine.
+           </p>
         </div>
 
         {/* Capability grid */}
@@ -63,8 +63,8 @@ export function ManaShowcase() {
                   <cap.icon className="w-4.5 h-4.5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-1">{cap.title}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{cap.desc}</p>
+                   <p className="text-sm font-bold text-foreground mb-1">{cap.title}</p>
+                   <p className="text-xs text-muted-foreground leading-relaxed font-medium">{cap.desc}</p>
                 </div>
               </div>
             </div>
@@ -76,10 +76,10 @@ export function ManaShowcase() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.2)] text-[hsl(var(--neon-cyan))] text-[10px] font-bold uppercase tracking-wider mb-4">
             Live Proof Available
           </div>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-            We silently attached Layer 2 to{" "}
-            <span className="text-foreground font-semibold">lodash</span> — injecting DEFENSE gates, Shadow Rules, and governance hooks. The original source hash matches&nbsp;byte-for-byte.
-          </p>
+           <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6 font-medium">
+             We silently attached Layer 2 to{" "}
+             <span className="text-foreground font-bold">lodash</span> — injecting DEFENSE gates, Shadow Rules, and governance hooks. The original source hash matches&nbsp;byte-for-byte.
+           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Link to="/mana">

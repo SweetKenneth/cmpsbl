@@ -112,7 +112,7 @@ export function NpmPackagesCTA() {
             <br />
             <span className="text-[hsl(var(--neon-purple))]">Evolves</span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8 font-medium">
             Install the{" "}
             <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-1.5 py-0.5 rounded">@cmpsbl/cli</code>{" "}
             to scaffold projects and run Ascension from your terminal. Pair&nbsp;it with the{" "}

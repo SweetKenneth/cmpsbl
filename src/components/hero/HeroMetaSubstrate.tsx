@@ -166,7 +166,7 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
       <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
+      <div className="text-[10px] sm:text-xs text-muted-foreground/70 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground transition-colors duration-300">{label}</div>
     </div>
   );
 }
@@ -253,7 +253,7 @@ export function HeroMetaSubstrate() {
             <p className="text-base sm:text-lg text-muted-foreground font-semibold leading-relaxed mb-2.5">
               Upload code in <span className="text-foreground font-extrabold">90+ languages</span>. Get back <span className="text-foreground font-extrabold">hardened, certified</span> software — in&nbsp;minutes.
             </p>
-            <p className="text-sm sm:text-base text-muted-foreground/80 font-medium leading-relaxed">
+            <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed">
               <span className="text-foreground font-bold">Dual-patent protected.</span> Free accounts are <span className="text-foreground font-bold">first-class members</span>. Your code gains <span className="text-foreground font-bold">security</span>, <span className="text-foreground font-bold">governance</span>, and <span className="text-foreground font-bold">resilience</span>&nbsp;— without modifying the&nbsp;original.
             </p>
           </FadeIn>
@@ -306,7 +306,7 @@ export function HeroMetaSubstrate() {
 
           {/* Trust line */}
           <FadeIn delay={0.45} className="mt-4 mb-2">
-            <p className="text-[10px] sm:text-xs text-muted-foreground/40 font-medium tracking-wide">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
               Diagnostic in seconds · Restoration in minutes · Your code is never stored or reused
             </p>
           </FadeIn>
@@ -356,7 +356,7 @@ export function HeroMetaSubstrate() {
         className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 animate-fade-in"
         style={{ animationDelay: "2.5s", animationFillMode: "both" }}
       >
-        <span className="text-[9px] text-muted-foreground/30 font-medium tracking-[0.2em] uppercase">Explore</span>
+        <span className="text-[9px] text-muted-foreground/50 font-semibold tracking-[0.2em] uppercase">Explore</span>
         <div className="w-px h-6 bg-gradient-to-b from-primary/20 to-transparent" />
         <div className="animate-scroll-bounce">
           <ChevronDown className="w-4 h-4 text-primary/25" />

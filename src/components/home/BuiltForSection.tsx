@@ -156,9 +156,9 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
               <div className="text-2xl sm:text-3xl font-black" style={{ color: audience.accentColor }}>
                 {audience.stats.value}
               </div>
-              <div className="text-xs text-muted-foreground">
-                {audience.stats.label}
-              </div>
+               <div className="text-xs font-medium text-muted-foreground">
+                 {audience.stats.label}
+               </div>
             </motion.div>
           </div>
           
@@ -177,9 +177,9 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.tagline}
           </p>
           
-          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed">
-            {audience.description}
-          </p>
+           <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed font-medium">
+             {audience.description}
+           </p>
           
           <div className="space-y-2.5 mb-6">
             {audience.features.map((feature, idx) => (
@@ -258,7 +258,7 @@ export function BuiltForSection() {
             <br />
             <span className="text-[hsl(var(--neon-cyan))]">Our Substrate.</span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed font-medium">
             Background processing, governed adaptation, and persistent memory — built for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}
             <span className="text-foreground font-medium">development</span>, and{" "}
