@@ -3016,7 +3016,7 @@ function __cmpsbl_verify__() {
   if (meta?.runtimeVersion && meta?.orchestrationVersion) { console.log("  ✓ Metadata intact"); passed++; }
   else { console.log("  ✗ Metadata corrupted"); }
 
-  if (meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
+  if (meta?.patents || meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
   else { console.log("  ✗ Patent reference missing"); }
 
   console.log();
