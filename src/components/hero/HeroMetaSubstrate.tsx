@@ -14,9 +14,7 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
   ChevronDown,
-  Search,
   Wrench,
-  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
