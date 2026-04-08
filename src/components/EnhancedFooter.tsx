@@ -110,17 +110,28 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Software Refurbishment Center
+                Original home of dual layer technology
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
                 Memory Stream discovers. Ascension restores. 40 Primitives power everything.
               </p>
-              <Link 
-                to="/plans" 
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neon-cyan hover:text-neon-cyan/80 transition-colors mb-4"
-              >
-                View Plans → Builder (free) · Creator · Architect
-              </Link>
+              <div className="flex flex-col gap-1 mb-4">
+                <Link 
+                  to="/plans" 
+                  className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neon-cyan hover:text-neon-cyan/80 transition-colors"
+                >
+                  View Plans →
+                </Link>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] sm:text-[11px] font-mono text-muted-foreground/70">
+                  <span>Builder (free)</span>
+                  <span className="text-border">·</span>
+                  <span>Studio $29</span>
+                  <span className="text-border">·</span>
+                  <span>Creator $49</span>
+                  <span className="text-border">·</span>
+                  <span>Architect $79</span>
+                </div>
+              </div>
 
               {/* Social Links */}
               <div className="flex items-center gap-2">
