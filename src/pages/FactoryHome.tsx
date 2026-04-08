@@ -31,7 +31,7 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 
 function SectionDivider() {
   return (
-    <div className="relative py-8 sm:py-12">
+    <div className="relative py-10 sm:py-14 md:py-16">
       <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
