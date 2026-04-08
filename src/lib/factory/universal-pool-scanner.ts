@@ -8,8 +8,9 @@
  * 
  * During Ascension, it scores EVERY candidate against the uploaded code
  * and selects the optimal 40 primitives that produce the maximum
- * compounding effect. No spine lock. No category restrictions. No
- * organ/layer/engine/agent quotas. Just the 40 best primitives for the job.
+ * compounding effect. The final selection is MATRIX-ENFORCED:
+ *   12 Organs · 12 Layers · 8 Engines · 8 Agents = 40 Primitives
+ * This architectural invariant is non-negotiable across all verticals.
  * 
  * The scanner uses extended collision time to deeply evaluate all
  * candidates before surfacing the final 40.
