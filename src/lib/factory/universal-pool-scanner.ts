@@ -985,14 +985,15 @@ function scoreCandidate(
   const structBoost = structuralBoosts?.get(primName) ?? 0;
   const structuralArchetypeBonus = structBoost * 0.12; // Up to 12% from structural patterns
 
-  // ── VERTICAL AFFINITY BOOST ──────────────────────────────────────────
-  // When running on a specific vertical substrate (e.g. security.cmpsbl.com),
-  // primitives from that vertical's expansion pool receive a density-gated
-  // bonus. This makes the vertical choice matter — a domain expert substrate
-  // gives its own primitives a competitive edge, while still using the full
-  // v21 engine quality. Capped at 0.10 and gated by signal density to prevent
-  // phantom boosts for irrelevant primitives.
-  const verticalAffinityBonus = (verticalAffinity && tagged.sourceVertical === verticalAffinity && hits > 0)
+  // ── VERTICAL BOOST (Tier 3) ─────────────────────────────────────────
+  // Expansion primitives on their home vertical get 2× score multiplier.
+  // Ultimate vertical gets NO vertical boost — pure meritocracy.
+  // Gated by signal density to prevent phantom boosts for irrelevant primitives.
+  const isHomeVertical = verticalAffinity
+    && verticalAffinity !== 'ultimate'
+    && tagged.sourceVertical === verticalAffinity
+    && hits > 0;
+  const verticalAffinityBonus = isHomeVertical
     ? 0.10 * Math.min(rawDensity / 0.15, 1)
     : 0;
 
