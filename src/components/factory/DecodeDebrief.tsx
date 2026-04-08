@@ -192,7 +192,7 @@ function getContextualResponse(
 
   // Export / download / zip
   if (/export|download|zip|package/i.test(q)) {
-    return `Your export package includes: the original source, the refurbished (hardened) source with primitive guard activations, a LICENSE file, pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, primitive manifest, and a README with quick-start instructions. Click "Export Refurbished Code" to download the ZIP.`;
+    return `Your export package includes: the original source, the ascended (hardened) source with primitive guard activations, a LICENSE file, pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, primitive manifest, and a README with quick-start instructions. Click "Export Ascended Code" to download the ZIP.`;
   }
 
   // Fingerprint / return / support
