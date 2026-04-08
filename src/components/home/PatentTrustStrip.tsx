@@ -37,10 +37,11 @@ export function PatentTrustStrip() {
           {PATENTS.map((p) => (
             <div
               key={p.number}
-              className="relative rounded-xl border border-border bg-card/50 backdrop-blur-sm p-5 sm:p-6 group hover:border-primary/30 transition-colors"
+              className="relative rounded-xl border border-border bg-card/50 backdrop-blur-sm p-5 sm:p-6 group hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/[0.06] transition-all duration-300"
             >
-              <div className="flex items-start gap-3">
-                <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div className="flex items-start gap-3 relative">
+                <div className="shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <Award className="w-5 h-5 text-primary" />
                 </div>
                 <div className="min-w-0">

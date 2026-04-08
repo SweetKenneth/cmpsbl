@@ -149,7 +149,7 @@ export default function FactoryHome() {
       </Suspense>
 
       {/* ═══ FINAL CTA ═══ */}
-      <section className="relative z-10 px-3 sm:px-4 py-14 sm:py-32 overflow-hidden">
+      <section className="relative z-10 px-3 sm:px-4 py-16 sm:py-32 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none hidden sm:block">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
         </div>
@@ -171,21 +171,21 @@ export default function FactoryHome() {
             />
 
             <div className="relative p-6 sm:p-14 md:p-20 text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-6 sm:mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <Sparkles className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white/90">Ready to Build?</span>
               </div>
 
-              <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
                 Install the SDK.
                 <br />
                 <span className="text-white/80">Build Something Real.</span>
               </h2>
-               <p className="text-white/80 text-base sm:text-lg max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed font-medium">
+               <p className="text-white/80 text-base sm:text-lg max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed font-medium animate-fade-in" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
                  40 primitives. Dual patents. Zero AI tricks. The substrate is free&nbsp;— start building today.
                </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
                 <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
                   <Link to="/auth">
                     <Terminal className="w-5 h-5 mr-2" />
@@ -198,6 +198,21 @@ export default function FactoryHome() {
                     View Plans
                   </Link>
                 </Button>
+              </div>
+
+              {/* Tier quick-reference */}
+              <div className="flex items-center justify-center gap-2 sm:gap-3 mt-6 animate-fade-in flex-wrap" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
+                {[
+                  { name: "Builder", price: "Free" },
+                  { name: "Studio", price: "$29" },
+                  { name: "Creator", price: "$49" },
+                  { name: "Architect", price: "$79" },
+                ].map((t, i) => (
+                  <span key={t.name} className="text-[10px] sm:text-xs text-white/60 font-mono font-medium">
+                    {i > 0 && <span className="mr-2 sm:mr-3 text-white/20">·</span>}
+                    <span className="text-white/80 font-bold">{t.name}</span> {t.price}
+                  </span>
+                ))}
               </div>
             </div>
 

@@ -53,13 +53,14 @@ export function ManaShowcase() {
 
         {/* Capability grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-          {CAPABILITIES.map((cap) => (
+          {CAPABILITIES.map((cap, i) => (
             <div
               key={cap.title}
-              className="rounded-xl border border-border bg-card/50 backdrop-blur-sm p-5 hover:border-primary/30 transition-colors group"
+              className="rounded-xl border border-border bg-card/50 backdrop-blur-sm p-5 hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/[0.06] transition-all duration-300 group"
+              style={{ animationDelay: `${i * 80}ms` }}
             >
               <div className="flex items-start gap-3">
-                <div className="shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
+                <div className="shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 group-hover:scale-110 transition-all duration-300">
                   <cap.icon className="w-4.5 h-4.5 text-primary" />
                 </div>
                 <div>
