@@ -42,6 +42,7 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 const DiscoveryDualCards = lazy(() => import("@/components/home/DiscoveryDualCards").then(m => ({ default: m.DiscoveryDualCards })));
+const PatentTrustStrip = lazy(() => import("@/components/home/PatentTrustStrip").then(m => ({ default: m.PatentTrustStrip })));
 
 // Clean section divider — animated diamond with cross-glow
 function SectionDivider() {
