@@ -206,7 +206,7 @@ export function HeroMetaSubstrate() {
 
       <div className="relative z-10 w-full max-w-6xl mx-auto">
         {/* ─── Stacked hero content ─── */}
-        <div className="text-center mb-10 sm:mb-14">
+        <div className="text-center mb-6 sm:mb-14">
           
           {/* Software Refurbishment Center banner */}
           <FadeIn delay={0.05}
