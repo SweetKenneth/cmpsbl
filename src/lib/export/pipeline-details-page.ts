@@ -421,17 +421,17 @@ function generateSealSVG(score: number, tier: string): string {
       return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2" fill="${tierColor}" opacity="0.5"/>`;
     }).join('\n    ')}
     <!-- Center text -->
-    <text x="100" y="72" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="9" fill="${tierColor}" letter-spacing="3" font-weight="600" text-transform="uppercase">CMPSBL®</text>
-    <text x="100" y="108" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" fill="${tierColor}" font-weight="700">${score}</text>
-    <text x="100" y="125" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="8" fill="${tierColor}" letter-spacing="2" opacity="0.8">CJPI SCORE</text>
-    <text x="100" y="148" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" fill="${tierColor}" letter-spacing="4" font-weight="600">${tier.toUpperCase()}</text>
+    <text x="100" y="72" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="9" fill="${tierColor}" letter-spacing="3" font-weight="700" text-transform="uppercase">CMPSBL®</text>
+    <text x="100" y="108" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="32" fill="${tierColor}" font-weight="800">${score}</text>
+    <text x="100" y="125" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="8" fill="${tierColor}" letter-spacing="2" opacity="0.8">CJPI SCORE</text>
+    <text x="100" y="148" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="11" fill="${tierColor}" letter-spacing="4" font-weight="700">${tier.toUpperCase()}</text>
     <!-- Circular text path -->
     <path id="topArc" d="M 30,100 a 70,70 0 0,1 140,0" fill="none"/>
-    <text font-family="Georgia, serif" font-size="7" fill="${tierColor}" letter-spacing="2.5" opacity="0.55">
+    <text font-family="Inter, sans-serif" font-size="7" fill="${tierColor}" letter-spacing="2.5" opacity="0.55">
       <textPath href="#topArc" startOffset="50%" text-anchor="middle">VERIFIED PIPELINE ARTIFACT</textPath>
     </text>
     <path id="bottomArc" d="M 30,100 a 70,70 0 0,0 140,0" fill="none"/>
-    <text font-family="Georgia, serif" font-size="7" fill="${tierColor}" letter-spacing="2" opacity="0.55">
+    <text font-family="Inter, sans-serif" font-size="7" fill="${tierColor}" letter-spacing="2" opacity="0.55">
       <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">MEMORY STREAM DISCOVERY</textPath>
     </text>
   </svg>`;
