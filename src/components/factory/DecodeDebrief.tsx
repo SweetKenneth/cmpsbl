@@ -221,7 +221,7 @@ function getContextualResponse(
     if (hasFailsafe) {
       return `FAILSAFE is active. You now have full version control: \`cmpsbl backup\` creates a snapshot, \`cmpsbl restore <id>\` rolls back. Circuit breakers handle automatic recovery during runtime failures. Your backup history is maintained independently of your deployment pipeline.`;
     }
-    return `Your current refurbishment doesn't include FAILSAFE. To add backup/restore capabilities with circuit breakers, you can run another refurbishment and select the FAILSAFE primitive.`;
+    return `Your current ascension doesn't include FAILSAFE. To add backup/restore capabilities with circuit breakers, you can run another ascension and select the FAILSAFE primitive.`;
   }
 
   // Documentation
