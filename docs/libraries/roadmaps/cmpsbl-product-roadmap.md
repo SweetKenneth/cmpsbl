@@ -63,30 +63,14 @@
 
 | # | Task | Status |
 |---|------|--------|
-| 2.7 | **Proxy Trap Detector** — detect foreign Proxy wrapping via `Object.getOwnPropertyDescriptor` | 🔲 Todo |
-| 2.8 | **Prototype Chain Verification** — detect added prototype links post-attachment | 🔲 Todo |
-| 2.9 | **Memory Footprint Analysis** — governed objects consume measurably more heap | 🔲 Todo |
-| 2.10 | **Lex Heartbeat Monitor** — periodic registry verification | 🔲 Todo |
-| 2.11 | **Attachment Alarm** — real-time alerts when Layer 2 detected | 🔲 Todo |
-| 2.12 | **Blacklist Registration Client** — one-liner registration on Lex Blacklist | 🔲 Todo |
+| 2.7 | **Behavioral Anomaly Detector** — proprietary runtime integrity analysis (🔒 method sealed) | 🔲 Todo |
+| 2.8 | **Heartbeat Monitor** — periodic registry verification & runtime health check | 🔲 Todo |
+| 2.9 | **Attachment Alarm** — real-time alerts when unauthorized Layer 2 activity detected | 🔲 Todo |
+| 2.10 | **Blacklist Registration Client** — one-liner registration on Lex Blacklist | 🔲 Todo |
 
-#### Shield Detection Vectors
-```
-Vector 1: Proxy Trap Fingerprinting
-  - Object.getOwnPropertyDescriptor() on Proxied vs. native differs
-  - Proxy.revocable() leaves revocation handle traces
-  - handler.get/set/apply trap timing differs from native access
-
-Vector 2: Prototype Chain Verification
-  - Attached objects gain additional prototype links
-  - __proto__ depth increases post-attachment
-  - Symbol.toStringTag behavior changes under governance layer
-
-Vector 3: Memory Footprint Analysis
-  - Governed objects consume measurably more heap
-  - WeakRef resolution timing differs for wrapped objects
-  - FinalizationRegistry callbacks fire differently
-```
+> ⛔ **SEALED:** Shield detection vectors are classified as Crown Jewel IP.
+> The *how* behind detection is never documented publicly, in marketing, or in any external-facing material.
+> Internal implementation details maintained in classified codebase only.
 
 ---
 
