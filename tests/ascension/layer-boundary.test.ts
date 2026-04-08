@@ -29,24 +29,33 @@ function extractLayer1(output: string): string {
   const marker = 'ORIGINAL SOURCE (UNMODIFIED — LAYER 1)';
   const idx = output.indexOf(marker);
   if (idx === -1) return '';
-  // Skip past the marker + comment lines + blank line
   const afterMarker = output.slice(idx);
   const lines = afterMarker.split('\n');
-  // Skip the marker line + patent line + divider line + blank
+
+  // Skip all comment/blank lines after the marker until we hit real code
   let startIdx = 0;
   for (let i = 0; i < lines.length; i++) {
-    if (!lines[i].startsWith('//') && !lines[i].startsWith('#') && !lines[i].startsWith('--') && lines[i].trim() !== '') {
-      startIdx = i;
-      break;
-    }
+    const trimmed = lines[i].trim();
+    // Skip comment lines (any language) and blank lines
+    if (trimmed === '' || /^(\/\/|#|--|\/\*|\*|""")/.test(trimmed)) continue;
+    // Skip lines that look like CMPSBL markers
+    if (trimmed.includes('═══') || trimmed.includes('CMPSBL') || trimmed.includes('Patent') || trimmed.includes('Verified byte')) continue;
+    startIdx = i;
+    break;
   }
-  // Find the end (verify block or footer)
+
+  // Collect lines until we hit the verify/footer section
   const l1Lines: string[] = [];
   for (let i = startIdx; i < lines.length; i++) {
-    if (lines[i].includes('SELF-VERIFICATION') || lines[i].includes('End of CMPSBL®') || lines[i].includes('__cmpsbl_verify__')) break;
-    l1Lines.push(lines[i]);
+    const line = lines[i];
+    if (line.includes('SELF-VERIFICATION') || line.includes('__cmpsbl_verify__')) break;
+    // Stop at CMPSBL footer comments
+    if (line.includes('End of CMPSBL®')) break;
+    // Stop at divider followed by verify section
+    if (/^(\/\/|#|--)\s*═══/.test(line.trim()) && i > startIdx) break;
+    l1Lines.push(line);
   }
-  // Trim trailing whitespace
+  // Trim trailing blank lines
   while (l1Lines.length && l1Lines[l1Lines.length - 1].trim() === '') l1Lines.pop();
   return l1Lines.join('\n');
 }
