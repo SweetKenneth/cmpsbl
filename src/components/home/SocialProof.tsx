@@ -10,6 +10,7 @@ interface Testimonial {
   quote: string;
   author: string;
   role: string;
+  date: string;
   rating: number;
   highlight: string;
   accentColor: string;
@@ -17,18 +18,20 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "Building on the substrate changed everything. Our agents adapt in real time, and issues resolve before we even notice them. We just build — the system handles the rest.",
-    author: "M.K.",
-    role: "Platform Engineer",
+    quote: "We replaced three internal tools with a single substrate integration. The memory persistence across sessions was the deciding factor — our agents actually retain context now instead of starting from scratch every run.",
+    author: "Daniel Okafor",
+    role: "Senior Platform Engineer, Relay Systems",
+    date: "Mar 2026",
     rating: 5,
     highlight: "EVOLUTION Layer",
     accentColor: "hsl(var(--neon-purple))",
   },
   {
-    quote: "Persistent memory and governed evolution gave us something we couldn't build ourselves — a system that remembers, adapts, and stays compliant. Every action is auditable.",
-    author: "R.S.",
-    role: "CTO, Enterprise SaaS",
-    rating: 5,
+    quote: "Governance was always an afterthought for us. With the substrate, audit trails and compliance checks are baked in from day one. Saved us weeks of custom tooling — and our security team actually trusts the output.",
+    author: "Priya Nair",
+    role: "CTO, Arcline Analytics",
+    date: "Feb 2026",
+    rating: 4,
     highlight: "GOVERNANCE Layer",
     accentColor: "hsl(var(--neon-magenta))",
   },
