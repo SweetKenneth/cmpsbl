@@ -229,19 +229,18 @@ export function HeroMetaSubstrate() {
           <h1 className="tracking-[-0.03em] leading-[1.1]">
             <FadeIn delay={0.15}>
               <span className="block text-sm sm:text-base md:text-lg font-medium text-muted-foreground/70 mb-2 tracking-[0.05em] uppercase">
-                Where classic software gets
+                Where machines learn how to
               </span>
             </FadeIn>
             <FadeIn delay={0.2}>
               <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black min-h-[1.2em]">
                 <TypedText 
-                  texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
+                  texts={["dream.", "ascend.", "adapt.", "evolve.", "reason."]}
                   gradientColors={[
+                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                     "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
-                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
                   ]}
                 />
