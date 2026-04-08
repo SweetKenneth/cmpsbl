@@ -250,11 +250,11 @@ export function HeroMetaSubstrate() {
 
           {/* Value prop */}
           <FadeIn delay={0.3} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
-            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-2.5">
-              Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code without changing&nbsp;it.
+            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-3">
+              Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code — a secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>.
             </p>
-            <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed mb-2.5">
-              A secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>&nbsp;— enhancing your software while your original code remains&nbsp;untouched.
+            <p className="text-base sm:text-lg md:text-xl font-black text-foreground tracking-tight leading-snug mb-3" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              Your code remains unchanged.
             </p>
             <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed">
               Works across <span className="text-foreground font-extrabold">90+ languages</span>. Runs in&nbsp;minutes.
