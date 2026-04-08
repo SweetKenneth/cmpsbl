@@ -3,7 +3,7 @@
  * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
-import { Link } from "react-router-dom";
+
 import { Package, Terminal, ArrowRight, Copy, Check, ExternalLink, Zap, Layers, Shield, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
