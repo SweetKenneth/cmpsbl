@@ -475,6 +475,7 @@ ${input.bodyContent}
 
 <div class="doc-footer">
   <div class="doc-footer-brand">
+    <img src="${LOGO_DATA_URI}" alt="CMPSBL" width="24" height="24" style="border-radius:4px;" />
     <span class="doc-footer-brand-mark">CMPSBL®</span>
   </div>
   <div class="doc-footer-tagline">Governed Cognitive Infrastructure</div>
