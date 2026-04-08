@@ -221,7 +221,7 @@ export function HeroMetaSubstrate() {
           </FadeIn>
 
           {/* CMPSBL Logo — the star */}
-          <FadeIn delay={0.1} className="mb-4 sm:mb-6">
+          <FadeIn delay={0.1} className="mb-3 sm:mb-6">
             <CmpsblWordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl" />
           </FadeIn>
           
