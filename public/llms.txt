@@ -190,7 +190,7 @@ Ascension is CMPSBL's code transformation engine:
 - Intent Mesh: https://cmpsbl.com/intent-mesh
 - Scanner: https://cmpsbl.com/scan
 - Code Assembly: https://cmpsbl.com/assembly
-- Refurbishment Lab: https://cmpsbl.com/restoration-shop
+- Ascension Lab: https://cmpsbl.com/ascension
 - Agent Forge: https://cmpsbl.com/agent-forge
 - Agent Power-Up: https://cmpsbl.com/agent-power-up
 
