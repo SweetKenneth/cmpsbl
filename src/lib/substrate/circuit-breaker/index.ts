@@ -50,6 +50,7 @@ export function getBreaker(module: string): CircuitBreaker {
       lastFailure: null,
       lastStateChange: Date.now(),
       totalTrips: 0,
+      everSucceeded: false,
     });
   }
   return breakers.get(module)!;
