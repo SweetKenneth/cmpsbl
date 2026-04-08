@@ -1,59 +1,89 @@
-# CLI Substrate Simulation & Flow Gaps — Speedrun Roadmap
-## 20 credits budget · Parallel execution · Zero drift
 
----
+# Ascension ↔ Mana Convergence Plan
 
-## Phase 1: Optional Simulation Mode (~3 credits)
-`cmpsbl simulate` — founder-created guided walkthrough teaching the substrate through "system recovery" missions. Optional. Exits anytime. Collects feedback.
+## Problem
+Ascension currently does two jobs: scanning code AND generating Layer 2 wrappers. But its wrappers are **generic templates** (`DefenseLayer.activate(...)`) that don't target specific functions. Mana already has the surgical wrapping engine that targets individual function boundaries. These systems should converge.
 
-### 1A. Simulation Engine (`packages/cli/src/simulation.ts`)
-- `SimulationState` persisted to `~/.cmpsbl/simulation.json`
-- 5 missions: Stabilize → Repair → Build → Discover → Graduate
-- System health starts 35%, increases per mission
-- `cmpsbl simulate` start/resume · `simulate skip` exit w/ feedback · `simulate status`
+## New Architecture
 
-### 1B. Mission Map
-| # | Mission | Teaches | Health |
-|---|---------|---------|--------|
-| 1 | Stabilize | `health`, `doctor`, `heal` | 35→55% |
-| 2 | Repair | `forge`, `loadout`, `scan` | 55→70% |
-| 3 | Build | `think`, `remember`, `recall` | 70→82% |
-| 4 | Discover | `dream`, `stream`, `discover` | 82→92% |
-| 5 | Graduate | `ascend`, `witness`, `topology` | 92→100% |
+```
+Upload → Ascension (SCAN + DIAGNOSE) → Mana (DEPLOY wrappers) → Export
+```
 
-### 1C. Feedback on Exit
-- 3-question terminal prompt → `~/.cmpsbl/feedback.json` + API POST
+### What Changes
 
----
+#### 1. Ascension gains: Function Boundary Detection → `AscensionFindings`
+**File:** `src/lib/factory/generate-refurbished-code.ts`
 
-## Phase 2: Contextual Event Surfacing (~2 credits)
-On boot, surface real events: new loadouts, dream digest, health changes, active goals.
+Currently Ascension knows *which primitives* the code needs but NOT *which functions* need wrapping. We add a lightweight function boundary scanner (similar to Mana's `scan()`) that produces a **findings manifest**:
 
----
+```typescript
+interface AscensionFinding {
+  functionName: string;           // e.g. "processPayment"
+  capability: ManaCapability;     // e.g. "defense_gate"
+  reason: string;                 // e.g. "Handles untrusted input"
+  primitive: string;              // e.g. "DEFENSE"
+  confidence: number;             // 0-1 from scanner signals
+}
+```
 
-## Phase 3: Flow Gap Filling (~3 credits)
-### 3A. Natural Aliases
-`start/setup/begin` → init/simulate · `build/create` → forge · `connect` → login · `activate` → loadout · `stabilize/recover` → heal · `train/learn` → simulate · `explore` → explain · `search/find` → recall · `list/show` → nodes/status · `exit/quit` → graceful
+This maps scanner signals to specific function names in the source:
+- Functions with `input`, `request`, `parse`, `validate` → DEFENSE gate
+- Functions with `save`, `update`, `delete`, `write` → GOVERNANCE hook
+- Functions with `log`, `track`, `emit` → AUDIT trail
+- Functions with `fetch`, `call`, `request` → CIRCUIT BREAKER
+- All exported functions → BEACON telemetry
 
-### 3B. Multi-Response Variants
-3-5 variants for status, health, help, whoami — random per invocation
+#### 2. `generateRefurbishedCode` replaces generic templates with Mana attachment config
+**File:** `src/lib/factory/generate-refurbished-code.ts`
 
-### 3C. Contextual Nudges
-30% post-command chance of "one more thing" based on simulation progress / unused capabilities
+Instead of the current `PRIMITIVE_WRAPPERS` (generic `.activate()` calls), Layer 2 now emits a **Mana Attachment Manifest** — a serialized configuration that tells the Mana runtime exactly which functions to wrap with which capabilities:
 
----
+```python
+# Layer 2 — Mana Attachment Manifest
+MANA_ATTACHMENTS = [
+    {"function": "processPayment", "capability": "defense_gate"},
+    {"function": "saveUser", "capability": "governance_hook"},
+    {"function": "fetchData", "capability": "circuit_breaker"},
+    {"function": "handleRequest", "capability": "defense_gate"},
+]
+```
 
-## Phase 4: Router Wiring (~2 credits)
-`case 'simulate'` + aliases in switch. Simulation-aware unknown cmd responses. Post-mission celebration.
+The generic `DefenseLayer.activate()` / `GovernancePolicy.enforce()` templates are replaced with this targeted manifest + Mana's actual wrapper factories serialized in the target language.
 
----
+#### 3. New file: `src/lib/mana/findings-bridge.ts`
+Bridge between Ascension's scan results and Mana's attachment API:
 
-## Execution (Parallel Batches)
-- **Batch 1**: Phase 1 (new simulation.ts) ‖ Phase 3A (aliases in index.ts)
-- **Batch 2**: Phase 2 + 3B + 3C + Phase 4 (index.ts edits)
+```typescript
+export function buildAttachmentPlan(
+  findings: AscensionFinding[],
+  primitives: PrimitiveRecommendation[],
+): ManaAttachmentConfig[]
+```
 
-**Est: ~10 credits · Remaining ~10 for governor commands + polish**
+Takes Ascension's findings and produces the exact `{ functionName, capability, rulePayload }` array that Mana's `attach()` expects.
 
----
+#### 4. Layer 2 code generation uses Mana wrapper factories
+Instead of generating custom template classes per primitive, the generator serializes Mana's actual wrapper logic (`wrapWithDefenseGate`, `wrapWithCircuitBreaker`, etc.) into the target language. This means the exported code does what Mana does at runtime — Lex checks, invocation counting, circuit breaker thresholds — but as static, standalone code.
 
-## Previous: Vertical Ascension Packs (Agent-First) — Completed/Archived
+### What Stays the Same
+- Layer 1 remains verbatim/untouched (patent compliance)
+- SHA-256 proof chain unchanged
+- Export ZIP format unchanged (18 files)
+- Mana Lab (`/mana`) workflow unchanged — it already does this for runtime
+- Polyglot adapters stay — they translate the Mana wrappers into target language syntax
+- PROOF.txt, manifest.json, INTEGRATION.md unchanged
+
+### Files Modified
+1. `src/lib/factory/generate-refurbished-code.ts` — Replace `PRIMITIVE_WRAPPERS` with Mana-based wrapper generation; add function boundary detection
+2. `src/lib/mana/findings-bridge.ts` — NEW: Bridge Ascension findings → Mana config
+3. `src/lib/mana/engine.ts` — Export wrapper factory signatures for static serialization (no logic changes)
+4. `src/lib/mana/types.ts` — Add `AscensionFinding` type
+
+### Risk Assessment
+- **Medium risk**: The polyglot adapters need to serialize Mana's JS wrapper logic into 90+ languages. The current adapter system already handles JS→Python/Rust/etc. transforms, but Mana's wrappers are more complex than the current templates.
+- **Low risk**: No changes to Mana's runtime engine — only adding export-friendly serialization.
+- **Zero risk**: Layer 1 untouched — patent compliance preserved.
+
+### Estimated Scope
+~300-400 lines changed across 4 files. The biggest change is replacing `PRIMITIVE_WRAPPERS` in `generate-refurbished-code.ts` with the findings-driven generation.
