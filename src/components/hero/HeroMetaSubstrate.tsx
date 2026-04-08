@@ -268,7 +268,7 @@ export function HeroMetaSubstrate() {
             >
               <Link to="/ascension">
                 <Wrench className="w-4 h-4 shrink-0" />
-                Run Diagnostic
+                Ascend Software
               </Link>
             </Button>
             <Button 
