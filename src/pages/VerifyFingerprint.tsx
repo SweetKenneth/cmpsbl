@@ -128,7 +128,8 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
     year: "numeric", month: "long", day: "numeric",
   });
 
-  const tierColor = tier === "S" ? "text-yellow-500" : tier === "A" ? "text-emerald-500" : "text-primary";
+  const tierBg = tier === "S" ? "bg-yellow-500/15 text-yellow-600" : tier === "A" ? "bg-emerald-500/15 text-emerald-600" : tier === "B" ? "bg-blue-500/15 text-blue-600" : "bg-muted text-muted-foreground";
+  const tierAccent = tier === "S" ? "text-yellow-600" : tier === "A" ? "text-emerald-600" : tier === "B" ? "text-blue-600" : "text-primary";
 
   return (
     <>
@@ -143,27 +144,23 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
         </div>
       </div>
 
+      {/* CJPI Hero */}
+      <div className="px-6 pt-6 pb-4 text-center border-b border-border">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <Award className={`h-6 w-6 ${tierAccent}`} />
+          <span className={`text-4xl font-black tracking-tight ${tierAccent}`}>{score}</span>
+          <span className={`text-xs font-bold uppercase px-2 py-0.5 rounded-full ${tierBg}`}>{tier}-Tier</span>
+        </div>
+        <p className="text-[10px] text-muted-foreground uppercase tracking-widest">CJPI Score · Governed Cognitive Infrastructure</p>
+      </div>
+
       {/* Details */}
       <div className="p-6 space-y-5">
-        {/* Score badge */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Award className={`h-5 w-5 ${tierColor}`} />
-            <span className="text-sm font-medium text-foreground">CJPI Score</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-2xl font-bold ${tierColor}`}>{score}</span>
-            <span className={`text-xs font-semibold px-1.5 py-0.5 rounded ${tierColor} bg-current/10`}>
-              {tier}-Tier
-            </span>
-          </div>
-        </div>
-
         {/* Metadata rows */}
         <div className="space-y-3 text-sm">
           <Row label="Fingerprint" value={fingerprint} mono />
           {serial && <Row label="Serial Number" value={serial} mono />}
-          <Row label="Source" value={isRestoration ? "Refurbishment Lab" : "Vertical Ascension"} />
+          <Row label="Source" value={isRestoration ? "Ascension Lab" : "Vertical Ascension"} />
           {language && <Row label="Language" value={language} />}
           <Row label="Processed" value={createdAt} />
           <Row label="Primitives Applied" value={String(primitives.length)} />
@@ -174,19 +171,22 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
           <div>
             <p className="text-xs text-muted-foreground mb-2">Applied Primitives</p>
             <div className="flex flex-wrap gap-1.5">
-              {primitives.slice(0, 12).map((p) => (
+              {primitives.map((p) => (
                 <span key={p} className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
                   {p}
                 </span>
               ))}
-              {primitives.length > 12 && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                  +{primitives.length - 12} more
-                </span>
-              )}
             </div>
           </div>
         )}
+
+        {/* Patent attribution */}
+        <div className="pt-3 border-t border-border">
+          <p className="text-[10px] text-muted-foreground leading-relaxed">
+            Protected under U.S. Patent App. No. 64/029,678 &amp; No. 64/031,637.
+            Inventor: Kenneth E. Sweet Jr. · PromptFluid™
+          </p>
+        </div>
       </div>
 
       {/* CTA */}
@@ -195,7 +195,7 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
           <FileCode className="h-3 w-3" /> cmpsbl.com
         </Link>
         <Link
-          to="/restore"
+          to="/ascension"
           className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
         >
           Run Your Own Ascension <ExternalLink className="h-3 w-3" />
