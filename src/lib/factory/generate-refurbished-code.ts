@@ -2696,12 +2696,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   failsafe: {
     imports: "import { CircuitBreaker, SnapshotManager } from '@cmpsbl/runtime/failsafe';",
     guard: "const failsafeBreaker = CircuitBreaker.create({ threshold: 5, resetMs: 30_000 });\nSnapshotManager.init({ autoSnapshot: true, intervalMs: 300_000 });",
-    wrapper: (code) => {
-      return code.replace(
-        /(?:await\s+)(fetch|axios|http)\b/g,
-        'await failsafeBreaker.execute(() => $1'
-      );
-    },
+    wrapper: (code) => code,
   },
   defense: {
     imports: "import { DefenseLayer, RequestValidator, DeviceFingerprint } from '@cmpsbl/runtime/defense';",
