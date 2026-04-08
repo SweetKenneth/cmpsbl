@@ -10,11 +10,13 @@ const PATENTS = [
     number: "64/029,678",
     title: "Dual-Layer Deterministic Software Evolution",
     shortTitle: "Layer 2 Architecture",
+    filed: "March 2026",
   },
   {
     number: "64/031,637",
     title: "Silent Symbiotic Software Attachment",
     shortTitle: "Universal Adhesion",
+    filed: "April 7, 2026",
   },
 ];
 
@@ -42,14 +44,14 @@ export function PatentTrustStrip() {
                   <Award className="w-5 h-5 text-primary" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[10px] font-mono text-muted-foreground mb-1">
-                    U.S. Patent App. No. {p.number}
-                  </p>
-                  <p className="text-sm font-semibold text-foreground leading-tight">
+                  <p className="text-sm font-bold text-foreground leading-tight">
                     {p.shortTitle}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  <p className="text-xs font-medium text-muted-foreground mt-1 leading-relaxed">
                     {p.title}
+                  </p>
+                  <p className="text-[10px] font-mono font-medium text-muted-foreground mt-2">
+                    U.S. Patent App. No. {p.number} · Filed {p.filed}
                   </p>
                 </div>
               </div>
@@ -60,19 +62,19 @@ export function PatentTrustStrip() {
         {/* Inventor attribution */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-sm text-muted-foreground">Inventor:</span>
-            <span className="text-sm font-semibold text-foreground">Kenneth E. Sweet Jr.</span>
-            <span className="text-muted-foreground">·</span>
+            <span className="text-sm font-medium text-muted-foreground">Inventor:</span>
+            <span className="text-sm font-bold text-foreground">Kenneth E. Sweet Jr.</span>
+            <span className="text-muted-foreground font-medium">·</span>
             <a
               href="https://orcid.org/0009-0001-4237-1243"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
             >
               ORCID <ExternalLink className="w-3 h-3" />
             </a>
           </div>
-          <p className="text-xs text-muted-foreground max-w-lg mx-auto">
+          <p className="text-xs font-medium text-muted-foreground max-w-lg mx-auto">
             Governed Cognitive Infrastructure · A PromptFluid™&nbsp;Product
           </p>
           <Link
