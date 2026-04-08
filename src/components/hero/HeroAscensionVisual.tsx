@@ -1,7 +1,7 @@
 /**
- * HeroAscensionVisual — Compact homepage hero version of the Combined Ascension.
- * life.js code with DREAM-powered Layer 2 injections.
- * 100% CSS keyframes. Compact sizing for hero placement.
+ * HeroAscensionVisual — Compact homepage hero with orbiting mystical runes,
+ * DREAM-powered Layer 2 injections, and polished terminal aesthetic.
+ * 100% CSS keyframes. No JS animation runtime.
  */
 
 import { memo } from "react";
@@ -62,6 +62,14 @@ const KEYFRAMES = `
   94%     { opacity: 0; transform: translateY(3px); }
   100%    { opacity: 0; }
 }
+@keyframes ha-rune-orbit {
+  0%   { transform: rotate(0deg) translateX(var(--orbit-r)) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
+}
+@keyframes ha-rune-glow {
+  0%, 100% { opacity: 0.3; filter: blur(0px); }
+  50%      { opacity: 0.9; filter: drop-shadow(0 0 4px currentColor); }
+}
 `;
 
 const L1_LINES = [
@@ -78,10 +86,19 @@ const L1_LINES = [
 ];
 
 const L2_INJECTIONS = [
-  { line: 1,  label: "DREAM.resilience",   color: "var(--neon-magenta)", delayPct: 14 },
-  { line: 3,  label: "DREAM.trust",        color: "var(--neon-cyan)",    delayPct: 30 },
-  { line: 7,  label: "DREAM.clarity",      color: "var(--neon-purple)",  delayPct: 46 },
-  { line: 8,  label: "DREAM.conviction",   color: "var(--neon-magenta)", delayPct: 62 },
+  { line: 1, label: "DREAM.resilience", color: "var(--neon-magenta)", delayPct: 14 },
+  { line: 3, label: "DREAM.trust",      color: "var(--neon-cyan)",    delayPct: 30 },
+  { line: 7, label: "DREAM.clarity",    color: "var(--neon-purple)",  delayPct: 46 },
+  { line: 8, label: "DREAM.conviction", color: "var(--neon-magenta)", delayPct: 62 },
+];
+
+const RUNES = [
+  { glyph: "◇", color: "neon-purple" },
+  { glyph: "△", color: "neon-cyan" },
+  { glyph: "⬡", color: "neon-magenta" },
+  { glyph: "◈", color: "neon-purple" },
+  { glyph: "⟡", color: "neon-cyan" },
+  { glyph: "✦", color: "neon-magenta" },
 ];
 
 const LINE_H = 20;
@@ -112,8 +129,26 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
       <style>{KEYFRAMES}</style>
       <div className="relative w-full max-w-md mx-auto select-none">
 
+        {/* ── Orbiting mystical runes ── */}
+        <div className="absolute inset-0 z-30 pointer-events-none overflow-visible">
+          {RUNES.map((rune, i) => (
+            <div
+              key={i}
+              className="absolute left-1/2 top-1/2 text-[11px] font-bold"
+              style={{
+                ["--orbit-r" as string]: `${90 + i * 14}px`,
+                color: `hsl(var(--${rune.color}))`,
+                animation: `ha-rune-orbit ${9 + i * 1.8}s linear infinite, ha-rune-glow ${3 + i * 0.4}s ease-in-out infinite`,
+                animationDelay: `${i * 0.5}s, ${i * 0.3}s`,
+              }}
+            >
+              {rune.glyph}
+            </div>
+          ))}
+        </div>
+
         {/* Header labels */}
-        <div className="flex items-center justify-between mb-2 px-0.5">
+        <div className="flex items-center justify-between mb-2 px-0.5 relative z-10">
           <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--neon-cyan))" }} />
             <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground/70">
@@ -154,10 +189,10 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
 
           {/* Code block */}
           <div
-            className="relative rounded-md border-2 border-foreground/15 bg-background/80 backdrop-blur-sm overflow-hidden shadow-xl shadow-primary/[0.06]"
+            className="relative rounded-md border-2 border-foreground/15 bg-background/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-primary/[0.08]"
             style={{ animation: `ha-glow 4s ease-in-out infinite` }}
           >
-            {/* Terminal dots */}
+            {/* Terminal header */}
             <div className="flex items-center gap-1 px-2.5 py-1.5 border-b border-border/40 bg-card/40">
               <div className="w-2 h-2 rounded-full bg-destructive/50" />
               <div className="w-2 h-2 rounded-full bg-accent/50" />
@@ -229,6 +264,20 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
             </span>
             <div className="w-1 h-1 rounded-full" style={{ background: "hsl(var(--neon-cyan))" }} />
           </div>
+        </div>
+
+        {/* ── Legend ── */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4 mt-10 flex-wrap relative z-10">
+          {[
+            { color: "var(--neon-cyan)", label: "Scan & verify" },
+            { color: "var(--neon-magenta)", label: "DREAM defense" },
+            { color: "var(--neon-purple)", label: "Governance" },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center gap-1">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ background: `hsl(${item.color})` }} />
+              <span className="text-[9px] font-medium text-muted-foreground/60">{item.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </>
