@@ -3192,19 +3192,28 @@ export function generateRefurbishedCode(
 
   const layer2Code = layer2Parts.join('\n');
 
-  // ── AST-aware Layer 2 Validation ───────────────────────────────────
+  // ── AST-aware Layer 2 Validation (HARD GATE) ────────────────────────
   // Structurally validate our generated code before combining with L1.
+  // If validation fails, throw to prevent malformed artifacts from shipping.
   const validation = validateLayer2(layer2Code, detected);
   if (!validation.valid) {
-    const errorSummary = validation.errors
-      .filter(e => e.severity === 'error')
+    const criticalErrors = validation.errors.filter(e => e.severity === 'error');
+    if (criticalErrors.length > 0) {
+      const errorSummary = criticalErrors
+        .map(e => `  L${e.line}: ${e.message}`)
+        .join('\n');
+      throw new Error(
+        `Layer 2 structural validation failed — ${criticalErrors.length} error(s) detected. ` +
+        `Export blocked to protect artifact integrity.\n${errorSummary}`
+      );
+    }
+    // Warnings only — annotate but allow export
+    const warnSummary = validation.errors
       .map(e => `  L${e.line}: ${e.message}`)
       .join('\n');
-    // Emit as structured warning in the artifact — do not block export,
-    // but surface the issue for debugging.
     layer2Parts.push('');
-    layer2Parts.push(adapter.comment(`⚠ LAYER 2 VALIDATION: ${validation.errors.length} issue(s) detected`));
-    layer2Parts.push(adapter.comment(errorSummary));
+    layer2Parts.push(adapter.comment(`⚠ LAYER 2 VALIDATION: ${validation.errors.length} warning(s)`));
+    layer2Parts.push(adapter.comment(warnSummary));
   }
 
   // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
