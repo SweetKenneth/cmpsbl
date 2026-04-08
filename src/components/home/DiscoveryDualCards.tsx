@@ -75,11 +75,11 @@ export function DiscoveryDualCards() {
               Zero&nbsp;LLM.
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-xl mx-auto leading-relaxed">
-            No large-language model sits between you and your results. Both systems run on{" "}
-            <span className="text-foreground/90 font-medium">pure internal cording</span>{" "}
-            — deterministic, auditable, and governed by the 40-Primitive&nbsp;substrate.
-          </p>
+           <p className="text-sm sm:text-base text-muted-foreground font-medium max-w-xl mx-auto leading-relaxed">
+             No large-language model sits between you and your results. Both systems run on{" "}
+             <span className="text-foreground font-semibold">pure internal cording</span>{" "}
+             — deterministic, auditable, and governed by the 40-Primitive&nbsp;substrate.
+           </p>
         </div>
 
         {/* Dual cards */}
