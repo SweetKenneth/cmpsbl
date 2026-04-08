@@ -100,7 +100,7 @@ export default function Mana() {
     <>
       <Helmet>
         <title>Mana — The Silent Software Attachment Layer | CMPSBL®</title>
-        <meta name="description" content="Mana silently attaches capabilities to any software without modifying source code. Patent pending. The foundation behind Ascension." />
+        <meta name="description" content="Mana silently attaches capabilities to any software without modifying source code. Patent pending. The deployment engine that delivers what Ascension discovers." />
       </Helmet>
 
       <PublicNav />
