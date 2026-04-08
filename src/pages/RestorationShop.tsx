@@ -34,6 +34,8 @@ import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
 import { generateUniversalUserGuide } from "@/lib/export/universal-user-guide";
 import { generateProofCertificate } from "@/lib/export/proof-certificate";
+import { serializeCmpsblManifest } from "@/lib/export/cmpsbl-manifest";
+import { generateIntegrationGuide } from "@/lib/export/integration-guide-generator";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
@@ -335,7 +337,30 @@ export default function RestorationShop() {
       ].join('\n');
       zip.file('README.md', readmeMd);
 
-      // ═══ Universal User Guide (HTML) — ships in every export ═══
+      // ═══ manifest.json — CMPSBL® Software Manifest ═══
+      const safeName = (fileName?.replace(/\.[^.]+$/, '') || 'ascended')
+        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      zip.file('manifest.json', serializeCmpsblManifest({
+        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
+        cjpi: report.cjpiCertificate.score,
+        modules: report.primitiveManifest.map(p => p.name),
+        targets: [detectedLang || 'typescript'],
+        category: 'ascension',
+        fingerprint,
+        source: 'CMPSBL® Ascension Lab',
+      }));
+
+      // ═══ INTEGRATION.md — Step-by-step deployment guide ═══
+      zip.file('INTEGRATION.md', generateIntegrationGuide({
+        kind: 'ascension',
+        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
+        slug: safeName,
+        languages: [detectedLang || 'typescript'],
+        systemChain: report.primitiveManifest.map(p => p.name),
+        score: report.cjpiCertificate.score,
+        category: 'ascension',
+      }));
+
       zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
         name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
         slug: `ascended-${report.id}`,
@@ -347,8 +372,6 @@ export default function RestorationShop() {
       }));
 
       // Dynamic ZIP naming: use the source file name, not generic serial
-      const safeName = (fileName?.replace(/\.[^.]+$/, '') || 'refurbished')
-        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
       zip.generateAsync({ type: 'blob' }).then(blob => {
         import('file-saver').then(({ saveAs }) => {
