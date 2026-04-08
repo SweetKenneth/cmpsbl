@@ -238,7 +238,7 @@ describe('FUNCTIONAL_TRANSFORMS — Identity invariant', () => {
 
 describe('Layer 2 Validator — Well-formed code', () => {
   it('passes valid JS Layer 2 code', () => {
-    const code = `const _DT = Object.freeze([1234, 5678]);\nconst _R = (i) => _DT[i % _DT.length];\n_R(0);`;
+    const code = `const arr = [1234, 5678];\nconst resolve = (i) => arr[i % arr.length];\nresolve(0);`;
     const result = validateLayer2(code, 'JavaScript');
     expect(result.valid).toBe(true);
     expect(result.errors.filter(e => e.severity === 'error')).toHaveLength(0);
