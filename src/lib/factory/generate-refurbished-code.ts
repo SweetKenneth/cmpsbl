@@ -3142,7 +3142,11 @@ export function generateRefurbishedCode(
     orchestrationVersion: '3.0.0',
     pipelineStages: 5,
     verifyUrl: `https://cmpsbl.com/verify/${fingerprint}`,
-    patent: 'U.S. App. No. 64/029,678',
+    inventor: 'Kenneth E. Sweet Jr.',
+    patents: [
+      'U.S. App. No. 64/029,678 — Dual-Layer Deterministic Software Evolution',
+      'U.S. App. No. 64/031,637 — Silent Symbiotic Software Attachment',
+    ],
   }, null, 2);
 
   const metaBlock = [
