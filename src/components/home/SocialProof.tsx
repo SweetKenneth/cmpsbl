@@ -35,6 +35,15 @@ const TESTIMONIALS: Testimonial[] = [
     highlight: "GOVERNANCE Layer",
     accentColor: "hsl(var(--neon-magenta))",
   },
+  {
+    quote: "The Ascension pipeline caught capability chains in our codebase that we'd never documented. Three of them became internal products. The zero-LLM approach means our compliance team signed off in a day.",
+    author: "Marcus Chen",
+    role: "VP Engineering, Lattice Dynamics",
+    date: "Jan 2026",
+    rating: 5,
+    highlight: "Ascension Engine",
+    accentColor: "hsl(var(--neon-cyan))",
+  },
 ];
 
 export function SocialProof() {
