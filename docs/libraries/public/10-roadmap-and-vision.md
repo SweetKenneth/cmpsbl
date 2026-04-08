@@ -39,9 +39,9 @@ The substrate is production-ready with:
 
 ## Shield-First GTM Overlay
 
-> **Strategic Pivot:** Ship the antidote before the virus. The shield IS the distribution engine.
+> **Strategic Approach:** Ship the defense before announcing the capability. The shield IS the distribution engine.
 
-The Shield-First strategy overlays the existing roadmap with a new market-entry sequence designed to drive adoption through fear-based distribution and security-company amplification.
+The Shield-First strategy overlays the existing roadmap with a market-entry sequence designed to drive adoption through security-awareness distribution and industry amplification.
 
 ### Phase 0 — "The Shield" (Pre-Launch, Now → Month 2)
 
@@ -52,7 +52,7 @@ The Shield-First strategy overlays the existing roadmap with a new market-entry 
 | **Whitepaper** | "Indefensibility Thesis & The Shield Protocol" | 🟡 Planned |
 | **Patent Mapping** | Shield detection methods covered under U.S. App. No. 64/031,637 | 🟡 Planned |
 
-### Phase 1 — "The Fear" (Months 1–3, $5K MRR Target)
+### Phase 1 — "Awareness" (Months 1–3, $5K MRR Target)
 
 | Deliverable | Description | Status |
 |-------------|-------------|--------|
@@ -86,7 +86,7 @@ The Shield-First strategy overlays the existing roadmap with a new market-entry 
 | Period | Product Roadmap | Shield-First GTM |
 |--------|----------------|------------------|
 | **Now** | Phase 6: ACTIVATION (onboarding, conversion) | Phase 0: Build Shield + Lex Registry |
-| **Months 1–3** | Revenue engine ($5K MRR target) | Phase 1: PoC demos, security seeding, fear distribution |
+| **Months 1–3** | Revenue engine ($5K MRR target) | Phase 1: PoC demos, security seeding, awareness distribution |
 | **Months 4–6** | Market proof ($15K MRR), case studies | Phase 2: Mana commercial launch, Blacklist→Whitelist conversion |
 | **Months 7–12** | Scale & defend ($50K MRR), team building | Phase 3: Lex as infrastructure, platform licensing |
 | **Year 2** | Enterprise expansion ($200K/mo), Series A readiness | Local Mana installations, $1M+ ARR |
@@ -137,12 +137,12 @@ The Shield-First strategy overlays the existing roadmap with a new market-entry 
 
 ```
 Ship Shield (free) → Security cos distribute it
-    → Millions learn Mana exists
-        → Fear drives blacklist registration
+    → Industry learns Mana exists
+        → Awareness drives blacklist registration
             → Registrations = qualified leads
                 → Leads convert to whitelist (licensed)
-                    → Revenue funds more demos
-                        → More demos = more fear = more shields
+                    → Revenue funds more demonstrations
+                        → More demonstrations = more awareness = more shields
 ```
 
 ---
