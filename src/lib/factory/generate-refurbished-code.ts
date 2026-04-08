@@ -3112,7 +3112,7 @@ export function generateRefurbishedCode(
     'U.S. Patent Pending — App. No. 64/029,678',
     '',
     'This artifact contains a sealed orchestration matrix.',
-    'Layer 1: Original source (hardened in-place)',
+    'Layer 1: Original source (byte-identical, unmodified)',
     'Layer 2: Orchestration matrix + primitive instrumentation',
     '',
     'DO NOT modify the orchestration matrix — it governs',
