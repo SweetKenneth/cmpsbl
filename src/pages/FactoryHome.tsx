@@ -100,6 +100,8 @@ export default function FactoryHome() {
         <TrustVisual
           src={trustInfrastructure}
           alt="Modern software teams building on trusted governed infrastructure"
+          caption="First recorded offline DREAM synthesis"
+          date="Nov 2024"
         />
 
         <SectionDivider />
