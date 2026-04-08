@@ -1,7 +1,7 @@
 /**
- * HeroAscensionVisual — Compact homepage hero with orbiting mystical runes,
- * DREAM-powered Layer 2 injections, and polished terminal aesthetic.
- * 100% CSS keyframes. No JS animation runtime.
+ * HeroAscensionVisual — Homepage hero: life.js Easter egg with DREAM Layer 2.
+ * Orbiting mystical runes, scanning beam, energy border, SHA verification.
+ * 100% CSS keyframes · zero JS animation runtime · production-grade.
  */
 
 import { memo } from "react";
@@ -11,44 +11,44 @@ const CYCLE = 12;
 const KEYFRAMES = `
 @keyframes ha-scan {
   0%   { top: -2px; opacity: 0; }
-  5%   { opacity: 1; }
-  45%  { opacity: 1; }
+  4%   { opacity: 1; }
+  46%  { opacity: 1; }
   50%  { top: calc(100% + 2px); opacity: 0; }
   100% { top: calc(100% + 2px); opacity: 0; }
 }
 @keyframes ha-inject {
-  0%   { transform: translateX(24px); opacity: 0; }
-  8%   { transform: translateX(-1px); opacity: 1; }
-  12%  { transform: translateX(0); opacity: 1; }
-  78%  { transform: translateX(0); opacity: 1; }
-  88%  { transform: translateX(24px); opacity: 0; }
-  100% { transform: translateX(24px); opacity: 0; }
+  0%   { transform: translateX(20px); opacity: 0; }
+  6%   { transform: translateX(-1px); opacity: 1; }
+  10%  { transform: translateX(0); opacity: 1; }
+  80%  { transform: translateX(0); opacity: 1; }
+  90%  { transform: translateX(20px); opacity: 0; }
+  100% { transform: translateX(20px); opacity: 0; }
 }
 @keyframes ha-gate-pulse {
-  0%, 100% { opacity: 0.5; box-shadow: 0 0 3px hsl(var(--neon-magenta) / 0.15); }
-  50%      { opacity: 1; box-shadow: 0 0 8px hsl(var(--neon-magenta) / 0.35); }
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
 }
 @keyframes ha-sweep {
-  0%   { left: -80%; opacity: 0.5; }
+  0%   { left: -80%; opacity: 0.4; }
   50%  { left: 200%; opacity: 0; }
   100% { left: 200%; opacity: 0; }
 }
 @keyframes ha-glow {
-  0%, 100% { box-shadow: inset 0 0 0 1px hsl(var(--neon-cyan) / 0.08); }
-  50%      { box-shadow: inset 0 0 0 1px hsl(var(--neon-cyan) / 0.2), inset 0 0 12px hsl(var(--neon-cyan) / 0.03); }
+  0%, 100% { box-shadow: 0 0 0 1px hsl(var(--neon-cyan) / 0.06), 0 8px 32px -8px hsl(var(--primary) / 0.08); }
+  50%      { box-shadow: 0 0 0 1px hsl(var(--neon-cyan) / 0.15), 0 8px 32px -8px hsl(var(--primary) / 0.12), inset 0 0 20px hsl(var(--neon-cyan) / 0.02); }
 }
 @keyframes ha-border {
   0%   { clip-path: inset(100% 0 0 0); }
-  12%  { clip-path: inset(0 0 0 0); }
-  88%  { clip-path: inset(0 0 0 0); }
-  96%  { clip-path: inset(100% 0 0 0); }
+  10%  { clip-path: inset(0 0 0 0); }
+  90%  { clip-path: inset(0 0 0 0); }
+  97%  { clip-path: inset(100% 0 0 0); }
   100% { clip-path: inset(100% 0 0 0); }
 }
 @keyframes ha-hash {
-  0%, 35% { opacity: 0; }
-  45%     { opacity: 1; }
-  85%     { opacity: 0.8; }
-  93%     { opacity: 0; }
+  0%, 38% { opacity: 0; transform: translateY(2px); }
+  48%     { opacity: 1; transform: translateY(0); }
+  82%     { opacity: 0.85; transform: translateY(0); }
+  92%     { opacity: 0; transform: translateY(2px); }
   100%    { opacity: 0; }
 }
 @keyframes ha-energy {
@@ -56,10 +56,10 @@ const KEYFRAMES = `
   100% { background-position: 200% 50%; }
 }
 @keyframes ha-l2-label {
-  0%, 5%  { opacity: 0; transform: translateY(3px); }
-  14%     { opacity: 1; transform: translateY(0); }
-  86%     { opacity: 1; transform: translateY(0); }
-  94%     { opacity: 0; transform: translateY(3px); }
+  0%, 4%  { opacity: 0; transform: translateY(3px) scale(0.95); }
+  12%     { opacity: 1; transform: translateY(0) scale(1); }
+  88%     { opacity: 1; transform: translateY(0) scale(1); }
+  96%     { opacity: 0; transform: translateY(3px) scale(0.95); }
   100%    { opacity: 0; }
 }
 @keyframes ha-rune-orbit {
@@ -67,12 +67,16 @@ const KEYFRAMES = `
   100% { transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
 }
 @keyframes ha-rune-glow {
-  0%, 100% { opacity: 0.3; filter: blur(0px); }
-  50%      { opacity: 0.9; filter: drop-shadow(0 0 4px currentColor); }
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 0.85; filter: drop-shadow(0 0 6px currentColor); }
+}
+@keyframes ha-corner-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.7; }
 }
 `;
 
-const L1_LINES = [
+const L1_LINES: { indent: number; kw?: string; text: string }[] = [
   { indent: 0, kw: "function", text: " secretOfLife() {" },
   { indent: 1, kw: "const", text: " work = doHardThings();" },
   { indent: 1, kw: "const", text: " crew = peopleYouLove();" },
@@ -101,45 +105,44 @@ const RUNES = [
   { glyph: "✦", color: "neon-magenta" },
 ];
 
-const LINE_H = 20;
+const LINE_H = 22;
 const TOTAL_H = L1_LINES.length * LINE_H;
 
-const CodeLine = memo(({ line, index }: { line: typeof L1_LINES[0]; index: number }) => {
-  if (!line.text && !line.kw) return <div style={{ height: LINE_H }} />;
-  return (
-    <div
-      className="font-mono text-[10px] sm:text-[11px] leading-[20px] whitespace-pre select-none"
-      style={{ paddingLeft: `${(line.indent ?? 0) * 14 + 10}px` }}
-    >
-      <span className="text-muted-foreground/30 mr-2 inline-block w-3 text-right tabular-nums text-[9px]">
-        {index + 1}
-      </span>
-      {line.kw && (
-        <span style={{ color: "hsl(var(--neon-purple))" }} className="font-semibold">{line.kw}</span>
-      )}
-      <span className="text-foreground/70">{line.text}</span>
-    </div>
-  );
-});
+const CodeLine = memo(({ line, index }: { line: typeof L1_LINES[0]; index: number }) => (
+  <div
+    className="font-mono text-[10.5px] sm:text-[11.5px] leading-[22px] whitespace-pre select-none"
+    style={{ paddingLeft: `${line.indent * 16 + 12}px` }}
+  >
+    <span className="text-muted-foreground/25 mr-2.5 inline-block w-4 text-right tabular-nums text-[9px]">
+      {index + 1}
+    </span>
+    {line.kw && (
+      <span style={{ color: "hsl(var(--neon-purple))" }} className="font-semibold">{line.kw}</span>
+    )}
+    <span className="text-foreground/75">{line.text}</span>
+  </div>
+));
 CodeLine.displayName = "HeroCodeLine";
 
 export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
   return (
     <>
       <style>{KEYFRAMES}</style>
-      <div className="relative w-full max-w-md mx-auto select-none">
+      <div className="relative w-full max-w-[420px] mx-auto select-none">
 
         {/* ── Orbiting mystical runes ── */}
-        <div className="absolute inset-0 z-30 pointer-events-none overflow-visible">
+        <div className="absolute inset-0 z-30 pointer-events-none" style={{ overflow: "visible" }}>
           {RUNES.map((rune, i) => (
             <div
               key={i}
-              className="absolute left-1/2 top-1/2 text-[11px] font-bold"
+              className="absolute left-1/2 top-1/2"
               style={{
-                ["--orbit-r" as string]: `${90 + i * 14}px`,
+                ["--orbit-r" as string]: `${100 + i * 16}px`,
                 color: `hsl(var(--${rune.color}))`,
-                animation: `ha-rune-orbit ${9 + i * 1.8}s linear infinite, ha-rune-glow ${3 + i * 0.4}s ease-in-out infinite`,
-                animationDelay: `${i * 0.5}s, ${i * 0.3}s`,
+                fontSize: `${10 + (i % 3)}px`,
+                fontWeight: 700,
+                animation: `ha-rune-orbit ${10 + i * 2}s linear infinite, ha-rune-glow ${3.5 + i * 0.5}s ease-in-out infinite`,
+                animationDelay: `${i * -1.2}s, ${i * -0.7}s`,
               }}
             >
               {rune.glyph}
@@ -147,75 +150,104 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
           ))}
         </div>
 
-        {/* Header labels */}
-        <div className="flex items-center justify-between mb-2 px-0.5 relative z-10">
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full" style={{ background: "hsl(var(--neon-cyan))" }} />
-            <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground/70">
-              Layer 1 — Source
+        {/* ── Header bar ── */}
+        <div className="flex items-center justify-between mb-2.5 px-1 relative z-10">
+          <div className="flex items-center gap-2">
+            <div
+              className="w-[5px] h-[5px] rounded-full"
+              style={{ background: "hsl(var(--neon-cyan))", boxShadow: "0 0 6px hsl(var(--neon-cyan) / 0.4)" }}
+            />
+            <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
+              Layer 1 — Original Source
             </span>
           </div>
-          <span className="text-[9px] font-mono font-semibold text-muted-foreground/50">life.js</span>
+          <span className="text-[9px] font-mono font-semibold text-muted-foreground/40 tracking-wider">life.js</span>
         </div>
 
-        {/* Main container */}
+        {/* ── Main container ── */}
         <div className="relative">
-          {/* Animated energy border */}
+          {/* Energy border with gradient animation */}
           <div
-            className="absolute -inset-[2px] rounded-lg pointer-events-none z-10"
+            className="absolute -inset-[3px] rounded-xl pointer-events-none z-10"
             style={{
-              border: "1.5px solid transparent",
+              border: "2px solid transparent",
               background: "linear-gradient(var(--background), var(--background)) padding-box, linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--neon-purple))) border-box",
               backgroundSize: "100% 100%, 200% 200%",
-              animation: `ha-energy 4s linear infinite, ha-border ${CYCLE}s ease-in-out infinite`,
+              animation: `ha-energy 3.5s linear infinite, ha-border ${CYCLE}s ease-in-out infinite`,
             }}
           >
-            {/* Layer 2 DREAM label */}
-            <div className="absolute -top-4 left-3 flex items-center gap-1">
-              <div className="w-1 h-1 rounded-full" style={{ background: "hsl(var(--neon-magenta))" }} />
+            {/* Layer 2 DREAM badge */}
+            <div className="absolute -top-[18px] left-4 flex items-center gap-1.5">
+              <div
+                className="w-[5px] h-[5px] rounded-full"
+                style={{ background: "hsl(var(--neon-magenta))", boxShadow: "0 0 6px hsl(var(--neon-magenta) / 0.5)" }}
+              />
               <span
-                className="text-[8px] font-bold uppercase tracking-[0.12em] px-1.5 py-px rounded-sm"
+                className="text-[8px] font-extrabold uppercase tracking-[0.14em] px-2 py-0.5 rounded-[3px]"
                 style={{
                   color: "hsl(var(--neon-magenta))",
-                  background: "hsl(var(--neon-magenta) / 0.1)",
-                  border: "1px solid hsl(var(--neon-magenta) / 0.2)",
+                  background: "hsl(var(--neon-magenta) / 0.08)",
+                  border: "1px solid hsl(var(--neon-magenta) / 0.25)",
+                  backdropFilter: "blur(8px)",
                   animation: `ha-l2-label ${CYCLE}s ease-in-out infinite`,
                 }}
               >
                 ✦ Layer 2 — DREAM Synthesis
               </span>
             </div>
+
+            {/* Corner accents */}
+            {[
+              { top: -1, right: -1 },
+              { bottom: -1, left: -1 },
+            ].map((pos, i) => (
+              <div
+                key={i}
+                className="absolute w-3 h-3 pointer-events-none"
+                style={{
+                  ...pos,
+                  borderTop: i === 0 ? "2px solid hsl(var(--neon-cyan) / 0.5)" : undefined,
+                  borderRight: i === 0 ? "2px solid hsl(var(--neon-cyan) / 0.5)" : undefined,
+                  borderBottom: i === 1 ? "2px solid hsl(var(--neon-magenta) / 0.5)" : undefined,
+                  borderLeft: i === 1 ? "2px solid hsl(var(--neon-magenta) / 0.5)" : undefined,
+                  borderRadius: i === 0 ? "0 8px 0 0" : "0 0 0 8px",
+                  animation: `ha-corner-pulse 3s ease-in-out infinite`,
+                  animationDelay: `${i * 1.5}s`,
+                }}
+              />
+            ))}
           </div>
 
-          {/* Code block */}
+          {/* ── Code block ── */}
           <div
-            className="relative rounded-md border-2 border-foreground/15 bg-background/80 backdrop-blur-sm overflow-hidden shadow-2xl shadow-primary/[0.08]"
+            className="relative rounded-lg bg-background/90 backdrop-blur-md overflow-hidden"
             style={{ animation: `ha-glow 4s ease-in-out infinite` }}
           >
-            {/* Terminal header */}
-            <div className="flex items-center gap-1 px-2.5 py-1.5 border-b border-border/40 bg-card/40">
-              <div className="w-2 h-2 rounded-full bg-destructive/50" />
-              <div className="w-2 h-2 rounded-full bg-accent/50" />
-              <div className="w-2 h-2 rounded-full bg-primary/50" />
-              <span className="ml-1.5 text-[9px] font-mono text-muted-foreground/40">ascension — live</span>
+            {/* Terminal chrome */}
+            <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border/30 bg-card/30">
+              <div className="w-[9px] h-[9px] rounded-full bg-[hsl(0_70%_55%/0.7)]" />
+              <div className="w-[9px] h-[9px] rounded-full bg-[hsl(45_70%_55%/0.7)]" />
+              <div className="w-[9px] h-[9px] rounded-full bg-[hsl(140_60%_45%/0.7)]" />
+              <span className="ml-2 text-[9px] font-mono text-muted-foreground/35 tracking-wide">ascension — live</span>
             </div>
 
             {/* Code area */}
-            <div className="relative py-1.5 pr-28 sm:pr-36" style={{ minHeight: `${TOTAL_H + 8}px` }}>
+            <div className="relative py-2 pr-[120px] sm:pr-[148px]" style={{ minHeight: `${TOTAL_H + 12}px` }}>
               {/* Scan line */}
               <div
-                className="absolute left-0 right-0 h-[1.5px] z-30 pointer-events-none"
+                className="absolute left-0 right-0 h-[2px] z-30 pointer-events-none"
                 style={{
-                  background: "linear-gradient(90deg, transparent, hsl(var(--neon-cyan)), transparent)",
+                  background: "linear-gradient(90deg, transparent 5%, hsl(var(--neon-cyan) / 0.8) 40%, hsl(var(--neon-cyan)) 50%, hsl(var(--neon-cyan) / 0.8) 60%, transparent 95%)",
+                  boxShadow: "0 0 8px 1px hsl(var(--neon-cyan) / 0.3)",
                   animation: `ha-scan ${CYCLE}s ease-in-out infinite`,
                   top: 0,
                 }}
               />
               {/* Shield sweep */}
               <div
-                className="absolute top-0 bottom-0 w-[50%] z-20 pointer-events-none"
+                className="absolute top-0 bottom-0 w-[45%] z-20 pointer-events-none"
                 style={{
-                  background: "linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.05), transparent)",
+                  background: "linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.04), transparent)",
                   animation: `ha-sweep ${CYCLE}s ease-in-out infinite`,
                 }}
               />
@@ -229,21 +261,23 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
               {L2_INJECTIONS.map((inj) => (
                 <div
                   key={inj.label}
-                  className="absolute right-0 z-20 flex items-center gap-1 pointer-events-none"
+                  className="absolute right-1 z-20 flex items-center gap-1 pointer-events-none"
                   style={{
-                    top: `${inj.line * LINE_H + 2}px`,
+                    top: `${inj.line * LINE_H + 3}px`,
                     animation: `ha-inject ${CYCLE}s ease-in-out infinite`,
                     animationDelay: `${(inj.delayPct / 100) * CYCLE}s`,
                   }}
                 >
-                  <div className="h-[1.5px] w-3 sm:w-4" style={{ background: `hsl(${inj.color})` }} />
+                  <div className="h-[1.5px] w-4 sm:w-5" style={{ background: `hsl(${inj.color})` }} />
                   <span
-                    className="text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-1 py-px rounded-sm border whitespace-nowrap"
+                    className="text-[8px] sm:text-[9px] font-extrabold uppercase tracking-[0.06em] px-1.5 py-[1px] rounded-[3px] border whitespace-nowrap"
                     style={{
                       color: `hsl(${inj.color})`,
-                      borderColor: `hsl(${inj.color} / 0.25)`,
+                      borderColor: `hsl(${inj.color} / 0.3)`,
                       background: `hsl(${inj.color} / 0.08)`,
+                      backdropFilter: "blur(4px)",
                       animation: `ha-gate-pulse 2.5s ease-in-out infinite`,
+                      animationDelay: `${(inj.delayPct / 100) * 2}s`,
                     }}
                   >
                     {inj.label}
@@ -253,29 +287,32 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
             </div>
           </div>
 
-          {/* SHA verification */}
+          {/* SHA verification strip */}
           <div
-            className="absolute -bottom-6 left-0 right-0 flex items-center justify-center gap-1.5 pointer-events-none"
+            className="absolute -bottom-7 left-0 right-0 flex items-center justify-center gap-2 pointer-events-none"
             style={{ animation: `ha-hash ${CYCLE}s ease-in-out infinite` }}
           >
-            <div className="w-1 h-1 rounded-full" style={{ background: "hsl(var(--neon-cyan))" }} />
-            <span className="text-[9px] font-mono font-semibold tracking-wider" style={{ color: "hsl(var(--neon-cyan) / 0.8)" }}>
+            <div className="h-[1px] w-6 sm:w-8" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.5))" }} />
+            <span className="text-[8px] font-mono font-bold tracking-[0.15em]" style={{ color: "hsl(var(--neon-cyan) / 0.7)" }}>
               SHA-256 VERIFIED · LAYER 1 INTACT
             </span>
-            <div className="w-1 h-1 rounded-full" style={{ background: "hsl(var(--neon-cyan))" }} />
+            <div className="h-[1px] w-6 sm:w-8" style={{ background: "linear-gradient(90deg, hsl(var(--neon-cyan) / 0.5), transparent)" }} />
           </div>
         </div>
 
         {/* ── Legend ── */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 mt-10 flex-wrap relative z-10">
+        <div className="flex items-center justify-center gap-4 sm:gap-5 mt-12 relative z-10">
           {[
-            { color: "var(--neon-cyan)", label: "Scan & verify" },
-            { color: "var(--neon-magenta)", label: "DREAM defense" },
+            { color: "var(--neon-cyan)", label: "Scan · Verify" },
+            { color: "var(--neon-magenta)", label: "DREAM Defense" },
             { color: "var(--neon-purple)", label: "Governance" },
           ].map((item) => (
-            <div key={item.label} className="flex items-center gap-1">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: `hsl(${item.color})` }} />
-              <span className="text-[9px] font-medium text-muted-foreground/60">{item.label}</span>
+            <div key={item.label} className="flex items-center gap-1.5">
+              <div
+                className="w-[5px] h-[5px] rounded-full"
+                style={{ background: `hsl(${item.color})`, boxShadow: `0 0 4px hsl(${item.color} / 0.3)` }}
+              />
+              <span className="text-[9px] font-semibold text-muted-foreground/50 tracking-wide">{item.label}</span>
             </div>
           ))}
         </div>
