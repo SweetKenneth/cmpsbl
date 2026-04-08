@@ -115,7 +115,7 @@ export default function Explore() {
         <DiscoveryDualCards />
 
         <SectionDivider />
-        <TrustVisual src={trustInfrastructure} alt="Cognitive infrastructure — 40 Primitives connected across governed layers" caption="First recorded offline DREAM synthesis" date="Nov 2024" />
+        <TrustVisual src={trustInfrastructure} alt="Cognitive infrastructure — 40 Primitives connected across governed layers" caption="First autonomous AI dreaming capability" date="Sep 2025" />
         <SubstrateAliveSection />
 
         <SectionDivider />
