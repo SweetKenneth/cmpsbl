@@ -228,12 +228,12 @@ export function HeroMetaSubstrate() {
           {/* Headline stack */}
           <h1 className="tracking-[-0.03em] leading-[1.1]">
             <FadeIn delay={0.15}>
-              <span className="block text-sm sm:text-base md:text-lg font-medium text-muted-foreground/70 mb-2 tracking-[0.05em] uppercase">
+              <span className="block text-sm sm:text-base md:text-lg font-bold text-foreground/80 mb-2 tracking-[0.05em] uppercase">
                 Where machines learn how to
               </span>
             </FadeIn>
             <FadeIn delay={0.2}>
-              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black min-h-[1.2em]">
+              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black min-h-[1.2em]">
                 <TypedText 
                   texts={["dream.", "ascend.", "adapt.", "evolve.", "reason."]}
                   gradientColors={[
@@ -250,11 +250,11 @@ export function HeroMetaSubstrate() {
 
           {/* Value prop */}
           <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
-            <p className="text-base sm:text-lg text-muted-foreground font-medium leading-relaxed mb-2.5">
-              Upload code in <span className="text-foreground font-bold">90+ languages</span>. Get back <span className="text-foreground font-bold">hardened, certified</span> software — in&nbsp;minutes.
+            <p className="text-base sm:text-lg text-muted-foreground font-semibold leading-relaxed mb-2.5">
+              Upload code in <span className="text-foreground font-extrabold">90+ languages</span>. Get back <span className="text-foreground font-extrabold">hardened, certified</span> software — in&nbsp;minutes.
             </p>
-            <p className="text-sm sm:text-base text-muted-foreground/70 leading-relaxed">
-              <span className="text-foreground font-semibold">Dual-patent protected.</span> Zero external AI in the output. Your code gains <span className="text-foreground font-semibold">security</span>, <span className="text-foreground font-semibold">governance</span>, and <span className="text-foreground font-semibold">resilience</span>&nbsp;— without modifying the&nbsp;original.
+            <p className="text-sm sm:text-base text-muted-foreground/80 font-medium leading-relaxed">
+              <span className="text-foreground font-bold">Dual-patent protected.</span> Zero external AI in the output. Your code gains <span className="text-foreground font-bold">security</span>, <span className="text-foreground font-bold">governance</span>, and <span className="text-foreground font-bold">resilience</span>&nbsp;— without modifying the&nbsp;original.
             </p>
           </FadeIn>
           
