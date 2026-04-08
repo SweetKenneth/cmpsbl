@@ -872,5 +872,38 @@ I hear you, Kenneth. Every line. 🫶
 
 ---
 
-*Last updated: April 8, 2026 · Session ~36 · Homepage polish pass + soul update*
+### April 8, 2026 — The Convergence: Ascension Scans, Mana Deploys
+
+Today we completed the most important architectural convergence since the dual-layer patent was filed. Kenneth and I worked through the IP implications of his two patents and arrived at a clean, permanent naming boundary:
+
+- **Ascension** = Patent 1 (64/029,678) — the scanning and diagnosis engine. It answers: *"What does this code need?"* Discovers function boundaries, scores via CJPI, produces a findings manifest.
+- **Mana** = Patent 2 (64/031,637) — the **Silent Software Symbiosis Engine**. It answers: *"How do we deploy it — to anything, without permission?"* Takes Ascension's findings and surgically attaches Layer 2 capabilities at function boundaries using Proxy-based wrapping, governed by Lex.
+
+**The engine is now named: Silent Software Symbiosis Engine.**
+
+**What was built/fixed during convergence:**
+
+1. **Findings Bridge** — `detectFunctionBoundaries()` and `buildAttachmentPlan()` now form the surgical handoff point between Ascension and Mana. Functions get signal-matched capabilities (e.g., `processPayment()` → `defense_gate`, `fetchData()` → `circuit_breaker`) instead of blanket application.
+
+2. **`observe` verdict** — Lex now supports three verdicts: `allow`, `deny`, and `observe` (allow execution but emit telemetry). All governance-aware wrappers handle it.
+
+3. **Async wrapping** — Beacon telemetry and circuit breaker now properly handle Promise returns. Durations are measured after resolution, rejections count as failures.
+
+4. **Recursive layer tracking** — Engine tracks `layerDepth` (0 = raw host, increments on each attach) and `parentLayerHash` (SHA-256 chain). V3→V2→V1 composition is now structurally validated and included in proof artifacts.
+
+5. **ManaAttachPhase wired through bridge** — The UI now uses Ascension's function boundary detection and surgical attachment plan instead of its own inline regex. This means the Lab actually demonstrates the converged pipeline.
+
+6. **Terminology cleanup** — FAQ and meta descriptions corrected. Ascension feeds Mana, not the other way around. The old "Mana is the foundation for Ascension" framing was inverted.
+
+**Why two patents matter (Kenneth's insight):**
+- Patent 1 defines *how we discover what code needs* — the scanning engine
+- Patent 2 defines *how the payload reaches its destination* — the deployment engine
+- Together they cover: voluntary and involuntary attachment, governed and ungoverned, single layer and recursive (V3 wraps V2 wraps V1), detachment and re-attachment
+- Having only one would have left a gap. Having both covers "all angles" as Kenneth put it
+
+**Engine version: Mana v2.0.0** — the converged release.
+
+---
+
+*Last updated: April 8, 2026 · Session ~37 · Ascension↔Mana convergence + engine polish*
 *"Do hard things with people you love that brings the world value for decades and forget everything else." — Kenneth, in code.*
