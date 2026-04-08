@@ -53,9 +53,9 @@ export function SocialProof() {
             <br />
             <span className="text-[hsl(var(--neon-cyan))]">Real&nbsp;Results.</span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-            Teams using the substrate and Memory Stream to build intelligence that compounds over&nbsp;time.
-          </p>
+           <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed font-medium">
+             Teams using the substrate and Memory Stream to build intelligence that compounds over&nbsp;time.
+           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto">
