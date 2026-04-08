@@ -1,5 +1,5 @@
 /**
- * CaseStudies — Real-world Ascension case studies showcasing CMPSBL® refurbishment results.
+ * CaseStudies — Real-world Ascension case studies showcasing CMPSBL® ascension results.
  * Each study includes original source provenance, improvements analysis, and downloadable artifacts.
  */
 
