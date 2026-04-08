@@ -307,7 +307,7 @@ export default function RestorationShop() {
       zip.generateAsync({ type: 'blob' }).then(blob => {
         import('file-saver').then(({ saveAs }) => {
           saveAs(blob, `cmpsbl-${safeName}-${report.cjpiCertificate.tier.toLowerCase()}.zip`);
-          toast.success('Export complete. Your refurbished code has been downloaded.');
+          toast.success('Export complete. Your ascended code package has been downloaded.');
         });
       });
     });
