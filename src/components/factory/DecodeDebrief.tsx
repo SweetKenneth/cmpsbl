@@ -140,7 +140,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'docs',
     role: 'decode',
-    content: `Your export includes: LICENSE, dual-layer source (original + refurbished), pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, and a README. Everything you need to verify and maintain independently. 📋`,
+    content: `Your export includes: LICENSE, dual-layer source (original + ascended), pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, and a README. Everything you need to verify and maintain independently. 📋`,
     icon: FileText,
   });
 

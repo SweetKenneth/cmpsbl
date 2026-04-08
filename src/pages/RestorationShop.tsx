@@ -21,6 +21,8 @@ import {
   MessageSquare,
   FileUp,
   Download,
+  Award,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
