@@ -261,48 +261,18 @@ export function HeroMetaSubstrate() {
             </p>
           </FadeIn>
           
-          {/* CTAs — 2×2 neon grid */}
-          <FadeIn delay={0.4} className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
+          {/* CTA — single focused action */}
+          <FadeIn delay={0.4} className="flex justify-center max-w-md mx-auto">
             <Button 
               asChild 
               size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-magenta)/0.3)] hover:shadow-[hsl(var(--neon-magenta)/0.5)]"
+              className="gap-2.5 h-14 px-10 text-sm sm:text-base font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] shadow-xl shadow-[hsl(var(--neon-magenta)/0.35)] hover:shadow-[hsl(var(--neon-magenta)/0.55)]"
               style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))" }}
             >
               <Link to="/ascension">
-                <Wrench className="w-4 h-4 shrink-0" />
-                Ascend Software
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-cyan)/0.3)] hover:shadow-[hsl(var(--neon-cyan)/0.5)]"
-              style={{ background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))" }}
-            >
-              <Link to="/verticals">
-                <Search className="w-4 h-4 shrink-0" />
-                Explore Verticals
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] hover:bg-[hsl(var(--neon-purple)/0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-purple)/0.15)]"
-            >
-              <Link to="/software-symbiosis">
-                <Layers className="w-4 h-4 shrink-0" />
-                Software Symbiosis
-              </Link>
-            </Button>
-            <Button 
-              asChild 
-              size="lg" 
-              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl border border-[hsl(var(--neon-cyan)/0.4)] bg-[hsl(var(--neon-cyan)/0.1)] text-[hsl(var(--neon-cyan))] hover:bg-[hsl(var(--neon-cyan)/0.18)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[hsl(var(--neon-cyan)/0.15)]"
-            >
-              <Link to="/plans">
+                <Wrench className="w-4.5 h-4.5 shrink-0" />
+                Ascend Your Code
                 <ArrowRight className="w-4 h-4 shrink-0" />
-                View Plans
               </Link>
             </Button>
           </FadeIn>
