@@ -1,7 +1,8 @@
 /**
  * FactoryHome — Series B Homepage
- * Hero → Live Stats → SDK/CLI → Built For → Mana Showcase →
- * Discovery Dual → Free Value → Patent Trust → Social Proof → Final CTA
+ * Hero → Live Stats → SDK/CLI → Trust Visual → Built For → Mana Showcase →
+ * Trust Visual → Discovery Dual → Free Value → Trust Visual → Social Proof →
+ * Final CTA → Patent Trust
  */
 
 import { lazy, Suspense, useRef } from "react";
@@ -13,6 +14,11 @@ import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 import { PublicNav } from "@/components/PublicNav";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
+import { TrustVisual } from "@/components/home/TrustVisual";
+
+import trustInfrastructure from "@/assets/trust-infrastructure.jpg";
+import trustEngineering from "@/assets/trust-engineering.jpg";
+import trustCognitive from "@/assets/trust-cognitive.jpg";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
@@ -91,6 +97,12 @@ export default function FactoryHome() {
         <NpmPackagesCTA />
 
         <SectionDivider />
+        <TrustVisual
+          src={trustInfrastructure}
+          alt="Modern software teams building on trusted governed infrastructure"
+        />
+
+        <SectionDivider />
 
         {/* ═══ BUILT FOR ═══ */}
         <BuiltForSection />
@@ -99,6 +111,12 @@ export default function FactoryHome() {
 
         {/* ═══ MANA — category-defining innovation ═══ */}
         <ManaShowcase />
+
+        <SectionDivider />
+        <TrustVisual
+          src={trustEngineering}
+          alt="Professional engineering environment with secure governed software workflows"
+        />
 
         <SectionDivider />
 
@@ -111,9 +129,10 @@ export default function FactoryHome() {
         <FreeValueProposition />
 
         <SectionDivider />
-
-        {/* ═══ PATENT + IP TRUST ═══ */}
-        <PatentTrustStrip />
+        <TrustVisual
+          src={trustCognitive}
+          alt="Protected cognitive architecture with secure pathways and persistent software memory"
+        />
 
         <SectionDivider />
 
@@ -151,9 +170,9 @@ export default function FactoryHome() {
                 <span className="text-sm font-semibold text-white/90">Ready to Build?</span>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
-                Install the SDK.{" "}
-                <br className="hidden sm:block" />
+              <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+                Install the SDK.
+                <br />
                 <span className="text-white/80">Build Something Real.</span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
@@ -180,6 +199,10 @@ export default function FactoryHome() {
           </div>
         </div>
       </section>
+
+      <Suspense fallback={<div className="min-h-[100px]" />}>
+        <PatentTrustStrip />
+      </Suspense>
 
       <Suspense fallback={<div className="min-h-[100px]" />}>
         <EnhancedFooter />
