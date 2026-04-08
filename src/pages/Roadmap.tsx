@@ -58,7 +58,7 @@ const PHASES = [
     name: "REFURBISHMENT",
     tagline: "Ascension Pipeline & Code Assembly",
     status: "Shipped",
-    description: "The Software Refurbishment Center is live. Users upload code, receive a full diagnostic, select primitives for hardening, and receive a Convex Core™ artifact with an HTML refurbishment report — all without replacing their original codebase.",
+    description: "The Software Ascension Center is live. Users upload code, receive a full diagnostic, select primitives for hardening, and receive a Convex Core™ artifact with an HTML ascension report — all without replacing their original codebase.",
     capabilities: [
       "5-step Ascension pipeline (Upload → Diagnostic → Select → Queue → Debrief)",
       "Adaptive Limited Rates Engine for queue management",
@@ -90,9 +90,9 @@ const PHASES = [
     name: "SITE & SEO",
     tagline: "Public Presence, Content & Developer Docs",
     status: "Shipped",
-    description: "Full public-facing site with the Software Refurbishment Center branding, automated blog pipeline, developer documentation, scanner tools, and SEO infrastructure — all live under the REVIVAL epoch (v18.0.0).",
+    description: "Full public-facing site with the Software Ascension Center branding, automated blog pipeline, developer documentation, scanner tools, and SEO infrastructure — all live under the REVIVAL epoch (v18.0.0).",
     capabilities: [
-      "Software Refurbishment Center branding across all surfaces",
+      "Software Ascension Center branding across all surfaces",
       "Automated blog pipeline with confidence scoring",
       "Scanner diagnostic tool for public-facing code analysis",
       "Full developer documentation with runtime reference",
@@ -186,7 +186,7 @@ const NEXT_STEPS = [
   },
   {
     title: "Email Delivery Pipeline",
-    description: "Automated email delivery of completed restorations, refurbishment reports, and diagnostic summaries.",
+    description: "Automated email delivery of completed restorations, ascension reports, and diagnostic summaries.",
     target: "Q4 2026",
     icon: Send,
     priority: "medium" as const,
@@ -217,9 +217,9 @@ export default function Roadmap() {
     <div className="min-h-screen bg-background relative">
       <SEO
         title="Roadmap — What We Shipped & What's Next | CMPSBL"
-        description="See what CMPSBL has shipped: the 40-primitive substrate, Memory Stream discovery, Ascension refurbishment pipeline, Showroom marketplace, and Code Assembly service. Plus what's coming next."
+        description="See what CMPSBL has shipped: the 40-primitive substrate, Memory Stream discovery, Ascension ascension pipeline, Showroom marketplace, and Code Assembly service. Plus what's coming next."
         canonical="https://cmpsbl.com/roadmap"
-        keywords={["CMPSBL roadmap", "software refurbishment", "code restoration", "substrate architecture", "shipped features", "product roadmap"]}
+        keywords={["CMPSBL roadmap", "software ascension", "code restoration", "substrate architecture", "shipped features", "product roadmap"]}
       />
 
       {/* Ambient background */}
@@ -451,7 +451,7 @@ export default function Roadmap() {
               {[
                 { phase: "Substrate", revenue: "npm Installs", status: "shipped" },
                 { phase: "Discovery", revenue: "Memory Packs", status: "shipped" },
-                { phase: "Refurbishment", revenue: "Restoration Fees", status: "shipped" },
+                { phase: "Ascension", revenue: "Restoration Fees", status: "shipped" },
                 { phase: "Commerce", revenue: "Subscriptions + Sales", status: "shipped" },
                 { phase: "Site & SEO", revenue: "Organic Traffic", status: "shipped" },
                 { phase: "Activation", revenue: "Conversion + Retention", status: "active" },

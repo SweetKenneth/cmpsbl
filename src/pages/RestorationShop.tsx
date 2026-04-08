@@ -1,5 +1,5 @@
 /**
- * RestorationShop → Refurbishment Lab (/ascension)
+ * RestorationShop → Ascension Lab (/ascension)
  * Full journey: Upload → Diagnostic → Select Primitives → Queue → DECODE Debrief → Export
  */
 
@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
-import { generateRefurbishedCode, generateLicense, getRefurbishedExtension } from "@/lib/factory/generate-refurbished-code";
+import { generateAscendedCode, generateLicense, getAscendedExtension } from "@/lib/factory/generate-ascended-code";
 import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
@@ -78,7 +78,7 @@ export default function RestorationShop() {
   const [report, setReport] = useState<RestorationReport | null>(null);
   const [queueEntry, setQueueEntry] = useState<QueueEntry | null>(null);
   const [selectedPrims, setSelectedPrims] = useState<PrimitiveRecommendation[]>([]);
-  const [refurbishedCode, setRefurbishedCode] = useState<string>('');
+  const [ascendedCode, setAscendedCode] = useState<string>('');
   const [detectedLang, setDetectedLang] = useState<string>('TypeScript');
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -147,8 +147,8 @@ export default function RestorationShop() {
     setReport(restorationReport);
 
     const fingerprint = restorationReport.cjpiCertificate.fingerprint;
-    const hardened = generateRefurbishedCode(code, selected, fingerprint, undefined, fileName ?? undefined);
-    setRefurbishedCode(hardened);
+    const hardened = generateAscendedCode(code, selected, fingerprint, undefined, fileName ?? undefined);
+    setAscendedCode(hardened);
 
     await saveRestorationSession({
       fingerprint,
@@ -189,11 +189,11 @@ export default function RestorationShop() {
       // This ensures the latest generator logic is always used,
       // preventing stale cached state from earlier sessions.
       // The generator now THROWS on L2 validation failure — catch it.
-      let freshRefurbished: string;
+      let freshAscended: string;
       try {
-        freshRefurbished = selectedPrims.length > 0
-          ? generateRefurbishedCode(code, selectedPrims, fingerprint, undefined, fileName ?? undefined)
-          : refurbishedCode;
+        freshAscended = selectedPrims.length > 0
+          ? generateAscendedCode(code, selectedPrims, fingerprint, undefined, fileName ?? undefined)
+          : ascendedCode;
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         toast.error('Export blocked — Layer 2 validation failed. Your code is safe.', {
@@ -207,9 +207,9 @@ export default function RestorationShop() {
       zip.file('LICENSE.html', wrapDocHtml('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
 
       // ═══ Dual-Layer Source ═══
-      const refExt = getRefurbishedExtension(detectedLang);
+      const refExt = getAscendedExtension(detectedLang);
       zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file(`src/ascended-source${refExt}`, freshRefurbished || '// Ascended code not generated');
+      zip.file(`src/ascended-source${refExt}`, freshAscended || '// Ascended code not generated');
 
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
@@ -302,7 +302,7 @@ export default function RestorationShop() {
         `| File | Purpose |`,
         `|------|---------|`,
         `| \`src/original-source.txt\` | Your original code (unmodified Layer 1) |`,
-        `| \`src/ascended-source${getRefurbishedExtension(detectedLang)}\` | Hardened code with primitive guards (Layer 2) |`,
+        `| \`src/ascended-source${getAscendedExtension(detectedLang)}\` | Hardened code with primitive guards (Layer 2) |`,
         `| \`PROOF.txt\` | Cryptographic provenance certificate |`,
         `| \`ascension-report.html\` | Branded Ascension report |`,
         `| \`docs/USER-GUIDE.html\` | Deployment and testing guide |`,
@@ -380,7 +380,7 @@ export default function RestorationShop() {
         });
       });
     });
-  }, [report, code, refurbishedCode, identityRole, selectedPrims, fileName, detectedLang]);
+  }, [report, code, ascendedCode, identityRole, selectedPrims, fileName, detectedLang]);
 
   const resetFlow = useCallback(() => {
     setPhase('upload');
@@ -390,7 +390,7 @@ export default function RestorationShop() {
     setReport(null);
     setQueueEntry(null);
     setSelectedPrims([]);
-    setRefurbishedCode('');
+    setAscendedCode('');
   }, []);
 
   const currentPhaseIdx = PHASE_META.findIndex(p => p.key === phase);
@@ -398,7 +398,7 @@ export default function RestorationShop() {
   return (
     <div className="min-h-screen bg-background relative">
       <SEO
-        title="The Refurbishment Lab | CMPSBL® — Code Refurbishment with 40 Primitives"
+        title="The Ascension Lab | CMPSBL® — Code Ascension with 40 Primitives"
         description="Upload your code. Our three-primitive scan team identifies vulnerabilities. Select up to 20 primitives to harden it. 3-day evaluation period included."
         canonical="https://cmpsbl.com/ascension"
       />
@@ -434,7 +434,7 @@ export default function RestorationShop() {
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
             <div className="w-1.5 h-1.5 rounded-full bg-neon-green lab-status-blink" />
-            <span className="text-xs font-medium text-primary tracking-wide">The Refurbishment Lab</span>
+            <span className="text-xs font-medium text-primary tracking-wide">The Ascension Lab</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground mb-4 leading-[1.05]">
@@ -446,7 +446,7 @@ export default function RestorationShop() {
             </span>
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-            We analyze your code, find its hidden potential, and refurbish it — only replacing what we absolutely have to. AI is our tool, not your dependency.
+            We analyze your code, find its hidden potential, and ascend it — only replacing what we absolutely have to. AI is our tool, not your dependency.
           </p>
         </div>
       </section>
@@ -760,7 +760,7 @@ export default function RestorationShop() {
                 report={report}
                 scanResult={scanResult}
                 originalCode={code}
-                refurbishedCode={refurbishedCode}
+                ascendedCode={ascendedCode}
                 selectedPrimitives={selectedPrims}
               />
               <RestorationReportView report={report} />
@@ -815,10 +815,10 @@ export default function RestorationShop() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-black text-foreground mb-3">
-              Refurbishment Center Membership
+              Ascension Center Membership
             </h2>
             <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-              One membership. Unlimited refurbishments. The queue is the experience — the center has a line because the work is worth waiting for.
+              One membership. Unlimited ascensions. The queue is the experience — the center has a line because the work is worth waiting for.
             </p>
           </div>
           <MembershipTiers />

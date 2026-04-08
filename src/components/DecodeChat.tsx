@@ -2,7 +2,7 @@
  * CMPSBL® DECODE Chat — Unified Conversational Interface
  * Modes: assistant | support | builder | governor
  * Single persistent conversation memory across all modes.
- * Fingerprint ID detection for return-visit refurbishment lookups.
+ * Fingerprint ID detection for return-visit ascension lookups.
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -37,8 +37,8 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode
 const SESSION_STORAGE_KEY = 'decode_chat_messages';
 
 const MODE_GREETINGS: Record<DecodeMode, string> = {
-  assistant: "Welcome to the **CMPSBL® Software Upgrade & Refurbishment Center** 🏗️\n\nI'm **DECODE** — your personal guide through the restoration process.\n\nIf you've been here before and have your **Fingerprint ID** from a previous upload, enter it now and I'll pull up your full refurbishment history for personalized support.\n\nOtherwise, how can I help you today? Whether you're here to scan new code, explore our primitives, or learn what CMPSBL can do — I'm ready. ✨",
-  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nIf you have a **Fingerprint ID** from a previous refurbishment, paste it here and I can look up your transaction details instantly.\n\nOtherwise, tell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
+  assistant: "Welcome to the **CMPSBL® Software Ascension Center** 🏗️\n\nI'm **DECODE** — your personal guide through the restoration process.\n\nIf you've been here before and have your **Fingerprint ID** from a previous upload, enter it now and I'll pull up your full ascension history for personalized support.\n\nOtherwise, how can I help you today? Whether you're here to scan new code, explore our primitives, or learn what CMPSBL can do — I'm ready. ✨",
+  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nIf you have a **Fingerprint ID** from a previous ascension, paste it here and I can look up your transaction details instantly.\n\nOtherwise, tell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
   builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with substrate configuration, memory chains, and capability integration. What are we building?",
   governor: "**DECODE** online — **governor mode** active 👑\n\nFull substrate telemetry and governance controls are live. All **40 primitives** across **4 categories** reporting.\n\nUse slash commands like `/health`, `/caps`, `/govern` for live data — or just talk to me. What do you need, Governor?",
 };
@@ -140,20 +140,20 @@ export function DecodeChat() {
             const s = result.session;
             const primList = s.selectedPrimitives.join(', ');
             const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprint}]\n` +
-              `Source: Refurbishment Center\nFingerprint: ${s.fingerprint}\nSerial: ${s.serialNumber}\n` +
+              `Source: Ascension Center\nFingerprint: ${s.fingerprint}\nSerial: ${s.serialNumber}\n` +
               `CJPI: ${s.cjpiScore}/100 (${s.cjpiTier})\nLanguage: ${s.originalLanguage ?? 'Unknown'}\n` +
               `Primitives: ${primList}\nDate: ${new Date(s.createdAt).toLocaleDateString()}\n` +
               `Report: ${JSON.stringify(s.report).slice(0, 2000)}\n` +
               `Scan Result: ${JSON.stringify(s.scanResult).slice(0, 1000)}\n[END SESSION CONTEXT]`;
 
-            lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
+            lookupReply = `Found it! 🔍 Here's your ascension record:\n\n` +
               `**Fingerprint:** \`${s.fingerprint}\`\n` +
               `**Serial:** \`${s.serialNumber}\`\n` +
               `**CJPI Score:** ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
               `**Primitives Applied:** ${primList}\n` +
               `**Language:** ${s.originalLanguage ?? 'Unknown'}\n` +
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
-              `I have your full original code, scan results, and refurbishment report on file. ` +
+              `I have your full original code, scan results, and ascension report on file. ` +
               `What would you like to know? I can explain any primitive that was applied, walk you through the findings, or help with next steps.`;
 
             setMessages(prev => [...prev, { role: 'assistant', content: contextBlock }, { role: 'assistant', content: lookupReply }]);
@@ -216,7 +216,7 @@ export function DecodeChat() {
       // No record found
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `🔍 I searched both the **Refurbishment Center** and all **Vertical Ascension** records for fingerprint \`${possibleFp}\`, but no matching record was found.\n\nDouble-check the ID and try again, or ask me anything else about the substrate.`
+        content: `🔍 I searched both the **Ascension Center** and all **Vertical Ascension** records for fingerprint \`${possibleFp}\`, but no matching record was found.\n\nDouble-check the ID and try again, or ask me anything else about the substrate.`
       }]);
       setIsLoading(false);
       return;
@@ -385,14 +385,14 @@ export function DecodeChat() {
 
   const quickActions = mode === 'support'
     ? [
-        { icon: "🔍", title: "Look Up Fingerprint", description: "Retrieve a past refurbishment", prompt: "I have a fingerprint ID from a previous refurbishment. Let me look it up." },
+        { icon: "🔍", title: "Look Up Fingerprint", description: "Retrieve a past ascension", prompt: "I have a fingerprint ID from a previous ascension. Let me look it up." },
         { icon: "🔧", title: "Troubleshoot", description: "Fix an issue", prompt: "I'm having an issue and need help troubleshooting." },
         { icon: "💰", title: "Plans & Pricing", description: "Subscription tiers", prompt: "Explain the CMPSBL subscription tiers and what each includes." },
         { icon: "👤", title: "Talk to a Human", description: "Escalate to support", prompt: "I'd like to escalate this to a human support agent." },
       ]
     : [
         { icon: "🔍", title: "Ascension Lookup", description: "Verify a fingerprint", prompt: "I have a fingerprint ID from an Ascension run. Can you verify it?" },
-        { icon: "🏗️", title: "Start Refurbishment", description: "Upgrade my code", prompt: "I want to refurbish my code. How do I get started with the Refurbishment Lab?" },
+        { icon: "🏗️", title: "Start Ascension", description: "Upgrade my code", prompt: "I want to ascend my code. How do I get started with the Ascension Lab?" },
         { icon: "🛡️", title: "What Are Primitives?", description: "Learn the 40 primitives", prompt: "Explain the 40 primitives and how they harden my software." },
         { icon: "🚀", title: "Getting Started", description: "Learn the substrate", prompt: "How do I start using the substrate? Walk me through the key features." },
       ];

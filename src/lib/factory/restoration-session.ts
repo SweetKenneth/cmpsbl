@@ -1,5 +1,5 @@
 /**
- * Restoration Session — Persist and retrieve refurbishment sessions
+ * Restoration Session — Persist and retrieve ascension sessions
  * Uses fingerprint ID for return-visit support via DECODE
  */
 

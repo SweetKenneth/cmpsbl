@@ -89,13 +89,13 @@ const TIERS: Array<{
     price: "$499–799",
     description: "Major reconstruction",
     scope: "Full reconstruction from fragments, backups, or partial code",
-    includes: ["Structural analysis", "Missing code reconstruction", "Full test suite", "Refurbishment report", "3-day evaluation"],
+    includes: ["Structural analysis", "Missing code reconstruction", "Full test suite", "Ascension report", "3-day evaluation"],
     featured: true,
   },
   {
     name: "Full Service",
     price: "$999+",
-    description: "Assembly + Refurbishment",
+    description: "Assembly + Ascension",
     scope: "Reconstruct, enhance, harden, and certify — complete transformation",
     includes: ["Everything in Rebuild", "CJPI certification", "IP protection", "25-language export", "Priority support"],
   },
@@ -109,7 +109,7 @@ export default function Assembly() {
         description="Full-service code reconstruction, splicing, and component integration. Bring us your broken, fragmented, or incomplete code — we piece it back together."
         canonical="https://cmpsbl.com/assembly"
         image="https://cmpsbl.com/og/store.jpg"
-        keywords={['code assembly', 'software reconstruction', 'component integration', 'code splicing', 'refurbishment service']}
+        keywords={['code assembly', 'software reconstruction', 'component integration', 'code splicing', 'ascension service']}
       />
 
       <PublicNav />

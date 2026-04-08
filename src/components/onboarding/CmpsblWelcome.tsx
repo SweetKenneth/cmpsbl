@@ -1,6 +1,6 @@
 /**
  * CMPSBL Welcome Onboarding — First-visit guided tour for /
- * Software Refurbishment Center intro: Memory Stream, Ascension, Catalog, legacy access
+ * Software Ascension Center intro: Memory Stream, Ascension, Catalog, legacy access
  * Uniform "Next" button bottom-right on every card
  */
 
@@ -40,9 +40,9 @@ const STEPS: OnboardingStep[] = [
   },
   {
     icon: Wrench,
-    tag: 'Refurbishment',
-    title: 'The Refurbishment Lab',
-    body: "Ascension takes your existing code and refurbishes it. We scan for vulnerabilities and hidden capabilities, harden it with up to 20 primitives, and send it back production-ready.\n\n3-day evaluation period included. If you're not satisfied, you keep the diagnostic report for free.",
+    tag: 'Ascension',
+    title: 'The Ascension Lab',
+    body: "Ascension takes your existing code and ascendes it. We scan for vulnerabilities and hidden capabilities, harden it with up to 20 primitives, and send it back production-ready.\n\n3-day evaluation period included. If you're not satisfied, you keep the diagnostic report for free.",
     footer: "Submit your code. We'll make it certified.",
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
@@ -51,7 +51,7 @@ const STEPS: OnboardingStep[] = [
     icon: ShoppingBag,
     tag: 'Catalog',
     title: 'Browse What the Scanners Found',
-    body: "The Catalog displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Open Archive — free access to Raw-tier discoveries that haven't been fully refurbished yet.",
+    body: "The Catalog displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Open Archive — free access to Raw-tier discoveries that haven't been fully ascended yet.",
     footer: 'Priced by quality. $1–$2 per CJPI point. Perfect 100s at $1,952.',
     accent: 'neon-magenta',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
@@ -69,7 +69,7 @@ const STEPS: OnboardingStep[] = [
     icon: Zap,
     tag: 'Get started',
     title: 'Start with a Free Account',
-    body: "Builder tier is free — browse the Catalog, access the Open Archive for Raw-tier discoveries, and view diagnostics.\n\nCreator and Architect tiers unlock Ascension refurbishments, expanded vaults, and priority processing. The center is already running — the scanners never stop.",
+    body: "Builder tier is free — browse the Catalog, access the Open Archive for Raw-tier discoveries, and view diagnostics.\n\nCreator and Architect tiers unlock Ascension ascensions, expanded vaults, and priority processing. The center is already running — the scanners never stop.",
     footer: 'No credit card required. The scanners are already discovering.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
