@@ -19,6 +19,7 @@ import { generateExportArtifacts, generateDiscoveryContext, generateTierMigratio
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 import { generateUniversalUserGuide } from './universal-user-guide';
+import { generateProofCertificate } from './proof-certificate';
 
 export interface TieredFoundryExportArtifact {
   id: string;

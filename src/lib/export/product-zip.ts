@@ -307,6 +307,14 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
   }));
 
+  // ═══ PROOF.txt — Cryptographic Provenance Certificate ═══
+  folder.file('PROOF.txt', generateProofCertificate({
+    tier: product.tier,
+    cjpi: cjpi,
+    primitives: [product.kind === 'engine' ? 'ENGINE' : 'AGENT', product.name],
+    source: `CMPSBL® Store · ${product.tier} Tier`,
+  }));
+
   return zip.generateAsync({ type: 'blob' });
 }
 
