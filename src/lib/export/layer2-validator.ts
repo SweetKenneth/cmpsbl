@@ -36,10 +36,23 @@ export function validateLayer2(
   language: string,
 ): Layer2ValidationResult {
   const errors: Layer2ValidationError[] = [];
+  const lang = language.toLowerCase();
 
-  // §1 — Balanced delimiters
+  // Languages where {} are structural blocks — hard errors on imbalance
+  const braceLanguages = new Set([
+    'typescript', 'javascript', 'java', 'c', 'c++', 'c#', 'csharp',
+    'rust', 'go', 'kotlin', 'scala', 'swift', 'dart', 'php',
+  ]);
+  const isBraceLang = braceLanguages.has(lang);
+
+  // §1 — Balanced delimiters (errors for brace langs, warnings for others)
   const delimiterErrors = checkBalancedDelimiters(layer2Code);
-  errors.push(...delimiterErrors);
+  if (isBraceLang) {
+    errors.push(...delimiterErrors);
+  } else {
+    // Downgrade to warnings for Python/Ruby/etc where {} are data literals
+    errors.push(...delimiterErrors.map(e => ({ ...e, severity: 'warning' as const })));
+  }
 
   // §2 — Unterminated strings
   const stringErrors = checkUnterminatedStrings(layer2Code, language);
