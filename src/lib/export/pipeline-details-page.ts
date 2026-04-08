@@ -215,7 +215,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
     html += `<div style="margin: 1rem 0; padding: 1rem 1.25rem; background: white; border: 1px solid var(--rule); border-radius: 4px;">`;
     html += `<div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem;">`;
     html += `<span style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em;">Stage ${i + 1}</span>`;
-    html += `<span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.1rem; font-weight: 600; color: var(--ink);">${escapeHtml(cap.name)}</span>`;
+    html += `<span style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink);">${escapeHtml(cap.name)}</span>`;
     html += `<span style="font-size: 0.75rem; color: var(--ink-muted);">— ${escapeHtml(cap.role)}</span>`;
     html += `</div>`;
     html += `<p style="font-size: 0.88rem; margin-bottom: 0.5rem;">${escapeHtml(cap.whatItDoes)}</p>`;
