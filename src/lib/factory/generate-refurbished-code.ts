@@ -3043,7 +3043,7 @@ if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
     lines.push(adapter.comment('Install: npm install @cmpsbl/test-harness'));
     lines.push(adapter.comment(`Run: verifyFingerprint("${fingerprint}")`));
     lines.push(adapter.comment(`© ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.`));
-    lines.push(adapter.comment('U.S. Patent Pending — App. No. 64/029,678'));
+    lines.push(adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'));
   }
 
   return lines.join('\n');
