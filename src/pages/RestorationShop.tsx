@@ -34,6 +34,8 @@ import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
 import { generateUniversalUserGuide } from "@/lib/export/universal-user-guide";
 import { generateProofCertificate } from "@/lib/export/proof-certificate";
+import { serializeCmpsblManifest } from "@/lib/export/cmpsbl-manifest";
+import { generateIntegrationGuide } from "@/lib/export/integration-guide-generator";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
