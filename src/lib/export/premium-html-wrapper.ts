@@ -433,6 +433,7 @@ tr:last-child td { border-bottom: none; }
 <body>
 
 <div class="doc-header">
+  <img src="${LOGO_DATA_URI}" alt="CMPSBL" width="40" height="40" style="margin-bottom:0.75rem;border-radius:8px;" />
   <div class="doc-issuer">${esc(substrateLabel)} · Software Export</div>
   <h1 class="doc-title">${esc(input.title)}</h1>
   ${input.subtitle ? `<p class="doc-subtitle">${esc(input.subtitle)}</p>` : ''}
