@@ -3169,7 +3169,8 @@ export function generateRefurbishedCode(
     '═══════════════════════════════════════════════════════════',
   ];
 
-  return [
+  // ── Assemble Layer 2 (everything except verbatimSource) ──────────────
+  const layer2Parts = [
     header,
     '',
     adapter.comment('═══ Runtime Imports ═══'),
@@ -3187,6 +3188,28 @@ export function generateRefurbishedCode(
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     ...guards,
+  ];
+
+  const layer2Code = layer2Parts.join('\n');
+
+  // ── AST-aware Layer 2 Validation ───────────────────────────────────
+  // Structurally validate our generated code before combining with L1.
+  const validation = validateLayer2(layer2Code, detected);
+  if (!validation.valid) {
+    const errorSummary = validation.errors
+      .filter(e => e.severity === 'error')
+      .map(e => `  L${e.line}: ${e.message}`)
+      .join('\n');
+    // Emit as structured warning in the artifact — do not block export,
+    // but surface the issue for debugging.
+    layer2Parts.push('');
+    layer2Parts.push(adapter.comment(`⚠ LAYER 2 VALIDATION: ${validation.errors.length} issue(s) detected`));
+    layer2Parts.push(adapter.comment(errorSummary));
+  }
+
+  // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
+  return [
+    layer2Code,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
