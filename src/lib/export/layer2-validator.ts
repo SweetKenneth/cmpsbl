@@ -221,9 +221,18 @@ function checkGuardPatterns(code: string, language: string): Layer2ValidationErr
       if (language.toLowerCase() === 'python' && line.trimEnd().endsWith(';')) {
         errors.push({ line: i + 1, column: line.length, message: 'Python guard has trailing semicolon', severity: 'error' });
       }
-      // For all: verify the line has balanced parens
-      const openParens = (line.match(/\(/g) ?? []).length;
-      const closeParens = (line.match(/\)/g) ?? []).length;
+      // Check balanced parens across the guard call (may span 1-3 lines)
+      let guardBlock = line;
+      let lookAhead = 1;
+      while (lookAhead <= 3 && i + lookAhead < lines.length) {
+        const nextLine = lines[i + lookAhead];
+        // Stop looking if next line is a new guard, comment, or blank separator
+        if (guardMethodPattern.test(nextLine) || /^\s*$/.test(nextLine) || /^\s*(\/\/|#|--)/.test(nextLine)) break;
+        guardBlock += '\n' + nextLine;
+        lookAhead++;
+      }
+      const openParens = (guardBlock.match(/\(/g) ?? []).length;
+      const closeParens = (guardBlock.match(/\)/g) ?? []).length;
       if (openParens !== closeParens) {
         errors.push({ line: i + 1, column: 0, message: `Unbalanced parentheses in guard call (${openParens} open, ${closeParens} close)`, severity: 'error' });
       }
