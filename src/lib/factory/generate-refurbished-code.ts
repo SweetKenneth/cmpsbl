@@ -3167,12 +3167,10 @@ export function generateRefurbishedCode(
     `Sealed:       ${new Date().toISOString()}`,
     '',
     'VERIFY: https://cmpsbl.com/verify/' + fingerprint,
-    '  npm install @cmpsbl/test-harness',
-    `  verifyFingerprint("${fingerprint}")`,
     '',
+    'Inventor: Kenneth E. Sweet Jr.',
+    'U.S. Patent App. No. 64/029,678 · No. 64/031,637',
     '© ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL® · All rights reserved.',
-    'U.S. Patent Pending — App. No. 64/029,678',
-    'Unauthorized reproduction prohibited.',
     '═══════════════════════════════════════════════════════════',
   ];
 
