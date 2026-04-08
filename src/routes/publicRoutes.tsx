@@ -139,6 +139,7 @@ export const publicRoutes = (
     <Route path="/mana/proof" element={<ManaProofPage />} />
     <Route path="/mana/lab" element={<ManaLabPage />} />
     <Route path="/dreams" element={<DreamStatePage />} />
+    <Route path="/lab" element={<LabPage />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
     <Route path="/dream-eater/archaeology" element={<DreamArchaeology />} />
