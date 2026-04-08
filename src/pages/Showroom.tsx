@@ -31,7 +31,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useDiscoveryCounts } from '@/hooks/useDiscoveryCounts';
 import { toast } from 'sonner';
 
-// Category images
+const MemoryRiverLazy = lazy(() => import('@/components/hero/MemoryRiver').then(m => ({ default: m.MemoryRiver })));
+
 import imgSecurity from '@/assets/showroom/security-compliance.jpg';
 import imgGovernance from '@/assets/showroom/governance-policy.jpg';
 import imgIntelligence from '@/assets/showroom/decision-intelligence.jpg';
