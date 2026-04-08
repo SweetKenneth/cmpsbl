@@ -34,6 +34,8 @@ export interface AttachmentPoint {
   invocations: number;
   /** Blocked invocation count (defense gates) */
   blocked: number;
+  /** Observed (but allowed) invocation count */
+  observed: number;
   /** Custom rule payload (e.g., shadow rule message) */
   rulePayload?: unknown;
 }
@@ -68,6 +70,10 @@ export interface ManaProof {
   readonly capabilities: ManaCapability[];
   /** Mana Fingerprint ID */
   readonly fingerprintId: string;
+  /** Recursive layer depth — 0 = raw host, 1 = first Mana layer, etc. */
+  readonly layerDepth: number;
+  /** SHA-256 of the parent layer (null if wrapping raw source) */
+  readonly parentLayerHash: string | null;
 }
 
 /** Telemetry event from Layer 2 observation */
@@ -90,6 +96,8 @@ export interface ManaManifest {
   readonly telemetry: ReadonlyArray<ManaTelemetryEvent>;
   readonly attachedAt: number | null;
   readonly detachedAt: number | null;
+  /** Recursive layer depth */
+  readonly layerDepth: number;
 }
 
 /** Mana Engine configuration */

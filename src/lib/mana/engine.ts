@@ -1,10 +1,12 @@
 /**
- * Mana Engine — Silent Symbiotic Attachment Runtime
+ * Mana Engine v2.0.0 — Silent Symbiotic Attachment Runtime
  * U.S. Patent App. No. 64/031,637
  * 
  * Wraps a Layer 1 host with Layer 2 capabilities at function boundaries.
  * The host source is NEVER modified — verified by SHA-256 proof.
  * All attachments governed by Lex.
+ * 
+ * Supports recursive layer composition: V3 wraps V2 wraps V1.
  * 
  * © CMPSBL® — All rights reserved.
  */
@@ -39,6 +41,11 @@ let hostSourceHash = '';
 let attachedAt: number | null = null;
 let detachedAt: number | null = null;
 
+/** Recursive layer depth — 0 = raw host, increments with each Mana wrap */
+let layerDepth = 0;
+/** SHA-256 of the parent layer (null if wrapping raw source) */
+let parentLayerHash: string | null = null;
+
 const attachmentPoints: Map<string, AttachmentPoint> = new Map();
 const telemetry: ManaTelemetryEvent[] = [];
 
@@ -57,7 +64,6 @@ async function computeHash(source: string): Promise<string> {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
-  // Node.js fallback
   const { createHash } = await import('crypto');
   return createHash('sha256').update(source).digest('hex');
 }
@@ -87,7 +93,6 @@ function emitTelemetry(
     metadata,
   });
 
-  // Evict oldest if over limit
   if (telemetry.length > config.maxTelemetryEvents) {
     telemetry.splice(0, telemetry.length - config.maxTelemetryEvents);
   }
@@ -106,12 +111,15 @@ function wrapWithDefenseGate(
     point.invocations++;
     emitTelemetry('defense_gate', functionName, 'invoked', { args: args.length });
 
-    // Lex check — can this invocation proceed?
     const { verdict } = evaluate('defense_gate', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
       emitTelemetry('defense_gate', functionName, 'blocked');
       throw new Error(`[MANA/DEFENSE] Lex denied invocation of ${functionName}`);
+    }
+    if (verdict === 'observe') {
+      point.observed++;
+      emitTelemetry('defense_gate', functionName, 'observed', { note: 'Lex observing — execution allowed' });
     }
 
     return originalFn.apply(this, args);
@@ -127,8 +135,33 @@ function wrapWithBeaconTelemetry(
     point.invocations++;
     const start = performance.now();
     const result = originalFn.apply(this, args);
-    const duration = performance.now() - start;
 
+    // Handle async returns — measure duration after resolution
+    if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => {
+          const duration = performance.now() - start;
+          emitTelemetry('beacon_telemetry', functionName, 'observed', {
+            durationMs: Math.round(duration * 100) / 100,
+            argCount: args.length,
+            returnType: 'promise',
+            async: true,
+          });
+          return resolved;
+        },
+        (err) => {
+          const duration = performance.now() - start;
+          emitTelemetry('beacon_telemetry', functionName, 'observed', {
+            durationMs: Math.round(duration * 100) / 100,
+            error: true,
+            async: true,
+          });
+          throw err;
+        }
+      );
+    }
+
+    const duration = performance.now() - start;
     emitTelemetry('beacon_telemetry', functionName, 'observed', {
       durationMs: Math.round(duration * 100) / 100,
       argCount: args.length,
@@ -148,13 +181,17 @@ function wrapWithGovernanceHook(
     point.invocations++;
 
     const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
-    emitTelemetry('governance_hook', functionName, verdict === 'deny' ? 'blocked' : 'invoked', {
-      verdict,
-    });
 
     if (verdict === 'deny') {
       point.blocked++;
+      emitTelemetry('governance_hook', functionName, 'blocked', { verdict });
       return undefined;
+    }
+    if (verdict === 'observe') {
+      point.observed++;
+      emitTelemetry('governance_hook', functionName, 'observed', { note: 'Governance observation — mutation logged' });
+    } else {
+      emitTelemetry('governance_hook', functionName, 'invoked', { verdict });
     }
 
     return originalFn.apply(this, args);
@@ -177,9 +214,11 @@ function wrapWithShadowRule(
         ? point.rulePayload
         : `[MANA] Simon says no — ${functionName} is governed.`;
       emitTelemetry('shadow_rule', functionName, 'blocked', { message });
-
-      // Shadow rules return a modified result, not throw
       return message;
+    }
+    if (verdict === 'observe') {
+      point.observed++;
+      emitTelemetry('shadow_rule', functionName, 'observed', { note: 'Shadow rule observing — passthrough with logging' });
     }
 
     return originalFn.apply(this, args);
@@ -229,6 +268,27 @@ function wrapWithCircuitBreaker(
 
     try {
       const result = originalFn.apply(this, args);
+
+      // Handle async — track rejections as failures
+      if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+        return (result as Promise<unknown>).then(
+          (resolved) => {
+            failures = 0;
+            emitTelemetry('circuit_breaker', functionName, 'invoked', { async: true });
+            return resolved;
+          },
+          (err) => {
+            failures++;
+            lastFailure = Date.now();
+            if (failures >= THRESHOLD) {
+              circuitOpen = true;
+              emitTelemetry('circuit_breaker', functionName, 'blocked', { reason: 'async_threshold', failures });
+            }
+            throw err;
+          }
+        );
+      }
+
       failures = 0;
       emitTelemetry('circuit_breaker', functionName, 'invoked');
       return result;
@@ -273,6 +333,11 @@ export function getState(): AttachmentState {
   return state;
 }
 
+/** Get current recursive layer depth */
+export function getLayerDepth(): number {
+  return layerDepth;
+}
+
 /**
  * Scan a host module and catalog its function boundaries.
  * Returns the list of wrappable function names.
@@ -296,6 +361,9 @@ export function scan(hostModule: Record<string, unknown>, packageName: string, v
 /**
  * Attach Layer 2 capabilities to a host module's function boundaries.
  * The host module object is wrapped in-place — original source untouched.
+ * 
+ * Supports recursive composition: calling attach() on an already-wrapped
+ * module increments layerDepth and chains parent hashes.
  */
 export async function attach(
   hostModule: Record<string, unknown>,
@@ -307,7 +375,18 @@ export async function attach(
   sourceForHash: string
 ): Promise<ManaManifest> {
   if (state === 'symbiotic') {
-    throw new Error('[MANA] Already attached. Detach first.');
+    // Recursive attach — V3 wraps V2: store current layer as parent
+    parentLayerHash = hostSourceHash || null;
+    layerDepth++;
+  } else {
+    // Detect if host is already a Mana-wrapped module (recursive layer)
+    const hasManaWraps = Object.values(hostModule).some(
+      v => typeof v === 'function' && (v as Function).name?.startsWith('mana')
+    );
+    if (hasManaWraps) {
+      parentLayerHash = hostSourceHash || null;
+      layerDepth++;
+    }
   }
 
   state = 'attaching';
@@ -321,7 +400,7 @@ export async function attach(
     const originalFn = hostModule[functionName];
 
     if (typeof originalFn !== 'function') {
-      continue; // Skip non-functions silently
+      continue;
     }
 
     // Lex governance check
@@ -341,6 +420,7 @@ export async function attach(
       active: true,
       invocations: 0,
       blocked: 0,
+      observed: 0,
       rulePayload,
     };
     attachmentPoints.set(`${functionName}:${capability}`, point);
@@ -349,7 +429,7 @@ export async function attach(
     const wrapper = getWrapper(capability);
     hostModule[functionName] = wrapper(originalFn, functionName, point);
 
-    emitTelemetry(capability, functionName, 'invoked', { action: 'attached' });
+    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth });
   }
 
   state = 'symbiotic';
@@ -380,16 +460,17 @@ export function detach(hostModule: Record<string, unknown>): ManaManifest {
 
   const manifest = getManifest();
 
-  // Clean up
+  // Clean up — decrement layer depth on detach
   originals.clear();
   attachmentPoints.clear();
+  if (layerDepth > 0) layerDepth--;
 
   return manifest;
 }
 
 /**
  * Generate cryptographic proof of non-modification.
- * Compares host source hash before and after attachment.
+ * Includes recursive layer tracking — each layer proves its host.
  */
 export async function generateProof(sourceForHash: string): Promise<ManaProof> {
   const currentHash = await computeHash(sourceForHash);
@@ -406,6 +487,8 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
     attachmentPointCount: points.length,
     capabilities,
     fingerprintId: generateFingerprintId(),
+    layerDepth,
+    parentLayerHash,
   };
 }
 
@@ -417,10 +500,11 @@ export function getManifest(): ManaManifest {
     attachmentState: state,
     attachmentPoints: Array.from(attachmentPoints.values()),
     lexRules: getRules(),
-    proof: null, // Proof is generated on-demand via generateProof()
+    proof: null,
     telemetry: [...telemetry],
     attachedAt,
     detachedAt,
+    layerDepth,
   };
 }
 
@@ -430,13 +514,14 @@ export function getTelemetry(): ReadonlyArray<ManaTelemetryEvent> {
 }
 
 /** Get telemetry summary */
-export function getTelemetrySummary(): Record<string, { invocations: number; blocked: number }> {
-  const summary: Record<string, { invocations: number; blocked: number }> = {};
+export function getTelemetrySummary(): Record<string, { invocations: number; blocked: number; observed: number }> {
+  const summary: Record<string, { invocations: number; blocked: number; observed: number }> = {};
 
   for (const point of attachmentPoints.values()) {
     summary[point.functionName] = {
       invocations: point.invocations,
       blocked: point.blocked,
+      observed: point.observed,
     };
   }
 
@@ -451,6 +536,8 @@ export function reset(): void {
   hostSourceHash = '';
   attachedAt = null;
   detachedAt = null;
+  layerDepth = 0;
+  parentLayerHash = null;
   attachmentPoints.clear();
   originals.clear();
   telemetry.length = 0;

@@ -14,6 +14,7 @@
 export {
   configure,
   getState,
+  getLayerDepth,
   scan,
   attach,
   detach,
@@ -23,6 +24,13 @@ export {
   getTelemetrySummary,
   reset,
 } from './engine';
+
+// Findings bridge — Ascension ↔ Mana convergence
+export {
+  detectFunctionBoundaries,
+  buildAttachmentPlan,
+  serializeAttachmentPlan,
+} from './findings-bridge';
 
 // Lex governor
 export {
