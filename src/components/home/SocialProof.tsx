@@ -101,6 +101,7 @@ export function SocialProof() {
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
                   {t.role && <span className="text-xs text-muted-foreground/70 font-medium">{t.role}</span>}
                 </div>
+                <span className="ml-auto text-[10px] text-muted-foreground/50 font-mono self-end">{t.date}</span>
               </div>
             </motion.div>
           ))}
