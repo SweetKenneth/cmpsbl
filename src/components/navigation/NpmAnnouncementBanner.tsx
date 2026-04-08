@@ -1,72 +1,48 @@
 /**
- * Site Announcement Banner — Dismissible top-bar across all pages
- * Currently: Site redesign announcement
+ * QuoteMarquee — Rolling quotes from internet pioneers
+ * Non-dismissible. Infinite scroll marquee with CSS animation.
  */
 
-import { useState, useEffect } from "react";
-import { Sparkles, ArrowRight, X } from "lucide-react";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
 
-const DISMISS_KEY = "cmpsbl-banner-dismissed-v2";
+const QUOTES = [
+  { text: "The Internet is becoming the town square for the global village of tomorrow.", author: "Bill Gates" },
+  { text: "Information wants to be free.", author: "Stewart Brand" },
+  { text: "The Web does not just connect machines, it connects people.", author: "Tim Berners-Lee" },
+  { text: "Move fast and break things. Unless you are breaking stuff, you are not moving fast enough.", author: "Mark Zuckerberg" },
+  { text: "The best way to predict the future is to invent it.", author: "Alan Kay" },
+  { text: "Software is eating the world.", author: "Marc Andreessen" },
+  { text: "Any sufficiently advanced technology is indistinguishable from magic.", author: "Arthur C. Clarke" },
+  { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
+  { text: "We are all now connected by the Internet, like neurons in a giant brain.", author: "Stephen Hawking" },
+  { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+] as const;
+
+// Duplicate for seamless loop
+const ITEMS = [...QUOTES, ...QUOTES];
 
 export function NpmAnnouncementBanner() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const dismissed = localStorage.getItem(DISMISS_KEY);
-    if (!dismissed) setVisible(true);
-  }, []);
-
-  const handleDismiss = () => {
-    setVisible(false);
-    localStorage.setItem(DISMISS_KEY, Date.now().toString());
-  };
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed top-0 left-0 right-0 z-[10001] overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))' }}
-        >
-          <div className="relative flex items-center justify-center gap-2 px-4 py-2 text-sm text-white">
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
-              className="flex items-center gap-2"
-            >
-              <Sparkles className="w-4 h-4 text-white/90 shrink-0" />
-              <span className="font-medium">
-                <span className="font-bold text-white">Marketplace Now Open.</span>
-              </span>
-              <span className="hidden sm:inline text-white/80">
-                50+ premium engines, agents, and memory chains — $10 to $50.
-              </span>
-              <a
-                href="https://marketplace.cmpsbl.com"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 ml-2 font-semibold text-white hover:underline underline-offset-2"
-              >
-                Browse Now
-                <ArrowRight className="w-3 h-3" />
-              </a>
-            </motion.div>
-            <button
-              onClick={handleDismiss}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/20 transition-colors"
-              aria-label="Dismiss announcement"
-            >
-              <X className="w-3.5 h-3.5 text-white/80" />
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      className="fixed top-0 left-0 right-0 z-[10001] overflow-hidden select-none"
+      style={{
+        background:
+          "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
+      }}
+    >
+      <div ref={containerRef} className="flex whitespace-nowrap animate-marquee py-1.5">
+        {ITEMS.map((q, i) => (
+          <span
+            key={`${q.author}-${i}`}
+            className="inline-flex items-center gap-1 mx-6 sm:mx-10 text-[11px] sm:text-xs text-white/90 font-medium shrink-0"
+          >
+            <span className="italic text-white/70">"{q.text}"</span>
+            <span className="text-white font-bold ml-1">— {q.author}</span>
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
