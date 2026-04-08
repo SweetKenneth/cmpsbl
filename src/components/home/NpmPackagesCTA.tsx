@@ -143,8 +143,10 @@ export function NpmPackagesCTA() {
           transition={{ duration: 0.4, delay: 0.15 }}
         >
           {/* CLI Card */}
-          <Link 
-            to="/documentation" 
+          <a 
+            href="https://www.npmjs.com/package/@cmpsbl/cli" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-cyan)/0.25)] bg-[hsl(var(--neon-cyan)/0.04)] hover:border-[hsl(var(--neon-cyan)/0.5)] hover:bg-[hsl(var(--neon-cyan)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-cyan)/0.05)]"
           >
             <Terminal className="w-8 h-8 text-[hsl(var(--neon-cyan))]" />
@@ -153,9 +155,9 @@ export function NpmPackagesCTA() {
               Scaffold projects, run Ascension, and validate manifests — all from your terminal.
             </p>
             <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[hsl(var(--neon-cyan))] group-hover:gap-2.5 transition-all">
-              View Docs <ArrowRight className="w-4 h-4" />
+              View on NPM <ArrowRight className="w-4 h-4" />
             </span>
-          </Link>
+          </a>
 
           {/* SDK Card */}
           <Link 
