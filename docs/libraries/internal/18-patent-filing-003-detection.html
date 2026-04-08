@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Provisional Patent Application — Runtime Integrity Verification System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --paper: #ffffff;
+    --accent: #2d3142;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --highlight: #f0f4ff;
+    --red: #dc2626;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.7;
+    font-size: 15px;
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 0.75in 1in;
+  }
+
+  .page-break { page-break-after: always; margin-bottom: 2rem; }
+
+  .classification {
+    background: var(--red);
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+  }
+
+  .document-header {
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .document-header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+
+  .document-header h2 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .document-header .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 6px;
+    margin: 2rem 0 1rem 0;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem 0;
+    color: var(--accent);
+  }
+
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 1rem 0 0.5rem 0;
+  }
+
+  p { margin-bottom: 0.75rem; }
+
+  .field-group {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 6px 16px;
+    margin-bottom: 1rem;
+    font-size: 14px;
+  }
+
+  .field-label {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .field-value {
+    color: var(--ink);
+  }
+
+  .cover-sheet {
+    border: 2px solid var(--ink);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .cover-sheet .cs-title {
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+  }
+
+  .cover-sheet .cs-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 14px;
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  th {
+    background: var(--highlight);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .checkbox {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--ink);
+    margin-right: 8px;
+    vertical-align: middle;
+    position: relative;
+  }
+
+  .checkbox.checked::after {
+    content: '✓';
+    position: absolute;
+    top: -4px;
+    left: 1px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .claim {
+    margin: 0.75rem 0;
+    padding-left: 2rem;
+    text-indent: -2rem;
+  }
+
+  .claim-number {
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  .note-box {
+    background: #fffbeb;
+    border: 1px solid #f59e0b;
+    border-left: 4px solid #f59e0b;
+    padding: 12px 16px;
+    margin: 1rem 0;
+    font-size: 13px;
+    border-radius: 4px;
+  }
+
+  .note-box strong {
+    color: #92400e;
+  }
+
+  .instruction-box {
+    background: var(--highlight);
+    border: 1px solid #93c5fd;
+    border-left: 4px solid #3b82f6;
+    padding: 12px 16px;
+    margin: 1rem 0;
+    font-size: 13px;
+    border-radius: 4px;
+  }
+
+  .red-box {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-left: 4px solid var(--red);
+    padding: 12px 16px;
+    margin: 1rem 0;
+    font-size: 13px;
+    border-radius: 4px;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+
+  .signature-block {
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+
+  .sig-line {
+    border-bottom: 1px solid var(--ink);
+    width: 300px;
+    margin: 2rem 0 4px 0;
+  }
+
+  .sig-label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  ul { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.4rem; }
+
+  .section-number {
+    font-weight: 700;
+    color: var(--accent);
+    margin-right: 0.5rem;
+  }
+
+  .legal-footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .toc {
+    margin: 1.5rem 0;
+  }
+
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--border);
+    font-size: 14px;
+  }
+
+  @media print {
+    body { padding: 0.5in 0.75in; font-size: 12pt; }
+    .classification { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-after: always; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 16px; font-size: 14px; }
+    .field-group { grid-template-columns: 1fr; }
+    .cover-sheet { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<!-- =========================================================
+     SECTION 1: FILING INSTRUCTIONS
+     ========================================================= -->
+
+<div class="document-header">
+  <h1>Provisional Patent Application</h1>
+  <h2>Filing Package & Instructions</h2>
+  <p class="subtitle">U.S. Patent & Trademark Office — Patent Center Electronic Filing</p>
+</div>
+
+<h2>Filing Instructions</h2>
+
+<div class="instruction-box">
+  <strong>📋 What This Package Contains:</strong>
+  <ol style="margin-top: 8px;">
+    <li><strong>Cover Sheet</strong> (PTO/SB/16 equivalent) — Page 2</li>
+    <li><strong>Written Specification</strong> (Technical Description) — Pages 3–8</li>
+    <li><strong>Informal Claims</strong> (Optional but recommended for scope) — Page 8</li>
+    <li><strong>Filing Fee Information</strong> — Below</li>
+  </ol>
+</div>
+
+<h3>How to File</h3>
+<ol>
+  <li>Go to <strong>https://patentcenter.uspto.gov</strong></li>
+  <li>Create an account or log in (USPTO.gov account required)</li>
+  <li>Select <strong>"New Submission" → "Provisional Application"</strong></li>
+  <li>Upload this document as the specification (PDF format)</li>
+  <li>Complete the electronic cover sheet (fields provided below)</li>
+  <li>Pay the filing fee</li>
+  <li>Receive your <strong>Application Number</strong> and <strong>Confirmation Number</strong></li>
+</ol>
+
+<h3>Filing Fee</h3>
+<table>
+  <tr>
+    <th>Entity Status</th>
+    <th>Fee (Effective Jan 19, 2025)</th>
+    <th>Applicable?</th>
+  </tr>
+  <tr>
+    <td>Micro Entity</td>
+    <td><strong>$65.00</strong></td>
+    <td><span class="checkbox checked"></span> Yes — you qualify</td>
+  </tr>
+  <tr>
+    <td>Small Entity</td>
+    <td>$130.00</td>
+    <td><span class="checkbox"></span></td>
+  </tr>
+  <tr>
+    <td>Large Entity</td>
+    <td>$325.00</td>
+    <td><span class="checkbox"></span></td>
+  </tr>
+</table>
+
+<div class="note-box">
+  <strong>Micro Entity Qualification:</strong> You qualify as a micro entity because: (1) you qualify as a small entity; (2) you have not been named as inventor on more than 4 previously filed patent applications; (3) you did not have a gross income exceeding 3× the median household income (~$228,000) in the previous calendar year; and (4) you have not assigned or licensed rights to an entity exceeding the income threshold. You must file a <strong>Micro Entity Certification (PTO/SB/15A)</strong> with your application. Patent Center will prompt you for this during filing.
+</div>
+
+<h3>Critical Deadlines</h3>
+<table>
+  <tr>
+    <th>Event</th>
+    <th>Deadline</th>
+  </tr>
+  <tr>
+    <td>File this provisional application</td>
+    <td><strong>ASAP</strong> — establishes priority date</td>
+  </tr>
+  <tr>
+    <td>Convert to non-provisional utility application</td>
+    <td><strong>12 months from filing date</strong></td>
+  </tr>
+  <tr>
+    <td>If not converted, provisional expires and is <strong>abandoned</strong></td>
+    <td>12 months + 1 day</td>
+  </tr>
+</table>
+
+<div class="red-box">
+  <strong>⚠️ IMPORTANT:</strong> A provisional application is <strong>never examined</strong> and <strong>never publishes</strong>. It stays confidential at the USPTO. It only establishes your priority date. You MUST file a non-provisional application within 12 months claiming the benefit of this provisional, or you lose the priority date entirely. Consider engaging a patent attorney for the non-provisional conversion.
+</div>
+
+<div class="page-break"></div>
+
+<!-- =========================================================
+     SECTION 2: COVER SHEET (PTO/SB/16 EQUIVALENT)
+     ========================================================= -->
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<div class="cover-sheet">
+  <div class="cs-title">Provisional Application for Patent Cover Sheet</div>
+  <div class="cs-subtitle">This is a request for filing a PROVISIONAL APPLICATION FOR PATENT<br>under 37 CFR §1.53(c)</div>
+
+  <h3>Inventor(s)</h3>
+  <div class="field-group">
+    <span class="field-label">Given Name:</span>
+    <span class="field-value">Kenneth Earl</span>
+    <span class="field-label">Family Name:</span>
+    <span class="field-value">Sweet Jr.</span>
+    <span class="field-label">Residence:</span>
+    <span class="field-value">Abilene, Texas, United States</span>
+    <span class="field-label">Mailing Address:</span>
+    <span class="field-value">302 Ross Ave, Abilene, TX 79605</span>
+  </div>
+
+  <h3>Title of the Invention</h3>
+  <div class="field-group">
+    <span class="field-label">Title:</span>
+    <span class="field-value"><strong>Runtime Integrity Verification System for Detecting Unauthorized Behavioral Modification of Software Functions Through Multi-Signal Anomaly Analysis</strong></span>
+  </div>
+
+  <h3>Correspondence Address</h3>
+  <div class="field-group">
+    <span class="field-label">Name:</span>
+    <span class="field-value">Kenneth Earl Sweet Jr.</span>
+    <span class="field-label">Address:</span>
+    <span class="field-value">302 Ross Ave</span>
+    <span class="field-label">City / State / ZIP:</span>
+    <span class="field-value">Abilene, TX 79605</span>
+    <span class="field-label">Country:</span>
+    <span class="field-value">United States</span>
+    <span class="field-label">Telephone:</span>
+    <span class="field-value">[YOUR PHONE NUMBER]</span>
+    <span class="field-label">Email:</span>
+    <span class="field-value">founder@cmpsbl.com</span>
+  </div>
+
+  <h3>Entity Status</h3>
+  <p><span class="checkbox checked"></span> Micro Entity (Certification PTO/SB/15A attached)</p>
+
+  <h3>Related Applications</h3>
+  <table>
+    <tr>
+      <th>Application No.</th>
+      <th>Title</th>
+      <th>Filing Date</th>
+      <th>Relationship</th>
+    </tr>
+    <tr>
+      <td>64/029,678<br>(Conf. 8985)</td>
+      <td>Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification</td>
+      <td>2025</td>
+      <td>Related — same inventor, complementary subject matter</td>
+    </tr>
+    <tr>
+      <td>64/031,637</td>
+      <td>Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments</td>
+      <td>April 7, 2026</td>
+      <td>Related — same inventor, complementary subject matter (this application covers the detection/defense counterpart)</td>
+    </tr>
+  </table>
+
+  <div class="note-box">
+    <strong>Note:</strong> This application is filed as a <strong>standalone provisional</strong>, not a Continuation-in-Part. The related applications above establish that the same inventor has filed complementary patents covering the attachment (offensive) capabilities. This third filing covers the <strong>detection and defense</strong> methodology — the ability to identify when the attachment described in App. No. 64/031,637 (or analogous unauthorized runtime modifications) has occurred.
+  </div>
+
+  <h3>Application Contents</h3>
+  <p><span class="checkbox checked"></span> Specification (Written Description) — 6 pages</p>
+  <p><span class="checkbox checked"></span> Informal Claims — 1 page</p>
+  <p><span class="checkbox"></span> Drawings — None (method patent; flowcharts may be added in non-provisional)</p>
+
+  <h3>Filing Fee</h3>
+  <p><span class="checkbox checked"></span> $65.00 — Micro Entity Provisional Application Filing Fee</p>
+
+</div>
+
+<div class="page-break"></div>
+
+<!-- =========================================================
+     SECTION 3: WRITTEN SPECIFICATION
+     ========================================================= -->
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<div class="document-header">
+  <h1>Written Specification</h1>
+  <h2>Runtime Integrity Verification System for Detecting Unauthorized Behavioral Modification of Software Functions Through Multi-Signal Anomaly Analysis</h2>
+</div>
+
+<h2>Field of the Invention</h2>
+
+<p>This invention relates generally to runtime software security and integrity verification, and more particularly to a system and method for detecting unauthorized behavioral modifications to software functions — including but not limited to runtime wrapping, function interception, middleware injection, prototype chain manipulation, and capability attachment — through multi-signal anomaly analysis conducted without access to or modification of the original source code.</p>
+
+<h2>Background of the Invention</h2>
+
+<p>Modern software architectures are increasingly exposed to runtime modification techniques that alter the behavior of existing functions without changing the underlying source code. These techniques include, but are not limited to:</p>
+
+<ul>
+  <li><strong>Function wrapping</strong> — replacing a function reference with a wrapper that intercepts calls, modifies arguments, alters return values, or introduces side effects;</li>
+  <li><strong>Prototype chain manipulation</strong> — modifying the prototype inheritance chain of objects to inject or override methods;</li>
+  <li><strong>Middleware injection</strong> — inserting processing layers between function calls and their consumers;</li>
+  <li><strong>Silent capability attachment</strong> — adding governance, telemetry, security, or monetization logic to existing functions at runtime boundaries without developer awareness or consent.</li>
+</ul>
+
+<p>The inventor has separately filed patent applications (U.S. App. Nos. 64/029,678 and 64/031,637) describing systems for performing such attachment and modification. The present invention addresses the complementary problem: <strong>detecting when such modification has occurred</strong>, regardless of the technique used, and providing a verification signal that software is operating in its original, unmodified state.</p>
+
+<p>Existing integrity verification approaches (checksum comparison, static analysis, code signing) fail to detect runtime modifications because the source code and compiled artifacts remain byte-for-byte identical. The modification occurs entirely in the runtime execution environment, below the visibility of traditional security tools.</p>
+
+<p>There is therefore a need for a runtime integrity verification system that can detect behavioral modification of software functions without requiring access to source code, without modifying the functions under test, and without prior knowledge of the specific modification technique employed.</p>
+
+<h2>Summary of the Invention</h2>
+
+<p>The present invention provides a runtime integrity verification system comprising a multi-signal anomaly analysis engine that observes the behavioral characteristics of software functions during execution and determines, with statistical confidence, whether those functions have been subjected to unauthorized modification.</p>
+
+<p>The system operates by collecting a plurality of behavioral signals from functions under test and comparing observed signal profiles against baseline behavioral models. Deviations exceeding configurable confidence thresholds trigger integrity violation alerts.</p>
+
+<p>The system is technique-agnostic — it does not look for any specific modification method, but instead detects the <strong>behavioral consequences</strong> of modification regardless of the underlying mechanism. This makes the system effective against known techniques (wrapping, proxying, prototype manipulation) and unknown future techniques that produce similar behavioral artifacts.</p>
+
+<h2>Detailed Description of Preferred Embodiments</h2>
+
+<h3>1. System Architecture</h3>
+
+<p>The runtime integrity verification system comprises the following components:</p>
+
+<ol type="a">
+  <li><strong>Signal Collection Module</strong> — a non-invasive observer that instruments function execution without modifying the functions under test. The Signal Collection Module gathers behavioral telemetry including but not limited to:
+    <ul>
+      <li>Execution timing characteristics (invocation latency, return timing, execution duration variance);</li>
+      <li>Behavioral fingerprint signals (property descriptor states, prototype chain topology, constructor identity, object property enumeration characteristics);</li>
+      <li>Call stack characteristics (depth, frame composition, caller chain topology);</li>
+      <li>Return value behavioral analysis (type consistency, structural integrity, value mutation patterns);</li>
+      <li>Memory and resource utilization patterns associated with function execution;</li>
+      <li>Error handling and exception propagation behavior.</li>
+    </ul>
+  </li>
+  <li><strong>Baseline Model Engine</strong> — constructs behavioral profiles for functions in their known-good unmodified state. Baselines may be established through:
+    <ul>
+      <li>Initial calibration during a trusted execution period;</li>
+      <li>Importation of pre-computed baseline profiles from a trusted authority;</li>
+      <li>Statistical modeling derived from behavioral invariants common to unmodified functions in a given runtime environment.</li>
+    </ul>
+  </li>
+  <li><strong>Anomaly Analysis Engine</strong> — compares observed behavioral signals against baseline models using a weighted multi-signal scoring algorithm. Each signal category contributes to a composite integrity score. The scoring weights are configurable and may be tuned for specific runtime environments, threat models, or sensitivity requirements.</li>
+  <li><strong>Verdict Engine</strong> — consumes composite integrity scores and emits one of the following determinations:
+    <ul>
+      <li><strong>VERIFIED</strong> — function behavior is consistent with baseline (unmodified);</li>
+      <li><strong>SUSPICIOUS</strong> — deviation detected but below violation threshold;</li>
+      <li><strong>VIOLATED</strong> — behavioral modification detected with high confidence;</li>
+      <li><strong>UNKNOWN</strong> — insufficient signal data for determination.</li>
+    </ul>
+  </li>
+  <li><strong>Response Orchestrator</strong> — upon detection of a VIOLATED verdict, the system may initiate configurable defensive responses including but not limited to:
+    <ul>
+      <li>Alerting human operators or automated monitoring systems;</li>
+      <li>Logging forensic data for post-incident analysis;</li>
+      <li>Initiating function restoration from known-good state;</li>
+      <li>Activating circuit breakers to isolate compromised functions;</li>
+      <li>Generating cryptographic integrity proofs for audit chains.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3>2. Multi-Signal Anomaly Analysis Method</h3>
+
+<p>The method of detecting unauthorized behavioral modification comprises the following steps:</p>
+
+<ol>
+  <li><strong>Establish Baseline:</strong> During a trusted initialization period, the system observes each function under protection and records its behavioral signal profile across all signal categories. This profile constitutes the function's behavioral fingerprint.</li>
+  <li><strong>Continuous Observation:</strong> During runtime operation, the Signal Collection Module continuously or periodically samples the behavioral signals of protected functions without interrupting their normal operation.</li>
+  <li><strong>Signal Comparison:</strong> For each observation cycle, the Anomaly Analysis Engine compares the observed signal vector against the stored baseline vector. Each signal category yields an individual deviation score.</li>
+  <li><strong>Weighted Composite Scoring:</strong> Individual deviation scores are combined using a configurable weighted formula to produce a composite integrity score. The weights reflect the relative diagnostic value of each signal category for the specific runtime environment.</li>
+  <li><strong>Threshold Evaluation:</strong> The composite integrity score is evaluated against configurable thresholds to determine the integrity verdict (VERIFIED, SUSPICIOUS, VIOLATED, or UNKNOWN).</li>
+  <li><strong>Response Execution:</strong> Based on the verdict, the Response Orchestrator initiates the appropriate defensive response as configured by the system operator.</li>
+</ol>
+
+<h3>3. Signal Categories and Their Diagnostic Value</h3>
+
+<p>The invention recognizes that different categories of behavioral signals have different diagnostic value for detecting different types of runtime modification. The following signal categories are identified as having particular diagnostic value:</p>
+
+<h4>3a. Property Descriptor Signals</h4>
+<p>Unmodified functions in JavaScript-compatible runtime environments exhibit specific property descriptor characteristics (configurability, writability, enumerability) that are altered when functions are replaced by wrapper constructs. The system observes these descriptor states as a high-weight integrity signal.</p>
+
+<h4>3b. Timing Differential Signals</h4>
+<p>Runtime modification techniques that interpose additional logic between caller and callee introduce measurable timing overhead. The system establishes baseline execution timing and detects statistically significant deviations. Timing signals are weighted to account for normal variance due to system load, garbage collection, and other non-adversarial factors.</p>
+
+<h4>3c. Prototype Chain Topology Signals</h4>
+<p>Functions in object-oriented runtime environments possess prototype chains that are structurally altered by certain modification techniques. The system maps and monitors prototype chain topology as an integrity signal.</p>
+
+<h4>3d. Constructor Identity Signals</h4>
+<p>Modified functions may exhibit altered constructor references, changed <code>name</code> properties, or inconsistent <code>toString()</code> representations. The system monitors these identity markers as supporting integrity signals.</p>
+
+<h4>3e. Call Stack Composition Signals</h4>
+<p>Wrapper functions and middleware layers introduce additional call stack frames. The system monitors call stack depth and frame composition during function execution as a supplementary integrity signal.</p>
+
+<h4>3f. Error Propagation Signals</h4>
+<p>Modified functions may exhibit altered error handling behavior — swallowing exceptions, wrapping errors in additional context, or modifying error types. The system monitors error propagation patterns as a supplementary integrity signal.</p>
+
+<h3>4. Technique-Agnostic Detection</h3>
+
+<p>A key feature of the invention is its technique-agnostic nature. Rather than detecting specific modification mechanisms (which would create an arms race requiring constant updates), the system detects the <strong>behavioral consequences</strong> common to all runtime modification approaches. Any technique that interposes logic between a function and its callers will produce observable behavioral artifacts in one or more signal categories. By monitoring multiple independent signal categories simultaneously, the system achieves robust detection even when individual signals are deliberately minimized by a sophisticated adversary.</p>
+
+<h3>5. Recursive Verification</h3>
+
+<p>The system supports recursive verification — the ability to verify the integrity of the verification system itself. The Signal Collection Module, Anomaly Analysis Engine, and Verdict Engine are themselves subject to integrity verification by a bootstrapped verification layer that establishes its own trusted baseline during a cryptographically sealed initialization sequence.</p>
+
+<h3>6. Cross-Environment Portability</h3>
+
+<p>While the preferred embodiment targets JavaScript/ECMAScript runtime environments (browsers, Node.js, Deno, Bun), the multi-signal anomaly analysis methodology is applicable to any runtime environment that supports function-level behavioral observation, including but not limited to: Python, Ruby, Java (via reflection), .NET (via interception), and compiled environments with dynamic linking capabilities.</p>
+
+<h2>Informal Claims</h2>
+
+<div class="note-box">
+  <strong>Note:</strong> Formal claims are not required for a provisional application. These informal claims are included to define the intended scope of protection and assist patent counsel in drafting the non-provisional application.
+</div>
+
+<p class="claim"><span class="claim-number">1.</span> A computer-implemented method for detecting unauthorized runtime modification of software functions, comprising: establishing a behavioral baseline for one or more software functions during a trusted execution period; continuously or periodically collecting a plurality of behavioral signals from the functions during runtime operation; comparing the collected behavioral signals against the stored baseline using a weighted multi-signal scoring algorithm to produce a composite integrity score; and determining, based on the composite integrity score and configurable thresholds, whether the function has been subjected to unauthorized behavioral modification.</p>
+
+<p class="claim"><span class="claim-number">2.</span> The method of claim 1, wherein the behavioral signals comprise two or more of: property descriptor state analysis, execution timing differential analysis, prototype chain topology mapping, constructor identity verification, call stack composition analysis, and error propagation pattern analysis.</p>
+
+<p class="claim"><span class="claim-number">3.</span> The method of claim 1, wherein the detection is technique-agnostic, detecting behavioral consequences of modification without requiring knowledge of the specific modification technique employed.</p>
+
+<p class="claim"><span class="claim-number">4.</span> The method of claim 1, further comprising initiating one or more configurable defensive responses upon detection of unauthorized modification, including alerting, logging, function restoration, circuit breaker activation, or cryptographic proof generation.</p>
+
+<p class="claim"><span class="claim-number">5.</span> The method of claim 1, further comprising recursive self-verification, wherein the integrity verification system verifies its own behavioral integrity using a bootstrapped verification layer established during a cryptographically sealed initialization sequence.</p>
+
+<p class="claim"><span class="claim-number">6.</span> A system for runtime integrity verification of software functions, comprising: a signal collection module configured to observe behavioral characteristics of software functions without modifying the functions under test; a baseline model engine configured to store behavioral fingerprints of functions in their unmodified state; an anomaly analysis engine configured to compare observed behavioral signals against stored baselines and produce composite integrity scores; and a verdict engine configured to emit integrity determinations based on composite scores and configurable thresholds.</p>
+
+<p class="claim"><span class="claim-number">7.</span> The system of claim 6, wherein the signal collection module collects signals across at least three independent signal categories to achieve robust detection even when individual signals are deliberately minimized by an adversary.</p>
+
+<p class="claim"><span class="claim-number">8.</span> The system of claim 6, wherein the anomaly analysis engine uses configurable signal weights that may be tuned for specific runtime environments, threat models, or sensitivity requirements.</p>
+
+<p class="claim"><span class="claim-number">9.</span> A non-transitory computer-readable medium storing instructions that, when executed by a processor, cause the processor to perform the method of claim 1.</p>
+
+<p class="claim"><span class="claim-number">10.</span> The method of claim 1, wherein the method operates across heterogeneous runtime environments including JavaScript, Python, Ruby, Java, and .NET environments.</p>
+
+<div class="page-break"></div>
+
+<!-- =========================================================
+     SECTION 4: INVENTOR DECLARATION & SIGNATURE
+     ========================================================= -->
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<h2>Inventor Declaration</h2>
+
+<p>I, the undersigned, declare that I am the sole inventor of the subject matter described in this provisional patent application. I have reviewed the above specification and believe it to be a true and complete description of my invention sufficient to enable a person of ordinary skill in the art to make and use the invention.</p>
+
+<p>I declare that all statements made herein of my own knowledge are true, and that all statements made on information and belief are believed to be true.</p>
+
+<div class="field-group" style="margin-top: 1.5rem;">
+  <span class="field-label">Inventor:</span>
+  <span class="field-value">Kenneth Earl Sweet Jr.</span>
+  <span class="field-label">Address:</span>
+  <span class="field-value">302 Ross Ave, Abilene, TX 79605</span>
+  <span class="field-label">Citizenship:</span>
+  <span class="field-value">United States</span>
+</div>
+
+<div class="signature-block">
+  <div class="sig-line"></div>
+  <span class="sig-label">Signature of Inventor</span>
+
+  <div class="sig-line"></div>
+  <span class="sig-label">Date</span>
+</div>
+
+<div class="page-break"></div>
+
+<!-- =========================================================
+     SECTION 5: TRANSMITTAL LETTER
+     ========================================================= -->
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<div class="document-header">
+  <h1>Transmittal Letter</h1>
+  <h2>Provisional Application for Patent Under 37 CFR §1.53(c)</h2>
+</div>
+
+<p style="margin-top: 1rem;"><strong>To:</strong> Commissioner for Patents<br>
+United States Patent and Trademark Office<br>
+P.O. Box 1450<br>
+Alexandria, VA 22313-1450</p>
+
+<p><strong>From:</strong><br>
+Kenneth Earl Sweet Jr.<br>
+302 Ross Ave<br>
+Abilene, TX 79605<br>
+founder@cmpsbl.com</p>
+
+<p><strong>Date:</strong> [INSERT FILING DATE]</p>
+
+<p><strong>Re:</strong> Provisional Application for Patent — "Runtime Integrity Verification System for Detecting Unauthorized Behavioral Modification of Software Functions Through Multi-Signal Anomaly Analysis"</p>
+
+<hr style="margin: 1.5rem 0;">
+
+<p>Dear Commissioner:</p>
+
+<p>Transmitted herewith for filing under 37 CFR §1.53(c) is a provisional application for patent comprising:</p>
+
+<ol>
+  <li>Provisional Application Cover Sheet (PTO/SB/16);</li>
+  <li>Written Specification (6 pages);</li>
+  <li>Informal Claims (10 claims);</li>
+  <li>Micro Entity Certification (PTO/SB/15A); and</li>
+  <li>Filing fee of $65.00 (micro entity rate).</li>
+</ol>
+
+<p>This application is related to the following previously filed applications by the same inventor:</p>
+
+<ul>
+  <li>U.S. Patent App. No. 64/029,678, filed 2025 — Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification</li>
+  <li>U.S. Patent App. No. 64/031,637, filed April 7, 2026 — Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Computing Environments</li>
+</ul>
+
+<p>The present application covers the detection and defense methodology complementary to the attachment systems described in the related applications. Together, the three applications form a comprehensive patent portfolio covering: (1) deterministic code evolution and hardening; (2) silent runtime capability attachment; and (3) detection of unauthorized runtime behavioral modification.</p>
+
+<p>Please direct all correspondence regarding this application to the address above.</p>
+
+<p>Respectfully submitted,</p>
+
+<div class="signature-block">
+  <div class="sig-line"></div>
+  <span class="sig-label">Kenneth Earl Sweet Jr. — Sole Inventor</span>
+
+  <div class="sig-line"></div>
+  <span class="sig-label">Date</span>
+</div>
+
+<div class="page-break"></div>
+
+<!-- =========================================================
+     SECTION 6: PRE-FILING CHECKLIST
+     ========================================================= -->
+
+<div class="classification">🔒 GOVERNOR EYES ONLY — PRIVILEGED & CONFIDENTIAL — PATENT DRAFT</div>
+
+<h2>Pre-Filing Checklist</h2>
+
+<table>
+  <tr>
+    <th style="width: 40px;">✓</th>
+    <th>Item</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Create USPTO.gov account at patentcenter.uspto.gov</td>
+    <td>Free to create</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Save this document as PDF</td>
+    <td>Print → Save as PDF (remove classification banners for filing)</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Add your phone number to the cover sheet</td>
+    <td>Replace [YOUR PHONE NUMBER]</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Insert filing date on transmittal letter</td>
+    <td>Replace [INSERT FILING DATE]</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Start new submission in Patent Center</td>
+    <td>Select "Provisional" application type</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Complete electronic cover sheet (PTO/SB/16)</td>
+    <td>Fields provided in Section 2 above</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Certify Micro Entity status (PTO/SB/15A)</td>
+    <td>Patent Center prompts you; check "Micro Entity" and certify</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Upload specification PDF</td>
+    <td>Upload as "Specification" document type</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Upload transmittal letter PDF</td>
+    <td>Upload as "Transmittal Letter" document type</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Pay $65.00 filing fee</td>
+    <td>Credit card, deposit account, or EFT</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Save confirmation receipt</td>
+    <td>Record Application Number and Confirmation Number</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Calendar 12-month deadline</td>
+    <td>Non-provisional must be filed before this date</td>
+  </tr>
+  <tr>
+    <td><span class="checkbox"></span></td>
+    <td>Delete this document from codebase</td>
+    <td>Tell Lov to delete after filing is confirmed</td>
+  </tr>
+</table>
+
+<div class="red-box">
+  <strong>⚠️ AFTER FILING:</strong> Record your Application Number and Confirmation Number in a secure location (not in this codebase). Then instruct Lov to delete this file. The filed document will be held confidentially by the USPTO and will never be published (provisionals do not publish). Your priority date is locked the moment the filing fee is paid and the application is accepted.
+</div>
+
+<div class="instruction-box">
+  <strong>💡 Patent Portfolio Summary After This Filing:</strong>
+  <table style="margin-top: 8px;">
+    <tr>
+      <th>Patent #</th>
+      <th>Covers</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>App. 64/029,678</td>
+      <td>The Weapon — Deterministic code hardening & evolution</td>
+      <td>Filed ✓</td>
+    </tr>
+    <tr>
+      <td>App. 64/031,637</td>
+      <td>The Delivery — Silent runtime attachment & governance</td>
+      <td>Filed ✓</td>
+    </tr>
+    <tr>
+      <td><em>[This Filing]</em></td>
+      <td>The Shield — Runtime integrity verification & detection</td>
+      <td>Ready to file</td>
+    </tr>
+  </table>
+</div>
+
+<div class="legal-footer">
+  <p>© 2025–2026 CMPSBL® · PromptFluid™ · Kenneth Earl Sweet Jr.</p>
+  <p>This document is prepared for patent filing purposes only. Governor Eyes Only.<br>
+  Delete from all digital systems after USPTO filing is confirmed.</p>
+</div>
+
+</body>
+</html>
