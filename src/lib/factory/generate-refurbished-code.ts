@@ -2821,9 +2821,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   echo: {
     imports: "import { StructuredLogger, EventCorrelator } from '@cmpsbl/runtime/echo';",
     guard: "StructuredLogger.init({ format: 'json', level: 'info', correlationId: true });\nEventCorrelator.enable({ traceContext: true, spanDepth: 10 });",
-    wrapper: (code) => {
-      return code.replace(/console\.(log|warn|error|info)\(/g, 'StructuredLogger.$1(');
-    },
+    wrapper: (code) => code,
   },
   observer: {
     imports: "import { StateObserver, TransitionTracker } from '@cmpsbl/runtime/observer';",
