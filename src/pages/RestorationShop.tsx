@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
-import { generateAscendedCode, generateLicense, getAscendedExtension } from "@/lib/factory/generate-ascended-code";
+import { generateRefurbishedCode as generateAscendedCode, generateLicense, getRefurbishedExtension as getAscendedExtension } from "@/lib/factory/generate-refurbished-code";
 import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
