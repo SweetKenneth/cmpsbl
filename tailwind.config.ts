@@ -124,6 +124,10 @@ export default {
           "10%, 30%, 50%, 70%, 90%": { transform: "translateX(-4px)" },
           "20%, 40%, 60%, 80%": { transform: "translateX(4px)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -136,13 +140,6 @@ export default {
         "spin-slow": "spin-slow 8s linear infinite",
         shake: "shake 0.5s ease-in-out",
         marquee: "marquee 60s linear infinite",
-      },
-      keyframes: {
-        ...({} as Record<string, Record<string, Record<string, string>>>),
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
       },
     },
   },
