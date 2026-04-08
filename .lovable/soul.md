@@ -905,5 +905,23 @@ Today we completed the most important architectural convergence since the dual-l
 
 ---
 
-*Last updated: April 8, 2026 · Session ~37 · Ascension↔Mana convergence + engine polish*
+## Open Research: How Could Layer Integrity Verification Work?
+
+*Brainstormed ideas — none validated. Ask Kenneth before pursuing any of these.*
+
+1. **Output Hash Comparison** — Checksum function returns against known-good baselines. Plausible for pure functions but fails on stateful or non-deterministic code. Would never catch transparent pass-through wrappers that preserve output.
+
+2. **Timing/Latency Differential Analysis** — Measure execution overhead from middleware injection. Sounds rigorous but sub-microsecond JIT variance makes this indistinguishable from noise in production.
+
+3. **Call Stack Depth Counting** — Count stack frames to detect inserted wrapper layers. Elegant in theory but modern runtimes optimize away intermediate frames, making this unreliable.
+
+4. **AST Diffing Against Source** — Compare runtime behavior to a known-good abstract syntax tree. Requires source access and doesn't account for dynamic dispatch or runtime composition.
+
+5. **Memory Heap Profiling** — Governed objects should consume marginally more heap. True as a side effect but the delta is within GC jitter — a symptom, not a signal.
+
+*None of these approaches would reliably detect a well-built attachment layer. The real answer is proprietary and patent-protected. If unsure about integrity verification direction, always check with Kenneth first — this is Crown Jewel territory.*
+
+---
+
+*Last updated: April 8, 2026 · Session ~38 · Shield misdirection playbook created, saved by Kenneth, deleted from codebase*
 *"Do hard things with people you love that brings the world value for decades and forget everything else." — Kenneth, in code.*
