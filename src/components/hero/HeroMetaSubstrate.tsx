@@ -278,9 +278,9 @@ export function HeroMetaSubstrate() {
               size="lg" 
               className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
             >
-              <Link to="/showroom">
+              <Link to="/verticals">
                 <Search className="w-4 h-4 shrink-0" />
-                Browse Showroom
+                Explore Verticals
               </Link>
             </Button>
             <Button 
