@@ -426,6 +426,18 @@ export default function Showroom() {
                 </Link>
               </Button>
             </motion.div>
+
+            {/* Memory Stream visualization */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="mt-8 max-w-3xl mx-auto"
+            >
+              <Suspense fallback={<div className="h-[160px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
+                <MemoryRiverLazy autoCrystallize hideTagline />
+              </Suspense>
+            </motion.div>
           </div>
         </section>
 
