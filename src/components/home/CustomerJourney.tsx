@@ -25,7 +25,7 @@ const STEPS = [
   },
   {
     number: "03",
-    title: "Refurbish",
+    title: "Ascend",
     description: "Apply up to 20 primitives to upgrade the system.",
     accent: "--neon-magenta",
     icon: Cpu,
