@@ -315,7 +315,7 @@ export function HeroMetaSubstrate() {
           </FadeIn>
 
           {/* Zenodo — bold & prominent */}
-          <FadeIn delay={0.5} className="flex justify-center mt-4">
+          <FadeIn delay={0.5} className="flex justify-center mt-3">
             <a
               href="https://zenodo.org/records/18895141"
               target="_blank"
