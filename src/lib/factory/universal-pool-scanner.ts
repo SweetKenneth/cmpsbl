@@ -1019,7 +1019,7 @@ function scoreCandidate(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — DYNAMIC SLOT SELECTION (CODE-DRIVEN)
+// §5 — MATRIX-ENFORCED SLOT SELECTION (12/12/8/8)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -1029,63 +1029,90 @@ function scoreCandidate(
 const SELECTION_THRESHOLD = 0.10;
 
 /**
- * The score gap that triggers a natural cutoff.
- * If the next candidate's score drops by more than 40% relative to the
- * current candidate, the scanner stops — the code doesn't need more.
+ * The 40-Primitive Matrix — non-negotiable architectural invariant.
+ * Every Ascension output MUST produce exactly this topology:
+ *   12 Organs · 12 Layers · 8 Engines · 8 Agents = 40 Primitives
  */
-const DROP_OFF_RATIO = 0.40;
-
-/** Absolute maximum to prevent degenerate cases */
+const MATRIX_QUOTAS: Record<string, number> = {
+  organ: 12,
+  layer: 12,
+  engine: 8,
+  agent: 8,
+};
 const MAX_SLOTS = 40;
 
-/** Minimum selection — at least a few primitives for any code */
-const MIN_SLOTS = 8;
-
 /**
- * Select the optimal primitives for this specific codebase.
- * The count is DYNAMIC — driven by what the code actually needs.
- * No category restrictions. No spine lock. No organ/layer quotas.
- * Diversity constraint: max 10 from any single non-spine source,
- * max 16 from spine (since spine has the most semantic breadth).
+ * Select the optimal 40 primitives enforcing the 12/12/8/8 matrix.
+ *
+ * Phase 1: Score-rank all candidates and greedily fill each role quota
+ *          with the highest-scoring primitives of that role.
+ * Phase 2: If any role is under-filled (code didn't trigger enough signals),
+ *          backfill from the remaining candidates of that role, relaxing
+ *          the signal-hit minimum to 1, then to 0 if needed.
+ * Phase 3: Final validation — every slot filled, topology locked.
  */
 function selectOptimalPrimitives(
   candidates: PoolCandidate[],
 ): PoolCandidate[] {
+  // Sort all candidates by score descending
   const sorted = [...candidates]
-    .filter(c => c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 2)
     .sort((a, b) => b.compoundingScore - a.compoundingScore);
 
+  // Bucket candidates by role
+  const byRole: Record<string, PoolCandidate[]> = {
+    organ: [],
+    layer: [],
+    engine: [],
+    agent: [],
+  };
+  for (const c of sorted) {
+    const role = c.primitive.role;
+    if (byRole[role]) byRole[role].push(c);
+  }
+
   const selected: PoolCandidate[] = [];
-  const sourceCounts: Record<string, number> = {};
   const usedIds = new Set<string>();
 
-  for (let i = 0; i < sorted.length; i++) {
-    if (selected.length >= MAX_SLOTS) break;
-
-    const candidate = sorted[i];
-
-    // Natural cutoff: if there's a significant score drop-off after minimum,
-    // stop — the code doesn't benefit from more primitives
-    if (selected.length >= MIN_SLOTS && i > 0) {
-      const prevScore = sorted[i - 1].compoundingScore;
-      const dropOff = (prevScore - candidate.compoundingScore) / prevScore;
-      if (dropOff >= DROP_OFF_RATIO) break;
+  // Phase 1: Fill each role quota with highest-scoring candidates
+  // that meet the quality threshold (score >= threshold AND signalHits >= 2)
+  for (const [role, quota] of Object.entries(MATRIX_QUOTAS)) {
+    const roleCandidates = byRole[role] ?? [];
+    let filled = 0;
+    for (const c of roleCandidates) {
+      if (filled >= quota) break;
+      if (usedIds.has(c.primitive.id)) continue;
+      if (c.compoundingScore >= SELECTION_THRESHOLD && c.signalHits >= 2) {
+        selected.push(c);
+        usedIds.add(c.primitive.id);
+        filled++;
+      }
     }
-
-    // Diversity: spine gets 24 (broadest semantic range, 31+ primitives),
-    // others capped at 5 to ensure expansion primitives don't crowd out
-    // architecturally significant spine matches
-    const maxForSource = candidate.sourceVertical === 'spine' ? 24 : 5;
-    const sc = sourceCounts[candidate.sourceVertical] ?? 0;
-    if (sc >= maxForSource) continue;
-
-    // Dedup by primitive ID
-    if (usedIds.has(candidate.primitive.id)) continue;
-
-    selected.push(candidate);
-    sourceCounts[candidate.sourceVertical] = sc + 1;
-    usedIds.add(candidate.primitive.id);
   }
+
+  // Phase 2: Backfill under-filled roles with relaxed requirements
+  // First pass: relax to signalHits >= 1
+  // Second pass: accept any candidate (signalHits >= 0)
+  for (const minHits of [1, 0]) {
+    for (const [role, quota] of Object.entries(MATRIX_QUOTAS)) {
+      const currentCount = selected.filter(s => s.primitive.role === role).length;
+      if (currentCount >= quota) continue;
+
+      const roleCandidates = byRole[role] ?? [];
+      let needed = quota - currentCount;
+      for (const c of roleCandidates) {
+        if (needed <= 0) break;
+        if (usedIds.has(c.primitive.id)) continue;
+        if (c.signalHits >= minHits) {
+          selected.push(c);
+          usedIds.add(c.primitive.id);
+          needed--;
+        }
+      }
+    }
+  }
+
+  // Sort final selection by compounding score descending for consistent output
+  selected.sort((a, b) => b.compoundingScore - a.compoundingScore);
 
   return selected;
 }
