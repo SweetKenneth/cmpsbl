@@ -166,6 +166,7 @@ export function resetBreaker(module: string): void {
   const b = getBreaker(module);
   b.failures = 0;
   b.successes = 0;
+  b.everSucceeded = false;
   transition(b, 'closed');
 }
 
