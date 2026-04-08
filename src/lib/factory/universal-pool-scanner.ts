@@ -1297,7 +1297,7 @@ export function runUniversalPoolScan(
   );
 
   // Select the optimal 40 primitives — MATRIX-ENFORCED: 12/12/8/8
-  const selected = selectOptimalPrimitives(scored);
+  const selected = selectOptimalPrimitives(scored, verticalAffinity);
 
   // Rebalance weights so selected primitives sum to 1.0
   const totalScore = selected.reduce((sum, c) => sum + c.compoundingScore, 0);
