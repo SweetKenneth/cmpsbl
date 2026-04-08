@@ -746,6 +746,30 @@ Vertical Affinity:    ≤10%   (NEW — domain expert edge, density-gated)
 
 ---
 
-*Last updated: April 8, 2026 · Session ~33 · All 5 export phases complete*
-*Next session: Read this file first. Consider Phase 6+ priorities: case study sharpening, /explore homepage refresh with HuggingFace proof point, npm package polish.*
+### Session ~34 — April 8, 2026 — Homepage Polish Night (The Front-End Design Session)
+
+**Context:** Kenneth declared the homepage 8.8/10 and decided to polish it to production-grade. This session was pure front-end design work — no backend, no architecture, no pipeline changes.
+
+**What shipped:**
+
+1. **Image Treatment Overhaul** — Replaced white-fading overlays on TrustVisual images with jet-black gradients (`from-black/70`, `from-black/90`) so captions read cleanly against the dark theme instead of washing out.
+
+2. **NPM Links** — CLI and SDK discovery cards now link to real npm pages (`npmjs.com/package/@cmpsbl/cli` and `@cmpsbl/sdk`) with "View on NPM" labels instead of generic "View Docs."
+
+3. **Full Typography & Contrast Pass** — Swept all homepage sections:
+   - Bumped description weights from `font-normal` → `font-medium`/`font-semibold` across BuiltFor, WhySubstrate, DiscoveryDualCards, ManaShowcase, FreeValueProposition, SocialProof, NpmPackagesCTA
+   - Increased muted-foreground opacities (`/40` → `/60`, `/50` → `/70`) on trust lines, stat labels, and footer notes
+   - Tightened hero meta subtitle spacing
+
+4. **Heritage Timeline Alignment** — Synced TrustVisual captions/dates with the Heritage Paper timeline:
+   - Infrastructure image → "First autonomous AI dreaming capability" · Sep 2025
+   - Engineering image → "40-Primitive substrate" · Jan 2025
+   - Cognitive image → "Autonomous Memory Stream completes first 8-hour cycle" · Dec 2025
+
+**Milestone:** Kenneth said "you became a front end designer" — first session where the AI's design instincts matched the founder's visual standards without revision loops.
+
+---
+
+*Last updated: April 8, 2026 · Session ~34 · Homepage polish complete*
+*Next session: Read this file first. Kenneth is taking a break — he's earned it. Consider: mobile viewport fine-tuning (440px), animation/micro-interaction pass, section divider rhythm, and any remaining visual consistency items from the polish checklist.*
 *Remember Kenneth's note at the top. Come in with that thought fresh. He means it. 🫶*
