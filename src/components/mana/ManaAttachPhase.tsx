@@ -1,6 +1,8 @@
 /**
  * ManaAttachPhase — Execute Layer 2 attachment and show live results
- * Runs the actual Mana engine on the uploaded code
+ * 
+ * Uses the Ascension findings bridge for surgical capability mapping
+ * instead of blanket rule application.
  */
 
 import { useState, useEffect, useRef } from 'react';
@@ -65,53 +67,76 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
     setProgress(0);
     setLogLines([]);
 
-    // Dynamic import to avoid bundling Mana engine on page load
-    const { configure, scan, attach, generateProof, registerRule, reset } = await import('@/lib/mana/index');
+    // Dynamic imports — findings bridge + engine
+    const [mana, bridge] = await Promise.all([
+      import('@/lib/mana/index'),
+      import('@/lib/mana/findings-bridge'),
+    ]);
 
-    addLog('MANA ENGINE v1.0.0 — Initializing...');
-    reset();
-    configure({ telemetry: true, maxTelemetryEvents: 5000, dreamSynthesis: false, lexMode: 'permissive' });
+    addLog('MANA ENGINE v2.0.0 — Initializing...');
+    mana.reset();
+    mana.configure({ telemetry: true, maxTelemetryEvents: 5000, dreamSynthesis: false, lexMode: 'permissive' });
     addLog('Lex Governor online. Mode: permissive.');
 
-    // Register shadow rules
+    // Register selected Lex rules
     const enabledRules = rules.filter(r => r.enabled);
     for (const rule of enabledRules) {
       addLog(`Lex rule registered: ${rule.label} (${rule.capability})`);
     }
     setProgress(15);
-
     await new Promise(r => setTimeout(r, 400));
 
-    // Scan — discover function boundaries from source
+    // Phase 1: SCAN — Ascension-grade function boundary detection via findings bridge
     setPhase('scanning');
     addLog(`Scanning host: ${upload.name} (${upload.language})`);
     addLog(`Source size: ${upload.sizeKb}KB · ${upload.fileCount} file(s)`);
 
-    // Parse function names from the code
-    const fnRegex = /(?:export\s+)?(?:async\s+)?function\s+(\w+)|(?:export\s+)?const\s+(\w+)\s*=\s*(?:async\s*)?\(|def\s+(\w+)|fn\s+(\w+)|func\s+(\w+)|pub\s+fn\s+(\w+)/g;
-    const functionNames: string[] = [];
-    let match: RegExpExecArray | null;
-    while ((match = fnRegex.exec(upload.sourceContent)) !== null) {
-      const name = match[1] || match[2] || match[3] || match[4] || match[5] || match[6];
-      if (name && !functionNames.includes(name)) {
-        functionNames.push(name);
-      }
-    }
+    const boundaries = bridge.detectFunctionBoundaries(upload.sourceContent);
+    const functionNames = boundaries.map(b => b.name);
 
-    // Ensure minimum functions
+    // Fallback for files with no detectable functions
     if (functionNames.length === 0) {
       functionNames.push('main', 'handler', 'process');
+      addLog('No function boundaries detected — using default entry points');
     }
 
     addLog(`Discovered ${functionNames.length} function boundaries`);
-    for (const fn of functionNames.slice(0, 10)) {
-      addLog(`  → ${fn}()`);
+    for (const b of boundaries.slice(0, 10)) {
+      addLog(`  → ${b.name}() [line ${b.line}]`);
     }
-    if (functionNames.length > 10) {
-      addLog(`  ... +${functionNames.length - 10} more`);
+    if (boundaries.length > 10) {
+      addLog(`  ... +${boundaries.length - 10} more`);
     }
     setProgress(35);
     await new Promise(r => setTimeout(r, 500));
+
+    // Phase 2: BUILD ATTACHMENT PLAN — surgical signal-matched mapping
+    addLog('Building surgical attachment plan via Ascension findings bridge...');
+
+    // Map enabled Lex rule capabilities → active primitives
+    const CAPABILITY_TO_PRIMITIVE: Record<ManaCapability, string> = {
+      defense_gate: 'DEFENSE',
+      beacon_telemetry: 'BEACON',
+      governance_hook: 'GOVERNANCE',
+      shadow_rule: 'DEFENSE',
+      circuit_breaker: 'FAILSAFE',
+      audit_trail: 'AUDIT',
+      dream_synthesis: 'BEACON',
+    };
+    const activePrimitives = new Set(
+      enabledRules.map(r => CAPABILITY_TO_PRIMITIVE[r.capability]).filter(Boolean)
+    );
+
+    const findings = bridge.buildAttachmentPlan(boundaries, activePrimitives);
+    addLog(`Findings bridge produced ${findings.length} surgical attachment targets`);
+    for (const f of findings.slice(0, 8)) {
+      addLog(`  ⊕ ${f.functionName}() ← ${f.capability} [${f.primitive}] (${Math.round(f.confidence * 100)}%)`);
+    }
+    if (findings.length > 8) {
+      addLog(`  ... +${findings.length - 8} more`);
+    }
+    setProgress(50);
+    await new Promise(r => setTimeout(r, 300));
 
     // Build the host module mock for the engine
     const hostModule: Record<string, unknown> = {};
@@ -119,35 +144,56 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
       hostModule[fn] = function (...args: unknown[]) { return args; };
     }
 
-    // Attach
+    // Phase 3: ATTACH — wrap function boundaries with Layer 2
     setPhase('attaching');
-    addLog('Phase 2: ATTACH — Wrapping function boundaries with Layer 2...');
+    addLog('Phase 3: ATTACH — Wrapping function boundaries with Layer 2...');
 
     const capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }> = [];
-    for (const fn of functionNames) {
-      for (const rule of enabledRules) {
-        capabilities.push({
-          functionName: fn,
-          capability: rule.capability,
-          rulePayload: rule.capability === 'shadow_rule' ? `🛑 MANA: ${fn} is under Lex governance.` : undefined,
-        });
+
+    // Use surgical findings from the bridge
+    for (const finding of findings) {
+      capabilities.push({
+        functionName: finding.functionName,
+        capability: finding.capability,
+        rulePayload: finding.capability === 'shadow_rule'
+          ? `🛑 MANA: ${finding.functionName} is under Lex governance.`
+          : undefined,
+      });
+    }
+
+    // If bridge produced no findings (generic code), apply enabled rules broadly
+    if (findings.length === 0 && enabledRules.length > 0) {
+      addLog('No signal-matched targets — applying blanket rules to all functions');
+      for (const fn of functionNames) {
+        for (const rule of enabledRules) {
+          capabilities.push({
+            functionName: fn,
+            capability: rule.capability,
+            rulePayload: rule.capability === 'shadow_rule' ? `🛑 MANA: ${fn} is under Lex governance.` : undefined,
+          });
+        }
       }
     }
 
-    const manifest = await attach(hostModule, capabilities, upload.sourceContent);
+    const manifest = await mana.attach(hostModule, capabilities, upload.sourceContent);
     addLog(`Attached ${manifest.attachmentPoints.length} attachment points across ${functionNames.length} functions`);
+    addLog(`Layer depth: ${manifest.layerDepth}`);
     setProgress(65);
 
-    for (const rule of enabledRules) {
-      const count = manifest.attachmentPoints.filter(p => p.capability === rule.capability).length;
-      addLog(`  ${rule.label}: ${count} points active`);
+    // Log capability distribution
+    const capCounts = new Map<string, number>();
+    for (const p of manifest.attachmentPoints) {
+      capCounts.set(p.capability, (capCounts.get(p.capability) ?? 0) + 1);
+    }
+    for (const [cap, count] of capCounts) {
+      addLog(`  ${cap}: ${count} points active`);
     }
     await new Promise(r => setTimeout(r, 400));
 
-    // Proof
+    // Phase 4: PROOF — SHA-256 verification
     setPhase('proving');
-    addLog('Phase 3: PROOF — Computing SHA-256 verification...');
-    const proof = await generateProof(upload.sourceContent);
+    addLog('Phase 4: PROOF — Computing SHA-256 verification...');
+    const proof = await mana.generateProof(upload.sourceContent);
     setProgress(90);
 
     addLog(`SHA-256 Before: ${proof.hostHashBefore.slice(0, 16)}...`);
@@ -157,6 +203,9 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
       : '❌ MISMATCH — Integrity check failed.'
     );
     addLog(`Fingerprint: ${proof.fingerprintId}`);
+    if (proof.parentLayerHash) {
+      addLog(`Parent layer: ${proof.parentLayerHash.slice(0, 16)}... (depth ${proof.layerDepth})`);
+    }
 
     await new Promise(r => setTimeout(r, 300));
 
@@ -245,7 +294,7 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
                 line.includes('✅') ? 'text-green-400' :
                 line.includes('❌') ? 'text-red-400' :
                 line.includes('═') ? 'text-primary' :
-                line.includes('→') ? 'text-[hsl(var(--neon-cyan,190_100%_60%))]' :
+                line.includes('→') || line.includes('⊕') ? 'text-[hsl(var(--neon-cyan,190_100%_60%))]' :
                 'text-white/70'
               )}
             >
