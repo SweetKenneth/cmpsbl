@@ -213,7 +213,7 @@ export function HeroMetaSubstrate() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
           >
             <Wrench className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Refurbishment Center</span>
+            <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Reimagined</span>
             <span className="flex items-center gap-1 pl-2 border-l border-border/30">
               <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
               <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
