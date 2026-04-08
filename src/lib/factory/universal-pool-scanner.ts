@@ -1043,27 +1043,48 @@ const MATRIX_QUOTAS: Record<string, number> = {
 const MAX_SLOTS = 40;
 
 /**
- * Mandatory primitives — these ALWAYS appear in scan results regardless of
- * signal detection. A file with zero security keywords must still receive
- * DEFENSE hardening. A file with no caching still benefits from MEMORY
- * tiering awareness. These are architectural non-negotiables.
+ * §5 — 3-TIER MANDATORY PRIMITIVE MODEL
  *
- * The scanner will force-select these primitives and apply a score floor
- * so they rank competitively even when the source code has no direct signals.
+ * Tier 1 — IRON LAW (always selected, no exceptions)
+ *   Architectural invariants from doc-04. Every scan, every vertical,
+ *   every upload MUST include them.
+ *
+ * Tier 2 — STRONG DEFAULT (loaded unless score is literally 0)
+ *   High-value for any software. Only absent if the code genuinely has
+ *   zero affinity AND no structural archetype match.
+ *
+ * Tier 3 — VERTICAL BOOST (2× scoring weight within home vertical)
+ *   Vertical expansion primitives get doubled score on their home
+ *   vertical. Ultimate gets Iron Law + Strong Default only — NO
+ *   vertical boost — to remain pure meritocracy.
  */
-const MANDATORY_PRIMITIVES: ReadonlySet<string> = new Set([
-  'DEFENSE',     // Security hardening — ALWAYS (Invariant #3: DEFENSE is terminal)
-  'MEMORY',      // Storage/persistence awareness — ALWAYS
-  'AUDIT',       // Immutable logging — ALWAYS (Invariant #1: AUDIT is immutable)
-  'GOVERNANCE',  // Policy enforcement — ALWAYS (Invariant #2: GOVERNANCE cannot be bypassed)
-  'FAILSAFE',    // Circuit breakers — ALWAYS
-  'BEACON',      // Health signals — ALWAYS
-  'IMMUNITY',    // Threat resistance — ALWAYS
-  'INTENT',      // Purpose alignment — ALWAYS
+
+/** Tier 1: Architectural invariants — ALWAYS selected, no exceptions */
+const IRON_LAW_PRIMITIVES: ReadonlySet<string> = new Set([
+  'DEFENSE',     // Invariant #3: DEFENSE is terminal
+  'GOVERNANCE',  // Invariant #2: GOVERNANCE cannot be bypassed
+  'AUDIT',       // Invariant #1: AUDIT is immutable
+  'FAILSAFE',    // Circuit breakers — always
+  'MEMORY',      // 4-tier persistent state — always
+  'BRAIN',       // Cognitive processing — always
 ]);
 
-/** Minimum score floor for mandatory primitives to ensure competitive ranking */
-const MANDATORY_SCORE_FLOOR = 0.25;
+/** Tier 2: Near-guaranteed — only absent if truly zero affinity */
+const STRONG_DEFAULT_PRIMITIVES: ReadonlySet<string> = new Set([
+  'DREAM',       // Pattern synthesis — high value for any software
+  'MEDIC',       // Self-healing diagnostics
+  'ENGINEER',    // Infrastructure management
+  'INCLUSIVE',   // Accessibility — first-class, not afterthought
+  'VISION',      // Telemetry and anomaly detection
+  'WRAITH',      // Stealth operations and obfuscation
+]);
+
+/** Score floors per tier */
+const IRON_LAW_SCORE_FLOOR = 0.30;
+const STRONG_DEFAULT_SCORE_FLOOR = 0.15;
+
+/** Vertical boost multiplier for expansion primitives on home vertical */
+const VERTICAL_BOOST_MULTIPLIER = 2.0;
 
 /**
  * Select the optimal 40 primitives enforcing the 12/12/8/8 matrix.
