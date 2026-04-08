@@ -62,19 +62,19 @@ export function PatentTrustStrip() {
         {/* Inventor attribution */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-sm text-muted-foreground">Inventor:</span>
-            <span className="text-sm font-semibold text-foreground">Kenneth E. Sweet Jr.</span>
-            <span className="text-muted-foreground">·</span>
+            <span className="text-sm font-medium text-muted-foreground">Inventor:</span>
+            <span className="text-sm font-bold text-foreground">Kenneth E. Sweet Jr.</span>
+            <span className="text-muted-foreground font-medium">·</span>
             <a
               href="https://orcid.org/0009-0001-4237-1243"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
             >
               ORCID <ExternalLink className="w-3 h-3" />
             </a>
           </div>
-          <p className="text-xs text-muted-foreground max-w-lg mx-auto">
+          <p className="text-xs font-medium text-muted-foreground max-w-lg mx-auto">
             Governed Cognitive Infrastructure · A PromptFluid™&nbsp;Product
           </p>
           <Link
