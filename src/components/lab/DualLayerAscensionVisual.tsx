@@ -222,8 +222,8 @@ export const DualLayerAscensionVisual = memo(function DualLayerAscensionVisual()
             {/* Terminal header */}
             <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border/50 bg-card/50">
               <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+              <div className="w-2.5 h-2.5 rounded-full bg-accent/60" />
+              <div className="w-2.5 h-2.5 rounded-full bg-primary/60" />
               <span className="ml-2 text-[10px] font-mono text-muted-foreground/50">ascension — live</span>
             </div>
 
