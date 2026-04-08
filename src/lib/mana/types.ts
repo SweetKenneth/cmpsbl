@@ -1,7 +1,6 @@
 /**
- * Mana Engine — Type Definitions
+ * Mana — Silent Software Symbiosis Engine · Type Definitions
  * U.S. Patent App. No. 64/031,637
- * Silent Symbiotic Software Attachment System
  * 
  * © CMPSBL® — All rights reserved.
  */

@@ -1,9 +1,8 @@
 /**
- * Mana Engine — Unified API
+ * Mana — Silent Software Symbiosis Engine
  * U.S. Patent App. No. 64/031,637
- * Silent Symbiotic Software Attachment System
  * 
- * The substrate's Layer 2 attachment runtime.
+ * The substrate's Layer 2 deployment and defense runtime.
  * Wraps host software at function boundaries without source modification.
  * All operations governed by Lex — the layer's conscience.
  * 
