@@ -210,7 +210,7 @@ export function HeroMetaSubstrate() {
           
           {/* Software Refurbishment Center banner */}
           <FadeIn delay={0.05}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
           >
             <Wrench className="w-3.5 h-3.5 text-primary" />
             <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Reimagined</span>
