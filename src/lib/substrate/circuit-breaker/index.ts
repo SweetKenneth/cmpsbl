@@ -98,6 +98,9 @@ export function recordFailure(module: string): void {
   b.failures++;
   b.lastFailure = Date.now();
 
+  // Cold-start guard: never trip a breaker that has never succeeded
+  if (!b.everSucceeded) return;
+
   if (b.state === 'half_open') {
     b.successes = 0;
     transition(b, 'open');
