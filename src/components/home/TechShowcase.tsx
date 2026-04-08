@@ -636,7 +636,7 @@ export function TechShowcase() {
             <Layers className="w-3 h-3 text-primary" />
             <span className="text-xs">40 Primitives • Organs · Layers · Engines · Agents</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
             Complete{" "}
             <span className="text-[hsl(var(--neon-cyan))]">
               Cognitive SDK

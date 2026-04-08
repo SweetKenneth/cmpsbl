@@ -129,7 +129,7 @@ export function IndustryShowcase() {
             <Sparkles className="w-3 h-3 text-primary animate-pulse" />
             <span className="text-xs font-semibold">Universal Infrastructure</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
             One Substrate,{" "}
             <span className="text-[hsl(var(--neon-purple))]">
               Every Industry
