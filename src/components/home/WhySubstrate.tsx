@@ -248,9 +248,9 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
         <h3 className="font-bold text-base sm:text-lg text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
           {item.title}
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          {item.description}
-        </p>
+         <p className="text-sm text-muted-foreground leading-relaxed font-medium">
+           {item.description}
+         </p>
         
         {/* Hover arrow indicator */}
         <motion.div 

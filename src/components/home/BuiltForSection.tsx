@@ -258,7 +258,7 @@ export function BuiltForSection() {
             <br />
             <span className="text-[hsl(var(--neon-cyan))]">Our Substrate.</span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed font-medium">
             Background processing, governed adaptation, and persistent memory — built for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}
             <span className="text-foreground font-medium">development</span>, and{" "}

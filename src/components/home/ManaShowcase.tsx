@@ -76,10 +76,10 @@ export function ManaShowcase() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.2)] text-[hsl(var(--neon-cyan))] text-[10px] font-bold uppercase tracking-wider mb-4">
             Live Proof Available
           </div>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-            We silently attached Layer 2 to{" "}
-            <span className="text-foreground font-semibold">lodash</span> — injecting DEFENSE gates, Shadow Rules, and governance hooks. The original source hash matches&nbsp;byte-for-byte.
-          </p>
+           <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6 font-medium">
+             We silently attached Layer 2 to{" "}
+             <span className="text-foreground font-bold">lodash</span> — injecting DEFENSE gates, Shadow Rules, and governance hooks. The original source hash matches&nbsp;byte-for-byte.
+           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Link to="/mana">

@@ -356,7 +356,7 @@ export function HeroMetaSubstrate() {
         className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 animate-fade-in"
         style={{ animationDelay: "2.5s", animationFillMode: "both" }}
       >
-        <span className="text-[9px] text-muted-foreground/30 font-medium tracking-[0.2em] uppercase">Explore</span>
+        <span className="text-[9px] text-muted-foreground/50 font-semibold tracking-[0.2em] uppercase">Explore</span>
         <div className="w-px h-6 bg-gradient-to-b from-primary/20 to-transparent" />
         <div className="animate-scroll-bounce">
           <ChevronDown className="w-4 h-4 text-primary/25" />
