@@ -177,9 +177,9 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.tagline}
           </p>
           
-          <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed">
-            {audience.description}
-          </p>
+           <p className="text-sm text-muted-foreground mb-5 flex-grow leading-relaxed font-medium">
+             {audience.description}
+           </p>
           
           <div className="space-y-2.5 mb-6">
             {audience.features.map((feature, idx) => (
