@@ -22,6 +22,11 @@ import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 import { PublicNav } from "@/components/PublicNav";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
+import { TrustVisual } from "@/components/home/TrustVisual";
+
+import trustInfrastructure from "@/assets/trust-infrastructure.jpg";
+import trustEngineering from "@/assets/trust-engineering.jpg";
+import trustCognitive from "@/assets/trust-cognitive.jpg";
 
 // Below-fold: lazy loaded to reduce initial JS and improve FCP
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
@@ -109,8 +114,7 @@ export default function Explore() {
         <DiscoveryDualCards />
 
         <SectionDivider />
-
-        {/* ═══ SUBSTRATE IS ALIVE — zero-setup value prop ═══ */}
+        <TrustVisual src={trustInfrastructure} alt="Cognitive infrastructure — 40 Primitives connected across governed layers" />
         <SubstrateAliveSection />
 
         <SectionDivider />
@@ -127,8 +131,7 @@ export default function Explore() {
         <BuiltForSection />
 
         <SectionDivider />
-
-        {/* ═══ ACTIVATION MODEL ═══ */}
+        <TrustVisual src={trustEngineering} alt="Enterprise-grade engineering environment powered by CMPSBL substrate" />
         <ArtifactPacksSection />
 
         <SectionDivider />
@@ -145,8 +148,7 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-
-        {/* ═══ MENTAL MODEL ═══ */}
+        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" />
         <HowCmpsblWorks />
 
         <SectionDivider />
