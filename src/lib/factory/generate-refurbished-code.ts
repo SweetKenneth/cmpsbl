@@ -20,6 +20,11 @@ import {
 } from '../export/opacity-engine';
 import { generateInlinePrimitives } from './inline-primitive-generator';
 import { validateLayer2 } from '../export/layer2-validator';
+import {
+  detectFunctionBoundaries,
+  buildAttachmentPlan,
+  serializeAttachmentPlan,
+} from '../mana/findings-bridge';
 
 // ── Language Syntax Adapters ──
 
