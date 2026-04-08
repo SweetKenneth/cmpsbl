@@ -253,7 +253,7 @@ export function HeroMetaSubstrate() {
             <p className="text-base sm:text-lg text-muted-foreground font-semibold leading-relaxed mb-2.5">
               Upload code in <span className="text-foreground font-extrabold">90+ languages</span>. Get back <span className="text-foreground font-extrabold">hardened, certified</span> software — in&nbsp;minutes.
             </p>
-            <p className="text-sm sm:text-base text-muted-foreground/80 font-medium leading-relaxed">
+            <p className="text-sm sm:text-base text-muted-foreground font-medium leading-relaxed">
               <span className="text-foreground font-bold">Dual-patent protected.</span> Free accounts are <span className="text-foreground font-bold">first-class members</span>. Your code gains <span className="text-foreground font-bold">security</span>, <span className="text-foreground font-bold">governance</span>, and <span className="text-foreground font-bold">resilience</span>&nbsp;— without modifying the&nbsp;original.
             </p>
           </FadeIn>
