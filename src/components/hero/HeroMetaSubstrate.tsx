@@ -114,8 +114,8 @@ function TypedText({ texts, gradientColors, className }: {
 }
 
 // ─── Animated Stat (CSS-only, no framer-motion) ─────────────────
-function AnimatedStat({ value, label, suffix = "", delay = 0 }: { 
-  value: number; label: string; suffix?: string; delay?: number;
+function AnimatedStat({ value, label, sublabel, suffix = "", delay = 0 }: { 
+  value: number; label: string; sublabel?: string; suffix?: string; delay?: number;
 }) {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
