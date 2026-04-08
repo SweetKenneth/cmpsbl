@@ -132,7 +132,7 @@ export default function Explore() {
         <BuiltForSection />
 
         <SectionDivider />
-        <TrustVisual src={trustEngineering} alt="Enterprise-grade engineering environment powered by CMPSBL substrate" />
+        <TrustVisual src={trustEngineering} alt="Enterprise-grade engineering environment powered by CMPSBL substrate" caption="40-Primitive substrate reaches full orchestration" date="Jan 2025" />
         <ArtifactPacksSection />
 
         <SectionDivider />
