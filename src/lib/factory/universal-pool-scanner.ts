@@ -1167,15 +1167,16 @@ function selectOptimalPrimitives(
     roleCounters[role]++;
   }
 
-  // Phase 0C: Apply VERTICAL BOOST (Tier 3) — 2× score for expansion
-  // primitives on their home vertical. Ultimate gets NO boost.
-  // This doesn't force-select; it doubles score so they win competitively.
-  for (const c of sorted) {
-    if (usedIds.has(c.primitive.id)) continue;
-    // Vertical boost is already applied in scoreCandidate via verticalAffinityBonus.
-    // Here we apply the additional 2× multiplier for non-ultimate verticals.
-    // The verticalAffinityBonus in scoreCandidate handles the density-gated 10%.
-    // This phase applies the full VERTICAL_BOOST_MULTIPLIER on top.
+  // Phase 0C: Apply VERTICAL BOOST (Tier 3) — 2× score multiplier
+  // for expansion primitives on their home vertical. Ultimate = no boost.
+  // This doesn't force-select; it multiplies score so they win competitively.
+  if (verticalAffinity && verticalAffinity !== 'ultimate') {
+    for (const c of sorted) {
+      if (usedIds.has(c.primitive.id)) continue;
+      if (c.sourceVertical === verticalAffinity && c.signalHits > 0) {
+        c.compoundingScore *= VERTICAL_BOOST_MULTIPLIER;
+      }
+    }
   }
 
   // Phase 1: Fill each role quota with highest-scoring candidates
