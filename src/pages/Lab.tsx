@@ -4,8 +4,7 @@
  */
 
 import { Helmet } from "react-helmet-async";
-import { DualLayerAscensionVisual } from "@/components/lab/DualLayerAscensionVisual";
-import { MagicalWrapVisual } from "@/components/lab/MagicalWrapVisual";
+import { CombinedAscensionVisual } from "@/components/lab/CombinedAscensionVisual";
 import { SplitPaneVisual } from "@/components/lab/SplitPaneVisual";
 import { ConcentricShieldVisual } from "@/components/lab/ConcentricShieldVisual";
 
@@ -25,7 +24,7 @@ function ExperimentBlock({
       <div className="max-w-3xl mx-auto">
         <div className="mb-8 text-center">
           <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-primary mb-1 block">
-            Experiment #{number}
+            Concept #{number}
           </span>
           <h2 className="text-lg sm:text-xl font-bold text-foreground mb-1">{title}</h2>
           <p className="text-xs text-muted-foreground font-medium">{description}</p>
@@ -56,28 +55,20 @@ export default function Lab() {
             Visual Lab
           </h1>
           <p className="text-sm text-muted-foreground font-medium">
-            Four hero animation concepts for dual-layer ascension.
+            Three hero animation concepts for dual-layer ascension.
           </p>
         </div>
 
         <ExperimentBlock
           number={1}
-          title="Terminal Scanner"
-          description="Scan line sweeps Layer 1 while capability labels inject from the right."
+          title="Terminal Scanner + Magical Wrap (Combined)"
+          description="Scan line, orbiting runes, energy border, and Layer 2 injections — all looping infinitely on a 10s cycle."
         >
-          <DualLayerAscensionVisual />
+          <CombinedAscensionVisual />
         </ExperimentBlock>
 
         <ExperimentBlock
           number={2}
-          title="Magical Code Wrap"
-          description="Enchanted runes orbit the legacy host while Layer 2 attachment glows into existence."
-        >
-          <MagicalWrapVisual />
-        </ExperimentBlock>
-
-        <ExperimentBlock
-          number={3}
           title="Before / After Split"
           description="Side-by-side: unprotected code vs. ascended code with visible hardening annotations."
         >
@@ -85,7 +76,7 @@ export default function Lab() {
         </ExperimentBlock>
 
         <ExperimentBlock
-          number={4}
+          number={3}
           title="Concentric Shield Rings"
           description="Each Layer 2 primitive orbits the host as a protective ring — Defense, Governance, Beacon, Failsafe."
         >
