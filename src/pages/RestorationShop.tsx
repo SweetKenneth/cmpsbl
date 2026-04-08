@@ -21,6 +21,8 @@ import {
   MessageSquare,
   FileUp,
   Download,
+  Award,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
@@ -643,6 +645,61 @@ export default function RestorationShop() {
           {/* DEBRIEF PHASE */}
           {phase === 'debrief' && report && (
             <div className="max-w-3xl mx-auto space-y-6">
+              {/* ═══ CJPI Hero Badge ═══ */}
+              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card/30 to-primary/5 p-6 sm:p-8 text-center relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none" style={{
+                  backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 60%)",
+                }} />
+                <div className="relative z-10">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/10 mb-4">
+                    <Award className="w-3 h-3 text-primary" />
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-widest">CJPI Certificate</span>
+                  </div>
+                  <div className="text-5xl sm:text-6xl font-black text-foreground mb-1">{report.cjpiCertificate.score}</div>
+                  <div className={cn(
+                    "inline-block text-xs font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-4",
+                    report.cjpiCertificate.tier === 'S-Tier' || report.cjpiCertificate.tier === 'Apex'
+                      ? "bg-primary/15 text-primary border border-primary/30"
+                      : report.cjpiCertificate.tier === 'A-Tier'
+                        ? "bg-neon-green/15 text-neon-green border border-neon-green/30"
+                        : "bg-muted/30 text-muted-foreground border border-border/30"
+                  )}>
+                    {report.cjpiCertificate.tier}
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground font-mono">
+                    <span>Serial: {report.cjpiCertificate.serialNumber}</span>
+                    <span className="hidden sm:inline">·</span>
+                    <span>{report.primitiveManifest.length} primitives applied</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* ═══ Primitives Applied Breakdown ═══ */}
+              <div className="rounded-xl border border-border/30 bg-card/20 p-4">
+                <h4 className="text-xs font-bold text-foreground mb-3 flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
+                  Primitives Applied — {report.primitiveManifest.length} Total
+                </h4>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                  {(['Organ', 'Layer', 'Engine', 'Agent'] as const).map(cat => {
+                    const count = report.primitiveManifest.filter(p => p.category === cat).length;
+                    return (
+                      <div key={cat} className="rounded-lg bg-muted/20 p-2.5 text-center">
+                        <div className="text-lg font-black text-foreground">{count}</div>
+                        <div className="text-[9px] text-muted-foreground uppercase tracking-wider">{cat}s</div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {report.primitiveManifest.map(p => (
+                    <span key={p.name} className="text-[9px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/10">
+                      {p.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
               <DecodeDebrief
                 report={report}
                 scanResult={scanResult}
@@ -652,32 +709,39 @@ export default function RestorationShop() {
               />
               <RestorationReportView report={report} />
 
-              {/* Fingerprint ID notice */}
-              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
-                <p className="text-xs text-muted-foreground mb-1">Your Fingerprint ID</p>
-                <p className="text-sm font-mono font-bold text-primary">{report.cjpiCertificate.fingerprint}</p>
-                <p className="text-[10px] text-muted-foreground mt-2">
-                  Save this ID — you can return anytime and use it with DECODE to pull up this refurbishment for support.
+              {/* ═══ Fingerprint & Verification ═══ */}
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 text-center">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Your Fingerprint ID</p>
+                <p className="text-base sm:text-lg font-mono font-black text-primary break-all">{report.cjpiCertificate.fingerprint}</p>
+                <p className="text-[10px] text-muted-foreground mt-3 mb-3">
+                  Save this ID — use it with DECODE for support, or verify provenance publicly.
                 </p>
+                <Button asChild variant="outline" size="sm" className="rounded-full text-xs gap-1.5">
+                  <Link to={`/verify/${report.cjpiCertificate.fingerprint}`}>
+                    <Shield className="w-3 h-3" />
+                    Verify Provenance
+                  </Link>
+                </Button>
               </div>
 
-              <div className="flex gap-3">
+              {/* ═══ Actions ═══ */}
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   onClick={resetFlow}
                   variant="outline"
-                  className="flex-1 rounded-xl font-semibold"
+                  className="sm:flex-1 rounded-xl font-semibold"
                 >
-                  Start New Refurbishment
+                  Start New Ascension
                 </Button>
                 <Button
-                  className="flex-1 rounded-xl font-bold gap-2"
+                  className="sm:flex-1 rounded-xl font-bold gap-2"
                   onClick={handleExport}
                 >
                   <Download className="w-3.5 h-3.5" />
-                  Export Refurbished Code
+                  Export Ascended Code
                 </Button>
               </div>
-              <div className="text-center pt-2">
+              <div className="text-center pt-1">
                 <Button asChild variant="link" size="sm" className="text-muted-foreground gap-1">
                   <Link to="/showroom">
                     <Sparkles className="w-3 h-3" />

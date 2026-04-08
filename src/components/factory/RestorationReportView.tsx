@@ -63,7 +63,7 @@ export function RestorationReportView({ report }: RestorationReportViewProps) {
             <FileText className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-foreground">Restoration Report</h3>
+            <h3 className="text-sm font-bold text-foreground">Ascension Report</h3>
             <p className="text-[10px] text-muted-foreground">
               {report.id} · Generated {report.generatedAt.toLocaleDateString()}
             </p>

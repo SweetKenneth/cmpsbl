@@ -88,7 +88,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'intro',
     role: 'decode',
-    content: `Refurbishment complete. I've analyzed your code, applied the primitives you selected, and prepared your hardened package. Let me walk you through exactly what changed. ✨`,
+    content: `Ascension complete. I've analyzed your code, applied the primitives you selected, and prepared your hardened package. Let me walk you through exactly what changed. ✨`,
     icon: MessageSquare,
   });
 
@@ -97,7 +97,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'cjpi',
     role: 'decode',
-    content: `Your code scored **CJPI ${cert.score}** — placing it in the **${cert.tier}** tier. ${cert.score >= 94 ? "That's exceptional." : cert.score >= 80 ? "Solid foundation." : "Room to grow."} Your fingerprint ID is \`${cert.fingerprint}\` — save this to pull up your refurbishment anytime.`,
+    content: `Your code scored **CJPI ${cert.score}** — placing it in the **${cert.tier}** tier. ${cert.score >= 94 ? "That's exceptional." : cert.score >= 80 ? "Solid foundation." : "Room to grow."} Your fingerprint ID is \`${cert.fingerprint}\` — save this to pull up your ascension anytime.`,
     icon: Sparkles,
     highlight: cert.score >= 90,
   });
@@ -140,7 +140,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'docs',
     role: 'decode',
-    content: `Your export includes: LICENSE, dual-layer source (original + refurbished), pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, and a README. Everything you need to verify and maintain independently. 📋`,
+    content: `Your export includes: LICENSE, dual-layer source (original + ascended), pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, and a README. Everything you need to verify and maintain independently. 📋`,
     icon: FileText,
   });
 
@@ -173,7 +173,7 @@ function getContextualResponse(
   if (/what.*change|what.*upgrade|what.*different|what.*happen|what.*did you do/i.test(q)) {
     const primList = primNames.join(', ');
     const vulnCount = report.vulnerabilityAssessment.length;
-    return `I applied ${primNames.length} primitives to your code: ${primList}. The scan team identified ${vulnCount} issues — ${report.vulnerabilityAssessment.filter(v => v.severity === 'critical').length} critical and ${report.vulnerabilityAssessment.filter(v => v.severity === 'warning').length} warnings — all of which have been addressed. Your CJPI score is ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier} tier). The refurbished code includes guard activations for each primitive, meaning they're actively protecting your runtime.`;
+    return `I applied ${primNames.length} primitives to your code: ${primList}. The scan team identified ${vulnCount} issues — ${report.vulnerabilityAssessment.filter(v => v.severity === 'critical').length} critical and ${report.vulnerabilityAssessment.filter(v => v.severity === 'warning').length} warnings — all of which have been addressed. Your CJPI score is ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier} tier). The ascended code includes guard activations for each primitive, meaning they're actively protecting your runtime.`;
   }
 
   // Questions about a specific primitive
@@ -192,12 +192,12 @@ function getContextualResponse(
 
   // Export / download / zip
   if (/export|download|zip|package/i.test(q)) {
-    return `Your export package includes: the original source, the refurbished (hardened) source with primitive guard activations, a LICENSE file, pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, primitive manifest, and a README with quick-start instructions. Click "Export Refurbished Code" to download the ZIP.`;
+    return `Your export package includes: the original source, the ascended (hardened) source with primitive guard activations, a LICENSE file, pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, primitive manifest, and a README with quick-start instructions. Click "Export Ascended Code" to download the ZIP.`;
   }
 
   // Fingerprint / return / support
   if (/fingerprint|return|come back|support|lookup|pull up/i.test(q)) {
-    return `Your fingerprint ID is \`${fingerprint}\`. Save it — you can return to cmpsbl.com anytime and provide this ID to DECODE. I'll pull up your full refurbishment history including the original code, what was applied, your CJPI score, and every primitive's contribution. It's your permanent reference for this refurbishment.`;
+    return `Your fingerprint ID is \`${fingerprint}\`. Save it — you can return to cmpsbl.com anytime and provide this ID to DECODE. I'll pull up your full ascension history including the original code, what was applied, your CJPI score, and every primitive's contribution. It's your permanent reference.`;
   }
 
   // CJPI / score / tier
@@ -221,7 +221,7 @@ function getContextualResponse(
     if (hasFailsafe) {
       return `FAILSAFE is active. You now have full version control: \`cmpsbl backup\` creates a snapshot, \`cmpsbl restore <id>\` rolls back. Circuit breakers handle automatic recovery during runtime failures. Your backup history is maintained independently of your deployment pipeline.`;
     }
-    return `Your current refurbishment doesn't include FAILSAFE. To add backup/restore capabilities with circuit breakers, you can run another refurbishment and select the FAILSAFE primitive.`;
+    return `Your current ascension doesn't include FAILSAFE. To add backup/restore capabilities with circuit breakers, you can run another ascension and select the FAILSAFE primitive.`;
   }
 
   // Documentation

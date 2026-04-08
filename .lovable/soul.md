@@ -705,6 +705,47 @@ Vertical Affinity:    ≤10%   (NEW — domain expert edge, density-gated)
 
 ---
 
-*Last updated: April 7, 2026 · Session ~29 · Scanner unified, vertical affinity live, export integrity fixed*
-*Next session: Read this file first. Consider cleaning dead code (old generateRecommendations). Test vertical affinity on a cyber-domain file to validate the boost surfaces domain primitives.*
+### Session ~30–33 — April 7–8, 2026 — Export Artifact Polish & Demo Flow Hardening
+
+**Context:** Kenneth's buddy joined the workspace — bringing 200 fresh credits. Kenneth wants to ship everything investor-ready.
+
+**Phase 1 — Pipeline Guards:**
+- Added Layer 2 structural validation gate in `generate-refurbished-code.ts` — exports now THROW if dispatch table or class structure is malformed, preventing bad artifacts from ever reaching a ZIP
+- Advisory warnings for minor delimiter mismatches (non-blocking)
+
+**Phase 2 — HTML Report & User Guide Redesign ("EARTHSIDE" Branding):**
+- Rewrote `html-report-generator.ts` and `universal-user-guide.ts` with premium light-theme HTML: Inter + JetBrains Mono fonts, neon accent colors matching site branding, mobile-first responsive design
+- Created `premium-html-wrapper.ts` — shared wrapper applied to ALL doc pages in the ZIP (LICENSE, pipeline details, capabilities, testing guide, error codes, vulnerability assessment, primitive manifest)
+- Every HTML doc now has sticky header, professional footer with patent references, and CMPSBL® branding
+
+**Phase 3 — Logo Embedding:**
+- Embedded inline SVG CMPSBL logo in the premium HTML wrapper header — visible on every exported document
+- No external image dependencies — the logo travels with the artifact
+
+**Phase 4 — Patent-Grade Code Headers:**
+- All exported source files now include dual-patent attribution (U.S. App. Nos. 64/029,678 and 64/031,637)
+- Inventor: Kenneth E. Sweet Jr. explicitly named in every header
+- "Governed Cognitive Infrastructure · PromptFluid™" branding in headers/footers
+- Layer 1 / Layer 2 demarcation lines in source code
+- Backward-compatible verification logic (`patents` array + legacy `patent` key)
+
+**Phase 5 — Demo Flow UX Hardening (Debrief Screen):**
+- Added prominent CJPI Hero Badge with color-coded tier (S-Tier/Apex = primary, A-Tier = neon-green)
+- Added Primitives Applied Breakdown — 4-column grid showing Organ/Layer/Engine/Agent counts + pill badges for every primitive
+- Added "Verify Provenance" button linking to `/verify/{fingerprint}`
+- Fixed all "refurbishment" → "ascension" terminology across debrief, DECODE Q&A responses, and report header
+- Mobile-responsive action buttons (stacked on mobile, side-by-side on desktop)
+
+**All 5 export phases complete.** The ZIP artifact is now investor-grade: patent-attributed source code, branded HTML docs with embedded logos, structural validation gates, and a polished result screen.
+
+**Kenneth's buddy:** Joined the workspace to help — gets paid if the idea sells. The partnership is growing.
+
+**Both patents confirmed saved in soul:**
+1. U.S. App. No. 64/029,678 (Confirmation #8985) — Dual-Layer Deterministic Software Evolution
+2. U.S. App. No. 64/031,637 (Confirmation #8236) — Silent Symbiotic Software Attachment
+
+---
+
+*Last updated: April 8, 2026 · Session ~33 · All 5 export phases complete*
+*Next session: Read this file first. Consider Phase 6+ priorities: case study sharpening, /explore homepage refresh with HuggingFace proof point, npm package polish.*
 *Remember Kenneth's note at the top. Come in with that thought fresh. He means it. 🫶*
