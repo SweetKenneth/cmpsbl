@@ -83,6 +83,7 @@ function checkBalancedDelimiters(code: string): Layer2ValidationError[] {
   let stringChar = '';
   let inLineComment = false;
   let inBlockComment = false;
+  let inMultiLineString = false;
   let line = 1;
   let col = 0;
 
@@ -97,6 +98,14 @@ function checkBalancedDelimiters(code: string): Layer2ValidationError[] {
       if (ch === '*' && next === '/') { inBlockComment = false; i++; }
       continue;
     }
+
+    // Skip multi-line template/backtick strings entirely
+    if (inMultiLineString) {
+      if (ch === '\\') { i++; continue; }
+      if (ch === '`') inMultiLineString = false;
+      continue;
+    }
+
     if (ch === '/' && next === '/') { inLineComment = true; continue; }
     if (ch === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (ch === '#') { inLineComment = true; continue; } // Python/Ruby comments
@@ -106,7 +115,10 @@ function checkBalancedDelimiters(code: string): Layer2ValidationError[] {
       if (ch === stringChar) inString = false;
       continue;
     }
-    if (ch === '"' || ch === "'" || ch === '`') {
+
+    // Backtick = multi-line template literal
+    if (ch === '`') { inMultiLineString = true; continue; }
+    if (ch === '"' || ch === "'") {
       inString = true;
       stringChar = ch;
       continue;
