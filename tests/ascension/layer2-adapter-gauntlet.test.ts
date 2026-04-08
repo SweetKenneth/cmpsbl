@@ -61,10 +61,21 @@ function extractL1(output: string): string {
     if (lines[i].includes('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)')) { start = i; break; }
   }
   if (start === -1) return '';
+  // Skip the marker comment block lines (lines starting with comment prefix + ═══)
+  // but stop skipping at first blank line AFTER the block, then take everything
   let idx = start + 1;
+  let passedCommentBlock = false;
   while (idx < lines.length) {
     const t = lines[idx].trim();
-    if (t === '' || /^(\/\/|#|--|\/\*|\*|"""|=begin|\(\*|;;\s|%\s|!\s|\*\s|<#)/.test(t)) { idx++; continue; }
+    // Skip lines that are part of the marker comment block
+    if (!passedCommentBlock) {
+      if (t === '' || /^(\/\/|#|--|\/\*|\*|"""|=begin|\(\*|;;\s|%\s|!\s|\*\s|<#)/.test(t)) {
+        if (t === '') passedCommentBlock = true;
+        idx++;
+        continue;
+      }
+      break;
+    }
     break;
   }
   const l1: string[] = [];
