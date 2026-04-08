@@ -1316,7 +1316,7 @@ export default function CaseStudies() {
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The{' '}
                 <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">ConsolidateBlocks</a>{' '}
-                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads). Refurbished through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
+                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads). Ascended through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
               </p>
             </div>
 
