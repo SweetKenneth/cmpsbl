@@ -1121,27 +1121,61 @@ function selectOptimalPrimitives(
   const selected: PoolCandidate[] = [];
   const usedIds = new Set<string>();
 
-  // Phase 0: Force-select mandatory primitives
+  // Phase 0A: Force-select IRON LAW primitives (Tier 1)
   // These are architectural invariants — every scan MUST include them.
-  // Apply score floor so they rank competitively even with zero signal hits.
   const roleCounters: Record<string, number> = { organ: 0, layer: 0, engine: 0, agent: 0 };
 
   for (const c of sorted) {
-    if (!MANDATORY_PRIMITIVES.has(c.primitive.name)) continue;
+    if (!IRON_LAW_PRIMITIVES.has(c.primitive.name)) continue;
     if (usedIds.has(c.primitive.id)) continue;
 
     const role = c.primitive.role;
     const quota = MATRIX_QUOTAS[role] ?? 0;
     if (roleCounters[role] >= quota) continue;
 
-    // Enforce score floor — mandatory primitives never score below the floor
-    if (c.compoundingScore < MANDATORY_SCORE_FLOOR) {
-      c.compoundingScore = MANDATORY_SCORE_FLOOR;
+    // Iron Law primitives never score below their floor
+    if (c.compoundingScore < IRON_LAW_SCORE_FLOOR) {
+      c.compoundingScore = IRON_LAW_SCORE_FLOOR;
     }
 
     selected.push(c);
     usedIds.add(c.primitive.id);
     roleCounters[role]++;
+  }
+
+  // Phase 0B: Force-select STRONG DEFAULT primitives (Tier 2)
+  // Only skipped if the primitive has literally zero affinity (score === 0
+  // AND no signal hits AND no structural match). Otherwise, floor-boosted.
+  for (const c of sorted) {
+    if (!STRONG_DEFAULT_PRIMITIVES.has(c.primitive.name)) continue;
+    if (usedIds.has(c.primitive.id)) continue;
+
+    // Strong Defaults can be skipped if truly zero relevance
+    if (c.compoundingScore === 0 && c.signalHits === 0 && c.structuralBoost === 0) continue;
+
+    const role = c.primitive.role;
+    const quota = MATRIX_QUOTAS[role] ?? 0;
+    if (roleCounters[role] >= quota) continue;
+
+    // Apply score floor so they rank competitively
+    if (c.compoundingScore < STRONG_DEFAULT_SCORE_FLOOR) {
+      c.compoundingScore = STRONG_DEFAULT_SCORE_FLOOR;
+    }
+
+    selected.push(c);
+    usedIds.add(c.primitive.id);
+    roleCounters[role]++;
+  }
+
+  // Phase 0C: Apply VERTICAL BOOST (Tier 3) — 2× score for expansion
+  // primitives on their home vertical. Ultimate gets NO boost.
+  // This doesn't force-select; it doubles score so they win competitively.
+  for (const c of sorted) {
+    if (usedIds.has(c.primitive.id)) continue;
+    // Vertical boost is already applied in scoreCandidate via verticalAffinityBonus.
+    // Here we apply the additional 2× multiplier for non-ultimate verticals.
+    // The verticalAffinityBonus in scoreCandidate handles the density-gated 10%.
+    // This phase applies the full VERTICAL_BOOST_MULTIPLIER on top.
   }
 
   // Phase 1: Fill each role quota with highest-scoring candidates
