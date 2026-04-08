@@ -149,7 +149,8 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
-        
+        <TrustVisual src={trustCognitive} alt="Cognitive architecture — governed data flows across secure pathways" />
+        <SectionDivider />
         <HowCmpsblWorks />
 
         <SectionDivider />
