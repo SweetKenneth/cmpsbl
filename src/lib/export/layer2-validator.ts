@@ -45,26 +45,26 @@ export function validateLayer2(
   ]);
   const isBraceLang = braceLanguages.has(lang);
 
-  // §1 — Balanced delimiters (errors for brace langs, warnings for others)
+  // §1 — Balanced delimiters (advisory — multi-line JSON and complex
+  //       constructs produce false positives in the naive parser)
   const delimiterErrors = checkBalancedDelimiters(layer2Code);
-  if (isBraceLang) {
-    errors.push(...delimiterErrors);
-  } else {
-    // Downgrade to warnings for Python/Ruby/etc where {} are data literals
-    errors.push(...delimiterErrors.map(e => ({ ...e, severity: 'warning' as const })));
-  }
+  errors.push(...delimiterErrors.map(e => ({ ...e, severity: 'warning' as const })));
 
-  // §2 — Unterminated strings
+  // §2 — Unterminated strings (advisory)
   const stringErrors = checkUnterminatedStrings(layer2Code, language);
   errors.push(...stringErrors);
 
-  // §3 — Dispatch table integrity
+  // §3 — Dispatch table integrity (HARD GATE — errors block export)
   const dispatchErrors = checkDispatchTableIntegrity(layer2Code);
   errors.push(...dispatchErrors);
 
-  // §4 — Guard init pattern validation
+  // §4 — Guard init pattern validation (hard for brace languages, advisory for others)
   const guardErrors = checkGuardPatterns(layer2Code, language);
-  errors.push(...guardErrors);
+  if (isBraceLang) {
+    errors.push(...guardErrors);
+  } else {
+    errors.push(...guardErrors.map(e => ({ ...e, severity: 'warning' as const })));
+  }
 
   return {
     valid: errors.filter(e => e.severity === 'error').length === 0,
