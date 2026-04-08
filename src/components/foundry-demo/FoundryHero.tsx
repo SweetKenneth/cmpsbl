@@ -1,10 +1,9 @@
 /**
- * Memory Stream Hero — Cinematic opening for the flagship product page
- * All metrics are real production data from the substrate.
+ * Foundry Hero — Cinematic opening with DREAM-powered Ascension visual.
  */
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { MemoryRiver } from '@/components/hero/MemoryRiver';
+import { HeroAscensionVisual } from '@/components/hero/HeroAscensionVisual';
 
 export function FoundryHero() {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ export function FoundryHero() {
         }}
       />
       
-      {/* Radial glow — dramatic */}
+      {/* Radial glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.08),transparent_50%)]" />
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(circle,hsl(var(--neon-purple)/0.04),transparent_60%)]" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle,hsl(var(--neon-cyan)/0.03),transparent_60%)]" />
@@ -34,7 +33,7 @@ export function FoundryHero() {
         >
           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] text-primary/80">
-            Memory Stream — Live
+            DREAM Synthesis — Live
           </span>
         </motion.div>
 
@@ -60,12 +59,12 @@ export function FoundryHero() {
           {' '}The stream never stops.
         </motion.p>
 
-        {/* Primary CTA — above the fold */}
+        {/* Primary CTA */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-14"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-12"
         >
           <button
             onClick={() => navigate('/showroom')}
@@ -83,14 +82,14 @@ export function FoundryHero() {
           </button>
         </motion.div>
 
-        {/* Memory Stream visualization */}
+        {/* DREAM Ascension Visual */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="mb-12 sm:mb-14"
+          className="mb-14 sm:mb-16"
         >
-          <MemoryRiver autoCrystallize hideTagline />
+          <HeroAscensionVisual />
         </motion.div>
 
         {/* Key stat trio */}

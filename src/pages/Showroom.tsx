@@ -4,7 +4,7 @@
  * Horizontal-scroll carousels grouped by CJPI tier with Stripe checkout.
  */
 
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { lazy, Suspense, useState, useMemo, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
@@ -31,7 +31,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useDiscoveryCounts } from '@/hooks/useDiscoveryCounts';
 import { toast } from 'sonner';
 
-// Category images
+const MemoryRiverLazy = lazy(() => import('@/components/hero/MemoryRiver').then(m => ({ default: m.MemoryRiver })));
+
 import imgSecurity from '@/assets/showroom/security-compliance.jpg';
 import imgGovernance from '@/assets/showroom/governance-policy.jpg';
 import imgIntelligence from '@/assets/showroom/decision-intelligence.jpg';
@@ -425,6 +426,18 @@ export default function Showroom() {
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </Button>
+            </motion.div>
+
+            {/* Memory Stream visualization */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="mt-8 max-w-3xl mx-auto"
+            >
+              <Suspense fallback={<div className="h-[160px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
+                <MemoryRiverLazy autoCrystallize hideTagline />
+              </Suspense>
             </motion.div>
           </div>
         </section>
