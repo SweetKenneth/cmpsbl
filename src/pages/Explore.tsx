@@ -114,8 +114,7 @@ export default function Explore() {
         <DiscoveryDualCards />
 
         <SectionDivider />
-
-        {/* ═══ SUBSTRATE IS ALIVE — zero-setup value prop ═══ */}
+        <TrustVisual src={trustInfrastructure} alt="Cognitive infrastructure — 40 Primitives connected across governed layers" />
         <SubstrateAliveSection />
 
         <SectionDivider />
