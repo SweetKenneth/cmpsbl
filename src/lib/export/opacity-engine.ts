@@ -183,131 +183,43 @@ export function generateDecoyPipelineComments(
  * sequencing, cross-primitive negotiation) happens in the compiled
  * preamble's dispatch tables — not in these visible transforms.
  */
+/**
+ * FUNCTIONAL_TRANSFORMS — Layer 2 Only (v3.1.0)
+ *
+ * PATENT COMPLIANCE: U.S. App. No. 64/029,678 requires Layer 1 (original
+ * source code) to remain verifiably unmodified. SHA-256 proof of non-
+ * modification is a core claim of the Dual-Layer architecture.
+ *
+ * These transforms previously injected instrumentation INTO Layer 1 source
+ * code via regex. That approach:
+ *   1. Violated the patent's "unmodified source" guarantee
+ *   2. Risked corrupting language builtins (e.g., Python set() bug)
+ *   3. Made SHA-256 verification impossible
+ *   4. Required per-language regex maintenance for 54+ languages
+ *
+ * As of v3.1.0, all transforms are IDENTITY FUNCTIONS on Layer 1.
+ * Instrumentation is delivered exclusively through:
+ *   - Layer 2 guard blocks (init/enable calls in the preamble)
+ *   - The compiled dispatch matrix (_G, _R, _V functions)
+ *   - Proxy-based boundary attachment (Mana engine)
+ *
+ * Layer 1 is concatenated verbatim. No parsing. No regex. No mutation.
+ */
 export const FUNCTIONAL_TRANSFORMS: Record<string, (code: string) => string> = {
-  // DEFENSE: Inject input validation at function boundaries
-  defense: (code) => {
-    return code.replace(
-      /function\s+(\w+)\s*\(([^)]*)\)\s*\{/g,
-      (match, name, params) => {
-        if (params.trim().length === 0) return match;
-        return `function ${name}(${params}) {\n  _G(0x01, { fn: '${name}', argc: ${params.split(',').length} });`;
-      }
-    );
-  },
-
-  // GOVERNANCE: Add audit trails to state mutations
-  // Only instrument method-style calls (.set(), .push(), etc.) and known
-  // framework verbs (setState, dispatch, commit, emit, send, update).
-  // Standalone builtins like Python's set() / frozenset() are excluded
-  // by requiring either a dot-prefix or the full compound name.
-  governance: (code) => {
-    return code.replace(
-      /(?:\.(set|push|update|send|emit)\s*\(|\b(setState|dispatch|commit)\s*\()/g,
-      (match, dotVerb, frameworkVerb) => {
-        const verb = dotVerb || frameworkVerb;
-        if (dotVerb) return `._G(0x03, { op: "${verb}" }), .${verb}(`;
-        return `_G(0x03, { op: "${verb}" }), ${verb}(`;
-      }
-    );
-  },
-
-  // BEACON: Inject health signal checkpoints
-  beacon: (code) => {
-    return code.replace(
-      /(?:export\s+)?(?:async\s+)?function\s+(\w+)/g,
-      (match, name) => {
-        return `${match} /* _V:${fnvHash(name).toString(16)} */`;
-      }
-    );
-  },
-
-  // BRAIN: Mark learning observation points
-  brain: (code) => {
-    return code.replace(
-      /\bcatch\s*\(\w+\)\s*\{/g,
-      'catch (e) {\n    _G(0x05, { err: e?.message, t: Date.now() });'
-    );
-  },
-
-  // MEMORY: Wrap persistent state access
-  memory: (code) => {
-    return code.replace(
-      /localStorage\.(getItem|setItem|removeItem)\s*\(/g,
-      '_G(0x06, { op: "$1" }), localStorage.$1('
-    );
-  },
-
-  // IDENTITY: Inject session binding at auth boundaries
-  identity: (code) => {
-    return code.replace(
-      /\b(login|authenticate|authorize|signIn|signUp)\s*\(/g,
-      '_G(0x07, { auth: "$1" }), $1('
-    );
-  },
-
-  // NERVE: Event bus signal propagation markers
-  nerve: (code) => {
-    return code.replace(
-      /\b(addEventListener|on|subscribe|listen)\s*\(\s*['"](\w+)['"]/g,
-      '$1("$2" /* _R:9 */'
-    );
-  },
-
-  // ECHO: Structured logging upgrade
-  echo: (code) => {
-    return code.replace(/console\.(log|warn|error|info)\(/g, '_G(0x0A, { lvl: "$1" }), console.$1(');
-  },
-
-  // ATLAS: Service topology markers
-  atlas: (code) => {
-    return code.replace(
-      /\b(fetch|axios|http\.get|http\.post|request)\s*\(\s*['"](https?:\/\/[^'"]+)['"]/g,
-      '_G(0x0B, { svc: "$2" }), $1("$2"'
-    );
-  },
-
-  // COMPASS: Module navigation markers
-  compass: (code) => {
-    return code.replace(
-      /^(import\s+.+from\s+['"].+['"];?)$/gm,
-      '$1 /* _M */'
-    );
-  },
-
-  // ACCESS: Boundary validation at entry points
-  access: (code) => {
-    return code.replace(
-      /\b(export\s+(?:default\s+)?(?:async\s+)?function\s+\w+)/g,
-      '$1 /* _B:validated */'
-    );
-  },
-
-  // TREATY: Schema enforcement markers
-  treaty: (code) => {
-    return code.replace(
-      /\b(interface|type)\s+(\w+)\s*\{/g,
-      '$1 $2 { /* _T:enforced */'
-    );
-  },
-
-  // VISION: Observability instrumentation
-  vision: (code) => {
-    return code.replace(
-      /\breturn\s+/g,
-      '_G(0x0E, { ret: true }); return '
-    );
-  },
-
-  // SHADOW: Canary instrumentation
-  shadow: (code) => {
-    return code.replace(
-      /\b(async\s+)?function\s+(\w+)/g,
-      (match, asyncKw, name) => {
-        const hash = fnvHash(name).toString(16).slice(0, 6);
-        return `${match} /* _S:${hash} */`;
-      }
-    );
-  },
+  defense:    (code) => code,
+  governance: (code) => code,
+  beacon:     (code) => code,
+  brain:      (code) => code,
+  memory:     (code) => code,
+  identity:   (code) => code,
+  nerve:      (code) => code,
+  echo:       (code) => code,
+  atlas:      (code) => code,
+  compass:    (code) => code,
+  access:     (code) => code,
+  treaty:     (code) => code,
+  vision:     (code) => code,
+  shadow:     (code) => code,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════

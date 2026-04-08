@@ -3074,33 +3074,26 @@ export function generateRefurbishedCode(
   const imports: string[] = [];
   const guards: string[] = [];
   // Strip any existing sealed-runtime footers from prior passes to prevent duplication
-  let cleanedSource = originalCode
+  // ── Layer 1 Preservation (Patent Compliance) ──────────────────────────
+  // U.S. App. No. 64/029,678 — Layer 1 MUST remain byte-identical to the
+  // original uploaded source. No regex, no AST transforms, no injection.
+  // Only strip prior CMPSBL footers (our own metadata, not user code).
+  const verbatimSource = originalCode
     .replace(/\n?.*═══ End of CMPSBL® Convex Core™ Sealed Artifact ═══.*\n?/g, '\n')
     .replace(/\n?.*End of CMPSBL® Convex Core™ Sealed Artifact.*\n?/g, '\n')
     .trimEnd();
 
-  // For Python: convert relative imports to absolute so file runs standalone
-  if (detected === 'Python') {
-    cleanedSource = cleanedSource
-      // `from . import X as Y` → `import X as Y`
-      .replace(/^from\s+\.\s+import\s+/gm, 'import ')
-      // `from .foo import X` → `from foo import X`
-      .replace(/^from\s+\.(\w)/gm, 'from $1')
-      // `from cmpsbl.runtime.X import Y` → stub (already handled by adapter, but catch originals)
-      .replace(/^from\s+cmpsbl\.runtime\.\w+\s+import\s+.+$/gm, (line) => `# ${line}  # stubbed for standalone`);
-  }
-  let transformedCode = cleanedSource;
-
+  // ── Layer 2 Guard Assembly ───────────────────────────────────────────
+  // All instrumentation lives here — imports and guard init blocks.
+  // wrapper() calls are intentionally omitted: Layer 1 is never parsed.
   for (const p of selectedPrimitives) {
     const wrapper = PRIMITIVE_WRAPPERS[p.primitiveId];
     if (wrapper) {
-      // Adapt the import to the source language
       const parsed = parseImport(wrapper.imports);
       imports.push(adapter.importStatement(parsed.module, parsed.symbols));
 
       guards.push(adapter.comment(`─── ${p.name} ───`));
       guards.push(adapter.transformGuard(wrapper.guard));
-      transformedCode = wrapper.wrapper(transformedCode);
     }
   }
 
