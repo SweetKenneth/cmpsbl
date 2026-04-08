@@ -260,39 +260,49 @@ export function HeroMetaSubstrate() {
             </p>
           </FadeIn>
           
-          {/* CTAs */}
-          <FadeIn delay={0.4} className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          {/* CTAs — 2×2 grid */}
+          <FadeIn delay={0.4} className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-md mx-auto">
             <Button 
               asChild 
               size="lg" 
-              className="w-full sm:w-auto gap-2 px-8 h-12 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Link to="/ascension">
-                <Wrench className="w-4 h-4" />
+                <Wrench className="w-4 h-4 shrink-0" />
                 Run Diagnostic
-                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </Button>
             <Button 
               asChild 
               variant="outline" 
               size="lg" 
-              className="w-full sm:w-auto gap-2 px-6 h-12 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
             >
               <Link to="/showroom">
-                <Search className="w-4 h-4" />
-                Browse the Showroom
+                <Search className="w-4 h-4 shrink-0" />
+                Browse Showroom
               </Link>
             </Button>
             <Button 
               asChild 
               variant="ghost" 
               size="lg" 
-              className="w-full sm:w-auto gap-2 px-6 h-12 text-sm font-medium rounded-xl hover:bg-[hsl(var(--neon-purple)/0.08)] hover:text-[hsl(var(--neon-purple))] transition-all duration-300 active:scale-[0.98]"
+              className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl hover:bg-[hsl(var(--neon-purple)/0.08)] hover:text-[hsl(var(--neon-purple))] transition-all duration-300 active:scale-[0.98]"
             >
               <Link to="/software-symbiosis">
-                <Layers className="w-4 h-4" />
-                The Layer Below All Software
+                <Layers className="w-4 h-4 shrink-0" />
+                Software Symbiosis
+              </Link>
+            </Button>
+            <Button 
+              asChild 
+              variant="ghost" 
+              size="lg" 
+              className="gap-2 h-12 text-xs sm:text-sm font-medium rounded-xl hover:bg-[hsl(var(--neon-cyan)/0.08)] hover:text-[hsl(var(--neon-cyan))] transition-all duration-300 active:scale-[0.98]"
+            >
+              <Link to="/plans">
+                <ArrowRight className="w-4 h-4 shrink-0" />
+                View Plans
               </Link>
             </Button>
           </FadeIn>
