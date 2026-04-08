@@ -58,13 +58,14 @@ export function validateLayer2(
   const dispatchErrors = checkDispatchTableIntegrity(layer2Code);
   errors.push(...dispatchErrors);
 
-  // §4 — Guard init pattern validation (hard for brace languages, advisory for others)
+  // §4 — Guard init pattern validation (advisory — multi-line guard
+  //       calls with object arguments trigger false positives)
   const guardErrors = checkGuardPatterns(layer2Code, language);
-  if (isBraceLang) {
-    errors.push(...guardErrors);
-  } else {
-    errors.push(...guardErrors.map(e => ({ ...e, severity: 'warning' as const })));
-  }
+  // Python semicolon check remains a hard error; paren balance is advisory
+  errors.push(...guardErrors.map(e => ({
+    ...e,
+    severity: (e.message.includes('trailing semicolon') ? 'error' : 'warning') as 'error' | 'warning',
+  })));
 
   return {
     valid: errors.filter(e => e.severity === 'error').length === 0,
