@@ -3026,7 +3026,7 @@ function __cmpsbl_verify__() {
   console.log(\`    \${verifyUrl}\`);
   console.log();
   console.log("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.");
-  console.log("  U.S. Patent Pending — App. No. 64/029,678");
+  console.log("  U.S. Patent App. No. 64/029,678 · No. 64/031,637");
   console.log("=".repeat(60));
   return passed === total;
 }
