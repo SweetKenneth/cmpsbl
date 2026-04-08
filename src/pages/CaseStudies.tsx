@@ -1452,7 +1452,7 @@ export default function CaseStudies() {
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The core TCP communication mixin from{' '}
                 <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">Rapid7's Metasploit Framework</a>{' '}
-                — 38K+ GitHub stars. This 342-line Ruby module is the foundation of every remote exploit in the framework. Refurbished through CMPSBL CYBER™ in under 10 seconds, with zero AI.
+                — 38K+ GitHub stars. This 342-line Ruby module is the foundation of every remote exploit in the framework. Ascended through CMPSBL CYBER™ in under 10 seconds, with zero AI.
               </p>
             </div>
 
