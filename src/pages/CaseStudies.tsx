@@ -1016,7 +1016,7 @@ export default function CaseStudies() {
                 A* Grid Path Planning Algorithm
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
-                The canonical A* path planner from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">PythonRobotics</a> — the most-starred open-source robotics algorithms repository on GitHub (29,000+ stars). Refurbished through the CMPSBL ROBOTICS™ Ascension pipeline in under 10 seconds, with zero AI calls.
+                The canonical A* path planner from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">PythonRobotics</a> — the most-starred open-source robotics algorithms repository on GitHub (29,000+ stars). Ascended through the CMPSBL ROBOTICS™ Ascension pipeline in under 10 seconds, with zero AI calls.
               </p>
             </div>
 
