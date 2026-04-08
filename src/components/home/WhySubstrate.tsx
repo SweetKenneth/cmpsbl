@@ -224,7 +224,7 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
           {/* Stat — solid color instead of gradient */}
           <div className="text-right">
             <div className={cn(
-              "text-lg sm:text-xl font-black font-mono tabular-nums",
+              "text-base sm:text-lg font-black font-mono tabular-nums",
               item.statColor
             )}>
               {item.stat}
@@ -245,7 +245,7 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
         </div>
         
         {/* Content */}
-        <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
+        <h3 className="font-bold text-base sm:text-lg text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
           {item.title}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -307,7 +307,7 @@ export function WhySubstrate() {
              <Hammer className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
-           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
+           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
                 40 Primitives.
                 <br />
                 <span className="text-[hsl(var(--neon-purple))]">Zero Assembly Required.</span>

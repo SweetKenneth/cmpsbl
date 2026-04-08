@@ -100,7 +100,7 @@ export function SubstrateAliveSection() {
 
         {/* Bottom callout */}
         <div className="rounded-xl border border-primary/15 bg-gradient-to-r from-primary/5 via-transparent to-[hsl(var(--neon-cyan)/0.05)] p-5 sm:p-7 text-center mb-6">
-          <p className="text-base sm:text-lg font-semibold text-foreground/80 mb-2">
+          <p className="text-sm sm:text-base font-semibold text-foreground/80 mb-2">
             You can build here faster than anywhere else.
           </p>
           <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto">

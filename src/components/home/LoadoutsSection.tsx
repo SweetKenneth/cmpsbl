@@ -119,7 +119,7 @@ export function LoadoutsSection() {
                       <Icon className="w-4 h-4 text-muted-foreground/60 group-hover:text-primary transition-colors" />
                     </div>
                     <div>
-                      <h3 className="text-sm sm:text-base font-bold text-foreground/90 leading-tight">{loadout.name}</h3>
+                      <h3 className="text-base sm:text-lg font-bold text-foreground/90 leading-tight">{loadout.name}</h3>
                       <span className="text-xs text-muted-foreground/50 uppercase tracking-wider">{loadout.category}</span>
                     </div>
                   </div>

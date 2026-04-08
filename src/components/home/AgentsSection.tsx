@@ -39,7 +39,7 @@ export function AgentsSection() {
             <Zap className="w-3 h-3 mr-1.5 text-primary" />
             <span className="text-xs font-semibold">5 Fused Meta-Agents</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 tracking-tight">
             Meta-Agents.{" "}
             <span className="text-[hsl(var(--neon-cyan))]">
               Fused Power.

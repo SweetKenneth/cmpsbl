@@ -187,12 +187,12 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">Ready to Build?</span>
               </div>
               
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
                 Start Building{" "}
                 <br className="hidden sm:block" />
                 <span className="text-white/80">Today — Free</span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+              <p className="text-white/70 text-sm sm:text-base max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
                 Persistent memory, governed evolution, and self-improvement cycles — all included. 
                 Start with 3 capability slots, no credit card required.
               </p>

@@ -170,7 +170,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.badge}
           </Badge>
           
-          <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1">
+          <h3 className="text-base sm:text-lg font-bold text-foreground mb-1">
             {audience.title}
           </h3>
           <p className="text-sm font-medium mb-3" style={{ color: audience.accentColor }}>
@@ -253,11 +253,11 @@ export function BuiltForSection() {
             <Hammer className="w-3 h-3 text-[hsl(var(--neon-purple))]" />
             <span className="text-xs">Built For Builders</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
             Your Industry.{" "}
             <span className="text-[hsl(var(--neon-cyan))]">Our Substrate.</span>
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Background processing, governed adaptation, and persistent memory — built for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}
             <span className="text-foreground font-medium">development</span>, and{" "}

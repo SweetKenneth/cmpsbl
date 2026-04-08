@@ -119,7 +119,7 @@ export function DiscoveryDualCards() {
                     >
                       {card.badge}
                     </span>
-                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                       {card.title}
                     </h3>
                   </div>
