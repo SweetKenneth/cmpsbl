@@ -51,8 +51,9 @@ export function ArtifactPacksSection() {
             <Package className="w-3 h-3 mr-1.5 text-[hsl(var(--neon-magenta))]" />
             <span className="text-xs font-semibold">{PIPELINE_PACKS_LABEL}</span>
           </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
-            Activate What You{" "}
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
+            Activate What You
+            <br />
             <span className="text-[hsl(var(--neon-magenta))]">Need</span>
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">

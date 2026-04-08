@@ -79,8 +79,10 @@ export function EnginesCTA() {
                   <span className="text-[10px] font-mono tracking-widest text-[hsl(var(--neon-cyan))] uppercase">Substrate Engines · Processing Powerhouses</span>
                 </motion.div>
 
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">
-                  8 Composable <span className="text-[hsl(var(--neon-cyan))]">Engines</span>
+                <h2 className="text-3xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">
+                  8 Composable
+                  <br />
+                  <span className="text-[hsl(var(--neon-cyan))]">Engines</span>
                 </h2>
                 <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
                   Processing powerhouses invoked for complex tasks — offline learning, capability discovery, 
