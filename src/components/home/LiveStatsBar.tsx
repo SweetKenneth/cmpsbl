@@ -6,7 +6,7 @@ import { Shield, Zap } from "lucide-react";
 
 export function LiveStatsBar() {
   return (
-    <section className="relative z-10 py-3 sm:py-3.5 border-b border-border/30 bg-card/30 backdrop-blur-sm overflow-hidden lab-shimmer">
+    <section className="relative z-10 py-3 sm:py-3.5 border-b border-border/30 bg-card/30 backdrop-blur-sm overflow-hidden lab-shimmer animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
       <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="container mx-auto px-4 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
