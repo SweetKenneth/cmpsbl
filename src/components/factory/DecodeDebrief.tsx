@@ -88,7 +88,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'intro',
     role: 'decode',
-    content: `Refurbishment complete. I've analyzed your code, applied the primitives you selected, and prepared your hardened package. Let me walk you through exactly what changed. ✨`,
+    content: `Ascension complete. I've analyzed your code, applied the primitives you selected, and prepared your hardened package. Let me walk you through exactly what changed. ✨`,
     icon: MessageSquare,
   });
 
