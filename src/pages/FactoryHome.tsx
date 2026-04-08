@@ -118,6 +118,8 @@ export default function FactoryHome() {
         <TrustVisual
           src={trustEngineering}
           alt="Professional engineering environment with secure governed software workflows"
+          caption="40-Primitive substrate reaches full orchestration"
+          date="Jan 2025"
         />
 
         <SectionDivider />
