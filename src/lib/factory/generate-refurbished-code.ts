@@ -2945,7 +2945,7 @@ def __cmpsbl_verify__():
         print("  ✗ Metadata corrupted")
 
     # Check 3: Patent reference present
-    if meta.get("patent"):
+    if meta.get("patents") or meta.get("patent"):
         print("  ✓ Patent reference present")
         checks_passed += 1
     else:
@@ -2973,7 +2973,7 @@ def __cmpsbl_verify__():
     print(f'    verify_fingerprint("{fingerprint}")')
     print()
     print("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.")
-    print("  U.S. Patent Pending — App. No. 64/029,678")
+    print("  U.S. Patent App. No. 64/029,678 · No. 64/031,637")
     print("=" * 60)
     return checks_passed == checks_total
 
@@ -3016,7 +3016,7 @@ function __cmpsbl_verify__() {
   if (meta?.runtimeVersion && meta?.orchestrationVersion) { console.log("  ✓ Metadata intact"); passed++; }
   else { console.log("  ✗ Metadata corrupted"); }
 
-  if (meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
+  if (meta?.patents || meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
   else { console.log("  ✗ Patent reference missing"); }
 
   console.log();
@@ -3026,7 +3026,7 @@ function __cmpsbl_verify__() {
   console.log(\`    \${verifyUrl}\`);
   console.log();
   console.log("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.");
-  console.log("  U.S. Patent Pending — App. No. 64/029,678");
+  console.log("  U.S. Patent App. No. 64/029,678 · No. 64/031,637");
   console.log("=".repeat(60));
   return passed === total;
 }
@@ -3043,7 +3043,7 @@ if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
     lines.push(adapter.comment('Install: npm install @cmpsbl/test-harness'));
     lines.push(adapter.comment(`Run: verifyFingerprint("${fingerprint}")`));
     lines.push(adapter.comment(`© ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.`));
-    lines.push(adapter.comment('U.S. Patent Pending — App. No. 64/029,678'));
+    lines.push(adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'));
   }
 
   return lines.join('\n');
@@ -3092,31 +3092,34 @@ export function generateRefurbishedCode(
 
   const headerLines = [
     '═══════════════════════════════════════════════════════════',
-    'CMPSBL® Convex Core™ — Sealed Artifact',
-    'A PromptFluid™ Product',
-    `Language: ${detected} (Bridge Adapter)`,
+    'CMPSBL® Convex Core™ Sealed Artifact',
+    'Governed Cognitive Infrastructure · PromptFluid™',
     '═══════════════════════════════════════════════════════════',
+    '',
+    `Language:     ${detected} (Bridge Adapter)`,
     `Fingerprint:  ${fingerprint}`,
     `Chain:        ${selectedPrimitives.map(p => p.name).join(' → ')}`,
     `Primitives:   ${selectedPrimitives.length}`,
     `Generated:    ${new Date().toISOString()}`,
     `Runtime:      Convex Core™ v3.0.0`,
     '',
-    'U.S. Patent Pending — App. No. 64/029,678',
+    '───────────────────────────────────────────────────────────',
+    'DUAL-LAYER ARCHITECTURE',
+    '  Layer 1 — Original source (byte-identical, unmodified)',
+    '  Layer 2 — CMPSBL® orchestration matrix',
     '',
-    'This artifact contains a sealed orchestration matrix.',
-    'Layer 1: Original source (byte-identical, unmodified)',
-    'Layer 2: Orchestration matrix + primitive instrumentation',
+    'INTELLECTUAL PROPERTY',
+    '  Inventor: Kenneth E. Sweet Jr.',
+    '  U.S. Patent App. No. 64/029,678',
+    '    "Dual-Layer Deterministic Software Evolution System"',
+    '  U.S. Patent App. No. 64/031,637',
+    '    "Silent Symbiotic Software Attachment System"',
+    '  © ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL®',
+    '───────────────────────────────────────────────────────────',
     '',
-    'DO NOT modify the orchestration matrix — it governs',
-    'primitive sequencing and collision resolution.',
-    'DO NOT modify the fingerprint — it validates this artifact.',
+    'DO NOT modify the orchestration matrix or fingerprint.',
     '',
-    'VERIFY THIS ARTIFACT:',
-    `  https://cmpsbl.com/verify/${fingerprint}`,
-    '  — or —',
-    '  npm install @cmpsbl/test-harness',
-    `  verifyFingerprint("${fingerprint}")`,
+    'VERIFY: https://cmpsbl.com/verify/' + fingerprint,
     '═══════════════════════════════════════════════════════════',
   ];
 
@@ -3139,7 +3142,11 @@ export function generateRefurbishedCode(
     orchestrationVersion: '3.0.0',
     pipelineStages: 5,
     verifyUrl: `https://cmpsbl.com/verify/${fingerprint}`,
-    patent: 'U.S. App. No. 64/029,678',
+    inventor: 'Kenneth E. Sweet Jr.',
+    patents: [
+      'U.S. App. No. 64/029,678 — Dual-Layer Deterministic Software Evolution',
+      'U.S. App. No. 64/031,637 — Silent Symbiotic Software Attachment',
+    ],
   }, null, 2);
 
   const metaBlock = [
@@ -3160,12 +3167,10 @@ export function generateRefurbishedCode(
     `Sealed:       ${new Date().toISOString()}`,
     '',
     'VERIFY: https://cmpsbl.com/verify/' + fingerprint,
-    '  npm install @cmpsbl/test-harness',
-    `  verifyFingerprint("${fingerprint}")`,
     '',
+    'Inventor: Kenneth E. Sweet Jr.',
+    'U.S. Patent App. No. 64/029,678 · No. 64/031,637',
     '© ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL® · All rights reserved.',
-    'U.S. Patent Pending — App. No. 64/029,678',
-    'Unauthorized reproduction prohibited.',
     '═══════════════════════════════════════════════════════════',
   ];
 
@@ -3223,7 +3228,7 @@ export function generateRefurbishedCode(
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
     adapter.comment('Verified byte-identical to uploaded source.'),
-    adapter.comment('U.S. Patent Pending — App. No. 64/029,678'),
+    adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     verbatimSource,
