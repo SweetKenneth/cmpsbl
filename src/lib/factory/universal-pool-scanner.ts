@@ -1101,6 +1101,7 @@ const VERTICAL_BOOST_MULTIPLIER = 2.0;
  */
 function selectOptimalPrimitives(
   candidates: PoolCandidate[],
+  verticalAffinity?: string,
 ): PoolCandidate[] {
   // Sort all candidates by score descending
   const sorted = [...candidates]
