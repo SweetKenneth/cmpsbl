@@ -1,6 +1,6 @@
 /**
- * META HERO: CMPSBL® Software Refurbishment Center
- * Clean, solution-forward hero with typed rotation and dual CTAs.
+ * META HERO: CMPSBL® Software Ascension Center
+ * Clean, solution-forward hero with typed rotation and single CTA.
  * 
  * PERFORMANCE: Uses pure CSS animations instead of framer-motion
  * to avoid 56KB parse cost on the landing page critical path.

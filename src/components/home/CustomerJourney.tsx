@@ -71,7 +71,7 @@ export function CustomerJourney() {
             From Upload to Ownership
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
-            Six steps. No surprises. No lock-in. Your code, refurbished and returned.
+            Six steps. No surprises. No lock-in. Your code, ascended and&nbsp;returned.
           </p>
         </div>
 

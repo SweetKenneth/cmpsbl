@@ -22,7 +22,7 @@ const PILLARS = [
     glowVar: "--neon-cyan",
   },
   {
-    title: "The Refurbishment Lab",
+    title: "The Ascension Lab",
     subtitle: "Ascension · Your Code",
     icon: Zap,
     description: "Bring us your code. We analyze, restore first, and only replace as a last resort. AI as a tool, not a foundation.",
