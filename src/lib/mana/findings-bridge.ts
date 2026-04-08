@@ -105,7 +105,8 @@ const CAPABILITY_SIGNALS: Array<{
   {
     patterns: [
       /^(parse|validate|sanitize|decode|deserialize|handle.*input|process.*request|accept|receive|read.*body)/i,
-      /^(handle|process|on).*(request|input|data|payload|message|event|upload|form)/i,
+      /^(handle|process|on).*(request|input|data|payload|message|event|upload|form|payment|transaction|order)/i,
+      /^(process|execute|run).*(payment|charge|transfer|withdraw|deposit)/i,
     ],
     capability: 'defense_gate',
     primitive: 'DEFENSE',
