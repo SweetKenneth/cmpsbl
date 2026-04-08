@@ -1,7 +1,12 @@
 /**
- * Generate Refurbished Code — Dual-layer source output
- * Takes original code + applied primitives and produces the "refurbished" version
- * with real per-primitive wrappers, guards, and instrumentation injected INTO the code.
+ * Generate Ascended Code — Dual-layer source output (v3.1.0)
+ *
+ * LAYER 1: Original source code — copied VERBATIM. Never parsed, regex'd, or
+ *          mutated. SHA-256 provable identity with uploaded source.
+ *          Patent: U.S. App. No. 64/029,678 (Dual-Layer Architecture)
+ *
+ * LAYER 2: Orchestration matrix, dispatch tables, guard blocks, metadata.
+ *          This is OUR generated code — structurally validated before export.
  *
  * Bridge Adapter: Output always matches the source language via language-specific
  * syntax adapters. Python in → Python out. Rust in → Rust out. HDL in → HDL out.
@@ -12,9 +17,9 @@ import { detectLanguage } from './code-metrics';
 import {
   generateCompiledPreamble,
   generateDecoyPipelineComments,
-  FUNCTIONAL_TRANSFORMS,
 } from '../export/opacity-engine';
 import { generateInlinePrimitives } from './inline-primitive-generator';
+import { validateLayer2 } from '../export/layer2-validator';
 
 // ── Language Syntax Adapters ──
 
