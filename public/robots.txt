@@ -79,6 +79,9 @@ Allow: /projects
 Allow: /support
 Allow: /heritage-paper
 Allow: /promptfluid
+Allow: /mana
+Allow: /software-symbiosis
+Allow: /marketplace
 Allow: /privacy
 Allow: /terms
 
