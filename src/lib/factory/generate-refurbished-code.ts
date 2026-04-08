@@ -2856,12 +2856,7 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
   wraith: {
     imports: "import { StealthOps, SecretRotator } from '@cmpsbl/runtime/wraith';",
     guard: "StealthOps.init({ minimalFootprint: true, encryptInTransit: true });\nSecretRotator.enable({ rotationIntervalMs: 86_400_000, auditAccess: true });",
-    wrapper: (code) => {
-      return code.replace(
-        /(?:password|secret|api_key|token)\s*[:=]\s*['"]([^'"]{8,})['"]/gi,
-        (match, _val) => match.replace(_val, '${WRAITH_SEALED_SECRET}')
-      );
-    },
+    wrapper: (code) => code,
   },
   obsidian: {
     imports: "import { RedundantStore, IntegrityVerifier } from '@cmpsbl/runtime/obsidian';",
