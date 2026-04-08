@@ -103,3 +103,29 @@ export interface ManaConfig {
   /** Lex strictness: 'permissive' allows all, 'strict' blocks by default */
   lexMode: 'permissive' | 'strict';
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Ascension ↔ Mana Bridge Types
+// ═══════════════════════════════════════════════════════════════
+
+/** A finding from Ascension's scan — identifies a specific function that needs wrapping */
+export interface AscensionFinding {
+  /** Function name detected in source (e.g. "processPayment") */
+  readonly functionName: string;
+  /** Mana capability to apply (e.g. "defense_gate") */
+  readonly capability: ManaCapability;
+  /** Which primitive drove this finding (e.g. "DEFENSE") */
+  readonly primitive: string;
+  /** Why this function was flagged (e.g. "Handles untrusted input") */
+  readonly reason: string;
+  /** Confidence from scanner signal strength (0–1) */
+  readonly confidence: number;
+}
+
+/** Serializable Mana attachment config for export artifacts */
+export interface ManaAttachmentEntry {
+  readonly functionName: string;
+  readonly capability: ManaCapability;
+  readonly primitive: string;
+  readonly reason: string;
+}
