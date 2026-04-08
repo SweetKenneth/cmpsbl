@@ -3081,9 +3081,17 @@ export function generateRefurbishedCode(
     .replace(/\n?.*End of CMPSBL® Convex Core™ Sealed Artifact.*\n?/g, '\n')
     .trimEnd();
 
+  // ── Mana Findings Bridge — Targeted Function Wrapping ──────────────
+  // Ascension SCANS + DIAGNOSES. Mana DEPLOYS + DEFENDS.
+  // Instead of generic `.activate()` templates, we detect function boundaries
+  // in the source, map them to capabilities, and generate surgical wrappers.
+  const boundaries = detectFunctionBoundaries(originalCode);
+  const activePrimitiveNames = new Set(selectedPrimitives.map(p => p.name.toUpperCase()));
+  const findings = buildAttachmentPlan(boundaries, activePrimitiveNames);
+  const attachmentPlan = serializeAttachmentPlan(findings);
+
   // ── Layer 2 Guard Assembly ───────────────────────────────────────────
-  // All instrumentation lives here — imports and guard init blocks.
-  // wrapper() calls are intentionally omitted: Layer 1 is never parsed.
+  // Phase 1: Primitive runtime imports (architectural init)
   for (const p of selectedPrimitives) {
     const wrapper = PRIMITIVE_WRAPPERS[p.primitiveId];
     if (wrapper) {
@@ -3093,6 +3101,34 @@ export function generateRefurbishedCode(
       guards.push(adapter.comment(`─── ${p.name} ───`));
       guards.push(adapter.transformGuard(wrapper.guard));
     }
+  }
+
+  // Phase 2: Mana attachment manifest — targeted function wrappers
+  // This tells the runtime exactly which functions to wrap with which capabilities.
+  if (attachmentPlan.length > 0) {
+    guards.push('');
+    guards.push(adapter.comment('═══════════════════════════════════════════════════════════'));
+    guards.push(adapter.comment('MANA ATTACHMENT MANIFEST — Targeted Function Wrappers'));
+    guards.push(adapter.comment('Each entry maps a specific function to a Layer 2 capability.'));
+    guards.push(adapter.comment('U.S. Patent App. No. 64/031,637'));
+    guards.push(adapter.comment('═══════════════════════════════════════════════════════════'));
+    guards.push('');
+
+    const manifestJson = JSON.stringify(attachmentPlan, null, 2);
+    guards.push(adapter.constDecl('__MANA_ATTACHMENTS__', manifestJson));
+
+    // Generate per-function wrapper comments showing what Mana targets
+    guards.push('');
+    guards.push(adapter.comment('─── Targeted Wrappers ───'));
+    for (const entry of attachmentPlan) {
+      guards.push(adapter.comment(
+        `${entry.functionName}() → ${entry.capability} [${entry.primitive}] — ${entry.reason}`
+      ));
+    }
+
+    guards.push('');
+    guards.push(adapter.comment(`Total attachments: ${attachmentPlan.length} functions targeted`));
+    guards.push(adapter.comment(`Functions detected: ${boundaries.length}`));
   }
 
   const headerLines = [
