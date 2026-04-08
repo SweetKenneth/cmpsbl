@@ -126,6 +126,7 @@ const ManaPage = lazy(() => import("@/pages/Mana"));
 const ManaProofPage = lazy(() => import("@/pages/ManaProof"));
 const ManaLabPage = lazy(() => import("@/pages/ManaLab"));
 const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
+const LabPage = lazy(() => import("@/pages/Lab"));
 
 export const publicRoutes = (
   <>
