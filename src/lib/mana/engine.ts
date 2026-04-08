@@ -1,5 +1,5 @@
 /**
- * Mana Engine v2.0.0 — Silent Symbiotic Attachment Runtime
+ * Mana Engine v2.0.0 — Silent Software Symbiosis Engine
  * U.S. Patent App. No. 64/031,637
  * 
  * Wraps a Layer 1 host with Layer 2 capabilities at function boundaries.
