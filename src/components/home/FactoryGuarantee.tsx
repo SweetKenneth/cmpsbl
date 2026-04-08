@@ -1,6 +1,6 @@
 /**
  * FactoryGuarantee — The CMPSBL promise
- * Three-day evaluation. No lock-in. Black-box protected.
+ * No lock-in. Black-box protected.
  * Premium gradient card with breathing glow and glass treatment.
  */
 
