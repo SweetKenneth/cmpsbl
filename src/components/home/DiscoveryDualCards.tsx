@@ -1,7 +1,6 @@
 /**
  * DiscoveryDualCards — Memory Stream + Ascension counterpart section
- * Explains both systems as two halves of the same substrate,
- * emphasising zero LLM usage — pure internal cording.
+ * Two halves of the same substrate — zero LLM usage.
  */
 
 import { Link } from "react-router-dom";
@@ -15,12 +14,12 @@ const CARDS = [
     glow: "--neon-cyan",
     badge: "Discovery",
     summary:
-      "An autonomous 8‑hour cycle that continuously samples, condenses, and crystallises real software from the substrate. Every pull is scored, governed, and export‑ready — no prompts, no triggers, no human in the loop.",
+      "An autonomous 8-hour cycle that continuously samples, condenses, and crystallises real software from the substrate. Every pull is scored, governed, and export-ready — no prompts, no triggers, no human in&nbsp;the&nbsp;loop.",
     bullets: [
       "Runs autonomously — never triggered",
       "Quality floor: 68+ CJPI score",
-      "Recursive re‑ingestion across cycles",
-      "APEX / MYTHIC tier → hardware languages",
+      "Recursive re-ingestion across cycles",
+      "APEX / MYTHIC → hardware languages",
     ],
     cta: "Explore Memory Stream",
   },
@@ -31,12 +30,12 @@ const CARDS = [
     glow: "--neon-purple",
     badge: "Transformation",
     summary:
-      "Upload any code in 90+ languages. It enters the 40‑Primitive matrix as Node #41, collides with every Organ, Layer, Engine, and Agent, and surfaces capabilities your software already had — but couldn't see.",
+      "Upload any code in 90+ languages. It enters the 40-Primitive matrix as Node #41, collides with every Organ, Layer, Engine, and Agent — surfacing capabilities your software already had but couldn't&nbsp;see.",
     bullets: [
       "Zero external AI calls — confirmed",
-      "90+ languages incl. HDL, GPU, blockchain, quantum & robotics",
-      "CJPI‑scored capability certificates",
-      "Sealed Mini‑Runtime™ in every export",
+      "90+ languages incl. HDL, GPU, and quantum",
+      "CJPI-scored capability certificates",
+      "Sealed Mini-Runtime™ in every export",
     ],
     cta: "Try Ascension",
   },
@@ -48,7 +47,7 @@ export function DiscoveryDualCards() {
       aria-label="Memory Stream and Ascension"
       className="relative z-10 px-3 sm:px-6 py-16 sm:py-24"
     >
-      {/* Ambient glow behind the section */}
+      {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-1/4 top-1/3 w-80 h-80 rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-cyan)/0.06)_0%,_transparent_70%)]" />
         <div className="absolute right-1/4 bottom-1/3 w-80 h-80 rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-purple)/0.06)_0%,_transparent_70%)]" />
@@ -64,7 +63,7 @@ export function DiscoveryDualCards() {
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-[1.1] mb-4">
-            Discovery &amp; Transformation —{" "}
+            Autonomous Discovery.{" "}
             <span
               className="bg-clip-text text-transparent"
               style={{
@@ -72,13 +71,13 @@ export function DiscoveryDualCards() {
                   "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
               }}
             >
-              Zero LLM
+              Zero&nbsp;LLM.
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto leading-[1.8]">
-            No large‑language model sits between you and your results. Both systems
-            run on <span className="text-foreground/90 font-medium">pure internal cording</span>{" "}
-            — deterministic, auditable, and governed by the 40‑Primitive mesh.
+          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-xl mx-auto leading-relaxed">
+            No large-language model sits between you and your results. Both systems run on{" "}
+            <span className="text-foreground/90 font-medium">pure internal cording</span>{" "}
+            — deterministic, auditable, and governed by the 40-Primitive&nbsp;substrate.
           </p>
         </div>
 
@@ -90,7 +89,7 @@ export function DiscoveryDualCards() {
               to={card.href}
               className="group relative rounded-2xl border border-border/25 bg-card/30 backdrop-blur-md overflow-hidden hover:border-primary/30 hover:-translate-y-1.5 transition-all duration-400 shadow-lg shadow-primary/[0.04] hover:shadow-xl hover:shadow-primary/[0.08]"
             >
-              {/* Top accent bar — wider with gradient fade */}
+              {/* Top accent bar */}
               <div
                 className="h-[3px]"
                 style={{
@@ -126,12 +125,13 @@ export function DiscoveryDualCards() {
                   </div>
                 </div>
 
-                {/* Summary */}
-                <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-5">
-                  {card.summary}
-                </p>
+                {/* Summary — using dangerouslySetInnerHTML for &nbsp; */}
+                <p
+                  className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-5"
+                  dangerouslySetInnerHTML={{ __html: card.summary }}
+                />
 
-                {/* Bullets — enhanced with better spacing */}
+                {/* Bullets */}
                 <ul className="space-y-2.5 mb-6">
                   {card.bullets.map((b) => (
                     <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground/75">
@@ -147,7 +147,7 @@ export function DiscoveryDualCards() {
                   ))}
                 </ul>
 
-                {/* CTA — upgraded to pill button style */}
+                {/* CTA pill */}
                 <div
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 group-hover:gap-3"
                   style={{
@@ -174,7 +174,7 @@ export function DiscoveryDualCards() {
 
         {/* Bottom note */}
         <p className="text-center text-xs text-muted-foreground/50 mt-6 sm:mt-8">
-          Both systems share the same governed substrate. Memory Stream <em>discovers</em> — Ascension <em>transforms</em>. Neither touches an LLM.
+          Both systems share the same governed substrate. Memory Stream <em>discovers</em>&nbsp;— Ascension <em>transforms</em>. Neither touches an&nbsp;LLM.
         </p>
       </div>
     </section>

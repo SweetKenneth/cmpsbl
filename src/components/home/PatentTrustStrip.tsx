@@ -1,7 +1,5 @@
 /**
  * PatentTrustStrip — Dual-patent IP trust signal for the homepage
- * Shows inventor attribution, patent numbers, ORCID, and verification link.
- * Designed to project institutional authority to investors and developers.
  */
 
 import { Shield, ExternalLink, Award } from "lucide-react";
@@ -75,7 +73,7 @@ export function PatentTrustStrip() {
             </a>
           </div>
           <p className="text-xs text-muted-foreground max-w-lg mx-auto">
-            Governed Cognitive Infrastructure · A PromptFluid™ Product
+            Governed Cognitive Infrastructure · A PromptFluid™&nbsp;Product
           </p>
           <Link
             to="/case-studies"

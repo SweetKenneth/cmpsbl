@@ -1,6 +1,5 @@
 /**
  * ManaShowcase — Software Symbiosis / Layer 2 showcase for the homepage
- * Highlights the Mana engine's silent attachment capability with visual proof.
  */
 
 import { Link } from "react-router-dom";
@@ -16,7 +15,7 @@ const CAPABILITIES = [
   {
     icon: ShieldCheck,
     title: "SHA-256 Proof",
-    desc: "Cryptographic verification that the host code is bit-identical before and after attachment.",
+    desc: "Cryptographic verification that host code is bit-identical before and after attachment.",
   },
   {
     icon: Lock,
@@ -43,12 +42,11 @@ export function ManaShowcase() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-3">
             The Universal Software{" "}
             <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
-              Adhesion Layer
+              Adhesion&nbsp;Layer
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Mana attaches capabilities to any software — payments, security, telemetry, governance — 
-            without the developer ever knowing. The host stays pristine. The layer does the work.
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+            Mana attaches capabilities to any software — payments, security, telemetry, governance — without the developer ever knowing. The host stays pristine.
           </p>
         </div>
 
@@ -77,10 +75,9 @@ export function ManaShowcase() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.2)] text-[hsl(var(--neon-cyan))] text-[10px] font-bold uppercase tracking-wider mb-4">
             Live Proof Available
           </div>
-          <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-6">
-            We silently attached Layer 2 to <span className="text-foreground font-semibold">lodash</span> on our servers — 
-            injecting DEFENSE gates, Shadow Rules, and governance hooks. 
-            The original source hash matches byte-for-byte.
+          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
+            We silently attached Layer 2 to{" "}
+            <span className="text-foreground font-semibold">lodash</span> — injecting DEFENSE gates, Shadow Rules, and governance hooks. The original source hash matches&nbsp;byte-for-byte.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">

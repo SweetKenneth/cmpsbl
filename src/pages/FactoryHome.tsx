@@ -1,11 +1,7 @@
 /**
  * FactoryHome — Series B Homepage
- * Hero → Live Stats → SDK/CLI → Discovery Dual (Ascension + Memory Stream) →
- * Mana Showcase → Patent Trust Strip → Free Value + Upgrade → Built For →
- * Social Proof → Final CTA
- *
- * NOTE: Hero component is NOT changed. All sections below the hero are new or
- * composed from the best of the original /explore page components.
+ * Hero → Live Stats → SDK/CLI → Built For → Mana Showcase →
+ * Discovery Dual → Free Value → Patent Trust → Social Proof → Final CTA
  */
 
 import { lazy, Suspense, useRef } from "react";
@@ -18,7 +14,6 @@ import { PublicNav } from "@/components/PublicNav";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
 
-// Below-fold: lazy loaded for FCP
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 const DiscoveryDualCards = lazy(() => import("@/components/home/DiscoveryDualCards").then(m => ({ default: m.DiscoveryDualCards })));
@@ -30,7 +25,7 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
+    <div className="relative py-8 sm:py-12">
       <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -92,33 +87,33 @@ export default function FactoryHome() {
       <LiveStatsBar />
 
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        {/* ═══ FREE SDK + CLI — #1 conversion driver ═══ */}
+        {/* ═══ FREE SDK + CLI ═══ */}
         <NpmPackagesCTA />
 
         <SectionDivider />
 
-        {/* ═══ MEMORY STREAM + ASCENSION — the two engines ═══ */}
-        <DiscoveryDualCards />
+        {/* ═══ BUILT FOR ═══ */}
+        <BuiltForSection />
 
         <SectionDivider />
 
-        {/* ═══ MANA — the category-defining innovation ═══ */}
+        {/* ═══ MANA — category-defining innovation ═══ */}
         <ManaShowcase />
 
         <SectionDivider />
 
-        {/* ═══ PATENT + IP TRUST — institutional authority ═══ */}
-        <PatentTrustStrip />
+        {/* ═══ MEMORY STREAM + ASCENSION ═══ */}
+        <DiscoveryDualCards />
 
         <SectionDivider />
 
-        {/* ═══ FREE → PAID — clear upgrade path ═══ */}
+        {/* ═══ FREE → PAID ═══ */}
         <FreeValueProposition />
 
         <SectionDivider />
 
-        {/* ═══ WHO IT'S FOR ═══ */}
-        <BuiltForSection />
+        {/* ═══ PATENT + IP TRUST ═══ */}
+        <PatentTrustStrip />
 
         <SectionDivider />
 
@@ -161,9 +156,8 @@ export default function FactoryHome() {
                 <br className="hidden sm:block" />
                 <span className="text-white/80">Build Something Real.</span>
               </h2>
-              <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
-                40 primitives. Dual patents. Zero AI tricks.
-                The substrate is free — start building today.
+              <p className="text-white/70 text-base sm:text-lg max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
+                40 primitives. Dual patents. Zero AI tricks. The substrate is free&nbsp;— start building today.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
