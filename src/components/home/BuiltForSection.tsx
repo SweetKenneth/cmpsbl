@@ -253,8 +253,9 @@ export function BuiltForSection() {
             <Hammer className="w-3 h-3 text-[hsl(var(--neon-purple))]" />
             <span className="text-xs">Built For Builders</span>
           </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
-            Your Industry.{" "}
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-black mb-5 tracking-tight">
+            Your Industry.
+            <br />
             <span className="text-[hsl(var(--neon-cyan))]">Our Substrate.</span>
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">

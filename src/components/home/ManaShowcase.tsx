@@ -39,8 +39,9 @@ export function ManaShowcase() {
             <Zap className="w-3.5 h-3.5" />
             Patented Technology
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-3">
-            The Universal Software{" "}
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-3">
+            The Universal Software
+            <br />
             <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
               Adhesion&nbsp;Layer
             </span>

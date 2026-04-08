@@ -107,8 +107,9 @@ export function NpmPackagesCTA() {
             <Package className="w-3.5 h-3.5" />
             Now on NPM
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-            Build What{" "}
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4">
+            Build What
+            <br />
             <span className="text-[hsl(var(--neon-purple))]">Evolves</span>
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8">

@@ -62,8 +62,9 @@ export function DiscoveryDualCards() {
               Two Sides of One Substrate
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-[1.1] mb-4">
-            Autonomous Discovery.{" "}
+          <h2 className="text-3xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-[1.1] mb-4">
+            Autonomous Discovery.
+            <br />
             <span
               className="bg-clip-text text-transparent"
               style={{
