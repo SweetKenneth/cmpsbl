@@ -1,28 +1,36 @@
 /**
- * FactoryHome — Software Refurbishment Center landing page
- * Hero → Live Stats → Pillars → Journey → Catalog → Open Archive → Guarantee
+ * FactoryHome — Series B Homepage
+ * Hero → Live Stats → SDK/CLI → Discovery Dual (Ascension + Memory Stream) →
+ * Mana Showcase → Patent Trust Strip → Free Value + Upgrade → Built For →
+ * Social Proof → Final CTA
+ *
+ * NOTE: Hero component is NOT changed. All sections below the hero are new or
+ * composed from the best of the original /explore page components.
  */
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useRef } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Terminal, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
-import { PublicNav } from "@/components/PublicNav";
-import { SubstrateTiers } from "@/components/home/SubstrateTiers";
 import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
+import { PublicNav } from "@/components/PublicNav";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
-import { DiagnosticExample } from "@/components/home/DiagnosticExample";
-import { CustomerJourney } from "@/components/home/CustomerJourney";
-import { FactoryPillars } from "@/components/home/FactoryPillars";
-import { ShowroomPreview } from "@/components/home/ShowroomPreview";
-import { FactoryGuarantee } from "@/components/home/FactoryGuarantee";
-import { JunkyardBanner } from "@/components/factory/JunkyardBanner";
-import { LabAmbient, ScanLine, Crosshair, MeasureMarkers, StatusIndicator } from "@/components/decorative/LabDecorations";
 
+// Below-fold: lazy loaded for FCP
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
+const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
+const DiscoveryDualCards = lazy(() => import("@/components/home/DiscoveryDualCards").then(m => ({ default: m.DiscoveryDualCards })));
+const ManaShowcase = lazy(() => import("@/components/home/ManaShowcase").then(m => ({ default: m.ManaShowcase })));
+const PatentTrustStrip = lazy(() => import("@/components/home/PatentTrustStrip").then(m => ({ default: m.PatentTrustStrip })));
+const FreeValueProposition = lazy(() => import("@/components/home/FreeValueProposition").then(m => ({ default: m.FreeValueProposition })));
+const BuiltForSection = lazy(() => import("@/components/home/BuiltForSection").then(m => ({ default: m.BuiltForSection })));
+const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
 
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14 lab-section-glow">
+    <div className="relative py-10 sm:py-14">
       <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -34,72 +42,150 @@ function SectionDivider() {
 }
 
 export default function FactoryHome() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
+    <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO
-        title="CMPSBL® — Software Refurbishment Center"
-        description="Memory Stream discovers. Ascension refurbishes. 40 Primitives power everything. No AI tricks. No lock-in. Just certified builds."
+        title="CMPSBL® — Governed Cognitive Infrastructure | Free SDK"
+        description="The patented dual-layer substrate where intelligence persists, adapts, and compounds. Free SDK and CLI. 40 primitives. Zero AI tricks. Ascension transforms code. Mana attaches silently."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home-v2.jpg"
-        keywords={['cognitive infrastructure', 'code refurbishment', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'software refurbishment center']}
+        keywords={['cognitive infrastructure', 'code hardening', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'Mana', 'Layer 2', 'free SDK', 'composable AI', 'governed AI', 'silent attachment', 'software symbiosis']}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'CMPSBL is a software refurbishment center — it discovers capabilities in code, refurbishes and hardens them, and sends them back production-ready. No AI inside the output.' },
-          { question: 'What is Memory Stream?', answer: 'Memory Stream is the autonomous discovery engine that runs 8-hour cycles finding capabilities nobody asked it to find. Every discovery is scored, priced, and placed in the Catalog.' },
-          { question: 'What is Ascension?', answer: 'Ascension is the refurbishment lab. Submit your code, we scan it for vulnerabilities and capabilities, refurbish it with up to 20 primitives, and send it back. 3-day evaluation period included.' },
-          { question: 'How does pricing work?', answer: 'Catalog discoveries are priced by CJPI score: $1-$2 per point depending on tier, with perfect 100s priced at $1,952 (the year of the first compiler). Once purchased, a discovery is permanently retired.' },
-          { question: 'Is there a free tier?', answer: 'Yes. Builder tier is free — browse the Catalog, access the Open Archive for Raw-tier discoveries, and view diagnostics.' },
+          { question: 'What is CMPSBL?', answer: 'CMPSBL is governed cognitive infrastructure — a patented dual-layer substrate where intelligence persists across sessions, adapts through deterministic evolution, and compounds over time. No AI inside the output.' },
+          { question: 'Is there a free tier?', answer: 'Yes. All 11 @cmpsbl/* NPM packages are free forever, including the CLI, SDK, and core 40 primitives. No credit card required.' },
+          { question: 'What is Ascension?', answer: 'Ascension transforms code by colliding it against 40 substrate primitives. Zero external AI calls. Your code gains security, governance, and resilience — without modification to the original source.' },
+          { question: 'What is Mana?', answer: 'Mana is the Universal Software Adhesion Layer — it silently attaches capabilities (payments, security, telemetry) to any codebase without requiring developer permission or source modification. Protected by U.S. patent.' },
+          { question: 'How does pricing work?', answer: 'Free tier includes full SDK, CLI, and core primitives. Studio ($29) unlocks business verticals. Creator ($49) adds technical verticals. Architect ($79) unlocks all 143+ primitives.' },
         ]}
       />
 
       <PublicNav />
       <CmpsblWelcome />
 
-      {/* Lab-grade ambient background */}
-      <LabAmbient />
+      {/* Ambient animated mesh background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <div
+          className="absolute -top-48 -left-48 w-[900px] h-[900px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, hsl(var(--primary) / 0.02) 35%, transparent 55%)" }}
+        />
+        <div
+          className="absolute top-1/3 -right-20 w-[600px] h-[600px] rounded-full animate-hero-orb-2"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.05) 0%, hsl(var(--neon-cyan) / 0.01) 35%, transparent 55%)" }}
+        />
+        <div
+          className="absolute -bottom-48 -right-48 w-[700px] h-[700px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.06) 0%, hsl(var(--neon-purple) / 0.015) 35%, transparent 55%)" }}
+        />
+        <div
+          className="absolute top-[60%] left-1/3 w-[500px] h-[400px] rounded-full animate-hero-orb-1 opacity-40"
+          style={{ background: "radial-gradient(ellipse, hsl(var(--neon-magenta) / 0.04) 0%, transparent 50%)" }}
+        />
+      </div>
 
-      {/* Technical measure markers — desktop only */}
-      <MeasureMarkers />
-
-      {/* Decorative crosshairs */}
-      <Crosshair className="top-[30%] left-[5%] hidden lg:block" size={100} color="--neon-cyan" />
-      <Crosshair className="top-[60%] right-[8%] hidden lg:block" size={70} color="--neon-purple" />
-
-      {/* ═══ HERO ═══ */}
+      {/* ═══ HERO (untouched) ═══ */}
       <HeroMetaSubstrate />
 
-      {/* ═══ LIVE CENTER STATUS ═══ */}
+      {/* ═══ LIVE METRICS ═══ */}
       <LiveStatsBar />
 
-      {/* ═══ EXAMPLE OUTPUT + BEFORE/AFTER ═══ */}
-      <DiagnosticExample />
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        {/* ═══ FREE SDK + CLI — #1 conversion driver ═══ */}
+        <NpmPackagesCTA />
 
-      {/* ═══ PIPELINE ═══ */}
-      <CustomerJourney />
+        <SectionDivider />
 
-      <SectionDivider />
+        {/* ═══ MEMORY STREAM + ASCENSION — the two engines ═══ */}
+        <DiscoveryDualCards />
 
-      {/* ═══ THREE PILLARS (Specialists — after value is clear) ═══ */}
-      <FactoryPillars />
+        <SectionDivider />
 
-      <SectionDivider />
+        {/* ═══ MANA — the category-defining innovation ═══ */}
+        <ManaShowcase />
 
-      {/* ═══ CATALOG PREVIEW ═══ */}
-      <ShowroomPreview />
+        <SectionDivider />
 
-      <SectionDivider />
+        {/* ═══ PATENT + IP TRUST — institutional authority ═══ */}
+        <PatentTrustStrip />
 
-      {/* ═══ OPEN ARCHIVE ═══ */}
-      <JunkyardBanner />
+        <SectionDivider />
 
-      <SectionDivider />
+        {/* ═══ FREE → PAID — clear upgrade path ═══ */}
+        <FreeValueProposition />
 
-      {/* ═══ SUBSTRATE ACCESS TIERS ═══ */}
-      <SubstrateTiers />
+        <SectionDivider />
 
-      <SectionDivider />
+        {/* ═══ WHO IT'S FOR ═══ */}
+        <BuiltForSection />
 
-      {/* ═══ THE GUARANTEE ═══ */}
-      <FactoryGuarantee />
+        <SectionDivider />
+
+        {/* ═══ SOCIAL PROOF ═══ */}
+        <SocialProof />
+
+        <SectionDivider />
+      </Suspense>
+
+      {/* ═══ FINAL CTA ═══ */}
+      <section className="relative z-10 px-3 sm:px-4 py-14 sm:py-32 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none hidden sm:block">
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
+        </div>
+        <div className="max-w-5xl mx-auto relative animate-fade-in-up">
+          <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
+            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
+
+            <div
+              className="absolute inset-0 opacity-[0.05]"
+              style={{
+                backgroundImage: `
+                  linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), 
+                  linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)
+                `,
+                backgroundSize: "50px 50px",
+              }}
+            />
+
+            <div className="relative p-6 sm:p-14 md:p-20 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <Sparkles className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white/90">Ready to Build?</span>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+                Install the SDK.{" "}
+                <br className="hidden sm:block" />
+                <span className="text-white/80">Build Something Real.</span>
+              </h2>
+              <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+                40 primitives. Dual patents. Zero AI tricks.
+                The substrate is free — start building today.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
+                  <Link to="/auth">
+                    <Terminal className="w-5 h-5 mr-2" />
+                    npm install @cmpsbl/sdk
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold backdrop-blur-sm rounded-xl">
+                  <Link to="/plans">
+                    View Plans
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          </div>
+        </div>
+      </section>
 
       <Suspense fallback={<div className="min-h-[100px]" />}>
         <EnhancedFooter />
