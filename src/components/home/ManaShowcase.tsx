@@ -63,8 +63,8 @@ export function ManaShowcase() {
                   <cap.icon className="w-4.5 h-4.5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-1">{cap.title}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{cap.desc}</p>
+                   <p className="text-sm font-bold text-foreground mb-1">{cap.title}</p>
+                   <p className="text-xs text-muted-foreground leading-relaxed font-medium">{cap.desc}</p>
                 </div>
               </div>
             </div>
