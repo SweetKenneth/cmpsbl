@@ -267,13 +267,12 @@ export function HeroMetaSubstrate() {
             <Button 
               asChild 
               size="lg" 
-              className="gap-2.5 h-14 px-10 text-sm sm:text-base font-bold rounded-xl border-0 text-white transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] shadow-xl shadow-[hsl(var(--neon-magenta)/0.35)] hover:shadow-[hsl(var(--neon-magenta)/0.55)]"
-              style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))" }}
+              className="gap-2 h-12 px-8 text-sm font-bold rounded-xl border border-border/40 bg-card/50 backdrop-blur-sm text-foreground hover:bg-card/80 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/[0.08]"
             >
               <Link to="/ascension">
-                <Wrench className="w-4.5 h-4.5 shrink-0" />
+                <Wrench className="w-4 h-4 shrink-0 text-primary" />
                 Ascend Your Code
-                <ArrowRight className="w-4 h-4 shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
               </Link>
             </Button>
           </FadeIn>
