@@ -1190,7 +1190,7 @@ export function runUniversalPoolScan(
     scoreCandidate(tagged, lowerCode, codeTokens, signalDocFreq, poolSize, mode, structuralBoosts, verticalAffinity)
   );
 
-  // Select the optimal primitives — count is CODE-DRIVEN, not hardcoded
+  // Select the optimal 40 primitives — MATRIX-ENFORCED: 12/12/8/8
   const selected = selectOptimalPrimitives(scored);
 
   // Rebalance weights so selected primitives sum to 1.0
