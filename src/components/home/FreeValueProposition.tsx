@@ -54,9 +54,9 @@ export function FreeValueProposition() {
               Everything You&nbsp;Need
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
-            No credit card. No trial limits. The SDK, CLI, and core substrate are free&nbsp;— permanently.
-          </p>
+           <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto font-medium">
+             No credit card. No trial limits. The SDK, CLI, and core substrate are free&nbsp;— permanently.
+           </p>
         </div>
 
         {/* Two-column layout */}
