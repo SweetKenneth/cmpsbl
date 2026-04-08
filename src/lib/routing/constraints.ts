@@ -43,5 +43,5 @@ export const DEFAULT_REQUIREMENTS: RoutingRequirements = {
   requires_vision: false,
   min_output_tokens: 1024,
   budget_ceiling_cents: 100,
-  min_health_score: 30,
+  min_health_score: 0,
 };

@@ -25,6 +25,7 @@ export interface CircuitBreaker {
   lastFailure: number | null;
   lastStateChange: number;
   totalTrips: number;
+  everSucceeded: boolean; // cold-start guard: no tripping until first success
 }
 
 const DEFAULT_CONFIG: CircuitBreakerConfig = {
