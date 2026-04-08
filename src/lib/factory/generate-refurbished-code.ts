@@ -3228,7 +3228,7 @@ export function generateRefurbishedCode(
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
     adapter.comment('Verified byte-identical to uploaded source.'),
-    adapter.comment('U.S. Patent Pending — App. No. 64/029,678'),
+    adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
     verbatimSource,
