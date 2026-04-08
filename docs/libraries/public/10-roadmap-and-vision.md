@@ -47,7 +47,7 @@ The Shield-First strategy overlays the existing roadmap with a market-entry sequ
 
 | Deliverable | Description | Status |
 |-------------|-------------|--------|
-| `@cmpsbl/shield` | Free npm package — Proxy Trap Detector, Lex Heartbeat Monitor, Attachment Alarm | 🟡 Planned |
+| `@cmpsbl/shield` | Free npm package — Runtime Integrity Monitor, Heartbeat Verification, Attachment Alarm | 🟡 Planned |
 | **Lex Registry** | Universal Blacklist/Whitelist governance database | 🟡 Planned |
 | **Whitepaper** | "Indefensibility Thesis & The Shield Protocol" | 🟡 Planned |
 | **Patent Mapping** | Shield detection methods covered under U.S. App. No. 64/031,637 | 🟡 Planned |
