@@ -1,7 +1,7 @@
 /**
- * DecodeDebrief — Interactive guided tour of refurbishment results
- * DECODE has FULL CONTEXT: original code, refurbished code, applied primitives, and scan results.
- * Answers questions as if it performed the refurbishment itself.
+ * DecodeDebrief — Interactive guided tour of ascension results
+ * DECODE has FULL CONTEXT: original code, ascended code, applied primitives, and scan results.
+ * Answers questions as if it performed the ascension itself.
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -156,13 +156,13 @@ function buildDebriefMessages(
   return msgs;
 }
 
-/** Context-aware Q&A that uses actual refurbishment data */
+/** Context-aware Q&A that uses actual ascension data */
 function getContextualResponse(
   question: string,
   report: RestorationReport,
   scanResult: ScanResult | null,
   originalCode: string,
-  refurbishedCode: string,
+  ascendedCode: string,
   selectedPrimitives: PrimitiveRecommendation[],
 ): string {
   const q = question.toLowerCase();
@@ -212,7 +212,7 @@ function getContextualResponse(
     if (hasDefense) {
       return `DEFENSE is active on your code. It provides device fingerprinting, request origin validation, and suspicious pattern detection. Unauthorized requests are blocked before reaching your application logic. You can customize the allowlist in your DEFENSE config.`;
     }
-    return `Security hardening was applied through the primitives you selected (${primNames.join(', ')}). Each one adds a layer of protection. For dedicated device-level security, the DEFENSE primitive would add fingerprinting — you can add it in a future refurbishment.`;
+    return `Security hardening was applied through the primitives you selected (${primNames.join(', ')}). Each one adds a layer of protection. For dedicated device-level security, the DEFENSE primitive would add fingerprinting — you can add it in a future ascension.`;
   }
 
   // Backup / restore
@@ -226,34 +226,34 @@ function getContextualResponse(
 
   // Documentation
   if (/doc|documentation|readme/i.test(q)) {
-    return `Your export includes comprehensive documentation: pipeline-details.md (every step of the refurbishment), new-capabilities.md (what you can now do), testing-guide.md (verification steps), error-codes.md (runtime error handling), vulnerability-assessment.md (what was found and fixed), primitive-manifest.md (what was applied), cjpi-certificate.json, and a README.md with quick-start instructions.`;
+    return `Your export includes comprehensive documentation: pipeline-details.md (every step of the ascension), new-capabilities.md (what you can now do), testing-guide.md (verification steps), error-codes.md (runtime error handling), vulnerability-assessment.md (what was found and fixed), primitive-manifest.md (what was applied), cjpi-certificate.json, and a README.md with quick-start instructions.`;
   }
 
   // Code / source / original
-  if (/code|source|original|refurbished|dual.?layer/i.test(q)) {
+  if (/code|source|original|ascended|dual.?layer/i.test(q)) {
     return `Your export contains dual-layer source: \`src/original-source.txt\` (your unchanged code) and \`src/ascended-source.ts\` (hardened code with @cmpsbl/runtime imports and primitive guard activations). The ascended version wraps your original logic — nothing was removed, only reinforced.`;
   }
 
   // Price / plan
   if (/price|cost|plan|subscribe|pay/i.test(q)) {
-    return `Exporting requires an active subscription. Studio ($29), Creator ($79), or Architect ($249) — all include unlimited refurbishments. Visit the Plans section below to get started.`;
+    return `Exporting requires an active subscription. Studio ($29), Creator ($79), or Architect ($249) — all include unlimited ascensions. Visit the Plans section below to get started.`;
   }
 
   // Fallback — still contextual
-  return `That's a good question. I have full context on your refurbishment — ${primNames.length} primitives applied (${primNames.join(', ')}), CJPI ${report.cjpiCertificate.score}, ${report.vulnerabilityAssessment.length} issues addressed. Could you rephrase or ask about a specific primitive, the export contents, testing, or your CJPI score? I'm here until you're ready to download.`;
+  return `That's a good question. I have full context on your ascension — ${primNames.length} primitives applied (${primNames.join(', ')}), CJPI ${report.cjpiCertificate.score}, ${report.vulnerabilityAssessment.length} issues addressed. Could you rephrase or ask about a specific primitive, the export contents, testing, or your CJPI score? I'm here until you're ready to download.`;
 }
 
 export function DecodeDebrief({
   report,
   scanResult,
   originalCode = '',
-  refurbishedCode = '',
+  ascendedCode = '',
   selectedPrimitives = [],
 }: {
   report: RestorationReport;
   scanResult: ScanResult | null;
   originalCode?: string;
-  refurbishedCode?: string;
+  ascendedCode?: string;
   selectedPrimitives?: PrimitiveRecommendation[];
 }) {
   const baseMessages = buildDebriefMessages(report, scanResult);
@@ -288,7 +288,7 @@ export function DecodeDebrief({
       content: q,
     };
 
-    const response = getContextualResponse(q, report, scanResult, originalCode, refurbishedCode, selectedPrimitives);
+    const response = getContextualResponse(q, report, scanResult, originalCode, ascendedCode, selectedPrimitives);
     const decodeMsg: DebriefMessage = {
       id: `decode-reply-${Date.now()}`,
       role: 'decode',
@@ -299,7 +299,7 @@ export function DecodeDebrief({
     setMessages(prev => [...prev, userMsg, decodeMsg]);
     setVisibleCount(prev => prev + 2);
     setUserInput('');
-  }, [userInput, report, scanResult, originalCode, refurbishedCode, selectedPrimitives]);
+  }, [userInput, report, scanResult, originalCode, ascendedCode, selectedPrimitives]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -322,7 +322,7 @@ export function DecodeDebrief({
         </div>
         <div className="flex-1">
           <h3 className="text-sm font-bold text-foreground">DECODE Debrief</h3>
-          <p className="text-[10px] text-muted-foreground">Interactive walkthrough — I have full context on your refurbishment</p>
+          <p className="text-[10px] text-muted-foreground">Interactive walkthrough — I have full context on your ascension</p>
         </div>
         {/* Fingerprint badge */}
         <button
@@ -421,7 +421,7 @@ export function DecodeDebrief({
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask me anything about your refurbishment..."
+              placeholder="Ask me anything about your ascension..."
               className="flex-1 h-9 text-xs bg-muted/30 border-border/30"
             />
             <Button

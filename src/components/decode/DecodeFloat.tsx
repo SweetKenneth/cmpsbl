@@ -360,7 +360,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
             const primList = s.selectedPrimitives.join(', ');
             // Build a hidden context block the LLM can reference for follow-ups
             const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprint}]\n` +
-              `Source: Refurbishment Center\n` +
+              `Source: Ascension Center\n` +
               `Fingerprint: ${s.fingerprint}\n` +
               `Serial: ${s.serialNumber}\n` +
               `CJPI: ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
@@ -371,14 +371,14 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
               `Scan Result: ${JSON.stringify(s.scanResult).slice(0, 1000)}\n` +
               `[END SESSION CONTEXT]`;
 
-            lookupReply = `✅ **Verified** — Fingerprint found in the Refurbishment Center.\n\n` +
+            lookupReply = `✅ **Verified** — Fingerprint found in the Ascension Center.\n\n` +
               `**Fingerprint:** \`${s.fingerprint}\`\n` +
               `**Serial:** \`${s.serialNumber}\`\n` +
               `**CJPI Score:** ${s.cjpiScore}/100 (${s.cjpiTier})\n` +
               `**Primitives Applied:** ${primList}\n` +
               `**Language:** ${s.originalLanguage ?? 'Unknown'}\n` +
               `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
-              `This is a verified Ascension record. What would you like to know about this refurbishment?`;
+              `This is a verified Ascension record. What would you like to know about this ascension?`;
 
             // Inject context block as a hidden assistant message so the LLM has the data for follow-ups
             setMessages(prev => [
@@ -442,7 +442,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           // No record found — tell the user directly, do NOT fall through to AI
           setMessages(prev => [...prev, {
             role: 'assistant',
-            content: `🔍 I searched both the **Refurbishment Center** and all **Vertical Ascension** records for fingerprint \`${possibleFp}\`, but no matching record was found.\n\nThis could mean:\n- The fingerprint hasn't been processed yet\n- It may have been entered incorrectly\n- The Ascension session may not have completed\n\nDouble-check the ID and try again, or ask me anything else about the substrate.`
+            content: `🔍 I searched both the **Ascension Center** and all **Vertical Ascension** records for fingerprint \`${possibleFp}\`, but no matching record was found.\n\nThis could mean:\n- The fingerprint hasn't been processed yet\n- It may have been entered incorrectly\n- The Ascension session may not have completed\n\nDouble-check the ID and try again, or ask me anything else about the substrate.`
           }]);
         }
       } catch (err) {

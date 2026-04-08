@@ -1,6 +1,6 @@
 /**
- * FactoryPillars — Three-pillar overview for the Software Refurbishment Center
- * Scanners (Memory Stream) · Refurbishment Lab (Ascension) · Specialists (Substrate)
+ * FactoryPillars — Three-pillar overview for the Software Ascension Center
+ * Scanners (Memory Stream) · Ascension Lab (Ascension) · Specialists (Substrate)
  */
 
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const PILLARS = [
     glowVar: "--neon-cyan",
   },
   {
-    title: "The Refurbishment Lab",
+    title: "The Ascension Lab",
     subtitle: "Ascension · Your Code",
     icon: Zap,
     description: "Bring us your code. We analyze, restore first, and only replace as a last resort. AI as a tool, not a foundation.",

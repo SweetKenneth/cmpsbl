@@ -1,5 +1,5 @@
 /**
- * CaseStudies — Real-world Ascension case studies showcasing CMPSBL® refurbishment results.
+ * CaseStudies — Real-world Ascension case studies showcasing CMPSBL® ascension results.
  * Each study includes original source provenance, improvements analysis, and downloadable artifacts.
  */
 
@@ -1016,7 +1016,7 @@ export default function CaseStudies() {
                 A* Grid Path Planning Algorithm
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
-                The canonical A* path planner from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">PythonRobotics</a> — the most-starred open-source robotics algorithms repository on GitHub (29,000+ stars). Refurbished through the CMPSBL ROBOTICS™ Ascension pipeline in under 10 seconds, with zero AI calls.
+                The canonical A* path planner from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">PythonRobotics</a> — the most-starred open-source robotics algorithms repository on GitHub (29,000+ stars). Ascended through the CMPSBL ROBOTICS™ Ascension pipeline in under 10 seconds, with zero AI calls.
               </p>
             </div>
 
@@ -1316,7 +1316,7 @@ export default function CaseStudies() {
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The{' '}
                 <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">ConsolidateBlocks</a>{' '}
-                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads). Refurbished through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
+                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads). Ascended through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
               </p>
             </div>
 
@@ -1452,7 +1452,7 @@ export default function CaseStudies() {
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The core TCP communication mixin from{' '}
                 <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">Rapid7's Metasploit Framework</a>{' '}
-                — 38K+ GitHub stars. This 342-line Ruby module is the foundation of every remote exploit in the framework. Refurbished through CMPSBL CYBER™ in under 10 seconds, with zero AI.
+                — 38K+ GitHub stars. This 342-line Ruby module is the foundation of every remote exploit in the framework. Ascended through CMPSBL CYBER™ in under 10 seconds, with zero AI.
               </p>
             </div>
 
@@ -3051,7 +3051,7 @@ export default function CaseStudies() {
         path="/case-studies"
         title="Case Studies"
         faq={[
-          { question: 'What is CMPSBL Ascension?', answer: 'Ascension is the CMPSBL® code refurbishment pipeline that analyzes, classifies, and hardens source code by colliding it against 40 Primitives — all without AI.' },
+          { question: 'What is CMPSBL Ascension?', answer: 'Ascension is the CMPSBL® code ascension pipeline that analyzes, classifies, and hardens source code by colliding it against 40 Primitives — all without AI.' },
           { question: 'How long does Ascension take?', answer: 'A typical file processes through the full 20-primitive pipeline in approximately 10 seconds.' },
           { question: 'Does Ascension use AI?', answer: 'No. The Ascension pipeline is purely algorithmic — deterministic pattern matching, structural analysis, and primitive guard injection. Zero external AI calls.' },
           { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, Quantum, or LLM.' },

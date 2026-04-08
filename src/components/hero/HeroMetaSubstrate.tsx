@@ -1,6 +1,6 @@
 /**
- * META HERO: CMPSBL® Software Refurbishment Center
- * Clean, solution-forward hero with typed rotation and dual CTAs.
+ * META HERO: CMPSBL® Software Ascension Center
+ * Clean, solution-forward hero with typed rotation and single CTA.
  * 
  * PERFORMANCE: Uses pure CSS animations instead of framer-motion
  * to avoid 56KB parse cost on the landing page critical path.
@@ -209,7 +209,7 @@ export function HeroMetaSubstrate() {
         {/* ─── Stacked hero content ─── */}
         <div className="text-center mb-6 sm:mb-14">
           
-          {/* Software Refurbishment Center banner */}
+          {/* Software Ascension Center banner */}
           <FadeIn delay={0.05}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
           >

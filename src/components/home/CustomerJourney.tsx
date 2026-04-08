@@ -1,5 +1,5 @@
 /**
- * CustomerJourney — The refurbishment experience in 6 clear steps
+ * CustomerJourney — The ascension experience in 6 clear steps
  * Timeline-style with connecting lines and staggered entrance
  */
 
@@ -25,7 +25,7 @@ const STEPS = [
   },
   {
     number: "03",
-    title: "Refurbish",
+    title: "Ascend",
     description: "Apply up to 20 primitives to upgrade the system.",
     accent: "--neon-magenta",
     icon: Cpu,
@@ -71,7 +71,7 @@ export function CustomerJourney() {
             From Upload to Ownership
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
-            Six steps. No surprises. No lock-in. Your code, refurbished and returned.
+            Six steps. No surprises. No lock-in. Your code, ascended and&nbsp;returned.
           </p>
         </div>
 

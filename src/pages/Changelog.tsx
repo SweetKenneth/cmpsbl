@@ -687,7 +687,7 @@ const stratumBeliever: Specimen[] = [
       "Complete site redesign: Showroom, Restoration Shop (Ascension), Foundry, and Plans pages rebuilt with consistent visual language and navigation",
       "Four-tier subscription model (Builder / Studio / Creator / Architect) deployed with Stripe-backed checkout, annual billing, and 7-day free trials",
       "Showroom launched as the primary certified discovery marketplace with search, rarity filtering, and one-click purchase",
-      "Restoration Shop (Ascension) redesigned as the refurbishment entry point — upload broken software, receive certified rebuilds",
+      "Restoration Shop (Ascension) redesigned as the ascension entry point — upload broken software, receive certified rebuilds",
       "Foundry reimagined as the Open Archive for raw discoveries and salvageable parts",
       "Mobile-first responsive audit across all public pages at 440px viewport",
       "Full SEO pass: canonical tags, JSON-LD, sitemap sync, robots.txt coverage for all new routes",

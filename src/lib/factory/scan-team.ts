@@ -1,6 +1,6 @@
 /**
  * Restoration Scan Team — ENCODE + ORACLE + ENGINEER + MEDIC + DEFENSE + FAILSAFE
- * Six-primitive diagnostic squad for the Refurbishment Lab.
+ * Six-primitive diagnostic squad for the Ascension Lab.
  * All 40 primitives available as recommendations.
  * Capabilities classified as Active/Passive/Hybrid archetypes.
  * ENCODE drives selection logic with randomization for unique builds.
