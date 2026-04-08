@@ -166,7 +166,10 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
       <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[10px] sm:text-xs text-muted-foreground/70 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground transition-colors duration-300">{label}</div>
+      <div className="text-[10px] sm:text-xs text-foreground/80 font-bold mt-1 tracking-[0.12em] uppercase group-hover:text-foreground transition-colors duration-300">{label}</div>
+      {sublabel && (
+        <div className="text-[8px] sm:text-[9px] text-muted-foreground/50 font-medium mt-0.5 tracking-[0.08em]">{sublabel}</div>
+      )}
     </div>
   );
 }
