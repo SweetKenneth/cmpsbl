@@ -48,7 +48,7 @@ const sections = [
     title: "3. How We Use Your Information",
     content: "We use the information we collect to:",
     list: [
-      "Provide, maintain, and improve the CMPSBL platform and its 40 primitives",
+      "Provide, maintain, and improve the CMPSBL substrate and its 40 primitives",
       "Process transactions for capability packs, Composable Cognitives, and subscriptions",
       "Power the Memory Stream discovery engine and crystallization scoring",
       "Route AI requests through the NEXUS Organ's 14-provider network",
