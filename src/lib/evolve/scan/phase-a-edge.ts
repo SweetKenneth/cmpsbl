@@ -160,7 +160,7 @@ async function detectLiveFunctions(): Promise<string[]> {
     'nexus-budget-optimizer',
     'nexus-code-assistant',
     'nexus-provider-discovery',
-    'radio-dj-tts',
+    
     'stripe-price-lookup',
     'tier-checkout',
     'world-engine-checkout',

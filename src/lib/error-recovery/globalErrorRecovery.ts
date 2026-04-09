@@ -76,7 +76,7 @@ function isBackgroundRequest(url: string): boolean {
   const backgroundPatterns = [
     '/functions/v1/pf-substrate',       // Substrate status polling
     '/functions/v1/pf-radio-broadcast', // Radio broadcast generation
-    '/functions/v1/radio-dj-tts',       // Radio TTS
+    
     '/rest/v1/brain_maintenance_log',   // Neural maintenance
     '/rest/v1/brain_embeddings',        // Embedding sync
     '/rest/v1/brain_knowledge_crystals',// Crystal sync
