@@ -68,7 +68,7 @@ const sections = [
   {
     id: "ip",
     title: "5. Intellectual Property",
-    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, 40-primitive substrate, Memory Stream discovery engine, orchestration systems, and Composable Cognitives — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. The @cmpsbl npm packages are released under Apache-2.0 and governed by their respective license terms. You may not copy, modify, distribute, or create derivative works of proprietary components without express written permission.",
+    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL substrate architecture, 40-primitive governed cognitive infrastructure, dual-layer technology, Memory Stream discovery engine, Ascension classification engine, Mana deployment layer, and all orchestration primitives — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. Patent pending (U.S. App. No. 64/029,678). The @cmpsbl npm packages are released under Apache-2.0 and governed by their respective license terms. You may not copy, modify, distribute, or create derivative works of proprietary components without express written permission.",
   },
   {
     id: "purchases",
