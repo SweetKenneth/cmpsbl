@@ -52,12 +52,14 @@ interface InventoryItem {
 
 export function useFoundryState() {
   const { user } = useAuth();
+  const { crystallizationsPerDay } = useUserLimits();
   const [userState, setUserState] = useState<FoundryUserState | null>(null);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [isMining, setIsMining] = useState(false);
   const [lastMineResult, setLastMineResult] = useState<MineResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastSyncedAt, setLastSyncedAt] = useState<number>(Date.now());
+  const [todayMineCount, setTodayMineCount] = useState(0);
 
   // Load user state + vault
   const loadState = useCallback(async () => {
