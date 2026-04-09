@@ -29,6 +29,7 @@ import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getLLMEngines, getLLMAgents } from './verticals/llm';
 import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
+import { getFintechEngines, getFintechAgents } from './verticals/fintech';
 import { getMediaEngines, getMediaAgents } from './verticals/media';
 import {
   ULTIMATE_ALL_ENGINES,
