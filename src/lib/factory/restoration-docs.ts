@@ -91,8 +91,9 @@ export function generateRestorationReport(
     durationMs: 2000 + Math.floor(Math.random() * 8000),
   }));
 
-  // Generate capabilities from the registry — ENCODE selects up to 10
-  // matched by source primitives, classified as Active/Passive/Hybrid
+  // Generate capabilities from the registry — ENCODE selects ALL matched
+  // capabilities classified as Active/Passive/Hybrid. No artificial cap —
+  // vertical expansion capabilities must surface alongside spine capabilities.
   const newCapabilities = selectCapabilities(selectedPrimitives);
 
   // Convert findings to vulnerability assessment
