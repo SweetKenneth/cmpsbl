@@ -878,8 +878,12 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   tag(getAgencyAgents(), 'agency');
 
   // Media (16)
-  tag(getMediaEngines(), 'media');
-  tag(getMediaAgents(), 'media');
+  tag(getMediaEngines(), 'media', MEDIA_AFFINITY_SIGNALS);
+  tag(getMediaAgents(), 'media', MEDIA_AFFINITY_SIGNALS);
+
+  // Fintech (16)
+  tag(getFintechEngines(), 'fintech', FINTECH_AFFINITY_SIGNALS);
+  tag(getFintechAgents(), 'fintech', FINTECH_AFFINITY_SIGNALS);
 
   // Ultimate Universal (16)
   tag(ULTIMATE_ALL_ENGINES, 'ultimate');
