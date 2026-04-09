@@ -23,6 +23,7 @@ import {
   ScrollText,
   ShoppingBag,
   Layers,
+  Brain,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -45,16 +46,16 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
+  { name: "Memory Stream", href: "/foundry", icon: Brain, badge: "LIVE", highlight: true },
   { name: "Mana", href: "/mana", icon: Layers, badge: "PATENT", highlight: true },
-  { name: "Explore Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
+  { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
   { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
-  { name: "Code Ascension", href: "/ascension", icon: Sparkles, badge: "NEW", highlight: true },
+  { name: "Ascension", href: "/ascension", icon: Sparkles, highlight: true },
   { name: "Verticals", href: "/verticals", icon: Globe, badge: "EXPLORE" },
-  { name: "Code Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
+  { name: "Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
   { name: "Case Studies", href: "/case-studies", icon: ScrollText },
-  { name: "View Plans", href: "/plans", icon: CreditCard },
-  { name: "Read the Docs", href: "/documentation", icon: FileText },
-  { name: "Try the Substrate", href: "/try", icon: Play },
+  { name: "Plans", href: "/plans", icon: CreditCard },
+  { name: "Docs", href: "/documentation", icon: FileText },
 ];
 
 /** Top 4 routes for the mobile quick-link grid */

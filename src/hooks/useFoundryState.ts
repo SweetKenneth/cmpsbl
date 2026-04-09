@@ -1,11 +1,13 @@
 /**
  * useFoundryState — Per-user Memory Stream workspace hook
  * Loads user state, vault, handles crystallization, enforces quality floor.
- * v13.3: structural pipeline identity with pipeline_steps support.
+ * v14.0: Tier-based daily crystallization limits (3/6/9/12/unlimited).
+ *        Shared across all substrates via foundry_user_state.totalMines + date check.
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserLimits } from '@/hooks/useUserLimits';
 import { executeMine, filterByQualityFloor, type MineResult, type MineResponse } from '@/lib/foundry/public-mining-engine';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import { recordPipelineLineage } from '@/substrate/memory-lineage';
@@ -50,12 +52,14 @@ interface InventoryItem {
 
 export function useFoundryState() {
   const { user } = useAuth();
+  const { crystallizationsPerDay } = useUserLimits();
   const [userState, setUserState] = useState<FoundryUserState | null>(null);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [isMining, setIsMining] = useState(false);
   const [lastMineResult, setLastMineResult] = useState<MineResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastSyncedAt, setLastSyncedAt] = useState<number>(Date.now());
+  const [todayMineCount, setTodayMineCount] = useState(0);
 
   // Load user state + vault
   const loadState = useCallback(async () => {
@@ -126,6 +130,14 @@ export function useFoundryState() {
 
       setInventory(mappedInventory);
       setLastSyncedAt(Date.now());
+
+      // Count today's crystallizations (shared across all substrates)
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const todayCount = mappedInventory.filter(
+        (item: InventoryItem) => new Date(item.obtainedAt) >= todayStart
+      ).length;
+      setTodayMineCount(todayCount);
     } catch (err) {
       console.error('Failed to load Memory Stream state:', err);
     } finally {
@@ -144,6 +156,15 @@ export function useFoundryState() {
       return;
     }
     if (isMining) return;
+
+    // Enforce daily crystallization limit (shared across all substrates)
+    if (crystallizationsPerDay !== -1 && todayMineCount >= crystallizationsPerDay) {
+      toast.error('Daily Limit Reached', {
+        description: `You've used ${todayMineCount}/${crystallizationsPerDay} crystallizations today. Upgrade your plan for more.`,
+        duration: 5000,
+      });
+      return;
+    }
 
     setIsMining(true);
     const startTime = Date.now();
@@ -197,7 +218,7 @@ export function useFoundryState() {
     } finally {
       setIsMining(false);
     }
-  }, [user, isMining, loadState]);
+  }, [user, isMining, loadState, crystallizationsPerDay, todayMineCount]);
 
   // Stats
   const bestPull = inventory.length > 0
@@ -208,6 +229,9 @@ export function useFoundryState() {
     acc[item.publicTier] = (acc[item.publicTier] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
+
+  const dailyLimit = crystallizationsPerDay === -1 ? Infinity : crystallizationsPerDay;
+  const remainingToday = Math.max(0, dailyLimit - todayMineCount);
 
   return {
     user,
@@ -222,5 +246,11 @@ export function useFoundryState() {
     inventoryCount: inventory.length,
     reload: loadState,
     lastSyncedAt,
+    /** Daily crystallization usage */
+    todayMineCount,
+    /** Daily crystallization cap (-1 = unlimited) */
+    dailyLimit: crystallizationsPerDay,
+    /** Remaining crystallizations today */
+    remainingToday,
   };
 }

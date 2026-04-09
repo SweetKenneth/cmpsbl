@@ -27,6 +27,8 @@ export interface ProductLimits {
   exportTraceAccess: boolean;
   /** Max crystallized assets usable */
   crystallizedAssetCap: number;
+  /** Max crystallizations (mines) per day across all substrates. -1 = unlimited */
+  crystallizationsPerDay: number;
   /** Radio listening limit in minutes per 24 hours. -1 = unlimited */
   radioMinutesPerDay: number;
 
@@ -55,6 +57,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: false,
     exportTraceAccess: false,
     crystallizedAssetCap: 12,
+    crystallizationsPerDay: 3,
     radioMinutesPerDay: 15,
     evolutionUploadsPerDay: 3,
     forgeAgentSlots: 3,
@@ -71,6 +74,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: false,
     exportTraceAccess: false,
     crystallizedAssetCap: 30,
+    crystallizationsPerDay: 6,
     radioMinutesPerDay: 30,
     evolutionUploadsPerDay: 6,
     forgeAgentSlots: 6,
@@ -87,6 +91,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: false,
     exportTraceAccess: true,
     crystallizedAssetCap: 45,
+    crystallizationsPerDay: 9,
     radioMinutesPerDay: 45,
     evolutionUploadsPerDay: 9,
     forgeAgentSlots: 9,
@@ -103,6 +108,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: true,
     exportTraceAccess: true,
     crystallizedAssetCap: 60,
+    crystallizationsPerDay: 12,
     radioMinutesPerDay: 60,
     evolutionUploadsPerDay: 12,
     forgeAgentSlots: 12,
@@ -119,6 +125,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: true,
     exportTraceAccess: true,
     crystallizedAssetCap: 200,
+    crystallizationsPerDay: -1,
     radioMinutesPerDay: -1,
     evolutionUploadsPerDay: 50,
     forgeAgentSlots: 50,
@@ -151,6 +158,7 @@ const GOD_MODE_LIMITS: ProductLimits = {
   safeEvolutionAccess: true,
   exportTraceAccess: true,
   crystallizedAssetCap: Infinity,
+  crystallizationsPerDay: -1,
   radioMinutesPerDay: -1,
   evolutionUploadsPerDay: Infinity,
   forgeAgentSlots: Infinity,
