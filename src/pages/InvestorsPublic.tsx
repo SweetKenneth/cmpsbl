@@ -132,8 +132,8 @@ export default function InvestorsPublic() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building CMPSBL — the composable AI platform where raw signals become production-ready software. 
-            40 modules across 12 groups, 675+ capabilities, and 14 documented world firsts.
+            Building CMPSBL — governed cognitive infrastructure with patented dual-layer technology. 
+            40 primitives across 4 categories, 200+ capabilities, and 14 documented world firsts.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">

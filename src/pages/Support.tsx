@@ -93,7 +93,7 @@ const FAQ_ITEMS = [
   {
     category: "Capability Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing modules in the platform — each handling specific domains like content generation, data analysis, or security scanning. They run as Convex Core™ artifacts with built-in capability gating and tier-based access.",
+    answer: "Engines are 8 specialized processing primitives in the substrate — each handling specific domains like synthesis, security scanning, or code generation. They run as Convex Core™ artifacts with built-in capability gating and tier-based access.",
   },
   {
     category: "Capability Packs",
