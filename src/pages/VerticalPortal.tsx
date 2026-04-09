@@ -9,12 +9,15 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, Clapperboard, Hexagon, type LucideIcon } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, Clapperboard, Hexagon, ArrowUpRight, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
+import { isVerticalAccessible } from "@/components/gates/VerticalAccessGate";
 import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
 import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory/vertical-factory-engine";
 
@@ -188,6 +191,7 @@ function useAllVerticals() {
 
 export default function VerticalPortal() {
   const { session } = useAuth();
+  const { role, isGovernor } = useUserRole();
   const VERTICALS = useAllVerticals();
 
   const handleVisitVertical = (url: string) => {
@@ -235,13 +239,17 @@ export default function VerticalPortal() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
               >
-                <Card className="h-full border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                <Card className={`h-full border transition-all duration-300 hover:shadow-lg ${
+                  isVerticalAccessible(v.id, role) 
+                    ? 'border-border hover:border-primary/30' 
+                    : 'border-border/40 hover:border-muted-foreground/20'
+                }`}>
                   <CardContent className="p-8">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-2.5 rounded-xl" style={{ background: `${v.accentColor}15` }}>
                         <v.icon className="h-6 w-6" style={{ color: v.accentColor }} />
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h3 className="font-bold text-lg text-foreground">{v.name}</h3>
                         <span className="text-xs font-mono px-2 py-0.5 rounded-full" style={{
                           background: `${v.accentColor}15`,
@@ -250,6 +258,12 @@ export default function VerticalPortal() {
                           {v.status}
                         </span>
                       </div>
+                      {!isVerticalAccessible(v.id, role) && v.id !== 'prime' && v.status !== 'Coming Soon' && (
+                        <Badge variant="outline" className="gap-1 text-[10px] font-mono shrink-0 border-muted-foreground/20 text-muted-foreground">
+                          <Lock className="w-2.5 h-2.5" />
+                          {v.id === 'ultimate' ? 'Architect' : 'Paid'}
+                        </Badge>
+                      )}
                     </div>
                     
                     <p className="text-sm text-muted-foreground mb-6">{v.tagline}</p>
@@ -277,6 +291,26 @@ export default function VerticalPortal() {
                       >
                         Coming Soon
                       </Button>
+                    ) : !isVerticalAccessible(v.id, role) && v.id !== 'prime' ? (
+                      <div className="space-y-2">
+                        <Button
+                          className="w-full text-sm font-semibold"
+                          variant="outline"
+                          onClick={() => handleVisitVertical(v.url)}
+                        >
+                          Preview (Read-Only) <ExternalLink className="ml-2 h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          className="w-full text-sm font-semibold gap-1.5"
+                          size="sm"
+                          variant="ghost"
+                          asChild
+                        >
+                          <a href="/plans">
+                            Upgrade to Unlock <ArrowUpRight className="h-3 w-3" />
+                          </a>
+                        </Button>
+                      </div>
                     ) : (
                       <Button
                         className="w-full border-0 text-sm font-semibold"
