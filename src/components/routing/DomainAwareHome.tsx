@@ -71,7 +71,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'security') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(220 30% 3%)" }} />}>
-        <CyberSecurityHome />
+        <VerticalAccessGate verticalId="security">
+          <CyberSecurityHome />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -79,7 +81,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'robotics') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(215 25% 5%)" }} />}>
-        <RoboticsHome />
+        <VerticalAccessGate verticalId="robotics">
+          <RoboticsHome />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -87,7 +91,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'quantum') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(260 30% 4%)" }} />}>
-        <QuantumHome />
+        <VerticalAccessGate verticalId="quantum">
+          <QuantumHome />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -95,7 +101,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'llm') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(170 30% 3%)" }} />}>
-        <LLMHome />
+        <VerticalAccessGate verticalId="llm">
+          <LLMHome />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -103,7 +111,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'agency') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(30 20% 4%)" }} />}>
-        <AgencyHome />
+        <VerticalAccessGate verticalId="agency">
+          <AgencyHome />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -111,9 +121,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'ultimate') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(270 30% 4%)" }} />}>
-        <PinGate pin="4645" storageKey="ultimate_access">
+        <VerticalAccessGate verticalId="ultimate">
           <UltimateHome />
-        </PinGate>
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -121,7 +131,9 @@ export default function DomainAwareHome() {
   if (verticalKey === 'media') {
     return (
       <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(330 25% 4%)" }} />}>
-        <MediaHome />
+        <VerticalAccessGate verticalId="media">
+          <MediaHome />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
@@ -131,7 +143,9 @@ export default function DomainAwareHome() {
     const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
     return (
       <Suspense fallback={<div className="min-h-screen bg-background" />}>
-        <VerticalSubstrateHome verticalKey={verticalKey} />
+        <VerticalAccessGate verticalId={verticalKey}>
+          <VerticalSubstrateHome verticalKey={verticalKey} />
+        </VerticalAccessGate>
       </Suspense>
     );
   }
