@@ -91,6 +91,7 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     safeEvolutionAccess: false,
     exportTraceAccess: true,
     crystallizedAssetCap: 45,
+    crystallizationsPerDay: 9,
     radioMinutesPerDay: 45,
     evolutionUploadsPerDay: 9,
     forgeAgentSlots: 9,
