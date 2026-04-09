@@ -61,7 +61,7 @@ const HeritagePaper = () => {
         <meta property="og:image" content="https://cmpsbl.com/og/about.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Heritage Paper — Cognitive Infrastructure Lineage | CMPSBL®" />
-        <meta name="twitter:description" content="Complete technical lineage from BRAIN Genesis to 40-Primitive cognitive substrate." />
+        <meta name="twitter:description" content="Complete technical lineage from BRAIN Genesis to 40-Primitive governed cognitive substrate." />
         <meta name="twitter:image" content="https://cmpsbl.com/og/about.jpg" />
       </Helmet>
 

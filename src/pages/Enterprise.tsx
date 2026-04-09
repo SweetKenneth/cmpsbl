@@ -57,7 +57,7 @@ const capabilities = [
   {
     icon: Users,
     title: "Dedicated Support & SLA",
-    description: "Direct line to the engineering team. Guaranteed uptime SLA, priority response, and a named account engineer — not just a ticket queue.",
+    description: "Direct line to engineering. Guaranteed uptime SLA, priority response, and a named account engineer — not just a ticket queue.",
   },
   {
     icon: Building2,
