@@ -91,8 +91,9 @@ export function generateRestorationReport(
     durationMs: 2000 + Math.floor(Math.random() * 8000),
   }));
 
-  // Generate capabilities from the registry — ENCODE selects up to 10
-  // matched by source primitives, classified as Active/Passive/Hybrid
+  // Generate capabilities from the registry — ENCODE selects ALL matched
+  // capabilities classified as Active/Passive/Hybrid. No artificial cap —
+  // vertical expansion capabilities must surface alongside spine capabilities.
   const newCapabilities = selectCapabilities(selectedPrimitives);
 
   // Convert findings to vulnerability assessment
@@ -175,8 +176,9 @@ function generateFingerprint(input: string): string {
 /**
  * ENCODE-driven capability selection — matches capabilities to the
  * user's selected primitives using the registry's sourcePrimitives field.
- * Returns up to 10 capabilities, randomized within relevance tiers.
- * Ensures a mix of Active, Passive, and Hybrid archetypes.
+ * Returns ALL matched capabilities (uncapped) so vertical expansion
+ * capabilities surface alongside spine capabilities in every export.
+ * Ensures a mix of Active, Passive, and Hybrid archetypes via priority ordering.
  */
 function selectCapabilities(
   selectedPrimitives: PrimitiveRecommendation[],
@@ -197,17 +199,17 @@ function selectCapabilities(
   const matched = scored.filter(s => s.matchCount > 0);
   matched.sort((a, b) => b.score - a.score);
 
-  // Ensure archetype diversity: at least 2 Active, 2 Passive, 2 Hybrid if available
+  // Ensure archetype diversity: prioritize Active, Passive, Hybrid first,
+  // then fill with remaining by score — NO cap, all matched capabilities surface
   const result: CapabilityDefinition[] = [];
   const archetypeCounts = { Active: 0, Passive: 0, Hybrid: 0 };
   const minPerArchetype = 2;
-  const maxCapabilities = 10;
 
   // First pass: ensure archetype minimums
   for (const archetype of ['Active', 'Passive', 'Hybrid'] as const) {
     const archetypeCaps = matched.filter(s => s.cap.archetype === archetype);
     for (const s of archetypeCaps) {
-      if (archetypeCounts[archetype] < minPerArchetype && result.length < maxCapabilities) {
+      if (archetypeCounts[archetype] < minPerArchetype) {
         if (!result.find(r => r.id === s.cap.id)) {
           result.push(s.cap);
           archetypeCounts[archetype]++;
@@ -216,9 +218,8 @@ function selectCapabilities(
     }
   }
 
-  // Second pass: fill remaining by score
+  // Second pass: fill ALL remaining matched capabilities by score
   for (const s of matched) {
-    if (result.length >= maxCapabilities) break;
     if (!result.find(r => r.id === s.cap.id)) {
       result.push(s.cap);
     }
