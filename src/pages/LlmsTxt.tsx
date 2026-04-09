@@ -70,7 +70,7 @@ CMPSBL adopts and implements LLMS.txt as its primary machine context.
 
 ## About
 
-CMPSBL is the reference implementation of the AI Operating System category — a governed cognitive reality powered by a set of core primitives: agents, engines, layers, and organs — with real-time observability, adaptive learning, and multi-provider routing.
+CMPSBL is governed cognitive infrastructure — a patented dual-layer substrate with 40 core primitives: agents, engines, layers, and organs. Layer 2 wraps around your code (Layer 1), adding governance, security, and new capabilities without modifying the original source. Zero external AI calls in the core pipeline.
 
 ## Architecture (40 Primitives — Agents · Engines · Layers · Organs)
 
