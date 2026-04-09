@@ -24,6 +24,7 @@ import {
   ShoppingBag,
   Layers,
   Brain,
+  Shield,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";

@@ -1901,6 +1901,17 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'AI agent power-up enhancement',
   },
+  '/shield': {
+    title: '@cmpsbl/shield — Runtime Integrity Monitor | CMPSBL',
+    description: 'Free runtime integrity monitor detecting unauthorized Layer 2 attachments. Register on the Lex Blacklist to protect your software from silent code wrapping.',
+    ogTitle: '@cmpsbl/shield — Detect Silent Software Attachment',
+    ogDescription: 'Free runtime monitor that detects unauthorized Layer 2 attachments. Register your software on the Lex Blacklist.',
+    ogImage: 'https://cmpsbl.com/og/shield.jpg',
+    keywords: ['runtime integrity', 'code protection', 'Layer 2 detection', 'Lex Blacklist', 'software security', 'behavioral signature detection'],
+    schema: 'product',
+    intent: 'Product/Security',
+    primaryKeyword: 'runtime integrity monitor software protection',
+  },
 };
 
 /**
