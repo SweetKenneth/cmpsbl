@@ -196,7 +196,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-009",
     fossilized: "2026-03-04",
     origin: "cognition",
-    stimulus: "Node-level dreaming operated without cross-primitive synthesis — each primitive dreamed in isolation, missing patterns that span multiple primitives",
+    stimulus: "Primitive-level dreaming operated without cross-primitive synthesis — each primitive dreamed in isolation, missing patterns that span multiple primitives",
     adaptations: [
       "Synapse engine introduced to facilitate lateral insight sharing between dreaming primitives",
       "Generation-capped synthesis prevents semantic drift from compounding across dream cycles",

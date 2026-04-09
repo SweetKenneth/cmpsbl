@@ -92,7 +92,7 @@ const sections = [
   {
     id: "third-party",
     title: "10. Third-Party Services",
-    content: "Our platform integrates with third-party AI providers (via NEXUS Organ routing), payment processors (Stripe), and analytics services. Each provider's data handling is governed by their own privacy policy. We minimize data shared with third parties to what is strictly required for service delivery.",
+    content: "Our substrate integrates with third-party AI providers (via NEXUS Organ routing), payment processors (Stripe), and analytics services. Each provider's data handling is governed by their own privacy policy. We minimize data shared with third parties to what is strictly required for service delivery.",
   },
   {
     id: "children",
