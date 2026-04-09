@@ -17,6 +17,7 @@ import { Lock, ArrowUpRight, Crown, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useUserRole, type SubstrateRole } from '@/hooks/useUserRole';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTrialAccess } from '@/hooks/useTrialAccess';
 
 /** Vertical tier mapping — which tier unlocks which verticals */
 export type VerticalId = 
