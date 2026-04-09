@@ -258,13 +258,23 @@ export default function VerticalPortal() {
                       </div>
                     </div>
 
-                    <Button
-                      className="w-full border-0 text-sm font-semibold"
-                      style={{ background: v.accentColor, color: 'white' }}
-                      onClick={() => handleVisitVertical(v.url)}
-                    >
-                      Visit {v.name.split('™')[0]}™ <ExternalLink className="ml-2 h-3.5 w-3.5" />
-                    </Button>
+                    {v.status === 'Coming Soon' ? (
+                      <Button
+                        className="w-full text-sm font-semibold opacity-60 cursor-not-allowed"
+                        variant="outline"
+                        disabled
+                      >
+                        Coming Soon
+                      </Button>
+                    ) : (
+                      <Button
+                        className="w-full border-0 text-sm font-semibold"
+                        style={{ background: v.accentColor, color: 'white' }}
+                        onClick={() => handleVisitVertical(v.url)}
+                      >
+                        Visit {v.name.split('™')[0]}™ <ExternalLink className="ml-2 h-3.5 w-3.5" />
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
