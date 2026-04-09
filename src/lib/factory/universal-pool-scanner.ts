@@ -1331,6 +1331,18 @@ const SYNERGY_PAIRS: ReadonlyArray<[string, string]> = [
   ['MEMORY', 'DREAM'],         // Persistent state + pattern synthesis
   ['EVOLUTION', 'VISION'],     // Self-improvement + future-state modeling
   ['ORACLE', 'COMPASS'],       // Prediction + strategic direction
+  // Media synergy pairs
+  ['CANVAS', 'RENDER'],        // Visual creation + rendering pipeline
+  ['SCORE', 'REEL'],           // Audio + video composition
+  ['COPY', 'CAMPAIGN'],        // Content writing + distribution orchestration
+  ['CURATOR', 'AMPLIFY'],      // Content curation + reach maximization
+  ['PERSONA', 'METRIC'],       // Audience modeling + measurement
+  // Fintech synergy pairs
+  ['LEDGER', 'CLEARING'],      // Accounting + settlement
+  ['RISKCORE', 'SENTINEL_FIN'],// Risk modeling + fraud detection
+  ['PAYRAIL', 'REGULATOR'],    // Payment routing + compliance
+  ['TICKER', 'MATCHBOOK'],     // Market data + order matching
+  ['UNDERWRITER', 'PORTFOLIO'],// Credit assessment + portfolio management
 ];
 
 /** Synergy boost multiplier per co-selected pair */
