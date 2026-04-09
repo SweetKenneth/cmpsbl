@@ -22,7 +22,7 @@ import { downloadUserGuide } from "@/lib/user-guide-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter a background processing state for memory consolidation", badge: "Zenodo Verified" },
   { title: "Self-Improving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "40-Module Platform", desc: "First AI infrastructure with 40 modules across 12 groups and hot-swappable security layers", badge: "Production" },
+  { title: "40-Primitive Substrate", desc: "First cognitive infrastructure with 40 primitives across 4 categories and hot-swappable security layers", badge: "Production" },
   { title: "Capability Crystallization", desc: "First emergent capability discovery with autonomous cross-system composition", badge: "50 Crystallized" },
   { title: "Natural Language → Code", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE Agent" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE Agent" },
@@ -85,7 +85,7 @@ export default function InvestorsPublic() {
 
   const products = [
     { icon: Brain, name: "BRAIN Organ", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
-    { icon: Eye, name: "VISION Agent", subtitle: "Monitoring", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 modules." },
+    { icon: Eye, name: "VISION Agent", subtitle: "Monitoring", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 primitives." },
     { icon: Shield, name: "DEFENSE Layer", subtitle: "Security", description: "Bot protection, threat detection, and governance guardrails — outermost security layer." },
     { icon: Server, name: "NEXUS Organ", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
     { icon: Code, name: "ENCODE Agent", subtitle: "Governed Execution", description: "Natural-language-to-code with graduated autonomy (Novice → Master) safety thresholds." },
@@ -93,7 +93,7 @@ export default function InvestorsPublic() {
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Platform Infrastructure", description: `40 modules across 12 groups with 675+ capabilities. Self-improving architecture with cryptographic verification.` },
+    { icon: Rocket, title: "Substrate Infrastructure", description: `40 primitives across 4 categories with 200+ capabilities. Patented dual-layer technology with cryptographic verification.` },
     { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + self-hosted licensing + capability marketplace + engine licensing. 90%+ gross margins." },
     { icon: BarChart, title: "Compounding Moat", description: "Self-improvement + accumulated capabilities + deep modular architecture = a technical gap that widens daily." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
@@ -103,9 +103,9 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investors — Seed Round Open | CMPSBL®"
-        description="Invest in CMPSBL: 14 documented world firsts, 90%+ gross margins, and a compounding technical moat. AI platform with Zenodo-verified IP. Seed round now open."
+        description="Invest in CMPSBL: 14 documented world firsts, patented dual-layer technology, and a compounding technical moat. Governed cognitive infrastructure with Zenodo-verified IP. Seed round now open."
         canonical="https://cmpsbl.com/investors"
-        keywords={['CMPSBL investment', 'AI seed round', 'AI startup funding', 'AI platform investment']}
+        keywords={['CMPSBL investment', 'AI seed round', 'dual layer technology', 'governed cognitive infrastructure']}
       />
       
       <PublicNav />
@@ -132,8 +132,8 @@ export default function InvestorsPublic() {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building CMPSBL — the composable AI platform where raw signals become production-ready software. 
-            40 modules across 12 groups, 675+ capabilities, and 14 documented world firsts.
+            Building CMPSBL — governed cognitive infrastructure with patented dual-layer technology. 
+            40 primitives across 4 categories, 200+ capabilities, and 14 documented world firsts.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">

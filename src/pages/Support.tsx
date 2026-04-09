@@ -44,7 +44,7 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "What is CMPSBL?",
-    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing, built-in security, and self-improvement — the operating system for AI.",
+    answer: "CMPSBL® (Composable) is governed cognitive infrastructure — a patented dual-layer substrate with 40 primitives. Layer 2 wraps around your code (Layer 1), adding governance, security, and new capabilities without modifying the original source. Zero external AI in the core pipeline.",
   },
   {
     category: "Getting Started",
@@ -93,7 +93,7 @@ const FAQ_ITEMS = [
   {
     category: "Capability Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing modules in the platform — each handling specific domains like content generation, data analysis, or security scanning. They run as Convex Core™ artifacts with built-in capability gating and tier-based access.",
+    answer: "Engines are 8 specialized processing primitives in the substrate — each handling specific domains like synthesis, security scanning, or code generation. They run as Convex Core™ artifacts with built-in capability gating and tier-based access.",
   },
   {
     category: "Capability Packs",

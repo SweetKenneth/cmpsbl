@@ -55,8 +55,8 @@ const PHASES = [
   },
   {
     number: 3,
-    name: "REFURBISHMENT",
-    tagline: "Ascension Pipeline & Code Assembly",
+    name: "ASCENSION",
+    tagline: "Dual-Layer Technology & Code Assembly",
     status: "Shipped",
     description: "The Software Ascension Center is live. Users upload code, receive a full diagnostic, select primitives for hardening, and receive a Convex Core™ artifact with an HTML ascension report — all without replacing their original codebase.",
     capabilities: [

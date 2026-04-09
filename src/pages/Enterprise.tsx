@@ -57,7 +57,7 @@ const capabilities = [
   {
     icon: Users,
     title: "Dedicated Support & SLA",
-    description: "Direct line to the engineering team. Guaranteed uptime SLA, priority response, and a named account engineer — not just a ticket queue.",
+    description: "Direct line to engineering. Guaranteed uptime SLA, priority response, and a named account engineer — not just a ticket queue.",
   },
   {
     icon: Building2,
@@ -130,7 +130,7 @@ export default function Enterprise() {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
-                <Link to="/ai-operating-system">How It Works</Link>
+                <Link to="/mana">How Dual-Layer Works</Link>
               </Button>
             </div>
           </motion.div>

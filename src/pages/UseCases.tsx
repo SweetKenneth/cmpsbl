@@ -398,16 +398,16 @@ export default function UseCases() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Use Cases — Real-World Applications | CMPSBL"
-        description="How teams use CMPSBL: gaming NPCs with persistent memory, enterprise document intelligence, healthcare triage agents, legal research copilots, and financial risk modeling with self-improving AI."
+        description="How CMPSBL's governed cognitive infrastructure transforms industries: gaming, enterprise, healthcare, legal, education, and more. Dual-layer technology. 40 primitives. Zero AI tricks."
         canonical="https://cmpsbl.com/use-cases"
         keywords={[
-          "AI use cases",
-          "enterprise AI",
+          "code ascension use cases",
+          "dual layer technology",
+          "enterprise governance",
           "healthcare AI",
           "legal AI",
-          "education AI",
-          "retail AI",
-          "customer support AI",
+          "gaming AI",
+          "governed cognitive infrastructure",
           "industry applications",
         ]}
       />
@@ -434,16 +434,16 @@ export default function UseCases() {
             </Badge>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">
-              <span className="text-primary">One Platform,</span>
+              <span className="text-primary">One Substrate,</span>
               <br />Every Industry
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>,{" "}
-              intelligent routing, and <Link to="/store" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
-              CMPSBL powers{" "}
-              <a href="https://en.wikipedia.org/wiki/Applications_of_artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
-              from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}
+              Governed cognitive infrastructure with{" "}
+              <Link to="/mana" className="text-primary hover:underline font-medium">dual-layer technology</Link>,{" "}
+              <Link to="/ascension" className="text-primary hover:underline font-medium">code ascension</Link>, and{" "}
+              <Link to="/verticals" className="text-primary hover:underline font-medium">industry-specific verticals</Link> —{" "}
+              CMPSBL powers applications from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}
               to healthcare to <Link to="/enterprise" className="text-primary hover:underline font-medium">enterprise ops</Link>.
             </p>
 

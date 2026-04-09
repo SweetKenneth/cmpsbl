@@ -46,16 +46,16 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Cognitive Platform Launched", description: "Launched the composable AI platform — 40 primitives across 4 categories, powered by persistent memory." },
-  { year: "2025", title: "200k+ Lines of Code", description: "Grew to a full cognitive runtime with multi-provider AI routing and composable infrastructure." },
-  { year: "2026", title: "REVIVAL Epoch", description: "Complete site redesign, four-tier subscription model, Showroom, Restoration Shop, and Foundry. The substrate shed its old skin and invited the world in." },
+  { year: "2024", title: "Cognitive Substrate Launched", description: "Launched the governed cognitive infrastructure substrate — 40 primitives across 4 categories, powered by dual-layer technology." },
+  { year: "2025", title: "200k+ Lines of Code", description: "Grew to a full cognitive runtime with patented dual-layer technology and deterministic processing." },
+  { year: "2026", title: "CONTACT Epoch", description: "Complete site redesign, four-tier subscription model, Showroom, Ascension Lab, and Memory Stream. Dual U.S. patent applications filed." },
 ];
 
 const capabilities = [
-  { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and four-tier memory architecture (hot/warm/cold/glacier)." },
+  { icon: Brain, title: "Dual-Layer Architecture", description: "Layer 2 wraps around your code — adding governance, security, and capabilities without modifying the original source. Verified by SHA-256." },
   { icon: Cpu, title: "Multi-Provider Routing", description: "Health-weighted AI provider selection with a 12-step free-tier fallback chain via the NEXUS Organ. Never locked into a single vendor." },
   { icon: Layers, title: "40 Primitives", description: "12 Organs, 12 Layers, 8 Engines, and 8 Agents with circuit-breaker isolation — the canonical substrate matrix." },
-  { icon: Shield, title: "Self-Evolving Platform", description: "The EVOLUTION Layer scans, proposes, and patches — the platform continuously improves itself under GOVERNANCE Layer oversight." },
+  { icon: Shield, title: "Patented Technology", description: "Two U.S. patent applications filed. The substrate continuously evolves itself under GOVERNANCE Layer oversight." },
   { icon: Zap, title: "Governed Runtime", description: "Every operation passes through governance checks. Budget, safety, and scope constraints enforced at the runtime level." },
   { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, and open-source models — automatically routes to the best provider for every task via NEXUS." },
 ];
@@ -71,10 +71,10 @@ export default function PromptFluidHome() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <SEO
-        title="PromptFluid — AI Infrastructure & Cognitive Systems Studio"
-        description="PromptFluid is the AI infrastructure studio behind CMPSBL®. Building persistent memory, self-learning AI, and cognitive infrastructure substrates."
+        title="PromptFluid™ — Governed Cognitive Infrastructure Studio"
+        description="PromptFluid™ is the parent company behind CMPSBL® — patented dual-layer technology, governed cognitive infrastructure, and the 40-primitive substrate."
         canonical="https://promptfluid.com"
-        keywords={["PromptFluid", "AI infrastructure", "cognitive systems", "CMPSBL", "AI consulting", "persistent memory"]}
+        keywords={["PromptFluid", "governed cognitive infrastructure", "dual layer technology", "CMPSBL", "code ascension", "software symbiosis"]}
       />
 
       <PublicNav />
@@ -125,7 +125,7 @@ export default function PromptFluidHome() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto mb-10"
           >
-            Engineering the future of AI operating systems since 2009.
+            Engineering governed cognitive infrastructure since 2009.
           </motion.p>
 
           <motion.div
