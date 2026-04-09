@@ -23,9 +23,9 @@ interface ExtLink {
 const INTERNAL_LINKS: InternalLink[] = [
   // Priority: Home
   { label: 'CMPSBL Home', href: '/' },
-  { label: 'Composable AI Platform', href: '/' },
+  { label: 'Governed Cognitive Infrastructure', href: '/' },
   // Platform
-  { label: 'How it Works', href: '/ai-operating-system' },
+  { label: 'Dual-Layer Technology', href: '/mana' },
   { label: 'Architecture', href: '/architecture' },
   { label: 'Runtime', href: '/runtime' },
   { label: 'Enterprise', href: '/enterprise' },

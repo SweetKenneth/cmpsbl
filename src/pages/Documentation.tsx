@@ -162,16 +162,16 @@ function OverviewSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Platform Overview</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is a cognitive AI operating system with 40 Core Primitives organized into 4 categories —
-          Organs, Layers, Engines, and Agents — covering routing, memory, self-improvement, monitoring, security,
-          and orchestration for AI applications.{" "}
+          CMPSBL is governed cognitive infrastructure — a patented dual-layer substrate with 40 Core Primitives organized into 4 categories —
+          Organs, Layers, Engines, and Agents. Layer 2 wraps around your code (Layer 1) adding governance, security,
+          and new capabilities — without modifying the original source.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> ready to use.
         </p>
       </div>
 
       <Callout type="tip">
-        <strong>New to CMPSBL?</strong> Start with the <Link to="/developers/guide" className="text-primary underline">Developer Guide</Link> to
-        get persistent memory running in under an hour — no framework changes needed.
+        <strong>New to CMPSBL?</strong> Start with <Link to="/try" className="text-primary underline">Try the Substrate</Link> to
+        see Ascension in action — upload any code and watch 40 primitives transform it.
       </Callout>
 
       {/* Architecture at a glance */}
@@ -1631,18 +1631,18 @@ export default function Documentation() {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-[120px]" />
         </div>
         <div className="relative container mx-auto px-4 py-16 sm:py-20 max-w-3xl text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">Ready to Build?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">Ready to Ascend?</h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
-            Deploy your own platform instance and start building with BYOK architecture.
+            Upload your code, watch 40 primitives collide, and receive a governed Layer 2 — free diagnostic, no signup required.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-              <Link to="/developers">
-                Developer Portal <ArrowRight className="w-4 h-4 ml-2" />
+              <Link to="/ascension">
+                Ascend Your Code <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="hover:border-primary/30 transition-colors">
-              <Link to="/developers/guide">Developer Guide</Link>
+              <Link to="/try">Try the Substrate</Link>
             </Button>
           </div>
         </div>

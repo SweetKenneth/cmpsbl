@@ -30,7 +30,7 @@ export default function ModuleDetail() {
     "name": `CMPSBL ${mod.name} Node`,
     "description": mod.description,
     "url": `https://cmpsbl.com/modules/${mod.slug}`,
-    "applicationCategory": "AI Operating System",
+    "applicationCategory": "Governed Cognitive Infrastructure",
     "operatingSystem": "Cloud",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
@@ -43,7 +43,7 @@ export default function ModuleDetail() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": `What does the ${mod.name} node do in CMPSBL's AI Operating System?`,
+        "name": `What does the ${mod.name} primitive do in CMPSBL's substrate?`,
         "acceptedAnswer": { "@type": "Answer", "text": mod.heroDescription },
       },
       ...mod.highlights.map(h => ({

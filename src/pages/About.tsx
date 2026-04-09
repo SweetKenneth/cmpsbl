@@ -118,17 +118,17 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="About — The Team Behind CMPSBL"
-        description="Meet the CMPSBL team building composable AI infrastructure from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — persistent memory, self-improvement cycles, and open governance."
+        title="About — CMPSBL® Governed Cognitive Infrastructure"
+        description="CMPSBL — governed cognitive infrastructure built by Kenneth E. Sweet Jr. in Dallas, TX since 2009. Patented dual-layer technology where your code stays unchanged and everything around it evolves."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'AI platform', 'composable AI', 'persistent memory', 'Kenneth Sweet']}
+        keywords={['about CMPSBL', 'governed cognitive infrastructure', 'dual layer technology', 'code ascension', 'Kenneth Sweet']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'About', url: 'https://cmpsbl.com/about' },
         ]}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'A composable cognitive infrastructure substrate with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
+          { question: 'What is CMPSBL?', answer: 'Governed cognitive infrastructure — a patented dual-layer substrate where Layer 2 wraps your code, adding governance, security, and new capabilities without modifying the original source.' },
           { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the substrate consolidates memory, extracts patterns, and generates new insights without active compute.' },
           { question: 'Can I build on the substrate?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
         ]}
@@ -229,10 +229,10 @@ export default function About() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3">
               Systems That <span className="text-primary">Dream · Adapt · Evolve</span>
             </h2>
-             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
-              Most AI platforms process and forget. When you build on CMPSBL, your systems
-              learn during downtime, self-tune under governance, and get smarter with every interaction.
-            </p>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
+              CMPSBL's dual-layer architecture wraps your code with a governed Layer 2 — your systems
+              learn during downtime, self-tune under governance, and compound intelligence over time.
+             </p>
           </motion.div>
 
           {/* Cards — stacks on mobile, 2-col on sm+ */}
@@ -300,10 +300,10 @@ export default function About() {
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Hammer className="w-4.5 h-4.5 text-primary" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Platform</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Substrate</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A composable AI platform organized across{" "}
+                  Governed cognitive infrastructure organized across{" "}
                   <Link to="/modules" className="text-primary hover:underline font-medium">specialized primitives</Link>.{" "}
                   MEMORY persists context via{" "}
                   <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
@@ -576,9 +576,9 @@ export default function About() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/about" title="About CMPSBL" faq={[
-        { question: "What is CMPSBL?", answer: "CMPSBL is a cognitive infrastructure substrate — a substrate layer between AI models and applications that manages persistent memory, orchestration, governance, and continuous self-improvement across 40 autonomous primitives." },
-        { question: "Who founded CMPSBL?", answer: "CMPSBL was founded by Kenneth E Sweet Jr in 2009. The platform has evolved from a portfolio tool into a full cognitive infrastructure layer." },
-        { question: "How is CMPSBL different from other AI platforms?", answer: "Unlike traditional AI wrappers, CMPSBL operates as an operating system with persistent memory, DREAM cycle consolidation, and self-improving capabilities. Intelligence compounds over time rather than resetting per session." },
+        { question: "What is CMPSBL?", answer: "Governed cognitive infrastructure — a patented dual-layer substrate where Layer 2 wraps your code, adding governance, security, and new capabilities. Your original code stays byte-for-byte identical." },
+        { question: "Who founded CMPSBL?", answer: "CMPSBL was founded by Kenneth E. Sweet Jr. in 2009 and is operated by PromptFluid™ TX." },
+        { question: "How is CMPSBL different?", answer: "CMPSBL uses patented dual-layer technology — zero external AI calls in the core pipeline. Your code remains unchanged while Layer 2 adds governance, security, and emergent capabilities deterministically." },
       ]} />
       <EnhancedFooter />
     </div>

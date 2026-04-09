@@ -151,10 +151,10 @@ export default function Assembly() {
             </h1>
             
             <p className="text-lg sm:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-4">
-              Bring us your broken, outdated, fragmented, or half-working code and we restore it into something usable again.
+              Broken, outdated, fragmented, or half-working code — we reconstruct it into something production-ready.
             </p>
             <p className="text-base text-muted-foreground/60 max-w-xl mx-auto leading-relaxed mb-10">
-              This is a paid member service for reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
+              A paid member service for reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -234,7 +234,7 @@ export default function Assembly() {
                 { step: "02", title: "Diagnostic", desc: "MEDIC + ENGINEER scan your code for structural integrity, missing dependencies, and recoverable patterns.", icon: Zap },
                 { step: "03", title: "Assembly Plan", desc: "ENCODE builds a detailed reconstruction plan — what can be restored, what needs substrate components, and the cost.", icon: Layers },
                 { step: "04", title: "Approval", desc: "You review and approve the plan before any work begins. No surprises.", icon: Shield },
-                { step: "05", title: "Assembly", desc: "Our specialists splice, reconstruct, and wire everything together. Classic development tactics, certified components.", icon: Puzzle },
+                { step: "05", title: "Assembly", desc: "We splice, reconstruct, and wire everything together. Classic development tactics, certified components.", icon: Puzzle },
                 { step: "06", title: "Debrief", desc: "DECODE walks you through the finished product — what was restored, what was added, and how to use it.", icon: CheckCircle2 },
               ].map((item) => (
                 <div key={item.step} className="rounded-xl border border-border/20 bg-card/30 p-5">

@@ -1,129 +1,80 @@
 /**
- * Try It — Developer-first conversion page.
- * Leads with code, proves value with live demo, converts with clear next steps.
+ * Try It — Experience the substrate firsthand.
+ * Leads with Ascension, proves dual-layer value, converts with clear next steps.
  */
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
-import { TryItChat } from "@/components/demo/TryItChat";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  Copy,
-  Check,
   Terminal,
   Package,
-  Clock,
   Zap,
   Brain,
   Shield,
   ExternalLink,
+  Layers,
+  Eye,
+  Lock,
+  Wrench,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-
-/* ─── Code snippets ─── */
-const INSTALL_CMD = "npm install @cmpsbl/sdk";
-
-const CODE_SNIPPET = `import { withPersistentMemory } from '@cmpsbl/sdk';
-
-const agent = withPersistentMemory({
-  agentId: 'my-agent',
-  scope: 'project',
-});
-
-// Your agent now remembers everything
-const ctx = await agent.getContext(userMessage);`;
-
-const REACT_SNIPPET = `import { usePersistentAgent } from '@cmpsbl/sdk';
-
-function Chat() {
-  const { respond, isLoading } = usePersistentAgent('my-agent');
-
-  const onSend = async (msg: string) => {
-    const ctx = await respond(msg);
-    // ctx.memories, ctx.confidence — it just works
-  };
-}`;
-
-/* ─── Copy button component ─── */
-function CopyButton({ text, className }: { text: string; className?: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = useCallback(() => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [text]);
-
-  return (
-    <button
-      onClick={copy}
-      className={cn(
-        "inline-flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-md",
-        "text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors",
-        className
-      )}
-      aria-label="Copy to clipboard"
-    >
-      {copied ? <Check className="w-3 h-3 text-neon-green" /> : <Copy className="w-3 h-3" />}
-      {copied ? "Copied" : "Copy"}
-    </button>
-  );
-}
-
-/* ─── Code block component ─── */
-function CodeBlock({
-  code,
-  label,
-  delay = 0,
-}: {
-  code: string;
-  label: string;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
-      className="rounded-xl border border-border/40 bg-card/80 backdrop-blur-sm overflow-hidden"
-    >
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border/30 bg-muted/20">
-        <span className="text-[11px] font-mono text-muted-foreground">{label}</span>
-        <CopyButton text={code} />
-      </div>
-      <pre className="p-4 overflow-x-auto text-[12px] sm:text-[13px] leading-relaxed font-mono text-foreground/90">
-        <code>{code}</code>
-      </pre>
-    </motion.div>
-  );
-}
 
 /* ─── Value props ─── */
 const VALUE_PROPS = [
   {
-    icon: Clock,
-    title: "5 minutes to integrate",
-    desc: "npm install, wrap your agent, done. No rewrites.",
-  },
-  {
-    icon: Brain,
-    title: "Memory that persists",
-    desc: "4-tier automatic lifecycle. Hot → Warm → Cold → Purge.",
-  },
-  {
-    icon: Zap,
-    title: "NEXUS routing included",
-    desc: "Auto-selects the optimal AI provider per query. No lock-in.",
+    icon: Layers,
+    title: "Dual-layer architecture",
+    desc: "Layer 2 wraps Layer 1. Your original code stays byte-for-byte identical — verified by SHA-256.",
   },
   {
     icon: Shield,
-    title: "Works with everything",
-    desc: "Node.js, React, Python, REST. Drop into any stack.",
+    title: "Governance built in",
+    desc: "Every operation passes through Lex — the layer's conscience. Ethics are architectural.",
+  },
+  {
+    icon: Brain,
+    title: "Zero external AI",
+    desc: "Ascension uses zero external AI calls. Deterministic. Same input, same output. Every time.",
+  },
+  {
+    icon: Zap,
+    title: "90+ languages supported",
+    desc: "TypeScript to COBOL. Python to Rust. Every language, same dual-layer semantics.",
+  },
+];
+
+/* ─── Three paths to try ─── */
+const TRY_PATHS = [
+  {
+    icon: Wrench,
+    title: "Ascend Your Code",
+    desc: "Upload any codebase. The substrate scans, diagnoses, and collides it against 40 primitives — producing a hardened, governed Layer 2.",
+    cta: "Start Ascension",
+    href: "/ascension",
+    accent: "--primary",
+    featured: true,
+  },
+  {
+    icon: Eye,
+    title: "Explore the Showroom",
+    desc: "Browse discoveries from the Memory Stream — autonomous capabilities scored by CJPI and ready to deploy.",
+    cta: "View Discoveries",
+    href: "/showroom",
+    accent: "--neon-cyan",
+  },
+  {
+    icon: Lock,
+    title: "See Mana in Action",
+    desc: "Watch Layer 2 silently attach to a live codebase. No modification. No cooperation required. Cryptographic proof included.",
+    cta: "View Mana",
+    href: "/mana",
+    accent: "--neon-purple",
   },
 ];
 
@@ -131,64 +82,100 @@ export default function TryIt() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Try CMPSBL — Add Memory to Any AI Agent in 3 Lines"
-        description="npm install @cmpsbl/sdk. Wrap your agent. Done. Persistent memory, intelligent routing, zero lock-in. Try the live demo — no signup required."
+        title="Try CMPSBL — Ascend Your Code in Minutes"
+        description="Experience dual-layer technology firsthand. Upload your code, watch 40 primitives collide, and receive a hardened, governed Layer 2 — without changing a single line. Free diagnostic."
         keywords={[
-          "AI agent memory",
-          "persistent memory SDK",
-          "CMPSBL SDK",
-          "AI memory management",
-          "agent orchestration",
+          "code ascension",
+          "dual layer technology",
+          "software hardening",
+          "governed cognitive infrastructure",
+          "CMPSBL substrate",
         ]}
       />
       <PublicNav />
 
       <main className="container mx-auto max-w-5xl px-4 pt-28 sm:pt-32 pb-20">
-        {/* ─── Hero: Code first ─── */}
+        {/* ─── Hero ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          className="text-center mb-12 sm:mb-16"
         >
           <Badge
             variant="outline"
-            className="mb-4 gap-1.5 border-neon-green/30 bg-neon-green/5 px-4 py-1.5"
+            className="mb-4 gap-1.5 border-primary/30 bg-primary/5 px-4 py-1.5"
           >
-            <Package className="w-3 h-3 text-neon-green" />
-            <span className="text-xs font-semibold text-neon-green">Live on npm</span>
+            <Wrench className="w-3 h-3 text-primary" />
+            <span className="text-xs font-semibold text-primary">Free Diagnostic</span>
           </Badge>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3">
-            Add memory to any AI agent.
+            Your code stays unchanged.
             <br />
-            <span className="text-primary">3 lines of code.</span>
+            <span className="text-primary">Everything around it evolves.</span>
           </h1>
-          <p className="text-muted-foreground max-w-lg mx-auto text-sm sm:text-base leading-relaxed mb-6">
-            Your agents forget everything between sessions. Fix that in 5 minutes.
-            <br className="hidden sm:block" />
-            No framework. No rewrite. Just memory that works.
+          <p className="text-muted-foreground max-w-lg mx-auto text-sm sm:text-base leading-relaxed mb-8">
+            Upload any codebase. The substrate diagnoses vulnerabilities, collides against 40 primitives, and produces a governed Layer&nbsp;2 — without touching your original&nbsp;source.
           </p>
 
-          {/* Install command — prominent */}
+          {/* Primary CTA */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.15 }}
-            className="inline-flex items-center gap-3 px-5 py-3 rounded-xl border border-primary/20 bg-primary/5 mb-4"
+            className="flex flex-col sm:flex-row justify-center gap-3"
           >
-            <Terminal className="w-4 h-4 text-primary shrink-0" />
-            <code className="text-sm sm:text-base font-mono font-bold text-foreground">
-              {INSTALL_CMD}
-            </code>
-            <CopyButton text={INSTALL_CMD} />
+            <Button asChild size="lg" className="gap-2 px-8 h-12 text-sm font-bold rounded-xl">
+              <Link to="/ascension">
+                <Wrench className="w-4 h-4" />
+                Ascend Your Code
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="gap-2 px-6 h-12 text-sm rounded-xl border-border/50">
+              <Link to="/case-studies">
+                View Case Studies
+              </Link>
+            </Button>
           </motion.div>
         </motion.div>
 
-        {/* ─── Code examples side by side ─── */}
-        <div className="grid md:grid-cols-2 gap-4 mb-16">
-          <CodeBlock code={CODE_SNIPPET} label="Node.js / Bun / Deno" delay={0.2} />
-          <CodeBlock code={REACT_SNIPPET} label="React / Next.js / Vite" delay={0.3} />
-        </div>
+        {/* ─── Three paths to try ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid md:grid-cols-3 gap-4 mb-16"
+        >
+          {TRY_PATHS.map((path) => (
+            <Link
+              key={path.title}
+              to={path.href}
+              className={cn(
+                "group relative rounded-xl border p-6 transition-all duration-300 hover:-translate-y-0.5",
+                path.featured
+                  ? "border-primary/30 bg-card/50 shadow-lg shadow-primary/5"
+                  : "border-border/30 bg-card/40 backdrop-blur-sm hover:border-primary/20"
+              )}
+            >
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
+                style={{ background: `hsl(var(${path.accent}) / 0.1)` }}
+              >
+                <path.icon className="w-5 h-5" style={{ color: `hsl(var(${path.accent}))` }} />
+              </div>
+              <h3 className="text-base font-bold mb-2 text-foreground">{path.title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4">{path.desc}</p>
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold" style={{ color: `hsl(var(${path.accent}))` }}>
+                {path.cta}
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </span>
+              {path.featured && (
+                <div className="absolute -top-px inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent rounded-t-xl" />
+              )}
+            </Link>
+          ))}
+        </motion.div>
 
         {/* ─── Value props ─── */}
         <motion.div
@@ -209,27 +196,7 @@ export default function TryIt() {
           ))}
         </motion.div>
 
-        {/* ─── Live demo section ─── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mb-16"
-        >
-          <div className="text-center mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold mb-2">
-              Don't take our word for it — try it live
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              No signup. No API key. Tell it your name, then ask it to remember.
-            </p>
-          </div>
-          <div className="max-w-2xl mx-auto">
-            <TryItChat className="w-full" />
-          </div>
-        </motion.div>
-
-        {/* ─── Social proof / npm stats ─── */}
+        {/* ─── Stats bar ─── */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -238,16 +205,16 @@ export default function TryIt() {
         >
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 text-center">
             <div>
-              <p className="text-2xl sm:text-3xl font-black text-foreground">11</p>
-              <p className="text-xs text-muted-foreground mt-1">npm packages</p>
+              <p className="text-2xl sm:text-3xl font-black text-foreground">40</p>
+              <p className="text-xs text-muted-foreground mt-1">cognitive primitives</p>
             </div>
             <div>
-              <p className="text-2xl sm:text-3xl font-black text-foreground">25</p>
+              <p className="text-2xl sm:text-3xl font-black text-foreground">90+</p>
               <p className="text-xs text-muted-foreground mt-1">languages supported</p>
             </div>
             <div>
-              <p className="text-2xl sm:text-3xl font-black text-foreground">40</p>
-              <p className="text-xs text-muted-foreground mt-1">cognitive primitives</p>
+              <p className="text-2xl sm:text-3xl font-black text-foreground">8hr</p>
+              <p className="text-xs text-muted-foreground mt-1">autonomous cycles</p>
             </div>
             <div>
               <p className="text-2xl sm:text-3xl font-black text-primary">0</p>
@@ -256,66 +223,110 @@ export default function TryIt() {
           </div>
         </motion.div>
 
+        {/* ─── How it works ─── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+          className="mb-16"
+        >
+          <div className="text-center mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-2">
+              How Ascension Works
+            </h2>
+            <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+              Upload code. Receive a governed, hardened version — with your original source untouched.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {[
+              { step: "01", title: "Upload", desc: "Paste or upload any codebase. JavaScript to COBOL — we handle it all." },
+              { step: "02", title: "Diagnose", desc: "40 primitives scan for vulnerabilities, missing governance, and structural gaps." },
+              { step: "03", title: "Collide", desc: "Your code collides against the substrate. Layer 2 crystallizes around Layer 1." },
+              { step: "04", title: "Export", desc: "Download your ascended code — hardened, governed, and certified with CJPI scoring." },
+            ].map((item) => (
+              <div key={item.step} className="rounded-xl border border-border/20 bg-card/30 p-5">
+                <span className="text-[10px] font-black text-primary/40 tracking-wider">{item.step}</span>
+                <h3 className="text-sm font-bold text-foreground/90 mt-2 mb-1.5">{item.title}</h3>
+                <p className="text-xs text-muted-foreground/60 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* ─── CTA ─── */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55 }}
+          transition={{ delay: 0.6 }}
           className="text-center"
         >
-          <h2 className="text-xl sm:text-2xl font-bold mb-2">Ready to build?</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-2">Ready to ascend?</h2>
           <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
-            Start with Persistent Memory — free. Scale to the full substrate when you need it.
+            Free diagnostic. No signup required. Your code is never stored or reused.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="gap-2 min-h-[48px] text-sm">
+              <Link to="/ascension">
+                <Wrench className="w-4 h-4" />
+                Ascend Your Code
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="gap-2 min-h-[48px] text-sm">
               <Link to="/documentation">
-                Read the Docs <ArrowRight className="w-4 h-4" />
+                Read the Docs
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="gap-2 min-h-[48px] text-sm">
-              <a
-                href="https://www.npmjs.com/org/cmpsbl"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link to="/showroom">
                 <Package className="w-4 h-4" />
-                View on npm
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2 min-h-[48px] text-sm">
-              <Link to="/store">
-                Browse the Store
+                Browse Discoveries
               </Link>
             </Button>
+          </div>
+
+          {/* Tier quick-reference */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mt-6 flex-wrap">
+            {[
+              { name: "Builder", price: "Free" },
+              { name: "Studio", price: "$29" },
+              { name: "Creator", price: "$49" },
+              { name: "Architect", price: "$79" },
+            ].map((t, i) => (
+              <span key={t.name} className="text-[10px] sm:text-xs text-muted-foreground/60 font-mono font-medium">
+                {i > 0 && <span className="mr-2 sm:mr-3 text-muted-foreground/20">·</span>}
+                <span className="text-foreground/80 font-bold">{t.name}</span> {t.price}
+              </span>
+            ))}
           </div>
         </motion.div>
       </main>
 
       <PageSEOBlock
         path="/try"
-        title="Try CMPSBL — Persistent Memory for AI Agents"
+        title="Try CMPSBL — Dual-Layer Code Ascension"
         faq={[
           {
-            question: "How do I add persistent memory to my AI agent?",
+            question: "What is code ascension?",
             answer:
-              "Install @cmpsbl/sdk via npm, wrap your agent with withPersistentMemory(), and your agent automatically remembers context across sessions. Three lines of code, no framework required.",
+              "Ascension transforms code by colliding it against 40 substrate primitives. A governed Layer 2 wraps around your original code (Layer 1), adding security, governance, and new capabilities — without modifying the source.",
           },
           {
             question: "Can I try CMPSBL without signing up?",
             answer:
-              "Yes. The live demo on this page lets you chat with the substrate and see persistent memory in action — zero signup, zero API key required.",
+              "Yes. The diagnostic is free and requires no signup. Upload your code and receive a full vulnerability and capability analysis in seconds.",
           },
           {
             question: "What languages does CMPSBL support?",
             answer:
-              "CMPSBL supports 90+ languages including JavaScript, TypeScript, Python, Rust, Go, Java, and 7 hardware description languages via the Ascension Engine.",
+              "CMPSBL supports 90+ languages including JavaScript, TypeScript, Python, Rust, Go, Java, COBOL, and 7 hardware description languages via the Ascension Engine.",
           },
           {
-            question: "Does CMPSBL require external AI API calls?",
+            question: "Does CMPSBL use external AI?",
             answer:
-              "No. The substrate's core engines (Ascension, DREAM, Memory Stream) use zero external AI calls. NEXUS routing is optional and routes to your own configured providers.",
+              "No. The substrate's core engines (Ascension, DREAM, Memory Stream) use zero external AI calls. Everything is deterministic — same input, same output, every time.",
           },
         ]}
       />
