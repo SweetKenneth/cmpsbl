@@ -242,9 +242,12 @@ const App = () => {
                    <Routes>
                     <Route path="/*" element={
                      <AuthProvider>
-                      <DecodeFloat />
+                       <DecodeFloat />
                        <Suspense fallback={null}>
                          <RegisterPasskeyPrompt />
+                       </Suspense>
+                       <Suspense fallback={null}>
+                         <ChurnPreventionToastsLazy />
                        </Suspense>
                         <Suspense fallback={<PageLoader />}>
                         <main id="main-content">
