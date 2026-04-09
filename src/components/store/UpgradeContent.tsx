@@ -1,6 +1,7 @@
 /**
- * UpgradeContent — Extracted inner content from Upgrade page.
- * Embeddable inside Store tabs or standalone Upgrade page.
+ * UpgradeContent — Substrate-tier pricing aligned with vertical access model.
+ * Free: Prime only · Studio $29: 3 substrates · Creator $49: 6 substrates
+ * Architect $79: All + Ultimate · Enterprise $999+: White-label + custom
  */
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -16,6 +17,7 @@ import {
   Building2, Unlock, Layers,
   Sparkles, Download, X,
   Zap, Shield, Brain, Globe, Diamond,
+  Radio, Crown, Users, Headphones,
 } from 'lucide-react';
 import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
@@ -39,31 +41,34 @@ const TIERS: {
   crownJewelLine: string;
   features: string[];
   capacity: {
-    slots: number;
+    substrates: string;
     vault: string;
     pulls: string;
+    radio: string;
     exportEnabled: boolean;
-    customSlots: boolean;
+    marketplace: boolean;
   };
 }[] = [
   {
     key: 'builder',
-    name: 'Builder',
+    name: 'Free',
     price: 'Free',
     annualPrice: 'Free',
     period: '',
-    tagline: 'Build real things. Not a trial.',
-    description: 'Full runtime access with baseline technology.',
+    tagline: 'Full Prime access. Zero cost. Forever.',
+    description: 'CMPSBL PRIME™ substrate with Memory Stream, Ascension exports, and Crown Jewel npm access.',
     accent: 'from-neon-green to-neon-green',
     icon: Unlock,
-    capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
-    crownJewelLine: '8 sealed Crown Jewel capabilities included',
+    capacity: { substrates: 'Prime Only', vault: '5 memories', pulls: '3 per day', radio: '15 min/day', exportEnabled: true, marketplace: false },
+    crownJewelLine: 'Crown Jewels included — free via npm for all',
     features: [
-      'Full runtime — not a demo',
-      'Standard memory (5 recalls)',
-      'Usage dashboard with ROI metrics',
-      'Member Hub access',
-      'Community Discord support',
+      'CMPSBL PRIME™ — full 40-primitive substrate',
+      'Memory Stream with daily discoveries',
+      'Ascension scanning & software exports',
+      'Crown Jewel npm access (free for all)',
+      'Marketplace browse (read-only)',
+      'Composable Radio — 15 min/day',
+      'Community support',
     ],
   },
   {
@@ -72,20 +77,20 @@ const TIERS: {
     price: '$29',
     annualPrice: '$23',
     period: '/mo',
-    tagline: 'More capacity for builders shipping products.',
-    description: 'Expanded memory, executable capabilities, and priority routing.',
+    tagline: 'Choose 3 industry substrates.',
+    description: 'Unlock 3 vertical substrates of your choice plus full Marketplace access.',
     accent: 'from-neon-purple to-neon-purple',
     icon: Sparkles,
     stripeTier: 'studio' as EngineSubscriptionTier,
-    capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
-    crownJewelLine: '28 Crown Jewel capabilities (8 Builder + 20 Studio)',
+    capacity: { substrates: '3 Verticals', vault: '25 memories', pulls: '6 per day', radio: '30 min/day', exportEnabled: true, marketplace: true },
+    crownJewelLine: '28 Crown Jewel capabilities (8 Free + 20 Studio)',
     features: [
-      'Run 6 packs simultaneously',
-      'Saved Workflows — one-click intent presets',
-      'Export traces & audit logs',
+      'Choose any 3 industry substrates',
+      'Full Marketplace access — buy & daily free downloads',
+      'Persistent memory across substrates',
+      'Composable Radio — 30 min/day',
       '2× deeper memory recall',
       'Priority queue — 3× faster routing',
-      'Referral credits program',
       'Email support',
     ],
   },
@@ -95,22 +100,22 @@ const TIERS: {
     price: '$49',
     annualPrice: '$39',
     period: '/mo',
-    tagline: '9 template packs. Maximum creative output.',
-    description: 'Trace exports, high-priority NEXUS routing, custom memory slots.',
+    tagline: 'Choose 6 industry substrates.',
+    description: 'Unlock 6 vertical substrates, priority routing, and full trace exports.',
     accent: 'from-neon-blue to-primary',
     icon: Layers,
     popular: true,
     stripeTier: 'creator' as EngineSubscriptionTier,
-    capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
-    crownJewelLine: '68 Crown Jewel capabilities (Builder + Studio + 40 Creator)',
+    capacity: { substrates: '6 Verticals', vault: '75 memories', pulls: '9 per day', radio: '45 min/day', exportEnabled: true, marketplace: true },
+    crownJewelLine: '68 Crown Jewel capabilities (Free + Studio + 40 Creator)',
     features: [
-      '9 packs running concurrently',
-      'Saved Workflows & custom presets',
+      'Choose any 6 industry substrates',
+      'Full Marketplace with priority downloads',
       'Dedicated memory partitions',
       'Full trace & compliance exports',
-      'Export templates (PDF/CSV/JSON)',
-      'Memory Stream alerts for memory chains',
-      'Custom memory slots you configure',
+      'Composable Radio — 45 min/day',
+      'Memory Stream alerts for chains',
+      'Custom memory slots',
       'Priority email support',
     ],
   },
@@ -120,27 +125,27 @@ const TIERS: {
     price: '$79',
     annualPrice: '$63',
     period: '/mo',
-    tagline: 'Full control. Maximum capability.',
-    description: 'Unlimited vault, dedicated partitions, and full governance authority.',
+    tagline: 'Every substrate. Including ULTIMATE.',
+    description: 'All industry verticals plus CMPSBL ULTIMATE™ with 143+ primitives. Maximum capability.',
     accent: 'from-neon-amber to-neon-amber',
-    icon: Building2,
+    icon: Crown,
     stripeTier: 'architect' as EngineSubscriptionTier,
-    capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
-    crownJewelLine: 'All Experience Crown Jewels unlocked',
+    capacity: { substrates: 'All + ULTIMATE', vault: 'Unlimited', pulls: '12 per day', radio: '60 min/day', exportEnabled: true, marketplace: true },
+    crownJewelLine: 'All Crown Jewel capabilities unlocked',
     features: [
-      '12 packs — maximum throughput',
+      'Every industry substrate unlocked',
+      'CMPSBL ULTIMATE™ — 143+ primitives',
+      'Cross-vertical Memory Stream',
       'Unlimited vault — never lose context',
-      'Private Discovery Pool — isolated memory',
+      'Composable Radio — 60 min/day',
       'Governance snapshots & audit trails',
-      'Full export templates (PDF/CSV/JSON)',
-      'Organization workspaces for teams',
-      'Early access to new agents, engines & resolvers',
-      'Custom memory slots you configure',
-      'White-glove onboarding call',
-      'Dedicated Slack support channel',
+      'Private Discovery Pool',
+      'Early access to new primitives',
+      'Dedicated Slack support',
     ],
   },
 ];
+
 export function UpgradeContent() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -148,7 +153,7 @@ export function UpgradeContent() {
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
   const [detailPack, setDetailPack] = useState<ArtifactPack | null>(null);
 
-  // Checkout recovery — show toast when user returns from canceled checkout
+  // Checkout recovery
   useEffect(() => {
     if (searchParams.get('canceled') === 'true') {
       const tier = searchParams.get('tier') || 'a plan';
@@ -163,7 +168,6 @@ export function UpgradeContent() {
           },
         },
       });
-      // Clean up URL params
       searchParams.delete('canceled');
       searchParams.delete('tier');
       setSearchParams(searchParams, { replace: true });
@@ -194,17 +198,18 @@ export function UpgradeContent() {
         >
           <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
             <Sparkles className="w-3 h-3 mr-1.5 inline" />
-            Plans
+            Substrate Access Plans
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Every Tier. Full Power.
+            Choose Your Substrates.
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto text-center">
-            Workflows, exports, Member Hub, governance, and the full cognitive runtime — <strong className="text-foreground">included on every plan</strong>. Scale slots, memory, and discovery as you grow.
+            Everyone gets <strong className="text-foreground">CMPSBL PRIME™</strong> free — including Memory Stream, Ascension, and Crown Jewel npm access.
+            Paid plans unlock <strong className="text-foreground">industry verticals</strong> and the <strong className="text-foreground">Marketplace</strong>.
           </p>
         </motion.div>
 
-        {/* What You Get — expanded value prop */}
+        {/* What You Get */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -212,12 +217,12 @@ export function UpgradeContent() {
           className="max-w-3xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
           {[
-            { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-neon-purple' },
-            { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-neon-amber' },
-            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code. PDF/CSV/JSON templates.', color: 'text-neon-green' },
-            { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
-            { icon: Shield, title: 'Member Hub', desc: 'Saved Workflows, usage dashboards with ROI metrics, referral credits, export center, and priority status — all from one command center.', color: 'text-primary' },
-            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new agents and engines.', color: 'text-neon-amber' },
+            { icon: Brain, title: 'Memory Stream', desc: 'Autonomous 8-hour discovery cycles that crystallize into exportable software. Free on Prime — compounding value on paid plans.', color: 'text-neon-purple' },
+            { icon: Zap, title: 'Ascension & Exports', desc: 'Scan code, diagnose weaknesses, and export hardened software. Free for all — deeper scanning on higher tiers.', color: 'text-neon-amber' },
+            { icon: Globe, title: 'Industry Substrates', desc: 'Fintech, Cyber, Robotics, Media, Quantum, LLM, Agency — each a specialized 40-primitive environment. Unlock 3, 6, or all.', color: 'text-neon-green' },
+            { icon: Diamond, title: 'Crown Jewels via npm', desc: 'All Crown Jewel capabilities ship free via npm. Register only if you need persistent memory across sessions.', color: 'text-neon-amber' },
+            { icon: Shield, title: 'Marketplace', desc: 'Browse free for everyone. Buy artifacts, claim daily free downloads, and access the full catalog on paid plans.', color: 'text-primary' },
+            { icon: Headphones, title: 'Composable Radio', desc: 'Rex Binary\'s unhinged AI radio — 15 to 60 minutes per day by tier. Unlimited for Enterprise.', color: 'text-sky-400' },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
               <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
@@ -229,7 +234,7 @@ export function UpgradeContent() {
           ))}
         </motion.div>
 
-        {/* Memory Stream pull breakdown */}
+        {/* Substrate Access Breakdown */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -237,25 +242,25 @@ export function UpgradeContent() {
           className="max-w-2xl mx-auto mt-8 text-center bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
         >
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Brain className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold">Daily Memory Stream Pulls</span>
+            <Globe className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold">Substrate Access by Tier</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { tier: 'Builder', pulls: '3', color: 'text-neon-green' },
-              { tier: 'Studio', pulls: '6', color: 'text-neon-purple' },
-              { tier: 'Creator', pulls: '9', color: 'text-sky-400' },
-              { tier: 'Architect', pulls: '12', color: 'text-neon-amber' },
+              { tier: 'Free', count: 'Prime', color: 'text-neon-green' },
+              { tier: 'Studio', count: '3', color: 'text-neon-purple' },
+              { tier: 'Creator', count: '6', color: 'text-sky-400' },
+              { tier: 'Architect', count: 'All', color: 'text-neon-amber' },
             ].map(t => (
               <div key={t.tier} className="text-center p-2 rounded-lg bg-muted/30">
-                <div className={`text-lg font-mono font-bold ${t.color}`}>{t.pulls}</div>
+                <div className={`text-lg font-mono font-bold ${t.color}`}>{t.count}</div>
                 <div className="text-[10px] text-muted-foreground">{t.tier}</div>
               </div>
             ))}
           </div>
           <p className="text-xs text-muted-foreground/70 leading-relaxed">
-            Each pull reveals a discovery you can <strong className="text-foreground">keep</strong> or <strong className="text-foreground">discard</strong>.
-            Rare and <strong className="text-foreground">Mythic</strong> discoveries appear occasionally — if your vault is full, you'll be prompted to upgrade.
+            <strong className="text-foreground">Free</strong> includes CMPSBL PRIME™ with full Memory Stream and Ascension.
+            <strong className="text-foreground"> Paid plans</strong> unlock industry verticals and Marketplace purchasing.
           </p>
         </motion.div>
 
@@ -322,7 +327,7 @@ export function UpgradeContent() {
                 {!isCurrent && t.stripeTier && (
                   <Badge className="absolute top-4 right-4 bg-neon-green text-white text-[10px]">7-day free trial</Badge>
                 )}
-                {t.popular && !isCurrent && !t.stripeTier && (
+                {t.popular && !isCurrent && (
                   <Badge className="absolute top-4 right-4 bg-neon-purple text-white text-[10px]">Popular</Badge>
                 )}
 
@@ -350,37 +355,37 @@ export function UpgradeContent() {
                     </div>
                     <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                       <div className="text-center p-1.5 rounded-lg bg-background/50">
-                        <div className="text-lg sm:text-xl font-bold text-primary font-mono tabular-nums">{t.capacity.slots}</div>
-                        <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Slots</div>
+                        <div className="text-sm sm:text-base font-bold text-primary font-mono tabular-nums leading-tight">
+                          {t.capacity.substrates.includes('All') ? '∞' : t.capacity.substrates.includes('Prime') ? '1' : t.capacity.substrates.split(' ')[0]}
+                        </div>
+                        <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Substrates</div>
                       </div>
                       <div className="text-center p-1.5 rounded-lg bg-background/50">
-                        <div className="text-lg sm:text-xl font-bold text-foreground font-mono tabular-nums">
+                        <div className="text-sm sm:text-base font-bold text-foreground font-mono tabular-nums leading-tight">
                           {t.capacity.vault === 'Unlimited' ? '∞' : t.capacity.vault.split(' ')[0]}
                         </div>
                         <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Vault</div>
                       </div>
                       <div className="text-center p-1.5 rounded-lg bg-background/50">
-                        <div className="text-lg sm:text-xl font-bold text-foreground font-mono tabular-nums">{t.capacity.pulls.split(' ')[0]}</div>
-                        <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Pulls/day</div>
+                        <div className="text-sm sm:text-base font-bold text-foreground font-mono tabular-nums leading-tight">{t.capacity.radio.split(' ')[0]}</div>
+                        <div className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase">Radio</div>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
                       <span className={`text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border inline-flex items-center gap-1 ${
-                        t.capacity.exportEnabled
+                        t.capacity.marketplace
                           ? 'border-neon-green/30 text-neon-green bg-neon-green/10'
                           : 'border-border/30 text-muted-foreground/50'
                       }`}>
-                        {t.capacity.exportEnabled ? (
-                          <><Download className="w-2.5 h-2.5" />Export</>
+                        {t.capacity.marketplace ? (
+                          <><Download className="w-2.5 h-2.5" />Marketplace</>
                         ) : (
-                          <><X className="w-2.5 h-2.5" />No Export</>
+                          <><X className="w-2.5 h-2.5" />Browse Only</>
                         )}
                       </span>
-                      {t.capacity.customSlots && (
-                        <span className="text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border border-primary/30 text-primary bg-primary/10 inline-flex items-center gap-1">
-                          <Sparkles className="w-2.5 h-2.5" />Custom Slots
-                        </span>
-                      )}
+                      <span className="text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border border-neon-green/30 text-neon-green bg-neon-green/10 inline-flex items-center gap-1">
+                        <Download className="w-2.5 h-2.5" />Ascension
+                      </span>
                     </div>
                   </div>
 
@@ -461,10 +466,31 @@ export function UpgradeContent() {
           <div className="w-14 h-14 rounded-2xl bg-neon-amber/10 border border-neon-amber/20 flex items-center justify-center mx-auto mb-5">
             <Building2 className="w-7 h-7 text-neon-amber" />
           </div>
-          <h3 className="text-2xl font-bold tracking-tight">Architect Custom</h3>
+          <h3 className="text-2xl font-bold tracking-tight">Enterprise — $999+/mo</h3>
           <p className="text-muted-foreground mt-2 max-w-lg mx-auto leading-relaxed">
-            Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Custom slot capacity beyond 12 with dedicated support.
+            Custom white-label branded substrate with your own theme and subdomain.
+            Personal account Memory Stream and Ascension — both with compounding value.
+            Domain forwarding with masking for a personal touch. Up to 10 accounts included.
           </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6 max-w-md mx-auto text-left">
+            {[
+              'Custom themed substrate',
+              'White-label branding',
+              'Free subdomain with domain masking',
+              'Personal Memory Stream',
+              'Personal Ascension pipeline',
+              'Compounding value on both',
+              'Up to 10 accounts for $999',
+              'Unlimited Composable Radio',
+              'Additional accounts — contact us',
+              'Dedicated support channel',
+            ].map(f => (
+              <div key={f} className="flex items-start gap-2 text-xs">
+                <Check className="w-3.5 h-3.5 text-neon-amber shrink-0 mt-0.5" />
+                <span>{f}</span>
+              </div>
+            ))}
+          </div>
           <Button variant="outline" className="mt-6 gap-2 hover:border-neon-amber/30 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200" asChild>
             <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4" /></a>
           </Button>
@@ -477,14 +503,14 @@ export function UpgradeContent() {
         <div className="max-w-2xl mx-auto space-y-8">
           <h2 className="text-2xl font-bold text-center tracking-tight">Common Questions</h2>
           {[
-            { q: 'What is the Memory Stream?', a: 'The Memory Stream continuously discovers new capabilities. Each day you can crystallize discoveries depending on your plan — Builder gets 3 pulls, Studio gets 6, Creator gets 9, and Architect gets 12.' },
-            { q: 'What is the vault?', a: 'The vault stores memories you choose to keep after crystallization. Each tier has different vault capacity — from 5 (Builder) to unlimited (Architect). Remove old memories to free space.' },
-            { q: 'How does the 7-day free trial work?', a: 'Every paid plan starts with a 7-day free trial. You won\'t be charged until day 8. Cancel anytime during the trial — no questions asked, no charge.' },
-            { q: 'What happens with Mythic discoveries?', a: 'Mythic memories are among the rarest outcomes. If your vault is full when one appears, you will be prompted to upgrade or manage your vault to keep it.' },
-            { q: 'Can I export my discoveries?', a: 'Studio and above can export full capability packs including runtime, memory implementation, and documentation. Builder tier can explore and store, but export requires an upgrade.' },
-            { q: 'What are custom memory slots?', a: 'Creator and Architect tiers can equip discovered memories directly into runtime slots. Lower tiers can only activate prebuilt capability packs.' },
-            { q: 'What does priority routing do?', a: 'Higher tiers get faster NEXUS execution, dedicated memory partitions, and priority queue placement. Architect gets the fastest routing with dedicated infrastructure.' },
-            { q: 'Can I start free and upgrade later?', a: 'Yes. Builder is fully functional with 3 slots, 5 vault capacity, and 3 daily pulls. Upgrade when you need more capacity.' },
+            { q: 'Do I need to pay to use CMPSBL?', a: 'No. CMPSBL PRIME™ is free forever — including Memory Stream, Ascension, Crown Jewel npm access, and software exports. Paid plans unlock industry vertical substrates and Marketplace purchasing.' },
+            { q: 'What are industry vertical substrates?', a: 'Specialized 40-primitive environments for specific industries — Fintech, Cyber, Robotics, Media, Quantum, LLM, Agency, and more. Each features domain-specific primitives, discoveries, and Crown Jewels.' },
+            { q: 'What is CMPSBL ULTIMATE™?', a: 'The universal tier with all 143+ primitives across every industry vertical. Available on the Architect plan ($79/mo). It combines all expansion primitives into a single substrate.' },
+            { q: 'How does the Marketplace work?', a: 'Everyone can browse the Marketplace. Paid accounts can purchase artifacts and claim daily free downloads. Free members can view but not transact.' },
+            { q: 'What about the Crown Jewel npm?', a: 'Crown Jewel capabilities are distributed free via npm for all users. No account required for the npm package. Registration is only needed for persistent memory across sessions.' },
+            { q: 'What is Composable Radio?', a: 'Rex Binary\'s AI-powered radio station with music, DJ interjections, and commercials. Listening time scales with your plan: 15 min (Free), 30 min (Studio), 45 min (Creator), 60 min (Architect), unlimited (Enterprise).' },
+            { q: 'How does Enterprise white-labeling work?', a: 'Enterprise ($999+/mo) includes a custom-themed substrate with your branding, a free subdomain with domain forwarding and masking, personal Memory Stream and Ascension with compounding value, and up to 10 accounts. Need more? Contact us.' },
+            { q: 'Can I access substrate dashboards?', a: 'Substrate dashboards are Governor-only. All other accounts access substrates through the front-end interface, SSO, and SDK. After login you\'re redirected to the homepage experience.' },
           ].map(faq => (
             <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border/30 transition-all duration-300">
               <h3 className="font-semibold">{faq.q}</h3>

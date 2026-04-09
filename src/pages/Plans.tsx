@@ -46,10 +46,10 @@ export default function Plans() {
       </main>
 
       <PageSEOBlock path="/plans" title="Plans & Pricing" faq={[
-        { question: "Is there a free tier for CMPSBL?", answer: "Yes. Builder tier is free with 3 capability slots, full runtime access, and no credit card required." },
-        { question: "What plans does CMPSBL offer?", answer: "Four tiers: Builder (free), Studio ($29/mo), Creator ($49/mo), and Architect ($79/mo). Annual billing saves 20%." },
-        { question: "Can I upgrade later?", answer: "Yes. Start on Builder and upgrade anytime. All paid plans include a 7-day free trial." },
-        { question: "What does each tier include?", answer: "Every tier includes full runtime access, Memory Stream pulls, vault storage, and Member Hub. Higher tiers add more slots, exports, custom memory, and priority routing." },
+        { question: "Is there a free tier for CMPSBL?", answer: "Yes. CMPSBL PRIME™ is free forever with Memory Stream, Ascension, Crown Jewel npm access, and software exports." },
+        { question: "What plans does CMPSBL offer?", answer: "Free (Prime), Studio ($29 — 3 substrates), Creator ($49 — 6 substrates), Architect ($79 — all + ULTIMATE), and Enterprise ($999+ — white-label with custom branding)." },
+        { question: "Can I upgrade later?", answer: "Yes. Start free and upgrade anytime. All paid plans include a 7-day free trial." },
+        { question: "What is CMPSBL ULTIMATE™?", answer: "The universal substrate tier with all 143+ primitives across every industry vertical. Available on Architect ($79/mo) and Enterprise plans." },
       ]} />
 
       <EnhancedFooter />

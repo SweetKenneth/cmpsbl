@@ -135,18 +135,23 @@ export function CmpsblNav() {
         <div className="container mx-auto px-4 lg:px-6">
           <nav className="flex items-center justify-between h-16 lg:h-[72px]" role="navigation" aria-label="Main navigation">
 
-            {/* Logo */}
-            <Link
-              to="/"
-              className="relative group flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
-              aria-label="CMPSBL Home"
-            >
-              <CmpsblLogo size="sm" priority className="transition-transform duration-300 group-hover:scale-105" />
-              <div className="hidden sm:flex flex-col">
-                <span className="text-lg font-bold tracking-tight leading-none">CMPSBL</span>
-                <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
+            {/* Logo + Radio */}
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                to="/"
+                className="relative group flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+                aria-label="CMPSBL Home"
+              >
+                <CmpsblLogo size="sm" priority className="transition-transform duration-300 group-hover:scale-105" />
+                <div className="hidden sm:flex flex-col">
+                  <span className="text-lg font-bold tracking-tight leading-none">CMPSBL</span>
+                  <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
+                </div>
+              </Link>
+              <div className="border-l border-border/30 pl-2 ml-1">
+                <AmbientMusicPlayer />
               </div>
-            </Link>
+            </div>
 
             {/* Desktop Links */}
             <div className="hidden lg:flex items-center gap-1">
