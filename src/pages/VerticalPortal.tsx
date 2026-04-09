@@ -110,7 +110,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(340 75% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
-    status: 'Active' as const,
+    status: 'Coming Soon' as const,
   },
   {
     id: 'legal',
