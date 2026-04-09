@@ -48,7 +48,7 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { name: "Memory Stream", href: "/foundry", icon: Brain, badge: "LIVE", highlight: true },
-  { name: "Shield", href: "/shield", icon: Layers, badge: "FREE", highlight: true },
+  { name: "Shield", href: "/shield", icon: Shield, badge: "FREE", highlight: true },
   { name: "Mana", href: "/mana", icon: Layers, badge: "PATENT", highlight: true },
   { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
   { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
