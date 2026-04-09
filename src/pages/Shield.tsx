@@ -39,6 +39,7 @@ import {
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import shieldHero from '@/assets/shield-hero.jpg';
+import shieldMidpage from '@/assets/shield-midpage.jpg';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
