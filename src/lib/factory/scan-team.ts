@@ -52,8 +52,11 @@ export interface PrimitiveRecommendation {
   collisionScore: number;
 }
 
+/** Catalog entry — just identity fields, no scoring or chain data */
+type PrimitiveCatalogEntry = Pick<PrimitiveRecommendation, 'primitiveId' | 'name' | 'category'>;
+
 /** Core 24 spine primitives (12 Organs + 12 Layers) — shared across all verticals */
-const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale' | 'chainPosition' | 'collisionScore'>[] = [
+const SPINE_PRIMITIVES: PrimitiveCatalogEntry[] = [
   // 12 Organs
   { primitiveId: 'core', name: 'CORE', category: 'Organ' },
   { primitiveId: 'system', name: 'SYSTEM', category: 'Organ' },
