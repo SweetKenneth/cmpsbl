@@ -1,5 +1,5 @@
 /**
- * Architecture — Public SEO page for CMPSBL 40-primitive substrate topology
+ * Architecture — Public SEO page for CMPSBL 40-primitive governed cognitive infrastructure
  * /architecture
  */
 
@@ -144,18 +144,18 @@ export default function Architecture() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Architecture — Agents · Engines · Layers · Organs | CMPSBL"
-        description="Explore CMPSBL's substrate architecture: 40 primitives organized as agents, engines, layers, and organs. Weighted matrix boot, clockless coordination, and cross-category mesh overlays."
+        title="Architecture — 40-Primitive Governed Cognitive Infrastructure | CMPSBL"
+        description="Explore CMPSBL's dual-layer architecture: 40 primitives organized as Organs, Layers, Engines, and Agents. Deterministic boot, clockless coordination, and governed cognitive infrastructure."
         image="https://cmpsbl.com/og/architecture.jpg"
-        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI primitives', 'cognitive substrate', 'AI infrastructure layers']}
+        keywords={['governed cognitive infrastructure', 'CMPSBL architecture', 'dual-layer technology', 'cognitive substrate', '40 primitives']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into a symmetric 12·12·8·8 matrix across 4 categories: Organs, Layers, Engines, and Agents. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is governed cognitive infrastructure built on 40 primitives organized into a symmetric 12·12·8·8 matrix across 4 categories: Organs, Layers, Engines, and Agents. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
           { question: 'What are the 4 categories?', answer: 'Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER).' },
-          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Layer proposes changes, SHADOW Layer validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
+          { question: 'What is dual-layer technology?', answer: "CMPSBL's patented dual-layer architecture wraps your existing code (Legacy Host / Layer 1) with a governed cognitive substrate (Layer 2). Your code remains unchanged — Ascension scans and classifies, Mana attaches governance and defense." },
         ]}
       />
 
@@ -177,11 +177,12 @@ export default function Architecture() {
                   12 Organs · 12 Layers · 8 Engines · 8 Agents
                 </Badge>
                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[1.05]">
-                   How CMPSBL Works
+                   Governed Cognitive{"\n"}Infrastructure
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
-                  A layered{" "}
-                  <a href="https://en.wikipedia.org/wiki/Event-driven_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">orchestration architecture</a>{" "}
+                  The original home of{" "}
+                  <Link to="/mana" className="text-primary hover:underline font-medium">dual-layer technology</Link>.{" "}
+                  A layered orchestration architecture
                   that boots deterministically, coordinates without a shared clock,
                   heals autonomously, and evolves through a shadow-first mutation process — all governed by a{" "}
                   <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">tamper-evident audit chain</a>.
@@ -189,9 +190,9 @@ export default function Architecture() {
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
                   40 primitives across 4 categories — a symmetric 12·12·8·8 matrix.{" "}
                   Every primitive carries a governance weight (Σ&nbsp;=&nbsp;1.000).
-                  No single primitive can dominate system-level decisions without proportional representation.{" "}
+                  No single primitive can dominate substrate-level decisions without proportional representation.{" "}
                   <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}
-                  or use our hosted substrate.
+                  or use the hosted substrate.
                 </p>
                 <p className="text-xs text-muted-foreground/40 font-mono flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
@@ -286,21 +287,21 @@ export default function Architecture() {
           <div className="container mx-auto max-w-4xl px-4 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              Dive deeper into individual primitives, live infrastructure, and technical documentation.{" "}
+              Dive deeper into the dual-layer architecture, live infrastructure, and technical documentation.{" "}
                See real-world <Link to="/use-cases" className="text-primary hover:underline font-medium">deployment examples</Link>{" "}
                or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
              </p>
              <div className="flex flex-wrap gap-4 justify-center">
-               <Link to="/store">
+               <Link to="/mana">
                  <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                   Explore Engines <ArrowRight className="w-4 h-4" />
+                   Dual-Layer Technology <ArrowRight className="w-4 h-4" />
                  </Button>
                </Link>
               <Link to="/documentation">
                 <Button variant="outline" className="hover:border-primary/30 transition-colors">Documentation</Button>
               </Link>
-              <Link to="/os">
-                <Button variant="outline" className="hover:border-primary/30 transition-colors">Live Dashboard</Button>
+              <Link to="/explore">
+                <Button variant="outline" className="hover:border-primary/30 transition-colors">Substrate Explorer</Button>
               </Link>
             </div>
           </div>

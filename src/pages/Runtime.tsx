@@ -181,8 +181,8 @@ export default function Runtime() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Baseline Runtime — What Every Plan Includes | CMPSBL"
-        description="Every CMPSBL plan includes the full platform runtime: persistent memory, smart AI routing, self-improvement cycles, security monitoring, evolution engine, and governed orchestration. No features gated."
+        title="Baseline Runtime — Governed Cognitive Infrastructure | CMPSBL"
+        description="Every CMPSBL plan includes the full substrate runtime: persistent memory, NEXUS routing, DREAM Engine synthesis, DEFENSE Layer security, EVOLUTION Layer self-improvement, and governed orchestration."
       />
       <PublicNav />
 
@@ -202,8 +202,8 @@ export default function Runtime() {
               What You Get. <span className="text-primary">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Every user gets the full substrate — all 40 primitives, all capabilities. No features are locked behind paywalls.
-              Plans include memory packs, priority routing, and expanded capacity.
+              Every user gets the full substrate — all 40 primitives, all capabilities. No features are gated.
+              Plans scale capacity with memory packs, priority routing, and expanded slots.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
               <Button asChild>
