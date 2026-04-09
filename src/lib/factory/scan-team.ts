@@ -83,7 +83,7 @@ const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale
 ];
 
 /** Standard 8 Engines + 8 Agents — canonical primitives (cmpsbl.com default) */
-const STANDARD_ENGINES_AGENTS: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
+const STANDARD_ENGINES_AGENTS: PrimitiveCatalogEntry[] = [
   // 8 Engines
   { primitiveId: 'dream', name: 'DREAM', category: 'Engine' },
   { primitiveId: 'harvest', name: 'HARVEST', category: 'Engine' },
@@ -109,8 +109,8 @@ const STANDARD_ENGINES_AGENTS: Omit<PrimitiveRecommendation, 'impactScore' | 'ra
  * Each vertical gets its own specialized engines/agents; default falls back to standard.
  */
 function buildVerticalCatalog(): {
-  spine: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[];
-  expansion: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[];
+  spine: PrimitiveCatalogEntry[];
+  expansion: PrimitiveCatalogEntry[];
 } {
   const vertical = getVerticalSubdomain();
 
@@ -675,7 +675,7 @@ function analyzeWithFailsafe(code: string, metrics: CodeMetrics): ScanFinding[] 
 
 /** ENCODE analyzes code signals to score each primitive's relevance */
 function scorePrimitiveRelevance(
-  primitive: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>,
+  primitive: PrimitiveCatalogEntry,
   code: string,
   findings: ScanFinding[],
   rand: () => number,
