@@ -1021,11 +1021,141 @@ function scoreCandidate(
     totalSignals: tagged.signals.length,
     compoundingScore: Math.round(compounding * 1000) / 1000,
     structuralBoost: Math.round(structBoost * 1000) / 1000,
+    chainPosition: -1,   // Set by chain sequencer after selection
+    collisionScore: 0,   // Set by chain sequencer after selection
   };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — MATRIX-ENFORCED SLOT SELECTION (12/12/8/8)
+// §4B — CHAIN EXECUTION SEQUENCER
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// After selection, primitives are ordered into a deterministic execution chain.
+// Each primitive's collision score cascades from its predecessor — the chain
+// narrows the behavioral space stage by stage, creating coordinated system
+// behavior rather than isolated enhancements.
+//
+// Chain order follows a logical dependency hierarchy:
+//   Stage 1: Foundation (CORE, SYSTEM, MEMORY)     — bootstrap, config, state
+//   Stage 2: Perception (NERVE, RELAY, IDENTITY)    — signals, messaging, context
+//   Stage 3: Reasoning  (BRAIN, DREAM, DECODE)      — cognition, synthesis
+//   Stage 4: Protection (DEFENSE, GOVERNANCE, AUDIT) — security, compliance
+//   Stage 5: Resilience (REFLEX, RIPPLE, FAILSAFE)   — recovery, containment
+//   Stage 6: Observation (BEACON, VISION, SHADOW)    — telemetry, monitoring
+//   Stage 7: Evolution  (EVOLUTION, FORGE, ENGINEER)  — adaptation, infrastructure
+//   Stage 8: Integration (NEXUS, INTEGRATION, TREATY) — routing, contracts
+//   Stage 9: Cognitive  (CONSCIENCE, INCLUSIVE, MEDIC) — ethics, accessibility
+//   Stage 10: Operations (ACCESS, HARVEST, ECHO)      — permissions, collection
+//   Stage 11+: Vertical Injection                     — domain-specific capabilities
+//
+// The only differentiator between scanners is WHICH capabilities fill the chain.
+// The chain spine itself is universal across all verticals.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Deterministic chain order — primitives listed earlier run first in the chain */
+const CHAIN_ORDER_MAP: Record<string, number> = {
+  // Stage 1: Foundation
+  CORE: 1, SYSTEM: 2, MEMORY: 3,
+  // Stage 2: Perception
+  NERVE: 4, RELAY: 5, IDENTITY: 6,
+  // Stage 3: Reasoning
+  BRAIN: 7, DREAM: 8, DECODE: 9,
+  // Stage 4: Protection
+  DEFENSE: 10, GOVERNANCE: 11, AUDIT: 12,
+  // Stage 5: Resilience
+  REFLEX: 13, RIPPLE: 14, FAILSAFE: 15,
+  // Stage 6: Observation
+  BEACON: 16, VISION: 17, SHADOW: 18,
+  // Stage 7: Evolution
+  EVOLUTION: 19, FORGE: 20, ENGINEER: 21,
+  // Stage 8: Integration
+  NEXUS: 22, INTEGRATION: 23, TREATY: 24,
+  // Stage 9: Cognitive Core
+  CONSCIENCE: 25, INCLUSIVE: 26, MEDIC: 27,
+  // Stage 10: Operations
+  ACCESS: 28, HARVEST: 29, ECHO: 30,
+  // Stage 11: Stealth & Advanced
+  WRAITH: 31, PHANTOM: 32, SANDBOX: 33,
+  // Stage 12: Sovereign & Specialist
+  SOVEREIGN: 34, COMPASS: 35, ATLAS: 36,
+  // Stage 13+: Reserved for vertical expansion (auto-assigned)
+};
+
+/** The maximum known spine position — expansion primitives start after this */
+const MAX_SPINE_CHAIN_POS = 36;
+
+/**
+ * Cascade decay factor — each successive primitive's collision score is
+ * attenuated by its predecessor's contribution. This creates the
+ * characteristic narrowing pattern (e.g., 73 → 64 → 55 → 47 → 36).
+ */
+const CASCADE_DECAY = 0.87;
+
+/**
+ * Sequence selected primitives into a deterministic execution chain.
+ *
+ * This is the architectural bridge between "individual scoring" and
+ * "coordinated system behavior". After this pass:
+ *   - Every primitive has a chainPosition (execution order)
+ *   - Every primitive has a collisionScore (cascading from predecessor)
+ *   - The chain is identical regardless of vertical — only the injected
+ *     capabilities differ
+ *
+ * @param selected The 40 selected primitives (unordered)
+ * @returns The same primitives, chain-ordered with cascading collision scores
+ */
+function sequenceChain(selected: PoolCandidate[]): PoolCandidate[] {
+  // Assign chain positions: spine primitives use fixed order,
+  // expansion primitives are appended by score after the spine
+  const spineSlots: PoolCandidate[] = [];
+  const expansionSlots: PoolCandidate[] = [];
+
+  for (const c of selected) {
+    const knownPos = CHAIN_ORDER_MAP[c.primitive.name.toUpperCase()];
+    if (knownPos !== undefined) {
+      c.chainPosition = knownPos;
+      spineSlots.push(c);
+    } else {
+      expansionSlots.push(c);
+    }
+  }
+
+  // Sort spine by fixed chain order
+  spineSlots.sort((a, b) => a.chainPosition - b.chainPosition);
+
+  // Expansion primitives: order by compounding score descending,
+  // assigned positions after the spine
+  expansionSlots.sort((a, b) => b.compoundingScore - a.compoundingScore);
+  let nextPos = MAX_SPINE_CHAIN_POS + 1;
+  for (const c of expansionSlots) {
+    c.chainPosition = nextPos++;
+  }
+
+  // Merge into final chain
+  const chain = [...spineSlots, ...expansionSlots];
+
+  // Compute cascading collision scores.
+  // The first primitive gets its raw compounding score as collision score.
+  // Each subsequent primitive's collision score is:
+  //   predecessor.collisionScore * CASCADE_DECAY + own.compoundingScore * (1 - CASCADE_DECAY)
+  // This creates a narrowing cascade where earlier primitives have more
+  // influence on the overall behavioral space.
+  if (chain.length > 0) {
+    const baseScore = Math.round(chain[0].compoundingScore * 100);
+    chain[0].collisionScore = Math.min(99, Math.max(20, baseScore));
+
+    for (let i = 1; i < chain.length; i++) {
+      const predecessor = chain[i - 1].collisionScore;
+      const ownContribution = chain[i].compoundingScore * 100;
+      const cascaded = predecessor * CASCADE_DECAY + ownContribution * (1 - CASCADE_DECAY);
+      chain[i].collisionScore = Math.round(Math.min(99, Math.max(10, cascaded)));
+    }
+  }
+
+  return chain;
+}
+
+
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
