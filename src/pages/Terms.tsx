@@ -18,7 +18,7 @@ const sections = [
   {
     id: "acceptance",
     title: "1. Acceptance of Terms",
-    content: "By accessing or using CMPSBL's services — including the 40-primitive substrate, Memory Stream, npm packages, API endpoints, and all associated tools — you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.",
+    content: "By accessing or using CMPSBL's governed cognitive infrastructure — including the 40-primitive substrate, Memory Stream, Ascension, Mana, npm packages, API endpoints, and all associated tools — you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.",
   },
   {
     id: "services",
