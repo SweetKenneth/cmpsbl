@@ -3182,6 +3182,8 @@ export function generateRefurbishedCode(
     sourceLanguage: detected,
     orchestrationVersion: '3.1.0',
     pipelineStages: 5,
+    chainModel: 'deterministic-cascade',
+    chainDepth: selectedPrimitives.length,
     manaAttachments: attachmentPlan.length,
     functionsDetected: boundaries.length,
     verifyUrl: `https://cmpsbl.com/verify/${fingerprint}`,
