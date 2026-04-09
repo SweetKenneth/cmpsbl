@@ -18,7 +18,7 @@ const sections = [
   {
     id: "introduction",
     title: "1. Introduction",
-    content: `CMPSBL® ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our platform (including the 40-primitive substrate, Memory Stream, npm packages, and API services), or interact with our cognitive infrastructure.`,
+    content: `CMPSBL® ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our governed cognitive infrastructure (including the 40-primitive substrate, Memory Stream, npm packages, and API services), or interact with our dual-layer technology.`,
   },
   {
     id: "information",
