@@ -22,7 +22,7 @@ import { downloadUserGuide } from "@/lib/user-guide-generator";
 const WORLD_FIRSTS = [
   { title: "Autonomous AI Dream State", desc: "First AI to enter a background processing state for memory consolidation", badge: "Zenodo Verified" },
   { title: "Self-Improving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "40-Module Platform", desc: "First AI infrastructure with 40 modules across 12 groups and hot-swappable security layers", badge: "Production" },
+  { title: "40-Primitive Substrate", desc: "First cognitive infrastructure with 40 primitives across 4 categories and hot-swappable security layers", badge: "Production" },
   { title: "Capability Crystallization", desc: "First emergent capability discovery with autonomous cross-system composition", badge: "50 Crystallized" },
   { title: "Natural Language → Code", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE Agent" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE Agent" },
