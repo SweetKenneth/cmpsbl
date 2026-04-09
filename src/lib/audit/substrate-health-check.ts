@@ -143,7 +143,7 @@ const EXPECTED_EDGE_FUNCTIONS = [
   'pf-substrate-upgrade',
   'pf-substrate',
   'pf-tsac-verify',
-  'radio-dj-tts',
+  
   'stripe-price-lookup',
   'tier-checkout',
   'world-engine-checkout',
