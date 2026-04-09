@@ -28,8 +28,8 @@ import { motion } from 'framer-motion';
 const SHIELD_FEATURES = [
   {
     icon: Search,
-    title: 'Proxy Trap Detector',
-    description: 'Detects when function exports have been wrapped by foreign Proxies at runtime.',
+    title: 'Behavioral Signature Detector',
+    description: 'Detects when function exports exhibit foreign behavioral signatures at runtime.',
   },
   {
     icon: Bell,
