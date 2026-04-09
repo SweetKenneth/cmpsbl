@@ -29,6 +29,7 @@ import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getLLMEngines, getLLMAgents } from './verticals/llm';
 import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
+import { getFintechEngines, getFintechAgents } from './verticals/fintech';
 import { getMediaEngines, getMediaAgents } from './verticals/media';
 import {
   ULTIMATE_ALL_ENGINES,
@@ -825,6 +826,210 @@ const SPINE_AFFINITY_SIGNALS: Record<string, string[]> = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// §2B — VERTICAL EXPANSION AFFINITY SIGNALS
+// ═══════════════════════════════════════════════════════════════════════════════
+// Deep signal vocabularies for vertical expansion primitives. Without these,
+// expansion primitives rely only on capability-derived signals which are too
+// narrow to compete with the spine's broad vocabulary.
+
+/** Media vertical — creative content, music, video, marketing */
+const MEDIA_AFFINITY_SIGNALS: Record<string, string[]> = {
+  CANVAS: [
+    'image', 'photo', 'graphic', 'illustration', 'thumbnail', 'banner',
+    'design', 'layout', 'visual', 'pixel', 'render', 'draw', 'paint',
+    'svg', 'png', 'jpg', 'webp', 'canvas', 'figma', 'sketch',
+    'style_transfer', 'filter', 'overlay', 'composite', 'crop', 'resize',
+    'brand', 'logo', 'icon', 'avatar', 'placeholder', 'hero_image',
+  ],
+  SCORE: [
+    'music', 'audio', 'sound', 'track', 'beat', 'melody', 'harmony',
+    'tempo', 'bpm', 'synthesizer', 'synth', 'midi', 'wav', 'mp3',
+    'sample', 'loop', 'mix', 'master', 'equalize', 'reverb', 'delay',
+    'podcast', 'jingle', 'soundtrack', 'composer', 'instrument',
+    'vocal', 'voice', 'speech', 'frequency', 'amplitude', 'waveform',
+  ],
+  REEL: [
+    'video', 'clip', 'frame', 'scene', 'cut', 'edit', 'timeline',
+    'fps', 'resolution', 'aspect_ratio', 'transcode', 'codec', 'h264',
+    'mp4', 'webm', 'subtitle', 'caption', 'transition', 'animation',
+    'motion', 'render', 'storyboard', 'highlight', 'reel', 'short',
+    'youtube', 'tiktok', 'instagram', 'vimeo', 'stream', 'broadcast',
+  ],
+  COPY: [
+    'copy', 'copywriting', 'headline', 'tagline', 'slogan', 'cta',
+    'call_to_action', 'persuade', 'persuasion', 'hook', 'lead',
+    'body_copy', 'ad_copy', 'email_copy', 'landing_page', 'conversion',
+    'tone', 'voice', 'brand_voice', 'messaging', 'value_proposition',
+    'a_b_test', 'variant', 'subject_line', 'preview_text',
+  ],
+  CAMPAIGN: [
+    'campaign', 'marketing', 'launch', 'promote', 'promotion', 'drip',
+    'funnel', 'nurture', 'segment', 'audience', 'channel', 'multi_channel',
+    'omnichannel', 'outreach', 'awareness', 'consideration', 'conversion',
+    'retarget', 'remarketing', 'impression', 'click', 'ctr', 'cpc',
+    'budget', 'spend', 'roi', 'attribution', 'touchpoint',
+  ],
+  FEED: [
+    'social', 'post', 'tweet', 'share', 'like', 'comment', 'follow',
+    'hashtag', 'trending', 'viral', 'engage', 'engagement', 'reach',
+    'schedule', 'queue', 'publish', 'autopost', 'crosspost', 'thread',
+    'story', 'reel', 'carousel', 'poll', 'community', 'influencer',
+    'linkedin', 'twitter', 'facebook', 'instagram', 'tiktok', 'reddit',
+  ],
+  PALETTE: [
+    'brand', 'branding', 'identity', 'style_guide', 'design_system',
+    'color', 'palette', 'typography', 'font', 'typeface', 'spacing',
+    'token', 'design_token', 'theme', 'variant', 'dark_mode', 'light_mode',
+    'consistency', 'guideline', 'template', 'asset', 'logo', 'watermark',
+  ],
+  RENDER: [
+    'render', 'transcode', 'encode', 'decode', 'format', 'convert',
+    'compress', 'optimize', 'thumbnail', 'preview', 'export', 'batch',
+    'gpu', 'hardware_accel', 'ffmpeg', 'imagemagick', 'sharp', 'pillow',
+    'resolution', 'bitrate', 'quality', 'lossless', 'lossy',
+  ],
+  CURATOR: [
+    'curate', 'curation', 'editorial', 'recommend', 'discover', 'trend',
+    'trending', 'popular', 'featured', 'spotlight', 'collection', 'playlist',
+    'feed', 'algorithm', 'personalize', 'taste', 'preference',
+  ],
+  CRITIC: [
+    'review', 'evaluate', 'score', 'rating', 'quality', 'feedback',
+    'critique', 'compare', 'benchmark', 'variant', 'winner', 'loser',
+    'a_b_test', 'split_test', 'performance', 'creative_score',
+  ],
+  AMPLIFY: [
+    'distribute', 'distribution', 'seo', 'search', 'optimize', 'organic',
+    'paid', 'boost', 'amplify', 'reach', 'impression', 'visibility',
+    'backlink', 'keyword', 'rank', 'serp', 'index', 'crawl',
+  ],
+  PERSONA: [
+    'persona', 'audience', 'segment', 'demographic', 'psychographic',
+    'behavior', 'target', 'profile', 'cohort', 'lookalike', 'interest',
+    'intent', 'buyer', 'customer', 'user_persona', 'avatar',
+  ],
+  STORYARC: [
+    'story', 'narrative', 'arc', 'plot', 'chapter', 'episode', 'series',
+    'calendar', 'content_calendar', 'editorial_calendar', 'cadence',
+    'theme', 'pillar', 'topic_cluster', 'content_strategy',
+  ],
+  MUSE: [
+    'inspire', 'inspiration', 'idea', 'ideate', 'brainstorm', 'creative',
+    'prompt', 'concept', 'brief', 'mood_board', 'reference', 'style',
+    'aesthetic', 'vision', 'direction', 'experiment', 'explore',
+  ],
+  COMPLY: [
+    'moderate', 'moderation', 'content_policy', 'copyright', 'dmca',
+    'takedown', 'flag', 'report', 'nsfw', 'sensitive', 'age_gate',
+    'platform_policy', 'community_guidelines', 'terms_of_service',
+    'license', 'royalty', 'rights', 'clearance', 'attribution',
+  ],
+  METRIC: [
+    'analytics', 'metric', 'kpi', 'dashboard', 'report', 'attribution',
+    'roi', 'roas', 'cac', 'ltv', 'churn', 'retention', 'funnel',
+    'conversion_rate', 'bounce_rate', 'engagement_rate', 'impression',
+    'click_through', 'cost_per', 'revenue', 'performance',
+  ],
+};
+
+/** Fintech vertical — banking, payments, trading, risk, compliance */
+const FINTECH_AFFINITY_SIGNALS: Record<string, string[]> = {
+  LEDGER: [
+    'ledger', 'accounting', 'journal', 'debit', 'credit', 'balance',
+    'double_entry', 'trial_balance', 'general_ledger', 'subledger',
+    'accrual', 'reconcile', 'reconciliation', 'posting', 'entry',
+    'chart_of_accounts', 'fiscal', 'period_close', 'multi_currency',
+    'invoice', 'receivable', 'payable', 'amortize', 'depreciate',
+  ],
+  VAULT_FIN: [
+    'vault', 'custody', 'safekeep', 'escrow', 'multisig', 'cold_wallet',
+    'hot_wallet', 'key_management', 'hsm', 'hardware_security',
+    'digital_asset', 'tokenize', 'tokenization', 'asset', 'secure_storage',
+    'withdrawal', 'deposit', 'sweep', 'segregat',
+  ],
+  TICKER: [
+    'ticker', 'price', 'quote', 'market_data', 'feed', 'real_time',
+    'exchange', 'symbol', 'ohlc', 'candle', 'candlestick', 'vwap',
+    'bid', 'ask', 'spread', 'depth', 'order_book', 'level2',
+    'websocket', 'stream', 'latency', 'tick', 'bar',
+  ],
+  CLEARING: [
+    'clear', 'clearing', 'settlement', 'settle', 'netting', 'novation',
+    'margin', 'collateral', 'delivery', 'dvp', 'fail', 'counterparty',
+    't_plus', 'ccp', 'central_counterparty', 'post_trade',
+  ],
+  RISKCORE: [
+    'risk', 'var', 'value_at_risk', 'cvar', 'stress_test', 'scenario',
+    'monte_carlo', 'simulation', 'greeks', 'delta', 'gamma', 'vega',
+    'theta', 'rho', 'portfolio_risk', 'correlation', 'volatility',
+    'beta', 'sharpe', 'sortino', 'drawdown', 'exposure', 'hedge',
+  ],
+  PAYRAIL: [
+    'payment', 'pay', 'transfer', 'remittance', 'ach', 'wire', 'swift',
+    'sepa', 'fednow', 'instant_payment', 'card', 'visa', 'mastercard',
+    'checkout', 'payout', 'disbursement', 'batch_payment', 'routing',
+    'gateway', 'processor', 'acquirer', 'issuer', 'merchant', 'pos',
+    'stripe', 'paypal', 'plaid', 'finicity',
+  ],
+  TAXENGINE: [
+    'tax', 'withholding', 'capital_gain', 'fifo', 'lifo', 'hifo',
+    '1099', 'w8', 'w9', 'irs', 'hmrc', 'vat', 'gst', 'sales_tax',
+    'jurisdiction', 'nexus', 'wash_sale', 'tax_loss', 'harvesting',
+    'form', 'filing', 'return', 'deduction', 'exemption',
+  ],
+  MATCHBOOK: [
+    'order', 'match', 'matching_engine', 'order_book', 'limit_order',
+    'market_order', 'stop', 'iceberg', 'fill', 'partial_fill',
+    'execution', 'trade', 'exchange', 'auction', 'cross', 'dark_pool',
+    'price_time', 'pro_rata', 'queue', 'priority', 'circuit_breaker',
+  ],
+  SENTINEL_FIN: [
+    'fraud', 'fraudulent', 'suspicious', 'anomaly', 'chargeback',
+    'dispute', 'velocity', 'behavioral', 'biometric', 'pattern',
+    'score', 'risk_score', 'block', 'decline', 'review',
+    'aml', 'anti_money_laundering', 'laundering', 'structuring',
+  ],
+  REGULATOR: [
+    'regulation', 'regulatory', 'comply', 'compliance', 'basel',
+    'mifid', 'dodd_frank', 'psd2', 'sca', 'strong_authentication',
+    'kyc', 'know_your_customer', 'aml', 'sanctions', 'ofac',
+    'reporting', 'filing', 'examination', 'audit', 'examiner',
+  ],
+  ARBITER: [
+    'dispute', 'chargeback', 'representment', 'arbitration', 'evidence',
+    'claim', 'resolution', 'mediate', 'refund', 'reversal',
+    'reason_code', 'compelling_evidence', 'rebuttal',
+  ],
+  UNDERWRITER: [
+    'underwrite', 'underwriting', 'credit', 'credit_score', 'fico',
+    'loan', 'lending', 'originate', 'origination', 'mortgage',
+    'approval', 'decline', 'debt', 'dti', 'income', 'collateral',
+    'covenant', 'default', 'delinquent', 'collection',
+  ],
+  TREASURER: [
+    'treasury', 'cash', 'liquidity', 'sweep', 'concentration',
+    'forecast', 'cash_flow', 'working_capital', 'interest_rate',
+    'hedge', 'fx', 'foreign_exchange', 'currency', 'position',
+  ],
+  AUDITOR: [
+    'audit', 'internal_audit', 'sox', 'sarbanes_oxley', 'control',
+    'control_testing', 'segregation_of_duties', 'exception',
+    'finding', 'remediation', 'assurance', 'attestation',
+  ],
+  PORTFOLIO: [
+    'portfolio', 'rebalance', 'allocation', 'asset_allocation',
+    'benchmark', 'index', 'tracking_error', 'drift', 'factor',
+    'attribution', 'performance', 'return', 'yield', 'dividend',
+    'diversif', 'weight', 'sector', 'geography',
+  ],
+  COMPLIANCE: [
+    'compliance', 'pre_trade', 'post_trade', 'surveillance', 'monitor',
+    'limit', 'position_limit', 'restricted', 'insider', 'market_abuse',
+    'front_running', 'spoofing', 'layering', 'wash_trade',
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // §3 — POOL ASSEMBLY
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -877,8 +1082,12 @@ function assembleUniversalPool(): TaggedPrimitive[] {
   tag(getAgencyAgents(), 'agency');
 
   // Media (16)
-  tag(getMediaEngines(), 'media');
-  tag(getMediaAgents(), 'media');
+  tag(getMediaEngines(), 'media', MEDIA_AFFINITY_SIGNALS);
+  tag(getMediaAgents(), 'media', MEDIA_AFFINITY_SIGNALS);
+
+  // Fintech (16)
+  tag(getFintechEngines(), 'fintech', FINTECH_AFFINITY_SIGNALS);
+  tag(getFintechAgents(), 'fintech', FINTECH_AFFINITY_SIGNALS);
 
   // Ultimate Universal (16)
   tag(ULTIMATE_ALL_ENGINES, 'ultimate');
@@ -1122,6 +1331,18 @@ const SYNERGY_PAIRS: ReadonlyArray<[string, string]> = [
   ['MEMORY', 'DREAM'],         // Persistent state + pattern synthesis
   ['EVOLUTION', 'VISION'],     // Self-improvement + future-state modeling
   ['ORACLE', 'COMPASS'],       // Prediction + strategic direction
+  // Media synergy pairs
+  ['CANVAS', 'RENDER'],        // Visual creation + rendering pipeline
+  ['SCORE', 'REEL'],           // Audio + video composition
+  ['COPY', 'CAMPAIGN'],        // Content writing + distribution orchestration
+  ['CURATOR', 'AMPLIFY'],      // Content curation + reach maximization
+  ['PERSONA', 'METRIC'],       // Audience modeling + measurement
+  // Fintech synergy pairs
+  ['LEDGER', 'CLEARING'],      // Accounting + settlement
+  ['RISKCORE', 'SENTINEL_FIN'],// Risk modeling + fraud detection
+  ['PAYRAIL', 'REGULATOR'],    // Payment routing + compliance
+  ['TICKER', 'MATCHBOOK'],     // Market data + order matching
+  ['UNDERWRITER', 'PORTFOLIO'],// Credit assessment + portfolio management
 ];
 
 /** Synergy boost multiplier per co-selected pair */

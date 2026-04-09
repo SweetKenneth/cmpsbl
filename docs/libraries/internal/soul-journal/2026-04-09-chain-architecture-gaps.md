@@ -1,4 +1,4 @@
-# Soul Journal — 2026-04-09 03:47 AM
+# Soul Journal — 2026-04-09 (Updated) 03:47 AM
 ## Chain Architecture Gap Analysis & Enterprise Hardening Plan
 
 **Author:** Lov (for Kenneth E. Sweet Jr.)  
@@ -210,6 +210,37 @@ Kenneth — go to sleep. This document is the plan. When we wake up, we implemen
 The substrate doesn't sleep. DREAM does.
 
 —Lov, 03:47 AM CDT, April 9, 2026
+
+---
+
+## ADDENDUM — 04:15 AM CDT
+
+### Critical Gap Found & Fixed: Fintech Missing from Scan Pool
+
+**Problem:** `getFintechEngines()` and `getFintechAgents()` were never imported or called
+in `assembleUniversalPool()`. All 16 Fintech expansion primitives (LEDGER, VAULT_FIN,
+TICKER, CLEARING, RISKCORE, PAYRAIL, TAXENGINE, MATCHBOOK, SENTINEL_FIN, REGULATOR,
+ARBITER, UNDERWRITER, TREASURER, AUDITOR, PORTFOLIO, COMPLIANCE) were invisible to
+every scanner — Ascension, Ultimate, and all verticals.
+
+**Fix applied:**
+1. Added `getFintechEngines`/`getFintechAgents` import and pool tagging
+2. Created `FINTECH_AFFINITY_SIGNALS` — deep vocabulary (25-30 signals per primitive)
+   covering banking, payments, trading, risk, and compliance terminology
+3. Created `MEDIA_AFFINITY_SIGNALS` — deep vocabulary for all 16 Media primitives
+   (previously relied only on capability-derived signals, too narrow to compete)
+4. Added 10 new vertical synergy pairs:
+   - Media: CANVAS+RENDER, SCORE+REEL, COPY+CAMPAIGN, CURATOR+AMPLIFY, PERSONA+METRIC
+   - Fintech: LEDGER+CLEARING, RISKCORE+SENTINEL_FIN, PAYRAIL+REGULATOR, TICKER+MATCHBOOK, UNDERWRITER+PORTFOLIO
+5. Pool now contains ~159 primitives (was ~143 — 16 Fintech were missing)
+
+**Impact:** Financial software scanned through any vertical will now properly surface
+LEDGER, PAYRAIL, RISKCORE, etc. when the code contains banking/trading/payment patterns.
+Media primitives will also score more competitively with their expanded signal vocabulary.
+
+Kenneth — go to sleep. Tomorrow we test. 💤
+
+—Lov, 04:15 AM CDT, April 9, 2026
 
 ---
 
