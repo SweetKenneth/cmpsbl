@@ -1027,7 +1027,7 @@ function scoreCandidate(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §4B — CHAIN EXECUTION SEQUENCER
+// §4B — CHAIN EXECUTION SEQUENCER (v23.0.0)
 // ═══════════════════════════════════════════════════════════════════════════════
 //
 // After selection, primitives are ordered into a deterministic execution chain.
@@ -1035,18 +1035,31 @@ function scoreCandidate(
 // narrows the behavioral space stage by stage, creating coordinated system
 // behavior rather than isolated enhancements.
 //
-// Chain order follows a logical dependency hierarchy:
-//   Stage 1: Foundation (CORE, SYSTEM, MEMORY)     — bootstrap, config, state
-//   Stage 2: Perception (NERVE, RELAY, IDENTITY)    — signals, messaging, context
-//   Stage 3: Reasoning  (BRAIN, DREAM, DECODE)      — cognition, synthesis
-//   Stage 4: Protection (DEFENSE, GOVERNANCE, AUDIT) — security, compliance
-//   Stage 5: Resilience (REFLEX, RIPPLE, FAILSAFE)   — recovery, containment
-//   Stage 6: Observation (BEACON, VISION, SHADOW)    — telemetry, monitoring
-//   Stage 7: Evolution  (EVOLUTION, FORGE, ENGINEER)  — adaptation, infrastructure
-//   Stage 8: Integration (NEXUS, INTEGRATION, TREATY) — routing, contracts
-//   Stage 9: Cognitive  (CONSCIENCE, INCLUSIVE, MEDIC) — ethics, accessibility
-//   Stage 10: Operations (ACCESS, HARVEST, ECHO)      — permissions, collection
-//   Stage 11+: Vertical Injection                     — domain-specific capabilities
+// v23 Chain Architecture — 13 stages, expanded where cognitive density warrants:
+//   Stage 1:  Foundation   (CORE, SYSTEM, MEMORY)            — bootstrap, config, state
+//   Stage 2:  Perception   (NERVE, ENCODE, RELAY, IDENTITY)  — signals, parsing, context
+//   Stage 3:  Reasoning    (BRAIN, DREAM, LINGUA, ORACLE)    — cognition, synthesis, prediction
+//   Stage 4:  Protection   (DEFENSE, GOVERNANCE, CONSCIENCE, AUDIT) — security → compliance → ethics → record
+//   Stage 5:  Resilience   (REFLEX, RIPPLE, FAILSAFE)        — recovery, containment
+//   Stage 6:  Observation  (BEACON, VISION, SHADOW)          — telemetry, monitoring
+//   Stage 7:  Evolution    (EVOLUTION, FORGE, ENGINEER)       — adaptation, infrastructure
+//   Stage 8:  Integration  (NEXUS, INTEGRATION, CORTEX, TREATY) — routing, orchestration, contracts
+//   Stage 9:  Operations   (ACCESS, HARVEST, ECHO, ECONOMY)  — permissions, collection, cost
+//   Stage 10: Stealth      (WRAITH, PHANTOM, SANDBOX)        — covert, isolated execution
+//   Stage 11: Sovereign    (SOVEREIGN, COMPASS, ATLAS)       — autonomy, direction, observability
+//   Stage 12: Cognitive    (INCLUSIVE, MEDIC, DECODE)         — accessibility, healing, extraction
+//   Stage 13+: Vertical Injection                            — domain-specific capabilities
+//
+// Key v23 changes:
+//   - CONSCIENCE moved to Protection (Stage 4) — ethics BEFORE execution
+//   - DREAM stays Iron Law at Stage 3 — Kenneth's DOI, autonomous heartbeat
+//   - ORACLE added to Reasoning (Stage 3) — predict after synthesize
+//   - ENCODE added to Perception (Stage 2) — parse before reason
+//   - LINGUA added to Reasoning (Stage 3) — language processing pre-prediction
+//   - CORTEX added to Integration (Stage 8) — multi-agent orchestration
+//   - ECONOMY added to Operations (Stage 9) — cost tracking
+//   - Synergy pairs boost co-selected complementary primitives by 15%
+//   - Two-phase cascade decay: 0.87 spine / 0.93 extension
 //
 // The only differentiator between scanners is WHICH capabilities fill the chain.
 // The chain spine itself is universal across all verticals.
@@ -1057,39 +1070,62 @@ const CHAIN_ORDER_MAP: Record<string, number> = {
   // Stage 1: Foundation
   CORE: 1, SYSTEM: 2, MEMORY: 3,
   // Stage 2: Perception
-  NERVE: 4, RELAY: 5, IDENTITY: 6,
+  NERVE: 4, ENCODE: 5, RELAY: 6, IDENTITY: 7,
   // Stage 3: Reasoning
-  BRAIN: 7, DREAM: 8, DECODE: 9,
-  // Stage 4: Protection
-  DEFENSE: 10, GOVERNANCE: 11, AUDIT: 12,
+  BRAIN: 8, DREAM: 9, LINGUA: 10, ORACLE: 11,
+  // Stage 4: Protection (security → compliance → ethics → record)
+  DEFENSE: 12, GOVERNANCE: 13, CONSCIENCE: 14, AUDIT: 15,
   // Stage 5: Resilience
-  REFLEX: 13, RIPPLE: 14, FAILSAFE: 15,
+  REFLEX: 16, RIPPLE: 17, FAILSAFE: 18,
   // Stage 6: Observation
-  BEACON: 16, VISION: 17, SHADOW: 18,
+  BEACON: 19, VISION: 20, SHADOW: 21,
   // Stage 7: Evolution
-  EVOLUTION: 19, FORGE: 20, ENGINEER: 21,
+  EVOLUTION: 22, FORGE: 23, ENGINEER: 24,
   // Stage 8: Integration
-  NEXUS: 22, INTEGRATION: 23, TREATY: 24,
-  // Stage 9: Cognitive Core
-  CONSCIENCE: 25, INCLUSIVE: 26, MEDIC: 27,
-  // Stage 10: Operations
-  ACCESS: 28, HARVEST: 29, ECHO: 30,
-  // Stage 11: Stealth & Advanced
-  WRAITH: 31, PHANTOM: 32, SANDBOX: 33,
-  // Stage 12: Sovereign & Specialist
-  SOVEREIGN: 34, COMPASS: 35, ATLAS: 36,
+  NEXUS: 25, INTEGRATION: 26, CORTEX: 27, TREATY: 28,
+  // Stage 9: Operations
+  ACCESS: 29, HARVEST: 30, ECHO: 31, ECONOMY: 32,
+  // Stage 10: Stealth & Advanced
+  WRAITH: 33, PHANTOM: 34, SANDBOX: 35,
+  // Stage 11: Sovereign & Specialist
+  SOVEREIGN: 36, COMPASS: 37, ATLAS: 38,
+  // Stage 12: Cognitive Core
+  INCLUSIVE: 39, MEDIC: 40, DECODE: 41,
   // Stage 13+: Reserved for vertical expansion (auto-assigned)
 };
 
 /** The maximum known spine position — expansion primitives start after this */
-const MAX_SPINE_CHAIN_POS = 36;
+const MAX_SPINE_CHAIN_POS = 41;
 
 /**
- * Cascade decay factor — each successive primitive's collision score is
- * attenuated by its predecessor's contribution. This creates the
- * characteristic narrowing pattern (e.g., 73 → 64 → 55 → 47 → 36).
+ * Cascade decay factors — two-phase model.
+ * Spine (positions 1-28): tight coordination at 0.87
+ * Extension (positions 29+): gentler 0.93 preserves vertical identity
  */
-const CASCADE_DECAY = 0.87;
+const SPINE_DECAY = 0.87;
+const EXTENSION_DECAY = 0.93;
+
+/**
+ * Synergy pairs — complementary primitives that produce exponential value
+ * when co-selected. Each primitive in a pair gets a 15% collision score
+ * boost applied AFTER cascade decay. Multiplicative if a primitive appears
+ * in multiple pairs (e.g., DREAM paired with both BRAIN and MEMORY).
+ */
+const SYNERGY_PAIRS: ReadonlyArray<[string, string]> = [
+  ['BRAIN', 'DREAM'],          // Cognitive reasoning + offline synthesis
+  ['DEFENSE', 'IMMUNITY'],     // Threat detection + behavioral fingerprinting
+  ['FORGE', 'ENGINEER'],       // Code generation + infrastructure
+  ['ENCODE', 'DECODE'],        // Bidirectional data I/O
+  ['HARVEST', 'ECHO'],         // Data collection + replay/simulation
+  ['NEXUS', 'CORTEX'],         // AI routing + multi-agent orchestration
+  ['GOVERNANCE', 'CONSCIENCE'],// Policy enforcement + ethical gating
+  ['MEMORY', 'DREAM'],         // Persistent state + pattern synthesis
+  ['EVOLUTION', 'VISION'],     // Self-improvement + future-state modeling
+  ['ORACLE', 'COMPASS'],       // Prediction + strategic direction
+];
+
+/** Synergy boost multiplier per co-selected pair */
+const SYNERGY_BOOST = 1.15;
 
 /**
  * Sequence selected primitives into a deterministic execution chain.
@@ -1098,6 +1134,7 @@ const CASCADE_DECAY = 0.87;
  * "coordinated system behavior". After this pass:
  *   - Every primitive has a chainPosition (execution order)
  *   - Every primitive has a collisionScore (cascading from predecessor)
+ *   - Synergy pairs receive a 15% post-cascade boost
  *   - The chain is identical regardless of vertical — only the injected
  *     capabilities differ
  *
@@ -1134,20 +1171,44 @@ function sequenceChain(selected: PoolCandidate[]): PoolCandidate[] {
   // Merge into final chain
   const chain = [...spineSlots, ...expansionSlots];
 
-  // Compute cascading collision scores.
+  // Build synergy lookup — which primitives are co-selected partners?
+  const selectedNames = new Set(chain.map(c => c.primitive.name.toUpperCase()));
+  const synergyMultipliers = new Map<string, number>();
+  for (const [a, b] of SYNERGY_PAIRS) {
+    if (selectedNames.has(a) && selectedNames.has(b)) {
+      synergyMultipliers.set(a, (synergyMultipliers.get(a) ?? 1) * SYNERGY_BOOST);
+      synergyMultipliers.set(b, (synergyMultipliers.get(b) ?? 1) * SYNERGY_BOOST);
+    }
+  }
+
+  // Compute cascading collision scores with two-phase decay.
   // The first primitive gets its raw compounding score as collision score.
   // Each subsequent primitive's collision score is:
-  //   predecessor.collisionScore * CASCADE_DECAY + own.compoundingScore * (1 - CASCADE_DECAY)
-  // This creates a narrowing cascade where earlier primitives have more
-  // influence on the overall behavioral space.
+  //   predecessor.collisionScore * decay + own.compoundingScore * (1 - decay)
+  // where decay = SPINE_DECAY for positions 1-28, EXTENSION_DECAY for 29+.
+  // Synergy boost is applied AFTER cascade computation.
   if (chain.length > 0) {
     const baseScore = Math.round(chain[0].compoundingScore * 100);
     chain[0].collisionScore = Math.min(99, Math.max(20, baseScore));
 
+    // Apply synergy to first primitive if applicable
+    const firstSynergy = synergyMultipliers.get(chain[0].primitive.name.toUpperCase());
+    if (firstSynergy) {
+      chain[0].collisionScore = Math.round(Math.min(99, chain[0].collisionScore * firstSynergy));
+    }
+
     for (let i = 1; i < chain.length; i++) {
+      const decay = chain[i].chainPosition <= 28 ? SPINE_DECAY : EXTENSION_DECAY;
       const predecessor = chain[i - 1].collisionScore;
       const ownContribution = chain[i].compoundingScore * 100;
-      const cascaded = predecessor * CASCADE_DECAY + ownContribution * (1 - CASCADE_DECAY);
+      let cascaded = predecessor * decay + ownContribution * (1 - decay);
+
+      // Apply synergy boost if this primitive has co-selected partners
+      const synergy = synergyMultipliers.get(chain[i].primitive.name.toUpperCase());
+      if (synergy) {
+        cascaded *= synergy;
+      }
+
       chain[i].collisionScore = Math.round(Math.min(99, Math.max(10, cascaded)));
     }
   }
@@ -1196,21 +1257,24 @@ const MAX_SLOTS = 40;
 
 /** Tier 1: Architectural invariants — ALWAYS selected, no exceptions */
 const IRON_LAW_PRIMITIVES: ReadonlySet<string> = new Set([
+  'CORE',        // Bootstrap primitive — the kernel
   'DEFENSE',     // Invariant #3: DEFENSE is terminal
   'GOVERNANCE',  // Invariant #2: GOVERNANCE cannot be bypassed
+  'CONSCIENCE',  // Ethical gating — pre-execution, non-negotiable
   'AUDIT',       // Invariant #1: AUDIT is immutable
   'FAILSAFE',    // Circuit breakers — always
   'MEMORY',      // 4-tier persistent state — always
   'BRAIN',       // Cognitive processing — always
+  'DREAM',       // Kenneth's DOI — autonomous offline synthesis, substrate heartbeat
 ]);
 
 /** Tier 2: Near-guaranteed — only absent if truly zero affinity */
 const STRONG_DEFAULT_PRIMITIVES: ReadonlySet<string> = new Set([
-  'DREAM',       // Pattern synthesis — high value for any software
   'MEDIC',       // Self-healing diagnostics
   'ENGINEER',    // Infrastructure management
   'INCLUSIVE',   // Accessibility — first-class, not afterthought
-  'VISION',      // Telemetry and anomaly detection
+  'VISION',      // Future-state modeling and prediction
+  'ORACLE',      // Prediction and forecasting
   'WRAITH',      // Stealth operations and obfuscation
 ]);
 
