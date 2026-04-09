@@ -52,7 +52,7 @@ const milestones = [
 ];
 
 const capabilities = [
-  { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and four-tier memory architecture (hot/warm/cold/glacier)." },
+  { icon: Brain, title: "Dual-Layer Architecture", description: "Layer 2 wraps around your code — adding governance, security, and capabilities without modifying the original source. Verified by SHA-256." },
   { icon: Cpu, title: "Multi-Provider Routing", description: "Health-weighted AI provider selection with a 12-step free-tier fallback chain via the NEXUS Organ. Never locked into a single vendor." },
   { icon: Layers, title: "40 Primitives", description: "12 Organs, 12 Layers, 8 Engines, and 8 Agents with circuit-breaker isolation — the canonical substrate matrix." },
   { icon: Shield, title: "Self-Evolving Platform", description: "The EVOLUTION Layer scans, proposes, and patches — the platform continuously improves itself under GOVERNANCE Layer oversight." },
