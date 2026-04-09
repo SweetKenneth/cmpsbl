@@ -9,12 +9,15 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, Clapperboard, Hexagon, type LucideIcon } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, Atom, Brain, Users, Crown, Clapperboard, Hexagon, ArrowUpRight, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
+import { isVerticalAccessible } from "@/components/gates/VerticalAccessGate";
 import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
 import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory/vertical-factory-engine";
 
