@@ -1,5 +1,5 @@
 /**
- * Architecture — Public SEO page for CMPSBL 40-primitive substrate topology
+ * Architecture — Public SEO page for CMPSBL 40-primitive governed cognitive infrastructure
  * /architecture
  */
 
