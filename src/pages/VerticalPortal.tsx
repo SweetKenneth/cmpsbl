@@ -271,25 +271,7 @@ export default function VerticalPortal() {
             ))}
           </div>
 
-          {/* Coming soon — filter out verticals that are already active */}
-          {(() => {
-            const activeIds = new Set(VERTICALS.map(v => v.id));
-            const upcoming = ['Health', 'Fintech', 'Legal', 'Gaming', 'Education']
-              .filter(v => !activeIds.has(v.toLowerCase()));
-            if (upcoming.length === 0) return null;
-            return (
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground mb-2">More verticals coming soon</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {upcoming.map(v => (
-                    <span key={v} className="px-3 py-1 text-xs font-mono rounded-full border border-border/50 text-muted-foreground/50">
-                      {v}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
+          {/* All verticals are now listed above */}
         </div>
       </div>
       <EnhancedFooter />
