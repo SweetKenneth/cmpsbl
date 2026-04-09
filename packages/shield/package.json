@@ -1,0 +1,51 @@
+{
+  "name": "@cmpsbl/shield",
+  "version": "1.0.0",
+  "description": "Cross-Vertical LLM Prompt Defense System — injection detection, hallucination grounding, output sanitization, and governance-gated audit receipts.",
+  "license": "Apache-2.0",
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "homepage": "https://cmpsbl.com/shield",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmpsbl/shield"
+  },
+  "keywords": [
+    "llm",
+    "prompt-injection",
+    "hallucination",
+    "ai-safety",
+    "prompt-defense",
+    "jailbreak-detection",
+    "output-sanitization",
+    "ai-governance",
+    "cmpsbl",
+    "cognitive-infrastructure"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
