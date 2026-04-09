@@ -1,11 +1,13 @@
 /**
  * useFoundryState — Per-user Memory Stream workspace hook
  * Loads user state, vault, handles crystallization, enforces quality floor.
- * v13.3: structural pipeline identity with pipeline_steps support.
+ * v14.0: Tier-based daily crystallization limits (3/6/9/12/unlimited).
+ *        Shared across all substrates via foundry_user_state.totalMines + date check.
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserLimits } from '@/hooks/useUserLimits';
 import { executeMine, filterByQualityFloor, type MineResult, type MineResponse } from '@/lib/foundry/public-mining-engine';
 import { MEMORY_STREAM_EVENT, MEMORY_STREAM_EMPTY } from '@/lib/branding/memory-stream';
 import { recordPipelineLineage } from '@/substrate/memory-lineage';
