@@ -1631,18 +1631,18 @@ export default function Documentation() {
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-[120px]" />
         </div>
         <div className="relative container mx-auto px-4 py-16 sm:py-20 max-w-3xl text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">Ready to Build?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">Ready to Ascend?</h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
-            Deploy your own platform instance and start building with BYOK architecture.
+            Upload your code, watch 40 primitives collide, and receive a governed Layer 2 — free diagnostic, no signup required.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-              <Link to="/developers">
-                Developer Portal <ArrowRight className="w-4 h-4 ml-2" />
+              <Link to="/ascension">
+                Ascend Your Code <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="hover:border-primary/30 transition-colors">
-              <Link to="/developers/guide">Developer Guide</Link>
+              <Link to="/try">Try the Substrate</Link>
             </Button>
           </div>
         </div>
