@@ -71,10 +71,10 @@ export default function PromptFluidHome() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <SEO
-        title="PromptFluid — AI Infrastructure & Cognitive Systems Studio"
-        description="PromptFluid is the AI infrastructure studio behind CMPSBL®. Building persistent memory, self-learning AI, and cognitive infrastructure substrates."
+        title="PromptFluid™ — Governed Cognitive Infrastructure Studio"
+        description="PromptFluid™ is the parent company behind CMPSBL® — patented dual-layer technology, governed cognitive infrastructure, and the 40-primitive substrate."
         canonical="https://promptfluid.com"
-        keywords={["PromptFluid", "AI infrastructure", "cognitive systems", "CMPSBL", "AI consulting", "persistent memory"]}
+        keywords={["PromptFluid", "governed cognitive infrastructure", "dual layer technology", "CMPSBL", "code ascension", "software symbiosis"]}
       />
 
       <PublicNav />
