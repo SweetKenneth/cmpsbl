@@ -118,11 +118,11 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="About — The Team Behind CMPSBL"
-        description="Meet the CMPSBL team building composable AI infrastructure from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — persistent memory, self-improvement cycles, and open governance."
+        title="About — CMPSBL® Governed Cognitive Infrastructure"
+        description="CMPSBL — governed cognitive infrastructure built by Kenneth E. Sweet Jr. in Dallas, TX since 2009. Patented dual-layer technology where your code stays unchanged and everything around it evolves."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'AI platform', 'composable AI', 'persistent memory', 'Kenneth Sweet']}
+        keywords={['about CMPSBL', 'governed cognitive infrastructure', 'dual layer technology', 'code ascension', 'Kenneth Sweet']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'About', url: 'https://cmpsbl.com/about' },
