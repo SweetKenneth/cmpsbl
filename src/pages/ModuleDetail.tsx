@@ -30,7 +30,7 @@ export default function ModuleDetail() {
     "name": `CMPSBL ${mod.name} Node`,
     "description": mod.description,
     "url": `https://cmpsbl.com/modules/${mod.slug}`,
-    "applicationCategory": "AI Operating System",
+    "applicationCategory": "Governed Cognitive Infrastructure",
     "operatingSystem": "Cloud",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "publisher": { "@type": "Organization", "name": "CMPSBL", "url": "https://cmpsbl.com" },
