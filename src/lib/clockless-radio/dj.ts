@@ -176,14 +176,14 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// Weighted random — heavy on callers, sponsors, and rex rants
+// Weighted random — heavy on sponsors/commercials, callers, and rex rants
 const WEIGHTED_TYPES: DJContentType[] = [
   'station_id',
   'system_shoutout', 'system_shoutout',
   'dev_shoutout', 'dev_shoutout',
-  'fake_sponsor', 'fake_sponsor', 'fake_sponsor',
+  'fake_sponsor', 'fake_sponsor', 'fake_sponsor', 'fake_sponsor', 'fake_sponsor',
   'philosophical',
-  'call_in', 'call_in', 'call_in', 'call_in', 'call_in',
+  'call_in', 'call_in', 'call_in', 'call_in',
   'rex_rant', 'rex_rant', 'rex_rant',
 ];
 
