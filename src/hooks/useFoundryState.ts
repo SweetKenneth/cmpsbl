@@ -130,6 +130,14 @@ export function useFoundryState() {
 
       setInventory(mappedInventory);
       setLastSyncedAt(Date.now());
+
+      // Count today's crystallizations (shared across all substrates)
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const todayCount = mappedInventory.filter(
+        (item: InventoryItem) => new Date(item.obtainedAt) >= todayStart
+      ).length;
+      setTodayMineCount(todayCount);
     } catch (err) {
       console.error('Failed to load Memory Stream state:', err);
     } finally {
