@@ -857,7 +857,7 @@ function generateRecommendations(
   // Score spine primitives (Organs + Layers) — stabilization
   const scoredSpine = spine.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
-    return { ...p, impactScore: score, rationale };
+    return { ...p, impactScore: score, rationale, chainPosition: 0, collisionScore: 0 };
   });
   scoredSpine.sort((a, b) => b.impactScore - a.impactScore);
 
@@ -866,7 +866,7 @@ function generateRecommendations(
   const scoredExpansion = expansion.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
     const verticalBonus = 10 + Math.floor(rand() * 15);
-    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale };
+    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale, chainPosition: 0, collisionScore: 0 };
   });
   scoredExpansion.sort((a, b) => b.impactScore - a.impactScore);
 
