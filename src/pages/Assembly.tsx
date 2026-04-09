@@ -151,10 +151,10 @@ export default function Assembly() {
             </h1>
             
             <p className="text-lg sm:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-4">
-              Bring us your broken, outdated, fragmented, or half-working code and we restore it into something usable again.
+              Broken, outdated, fragmented, or half-working code — we reconstruct it into something production-ready.
             </p>
             <p className="text-base text-muted-foreground/60 max-w-xl mx-auto leading-relaxed mb-10">
-              This is a paid member service for reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
+              A paid member service for reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
