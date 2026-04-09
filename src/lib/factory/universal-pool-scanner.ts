@@ -1257,21 +1257,24 @@ const MAX_SLOTS = 40;
 
 /** Tier 1: Architectural invariants — ALWAYS selected, no exceptions */
 const IRON_LAW_PRIMITIVES: ReadonlySet<string> = new Set([
+  'CORE',        // Bootstrap primitive — the kernel
   'DEFENSE',     // Invariant #3: DEFENSE is terminal
   'GOVERNANCE',  // Invariant #2: GOVERNANCE cannot be bypassed
+  'CONSCIENCE',  // Ethical gating — pre-execution, non-negotiable
   'AUDIT',       // Invariant #1: AUDIT is immutable
   'FAILSAFE',    // Circuit breakers — always
   'MEMORY',      // 4-tier persistent state — always
   'BRAIN',       // Cognitive processing — always
+  'DREAM',       // Kenneth's DOI — autonomous offline synthesis, substrate heartbeat
 ]);
 
 /** Tier 2: Near-guaranteed — only absent if truly zero affinity */
 const STRONG_DEFAULT_PRIMITIVES: ReadonlySet<string> = new Set([
-  'DREAM',       // Pattern synthesis — high value for any software
   'MEDIC',       // Self-healing diagnostics
   'ENGINEER',    // Infrastructure management
   'INCLUSIVE',   // Accessibility — first-class, not afterthought
-  'VISION',      // Telemetry and anomaly detection
+  'VISION',      // Future-state modeling and prediction
+  'ORACLE',      // Prediction and forecasting
   'WRAITH',      // Stealth operations and obfuscation
 ]);
 
