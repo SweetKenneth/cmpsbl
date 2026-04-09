@@ -27,6 +27,8 @@ export interface ProductLimits {
   exportTraceAccess: boolean;
   /** Max crystallized assets usable */
   crystallizedAssetCap: number;
+  /** Max crystallizations (mines) per day across all substrates. -1 = unlimited */
+  crystallizationsPerDay: number;
   /** Radio listening limit in minutes per 24 hours. -1 = unlimited */
   radioMinutesPerDay: number;
 
