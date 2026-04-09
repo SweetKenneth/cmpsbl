@@ -53,7 +53,7 @@ export interface PrimitiveRecommendation {
 }
 
 /** Core 24 spine primitives (12 Organs + 12 Layers) — shared across all verticals */
-const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
+const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale' | 'chainPosition' | 'collisionScore'>[] = [
   // 12 Organs
   { primitiveId: 'core', name: 'CORE', category: 'Organ' },
   { primitiveId: 'system', name: 'SYSTEM', category: 'Organ' },
