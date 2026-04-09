@@ -80,17 +80,6 @@ const STATIC_VERTICALS = [
     status: 'Active' as const,
   },
   {
-    id: 'ultimate',
-    name: 'CMPSBL ULTIMATE™',
-    tagline: '120 Candidates · Dynamic Selection · No Spine Lock · Maximum Compounding',
-    url: 'https://ultimate.cmpsbl.com',
-    icon: Crown,
-    accentColor: 'hsl(270 70% 50%)',
-    primitiveCount: 40,
-    capabilityCount: '120 pool',
-    status: 'Active' as const,
-  },
-  {
     id: 'media',
     name: 'CMPSBL MEDIA™',
     tagline: 'Cognitive Media Infrastructure — Content Creates Itself',
@@ -99,6 +88,72 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(330 85% 60%)',
     primitiveCount: 16,
     capabilityCount: '110+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'fintech',
+    name: 'CMPSBL FINTECH™',
+    tagline: 'Cognitive Financial Infrastructure — Money Moves Smarter',
+    url: 'https://fintech.cmpsbl.com',
+    icon: Banknote,
+    accentColor: 'hsl(152 80% 40%)',
+    primitiveCount: 16,
+    capabilityCount: '130+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'healthcare',
+    name: 'CMPSBL HEALTH™',
+    tagline: 'Cognitive Healthcare Infrastructure — Patients First, Always',
+    url: 'https://healthcare.cmpsbl.com',
+    icon: Heart,
+    accentColor: 'hsl(340 75% 55%)',
+    primitiveCount: 16,
+    capabilityCount: '100+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'legal',
+    name: 'CMPSBL LEGAL™',
+    tagline: 'Cognitive Legal Infrastructure — Contracts Govern Themselves',
+    url: 'https://legal.cmpsbl.com',
+    icon: Scale,
+    accentColor: 'hsl(220 60% 50%)',
+    primitiveCount: 16,
+    capabilityCount: '95+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'gaming',
+    name: 'CMPSBL GAMING™',
+    tagline: 'Cognitive Gaming Infrastructure — Worlds Build Themselves',
+    url: 'https://gaming.cmpsbl.com',
+    icon: Gamepad2,
+    accentColor: 'hsl(280 80% 55%)',
+    primitiveCount: 16,
+    capabilityCount: '100+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'education',
+    name: 'CMPSBL EDU™',
+    tagline: 'Cognitive Education Infrastructure — Knowledge Compounds Here',
+    url: 'https://education.cmpsbl.com',
+    icon: GraduationCap,
+    accentColor: 'hsl(45 90% 50%)',
+    primitiveCount: 16,
+    capabilityCount: '90+',
+    status: 'Active' as const,
+  },
+  {
+    id: 'ultimate',
+    name: 'CMPSBL ULTIMATE™',
+    tagline: '143-Primitive Pool · Dynamic Selection · No Spine Lock · Maximum Compounding',
+    url: 'https://ultimate.cmpsbl.com',
+    icon: Crown,
+    accentColor: 'hsl(270 70% 50%)',
+    primitiveCount: 40,
+    capabilityCount: '143 pool',
     status: 'Active' as const,
   },
 ];
@@ -216,25 +271,7 @@ export default function VerticalPortal() {
             ))}
           </div>
 
-          {/* Coming soon — filter out verticals that are already active */}
-          {(() => {
-            const activeIds = new Set(VERTICALS.map(v => v.id));
-            const upcoming = ['Health', 'Fintech', 'Legal', 'Gaming', 'Education']
-              .filter(v => !activeIds.has(v.toLowerCase()));
-            if (upcoming.length === 0) return null;
-            return (
-              <div className="text-center">
-                <p className="text-sm text-muted-foreground mb-2">More verticals coming soon</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {upcoming.map(v => (
-                    <span key={v} className="px-3 py-1 text-xs font-mono rounded-full border border-border/50 text-muted-foreground/50">
-                      {v}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
+          {/* All verticals are now listed above */}
         </div>
       </div>
       <EnhancedFooter />
