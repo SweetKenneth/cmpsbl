@@ -191,6 +191,7 @@ function useAllVerticals() {
 
 export default function VerticalPortal() {
   const { session } = useAuth();
+  const { role, isGovernor } = useUserRole();
   const VERTICALS = useAllVerticals();
 
   const handleVisitVertical = (url: string) => {
