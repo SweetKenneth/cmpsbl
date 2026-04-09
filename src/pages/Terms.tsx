@@ -23,7 +23,7 @@ const sections = [
   {
     id: "services",
     title: "2. Description of Services",
-    content: "CMPSBL® provides composable cognitive infrastructure including but not limited to:",
+    content: "CMPSBL® provides governed cognitive infrastructure including but not limited to:",
     list: [
       "CMPSBL Substrate — 40 specialized primitives organized across Organs, Layers, Engines, and Agents",
       "Memory Stream — Continuous discovery engine with crystallization scoring and artifact export",
