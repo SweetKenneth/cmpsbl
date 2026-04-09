@@ -52,10 +52,10 @@ const HeritagePaper = () => {
     <>
       <Helmet>
         <title>Heritage Paper — Cognitive Infrastructure Lineage | CMPSBL®</title>
-        <meta name="description" content="Comprehensive lineage paper tracing the heritage of CMPSBL from BRAIN Genesis (January 2025) through the 40-module cognitive platform. Open access academic publication." />
+        <meta name="description" content="Comprehensive lineage paper tracing the heritage of CMPSBL from BRAIN Genesis (January 2025) through the 40-Primitive governed cognitive infrastructure substrate. Open access academic publication." />
         <link rel="canonical" href="https://cmpsbl.com/heritage-paper" />
-        <meta property="og:title" content="Heritage of Autonomous Cognitive Infrastructure | CMPSBL®" />
-        <meta property="og:description" content="The complete technical lineage of CMPSBL — from first prototype to 40-module cognitive platform." />
+        <meta property="og:title" content="Heritage of Governed Cognitive Infrastructure | CMPSBL®" />
+        <meta property="og:description" content="The complete technical lineage of CMPSBL — from first prototype to 40-Primitive governed cognitive substrate." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://cmpsbl.com/heritage-paper" />
         <meta property="og:image" content="https://cmpsbl.com/og/about.jpg" />
