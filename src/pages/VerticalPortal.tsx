@@ -110,7 +110,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(340 75% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
-    status: 'Active' as const,
+    status: 'Coming Soon' as const,
   },
   {
     id: 'legal',
@@ -121,7 +121,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(220 60% 50%)',
     primitiveCount: 16,
     capabilityCount: '95+',
-    status: 'Active' as const,
+    status: 'Coming Soon' as const,
   },
   {
     id: 'gaming',
@@ -132,7 +132,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(280 80% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
-    status: 'Active' as const,
+    status: 'Coming Soon' as const,
   },
   {
     id: 'education',
@@ -143,7 +143,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(45 90% 50%)',
     primitiveCount: 16,
     capabilityCount: '90+',
-    status: 'Active' as const,
+    status: 'Coming Soon' as const,
   },
   {
     id: 'ultimate',
@@ -258,13 +258,23 @@ export default function VerticalPortal() {
                       </div>
                     </div>
 
-                    <Button
-                      className="w-full border-0 text-sm font-semibold"
-                      style={{ background: v.accentColor, color: 'white' }}
-                      onClick={() => handleVisitVertical(v.url)}
-                    >
-                      Visit {v.name.split('™')[0]}™ <ExternalLink className="ml-2 h-3.5 w-3.5" />
-                    </Button>
+                    {v.status === 'Coming Soon' ? (
+                      <Button
+                        className="w-full text-sm font-semibold opacity-60 cursor-not-allowed"
+                        variant="outline"
+                        disabled
+                      >
+                        Coming Soon
+                      </Button>
+                    ) : (
+                      <Button
+                        className="w-full border-0 text-sm font-semibold"
+                        style={{ background: v.accentColor, color: 'white' }}
+                        onClick={() => handleVisitVertical(v.url)}
+                      >
+                        Visit {v.name.split('™')[0]}™ <ExternalLink className="ml-2 h-3.5 w-3.5" />
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
