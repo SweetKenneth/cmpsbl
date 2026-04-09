@@ -23,6 +23,7 @@ import {
   ScrollText,
   ShoppingBag,
   Layers,
+  Brain,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
