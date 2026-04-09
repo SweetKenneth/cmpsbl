@@ -300,10 +300,10 @@ export default function About() {
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Hammer className="w-4.5 h-4.5 text-primary" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Platform</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Substrate</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  A composable AI platform organized across{" "}
+                  Governed cognitive infrastructure organized across{" "}
                   <Link to="/modules" className="text-primary hover:underline font-medium">specialized primitives</Link>.{" "}
                   MEMORY persists context via{" "}
                   <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
