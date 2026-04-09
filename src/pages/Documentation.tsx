@@ -162,9 +162,9 @@ function OverviewSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Platform Overview</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is a cognitive AI operating system with 40 Core Primitives organized into 4 categories —
-          Organs, Layers, Engines, and Agents — covering routing, memory, self-improvement, monitoring, security,
-          and orchestration for AI applications.{" "}
+          CMPSBL is governed cognitive infrastructure — a patented dual-layer substrate with 40 Core Primitives organized into 4 categories —
+          Organs, Layers, Engines, and Agents. Layer 2 wraps around your code (Layer 1) adding governance, security,
+          and new capabilities — without modifying the original source.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> ready to use.
         </p>
       </div>
