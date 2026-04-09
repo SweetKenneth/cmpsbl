@@ -47,13 +47,13 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { name: "Memory Stream", href: "/foundry", icon: Brain, badge: "LIVE", highlight: true },
+  { name: "Shield", href: "/shield", icon: Layers, badge: "FREE", highlight: true },
   { name: "Mana", href: "/mana", icon: Layers, badge: "PATENT", highlight: true },
   { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
   { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
   { name: "Ascension", href: "/ascension", icon: Sparkles, highlight: true },
   { name: "Verticals", href: "/verticals", icon: Globe, badge: "EXPLORE" },
   { name: "Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
-  { name: "Case Studies", href: "/case-studies", icon: ScrollText },
   { name: "Plans", href: "/plans", icon: CreditCard },
   { name: "Docs", href: "/documentation", icon: FileText },
 ];
