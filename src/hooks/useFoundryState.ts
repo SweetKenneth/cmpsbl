@@ -157,6 +157,15 @@ export function useFoundryState() {
     }
     if (isMining) return;
 
+    // Enforce daily crystallization limit (shared across all substrates)
+    if (crystallizationsPerDay !== -1 && todayMineCount >= crystallizationsPerDay) {
+      toast.error('Daily Limit Reached', {
+        description: `You've used ${todayMineCount}/${crystallizationsPerDay} crystallizations today. Upgrade your plan for more.`,
+        duration: 5000,
+      });
+      return;
+    }
+
     setIsMining(true);
     const startTime = Date.now();
     try {
