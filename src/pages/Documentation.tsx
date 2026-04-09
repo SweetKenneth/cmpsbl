@@ -170,8 +170,8 @@ function OverviewSection() {
       </div>
 
       <Callout type="tip">
-        <strong>New to CMPSBL?</strong> Start with the <Link to="/developers/guide" className="text-primary underline">Developer Guide</Link> to
-        get persistent memory running in under an hour — no framework changes needed.
+        <strong>New to CMPSBL?</strong> Start with <Link to="/try" className="text-primary underline">Try the Substrate</Link> to
+        see Ascension in action — upload any code and watch 40 primitives transform it.
       </Callout>
 
       {/* Architecture at a glance */}
