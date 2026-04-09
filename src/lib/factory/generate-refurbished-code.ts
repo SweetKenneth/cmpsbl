@@ -3139,7 +3139,7 @@ export function generateRefurbishedCode(
     '',
     `Language:     ${detected} (Bridge Adapter)`,
     `Fingerprint:  ${fingerprint}`,
-    `Chain:        ${selectedPrimitives.map(p => p.name).join(' → ')}`,
+    `Chain:        ${selectedPrimitives.map(p => `${p.name}(${p.collisionScore})`).join(' → ')}`,
     `Primitives:   ${selectedPrimitives.length}`,
     `Generated:    ${new Date().toISOString()}`,
     `Runtime:      Convex Core™ v3.0.0`,
