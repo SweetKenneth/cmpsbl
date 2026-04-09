@@ -41,7 +41,7 @@ interface Specimen {
   adaptations: string[];
   /** Net-new traits that didn't exist before this mutation */
   phenotype: string[];
-  /** Optional: which nodes were most affected */
+  /** Optional: which primitives were most affected */
   affectedNodes?: string[];
   /** Whether this was an autonomous evolution run */
   autonomous?: boolean;
