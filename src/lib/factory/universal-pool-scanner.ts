@@ -1433,38 +1433,45 @@ export function runUniversalPoolScan(
   // Select the optimal 40 primitives — MATRIX-ENFORCED: 12/12/8/8
   const selected = selectOptimalPrimitives(scored, verticalAffinity);
 
+  // ── CHAIN SEQUENCING ──────────────────────────────────────────────────
+  // Order the 40 selected primitives into a deterministic execution chain.
+  // Every vertical uses the same chain spine — the only differentiator is
+  // WHICH capabilities fill each slot. Collision scores cascade downward
+  // so earlier primitives narrow the behavioral space for later ones.
+  const chained = sequenceChain(selected);
+
   // Rebalance weights so selected primitives sum to 1.0
-  const totalScore = selected.reduce((sum, c) => sum + c.compoundingScore, 0);
-  const fullSurface: VerticalPrimitive[] = selected.map(c => ({
+  const totalScore = chained.reduce((sum, c) => sum + c.compoundingScore, 0);
+  const fullSurface: VerticalPrimitive[] = chained.map(c => ({
     ...c.primitive,
     weight: totalScore > 0
       ? Math.round((c.compoundingScore / totalScore) * 10000) / 10000
-      : Math.round((1.0 / selected.length) * 10000) / 10000,
+      : Math.round((1.0 / chained.length) * 10000) / 10000,
     inherited: false,
   }));
 
   // Source distribution
   const sourceDistribution: Record<string, number> = {};
   const roleDistribution: Record<string, number> = {};
-  for (const s of selected) {
+  for (const s of chained) {
     sourceDistribution[s.sourceVertical] = (sourceDistribution[s.sourceVertical] ?? 0) + 1;
     roleDistribution[s.primitive.role] = (roleDistribution[s.primitive.role] ?? 0) + 1;
   }
 
   // ── CONFIDENCE BANDING ─────────────────────────────────────────────
-  const confidenceBands = bandResults(selected, structuralBoosts, intentPrimitives);
+  const confidenceBands = bandResults(chained, structuralBoosts, intentPrimitives);
   const bandDistribution = getBandDistribution(confidenceBands);
 
   // ── 4-AXIS COMPATIBILITY SCORING ───────────────────────────────────
   const compatibilityReports = batchCompatibility(
-    selected.map(c => ({ name: c.primitive.name, signalScore: c.affinityScore })),
+    chained.map(c => ({ name: c.primitive.name, signalScore: c.affinityScore })),
     contract,
     environmentProfile,
     structuralMatches,
   );
 
   // ── MERGE SIMULATION ──────────────────────────────────────────────
-  const selectedSet = new Set(selected.map(c => c.primitive.name.toUpperCase()));
+  const selectedSet = new Set(chained.map(c => c.primitive.name.toUpperCase()));
   const mergeReport = runMergeSimulation(compatibilityReports, structuralMatches, selectedSet);
 
   // ── ECOSYSTEM REGISTRY SUGGESTIONS ─────────────────────────────────
@@ -1486,7 +1493,7 @@ export function runUniversalPoolScan(
   }
 
   return {
-    selectedPrimitives: selected,
+    selectedPrimitives: chained,
     fullSurface,
     totalCandidatesEvaluated: pool.length,
     candidatesAboveThreshold: scored.filter(c => c.compoundingScore >= SELECTION_THRESHOLD).length,
