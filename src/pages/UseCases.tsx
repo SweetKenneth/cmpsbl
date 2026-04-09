@@ -398,16 +398,16 @@ export default function UseCases() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Use Cases — Real-World Applications | CMPSBL"
-        description="How teams use CMPSBL: gaming NPCs with persistent memory, enterprise document intelligence, healthcare triage agents, legal research copilots, and financial risk modeling with self-improving AI."
+        description="How CMPSBL's governed cognitive infrastructure transforms industries: gaming, enterprise, healthcare, legal, education, and more. Dual-layer technology. 40 primitives. Zero AI tricks."
         canonical="https://cmpsbl.com/use-cases"
         keywords={[
-          "AI use cases",
-          "enterprise AI",
+          "code ascension use cases",
+          "dual layer technology",
+          "enterprise governance",
           "healthcare AI",
           "legal AI",
-          "education AI",
-          "retail AI",
-          "customer support AI",
+          "gaming AI",
+          "governed cognitive infrastructure",
           "industry applications",
         ]}
       />
