@@ -39,6 +39,7 @@ import {
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import shieldHero from '@/assets/shield-hero.jpg';
+import shieldMidpage from '@/assets/shield-midpage.jpg';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -377,6 +378,22 @@ export default function ShieldPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* ═══════════════════════════════════════════════════════════ */}
+        {/* FULL-BLEED VISUAL BREAK                                    */}
+        {/* ═══════════════════════════════════════════════════════════ */}
+        <div className="relative w-full h-48 sm:h-64 md:h-80 overflow-hidden">
+          <img
+            src={shieldMidpage}
+            alt="Digital ocean of data streams with shield barrier on the horizon"
+            width={1920}
+            height={640}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
+        </div>
 
         {/* ═══════════════════════════════════════════════════════════ */}
         {/* THE SOLUTION — Shield detection capabilities               */}
