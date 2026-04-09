@@ -155,7 +155,7 @@ export default function Architecture() {
         faq={[
           { question: 'How is CMPSBL structured?', answer: 'CMPSBL is governed cognitive infrastructure built on 40 primitives organized into a symmetric 12·12·8·8 matrix across 4 categories: Organs, Layers, Engines, and Agents. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
           { question: 'What are the 4 categories?', answer: 'Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER).' },
-          { question: 'What is dual-layer technology?', answer: 'CMPSBL's patented dual-layer architecture wraps your existing code (Legacy Host / Layer 1) with a governed cognitive substrate (Layer 2). Your code remains unchanged — Ascension scans and classifies, Mana attaches governance and defense.' },
+          { question: 'What is dual-layer technology?', answer: "CMPSBL's patented dual-layer architecture wraps your existing code (Legacy Host / Layer 1) with a governed cognitive substrate (Layer 2). Your code remains unchanged — Ascension scans and classifies, Mana attaches governance and defense." },
         ]}
       />
 
