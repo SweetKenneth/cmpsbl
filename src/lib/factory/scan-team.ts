@@ -909,5 +909,58 @@ function generateRecommendations(
     if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
   }
 
-  return result.sort((a, b) => b.impactScore - a.impactScore);
+  // Apply chain sequencing — deterministic execution order with cascading collision scores
+  return applyChainSequence(result);
+}
+
+/**
+ * Apply deterministic chain sequencing to a set of recommendations.
+ * Uses the same chain order map as the Universal Pool Scanner so all
+ * scanners produce identical chain spines — only the injected capabilities differ.
+ */
+const RECOMMENDATION_CHAIN_ORDER: Record<string, number> = {
+  CORE: 1, SYSTEM: 2, MEMORY: 3, NERVE: 4, RELAY: 5, IDENTITY: 6,
+  BRAIN: 7, DREAM: 8, DECODE: 9, DEFENSE: 10, GOVERNANCE: 11, AUDIT: 12,
+  REFLEX: 13, RIPPLE: 14, FAILSAFE: 15, BEACON: 16, VISION: 17, SHADOW: 18,
+  EVOLUTION: 19, FORGE: 20, ENGINEER: 21, NEXUS: 22, INTEGRATION: 23, TREATY: 24,
+  CONSCIENCE: 25, INCLUSIVE: 26, MEDIC: 27, ACCESS: 28, HARVEST: 29, ECHO: 30,
+  WRAITH: 31, PHANTOM: 32, SANDBOX: 33, SOVEREIGN: 34, COMPASS: 35, ATLAS: 36,
+};
+
+function applyChainSequence(recs: PrimitiveRecommendation[]): PrimitiveRecommendation[] {
+  const spineRecs: PrimitiveRecommendation[] = [];
+  const expansionRecs: PrimitiveRecommendation[] = [];
+
+  for (const r of recs) {
+    const pos = RECOMMENDATION_CHAIN_ORDER[r.name.toUpperCase()];
+    if (pos !== undefined) {
+      r.chainPosition = pos;
+      spineRecs.push(r);
+    } else {
+      expansionRecs.push(r);
+    }
+  }
+
+  spineRecs.sort((a, b) => a.chainPosition - b.chainPosition);
+  expansionRecs.sort((a, b) => b.impactScore - a.impactScore);
+
+  let nextPos = 37;
+  for (const r of expansionRecs) {
+    r.chainPosition = nextPos++;
+  }
+
+  const chain = [...spineRecs, ...expansionRecs];
+
+  // Cascading collision scores — same decay as Universal Pool Scanner
+  const DECAY = 0.87;
+  if (chain.length > 0) {
+    chain[0].collisionScore = Math.min(99, Math.max(20, chain[0].impactScore));
+    for (let i = 1; i < chain.length; i++) {
+      const prev = chain[i - 1].collisionScore;
+      const own = chain[i].impactScore;
+      chain[i].collisionScore = Math.round(Math.min(99, Math.max(10, prev * DECAY + own * (1 - DECAY))));
+    }
+  }
+
+  return chain;
 }
