@@ -218,7 +218,7 @@ export function useFoundryState() {
     } finally {
       setIsMining(false);
     }
-  }, [user, isMining, loadState]);
+  }, [user, isMining, loadState, crystallizationsPerDay, todayMineCount]);
 
   // Stats
   const bestPull = inventory.length > 0
@@ -229,6 +229,9 @@ export function useFoundryState() {
     acc[item.publicTier] = (acc[item.publicTier] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
+
+  const dailyLimit = crystallizationsPerDay === -1 ? Infinity : crystallizationsPerDay;
+  const remainingToday = Math.max(0, dailyLimit - todayMineCount);
 
   return {
     user,
@@ -243,5 +246,13 @@ export function useFoundryState() {
     inventoryCount: inventory.length,
     reload: loadState,
     lastSyncedAt,
+    /** Daily crystallization usage */
+    todayMineCount,
+    /** Daily crystallization cap (-1 = unlimited) */
+    dailyLimit: crystallizationsPerDay,
+    /** Remaining crystallizations today */
+    remainingToday,
+  };
+}
   };
 }
