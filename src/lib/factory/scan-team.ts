@@ -46,6 +46,10 @@ export interface PrimitiveRecommendation {
   category: 'Organ' | 'Layer' | 'Engine' | 'Agent';
   impactScore: number;
   rationale: string;
+  /** Position in the deterministic execution chain (1-indexed) */
+  chainPosition: number;
+  /** Cascading collision score from the chain sequencer */
+  collisionScore: number;
 }
 
 /** Core 24 spine primitives (12 Organs + 12 Layers) — shared across all verticals */
