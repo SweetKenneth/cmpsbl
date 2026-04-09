@@ -87,7 +87,7 @@ export default function Contact() {
               Get in Touch
             </Badge>
              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6 text-foreground tracking-tight">
-               Talk to the CMPSBL Team
+               Talk to Us
              </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl leading-relaxed">
               Enterprise partnerships, technical questions, research collaborations, or just want to learn more — we respond to every message.
