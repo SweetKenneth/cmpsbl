@@ -158,6 +158,7 @@ const GOD_MODE_LIMITS: ProductLimits = {
   safeEvolutionAccess: true,
   exportTraceAccess: true,
   crystallizedAssetCap: Infinity,
+  crystallizationsPerDay: -1,
   radioMinutesPerDay: -1,
   evolutionUploadsPerDay: Infinity,
   forgeAgentSlots: Infinity,
