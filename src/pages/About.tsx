@@ -576,9 +576,9 @@ export default function About() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/about" title="About CMPSBL" faq={[
-        { question: "What is CMPSBL?", answer: "CMPSBL is a cognitive infrastructure substrate — a substrate layer between AI models and applications that manages persistent memory, orchestration, governance, and continuous self-improvement across 40 autonomous primitives." },
-        { question: "Who founded CMPSBL?", answer: "CMPSBL was founded by Kenneth E Sweet Jr in 2009. The platform has evolved from a portfolio tool into a full cognitive infrastructure layer." },
-        { question: "How is CMPSBL different from other AI platforms?", answer: "Unlike traditional AI wrappers, CMPSBL operates as an operating system with persistent memory, DREAM cycle consolidation, and self-improving capabilities. Intelligence compounds over time rather than resetting per session." },
+        { question: "What is CMPSBL?", answer: "Governed cognitive infrastructure — a patented dual-layer substrate where Layer 2 wraps your code, adding governance, security, and new capabilities. Your original code stays byte-for-byte identical." },
+        { question: "Who founded CMPSBL?", answer: "CMPSBL was founded by Kenneth E. Sweet Jr. in 2009 and is operated by PromptFluid™ TX." },
+        { question: "How is CMPSBL different?", answer: "CMPSBL uses patented dual-layer technology — zero external AI calls in the core pipeline. Your code remains unchanged while Layer 2 adds governance, security, and emergent capabilities deterministically." },
       ]} />
       <EnhancedFooter />
     </div>
