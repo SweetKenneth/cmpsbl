@@ -62,6 +62,7 @@ export function getSectionOgImage(section: string): string {
     careers: '/og/about.jpg',
     packs: '/og/store.jpg',
     upgrade: '/og/pricing.jpg',
+    shield: '/og/shield.jpg',
   };
 
   const path = SECTION_MAP[section];
