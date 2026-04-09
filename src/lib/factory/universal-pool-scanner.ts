@@ -71,10 +71,14 @@ export interface PoolCandidate {
   compoundingScore: number;
   /** Structural archetype boost applied to this candidate (0–1) */
   structuralBoost: number;
+  /** Position in the deterministic execution chain (0-indexed) */
+  chainPosition: number;
+  /** Cascading collision score — influenced by predecessor in chain */
+  collisionScore: number;
 }
 
 export interface UniversalScanResult {
-  /** The primitives selected as the optimal surface for this code (variable count) */
+  /** The primitives selected as the optimal surface for this code — CHAIN-ORDERED */
   selectedPrimitives: PoolCandidate[];
   /** Full primitive surface (the selected primitives, rebalanced) */
   fullSurface: VerticalPrimitive[];
