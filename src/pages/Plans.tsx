@@ -30,8 +30,8 @@ export default function Plans() {
       </div>
 
       <SEO
-        title="Plans — Builder to Architect | CMPSBL"
-        description="Four tiers of cognitive infrastructure: Builder (free, 3 slots), Studio ($29/mo), Creator ($49/mo), Architect ($79/mo). Full runtime on every plan. Scale slots, memory, exports, and routing as you grow."
+        title="Plans — Free to Enterprise | CMPSBL"
+        description="Choose your substrates: Free (Prime), Studio ($29 — 3 verticals), Creator ($49 — 6 verticals), Architect ($79 — all + ULTIMATE), Enterprise ($999+ — white-label). Memory Stream, Ascension, and Crown Jewel npm free for all."
         canonical="https://cmpsbl.com/plans"
         image="https://cmpsbl.com/og/plans.jpg"
       />
