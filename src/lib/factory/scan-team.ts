@@ -46,10 +46,17 @@ export interface PrimitiveRecommendation {
   category: 'Organ' | 'Layer' | 'Engine' | 'Agent';
   impactScore: number;
   rationale: string;
+  /** Position in the deterministic execution chain (1-indexed) */
+  chainPosition: number;
+  /** Cascading collision score from the chain sequencer */
+  collisionScore: number;
 }
 
+/** Catalog entry — just identity fields, no scoring or chain data */
+type PrimitiveCatalogEntry = Pick<PrimitiveRecommendation, 'primitiveId' | 'name' | 'category'>;
+
 /** Core 24 spine primitives (12 Organs + 12 Layers) — shared across all verticals */
-const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
+const SPINE_PRIMITIVES: PrimitiveCatalogEntry[] = [
   // 12 Organs
   { primitiveId: 'core', name: 'CORE', category: 'Organ' },
   { primitiveId: 'system', name: 'SYSTEM', category: 'Organ' },
@@ -79,7 +86,7 @@ const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale
 ];
 
 /** Standard 8 Engines + 8 Agents — canonical primitives (cmpsbl.com default) */
-const STANDARD_ENGINES_AGENTS: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
+const STANDARD_ENGINES_AGENTS: PrimitiveCatalogEntry[] = [
   // 8 Engines
   { primitiveId: 'dream', name: 'DREAM', category: 'Engine' },
   { primitiveId: 'harvest', name: 'HARVEST', category: 'Engine' },
@@ -105,8 +112,8 @@ const STANDARD_ENGINES_AGENTS: Omit<PrimitiveRecommendation, 'impactScore' | 'ra
  * Each vertical gets its own specialized engines/agents; default falls back to standard.
  */
 function buildVerticalCatalog(): {
-  spine: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[];
-  expansion: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[];
+  spine: PrimitiveCatalogEntry[];
+  expansion: PrimitiveCatalogEntry[];
 } {
   const vertical = getVerticalSubdomain();
 
@@ -248,10 +255,12 @@ function buildUltimateRecommendations(code: string): PrimitiveRecommendation[] {
         name: candidate.primitive.name,
         category: toRecommendationCategory(candidate.primitive.role),
         impactScore: Math.max(55, Math.min(99, Math.round(candidate.compoundingScore * 100))),
-        rationale: `${sourceLabel} · ${signalSummary} · collision ${Math.round(candidate.compoundingScore * 100)}`,
+        rationale: `${sourceLabel} · ${signalSummary} · collision ${candidate.collisionScore}`,
+        chainPosition: candidate.chainPosition,
+        collisionScore: candidate.collisionScore,
       };
     })
-    .sort((a, b) => b.impactScore - a.impactScore);
+    .sort((a, b) => a.chainPosition - b.chainPosition);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -671,7 +680,7 @@ function analyzeWithFailsafe(code: string, metrics: CodeMetrics): ScanFinding[] 
 
 /** ENCODE analyzes code signals to score each primitive's relevance */
 function scorePrimitiveRelevance(
-  primitive: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>,
+  primitive: PrimitiveCatalogEntry,
   code: string,
   findings: ScanFinding[],
   rand: () => number,
@@ -848,7 +857,7 @@ function generateRecommendations(
   // Score spine primitives (Organs + Layers) — stabilization
   const scoredSpine = spine.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
-    return { ...p, impactScore: score, rationale };
+    return { ...p, impactScore: score, rationale, chainPosition: 0, collisionScore: 0 };
   });
   scoredSpine.sort((a, b) => b.impactScore - a.impactScore);
 
@@ -857,7 +866,7 @@ function generateRecommendations(
   const scoredExpansion = expansion.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
     const verticalBonus = 10 + Math.floor(rand() * 15);
-    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale };
+    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale, chainPosition: 0, collisionScore: 0 };
   });
   scoredExpansion.sort((a, b) => b.impactScore - a.impactScore);
 
@@ -900,5 +909,58 @@ function generateRecommendations(
     if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
   }
 
-  return result.sort((a, b) => b.impactScore - a.impactScore);
+  // Apply chain sequencing — deterministic execution order with cascading collision scores
+  return applyChainSequence(result);
+}
+
+/**
+ * Apply deterministic chain sequencing to a set of recommendations.
+ * Uses the same chain order map as the Universal Pool Scanner so all
+ * scanners produce identical chain spines — only the injected capabilities differ.
+ */
+const RECOMMENDATION_CHAIN_ORDER: Record<string, number> = {
+  CORE: 1, SYSTEM: 2, MEMORY: 3, NERVE: 4, RELAY: 5, IDENTITY: 6,
+  BRAIN: 7, DREAM: 8, DECODE: 9, DEFENSE: 10, GOVERNANCE: 11, AUDIT: 12,
+  REFLEX: 13, RIPPLE: 14, FAILSAFE: 15, BEACON: 16, VISION: 17, SHADOW: 18,
+  EVOLUTION: 19, FORGE: 20, ENGINEER: 21, NEXUS: 22, INTEGRATION: 23, TREATY: 24,
+  CONSCIENCE: 25, INCLUSIVE: 26, MEDIC: 27, ACCESS: 28, HARVEST: 29, ECHO: 30,
+  WRAITH: 31, PHANTOM: 32, SANDBOX: 33, SOVEREIGN: 34, COMPASS: 35, ATLAS: 36,
+};
+
+function applyChainSequence(recs: PrimitiveRecommendation[]): PrimitiveRecommendation[] {
+  const spineRecs: PrimitiveRecommendation[] = [];
+  const expansionRecs: PrimitiveRecommendation[] = [];
+
+  for (const r of recs) {
+    const pos = RECOMMENDATION_CHAIN_ORDER[r.name.toUpperCase()];
+    if (pos !== undefined) {
+      r.chainPosition = pos;
+      spineRecs.push(r);
+    } else {
+      expansionRecs.push(r);
+    }
+  }
+
+  spineRecs.sort((a, b) => a.chainPosition - b.chainPosition);
+  expansionRecs.sort((a, b) => b.impactScore - a.impactScore);
+
+  let nextPos = 37;
+  for (const r of expansionRecs) {
+    r.chainPosition = nextPos++;
+  }
+
+  const chain = [...spineRecs, ...expansionRecs];
+
+  // Cascading collision scores — same decay as Universal Pool Scanner
+  const DECAY = 0.87;
+  if (chain.length > 0) {
+    chain[0].collisionScore = Math.min(99, Math.max(20, chain[0].impactScore));
+    for (let i = 1; i < chain.length; i++) {
+      const prev = chain[i - 1].collisionScore;
+      const own = chain[i].impactScore;
+      chain[i].collisionScore = Math.round(Math.min(99, Math.max(10, prev * DECAY + own * (1 - DECAY))));
+    }
+  }
+
+  return chain;
 }
