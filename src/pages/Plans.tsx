@@ -9,6 +9,8 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { UpgradeContent } from '@/components/store/UpgradeContent';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
+import { TrialBanner } from '@/components/adoption/TrialBanner';
+import { CompoundingValueDashboard } from '@/components/adoption/CompoundingValueDashboard';
 
 export default function Plans() {
   return (
