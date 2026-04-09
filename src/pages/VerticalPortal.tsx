@@ -25,6 +25,17 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 const STATIC_VERTICALS = [
   {
+    id: 'prime',
+    name: 'CMPSBL PRIME™',
+    tagline: 'The Core 40 — Free Cognitive Infrastructure for Everyone',
+    url: 'https://cmpsbl.com',
+    icon: Hexagon,
+    accentColor: 'hsl(210 15% 50%)',
+    primitiveCount: 40,
+    capabilityCount: '200+',
+    status: 'Active' as const,
+  },
+  {
     id: 'security',
     name: 'CMPSBL CYBER™',
     tagline: 'Cognitive Security Infrastructure — Threats Die Here',
