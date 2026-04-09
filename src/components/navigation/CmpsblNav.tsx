@@ -1,6 +1,7 @@
 /**
  * CmpsblNav — Factory-Era Flat Navigation
  * Clean dark command bar with quick-link grid on mobile.
+ * Radio toggle sits next to the logo for all substrates.
  */
 
 import { useState, useEffect } from "react";
@@ -30,6 +31,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { AmbientMusicPlayer } from "@/components/substrate-os/audio/AmbientMusicPlayer";
 
 const MARKETPLACE_URL = "https://marketplace.cmpsbl.com";
 
