@@ -255,10 +255,12 @@ function buildUltimateRecommendations(code: string): PrimitiveRecommendation[] {
         name: candidate.primitive.name,
         category: toRecommendationCategory(candidate.primitive.role),
         impactScore: Math.max(55, Math.min(99, Math.round(candidate.compoundingScore * 100))),
-        rationale: `${sourceLabel} · ${signalSummary} · collision ${Math.round(candidate.compoundingScore * 100)}`,
+        rationale: `${sourceLabel} · ${signalSummary} · collision ${candidate.collisionScore}`,
+        chainPosition: candidate.chainPosition,
+        collisionScore: candidate.collisionScore,
       };
     })
-    .sort((a, b) => b.impactScore - a.impactScore);
+    .sort((a, b) => a.chainPosition - b.chainPosition);
 }
 
 // ═══════════════════════════════════════════════════════════════
