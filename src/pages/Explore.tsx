@@ -65,13 +65,13 @@ export default function Explore() {
   return (
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
-        title="Composable AI Infrastructure | CMPSBL"
-        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 capability slots. Composable AI platform for agentic systems that learn."
+        title="CMPSBL® — Governed Cognitive Infrastructure"
+        description="Governed cognitive infrastructure — patented dual-layer technology where your code stays unchanged and everything around it evolves. 40 primitives. Zero AI tricks. Free to start."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home-v2.jpg"
-        keywords={['composable AI', 'cognitive infrastructure', 'AI platform', 'agentic AI', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software', 'capability packs']}
+        keywords={['governed cognitive infrastructure', 'dual layer technology', 'code ascension', 'Mana', 'software hardening', 'CJPI', 'Memory Stream', 'substrate', 'patented AI']}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI platform where intelligence persists across sessions, adapts through governed evolution, and compounds over time.' },
+          { question: 'What is CMPSBL?', answer: 'Governed cognitive infrastructure — a patented dual-layer substrate where Layer 2 wraps your code, adding governance, security, and new capabilities without modifying the original source.' },
           { question: 'How does persistent memory work?', answer: 'CMPSBL provides multi-tier persistent memory that gives AI agents permanent recall across sessions. Add it to any agent in under an hour with the free tier.' },
           { question: 'What are capability packs?', answer: 'Capability packs are bundles of features you activate on demand. Each pack uses one slot. Your plan determines how many slots you have — not which packs you can access.' },
           { question: 'Is there a free tier?', answer: 'Yes. The Builder tier is completely free — 3 capability slots, full runtime access, persistent memory, and governed orchestration. No credit card required.' },
