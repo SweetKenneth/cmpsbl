@@ -232,6 +232,8 @@ export default function VerticalPortal() {
             </p>
           </motion.div>
 
+          <TrialBanner />
+
           <div className="grid sm:grid-cols-2 gap-6 mb-16">
             {VERTICALS.map((v, i) => (
               <motion.div
