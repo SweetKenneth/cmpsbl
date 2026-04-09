@@ -125,7 +125,7 @@ export default function PromptFluidHome() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto mb-10"
           >
-            Engineering the future of AI operating systems since 2009.
+            Engineering governed cognitive infrastructure since 2009.
           </motion.p>
 
           <motion.div
