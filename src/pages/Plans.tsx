@@ -9,6 +9,8 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { UpgradeContent } from '@/components/store/UpgradeContent';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
+import { TrialBanner } from '@/components/adoption/TrialBanner';
+import { CompoundingValueDashboard } from '@/components/adoption/CompoundingValueDashboard';
 
 export default function Plans() {
   return (
@@ -41,8 +43,13 @@ export default function Plans() {
       <main className="pt-28 sm:pt-32 pb-20 relative z-10">
         <div className="container mx-auto px-4 mb-6">
           <PublicBreadcrumb />
+          <TrialBanner />
         </div>
         <UpgradeContent />
+        <div className="container mx-auto px-4 mt-12">
+          <h2 className="text-lg font-bold text-foreground mb-4">Your Compounding Value</h2>
+          <CompoundingValueDashboard />
+        </div>
       </main>
 
       <PageSEOBlock path="/plans" title="Plans & Pricing" faq={[

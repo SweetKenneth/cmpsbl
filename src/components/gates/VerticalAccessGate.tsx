@@ -17,6 +17,7 @@ import { Lock, ArrowUpRight, Crown, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useUserRole, type SubstrateRole } from '@/hooks/useUserRole';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTrialAccess } from '@/hooks/useTrialAccess';
 
 /** Vertical tier mapping — which tier unlocks which verticals */
 export type VerticalId = 
@@ -70,6 +71,7 @@ interface VerticalAccessGateProps {
 export function VerticalAccessGate({ verticalId, children, allowReadOnly = true }: VerticalAccessGateProps) {
   const { user } = useAuth();
   const { role, isGovernor } = useUserRole();
+  const { isTrialActive, trialTier } = useTrialAccess();
 
   // Governor always bypasses
   if (isGovernor) return <>{children}</>;
@@ -77,26 +79,30 @@ export function VerticalAccessGate({ verticalId, children, allowReadOnly = true 
   // Prime is free for everyone
   if (verticalId === 'prime') return <>{children}</>;
 
-  // Check if the user's tier can access this vertical
-  const minTier = VERTICAL_MIN_TIER[verticalId] || 'studio';
+  // Determine effective role — trial tier overrides base role if higher
   const tierOrder: SubstrateRole[] = ['free', 'studio', 'creator', 'architect', 'governor'];
-  const currentLevel = tierOrder.indexOf(role);
+  const baseLevel = tierOrder.indexOf(role);
+  const trialLevel = isTrialActive && trialTier ? tierOrder.indexOf(trialTier) : -1;
+  const effectiveLevel = Math.max(baseLevel, trialLevel);
+
+  // Check if the user's effective tier can access this vertical
+  const minTier = VERTICAL_MIN_TIER[verticalId] || 'studio';
   const requiredLevel = tierOrder.indexOf(minTier);
 
   // Ultimate requires architect
-  if (verticalId === 'ultimate' && currentLevel < tierOrder.indexOf('architect')) {
+  if (verticalId === 'ultimate' && effectiveLevel < tierOrder.indexOf('architect')) {
     return <ReadOnlyOverlay verticalId={verticalId} requiredTier="architect">{children}</ReadOnlyOverlay>;
   }
 
   // Free users get read-only on all paid verticals
-  if (currentLevel < requiredLevel) {
+  if (effectiveLevel < requiredLevel) {
     if (allowReadOnly) {
       return <ReadOnlyOverlay verticalId={verticalId} requiredTier={minTier}>{children}</ReadOnlyOverlay>;
     }
     return <BlockedOverlay verticalId={verticalId} requiredTier={minTier} />;
   }
 
-  // Paid user — they have access
+  // Paid or trial user — they have access
   return <>{children}</>;
 }
 
