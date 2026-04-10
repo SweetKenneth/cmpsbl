@@ -71,3 +71,7 @@ export {
   generateActivationGuide,
   renderActivationGuideHtml,
 } from './activation-guide';
+
+// Mana Bridge
+export type { ManaActivationArtifacts } from './mana-bridge';
+export { generateManaActivationArtifacts } from './mana-bridge';
