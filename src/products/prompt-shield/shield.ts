@@ -238,3 +238,20 @@ export class PromptShield {
     };
   }
 }
+
+// ── Lifecycle Bridge ───────────────────────────────────────────────────
+
+/** Primitives exercised by Prompt-Shield (cross-vertical) */
+const SHIELD_PRIMITIVES = [
+  'DEFENSE', 'GOVERNANCE', 'CONSCIENCE', 'COMPASS', 'AUDIT', 'BEACON',
+  'VERITAS', 'RAMPART', 'SIEVE', 'GAUNTLET', 'BASTION', 'WATCHTOWER',
+] as const;
+
+/**
+ * Build a lifecycle summary for this product's report.
+ * Proves which primitives are activated at runtime.
+ */
+export function getLifecycleSummary() {
+  const { buildReporterLifecycleSummary } = require('@/lib/capability-lifecycle/export-bridge');
+  return buildReporterLifecycleSummary('prompt-shield', SHIELD_PRIMITIVES);
+}
