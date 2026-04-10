@@ -188,7 +188,28 @@ Both are required for full verification. Provenance without behavior proves orig
 
 ---
 
-## 9. Patent Attribution
+## 9. Generic Activation (Universal Baseline)
+
+Every primitive — not just the 12 specialized ones — can reach full Activated and Behaviorally Verified status through the **Generic Primitive Activation Engine**.
+
+If a primitive doesn't have a specialized runtime (like DEFENSE or GOVERNANCE do), a universal wrapper is applied automatically:
+
+1. **Import** `wrapGeneric` from `@cmpsbl/runtime/generic-wrapper`
+2. **Wrap** your target function: `const wrapped = wrapGeneric('PRIMITIVE_NAME', yourFunction)`
+3. **Run** `npx ts-node RUN_VERIFICATION.ts` to confirm activation
+
+The generic wrapper:
+- Observes every call (emits `call_interception`)
+- Emits telemetry after execution (emits `telemetry_emit`)
+- **Never alters** original function behavior
+- **Never blocks** execution
+- Is fully reversible — remove the wrap call to restore original behavior
+
+Specialized primitives (DEFENSE, MEMORY, BEACON, etc.) still use their richer, hand-written activation logic. The generic engine is the baseline that ensures nothing gets stuck.
+
+---
+
+## 10. Patent Attribution
 
 CMPSBL artifacts are protected under two U.S. patent applications:
 

@@ -213,7 +213,37 @@ This ensures:
 
 ---
 
-## 11. Architectural Guarantees
+## 12. Generic Primitive Activation Engine (v2.0.0)
+
+Addresses the bottleneck where primitives without hand-written activation logic terminated at "bound."
+
+### Problem
+Only 12 specialized primitives (DEFENSE, GOVERNANCE, MEMORY, etc.) had activation paths. All others (~147 remaining) were permanently stuck at the "bound" state, making the system "partially activated."
+
+### Solution
+A **Generic Primitive Activation Engine** provides a universal baseline:
+
+| Component | File | Function |
+|---|---|---|
+| Generic Runtime Wrapper | `packages/runtime/src/generic-wrapper.ts` | `wrapGeneric()` — transparent observe + emit layer |
+| Auto-Activation Pass | `src/lib/capability-lifecycle/generic-activation.ts` | `runAutoActivation()` — generates ActivationRecords for non-specialized primitives |
+| Generic Behavioral Probe | `generic-activation.ts` + `behavioral-verifier.ts` | `runGenericBehavioralProbes()` + generic probe fallback |
+| Activation Guide Fallback | `activation-guide.ts` (updated) | 3-step generic instructions for primitives not in ACTIVATION_KNOWLEDGE |
+| Export Integration | `export-bridge.ts` (updated) | Auto-activation injected into Ascension + Product pipelines |
+
+### Safety Constraints
+- Generic wrappers NEVER alter L1 behavior
+- Generic wrappers NEVER block execution
+- Only observe + emit — transparent observation layer
+- Specialized primitives ALWAYS override with richer behavior
+
+### Result
+- **Before**: 12 primitives activatable → "partially activated"
+- **After**: ALL primitives activatable → "fully activatable (generic baseline)"
+
+---
+
+## 13. Architectural Guarantees
 
 - The system is **incapable of overclaiming** — claim validation is enforced at the type level
 - The system is **provably aligned** with actual runtime behavior — every claim maps to ledger evidence
@@ -221,6 +251,7 @@ This ensures:
 - Proprietary binding and scoring logic remains **protected** — the ledger exposes WHAT was proven, not HOW
 - **Silent omission is impossible** — fail-closed verification rejects incomplete runs
 - **Identity is cryptographically bound** — fingerprint mismatch halts verification
+- **Universal activation** — no primitive is left behind, generic baseline ensures full lifecycle progression
 
 ---
 

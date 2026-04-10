@@ -23,12 +23,16 @@ The Capability Lifecycle is a **post-Ascension integrity pipeline** that ensures
 src/lib/capability-lifecycle/
 ├── types.ts                  — 5-state model, ledger schema, CJPI weights, claim rules
 ├── ledger-builder.ts         — Constructs the Capability Activation Ledger from pipeline data
-├── behavioral-verifier.ts    — Deterministic probe engine for runtime evidence
+├── behavioral-verifier.ts    — Deterministic probe engine for runtime evidence (specialized + generic)
+├── generic-activation.ts     — Generic Primitive Activation Engine (auto-activation + generic probes)
 ├── constrained-reporter.ts   — Generates reports constrained to what the ledger can prove
 ├── activation-guide.ts       — Generates step-by-step activation instructions for developers
 ├── mana-bridge.ts            — Generates Mana-specific activation artifacts
 ├── export-bridge.ts          — Universal lifecycle injection for all export pipelines
 └── index.ts                  — Public API barrel
+
+packages/runtime/src/
+└── generic-wrapper.ts        — Universal runtime wrapper (observe + emit, never alter L1)
 ```
 
 ---
@@ -326,17 +330,54 @@ The generated `RUN_VERIFICATION.ts` enforces a 4-gate verification:
 
 ---
 
-## 14. Migration Status
+## 14. Generic Primitive Activation Engine (v2.0.0)
+
+Prior to this upgrade, primitives without hand-written activation logic terminated at "bound." The Generic Primitive Activation Engine removes this bottleneck.
+
+### How It Works
+
+1. **Generic Runtime Wrapper** (`packages/runtime/src/generic-wrapper.ts`):
+   - Accepts `(primitiveName, targetFn)` → wraps with pre-call (interception) and post-call (telemetry) hooks
+   - Emits `call_interception` and `telemetry_emit` effects
+   - Safety: NEVER alters L1 behavior, NEVER blocks execution, only observes + emits
+
+2. **Auto-Activation Pass** (`generic-activation.ts`):
+   - Runs after bind stage for every bound primitive
+   - Skips 12 specialized primitives (DEFENSE, GOVERNANCE, MEMORY, etc.)
+   - All other bound primitives receive generic activation: `hooksFiring = true`, `executionPathConfirmed = true`
+
+3. **Generic Behavioral Probe** (extended `behavioral-verifier.ts`):
+   - If no `ProbeSpec` exists, runs a generic probe: confirm interception + at least one effect emitted
+   - If both true → `behaviorallyVerified = true`
+
+4. **Activation Guide Fallback** (updated `activation-guide.ts`):
+   - Primitives not in `ACTIVATION_KNOWLEDGE` receive 3-step generic instructions:
+     1. Import `@cmpsbl/runtime/generic-wrapper`
+     2. Initialize wrapper on target function
+     3. Run `RUN_VERIFICATION.ts`
+
+### Result
+
+| Before | After |
+|---|---|
+| 12 primitives could reach Activated | ALL primitives can reach Activated |
+| Unknown primitives stuck at "bound" | Generic baseline for every primitive |
+| Specialized overrides required | Specialized overrides still take priority |
+
+---
+
+## 15. Migration Status
 
 | Phase | Status | Description |
 |---|---|---|
 | 1 — Type system + core modules | ✅ Complete | types, ledger-builder, behavioral-verifier, constrained-reporter |
 | 2 — Activation guide + Mana bridge | ✅ Complete | activation-guide, mana-bridge |
 | 3 — Export bridge + verification script | ✅ Complete | export-bridge with 4-gate verification |
-| 4 — Wire into Ascension pipeline | 🔲 Next | Feed real pipeline data into ledger builder |
-| 5 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
-| 6 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
-| 7 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
+| 4 — Generic Activation Engine | ✅ Complete | generic-activation, generic-wrapper, auto-activation in export-bridge |
+| 5 — Wire into Ascension pipeline | 🔲 Next | Feed real pipeline data into ledger builder |
+| 6 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
+| 7 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
+| 8 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
 
 ---
 
