@@ -16,6 +16,7 @@
 import type { DetectionRecord, GenerationRecord, BindingRecord } from './ledger-builder';
 import { buildLedger } from './ledger-builder';
 import { generateActivationGuide, renderActivationGuideHtml } from './activation-guide';
+import { runAutoActivation, runGenericBehavioralProbes, getSpecializedPrimitives } from './generic-activation';
 import type { CapabilityActivationLedger } from './types';
 import type { CapabilityActivationGuide } from './activation-guide';
 

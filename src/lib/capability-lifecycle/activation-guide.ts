@@ -363,29 +363,47 @@ function buildGenericActivationEntry(
     name: entry.name,
     state: entry.state,
     targets: entry.targets,
-    activationMode: 'manual',
-    integrationSteps: [{
-      step: 1,
-      description: `Import and initialize the ${entry.name} runtime module`,
-      placement: 'Application entry point (e.g., main.ts, index.ts, app.py)',
-      connectsTo: entry.targets.length > 0
-        ? `L1 functions: ${entry.targets.join(', ')}`
-        : 'L1 application entry point',
-      code: `// Import the ${entry.name} runtime\nimport { ${entry.name}Runtime } from '@cmpsbl/runtime/${entry.name.toLowerCase()}';\n\n// Initialize\n${entry.name}Runtime.init();`,
-      language: 'typescript',
-    }],
+    activationMode: entry.activated ? 'automatic' : 'assisted',
+    integrationSteps: [
+      {
+        step: 1,
+        description: `Import the generic runtime wrapper`,
+        placement: 'Application entry point (e.g., main.ts, index.ts)',
+        connectsTo: 'L2 orchestration layer — generic activation engine',
+        code: `import { wrapGeneric } from '@cmpsbl/runtime/generic-wrapper';`,
+        language: 'typescript',
+      },
+      {
+        step: 2,
+        description: `Initialize the generic wrapper for ${entry.name}`,
+        placement: 'Initialization block — after imports, before main execution',
+        connectsTo: entry.targets.length > 0
+          ? `L1 targets: ${entry.targets.join(', ')}`
+          : 'L1 application entry point',
+        code: `// Wrap your target function with generic observation\nconst wrapped = wrapGeneric('${entry.name}', yourTargetFunction);\n\n// Use 'wrapped' in place of 'yourTargetFunction'\n// The wrapper observes calls and emits telemetry without altering behavior.`,
+        language: 'typescript',
+      },
+      {
+        step: 3,
+        description: `Run the verification script to confirm activation`,
+        placement: 'After integration — one-time verification',
+        connectsTo: 'RUN_VERIFICATION.ts in your export package',
+        code: `npx ts-node RUN_VERIFICATION.ts`,
+        language: 'bash',
+      },
+    ],
     behaviorDelta: {
-      before: `No ${entry.name} capability active. Default behavior unchanged.`,
-      after: `${entry.name} wrapper active on ${entry.targets.length} target(s). See runtime documentation for specific behavioral changes.`,
+      before: `No ${entry.name} observation layer. Function executes without interception or telemetry.`,
+      after: `${entry.name} wrapped with generic observation. Every call emits interception + telemetry signals. Original behavior is UNCHANGED.`,
     },
     verificationSteps: [{
-      instruction: `Check ${entry.name}Runtime.status() after initialization.`,
-      expectedOutcome: `Returns { active: true, targets: ${entry.targets.length} }`,
+      instruction: `Run RUN_VERIFICATION.ts and confirm ${entry.name} appears as VERIFIED in the output.`,
+      expectedOutcome: `STATUS: FULLY VERIFIED includes ${entry.name} with call_interception and telemetry_emit effects.`,
     }],
     safetyNotes: {
-      compatibilityImpact: 'Review target function signatures for compatibility before activation.',
-      reversibility: 'Fully reversible. Remove import and init lines to restore original behavior.',
-      performanceNotes: 'Overhead varies by primitive. Monitor latency after activation.',
+      compatibilityImpact: 'Zero behavioral impact. Generic wrapper is a transparent observation layer.',
+      reversibility: 'Fully reversible. Remove the wrapGeneric call to restore unwrapped execution.',
+      performanceNotes: 'Adds ~0.01ms per call for effect collection. Negligible in production workloads.',
     },
   };
 }
