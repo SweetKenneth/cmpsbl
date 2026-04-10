@@ -302,8 +302,7 @@ async function verify() {
   console.log('━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(JSON.stringify(results, null, 2));
 
-  const verified = results.verified ?? 0;
-  const total = EXPECTED_PRIMITIVES.length;
+
 
   console.log(\`\\n✓ \${verified}/\${total} primitives behaviorally verified\`);
   console.log(\`✓ \${total}/\${total} primitives accounted for (fail-closed)\`);
