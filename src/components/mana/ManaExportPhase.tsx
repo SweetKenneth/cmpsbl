@@ -13,6 +13,7 @@ import { saveAs } from 'file-saver';
 import type { AttachmentResult } from './ManaAttachPhase';
 import type { ManaMergeResult } from './ManaMergePhase';
 import { PATENT_NOTICE, MANA_PATENT_NOTICE, COPYRIGHT_NOTICE } from '@/config/domains';
+import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana-bridge';
 
 interface Props {
   result: AttachmentResult;
@@ -131,7 +132,7 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState(false);
 
-  const { manifest, proof, hostName, functionNames } = result;
+  const { manifest, proof, hostName, hostLanguage, functionNames } = result;
   const capabilities = [...new Set(manifest.attachmentPoints.map(p => p.capability))];
 
   const handleExport = async () => {
@@ -209,6 +210,19 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
         }
       }
 
+      // ── Capability Activation Guide (auto-generated) ──────────────────
+      try {
+        const activationArtifacts = generateManaActivationArtifacts(
+          manifest,
+          proof.fingerprintId,
+          hostLanguage,
+        );
+        zip.file('capability-ledger.json', activationArtifacts.ledgerJson);
+        zip.file('ACTIVATION-GUIDE.html', activationArtifacts.guideHtml);
+      } catch {
+        // Non-fatal — export proceeds without activation guide
+      }
+
       // License
       zip.file('LICENSE', `CMPSBL® Mana Layer 2 Export Pack
 ${MANA_PATENT_NOTICE.inline}
@@ -264,6 +278,8 @@ All rights reserved.
                 { icon: Eye, label: 'lex-manifest.json', desc: `${capabilities.length} capability types · Lex governance rules` },
                 { icon: Lock, label: 'PROOF.txt', desc: `SHA-256 verification certificate · ${proof.verified ? 'VERIFIED' : 'FAILED'}` },
                 { icon: FileCode2, label: 'README.md', desc: 'Full documentation and usage guide' },
+                { icon: FileCode2, label: 'ACTIVATION-GUIDE.html', desc: 'Step-by-step capability activation instructions' },
+                { icon: Eye, label: 'capability-ledger.json', desc: 'Machine-readable activation state per primitive' },
                 { icon: Shield, label: 'LICENSE', desc: 'Patent protection and legal notices' },
               ].map(item => (
                 <div key={item.label} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/10">

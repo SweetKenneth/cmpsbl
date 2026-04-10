@@ -299,7 +299,7 @@ export function generateActivationGuide(
   sourceLanguage: string,
 ): CapabilityActivationGuide {
   const activatableEntries = ledger.entries.filter(
-    e => e.generated && e.bound,
+    e => e.generated && e.bound && e.targets.length > 0,
   );
 
   const entries = activatableEntries.map(entry =>
