@@ -277,6 +277,16 @@ async function verify() {
     missing.forEach(m => console.error(\`   ✗ \${m}\`));
     throw new Error(\`Verification incomplete — missing probes for: \${missing.join(', ')}\`);
   }
+  // ━━━ Tamper signal: detect injected/rogue primitives ━━━
+  const expectedSet = new Set(EXPECTED_PRIMITIVES as readonly string[]);
+  const unexpected = (results.probes ?? [])
+    .map((r: { primitiveName: string }) => r.primitiveName)
+    .filter((p: string) => !expectedSet.has(p));
+  if (unexpected.length > 0) {
+    console.warn(\`\\n🚨 UNEXPECTED PROBES DETECTED:\`);
+    unexpected.forEach((u: string) => console.warn(\`   ⚠ \${u}\`));
+    console.warn('  This may indicate injected primitives or rogue wrappers.\\n');
+  }
 
   console.log('━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(JSON.stringify(results, null, 2));
