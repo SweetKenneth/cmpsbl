@@ -13,6 +13,7 @@ import { saveAs } from 'file-saver';
 import type { AttachmentResult } from './ManaAttachPhase';
 import type { ManaMergeResult } from './ManaMergePhase';
 import { PATENT_NOTICE, MANA_PATENT_NOTICE, COPYRIGHT_NOTICE } from '@/config/domains';
+import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana-bridge';
 
 interface Props {
   result: AttachmentResult;
