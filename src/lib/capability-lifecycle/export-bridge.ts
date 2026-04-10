@@ -294,11 +294,15 @@ async function verify() {
   console.warn(\`   Observed: \${probeNames.size}\`);
   console.warn(\`   Extra:    \${unexpected.length}\`);
 
+  // ━━━ Single-line status header ━━━
+  const verified = results.verified ?? 0;
+  const total = EXPECTED_PRIMITIVES.length;
+  console.log(\`\\nSTATUS: \${verified === total ? 'FULLY VERIFIED' : 'PARTIALLY VERIFIED'} | \${verified}/\${total}\`);
+
   console.log('━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(JSON.stringify(results, null, 2));
 
-  const verified = results.verified ?? 0;
-  const total = EXPECTED_PRIMITIVES.length;
+
 
   console.log(\`\\n✓ \${verified}/\${total} primitives behaviorally verified\`);
   console.log(\`✓ \${total}/\${total} primitives accounted for (fail-closed)\`);
