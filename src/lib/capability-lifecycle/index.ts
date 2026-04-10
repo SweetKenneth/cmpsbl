@@ -45,6 +45,15 @@ export type {
 
 export { buildLedger } from './ledger-builder';
 
+// Generic Activation Engine
+export {
+  runAutoActivation,
+  runGenericBehavioralProbes,
+  buildGenericActivationEvidence,
+  isSpecializedPrimitive,
+  getSpecializedPrimitives,
+} from './generic-activation';
+
 // Behavioral Verifier
 export type { ProbableArtifact, CapturedEffect } from './behavioral-verifier';
 export {
