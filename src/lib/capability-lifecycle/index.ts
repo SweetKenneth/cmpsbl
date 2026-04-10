@@ -75,3 +75,17 @@ export {
 // Mana Bridge
 export type { ManaActivationArtifacts } from './mana-bridge';
 export { generateManaActivationArtifacts } from './mana-bridge';
+
+// Export Bridge (universal lifecycle injection for all export pipelines)
+export type {
+  ExportCapability,
+  ExportProduct,
+  LifecycleExportArtifacts,
+} from './export-bridge';
+
+export {
+  buildAscensionLifecycleArtifacts,
+  buildProductLifecycleArtifacts,
+  buildScannerDetectionRecords,
+  buildReporterLifecycleSummary,
+} from './export-bridge';
