@@ -55,3 +55,19 @@ export {
 // Constrained Reporter
 export type { ConstrainedReport, CapabilitySummary } from './constrained-reporter';
 export { generateConstrainedReport } from './constrained-reporter';
+
+// Activation Guide
+export type {
+  ActivationMode,
+  BehaviorDelta,
+  VerificationStep,
+  SafetyNotes,
+  IntegrationStep,
+  PrimitiveActivationEntry,
+  CapabilityActivationGuide,
+} from './activation-guide';
+
+export {
+  generateActivationGuide,
+  renderActivationGuideHtml,
+} from './activation-guide';

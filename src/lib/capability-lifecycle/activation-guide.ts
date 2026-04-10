@@ -601,7 +601,7 @@ function renderEntryHtml(entry: PrimitiveActivationEntry): string {
       <strong>Performance:</strong> ${escapeHtml(entry.safetyNotes.performanceNotes)}
     </div>
 
-    ${entry.gaps.length > 0 ? `<h3>Gaps</h3><ul>${entry.gaps.map(g => `<li>${escapeHtml(g)}</li>`).join('')}</ul>` : ''}
+    ${entry.integrationSteps.length === 0 ? '<p><em>No integration steps available — see generic runtime documentation.</em></p>' : ''}
   </div>`;
 }
 
