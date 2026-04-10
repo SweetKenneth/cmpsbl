@@ -16,7 +16,8 @@
 import type { DetectionRecord, GenerationRecord, BindingRecord } from './ledger-builder';
 import { buildLedger } from './ledger-builder';
 import { generateActivationGuide, renderActivationGuideHtml } from './activation-guide';
-import type { CapabilityActivationLedger, CapabilityActivationGuide } from './types';
+import type { CapabilityActivationLedger } from './types';
+import type { CapabilityActivationGuide } from './activation-guide';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — INPUT ADAPTERS
