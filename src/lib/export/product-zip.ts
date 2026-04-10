@@ -315,12 +315,16 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     source: `CMPSBL® Store · ${product.tier} Tier`,
   }));
 
-  // ═══ Capability Activation Ledger + Guide (lifecycle artifacts) ═══
+  // ═══ Capability Activation Ledger + Guide + Verification (lifecycle artifacts) ═══
   try {
-    const { buildProductLifecycleArtifacts } = await import('@/lib/capability-lifecycle/export-bridge');
+    const { buildProductLifecycleArtifacts, generateVerificationScript } = await import('@/lib/capability-lifecycle/export-bridge');
     const lifecycle = buildProductLifecycleArtifacts(product);
     folder.file('capability-ledger.json', lifecycle.ledgerJson);
     docsFolder.file('ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+    folder.file('RUN_VERIFICATION.ts', generateVerificationScript(
+      `${product.kind}-${product.slug}`,
+      caps.map(c => c.toUpperCase().replace(/[^A-Z0-9_]/g, '')),
+    ));
   } catch {
     // Graceful degradation — lifecycle artifacts are supplementary
   }
