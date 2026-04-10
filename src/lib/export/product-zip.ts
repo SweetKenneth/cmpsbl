@@ -315,6 +315,16 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     source: `CMPSBL® Store · ${product.tier} Tier`,
   }));
 
+  // ═══ Capability Activation Ledger + Guide (lifecycle artifacts) ═══
+  try {
+    const { buildProductLifecycleArtifacts } = await import('@/lib/capability-lifecycle/export-bridge');
+    const lifecycle = buildProductLifecycleArtifacts(product);
+    folder.file('capability-ledger.json', lifecycle.ledgerJson);
+    docsFolder.file('ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+  } catch {
+    // Graceful degradation — lifecycle artifacts are supplementary
+  }
+
   return zip.generateAsync({ type: 'blob' });
 }
 
