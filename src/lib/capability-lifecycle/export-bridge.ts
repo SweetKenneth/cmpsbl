@@ -288,6 +288,12 @@ async function verify() {
     console.warn('  This may indicate injected primitives or rogue wrappers.\\n');
   }
 
+  // ━━━ Probe delta context: instant interpretability ━━━
+  console.warn(\`\\n🔍 Probe Delta:\`);
+  console.warn(\`   Expected: \${EXPECTED_PRIMITIVES.length}\`);
+  console.warn(\`   Observed: \${probeNames.size}\`);
+  console.warn(\`   Extra:    \${unexpected.length}\`);
+
   console.log('━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(JSON.stringify(results, null, 2));
 

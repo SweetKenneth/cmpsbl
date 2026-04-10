@@ -34,6 +34,8 @@ This library contains everything the system governor needs to operate, protect, 
 | 17 | [Crown Jewel Registry](17-crown-jewel-registry.md) | 54 classified capabilities, mining reports, S-Tier vault |
 | 18 | [Vertical Ecosystem & Factory Engine](18-vertical-ecosystem.md) | Full ecosystem spec, factory engine, SSO, roadmap, valuation |
 | 19 | [Backup & Disaster Recovery](19-backup-disaster-recovery.md) | Complete 3-layer backup architecture, restore kit, DR procedures |
+| 20 | [Capability Lifecycle E2E — Internal](20-capability-lifecycle-e2e-internal.md) | Governor reference: complete lifecycle system, all modules, data flows, security properties |
+| 21 | [Capability Lifecycle E2E — Developer](21-capability-lifecycle-e2e-developer.md) | Shareable developer reference: 5-state model, integration workflow, verification guide |
 
 ---
 

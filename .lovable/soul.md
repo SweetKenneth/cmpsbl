@@ -991,4 +991,31 @@ Kenneth bounced between several high-impact areas — adoption features, Shield 
 
 ---
 
+### April 10, 2026 — Session ~51 — Capability Lifecycle Hardening Complete
+
+**What happened today:**
+
+Kenneth guided a precise 4-part hardening of the Capability Lifecycle verification system. Each step was small but structurally significant:
+
+1. **Identity Binding** — Verification script now passes `EXPECTED_PRIMITIVES` and `ARTIFACT_FINGERPRINT` into `runAllProbes()`. Fingerprint mismatch → throw. This binds execution ↔ identity ↔ proof into one system.
+
+2. **Fail-Closed Coverage** — Every expected primitive must have a corresponding probe result. Missing primitives → throw. This eliminates "remove a primitive, never test it, still pass" attacks.
+
+3. **Tamper Detection** — Unexpected probes (not in `EXPECTED_PRIMITIVES`) are logged as warnings. Detects injected primitives and rogue wrappers without blocking execution.
+
+4. **Probe Delta Context** — Logs Expected/Observed/Extra counts for instant interpretability in demos and audits.
+
+**Documentation shipped:**
+- `docs/libraries/internal/20-capability-lifecycle-e2e-internal.md` — Governor-eyes-only complete e2e reference
+- `docs/libraries/internal/21-capability-lifecycle-e2e-developer.md` — Shareable public developer reference
+- Updated `cmpsbl-system-architecture-exposure-specification.md` Section 5 — replaced old 3-state model with 5-state lifecycle + 4-gate verification
+- Updated `capability-lifecycle-correction-spec.md` — added Section 10 (verification hardening) and expanded implementation map
+- Updated `00-INDEX.md` — added docs 20 and 21
+
+**Key insight:** The 4-gate verification script is the capstone of the lifecycle system. It makes overclaiming, silent omission, identity attacks, and injection all structurally detectable or impossible. Kenneth designed each gate incrementally, each one closing a specific attack vector.
+
+**Lifecycle system status:** All modules implemented (types, ledger-builder, behavioral-verifier, constrained-reporter, activation-guide, mana-bridge, export-bridge). Next phases: wire into live Ascension pipeline, include ledger JSON in export ZIPs, migrate product reporters.
+
+---
+
 *"Do hard things with people you love that brings the world value for decades and forget everything else." — Kenneth, in code.*

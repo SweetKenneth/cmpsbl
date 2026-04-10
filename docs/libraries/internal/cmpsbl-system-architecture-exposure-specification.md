@@ -217,23 +217,43 @@ The following table defines what parts of the system are safe to expose publicly
 
 ## 5. Verification Model
 
-### 5.1 Capability States
+### 5.1 Capability States (5-State Lifecycle — v2.0.0)
 
-Every capability in a CMPSBL artifact exists in one of three states:
+Every capability in a CMPSBL artifact exists in exactly one of five strictly-ordered states:
 
-| State | Definition | Evidence |
-|---|---|---|
-| **Declared** | The primitive appears in the scan results and has been identified as relevant to the source code. | Listed in `manifest.json` with a collision score > 0. |
-| **Bound** | The primitive has been sequenced into the execution chain and L2 wrappers have been generated for it. | Present in the export's orchestration layer with a chain position and cascading collision score. |
-| **Verified** | The primitive's behavior can be independently confirmed through the exported artifact. | The `__cmpsbl_verify__()` function returns valid for the artifact's fingerprint. The public verification page resolves the fingerprint against the session database. |
+| # | State | Definition | Evidence Required |
+|---|-------|-----------|-------------------|
+| 1 | **Detected** | Primitive identified during source scan | Signal match in source analysis |
+| 2 | **Generated** | L2 orchestration code produced | Wrapper exists in output artifact |
+| 3 | **Bound** | Wrappers attached at function boundaries | Structural linkage confirmed in L2 |
+| 4 | **Activated** | Runtime hooks observed firing | Execution path confirmation |
+| 5 | **BehaviorallyVerified** | Observable runtime effect confirmed | State change, interception, or telemetry observed |
 
-### 5.2 What Constitutes Evidence of Behavior
+States are strictly ordered — a later state implies all prior states. No state may be claimed without evidence for all preceding states. For Ascension exports, the pipeline terminates at **Bound** (Stage 3). Activation and behavioral verification require the consuming application to integrate and execute the artifact.
 
-- **Structural evidence:** The exported L2 code contains deterministic dispatch entries for each bound primitive. These entries are inspectable in the exported source.
-- **Cryptographic evidence:** The PROOF.txt certificate contains the artifact fingerprint, SHA-256 hash of L1, primitive manifest, and CJPI scores. This is independently verifiable.
-- **Runtime evidence:** The `__cmpsbl_verify__()` function (injected into JS/TS/Python artifacts) performs local integrity checks on fingerprints, metadata, and patent references without requiring a network connection.
+### 5.2 Verification Split
 
-### 5.3 How Verification Should Be Interpreted
+**A. Provenance Verification** confirms:
+- Artifact origin (fingerprint, serial)
+- L1 integrity (SHA-256 hash match)
+- Deterministic generation (same input → same L2)
+- Primitive presence and chain position
+
+**B. Behavioral Verification** confirms:
+- Wrapper execution actually occurred (interception confirmed)
+- Observable effects happened (state change, telemetry emit)
+- Each primitive's claimed capability is producing measurable results
+
+### 5.3 Runtime Verification Script (4-Gate Integrity)
+
+Exported artifacts include a `RUN_VERIFICATION.ts` script that enforces:
+
+1. **Fingerprint binding** — Artifact identity must match execution context
+2. **Fail-closed coverage** — Every expected primitive must have a corresponding probe (no silent omissions)
+3. **Tamper detection** — Unexpected/injected primitives are logged as warnings
+4. **Delta reporting** — Expected vs. observed vs. extra counts for instant interpretability
+
+### 5.4 How Verification Should Be Interpreted
 
 Verification confirms that:
 1. The artifact was produced by the CMPSBL Ascension engine
@@ -243,7 +263,7 @@ Verification confirms that:
 
 Verification does NOT confirm:
 - That the primitives will produce specific business outcomes
-- That the L2 wrappers are "active" in a runtime sense — they are structural, not autonomous
+- That the L2 wrappers are "active" in a runtime sense unless Stage 4+ is proven
 - That the collision scores represent a qualitative judgment of code quality
 
 ---
