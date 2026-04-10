@@ -60,3 +60,6 @@ export type {
 } from './types';
 
 export { DEFAULT_CONTENT_GUARDIAN_CONFIG } from './types';
+
+// Lifecycle bridge
+export { getLifecycleSummary } from './reporter';

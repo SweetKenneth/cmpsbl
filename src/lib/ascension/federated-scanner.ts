@@ -418,6 +418,53 @@ export async function runCrossPollinationCycle(): Promise<CrossPollinationResult
   };
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// §8 — LIFECYCLE DETECTION BRIDGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Extract lifecycle-compatible detection records from a vertical scanner.
+ * Feeds combined signals into the capability lifecycle ledger model.
+ */
+export function extractLifecycleDetections(
+  verticalId: string,
+  minWeight = 0.4,
+): import('@/lib/capability-lifecycle/ledger-builder').DetectionRecord[] {
+  const scanner = getVerticalScanner(verticalId);
+  const signals = scanner.getCombinedSignals(minWeight);
+
+  return Array.from(signals.entries()).map(([primitive, targets]) => ({
+    primitiveName: primitive,
+    targets: [...targets],
+    confidence: targets.length > 2 ? 1.0 : targets.length > 1 ? 0.85 : 0.7,
+  }));
+}
+
+/**
+ * Extract lifecycle detections from ALL active verticals combined.
+ * De-duplicates across verticals, merging target lists.
+ */
+export function extractAllLifecycleDetections(
+  minWeight = 0.4,
+): import('@/lib/capability-lifecycle/ledger-builder').DetectionRecord[] {
+  const merged = new Map<string, Set<string>>();
+
+  for (const verticalId of getAllActiveVerticalIds()) {
+    const records = extractLifecycleDetections(verticalId, minWeight);
+    for (const rec of records) {
+      const existing = merged.get(rec.primitiveName) ?? new Set();
+      for (const t of rec.targets) existing.add(t);
+      merged.set(rec.primitiveName, existing);
+    }
+  }
+
+  return Array.from(merged.entries()).map(([name, targets]) => ({
+    primitiveName: name,
+    targets: [...targets],
+    confidence: targets.size > 2 ? 1.0 : targets.size > 1 ? 0.85 : 0.7,
+  }));
+}
+
 /**
  * Get a federated view of scanner intelligence across all verticals.
  */

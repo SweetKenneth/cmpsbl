@@ -77,3 +77,6 @@ export type {
 } from './types';
 
 export { DEFAULT_SENTINEL_CONFIG } from './types';
+
+// Lifecycle bridge
+export { getLifecycleSummary } from './reporter';

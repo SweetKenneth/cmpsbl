@@ -325,6 +325,8 @@ export {
   getExpansionPrimitives,
   recordFederatedMatch,
   resetFederatedStores,
+  extractLifecycleDetections,
+  extractAllLifecycleDetections,
   type VerticalScannerInstance,
   type VerticalPrimeResult,
   type VerticalScannerStats,

@@ -31,3 +31,6 @@ export type {
   DefenseAction,
   AnalysisVerdict,
 } from './types';
+
+// Lifecycle bridge
+export { getLifecycleSummary } from './shield';

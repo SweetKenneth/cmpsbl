@@ -4,6 +4,7 @@
  *
  * Compiles scan → triage → governance → execution results
  * into a structured report including the "what I prevented" section.
+ * Emits capability lifecycle detection records for the lifecycle ledger.
  */
 
 import type {
@@ -170,4 +171,21 @@ function determineStatus(issues: DetectedIssue[], fixes: FixAttempt[]): Sentinel
   if (hasCritical) return 'completed_with_issues';
   if (issues.length === 0) return 'completed';
   return 'completed';
+}
+
+// ── Lifecycle Bridge ───────────────────────────────────────────────────
+
+/** Primitives exercised by Auto-Sentinel */
+const SENTINEL_PRIMITIVES = [
+  'DEFENSE', 'GOVERNANCE', 'CONSCIENCE', 'COMPASS',
+  'BEACON', 'SHADOW', 'FAILSAFE', 'EVOLUTION',
+] as const;
+
+/**
+ * Build a lifecycle summary for this product's report.
+ * Proves which primitives are activated at runtime.
+ */
+export function getLifecycleSummary() {
+  const { buildReporterLifecycleSummary } = require('@/lib/capability-lifecycle/export-bridge');
+  return buildReporterLifecycleSummary('auto-sentinel', SENTINEL_PRIMITIVES);
 }
