@@ -132,7 +132,7 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState(false);
 
-  const { manifest, proof, hostName, functionNames } = result;
+  const { manifest, proof, hostName, hostLanguage, functionNames } = result;
   const capabilities = [...new Set(manifest.attachmentPoints.map(p => p.capability))];
 
   const handleExport = async () => {
