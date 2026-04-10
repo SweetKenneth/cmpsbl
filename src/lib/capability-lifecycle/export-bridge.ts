@@ -269,6 +269,15 @@ async function verify() {
 
   console.log('\\n✓ Fingerprint verified: identity bound to execution\\n');
 
+  // ━━━ Fail-closed: every expected primitive must have a probe ━━━
+  const probeNames = new Set((results.probes ?? []).map((r: { primitiveName: string }) => r.primitiveName));
+  const missing = EXPECTED_PRIMITIVES.filter(p => !probeNames.has(p));
+  if (missing.length > 0) {
+    console.error(\`\\n🚨 VERIFICATION INCOMPLETE — missing probes for:\`);
+    missing.forEach(m => console.error(\`   ✗ \${m}\`));
+    throw new Error(\`Verification incomplete — missing probes for: \${missing.join(', ')}\`);
+  }
+
   console.log('━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(JSON.stringify(results, null, 2));
 
@@ -276,9 +285,10 @@ async function verify() {
   const total = EXPECTED_PRIMITIVES.length;
 
   console.log(\`\\n✓ \${verified}/\${total} primitives behaviorally verified\`);
+  console.log(\`✓ \${total}/\${total} primitives accounted for (fail-closed)\`);
 
   if (verified < total) {
-    console.log(\`⚠ \${total - verified} primitives pending verification\`);
+    console.log(\`⚠ \${total - verified} primitives pending full behavioral verification\`);
     console.log('  Run with runtime integration to complete verification.');
   }
 
