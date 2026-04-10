@@ -278,6 +278,8 @@ All rights reserved.
                 { icon: Eye, label: 'lex-manifest.json', desc: `${capabilities.length} capability types · Lex governance rules` },
                 { icon: Lock, label: 'PROOF.txt', desc: `SHA-256 verification certificate · ${proof.verified ? 'VERIFIED' : 'FAILED'}` },
                 { icon: FileCode2, label: 'README.md', desc: 'Full documentation and usage guide' },
+                { icon: FileCode2, label: 'ACTIVATION-GUIDE.html', desc: 'Step-by-step capability activation instructions' },
+                { icon: Eye, label: 'capability-ledger.json', desc: 'Machine-readable activation state per primitive' },
                 { icon: Shield, label: 'LICENSE', desc: 'Patent protection and legal notices' },
               ].map(item => (
                 <div key={item.label} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/10">
