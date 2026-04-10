@@ -88,4 +88,5 @@ export {
   buildProductLifecycleArtifacts,
   buildScannerDetectionRecords,
   buildReporterLifecycleSummary,
+  generateVerificationScript,
 } from './export-bridge';
