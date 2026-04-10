@@ -210,6 +210,19 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
         }
       }
 
+      // ── Capability Activation Guide (auto-generated) ──────────────────
+      try {
+        const activationArtifacts = generateManaActivationArtifacts(
+          manifest,
+          proof.fingerprintId,
+          hostLanguage,
+        );
+        zip.file('capability-ledger.json', activationArtifacts.ledgerJson);
+        zip.file('ACTIVATION-GUIDE.html', activationArtifacts.guideHtml);
+      } catch {
+        // Non-fatal — export proceeds without activation guide
+      }
+
       // License
       zip.file('LICENSE', `CMPSBL® Mana Layer 2 Export Pack
 ${MANA_PATENT_NOTICE.inline}
