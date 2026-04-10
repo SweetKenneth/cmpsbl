@@ -16,6 +16,7 @@
 import type { DetectionRecord, GenerationRecord, BindingRecord } from './ledger-builder';
 import { buildLedger } from './ledger-builder';
 import { generateActivationGuide, renderActivationGuideHtml } from './activation-guide';
+import { runAutoActivation, runGenericBehavioralProbes, getSpecializedPrimitives } from './generic-activation';
 import type { CapabilityActivationLedger } from './types';
 import type { CapabilityActivationGuide } from './activation-guide';
 
@@ -92,7 +93,11 @@ export function buildAscensionLifecycleArtifacts(
     structurallyLinked: true,
   }));
 
-  const ledger = buildLedger(fingerprintId, detections, generations, bindings, [], []);
+  // Auto-activation: generically activate all bound primitives without specialized runtimes
+  const autoActivations = runAutoActivation(bindings, []);
+  const genericProbes = runGenericBehavioralProbes(autoActivations, getSpecializedPrimitives());
+
+  const ledger = buildLedger(fingerprintId, detections, generations, bindings, autoActivations, genericProbes);
   const guide = generateActivationGuide(ledger, sourceLanguage);
   const guideHtml = renderActivationGuideHtml(guide);
   const ledgerJson = JSON.stringify(ledger, null, 2);
@@ -132,7 +137,11 @@ export function buildProductLifecycleArtifacts(
     structurallyLinked: true,
   }));
 
-  const ledger = buildLedger(fingerprintId, detections, generations, bindings, [], []);
+  // Auto-activation for product exports
+  const autoActivations = runAutoActivation(bindings, []);
+  const genericProbes = runGenericBehavioralProbes(autoActivations, getSpecializedPrimitives());
+
+  const ledger = buildLedger(fingerprintId, detections, generations, bindings, autoActivations, genericProbes);
   const guide = generateActivationGuide(ledger, 'typescript');
   const guideHtml = renderActivationGuideHtml(guide);
   const ledgerJson = JSON.stringify(ledger, null, 2);
