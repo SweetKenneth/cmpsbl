@@ -157,10 +157,15 @@ export function buildScannerDetectionRecords(
 /**
  * Build lifecycle summary for product reporters.
  * Returns a compact summary that can be appended to report output.
+ *
+ * IMPORTANT: Activation is never assumed. Primitives terminate at "bound"
+ * unless real runtime evidence (runtimeEvidence set) is provided.
+ * This prevents overclaiming — the system only reports what it can prove.
  */
 export function buildReporterLifecycleSummary(
   productName: string,
   primitives: readonly string[],
+  runtimeEvidence?: ReadonlySet<string>,
 ): {
   readonly ledgerSnapshot: CapabilityActivationLedger;
   readonly activePrimitives: number;
@@ -185,12 +190,17 @@ export function buildReporterLifecycleSummary(
     structurallyLinked: true,
   }));
 
-  // Product reporters have runtime activation evidence
-  const activations = detections.map(d => ({
-    primitiveName: d.primitiveName,
-    hooksFiring: true,
-    executionPathConfirmed: true,
-  }));
+  // Activation is NEVER assumed — only proven primitives get activated state.
+  // Without runtime evidence, all primitives terminate at "bound".
+  const activations = runtimeEvidence
+    ? detections
+        .filter(d => runtimeEvidence.has(d.primitiveName))
+        .map(d => ({
+          primitiveName: d.primitiveName,
+          hooksFiring: true,
+          executionPathConfirmed: true,
+        }))
+    : [];
 
   const ledger = buildLedger(`product-${productName}`, detections, generations, bindings, activations, []);
 
@@ -200,4 +210,68 @@ export function buildReporterLifecycleSummary(
     boundPrimitives: ledger.summary.totalBound,
     gaps: ledger.entries.flatMap(e => e.gaps),
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §4 — VERIFICATION SCRIPT GENERATOR
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Generate the RUN_VERIFICATION.ts script for inclusion in export ZIPs.
+ * One command: `npx ts-node RUN_VERIFICATION.ts` → full probe output.
+ */
+export function generateVerificationScript(
+  fingerprintId: string,
+  primitives: readonly string[],
+): string {
+  const primitiveList = primitives.map(p => `  '${p}',`).join('\n');
+
+  return `/**
+ * CMPSBL® — Artifact Verification Script
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Run this to verify your artifact's capability integrity.
+ *
+ *   npx ts-node RUN_VERIFICATION.ts
+ *
+ * Fingerprint: ${fingerprintId}
+ * Generated:   ${new Date().toISOString()}
+ *
+ * © CMPSBL® — All rights reserved.
+ */
+
+import { runAllProbes } from '@cmpsbl/runtime/verify';
+
+const ARTIFACT_FINGERPRINT = '${fingerprintId}';
+
+const EXPECTED_PRIMITIVES = [
+${primitiveList}
+] as const;
+
+async function verify() {
+  console.log('\\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('  CMPSBL® Artifact Verification');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n');
+  console.log(\`Fingerprint: \${ARTIFACT_FINGERPRINT}\`);
+  console.log(\`Primitives:  \${EXPECTED_PRIMITIVES.length} expected\\n\`);
+
+  const results = await runAllProbes();
+
+  console.log('\\n━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log(JSON.stringify(results, null, 2));
+
+  const verified = results.verified ?? 0;
+  const total = EXPECTED_PRIMITIVES.length;
+
+  console.log(\`\\n✓ \${verified}/\${total} primitives behaviorally verified\`);
+
+  if (verified < total) {
+    console.log(\`⚠ \${total - verified} primitives pending verification\`);
+    console.log('  Run with runtime integration to complete verification.');
+  }
+
+  console.log('\\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\\n');
+}
+
+verify().catch(console.error);
+`;
 }

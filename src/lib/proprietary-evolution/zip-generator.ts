@@ -1169,13 +1169,15 @@ const storage = createPersistentStorage({
     htmlFolder.file(filename, content);
   }
 
-  // ═══ Capability Activation Ledger + Guide (lifecycle artifacts) ═══
+  // ═══ Capability Activation Ledger + Guide + Verification (lifecycle artifacts) ═══
   try {
-    const { buildAscensionLifecycleArtifacts } = await import('@/lib/capability-lifecycle/export-bridge');
+    const { buildAscensionLifecycleArtifacts, generateVerificationScript } = await import('@/lib/capability-lifecycle/export-bridge');
     const fingerprint = capabilities[0]?.fingerprint?.slice(0, 12).toUpperCase() ?? 'UNKNOWN';
     const lifecycle = buildAscensionLifecycleArtifacts(capabilities, fingerprint, targetLanguage);
     zip.file('capability-ledger.json', lifecycle.ledgerJson);
     docsFolder.file('ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+    const allPrimitives = [...new Set(capabilities.flatMap(c => c.chain))];
+    zip.file('RUN_VERIFICATION.ts', generateVerificationScript(fingerprint, allPrimitives));
   } catch {
     // Graceful degradation — lifecycle artifacts are supplementary
   }
