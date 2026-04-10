@@ -254,9 +254,22 @@ async function verify() {
   console.log(\`Fingerprint: \${ARTIFACT_FINGERPRINT}\`);
   console.log(\`Primitives:  \${EXPECTED_PRIMITIVES.length} expected\\n\`);
 
-  const results = await runAllProbes();
+  const results = await runAllProbes({
+    expected: EXPECTED_PRIMITIVES,
+    fingerprint: ARTIFACT_FINGERPRINT,
+  });
 
-  console.log('\\n━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  // ━━━ Identity binding: execution ↔ identity ↔ proof ━━━
+  if (results.fingerprint !== ARTIFACT_FINGERPRINT) {
+    console.error('\\n🚨 FINGERPRINT MISMATCH — artifact integrity compromised');
+    console.error(\`   Expected: \${ARTIFACT_FINGERPRINT}\`);
+    console.error(\`   Received: \${results.fingerprint}\`);
+    throw new Error('Fingerprint mismatch — artifact integrity compromised');
+  }
+
+  console.log('\\n✓ Fingerprint verified: identity bound to execution\\n');
+
+  console.log('━━━ Results ━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(JSON.stringify(results, null, 2));
 
   const verified = results.verified ?? 0;
