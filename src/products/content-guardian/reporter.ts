@@ -85,3 +85,20 @@ export function generateReport(
     receiptHead,
   };
 }
+
+// ── Lifecycle Bridge ───────────────────────────────────────────────────
+
+/** Primitives exercised by Content-Guardian */
+const CONTENT_GUARDIAN_PRIMITIVES = [
+  'CRITIC', 'PALETTE', 'COMPLY', 'METRIC', 'PERSONA', 'STORYARC',
+  'GOVERNANCE', 'CONSCIENCE', 'BEACON', 'COMPASS', 'AUDIT', 'SHADOW',
+] as const;
+
+/**
+ * Build a lifecycle summary for this product's report.
+ * Proves which primitives are activated at runtime.
+ */
+export function getLifecycleSummary() {
+  const { buildReporterLifecycleSummary } = require('@/lib/capability-lifecycle/export-bridge');
+  return buildReporterLifecycleSummary('content-guardian', CONTENT_GUARDIAN_PRIMITIVES);
+}

@@ -146,3 +146,20 @@ export function generateReport(
     receiptHead,
   };
 }
+
+// ── Lifecycle Bridge ───────────────────────────────────────────────────
+
+/** Primitives exercised by Dep-Guardian */
+const DEP_GUARDIAN_PRIMITIVES = [
+  'ENGINEER', 'EVOLUTION', 'SOVEREIGN', 'COMPASS',
+  'DEFENSE', 'CONSCIENCE', 'BEACON', 'SHADOW', 'REFLEX',
+] as const;
+
+/**
+ * Build a lifecycle summary for this product's report.
+ * Proves which primitives are activated at runtime.
+ */
+export function getLifecycleSummary() {
+  const { buildReporterLifecycleSummary } = require('@/lib/capability-lifecycle/export-bridge');
+  return buildReporterLifecycleSummary('dep-guardian', DEP_GUARDIAN_PRIMITIVES);
+}
