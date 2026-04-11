@@ -206,116 +206,118 @@ export function HeroMetaSubstrate() {
       <HeroBackground />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto">
-        {/* ─── Stacked hero content ─── */}
-        <div className="text-center mb-6 sm:mb-14">
+        {/* ─── Desktop: side-by-side · Mobile: stacked ─── */}
+        <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center mb-6 sm:mb-14">
           
-          {/* Software Ascension Center banner — no delay, instant visibility */}
-          <FadeIn delay={0}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
-          >
-            <Wrench className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Reimagined</span>
-            <span className="flex items-center gap-1 pl-2 border-l border-border/30">
-              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
-              <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
-            </span>
-          </FadeIn>
-
-          {/* CMPSBL Logo — the star (no fade-in: this is the LCP element, must be instantly visible) */}
-          <div className="mb-3 sm:mb-6">
-            <CmpsblWordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl" />
-          </div>
+          {/* ─── LEFT: Text content ─── */}
+          <div className="text-center lg:text-left mb-8 lg:mb-0">
           
-          {/* Headline stack */}
-          <h1 className="tracking-[-0.03em] leading-[1.1]">
-            <FadeIn delay={0}>
-              <span className="block text-sm sm:text-base md:text-lg font-bold text-foreground/80 mb-2 tracking-[0.05em] uppercase">
-                Where machines learn how to
-              </span>
-            </FadeIn>
-            <FadeIn delay={0.05}>
-              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black min-h-[1.2em]">
-                <TypedText 
-                  texts={["dream.", "ascend.", "adapt.", "evolve.", "reason."]}
-                  gradientColors={[
-                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
-                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
-                    "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
-                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
-                  ]}
-                />
-              </span>
-            </FadeIn>
-          </h1>
-
-          {/* Value prop */}
-          <FadeIn delay={0.1} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
-            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-3">
-              Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code — a secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>.
-            </p>
-            <p className="text-base sm:text-lg md:text-xl font-black text-foreground tracking-tight leading-snug mb-3" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Your code remains unchanged.
-            </p>
-            <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed">
-              Works across <span className="text-foreground font-extrabold">90+ languages</span>. Runs in&nbsp;minutes.
-            </p>
-          </FadeIn>
-          
-          {/* CTA — single focused action */}
-          <FadeIn delay={0.15} className="flex justify-center max-w-md mx-auto">
-            <div className="relative group rounded-xl p-[1.5px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" style={{ background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--primary)))" }}>
-              <Button 
-                asChild 
-                size="lg" 
-                className="gap-2 h-12 px-8 w-full text-sm font-bold rounded-[10px] bg-background hover:bg-card/90 text-foreground transition-all duration-300 shadow-lg shadow-primary/[0.06]"
-              >
-                <Link to="/ascension">
-                  <Wrench className="w-4 h-4 shrink-0 text-primary" />
-                  Ascend Your Code
-                  <ArrowRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                </Link>
-              </Button>
-            </div>
-          </FadeIn>
-
-          {/* Trust line */}
-          <FadeIn delay={0.2} className="mt-3 mb-1">
-            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
-              Diagnostic in seconds · Restoration in minutes · Your code is never stored or&nbsp;reused
-            </p>
-          </FadeIn>
-
-          {/* Zenodo — bold & prominent */}
-          <FadeIn delay={0.25} className="flex justify-center mt-3">
-            <a
-              href="https://zenodo.org/records/18895141"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.08)] backdrop-blur-sm hover:border-[hsl(var(--neon-purple)/0.6)] hover:bg-[hsl(var(--neon-purple)/0.14)] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-[hsl(var(--neon-purple)/0.1)]"
+            {/* Software Reimagined banner */}
+            <FadeIn delay={0}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
             >
-              <span className="w-2 h-2 rounded-full bg-[hsl(var(--neon-purple))] animate-pulse" />
-              <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-[hsl(var(--neon-purple))] transition-colors tracking-wide">
-                Academic Prior Art — Zenodo v13.5
+              <Wrench className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Reimagined</span>
+              <span className="flex items-center gap-1 pl-2 border-l border-border/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
+                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
               </span>
-              <ArrowRight className="w-3.5 h-3.5 text-[hsl(var(--neon-purple)/0.6)] group-hover:text-[hsl(var(--neon-purple))] transition-colors" />
-            </a>
+            </FadeIn>
+
+            {/* CMPSBL Logo */}
+            <div className="mb-3 sm:mb-6">
+              <CmpsblWordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl" />
+            </div>
+            
+            {/* Headline stack */}
+            <h1 className="tracking-[-0.03em] leading-[1.1]">
+              <FadeIn delay={0}>
+                <span className="block text-sm sm:text-base md:text-lg font-bold text-foreground/80 mb-2 tracking-[0.05em] uppercase">
+                  Where machines learn how to
+                </span>
+              </FadeIn>
+              <FadeIn delay={0.05}>
+                <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black min-h-[1.2em]">
+                  <TypedText 
+                    texts={["dream.", "ascend.", "adapt.", "evolve.", "reason."]}
+                    gradientColors={[
+                      "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
+                      "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                      "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
+                      "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
+                      "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                    ]}
+                  />
+                </span>
+              </FadeIn>
+            </h1>
+
+            {/* Value prop */}
+            <FadeIn delay={0.1} className="max-w-lg mx-auto lg:mx-0 mt-3 sm:mt-6 mb-6 sm:mb-10">
+              <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-3">
+                Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code — a secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>.
+              </p>
+              <p className="text-base sm:text-lg md:text-xl font-black text-foreground tracking-tight leading-snug mb-3" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                Your code remains unchanged.
+              </p>
+              <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed">
+                Works across <span className="text-foreground font-extrabold">90+ languages</span>. Runs in&nbsp;minutes.
+              </p>
+            </FadeIn>
+            
+            {/* CTA */}
+            <FadeIn delay={0.15} className="flex justify-center lg:justify-start max-w-md mx-auto lg:mx-0">
+              <div className="relative group rounded-xl p-[1.5px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" style={{ background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--primary)))" }}>
+                <Button 
+                  asChild 
+                  size="lg" 
+                  className="gap-2 h-12 px-8 w-full text-sm font-bold rounded-[10px] bg-background hover:bg-card/90 text-foreground transition-all duration-300 shadow-lg shadow-primary/[0.06]"
+                >
+                  <Link to="/ascension">
+                    <Wrench className="w-4 h-4 shrink-0 text-primary" />
+                    Ascend Your Code
+                    <ArrowRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                  </Link>
+                </Button>
+              </div>
+            </FadeIn>
+
+            {/* Trust line */}
+            <FadeIn delay={0.2} className="mt-3 mb-1">
+              <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
+                Diagnostic in seconds · Restoration in minutes · Your code is never stored or&nbsp;reused
+              </p>
+            </FadeIn>
+
+            {/* Zenodo */}
+            <FadeIn delay={0.25} className="flex justify-center lg:justify-start mt-3">
+              <a
+                href="https://zenodo.org/records/18895141"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.08)] backdrop-blur-sm hover:border-[hsl(var(--neon-purple)/0.6)] hover:bg-[hsl(var(--neon-purple)/0.14)] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-[hsl(var(--neon-purple)/0.1)]"
+              >
+                <span className="w-2 h-2 rounded-full bg-[hsl(var(--neon-purple))] animate-pulse" />
+                <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-[hsl(var(--neon-purple))] transition-colors tracking-wide">
+                  Academic Prior Art — Zenodo v13.5
+                </span>
+                <ArrowRight className="w-3.5 h-3.5 text-[hsl(var(--neon-purple)/0.6)] group-hover:text-[hsl(var(--neon-purple))] transition-colors" />
+              </a>
+            </FadeIn>
+          </div>
+
+          {/* ─── RIGHT: DREAM Ascension Visual ─── */}
+          <FadeIn delay={0.3} className="w-full">
+            <p className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-3 sm:mb-4">
+              This is what ascension looks like
+            </p>
+            <Suspense fallback={<div className="h-[200px] lg:h-[340px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
+              <HeroAscensionVisualLazy />
+            </Suspense>
           </FadeIn>
         </div>
-        
-        {/* ─── DREAM Ascension Visual ─── */}
-        <FadeIn delay={0.3} className="max-w-4xl mx-auto mb-6 sm:mb-12">
-          <p className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-3 sm:mb-4">
-            This is what ascension looks like
-          </p>
-          <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
-            <HeroAscensionVisualLazy />
-          </Suspense>
-        </FadeIn>
 
-
-        
-        {/* ─── Stats bar ─── */}
+        {/* ─── Stats bar (full-width below both columns) ─── */}
         <FadeIn delay={0.35}>
           <div 
             className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge max-w-3xl mx-auto"
