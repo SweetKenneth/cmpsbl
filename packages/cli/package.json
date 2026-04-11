@@ -1,13 +1,29 @@
 {
   "name": "@cmpsbl/cli",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "CMPSBL® CLI — The cognitive substrate in your terminal. One install, zero setup.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "bin": { "cmpsbl": "dist/bin.js" },
-  "files": ["dist"],
-  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
-  "keywords": ["cmpsbl", "cli", "cjpi", "score", "manifest", "ai", "cognitive", "substrate"],
+  "bin": {
+    "cmpsbl": "dist/bin.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cmpsbl",
+    "cli",
+    "cjpi",
+    "score",
+    "manifest",
+    "ai",
+    "cognitive",
+    "substrate"
+  ],
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
   "homepage": "https://cmpsbl.com",
@@ -17,5 +33,7 @@
   "bundledDependencies": [
     "@cmpsbl/runtime"
   ],
-  "devDependencies": { "@types/node": "^22.0.0" }
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
 }
