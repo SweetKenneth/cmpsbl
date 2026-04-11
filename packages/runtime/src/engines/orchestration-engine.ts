@@ -3,10 +3,10 @@
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Deterministic signal → policy → rule evaluation → action chain execution.
  *
- * Phase 5: declarative policy layer with action chains.
- *   - validate_input        → Interception Engine (test args against rules)
+ * Phase 5.2: separation of detection from enforcement.
+ *   - validate_input        → DETECT only (flags ctx.validationFailed)
+ *   - block_execution       → ENFORCE only (throws if ctx.validationFailed)
  *   - persist_state         → State Engine (write payload to namespace)
- *   - block_execution       → throws (halts pipeline)
  *   - tighten_interception  → registers warning rule on Interception Engine
  *   - trip_execution        → registers trip rule on Execution Engine
  *   - log_only              → proof event only
@@ -278,6 +278,12 @@ function executeAction(
 
   switch (action) {
     case 'validate_input': {
+      /**
+       * Phase 5.2 — DETECT ONLY.
+       * validate_input inspects the payload and sets ctx.validationFailed
+       * but never throws. Enforcement is delegated to block_execution.
+       * This enables composable chains: detect-only, detect+log, detect+block.
+       */
       const inputArg = (payload as Record<string, unknown> | undefined)?.input;
       if (inputArg === undefined) {
         recordActionExecution(primitive, ruleId, action);
@@ -285,29 +291,29 @@ function executeAction(
         return;
       }
 
+      let detected = false;
+
       /* Built-in injection detection (DEFENSE-grade) */
       if (typeof inputArg === 'string') {
-        const injectionDetected = INJECTION_PATTERNS.some(p => p.test(inputArg));
-        if (injectionDetected) {
-          if (ctx) ctx.validationFailed = true;
-          recordActionExecution(primitive, ruleId, action);
-          emit(primitive, signal, action, ruleId, 'execution_blocked');
-          throw new Error(
-            `[CORTEX] execution blocked by rule '${ruleId}' (action=${action})`,
-          );
-        }
+        detected = INJECTION_PATTERNS.some(p => p.test(inputArg));
       }
 
       /* Also check interception engine rules */
-      const passthrough = (...args: unknown[]) => args;
-      const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
+      if (!detected) {
+        const passthrough = (...args: unknown[]) => args;
+        const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
+        try {
+          guarded(inputArg);
+        } catch {
+          detected = true;
+        }
+      }
 
-      try {
-        guarded(inputArg);
-      } catch (err) {
+      if (detected) {
         if (ctx) ctx.validationFailed = true;
+        recordActionExecution(primitive, ruleId, action);
         emit(primitive, signal, action, ruleId, 'execution_blocked');
-        throw err;
+        return;   /* ← no throw — block_execution handles enforcement */
       }
 
       recordActionExecution(primitive, ruleId, action);
