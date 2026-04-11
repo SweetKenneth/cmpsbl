@@ -31,7 +31,8 @@ export type OrchestrationAction =
 
 export type OrchestrationEffect =
   | 'action_planned'
-  | 'action_executed';
+  | 'action_executed'
+  | 'action_skipped';
 
 export interface OrchestrationRule {
   readonly id: string;
@@ -56,6 +57,10 @@ export interface OrchestrationEvent {
 
 const rules: OrchestrationRule[] = [];
 const events: OrchestrationEvent[] = [];
+const actionHistory = new Map<string, number>();
+
+const ACTION_COOLDOWN_MS = 30_000;
+const MAX_ACTION_HISTORY = 500;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2b — DETERMINISTIC AUTO-RULE ID HELPERS
@@ -67,6 +72,43 @@ function makeInterceptionAutoRuleId(primitive: string): string {
 
 function makeExecutionAutoRuleId(primitive: string): string {
   return `cortex-trip-${primitive}`;
+}
+
+function makeActionHistoryKey(
+  primitive: string,
+  ruleId: string,
+  action: OrchestrationAction,
+): string {
+  return `${primitive}::${ruleId}::${action}`;
+}
+
+function shouldSkipAction(
+  primitive: string,
+  ruleId: string,
+  action: OrchestrationAction,
+): boolean {
+  const key = makeActionHistoryKey(primitive, ruleId, action);
+  const lastExecutedAt = actionHistory.get(key);
+
+  if (lastExecutedAt == null) return false;
+
+  return Date.now() - lastExecutedAt < ACTION_COOLDOWN_MS;
+}
+
+function recordActionExecution(
+  primitive: string,
+  ruleId: string,
+  action: OrchestrationAction,
+): void {
+  const key = makeActionHistoryKey(primitive, ruleId, action);
+  actionHistory.set(key, Date.now());
+
+  if (actionHistory.size > MAX_ACTION_HISTORY) {
+    const oldestKey = actionHistory.keys().next().value;
+    if (oldestKey) {
+      actionHistory.delete(oldestKey);
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -113,6 +155,7 @@ export function getOrchestrationEventsForPrimitive(
 export function resetOrchestrationEngine(): void {
   rules.length = 0;
   events.length = 0;
+  actionHistory.clear();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -147,6 +190,11 @@ function executeAction(
   ruleId: string,
   payload?: unknown,
 ): void {
+  if (shouldSkipAction(primitive, ruleId, action)) {
+    emit(primitive, signal, action, ruleId, 'action_skipped');
+    return;
+  }
+
   switch (action) {
     case 'tighten_interception': {
       const autoRuleId = makeInterceptionAutoRuleId(primitive);
@@ -164,6 +212,7 @@ function executeAction(
         });
       }
 
+      recordActionExecution(primitive, ruleId, action);
       emit(primitive, signal, action, ruleId, 'action_executed');
       return;
     }
@@ -184,11 +233,13 @@ function executeAction(
         });
       }
 
+      recordActionExecution(primitive, ruleId, action);
       emit(primitive, signal, action, ruleId, 'action_executed');
       return;
     }
 
     case 'log_only': {
+      recordActionExecution(primitive, ruleId, action);
       emit(primitive, signal, action, ruleId, 'action_executed');
       return;
     }
