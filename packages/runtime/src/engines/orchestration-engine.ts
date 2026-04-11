@@ -23,8 +23,9 @@
 import { registerRule, getRegisteredRules, wrapInterception } from './interception-engine';
 import { registerExecutionRule, getExecutionRules } from './execution-engine';
 import { writeState } from './state-engine';
-import { resolveCapabilityActions } from './capability-registry';
+import { resolveCapabilityActions, isCapabilityRegistered } from './capability-registry';
 import { resolveCondition } from './condition-resolver';
+import { validateAttachment } from './attachment-schema';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -539,18 +540,26 @@ function mapCapabilityToActions(capability: string): readonly OrchestrationActio
 /**
  * Register orchestration rules derived from Mana attachments.
  *
- * Phase 5 evolution:
- *   - If attachment has a `policy`, use policy.on as signal,
- *     policy.condition as extra test, and policy.then as action chain.
- *   - If no policy, fall back to Phase 3 capability mapping.
- *
- * Rules are deduplicated by ID so this is safe to call multiple times.
+ * Phase 2 stabilization:
+ *   - Every attachment is validated before consumption.
+ *   - Invalid attachments are rejected with a thrown error.
+ *   - No silent fallbacks — capability must be registered,
+ *     conditions must be resolvable.
+ *   - Rules are deduplicated by ID so this is safe to call multiple times.
  */
 export function registerAttachmentRules(
   primitive: string,
   attachments: ReadonlyArray<AttachmentEntry>,
 ): void {
   for (const a of attachments) {
+    /* ── Gate: validate before consumption ── */
+    const validation = validateAttachment(a);
+    if (!validation.valid) {
+      throw new Error(
+        `[CORTEX] Invalid attachment for '${a.functionName}': ${validation.errors.join('; ')}`,
+      );
+    }
+
     const ruleId = `attachment::${a.functionName}::${a.capability}`;
 
     const exists = rules.some(r => r.id === ruleId);
@@ -567,9 +576,7 @@ export function registerAttachmentRules(
      * the full chain is resolved at execution time from attachmentRegistry. */
     const primaryAction: OrchestrationAction = a.policy
       ? (Array.isArray(a.policy.then)
-        ? (a.policy.then.length > 0
-          ? a.policy.then[0] as OrchestrationAction
-          : 'log_only')
+        ? a.policy.then[0] as OrchestrationAction
         : a.policy.then as OrchestrationAction)
       : mapCapabilityToActions(a.capability)[0];
 
