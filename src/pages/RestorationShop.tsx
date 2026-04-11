@@ -181,7 +181,7 @@ export default function RestorationShop() {
     if (!report) return;
     toast.success('Preparing your ascended code package for download...');
 
-    import('jszip').then(({ default: JSZip }) => {
+    import('jszip').then(async ({ default: JSZip }) => {
       const zip = new JSZip();
       const fingerprint = report.cjpiCertificate.fingerprint;
 
@@ -355,6 +355,28 @@ export default function RestorationShop() {
         .replace(/\n{2,}/g, '\n')
         .replace(/^(?!<[a-z])(.*[^\n])$/gm, (m) => m.trim() ? `<p>${m}</p>` : '');
       zip.file('INTEGRATION.html', wrapDocHtml('Integration Guide', integrationBody));
+
+      // ═══ Capability Activation Ledger + Guide + Verification ═══
+      try {
+        const lifecycleModule = await import('@/lib/capability-lifecycle/export-bridge');
+        const lifecycle = lifecycleModule.buildAscensionLifecycleArtifacts(
+          report.primitiveManifest.map(p => ({
+            chain: [p.name],
+            fingerprint,
+            name: p.name,
+            description: p.contribution,
+            archetype: 'Active' as const,
+          })),
+          fingerprint,
+          detectedLang || 'typescript',
+        );
+        zip.file('capability-ledger.json', lifecycle.ledgerJson);
+        zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+        const allPrimitives = report.primitiveManifest.map(p => p.name);
+        zip.file('RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(fingerprint, allPrimitives));
+      } catch {
+        // Graceful degradation — lifecycle artifacts are supplementary
+      }
 
       zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
         name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',

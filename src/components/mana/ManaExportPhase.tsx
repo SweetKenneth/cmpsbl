@@ -14,6 +14,7 @@ import type { AttachmentResult } from './ManaAttachPhase';
 import type { ManaMergeResult } from './ManaMergePhase';
 import { PATENT_NOTICE, MANA_PATENT_NOTICE, COPYRIGHT_NOTICE } from '@/config/domains';
 import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana-bridge';
+import { generateVerificationScript } from '@/lib/capability-lifecycle/export-bridge';
 
 interface Props {
   result: AttachmentResult;
@@ -219,8 +220,10 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
         );
         zip.file('capability-ledger.json', activationArtifacts.ledgerJson);
         zip.file('ACTIVATION-GUIDE.html', activationArtifacts.guideHtml);
+        const allPrimitives = [...new Set(manifest.attachmentPoints.map((p: { capability: string }) => p.capability.toUpperCase()))];
+        zip.file('RUN_VERIFICATION.ts', generateVerificationScript(proof.fingerprintId, allPrimitives));
       } catch {
-        // Non-fatal — export proceeds without activation guide
+        // Non-fatal — export proceeds without activation artifacts
       }
 
       // License

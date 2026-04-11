@@ -1105,27 +1105,39 @@ Updated all four lifecycle docs to v2.1.0:
 
 ---
 
+### [FACT] April 11, 2026 — Patch 2 (Evening)
+
+**Completed:**
+- ✅ Fixed 50+ hallucinated package references in `scan-team.ts` (`@cmpsbl/cyber`, `@cmpsbl/quantum`, `@cmpsbl/agency` → all `@cmpsbl/runtime`)
+- ✅ Added `capability-ledger.json`, `ACTIVATION-GUIDE.html`, `RUN_VERIFICATION.ts` to RestorationShop export (was missing all three)
+- ✅ Added `RUN_VERIFICATION.ts` to Mana export path (was missing)
+- ✅ Cross-scanner uniformity audit: all 4 export paths (RestorationShop, zip-generator, product-zip, Mana) now produce the full lifecycle artifact set
+- ✅ Converted all 12 public docs (`docs/libraries/public/`) from raw Markdown to branded HTML with Inter/JetBrains Mono typography, sticky nav, prev/next paging, patent footer, print stylesheet, and mobile responsive design
+- ✅ Fixed terminology in public docs: "AI operating system" → "Governed Cognitive Infrastructure", "REFURBISHMENT" → "ASCENSION"
+
+**Build: clean. Zero TypeScript errors.**
+
+---
+
 ### [TODO] Tomorrow's Plan — April 12, 2026
 
-**Priority 1: Export Pipeline Completion**
-1. Fix hallucinated package references in `scan-team.ts` (`@cmpsbl/cyber` → `@cmpsbl/runtime`)
-2. Add `capability-ledger.json` to export ZIPs (Phase 7 of lifecycle migration)
-3. Add `ACTIVATION-GUIDE.html` to export ZIPs
-4. Add `RUN_VERIFICATION.ts` to export ZIPs
-5. Verify all vertical scanners produce identical artifact structure
+**Priority 1: Behavior Engine Phase 2**
+1. Design CORTEX Phase 2 dynamic adaptation (cross-engine mutation via signals)
+2. Wire Behavior Engines into Ascension export pipeline as activation evidence
+3. Add behavioral probe results to `capability-ledger.json` output
 
-**Priority 2: Cross-Scanner Uniformity**
-6. Audit Restoration Shop, Forge Exporter, Product ZIP, Foundry Tiered ZIP, and Universal Adapter for consistent `primitives` key usage
-7. Ensure all export paths use `wrapPremiumDocPage()` for HTML docs (no raw markdown exports anywhere)
+**Priority 2: Lifecycle Pipeline Wiring**
+4. Wire ledger builder into live Ascension pipeline (Phase 6)
+5. Migrate product reporters to `generateConstrainedReport()` (Phase 8)
+6. Update `/verify/:fingerprint` UI to show decomposed CJPI (Phase 9)
 
-**Priority 3: Behavior Engine Phase 2**
-8. Design CORTEX Phase 2 dynamic adaptation (cross-engine mutation via signals)
-9. Wire Behavior Engines into Ascension export pipeline as activation evidence
+**Priority 3: Export Polish**
+7. Ensure all export paths use `wrapPremiumDocPage()` for HTML docs (audit for any remaining raw markdown)
+8. Add HTML versions of `MEMORY-SETUP.md`, `DISCOVERY-CONTEXT.md`, `TIER-MIGRATION.md` in zip-generator
 
-**Priority 4: Lifecycle Pipeline Wiring**
-10. Wire ledger builder into live Ascension pipeline (Phase 6)
-11. Migrate product reporters to `generateConstrainedReport()` (Phase 8)
-12. Update `/verify/:fingerprint` UI to show decomposed CJPI (Phase 9)
+**Priority 4: Documentation**
+9. Convert internal docs (20-21, correction-spec, exposure-spec) to branded HTML matching public docs theme
+10. Review and update Convex Core docs (`docs/libraries/convex-core/`) for accuracy
 
 ---
 
