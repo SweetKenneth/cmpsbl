@@ -309,14 +309,46 @@ export function HeroMetaSubstrate() {
             </FadeIn>
           </div>
 
-          {/* ─── RIGHT: DREAM Ascension Visual ─── */}
-          <FadeIn delay={0.3} className="w-full">
+          {/* ─── RIGHT: DREAM Ascension Visual + supporting elements ─── */}
+          <FadeIn delay={0.3} className="w-full flex flex-col">
             <p className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-3 sm:mb-4">
               This is what ascension looks like
             </p>
             <Suspense fallback={<div className="h-[200px] lg:h-[340px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
               <HeroAscensionVisualLazy />
             </Suspense>
+
+            {/* ─── How it works steps (desktop only, balances the column) ─── */}
+            <div className="hidden lg:block mt-6">
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { icon: Scan, label: "Scan", desc: "40 Primitives analyze your codebase", color: "var(--neon-cyan)" },
+                  { icon: ShieldCheck, label: "Ascend", desc: "Governance & security layers applied", color: "var(--neon-purple)" },
+                  { icon: Layers, label: "Export", desc: "Ship in 90+ languages, unchanged", color: "var(--neon-magenta)" },
+                ].map((step, i) => (
+                  <div
+                    key={step.label}
+                    className="relative flex flex-col items-center text-center p-4 rounded-xl border border-border/20 bg-card/10 backdrop-blur-sm group hover:-translate-y-0.5 transition-all duration-300"
+                  >
+                    <div className="flex items-center justify-center w-8 h-8 rounded-lg mb-2" style={{ background: `hsl(${step.color} / 0.12)` }}>
+                      <step.icon className="w-4 h-4" style={{ color: `hsl(${step.color})` }} />
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60 mb-0.5">Step {i + 1}</span>
+                    <span className="text-xs font-bold text-foreground">{step.label}</span>
+                    <span className="text-[10px] text-muted-foreground/70 font-medium mt-1 leading-tight">{step.desc}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Technology badges */}
+              <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
+                {["Patent-Pending", "Zero AI in Output", "Dual-Layer Architecture", "8hr Autonomous Cycles"].map(tag => (
+                  <span key={tag} className="text-[9px] font-bold uppercase tracking-[0.1em] px-2.5 py-1 rounded-full border border-border/25 bg-card/15 text-muted-foreground/60">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
           </FadeIn>
         </div>
 
