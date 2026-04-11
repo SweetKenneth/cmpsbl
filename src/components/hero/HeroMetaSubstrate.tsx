@@ -209,8 +209,8 @@ export function HeroMetaSubstrate() {
         {/* ─── Stacked hero content ─── */}
         <div className="text-center mb-6 sm:mb-14">
           
-          {/* Software Ascension Center banner */}
-          <FadeIn delay={0.05}
+          {/* Software Ascension Center banner — no delay, instant visibility */}
+          <FadeIn delay={0}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
           >
             <Wrench className="w-3.5 h-3.5 text-primary" />
@@ -228,12 +228,12 @@ export function HeroMetaSubstrate() {
           
           {/* Headline stack */}
           <h1 className="tracking-[-0.03em] leading-[1.1]">
-            <FadeIn delay={0.15}>
+            <FadeIn delay={0}>
               <span className="block text-sm sm:text-base md:text-lg font-bold text-foreground/80 mb-2 tracking-[0.05em] uppercase">
                 Where machines learn how to
               </span>
             </FadeIn>
-            <FadeIn delay={0.2}>
+            <FadeIn delay={0.05}>
               <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black min-h-[1.2em]">
                 <TypedText 
                   texts={["dream.", "ascend.", "adapt.", "evolve.", "reason."]}
@@ -250,7 +250,7 @@ export function HeroMetaSubstrate() {
           </h1>
 
           {/* Value prop */}
-          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
+          <FadeIn delay={0.1} className="max-w-lg mx-auto mt-3 sm:mt-6 mb-6 sm:mb-10">
             <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-3">
               Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code — a secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>.
             </p>
@@ -263,7 +263,7 @@ export function HeroMetaSubstrate() {
           </FadeIn>
           
           {/* CTA — single focused action */}
-          <FadeIn delay={0.4} className="flex justify-center max-w-md mx-auto">
+          <FadeIn delay={0.15} className="flex justify-center max-w-md mx-auto">
             <div className="relative group rounded-xl p-[1.5px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" style={{ background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta)), hsl(var(--primary)))" }}>
               <Button 
                 asChild 
@@ -280,14 +280,14 @@ export function HeroMetaSubstrate() {
           </FadeIn>
 
           {/* Trust line */}
-          <FadeIn delay={0.45} className="mt-3 mb-1">
+          <FadeIn delay={0.2} className="mt-3 mb-1">
             <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
               Diagnostic in seconds · Restoration in minutes · Your code is never stored or&nbsp;reused
             </p>
           </FadeIn>
 
           {/* Zenodo — bold & prominent */}
-          <FadeIn delay={0.5} className="flex justify-center mt-3">
+          <FadeIn delay={0.25} className="flex justify-center mt-3">
             <a
               href="https://zenodo.org/records/18895141"
               target="_blank"
@@ -304,7 +304,7 @@ export function HeroMetaSubstrate() {
         </div>
         
         {/* ─── DREAM Ascension Visual ─── */}
-        <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-6 sm:mb-12">
+        <FadeIn delay={0.3} className="max-w-4xl mx-auto mb-6 sm:mb-12">
           <p className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/50 mb-3 sm:mb-4">
             This is what ascension looks like
           </p>
@@ -316,7 +316,7 @@ export function HeroMetaSubstrate() {
 
         
         {/* ─── Stats bar ─── */}
-        <FadeIn delay={0.7}>
+        <FadeIn delay={0.35}>
           <div 
             className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge max-w-3xl mx-auto"
           >

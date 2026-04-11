@@ -5,7 +5,9 @@ import { getVerticalSubdomain, isMarketplaceDomain, isControlDomain, isManaDomai
 import { isDynamicVertical } from "@/lib/factory/vertical-factory-engine";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
-const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
+// FactoryHome is eagerly imported — it's the default (99%) path.
+// Lazy-loading it adds an extra waterfall hop that increases Speed Index by ~200ms.
+import FactoryHome from "@/pages/FactoryHome";
 const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
 const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
@@ -150,9 +152,6 @@ export default function DomainAwareHome() {
     );
   }
 
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-background" />}>
-      <FactoryHome />
-    </Suspense>
-  );
+  // No Suspense needed — FactoryHome is eagerly imported for faster Speed Index
+  return <FactoryHome />;
 }
