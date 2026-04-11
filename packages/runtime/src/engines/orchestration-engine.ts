@@ -1,18 +1,28 @@
 /**
  * CMPSBL® Orchestration Engine — Signal Routing Layer (CORTEX)
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Deterministic signal → action router across engines.
+ * Deterministic signal → rule evaluation → action execution router.
  *
- * Inputs:  events from other engines
- * Outputs: actions + orchestration events (proof layer)
+ * Phase 2: controlled action execution through public engine APIs only.
+ *   - validate_input  → Interception Engine (test args against rules)
+ *   - persist_state   → State Engine (write payload to namespace)
+ *   - block_execution → throws (halts pipeline)
+ *   - tighten_interception → registers warning rule on Interception Engine
+ *   - trip_execution   → registers trip rule on Execution Engine
+ *   - log_only         → proof event only
  *
- * Phase 2: controlled action execution through public APIs only.
+ * Constraints:
+ *   - No async
+ *   - No cross-engine mutation beyond public APIs
+ *   - No recursion into routeSignal from action handlers
+ *   - Payload treated as untrusted
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import { registerRule, getRegisteredRules } from './interception-engine';
+import { registerRule, getRegisteredRules, wrapInterception } from './interception-engine';
 import { registerExecutionRule, getExecutionRules } from './execution-engine';
+import { writeState } from './state-engine';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -22,9 +32,13 @@ export type OrchestrationSignal =
   | 'anomaly_detected'
   | 'execution_failed'
   | 'execution_retried'
+  | 'execution_started'
   | 'state_written';
 
 export type OrchestrationAction =
+  | 'validate_input'
+  | 'persist_state'
+  | 'block_execution'
   | 'tighten_interception'
   | 'trip_execution'
   | 'log_only';
@@ -32,7 +46,10 @@ export type OrchestrationAction =
 export type OrchestrationEffect =
   | 'action_planned'
   | 'action_executed'
-  | 'action_skipped';
+  | 'action_skipped'
+  | 'validation_passed'
+  | 'execution_blocked'
+  | 'state_persisted';
 
 export interface OrchestrationRule {
   readonly id: string;
@@ -183,6 +200,17 @@ function emit(
 // §6b — ACTION HANDLER (Phase 2 — controlled execution via public APIs)
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/**
+ * Execute an action through public engine APIs only.
+ *
+ * Actions:
+ *   validate_input       → wraps a no-op through Interception Engine rules
+ *   persist_state         → writes payload to State Engine namespace
+ *   block_execution       → emits proof event, throws to halt pipeline
+ *   tighten_interception  → registers a warning rule on the Interception Engine
+ *   trip_execution        → registers a trip rule on the Execution Engine
+ *   log_only              → proof event only
+ */
 function executeAction(
   primitive: string,
   signal: OrchestrationSignal,
@@ -196,6 +224,58 @@ function executeAction(
   }
 
   switch (action) {
+    // ── NEW Phase 2 actions ────────────────────────────────────────────────
+
+    case 'validate_input': {
+      /* Run the payload through the Interception Engine's registered rules
+       * by wrapping a pass-through function and invoking it.
+       * If any interception rule blocks, the error propagates up. */
+      const passthrough = (...args: unknown[]) => args;
+      const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
+
+      const inputArg = (payload as Record<string, unknown> | undefined)?.input;
+      if (inputArg === undefined) {
+        recordActionExecution(primitive, ruleId, action);
+        emit(primitive, signal, action, ruleId, 'action_executed');
+        return;
+      }
+
+      try {
+        guarded(inputArg);
+      } catch (err) {
+        emit(primitive, signal, action, ruleId, 'execution_blocked');
+        throw err;
+      }
+
+      recordActionExecution(primitive, ruleId, action);
+      emit(primitive, signal, action, ruleId, 'validation_passed');
+      return;
+    }
+
+    case 'persist_state': {
+      /* Write payload into State Engine under the CORTEX namespace */
+      if (payload == null) {
+        recordActionExecution(primitive, ruleId, action);
+        emit(primitive, signal, action, ruleId, 'action_executed');
+        return;
+      }
+
+      writeState(primitive, payload, { namespace: `cortex::${ruleId}` });
+
+      recordActionExecution(primitive, ruleId, action);
+      emit(primitive, signal, action, ruleId, 'state_persisted');
+      return;
+    }
+
+    case 'block_execution': {
+      /* Hard stop — emit proof then throw */
+      recordActionExecution(primitive, ruleId, action);
+      emit(primitive, signal, action, ruleId, 'execution_blocked');
+      throw new Error(`[CORTEX] execution blocked by rule '${ruleId}'`);
+    }
+
+    // ── Phase 1 carry-forward actions ──────────────────────────────────────
+
     case 'tighten_interception': {
       const autoRuleId = makeInterceptionAutoRuleId(primitive);
 
@@ -257,10 +337,15 @@ function executeAction(
  *   1. Iterate rules by priority (descending)
  *   2. Match on signal type
  *   3. If rule.test exists, evaluate it (swallow test errors)
- *   4. On match → emit orchestration event
+ *   4. On match → emit action_planned → execute action
  *
- * Phase 1: emit only — no cross-engine mutation.
- * Phase 2 will attach real engine hooks here.
+ * Phase 2: actions mutate other engines through public APIs only.
+ *
+ * Normal input:
+ *   execution_started → validation_passed → state_persisted → pipeline executes
+ *
+ * Malicious input:
+ *   execution_started → execution_blocked → exception thrown → pipeline halted
  */
 export function routeSignal(
   primitive: string,
