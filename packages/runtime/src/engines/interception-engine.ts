@@ -25,8 +25,11 @@
 
 export type InterceptionAction = 'block' | 'warn' | 'sanitize';
 
+export type InterceptionEffect = 'input_blocked' | 'input_sanitized' | 'input_flagged';
+
 export interface InterceptionRule {
   readonly id: string;
+  readonly priority?: number;
   readonly test: (args: readonly unknown[]) => boolean;
   readonly action: InterceptionAction;
   readonly sanitize?: (args: unknown[]) => unknown[];
@@ -36,6 +39,7 @@ export interface InterceptionEvent {
   readonly primitive: string;
   readonly ruleId: string;
   readonly action: InterceptionAction;
+  readonly effect: InterceptionEffect;
   readonly timestamp: number;
   readonly argsSnapshot: string;
 }
@@ -47,9 +51,10 @@ export interface InterceptionEvent {
 const rules: InterceptionRule[] = [];
 const events: InterceptionEvent[] = [];
 
-/** Register a new interception rule */
+/** Register a new interception rule (sorted by descending priority) */
 export function registerRule(rule: InterceptionRule): void {
   rules.push(rule);
+  rules.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
 }
 
 /** Remove a rule by ID */
@@ -99,17 +104,29 @@ function snapshotArgs(args: readonly unknown[]): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §4 — INTERCEPTION WRAPPER
+// §4 — EFFECT CLASSIFICATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function classifyEffect(action: InterceptionAction): InterceptionEffect {
+  switch (action) {
+    case 'block': return 'input_blocked';
+    case 'sanitize': return 'input_sanitized';
+    case 'warn': return 'input_flagged';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — INTERCEPTION WRAPPER
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Wrap a function with policy-driven interception.
  *
- * Evaluation order per call:
+ * Evaluation order per call (rules sorted by descending priority):
  *   1. Iterate all rules against args
  *   2. First 'block' rule → emit event, throw immediately
- *   3. 'sanitize' rules → emit event, rewrite args in place
- *   4. 'warn' rules → emit event, continue execution
+ *   3. 'sanitize' rules → emit event, rewrite args, continue evaluating
+ *   4. 'warn' rules → emit event, continue (warnings stack)
  *   5. Execute original function with (possibly sanitized) args
  */
 export function wrapInterception<T extends (...args: any[]) => any>(
@@ -124,7 +141,6 @@ export function wrapInterception<T extends (...args: any[]) => any>(
       try {
         matched = rule.test(processedArgs);
       } catch {
-        // Malformed test — skip, never crash the engine
         continue;
       }
 
@@ -134,27 +150,26 @@ export function wrapInterception<T extends (...args: any[]) => any>(
         primitive: primitiveName,
         ruleId: rule.id,
         action: rule.action,
+        effect: classifyEffect(rule.action),
         timestamp: Date.now(),
         argsSnapshot: snapshotArgs(processedArgs),
       };
       events.push(event);
 
-      switch (rule.action) {
-        case 'block':
-          throw new Error(
-            `[${primitiveName}] blocked by rule '${rule.id}'`
-          );
-
-        case 'sanitize':
-          if (rule.sanitize) {
-            processedArgs = rule.sanitize(processedArgs);
-          }
-          break;
-
-        case 'warn':
-          // Event already emitted — continue execution
-          break;
+      if (rule.action === 'block') {
+        throw new Error(
+          `[${primitiveName}] blocked by rule '${rule.id}'`
+        );
       }
+
+      if (rule.action === 'sanitize') {
+        if (rule.sanitize) {
+          processedArgs = rule.sanitize(processedArgs);
+        }
+        continue;
+      }
+
+      /* warn — event emitted, warnings stack */
     }
 
     return targetFn.apply(this, processedArgs);
