@@ -10,8 +10,12 @@
  * Zero mutation of L1 behavior.
  * State is supplementary and observable.
  *
+ * Routes state signals to the Orchestration Engine (CORTEX).
+ *
  * © CMPSBL® — All rights reserved.
  */
+
+import { routeSignal } from './orchestration-engine';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -114,6 +118,7 @@ export function writeState(
 
   stateStore.set(key, entry);
   emitStateEvent(primitive, namespace, 'state_written');
+  routeSignal(primitive, 'state_written', { value });
 
   if (policy?.snapshotOnWrite) {
     const current = snapshotStore.get(key) ?? [];

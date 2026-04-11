@@ -7,9 +7,12 @@
  *   3. Anomaly detection (deterministic deviation)
  *
  * Emits structured events for behavioral verification.
+ * Routes anomaly signals to the Orchestration Engine (CORTEX).
  *
  * © CMPSBL® — All rights reserved.
  */
+
+import { routeSignal } from './orchestration-engine';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -122,6 +125,7 @@ function detectAnomaly(
 
   if (deviation >= ANOMALY_THRESHOLD) {
     emit(primitive, 'anomaly_detected', duration);
+    routeSignal(primitive, 'anomaly_detected', { duration });
   }
 }
 

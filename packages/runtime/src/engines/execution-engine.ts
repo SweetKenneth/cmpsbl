@@ -12,8 +12,12 @@
  *   - Every decision emits a verifiable event
  *   - Zero mutation of L1 behavior
  *
+ * Routes failure/retry signals to the Orchestration Engine (CORTEX).
+ *
  * © CMPSBL® — All rights reserved.
  */
+
+import { routeSignal } from './orchestration-engine';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -254,6 +258,7 @@ export function wrapExecution<T extends (...args: any[]) => any>(
         return result;
       } catch (error: unknown) {
         emitEvent(primitiveName, 'execution_failed', attempt, undefined, error);
+        routeSignal(primitiveName, 'execution_failed', { error: error instanceof Error ? error.message : String(error), attempt });
 
         const rule = matchRule(error, attempt);
 
@@ -279,6 +284,7 @@ export function wrapExecution<T extends (...args: any[]) => any>(
           }
 
           emitEvent(primitiveName, 'execution_retried', attempt, rule.id, error);
+          routeSignal(primitiveName, 'execution_retried', { attempt });
 
           const delay = rule.backoffMs?.(attempt) ?? 0;
           await sleep(delay);
