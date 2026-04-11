@@ -101,6 +101,31 @@ const MAX_ROUTING_DEPTH = 2;
 const ACTION_COOLDOWN_MS = 30_000;
 const MAX_ACTION_HISTORY = 500;
 
+/** Actions exempt from cooldown — security-critical actions must always execute */
+const COOLDOWN_EXEMPT_ACTIONS: ReadonlySet<OrchestrationAction> = new Set([
+  'validate_input',
+  'block_execution',
+]);
+
+/**
+ * Chain-local execution context — carries state between actions in a single chain.
+ * `validationFailed` is set by `validate_input` when injection is detected,
+ * and read by `block_execution` to decide whether to throw.
+ */
+interface ChainContext {
+  validationFailed: boolean;
+}
+
+/** Built-in injection patterns for validate_input (DEFENSE-grade) */
+const INJECTION_PATTERNS: readonly RegExp[] = [
+  /<script[\s>]/i,
+  /javascript:/i,
+  /on(?:load|error|click|mouseover)=/i,
+  /<iframe[\s>]/i,
+  /<object[\s>]/i,
+  /<embed[\s>]/i,
+];
+
 /**
  * Active attachment registry — maps ruleId → AttachmentEntry.
  * Used by routeSignal to resolve policy action chains at execution time.
