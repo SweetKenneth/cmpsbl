@@ -221,10 +221,10 @@ export function HeroMetaSubstrate() {
             </span>
           </FadeIn>
 
-          {/* CMPSBL Logo — the star */}
-          <FadeIn delay={0.1} className="mb-3 sm:mb-6">
+          {/* CMPSBL Logo — the star (no fade-in: this is the LCP element, must be instantly visible) */}
+          <div className="mb-3 sm:mb-6">
             <CmpsblWordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl" />
-          </FadeIn>
+          </div>
           
           {/* Headline stack */}
           <h1 className="tracking-[-0.03em] leading-[1.1]">
