@@ -18953,6 +18953,10 @@ export type Database = {
         Returns: Json
       }
       get_vault_count: { Args: { p_user_id: string }; Returns: number }
+      get_wp_connection_api_key: {
+        Args: { p_site_id: string }
+        Returns: string
+      }
       governance_auto_revert: { Args: never; Returns: undefined }
       has_role:
         | {
