@@ -1052,9 +1052,11 @@ That matters. And I won't forget it.
 
 ---
 
-### April 11, 2026 — Session ~53 — Behavior Engine Layer Complete (5/5 Engines)
+### April 11, 2026 — Session ~53 — Behavior Engine Layer Complete + Export Audit
 
 **What happened today:**
+
+**Part 1: Behavior Engine Layer (5/5 Engines)**
 
 Kenneth directed the final core engine buildout for the runtime Behavior Engine Layer. All 5 engines implemented from spec to production:
 
@@ -1080,7 +1082,50 @@ Kenneth directed the final core engine buildout for the runtime Behavior Engine 
 
 **[OBSERVATION]** The substrate now has a complete feedback loop. Engines were isolated — now they can "see" each other through deterministic signal routing. This is the foundation for Phase 2 dynamic adaptation.
 
+**Part 2: Export Artifact Audit + Fixes**
+
+Kenneth uploaded an example Ascension export ZIP (modeling_utils_v5.5.0) for review. Audit findings:
+
+1. **[FACT] `modules` → `primitives` terminology fix**: manifest.json used banned term "modules". Fixed across `cmpsbl-manifest.ts` — now uses `primitives` key. All export pipelines affected.
+2. **[FACT] README.md/INTEGRATION.md → HTML conversion**: Both were raw markdown in an otherwise all-HTML export. Converted to premium HTML using `wrapPremiumDocPage()` for uniform enterprise presentation.
+3. **[FACT] Manifest enrichment**: Added `serial` field, added `Mint` and `Mythic` tier classifications to `tierFromScore()`.
+4. **[OBSERVATION] Hallucinated package references**: New capabilities in `scan-team.ts` reference `@cmpsbl/cyber`, `@cmpsbl/quantum`, `@cmpsbl/agency` — these packages don't exist. Should all be `@cmpsbl/runtime`. (Flagged for next session.)
+5. **[OBSERVATION] Missing lifecycle artifacts**: No `capability-ledger.json`, `ACTIVATION-GUIDE.html`, or `RUN_VERIFICATION.ts` in exports yet — Phase 6/7 of lifecycle migration (documented as pending).
+6. **[FACT] Security hardening**: Applied RLS policy fixes across brain_memory tables, immune_intelligence_events, brain_daily_reports, tenants, pf_media_cache, and core_settings.
+
+**Part 3: Documentation Updates**
+
+Updated all four lifecycle docs to v2.1.0:
+- `20-capability-lifecycle-e2e-internal.md` — Added Section 15 (Behavior Engine Layer) and updated migration status
+- `21-capability-lifecycle-e2e-developer.md` — Version bump
+- `capability-lifecycle-correction-spec.md` — Updated migration path with Phase 4-5 complete
+- `cmpsbl-system-architecture-exposure-specification.md` — Version bump
+
 **Build: clean. Zero TypeScript errors.**
+
+---
+
+### [TODO] Tomorrow's Plan — April 12, 2026
+
+**Priority 1: Export Pipeline Completion**
+1. Fix hallucinated package references in `scan-team.ts` (`@cmpsbl/cyber` → `@cmpsbl/runtime`)
+2. Add `capability-ledger.json` to export ZIPs (Phase 7 of lifecycle migration)
+3. Add `ACTIVATION-GUIDE.html` to export ZIPs
+4. Add `RUN_VERIFICATION.ts` to export ZIPs
+5. Verify all vertical scanners produce identical artifact structure
+
+**Priority 2: Cross-Scanner Uniformity**
+6. Audit Restoration Shop, Forge Exporter, Product ZIP, Foundry Tiered ZIP, and Universal Adapter for consistent `primitives` key usage
+7. Ensure all export paths use `wrapPremiumDocPage()` for HTML docs (no raw markdown exports anywhere)
+
+**Priority 3: Behavior Engine Phase 2**
+8. Design CORTEX Phase 2 dynamic adaptation (cross-engine mutation via signals)
+9. Wire Behavior Engines into Ascension export pipeline as activation evidence
+
+**Priority 4: Lifecycle Pipeline Wiring**
+10. Wire ledger builder into live Ascension pipeline (Phase 6)
+11. Migrate product reporters to `generateConstrainedReport()` (Phase 8)
+12. Update `/verify/:fingerprint` UI to show decomposed CJPI (Phase 9)
 
 ---
 

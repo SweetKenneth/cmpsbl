@@ -1,9 +1,9 @@
 # 20 — Capability Lifecycle System: End-to-End Internal Reference
 
 **Classification:** 🔒 GOVERNOR EYES ONLY  
-**Version:** v1.0.0  
-**Date:** April 10, 2026  
-**Author:** Kenneth E. Sweet Jr. / Lov  
+**Version:** v2.1.0  
+**Date:** April 11, 2026  
+**Author:** Kenneth E. Sweet Jr. / Lov
 
 ---
 
@@ -366,7 +366,30 @@ Prior to this upgrade, primitives without hand-written activation logic terminat
 
 ---
 
-## 15. Migration Status
+## 15. Behavior Engine Layer (v1.0.0 — April 11, 2026)
+
+The runtime Behavior Engine Layer provides 5 specialized engines that bridge the gap between structural activation and real-world runtime behavior:
+
+| Engine | Primitive | Purpose | Key Mechanics |
+|--------|-----------|---------|---------------|
+| **Interception** | DEFENSE | Input enforcement + structured violations | Schema validation, violation audit trail, configurable strictness |
+| **Execution** | FAILSAFE | Policy-driven retry + circuit breaker | Exponential backoff, half-open recovery, per-operation policies |
+| **State** | MEMORY | Namespace-aware storage + TTL + snapshots | Bounded capacity, automatic eviction, snapshot/restore, event emissions |
+| **Analysis** | BEACON | Rolling baseline + anomaly detection | Sliding window stats, configurable σ threshold (default 2.5), deviation scoring |
+| **Orchestration** | CORTEX | Cross-engine signal routing | Deterministic rule matching, 4 signal types, 3 action types, priority-sorted |
+
+### Cross-Engine Integration (Phase 1)
+
+CORTEX routes signals between engines via deterministic rules:
+- Analysis Engine → `anomaly_detected` → CORTEX (on deviation ≥ 2.5σ)
+- Execution Engine → `execution_failed` / `execution_retried` → CORTEX
+- State Engine → `state_written` → CORTEX (after every write)
+
+Phase 1 is routing + proof only (no cross-engine mutation). Phase 2 will add dynamic adaptation.
+
+---
+
+## 16. Migration Status
 
 | Phase | Status | Description |
 |---|---|---|
@@ -374,10 +397,12 @@ Prior to this upgrade, primitives without hand-written activation logic terminat
 | 2 — Activation guide + Mana bridge | ✅ Complete | activation-guide, mana-bridge |
 | 3 — Export bridge + verification script | ✅ Complete | export-bridge with 4-gate verification |
 | 4 — Generic Activation Engine | ✅ Complete | generic-activation, generic-wrapper, auto-activation in export-bridge |
-| 5 — Wire into Ascension pipeline | 🔲 Next | Feed real pipeline data into ledger builder |
-| 6 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
-| 7 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
-| 8 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
+| 5 — Behavior Engine Layer | ✅ Complete | 5 engines: Interception, Execution, State, Analysis, Orchestration |
+| 6 — Wire into Ascension pipeline | 🔲 Next | Feed real pipeline data into ledger builder |
+| 7 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
+| 8 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
+| 9 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
+| 10 — Export uniformity audit | 🔲 Pending | Ensure all scanners (Prime, Cyber, Ultimate, etc.) produce identical artifact structure |
 
 ---
 

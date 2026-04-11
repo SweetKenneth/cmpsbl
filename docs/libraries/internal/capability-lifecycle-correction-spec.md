@@ -1,10 +1,10 @@
 # CMPSBL® Capability Lifecycle Correction — Technical Specification
 
-**Version:** 1.0.0  
-**Date:** 2026-04-10  
+**Version:** 2.1.0  
+**Date:** 2026-04-11  
 **Classification:** Internal — Architectural  
 **Author:** System Architecture  
-**Status:** Implemented  
+**Status:** Implemented
 
 ---
 
@@ -187,10 +187,12 @@ These limitations MUST appear in all outputs:
 1. **Phase 1 (Complete):** Type definitions, ledger builder, behavioral verifier, constrained reporter
 2. **Phase 2 (Complete):** Activation guide, Mana bridge, export bridge
 3. **Phase 3 (Complete):** 4-gate verification script (fingerprint binding, fail-closed coverage, tamper detection, delta reporting)
-4. **Phase 4 (Next):** Wire ledger builder into Ascension pipeline after `generate` stage
-5. **Phase 5:** Include `capability-ledger.json` in export artifacts
-6. **Phase 6:** Migrate product reporters to read from ledger
-7. **Phase 7:** Update verification UI to show decomposed CJPI
+4. **Phase 4 (Complete):** Generic Primitive Activation Engine — universal baseline for all primitives
+5. **Phase 5 (Complete):** Behavior Engine Layer — 5 runtime engines (Interception/DEFENSE, Execution/FAILSAFE, State/MEMORY, Analysis/BEACON, Orchestration/CORTEX)
+6. **Phase 6 (Next):** Wire ledger builder into Ascension pipeline after `generate` stage
+7. **Phase 7:** Include `capability-ledger.json` in export artifacts
+8. **Phase 8:** Migrate product reporters to read from ledger
+9. **Phase 9:** Update verification UI to show decomposed CJPI
 
 ---
 
