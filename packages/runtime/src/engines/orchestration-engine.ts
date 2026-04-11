@@ -513,72 +513,24 @@ export function routeSignal(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §8 — CAPABILITY → ACTION MAPPER (Phase 3 — backward compatibility)
+// §8 — CAPABILITY → ACTION MAPPER (Phase 2 — delegated to capability-registry)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Map a Mana capability slug to a deterministic action chain.
- * Used as fallback when no policy is declared on the attachment.
- *
- * defense_gate returns ['validate_input', 'block_execution'] —
- * detection AND enforcement by default.
+ * Delegates to the Capability Registry (Phase 2).
  */
 function mapCapabilityToActions(capability: string): readonly OrchestrationAction[] {
-  switch (capability) {
-    case 'defense_gate':
-      return ['validate_input', 'block_execution'];
-    case 'beacon_telemetry':
-      return ['persist_state'];
-    case 'circuit_breaker':
-      return ['trip_execution'];
-    case 'governance_hook':
-      return ['tighten_interception'];
-    case 'audit_trail':
-      return ['persist_state'];
-    default:
-      return ['log_only'];
-  }
+  return resolveCapabilityActions(capability);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §8b — CONDITION RESOLVER (Phase 5)
+// §8b — CONDITION RESOLVER (Phase 2 — delegated to condition-resolver)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Resolve a policy condition string to a deterministic test function.
- * Only internal string keys are supported — no freeform user code.
- */
-function resolveCondition(condition?: string): ((payload: unknown) => boolean) | undefined {
-  if (!condition) return undefined;
-
-  switch (condition) {
-    case 'always':
-      return () => true;
-
-    case 'input_exists':
-      return (payload: unknown) => {
-        if (typeof payload !== 'object' || payload === null) return false;
-        return 'input' in (payload as Record<string, unknown>);
-      };
-
-    case 'input_contains_script':
-      return (payload: unknown) => {
-        if (typeof payload !== 'object' || payload === null) return false;
-        const input = (payload as Record<string, unknown>).input;
-        return typeof input === 'string' && input.includes('<script');
-      };
-
-    case 'input_is_string':
-      return (payload: unknown) => {
-        if (typeof payload !== 'object' || payload === null) return false;
-        const input = (payload as Record<string, unknown>).input;
-        return typeof input === 'string';
-      };
-
-    default:
-      return undefined;
-  }
-}
+/* Condition resolution is now handled by the imported resolveCondition from
+ * './condition-resolver'. The function supports composable AND/OR/NOT syntax
+ * and a declarative condition registry. See condition-resolver.ts for details. */
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §9 — ATTACHMENT → RULE AUTO-BINDING (Phase 5 — policy-first)
