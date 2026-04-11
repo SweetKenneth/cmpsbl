@@ -1,7 +1,7 @@
 # CMPSBL® System Architecture & Exposure Specification
 
-**Version:** 1.0.0  
-**Date:** April 10, 2026  
+**Version:** 2.1.0  
+**Date:** April 11, 2026  
 **Author:** Kenneth E. Sweet Jr.  
 **Classification:** INTERNAL — Reference Architecture Document  
 **Status:** Canonical

@@ -1,10 +1,10 @@
 # CMPSBL® Capability Lifecycle Correction — Technical Specification
 
-**Version:** 1.0.0  
-**Date:** 2026-04-10  
+**Version:** 2.1.0  
+**Date:** 2026-04-11  
 **Classification:** Internal — Architectural  
 **Author:** System Architecture  
-**Status:** Implemented  
+**Status:** Implemented
 
 ---
 

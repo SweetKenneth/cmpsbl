@@ -1,7 +1,7 @@
 # CMPSBL® Capability Lifecycle — Developer Reference
 
-**Version:** v1.0.0  
-**Date:** April 10, 2026  
+**Version:** v2.1.0  
+**Date:** April 11, 2026  
 **Classification:** PUBLIC — Developer Documentation  
 **Author:** CMPSBL®
 
