@@ -33,6 +33,7 @@ export type OrchestrationSignal =
   | 'execution_failed'
   | 'execution_retried'
   | 'execution_started'
+  | 'rule_registered'
   | 'state_written';
 
 export type OrchestrationAction =
@@ -456,14 +457,15 @@ export function registerAttachmentRules(
       priority: 500,
       signal: 'execution_started',
       test: (payload: unknown) => {
-        if (payload == null || typeof payload !== 'object') return false;
-        return (payload as Record<string, unknown>).function === a.functionName;
+        if (typeof payload !== 'object' || payload === null) return false;
+        const fn = (payload as Record<string, unknown>).function;
+        return typeof fn === 'string' && fn === a.functionName;
       },
       action,
     });
 
-    /* Proof event — every auto-bound rule is auditable */
-    emit(primitive, 'execution_started', action, ruleId, 'action_planned');
+    /* Proof event — registration-time, not runtime */
+    emit(primitive, 'rule_registered', action, ruleId, 'action_planned');
   }
 }
 
