@@ -6,11 +6,13 @@
  * Inputs:  events from other engines
  * Outputs: actions + orchestration events (proof layer)
  *
- * Phase 1: routing + proof only (no cross-engine mutation).
- * Phase 2 will attach real engine hooks for dynamic adaptation.
+ * Phase 2: controlled action execution through public APIs only.
  *
  * © CMPSBL® — All rights reserved.
  */
+
+import { registerRule, getRegisteredRules } from './interception-engine';
+import { registerExecutionRule, getExecutionRules } from './execution-engine';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -28,7 +30,8 @@ export type OrchestrationAction =
   | 'log_only';
 
 export type OrchestrationEffect =
-  | 'action_planned';
+  | 'action_planned'
+  | 'action_executed';
 
 export interface OrchestrationRule {
   readonly id: string;
@@ -53,6 +56,18 @@ export interface OrchestrationEvent {
 
 const rules: OrchestrationRule[] = [];
 const events: OrchestrationEvent[] = [];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §2b — DETERMINISTIC AUTO-RULE ID HELPERS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function makeInterceptionAutoRuleId(primitive: string): string {
+  return `cortex-tighten-${primitive}`;
+}
+
+function makeExecutionAutoRuleId(primitive: string): string {
+  return `cortex-trip-${primitive}`;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — RULE REGISTRY
@@ -122,36 +137,62 @@ function emit(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §6b — ACTION HANDLER (Phase 2 Patch 1 — intent only, no mutation)
+// §6b — ACTION HANDLER (Phase 2 — controlled execution via public APIs)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function executeAction(
   primitive: string,
+  signal: OrchestrationSignal,
   action: OrchestrationAction,
-  _payload?: unknown,
+  ruleId: string,
+  payload?: unknown,
 ): void {
   switch (action) {
-    case 'tighten_interception':
-      /* Phase 1: no mutation — intent only */
-      break;
+    case 'tighten_interception': {
+      const autoRuleId = makeInterceptionAutoRuleId(primitive);
 
-    case 'trip_execution':
-      /* Phase 1: no mutation — intent only */
-      break;
+      const alreadyExists = getRegisteredRules().some(
+        r => r.id === autoRuleId,
+      );
 
-    case 'log_only':
-      break;
+      if (!alreadyExists) {
+        registerRule({
+          id: autoRuleId,
+          priority: 1000,
+          test: () => true,
+          action: 'warn',
+        });
+      }
+
+      emit(primitive, signal, action, ruleId, 'action_executed');
+      return;
+    }
+
+    case 'trip_execution': {
+      const autoRuleId = makeExecutionAutoRuleId(primitive);
+
+      const alreadyExists = getExecutionRules().some(
+        r => r.id === autoRuleId,
+      );
+
+      if (!alreadyExists) {
+        registerExecutionRule({
+          id: autoRuleId,
+          priority: 1000,
+          test: () => true,
+          action: 'trip',
+        });
+      }
+
+      emit(primitive, signal, action, ruleId, 'action_executed');
+      return;
+    }
+
+    case 'log_only': {
+      emit(primitive, signal, action, ruleId, 'action_executed');
+      return;
+    }
   }
-
-  /* Emit proof that action was planned */
-  events.push({
-    primitive,
-    signal: 'state_written',
-    action,
-    ruleId: 'internal',
-    timestamp: Date.now(),
-    effect: 'action_planned',
-  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -192,7 +233,7 @@ export function routeSignal(
     if (!matched) continue;
 
     emit(primitive, signal, rule.action, rule.id, 'action_planned');
-    executeAction(primitive, rule.action, payload);
+    executeAction(primitive, signal, rule.action, rule.id, payload);
   }
 }
 
