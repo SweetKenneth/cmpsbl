@@ -16,7 +16,7 @@
  * Design constraints:
  *   - No eval, no dynamic code execution
  *   - All conditions are synchronous
- *   - Unknown conditions resolve to undefined (rule always matches)
+ *   - Unknown conditions return undefined (caller must reject)
  *   - Composition depth is flat (no nesting)
  *
  * © CMPSBL® — All rights reserved.

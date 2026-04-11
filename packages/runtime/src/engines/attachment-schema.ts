@@ -17,7 +17,7 @@
  */
 
 import type { AttachmentEntry, AttachmentPolicy, OrchestrationAction, OrchestrationSignal } from './orchestration-engine';
-import { getCapabilityDefinition, resolveCapabilityActions, resolveCapabilitySignal } from './capability-registry';
+import { getCapabilityDefinition, resolveCapabilityActions, resolveCapabilitySignal, isCapabilityRegistered } from './capability-registry';
 import { resolveCondition } from './condition-resolver';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -109,9 +109,9 @@ export function validateAttachment(entry: unknown): AttachmentValidationResult {
     errors.push('primitive is required and must be a non-empty string');
   }
 
-  /* Capability existence check (warning, not error — allows future expansion) */
-  if (typeof e.capability === 'string' && !getCapabilityDefinition(e.capability)) {
-    warnings.push(`capability '${e.capability}' is not in the registry — will use log_only fallback`);
+  /* Capability must be registered — no silent fallbacks */
+  if (typeof e.capability === 'string' && !isCapabilityRegistered(e.capability)) {
+    errors.push(`capability '${e.capability}' is not registered — register before attaching`);
   }
 
   /* Policy validation */
@@ -132,7 +132,7 @@ export function validateAttachment(entry: unknown): AttachmentValidationResult {
       if (policy.condition !== undefined && typeof policy.condition === 'string') {
         const resolved = resolveCondition(policy.condition);
         if (!resolved) {
-          warnings.push(`policy.condition '${policy.condition}' could not be resolved — rule will always match`);
+          errors.push(`policy.condition '${policy.condition}' is not a registered condition`);
         }
       }
 
