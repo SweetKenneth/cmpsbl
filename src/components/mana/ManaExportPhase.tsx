@@ -220,7 +220,7 @@ export function ManaExportPhase({ result, mergeResult }: Props) {
         );
         zip.file('capability-ledger.json', activationArtifacts.ledgerJson);
         zip.file('ACTIVATION-GUIDE.html', activationArtifacts.guideHtml);
-        const allPrimitives = manifest.capabilities.map((c: { module: string }) => c.module.toUpperCase());
+        const allPrimitives = [...new Set(manifest.attachmentPoints.map((p: { capability: string }) => p.capability.toUpperCase()))];
         zip.file('RUN_VERIFICATION.ts', generateVerificationScript(proof.fingerprintId, allPrimitives));
       } catch {
         // Non-fatal — export proceeds without activation artifacts
