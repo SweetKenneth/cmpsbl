@@ -181,7 +181,7 @@ export default function RestorationShop() {
     if (!report) return;
     toast.success('Preparing your ascended code package for download...');
 
-    import('jszip').then(({ default: JSZip }) => {
+    import('jszip').then(async ({ default: JSZip }) => {
       const zip = new JSZip();
       const fingerprint = report.cjpiCertificate.fingerprint;
 
