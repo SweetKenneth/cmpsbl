@@ -17,6 +17,16 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
+    <!-- Domain redirect: cmpsbl.lovable.app → cmpsbl.com -->
+    <script>
+      (function () {
+        var h = location.hostname;
+        if (h === "cmpsbl.lovable.app" || h === "www.cmpsbl.lovable.app") {
+          location.replace("https://cmpsbl.com" + location.pathname + location.search + location.hash);
+        }
+      })();
+    </script>
+
     <!-- PWA manifest: deferred to avoid blocking FCP; disabled in editor preview -->
     <script>
       setTimeout(function () {
