@@ -1,9 +1,9 @@
 /**
  * CMPSBL® Orchestration Engine — Signal Routing Layer (CORTEX)
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Deterministic signal → rule evaluation → action execution router.
+ * Deterministic signal → policy → rule evaluation → action chain execution.
  *
- * Phase 3: artifact-driven auto-binding — attachments become rules.
+ * Phase 5: declarative policy layer with action chains.
  *   - validate_input        → Interception Engine (test args against rules)
  *   - persist_state         → State Engine (write payload to namespace)
  *   - block_execution       → throws (halts pipeline)
@@ -33,8 +33,10 @@ export type OrchestrationSignal =
   | 'execution_failed'
   | 'execution_retried'
   | 'execution_started'
+  | 'execution_succeeded'
   | 'rule_registered'
-  | 'state_written';
+  | 'state_written'
+  | 'validation_failed';
 
 export type OrchestrationAction =
   | 'validate_input'
@@ -69,6 +71,21 @@ export interface OrchestrationEvent {
   readonly effect: OrchestrationEffect;
 }
 
+/** Declarative policy attached to an artifact entry (Phase 5) */
+export interface AttachmentPolicy {
+  readonly on: OrchestrationSignal;
+  readonly condition?: string;
+  readonly then: OrchestrationAction | readonly OrchestrationAction[];
+}
+
+/** Mana attachment entry — extended with optional policy (Phase 5) */
+export interface AttachmentEntry {
+  readonly functionName: string;
+  readonly capability: string;
+  readonly primitive: string;
+  readonly policy?: AttachmentPolicy;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2 — STORAGE
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -83,6 +100,12 @@ const MAX_ROUTING_DEPTH = 2;
 
 const ACTION_COOLDOWN_MS = 30_000;
 const MAX_ACTION_HISTORY = 500;
+
+/**
+ * Active attachment registry — maps ruleId → AttachmentEntry.
+ * Used by routeSignal to resolve policy action chains at execution time.
+ */
+const attachmentRegistry = new Map<string, AttachmentEntry>();
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2b — DETERMINISTIC AUTO-RULE ID HELPERS
@@ -148,6 +171,7 @@ export function removeOrchestrationRule(ruleId: string): boolean {
   const idx = rules.findIndex(r => r.id === ruleId);
   if (idx === -1) return false;
   rules.splice(idx, 1);
+  attachmentRegistry.delete(ruleId);
   return true;
 }
 
@@ -178,6 +202,7 @@ export function resetOrchestrationEngine(): void {
   rules.length = 0;
   events.length = 0;
   actionHistory.clear();
+  attachmentRegistry.clear();
   routingDepth = 0;
 }
 
@@ -207,15 +232,7 @@ function emit(
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Execute an action through public engine APIs only.
- *
- * Actions:
- *   validate_input       → wraps a no-op through Interception Engine rules
- *   persist_state         → writes payload to State Engine namespace
- *   block_execution       → emits proof event, throws to halt pipeline
- *   tighten_interception  → registers a warning rule on the Interception Engine
- *   trip_execution        → registers a trip rule on the Execution Engine
- *   log_only              → proof event only
+ * Execute a single action through public engine APIs only.
  */
 function executeAction(
   primitive: string,
@@ -230,12 +247,7 @@ function executeAction(
   }
 
   switch (action) {
-    // ── NEW Phase 2 actions ────────────────────────────────────────────────
-
     case 'validate_input': {
-      /* Run the payload through the Interception Engine's registered rules
-       * by wrapping a pass-through function and invoking it.
-       * If any interception rule blocks, the error propagates up. */
       const passthrough = (...args: unknown[]) => args;
       const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
 
@@ -259,7 +271,6 @@ function executeAction(
     }
 
     case 'persist_state': {
-      /* Write payload into State Engine under the CORTEX namespace */
       if (payload == null) {
         recordActionExecution(primitive, ruleId, action);
         emit(primitive, signal, action, ruleId, 'action_executed');
@@ -274,13 +285,10 @@ function executeAction(
     }
 
     case 'block_execution': {
-      /* Hard stop — emit proof then throw */
       recordActionExecution(primitive, ruleId, action);
       emit(primitive, signal, action, ruleId, 'execution_blocked');
       throw new Error(`[CORTEX] execution blocked by rule '${ruleId}'`);
     }
-
-    // ── Phase 1 carry-forward actions ──────────────────────────────────────
 
     case 'tighten_interception': {
       const autoRuleId = makeInterceptionAutoRuleId(primitive);
@@ -333,33 +341,69 @@ function executeAction(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// §6c — ACTION CHAIN EXECUTOR (Phase 5)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Execute a deterministic sequence of actions for a single rule match.
+ * Actions run in order; if any throws (e.g. block_execution), the chain halts.
+ */
+function executeActionChain(
+  primitive: string,
+  signal: OrchestrationSignal,
+  actions: readonly OrchestrationAction[],
+  ruleId: string,
+  payload?: unknown,
+): void {
+  for (const action of actions) {
+    executeAction(primitive, signal, action, ruleId, payload);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §6d — POLICY ACTION RESOLVER (Phase 5)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Resolve the action chain for a matched rule.
+ *
+ * If the rule was registered from an attachment with a policy,
+ * the policy's `then` field takes precedence (may be an array).
+ * Otherwise falls back to the single action stored on the rule.
+ */
+function resolveRuleActions(
+  ruleId: string,
+  fallbackAction: OrchestrationAction,
+): readonly OrchestrationAction[] {
+  const attachment = attachmentRegistry.get(ruleId);
+  if (!attachment?.policy) return [fallbackAction];
+
+  const thenActions = attachment.policy.then;
+  return Array.isArray(thenActions)
+    ? thenActions as readonly OrchestrationAction[]
+    : [thenActions as OrchestrationAction];
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // §7 — SIGNAL ROUTER
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Route a signal from any engine through the orchestration rule set.
  *
+ * Phase 5: supports policy-driven action chains.
+ *
  * Evaluation is deterministic:
  *   1. Iterate rules by priority (descending)
  *   2. Match on signal type
  *   3. If rule.test exists, evaluate it (swallow test errors)
- *   4. On match → emit action_planned → execute action
- *
- * Phase 2: actions mutate other engines through public APIs only.
- *
- * Normal input:
- *   execution_started → validation_passed → state_persisted → pipeline executes
- *
- * Malicious input:
- *   execution_started → execution_blocked → exception thrown → pipeline halted
+ *   4. On match → resolve action chain → execute sequentially
  */
 export function routeSignal(
   primitive: string,
   signal: OrchestrationSignal,
   payload?: unknown,
 ): void {
-  /* Re-entrancy guard — prevent loops from actions that trigger signals
-   * (e.g. persist_state → writeState → routeSignal('state_written')) */
   if (routingDepth >= MAX_ROUTING_DEPTH) return;
 
   routingDepth++;
@@ -373,15 +417,20 @@ export function routeSignal(
         try {
           matched = rule.test(payload);
         } catch {
-          /* Malformed test — skip, never crash the router */
           continue;
         }
       }
 
       if (!matched) continue;
 
-      emit(primitive, signal, rule.action, rule.id, 'action_planned');
-      executeAction(primitive, signal, rule.action, rule.id, payload);
+      const actions = resolveRuleActions(rule.id, rule.action);
+
+      /* Emit action_planned for each action in the chain */
+      for (const action of actions) {
+        emit(primitive, signal, action, rule.id, 'action_planned');
+      }
+
+      executeActionChain(primitive, signal, actions, rule.id, payload);
     }
   } finally {
     routingDepth--;
@@ -389,15 +438,12 @@ export function routeSignal(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §8 — CAPABILITY → ACTION MAPPER (Phase 3)
+// §8 — CAPABILITY → ACTION MAPPER (Phase 3 — backward compatibility)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Map a Mana capability slug to a deterministic orchestration action.
- *
- * This is the bridge between "what the artifact declares" and
- * "what the runtime does." New capabilities should be added here
- * as the behavior engine expands.
+ * Used as fallback when no policy is declared on the attachment.
  */
 function mapCapabilityToAction(capability: string): OrchestrationAction {
   switch (capability) {
@@ -417,27 +463,58 @@ function mapCapabilityToAction(capability: string): OrchestrationAction {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §9 — ATTACHMENT → RULE AUTO-BINDING (Phase 3)
+// §8b — CONDITION RESOLVER (Phase 5)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Minimal shape of a Mana attachment entry */
-export interface AttachmentEntry {
-  readonly functionName: string;
-  readonly capability: string;
-  readonly primitive: string;
+/**
+ * Resolve a policy condition string to a deterministic test function.
+ * Only internal string keys are supported — no freeform user code.
+ */
+function resolveCondition(condition?: string): ((payload: unknown) => boolean) | undefined {
+  if (!condition) return undefined;
+
+  switch (condition) {
+    case 'always':
+      return () => true;
+
+    case 'input_exists':
+      return (payload: unknown) => {
+        if (typeof payload !== 'object' || payload === null) return false;
+        return 'input' in (payload as Record<string, unknown>);
+      };
+
+    case 'input_contains_script':
+      return (payload: unknown) => {
+        if (typeof payload !== 'object' || payload === null) return false;
+        const input = (payload as Record<string, unknown>).input;
+        return typeof input === 'string' && input.includes('<script');
+      };
+
+    case 'input_is_string':
+      return (payload: unknown) => {
+        if (typeof payload !== 'object' || payload === null) return false;
+        const input = (payload as Record<string, unknown>).input;
+        return typeof input === 'string';
+      };
+
+    default:
+      return undefined;
+  }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §9 — ATTACHMENT → RULE AUTO-BINDING (Phase 5 — policy-first)
+// ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Register orchestration rules derived from Mana attachments.
  *
- * Each attachment becomes a deterministic rule:
- *   signal:  execution_started
- *   test:    payload.function === attachment.functionName
- *   action:  derived from capability via mapCapabilityToAction
+ * Phase 5 evolution:
+ *   - If attachment has a `policy`, use policy.on as signal,
+ *     policy.condition as extra test, and policy.then as action chain.
+ *   - If no policy, fall back to Phase 3 capability mapping.
  *
  * Rules are deduplicated by ID so this is safe to call multiple times.
- * Intended to be called once at runtime initialization:
- *   registerAttachmentRules(primitiveName, __MANA_ATTACHMENTS__);
  */
 export function registerAttachmentRules(
   primitive: string,
@@ -446,26 +523,44 @@ export function registerAttachmentRules(
   for (const a of attachments) {
     const ruleId = `attachment::${a.functionName}::${a.capability}`;
 
-    /* Deduplicate — idempotent registration */
     const exists = rules.some(r => r.id === ruleId);
     if (exists) continue;
 
-    const action = mapCapabilityToAction(a.capability);
+    /* Determine signal — policy overrides default */
+    const signal: OrchestrationSignal = a.policy?.on ?? 'execution_started';
+
+    /* Resolve condition test from policy string key */
+    const conditionTest = resolveCondition(a.policy?.condition);
+
+    /* Determine the single action stored on the rule.
+     * For policy chains, the first action is stored here;
+     * the full chain is resolved at execution time from attachmentRegistry. */
+    const primaryAction: OrchestrationAction = a.policy
+      ? (Array.isArray(a.policy.then)
+        ? (a.policy.then[0] as OrchestrationAction ?? 'log_only')
+        : a.policy.then as OrchestrationAction)
+      : mapCapabilityToAction(a.capability);
 
     registerOrchestrationRule({
       id: ruleId,
       priority: 500,
-      signal: 'execution_started',
+      signal,
       test: (payload: unknown) => {
         if (typeof payload !== 'object' || payload === null) return false;
+
         const fn = (payload as Record<string, unknown>).function;
-        return typeof fn === 'string' && fn === a.functionName;
+        if (typeof fn !== 'string' || fn !== a.functionName) return false;
+
+        if (!conditionTest) return true;
+        return conditionTest(payload);
       },
-      action,
+      action: primaryAction,
     });
 
-    /* Proof event — registration-time, not runtime */
-    emit(primitive, 'rule_registered', action, ruleId, 'action_planned');
+    /* Store attachment in registry so resolveRuleActions can find the full chain */
+    attachmentRegistry.set(ruleId, a);
+
+    emit(primitive, 'rule_registered', primaryAction, ruleId, 'action_planned');
   }
 }
 
