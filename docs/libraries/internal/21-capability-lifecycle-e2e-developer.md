@@ -1,8 +1,8 @@
 # CMPSBL® Capability Lifecycle — Developer Reference
 
-**Version:** v2.1.0  
-**Date:** April 11, 2026  
-**Classification:** PUBLIC — Developer Documentation  
+**Version:** v2.5.0  
+**Date:** April 12, 2026  
+**Classification:** PUBLIC — Developer Documentation
 **Author:** CMPSBL®
 
 ---
@@ -201,15 +201,43 @@ If a primitive doesn't have a specialized runtime (like DEFENSE or GOVERNANCE do
 The generic wrapper:
 - Observes every call (emits `call_interception`)
 - Emits telemetry after execution (emits `telemetry_emit`)
+- **Auto-binds** attachment rules from the artifact manifest (no manual rule registration)
+- **Routes signals** through CORTEX on every invocation (`execution_started`)
+- Resolves function identity from `targetFn.name` (guarded against empty/anonymous)
 - **Never alters** original function behavior
-- **Never blocks** execution
+- **Never blocks** execution (unless a CORTEX policy explicitly declares `block_execution`)
 - Is fully reversible — remove the wrap call to restore original behavior
 
 Specialized primitives (DEFENSE, MEMORY, BEACON, etc.) still use their richer, hand-written activation logic. The generic engine is the baseline that ensures nothing gets stuck.
 
 ---
 
-## 10. Patent Attribution
+## 10. Declarative Policies (Advanced)
+
+Artifacts can include **policies** that declare runtime behavior without manual code:
+
+```typescript
+{
+  functionName: 'transpile',
+  capability: 'beacon_telemetry',
+  primitive: 'BEACON',
+  policy: {
+    on: 'execution_started',        // Which signal to listen for
+    condition: 'input_exists',       // When to fire (deterministic)
+    then: ['persist_state', 'log_only']  // What to do (in order)
+  }
+}
+```
+
+**Available conditions:** `always`, `input_exists`, `input_contains_script`, `input_is_string`
+
+**Available actions:** `validate_input`, `persist_state`, `block_execution`, `tighten_interception`, `trip_execution`, `log_only`
+
+If no policy is declared, behavior is derived automatically from the capability type (e.g., `defense_gate` → `validate_input`).
+
+---
+
+## 11. Patent Attribution
 
 CMPSBL artifacts are protected under two U.S. patent applications:
 
