@@ -157,6 +157,9 @@ function shouldSkipAction(
   ruleId: string,
   action: OrchestrationAction,
 ): boolean {
+  /* Security-critical actions are never skipped by cooldown */
+  if (COOLDOWN_EXEMPT_ACTIONS.has(action)) return false;
+
   const key = makeActionHistoryKey(primitive, ruleId, action);
   const lastExecutedAt = actionHistory.get(key);
 
