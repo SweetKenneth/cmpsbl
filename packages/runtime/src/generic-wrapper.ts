@@ -198,7 +198,9 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
   primitiveName: string,
   targetFn: (...args: TArgs) => Promise<TReturn>,
   attachments?: ReadonlyArray<AttachmentEntry>,
+  functionName?: string,
 ): (...args: TArgs) => Promise<TReturn> {
+  const resolvedFnName = functionName ?? targetFn.name ?? primitiveName;
   const handle: WrapperHandle = {
     primitiveName,
     wrappedAt: Date.now(),
