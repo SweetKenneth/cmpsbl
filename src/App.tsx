@@ -30,7 +30,7 @@ import DeferredMotionConfig from "@/components/providers/DeferredMotionConfig";
 import DeferredTooltipProvider from "@/components/providers/DeferredTooltipProvider";
 const SmartToastRenderer = lazy(() => import("@/components/toast/SmartToastRenderer"));
 const SonnerToaster = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
-const DecodeFloat = lazy(() => import("@/components/decode/DecodeFloat"));
+import { DeferredDecodeFloat } from "@/components/decode/DeferredDecodeFloat";
 const ChurnPreventionToastsLazy = lazy(() => import("@/components/adoption/ChurnPreventionToasts").then(m => ({ default: m.ChurnPreventionToasts })));
 
 // Defer non-critical CSS (substrate voice, decode orb, clockless river animations)
@@ -250,7 +250,7 @@ const App = () => {
                    <Routes>
                     <Route path="/*" element={
                      <AuthProvider>
-                       <DecodeFloat />
+                       <DeferredDecodeFloat />
                        <Suspense fallback={null}>
                          <RegisterPasskeyPrompt />
                        </Suspense>

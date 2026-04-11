@@ -1,11 +1,13 @@
 /**
  * TrustVisual — Full-bleed cinematic image break between homepage sections.
  * Adds visual trust and breaks up text-heavy content.
- * Polish: parallax-hint on hover, refined caption treatment, subtle entry animation.
+ * 
+ * PERFORMANCE: Uses CSS animations + IntersectionObserver instead of framer-motion
+ * to avoid pulling ~60KB framer-motion into the home page critical path.
  */
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 interface TrustVisualProps {
   src: string;
@@ -16,13 +18,33 @@ interface TrustVisualProps {
 }
 
 export function TrustVisual({ src, alt, caption, date, className }: TrustVisualProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-60px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.97 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      className={cn("relative w-full max-w-5xl mx-auto px-3 sm:px-4", className)}
+    <div
+      ref={ref}
+      className={cn(
+        "relative w-full max-w-5xl mx-auto px-3 sm:px-4 transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-[0.97]",
+        className
+      )}
     >
       <div className="relative rounded-2xl overflow-hidden border border-border/20 shadow-2xl shadow-primary/[0.06] group">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 z-10 pointer-events-none" />
@@ -49,6 +71,6 @@ export function TrustVisual({ src, alt, caption, date, className }: TrustVisualP
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
