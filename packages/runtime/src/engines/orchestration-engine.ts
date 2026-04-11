@@ -3,13 +3,13 @@
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Deterministic signal → rule evaluation → action execution router.
  *
- * Phase 2: controlled action execution through public engine APIs only.
- *   - validate_input  → Interception Engine (test args against rules)
- *   - persist_state   → State Engine (write payload to namespace)
- *   - block_execution → throws (halts pipeline)
- *   - tighten_interception → registers warning rule on Interception Engine
- *   - trip_execution   → registers trip rule on Execution Engine
- *   - log_only         → proof event only
+ * Phase 3: artifact-driven auto-binding — attachments become rules.
+ *   - validate_input        → Interception Engine (test args against rules)
+ *   - persist_state         → State Engine (write payload to namespace)
+ *   - block_execution       → throws (halts pipeline)
+ *   - tighten_interception  → registers warning rule on Interception Engine
+ *   - trip_execution        → registers trip rule on Execution Engine
+ *   - log_only              → proof event only
  *
  * Constraints:
  *   - No async
@@ -388,7 +388,87 @@ export function routeSignal(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §8 — ORCHESTRATION WRAPPER
+// §8 — CAPABILITY → ACTION MAPPER (Phase 3)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Map a Mana capability slug to a deterministic orchestration action.
+ *
+ * This is the bridge between "what the artifact declares" and
+ * "what the runtime does." New capabilities should be added here
+ * as the behavior engine expands.
+ */
+function mapCapabilityToAction(capability: string): OrchestrationAction {
+  switch (capability) {
+    case 'defense_gate':
+      return 'validate_input';
+    case 'beacon_telemetry':
+      return 'persist_state';
+    case 'circuit_breaker':
+      return 'trip_execution';
+    case 'governance_hook':
+      return 'tighten_interception';
+    case 'audit_trail':
+      return 'persist_state';
+    default:
+      return 'log_only';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §9 — ATTACHMENT → RULE AUTO-BINDING (Phase 3)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Minimal shape of a Mana attachment entry */
+export interface AttachmentEntry {
+  readonly functionName: string;
+  readonly capability: string;
+  readonly primitive: string;
+}
+
+/**
+ * Register orchestration rules derived from Mana attachments.
+ *
+ * Each attachment becomes a deterministic rule:
+ *   signal:  execution_started
+ *   test:    payload.function === attachment.functionName
+ *   action:  derived from capability via mapCapabilityToAction
+ *
+ * Rules are deduplicated by ID so this is safe to call multiple times.
+ * Intended to be called once at runtime initialization:
+ *   registerAttachmentRules(primitiveName, __MANA_ATTACHMENTS__);
+ */
+export function registerAttachmentRules(
+  primitive: string,
+  attachments: ReadonlyArray<AttachmentEntry>,
+): void {
+  for (const a of attachments) {
+    const ruleId = `attachment::${a.functionName}::${a.capability}`;
+
+    /* Deduplicate — idempotent registration */
+    const exists = rules.some(r => r.id === ruleId);
+    if (exists) continue;
+
+    const action = mapCapabilityToAction(a.capability);
+
+    registerOrchestrationRule({
+      id: ruleId,
+      priority: 500,
+      signal: 'execution_started',
+      test: (payload: unknown) => {
+        if (payload == null || typeof payload !== 'object') return false;
+        return (payload as Record<string, unknown>).function === a.functionName;
+      },
+      action,
+    });
+
+    /* Proof event — every auto-bound rule is auditable */
+    emit(primitive, 'execution_started', action, ruleId, 'action_planned');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §10 — ORCHESTRATION WRAPPER
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -398,12 +478,11 @@ export function routeSignal(
  * signals from other engines, not on direct function calls.
  * This wrapper exists for generic-wrapper routing compatibility.
  */
-export function wrapOrchestration<T extends (...args: any[]) => any>(
+export function wrapOrchestration<T extends (...args: unknown[]) => unknown>(
   _primitiveName: string,
   targetFn: T,
 ): T {
   /* Orchestration is reactive — it routes signals from other engines.
-   * The wrapper itself doesn't alter execution.
-   * Future: could emit 'orchestration_invoked' if needed. */
+   * The wrapper itself doesn't alter execution. */
   return targetFn;
 }

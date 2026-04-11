@@ -1147,6 +1147,7 @@ Updated all four lifecycle docs to v2.1.0:
 **Priority 1: Behavior Engine Phase 2 (continued)**
 1. ~~Design CORTEX Phase 2 dynamic adaptation~~ ✅ Done
 2. Wire Behavior Engines into Ascension export pipeline as activation evidence
+2. Wire engine outputs into Ascension export as activation evidence
 3. Add behavioral probe results to `capability-ledger.json` output
 
 **Priority 2: Lifecycle Pipeline Wiring**
@@ -1161,6 +1162,15 @@ Updated all four lifecycle docs to v2.1.0:
 **Priority 4: Documentation**
 9. Convert internal docs (20-21, correction-spec, exposure-spec) to branded HTML matching public docs theme
 10. Review and update Convex Core docs (`docs/libraries/convex-core/`) for accuracy
+
+### Session: April 12, 2026 — CORTEX Phase 3: Artifact-Driven Auto-Binding
+
+**[FACT]** CORTEX Phase 3 shipped. The orchestration engine now auto-generates rules from `__MANA_ATTACHMENTS__` at runtime via `registerAttachmentRules()`. Attachments are no longer metadata — they are executable behavior declarations. Capability → action mapping: `defense_gate` → `validate_input`, `beacon_telemetry` → `persist_state`, `circuit_breaker` → `trip_execution`, `governance_hook` → `tighten_interception`, `audit_trail` → `persist_state`, all others → `log_only`. Rules deduplicate by ID and emit proof events on registration. Build clean, zero TS errors.
+
+**Next (Phase 4 candidates):**
+- CORTEX Phase 4: dynamic rule generation from runtime telemetry (anomaly → rule)
+- Wire `registerAttachmentRules` into the generic-wrapper init path
+- Add `function` field to all `routeSignal` call sites for payload contract compliance
 
 ---
 
