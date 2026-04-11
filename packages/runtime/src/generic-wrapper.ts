@@ -16,6 +16,13 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { getEngineForPrimitive } from '@/lib/runtime/primitive-engine-map';
+import { wrapInterception } from './engines/interception-engine';
+import { wrapState } from './engines/state-engine';
+import { wrapExecution } from './engines/execution-engine';
+import { wrapAnalysis } from './engines/analysis-engine';
+import { wrapOrchestration } from './engines/orchestration-engine';
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -80,13 +87,15 @@ export function resetCollector(): void {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Wrap a target function with generic observation hooks.
+ * Wrap a target function with engine-specific behavior + generic observation hooks.
  *
  * The wrapper:
- *   1. Emits a `call_interception` effect on every call (pre-call)
- *   2. Invokes the original function UNMODIFIED
- *   3. Emits a `telemetry_emit` effect after successful return (post-call)
- *   4. On error: re-throws without modification (never swallows)
+ *   1. Resolves the behavior engine for the primitive
+ *   2. Applies engine-specific wrapping (interception, state, execution, etc.)
+ *   3. Emits a `call_interception` effect on every call (pre-call)
+ *   4. Invokes the engine-wrapped function
+ *   5. Emits a `telemetry_emit` effect after successful return (post-call)
+ *   6. On error: re-throws without modification (never swallows)
  *
  * This is a transparent observation layer — L1 behavior is never altered.
  */
@@ -102,26 +111,45 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
   };
   activeWrappers.set(primitiveName, handle);
 
+  const engine = getEngineForPrimitive(primitiveName);
+
+  let wrappedFn = targetFn;
+
+  switch (engine) {
+    case 'interception':
+      wrappedFn = wrapInterception(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'state':
+      wrappedFn = wrapState(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'execution':
+      wrappedFn = wrapExecution(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'analysis':
+      wrappedFn = wrapAnalysis(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'orchestration':
+      wrappedFn = wrapOrchestration(primitiveName, targetFn) as typeof targetFn;
+      break;
+  }
+
   return function genericWrapper(this: unknown, ...args: TArgs): TReturn {
     totalCallCount++;
 
-    // Pre-call: interception signal
     collectedEffects.push({
       kind: 'call_interception',
       primitiveName,
       timestamp: Date.now(),
-      description: `Generic wrapper intercepted call to ${primitiveName}-wrapped function`,
+      description: `Wrapper executed for ${primitiveName} via ${engine} engine`,
     });
 
-    // Execute original — NEVER modify behavior
-    const result = targetFn.apply(this, args);
+    const result = wrappedFn.apply(this, args);
 
-    // Post-call: telemetry signal
     collectedEffects.push({
       kind: 'telemetry_emit',
       primitiveName,
       timestamp: Date.now(),
-      description: `Telemetry emitted after ${primitiveName} execution completed`,
+      description: `Telemetry emitted (${engine})`,
     });
 
     return result;
@@ -142,6 +170,28 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
   };
   activeWrappers.set(primitiveName, handle);
 
+  const engine = getEngineForPrimitive(primitiveName);
+
+  let wrappedFn = targetFn;
+
+  switch (engine) {
+    case 'interception':
+      wrappedFn = wrapInterception(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'state':
+      wrappedFn = wrapState(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'execution':
+      wrappedFn = wrapExecution(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'analysis':
+      wrappedFn = wrapAnalysis(primitiveName, targetFn) as typeof targetFn;
+      break;
+    case 'orchestration':
+      wrappedFn = wrapOrchestration(primitiveName, targetFn) as typeof targetFn;
+      break;
+  }
+
   return async function genericWrapperAsync(this: unknown, ...args: TArgs): Promise<TReturn> {
     totalCallCount++;
 
@@ -149,16 +199,16 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
       kind: 'call_interception',
       primitiveName,
       timestamp: Date.now(),
-      description: `Generic wrapper intercepted async call to ${primitiveName}-wrapped function`,
+      description: `Wrapper executed for async ${primitiveName} via ${engine} engine`,
     });
 
-    const result = await targetFn.apply(this, args);
+    const result = await wrappedFn.apply(this, args);
 
     collectedEffects.push({
       kind: 'telemetry_emit',
       primitiveName,
       timestamp: Date.now(),
-      description: `Telemetry emitted after ${primitiveName} async execution completed`,
+      description: `Telemetry emitted (${engine} async)`,
     });
 
     return result;
