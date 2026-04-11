@@ -177,6 +177,7 @@ export function resetOrchestrationEngine(): void {
   rules.length = 0;
   events.length = 0;
   actionHistory.clear();
+  routingDepth = 0;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
