@@ -1,8 +1,8 @@
 # 20 — Capability Lifecycle System: End-to-End Internal Reference
 
 **Classification:** 🔒 GOVERNOR EYES ONLY  
-**Version:** v2.1.0  
-**Date:** April 11, 2026  
+**Version:** v2.5.0  
+**Date:** April 12, 2026  
 **Author:** Kenneth E. Sweet Jr. / Lov
 
 ---
@@ -32,7 +32,13 @@ src/lib/capability-lifecycle/
 └── index.ts                  — Public API barrel
 
 packages/runtime/src/
-└── generic-wrapper.ts        — Universal runtime wrapper (observe + emit, never alter L1)
+├── generic-wrapper.ts        — Universal runtime wrapper (observe + emit + auto-bind attachments)
+└── engines/
+    ├── interception-engine.ts — Policy-driven input enforcement (DEFENSE/GOVERNANCE)
+    ├── execution-engine.ts    — Circuit breaker + retry (FAILSAFE)
+    ├── state-engine.ts        — Namespace-aware TTL persistence (MEMORY)
+    ├── analysis-engine.ts     — Rolling baseline + anomaly detection (BEACON/ORACLE)
+    └── orchestration-engine.ts — Signal → policy → action chain router (CORTEX Phase 5)
 ```
 
 ---
@@ -337,8 +343,11 @@ Prior to this upgrade, primitives without hand-written activation logic terminat
 ### How It Works
 
 1. **Generic Runtime Wrapper** (`packages/runtime/src/generic-wrapper.ts`):
-   - Accepts `(primitiveName, targetFn)` → wraps with pre-call (interception) and post-call (telemetry) hooks
-   - Emits `call_interception` and `telemetry_emit` effects
+   - Accepts `(primitiveName, targetFn, attachments?, functionName?)` → wraps with pre-call (interception) and post-call (telemetry) hooks
+   - **Phase 4 auto-binding**: Resolves `__MANA_ATTACHMENTS__` at wrap time, calls `registerAttachmentRules()` once per primitive
+   - **Phase 4 signal emission**: Emits `routeSignal('execution_started', { function, input })` on every invocation
+   - Function identity resolution: `functionName` override → `targetFn.name` (guarded against empty/anonymous) → `primitiveName`
+   - Emits `call_interception`, `telemetry_emit`, and `attachment_bound` effects
    - Safety: NEVER alters L1 behavior, NEVER blocks execution, only observes + emits
 
 2. **Auto-Activation Pass** (`generic-activation.ts`):
@@ -363,10 +372,11 @@ Prior to this upgrade, primitives without hand-written activation logic terminat
 | 12 primitives could reach Activated | ALL primitives can reach Activated |
 | Unknown primitives stuck at "bound" | Generic baseline for every primitive |
 | Specialized overrides required | Specialized overrides still take priority |
+| Manual rule registration required | Artifact-driven auto-binding (Phase 4) |
 
 ---
 
-## 15. Behavior Engine Layer (v1.0.0 — April 11, 2026)
+## 15. Behavior Engine Layer (v2.1.0 — April 12, 2026)
 
 The runtime Behavior Engine Layer provides 5 specialized engines that bridge the gap between structural activation and real-world runtime behavior:
 
@@ -376,16 +386,60 @@ The runtime Behavior Engine Layer provides 5 specialized engines that bridge the
 | **Execution** | FAILSAFE | Policy-driven retry + circuit breaker | Exponential backoff, half-open recovery, per-operation policies |
 | **State** | MEMORY | Namespace-aware storage + TTL + snapshots | Bounded capacity, automatic eviction, snapshot/restore, event emissions |
 | **Analysis** | BEACON | Rolling baseline + anomaly detection | Sliding window stats, configurable σ threshold (default 2.5), deviation scoring |
-| **Orchestration** | CORTEX | Cross-engine signal routing | Deterministic rule matching, 4 signal types, 3 action types, priority-sorted |
+| **Orchestration** | CORTEX | Policy-driven action chain execution | Declarative policies, action chains, condition resolver, attachment auto-binding |
 
-### Cross-Engine Integration (Phase 1)
+### CORTEX Evolution (Phases 1–5)
 
-CORTEX routes signals between engines via deterministic rules:
-- Analysis Engine → `anomaly_detected` → CORTEX (on deviation ≥ 2.5σ)
-- Execution Engine → `execution_failed` / `execution_retried` → CORTEX
-- State Engine → `state_written` → CORTEX (after every write)
+| Phase | Description | Status |
+|-------|-------------|--------|
+| **Phase 1** | Signal routing + proof emission | ✅ Complete |
+| **Phase 2** | Action execution via public engine APIs (`validate_input`, `persist_state`, `block_execution`, `tighten_interception`, `trip_execution`) | ✅ Complete |
+| **Phase 3** | Attachment → rule auto-binding (`registerAttachmentRules`) with capability → action mapping | ✅ Complete |
+| **Phase 4** | Automatic binding — generic wrapper auto-resolves `__MANA_ATTACHMENTS__`, emits `execution_started` with function identity, no manual glue | ✅ Complete |
+| **Phase 5** | Declarative policy layer — `AttachmentPolicy { on, condition, then }` with action chains and condition resolver | ✅ Complete |
 
-Phase 1 is routing + proof only (no cross-engine mutation). Phase 2 will add dynamic adaptation.
+### Phase 5 Architecture
+
+```
+Artifact declares:
+  { functionName, capability, primitive, policy: { on, condition, then } }
+        │
+        ▼
+  registerAttachmentRules() ← called automatically by generic wrapper
+        │
+        ├─ policy.on → signal to listen for (default: execution_started)
+        ├─ policy.condition → resolved to deterministic test function
+        │    (always | input_exists | input_contains_script | input_is_string)
+        ├─ policy.then → single action OR ordered action chain
+        │
+        ▼
+  routeSignal() matches → resolveRuleActions() → executeActionChain()
+        │
+        ▼
+  Each action executes via public engine APIs
+  (Interception, State, Execution engines)
+```
+
+### Signals (v2.1.0)
+
+| Signal | Source |
+|--------|--------|
+| `execution_started` | Generic wrapper (every call) |
+| `execution_succeeded` | Post-execution (future) |
+| `execution_failed` | Execution Engine (on error) |
+| `execution_retried` | Execution Engine (on retry) |
+| `anomaly_detected` | Analysis Engine (deviation ≥ 2.5σ) |
+| `state_written` | State Engine (after every write) |
+| `validation_failed` | Interception Engine (on block) |
+| `rule_registered` | Orchestration Engine (attachment auto-binding) |
+
+### Safety Constraints
+
+- Re-entrancy guard: max depth 2 (prevents `routeSignal → writeState → routeSignal` loops)
+- Action cooldown: 30s per (primitive, ruleId, action) key
+- Payload treated as untrusted — all casts guarded with `typeof` checks
+- No async execution, no freeform user code in conditions
+- Backward compatible: artifacts without policies still use Phase 3 capability mapping
 
 ---
 
@@ -397,7 +451,8 @@ Phase 1 is routing + proof only (no cross-engine mutation). Phase 2 will add dyn
 | 2 — Activation guide + Mana bridge | ✅ Complete | activation-guide, mana-bridge |
 | 3 — Export bridge + verification script | ✅ Complete | export-bridge with 4-gate verification |
 | 4 — Generic Activation Engine | ✅ Complete | generic-activation, generic-wrapper, auto-activation in export-bridge |
-| 5 — Behavior Engine Layer | ✅ Complete | 5 engines: Interception, Execution, State, Analysis, Orchestration |
+| 5 — Behavior Engine Layer | ✅ Complete | 5 engines: Interception, Execution, State, Analysis, Orchestration (Phase 5) |
+| 5b — CORTEX Phases 2–5 | ✅ Complete | Action execution, auto-binding, declarative policies, action chains |
 | 6 — Wire into Ascension pipeline | 🔲 Next | Feed real pipeline data into ledger builder |
 | 7 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
 | 8 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
