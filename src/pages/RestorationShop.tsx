@@ -356,6 +356,28 @@ export default function RestorationShop() {
         .replace(/^(?!<[a-z])(.*[^\n])$/gm, (m) => m.trim() ? `<p>${m}</p>` : '');
       zip.file('INTEGRATION.html', wrapDocHtml('Integration Guide', integrationBody));
 
+      // ═══ Capability Activation Ledger + Guide + Verification ═══
+      try {
+        const { buildAscensionLifecycleArtifacts, generateVerificationScript } = await import('@/lib/capability-lifecycle/export-bridge');
+        const lifecycle = buildAscensionLifecycleArtifacts(
+          report.primitiveManifest.map(p => ({
+            chain: [p.name],
+            fingerprint,
+            name: p.name,
+            description: p.description || '',
+            archetype: (p as Record<string, unknown>).archetype as string || 'Active',
+          })),
+          fingerprint,
+          detectedLang || 'typescript',
+        );
+        zip.file('capability-ledger.json', lifecycle.ledgerJson);
+        zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+        const allPrimitives = report.primitiveManifest.map(p => p.name);
+        zip.file('RUN_VERIFICATION.ts', generateVerificationScript(fingerprint, allPrimitives));
+      } catch {
+        // Graceful degradation — lifecycle artifacts are supplementary
+      }
+
       zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
         name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
         slug: `ascended-${report.id}`,
