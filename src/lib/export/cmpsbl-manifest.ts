@@ -3,24 +3,29 @@
  * 
  * Generates a standardized manifest.json for every ZIP export
  * across the substrate — Foundry, Vault, Forge, Universal Adapter, and Templates.
+ *
+ * Terminology: Uses "primitives" (never "modules") per CMPSBL® governance.
  */
 
 export interface CmpsblManifestInput {
   name: string;
   cjpi?: number;
+  /** @deprecated Use `primitives` instead */
   modules?: string[];
+  primitives?: string[];
   targets?: string[];
   version?: string;
   category?: string;
   fingerprint?: string;
   source?: string;
+  serial?: string;
 }
 
 export interface CmpsblManifest {
   name: string;
   tier: string;
   cjpi: number;
-  modules: string[];
+  primitives: string[];
   exported: string;
   runtime: string;
   targets: string[];
@@ -28,11 +33,14 @@ export interface CmpsblManifest {
   category?: string;
   fingerprint?: string;
   source?: string;
+  serial?: string;
 }
 
 function tierFromScore(score: number): string {
-  if (score >= 90) return 'Apex';
+  if (score >= 93) return 'Apex';
+  if (score >= 85) return 'Mythic';
   if (score >= 75) return 'Enterprise';
+  if (score >= 65) return 'Mint';
   if (score >= 55) return 'Architect';
   if (score >= 35) return 'Creator';
   return 'Raw';
@@ -47,7 +55,7 @@ export function generateCmpsblManifest(input: CmpsblManifestInput): CmpsblManife
     name: input.name,
     tier: tierFromScore(cjpi),
     cjpi,
-    modules: input.modules ?? ['SYSTEM'],
+    primitives: input.primitives ?? input.modules ?? ['SYSTEM'],
     exported: new Date().toISOString().slice(0, 10),
     runtime: 'cmpsbl-convex-core-processing-layer',
     targets: input.targets ?? ['typescript'],
@@ -55,6 +63,7 @@ export function generateCmpsblManifest(input: CmpsblManifestInput): CmpsblManife
     ...(input.category ? { category: input.category } : {}),
     ...(input.fingerprint ? { fingerprint: input.fingerprint } : {}),
     ...(input.source ? { source: input.source } : {}),
+    ...(input.serial ? { serial: input.serial } : {}),
   };
 }
 
