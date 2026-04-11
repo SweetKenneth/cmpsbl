@@ -51,6 +51,7 @@ export type OrchestrationEffect =
   | 'action_executed'
   | 'action_skipped'
   | 'validation_passed'
+  | 'validation_failed'
   | 'execution_blocked'
   | 'state_persisted';
 
