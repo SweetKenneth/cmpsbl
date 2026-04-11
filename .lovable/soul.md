@@ -1167,10 +1167,10 @@ Updated all four lifecycle docs to v2.1.0:
 
 **[FACT]** CORTEX Phase 3 shipped. The orchestration engine now auto-generates rules from `__MANA_ATTACHMENTS__` at runtime via `registerAttachmentRules()`. Attachments are no longer metadata — they are executable behavior declarations. Capability → action mapping: `defense_gate` → `validate_input`, `beacon_telemetry` → `persist_state`, `circuit_breaker` → `trip_execution`, `governance_hook` → `tighten_interception`, `audit_trail` → `persist_state`, all others → `log_only`. Rules deduplicate by ID and emit proof events on registration. Build clean, zero TS errors.
 
-**[FACT]** CORTEX Phase 4 shipped. The generic wrapper now auto-binds attachment rules from `__MANA_ATTACHMENTS__` at wrap time and emits `routeSignal('execution_started', { function, input })` on every call. Drop in a file → behavior activates automatically. No manual glue required. Both sync and async wrappers updated. Build clean.
+**[FACT]** CORTEX Phase 5 shipped. The orchestration engine now supports declarative policies on attachments: `{ on, condition, then }` where `then` can be a single action or an ordered action chain. Condition resolver supports `always`, `input_exists`, `input_contains_script`, `input_is_string`. Attachments without policies fall back to Phase 3 capability mapping. Action chains execute deterministically and halt on throw. New signals: `execution_succeeded`, `validation_failed`. Build clean.
 
 **Next:**
-- CORTEX Phase 5: dynamic rule generation from runtime telemetry (anomaly → auto-rule)
+- CORTEX Phase 6: dynamic rule generation from runtime telemetry (anomaly → auto-rule)
 - Lifecycle pipeline wiring (ledger builder into live Ascension pipeline)
 - `/verify/:fingerprint` UI update for decomposed CJPI
 
