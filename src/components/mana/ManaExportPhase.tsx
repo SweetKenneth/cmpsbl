@@ -14,6 +14,7 @@ import type { AttachmentResult } from './ManaAttachPhase';
 import type { ManaMergeResult } from './ManaMergePhase';
 import { PATENT_NOTICE, MANA_PATENT_NOTICE, COPYRIGHT_NOTICE } from '@/config/domains';
 import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana-bridge';
+import { generateVerificationScript } from '@/lib/capability-lifecycle/export-bridge';
 
 interface Props {
   result: AttachmentResult;
