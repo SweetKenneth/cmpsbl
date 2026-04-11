@@ -27,6 +27,9 @@ export type OrchestrationAction =
   | 'trip_execution'
   | 'log_only';
 
+export type OrchestrationEffect =
+  | 'action_planned';
+
 export interface OrchestrationRule {
   readonly id: string;
   readonly priority?: number;
@@ -41,6 +44,7 @@ export interface OrchestrationEvent {
   readonly action: OrchestrationAction;
   readonly ruleId: string;
   readonly timestamp: number;
+  readonly effect: OrchestrationEffect;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -105,6 +109,7 @@ function emit(
   signal: OrchestrationSignal,
   action: OrchestrationAction,
   ruleId: string,
+  effect: OrchestrationEffect,
 ): void {
   events.push({
     primitive,
@@ -112,6 +117,40 @@ function emit(
     action,
     ruleId,
     timestamp: Date.now(),
+    effect,
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §6b — ACTION HANDLER (Phase 2 Patch 1 — intent only, no mutation)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function executeAction(
+  primitive: string,
+  action: OrchestrationAction,
+  _payload?: unknown,
+): void {
+  switch (action) {
+    case 'tighten_interception':
+      /* Phase 1: no mutation — intent only */
+      break;
+
+    case 'trip_execution':
+      /* Phase 1: no mutation — intent only */
+      break;
+
+    case 'log_only':
+      break;
+  }
+
+  /* Emit proof that action was planned */
+  events.push({
+    primitive,
+    signal: 'state_written',
+    action,
+    ruleId: 'internal',
+    timestamp: Date.now(),
+    effect: 'action_planned',
   });
 }
 
@@ -152,14 +191,8 @@ export function routeSignal(
 
     if (!matched) continue;
 
-    emit(primitive, signal, rule.action, rule.id);
-
-    /* Phase 1 = emit only (no cross-engine mutation yet)
-     * Phase 2 will attach real engine hooks here:
-     *   - tighten_interception → register stricter interception rules
-     *   - trip_execution → open circuit for the primitive
-     *   - log_only → telemetry capture
-     */
+    emit(primitive, signal, rule.action, rule.id, 'action_planned');
+    executeAction(primitive, rule.action, payload);
   }
 }
 
