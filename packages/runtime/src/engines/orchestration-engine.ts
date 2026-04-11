@@ -105,7 +105,7 @@ const ACTION_COOLDOWN_MS = 30_000;
 const MAX_ACTION_HISTORY = 500;
 
 /** Actions exempt from cooldown — security-critical actions must always execute */
-const COOLDOWN_EXEMPT_ACTIONS: ReadonlySet<OrchestrationAction> = new Set([
+const COOLDOWN_EXEMPT_ACTIONS: ReadonlySet<OrchestrationAction> = new Set<OrchestrationAction>([
   'validate_input',
   'block_execution',
 ]);
