@@ -443,12 +443,18 @@ function resolveRuleActions(
   fallbackAction: OrchestrationAction,
 ): readonly OrchestrationAction[] {
   const attachment = attachmentRegistry.get(ruleId);
-  if (!attachment?.policy) return [fallbackAction];
+  if (!attachment) return [fallbackAction];
 
-  const thenActions = attachment.policy.then;
-  return Array.isArray(thenActions)
-    ? thenActions as readonly OrchestrationAction[]
-    : [thenActions as OrchestrationAction];
+  /* If policy has explicit `then`, respect it */
+  if (attachment.policy) {
+    const thenActions = attachment.policy.then;
+    return Array.isArray(thenActions)
+      ? thenActions as readonly OrchestrationAction[]
+      : [thenActions as OrchestrationAction];
+  }
+
+  /* No policy — use capability-derived chain (includes enforcement) */
+  return mapCapabilityToActions(attachment.capability);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -509,23 +515,26 @@ export function routeSignal(
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Map a Mana capability slug to a deterministic orchestration action.
+ * Map a Mana capability slug to a deterministic action chain.
  * Used as fallback when no policy is declared on the attachment.
+ *
+ * defense_gate returns ['validate_input', 'block_execution'] —
+ * detection AND enforcement by default.
  */
-function mapCapabilityToAction(capability: string): OrchestrationAction {
+function mapCapabilityToActions(capability: string): readonly OrchestrationAction[] {
   switch (capability) {
     case 'defense_gate':
-      return 'validate_input';
+      return ['validate_input', 'block_execution'];
     case 'beacon_telemetry':
-      return 'persist_state';
+      return ['persist_state'];
     case 'circuit_breaker':
-      return 'trip_execution';
+      return ['trip_execution'];
     case 'governance_hook':
-      return 'tighten_interception';
+      return ['tighten_interception'];
     case 'audit_trail':
-      return 'persist_state';
+      return ['persist_state'];
     default:
-      return 'log_only';
+      return ['log_only'];
   }
 }
 
@@ -608,7 +617,7 @@ export function registerAttachmentRules(
           ? a.policy.then[0] as OrchestrationAction
           : 'log_only')
         : a.policy.then as OrchestrationAction)
-      : mapCapabilityToAction(a.capability);
+      : mapCapabilityToActions(a.capability)[0];
 
     registerOrchestrationRule({
       id: ruleId,
