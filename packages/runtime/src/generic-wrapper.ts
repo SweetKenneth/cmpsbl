@@ -16,7 +16,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { getEngineForPrimitive } from '@/lib/runtime/primitive-engine-map';
 import { wrapInterception } from './engines/interception-engine';
 import { wrapState } from './engines/state-engine';
 import { wrapExecution } from './engines/execution-engine';
@@ -27,6 +26,40 @@ import type { AttachmentEntry } from './engines/orchestration-engine';
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Why this lives here: the runtime package must build standalone and cannot
+ * depend on application-only alias imports.
+ */
+type BehaviorEngine =
+  | 'interception'
+  | 'state'
+  | 'execution'
+  | 'analysis'
+  | 'orchestration'
+  | 'generic';
+
+const PRIMITIVE_ENGINE_MAP: Record<string, BehaviorEngine> = {
+  DEFENSE: 'interception',
+  GOVERNANCE: 'interception',
+  IMMUNITY: 'interception',
+  CONSCIENCE: 'interception',
+
+  MEMORY: 'state',
+
+  FAILSAFE: 'execution',
+
+  ORACLE: 'analysis',
+  SENTINEL: 'analysis',
+  BEACON: 'analysis',
+  AUDIT: 'analysis',
+
+  CORTEX: 'orchestration',
+};
+
+function getEngineForPrimitive(name: string): BehaviorEngine {
+  return PRIMITIVE_ENGINE_MAP[name] ?? 'generic';
+}
 
 /** Standard effect emitted by generic wrappers */
 export interface GenericEffect {
@@ -115,7 +148,7 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
   const resolvedFnName = functionName
     ?? (targetFn.name && targetFn.name !== 'anonymous' ? targetFn.name : undefined)
     ?? primitiveName;
-  // Register the wrapper
+
   const handle: WrapperHandle = {
     primitiveName,
     wrappedAt: Date.now(),
@@ -160,7 +193,10 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
       wrappedFn = wrapAnalysis(primitiveName, targetFn) as typeof targetFn;
       break;
     case 'orchestration':
-      wrappedFn = wrapOrchestration(primitiveName, targetFn) as typeof targetFn;
+      wrappedFn = wrapOrchestration(
+        primitiveName,
+        targetFn as (...args: unknown[]) => unknown,
+      ) as typeof targetFn;
       break;
   }
 
@@ -205,6 +241,7 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
   const resolvedFnName = functionName
     ?? (targetFn.name && targetFn.name !== 'anonymous' ? targetFn.name : undefined)
     ?? primitiveName;
+
   const handle: WrapperHandle = {
     primitiveName,
     wrappedAt: Date.now(),
@@ -249,7 +286,10 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
       wrappedFn = wrapAnalysis(primitiveName, targetFn) as typeof targetFn;
       break;
     case 'orchestration':
-      wrappedFn = wrapOrchestration(primitiveName, targetFn) as typeof targetFn;
+      wrappedFn = wrapOrchestration(
+        primitiveName,
+        targetFn as (...args: unknown[]) => unknown,
+      ) as typeof targetFn;
       break;
   }
 
