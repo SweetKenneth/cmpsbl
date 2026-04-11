@@ -537,7 +537,9 @@ export function registerAttachmentRules(
      * the full chain is resolved at execution time from attachmentRegistry. */
     const primaryAction: OrchestrationAction = a.policy
       ? (Array.isArray(a.policy.then)
-        ? (a.policy.then[0] as OrchestrationAction ?? 'log_only')
+        ? (a.policy.then.length > 0
+          ? a.policy.then[0] as OrchestrationAction
+          : 'log_only')
         : a.policy.then as OrchestrationAction)
       : mapCapabilityToAction(a.capability);
 
