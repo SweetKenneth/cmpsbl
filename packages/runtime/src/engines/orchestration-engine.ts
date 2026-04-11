@@ -23,6 +23,8 @@
 import { registerRule, getRegisteredRules, wrapInterception } from './interception-engine';
 import { registerExecutionRule, getExecutionRules } from './execution-engine';
 import { writeState } from './state-engine';
+import { resolveCapabilityActions } from './capability-registry';
+import { resolveCondition } from './condition-resolver';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
