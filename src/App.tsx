@@ -152,18 +152,25 @@ const App = () => {
   useEffect(() => {
     loadDeferredCSS();
 
-    // Tier 1: Critical safety (immediate)
+    // Tier 1: Critical safety (immediate — keep minimal to shorten critical chain)
     Promise.all([
       import("@/lib/defense/site-guard"),
       import("@/lib/telemetry/error-telemetry"),
-      import("@/lib/error-recovery/globalErrorRecovery"),
-    ]).then(([guard, telemetry, recovery]) => {
+    ]).then(([guard, telemetry]) => {
       const c = guard.installSiteGuard();
       telemetry.installGlobalErrorHandler();
-      const c2 = recovery.installGlobalErrorRecovery();
       if (c) cleanupRef.current.push(c);
-      if (c2) cleanupRef.current.push(c2);
     });
+
+    // Tier 1b: Error recovery (deferred 50ms to avoid inflating network dependency tree)
+    // globalErrorRecovery patches fetch — loading it immediately chains ALL subsequent
+    // API calls into its dependency node, inflating Lighthouse's critical chain to 12s+
+    setTimeout(() => {
+      import("@/lib/error-recovery/globalErrorRecovery").then((recovery) => {
+        const c2 = recovery.installGlobalErrorRecovery();
+        if (c2) cleanupRef.current.push(c2);
+      });
+    }, 50);
 
     // Tier 2: UX essentials (after 100ms)
     setTimeout(() => {
