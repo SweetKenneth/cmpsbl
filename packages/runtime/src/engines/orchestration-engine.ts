@@ -51,6 +51,7 @@ export type OrchestrationEffect =
   | 'action_executed'
   | 'action_skipped'
   | 'validation_passed'
+  | 'validation_failed'
   | 'execution_blocked'
   | 'state_persisted';
 
@@ -312,7 +313,7 @@ function executeAction(
       if (detected) {
         if (ctx) ctx.validationFailed = true;
         recordActionExecution(primitive, ruleId, action);
-        emit(primitive, signal, action, ruleId, 'execution_blocked');
+        emit(primitive, signal, action, ruleId, 'validation_failed');
         return;   /* ← no throw — block_execution handles enforcement */
       }
 
