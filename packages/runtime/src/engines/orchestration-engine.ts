@@ -357,24 +357,33 @@ export function routeSignal(
   signal: OrchestrationSignal,
   payload?: unknown,
 ): void {
-  for (const rule of rules) {
-    if (rule.signal !== signal) continue;
+  /* Re-entrancy guard — prevent loops from actions that trigger signals
+   * (e.g. persist_state → writeState → routeSignal('state_written')) */
+  if (routingDepth >= MAX_ROUTING_DEPTH) return;
 
-    let matched = true;
+  routingDepth++;
+  try {
+    for (const rule of rules) {
+      if (rule.signal !== signal) continue;
 
-    if (rule.test) {
-      try {
-        matched = rule.test(payload);
-      } catch {
-        /* Malformed test — skip, never crash the router */
-        continue;
+      let matched = true;
+
+      if (rule.test) {
+        try {
+          matched = rule.test(payload);
+        } catch {
+          /* Malformed test — skip, never crash the router */
+          continue;
+        }
       }
+
+      if (!matched) continue;
+
+      emit(primitive, signal, rule.action, rule.id, 'action_planned');
+      executeAction(primitive, signal, rule.action, rule.id, payload);
     }
-
-    if (!matched) continue;
-
-    emit(primitive, signal, rule.action, rule.id, 'action_planned');
-    executeAction(primitive, signal, rule.action, rule.id, payload);
+  } finally {
+    routingDepth--;
   }
 }
 
