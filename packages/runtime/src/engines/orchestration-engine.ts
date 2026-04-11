@@ -76,6 +76,10 @@ const rules: OrchestrationRule[] = [];
 const events: OrchestrationEvent[] = [];
 const actionHistory = new Map<string, number>();
 
+/** Re-entrancy guard — prevents routeSignal → executeAction → writeState → routeSignal loops */
+let routingDepth = 0;
+const MAX_ROUTING_DEPTH = 2;
+
 const ACTION_COOLDOWN_MS = 30_000;
 const MAX_ACTION_HISTORY = 500;
 
