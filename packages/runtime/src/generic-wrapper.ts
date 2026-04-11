@@ -195,6 +195,7 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
 export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
   primitiveName: string,
   targetFn: (...args: TArgs) => Promise<TReturn>,
+  attachments?: ReadonlyArray<AttachmentEntry>,
 ): (...args: TArgs) => Promise<TReturn> {
   const handle: WrapperHandle = {
     primitiveName,
@@ -202,6 +203,25 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
     hooksFiring: true,
   };
   activeWrappers.set(primitiveName, handle);
+
+  // ── Phase 4: auto-bind attachment rules (once per primitive) ──────────
+  const resolvedAttachments = attachments
+    ?? (typeof __MANA_ATTACHMENTS__ !== 'undefined' ? __MANA_ATTACHMENTS__ : undefined);
+
+  if (resolvedAttachments && resolvedAttachments.length > 0 && !attachmentsBound.has(primitiveName)) {
+    const relevantAttachments = resolvedAttachments.filter(a => a.primitive === primitiveName);
+    if (relevantAttachments.length > 0) {
+      registerAttachmentRules(primitiveName, relevantAttachments);
+      attachmentsBound.add(primitiveName);
+
+      collectedEffects.push({
+        kind: 'attachment_bound',
+        primitiveName,
+        timestamp: Date.now(),
+        description: `Auto-bound ${relevantAttachments.length} attachment rule(s) from artifact (async)`,
+      });
+    }
+  }
 
   const engine = getEngineForPrimitive(primitiveName);
 
@@ -233,6 +253,12 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
       primitiveName,
       timestamp: Date.now(),
       description: `Wrapper executed for async ${primitiveName} via ${engine} engine`,
+    });
+
+    // ── Phase 4: emit execution_started with function identity ──────────
+    routeSignal(primitiveName, 'execution_started', {
+      function: primitiveName,
+      input: args[0],
     });
 
     const result = await wrappedFn.apply(this, args);
