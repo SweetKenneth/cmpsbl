@@ -101,6 +101,31 @@ const MAX_ROUTING_DEPTH = 2;
 const ACTION_COOLDOWN_MS = 30_000;
 const MAX_ACTION_HISTORY = 500;
 
+/** Actions exempt from cooldown — security-critical actions must always execute */
+const COOLDOWN_EXEMPT_ACTIONS: ReadonlySet<OrchestrationAction> = new Set([
+  'validate_input',
+  'block_execution',
+]);
+
+/**
+ * Chain-local execution context — carries state between actions in a single chain.
+ * `validationFailed` is set by `validate_input` when injection is detected,
+ * and read by `block_execution` to decide whether to throw.
+ */
+interface ChainContext {
+  validationFailed: boolean;
+}
+
+/** Built-in injection patterns for validate_input (DEFENSE-grade) */
+const INJECTION_PATTERNS: readonly RegExp[] = [
+  /<script[\s>]/i,
+  /javascript:/i,
+  /on(?:load|error|click|mouseover)=/i,
+  /<iframe[\s>]/i,
+  /<object[\s>]/i,
+  /<embed[\s>]/i,
+];
+
 /**
  * Active attachment registry — maps ruleId → AttachmentEntry.
  * Used by routeSignal to resolve policy action chains at execution time.
@@ -132,6 +157,9 @@ function shouldSkipAction(
   ruleId: string,
   action: OrchestrationAction,
 ): boolean {
+  /* Security-critical actions are never skipped by cooldown */
+  if (COOLDOWN_EXEMPT_ACTIONS.has(action)) return false;
+
   const key = makeActionHistoryKey(primitive, ruleId, action);
   const lastExecutedAt = actionHistory.get(key);
 
@@ -233,6 +261,7 @@ function emit(
 
 /**
  * Execute a single action through public engine APIs only.
+ * Accepts a ChainContext to carry state between chained actions.
  */
 function executeAction(
   primitive: string,
@@ -240,6 +269,7 @@ function executeAction(
   action: OrchestrationAction,
   ruleId: string,
   payload?: unknown,
+  ctx?: ChainContext,
 ): void {
   if (shouldSkipAction(primitive, ruleId, action)) {
     emit(primitive, signal, action, ruleId, 'action_skipped');
@@ -248,9 +278,6 @@ function executeAction(
 
   switch (action) {
     case 'validate_input': {
-      const passthrough = (...args: unknown[]) => args;
-      const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
-
       const inputArg = (payload as Record<string, unknown> | undefined)?.input;
       if (inputArg === undefined) {
         recordActionExecution(primitive, ruleId, action);
@@ -258,9 +285,25 @@ function executeAction(
         return;
       }
 
+      /* Built-in injection detection (DEFENSE-grade) */
+      if (typeof inputArg === 'string') {
+        const injectionDetected = INJECTION_PATTERNS.some(p => p.test(inputArg));
+        if (injectionDetected && ctx) {
+          ctx.validationFailed = true;
+          recordActionExecution(primitive, ruleId, action);
+          emit(primitive, signal, action, ruleId, 'execution_blocked');
+          return;
+        }
+      }
+
+      /* Also check interception engine rules */
+      const passthrough = (...args: unknown[]) => args;
+      const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
+
       try {
         guarded(inputArg);
       } catch (err) {
+        if (ctx) ctx.validationFailed = true;
         emit(primitive, signal, action, ruleId, 'execution_blocked');
         throw err;
       }
@@ -285,6 +328,14 @@ function executeAction(
     }
 
     case 'block_execution': {
+      /* In a chain context, block_execution is conditional —
+       * it only throws if a prior validate_input flagged an issue.
+       * When used standalone (no ctx), it blocks unconditionally. */
+      if (ctx && !ctx.validationFailed) {
+        recordActionExecution(primitive, ruleId, action);
+        emit(primitive, signal, action, ruleId, 'action_executed');
+        return;
+      }
       recordActionExecution(primitive, ruleId, action);
       emit(primitive, signal, action, ruleId, 'execution_blocked');
       throw new Error(`[CORTEX] execution blocked by rule '${ruleId}'`);
@@ -346,6 +397,7 @@ function executeAction(
 
 /**
  * Execute a deterministic sequence of actions for a single rule match.
+ * A shared ChainContext carries state (e.g. validationFailed) between actions.
  * Actions run in order; if any throws (e.g. block_execution), the chain halts.
  */
 function executeActionChain(
@@ -355,8 +407,9 @@ function executeActionChain(
   ruleId: string,
   payload?: unknown,
 ): void {
+  const ctx: ChainContext = { validationFailed: false };
   for (const action of actions) {
-    executeAction(primitive, signal, action, ruleId, payload);
+    executeAction(primitive, signal, action, ruleId, payload, ctx);
   }
 }
 
