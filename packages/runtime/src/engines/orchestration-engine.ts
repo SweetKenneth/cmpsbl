@@ -261,6 +261,7 @@ function emit(
 
 /**
  * Execute a single action through public engine APIs only.
+ * Accepts a ChainContext to carry state between chained actions.
  */
 function executeAction(
   primitive: string,
@@ -268,6 +269,7 @@ function executeAction(
   action: OrchestrationAction,
   ruleId: string,
   payload?: unknown,
+  ctx?: ChainContext,
 ): void {
   if (shouldSkipAction(primitive, ruleId, action)) {
     emit(primitive, signal, action, ruleId, 'action_skipped');
@@ -276,9 +278,6 @@ function executeAction(
 
   switch (action) {
     case 'validate_input': {
-      const passthrough = (...args: unknown[]) => args;
-      const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
-
       const inputArg = (payload as Record<string, unknown> | undefined)?.input;
       if (inputArg === undefined) {
         recordActionExecution(primitive, ruleId, action);
@@ -286,9 +285,25 @@ function executeAction(
         return;
       }
 
+      /* Built-in injection detection (DEFENSE-grade) */
+      if (typeof inputArg === 'string') {
+        const injectionDetected = INJECTION_PATTERNS.some(p => p.test(inputArg));
+        if (injectionDetected && ctx) {
+          ctx.validationFailed = true;
+          recordActionExecution(primitive, ruleId, action);
+          emit(primitive, signal, action, ruleId, 'execution_blocked');
+          return;
+        }
+      }
+
+      /* Also check interception engine rules */
+      const passthrough = (...args: unknown[]) => args;
+      const guarded = wrapInterception(`cortex::${primitive}`, passthrough);
+
       try {
         guarded(inputArg);
       } catch (err) {
+        if (ctx) ctx.validationFailed = true;
         emit(primitive, signal, action, ruleId, 'execution_blocked');
         throw err;
       }
