@@ -10,7 +10,7 @@
  * Design constraints:
  *   - No capability can be registered twice (idempotent, first-write wins)
  *   - Action chains are immutable after registration
- *   - Unknown capabilities resolve to a safe default (log_only)
+ *   - Unknown capabilities throw — no silent fallbacks
  *   - Registry is queryable for introspection/proof
  *
  * © CMPSBL® — All rights reserved.
@@ -92,20 +92,33 @@ export function registerCapability(input: CapabilityRegistrationInput): boolean 
 
 /**
  * Resolve a capability slug to its default action chain.
- * Returns ['log_only'] for unknown capabilities (safe fallback).
+ * Throws if the capability is not registered — no silent fallbacks.
  */
 export function resolveCapabilityActions(slug: string): readonly OrchestrationAction[] {
   const def = registry.get(slug);
-  return def ? def.defaultActions : ['log_only'];
+  if (!def) {
+    throw new Error(`[CapabilityRegistry] Unknown capability '${slug}' — register before use`);
+  }
+  return def.defaultActions;
 }
 
 /**
  * Resolve a capability slug to its default signal.
- * Returns 'execution_started' for unknown capabilities.
+ * Throws if the capability is not registered — no silent fallbacks.
  */
 export function resolveCapabilitySignal(slug: string): OrchestrationSignal {
   const def = registry.get(slug);
-  return def ? def.defaultSignal : 'execution_started';
+  if (!def) {
+    throw new Error(`[CapabilityRegistry] Unknown capability '${slug}' — register before use`);
+  }
+  return def.defaultSignal;
+}
+
+/**
+ * Check if a capability slug is registered (non-throwing query).
+ */
+export function isCapabilityRegistered(slug: string): boolean {
+  return registry.has(slug);
 }
 
 /**
