@@ -110,7 +110,9 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
   primitiveName: string,
   targetFn: (...args: TArgs) => TReturn,
   attachments?: ReadonlyArray<AttachmentEntry>,
+  functionName?: string,
 ): (...args: TArgs) => TReturn {
+  const resolvedFnName = functionName ?? targetFn.name ?? primitiveName;
   // Register the wrapper
   const handle: WrapperHandle = {
     primitiveName,
@@ -172,7 +174,7 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
 
     // ── Phase 4: emit execution_started with function identity ──────────
     routeSignal(primitiveName, 'execution_started', {
-      function: primitiveName,
+      function: resolvedFnName,
       input: args[0],
     });
 
@@ -257,7 +259,7 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
 
     // ── Phase 4: emit execution_started with function identity ──────────
     routeSignal(primitiveName, 'execution_started', {
-      function: primitiveName,
+      function: resolvedFnName,
       input: args[0],
     });
 
