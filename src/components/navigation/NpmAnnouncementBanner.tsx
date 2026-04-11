@@ -1,9 +1,11 @@
 /**
  * QuoteMarquee — Rolling quotes from internet pioneers
  * Non-dismissible. Infinite scroll marquee with CSS animation.
+ * Deferred render: delays mount so hero content becomes the LCP element
+ * instead of this small decorative banner text.
  */
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const QUOTES = [
   { text: "Information wants to be free.", author: "Stewart Brand" },
@@ -23,6 +25,18 @@ const ITEMS = [...QUOTES, ...QUOTES];
 
 export function NpmAnnouncementBanner() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+
+  // Defer render until after hero has painted — prevents this banner
+  // from being identified as the LCP element by Lighthouse
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setReady(true));
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  if (!ready) return null;
 
   return (
     <div
