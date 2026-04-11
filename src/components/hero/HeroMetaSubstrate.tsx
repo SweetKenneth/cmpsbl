@@ -15,6 +15,9 @@ import {
   ArrowRight, 
   ChevronDown,
   Wrench,
+  Scan,
+  ShieldCheck,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
