@@ -358,22 +358,26 @@ export default function RestorationShop() {
 
       // ═══ Capability Activation Ledger + Guide + Verification ═══
       try {
-        const lifecycleModule = await import('@/lib/capability-lifecycle/export-bridge');
-        const lifecycle = lifecycleModule.buildAscensionLifecycleArtifacts(
-          report.primitiveManifest.map(p => ({
-            chain: [p.name],
-            fingerprint,
-            name: p.name,
-            description: p.contribution,
-            archetype: 'Active' as const,
-          })),
-          fingerprint,
-          detectedLang || 'typescript',
-        );
-        zip.file('capability-ledger.json', lifecycle.ledgerJson);
-        zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
-        const allPrimitives = report.primitiveManifest.map(p => p.name);
-        zip.file('RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(fingerprint, allPrimitives));
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        import('@/lib/capability-lifecycle/export-bridge').then(lifecycleModule => {
+          try {
+            const lifecycle = lifecycleModule.buildAscensionLifecycleArtifacts(
+              report.primitiveManifest.map(p => ({
+                chain: [p.name],
+                fingerprint,
+                name: p.name,
+                description: p.contribution,
+                archetype: 'Active' as const,
+              })),
+              fingerprint,
+              detectedLang || 'typescript',
+            );
+            zip.file('capability-ledger.json', lifecycle.ledgerJson);
+            zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+            const allPrimitives = report.primitiveManifest.map(p => p.name);
+            zip.file('RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(fingerprint, allPrimitives));
+          } catch { /* non-fatal */ }
+        }).catch(() => { /* non-fatal */ });
       } catch {
         // Graceful degradation — lifecycle artifacts are supplementary
       }
