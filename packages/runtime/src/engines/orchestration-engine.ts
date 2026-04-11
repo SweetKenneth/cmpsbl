@@ -397,6 +397,7 @@ function executeAction(
 
 /**
  * Execute a deterministic sequence of actions for a single rule match.
+ * A shared ChainContext carries state (e.g. validationFailed) between actions.
  * Actions run in order; if any throws (e.g. block_execution), the chain halts.
  */
 function executeActionChain(
@@ -406,8 +407,9 @@ function executeActionChain(
   ruleId: string,
   payload?: unknown,
 ): void {
+  const ctx: ChainContext = { validationFailed: false };
   for (const action of actions) {
-    executeAction(primitive, signal, action, ruleId, payload);
+    executeAction(primitive, signal, action, ruleId, payload, ctx);
   }
 }
 
