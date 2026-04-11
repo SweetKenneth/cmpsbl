@@ -328,6 +328,14 @@ function executeAction(
     }
 
     case 'block_execution': {
+      /* In a chain context, block_execution is conditional —
+       * it only throws if a prior validate_input flagged an issue.
+       * When used standalone (no ctx), it blocks unconditionally. */
+      if (ctx && !ctx.validationFailed) {
+        recordActionExecution(primitive, ruleId, action);
+        emit(primitive, signal, action, ruleId, 'action_executed');
+        return;
+      }
       recordActionExecution(primitive, ruleId, action);
       emit(primitive, signal, action, ruleId, 'execution_blocked');
       throw new Error(`[CORTEX] execution blocked by rule '${ruleId}'`);
