@@ -21,7 +21,8 @@ import { wrapInterception } from './engines/interception-engine';
 import { wrapState } from './engines/state-engine';
 import { wrapExecution } from './engines/execution-engine';
 import { wrapAnalysis } from './engines/analysis-engine';
-import { wrapOrchestration } from './engines/orchestration-engine';
+import { wrapOrchestration, registerAttachmentRules, routeSignal } from './engines/orchestration-engine';
+import type { AttachmentEntry } from './engines/orchestration-engine';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -29,11 +30,17 @@ import { wrapOrchestration } from './engines/orchestration-engine';
 
 /** Standard effect emitted by generic wrappers */
 export interface GenericEffect {
-  readonly kind: 'call_interception' | 'telemetry_emit' | 'state_write';
+  readonly kind: 'call_interception' | 'telemetry_emit' | 'state_write' | 'attachment_bound';
   readonly primitiveName: string;
   readonly timestamp: number;
   readonly description: string;
 }
+
+/** Mana attachment manifest — injected into artifacts at build time */
+declare const __MANA_ATTACHMENTS__: ReadonlyArray<AttachmentEntry> | undefined;
+
+/** Track which primitives have already auto-bound attachments */
+const attachmentsBound = new Set<string>();
 
 /** Wrapper metadata returned after wrapping */
 export interface WrapperHandle {
@@ -102,6 +109,7 @@ export function resetCollector(): void {
 export function wrapGeneric<TArgs extends unknown[], TReturn>(
   primitiveName: string,
   targetFn: (...args: TArgs) => TReturn,
+  attachments?: ReadonlyArray<AttachmentEntry>,
 ): (...args: TArgs) => TReturn {
   // Register the wrapper
   const handle: WrapperHandle = {
@@ -110,6 +118,25 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
     hooksFiring: true,
   };
   activeWrappers.set(primitiveName, handle);
+
+  // ── Phase 4: auto-bind attachment rules (once per primitive) ──────────
+  const resolvedAttachments = attachments
+    ?? (typeof __MANA_ATTACHMENTS__ !== 'undefined' ? __MANA_ATTACHMENTS__ : undefined);
+
+  if (resolvedAttachments && resolvedAttachments.length > 0 && !attachmentsBound.has(primitiveName)) {
+    const relevantAttachments = resolvedAttachments.filter(a => a.primitive === primitiveName);
+    if (relevantAttachments.length > 0) {
+      registerAttachmentRules(primitiveName, relevantAttachments);
+      attachmentsBound.add(primitiveName);
+
+      collectedEffects.push({
+        kind: 'attachment_bound',
+        primitiveName,
+        timestamp: Date.now(),
+        description: `Auto-bound ${relevantAttachments.length} attachment rule(s) from artifact`,
+      });
+    }
+  }
 
   const engine = getEngineForPrimitive(primitiveName);
 
@@ -141,6 +168,12 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
       primitiveName,
       timestamp: Date.now(),
       description: `Wrapper executed for ${primitiveName} via ${engine} engine`,
+    });
+
+    // ── Phase 4: emit execution_started with function identity ──────────
+    routeSignal(primitiveName, 'execution_started', {
+      function: primitiveName,
+      input: args[0],
     });
 
     const result = wrappedFn.apply(this, args);
