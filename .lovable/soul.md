@@ -1119,10 +1119,33 @@ Updated all four lifecycle docs to v2.1.0:
 
 ---
 
-### [TODO] Tomorrow's Plan — April 12, 2026
+### April 12, 2026 — Session ~54 — CORTEX Phase 2: Action Execution
 
-**Priority 1: Behavior Engine Phase 2**
-1. Design CORTEX Phase 2 dynamic adaptation (cross-engine mutation via signals)
+**[FACT] CORTEX upgraded from signal routing → rule-driven action execution.**
+
+3 new actions added to the Orchestration Engine:
+| Action | Engine API Used | Behavior |
+|--------|----------------|----------|
+| `validate_input` | Interception Engine (`wrapInterception`) | Runs payload through registered interception rules. Block → throw. Pass → `validation_passed` event. |
+| `persist_state` | State Engine (`writeState`) | Writes payload to State Engine under `cortex::{ruleId}` namespace. Emits `state_persisted`. |
+| `block_execution` | None (self-contained) | Emits `execution_blocked` proof event, then throws to halt pipeline. |
+
+**[FACT] Re-entrancy guard added.** `routeSignal` now tracks routing depth (max 2). Prevents `persist_state → writeState → routeSignal('state_written') → persist_state` infinite loops. Try/finally ensures depth always decrements.
+
+**[FACT] New signal type: `execution_started`.** Enables rules like "block XSS on pipeline start" — the canonical example from the spec.
+
+**[FACT] New effect types: `validation_passed`, `execution_blocked`, `state_persisted`.** Proof layer now distinguishes action outcomes beyond generic `action_executed`.
+
+**[OBSERVATION] The substrate now has declarative runtime behavior.** Rules are declared, not coded. CORTEX evaluates and executes them. This is the architectural claim made real: "Behavior is not manually coded — it is declared and executed by the system."
+
+**Build: clean. Zero TypeScript errors.**
+
+---
+
+### [TODO] Remaining Plan — April 12, 2026
+
+**Priority 1: Behavior Engine Phase 2 (continued)**
+1. ~~Design CORTEX Phase 2 dynamic adaptation~~ ✅ Done
 2. Wire Behavior Engines into Ascension export pipeline as activation evidence
 3. Add behavioral probe results to `capability-ledger.json` output
 
@@ -1132,7 +1155,7 @@ Updated all four lifecycle docs to v2.1.0:
 6. Update `/verify/:fingerprint` UI to show decomposed CJPI (Phase 9)
 
 **Priority 3: Export Polish**
-7. Ensure all export paths use `wrapPremiumDocPage()` for HTML docs (audit for any remaining raw markdown)
+7. Ensure all export paths use `wrapPremiumDocPage()` for HTML docs
 8. Add HTML versions of `MEMORY-SETUP.md`, `DISCOVERY-CONTEXT.md`, `TIER-MIGRATION.md` in zip-generator
 
 **Priority 4: Documentation**
