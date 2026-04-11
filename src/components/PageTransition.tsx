@@ -1,8 +1,7 @@
 /**
  * PageTransition — Smooth fade-in wrapper for public pages
- * Wrap page content to get a polished entrance animation.
+ * Uses pure CSS animations to avoid framer-motion forced reflows.
  */
-import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
 interface PageTransitionProps {
@@ -12,14 +11,13 @@ interface PageTransitionProps {
 
 export function PageTransition({ children, className }: PageTransitionProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    <div
       className={className}
+      style={{
+        animation: "pageFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
