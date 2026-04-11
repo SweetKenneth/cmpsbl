@@ -443,12 +443,18 @@ function resolveRuleActions(
   fallbackAction: OrchestrationAction,
 ): readonly OrchestrationAction[] {
   const attachment = attachmentRegistry.get(ruleId);
-  if (!attachment?.policy) return [fallbackAction];
+  if (!attachment) return [fallbackAction];
 
-  const thenActions = attachment.policy.then;
-  return Array.isArray(thenActions)
-    ? thenActions as readonly OrchestrationAction[]
-    : [thenActions as OrchestrationAction];
+  /* If policy has explicit `then`, respect it */
+  if (attachment.policy) {
+    const thenActions = attachment.policy.then;
+    return Array.isArray(thenActions)
+      ? thenActions as readonly OrchestrationAction[]
+      : [thenActions as OrchestrationAction];
+  }
+
+  /* No policy — use capability-derived chain (includes enforcement) */
+  return mapCapabilityToActions(attachment.capability);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
