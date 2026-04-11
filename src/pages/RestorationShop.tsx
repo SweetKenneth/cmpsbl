@@ -358,14 +358,14 @@ export default function RestorationShop() {
 
       // ═══ Capability Activation Ledger + Guide + Verification ═══
       try {
-        const { buildAscensionLifecycleArtifacts, generateVerificationScript } = await import('@/lib/capability-lifecycle/export-bridge');
-        const lifecycle = buildAscensionLifecycleArtifacts(
+        const lifecycleModule = await import('@/lib/capability-lifecycle/export-bridge');
+        const lifecycle = lifecycleModule.buildAscensionLifecycleArtifacts(
           report.primitiveManifest.map(p => ({
             chain: [p.name],
             fingerprint,
             name: p.name,
-            description: p.description || '',
-            archetype: (p as Record<string, unknown>).archetype as string || 'Active',
+            description: p.contribution,
+            archetype: 'Active' as const,
           })),
           fingerprint,
           detectedLang || 'typescript',
@@ -373,7 +373,7 @@ export default function RestorationShop() {
         zip.file('capability-ledger.json', lifecycle.ledgerJson);
         zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
         const allPrimitives = report.primitiveManifest.map(p => p.name);
-        zip.file('RUN_VERIFICATION.ts', generateVerificationScript(fingerprint, allPrimitives));
+        zip.file('RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(fingerprint, allPrimitives));
       } catch {
         // Graceful degradation — lifecycle artifacts are supplementary
       }
