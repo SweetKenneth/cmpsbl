@@ -60,6 +60,7 @@ const snapshotStore = new Map<string, StateSnapshot[]>();
 const stateEvents: StateEvent[] = [];
 
 const DEFAULT_NAMESPACE = 'default';
+const MAX_SNAPSHOTS = 50;
 
 function makeKey(primitive: string, namespace: string): string {
   return `${primitive}::${namespace}`;
@@ -116,6 +117,11 @@ export function writeState(
 
   if (policy?.snapshotOnWrite) {
     const current = snapshotStore.get(key) ?? [];
+
+    if (current.length >= MAX_SNAPSHOTS) {
+      current.shift();
+    }
+
     current.push({
       primitive,
       namespace,
