@@ -288,11 +288,13 @@ function executeAction(
       /* Built-in injection detection (DEFENSE-grade) */
       if (typeof inputArg === 'string') {
         const injectionDetected = INJECTION_PATTERNS.some(p => p.test(inputArg));
-        if (injectionDetected && ctx) {
-          ctx.validationFailed = true;
+        if (injectionDetected) {
+          if (ctx) ctx.validationFailed = true;
           recordActionExecution(primitive, ruleId, action);
           emit(primitive, signal, action, ruleId, 'execution_blocked');
-          return;
+          throw new Error(
+            `[CORTEX] execution blocked by rule '${ruleId}' (action=${action})`,
+          );
         }
       }
 
@@ -409,7 +411,12 @@ function executeActionChain(
 ): void {
   const ctx: ChainContext = { validationFailed: false };
   for (const action of actions) {
-    executeAction(primitive, signal, action, ruleId, payload, ctx);
+    try {
+      executeAction(primitive, signal, action, ruleId, payload, ctx);
+    } catch (err) {
+      /* Terminal — execution_blocked halts the entire chain immediately */
+      throw err;
+    }
   }
 }
 
