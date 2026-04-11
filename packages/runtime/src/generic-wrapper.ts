@@ -112,7 +112,9 @@ export function wrapGeneric<TArgs extends unknown[], TReturn>(
   attachments?: ReadonlyArray<AttachmentEntry>,
   functionName?: string,
 ): (...args: TArgs) => TReturn {
-  const resolvedFnName = functionName ?? targetFn.name ?? primitiveName;
+  const resolvedFnName = functionName
+    ?? (targetFn.name && targetFn.name !== 'anonymous' ? targetFn.name : undefined)
+    ?? primitiveName;
   // Register the wrapper
   const handle: WrapperHandle = {
     primitiveName,
@@ -200,7 +202,9 @@ export function wrapGenericAsync<TArgs extends unknown[], TReturn>(
   attachments?: ReadonlyArray<AttachmentEntry>,
   functionName?: string,
 ): (...args: TArgs) => Promise<TReturn> {
-  const resolvedFnName = functionName ?? targetFn.name ?? primitiveName;
+  const resolvedFnName = functionName
+    ?? (targetFn.name && targetFn.name !== 'anonymous' ? targetFn.name : undefined)
+    ?? primitiveName;
   const handle: WrapperHandle = {
     primitiveName,
     wrappedAt: Date.now(),
