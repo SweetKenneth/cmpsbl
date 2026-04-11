@@ -617,7 +617,7 @@ export function registerAttachmentRules(
           ? a.policy.then[0] as OrchestrationAction
           : 'log_only')
         : a.policy.then as OrchestrationAction)
-      : mapCapabilityToAction(a.capability);
+      : mapCapabilityToActions(a.capability)[0];
 
     registerOrchestrationRule({
       id: ruleId,
