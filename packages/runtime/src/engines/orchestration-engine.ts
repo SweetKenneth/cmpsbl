@@ -1,8 +1,185 @@
+/**
+ * CMPSBL® Orchestration Engine — Signal Routing Layer (CORTEX)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Deterministic signal → action router across engines.
+ *
+ * Inputs:  events from other engines
+ * Outputs: actions + orchestration events (proof layer)
+ *
+ * Phase 1: routing + proof only (no cross-engine mutation).
+ * Phase 2 will attach real engine hooks for dynamic adaptation.
+ *
+ * © CMPSBL® — All rights reserved.
+ */
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §1 — TYPES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type OrchestrationSignal =
+  | 'anomaly_detected'
+  | 'execution_failed'
+  | 'execution_retried'
+  | 'state_written';
+
+export type OrchestrationAction =
+  | 'tighten_interception'
+  | 'trip_execution'
+  | 'log_only';
+
+export interface OrchestrationRule {
+  readonly id: string;
+  readonly priority?: number;
+  readonly signal: OrchestrationSignal;
+  readonly test?: (payload: unknown) => boolean;
+  readonly action: OrchestrationAction;
+}
+
+export interface OrchestrationEvent {
+  readonly primitive: string;
+  readonly signal: OrchestrationSignal;
+  readonly action: OrchestrationAction;
+  readonly ruleId: string;
+  readonly timestamp: number;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §2 — STORAGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const rules: OrchestrationRule[] = [];
+const events: OrchestrationEvent[] = [];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §3 — RULE REGISTRY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Register a new orchestration rule (sorted by descending priority) */
+export function registerOrchestrationRule(rule: OrchestrationRule): void {
+  rules.push(rule);
+  rules.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+}
+
+/** Remove a rule by ID */
+export function removeOrchestrationRule(ruleId: string): boolean {
+  const idx = rules.findIndex(r => r.id === ruleId);
+  if (idx === -1) return false;
+  rules.splice(idx, 1);
+  return true;
+}
+
+/** Get all registered rules (immutable snapshot) */
+export function getOrchestrationRules(): readonly OrchestrationRule[] {
+  return [...rules];
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §4 — EVENT ACCESS (PROOF LAYER)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export function getOrchestrationEvents(): readonly OrchestrationEvent[] {
+  return [...events];
+}
+
+export function getOrchestrationEventsForPrimitive(
+  primitive: string,
+): readonly OrchestrationEvent[] {
+  return events.filter(e => e.primitive === primitive);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — RESET (TESTING ONLY)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export function resetOrchestrationEngine(): void {
+  rules.length = 0;
+  events.length = 0;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §6 — EVENT EMISSION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function emit(
+  primitive: string,
+  signal: OrchestrationSignal,
+  action: OrchestrationAction,
+  ruleId: string,
+): void {
+  events.push({
+    primitive,
+    signal,
+    action,
+    ruleId,
+    timestamp: Date.now(),
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §7 — SIGNAL ROUTER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Route a signal from any engine through the orchestration rule set.
+ *
+ * Evaluation is deterministic:
+ *   1. Iterate rules by priority (descending)
+ *   2. Match on signal type
+ *   3. If rule.test exists, evaluate it (swallow test errors)
+ *   4. On match → emit orchestration event
+ *
+ * Phase 1: emit only — no cross-engine mutation.
+ * Phase 2 will attach real engine hooks here.
+ */
+export function routeSignal(
+  primitive: string,
+  signal: OrchestrationSignal,
+  payload?: unknown,
+): void {
+  for (const rule of rules) {
+    if (rule.signal !== signal) continue;
+
+    let matched = true;
+
+    if (rule.test) {
+      try {
+        matched = rule.test(payload);
+      } catch {
+        /* Malformed test — skip, never crash the router */
+        continue;
+      }
+    }
+
+    if (!matched) continue;
+
+    emit(primitive, signal, rule.action, rule.id);
+
+    /* Phase 1 = emit only (no cross-engine mutation yet)
+     * Phase 2 will attach real engine hooks here:
+     *   - tighten_interception → register stricter interception rules
+     *   - trip_execution → open circuit for the primitive
+     *   - log_only → telemetry capture
+     */
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §8 — ORCHESTRATION WRAPPER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Wrap a function with orchestration-layer observation.
+ *
+ * Currently a pass-through — the orchestration engine acts on
+ * signals from other engines, not on direct function calls.
+ * This wrapper exists for generic-wrapper routing compatibility.
+ */
 export function wrapOrchestration<T extends (...args: any[]) => any>(
-  primitiveName: string,
+  _primitiveName: string,
   targetFn: T,
 ): T {
-  return function (this: any, ...args: any[]) {
-    return targetFn.apply(this, args);
-  } as T;
+  /* Orchestration is reactive — it routes signals from other engines.
+   * The wrapper itself doesn't alter execution.
+   * Future: could emit 'orchestration_invoked' if needed. */
+  return targetFn;
 }
