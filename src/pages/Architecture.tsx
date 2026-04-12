@@ -177,8 +177,12 @@ export default function Architecture() {
                   12 Organs · 12 Layers · 8 Engines · 8 Agents
                 </Badge>
                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[1.05]">
-                   Governed Cognitive{"\n"}Infrastructure
-                </h1>
+                   Governed Cognitive
+                   <br />
+                   <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+                     Infrastructure
+                   </span>
+                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
                   The original home of{" "}
                   <Link to="/mana" className="text-primary hover:underline font-medium">dual-layer technology</Link>.{" "}

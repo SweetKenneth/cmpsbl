@@ -1771,7 +1771,10 @@ export default function Changelog() {
              FULL HISTORY
            </Badge>
            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
-             The <span className="text-primary">Changelog</span>
+             The{" "}
+             <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+               Changelog
+             </span>
            </h1>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
              Every change to the platform is recorded here — what triggered it,
