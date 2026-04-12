@@ -112,24 +112,32 @@ let activeFingerprint: ArtifactFingerprint | null = null;
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Compute an artifact fingerprint from manifest + attachments.
- * This is the identity anchor — every subsequent event carries it.
+ * Calculate a fingerprint without mutating active state.
+ * Used for re-verification without corrupting the identity anchor.
  */
-export function computeFingerprint(
+function calculateFingerprint(
   manifest: Record<string, unknown>,
   attachments: readonly Record<string, unknown>[],
 ): ArtifactFingerprint {
   const manifestHash = fnv1a(JSON.stringify(manifest));
   const attachmentHash = fnv1a(JSON.stringify(attachments));
-  const composite = `${manifestHash.toString(16)}-${attachmentHash.toString(16)}`;
-
-  const fp: ArtifactFingerprint = {
+  return {
     manifestHash,
     attachmentHash,
-    composite,
+    composite: `${manifestHash.toString(16)}-${attachmentHash.toString(16)}`,
     computedAt: Date.now(),
   };
+}
 
+/**
+ * Compute and bind an artifact fingerprint as the active identity anchor.
+ * Every subsequent ledger event carries this fingerprint.
+ */
+export function computeFingerprint(
+  manifest: Record<string, unknown>,
+  attachments: readonly Record<string, unknown>[],
+): ArtifactFingerprint {
+  const fp = calculateFingerprint(manifest, attachments);
   activeFingerprint = fp;
   return fp;
 }
@@ -304,8 +312,8 @@ export function verifyIntegrity(
   manifest: Record<string, unknown>,
   attachments: readonly Record<string, unknown>[],
 ): { valid: boolean; expected: string | null; actual: string } {
-  const recomputed = computeFingerprint(manifest, attachments);
   const expected = activeFingerprint?.composite ?? null;
+  const recomputed = calculateFingerprint(manifest, attachments);
   const valid = expected === recomputed.composite;
 
   record(
