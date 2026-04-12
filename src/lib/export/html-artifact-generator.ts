@@ -603,6 +603,360 @@ const instance = init({ storage });
   `);
 }
 
+export function generateCapabilityLifecycleInternalHTML(): string {
+  return htmlShell('Capability Lifecycle — Internal Reference', '🔒 Governor Eyes Only · v2.5.0', `
+  <div class="warning-box">
+    <strong>Classification: GOVERNOR EYES ONLY.</strong> This document describes the complete internal architecture
+    of the Capability Lifecycle system. Do not distribute outside CMPSBL.
+  </div>
+
+  <h2>1. System Overview</h2>
+  <p>The Capability Lifecycle is a <strong>post-Ascension integrity pipeline</strong> that ensures every claim
+  CMPSBL makes about an artifact is provably backed by evidence. It sits between the Ascension export engine
+  and all downstream consumers (reports, verification pages, CJPI scores, activation guides).</p>
+
+  <h3>Architecture</h3>
+  <pre>
+src/lib/capability-lifecycle/
+├── types.ts                  — 5-state model, ledger schema, CJPI weights, claim rules
+├── ledger-builder.ts         — Constructs the Capability Activation Ledger
+├── behavioral-verifier.ts    — Deterministic probe engine for runtime evidence
+├── generic-activation.ts     — Generic Primitive Activation Engine
+├── constrained-reporter.ts   — Reports constrained to what the ledger proves
+├── activation-guide.ts       — Step-by-step activation instructions
+├── mana-bridge.ts            — Mana-specific activation artifacts
+├── export-bridge.ts          — Universal lifecycle injection for all exports
+└── index.ts                  — Public API barrel
+
+packages/runtime/src/engines/
+├── interception-engine.ts    — Policy-driven input enforcement (DEFENSE/GOVERNANCE)
+├── execution-engine.ts       — Circuit breaker + retry (FAILSAFE)
+├── state-engine.ts           — Namespace-aware TTL persistence (MEMORY)
+├── analysis-engine.ts        — Rolling baseline + anomaly detection (BEACON/ORACLE)
+├── orchestration-engine.ts   — Signal → policy → action routing (CORTEX)
+└── dynamic-rule-generator.ts — Auto-generates rules from telemetry (CORTEX Phase 6)</pre>
+
+  <h2>2. The 5-State Lifecycle Model</h2>
+  <table>
+    <thead><tr><th>#</th><th>State</th><th>Evidence Required</th><th>What It Proves</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Detected</strong></td><td>Signal match in source analysis</td><td>Scanner saw something relevant</td></tr>
+      <tr><td>2</td><td><strong>Generated</strong></td><td>L2 wrapper code exists in output</td><td>Code was produced, not just detected</td></tr>
+      <tr><td>3</td><td><strong>Bound</strong></td><td>Structural linkage at function boundaries</td><td>L2 is attached to L1 — not floating</td></tr>
+      <tr><td>4</td><td><strong>Activated</strong></td><td>Runtime hooks observed firing</td><td>Code is actually executing</td></tr>
+      <tr><td>5</td><td><strong>BehaviorallyVerified</strong></td><td>Observable state change, interception, or telemetry</td><td>The capability DOES something measurable</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box">
+    <strong>Why 5 states?</strong> The old 3-state model conflated structural binding with runtime behavior.
+    "Verified" could mean "SHA-256 checks out" or "the wrapper intercepted a call." That ambiguity
+    enabled overclaiming. The 5-state model makes it structurally impossible to overclaim.
+  </div>
+
+  <h2>3. Capability Activation Ledger</h2>
+  <p>A machine-readable JSON structure generated per artifact. It is the <strong>single source of truth</strong>
+  for all downstream systems. Nothing — reports, CJPI scores, verification pages — may generate claims
+  independently of this ledger.</p>
+  <pre>
+interface CapabilityLedgerEntry {
+  name: string;              // Primitive name
+  state: CapabilityState;    // Highest confirmed state
+  detected: boolean;
+  generated: boolean;
+  bound: boolean;
+  activated: boolean;
+  behaviorallyVerified: boolean;
+  targets: string[];         // Function boundaries wrapped
+  evidence: string[];        // Machine-readable proof strings
+  gaps: string[];            // What is NOT proven — explicitly surfaced
+}</pre>
+
+  <h2>4. Decomposed CJPI Scoring</h2>
+  <table>
+    <thead><tr><th>Component</th><th>Weight</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Structural</td><td>25%</td><td>Detected + Generated</td></tr>
+      <tr><td>Binding</td><td>25%</td><td>Bound</td></tr>
+      <tr><td>Activation</td><td>25%</td><td>Activated</td></tr>
+      <tr><td>Behavioral</td><td>20%</td><td>BehaviorallyVerified</td></tr>
+      <tr><td>Security</td><td>5%</td><td>Security-specific primitives behaviorally proven</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Constrained Reporting</h2>
+  <p>Reports are <strong>constrained</strong> by ledger state. Allowed claim phrases per state:</p>
+  <table>
+    <thead><tr><th>State</th><th>Max Claim Level</th><th>Example Phrase</th></tr></thead>
+    <tbody>
+      <tr><td>Detected</td><td>structural_only</td><td>"Pattern detected in source"</td></tr>
+      <tr><td>Generated</td><td>structural_only</td><td>"Wrapper code generated"</td></tr>
+      <tr><td>Bound</td><td>structural_only</td><td>"Structurally bound at function boundaries"</td></tr>
+      <tr><td>Activated</td><td>runtime_confirmed</td><td>"Runtime activation confirmed"</td></tr>
+      <tr><td>BehaviorallyVerified</td><td>behavioral_proven</td><td>"Behavior verified through deterministic probes"</td></tr>
+    </tbody>
+  </table>
+  <div class="highlight-box">
+    <strong>Forbidden patterns:</strong> "fully protected", "guaranteed secure", "100% coverage",
+    "certified compliant", "enterprise-grade protection" — unless every relevant primitive
+    reaches BehaviorallyVerified.
+  </div>
+
+  <h2>6. Behavioral Verification Engine</h2>
+  <p>The behavioral verifier runs deterministic probes per engine type:</p>
+  <table>
+    <thead><tr><th>Engine</th><th>Probe</th><th>Expected Effect</th></tr></thead>
+    <tbody>
+      <tr><td>Interception</td><td>Submit known-bad payload</td><td>Block or sanitize</td></tr>
+      <tr><td>State</td><td>Write + read cycle</td><td>Value persisted</td></tr>
+      <tr><td>Execution</td><td>Trigger circuit breaker</td><td>Fallback invoked</td></tr>
+      <tr><td>Analysis</td><td>Submit anomalous timing</td><td>Anomaly flagged</td></tr>
+      <tr><td>Orchestration</td><td>Emit known signal</td><td>Matching rule fires</td></tr>
+    </tbody>
+  </table>
+  `);
+}
+
+export function generateCapabilityLifecycleDeveloperHTML(): string {
+  return htmlShell('Capability Lifecycle — Developer Reference', 'Public Documentation · v2.5.0', `
+  <h2>1. Overview</h2>
+  <p>Every capability CMPSBL discovers in your code follows a strict <strong>5-stage lifecycle</strong>.
+  This ensures every claim in your export artifacts — reports, scores, certificates — is backed by evidence.</p>
+
+  <h2>2. The 5 Stages</h2>
+  <table>
+    <thead><tr><th>Stage</th><th>What Happens</th><th>Your Action</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Detected</strong></td><td>Scanner identifies structural signals matching a primitive</td><td>None — automatic</td></tr>
+      <tr><td><strong>2. Generated</strong></td><td>Layer 2 orchestration code is produced</td><td>None — automatic</td></tr>
+      <tr><td><strong>3. Bound</strong></td><td>Wrappers structurally linked to function boundaries (L1 unmodified)</td><td>None — automatic</td></tr>
+      <tr><td><strong>4. Activated</strong></td><td>Wrappers integrated into runtime and confirmed executing</td><td><strong>You do this</strong> — integrate the artifact</td></tr>
+      <tr><td><strong>5. Verified</strong></td><td>Observable effects confirmed through deterministic probes</td><td><strong>You do this</strong> — run the verification script</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box">
+    <strong>Key principle:</strong> Stages 1–3 happen automatically during Ascension.
+    Stages 4–5 require you to integrate the artifact and run verification.
+  </div>
+
+  <h2>3. Your Export Artifacts</h2>
+  <h3>Capability Activation Ledger (<code>capability-ledger.json</code>)</h3>
+  <p>Machine-readable JSON recording the exact state of every primitive. Each entry includes
+  state, targets, evidence, and gaps. This is the single source of truth — all reports derive from it.</p>
+
+  <h3>Decomposed CJPI Score</h3>
+  <table>
+    <thead><tr><th>Component</th><th>Weight</th><th>What It Measures</th></tr></thead>
+    <tbody>
+      <tr><td>Structural</td><td>25%</td><td>Were primitives detected and code generated?</td></tr>
+      <tr><td>Binding</td><td>25%</td><td>Are wrappers structurally attached?</td></tr>
+      <tr><td>Activation</td><td>25%</td><td>Are wrappers executing at runtime?</td></tr>
+      <tr><td>Behavioral</td><td>20%</td><td>Are observable effects confirmed?</td></tr>
+      <tr><td>Security</td><td>5%</td><td>Are security primitives behaviorally proven?</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Activation Guide (<code>ACTIVATION_GUIDE.html</code>)</h3>
+  <p>Step-by-step instructions showing how to move each primitive to full activation.
+  Includes activation mode (Automatic/Assisted/Manual), copy-paste code snippets,
+  before/after behavior comparisons, and rollback instructions.</p>
+
+  <h3>Verification Script (<code>RUN_VERIFICATION.ts</code>)</h3>
+  <p>Run after integration to verify artifact integrity. Performs fingerprint verification,
+  primitive coverage check, tamper detection, and delta summary.</p>
+
+  <h2>4. Integration Workflow</h2>
+  <pre>
+import { init } from '@cmpsbl/runtime';
+
+// Initialize with your artifact
+const instance = init();
+
+// Your code runs through the cognitive overlay
+// Layer 1 (your code) is never modified
+// Layer 2 (discovered capabilities) wraps at function boundaries
+
+// Run verification after integration
+// npx tsx RUN_VERIFICATION.ts</pre>
+
+  <h2>5. Constrained Reporting</h2>
+  <p>Reports are honest about what has been proven. If a primitive is Bound but not Activated,
+  the report says <em>"Wrapper generated and structurally bound"</em> — never <em>"capability enabled."</em>
+  Only Behaviorally Verified primitives carry unrestricted claims.</p>
+  `);
+}
+
+export function generateCorrectionSpecHTML(): string {
+  return htmlShell('Capability Lifecycle Correction', 'Technical Specification · v2.1.0', `
+  <h2>1. Problem Statement</h2>
+  <p>The system conflated <strong>structural binding</strong> and <strong>provenance verification</strong>
+  with <strong>runtime activation</strong> and <strong>behavioral verification</strong>. The prior 3-state
+  model overloaded "Verified" to mean both "provenance confirmed" and "runtime behavior proven."</p>
+  <div class="warning-box">
+    This created a risk of <strong>overclaiming</strong> — reports could imply runtime capability
+    where only structural binding existed.
+  </div>
+
+  <h2>2. Model Correction</h2>
+  <h3>Previous Model (Deprecated)</h3>
+  <table>
+    <thead><tr><th>State</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Declared</td><td>Primitive listed in manifest</td></tr>
+      <tr><td>Bound</td><td>Sequenced in execution chain</td></tr>
+      <tr><td>Verified</td><td>SHA-256 + chain position confirmed</td></tr>
+    </tbody>
+  </table>
+
+  <h3>New Model (v2.0.0)</h3>
+  <table>
+    <thead><tr><th>State</th><th>Meaning</th><th>Evidence Required</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Detected</strong></td><td>Identified during scan</td><td>Signal match in source</td></tr>
+      <tr><td><strong>Generated</strong></td><td>L2 orchestration code created</td><td>Wrapper exists in output</td></tr>
+      <tr><td><strong>Bound</strong></td><td>Wrappers attached at function boundaries</td><td>Structural linkage in L2</td></tr>
+      <tr><td><strong>Activated</strong></td><td>Runtime attachment executed</td><td>Hooks firing in execution path</td></tr>
+      <tr><td><strong>BehaviorallyVerified</strong></td><td>Observable effect confirmed</td><td>State change, interception, or telemetry</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Verification Split</h2>
+  <h3>A. Provenance Verification</h3>
+  <ul>
+    <li>Artifact origin (fingerprint, serial)</li>
+    <li>L1 integrity (SHA-256 hash match)</li>
+    <li>Deterministic generation (same input → same L2)</li>
+    <li>Primitive presence and chain position</li>
+  </ul>
+  <h3>B. Behavioral Verification</h3>
+  <ul>
+    <li>Wrapper execution actually occurred</li>
+    <li>Target function calls passed through L2</li>
+    <li>Observable effects happened</li>
+  </ul>
+
+  <h2>4. Decomposed CJPI Scoring</h2>
+  <table>
+    <thead><tr><th>Component</th><th>Source</th><th>Weight</th></tr></thead>
+    <tbody>
+      <tr><td>Structural</td><td>Detected + Generated</td><td>0.25</td></tr>
+      <tr><td>Binding</td><td>Bound</td><td>0.25</td></tr>
+      <tr><td>Activation</td><td>Activated</td><td>0.25</td></tr>
+      <tr><td>Behavioral</td><td>BehaviorallyVerified</td><td>0.20</td></tr>
+      <tr><td>Security</td><td>Security-specific BehaviorallyVerified</td><td>0.05</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Implementation Status</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Phase 1: Types + Ledger Builder</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 2: Behavioral Verifier</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 3: Constrained Reporter</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 4: Generic Activation</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 5: Activation Guide</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 6: Runtime Evidence Bridge</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 7: Export Integration</td><td>✅ Complete</td></tr>
+      <tr><td>Phase 8: Production Provider</td><td>✅ Complete</td></tr>
+    </tbody>
+  </table>
+  `);
+}
+
+export function generateExposureSpecHTML(): string {
+  return htmlShell('System Architecture &amp; Exposure Specification', 'Internal Reference Architecture · v2.1.0', `
+  <div class="warning-box">
+    <strong>Classification: INTERNAL.</strong> Canonical reference architecture document.
+    Describes every major directory and its architectural role.
+  </div>
+
+  <h2>1. Executive Overview</h2>
+  <p>CMPSBL® is a <strong>cognitive infrastructure substrate</strong> — not an agent platform, not a framework.
+  It provides deterministic discovery, classification, and hardening of software artifacts through a dual-layer
+  architecture protected by U.S. patent applications (Nos. 64/029,678 and 64/031,637).</p>
+
+  <h3>Dual-Layer Architecture</h3>
+  <table>
+    <thead><tr><th>Layer</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Layer 1 (L1)</strong></td><td>Original source code — immutable, SHA-256 verified, never modified</td></tr>
+      <tr><td><strong>Layer 2 (L2)</strong></td><td>Generated orchestration layer wrapping L1 at function boundaries — provides emergent capabilities without altering source</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. System Topology</h2>
+
+  <h3>2.1 <code>src/core/</code> — Runtime Kernel</h3>
+  <p>Boot sequence, event bus, lifecycle management, diagnostics, internal registry.</p>
+  <table>
+    <thead><tr><th>Subdirectory</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><code>boot/</code></td><td>System initialization and First Contact ceremony</td></tr>
+      <tr><td><code>bus/</code></td><td>Internal event bus for cross-primitive communication</td></tr>
+      <tr><td><code>diagnostics/</code></td><td>Runtime health introspection</td></tr>
+      <tr><td><code>graph/</code></td><td>Dependency graph resolution</td></tr>
+      <tr><td><code>resilience/</code></td><td>Circuit breaker and graceful degradation</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 <code>src/hooks/</code> — React Integration</h3>
+  <p>Exposes substrate state to the UI through standard React hooks. Primary public interface for front-end consumers.</p>
+
+  <h3>2.3 <code>src/lib/ascension/</code> — Ascension Engine</h3>
+  <p>Core discovery and classification pipeline: source scanning, primitive detection, collision scoring, artifact generation.</p>
+  <table>
+    <thead><tr><th>Component</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><code>capability-scanner-primitive.ts</code></td><td>Signal detection against source code</td></tr>
+      <tr><td><code>primitive-extractor.ts</code></td><td>Extracts primitive candidates</td></tr>
+      <tr><td><code>execution-binding.ts</code></td><td>Binds discovered primitives to L2</td></tr>
+      <tr><td><code>quality-gate.ts</code></td><td>Enforces minimum thresholds</td></tr>
+      <tr><td><code>chain-injection.ts</code></td><td>Deterministic chain ordering</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.4 <code>src/lib/factory/</code> — Artifact Manufacturing</h3>
+  <p>Code generation, report production, certificate creation, and the universal pool scanner
+  that assembles ~159 primitive candidates across all verticals.</p>
+
+  <h3>2.5 <code>src/crownjewels/</code> — Crown Jewel Registry</h3>
+  <p>Curated catalog of high-value capability discoveries organized by tier (S-Tier, A-Tier)
+  and by vertical (Cyber, Robotics, Quantum, LLM, Agency, Media, Fintech, Ultimate).</p>
+
+  <h3>2.6 <code>packages/runtime/</code> — Behavior Engine Layer</h3>
+  <p>Transitions the primitive matrix from observation to active, policy-driven enforcement:</p>
+  <table>
+    <thead><tr><th>Engine</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Interception</strong></td><td>Priority-sorted rule evaluation (block/sanitize/warn)</td></tr>
+      <tr><td><strong>Execution</strong></td><td>Circuit breaker + retry (FAILSAFE)</td></tr>
+      <tr><td><strong>State</strong></td><td>Namespace-aware TTL persistence (MEMORY)</td></tr>
+      <tr><td><strong>Analysis</strong></td><td>Timing/frequency tracking and anomaly detection</td></tr>
+      <tr><td><strong>Orchestration</strong></td><td>Declarative signal → policy → action routing (CORTEX)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Exposure Levels</h2>
+  <table>
+    <thead><tr><th>Level</th><th>What's Visible</th><th>What's Protected</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Public</strong></td><td>API surface, hook interfaces, scores, reports</td><td>—</td></tr>
+      <tr><td><strong>Developer</strong></td><td>Integration guides, lifecycle docs, activation guides</td><td>Internal weights, heuristics</td></tr>
+      <tr><td><strong>Internal</strong></td><td>Architecture, correction specs, exposure specs</td><td>Trade secrets, exact algorithms</td></tr>
+      <tr><td><strong>Governor</strong></td><td>Everything</td><td>Nothing hidden</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Protected Boundaries</h2>
+  <div class="highlight-box">
+    <strong>Explicit instruction required to modify:</strong> Organ internals, Layer routing,
+    CLM serialization, DEFENSE shielding, GOVERNANCE checks, Memory Stream pipeline,
+    DREAM synthesis, Ascension engine, auth flows, <code>supabase/migrations/*</code>,
+    <code>src/config/*</code>, unexposed Crown Jewels.
+  </div>
+  `);
+}
+
 export function generateHTMLArtifacts(input: HTMLArtifactsInput): Record<string, string> {
   return {
     'ERROR-CODES.html': generateErrorCodesHTML(),
@@ -615,5 +969,9 @@ export function generateHTMLArtifacts(input: HTMLArtifactsInput): Record<string,
     'DISCOVERY-CONTEXT.html': generateDiscoveryContextHTML(input.name, input.score, input.tier),
     'TIER-MIGRATION.html': generateTierMigrationHTML(),
     'MEMORY-SETUP.html': generateMemorySetupHTML(input.name, input.slug),
+    'LIFECYCLE-INTERNAL.html': generateCapabilityLifecycleInternalHTML(),
+    'LIFECYCLE-DEVELOPER.html': generateCapabilityLifecycleDeveloperHTML(),
+    'LIFECYCLE-CORRECTION.html': generateCorrectionSpecHTML(),
+    'ARCHITECTURE-EXPOSURE.html': generateExposureSpecHTML(),
   };
 }
