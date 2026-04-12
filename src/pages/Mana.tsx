@@ -6,6 +6,8 @@
 
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FAQ } from "@/components/FAQ";
@@ -105,7 +107,14 @@ export default function Mana() {
 
       <PublicNav />
 
-      <main className="min-h-screen">
+      <main className="min-h-screen bg-background">
+        {/* Ambient glow */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 gradient-mesh opacity-60" />
+          <div className="absolute top-40 left-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }} />
+          <div className="absolute bottom-40 right-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.03) 0%, transparent 60%)" }} />
+        </div>
+
         {/* ═══ FULL-BLEED HERO ═══ */}
         <section className="relative w-full min-h-[100vh] flex items-center justify-center overflow-hidden">
           {/* Background image */}
@@ -881,21 +890,9 @@ export default function Mana() {
           </div>
         </section>
 
-        {/* ═══ FOOTER ═══ */}
-        <section className="container mx-auto px-4 lg:px-6 pb-12">
-          <div className="max-w-3xl mx-auto text-center border-t border-border pt-10">
-            <p className="text-xs text-muted-foreground/60 leading-relaxed">
-              © 2025–2026 CMPSBL®. A PromptFluid™ Product. All rights reserved.
-              <br />
-              Mana™, Lex™, Ascension™ are trademarks of PromptFluid™ TX.
-              <br />
-              Protected by U.S. Patent Applications No. 64/029,678 and No. {PATENT_APP_NO}.
-              <br />
-              Inventor: Kenneth E. Sweet Jr. (ORCID: 0009-0001-4237-1243)
-            </p>
-          </div>
-        </section>
       </main>
+
+      <EnhancedFooter />
     </>
   );
 }
