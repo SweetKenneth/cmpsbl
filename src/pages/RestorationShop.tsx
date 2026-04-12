@@ -623,7 +623,7 @@ export default function RestorationShop() {
 
           {/* DIAGNOSTIC PHASE */}
           {phase === 'diagnostic' && scanResult && (
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="max-w-2xl mx-auto space-y-6 phase-card-enter">
               {/* Score overview cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
@@ -790,7 +790,7 @@ export default function RestorationShop() {
 
           {/* SELECT PRIMITIVES PHASE */}
           {phase === 'select' && scanResult && (
-            <div className="space-y-6">
+            <div className="space-y-6 phase-card-enter">
               <PrimitiveSelector
                 recommendations={scanResult.recommendedPrimitives}
                 onConfirm={handleSelectPrimitives}
