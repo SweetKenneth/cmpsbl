@@ -931,3 +931,17 @@ export type {
   RuntimeHealthInput,
   UnifiedHealthResult,
 } from './engines/unified-health';
+
+// ═══════════════════════════════════════════════════════════════
+// §17 — Phase 8: Productization Layer (developer API)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  init,
+  ascendQuick,
+} from './production-provider';
+
+export type {
+  AscensionConfig,
+  AscensionSession,
+} from './production-provider';
