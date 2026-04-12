@@ -19,9 +19,9 @@
 import type { AscensionArtifact, AscensionOptions } from './ascension-loop';
 import { ascend, renderPipelineSummary } from './ascension-loop';
 import type { HealthCheckResponse } from './portable-artifact';
-import { getHealthCheck, detectEnvironment } from './portable-artifact';
+import { getArtifactHealthCheck, UNCOMPUTED_FINGERPRINT, detectEnvironment } from './portable-artifact';
 import type { ArtifactFingerprint } from './engines/verification-ledger';
-import { renderVerificationReport, resetVerificationLedger, generateVerificationSummary } from './engines/verification-ledger';
+import { renderVerificationReport, resetVerificationLedger } from './engines/verification-ledger';
 import { resolveHealthFromSummary } from './engines/unified-health';
 import type { HealthStatus } from './engines/unified-health';
 
@@ -53,9 +53,9 @@ export interface AscensionConfig {
 export interface SessionStatus {
   readonly health: HealthStatus;
   readonly coverage: number;
-  readonly fingerprint: string | null;
-  /** Full identity surface for advanced traceability */
-  readonly identity: ArtifactFingerprint | null;
+  readonly fingerprint: string;
+  /** Full identity surface for advanced traceability (never null) */
+  readonly identity: ArtifactFingerprint;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -122,6 +122,9 @@ export function init<T extends Record<string, unknown>>(
 
   const artifact = ascend(sourceCode, moduleExports, options);
 
+  // Resolve once — artifact identity is immutable after ascension
+  const identity: ArtifactFingerprint = artifact.fingerprint ?? UNCOMPUTED_FINGERPRINT;
+
   /** Resolve unified health from the artifact's real signals */
   function resolveHealth(): HealthStatus {
     return resolveHealthFromSummary(
@@ -141,15 +144,15 @@ export function init<T extends Record<string, unknown>>(
       return {
         health: resolveHealth(),
         coverage: artifact.pipeline.coverageRatio,
-        fingerprint: artifact.fingerprint?.composite ?? null,
-        identity: artifact.fingerprint ?? null,
+        fingerprint: identity.composite,
+        identity,
       };
     },
 
     healthCheck(): HealthCheckResponse {
       // Session-scoped — uses this artifact's data, not global state
-      return getHealthCheck({
-        fingerprint: artifact.fingerprint,
+      return getArtifactHealthCheck({
+        fingerprint: identity,
         coverageRatio: artifact.pipeline.coverageRatio,
         verification: artifact.verification,
       });
