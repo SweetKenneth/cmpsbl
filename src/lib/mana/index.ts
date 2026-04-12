@@ -6,6 +6,9 @@
  * Wraps host software at function boundaries without source modification.
  * All operations governed by Lex — the layer's conscience.
  * 
+ * Phase 0: Engine core + single-package attachment
+ * Phase 1: Runtime loader + multi-package composition + manifest consumer
+ * 
  * © CMPSBL® — All rights reserved.
  */
 
@@ -41,6 +44,20 @@ export {
   ruleCount,
 } from './lex';
 
+// Config — declarative deployment configuration (Phase 1)
+export {
+  generateExampleConfig,
+} from './config';
+
+// Manifest consumer — Ascension → Mana auto-deploy bridge (Phase 1)
+export {
+  manifestToConfig,
+  mergeManifests,
+  serializeConfig,
+  parseConfig,
+  summarizeDeployment,
+} from './manifest-consumer';
+
 // Types — all 92 capabilities unified with Ascension
 export type {
   AttachmentState,
@@ -55,3 +72,16 @@ export type {
   AscensionFinding,
   ManaAttachmentEntry,
 } from './types';
+
+// Config types (Phase 1)
+export type {
+  ManaLoaderConfig,
+  ManaTargetConfig,
+  ManaAttachmentDirective,
+} from './config';
+
+// Manifest consumer types (Phase 1)
+export type {
+  AscensionManifest,
+  DeploymentSummary,
+} from './manifest-consumer';
