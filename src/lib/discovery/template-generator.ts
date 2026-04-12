@@ -47,16 +47,12 @@ export interface RetiredCombo {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// BUILDING BLOCKS
+// BUILDING BLOCKS — defaults (overridden by config.primitivePool)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const MODULES = [
-  // Full 40-primitive matrix
-  'CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE', 'ENCODE', 'CORTEX', 'DEFENSE', 'ORACLE', 'CONSCIENCE',
-  'PHANTOM', 'HARVEST', 'EVOLUTION', 'SHADOW', 'IMMUNITY', 'INTENT', 'GOVERNANCE', 'ATLAS', 'FORGE', 'LINGUA',
-  'ECHO', 'SOVEREIGN', 'REFLEX', 'TREATY', 'ENGINEER', 'COMPASS', 'OBSERVER', 'RELAY', 'NEXUS', 'DREAM',
-  'PRISM', 'AUDIT', 'IDENTITY', 'MESH', 'ECONOMY', 'ACCESS', 'VISION', 'ANALYTICS', 'MEDIC', 'RIPPLE',
-];
+import { ALL_PRIMITIVES, EXPANDED_CATEGORIES, EXPANDED_AFFINITY } from './expanded-primitives';
+
+const DEFAULT_MODULES = ALL_PRIMITIVES;
 
 const CATEGORIES: DiscoveryCategory[] = [
   'cognitive', 'evolution', 'security', 'routing', 'learning',
