@@ -28,7 +28,7 @@ import { useEffect, useState, lazy, Suspense, useRef } from "react";
 
 import { InvisibleWatermark } from "@/components/legal/InvisibleWatermark";
 import { SEOProvider } from "@/contexts/SEOContext";
-import { CyberThemeWrapper } from "@/components/theme/CyberThemeWrapper";
+import { VerticalThemeWrapper } from "@/components/theme/VerticalThemeWrapper";
 
 // Deferred providers — render children immediately, load library lazily
 // This prevents ~87KB of framer-motion + radix from blocking initial render
