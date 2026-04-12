@@ -360,6 +360,8 @@ export default function ControlCenterHome() {
       <Helmet>
         <title>Central Control Station — CMPSBL®</title>
         <meta name="description" content="Governor command center for all CMPSBL® substrates." />
+        <link rel="canonical" href="https://control.cmpsbl.com" />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">
