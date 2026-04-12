@@ -159,7 +159,7 @@ export function CmpsblNav() {
                   <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
                 </div>
               </Link>
-              <div className="border-l border-border/30 pl-2 ml-1">
+              <div className="border-l border-border/30 pl-2 ml-1 hidden sm:block">
                 <AmbientMusicPlayer />
               </div>
             </div>

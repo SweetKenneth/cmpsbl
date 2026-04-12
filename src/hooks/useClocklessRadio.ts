@@ -197,6 +197,7 @@ export function useClocklessRadio() {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
+    cancelTTS();
     engineRef.current?.stop();
   }, []);
 
