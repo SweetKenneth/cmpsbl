@@ -578,18 +578,7 @@ export default function RestorationShop() {
           {/* DIAGNOSTIC PHASE */}
           {phase === 'diagnostic' && scanResult && (
             <div className="max-w-2xl mx-auto space-y-6">
-              <DecodeFactoryVoice
-                role="mechanic"
-                findings={scanResult.findings.map(f => ({
-                  id: f.id,
-                  severity: f.severity,
-                  title: f.title,
-                  description: f.description,
-                  primitiveRecommendation: f.primitiveRecommendation,
-                }))}
-                scanContext={{ originalCode: code, scanResult }}
-              />
-
+              {/* Score overview cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
                    <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
@@ -644,13 +633,112 @@ export default function RestorationShop() {
                 </div>
               </div>
 
-              <Button
-                onClick={() => setPhase('select')}
-                className="w-full rounded-xl font-bold gap-2"
-              >
-                Choose Your Primitives
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Button>
+              {/* ═══ Enterprise Findings Table ═══ */}
+              <div className="rounded-xl border border-border/30 bg-card/20 p-4">
+                <h4 className="text-xs font-bold text-foreground mb-3 flex items-center gap-2">
+                  <Shield className="w-3.5 h-3.5 text-primary" />
+                  Scan Findings — {scanResult.findings.length} Issues Detected
+                </h4>
+                <div className="space-y-2">
+                  {scanResult.findings
+                    .sort((a, b) => {
+                      const sev = { critical: 0, warning: 1, info: 2 };
+                      return (sev[a.severity] ?? 2) - (sev[b.severity] ?? 2);
+                    })
+                    .map(f => (
+                    <div
+                      key={f.id}
+                      className={cn(
+                        "rounded-lg border p-3 transition-colors",
+                        f.severity === 'critical'
+                          ? "border-destructive/30 bg-destructive/5"
+                          : f.severity === 'warning'
+                            ? "border-amber-500/20 bg-amber-500/5"
+                            : "border-border/20 bg-card/10",
+                      )}
+                    >
+                      <div className="flex items-start gap-2.5">
+                        <div className={cn(
+                          "shrink-0 mt-0.5 w-5 h-5 rounded flex items-center justify-center text-[9px] font-black uppercase",
+                          f.severity === 'critical'
+                            ? "bg-destructive/20 text-destructive"
+                            : f.severity === 'warning'
+                              ? "bg-amber-500/20 text-amber-400"
+                              : "bg-primary/10 text-primary",
+                        )}>
+                          {f.severity === 'critical' ? '!' : f.severity === 'warning' ? '⚠' : 'ℹ'}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-foreground">{f.title}</span>
+                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-muted-foreground font-mono">
+                              {f.source}
+                            </span>
+                            {f.primitiveRecommendation && (
+                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+                                Fix → {f.primitiveRecommendation}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">
+                            {f.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* DECODE Context (collapsible) */}
+              <DecodeFactoryVoice
+                role="mechanic"
+                findings={scanResult.findings.map(f => ({
+                  id: f.id,
+                  severity: f.severity,
+                  title: f.title,
+                  description: f.description,
+                  primitiveRecommendation: f.primitiveRecommendation,
+                }))}
+                scanContext={{ originalCode: code, scanResult }}
+              />
+
+              {/* Action buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                {(() => {
+                  const findingLinkedCount = scanResult.findings.filter(f => f.primitiveRecommendation).length;
+                  return findingLinkedCount > 0 ? (
+                    <Button
+                      onClick={() => {
+                        const findingPrimIds = new Set(
+                          scanResult.findings
+                            .filter(f => f.primitiveRecommendation)
+                            .map(f => f.primitiveRecommendation!.toLowerCase())
+                        );
+                        const autoSelected = scanResult.recommendedPrimitives.filter(
+                          r => findingPrimIds.has(r.primitiveId)
+                        );
+                        if (autoSelected.length > 0) {
+                          handleSelectPrimitives(autoSelected);
+                        }
+                      }}
+                      disabled={isRestoring}
+                      className="sm:flex-1 rounded-xl font-bold gap-2 bg-destructive hover:bg-destructive/90 text-white"
+                    >
+                      <Shield className="w-3.5 h-3.5" />
+                      Auto-Fix {findingLinkedCount} Issue{findingLinkedCount !== 1 ? 's' : ''} Now
+                    </Button>
+                  ) : null;
+                })()}
+                <Button
+                  onClick={() => setPhase('select')}
+                  variant={scanResult.findings.some(f => f.primitiveRecommendation) ? "outline" : "default"}
+                  className="sm:flex-1 rounded-xl font-bold gap-2"
+                >
+                  Choose Primitives Manually
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Button>
+              </div>
             </div>
           )}
 
