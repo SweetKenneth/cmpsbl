@@ -76,19 +76,27 @@ function isBackgroundRequest(url: string): boolean {
   const backgroundPatterns = [
     '/functions/v1/pf-substrate',       // Substrate status polling
     '/functions/v1/pf-radio-broadcast', // Radio broadcast generation
+    '/functions/v1/passkey-auth',       // Passkey checks
     
     '/rest/v1/brain_maintenance_log',   // Neural maintenance
     '/rest/v1/brain_embeddings',        // Embedding sync
     '/rest/v1/brain_knowledge_crystals',// Crystal sync
     '/rest/v1/brain_classifier_models', // Classifier polling
     '/rest/v1/brain_reasoning_traces',  // Trace polling
+    '/rest/v1/brain_events',            // Event telemetry
     '/rest/v1/defense_events',          // Defense telemetry
     '/rest/v1/site_page_views',         // Analytics
     '/rest/v1/site_sessions',           // Session tracking
     '/rest/v1/analytics_events',        // Analytics events
+    '/rest/v1/analytics_snapshots',     // Analytics snapshots
+    '/rest/v1/ai_usage_log',            // AI usage telemetry
+    '/rest/v1/ai_daily_quota',          // AI quota polling
+    '/rest/v1/ai_learning_data',        // AI learning data
+    '/rest/v1/audit_logs',              // Audit logs
     '/rest/v1/rpc/brain_',              // Brain RPCs
     '/rest/v1/rpc/run_memory_tiering',  // Memory tiering
     '/rest/v1/rpc/apply_confidence_decay', // Confidence decay
+    '/rest/v1/rpc/has_role',            // Role checks
   ];
   return backgroundPatterns.some(p => url.includes(p));
 }
