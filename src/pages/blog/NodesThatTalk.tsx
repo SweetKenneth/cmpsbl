@@ -30,7 +30,6 @@ export default function NodesThatTalk() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Webhook Reliability</h2>
       <p>RIPPLE also handles external communication. Every outbound message gets <a href="https://en.wikipedia.org/wiki/Exponential_backoff" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">exponential backoff</a> retry logic, dead-letter queuing, and delivery confirmation. Failed deliveries don't disappear — they land in a dead-letter queue where they can be inspected, replayed, or escalated. This pattern later evolved into the dedicated <Link to="/blog/protocols-for-machines" className="text-primary hover:underline">RELAY node</Link> when outbound communication became complex enough to warrant its own node.</p>
-
       <h2 className="text-2xl font-bold text-foreground mt-8">The Nervous System</h2>
       <p>RIPPLE transformed the substrate from a collection of tools into a coordinated system. Before RIPPLE, each primitive was an island. After RIPPLE, they were a network. That distinction matters more than any individual capability we built. It's the difference between having five hammers and having a hand.</p>
       <p>The most telling metric: before RIPPLE, the average time between DEFENSE detecting a threat and NEXUS adjusting routing was 45 seconds (one poll cycle). After RIPPLE, it was 8 milliseconds. That's the difference between blocking an attack and absorbing one.</p>

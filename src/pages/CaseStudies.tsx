@@ -1924,8 +1924,7 @@ export default function CaseStudies() {
             <div className="flex flex-wrap gap-3">
               <a
                 href="https://github.com/ArduPilot/ardupilot/blob/master/Tools/autotest/vehicle_test_suite.py"
-                target="_blank"rel="noopener noreferrer"
-                rel="noopener noreferrer"
+                target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-muted/50 text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
                 <FileCode className="w-4 h-4" /> View Original Source ↗
@@ -2104,8 +2103,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py"
-                    target="_blank"rel="noopener noreferrer"
-                    rel="noopener noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
                     <FileCode className="w-4 h-4" /> View Original Source ↗
@@ -2272,8 +2270,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/google/or-tools/blob/stable/ortools/sat/python/cp_model.py"
-                    target="_blank"rel="noopener noreferrer"
-                    rel="noopener noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
                     <FileCode className="w-4 h-4" /> View Original Source ↗
@@ -2455,8 +2452,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py"
-                    target="_blank"rel="noopener noreferrer"
-                    rel="noopener noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
                     <FileCode className="w-4 h-4" /> View Original Source ↗
@@ -2692,8 +2688,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/_client.py"
-                    target="_blank"rel="noopener noreferrer"
-                    rel="noopener noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
                     <FileCode className="w-4 h-4" /> View Original Source ↗

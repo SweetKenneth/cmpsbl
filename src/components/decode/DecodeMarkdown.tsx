@@ -77,8 +77,7 @@ export function DecodeMarkdown({ content, className, isUser = false }: DecodeMar
         a: ({ href, children }) => (
           <a
             href={href}
-            target="_blank"rel="noopener noreferrer"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className={cn(
               'underline underline-offset-2',
               isUser ? 'text-primary-foreground/90 hover:text-primary-foreground' : 'text-primary hover:text-primary/80'

@@ -193,8 +193,7 @@ export default function Namespace() {
               <a
                 key={surface.domain}
                 href={`https://aigvrn.com/${surface.name.toLowerCase()}`}
-                target="_blank"rel="noopener noreferrer"
-                rel="noopener noreferrer"
+                target="_blank" rel="noopener noreferrer"
                 className={`group p-4 rounded-lg border transition-all hover:shadow-md ${
                   surface.isRoot 
                     ? "border-primary/30 bg-primary/5 hover:border-primary/50" 
@@ -322,8 +321,7 @@ export default function Namespace() {
               <a
                 key={surface.domain}
                 href={`https://${surface.domain}`}
-                target="_blank"rel="noopener noreferrer"
-                rel="noopener noreferrer"
+                target="_blank" rel="noopener noreferrer"
                 className={`p-3 rounded-lg border text-center font-mono text-sm transition-colors hover:border-primary/50 ${
                   surface.isRoot 
                     ? "border-primary/30 bg-primary/5 text-primary" 
@@ -369,7 +367,6 @@ export default function Namespace() {
               <a 
                 href="https://aigvrn.com" 
                 target="_blank" rel="noopener noreferrer"
-                rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >
                 <Globe className="w-5 h-5 text-primary" />
@@ -382,7 +379,6 @@ export default function Namespace() {
               <a 
                 href="https://zenodo.org/records/18209222" 
                 target="_blank" rel="noopener noreferrer"
-                rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >
                 <Archive className="w-5 h-5 text-muted-foreground" />
@@ -395,7 +391,6 @@ export default function Namespace() {
               <a 
                 href="https://orcid.org/0009-0001-4237-1243" 
                 target="_blank" rel="noopener noreferrer"
-                rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >
                 <Users className="w-5 h-5 text-muted-foreground" />

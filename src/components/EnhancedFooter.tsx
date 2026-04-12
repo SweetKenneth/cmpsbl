@@ -139,8 +139,7 @@ export function EnhancedFooter() {
                   <a
                     key={social.name}
                     href={social.href}
-                    target="_blank"rel="noopener noreferrer"
-                    rel="noopener noreferrer"
+                    target="_blank" rel="noopener noreferrer"
                     className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-neon-cyan/10 hover:text-neon-cyan hover:scale-110 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 touch-target"
                     title={social.name}
                   >
@@ -160,8 +159,7 @@ export function EnhancedFooter() {
                       {link.external ? (
                         <a
                           href={link.href}
-                          target="_blank"rel="noopener noreferrer"
-                          rel="noopener noreferrer"
+                          target="_blank" rel="noopener noreferrer"
                           className={cn(
                             "text-sm transition-all duration-300 inline-block underline-reveal",
                             link.highlight ? "text-neon-cyan hover:text-neon-cyan/80 font-medium" : "text-muted-foreground hover:text-foreground"

@@ -296,8 +296,7 @@ export function HeroMetaSubstrate() {
             <FadeIn delay={0.25} className="flex justify-center lg:justify-start mt-3">
               <a
                 href="https://zenodo.org/records/18895141"
-                target="_blank"rel="noopener noreferrer"
-                rel="noopener noreferrer"
+                target="_blank" rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.08)] backdrop-blur-sm hover:border-[hsl(var(--neon-purple)/0.6)] hover:bg-[hsl(var(--neon-purple)/0.14)] transition-all duration-300 hover:-translate-y-0.5 shadow-md shadow-[hsl(var(--neon-purple)/0.1)]"
               >
                 <span className="w-2 h-2 rounded-full bg-[hsl(var(--neon-purple))] animate-pulse" />

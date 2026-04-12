@@ -152,8 +152,7 @@ export function LiveCodeExamplesCompact() {
         <motion.a
           key={example.id}
           href={example.sourceUrl}
-          target="_blank"rel="noopener noreferrer"
-          rel="noopener noreferrer"
+          target="_blank" rel="noopener noreferrer"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

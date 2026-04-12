@@ -355,7 +355,7 @@ export default function LlmsTxt() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button variant="outline" className="w-full gap-2" asChild>
-                  <a href="/llms.txt" target="_blank"rel="noopener noreferrer">
+                  <a href="/llms.txt" target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="w-4 h-4" />
                     View in Browser
                   </a>
@@ -525,7 +525,6 @@ export default function LlmsTxt() {
             <a 
               href="https://llmstxt.org" 
               target="_blank" rel="noopener noreferrer"
-              rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
               llmstxt.org
