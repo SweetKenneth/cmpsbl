@@ -61,6 +61,16 @@ function wrapDocHtml(title: string, bodyContent: string): string {
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
 type ProcessingPrimitive = { name: string; status: 'pending' | 'active' | 'done' };
 
+/** Trigger subtle haptic feedback for key interactions */
+function haptic(pattern: 'light' | 'medium' | 'success' = 'light') {
+  try {
+    if ('vibrate' in navigator) {
+      const patterns = { light: [8], medium: [15], success: [10, 30, 10] };
+      navigator.vibrate(patterns[pattern]);
+    }
+  } catch { /* non-critical */ }
+}
+
 const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
   { key: 'upload', label: 'Upload', icon: Upload },
   { key: 'diagnostic', label: 'Diagnostic', icon: Search },
@@ -109,11 +119,13 @@ export default function RestorationShop() {
 
   const handleScan = useCallback(async () => {
     if (!code.trim() || isScanning) return;
+    haptic('medium');
     setIsScanning(true);
     try {
       const result = await runScanTeam(code, fileName ?? undefined);
       setScanResult(result);
       setDetectedLang(result.metrics.language || 'TypeScript');
+      haptic('success');
       setPhase('diagnostic');
     } finally {
       setIsScanning(false);
@@ -123,6 +135,7 @@ export default function RestorationShop() {
   const handleSelectPrimitives = useCallback(async (selected: PrimitiveRecommendation[]) => {
     if (!scanResult || isRestoring) return;
     setIsRestoring(true);
+    haptic('medium');
     setSelectedPrims(selected);
 
     const entry = addToQueue('demo-user', 'builder', 'demo-hash', selected.map(s => s.name));
@@ -161,6 +174,7 @@ export default function RestorationShop() {
 
     entry.status = 'complete';
     setQueueEntry({ ...entry });
+    haptic('success');
     setPhase('debrief');
     setIsRestoring(false);
   }, [scanResult, isRestoring, code, fileName]);
@@ -471,7 +485,7 @@ export default function RestorationShop() {
       {/* Main flow */}
       <section className="relative z-10 px-3 sm:px-6 pb-16 sm:pb-24">
         <div className="max-w-4xl mx-auto">
-          {/* Phase indicators */}
+          {/* Phase indicators — enterprise stepper with animated connectors */}
           <div className="flex items-center justify-center gap-1 mb-10">
             {PHASE_META.map((p, idx) => {
               const Icon = p.icon;
@@ -479,21 +493,39 @@ export default function RestorationShop() {
               const isPast = currentPhaseIdx > idx;
               return (
                 <div key={p.key} className="flex items-center">
-                  <div className={cn(
-                    "w-9 h-9 rounded-xl flex items-center justify-center transition-all border",
-                    isActive
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                      : isPast
-                        ? "bg-primary/15 text-primary border-primary/30"
-                        : "bg-card/40 text-muted-foreground/40 border-border/20",
+                  <button
+                    onClick={() => { if (isPast) haptic('light'); }}
+                    className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 border relative",
+                      isActive
+                        ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_hsl(var(--primary)/0.3)] scale-105"
+                        : isPast
+                          ? "bg-primary/15 text-primary border-primary/30"
+                          : "bg-card/40 text-muted-foreground/40 border-border/20",
+                    )}
+                  >
+                    <Icon className={cn("w-4 h-4 transition-transform", isActive && "animate-pulse")} />
+                    {isActive && (
+                      <div className="absolute inset-0 rounded-xl border-2 border-primary/30 animate-ping opacity-30 pointer-events-none" />
+                    )}
+                  </button>
+                  <span className={cn(
+                    "text-[9px] font-mono uppercase tracking-wider ml-1 hidden sm:inline transition-colors",
+                    isActive ? "text-primary font-bold" : isPast ? "text-primary/60" : "text-muted-foreground/30"
                   )}>
-                    <Icon className="w-4 h-4" />
-                  </div>
+                    {p.label}
+                  </span>
                   {idx < PHASE_META.length - 1 && (
-                    <div className={cn(
-                      "w-8 h-px mx-1 transition-colors",
-                      isPast ? "bg-primary/40" : "bg-border/30"
-                    )} />
+                    <div className="w-6 sm:w-10 h-[2px] mx-1.5 relative overflow-hidden rounded-full bg-border/20">
+                      <div
+                        className={cn(
+                          "absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out",
+                          isPast
+                            ? "w-full bg-gradient-to-r from-primary/60 to-primary/40"
+                            : "w-0 bg-primary/40"
+                        )}
+                      />
+                    </div>
                   )}
                 </div>
               );
@@ -502,11 +534,16 @@ export default function RestorationShop() {
 
           {/* UPLOAD PHASE */}
           {phase === 'upload' && (
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="rounded-xl border border-border/40 bg-card/20 p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <Upload className="w-5 h-5 text-primary" />
-                  <h2 className="text-sm font-bold text-foreground">Upload Your Code</h2>
+            <div className="max-w-2xl mx-auto space-y-6 phase-card-enter">
+              <div className="rounded-2xl border border-border/30 bg-card/20 backdrop-blur-sm p-6 sm:p-8 shadow-sm">
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <Upload className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-foreground">Upload Your Code</h2>
+                    <p className="text-[10px] text-muted-foreground">Any language, any stack — we'll handle the rest</p>
+                  </div>
                 </div>
 
                 <input
@@ -518,45 +555,55 @@ export default function RestorationShop() {
                 />
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => { haptic('light'); fileInputRef.current?.click(); }}
                   className={cn(
-                    "w-full rounded-xl border-2 border-dashed p-6 mb-4 text-center transition-colors",
-                    "hover:border-primary/40 hover:bg-primary/5",
-                    fileName ? "border-primary/30 bg-primary/5" : "border-border/40 bg-background/30"
+                    "w-full rounded-2xl border-2 border-dashed p-8 mb-5 text-center transition-all duration-300 group",
+                    "hover:border-primary/40 hover:bg-primary/5 hover:shadow-[0_0_30px_hsl(var(--primary)/0.08)]",
+                    fileName ? "border-primary/30 bg-primary/5" : "border-border/30 bg-background/20 drop-zone-idle"
                   )}
                 >
-                  <FileUp className={cn("w-8 h-8 mx-auto mb-2", fileName ? "text-primary" : "text-muted-foreground/40")} />
+                  <div className={cn(
+                    "w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center transition-all duration-300",
+                    fileName
+                      ? "bg-primary/15 border border-primary/20"
+                      : "bg-muted/20 border border-border/20 group-hover:bg-primary/10 group-hover:border-primary/20"
+                  )}>
+                    <FileUp className={cn(
+                      "w-6 h-6 transition-all duration-300",
+                      fileName ? "text-primary" : "text-muted-foreground/40 group-hover:text-primary/60"
+                    )} />
+                  </div>
                   {fileName ? (
                     <div>
-                      <p className="text-sm font-semibold text-foreground">{fileName}</p>
-                      <p className="text-[10px] text-muted-foreground mt-1">Click to choose a different file</p>
+                      <p className="text-sm font-bold text-foreground">{fileName}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1.5">Click to choose a different file</p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm font-medium text-foreground">Click to upload a file</p>
-                      <p className="text-[10px] text-muted-foreground mt-1">
+                      <p className="text-sm font-semibold text-foreground">Click to upload a file</p>
+                      <p className="text-[10px] text-muted-foreground mt-1.5">
                         Any of 90+ supported languages · Max 1MB
                       </p>
                     </div>
                   )}
                 </button>
 
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex-1 h-px bg-border/30" />
-                  <span className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">or paste code</span>
-                  <div className="flex-1 h-px bg-border/30" />
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+                  <span className="text-[9px] text-muted-foreground/50 uppercase tracking-[0.2em] font-mono">or paste code</span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
                 </div>
 
                 <Textarea
                   value={code}
                   onChange={(e) => { setCode(e.target.value); setFileName(null); }}
                   placeholder="Paste your code here — any language, any stack..."
-                  className="min-h-[160px] bg-background/50 font-mono text-xs mb-4"
+                  className="min-h-[160px] bg-background/50 font-mono text-xs mb-5 rounded-xl border-border/30 focus:border-primary/40 transition-colors"
                 />
                 <Button
                   onClick={handleScan}
                   disabled={!code.trim() || isScanning}
-                  className="w-full rounded-xl font-bold gap-2"
+                  className="w-full rounded-xl font-bold gap-2.5 h-12 text-sm shadow-[0_0_20px_hsl(var(--primary)/0.15)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.25)] transition-all"
                 >
                   {isScanning ? (
                     <>
@@ -577,7 +624,7 @@ export default function RestorationShop() {
 
           {/* DIAGNOSTIC PHASE */}
           {phase === 'diagnostic' && scanResult && (
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="max-w-2xl mx-auto space-y-6 phase-card-enter">
               {/* Score overview cards */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
@@ -744,7 +791,7 @@ export default function RestorationShop() {
 
           {/* SELECT PRIMITIVES PHASE */}
           {phase === 'select' && scanResult && (
-            <div className="space-y-6">
+            <div className="space-y-6 phase-card-enter">
               <PrimitiveSelector
                 recommendations={scanResult.recommendedPrimitives}
                 onConfirm={handleSelectPrimitives}
@@ -757,43 +804,63 @@ export default function RestorationShop() {
 
           {/* QUEUE PHASE */}
           {phase === 'queue' && (
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="max-w-2xl mx-auto space-y-6 phase-card-enter">
               <RestorationQueue
                 entry={queueEntry}
                 queuePosition={queueEntry ? getQueuePosition(queueEntry.id) : null}
                 estimatedWaitMs={estimateWaitTime('builder')}
               />
 
-              {/* Animated primitive activation */}
+              {/* Cinematic primitive activation sequence */}
               {processingPrimitives.length > 0 && (
-                <div className="rounded-xl border border-border/30 bg-card/20 p-4">
-                  <h4 className="text-xs font-bold text-foreground mb-3 flex items-center gap-2">
+                <div className="rounded-2xl border border-primary/20 bg-card/30 backdrop-blur-sm p-5 shadow-sm">
+                  <h4 className="text-xs font-bold text-foreground mb-1 flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-primary" />
                     Applying Primitives
                   </h4>
-                  <div className="space-y-1.5">
-                    {processingPrimitives.map((p) => (
-                      <div key={p.name} className="flex items-center gap-2">
+                  <p className="text-[10px] text-muted-foreground mb-4">
+                    Each primitive is being woven into your code's runtime behavior
+                  </p>
+                  {/* Progress bar */}
+                  <div className="h-1.5 rounded-full bg-border/20 mb-4 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-500 ease-out"
+                      style={{ width: `${(processingPrimitives.filter(p => p.status === 'done').length / processingPrimitives.length) * 100}%` }}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    {processingPrimitives.map((p, idx) => (
+                      <div
+                        key={p.name}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300",
+                          p.status === 'active' && "bg-primary/5 border border-primary/20 primitive-activate",
+                          p.status === 'done' && "primitive-seal-flash",
+                        )}
+                        style={{ animationDelay: `${idx * 50}ms` }}
+                      >
                         {p.status === 'done' ? (
-                          <div className="w-4 h-4 rounded-full bg-neon-green/20 flex items-center justify-center">
-                            <div className="w-2 h-2 rounded-full bg-neon-green" />
+                          <div className="w-5 h-5 rounded-full bg-[hsl(142_76%_36%/0.15)] flex items-center justify-center">
+                            <div className="w-2.5 h-2.5 rounded-full bg-[hsl(142_76%_36%)]" />
                           </div>
                         ) : p.status === 'active' ? (
-                          <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                          <div className="w-5 h-5 relative">
+                            <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                          </div>
                         ) : (
-                          <div className="w-4 h-4 rounded-full border border-border/40" />
+                          <div className="w-5 h-5 rounded-full border border-border/30 bg-muted/10" />
                         )}
                         <span className={cn(
-                          "text-xs font-mono",
-                          p.status === 'done' ? "text-foreground" : p.status === 'active' ? "text-primary font-bold" : "text-muted-foreground/50"
+                          "text-xs font-mono flex-1",
+                          p.status === 'done' ? "text-foreground" : p.status === 'active' ? "text-primary font-bold" : "text-muted-foreground/40"
                         )}>
                           {p.name}
                         </span>
                         {p.status === 'active' && (
-                          <span className="text-[9px] text-primary/70 ml-auto">activating...</span>
+                          <span className="text-[9px] text-primary/60 font-mono animate-pulse">activating...</span>
                         )}
                         {p.status === 'done' && (
-                          <span className="text-[9px] text-neon-green/70 ml-auto">sealed</span>
+                          <span className="text-[9px] text-[hsl(142_76%_36%/0.7)] font-mono font-semibold">✓ sealed</span>
                         )}
                       </div>
                     ))}
@@ -805,29 +872,36 @@ export default function RestorationShop() {
 
           {/* DEBRIEF PHASE */}
           {phase === 'debrief' && report && (
-            <div className="max-w-3xl mx-auto space-y-6">
-              {/* ═══ CJPI Hero Badge ═══ */}
-              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card/30 to-primary/5 p-6 sm:p-8 text-center relative overflow-hidden">
+            <div className="max-w-3xl mx-auto space-y-6 phase-card-enter">
+              {/* ═══ CJPI Hero Badge — Cinematic Score Reveal ═══ */}
+              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card/30 to-primary/5 p-8 sm:p-10 text-center relative overflow-hidden cjpi-glow-pulse">
+                {/* Ambient glow layers */}
                 <div className="absolute inset-0 pointer-events-none" style={{
-                  backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 60%)",
+                  backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.12) 0%, transparent 50%)",
+                }} />
+                <div className="absolute inset-0 pointer-events-none" style={{
+                  backgroundImage: "radial-gradient(circle at 30% 80%, hsl(var(--neon-purple) / 0.06) 0%, transparent 40%)",
                 }} />
                 <div className="relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/10 mb-4">
-                    <Award className="w-3 h-3 text-primary" />
-                    <span className="text-[10px] font-bold text-primary uppercase tracking-widest">CJPI Certificate</span>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/10 mb-5 ascension-stagger-1">
+                    <Award className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">CJPI Certificate</span>
                   </div>
-                  <div className="text-5xl sm:text-6xl font-black text-foreground mb-1">{report.cjpiCertificate.score}</div>
+                  <div className="text-6xl sm:text-7xl font-black text-foreground mb-2 cjpi-score-reveal">
+                    {report.cjpiCertificate.score}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground/60 font-mono mb-3 ascension-stagger-2">out of 100</div>
                   <div className={cn(
-                    "inline-block text-xs font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-4",
+                    "inline-block text-xs font-black uppercase tracking-[0.2em] px-5 py-2 rounded-full mb-5 cjpi-tier-reveal",
                     report.cjpiCertificate.tier === 'S-Tier' || report.cjpiCertificate.tier === 'Apex'
-                      ? "bg-primary/15 text-primary border border-primary/30"
+                      ? "bg-primary/15 text-primary border border-primary/30 shadow-[0_0_20px_hsl(var(--primary)/0.2)]"
                       : report.cjpiCertificate.tier === 'A-Tier'
                         ? "bg-neon-green/15 text-neon-green border border-neon-green/30"
                         : "bg-muted/30 text-muted-foreground border border-border/30"
                   )}>
                     {report.cjpiCertificate.tier}
                   </div>
-                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground font-mono">
+                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground font-mono ascension-stagger-3">
                     <span>Serial: {report.cjpiCertificate.serialNumber}</span>
                     <span className="hidden sm:inline">·</span>
                     <span>{report.primitiveManifest.length} primitives applied</span>
