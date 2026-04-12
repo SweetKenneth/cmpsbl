@@ -192,7 +192,20 @@ export function ascend<T extends Record<string, unknown>>(
   }));
   const buildMs = Math.round(performance.now() - buildStart);
 
-  // ── Phase C: Activate runtime ──────────────────────────────
+  // ── Phase C: Fingerprint (Phase 6) ─────────────────────────
+  const fingerprint = computeFingerprint(
+    manifest as unknown as Record<string, unknown>,
+    attachmentEntries as unknown as Record<string, unknown>[],
+  );
+
+  record('artifact_bound', 'SYSTEM', 'ascension', 'Artifact manifest and attachments bound', {
+    name: manifest.name,
+    cjpi,
+    attachmentCount: attachmentEntries.length,
+    primitivesUsed: scan.policyResult.primitivesUsed,
+  });
+
+  // ── Phase D: Activate runtime ──────────────────────────────
   const activateStart = performance.now();
   const { wrapped, result: activation } = initializeArtifact(
     moduleExports,
@@ -201,10 +214,26 @@ export function ascend<T extends Record<string, unknown>>(
   );
   const activateMs = Math.round(performance.now() - activateStart);
 
-  // ── Phase D: Generate proof ────────────────────────────────
+  // Record activation events into verification ledger
+  const activationSeq = record('function_wrapped', 'SYSTEM', 'ascension',
+    `${activation.wrappedCount} functions wrapped across ${activation.primitivesUsed} primitives`, {
+    wrappedCount: activation.wrappedCount,
+    skippedCount: activation.skippedCount,
+  });
+
+  // ── Phase E: Generate proof ────────────────────────────────
   const proofStart = performance.now();
   const proof = generateActivationReport();
   const proofMs = Math.round(performance.now() - proofStart);
+
+  record('proof_generated', 'SYSTEM', 'ascension',
+    `Activation proof: ${proof.activatedCount} activated, ${proof.boundCount} bound, ${proof.unresolvedCount} unresolved`, {
+    dropInSuccess: proof.dropInSuccess,
+    totalPrimitives: proof.totalPrimitives,
+  }, { causedBy: activationSeq });
+
+  // ── Phase F: Verification summary ──────────────────────────
+  const verification = generateVerificationSummary();
 
   const totalMs = Math.round(performance.now() - pipelineStart);
 
@@ -214,6 +243,11 @@ export function ascend<T extends Record<string, unknown>>(
     proof.totalPrimitives > 0;
 
   if (!integrityOk) {
+    record('integrity_check', 'SYSTEM', 'verification',
+      'Low activation integrity — potential scan/runtime mismatch', {
+      wrappedCount: activation.wrappedCount,
+      boundariesDetected: scan.meta.boundariesDetected,
+    });
     console.warn('CMPSBL: Low activation integrity — potential scan/runtime mismatch');
   }
 
@@ -224,6 +258,8 @@ export function ascend<T extends Record<string, unknown>>(
     scan,
     activation,
     proof,
+    fingerprint,
+    verification,
     pipeline: {
       totalMs,
       phases: { scanMs, buildMs, activateMs, proofMs },
