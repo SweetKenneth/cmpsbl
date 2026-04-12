@@ -9,6 +9,10 @@
  *   - Behavior is visible, not implied
  *   - System feels like a tool, not a concept
  *
+ * Constraint: Single active session per process.
+ * Running multiple concurrent sessions will cause cross-contamination
+ * in the verification ledger. Scoped ledgers are a future enhancement.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
@@ -17,7 +21,7 @@ import { ascend, renderPipelineSummary } from './ascension-loop';
 import type { HealthCheckResponse } from './portable-artifact';
 import { getHealthCheck, detectEnvironment, generateDeploymentManifest } from './portable-artifact';
 import { renderVerificationReport, resetVerificationLedger } from './engines/verification-ledger';
-import { getLatchedCoverageRatio } from './engines/unified-health';
+import { resolveHealthFromSummary } from './engines/unified-health';
 import type { HealthStatus } from './engines/unified-health';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -41,15 +45,28 @@ export interface AscensionConfig {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §2 — SESSION (stateful wrapper around an Ascension artifact)
+// §2 — STATUS SNAPSHOT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Quick-glance status — one call instead of three */
+export interface SessionStatus {
+  readonly health: HealthStatus;
+  readonly coverage: number;
+  readonly fingerprint: string | null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §3 — SESSION (stateful wrapper around an Ascension artifact)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Lightweight handle returned after initialization */
 export interface AscensionSession<T extends Record<string, unknown> = Record<string, unknown>> {
   /** The wrapped module — drop-in replacement */
   readonly exports: T;
-  /** Current health status */
+  /** Current health status (unified: activation + runtime) */
   health(): HealthStatus;
+  /** Quick-glance status snapshot */
+  status(): SessionStatus;
   /** Full health check (for /health endpoint) */
   healthCheck(): HealthCheckResponse;
   /** Human-readable pipeline summary */
@@ -58,12 +75,15 @@ export interface AscensionSession<T extends Record<string, unknown> = Record<str
   verificationReport(): string;
   /** Raw artifact (for advanced use) */
   readonly artifact: AscensionArtifact<T>;
-  /** Tear down — release latches and clear ledger */
+  /**
+   * Tear down — release latches and clear ledger.
+   * ⚠ Resets global verification state. Single active session per process.
+   */
   destroy(): void;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — INIT (the developer entry point)
+// §4 — INIT (the developer entry point)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -76,6 +96,7 @@ export interface AscensionSession<T extends Record<string, unknown> = Record<str
  * const session = init(myLib, sourceCode, { name: 'my-lib' });
  * // session.exports is a drop-in replacement for myLib
  * // session.health() returns 'healthy' | 'partial' | 'degraded'
+ * // session.status() returns { health, coverage, fingerprint }
  * ```
  */
 export function init<T extends Record<string, unknown>>(
@@ -98,15 +119,27 @@ export function init<T extends Record<string, unknown>>(
 
   const artifact = ascend(sourceCode, moduleExports, options);
 
+  /** Resolve unified health from the artifact's real signals */
+  function resolveHealth(): HealthStatus {
+    return resolveHealthFromSummary(
+      artifact.pipeline.coverageRatio,
+      artifact.verification,
+    ).status;
+  }
+
   return {
     exports: artifact.exports,
 
     health(): HealthStatus {
-      const ratio = getLatchedCoverageRatio();
-      if (ratio === null) return 'partial';
-      if (ratio >= 0.8) return 'healthy';
-      if (ratio >= 0.5) return 'partial';
-      return 'degraded';
+      return resolveHealth();
+    },
+
+    status(): SessionStatus {
+      return {
+        health: resolveHealth(),
+        coverage: artifact.pipeline.coverageRatio,
+        fingerprint: artifact.fingerprint?.composite ?? null,
+      };
     },
 
     healthCheck(): HealthCheckResponse {
@@ -124,13 +157,14 @@ export function init<T extends Record<string, unknown>>(
     artifact,
 
     destroy(): void {
+      // ⚠ Global state — single active session per process
       resetVerificationLedger();
     },
   };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §4 — QUICK-START HELPERS
+// §5 — QUICK-START HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
