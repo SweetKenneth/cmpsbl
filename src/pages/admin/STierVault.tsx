@@ -27,6 +27,9 @@ import registryData from "@/crownjewels/s-tier.registry.json";
 import type { STierEntry } from "@/crownjewels/types";
 import { getATierVault, type ATierEntry } from "@/crownjewels/a-tier";
 import {
+  getAllVerticalJewels, getVerticalRegistrySummaries, getRegisteredVerticals,
+} from "@/crownjewels/expansion-jewels";
+import {
   generateSingleExport, generateExportBundle, downloadBundle,
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
