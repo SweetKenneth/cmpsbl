@@ -111,16 +111,25 @@ let activeFingerprint: ArtifactFingerprint | null = null;
 // §3 — FINGERPRINTING
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/** Stable JSON serialization — sorts keys to prevent order-dependent hashes */
+function stableStringify(obj: unknown): string {
+  if (obj === null || typeof obj !== 'object') return JSON.stringify(obj);
+  if (Array.isArray(obj)) return `[${obj.map(stableStringify).join(',')}]`;
+  const sorted = Object.keys(obj as Record<string, unknown>).sort();
+  const pairs = sorted.map(k => `${JSON.stringify(k)}:${stableStringify((obj as Record<string, unknown>)[k])}`);
+  return `{${pairs.join(',')}}`;
+}
+
 /**
  * Calculate a fingerprint without mutating active state.
- * Used for re-verification without corrupting the identity anchor.
+ * Uses stable serialization to ensure portability across environments.
  */
 function calculateFingerprint(
   manifest: Record<string, unknown>,
   attachments: readonly Record<string, unknown>[],
 ): ArtifactFingerprint {
-  const manifestHash = fnv1a(JSON.stringify(manifest));
-  const attachmentHash = fnv1a(JSON.stringify(attachments));
+  const manifestHash = fnv1a(stableStringify(manifest));
+  const attachmentHash = fnv1a(stableStringify(attachments));
   return {
     manifestHash,
     attachmentHash,
