@@ -248,12 +248,12 @@ const App = () => {
                       Skip to content
                     </a>
                     <ScrollToTop />
-                    <Suspense fallback={null}>
-                      <PersistentRadioPlayer />
-                    </Suspense>
                    <Routes>
                     <Route path="/*" element={
                      <AuthProvider>
+                       <Suspense fallback={null}>
+                         <PersistentRadioPlayer />
+                       </Suspense>
                        <DeferredDecodeFloat />
                        <Suspense fallback={null}>
                          <RegisterPasskeyPrompt />
