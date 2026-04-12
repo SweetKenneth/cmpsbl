@@ -189,7 +189,7 @@ export default function Architecture() {
                   A layered orchestration architecture
                   that boots deterministically, coordinates without a shared clock,
                   heals autonomously, and evolves through a shadow-first mutation process — all governed by a{" "}
-                  <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">tamper-evident audit chain</a>.
+                  <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">tamper-evident audit chain</a>.
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
                   40 primitives across 4 categories — a symmetric 12·12·8·8 matrix.{" "}

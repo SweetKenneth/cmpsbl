@@ -29,20 +29,20 @@ export function AuthorBio({ publishDate, readTime, authorName }: AuthorBioProps)
             <div>
               <h3 className="text-xl font-bold text-foreground">
                 {member.orcid ? (
-                  <a href={member.orcid} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                  <a href={member.orcid} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors"rel="noopener noreferrer">
                     {member.name}
                   </a>
                 ) : member.name}
               </h3>
               <p className="text-sm text-muted-foreground">{member.role}</p>
               <div className="flex gap-2 mt-2">
-                <a href="https://www.linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="https://www.linkedin.com/company/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"rel="noopener noreferrer">
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <a href="https://x.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="https://x.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"rel="noopener noreferrer">
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a href="https://github.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="https://github.com/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"rel="noopener noreferrer">
                   <Github className="w-4 h-4" />
                 </a>
               </div>

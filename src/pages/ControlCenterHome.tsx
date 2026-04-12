@@ -923,7 +923,7 @@ export default function ControlCenterHome() {
                       </div>
                       <a
                         href={`https://${s.domain}`}
-                        target="_blank"
+                        target="_blank"rel="noopener noreferrer"
                         rel="noopener noreferrer"
                         className="text-primary hover:underline flex items-center gap-0.5"
                       >

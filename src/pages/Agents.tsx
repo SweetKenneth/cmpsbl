@@ -162,9 +162,9 @@ export default function Agents() {
                   <strong className="text-foreground">Standalone deployment:</strong> Every agent purchase includes a
                   self-contained ZIP with the embedded <strong className="text-foreground">Convex Core™</strong> —
                   deploy to your own infrastructure, no CMPSBL dependency required. Also activates via{" "}
-                  <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@cmpsbl/sdk</a>{" "}
+                  <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">@cmpsbl/sdk</a>{" "}
                   and the{" "}
-                  <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">CLI</a>.
+                  <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">CLI</a>.
                 </p>
                 <div className="flex flex-wrap gap-3 mt-3">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

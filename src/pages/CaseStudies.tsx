@@ -775,7 +775,7 @@ export default function CaseStudies() {
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The <code className="text-xs px-1.5 py-0.5 rounded bg-muted font-mono">__init__.py</code> core of{' '}
-                <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">Hugging Face Tokenizers</a>{' '}
+                <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">Hugging Face Tokenizers</a>{' '}
                 — the tokenization library powering virtually every LLM in production today, with over <strong className="text-foreground">73 million monthly PyPI downloads</strong>. The first code ever processed through CMPSBL LLM™, our brand-new vertical substrate. Ascension found a <strong className="text-destructive">critical error</strong> and hardened it with 20 LLM-specialized primitives — in under 10 seconds, with zero AI.
               </p>
             </div>
@@ -806,14 +806,14 @@ export default function CaseStudies() {
                 <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
-                    <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">huggingface/tokenizers</a>{' '}
+                    <a href="https://github.com/huggingface/tokenizers" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">huggingface/tokenizers</a>{' '}
                     — the fast, Rust-backed tokenization library maintained by{' '}
-                    <a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Hugging Face</a>. With over <strong className="text-foreground">9,400+ GitHub stars</strong> and{' '}
+                    <a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">Hugging Face</a>. With over <strong className="text-foreground">9,400+ GitHub stars</strong> and{' '}
                     <strong className="text-foreground">73+ million monthly PyPI downloads</strong>, this library is the tokenization backbone for GPT, BERT, LLaMA, Mistral, and virtually every transformer model in production. Licensed under Apache 2.0.
                   </p>
                   <p>
                     <strong className="text-foreground">File:</strong>{' '}
-                    <a href="https://github.com/huggingface/tokenizers/blob/main/bindings/python/py_src/tokenizers/__init__.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">bindings/python/py_src/tokenizers/__init__.py</a>{' '}
+                    <a href="https://github.com/huggingface/tokenizers/blob/main/bindings/python/py_src/tokenizers/__init__.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs"rel="noopener noreferrer">bindings/python/py_src/tokenizers/__init__.py</a>{' '}
                     — the Python package initializer that defines the type system for every tokenizer interaction: <code className="text-xs px-1 py-0.5 rounded bg-muted">TextInputSequence</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">EncodeInput</code>, <code className="text-xs px-1 py-0.5 rounded bg-muted">PreTokenizedInputSequence</code>, offset referentials, split delimiter behaviors, and the complete import surface for BPE, WordPiece, Unigram, and SentencePiece tokenizers.
                   </p>
                   <p>
@@ -870,7 +870,7 @@ export default function CaseStudies() {
                 <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
                   <p>
                     Running HuggingFace Tokenizers through <strong className="text-foreground">CMPSBL LLM™</strong> is the defining use case for our newest vertical. The LLM substrate was built specifically to address the{' '}
-                    <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">OWASP Top 10 for LLMs</a>{' '}
+                    <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">OWASP Top 10 for LLMs</a>{' '}
                     — hallucination, prompt injection, bias, context poisoning, and supply chain vulnerabilities. The expansion primitives aren't generic: LEXICON understands tokenizer security and adversarial input sanitization. SKEPTIC validates output consistency. TETHER manages context windows. SIEVE filters harmful content.
                   </p>
                   <p>
@@ -1016,7 +1016,7 @@ export default function CaseStudies() {
                 A* Grid Path Planning Algorithm
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
-                The canonical A* path planner from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">PythonRobotics</a> — the most-starred open-source robotics algorithms repository on GitHub (29,000+ stars). Ascended through the CMPSBL ROBOTICS™ Ascension pipeline in under 10 seconds, with zero AI calls.
+                The canonical A* path planner from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">PythonRobotics</a> — the most-starred open-source robotics algorithms repository on GitHub (29,000+ stars). Ascended through the CMPSBL ROBOTICS™ Ascension pipeline in under 10 seconds, with zero AI calls.
               </p>
             </div>
 
@@ -1046,19 +1046,19 @@ export default function CaseStudies() {
                 <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
-                    <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">AtsushiSakai/PythonRobotics</a>{' '}
+                    <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">AtsushiSakai/PythonRobotics</a>{' '}
                     — a comprehensive collection of robotics algorithms with sample code and mathematical explanations, cited in academic papers and used in production autonomous driving systems worldwide.
                   </p>
                   <p>
                     <strong className="text-foreground">File:</strong>{' '}
-                    <a href="https://github.com/AtsushiSakai/PythonRobotics/blob/master/PathPlanning/AStar/a_star.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">PathPlanning/AStar/a_star.py</a>{' '}
+                    <a href="https://github.com/AtsushiSakai/PythonRobotics/blob/master/PathPlanning/AStar/a_star.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs"rel="noopener noreferrer">PathPlanning/AStar/a_star.py</a>{' '}
                     — the A* grid-based path planning implementation. Originally authored by{' '}
-                    <a href="https://github.com/AtsushiSakai" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Atsushi Sakai</a>{' '}
-                    and <a href="https://github.com/nkanargias" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Nikos Kanargias</a>.
+                    <a href="https://github.com/AtsushiSakai" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">Atsushi Sakai</a>{' '}
+                    and <a href="https://github.com/nkanargias" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">Nikos Kanargias</a>.
                   </p>
                   <p>
                     <strong className="text-foreground">Algorithm:</strong> A* search is a best-first graph traversal algorithm that finds the shortest path between nodes using a heuristic function. It is foundational in robotics for{' '}
-                    <a href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">grid-based motion planning</a>,{' '}
+                    <a href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">grid-based motion planning</a>,{' '}
                     autonomous navigation, warehouse logistics, and multi-robot coordination.
                   </p>
                 </div>
@@ -1213,7 +1213,7 @@ export default function CaseStudies() {
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 A functional PHP agent mirroring the{' '}
-                <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">OpenAI Agents SDK</a>{' '}
+                <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">OpenAI Agents SDK</a>{' '}
                 architecture — uploaded to all four CMPSBL® substrates to demonstrate how the same source code receives fundamentally different hardening based on the active vertical.
               </p>
             </div>
@@ -1315,7 +1315,7 @@ export default function CaseStudies() {
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The{' '}
-                <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">ConsolidateBlocks</a>{' '}
+                <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">ConsolidateBlocks</a>{' '}
                 transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads). Ascended through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
               </p>
             </div>
@@ -1343,7 +1343,7 @@ export default function CaseStudies() {
                 <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
-                    <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Qiskit/qiskit</a>{' '}
+                    <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">Qiskit/qiskit</a>{' '}
                     — IBM's open-source SDK for quantum computing with over <strong className="text-foreground">13 million downloads</strong>. This critical optimization pass consolidates consecutive quantum gates into single unitary operations using KAK decomposition.
                   </p>
                 </div>
@@ -1451,7 +1451,7 @@ export default function CaseStudies() {
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The core TCP communication mixin from{' '}
-                <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">Rapid7's Metasploit Framework</a>{' '}
+                <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">Rapid7's Metasploit Framework</a>{' '}
                 — 38K+ GitHub stars. This 342-line Ruby module is the foundation of every remote exploit in the framework. Ascended through CMPSBL CYBER™ in under 10 seconds, with zero AI.
               </p>
             </div>
@@ -1479,7 +1479,7 @@ export default function CaseStudies() {
                 <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
-                    <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">rapid7/metasploit-framework</a>{' '}
+                    <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">rapid7/metasploit-framework</a>{' '}
                     — the open-source penetration testing framework maintained by Rapid7. The <code className="text-xs px-1 py-0.5 rounded bg-muted">Msf::Exploit::Remote::Tcp</code> mixin provides TCP socket establishment, SSL/TLS negotiation, proxy support, and evasive TCP segmentation. Every remote TCP-based exploit in the framework inherits from this module.
                   </p>
                 </div>
@@ -1587,7 +1587,7 @@ export default function CaseStudies() {
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
                 The <code className="text-xs px-1.5 py-0.5 rounded bg-muted font-mono">ssl/tls13_enc.c</code> TLS 1.3 encryption engine from{' '}
-                <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">OpenSSL</a>{' '}
+                <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">OpenSSL</a>{' '}
                 — widely regarded as the most audited security codebase on earth. Secures an estimated <strong className="text-foreground">66% of all encrypted internet traffic</strong>. Maintained by hundreds of world-class cryptographers. The full CMPSBL Cyber™ Vertical Primitive chain fired — every offensive and defensive primitive activated — in under 10 seconds, with zero AI.
               </p>
             </div>
@@ -1617,12 +1617,12 @@ export default function CaseStudies() {
                 <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
                   <p>
                     <strong className="text-foreground">Repository:</strong>{' '}
-                    <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">openssl/openssl</a>{' '}
+                    <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">openssl/openssl</a>{' '}
                     — the open-source cryptography and SSL/TLS toolkit that secures an estimated 66% of all encrypted internet traffic. Maintained by the OpenSSL Software Foundation with a dedicated security team and hundreds of world-class cryptographers who have reviewed this codebase. Licensed under Apache 2.0.
                   </p>
                   <p>
                     <strong className="text-foreground">File:</strong>{' '}
-                    <a href="https://github.com/openssl/openssl/blob/master/ssl/tls13_enc.c" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">ssl/tls13_enc.c</a>{' '}
+                    <a href="https://github.com/openssl/openssl/blob/master/ssl/tls13_enc.c" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs"rel="noopener noreferrer">ssl/tls13_enc.c</a>{' '}
                     — the TLS 1.3 encryption engine responsible for key derivation, handshake encryption, traffic key generation, and the cryptographic state machine that secures HTTPS connections worldwide. This file implements the core of RFC 8446.
                   </p>
                   <p>
@@ -1804,14 +1804,14 @@ export default function CaseStudies() {
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 <code className="px-1 py-0.5 rounded bg-muted text-xs font-mono">Tools/autotest/vehicle_test_suite.py</code> is the core test orchestration layer of{' '}
-                <a href="https://github.com/ArduPilot/ardupilot" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://github.com/ArduPilot/ardupilot" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   ArduPilot
                 </a>{' '}
                 (15K+ GitHub stars) — the world's most trusted open-source autonomous vehicle platform, installed in over{' '}
                 <strong className="text-foreground">1,000,000 vehicles worldwide</strong>. ArduPilot powers autonomous drones, planes, rovers, submarines, and blimps used by{' '}
                 <strong className="text-foreground">NASA, Intel, and Boeing</strong> for testing, development, and production deployment.
                 Originally named <code className="px-1 py-0.5 rounded bg-muted text-xs font-mono">common.py</code>, it was renamed in{' '}
-                <a href="https://github.com/ArduPilot/ardupilot/pull/25330" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://github.com/ArduPilot/ardupilot/pull/25330" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   PR #25330
                 </a>{' '}
                 (merged October 2023). This file orchestrates all vehicle-type testing across ArduCopter, ArduPlane, ArduRover, ArduSub, and Blimp — every vehicle type inherits from it.
@@ -1831,7 +1831,7 @@ export default function CaseStudies() {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 The substrate detected <strong className="text-foreground">dynamic code execution patterns</strong> in autonomous vehicle test orchestration software —
                 structural patterns that, if present in production control paths, represent a{' '}
-                <a href="https://owasp.org/www-community/attacks/Code_Injection" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://owasp.org/www-community/attacks/Code_Injection" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   documented attack surface per OWASP guidelines
                 </a>.
                 Python's <code className="px-1 py-0.5 rounded bg-muted text-xs font-mono">exec()</code> and{' '}
@@ -1924,7 +1924,7 @@ export default function CaseStudies() {
             <div className="flex flex-wrap gap-3">
               <a
                 href="https://github.com/ArduPilot/ardupilot/blob/master/Tools/autotest/vehicle_test_suite.py"
-                target="_blank"
+                target="_blank"rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-muted/50 text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
@@ -1994,11 +1994,11 @@ export default function CaseStudies() {
             <div className="prose prose-sm dark:prose-invert max-w-none">
               <p className="text-muted-foreground leading-relaxed">
                 <code className="text-primary">gaussian1d-models.py</code> — a swaption calibration example from{' '}
-                <a href="https://github.com/lballabio/QuantLib-SWIG" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://github.com/lballabio/QuantLib-SWIG" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   QuantLib-SWIG
                 </a>{' '}
                 (385+ GitHub stars), the Python binding layer for{' '}
-                <a href="https://github.com/lballabio/QuantLib" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://github.com/lballabio/QuantLib" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   QuantLib
                 </a>{' '}
                 — the most widely adopted open-source library for quantitative finance with{' '}
@@ -2104,7 +2104,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py"
-                    target="_blank"
+                    target="_blank"rel="noopener noreferrer"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
@@ -2165,7 +2165,7 @@ export default function CaseStudies() {
             <div className="prose prose-sm dark:prose-invert max-w-none">
               <p className="text-muted-foreground leading-relaxed">
                 <code className="text-primary">cp_model.py</code> — the core Python interface for the CP-SAT constraint programming solver from{' '}
-                <a href="https://github.com/google/or-tools" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://github.com/google/or-tools" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   Google OR-Tools
                 </a>{' '}
                 — the most widely deployed open-source operations research library with{' '}
@@ -2272,7 +2272,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/google/or-tools/blob/stable/ortools/sat/python/cp_model.py"
-                    target="_blank"
+                    target="_blank"rel="noopener noreferrer"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
@@ -2332,7 +2332,7 @@ export default function CaseStudies() {
             <div className="prose prose-sm dark:prose-invert max-w-none">
               <p className="text-muted-foreground leading-relaxed">
                 <code className="text-primary">functional.py</code> — the core functional interface for{' '}
-                <a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                <a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">
                   PyTorch
                 </a>{' '}
                 — Meta&apos;s open-source deep learning framework with{' '}
@@ -2369,7 +2369,7 @@ export default function CaseStudies() {
                 the mathematical foundation underlying every major AI model in production. In PyTorch&apos;s async execution model, GPU backend
                 failures can return control to the Python frontend without propagating errors, creating silent failure modes during model
                 training and inference that are invisible to conventional testing. This intersects with a CVE-confirmed code injection vector
-                (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-45907" target="_blank" rel="noopener noreferrer" className="text-primary underline">CVE-2022-45907</a>,
+                (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-45907" target="_blank" rel="noopener noreferrer" className="text-primary underline"rel="noopener noreferrer">CVE-2022-45907</a>,
                 CVSS 9.8) in deprecated API surfaces that retain <code className="text-primary">eval</code>-based execution paths.
               </p>
             </div>
@@ -2455,7 +2455,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py"
-                    target="_blank"
+                    target="_blank"rel="noopener noreferrer"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >
@@ -2520,10 +2520,10 @@ export default function CaseStudies() {
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 <code className="text-primary">src/anthropic/_client.py</code> — the base client implementation of the official{' '}
-                <a href="https://github.com/anthropics/anthropic-sdk-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">Anthropic Python SDK</a>{' '}
+                <a href="https://github.com/anthropics/anthropic-sdk-python" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">Anthropic Python SDK</a>{' '}
                 (3K+ GitHub stars). The transport layer handling authentication, retry logic, timeout management, streaming,
                 and connection pooling for every API call made to Claude worldwide.
-                Generated by <a href="https://www.stainless.com/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">Stainless</a> from Anthropic&apos;s OpenAPI spec.
+                Generated by <a href="https://www.stainless.com/" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">Stainless</a> from Anthropic&apos;s OpenAPI spec.
                 660 lines · Python · MIT License.
               </p>
             </div>
@@ -2560,16 +2560,16 @@ export default function CaseStudies() {
               <h3 className="text-sm font-semibold text-foreground">Verified Evidence (GitHub Issues)</h3>
               <ul className="text-sm text-muted-foreground space-y-2 list-disc list-inside">
                 <li>
-                  <a href="https://github.com/anthropics/anthropic-sdk-python/issues/1258" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">Issue #1258</a>: Mid-stream SSE errors receive <code className="text-primary">status_code=200</code> instead of the actual error code — SDK reports success when the API has failed
+                  <a href="https://github.com/anthropics/anthropic-sdk-python/issues/1258" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">Issue #1258</a>: Mid-stream SSE errors receive <code className="text-primary">status_code=200</code> instead of the actual error code — SDK reports success when the API has failed
                 </li>
                 <li>
-                  <a href="https://github.com/anthropics/anthropic-sdk-python/issues/1192" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">Issue #1192</a>: <code className="text-primary">IndexError</code> during streaming when <code className="text-primary">current_snapshot.content</code> is empty
+                  <a href="https://github.com/anthropics/anthropic-sdk-python/issues/1192" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">Issue #1192</a>: <code className="text-primary">IndexError</code> during streaming when <code className="text-primary">current_snapshot.content</code> is empty
                 </li>
                 <li>
-                  <a href="https://github.com/anthropics/claude-code/issues/38905" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">Claude Code #38905</a>: Silent stream abort — Claude stops mid-task without error
+                  <a href="https://github.com/anthropics/claude-code/issues/38905" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">Claude Code #38905</a>: Silent stream abort — Claude stops mid-task without error
                 </li>
                 <li>
-                  <a href="https://github.com/anthropics/anthropic-sdk-typescript/issues/867" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">TS SDK #867</a>: Infinitely hanging clients during streaming — proposal for streaming idle timeout
+                  <a href="https://github.com/anthropics/anthropic-sdk-typescript/issues/867" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary"rel="noopener noreferrer">TS SDK #867</a>: Infinitely hanging clients during streaming — proposal for streaming idle timeout
                 </li>
               </ul>
             </div>
@@ -2692,7 +2692,7 @@ export default function CaseStudies() {
                 <div className="space-y-2">
                   <a
                     href="https://github.com/anthropics/anthropic-sdk-python/blob/main/src/anthropic/_client.py"
-                    target="_blank"
+                    target="_blank"rel="noopener noreferrer"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-sm text-primary hover:underline"
                   >

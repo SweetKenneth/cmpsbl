@@ -288,7 +288,7 @@ export function ProjectStarter() {
                     {step.link && (
                       <a
                         href={step.link}
-                        target="_blank"
+                        target="_blank"rel="noopener noreferrer"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 text-primary text-sm hover:underline ml-8"
                       >

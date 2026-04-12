@@ -123,7 +123,7 @@ export default function AcademicV13Docs() {
           <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
             <a
               href="https://doi.org/10.5281/zenodo.18234909"
-              target="_blank"
+              target="_blank"rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-primary hover:underline"
             >
@@ -133,7 +133,7 @@ export default function AcademicV13Docs() {
             <span>·</span>
             <a
               href="https://orcid.org/0009-0001-4237-1243"
-              target="_blank"
+              target="_blank"rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 hover:underline"
             >

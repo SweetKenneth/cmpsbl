@@ -291,7 +291,7 @@ export default function CodeLab() {
                         </Link>
                       </Button>
                       <Button asChild variant="ghost" size="sm" className="gap-2">
-                        <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                           <ExternalLink className="w-4 h-4" />
                           GitHub
                         </a>
@@ -647,7 +647,7 @@ const res = await fetch(GATEWAY, {
               </div>
               <div className="mt-4 flex gap-3">
                 <Button asChild size="sm" variant="outline">
-                  <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                     View on NPM <ExternalLink className="w-3 h-3 ml-1" />
                   </a>
                 </Button>

@@ -141,7 +141,7 @@ export default function PromptFluidHome() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="h-14 px-8 text-base font-semibold gap-2 border-primary/30 hover:bg-primary/5">
-              <a href="https://cmpsbl.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://cmpsbl.com" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                 <Sparkles className="w-5 h-5" />
                 Explore CMPSBL
               </a>
@@ -379,7 +379,7 @@ export default function PromptFluidHome() {
                   size="lg"
                   className="px-8 h-14 text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
-                  <a href="https://cmpsbl.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://cmpsbl.com" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                     <Terminal className="w-5 h-5 mr-2" />
                     Explore CMPSBL
                     <ArrowRight className="w-4 h-4 ml-2" />

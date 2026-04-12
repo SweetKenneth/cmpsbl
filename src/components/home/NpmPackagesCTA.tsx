@@ -145,7 +145,7 @@ export function NpmPackagesCTA() {
           {/* CLI Card */}
           <a 
             href="https://www.npmjs.com/package/@cmpsbl/cli" 
-            target="_blank"
+            target="_blank"rel="noopener noreferrer"
             rel="noopener noreferrer"
             className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-cyan)/0.25)] bg-[hsl(var(--neon-cyan)/0.04)] hover:border-[hsl(var(--neon-cyan)/0.5)] hover:bg-[hsl(var(--neon-cyan)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-cyan)/0.05)]"
           >
@@ -162,7 +162,7 @@ export function NpmPackagesCTA() {
           {/* SDK Card */}
           <a 
             href="https://www.npmjs.com/package/@cmpsbl/sdk" 
-            target="_blank"
+            target="_blank"rel="noopener noreferrer"
             rel="noopener noreferrer"
             className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-purple)/0.25)] bg-[hsl(var(--neon-purple)/0.04)] hover:border-[hsl(var(--neon-purple)/0.5)] hover:bg-[hsl(var(--neon-purple)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-purple)/0.05)]"
           >
@@ -185,7 +185,7 @@ export function NpmPackagesCTA() {
           transition={{ duration: 0.4, delay: 0.3 }}
         >
           <Button asChild size="lg" variant="outline" className="font-semibold text-foreground border-border hover:text-primary">
-            <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
               <ExternalLink className="w-4 h-4 mr-2" />
               View All Packages on NPM
             </a>

@@ -237,7 +237,7 @@ export default function Insights() {
               CMPSBL® by{" "}
               <a
                 href="https://orcid.org/0009-0001-4237-1243"
-                target="_blank"
+                target="_blank"rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >

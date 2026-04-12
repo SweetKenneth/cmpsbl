@@ -84,7 +84,7 @@ export function BlogShareBar({ title, slug, progress, visible }: BlogShareBarPro
               <a
                 key={label}
                 href={href}
-                target="_blank"
+                target="_blank"rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 aria-label={label}
                 className={cn(
@@ -141,7 +141,7 @@ export function BlogShareBar({ title, slug, progress, visible }: BlogShareBarPro
                   <a
                     key={label}
                     href={href}
-                    target="_blank"
+                    target="_blank"rel="noopener noreferrer"
                     rel="noopener noreferrer"
                     aria-label={label}
                     className="w-10 h-10 rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary transition-colors min-h-[44px] min-w-[44px]"

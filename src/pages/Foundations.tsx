@@ -199,7 +199,7 @@ export default function Foundations() {
                 <a
                   key={archive.name}
                   href={archive.href}
-                  target="_blank"
+                  target="_blank"rel="noopener noreferrer"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 p-5 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift"
                 >
@@ -219,7 +219,7 @@ export default function Foundations() {
               CMPSBL Substrate by{" "}
               <a
                 href="https://orcid.org/0009-0001-4237-1243"
-                target="_blank"
+                target="_blank"rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >

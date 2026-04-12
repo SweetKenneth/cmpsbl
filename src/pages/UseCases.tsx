@@ -488,7 +488,7 @@ export default function UseCases() {
               From self-healing aircraft to kitchens that learn your taste — see what's possible 
               when AI remembers, adapts, and improves over time. Powered by the{" "}
               <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">cognitive platform</Link>{" "}
-              and <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IoT integration</a>.
+              and <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">IoT integration</a>.
             </p>
           </motion.div>
 
@@ -587,7 +587,7 @@ export default function UseCases() {
               See how teams across industries use <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>{" "}
               and <Link to="/solutions" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
               to build{" "}
-              <a href="https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
+              <a href="https://en.wikipedia.org/wiki/Artificial_intelligence_in_healthcare" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">AI applications</a>{" "}
               that actually learn.
             </p>
           </motion.div>

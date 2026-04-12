@@ -328,7 +328,7 @@ await cmpsbl.dream.cycle({
               <Link to="/devtools"><Code className="w-3.5 h-3.5 mr-1.5" />Developer Tools</Link>
             </Button>
             <Button asChild size="sm" variant="outline">
-              <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                 <ExternalLink className="w-3.5 h-3.5 mr-1.5" />View on NPM
               </a>
             </Button>

@@ -68,7 +68,7 @@ export function PatentTrustStrip() {
             <span className="text-muted-foreground font-medium">·</span>
             <a
               href="https://orcid.org/0009-0001-4237-1243"
-              target="_blank"
+              target="_blank"rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
             >

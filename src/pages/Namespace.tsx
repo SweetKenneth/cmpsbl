@@ -193,7 +193,7 @@ export default function Namespace() {
               <a
                 key={surface.domain}
                 href={`https://aigvrn.com/${surface.name.toLowerCase()}`}
-                target="_blank"
+                target="_blank"rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className={`group p-4 rounded-lg border transition-all hover:shadow-md ${
                   surface.isRoot 
@@ -322,7 +322,7 @@ export default function Namespace() {
               <a
                 key={surface.domain}
                 href={`https://${surface.domain}`}
-                target="_blank"
+                target="_blank"rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className={`p-3 rounded-lg border text-center font-mono text-sm transition-colors hover:border-primary/50 ${
                   surface.isRoot 
@@ -368,7 +368,7 @@ export default function Namespace() {
             <div className="grid sm:grid-cols-3 gap-4">
               <a 
                 href="https://aigvrn.com" 
-                target="_blank" 
+                target="_blank" rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >
@@ -381,7 +381,7 @@ export default function Namespace() {
               </a>
               <a 
                 href="https://zenodo.org/records/18209222" 
-                target="_blank" 
+                target="_blank" rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >
@@ -394,7 +394,7 @@ export default function Namespace() {
               </a>
               <a 
                 href="https://orcid.org/0009-0001-4237-1243" 
-                target="_blank" 
+                target="_blank" rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors"
               >

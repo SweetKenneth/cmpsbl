@@ -253,7 +253,7 @@ export default function LlmsTxt() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Terminal className="w-4 h-4 text-primary" />
             <span className="text-sm font-mono text-primary">
-              <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="hover:underline">llmstxt.org</a>
+              <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="hover:underline"rel="noopener noreferrer">llmstxt.org</a>
             </span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
@@ -261,7 +261,7 @@ export default function LlmsTxt() {
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
             A machine-readable context format for AI systems, designed by{" "}
-            <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>. 
+            <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">llmstxt.org</a>. 
             We follow this protocol and recommend it for web designers, SaaS builders, and system architects.
           </p>
           <p className="text-xs font-mono text-muted-foreground/60 uppercase tracking-widest">
@@ -355,7 +355,7 @@ export default function LlmsTxt() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button variant="outline" className="w-full gap-2" asChild>
-                  <a href="/llms.txt" target="_blank">
+                  <a href="/llms.txt" target="_blank"rel="noopener noreferrer">
                     <ExternalLink className="w-4 h-4" />
                     View in Browser
                   </a>
@@ -512,7 +512,7 @@ export default function LlmsTxt() {
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
             LLMS.txt is a protocol designed by{" "}
-            <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">llmstxt.org</a>
+            <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">llmstxt.org</a>
             {" "}to make pages machine-readable for AI systems.
             CMPSBL® follows this standard and recommends it for all web designers and system architects.
           </p>
@@ -524,7 +524,7 @@ export default function LlmsTxt() {
             LLMS.txt protocol by{" "}
             <a 
               href="https://llmstxt.org" 
-              target="_blank" 
+              target="_blank" rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >

@@ -169,7 +169,7 @@ export function LoadoutsSection() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Button asChild variant="outline" size="lg" className="gap-2 rounded-xl font-mono text-sm">
-            <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
               <Terminal className="w-4 h-4" />
               cmpsbl loadout list
             </a>

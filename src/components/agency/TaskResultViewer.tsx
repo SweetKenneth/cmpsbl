@@ -163,7 +163,7 @@ export function TaskResultViewer({ task, className }: TaskResultViewerProps) {
                   <a
                     key={i}
                     href={source}
-                    target="_blank"
+                    target="_blank"rel="noopener noreferrer"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 p-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors text-sm"
                   >

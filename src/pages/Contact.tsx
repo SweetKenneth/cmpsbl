@@ -185,7 +185,7 @@ export default function Contact() {
                         { href: "https://www.linkedin.com/company/cmpsbl", label: "LinkedIn", icon: "in" },
                         { href: "https://github.com/cmpsbl", label: "GitHub", icon: "⌘" },
                       ].map((link) => (
-                        <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group">
+                        <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors group"rel="noopener noreferrer">
                           <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-xs font-bold text-primary group-hover:bg-primary/20 transition-colors">{link.icon}</span>
                           {link.label}
                           <ArrowRight className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />

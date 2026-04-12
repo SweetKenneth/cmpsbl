@@ -535,7 +535,7 @@ export function IntegrationsHub() {
               {/* External Links */}
               <div className="flex flex-wrap gap-3">
                 <Button asChild variant="outline" className="gap-2">
-                  <a href={integration.docsUrl} target="_blank" rel="noopener noreferrer">
+                  <a href={integration.docsUrl} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                     <ExternalLink className="w-4 h-4" />
                     Official Docs
                   </a>
@@ -602,7 +602,7 @@ export function IntegrationsHub() {
                         Sign up for {integration.name} and create a project or app.
                       </p>
                       <Button asChild variant="outline" size="sm" className="gap-2">
-                        <a href={integration.docsUrl} target="_blank" rel="noopener noreferrer">
+                        <a href={integration.docsUrl} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
                           <ExternalLink className="w-3 h-3" />
                           Visit {integration.name}
                         </a>
