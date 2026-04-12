@@ -10,6 +10,7 @@ import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import {
   Upload,
   ArrowRight,
@@ -23,7 +24,19 @@ import {
   Download,
   Award,
   Shield,
+  GitBranch,
+  Check,
+  X,
+  FolderTree,
 } from "lucide-react";
+import {
+  parseGitHubUrl,
+  fetchGitHubTree,
+  fetchGitHubFileContent,
+  classifyRepoTree,
+  type ClassifiedFile,
+  type FileCategory,
+} from "@/lib/repo-scanner/classify";
 import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
