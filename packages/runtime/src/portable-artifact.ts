@@ -282,10 +282,36 @@ const bootTime = Date.now();
 /**
  * Generate a health check response for production monitoring.
  * Can be wired to any HTTP framework's /health endpoint.
+ *
+ * When called with an artifact fingerprint + coverage ratio,
+ * the response is scoped to that session (no global state dependency).
+ * Without arguments, falls back to global latched state.
  */
-export function getHealthCheck(): HealthCheckResponse {
-  const fp = getActiveFingerprint();
+export function getHealthCheck(
+  opts?: {
+    readonly fingerprint: ArtifactFingerprint | null;
+    readonly coverageRatio: number;
+    readonly verification: VerificationSummary;
+  },
+): HealthCheckResponse {
   const env = detectEnvironment();
+
+  // Session-scoped path — deterministic, no global reads
+  if (opts) {
+    const unified = resolveHealthFromSummary(opts.coverageRatio, opts.verification);
+    return {
+      status: unified.status,
+      artifact: opts.verification.artifactFingerprint,
+      fingerprint: opts.fingerprint?.composite ?? null,
+      environment: env,
+      uptime: Date.now() - bootTime,
+      verification: opts.verification,
+      timestamp: new Date().toISOString(),
+    };
+  }
+
+  // Global fallback path (backward compat)
+  const fp = getActiveFingerprint();
 
   if (!fp) {
     return {
@@ -300,15 +326,11 @@ export function getHealthCheck(): HealthCheckResponse {
   }
 
   const verification = generateVerificationSummary();
-
-  // Unified health — use the real activation coverage ratio latched by the pipeline.
-  // Falls back to 0 if no pipeline has run (pre-ascension / cold start).
   const coverageRatio = getLatchedCoverageRatio() ?? 0;
   const unified = resolveHealthFromSummary(coverageRatio, verification);
-  const status = unified.status;
 
   return {
-    status,
+    status: unified.status,
     artifact: verification.artifactFingerprint,
     fingerprint: fp.composite,
     environment: env,
