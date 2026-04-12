@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Radio, Volume2, VolumeX, Play, Pause, SkipForward } from 'lucide-react';
+import { Radio, Volume2, VolumeX, Play, Pause, SkipForward, Bluetooth } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
@@ -164,7 +164,7 @@ function ClocklessRadioPlayer({ className }: { className?: string }) {
                 </div>
 
                 {/* Volume */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 mb-3">
                   <VolumeX className="w-4 h-4 text-muted-foreground" />
                   <Slider
                     value={[radio.volume * 100]}
@@ -175,6 +175,26 @@ function ClocklessRadioPlayer({ className }: { className?: string }) {
                   />
                   <Volume2 className="w-4 h-4 text-muted-foreground" />
                 </div>
+
+                {/* Bluetooth / SFX-Only Mode */}
+                <button
+                  onClick={() => radio.setSFXOnly(!radio.sfxOnly)}
+                  className={cn(
+                    "flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs transition-all border",
+                    radio.sfxOnly
+                      ? "bg-primary/10 border-primary/30 text-primary"
+                      : "border-border/30 text-muted-foreground hover:border-border"
+                  )}
+                >
+                  <Bluetooth className="w-3.5 h-3.5" />
+                  <span className="flex-1 text-left">Bluetooth Mode</span>
+                  <span className="text-[10px] opacity-70">{radio.sfxOnly ? 'ON' : 'OFF'}</span>
+                </button>
+                {radio.sfxOnly && (
+                  <p className="text-[10px] text-muted-foreground/60 mt-1 px-1">
+                    Voice disabled — SFX + text only. All audio routes to paired device.
+                  </p>
+                )}
               </motion.div>
             </>
           )}
