@@ -315,6 +315,10 @@ export default function RestorationShop() {
     setQueueEntry(null);
     setSelectedPrims([]);
     setAscendedCode('');
+    setRepoUrl('');
+    setRepoFiles([]);
+    setRepoConfirmed(false);
+    setUploadMode('file');
   }, []);
 
   const currentPhaseIdx = PHASE_META.findIndex(p => p.key === phase);
