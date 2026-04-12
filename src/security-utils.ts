@@ -21,7 +21,7 @@ import React, { useMemo } from 'react';
  * DOMPurify config — strict by default.
  * Only allow safe tags, strip all event handlers and scripts.
  */
-const PURIFY_CONFIG: DOMPurify.Config = {
+const PURIFY_CONFIG = {
   ALLOWED_TAGS: [
     'b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li',
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'code', 'pre',
@@ -41,9 +41,9 @@ const PURIFY_CONFIG: DOMPurify.Config = {
 /**
  * Sanitize HTML string — safe for dangerouslySetInnerHTML.
  */
-export function sanitizeHTML(dirty: string, customConfig: DOMPurify.Config = {}): string {
+export function sanitizeHTML(dirty: string, customConfig: Record<string, unknown> = {}): string {
   if (typeof dirty !== 'string') return '';
-  return DOMPurify.sanitize(dirty, { ...PURIFY_CONFIG, ...customConfig });
+  return DOMPurify.sanitize(dirty, { ...PURIFY_CONFIG, ...customConfig }) as string;
 }
 
 /**
