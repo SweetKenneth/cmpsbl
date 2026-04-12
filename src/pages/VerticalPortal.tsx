@@ -147,7 +147,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(280 80% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
-    status: 'Coming Soon' as const,
+    status: 'Active' as const,
   },
   {
     id: 'education',
@@ -158,7 +158,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(45 90% 50%)',
     primitiveCount: 16,
     capabilityCount: '90+',
-    status: 'Coming Soon' as const,
+    status: 'Active' as const,
   },
   {
     id: 'ultimate',

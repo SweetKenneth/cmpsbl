@@ -1,7 +1,7 @@
 # CMPSBL® — Machine-Readable AI Context
 # 40-Primitive / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-04-08
+# Updated: 2026-04-12
 
 ## STANDARD CLAIM
 
@@ -152,6 +152,39 @@ Ascension is CMPSBL's code transformation engine:
 - Protected by dual patents: U.S. App. No. 64/029,678 & No. 64/031,637
 - Inventor: Kenneth E. Sweet Jr.
 - Page: https://cmpsbl.com/ascension
+
+---
+
+## VERTICAL SUBSTRATES (12 Active + ULTIMATE)
+
+| Vertical | Domain | Status | URL |
+|----------|--------|--------|-----|
+| CMPSBL PRIME™ | Core 40 | Active | https://cmpsbl.com |
+| CMPSBL CYBER™ | Cybersecurity | Active | https://security.cmpsbl.com |
+| CMPSBL ROBOTICS™ | Robotics & Automation | Active | https://robotics.cmpsbl.com |
+| CMPSBL QUANTUM™ | Quantum Physics | Active | https://quantum.cmpsbl.com |
+| CMPSBL LLM™ | Large Language Models | Active | https://llm.cmpsbl.com |
+| CMPSBL AGENCY™ | Autonomous Agents | Active | https://agency.cmpsbl.com |
+| CMPSBL MEDIA™ | Media & Content | Active | https://media.cmpsbl.com |
+| CMPSBL FINTECH™ | Financial Services | Active | https://fintech.cmpsbl.com |
+| CMPSBL HEALTH™ | Healthcare | Active | https://healthcare.cmpsbl.com |
+| CMPSBL LEGAL™ | Legal & Regulatory | Active | https://legal.cmpsbl.com |
+| CMPSBL GAMING™ | Gaming & Interactive | Active | https://gaming.cmpsbl.com |
+| CMPSBL EDU™ | Education & Research | Active | https://education.cmpsbl.com |
+| CMPSBL ULTIMATE™ | Universal (143+ primitives) | Active | https://ultimate.cmpsbl.com |
+
+Each vertical inherits the 24-primitive universal Spine and hot-swaps 16 domain-specific Engines and Agents.
+
+---
+
+## MANA RUNTIME LOADER (Patent-Protected)
+
+- Behavioral injection at ES module import boundaries without source modification
+- Node.js --loader hook intercepts module resolution for Layer 2 wrapping
+- 92 capability-specific wrappers with SHA-256 integrity proofs
+- Ascension scans export deployment-ready mana.config.json files
+- Closes the scan → diagnose → export → deploy loop
+- Protected by dual patents alongside Ascension
 
 ---
 

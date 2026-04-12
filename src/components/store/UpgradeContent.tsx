@@ -504,7 +504,7 @@ export function UpgradeContent() {
           <h2 className="text-2xl font-bold text-center tracking-tight">Common Questions</h2>
           {[
             { q: 'Do I need to pay to use CMPSBL?', a: 'No. CMPSBL PRIME™ is free forever — including Memory Stream, Ascension, Crown Jewel npm access, and software exports. Paid plans unlock industry vertical substrates and Marketplace purchasing.' },
-            { q: 'What are industry vertical substrates?', a: 'Specialized 40-primitive environments for specific industries — Fintech, Cyber, Robotics, Media, Quantum, LLM, Agency, and more. Each features domain-specific primitives, discoveries, and Crown Jewels.' },
+            { q: 'What are industry vertical substrates?', a: 'Specialized 40-primitive environments for specific industries — Fintech, Cyber, Robotics, Media, Quantum, LLM, Agency, Health, Legal, Gaming, Education, and more. Each features domain-specific primitives, discoveries, and Crown Jewels. All 12 verticals are now live.' },
             { q: 'What is CMPSBL ULTIMATE™?', a: 'The universal tier with all 143+ primitives across every industry vertical. Available on the Architect plan ($79/mo). It combines all expansion primitives into a single substrate.' },
             { q: 'How does the Marketplace work?', a: 'Everyone can browse the Marketplace. Paid accounts can purchase artifacts and claim daily free downloads. Free members can view but not transact.' },
             { q: 'What about the Crown Jewel npm?', a: 'Crown Jewel capabilities are distributed free via npm for all users. No account required for the npm package. Registration is only needed for persistent memory across sessions.' },
