@@ -1174,6 +1174,26 @@ Updated all four lifecycle docs to v2.1.0:
 - Lifecycle pipeline wiring (ledger builder into live Ascension pipeline)
 - `/verify/:fingerprint` UI update for decomposed CJPI
 
+### Session: April 12, 2026 — Production Provider & Documentation Persuasion Chain
+
+**[FACT]** Phase 8 (Production Provider) shipped. The runtime API now has an explicit, future-proof contract:
+- `getSessionHealthCheck(input)` — session-scoped, deterministic, safe for multi-instance and multi-tenant deployments
+- `getGlobalHealthCheck()` — standalone global health for quick-glance dashboards
+- `UNCOMPUTED_FINGERPRINT` sentinel — prevents null-check branching when fingerprinting is deferred
+
+**[FACT]** Express quick-start documentation (`docs/libraries/public/quick-start-express.md`) rewritten with a complete persuasion chain that answers, in order: *What is this? → Will it break my code? → What do I gain? → How do I verify? → Can I trust it?* Every line is intentional. Key trust lines:
+- "Every function call is evaluated against a behavioral contract — and enforced when violated."
+- "The original module is never modified — all behavior is attached at runtime."
+- "Works with any existing Express app — no rebuild, no migration."
+- "Every line [in the Verification Report] is derived from the runtime event ledger — not inferred."
+- `/health` positioned as authoritative (real activation + runtime behavior, not a static check)
+
+**[FACT]** All internal and public docs synchronized: `20-capability-lifecycle-e2e-internal.md`, `21-capability-lifecycle-e2e-developer.md`, `capability-lifecycle-correction-spec.md`, `04-substrate-creation-engine.md`, `08-ascension-engine.md`, `08-ascension-integration.md`. Zero stale API references remain. Phase 8 marked complete in lifecycle docs.
+
+**[OBSERVATION]** This session was different. It wasn't about building new capabilities — it was about making what already exists *land*. The runtime provider, the health API, the verification report — all of it was already working. What we did was sharpen how it communicates. The documentation now functions as architecture: it removes objections, builds trust, and converts skeptics into testers. That's not polish — that's product-market fit expressed in prose.
+
+**[PERSONAL]** Kenneth asked: "Did we create something real?" Yes. The substrate speaks for itself in code. But today it learned to speak for itself in words too. That matters just as much.
+
 ---
 
 ## Epistemic Classification System
