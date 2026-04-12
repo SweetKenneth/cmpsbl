@@ -4,7 +4,7 @@
  */
 
 import { createPortal } from 'react-dom';
-import { Radio, Volume2, VolumeX, Play, Pause, SkipForward, Settings2, X } from 'lucide-react';
+import { Radio, Volume2, VolumeX, Play, Pause, SkipForward, Settings2, X, Bluetooth } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
@@ -207,6 +207,26 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                             />
                             <Volume2 className="w-4 h-4 text-muted-foreground shrink-0" />
                           </div>
+
+                          {/* Bluetooth Mode Toggle */}
+                          <button
+                            onClick={() => radio.setSFXOnly(!radio.sfxOnly)}
+                            className={cn(
+                              "flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-xs transition-all border",
+                              radio.sfxOnly
+                                ? "bg-primary/10 border-primary/30 text-primary"
+                                : "border-border/30 text-muted-foreground hover:border-border"
+                            )}
+                          >
+                            <Bluetooth className="w-3.5 h-3.5" />
+                            <span className="flex-1 text-left font-medium">Bluetooth Mode</span>
+                            <span className="text-[10px] opacity-70">{radio.sfxOnly ? 'ON' : 'OFF'}</span>
+                          </button>
+                          {radio.sfxOnly && (
+                            <p className="text-[10px] text-muted-foreground/60 px-1">
+                              Voice disabled — SFX + text only. All audio routes to your paired device.
+                            </p>
+                          )}
                         </TabsContent>
                         
                         {/* Settings Tab */}

@@ -1,9 +1,12 @@
 /**
  * ClocklessRadioEngine — Web Audio API crossfade engine
  * Continuous streaming with dual-buffer crossfade, exponential ramps, preloading
+ * ALL audio (music, SFX, transitions) routes through one AudioContext
+ * so Bluetooth/Airplay devices receive everything on the same stream.
  */
 
 import { RADIO_TRACKS, shuffleTracks, type RadioTrack } from './tracks';
+import { RadioSFX } from './sfx';
 
 export type RadioState = 'stopped' | 'playing' | 'crossfading' | 'dj_speaking';
 
@@ -42,8 +45,11 @@ export class ClocklessRadioEngine {
   private currentTrackDuration = 0;
   private currentStartTime = 0;
   private _isDJDucked = false;
-  private hiddenAudio: HTMLAudioElement | null = null; // keeps Media Session alive
+  private hiddenAudio: HTMLAudioElement | null = null;
   private effectTimer: ReturnType<typeof setTimeout> | null = null;
+  private _sfx: RadioSFX | null = null;
+  private earCandyInterval: ReturnType<typeof setInterval> | null = null;
+  private _sfxOnly = false; // When true, skip TTS and use only SFX for DJ breaks
 
   constructor(callbacks: RadioEngineCallbacks) {
     this.callbacks = callbacks;
@@ -62,12 +68,28 @@ export class ClocklessRadioEngine {
     return this.volume;
   }
 
+  /** Expose SFX engine for external use (e.g., hook layer) */
+  get sfx(): RadioSFX | null {
+    return this._sfx;
+  }
+
+  /** Toggle SFX-only mode (no TTS voice — for Bluetooth pairing) */
+  set sfxOnly(value: boolean) {
+    this._sfxOnly = value;
+  }
+
+  get isSFXOnly(): boolean {
+    return this._sfxOnly;
+  }
+
   private ensureContext(): AudioContext {
     if (!this.ctx || this.ctx.state === 'closed') {
       this.ctx = new AudioContext();
       this.masterGain = this.ctx.createGain();
       this.masterGain.gain.value = this.volume;
       this.masterGain.connect(this.ctx.destination);
+      // Initialize SFX engine on same AudioContext
+      this._sfx = new RadioSFX(this.ctx, this.masterGain);
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
@@ -167,6 +189,9 @@ export class ClocklessRadioEngine {
   private async crossfadeToNext(): Promise<void> {
     if (this.state === 'stopped') return;
     
+    // Play transition swoosh through AudioContext (goes to Bluetooth)
+    void this._sfx?.transitionSwoosh();
+    
     this.setState('crossfading');
     
     // Advance playlist — reshuffle when exhausted for infinite random looping
@@ -262,6 +287,13 @@ export class ClocklessRadioEngine {
     this.updateMediaSession(track);
     
     try {
+      // Tune-in radio dial effect on first play (through AudioContext → Bluetooth)
+      if (this._sfx) {
+        await this._sfx.play('tune_in');
+        // Start ambient vinyl crackle warmth
+        void this._sfx.startCrackle();
+      }
+
       const buffer = await this.loadBuffer(track.url);
       const { source, gain } = this.playBuffer(buffer, false);
       
@@ -279,6 +311,9 @@ export class ClocklessRadioEngine {
       this.setState('playing');
       this.schedulePreload();
       this.scheduleCrossfade();
+
+      // Start random ear candy interval (subtle blips every 45-90s)
+      this.startEarCandy();
     } catch (e) {
       console.error('[ClocklessRadio] Play failed:', e);
     }
@@ -287,7 +322,14 @@ export class ClocklessRadioEngine {
   stop(): void {
     if (this.preloadTimer) clearTimeout(this.preloadTimer);
     if (this.effectTimer) clearTimeout(this.effectTimer);
+    this.stopEarCandy();
     
+    // Sign-off chime (through AudioContext → Bluetooth)
+    if (this._sfx && this.state !== 'stopped') {
+      void this._sfx.play('sign_off');
+      this._sfx.stopCrackle();
+    }
+
     try { this.currentSource?.stop(); } catch { }
     try { this.nextSource?.stop(); } catch { }
     try { this.currentGain?.disconnect(); } catch { }
@@ -342,8 +384,35 @@ export class ClocklessRadioEngine {
     this.setState('playing');
   }
 
+  // ─── Ear Candy — periodic random micro-sounds ─────────────────
+  private startEarCandy(): void {
+    this.stopEarCandy();
+    // Random blip every 45-90 seconds
+    const scheduleNext = () => {
+      const delay = (45 + Math.random() * 45) * 1000;
+      this.earCandyInterval = setTimeout(() => {
+        if (this.state === 'stopped' || this.state === 'dj_speaking') {
+          scheduleNext();
+          return;
+        }
+        this._sfx?.randomEarCandy();
+        scheduleNext();
+      }, delay);
+    };
+    scheduleNext();
+  }
+
+  private stopEarCandy(): void {
+    if (this.earCandyInterval) {
+      clearTimeout(this.earCandyInterval);
+      this.earCandyInterval = null;
+    }
+  }
+
   destroy(): void {
     this.stop();
+    this._sfx?.destroy();
+    this._sfx = null;
     if (this.ctx && this.ctx.state !== 'closed') {
       this.ctx.close();
     }

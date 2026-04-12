@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   ClocklessRadioEngine,
   RadioDJ,
+  RadioSFX,
   type RadioTrack,
   type RadioState,
   type DJContent,
@@ -28,6 +29,7 @@ export interface ClocklessRadioState {
   minutesRemaining: number;
   totalMinutes: number;
   limitReached: boolean;
+  sfxOnly: boolean;
 }
 
 interface RadioTimerData {
@@ -49,6 +51,7 @@ const initialState: ClocklessRadioState = {
   minutesRemaining: -1,
   totalMinutes: -1,
   limitReached: false,
+  sfxOnly: false,
 };
 
 let sharedState: ClocklessRadioState = { ...initialState };
@@ -215,14 +218,34 @@ function startDJSegment(content: DJContent): void {
     finishDJSegment();
   }, content.duration + 6000);
 
-  void speakDJContent(content)
-    .catch(() => {
-      // Text stays visible even if TTS fails.
-    })
-    .finally(() => {
-      if (djToken !== activeDJToken) return;
-      finishDJSegment();
-    });
+  // Play intro SFX through AudioContext (routes to Bluetooth) BEFORE voice
+  const sfx = sharedEngine.sfx;
+  const sfxType = RadioSFX.sfxForDJ(content.type);
+  const sfxPromise = sfx ? sfx.play(sfxType) : Promise.resolve();
+
+  sfxPromise.then(() => {
+    if (djToken !== activeDJToken) return;
+
+    // SFX-only mode: skip TTS voice entirely (text still shows visually)
+    if (sharedEngine?.isSFXOnly) {
+      // Hold the text visible for the estimated duration then dismiss
+      setTimeout(() => {
+        if (djToken !== activeDJToken) return;
+        finishDJSegment();
+      }, content.duration);
+      return;
+    }
+
+    // Normal mode: speak through SpeechSynthesis
+    void speakDJContent(content)
+      .catch(() => {
+        // Text stays visible even if TTS fails.
+      })
+      .finally(() => {
+        if (djToken !== activeDJToken) return;
+        finishDJSegment();
+      });
+  });
 }
 
 function getSharedEngine(): ClocklessRadioEngine {
@@ -339,6 +362,13 @@ export function useClocklessRadio() {
     await playSharedRadio();
   }, []);
 
+  const setSFXOnly = useCallback((value: boolean) => {
+    if (sharedEngine) {
+      sharedEngine.sfxOnly = value;
+    }
+    updateSharedState((prev) => ({ ...prev, sfxOnly: value }));
+  }, []);
+
   return {
     ...radioState,
     play,
@@ -346,5 +376,6 @@ export function useClocklessRadio() {
     skip,
     setVolume,
     toggle,
+    setSFXOnly,
   };
 }
