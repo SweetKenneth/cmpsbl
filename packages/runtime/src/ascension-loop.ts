@@ -73,6 +73,8 @@ export interface PipelineTrace {
   readonly exportsWrapped: number;
   readonly enforcingBehaviors: number;
   readonly observingBehaviors: number;
+  /** Real activation coverage ratio (wrappedCount / boundariesDetected) */
+  readonly coverageRatio: number;
 }
 
 /** Options for the full Ascension pipeline */
@@ -278,6 +280,7 @@ export function ascend<T extends Record<string, unknown>>(
       exportsWrapped: activation.wrappedCount,
       enforcingBehaviors: scan.meta.enforcingCount,
       observingBehaviors: scan.meta.observingCount,
+      coverageRatio,
     },
   };
 }
