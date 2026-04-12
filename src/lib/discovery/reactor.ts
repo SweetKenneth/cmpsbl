@@ -26,6 +26,16 @@ export interface ReactorConfig {
   scoringVersion?: string;
   /** Injected templates from the auto-generator (used alongside hardcoded ones) */
   injectedTemplates?: SynthesisTemplate[];
+  /** Primitive pool mode — 'core' (40), 'full' (159), or a vertical ID */
+  primitivePool?: 'core' | 'full' | string;
+  /** Number of random templates to generate in exploratory mode (default 200) */
+  exploratoryBatchSize?: number;
+  /** Minimum chain depth for exploratory generation */
+  exploratoryMinDepth?: number;
+  /** Maximum chain depth for exploratory generation */
+  exploratoryMaxDepth?: number;
+  /** Category focus — limit exploratory to specific categories */
+  categoryFocus?: string[];
 }
 
 export interface ReactorCandidate {
@@ -61,23 +71,19 @@ export interface ReactorRunResult {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CANONICAL MODULES — used for combinatorial synthesis
+// PRIMITIVES & CATEGORIES — sourced from expanded pool
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const CANONICAL_MODULES = [
-  // Full 40-primitive matrix
-  'CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE', 'ENCODE', 'CORTEX', 'DEFENSE', 'ORACLE', 'CONSCIENCE',
-  'PHANTOM', 'HARVEST', 'EVOLUTION', 'SHADOW', 'IMMUNITY', 'INTENT', 'GOVERNANCE', 'ATLAS', 'FORGE', 'LINGUA',
-  'ECHO', 'SOVEREIGN', 'REFLEX', 'TREATY', 'ENGINEER', 'COMPASS', 'OBSERVER', 'RELAY', 'NEXUS', 'DREAM',
-  'PRISM', 'AUDIT', 'IDENTITY', 'MESH', 'ECONOMY', 'ACCESS', 'VISION', 'ANALYTICS', 'MEDIC', 'RIPPLE',
-];
+import {
+  ALL_PRIMITIVES, CORE_PRIMITIVES, EXPANDED_CATEGORIES, EXPANDED_AFFINITY,
+  computeExpandedSynergy, getPrimitivePool,
+} from './expanded-primitives';
+import { generateTemplateBatch, type GeneratedTemplate } from './template-generator';
 
-const CATEGORIES: DiscoveryCategory[] = [
-  'cognitive', 'evolution', 'security', 'routing', 'learning',
-  'orchestration', 'integration', 'observability', 'governance',
-  'compliance', 'prediction', 'ethics', 'privacy', 'synthesis',
-  'localization', 'geospatial', 'simulation', 'contracts', 'acquisition', 'edge',
-];
+/** @deprecated — use getPrimitivePool() for dynamic resolution */
+const CANONICAL_MODULES = ALL_PRIMITIVES;
+
+const CATEGORIES: DiscoveryCategory[] = EXPANDED_CATEGORIES;
 
 const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as const;
 
