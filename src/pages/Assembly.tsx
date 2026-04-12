@@ -183,9 +183,10 @@ export default function Assembly() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-3 text-foreground">
-                The One-Stop Shop for Code
+                The One-Stop Shop for
+                <span className="text-primary"> Code</span>
               </h2>
-              <p className="text-muted-foreground/70 max-w-xl mx-auto">
+              <p className="text-muted-foreground max-w-xl mx-auto font-medium">
                 Issues. Improvements. Assembly. We handle every pain point so you don't have to.
               </p>
             </div>
