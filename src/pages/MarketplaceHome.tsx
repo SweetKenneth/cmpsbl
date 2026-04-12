@@ -153,6 +153,7 @@ export default function MarketplaceHome() {
       <Helmet>
         <title>CMPSBL Marketplace — Premium Software from Every Substrate</title>
         <meta name="description" content="Shop the best cognitive software from across the CMPSBL ecosystem. Enterprise-grade engines, agents, and memory chains — $10 to $50." />
+        <link rel="canonical" href="https://marketplace.cmpsbl.com" />
       </Helmet>
       <StructuredData
         type="breadcrumb"
@@ -161,6 +162,16 @@ export default function MarketplaceHome() {
           { name: "Marketplace", url: "https://marketplace.cmpsbl.com" },
         ]}}
       />
+      <StructuredData
+        type="webApplication"
+        data={{
+          name: "CMPSBL Marketplace",
+          description: "Enterprise-grade cognitive software curated by MERCHANT™ from across all CMPSBL substrates. Engines, agents, and memory chains — $10 to $50.",
+          url: "https://marketplace.cmpsbl.com",
+          features: "CJPI-Scored Software, Autonomous Curation, S-Tier Vault Access, Memory Chain Products, 8-Hour Refresh Cycle, Plug-and-Play Deployment",
+        }}
+      />
+
 
       <PublicNav />
 
