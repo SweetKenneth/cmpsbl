@@ -27,8 +27,14 @@ import {
   Shield, Brain, Cpu, Eye, Scale, GitBranch, Loader2,
   Download, Star, ChevronDown, ChevronUp, Plus, Copy, Check,
   Bot, Pause, RotateCcw, Pickaxe, Sparkles, Timer, Hash,
+  Ban, BarChart3,
 } from 'lucide-react';
 import type { ReactorRunResult, ReactorCandidate } from '@/lib/discovery/reactor';
+import {
+  getRetiredComboCount, clearAllRetiredCombos, estimateTotalCombinations,
+  loadRetiredCombos,
+} from '@/lib/discovery/combo-retirement';
+import { getPrimitivePool, EXPANDED_CATEGORIES } from '@/lib/discovery/expanded-primitives';
 
 const TIER_COLORS: Record<string, string> = {
   'cmpsbl-only': 'bg-destructive/20 text-destructive border-destructive/30',
@@ -815,7 +821,19 @@ export default function DiscoveryMiningConsole() {
   const [minDepth, setMinDepth] = useState(2);
   const [maxDepth, setMaxDepth] = useState(8);
 
-  useEffect(() => { fetchRuns(); }, [fetchRuns]);
+  // Combination tracker state
+  const [retiredCount, setRetiredCount] = useState(0);
+  const [totalEstimate, setTotalEstimate] = useState(0);
+
+  const refreshComboStats = useCallback(async () => {
+    const rc = await getRetiredComboCount();
+    setRetiredCount(rc);
+    const poolSize = getPrimitivePool(primitivePool as any).length;
+    const catCount = EXPANDED_CATEGORIES.length;
+    setTotalEstimate(estimateTotalCombinations(poolSize, catCount, minDepth, maxDepth));
+  }, [primitivePool, minDepth, maxDepth]);
+
+  useEffect(() => { fetchRuns(); refreshComboStats(); }, [fetchRuns, refreshComboStats]);
 
   const handleRun = () => {
     executeRun({
@@ -826,7 +844,13 @@ export default function DiscoveryMiningConsole() {
       exploratoryBatchSize: batchSize,
       exploratoryMinDepth: minDepth,
       exploratoryMaxDepth: maxDepth,
-    });
+    }).then(() => refreshComboStats());
+  };
+
+  const handleClearRetired = async () => {
+    await clearAllRetiredCombos();
+    await refreshComboStats();
+    toast.success('All retired combinations cleared');
   };
 
   const exportJson = () => {
@@ -840,6 +864,9 @@ export default function DiscoveryMiningConsole() {
     URL.revokeObjectURL(url);
   };
 
+  const remainingCombos = Math.max(0, totalEstimate - retiredCount);
+  const exploredPercent = totalEstimate > 0 ? Math.min(100, (retiredCount / totalEstimate) * 100) : 0;
+
   return (
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6">
@@ -851,7 +878,7 @@ export default function DiscoveryMiningConsole() {
               Discovery Mining Console
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Capability Synthesis Reactor — 159-Primitive combinatorial discovery engine
+              Capability Synthesis Reactor — {getPrimitivePool(primitivePool as any).length}-Primitive combinatorial discovery engine
             </p>
           </div>
 
@@ -882,29 +909,29 @@ export default function DiscoveryMiningConsole() {
                 </div>
               </div>
 
-              {/* Row 2: Primitive Pool + Depth + Batch (shown when exploratory) */}
-              {exploratoryMode && (
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2 border-t border-border/50">
-                  <div className="space-y-1">
-                    <Label className="text-xs text-muted-foreground">Primitive Pool</Label>
-                    <Select value={primitivePool} onValueChange={setPrimitivePool}>
-                      <SelectTrigger className="h-8 text-xs">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="core">Core 40</SelectItem>
-                        <SelectItem value="full">Full 159</SelectItem>
-                        <SelectItem value="cyber">Cyber</SelectItem>
-                        <SelectItem value="robotics">Robotics</SelectItem>
-                        <SelectItem value="quantum">Quantum</SelectItem>
-                        <SelectItem value="llm">LLM Safety</SelectItem>
-                        <SelectItem value="agency">Agency</SelectItem>
-                        <SelectItem value="media">Media</SelectItem>
-                        <SelectItem value="fintech">Fintech</SelectItem>
-                        <SelectItem value="ultimate">Ultimate</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+              {/* Row 2: Primitive Pool + Depth controls — always visible */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2 border-t border-border/50">
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground">Primitive Pool</Label>
+                  <Select value={primitivePool} onValueChange={setPrimitivePool}>
+                    <SelectTrigger className="h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="core">Core 40</SelectItem>
+                      <SelectItem value="full">Full 159</SelectItem>
+                      <SelectItem value="cyber">Cyber</SelectItem>
+                      <SelectItem value="robotics">Robotics</SelectItem>
+                      <SelectItem value="quantum">Quantum</SelectItem>
+                      <SelectItem value="llm">LLM Safety</SelectItem>
+                      <SelectItem value="agency">Agency</SelectItem>
+                      <SelectItem value="media">Media</SelectItem>
+                      <SelectItem value="fintech">Fintech</SelectItem>
+                      <SelectItem value="ultimate">Ultimate</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {exploratoryMode && (
                   <div className="space-y-1">
                     <Label className="text-xs text-muted-foreground">Batch Size: {batchSize}</Label>
                     <Slider
@@ -912,22 +939,48 @@ export default function DiscoveryMiningConsole() {
                       min={50} max={1000} step={50} className="py-2"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <Label className="text-xs text-muted-foreground">Min Depth: {minDepth}</Label>
-                    <Slider
-                      value={[minDepth]} onValueChange={([v]) => setMinDepth(v)}
-                      min={2} max={6} step={1} className="py-2"
-                    />
+                )}
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground">Min Depth: {minDepth}</Label>
+                  <Slider
+                    value={[minDepth]} onValueChange={([v]) => setMinDepth(v)}
+                    min={2} max={6} step={1} className="py-2"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-muted-foreground">Max Depth: {maxDepth}</Label>
+                  <Slider
+                    value={[maxDepth]} onValueChange={([v]) => setMaxDepth(v)}
+                    min={4} max={12} step={1} className="py-2"
+                  />
+                </div>
+              </div>
+
+              {/* Row 3: Combination Tracker */}
+              <div className="pt-2 border-t border-border/50">
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">Discovery Space</span>
                   </div>
-                  <div className="space-y-1">
-                    <Label className="text-xs text-muted-foreground">Max Depth: {maxDepth}</Label>
-                    <Slider
-                      value={[maxDepth]} onValueChange={([v]) => setMaxDepth(v)}
-                      min={4} max={12} step={1} className="py-2"
-                    />
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono">
+                      <span className="text-primary font-bold">{remainingCombos.toLocaleString()}</span>
+                      <span className="text-muted-foreground"> / {totalEstimate.toLocaleString()} remaining</span>
+                    </span>
+                    <Button variant="ghost" size="sm" className="h-5 px-1.5 text-[10px] gap-0.5" onClick={handleClearRetired}>
+                      <RotateCcw className="w-3 h-3" /> Reset
+                    </Button>
                   </div>
                 </div>
-              )}
+                <Progress value={exploredPercent} className="h-2" />
+                <div className="flex justify-between mt-1 text-[10px] text-muted-foreground">
+                  <span>{exploredPercent.toFixed(1)}% explored</span>
+                  <span className="flex items-center gap-1">
+                    <Ban className="w-3 h-3" /> {retiredCount.toLocaleString()} retired forever
+                  </span>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>

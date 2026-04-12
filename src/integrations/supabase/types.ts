@@ -6828,6 +6828,39 @@ export type Database = {
         }
         Relationships: []
       }
+      discovery_retired_combos: {
+        Row: {
+          category: string
+          combo_hash: string
+          id: string
+          module_chain: string[]
+          retired_at: string
+          retired_by: string | null
+          total_discoveries: number
+          total_runs: number
+        }
+        Insert: {
+          category: string
+          combo_hash: string
+          id?: string
+          module_chain: string[]
+          retired_at?: string
+          retired_by?: string | null
+          total_discoveries?: number
+          total_runs?: number
+        }
+        Update: {
+          category?: string
+          combo_hash?: string
+          id?: string
+          module_chain?: string[]
+          retired_at?: string
+          retired_by?: string | null
+          total_discoveries?: number
+          total_runs?: number
+        }
+        Relationships: []
+      }
       discovery_runs: {
         Row: {
           accepted_count: number
