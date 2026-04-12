@@ -242,7 +242,7 @@ const App = () => {
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
               <DeferredTooltipProvider>
-                <CyberThemeWrapper>
+                <VerticalThemeWrapper>
                   <SmartToastRenderer />
                   <SonnerToaster />
                    <BrowserRouter>
@@ -295,7 +295,7 @@ const App = () => {
                     } />
                   </Routes>
                 </BrowserRouter>
-                </CyberThemeWrapper>
+                </VerticalThemeWrapper>
               </DeferredTooltipProvider>
             </SubstrateProvider>
           </Suspense>
