@@ -9,10 +9,10 @@
  * Pipeline fingerprint epoch.
  * Used as a versioning salt in structural fingerprint computation.
  * Changing this value invalidates ALL existing fingerprints.
- * Rotation path: SPARTA → ATHENA → TITAN → CONTRACT → CONTACT
+ * Rotation path: SPARTA → ATHENA → TITAN → CONTRACT → CONTACT → MINDGAMES → IRONCLAD → BELIEVER → REVIVAL → CONVERGENCE → SYMBIOTIC
  */
 export const PIPELINE_FINGERPRINT_EPOCH =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_PIPELINE_FINGERPRINT_EPOCH) || 'CONTACT';
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_PIPELINE_FINGERPRINT_EPOCH) || 'SYMBIOTIC';
 
 /**
  * Quality floor for public mining.

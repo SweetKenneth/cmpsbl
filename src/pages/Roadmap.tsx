@@ -90,7 +90,7 @@ const PHASES = [
     name: "SITE & SEO",
     tagline: "Public Presence, Content & Developer Docs",
     status: "Shipped",
-    description: "Full public-facing site with the Software Ascension Center branding, automated blog pipeline, developer documentation, scanner tools, and SEO infrastructure — all live under the REVIVAL epoch (v18.0.0).",
+    description: "Full public-facing site with the Software Ascension Center branding, automated blog pipeline, developer documentation, scanner tools, and SEO infrastructure — shipped during the REVIVAL epoch, now part of the SYMBIOTIC substrate (v19.0.0).",
     capabilities: [
       "Software Ascension Center branding across all surfaces",
       "Automated blog pipeline with confidence scoring",
@@ -241,7 +241,7 @@ export default function Roadmap() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-4xl">
             <Badge variant="outline" className="mb-6 border-primary/30 bg-primary/5 text-primary font-mono text-xs tracking-widest uppercase">
               <Sparkles className="w-3 h-3 mr-2" />
-              v18.0.0 · Epoch: REVIVAL
+              v19.0.0 · Epoch: SYMBIOTIC
             </Badge>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-6 leading-[0.95]">

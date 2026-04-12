@@ -1707,7 +1707,7 @@ function DocViewer({ doc, onBack }: { doc: InvestorDoc; onBack: () => void }) {
           </div>
 
           <div className="flex items-center gap-4 text-[10px] text-slate-400 font-mono">
-            <span>Version 18.0.0</span>
+            <span>Version 19.0.0</span>
             <span>·</span>
             <span>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
             <span>·</span>
