@@ -108,6 +108,30 @@ export {
 } from './fintech';
 
 export {
+  getEducationSubstrate, getEducationPrimitives, getEducationEngines, getEducationAgents,
+  getAllEducationCapabilities, getEducationCrownJewels, getEducationPrimitiveCrownJewels,
+  getEducationCrownJewelSummary, getEducationCrownJewelCount, getEducationCrownJewelCapabilities,
+} from './education';
+
+export {
+  getHealthSubstrate, getHealthPrimitives, getHealthEngines, getHealthAgents,
+  getAllHealthCapabilities, getHealthCrownJewels, getHealthPrimitiveCrownJewels,
+  getHealthCrownJewelSummary, getHealthCrownJewelCount, getHealthCrownJewelCapabilities,
+} from './health';
+
+export {
+  getGamingSubstrate, getGamingPrimitives, getGamingEngines, getGamingAgents,
+  getAllGamingCapabilities, getGamingCrownJewels, getGamingPrimitiveCrownJewels,
+  getGamingCrownJewelSummary, getGamingCrownJewelCount, getGamingCrownJewelCapabilities,
+} from './gaming';
+
+export {
+  getLegalSubstrate, getLegalPrimitives, getLegalEngines, getLegalAgents,
+  getAllLegalCapabilities, getLegalCrownJewels, getLegalPrimitiveCrownJewels,
+  getLegalCrownJewelSummary, getLegalCrownJewelCount, getLegalCrownJewelCapabilities,
+} from './legal';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
@@ -169,6 +193,10 @@ import { getAgencySubstrate } from './agency';
 import { getMediaSubstrate } from './media';
 import { getUltimateSubstrate } from './ultimate';
 import { getFintechSubstrate } from './fintech';
+import { getEducationSubstrate } from './education';
+import { getHealthSubstrate } from './health';
+import { getGamingSubstrate } from './gaming';
+import { getLegalSubstrate } from './legal';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
@@ -183,6 +211,10 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['media-v1', getMediaSubstrate],
   ['ultimate-v1', getUltimateSubstrate],
   ['fintech-v1', getFintechSubstrate],
+  ['education-v1', getEducationSubstrate],
+  ['health-v1', getHealthSubstrate],
+  ['gaming-v1', getGamingSubstrate],
+  ['legal-v1', getLegalSubstrate],
 ]);
 
 /** Domain to vertical ID mapping (static) */
@@ -195,6 +227,10 @@ const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['media', 'media-v1'],
   ['ultimate', 'ultimate-v1'],
   ['fintech', 'fintech-v1'],
+  ['education', 'education-v1'],
+  ['health', 'health-v1'],
+  ['gaming', 'gaming-v1'],
+  ['legal', 'legal-v1'],
 ]);
 
 /**
