@@ -542,24 +542,44 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   }
 
   // ═══════════════════════════════════════════════════════════
-  // Mana Bridge Summary (if available)
+  // Mana Bridge — Deployment Config + Attachment Plan
   // ═══════════════════════════════════════════════════════════
 
   try {
-    const { serializeAttachmentPlan } = await import('@/lib/mana/findings-bridge');
-    const findings = report.primitiveManifest.map(p => ({
-      functionName: p.name.toLowerCase().replace(/[^a-z0-9]+/g, '_'),
-      capability: p.name.toLowerCase().replace(/[^a-z0-9]+/g, '_') as any,
-      capabilities: [p.name.toLowerCase().replace(/[^a-z0-9]+/g, '_') as any],
-      primitive: p.name,
-      confidence: 0.95,
-      reason: p.contribution,
-    }));
+    const { serializeAttachmentPlan, detectFunctionBoundaries, buildAttachmentPlan } = await import('@/lib/mana/findings-bridge');
+    const { manifestToConfig, serializeConfig, summarizeDeployment } = await import('@/lib/mana/manifest-consumer');
+    const { generateExampleConfig } = await import('@/lib/mana/config');
+
+    // Build attachment plan from actual source code function boundaries
+    const boundaries = detectFunctionBoundaries(code);
+    const activePrimitives = new Set(report.primitiveManifest.map(p => p.name));
+    const findings = buildAttachmentPlan(boundaries, activePrimitives);
     const plan = serializeAttachmentPlan(findings);
+
     zip.file('verification/mana-attachment-plan.json', JSON.stringify(plan, null, 2));
     fileCount++;
+
+    // Generate deployable mana.config.json — closes the scan→deploy loop
+    if (plan.length > 0) {
+      const manaConfig = manifestToConfig({
+        source: fileName?.replace(/\.[^.]+$/, '') || 'ascended',
+        language: detectedLang || 'typescript',
+        cjpiScore: report.cjpiCertificate.score,
+        fingerprint,
+        attachmentPlan: plan,
+        appliedPrimitives: report.primitiveManifest.map(p => p.name),
+        exportedAt: new Date().toISOString(),
+      });
+      zip.file('mana.config.json', serializeConfig(manaConfig));
+      fileCount++;
+
+      // Deployment summary
+      const summary = summarizeDeployment(manaConfig);
+      zip.file('verification/mana-deployment-summary.json', JSON.stringify(summary, null, 2));
+      fileCount++;
+    }
   } catch {
-    // Mana bridge is optional
+    // Mana bridge is optional — graceful degradation
   }
 
   // ═══════════════════════════════════════════════════════════
