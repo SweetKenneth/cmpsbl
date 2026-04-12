@@ -871,29 +871,36 @@ export default function RestorationShop() {
 
           {/* DEBRIEF PHASE */}
           {phase === 'debrief' && report && (
-            <div className="max-w-3xl mx-auto space-y-6">
-              {/* ═══ CJPI Hero Badge ═══ */}
-              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card/30 to-primary/5 p-6 sm:p-8 text-center relative overflow-hidden">
+            <div className="max-w-3xl mx-auto space-y-6 phase-card-enter">
+              {/* ═══ CJPI Hero Badge — Cinematic Score Reveal ═══ */}
+              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-card/30 to-primary/5 p-8 sm:p-10 text-center relative overflow-hidden cjpi-glow-pulse">
+                {/* Ambient glow layers */}
                 <div className="absolute inset-0 pointer-events-none" style={{
-                  backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 60%)",
+                  backgroundImage: "radial-gradient(circle at 50% 0%, hsl(var(--primary) / 0.12) 0%, transparent 50%)",
+                }} />
+                <div className="absolute inset-0 pointer-events-none" style={{
+                  backgroundImage: "radial-gradient(circle at 30% 80%, hsl(var(--neon-purple) / 0.06) 0%, transparent 40%)",
                 }} />
                 <div className="relative z-10">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/10 mb-4">
-                    <Award className="w-3 h-3 text-primary" />
-                    <span className="text-[10px] font-bold text-primary uppercase tracking-widest">CJPI Certificate</span>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/10 mb-5 ascension-stagger-1">
+                    <Award className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">CJPI Certificate</span>
                   </div>
-                  <div className="text-5xl sm:text-6xl font-black text-foreground mb-1">{report.cjpiCertificate.score}</div>
+                  <div className="text-6xl sm:text-7xl font-black text-foreground mb-2 cjpi-score-reveal">
+                    {report.cjpiCertificate.score}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground/60 font-mono mb-3 ascension-stagger-2">out of 100</div>
                   <div className={cn(
-                    "inline-block text-xs font-black uppercase tracking-[0.2em] px-4 py-1.5 rounded-full mb-4",
+                    "inline-block text-xs font-black uppercase tracking-[0.2em] px-5 py-2 rounded-full mb-5 cjpi-tier-reveal",
                     report.cjpiCertificate.tier === 'S-Tier' || report.cjpiCertificate.tier === 'Apex'
-                      ? "bg-primary/15 text-primary border border-primary/30"
+                      ? "bg-primary/15 text-primary border border-primary/30 shadow-[0_0_20px_hsl(var(--primary)/0.2)]"
                       : report.cjpiCertificate.tier === 'A-Tier'
                         ? "bg-neon-green/15 text-neon-green border border-neon-green/30"
                         : "bg-muted/30 text-muted-foreground border border-border/30"
                   )}>
                     {report.cjpiCertificate.tier}
                   </div>
-                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground font-mono">
+                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[10px] text-muted-foreground font-mono ascension-stagger-3">
                     <span>Serial: {report.cjpiCertificate.serialNumber}</span>
                     <span className="hidden sm:inline">·</span>
                     <span>{report.primitiveManifest.length} primitives applied</span>
