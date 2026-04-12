@@ -19,7 +19,7 @@
 
 import type { RestorationReport } from '@/lib/factory/restoration-docs';
 import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
-import { generateAscendedCode, generateLicense, getAscendedExtension } from '@/lib/factory/generate-refurbished-code';
+import { generateRefurbishedCode as generateAscendedCode, generateLicense, getRefurbishedExtension as getAscendedExtension } from '@/lib/factory/generate-refurbished-code';
 import { wrapPremiumDocPage } from './premium-html-wrapper';
 import { wrapPremiumHtml, type PremiumDocInput } from './premium-html-wrapper';
 import { generateUniversalUserGuide } from './universal-user-guide';
