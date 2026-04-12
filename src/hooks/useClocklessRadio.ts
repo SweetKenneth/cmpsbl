@@ -29,6 +29,7 @@ export interface ClocklessRadioState {
   minutesRemaining: number;
   totalMinutes: number;
   limitReached: boolean;
+  sfxOnly: boolean;
 }
 
 interface RadioTimerData {
@@ -50,6 +51,7 @@ const initialState: ClocklessRadioState = {
   minutesRemaining: -1,
   totalMinutes: -1,
   limitReached: false,
+  sfxOnly: false,
 };
 
 let sharedState: ClocklessRadioState = { ...initialState };
