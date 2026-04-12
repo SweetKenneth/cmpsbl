@@ -233,13 +233,15 @@ Cycle N: Intelligence compounds exponentially
 
 ### Single CDM cycle execution order:
 ```
-1. generateTemplateBatch()          — 30 fresh templates
-2. runReactor()                     — Score & discover
+1. generateTemplateBatch()          — 30 fresh templates (159-primitive pool)
+2. runReactor()                     — Score & discover via CJPI
 3. runVaultBridge()                 — Ingest ENTIRE vault as training data
 4. runReactorChainBridge()          — Feed 126 chain templates
-5. runCrossPollinationCycle()       — Federate across 6 verticals
+5. runCrossPollinationCycle()       — Federate across 12 verticals
 6. runScannerOnAscensionNodes()     — Scan 20 most recent uploads
 7. addDiscovery() + routeDiscovery() — Route results to ledger/vault
+8. runProductCompiler()             — Assemble compatible chains into suites
+9. runMarketplaceRotation()         — Auto-price and rotate listings
 ```
 
 ### Client-side Shadow Mesh (supplemental):
