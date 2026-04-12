@@ -322,7 +322,14 @@ export class ClocklessRadioEngine {
   stop(): void {
     if (this.preloadTimer) clearTimeout(this.preloadTimer);
     if (this.effectTimer) clearTimeout(this.effectTimer);
+    this.stopEarCandy();
     
+    // Sign-off chime (through AudioContext → Bluetooth)
+    if (this._sfx && this.state !== 'stopped') {
+      void this._sfx.play('sign_off');
+      this._sfx.stopCrackle();
+    }
+
     try { this.currentSource?.stop(); } catch { }
     try { this.nextSource?.stop(); } catch { }
     try { this.currentGain?.disconnect(); } catch { }
@@ -377,8 +384,35 @@ export class ClocklessRadioEngine {
     this.setState('playing');
   }
 
+  // ─── Ear Candy — periodic random micro-sounds ─────────────────
+  private startEarCandy(): void {
+    this.stopEarCandy();
+    // Random blip every 45-90 seconds
+    const scheduleNext = () => {
+      const delay = (45 + Math.random() * 45) * 1000;
+      this.earCandyInterval = setTimeout(() => {
+        if (this.state === 'stopped' || this.state === 'dj_speaking') {
+          scheduleNext();
+          return;
+        }
+        this._sfx?.randomEarCandy();
+        scheduleNext();
+      }, delay);
+    };
+    scheduleNext();
+  }
+
+  private stopEarCandy(): void {
+    if (this.earCandyInterval) {
+      clearTimeout(this.earCandyInterval);
+      this.earCandyInterval = null;
+    }
+  }
+
   destroy(): void {
     this.stop();
+    this._sfx?.destroy();
+    this._sfx = null;
     if (this.ctx && this.ctx.state !== 'closed') {
       this.ctx.close();
     }
