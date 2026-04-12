@@ -1469,6 +1469,56 @@ const stratumSymbiotic: Specimen[] = [
     ],
     affectedNodes: ["FORGE Engine", "ECONOMY Agent", "EVOLUTION Layer"],
   },
+  {
+    id: "SYMB-004",
+    fossilized: "2026-04-12",
+    origin: "cognition",
+    stimulus: "Expansion verticals (Gaming, Education, Health, Legal) had no visual identity — all rendered with the default Earthside theme regardless of subdomain",
+    adaptations: [
+      "Unified VerticalThemeWrapper replaces individual CyberThemeWrapper/RoboticsThemeWrapper — single dispatcher for all 6 themed verticals",
+      "Gaming theme: deep purple base with neon green primary and electric accents (dark mode, animated scanline)",
+      "Education theme: warm parchment base with teal primary and gold accents (light mode)",
+      "Health theme: clinical white base with green-blue primary (light mode)",
+      "Legal theme: parchment base with deep navy primary and gold accents (light mode)",
+    ],
+    phenotype: [
+      "Every vertical substrate now has a distinct visual identity matching its domain character",
+      "Theme infrastructure scales to new verticals with a single config entry — zero new components needed",
+    ],
+    affectedNodes: ["SYSTEM Organ", "RELAY Organ"],
+  },
+  {
+    id: "SYMB-005",
+    fossilized: "2026-04-12",
+    origin: "cognition",
+    stimulus: "CORTEX could receive anomaly signals but had no mechanism to autonomously generate protective rules from runtime telemetry patterns",
+    adaptations: [
+      "CORTEX Phase 6 dynamic rule generator: frequency-based (N anomalies in window T triggers tighten_interception) and severity-based (>5σ deviation triggers immediate trip_execution)",
+      "Auto-rules use cortex-auto- prefix with cooldown decay and 50-rule cap to prevent runaway generation",
+      "Wired into analysis engine anomaly detection loop — anomalies now self-heal into enforcement rules",
+    ],
+    phenotype: [
+      "The substrate closes the observation-to-enforcement loop autonomously — no human intervention needed",
+      "Runtime anomalies become protective rules within the same execution context",
+    ],
+    affectedNodes: ["CORTEX Engine", "BEACON Engine"],
+  },
+  {
+    id: "SYMB-006",
+    fossilized: "2026-04-12",
+    origin: "cognition",
+    stimulus: "The /verify/:fingerprint page showed a single CJPI number with no breakdown — users couldn't understand what the score measured",
+    adaptations: [
+      "Decomposed 5-component CJPI breakdown added to verification page: Structural (25%), Binding (25%), Activation (25%), Behavioral (20%), Security (5%)",
+      "Animated progress bars with per-component scoring derived from composite score and primitive coverage",
+      "Runtime verification status indicator — shows whether behavioral proof exists or score is structural only",
+    ],
+    phenotype: [
+      "Verification consumers can now assess exactly which lifecycle stages contribute to a CJPI score",
+      "The decomposition builds trust by showing the scoring methodology is transparent and multi-dimensional",
+    ],
+    affectedNodes: ["ENCODE Agent", "BEACON Engine"],
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
