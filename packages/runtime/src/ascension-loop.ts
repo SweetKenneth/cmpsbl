@@ -20,6 +20,13 @@ import type { ArtifactManifest, InitializationResult } from './artifact-initiali
 import { initializeArtifact } from './artifact-initializer';
 import type { ActivationReport } from './engines/activation-proof';
 import { generateActivationReport } from './engines/activation-proof';
+import type { VerificationSummary, ArtifactFingerprint } from './engines/verification-ledger';
+import {
+  computeFingerprint,
+  record,
+  generateVerificationSummary,
+  renderVerificationReport,
+} from './engines/verification-ledger';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -39,6 +46,10 @@ export interface AscensionArtifact<T extends Record<string, unknown> = Record<st
   readonly activation: InitializationResult;
   /** Activation proof (what primitives are active, what rules are registered) */
   readonly proof: ActivationReport;
+  /** Phase 6: Artifact fingerprint for identity verification */
+  readonly fingerprint: ArtifactFingerprint;
+  /** Phase 6: Verification summary — what was attached, executed, blocked, and why */
+  readonly verification: VerificationSummary;
   /** Pipeline execution metadata */
   readonly pipeline: PipelineTrace;
 }
