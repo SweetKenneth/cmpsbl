@@ -189,10 +189,13 @@ These limitations MUST appear in all outputs:
 3. **Phase 3 (Complete):** 4-gate verification script (fingerprint binding, fail-closed coverage, tamper detection, delta reporting)
 4. **Phase 4 (Complete):** Generic Primitive Activation Engine — universal baseline for all primitives
 5. **Phase 5 (Complete):** Behavior Engine Layer — 5 runtime engines (Interception/DEFENSE, Execution/FAILSAFE, State/MEMORY, Analysis/BEACON, Orchestration/CORTEX)
-6. **Phase 6 (Next):** Wire ledger builder into Ascension pipeline after `generate` stage
-7. **Phase 7:** Include `capability-ledger.json` in export artifacts
-8. **Phase 8:** Migrate product reporters to read from ledger
-9. **Phase 9:** Update verification UI to show decomposed CJPI
+6. **Phase 6 (Complete):** Ascension Runtime Pipeline — 8-phase scan → attach → activate → verify → fingerprint → health → deploy
+7. **Phase 7 (Complete):** Unified Health + Deployment — unified health resolver, environment detection, portable artifacts, deployment manifests
+8. **Phase 8 (Complete):** Production Provider — `init()` API, `AscensionSession`, `getSessionHealthCheck()`, `getGlobalHealthCheck()`, `UNCOMPUTED_FINGERPRINT`, `SessionStatus`
+9. **Phase 9 (Next):** Wire lifecycle ledger builder into Ascension pipeline after `generate` stage
+10. **Phase 10:** Include `capability-ledger.json` in export artifacts
+11. **Phase 11:** Migrate product reporters to read from ledger
+12. **Phase 12:** Update verification UI to show decomposed CJPI
 
 ---
 

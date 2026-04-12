@@ -34,6 +34,26 @@ Export as a ZIP archive containing:
 
 If CMPSBL disappeared tomorrow, the export still runs. That's the portability guarantee.
 
+### 5. Runtime Integration (Optional)
+
+For runtime governance, use the production API:
+
+```typescript
+import { init } from '@cmpsbl/runtime';
+const session = init(myLib, sourceCode, { name: 'my-lib' });
+
+// Drop-in replacement — same signatures, now governed
+app.get('/users', session.exports.getUsers);
+
+// Authoritative health — unified activation + runtime signal
+app.get('/health', (_, res) => res.json(session.healthCheck()));
+
+// Quick-glance status for dashboards
+app.get('/status', (_, res) => res.json(session.status()));
+```
+
+No framework changes. No rewrites. No lock-in. The original module is never modified — all behavior is attached at runtime.
+
 ---
 
 ## Supported Languages

@@ -138,6 +138,29 @@ Final artifact package:
   └── test/                         ← Test harness
 ```
 
+### Phase 9: Runtime Deployment (April 12, 2026)
+
+The Ascension runtime now includes a **production-ready deployment layer**:
+
+```
+packages/runtime/src/
+├── production-provider.ts          ← init() → AscensionSession API
+├── portable-artifact.ts            ← Environment detection, health endpoints, deployment manifests
+├── ascension-loop.ts               ← 8-phase pipeline with unified health + PipelineTrace
+└── engines/
+    ├── unified-health.ts           ← Activation + runtime health merger
+    └── verification-ledger.ts      ← Append-only audit trail + fingerprinting
+```
+
+**Key APIs:**
+- `init()` → `AscensionSession` with `.exports`, `.health()`, `.status()`, `.healthCheck()`, `.destroy()`
+- `getSessionHealthCheck()` — session-scoped, deterministic, multi-tenant safe
+- `getGlobalHealthCheck()` — reads latched pipeline state for standalone endpoints
+- `UNCOMPUTED_FINGERPRINT` — null-safe sentinel for pre-ascension state
+- Environment-agnostic: Node, Browser, Deno, Bun, Edge Workers
+
+**Health resolution:** Real activation coverage ratio (wrappedCount / boundariesDetected) latched once during pipeline, merged with runtime anomaly events via worst-of-both-worlds. No proxy signals.
+
 ---
 
 ## What Makes This Patentable

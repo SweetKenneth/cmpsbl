@@ -94,6 +94,41 @@ A self-contained script you run after integration to verify your artifact's inte
 
 ## 4. Integration Workflow
 
+### Option A: Full Session (Recommended)
+
+```typescript
+import { init } from '@cmpsbl/runtime';
+import * as myLib from './my-lib';
+import { readFileSync } from 'fs';
+
+const source = readFileSync('./my-lib.ts', 'utf-8');
+const session = init(myLib, source, { name: 'my-lib' });
+
+// session.exports is a drop-in replacement for myLib
+app.get('/users', session.exports.getUsers);
+
+// Authoritative health endpoint (session-scoped, multi-tenant safe)
+app.get('/health', (_, res) => res.json(session.healthCheck()));
+
+// Quick-glance status for dashboards, alerts, or deployment gates
+app.get('/status', (_, res) => res.json(session.status()));
+
+// Graceful shutdown
+process.on('SIGTERM', () => { session.destroy(); process.exit(0); });
+```
+
+### Option B: One-Shot (Scripts / CLIs)
+
+```typescript
+import { ascendQuick } from '@cmpsbl/runtime';
+import * as myLib from './my-lib';
+
+const governed = ascendQuick(myLib, source, 'my-lib');
+// governed.getUsers is wrapped — same signature, now verified
+```
+
+### Option C: Verification Script (Post-Export)
+
 ```
 Step 1: Run Ascension on your source code
         → Receive export ZIP with lifecycle artifacts
