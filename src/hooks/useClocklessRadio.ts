@@ -362,6 +362,13 @@ export function useClocklessRadio() {
     await playSharedRadio();
   }, []);
 
+  const setSFXOnly = useCallback((value: boolean) => {
+    if (sharedEngine) {
+      sharedEngine.sfxOnly = value;
+    }
+    updateSharedState((prev) => ({ ...prev, sfxOnly: value }));
+  }, []);
+
   return {
     ...radioState,
     play,
@@ -369,5 +376,6 @@ export function useClocklessRadio() {
     skip,
     setVolume,
     toggle,
+    setSFXOnly,
   };
 }
