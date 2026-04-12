@@ -287,6 +287,13 @@ export class ClocklessRadioEngine {
     this.updateMediaSession(track);
     
     try {
+      // Tune-in radio dial effect on first play (through AudioContext → Bluetooth)
+      if (this._sfx) {
+        await this._sfx.play('tune_in');
+        // Start ambient vinyl crackle warmth
+        void this._sfx.startCrackle();
+      }
+
       const buffer = await this.loadBuffer(track.url);
       const { source, gain } = this.playBuffer(buffer, false);
       
@@ -304,6 +311,9 @@ export class ClocklessRadioEngine {
       this.setState('playing');
       this.schedulePreload();
       this.scheduleCrossfade();
+
+      // Start random ear candy interval (subtle blips every 45-90s)
+      this.startEarCandy();
     } catch (e) {
       console.error('[ClocklessRadio] Play failed:', e);
     }
