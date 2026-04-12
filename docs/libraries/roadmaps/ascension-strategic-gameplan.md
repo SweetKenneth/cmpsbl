@@ -120,19 +120,29 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 
 ---
 
-## Phase 6 — Verification & Proof Layer
+## Phase 6 — Verification & Proof Layer ✅ COMPLETE
 
 **Goal:** Make behavior auditable and trustworthy.
 
 **Key outcomes:**
-- Runtime emits structured, queryable events
-- Verification answers: what was attached, what executed, what was blocked, why it happened
-- Fingerprinting ties artifact → runtime → behavior
+- ✅ Runtime emits structured, queryable events (verification ledger)
+- ✅ Verification answers: what was attached, what executed, what was blocked, why it happened
+- ✅ Fingerprinting ties artifact → runtime → behavior
+- ✅ Causal chain linkage connects events to their causes
+
+**Delivered:**
+- `verification-ledger.ts` — Append-only structured event log with 11 event kinds
+- Artifact fingerprinting (FNV-1a composite of manifest + attachments)
+- Query API: `queryByKind()`, `queryByPrimitive()`, `queryByFunction()`, `getCausalChain()`
+- `generateVerificationSummary()` — Single-call trust surface
+- `verifyIntegrity()` — Runtime fingerprint verification with tamper detection
+- `renderVerificationReport()` — Human-readable externally shareable proof
+- Integrated into `ascend()` — every pipeline run auto-records binding, wrapping, proof, and integrity events
 
 **Exit criteria:**
-- Every behavior has a trace
-- No "black box" execution
-- Trust can be established externally
+- ✅ Every behavior has a trace (ledger records all binding, execution, enforcement events)
+- ✅ No "black box" execution (causal chains link every event to its cause)
+- ✅ Trust can be established externally (fingerprint + verification summary + report)
 
 ---
 
