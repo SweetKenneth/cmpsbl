@@ -13,6 +13,7 @@
  */
 
 import { routeSignal } from './orchestration-engine';
+import { recordAnomaly } from './dynamic-rule-generator';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -126,6 +127,9 @@ function detectAnomaly(
   if (deviation >= ANOMALY_THRESHOLD) {
     emit(primitive, 'anomaly_detected', duration);
     routeSignal(primitive, 'anomaly_detected', { duration });
+
+    // Phase 6: Feed anomaly to dynamic rule generator for auto-rule evaluation
+    recordAnomaly(primitive, deviation);
   }
 }
 

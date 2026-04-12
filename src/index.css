@@ -1545,6 +1545,293 @@ All colors MUST be HSL.
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════ */
+/* CMPSBL GAMING™ — Gaming Vertical Theme                         */
+/* Deep purple base · Neon green accents · Electric highlights    */
+/* ═══════════════════════════════════════════════════════════════ */
+.gaming-theme,
+.gaming-theme .dark,
+.gaming-theme :root {
+  --background: 270 30% 4%;
+  --foreground: 0 0% 95%;
+  --card: 270 25% 7%;
+  --card-foreground: 0 0% 92%;
+  --popover: 270 25% 6%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 145 100% 50%;
+  --primary-variant: 145 80% 40%;
+  --primary-foreground: 270 30% 4%;
+  --secondary: 270 20% 12%;
+  --secondary-foreground: 0 0% 90%;
+  --muted: 270 20% 9%;
+  --muted-foreground: 270 15% 50%;
+  --accent: 280 100% 65%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 80% 55%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 270 20% 14%;
+  --input: 270 20% 11%;
+  --ring: 145 100% 50%;
+  --sidebar-background: 270 25% 6%;
+  --sidebar-foreground: 0 0% 90%;
+  --sidebar-primary: 145 100% 50%;
+  --sidebar-primary-foreground: 270 30% 4%;
+  --sidebar-accent: 270 20% 12%;
+  --sidebar-accent-foreground: 0 0% 90%;
+  --sidebar-border: 270 20% 14%;
+  --sidebar-ring: 145 100% 50%;
+
+  --neon-cyan: 185 100% 55%;
+  --neon-magenta: 310 100% 60%;
+  --neon-purple: 280 100% 65%;
+  --neon-amber: 45 100% 55%;
+  --neon-green: 145 100% 50%;
+  --neon-blue: 220 100% 60%;
+  --stream-slate: 270 20% 9%;
+
+  --system-green: 145 100% 50%;
+  --system-amber: 45 100% 55%;
+
+  --gradient-fluid: linear-gradient(135deg, hsl(145 100% 50%), hsl(280 100% 65%));
+  --gradient-primary: linear-gradient(135deg, hsl(145 100% 50%), hsl(145 80% 38%));
+  --gradient-accent: linear-gradient(135deg, hsl(280 100% 65%), hsl(310 100% 60%));
+  --gradient-warm: linear-gradient(135deg, hsl(145 100% 50%), hsl(185 100% 55%));
+  --gradient-mesh: radial-gradient(at 0% 0%, hsl(145 100% 50% / 0.08) 0px, transparent 50%),
+                   radial-gradient(at 100% 0%, hsl(280 100% 65% / 0.06) 0px, transparent 50%),
+                   radial-gradient(at 100% 100%, hsl(310 100% 60% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsl(185 100% 55% / 0.04) 0px, transparent 50%);
+  --shadow-glow: 0 0 40px hsl(145 100% 50% / 0.15);
+  --shadow-glow-lg: 0 20px 60px hsl(145 100% 50% / 0.12);
+  --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
+
+  color-scheme: dark;
+}
+
+.gaming-theme body {
+  background: hsl(270 30% 4%);
+  color: hsl(0 0% 95%);
+}
+
+@keyframes game-scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.7; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.gaming-theme .gaming-scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(145 100% 50% / 0.6), hsl(280 100% 65% / 0.5), transparent);
+  animation: game-scan 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* CMPSBL EDUCATION™ — Education Vertical Theme                   */
+/* Warm light base · Teal accents · Gold highlights               */
+/* ═══════════════════════════════════════════════════════════════ */
+.education-theme,
+.education-theme .dark,
+.education-theme :root {
+  --background: 40 25% 97%;
+  --foreground: 220 20% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 15%;
+  --primary: 175 65% 40%;
+  --primary-variant: 175 55% 34%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 40 15% 92%;
+  --secondary-foreground: 220 15% 22%;
+  --muted: 40 15% 95%;
+  --muted-foreground: 220 10% 40%;
+  --accent: 38 85% 55%;
+  --accent-foreground: 220 20% 10%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 40 12% 85%;
+  --input: 40 12% 90%;
+  --ring: 175 65% 40%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 220 15% 25%;
+  --sidebar-primary: 175 65% 40%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 40 15% 92%;
+  --sidebar-accent-foreground: 220 15% 22%;
+  --sidebar-border: 40 12% 88%;
+  --sidebar-ring: 175 65% 40%;
+
+  --neon-cyan: 175 80% 45%;
+  --neon-magenta: 330 70% 55%;
+  --neon-purple: 260 70% 55%;
+  --neon-amber: 38 85% 55%;
+  --neon-green: 145 65% 40%;
+  --neon-blue: 210 80% 50%;
+  --stream-slate: 40 15% 93%;
+
+  --system-green: 145 65% 42%;
+  --system-amber: 38 85% 55%;
+
+  --gradient-fluid: linear-gradient(135deg, hsl(175 65% 40%), hsl(175 55% 30%));
+  --gradient-primary: linear-gradient(135deg, hsl(175 65% 40%), hsl(175 55% 30%));
+  --gradient-accent: linear-gradient(135deg, hsl(38 85% 55%), hsl(38 75% 45%));
+  --gradient-warm: linear-gradient(135deg, hsl(38 85% 55%), hsl(25 80% 50%));
+  --gradient-mesh: radial-gradient(at 0% 0%, hsl(175 65% 40% / 0.06) 0px, transparent 50%),
+                   radial-gradient(at 100% 0%, hsl(38 85% 55% / 0.06) 0px, transparent 50%),
+                   radial-gradient(at 100% 100%, hsl(145 65% 40% / 0.04) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsl(210 80% 50% / 0.04) 0px, transparent 50%);
+  --shadow-glow: 0 0 40px hsl(175 65% 40% / 0.1);
+  --shadow-glow-lg: 0 20px 60px hsl(175 65% 40% / 0.08);
+  --shadow-elegant: 0 4px 20px -4px hsl(220 15% 15% / 0.1);
+
+  color-scheme: light;
+}
+
+.education-theme body {
+  background: hsl(40 25% 97%);
+  color: hsl(220 20% 15%);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* CMPSBL HEALTH™ — Healthcare Vertical Theme                     */
+/* Clinical white base · Green-blue primary · Clean accents       */
+/* ═══════════════════════════════════════════════════════════════ */
+.health-theme,
+.health-theme .dark,
+.health-theme :root {
+  --background: 180 10% 98%;
+  --foreground: 210 20% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 20% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 20% 15%;
+  --primary: 160 55% 42%;
+  --primary-variant: 160 50% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 180 8% 93%;
+  --secondary-foreground: 210 15% 22%;
+  --muted: 180 8% 96%;
+  --muted-foreground: 210 10% 40%;
+  --accent: 195 70% 48%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 180 8% 86%;
+  --input: 180 8% 91%;
+  --ring: 160 55% 42%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 210 15% 25%;
+  --sidebar-primary: 160 55% 42%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 180 8% 93%;
+  --sidebar-accent-foreground: 210 15% 22%;
+  --sidebar-border: 180 8% 88%;
+  --sidebar-ring: 160 55% 42%;
+
+  --neon-cyan: 195 70% 48%;
+  --neon-magenta: 340 65% 55%;
+  --neon-purple: 270 60% 55%;
+  --neon-amber: 38 80% 50%;
+  --neon-green: 160 55% 42%;
+  --neon-blue: 210 70% 50%;
+  --stream-slate: 180 8% 94%;
+
+  --system-green: 160 55% 42%;
+  --system-amber: 38 80% 50%;
+
+  --gradient-fluid: linear-gradient(135deg, hsl(160 55% 42%), hsl(195 70% 48%));
+  --gradient-primary: linear-gradient(135deg, hsl(160 55% 42%), hsl(160 50% 32%));
+  --gradient-accent: linear-gradient(135deg, hsl(195 70% 48%), hsl(195 60% 40%));
+  --gradient-warm: linear-gradient(135deg, hsl(160 55% 42%), hsl(145 50% 38%));
+  --gradient-mesh: radial-gradient(at 0% 0%, hsl(160 55% 42% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 100% 0%, hsl(195 70% 48% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 100% 100%, hsl(145 50% 38% / 0.04) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsl(210 70% 50% / 0.03) 0px, transparent 50%);
+  --shadow-glow: 0 0 40px hsl(160 55% 42% / 0.08);
+  --shadow-glow-lg: 0 20px 60px hsl(160 55% 42% / 0.06);
+  --shadow-elegant: 0 4px 20px -4px hsl(210 15% 15% / 0.08);
+
+  color-scheme: light;
+}
+
+.health-theme body {
+  background: hsl(180 10% 98%);
+  color: hsl(210 20% 15%);
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* CMPSBL LEGAL™ — Legal & Regulatory Vertical Theme              */
+/* Parchment base · Deep navy primary · Gold accents              */
+/* ═══════════════════════════════════════════════════════════════ */
+.legal-theme,
+.legal-theme .dark,
+.legal-theme :root {
+  --background: 35 20% 96%;
+  --foreground: 220 30% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 30% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 30% 12%;
+  --primary: 220 55% 30%;
+  --primary-variant: 220 50% 24%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 35 12% 91%;
+  --secondary-foreground: 220 25% 20%;
+  --muted: 35 12% 94%;
+  --muted-foreground: 220 12% 42%;
+  --accent: 40 75% 50%;
+  --accent-foreground: 220 30% 8%;
+  --destructive: 0 65% 48%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 35 10% 82%;
+  --input: 35 10% 88%;
+  --ring: 220 55% 30%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 220 25% 22%;
+  --sidebar-primary: 220 55% 30%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 35 12% 91%;
+  --sidebar-accent-foreground: 220 25% 20%;
+  --sidebar-border: 35 10% 85%;
+  --sidebar-ring: 220 55% 30%;
+
+  --neon-cyan: 195 60% 42%;
+  --neon-magenta: 340 55% 50%;
+  --neon-purple: 260 55% 50%;
+  --neon-amber: 40 75% 50%;
+  --neon-green: 145 55% 38%;
+  --neon-blue: 220 55% 45%;
+  --stream-slate: 35 12% 92%;
+
+  --system-green: 145 55% 38%;
+  --system-amber: 40 75% 50%;
+
+  --gradient-fluid: linear-gradient(135deg, hsl(220 55% 30%), hsl(220 50% 22%));
+  --gradient-primary: linear-gradient(135deg, hsl(220 55% 30%), hsl(220 50% 22%));
+  --gradient-accent: linear-gradient(135deg, hsl(40 75% 50%), hsl(40 65% 42%));
+  --gradient-warm: linear-gradient(135deg, hsl(40 75% 50%), hsl(30 70% 45%));
+  --gradient-mesh: radial-gradient(at 0% 0%, hsl(220 55% 30% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 100% 0%, hsl(40 75% 50% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 100% 100%, hsl(145 55% 38% / 0.03) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsl(220 55% 40% / 0.03) 0px, transparent 50%);
+  --shadow-glow: 0 0 40px hsl(220 55% 30% / 0.08);
+  --shadow-glow-lg: 0 20px 60px hsl(220 55% 30% / 0.06);
+  --shadow-elegant: 0 4px 20px -4px hsl(220 30% 12% / 0.1);
+
+  color-scheme: light;
+}
+
+.legal-theme body {
+  background: hsl(35 20% 96%);
+  color: hsl(220 30% 12%);
+}
+
 
 @keyframes auth-stream {
   0% { transform: translateX(-100%); }

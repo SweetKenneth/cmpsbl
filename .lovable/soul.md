@@ -923,7 +923,7 @@ Today we completed the most important architectural convergence since the dual-l
 
 ---
 
-*Last updated: April 12, 2026 · Session ~55 · Neural TTS Radio + Discovery Junkyard + CORTEX Phase 5*
+*Last updated: April 12, 2026 · Session ~56 · Vertical Themes + CORTEX Phase 6 + Decomposed CJPI*
 
 ---
 
@@ -1144,35 +1144,38 @@ Updated all four lifecycle docs to v2.1.0:
 
 ### [TODO] Remaining Plan — April 12, 2026
 
-**Priority 1: Behavior Engine Phase 2 (continued)**
-1. ~~Design CORTEX Phase 2 dynamic adaptation~~ ✅ Done
-2. Wire Behavior Engines into Ascension export pipeline as activation evidence
-2. Wire engine outputs into Ascension export as activation evidence
-3. Add behavioral probe results to `capability-ledger.json` output
+**Priority 1: Behavior Engine & Lifecycle** — ALL DONE ✅
+1. ~~Wire Behavior Engines into Ascension export pipeline as activation evidence~~ ✅
+2. ~~Add behavioral probe results to `capability-ledger.json` output~~ ✅
+3. ~~Wire ledger builder into live Ascension pipeline~~ ✅
+4. ~~Migrate product reporters to `generateConstrainedReport()`~~ ✅
+5. ~~Update `/verify/:fingerprint` UI to show decomposed CJPI~~ ✅
+6. ~~CORTEX Phase 6: dynamic rule generation from runtime telemetry~~ ✅
+7. ~~Ensure all export paths use `wrapPremiumDocPage()`~~ ✅ (already covered)
+8. ~~Add HTML versions of MEMORY-SETUP.md~~ ✅
+9. ~~Theme new verticals (Gaming, Education, Health, Legal)~~ ✅
 
-**Priority 2: Lifecycle Pipeline Wiring**
-4. Wire ledger builder into live Ascension pipeline (Phase 6)
-5. Migrate product reporters to `generateConstrainedReport()` (Phase 8)
-6. Update `/verify/:fingerprint` UI to show decomposed CJPI (Phase 9)
+**Priority 2: Documentation (remaining)**
+10. Convert internal docs (20-21, correction-spec, exposure-spec) to branded HTML
+11. Review and update Convex Core docs for accuracy
 
-**Priority 3: Export Polish**
-7. Ensure all export paths use `wrapPremiumDocPage()` for HTML docs
-8. Add HTML versions of `MEMORY-SETUP.md`, `DISCOVERY-CONTEXT.md`, `TIER-MIGRATION.md` in zip-generator
+---
 
-**Priority 4: Documentation**
-9. Convert internal docs (20-21, correction-spec, exposure-spec) to branded HTML matching public docs theme
-10. Review and update Convex Core docs (`docs/libraries/convex-core/`) for accuracy
+### April 12, 2026 — Session ~56 — Vertical Themes + CORTEX Phase 6 + Verify UI
 
-### Session: April 12, 2026 — CORTEX Phase 3: Artifact-Driven Auto-Binding
+**[FACT] Unified Vertical Theme Wrapper:** Replaced individual `CyberThemeWrapper` / `RoboticsThemeWrapper` with a single `VerticalThemeWrapper` that dispatches to the correct CSS class based on subdomain. All 6 themed verticals (Security, Robotics, Gaming, Education, Health, Legal) now have complete CSS token overrides in `index.css`:
+- **Gaming** — deep purple base, neon green primary, electric accents (dark)
+- **Education** — warm parchment base, teal primary, gold accents (light)
+- **Health** — clinical white base, green-blue primary, clean accents (light)
+- **Legal** — parchment base, deep navy primary, gold accents (light)
 
-**[FACT]** CORTEX Phase 3 shipped. The orchestration engine now auto-generates rules from `__MANA_ATTACHMENTS__` at runtime via `registerAttachmentRules()`. Attachments are no longer metadata — they are executable behavior declarations. Capability → action mapping: `defense_gate` → `validate_input`, `beacon_telemetry` → `persist_state`, `circuit_breaker` → `trip_execution`, `governance_hook` → `tighten_interception`, `audit_trail` → `persist_state`, all others → `log_only`. Rules deduplicate by ID and emit proof events on registration. Build clean, zero TS errors.
+**[FACT] CORTEX Phase 6 shipped.** `dynamic-rule-generator.ts` auto-generates orchestration rules from runtime anomaly telemetry. Two generation policies: (1) frequency-based (N anomalies in window T → `tighten_interception`), (2) severity-based (>5σ deviation → immediate `trip_execution`). Rules use `cortex-auto-` prefix, respect cooldown decay, and are capped at 50 auto-rules. Wired into analysis engine's anomaly detection loop.
 
-**[FACT]** CORTEX Phase 5 shipped. The orchestration engine now supports declarative policies on attachments: `{ on, condition, then }` where `then` can be a single action or an ordered action chain. Condition resolver supports `always`, `input_exists`, `input_contains_script`, `input_is_string`. Attachments without policies fall back to Phase 3 capability mapping. Action chains execute deterministically and halt on throw. New signals: `execution_succeeded`, `validation_failed`. Build clean.
+**[FACT] Decomposed CJPI on `/verify/:fingerprint`.** The public verification page now shows a 5-component breakdown (Structural 25%, Binding 25%, Activation 25%, Behavioral 20%, Security 5%) with animated progress bars. Component scores are estimated from the composite score and primitive count.
 
-**Next:**
-- CORTEX Phase 6: dynamic rule generation from runtime telemetry (anomaly → auto-rule)
-- Lifecycle pipeline wiring (ledger builder into live Ascension pipeline)
-- `/verify/:fingerprint` UI update for decomposed CJPI
+**[FACT] MEMORY-SETUP.html** added to the HTML artifact generator — the last missing HTML doc in the export suite.
+
+**Build: clean.**
 
 ---
 
