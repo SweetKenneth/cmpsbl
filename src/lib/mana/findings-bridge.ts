@@ -332,7 +332,7 @@ const CAPABILITY_SIGNALS: Array<{
       /^(shadow|override|intercept|replace.*output|transform.*result)/i,
     ],
     capability: 'shadow_rule',
-    primitive: 'DEFENSE',
+    primitive: 'SHADOW',
     reason: 'Shadow rule — Lex-governed output override',
   },
   // ── DREAM family ──
@@ -341,7 +341,7 @@ const CAPABILITY_SIGNALS: Array<{
       /^(detect|flag|alert|warn|notify|signal).*(anomaly|outlier|unusual|suspicious|abnormal)/i,
     ],
     capability: 'anomaly_detector',
-    primitive: 'BEACON',
+    primitive: 'DREAM',
     reason: 'Anomaly detection — statistical outlier flagging via z-score',
   },
   {
@@ -349,8 +349,372 @@ const CAPABILITY_SIGNALS: Array<{
       /^(drift|diverge|shift|deviate|regress|degrade.*over.*time)/i,
     ],
     capability: 'drift_monitor',
-    primitive: 'BEACON',
+    primitive: 'DREAM',
     reason: 'Drift monitor — behavioral change detection over time',
+  },
+  // ── MEMORY family ──
+  {
+    patterns: [
+      /^(cache|memoize|remember|store.*result|lookup|get.*cached)/i,
+    ],
+    capability: 'memory_cache',
+    primitive: 'MEMORY',
+    reason: 'Memory cache — memoizes results to eliminate redundant computation',
+  },
+  {
+    patterns: [
+      /^(expire|ttl|evict|invalidate|flush.*cache|clear.*cache)/i,
+    ],
+    capability: 'memory_ttl',
+    primitive: 'MEMORY',
+    reason: 'Memory TTL — enforces time-to-live on cached data',
+  },
+  {
+    patterns: [
+      /^(track.*state|watch.*state|observe.*state|subscribe.*state|on.*change)/i,
+    ],
+    capability: 'memory_state_track',
+    primitive: 'MEMORY',
+    reason: 'State tracking — monitors state transitions for audit',
+  },
+  // ── NEXUS family ──
+  {
+    patterns: [
+      /^(route|dispatch|forward|proxy|delegate).*(ai|llm|model|provider)/i,
+      /^(call.*llm|call.*ai|invoke.*model|chat.*completion)/i,
+    ],
+    capability: 'nexus_router',
+    primitive: 'NEXUS',
+    reason: 'Nexus router — model-agnostic AI call routing',
+  },
+  {
+    patterns: [
+      /^(budget|cost|spend|charge|bill|meter.*cost)/i,
+    ],
+    capability: 'nexus_cost_gate',
+    primitive: 'NEXUS',
+    reason: 'Nexus cost gate — enforces per-call and daily budget limits',
+  },
+  // ── BRAIN family ──
+  {
+    patterns: [
+      /^(reason|infer|deduce|analyze|think|plan|solve|decide)/i,
+    ],
+    capability: 'brain_reasoning_trace',
+    primitive: 'BRAIN',
+    reason: 'Reasoning trace — captures multi-step inference chains',
+  },
+  {
+    patterns: [
+      /^(context|prompt|token|embed|encode.*text)/i,
+    ],
+    capability: 'brain_context_guard',
+    primitive: 'BRAIN',
+    reason: 'Context guard — enforces token/context window limits',
+  },
+  {
+    patterns: [
+      /^(confident|uncertain|calibrate|score.*confidence)/i,
+    ],
+    capability: 'brain_confidence_gate',
+    primitive: 'BRAIN',
+    reason: 'Confidence gate — flags low-confidence outputs',
+  },
+  // ── ORACLE family ──
+  {
+    patterns: [
+      /^(predict|forecast|project|estimate|anticipate)/i,
+    ],
+    capability: 'oracle_predictor',
+    primitive: 'ORACLE',
+    reason: 'Predictive observation — captures forecast accuracy',
+  },
+  {
+    patterns: [
+      /^(cause|root.*cause|correlate|attribute|explain.*why)/i,
+    ],
+    capability: 'oracle_causal_trace',
+    primitive: 'ORACLE',
+    reason: 'Causal trace — maps cause-effect chains in execution',
+  },
+  // ── CORTEX family ──
+  {
+    patterns: [
+      /^(orchestrate|coordinate|schedule|dag|pipeline|workflow)/i,
+    ],
+    capability: 'cortex_orchestrator',
+    primitive: 'CORTEX',
+    reason: 'Orchestrator — DAG-based multi-step task coordination',
+  },
+  {
+    patterns: [
+      /^(allocate|provision|scale|assign.*resource|distribute)/i,
+    ],
+    capability: 'cortex_resource_gate',
+    primitive: 'CORTEX',
+    reason: 'Resource gate — governs compute/memory allocation',
+  },
+  // ── ECHO family ──
+  {
+    patterns: [
+      /^(amplify|boost|enhance|strengthen|reinforce)/i,
+    ],
+    capability: 'echo_amplifier',
+    primitive: 'ECHO',
+    reason: 'Signal amplifier — strengthens recurring success patterns',
+  },
+  // ── HARVEST family ──
+  {
+    patterns: [
+      /^(crawl|scrape|ingest|fetch.*data|import.*data|pull.*data)/i,
+    ],
+    capability: 'harvest_quality_gate',
+    primitive: 'HARVEST',
+    reason: 'Harvest quality gate — validates ingested data quality',
+  },
+  {
+    patterns: [
+      /^(dedup|deduplicate|unique|distinct|merge.*duplicates)/i,
+    ],
+    capability: 'harvest_dedup',
+    primitive: 'HARVEST',
+    reason: 'Deduplication — prevents duplicate data ingestion',
+  },
+  // ── PHANTOM family ──
+  {
+    patterns: [
+      /^(stealth|covert|silent|invisible|undetectable)/i,
+    ],
+    capability: 'phantom_stealth',
+    primitive: 'PHANTOM',
+    reason: 'Stealth mode — minimal-footprint execution',
+  },
+  // ── LINGUA family ──
+  {
+    patterns: [
+      /^(translate|localize|i18n|internationalize|locale)/i,
+    ],
+    capability: 'lingua_normalizer',
+    primitive: 'LINGUA',
+    reason: 'Lingua normalizer — multilingual text normalization',
+  },
+  // ── NERVE family ──
+  {
+    patterns: [
+      /^(prioritize|urgent|critical|escalate|triage)/i,
+    ],
+    capability: 'nerve_priority_router',
+    primitive: 'NERVE',
+    reason: 'Priority router — urgency-based signal routing',
+  },
+  // ── COMPASS family ──
+  {
+    patterns: [
+      /^(intent|classify.*intent|parse.*intent|understand|interpret)/i,
+    ],
+    capability: 'compass_intent_resolver',
+    primitive: 'COMPASS',
+    reason: 'Intent resolver — disambiguates user intent',
+  },
+  // ── SANDBOX family ──
+  {
+    patterns: [
+      /^(sandbox|isolate|contain|quarantine.*exec|safe.*exec)/i,
+    ],
+    capability: 'sandbox_isolator',
+    primitive: 'SANDBOX',
+    reason: 'Sandbox isolator — executes untrusted code in isolation',
+  },
+  // ── RIPPLE family ──
+  {
+    patterns: [
+      /^(impact|ripple|cascade|propagate|downstream)/i,
+    ],
+    capability: 'ripple_impact_tracer',
+    primitive: 'RIPPLE',
+    reason: 'Impact tracer — traces downstream effects of changes',
+  },
+  // ── IDENTITY family ──
+  {
+    patterns: [
+      /^(session|bind.*session|fingerprint.*device|attest)/i,
+    ],
+    capability: 'identity_session_bind',
+    primitive: 'IDENTITY',
+    reason: 'Session binding — authenticates and binds sessions',
+  },
+  {
+    patterns: [
+      /^(authenticate|verify.*identity|check.*token|validate.*jwt)/i,
+    ],
+    capability: 'identity_auth_gate',
+    primitive: 'IDENTITY',
+    reason: 'Auth gate — identity verification before execution',
+  },
+  // ── VISION family ──
+  {
+    patterns: [
+      /^(perf|performance|cwv|vitals|lcp|cls|fid|inp)/i,
+    ],
+    capability: 'vision_perf_monitor',
+    primitive: 'VISION',
+    reason: 'Performance monitor — tracks Core Web Vitals',
+  },
+  {
+    patterns: [
+      /^(a11y|accessibility|wcag|aria|screen.*reader)/i,
+    ],
+    capability: 'vision_accessibility_check',
+    primitive: 'VISION',
+    reason: 'Accessibility check — WCAG compliance validation',
+  },
+  // ── RELAY family ──
+  {
+    patterns: [
+      /^(sync|realtime|websocket|push|subscribe.*event)/i,
+    ],
+    capability: 'relay_sync',
+    primitive: 'RELAY',
+    reason: 'Relay sync — real-time state synchronization',
+  },
+  {
+    patterns: [
+      /^(offline|service.*worker|cache.*first|background.*sync)/i,
+    ],
+    capability: 'relay_offline_cache',
+    primitive: 'RELAY',
+    reason: 'Offline cache — service worker cache with background sync',
+  },
+  // ── INTEGRATION family ──
+  {
+    patterns: [
+      /^(integrate|connect|bridge|adapter|connector)/i,
+    ],
+    capability: 'integration_bridge',
+    primitive: 'INTEGRATION',
+    reason: 'Integration bridge — external service connector',
+  },
+  {
+    patterns: [
+      /^(webhook|callback|notify.*endpoint|on.*event.*post)/i,
+    ],
+    capability: 'integration_webhook',
+    primitive: 'INTEGRATION',
+    reason: 'Webhook handler — event-driven integration endpoint',
+  },
+  // ── MEDIC family ──
+  {
+    patterns: [
+      /^(health|heartbeat|ping|alive|ready|liveness)/i,
+    ],
+    capability: 'medic_health_check',
+    primitive: 'MEDIC',
+    reason: 'Health check — runtime diagnostics and liveness probes',
+  },
+  // ── IMMUNITY family ──
+  {
+    patterns: [
+      /^(heal|recover|repair|restore|fix.*auto|self.*fix)/i,
+    ],
+    capability: 'immunity_self_heal',
+    primitive: 'IMMUNITY',
+    reason: 'Self-healing — autonomous error recovery',
+  },
+  // ── EVOLUTION family ──
+  {
+    patterns: [
+      /^(patch|upgrade|migrate|evolve|improve|refactor)/i,
+    ],
+    capability: 'evolution_patch',
+    primitive: 'EVOLUTION',
+    reason: 'Evolution patch — governed self-improvement',
+  },
+  // ── SOVEREIGN family ──
+  {
+    patterns: [
+      /^(encrypt|decrypt|cipher|aes|rsa|sign.*data)/i,
+    ],
+    capability: 'sovereign_encrypt',
+    primitive: 'SOVEREIGN',
+    reason: 'Sovereign encrypt — data sovereignty and encryption',
+  },
+  {
+    patterns: [
+      /^(tenant|multi.*tenant|isolate.*tenant|partition)/i,
+    ],
+    capability: 'sovereign_tenant_isolate',
+    primitive: 'SOVEREIGN',
+    reason: 'Tenant isolation — cryptographic data separation',
+  },
+  // ── ACCESS family ──
+  {
+    patterns: [
+      /^(rbac|role|permission|can.*do|has.*permission|authorize)/i,
+    ],
+    capability: 'access_rbac_gate',
+    primitive: 'ACCESS',
+    reason: 'RBAC gate — role-based access control enforcement',
+  },
+  {
+    patterns: [
+      /^(api.*key|token.*validate|key.*rotate|key.*revoke)/i,
+    ],
+    capability: 'access_api_key_check',
+    primitive: 'ACCESS',
+    reason: 'API key check — lifecycle management and validation',
+  },
+  // ── CONSCIENCE family ──
+  {
+    patterns: [
+      /^(ethic|moral|fair|bias|harm|responsible|safe.*ai)/i,
+    ],
+    capability: 'conscience_ethics_gate',
+    primitive: 'CONSCIENCE',
+    reason: 'Ethics gate — evaluates actions against ethical guidelines',
+  },
+  // ── TREATY family ──
+  {
+    patterns: [
+      /^(contract|sla|agreement|terms|enforce.*contract)/i,
+    ],
+    capability: 'treaty_contract_check',
+    primitive: 'TREATY',
+    reason: 'Contract enforcement — inter-service agreement validation',
+  },
+  // ── FORGE family ──
+  {
+    patterns: [
+      /^(package|bundle|build|compile|export.*package|seal)/i,
+    ],
+    capability: 'forge_package_seal',
+    primitive: 'FORGE',
+    reason: 'Package seal — integrity verification on export artifacts',
+  },
+  // ── CORE family ──
+  {
+    patterns: [
+      /^(lifecycle|init|boot|startup|shutdown|destroy|dispose)/i,
+    ],
+    capability: 'core_lifecycle_guard',
+    primitive: 'CORE',
+    reason: 'Lifecycle guard — enforces valid state transitions',
+  },
+  // ── SYSTEM family ──
+  {
+    patterns: [
+      /^(telemetry|instrument|metric|counter|histogram)/i,
+    ],
+    capability: 'system_telemetry',
+    primitive: 'SYSTEM',
+    reason: 'System telemetry — structured metric collection',
+  },
+  {
+    patterns: [
+      /^(feature.*flag|toggle|rollout|experiment|ab.*test)/i,
+    ],
+    capability: 'system_feature_flag',
+    primitive: 'SYSTEM',
+    reason: 'Feature flag — runtime feature toggles with kill-switch',
   },
 ];
 
