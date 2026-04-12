@@ -42,6 +42,7 @@ export interface ScanPipelineResult {
 }
 
 export interface PipelineMeta {
+  readonly boundariesDetected: number;
   readonly findingsCount: number;
   readonly attachmentsGenerated: number;
   readonly unmappedCount: number;
@@ -399,6 +400,7 @@ export function runScanPipeline(
     behaviorReport,
     behaviorReportText,
     meta: {
+      boundariesDetected: boundaries.length,
       findingsCount: findings.length,
       attachmentsGenerated: attachments.length,
       unmappedCount: policyResult.unmapped.length,
@@ -425,6 +427,7 @@ export function runScanPipelineFromFindings(findings: readonly ScanFinding[]): S
     behaviorReport,
     behaviorReportText,
     meta: {
+      boundariesDetected: 0,
       findingsCount: findings.length,
       attachmentsGenerated: attachments.length,
       unmappedCount: policyResult.unmapped.length,
