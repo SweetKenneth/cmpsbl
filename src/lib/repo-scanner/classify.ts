@@ -281,8 +281,18 @@ export async function fetchGitHubFileContent(
   const res = await fetch(url, {
     headers: { 'Accept': 'application/vnd.github.v3+json' },
   });
+
+  if (res.status === 403) {
+    throw new Error('GitHub API rate limit hit while fetching file content. Try again later.');
+  }
   if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
+
   const data = await res.json();
-  // GitHub returns base64-encoded content
-  return atob(data.content.replace(/\n/g, ''));
+  // GitHub returns base64-encoded content — handle large files gracefully
+  try {
+    return atob(data.content.replace(/\n/g, ''));
+  } catch {
+    // Binary or oversized file — return placeholder
+    return `// [Binary or non-decodable file — ${data.size ?? 'unknown'} bytes]`;
+  }
 }
