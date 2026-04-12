@@ -5,9 +5,15 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { installProductionLogGuard } from "@/lib/system/productionLogGuard";
+import { initPostHog } from "@/lib/telemetry/posthog";
+import { initWebVitals } from "@/lib/telemetry/web-vitals";
 
 // Install production log guard before anything else logs
 installProductionLogGuard();
+
+// Initialize PostHog analytics and Web Vitals reporting
+initPostHog();
+initWebVitals();
 
 // Redirect cmpsbl-com.lovable.app → cmpsbl.com (staging URL → production domain)
 if (
