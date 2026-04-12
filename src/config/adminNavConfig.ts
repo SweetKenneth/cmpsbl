@@ -21,6 +21,7 @@ import {
   Terminal,
   Gauge,
   Eye,
+  BarChart3,
   type LucideIcon,
 } from "lucide-react";
 
@@ -103,6 +104,7 @@ export const adminNavConfig: NavGroup[] = [
       { id: "demo", label: "Demo", path: "/demo", icon: Activity },
       { id: "lab", label: "Lab", path: "/lab", icon: HeartPulse },
       { id: "analytics", label: "Analytics Intelligence", path: "/admin/analytics", icon: Eye, isNew: true },
+      { id: "posthog", label: "PostHog Analytics", path: "/admin/posthog", icon: BarChart3, isNew: true },
     ],
   },
   {
