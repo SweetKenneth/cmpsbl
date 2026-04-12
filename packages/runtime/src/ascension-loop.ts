@@ -237,18 +237,18 @@ export function ascend<T extends Record<string, unknown>>(
 
   const totalMs = Math.round(performance.now() - pipelineStart);
 
-  // Pipeline integrity check — sanity guard
-  const integrityOk =
-    activation.wrappedCount >= scan.meta.boundariesDetected * 0.5 &&
-    proof.totalPrimitives > 0;
+  // Pipeline integrity check — sanity guard with quantified coverage
+  const coverage = activation.wrappedCount / Math.max(scan.meta.boundariesDetected, 1);
+  const integrityOk = coverage >= 0.5 && proof.totalPrimitives > 0;
 
   if (!integrityOk) {
     record('integrity_check', 'SYSTEM', 'verification',
-      'Low activation integrity — potential scan/runtime mismatch', {
+      `Low activation integrity (${Math.round(coverage * 100)}%) — potential scan/runtime mismatch`, {
       wrappedCount: activation.wrappedCount,
       boundariesDetected: scan.meta.boundariesDetected,
+      coverage: Math.round(coverage * 100),
     });
-    console.warn('CMPSBL: Low activation integrity — potential scan/runtime mismatch');
+    console.warn(`CMPSBL: Low activation integrity (${Math.round(coverage * 100)}%) — potential scan/runtime mismatch`);
   }
 
   return {
