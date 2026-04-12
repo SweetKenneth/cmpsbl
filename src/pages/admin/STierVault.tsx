@@ -1122,10 +1122,11 @@ export default function STierVault() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="registry" className="gap-1.5"><Shield className="w-3.5 h-3.5" /> Registry ({filtered.length})</TabsTrigger>
-            <TabsTrigger value="promoted" className="gap-1.5"><Zap className="w-3.5 h-3.5" /> Discovered ({filteredPromoted.length})</TabsTrigger>
-            <TabsTrigger value="a-tier" className="gap-1.5"><Package className="w-3.5 h-3.5" /> A-Tier ({filteredATier.length})</TabsTrigger>
+          <TabsList className="w-full sm:w-auto grid grid-cols-4 sm:flex">
+            <TabsTrigger value="registry" className="gap-1 text-xs sm:text-sm"><Shield className="w-3.5 h-3.5" /><span className="hidden sm:inline">Registry ({filtered.length})</span><span className="sm:hidden">{filtered.length}</span></TabsTrigger>
+            <TabsTrigger value="promoted" className="gap-1 text-xs sm:text-sm"><Zap className="w-3.5 h-3.5" /><span className="hidden sm:inline">Discovered ({filteredPromoted.length})</span><span className="sm:hidden">{filteredPromoted.length}</span></TabsTrigger>
+            <TabsTrigger value="federation" className="gap-1 text-xs sm:text-sm"><Globe className="w-3.5 h-3.5" /><span className="hidden sm:inline">Federation ({filteredFederation.length})</span><span className="sm:hidden">{filteredFederation.length}</span></TabsTrigger>
+            <TabsTrigger value="a-tier" className="gap-1 text-xs sm:text-sm"><Package className="w-3.5 h-3.5" /><span className="hidden sm:inline">A-Tier ({filteredATier.length})</span><span className="sm:hidden">{filteredATier.length}</span></TabsTrigger>
           </TabsList>
 
           {/* ─── Registry Tab ─── */}
