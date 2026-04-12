@@ -16,7 +16,6 @@ import {
   LogOut,
   Command,
   Sparkles,
-  FileText,
   CreditCard,
   Package,
   Globe,
@@ -30,14 +29,11 @@ import {
   Building2,
   Users,
   Newspaper,
-  Map,
   Cpu,
-  Beaker,
   Rocket,
   ScrollText,
   Award,
   Eye,
-  Code,
   ExternalLink,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
