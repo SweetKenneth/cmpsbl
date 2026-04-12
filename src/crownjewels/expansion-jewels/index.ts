@@ -51,6 +51,14 @@ export function getTotalSTierCount(): number {
   return Object.values(REGISTRIES).reduce((sum, r) => sum + r.length, 0);
 }
 
+interface VerticalRegistrySummary {
+  vertical: string;
+  totalJewels: number;
+  primitives: number;
+  avgCjpi: number;
+  topJewel: { name: string; cjpi: number; primitive: string };
+}
+
 /** Get summary for each vertical registry */
 export function getVerticalRegistrySummaries(): VerticalRegistrySummary[] {
   return Object.entries(REGISTRIES).map(([vertical, jewels]) => {
