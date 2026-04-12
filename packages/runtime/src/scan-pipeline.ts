@@ -376,8 +376,8 @@ export function runScanPipeline(
   // Step 1: Detect function boundaries
   const boundaries = detectBoundaries(sourceCode);
 
-  // Step 2: Match signals → findings
-  let findings = matchSignals(boundaries, options.activePrimitives);
+  // Step 2: Match signals → findings (name + body + call graph)
+  let findings = matchSignals(sourceCode, boundaries, options.activePrimitives);
 
   // Step 3: Apply confidence threshold
   if (minConf > 0) {
