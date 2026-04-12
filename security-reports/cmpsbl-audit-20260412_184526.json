@@ -1,0 +1,1 @@
+{"audit":"cmpsbl-security-audit","version":"2.0.0","stack":"client-side-react","timestamp":"2026-04-12T18:45:35Z","target":"cmpsbl.com","subdomains":8,"results":{"pass":51,"warn":9,"fail":31,"skip":9,"total":100},"score":56,"grade":"C"}
