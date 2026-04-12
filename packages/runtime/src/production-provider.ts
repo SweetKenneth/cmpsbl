@@ -138,7 +138,7 @@ export function init<T extends Record<string, unknown>>(
       return {
         health: resolveHealth(),
         coverage: artifact.pipeline.coverageRatio,
-        fingerprint: artifact.fingerprint?.hash ?? null,
+        fingerprint: artifact.fingerprint?.composite ?? null,
       };
     },
 
