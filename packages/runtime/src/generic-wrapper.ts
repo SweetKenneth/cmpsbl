@@ -22,43 +22,16 @@ import { wrapExecution } from './engines/execution-engine';
 import { wrapAnalysis } from './engines/analysis-engine';
 import { wrapOrchestration, registerAttachmentRules, routeSignal } from './engines/orchestration-engine';
 import type { AttachmentEntry } from './engines/orchestration-engine';
+import { resolveEngine } from './engines/primitive-engine-map';
+import type { BehaviorEngine } from './engines/primitive-engine-map';
+import { resolveIdentity, isAlreadyWrapped, resolveFunctionName } from './engines/function-identity';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Why this lives here: the runtime package must build standalone and cannot
- * depend on application-only alias imports.
- */
-type BehaviorEngine =
-  | 'interception'
-  | 'state'
-  | 'execution'
-  | 'analysis'
-  | 'orchestration'
-  | 'generic';
-
-const PRIMITIVE_ENGINE_MAP: Record<string, BehaviorEngine> = {
-  DEFENSE: 'interception',
-  GOVERNANCE: 'interception',
-  IMMUNITY: 'interception',
-  CONSCIENCE: 'interception',
-
-  MEMORY: 'state',
-
-  FAILSAFE: 'execution',
-
-  ORACLE: 'analysis',
-  SENTINEL: 'analysis',
-  BEACON: 'analysis',
-  AUDIT: 'analysis',
-
-  CORTEX: 'orchestration',
-};
-
 function getEngineForPrimitive(name: string): BehaviorEngine {
-  return PRIMITIVE_ENGINE_MAP[name] ?? 'generic';
+  return resolveEngine(name);
 }
 
 /** Standard effect emitted by generic wrappers */
