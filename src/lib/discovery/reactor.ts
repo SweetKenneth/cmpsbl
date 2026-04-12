@@ -446,9 +446,29 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       .select('id');
     const knownIds = new Set((existingDiscoveries ?? []).map((d: any) => d.id));
 
-    // 4. Generate candidates from templates, skipping already-known ones
-    // 4. Generate candidates from templates (hardcoded + injected), skipping already-known ones
-    const allTemplates = [...SYNTHESIS_TEMPLATES, ...(config.injectedTemplates || [])];
+    // 4. Generate candidates from templates (hardcoded + injected + exploratory), skipping already-known ones
+    // Resolve the primitive pool for this run
+    const activePool = getPrimitivePool((config.primitivePool as any) ?? 'full');
+
+    // Build template sources
+    const baseTemplates = [...SYNTHESIS_TEMPLATES, ...(config.injectedTemplates || [])];
+
+    // EXPLORATORY MODE: Generate random templates from the full/selected primitive pool
+    let exploratoryTemplates: GeneratedTemplate[] = [];
+    if (config.exploratoryMode) {
+      const batchSize = config.exploratoryBatchSize ?? 200;
+      exploratoryTemplates = generateTemplateBatch({
+        batchSize,
+        minModules: config.exploratoryMinDepth ?? 2,
+        maxModules: config.exploratoryMaxDepth ?? 8,
+        minCjpiTarget: 75,
+        biasHighValue: true,
+        primitivePool: activePool,
+        categoryFocus: config.categoryFocus,
+      });
+    }
+
+    const allTemplates = [...baseTemplates, ...exploratoryTemplates];
     const candidates: ReactorCandidate[] = [];
     let skippedCount = 0;
     for (const template of allTemplates) {
@@ -487,7 +507,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       });
     }
 
-    console.log(`[Reactor] Skipped ${skippedCount} already-known discoveries, ${candidates.length} new candidates`);
+    console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known | ${candidates.length} new candidates`);
 
     // 4. Sort by CJPI descending
     candidates.sort((a, b) => b.cjpi - a.cjpi);
