@@ -477,6 +477,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
 
     const allTemplates = [...baseTemplates, ...exploratoryTemplates];
     const candidates: ReactorCandidate[] = [];
+    const junkyardCandidates: ReactorCandidate[] = [];
     let skippedCount = 0;
     let retiredSkipCount = 0;
     for (const template of allTemplates) {
@@ -499,10 +500,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       const finalCjpi = Math.round(Math.min(100, baseCjpi * synergyMultiplier) * 10) / 10;
       const tier = autoAssignTier(finalCjpi);
 
-      // Only accept 80+ pipelines
-      if (finalCjpi < 80) continue;
-
-      candidates.push({
+      const candidate: ReactorCandidate = {
         id: stableId,
         name: template.namePattern,
         description: template.descriptionPattern,
@@ -518,7 +516,15 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
         synergyMultiplier,
         discoveredBy: template.discoveredBy,
         rationale: template.rationale,
-      });
+      };
+
+      // Sub-threshold discoveries → junkyard instead of being silently dropped
+      if (finalCjpi < 80) {
+        junkyardCandidates.push(candidate);
+        continue;
+      }
+
+      candidates.push(candidate);
     }
 
     console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known + ${retiredSkipCount} retired | ${candidates.length} new candidates`);
