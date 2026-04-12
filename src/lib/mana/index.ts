@@ -41,7 +41,7 @@ export {
   ruleCount,
 } from './lex';
 
-// Types
+// Types — all 92 capabilities unified with Ascension
 export type {
   AttachmentState,
   LexVerdict,
@@ -52,4 +52,6 @@ export type {
   ManaTelemetryEvent,
   ManaManifest,
   ManaConfig,
+  AscensionFinding,
+  ManaAttachmentEntry,
 } from './types';

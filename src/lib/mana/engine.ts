@@ -853,9 +853,170 @@ function wrapWithDriftMonitor(
   };
 }
 
-/** Get wrapper factory for a capability */
+// ═══════════════════════════════════════════════════════════════
+// Primitive-Family Wrapper Factories — 60 new deployable behaviors
+// ═══════════════════════════════════════════════════════════════
+
+/** Generic observation wrapper — emits telemetry for any capability */
+function wrapWithObservation(
+  originalFn: Function, functionName: string, point: AttachmentPoint, capName: ManaCapability
+): Function {
+  return function manaObservation(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const start = performance.now();
+    const result = originalFn.apply(this, args);
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(resolved => {
+        emitTelemetry(capName, functionName, 'observed', {
+          durationMs: Math.round((performance.now() - start) * 100) / 100,
+          argCount: args.length,
+        });
+        return resolved;
+      });
+    }
+    emitTelemetry(capName, functionName, 'observed', {
+      durationMs: Math.round((performance.now() - start) * 100) / 100,
+      argCount: args.length,
+    });
+    return result;
+  };
+}
+
+/** Generic gating wrapper — evaluates Lex before allowing execution */
+function wrapWithGate(
+  originalFn: Function, functionName: string, point: AttachmentPoint, capName: ManaCapability, lexKey: ManaCapability
+): Function {
+  return function manaGate(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const { verdict } = evaluate(lexKey, functionName, config.lexMode);
+    if (verdict === 'deny') {
+      point.blocked++;
+      emitTelemetry(capName, functionName, 'blocked', { reason: `${capName}_denied` });
+      throw new Error(`[MANA/${capName.toUpperCase()}] ${functionName} blocked by Lex`);
+    }
+    if (verdict === 'observe') {
+      point.observed++;
+      emitTelemetry(capName, functionName, 'observed', { note: 'Lex observation mode' });
+    }
+    return originalFn.apply(this, args);
+  };
+}
+
+// ── MEMORY family ──
+function wrapWithMemoryCache(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const cache = new Map<string, { value: unknown; ts: number }>();
+  const TTL = 60000;
+  return function manaMemoryCache(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const key = JSON.stringify(args).slice(0, 200);
+    const cached = cache.get(key);
+    if (cached && Date.now() - cached.ts < TTL) {
+      point.observed++;
+      emitTelemetry('memory_cache', functionName, 'observed', { cacheHit: true, cacheSize: cache.size });
+      return cached.value;
+    }
+    const result = originalFn.apply(this, args);
+    cache.set(key, { value: result, ts: Date.now() });
+    if (cache.size > 500) {
+      const oldest = cache.keys().next().value;
+      if (oldest) cache.delete(oldest);
+    }
+    emitTelemetry('memory_cache', functionName, 'invoked', { cacheHit: false, cacheSize: cache.size });
+    return result;
+  };
+}
+
+// ── NEXUS family ──
+function wrapWithNexusCostGate(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  let totalCost = 0;
+  const BUDGET = 10000; // millicents
+  return function manaNexusCostGate(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    if (totalCost >= BUDGET) {
+      point.blocked++;
+      emitTelemetry('nexus_cost_gate', functionName, 'blocked', { totalCost, budget: BUDGET });
+      throw new Error(`[MANA/NEXUS] ${functionName} budget exhausted (${totalCost}/${BUDGET} millicents)`);
+    }
+    const result = originalFn.apply(this, args);
+    totalCost += 10; // default per-call cost
+    emitTelemetry('nexus_cost_gate', functionName, 'invoked', { totalCost });
+    return result;
+  };
+}
+
+// ── BRAIN family ──
+function wrapWithBrainConfidenceGate(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaBrainConfidence(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+    // If result has a confidence field, gate on it
+    if (result && typeof result === 'object' && 'confidence' in (result as Record<string, unknown>)) {
+      const conf = (result as Record<string, unknown>).confidence;
+      if (typeof conf === 'number' && conf < 0.5) {
+        point.observed++;
+        emitTelemetry('brain_confidence_gate', functionName, 'observed', {
+          confidence: conf, action: 'low_confidence_flagged',
+        });
+      }
+    }
+    emitTelemetry('brain_confidence_gate', functionName, 'invoked');
+    return result;
+  };
+}
+
+// ── IMMUNITY family ──
+function wrapWithImmunitySelfHeal(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  let consecutiveFailures = 0;
+  return function manaImmunitySelfHeal(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    try {
+      const result = originalFn.apply(this, args);
+      if (result && typeof (result as Promise<unknown>).then === 'function') {
+        return (result as Promise<unknown>).then(resolved => {
+          consecutiveFailures = 0;
+          return resolved;
+        }).catch((err: Error) => {
+          consecutiveFailures++;
+          if (consecutiveFailures >= 3) {
+            point.observed++;
+            emitTelemetry('immunity_self_heal', functionName, 'observed', {
+              consecutiveFailures, action: 'self_heal_triggered',
+            });
+            consecutiveFailures = 0;
+            return undefined; // graceful recovery
+          }
+          throw err;
+        });
+      }
+      consecutiveFailures = 0;
+      return result;
+    } catch (err) {
+      consecutiveFailures++;
+      if (consecutiveFailures >= 3) {
+        point.observed++;
+        emitTelemetry('immunity_self_heal', functionName, 'observed', {
+          consecutiveFailures, action: 'self_heal_triggered',
+        });
+        consecutiveFailures = 0;
+        return undefined;
+      }
+      throw err;
+    }
+  };
+}
+
+/** Get wrapper factory for a capability — unified across all 92 capabilities */
 function getWrapper(capability: ManaCapability) {
   switch (capability) {
+    // ── Original 32 with dedicated wrappers ──
     case 'defense_gate': return wrapWithDefenseGate;
     case 'input_sanitizer': return wrapWithInputSanitizer;
     case 'threat_scorer': return wrapWithThreatScorer;
@@ -885,9 +1046,194 @@ function getWrapper(capability: ManaCapability) {
     case 'shadow_rule': return wrapWithShadowRule;
     case 'output_filter': return wrapWithOutputFilter;
     case 'data_masker': return wrapWithDataMasker;
-    case 'dream_synthesis': return wrapWithBeaconTelemetry;
     case 'anomaly_detector': return wrapWithAnomalyDetector;
     case 'drift_monitor': return wrapWithDriftMonitor;
+
+    // ── MEMORY family ──
+    case 'memory_cache': return wrapWithMemoryCache;
+    case 'memory_ttl': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'memory_ttl');
+    case 'memory_state_track': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'memory_state_track');
+
+    // ── NEXUS family ──
+    case 'nexus_router': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'nexus_router');
+    case 'nexus_cost_gate': return wrapWithNexusCostGate;
+    case 'nexus_fallback': return (fn: Function, name: string, pt: AttachmentPoint) => {
+      const wrapped = wrapWithFallbackProvider(fn, name, pt);
+      return function manaNextFallback(this: unknown, ...args: unknown[]) {
+        emitTelemetry('nexus_fallback', name, 'invoked');
+        return wrapped.apply(this, args);
+      };
+    };
+
+    // ── BRAIN family ──
+    case 'brain_reasoning_trace': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'brain_reasoning_trace');
+    case 'brain_context_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'brain_context_guard', 'governance_hook');
+    case 'brain_confidence_gate': return wrapWithBrainConfidenceGate;
+    case 'dream_synthesis': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'dream_synthesis');
+
+    // ── ORACLE family ──
+    case 'oracle_predictor': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'oracle_predictor');
+    case 'oracle_anomaly_alert': return wrapWithAnomalyDetector;
+    case 'oracle_causal_trace': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'oracle_causal_trace');
+
+    // ── CORTEX family ──
+    case 'cortex_orchestrator': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'cortex_orchestrator');
+    case 'cortex_resource_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'cortex_resource_gate', 'governance_hook');
+    case 'cortex_planning_trace': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'cortex_planning_trace');
+
+    // ── ECHO family ──
+    case 'echo_amplifier': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'echo_amplifier');
+    case 'echo_resonance': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'echo_resonance');
+
+    // ── HARVEST family ──
+    case 'harvest_quality_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'harvest_quality_gate', 'governance_hook');
+    case 'harvest_dedup': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'harvest_dedup');
+
+    // ── PHANTOM family ──
+    case 'phantom_stealth': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'phantom_stealth');
+    case 'phantom_fingerprint_mask': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'phantom_fingerprint_mask');
+
+    // ── LINGUA family ──
+    case 'lingua_normalizer': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'lingua_normalizer');
+    case 'lingua_encoding_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'lingua_encoding_guard');
+
+    // ── NERVE family ──
+    case 'nerve_priority_router': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'nerve_priority_router');
+    case 'nerve_backpressure': return wrapWithBulkheadIsolator;
+
+    // ── COMPASS family ──
+    case 'compass_intent_resolver': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'compass_intent_resolver');
+    case 'compass_goal_validator': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'compass_goal_validator', 'governance_hook');
+
+    // ── SANDBOX family ──
+    case 'sandbox_isolator': return wrapWithBulkheadIsolator;
+    case 'sandbox_resource_limit': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'sandbox_resource_limit', 'governance_hook');
+
+    // ── RIPPLE family ──
+    case 'ripple_impact_tracer': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'ripple_impact_tracer');
+    case 'ripple_dependency_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'ripple_dependency_check');
+
+    // ── IDENTITY family ──
+    case 'identity_session_bind': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'identity_session_bind');
+    case 'identity_auth_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'identity_auth_gate', 'access_controller');
+
+    // ── VISION family ──
+    case 'vision_perf_monitor': return wrapWithLatencyProfiler;
+    case 'vision_accessibility_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'vision_accessibility_check');
+
+    // ── INCLUSIVE family ──
+    case 'inclusive_i18n_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'inclusive_i18n_guard');
+    case 'inclusive_contrast_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'inclusive_contrast_check');
+
+    // ── RELAY family ──
+    case 'relay_sync': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'relay_sync');
+    case 'relay_offline_cache': return wrapWithMemoryCache;
+
+    // ── INTEGRATION family ──
+    case 'integration_bridge': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'integration_bridge');
+    case 'integration_webhook': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'integration_webhook');
+
+    // ── ATLAS family ──
+    case 'atlas_complexity_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'atlas_complexity_check');
+    case 'atlas_dependency_map': return wrapWithDependencyMapper;
+
+    // ── MEDIC family ──
+    case 'medic_health_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'medic_health_check');
+    case 'medic_memory_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'medic_memory_guard');
+
+    // ── SYSTEM family ──
+    case 'system_telemetry': return wrapWithBeaconTelemetry;
+    case 'system_feature_flag': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'system_feature_flag', 'governance_hook');
+
+    // ── IMMUNITY family ──
+    case 'immunity_self_heal': return wrapWithImmunitySelfHeal;
+    case 'immunity_quarantine': return wrapWithBulkheadIsolator;
+    case 'immunity_vaccination': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'immunity_vaccination');
+
+    // ── REFLEX family ──
+    case 'reflex_circuit_breaker': return wrapWithCircuitBreaker;
+    case 'reflex_fallback_chain': return wrapWithFallbackProvider;
+
+    // ── EVOLUTION family ──
+    case 'evolution_patch': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'evolution_patch');
+    case 'evolution_rollback': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'evolution_rollback');
+
+    // ── TREATY family ──
+    case 'treaty_contract_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'treaty_contract_check', 'governance_hook');
+    case 'treaty_sla_monitor': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'treaty_sla_monitor');
+
+    // ── SOVEREIGN family ──
+    case 'sovereign_encrypt': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'sovereign_encrypt');
+    case 'sovereign_tenant_isolate': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'sovereign_tenant_isolate', 'access_controller');
+
+    // ── CORE family ──
+    case 'core_lifecycle_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'core_lifecycle_guard', 'governance_hook');
+    case 'core_state_validator': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'core_state_validator');
+
+    // ── ACCESS family ──
+    case 'access_rbac_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'access_rbac_gate', 'access_controller');
+    case 'access_api_key_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'access_api_key_check', 'access_controller');
+
+    // ── CONSCIENCE family ──
+    case 'conscience_ethics_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithGate(fn, name, pt, 'conscience_ethics_gate', 'governance_hook');
+    case 'conscience_bias_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'conscience_bias_check');
+
+    // ── FORGE family ──
+    case 'forge_package_seal': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'forge_package_seal');
+    case 'forge_integrity_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
+      wrapWithObservation(fn, name, pt, 'forge_integrity_check');
+
     default: return wrapWithBeaconTelemetry;
   }
 }

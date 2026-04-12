@@ -15,40 +15,38 @@ import type { ManaMergeResult } from './ManaMergePhase';
 import type { LexRuleConfig } from './LexRuleSelector';
 import type { ManaUploadResult } from './ManaUploadPhase';
 
-const CAPABILITY_ICONS: Record<ManaCapability, typeof Shield> = {
-  defense_gate: Shield,
-  input_sanitizer: ShieldCheck,
-  threat_scorer: Gauge,
-  rate_limiter: Timer,
-  payload_validator: FileCheck,
-  injection_guard: Lock,
-  beacon_telemetry: Activity,
-  latency_profiler: BarChart3,
-  error_tracker: Bug,
-  throughput_meter: TrendingDown,
-  dependency_mapper: GitBranch,
-  governance_hook: Scale,
-  mutation_guard: Fingerprint,
-  policy_enforcer: Gavel,
-  consent_gate: UserCheck,
-  compliance_check: Search,
-  access_controller: Lock,
-  circuit_breaker: Zap,
-  retry_handler: RotateCcw,
-  timeout_guard: Clock,
-  bulkhead_isolator: Box,
-  fallback_provider: Umbrella,
-  audit_trail: AlertTriangle,
-  call_logger: FileText,
-  state_snapshot: Camera,
-  forensic_recorder: Microscope,
-  shadow_rule: Eye,
-  output_filter: Filter,
-  data_masker: EyeOff,
-  dream_synthesis: Activity,
-  anomaly_detector: Brain,
-  drift_monitor: TrendingDown,
-};
+/** Get icon for a capability — uses family prefix matching for 92 capabilities */
+function getCapabilityIcon(cap: ManaCapability): typeof Shield {
+  if (cap.startsWith('defense') || cap.startsWith('input_sanitizer') || cap.startsWith('injection') || cap.startsWith('payload') || cap.startsWith('output_filter') || cap.startsWith('data_masker')) return Shield;
+  if (cap.startsWith('beacon') || cap.startsWith('latency') || cap.startsWith('throughput') || cap.startsWith('system_telemetry')) return Activity;
+  if (cap.startsWith('error')) return Bug;
+  if (cap.startsWith('governance') || cap.startsWith('mutation') || cap.startsWith('policy') || cap.startsWith('conscience')) return Scale;
+  if (cap.startsWith('consent') || cap.startsWith('identity')) return UserCheck;
+  if (cap.startsWith('compliance') || cap.startsWith('treaty')) return Search;
+  if (cap.startsWith('access') || cap.startsWith('sovereign')) return Lock;
+  if (cap.startsWith('circuit') || cap.startsWith('reflex')) return Zap;
+  if (cap.startsWith('retry')) return RotateCcw;
+  if (cap.startsWith('timeout') || cap.startsWith('memory_ttl')) return Clock;
+  if (cap.startsWith('bulkhead') || cap.startsWith('sandbox')) return Box;
+  if (cap.startsWith('fallback') || cap.startsWith('immunity')) return Umbrella;
+  if (cap.startsWith('audit') || cap.startsWith('forge')) return AlertTriangle;
+  if (cap.startsWith('call_logger') || cap.startsWith('evolution')) return FileText;
+  if (cap.startsWith('state_snapshot') || cap.startsWith('memory_state')) return Camera;
+  if (cap.startsWith('forensic')) return Microscope;
+  if (cap.startsWith('shadow') || cap.startsWith('phantom')) return Eye;
+  if (cap.startsWith('drift') || cap.startsWith('anomaly') || cap.startsWith('oracle')) return TrendingDown;
+  if (cap.startsWith('dream') || cap.startsWith('brain') || cap.startsWith('cortex') || cap.startsWith('compass')) return Brain;
+  if (cap.startsWith('threat')) return Gauge;
+  if (cap.startsWith('rate')) return Timer;
+  if (cap.startsWith('dependency') || cap.startsWith('ripple') || cap.startsWith('atlas')) return GitBranch;
+  if (cap.startsWith('nexus') || cap.startsWith('nerve') || cap.startsWith('relay')) return BarChart3;
+  if (cap.startsWith('echo') || cap.startsWith('harvest')) return Fingerprint;
+  if (cap.startsWith('lingua') || cap.startsWith('inclusive')) return FileCheck;
+  if (cap.startsWith('vision') || cap.startsWith('medic')) return ShieldCheck;
+  if (cap.startsWith('integration')) return Gavel;
+  if (cap.startsWith('core')) return Layers;
+  return Activity;
+}
 
 export interface AttachmentResult {
   manifest: ManaManifest;
@@ -139,42 +137,30 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
     addLog('Building surgical attachment plan via Ascension findings bridge...');
 
     // Map enabled Lex rule capabilities → active primitives
-    const CAPABILITY_TO_PRIMITIVE: Record<ManaCapability, string> = {
-      defense_gate: 'DEFENSE',
-      input_sanitizer: 'DEFENSE',
-      threat_scorer: 'DEFENSE',
-      rate_limiter: 'DEFENSE',
-      payload_validator: 'DEFENSE',
-      injection_guard: 'DEFENSE',
-      beacon_telemetry: 'BEACON',
-      latency_profiler: 'BEACON',
-      error_tracker: 'BEACON',
-      throughput_meter: 'BEACON',
-      dependency_mapper: 'BEACON',
-      governance_hook: 'GOVERNANCE',
-      mutation_guard: 'GOVERNANCE',
-      policy_enforcer: 'GOVERNANCE',
-      consent_gate: 'GOVERNANCE',
-      compliance_check: 'GOVERNANCE',
-      access_controller: 'GOVERNANCE',
-      circuit_breaker: 'FAILSAFE',
-      retry_handler: 'FAILSAFE',
-      timeout_guard: 'FAILSAFE',
-      bulkhead_isolator: 'FAILSAFE',
-      fallback_provider: 'FAILSAFE',
-      audit_trail: 'AUDIT',
-      call_logger: 'AUDIT',
-      state_snapshot: 'AUDIT',
-      forensic_recorder: 'AUDIT',
-      shadow_rule: 'DEFENSE',
-      output_filter: 'DEFENSE',
-      data_masker: 'DEFENSE',
-      dream_synthesis: 'BEACON',
-      anomaly_detector: 'BEACON',
-      drift_monitor: 'BEACON',
+    // Derive primitive from capability slug prefix
+    const capToPrimitive = (cap: string): string => {
+      const SLUG_MAP: Record<string, string> = {
+        defense: 'DEFENSE', input_sanitizer: 'DEFENSE', threat: 'DEFENSE', rate: 'DEFENSE', payload: 'DEFENSE', injection: 'DEFENSE',
+        beacon: 'BEACON', latency: 'BEACON', error: 'BEACON', throughput: 'BEACON', dependency: 'BEACON',
+        governance: 'GOVERNANCE', mutation: 'GOVERNANCE', policy: 'GOVERNANCE', consent: 'GOVERNANCE', compliance: 'GOVERNANCE', access_controller: 'GOVERNANCE',
+        circuit: 'FAILSAFE', retry: 'FAILSAFE', timeout: 'FAILSAFE', bulkhead: 'FAILSAFE', fallback: 'FAILSAFE',
+        audit: 'AUDIT', call_logger: 'AUDIT', state_snapshot: 'AUDIT', forensic: 'AUDIT',
+        shadow: 'SHADOW', output_filter: 'SHADOW', data_masker: 'SHADOW',
+        dream: 'DREAM', anomaly: 'DREAM', drift: 'DREAM',
+        memory: 'MEMORY', nexus: 'NEXUS', brain: 'BRAIN', oracle: 'ORACLE', cortex: 'CORTEX',
+        echo: 'ECHO', harvest: 'HARVEST', phantom: 'PHANTOM', lingua: 'LINGUA', nerve: 'NERVE',
+        compass: 'COMPASS', sandbox: 'SANDBOX', ripple: 'RIPPLE', identity: 'IDENTITY', vision: 'VISION',
+        inclusive: 'INCLUSIVE', relay: 'RELAY', integration: 'INTEGRATION', atlas: 'ATLAS', medic: 'MEDIC',
+        system: 'SYSTEM', immunity: 'IMMUNITY', reflex: 'REFLEX', evolution: 'EVOLUTION', treaty: 'TREATY',
+        sovereign: 'SOVEREIGN', core: 'CORE', access: 'ACCESS', conscience: 'CONSCIENCE', forge: 'FORGE',
+      };
+      for (const [prefix, prim] of Object.entries(SLUG_MAP)) {
+        if (cap.startsWith(prefix)) return prim;
+      }
+      return 'BEACON';
     };
     const activePrimitives = new Set(
-      enabledRules.map(r => CAPABILITY_TO_PRIMITIVE[r.capability]).filter(Boolean)
+      enabledRules.map(r => capToPrimitive(r.capability)).filter(Boolean)
     );
 
     const findings = bridge.buildAttachmentPlan(boundaries, activePrimitives);
