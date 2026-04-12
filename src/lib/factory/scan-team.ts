@@ -191,6 +191,20 @@ function buildVerticalCatalog(): {
 
   // Dynamic verticals — auto-discovered from the factory engine
   if (vertical) {
+    // Fintech vertical
+    if (vertical === 'fintech') {
+      const finEngines = getFintechEngines().map(e => ({ primitiveId: e.id.toLowerCase(), name: e.name, category: 'Engine' as const }));
+      const finAgents = getFintechAgents().map(a => ({ primitiveId: a.id.toLowerCase(), name: a.name, category: 'Agent' as const }));
+      return { spine: [...SPINE_PRIMITIVES], expansion: [...finEngines, ...finAgents] };
+    }
+
+    // Media vertical
+    if (vertical === 'media') {
+      const medEngines = getMediaEngines().map(e => ({ primitiveId: e.id.toLowerCase(), name: e.name, category: 'Engine' as const }));
+      const medAgents = getMediaAgents().map(a => ({ primitiveId: a.id.toLowerCase(), name: a.name, category: 'Agent' as const }));
+      return { spine: [...SPINE_PRIMITIVES], expansion: [...medEngines, ...medAgents] };
+    }
+
     const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
     if (dynamicPrimitives) {
       const dynEngines = dynamicPrimitives.engines.map(e => ({
