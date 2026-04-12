@@ -472,13 +472,12 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
 
     // Inject real behavioral evidence from runtime engines if available
     try {
-      const { extractBehavioralEvidence, hasBehavioralEvidence } = await import(
-        /* @vite-ignore */ '@cmpsbl/runtime'
-      );
-      if (hasBehavioralEvidence()) {
-        const evidence = extractBehavioralEvidence();
-        // BridgedProbe is structurally compatible with BehavioralProbe
-        lifecycleModule.injectRuntimeEvidence(evidence.probes as never[]);
+      // Dynamic import — runtime package may not be available in all environments
+      const runtimePath = 'packages/runtime/src/engines/behavioral-evidence-bridge';
+      const runtimeModule = await import(/* @vite-ignore */ `../../${runtimePath}`).catch(() => null);
+      if (runtimeModule?.hasBehavioralEvidence?.()) {
+        const evidence = runtimeModule.extractBehavioralEvidence();
+        lifecycleModule.injectRuntimeEvidence(evidence.probes);
       }
     } catch {
       // Runtime not available — will use generic probes (graceful degradation)
