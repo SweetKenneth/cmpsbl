@@ -1,6 +1,6 @@
 # CMPSBL® Documentation Libraries
 
-**Version:** v17.0.0 — CONVERGENCE Epoch
+**Version:** v19.0.0 — SYMBIOTIC Epoch
 
 ---
 
