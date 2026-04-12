@@ -111,13 +111,19 @@ let activeFingerprint: ArtifactFingerprint | null = null;
 // §3 — FINGERPRINTING
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Stable JSON serialization — sorts keys to prevent order-dependent hashes */
+/** Stable JSON serialization — sorts object keys, preserves array order */
 function stableStringify(obj: unknown): string {
-  if (obj === null || typeof obj !== 'object') return JSON.stringify(obj);
-  if (Array.isArray(obj)) return `[${obj.map(stableStringify).join(',')}]`;
-  const sorted = Object.keys(obj as Record<string, unknown>).sort();
-  const pairs = sorted.map(k => `${JSON.stringify(k)}:${stableStringify((obj as Record<string, unknown>)[k])}`);
-  return `{${pairs.join(',')}}`;
+  if (Array.isArray(obj)) {
+    return `[${obj.map(stableStringify).join(',')}]`;
+  }
+  if (obj && typeof obj === 'object') {
+    const keys = Object.keys(obj as Record<string, unknown>).sort();
+    const pairs = keys.map(
+      k => `${JSON.stringify(k)}:${stableStringify((obj as Record<string, unknown>)[k])}`
+    );
+    return `{${pairs.join(',')}}`;
+  }
+  return JSON.stringify(obj);
 }
 
 /**
