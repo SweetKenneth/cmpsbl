@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { Shield, Cpu, Activity, Zap, Lock, Eye, Server, Terminal, ArrowRight, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -91,8 +92,10 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <title>{`${displayName} | Cognitive Security Infrastructure`}</title>
         <meta name="description" content={tagline} />
       </Helmet>
+      <StructuredData type="webApplication" data={{ name: displayName, description: tagline, url: `https://cmpsbl.com/vertical/${verticalKey}`, features: "40-Primitive Substrate, Persistent Memory, Governed Cognitive Infrastructure, Autonomous Evolution, Security Hardening" }} />
 
       <PublicNav />
+
       <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">
