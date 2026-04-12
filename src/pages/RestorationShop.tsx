@@ -39,6 +39,7 @@ import { DecodeDebrief } from "@/components/factory/DecodeDebrief";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { useDecodeStore } from "@/stores/decodeStore";
 import { getVerticalSubdomain } from "@/config/domains";
+import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
