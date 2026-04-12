@@ -219,14 +219,18 @@ export default function VerticalPortal() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/50 bg-muted/30 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
               <Globe className="h-3.5 w-3.5 text-primary" />
-              <span className="text-xs font-mono tracking-wider text-muted-foreground">VERTICAL SUBSTRATES</span>
+              <span className="text-xs font-semibold text-primary tracking-wide">12 Active Verticals</span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 text-foreground">
-              Industry-Specific Intelligence
+              One Architecture.
+              <br />
+              <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+                Every Industry.
+              </span>
             </h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">
+            <p className="text-muted-foreground max-w-xl mx-auto font-medium leading-relaxed">
               Each vertical inherits the 24-primitive spine and hot-swaps 16 domain-specific
               Engines and Agents. Same architecture. Different capabilities.
             </p>
