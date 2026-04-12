@@ -1287,6 +1287,57 @@ export default function STierVault() {
             )}
           </TabsContent>
 
+          {/* ─── Federation Tab — ALL vertical Crown Jewels ─── */}
+          <TabsContent value="federation" className="space-y-4 mt-4">
+            {/* Vertical summaries */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+              {verticalSummaries.map(v => (
+                <Card
+                  key={v.vertical}
+                  className={`cursor-pointer border-border/50 hover:border-primary/30 transition-all duration-200 ${fedVerticalFilter === v.vertical ? 'border-primary ring-1 ring-primary/20' : ''}`}
+                  onClick={() => setFedVerticalFilter(fedVerticalFilter === v.vertical ? null : v.vertical)}
+                >
+                  <CardContent className="p-2.5 text-center">
+                    <div className="text-lg font-bold font-mono tabular-nums text-foreground">{v.totalJewels}</div>
+                    <div className="text-[10px] text-muted-foreground capitalize">{v.vertical}</div>
+                    <div className="text-[9px] text-primary font-mono">avg {v.avgCjpi}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              {filteredFederation.length} of {allVerticalJewels.length} federated Crown Jewels across {registeredVerticals.length} verticals
+              {fedVerticalFilter && <> • Filtered: <span className="capitalize font-semibold">{fedVerticalFilter}</span></>}
+            </p>
+
+            <div className="space-y-3">
+              {filteredFederation.slice(0, 100).map(entry => (
+                <ArtifactCard
+                  key={entry.id}
+                  entry={entry}
+                  onViewCode={handleViewCode}
+                  onExport={handleExport}
+                  loadingCode={loadingCode}
+                  expanded={expandedIds.has(entry.id)}
+                  onToggle={() => toggleExpand(entry.id)}
+                />
+              ))}
+              {filteredFederation.length > 100 && (
+                <p className="text-xs text-center text-muted-foreground py-4">
+                  Showing 100 of {filteredFederation.length} — use search or vertical filter to narrow
+                </p>
+              )}
+            </div>
+
+            {filteredFederation.length === 0 && (
+              <div className="text-center py-12">
+                <Globe className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
+                <p className="text-muted-foreground">No federated jewels match your filters</p>
+              </div>
+            )}
+          </TabsContent>
+
           {/* ─── A-Tier Vault Tab ─── */}
           <TabsContent value="a-tier" className="space-y-4 mt-4">
             {/* Vertical filter chips */}
