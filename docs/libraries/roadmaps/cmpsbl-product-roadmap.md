@@ -269,16 +269,19 @@ All four must be met before declaring the engine complete:
 
 ---
 
-## The Flywheel
+## The Compounding Flywheel
 
 ```
-Ship Shield (free) → Security cos distribute it
-    → Industry learns Mana exists
-        → Awareness drives blacklist registration
-            → Registrations = qualified leads
-                → Leads convert to whitelist (licensed)
-                    → Revenue funds engine completion
-                        → Engine completion = more capability = more shields
+Discovery Engine runs autonomously (8hr cadence)
+    → Mines 10²³+ primitive combinations across 12 verticals
+        → CJPI scores & classifies every discovery
+            → Product Compiler assembles compatible chains into software suites
+                → ECONOMY auto-prices ($50–$99 Forge, $10–$50 Showroom)
+                    → Marketplace rotates inventory autonomously
+                        → Scanner ingests ALL discoveries as training data
+                            → Cross-pollination propagates signals across verticals
+                                → Each cycle refines the next → intelligence compounds
+                                    → Zero human intervention — pure algorithmic curing
 ```
 
 ---

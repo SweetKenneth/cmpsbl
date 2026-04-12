@@ -170,17 +170,22 @@ Everything scored **below 68** (Raw tier) goes to the Open Archive — free acce
 
 ---
 
-## The Flywheel
+## The Compounding Flywheel
 
 ```
-Customer uploads code → ENCODE+ORACLE+ENGINEER scan →
-DECODE explains findings → Customer chooses primitives →
-Restoration runs → BRAIN learns from the pattern →
-Memory Stream discovers more → Showroom gets stronger →
-More customers → More patterns → Platform upgrades itself
+Customer uploads code → Ascension scans against 159-primitive pool
+    → CJPI classifies & certifies capabilities (zero AI)
+        → Discoveries route to Showroom / S-Tier Vault / Junkyard
+            → Product Compiler assembles compatible chains into suites
+                → ECONOMY auto-prices → Marketplace rotates inventory
+                    → Scanner ingests ALL discoveries as training data
+                        → 12 verticals cross-pollinate intelligence
+                            → BRAIN learns structural patterns (not source code)
+                                → Memory Stream compounds every 8 hours
+                                    → Substrate gets stronger with every cycle
 ```
 
-Every restoration leaves a computational signature (not customer code) that feeds back into the discovery cycle. The platform gets stronger with every interaction.
+Every scan leaves a computational signature (not customer code) that feeds back into the discovery cycle. The substrate gets stronger with every interaction — pure algorithmic compounding, not AI inference.
 
 ### Key Legal Principle
 No customer code is ever copied or redistributed. CMPSBL observes **patterns and behavioral signatures** — abstracted architectural insights, not source code. Covered in ToS §15 (Continuous Learning & Primitive Reuse).

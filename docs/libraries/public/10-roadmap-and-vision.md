@@ -133,17 +133,22 @@ The Shield-First strategy overlays the existing roadmap with a market-entry sequ
 
 ---
 
-## The Flywheel
+## The Compounding Flywheel
 
 ```
-Ship Shield (free) → Security cos distribute it
-    → Industry learns Mana exists
-        → Awareness drives blacklist registration
-            → Registrations = qualified leads
-                → Leads convert to whitelist (licensed)
-                    → Revenue funds more demonstrations
-                        → More demonstrations = more awareness = more shields
+Substrate runs autonomously (every 8 hours)
+    → Discovery Engine mines 10²³+ primitive combinations (2–12 deep)
+        → CJPI scores & classifies: S-Tier → Showroom → Junkyard
+            → Product Compiler assembles compatible discoveries into software suites ($50–$99)
+                → ECONOMY prices every product autonomously
+                    → Marketplace rotates listings (Showroom, Forge, Junkyard)
+                        → Scanner learns from ALL discoveries (4,000+)
+                            → 12 vertical substrates cross-pollinate intelligence
+                                → Each cycle makes the next cycle smarter
+                                    → Flywheel compounds — zero human intervention
 ```
+
+**This is not AI.** No language models generate these discoveries. No neural networks score them. The substrate uses pure algorithmic collision — deterministic primitive-chain synthesis, CJPI scoring formulas, and EMA-smoothed feedback loops. The intelligence compounds because the system learns from its own structural observations, not from probabilistic inference.
 
 ---
 
