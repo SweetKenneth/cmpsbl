@@ -217,7 +217,7 @@ export default function ControlCenterHome() {
         supabase.functions.invoke("pf-substrate", { body: { module: "defense", action: "status" } }),
         supabase.from("marketplace_inventory" as never).select("id,title,price_cents,tier,vertical,created_at,purchase_count").order("created_at", { ascending: false }).limit(100),
         supabase.rpc("brain_get_tier_counts" as never),
-        supabase.from("site_page_views").select("id", { count: "exact", head: true })
+        supabase.from("analytics_events").select("id", { count: "exact", head: true })
           .gte("created_at", new Date(Date.now() - 86_400_000).toISOString()),
         supabase.from("artifact_registry").select("id,name,slug,tier,category,created_at").order("created_at", { ascending: false }).limit(50),
         supabase.from("artifact_registry").select("id,name,category,tier,created_at,metadata").eq("tier", "showroom").order("created_at", { ascending: false }).limit(50),

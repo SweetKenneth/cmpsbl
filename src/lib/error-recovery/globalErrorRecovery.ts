@@ -85,8 +85,7 @@ function isBackgroundRequest(url: string): boolean {
     '/rest/v1/brain_reasoning_traces',  // Trace polling
     '/rest/v1/brain_events',            // Event telemetry
     '/rest/v1/defense_events',          // Defense telemetry
-    '/rest/v1/site_page_views',         // Analytics
-    '/rest/v1/site_sessions',           // Session tracking
+    '/rest/v1/analytics_events',        // Analytics events
     '/rest/v1/analytics_events',        // Analytics events
     '/rest/v1/analytics_snapshots',     // Analytics snapshots
     '/rest/v1/ai_usage_log',            // AI usage telemetry
