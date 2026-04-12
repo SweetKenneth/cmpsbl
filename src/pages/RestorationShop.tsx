@@ -439,78 +439,212 @@ export default function RestorationShop() {
                   </div>
                 </div>
 
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".js,.jsx,.ts,.tsx,.py,.rs,.go,.java,.c,.cpp,.cs,.rb,.swift,.kt,.php,.scala,.lua,.r,.dart,.ex,.vhd,.v,.sv,.scala,.hdl,.fir,text/*"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => { haptic('light'); fileInputRef.current?.click(); }}
-                  className={cn(
-                    "w-full rounded-2xl border-2 border-dashed p-8 mb-5 text-center transition-all duration-300 group",
-                    "hover:border-primary/40 hover:bg-primary/5 hover:shadow-[0_0_30px_hsl(var(--primary)/0.08)]",
-                    fileName ? "border-primary/30 bg-primary/5" : "border-border/30 bg-background/20 drop-zone-idle"
-                  )}
-                >
-                  <div className={cn(
-                    "w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center transition-all duration-300",
-                    fileName
-                      ? "bg-primary/15 border border-primary/20"
-                      : "bg-muted/20 border border-border/20 group-hover:bg-primary/10 group-hover:border-primary/20"
-                  )}>
-                    <FileUp className={cn(
-                      "w-6 h-6 transition-all duration-300",
-                      fileName ? "text-primary" : "text-muted-foreground/40 group-hover:text-primary/60"
-                    )} />
-                  </div>
-                  {fileName ? (
-                    <div>
-                      <p className="text-sm font-bold text-foreground">{fileName}</p>
-                      <p className="text-[10px] text-muted-foreground mt-1.5">Click to choose a different file</p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Click to upload a file</p>
-                      <p className="text-[10px] text-muted-foreground mt-1.5">
-                        Any of 90+ supported languages · Max 1MB
-                      </p>
-                    </div>
-                  )}
-                </button>
-
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
-                  <span className="text-[9px] text-muted-foreground/50 uppercase tracking-[0.2em] font-mono">or paste code</span>
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+                {/* Mode tabs */}
+                <div className="flex items-center gap-1 p-1 rounded-xl bg-muted/30 border border-border/20 mb-5">
+                  {([
+                    { key: 'file' as const, label: 'Upload File', icon: FileUp },
+                    { key: 'paste' as const, label: 'Paste Code', icon: Upload },
+                    { key: 'repo' as const, label: 'GitHub Repo', icon: GitBranch, beta: true },
+                  ]).map(tab => (
+                    <button
+                      key={tab.key}
+                      onClick={() => setUploadMode(tab.key)}
+                      className={cn(
+                        "flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all",
+                        uploadMode === tab.key
+                          ? "bg-background text-foreground shadow-sm border border-border/30"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      <tab.icon className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">{tab.label}</span>
+                      <span className="sm:hidden">{tab.key === 'repo' ? 'Repo' : tab.key === 'paste' ? 'Paste' : 'File'}</span>
+                      {tab.beta && (
+                        <Badge variant="secondary" className="text-[8px] px-1.5 py-0 h-4 ml-0.5">Beta</Badge>
+                      )}
+                    </button>
+                  ))}
                 </div>
 
-                <Textarea
-                  value={code}
-                  onChange={(e) => { setCode(e.target.value); setFileName(null); }}
-                  placeholder="Paste your code here — any language, any stack..."
-                  className="min-h-[160px] bg-background/50 font-mono text-xs mb-5 rounded-xl border-border/30 focus:border-primary/40 transition-colors"
-                />
-                <Button
-                  onClick={handleScan}
-                  disabled={!code.trim() || isScanning}
-                  className="w-full rounded-xl font-bold gap-2.5 h-12 text-sm shadow-[0_0_20px_hsl(var(--primary)/0.15)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.25)] transition-all"
-                >
-                  {isScanning ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Scanning with ENCODE + ORACLE + ENGINEER...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4" />
-                      Run Diagnostic Scan
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </Button>
+                {/* FILE UPLOAD MODE */}
+                {uploadMode === 'file' && (
+                  <>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".js,.jsx,.ts,.tsx,.py,.rs,.go,.java,.c,.cpp,.cs,.rb,.swift,.kt,.php,.scala,.lua,.r,.dart,.ex,.vhd,.v,.sv,.scala,.hdl,.fir,text/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => { haptic('light'); fileInputRef.current?.click(); }}
+                      className={cn(
+                        "w-full rounded-2xl border-2 border-dashed p-8 mb-5 text-center transition-all duration-300 group",
+                        "hover:border-primary/40 hover:bg-primary/5 hover:shadow-[0_0_30px_hsl(var(--primary)/0.08)]",
+                        fileName ? "border-primary/30 bg-primary/5" : "border-border/30 bg-background/20 drop-zone-idle"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center transition-all duration-300",
+                        fileName
+                          ? "bg-primary/15 border border-primary/20"
+                          : "bg-muted/20 border border-border/20 group-hover:bg-primary/10 group-hover:border-primary/20"
+                      )}>
+                        <FileUp className={cn(
+                          "w-6 h-6 transition-all duration-300",
+                          fileName ? "text-primary" : "text-muted-foreground/40 group-hover:text-primary/60"
+                        )} />
+                      </div>
+                      {fileName ? (
+                        <div>
+                          <p className="text-sm font-bold text-foreground">{fileName}</p>
+                          <p className="text-[10px] text-muted-foreground mt-1.5">Click to choose a different file</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">Click to upload a file</p>
+                          <p className="text-[10px] text-muted-foreground mt-1.5">
+                            Any of 90+ supported languages · Max 1MB
+                          </p>
+                        </div>
+                      )}
+                    </button>
+                  </>
+                )}
+
+                {/* PASTE MODE */}
+                {uploadMode === 'paste' && (
+                  <Textarea
+                    value={code}
+                    onChange={(e) => { setCode(e.target.value); setFileName(null); }}
+                    placeholder="Paste your code here — any language, any stack..."
+                    className="min-h-[160px] bg-background/50 font-mono text-xs mb-5 rounded-xl border-border/30 focus:border-primary/40 transition-colors"
+                  />
+                )}
+
+                {/* REPO SCAN MODE (BETA) */}
+                {uploadMode === 'repo' && (
+                  <div className="space-y-4 mb-5">
+                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground px-1">
+                      <FolderTree className="w-3.5 h-3.5" />
+                      <span>Public repositories only · We fetch the file tree, classify files, then you confirm before we download anything</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={repoUrl}
+                        onChange={(e) => setRepoUrl(e.target.value)}
+                        placeholder="https://github.com/owner/repo"
+                        className="flex-1 h-10 px-3 text-sm bg-background/50 border border-border/30 rounded-xl focus:border-primary/40 focus:outline-none transition-colors font-mono"
+                        onKeyDown={(e) => e.key === 'Enter' && handleFetchRepo()}
+                      />
+                      <Button
+                        onClick={handleFetchRepo}
+                        disabled={!repoUrl.trim() || isFetchingTree}
+                        variant="outline"
+                        className="h-10 rounded-xl gap-1.5"
+                      >
+                        {isFetchingTree ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                        Map
+                      </Button>
+                    </div>
+
+                    {/* File classification results */}
+                    {repoFiles.length > 0 && !repoConfirmed && (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs font-bold text-foreground">
+                            {repoFiles.filter(f => f.category === 'core').length} core · {repoFiles.filter(f => f.category === 'supporting').length} supporting · {repoFiles.filter(f => f.category === 'skipped').length} skipped
+                          </p>
+                          <Badge variant="secondary" className="text-[8px]">Click to toggle</Badge>
+                        </div>
+
+                        {/* Core files */}
+                        {repoFiles.filter(f => f.category === 'core').length > 0 && (
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-primary uppercase tracking-wider">Core — Will be scanned</p>
+                            <div className="max-h-40 overflow-y-auto rounded-xl border border-primary/20 bg-primary/5 p-2 space-y-0.5">
+                              {repoFiles.filter(f => f.category === 'core').map(f => (
+                                <button
+                                  key={f.path}
+                                  onClick={() => toggleFileCategory(f.path)}
+                                  className="w-full flex items-center gap-2 px-2 py-1 rounded-lg text-left hover:bg-primary/10 transition-colors group"
+                                >
+                                  <Check className="w-3 h-3 text-primary shrink-0" />
+                                  <span className="text-[11px] font-mono text-foreground truncate flex-1">{f.path}</span>
+                                  <span className="text-[9px] text-muted-foreground shrink-0">{f.reason}</span>
+                                  <X className="w-3 h-3 text-muted-foreground/30 group-hover:text-destructive shrink-0" />
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Supporting files */}
+                        {repoFiles.filter(f => f.category === 'supporting').length > 0 && (
+                          <div className="space-y-1">
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Supporting — Click to include</p>
+                            <div className="max-h-28 overflow-y-auto rounded-xl border border-border/20 bg-muted/10 p-2 space-y-0.5">
+                              {repoFiles.filter(f => f.category === 'supporting').map(f => (
+                                <button
+                                  key={f.path}
+                                  onClick={() => toggleFileCategory(f.path)}
+                                  className="w-full flex items-center gap-2 px-2 py-1 rounded-lg text-left hover:bg-primary/10 transition-colors"
+                                >
+                                  <div className="w-3 h-3 rounded-sm border border-border/40 shrink-0" />
+                                  <span className="text-[11px] font-mono text-muted-foreground truncate flex-1">{f.path}</span>
+                                  <span className="text-[9px] text-muted-foreground/50 shrink-0">{f.reason}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Skipped summary */}
+                        {repoFiles.filter(f => f.category === 'skipped').length > 0 && (
+                          <p className="text-[10px] text-muted-foreground/50">
+                            {repoFiles.filter(f => f.category === 'skipped').length} files skipped (tests, configs, assets, lock files)
+                          </p>
+                        )}
+
+                        <Button
+                          onClick={handleConfirmAndScan}
+                          disabled={repoFiles.filter(f => f.category === 'core').length === 0 || isDownloadingFiles}
+                          className="w-full rounded-xl font-bold gap-2 h-11 text-sm"
+                        >
+                          {isDownloadingFiles ? (
+                            <><Loader2 className="w-4 h-4 animate-spin" /> Downloading core files...</>
+                          ) : (
+                            <><Download className="w-4 h-4" /> Download & Prepare {repoFiles.filter(f => f.category === 'core').length} Core Files</>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* SCAN BUTTON — shown when code is ready from any mode */}
+                {(uploadMode !== 'repo' || (repoConfirmed && code.trim())) && (
+                  <Button
+                    onClick={handleScan}
+                    disabled={!code.trim() || isScanning}
+                    className="w-full rounded-xl font-bold gap-2.5 h-12 text-sm shadow-[0_0_20px_hsl(var(--primary)/0.15)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.25)] transition-all"
+                  >
+                    {isScanning ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Scanning with ENCODE + ORACLE + ENGINEER...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4" />
+                        Run Diagnostic Scan
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
             </div>
           )}
