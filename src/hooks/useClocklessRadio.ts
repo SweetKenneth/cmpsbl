@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   ClocklessRadioEngine,
   RadioDJ,
+  RadioSFX,
   type RadioTrack,
   type RadioState,
   type DJContent,
