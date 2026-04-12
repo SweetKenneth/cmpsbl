@@ -890,7 +890,7 @@ export default function SubstrateDashboard() {
             CMPSBL® is a registered trademark. For ownership inquiries, licensing arrangements, or enterprise partnerships:
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 text-xs md:text-sm">
-            <span><strong>Founder:</strong> <a href="https://orcid.org/0009-0001-4237-1243" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">Kenneth E Sweet Jr</a></span>
+            <span><strong>Founder:</strong> <a href="https://orcid.org/0009-0001-4237-1243" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Kenneth E Sweet Jr</a></span>
             <span><strong>Email:</strong> Dev@CMPSBL.com</span>
             <span><strong>Phone:</strong> (760) FLUID-AI</span>
           </div>

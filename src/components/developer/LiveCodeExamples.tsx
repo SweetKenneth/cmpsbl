@@ -114,7 +114,7 @@ export function LiveCodeExamples({ className }: { className?: string }) {
                     <p className="text-xs text-muted-foreground">{example.description}</p>
                   </div>
                   <Button variant="outline" size="sm" asChild>
-                    <a href={example.sourceUrl} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                    <a href={example.sourceUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="w-3 h-3 mr-1" />
                       Open
                     </a>

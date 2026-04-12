@@ -43,12 +43,12 @@ export function ScanShareCard({ scanId, domain, score, scanType = 'accessibility
         {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
         {copied ? 'Copied!' : 'Share'}
       </Button>
-      <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="inline-flex"rel="noopener noreferrer">
+      <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="inline-flex">
         <Button variant="ghost" size="icon" className="h-8 w-8">
           <Twitter className="h-3.5 w-3.5" />
         </Button>
       </a>
-      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="inline-flex"rel="noopener noreferrer">
+      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="inline-flex">
         <Button variant="ghost" size="icon" className="h-8 w-8">
           <Linkedin className="h-3.5 w-3.5" />
         </Button>

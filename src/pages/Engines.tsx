@@ -285,7 +285,7 @@ export default function Engines() {
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
                 Engines are hosted{" "}
-                <a href="https://en.wikipedia.org/wiki/Runtime_system" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">cognitive runtimes</a>{" "}
+                <a href="https://en.wikipedia.org/wiki/Runtime_system" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive runtimes</a>{" "}
                 that power your <strong className="text-foreground">websites, apps, and AI agents</strong> via the <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">CMPSBL platform</Link>.
                 When you purchase an engine, you get an <strong className="text-foreground">API key + copy-paste SDK</strong> to
                 call it from your own stack — any language, any framework.
@@ -298,7 +298,7 @@ export default function Engines() {
               <div className="max-w-2xl mx-auto mb-4 p-4 rounded-xl border border-border/50 bg-card/50 text-left">
                 <p className="text-sm text-muted-foreground leading-relaxed mb-2">
                   <strong className="text-foreground">How it works:</strong> Every engine purchase includes a
-                  single-file <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">TypeScript</a> SDK (<code className="text-xs bg-muted px-1 py-0.5 rounded">cmpsbl-engine-sdk.ts</code>)
+                  single-file <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">TypeScript</a> SDK (<code className="text-xs bg-muted px-1 py-0.5 rounded">cmpsbl-engine-sdk.ts</code>)
                   you copy into your project. The SDK calls the engine API — your website or app stays in your stack,
                   the heavy compute runs on ours. No infrastructure to manage.{" "}
                   See the <Link to="/documentation" className="text-primary hover:underline font-medium">full API docs</Link>.

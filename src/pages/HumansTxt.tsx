@@ -216,7 +216,7 @@ export default function HumansTxt() {
           <motion.div className="mb-10 sm:mb-14" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
               <Users className="w-3 h-3 text-primary" />
-              <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-primary hover:underline"rel="noopener noreferrer">humanstxt.org</a>
+              <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-primary hover:underline">humanstxt.org</a>
             </Badge>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3">Humans.txt</h1>
             <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
@@ -283,7 +283,7 @@ export default function HumansTxt() {
           <motion.p className="mt-8 text-center text-xs text-muted-foreground/50"
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             Following the{" "}
-            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary/70 hover:text-primary hover:underline transition-colors"rel="noopener noreferrer">humanstxt.org</a>{" "}
+            <a href="https://humanstxt.org" target="_blank" rel="noopener noreferrer" className="text-primary/70 hover:text-primary hover:underline transition-colors">humanstxt.org</a>{" "}
             standard for crediting the humans behind digital projects.
           </motion.p>
         </div>

@@ -192,7 +192,7 @@ export default function About() {
             className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mb-8 font-medium"
           >
             CMPSBL is the substrate — composable{" "}
-            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">cognitive infrastructure</a>{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>{" "}
             where your systems learn during downtime, self-tune within guardrails, and get smarter with every interaction. The{" "}
             <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
             captures what they discover.
@@ -308,7 +308,7 @@ export default function About() {
                   Governed cognitive infrastructure organized across{" "}
                   <Link to="/modules" className="text-primary hover:underline font-medium">specialized primitives</Link>.{" "}
                   MEMORY persists context via{" "}
-                  <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">spaced repetition</a>.{" "}
+                  <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
                    Self-improvement cycles consolidate knowledge. <Link to="/architecture" className="text-primary hover:underline font-medium">Security</Link>{" "}
                    adapts to threats. Smart routing sends every call to the optimal provider.
                 </p>
@@ -444,7 +444,7 @@ export default function About() {
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 text-foreground">About the Founder</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   I've been shipping software since 2009. CMPSBL is the answer to a question I kept running into: why does every AI team rebuild the same{" "}
-                  <a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">AI infrastructure</a>{" "}
+                  <a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
                   from scratch?
                 </p>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">

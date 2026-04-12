@@ -207,7 +207,7 @@ export default function Solutions() {
               <h2 className="text-2xl sm:text-3xl font-black mb-4 text-foreground">Enterprise & Self-Hosted</h2>
               <p className="text-base sm:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
                 Need dedicated infrastructure, air-gapped deployment via LNCHBL,{" "}
-                <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">SOC 2</a>{" "}
+                <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">SOC 2</a>{" "}
                 compliance guarantees, or custom capacity?{" "}
                 See <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>{" "}
                 or contact our enterprise team for tailored pricing.
@@ -236,7 +236,7 @@ export default function Solutions() {
             Free tier. No credit card. <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>{" "}
             in under an hour. Explore the <Link to="/academy" className="text-primary hover:underline font-medium">Developer Academy</Link>{" "}
             or read the{" "}
-            <a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">LLM routing</a> docs.
+            <a href="https://en.wikipedia.org/wiki/Large_language_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">LLM routing</a> docs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">

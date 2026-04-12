@@ -118,8 +118,8 @@ export default function StartHere() {
           {/* Intro — balanced narrative */}
           <motion.p {...stagger(0.15)} className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-3">
             CMPSBL is{" "}
-            <a href="https://en.wikipedia.org/wiki/Composability" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">composable</a>{" "}
-            <a href="https://en.wikipedia.org/wiki/Cognitive_computing" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">cognitive infrastructure</a>.{" "}
+            <a href="https://en.wikipedia.org/wiki/Composability" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">composable</a>{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_computing" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>.{" "}
             You build on the substrate — adding{" "}
             <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
             DREAM cycles, governed evolution, and{" "}
@@ -148,7 +148,7 @@ export default function StartHere() {
                 </div>
                 <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
                   The substrate is the living engine underneath. Your systems don't just run — they dream, adapt, and evolve within{" "}
-                  <a href="https://en.wikipedia.org/wiki/AI_safety" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"rel="noopener noreferrer">governed boundaries</a>.{" "}
+                  <a href="https://en.wikipedia.org/wiki/AI_safety" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">governed boundaries</a>.{" "}
                   See the <Link to="/plans" className="text-primary hover:underline font-medium">full plan comparison</Link>.
                 </p>
                 <div className="space-y-4">

@@ -144,7 +144,7 @@ export default function Publication() {
             </motion.p>
 
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground mb-12">
-              <a href={ORCID_URL} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors"rel="noopener noreferrer">
+              <a href={ORCID_URL} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 Kenneth E. Sweet Jr.
               </a>
               <span className="text-border">·</span>
@@ -181,19 +181,19 @@ export default function Publication() {
                   {/* Action buttons */}
                   <div className="px-6 md:px-8 py-5 flex flex-wrap gap-3">
                     <Button asChild size="sm">
-                      <a href={DOI_URL} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                      <a href={DOI_URL} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-3.5 h-3.5 mr-2" />
                         View on Zenodo
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <a href={ORCID_URL} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                      <a href={ORCID_URL} target="_blank" rel="noopener noreferrer">
                         <User className="w-3.5 h-3.5 mr-2" />
                         ORCID
                       </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <a href="https://osf.io/ah7nx/" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                      <a href="https://osf.io/ah7nx/" target="_blank" rel="noopener noreferrer">
                         <Search className="w-3.5 h-3.5 mr-2" />
                         OSF
                       </a>

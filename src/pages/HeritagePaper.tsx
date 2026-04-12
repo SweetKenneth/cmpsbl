@@ -74,7 +74,7 @@ const HeritagePaper = () => {
           <span className="hidden sm:inline">Back</span>
         </Button>
         <div className="flex items-center gap-2">
-          <a href="/docs/meta-paper/heritage.html" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+          <a href="/docs/meta-paper/heritage.html" target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" size="sm" className="text-xs font-mono">Standalone HTML</Button>
           </a>
           <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-2">

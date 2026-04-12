@@ -322,7 +322,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
                   </Button>
                   {agency.status === 'deployed' && agency.deploymentDomain && (
                     <Button variant="ghost" size="sm" className="h-6 gap-1 text-xs" asChild>
-                      <a href={`https://${agency.deploymentDomain}`} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                      <a href={`https://${agency.deploymentDomain}`} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-3 h-3" />
                         View
                       </a>

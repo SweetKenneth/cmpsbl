@@ -397,9 +397,9 @@ export default function Store() {
                       </div>
                       <p className="text-xs text-muted-foreground leading-relaxed">
                         Active packs are delivered through the{' '}
-                        <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">@cmpsbl/sdk</a>{' '}
+                        <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl/sdk</a>{' '}
                         and{' '}
-                        <a href="https://www.npmjs.com/package/@cmpsbl/runtime" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2"rel="noopener noreferrer">@cmpsbl/runtime</a>{' '}
+                        <a href="https://www.npmjs.com/package/@cmpsbl/runtime" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl/runtime</a>{' '}
                         packages. Install, authenticate, and your active packs are available instantly.
                       </p>
                     </div>
@@ -409,7 +409,7 @@ export default function Store() {
                     <div className="inline-flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
                       <code className="bg-muted px-2 py-1 rounded text-xs font-mono">npm i @cmpsbl/sdk</code>
                       <span>·</span>
-                      <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80"rel="noopener noreferrer">
+                      <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
                         View all 11 packages on NPM →
                       </a>
                     </div>

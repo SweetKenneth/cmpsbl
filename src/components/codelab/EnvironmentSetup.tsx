@@ -284,7 +284,7 @@ export function EnvironmentSetup() {
                       className="ml-auto gap-1 text-xs"
                       asChild
                     >
-                      <a href={firstVar.docsUrl} target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                      <a href={firstVar.docsUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-3 h-3" />
                         Docs
                       </a>

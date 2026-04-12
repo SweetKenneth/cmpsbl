@@ -269,7 +269,7 @@ export default function ShieldPage() {
               className="flex flex-wrap items-center justify-center gap-3"
             >
               <Button size="lg" className="gap-2 rounded-xl font-bold shadow-lg shadow-primary/20" asChild>
-                <a href="https://www.npmjs.com/package/@cmpsbl/shield" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                <a href="https://www.npmjs.com/package/@cmpsbl/shield" target="_blank" rel="noopener noreferrer">
                   <ShieldIcon className="w-4 h-4" />
                   Get Shield — Free <ExternalLink className="w-3.5 h-3.5" />
                 </a>
@@ -623,7 +623,7 @@ export default function ShieldPage() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
                 <Button size="lg" className="gap-2 rounded-xl font-bold w-full sm:w-auto shadow-lg shadow-primary/20" asChild>
-                  <a href="https://www.npmjs.com/package/@cmpsbl/shield" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+                  <a href="https://www.npmjs.com/package/@cmpsbl/shield" target="_blank" rel="noopener noreferrer">
                     <ShieldIcon className="w-4 h-4" />
                     Install @cmpsbl/shield <ExternalLink className="w-3.5 h-3.5" />
                   </a>

@@ -185,7 +185,7 @@ export function NpmPackagesCTA() {
           transition={{ duration: 0.4, delay: 0.3 }}
         >
           <Button asChild size="lg" variant="outline" className="font-semibold text-foreground border-border hover:text-primary">
-            <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer"rel="noopener noreferrer">
+            <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
               <ExternalLink className="w-4 h-4 mr-2" />
               View All Packages on NPM
             </a>
