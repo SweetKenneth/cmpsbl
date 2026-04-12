@@ -1155,9 +1155,27 @@ Updated all four lifecycle docs to v2.1.0:
 8. ~~Add HTML versions of MEMORY-SETUP.md~~ ✅
 9. ~~Theme new verticals (Gaming, Education, Health, Legal)~~ ✅
 
-**Priority 2: Documentation (remaining)**
-10. Convert internal docs (20-21, correction-spec, exposure-spec) to branded HTML
-11. Review and update Convex Core docs for accuracy
+**Priority 2: Documentation** — ALL DONE ✅
+10. ~~Convert internal docs (20-21, correction-spec, exposure-spec) to branded HTML~~ ✅
+11. ~~Review and update Convex Core docs for accuracy~~ ✅
+
+---
+
+### April 12, 2026 — Session ~57 — Documentation Suite Completion
+
+**[FACT] All 4 remaining internal docs converted to branded HTML:**
+- `generateCapabilityLifecycleInternalHTML()` — Governor-only lifecycle reference (doc 20)
+- `generateCapabilityLifecycleDeveloperHTML()` — Public developer lifecycle guide (doc 21)
+- `generateCorrectionSpecHTML()` — Lifecycle correction specification with model migration
+- `generateExposureSpecHTML()` — System architecture & exposure spec with topology
+
+All added to `generateHTMLArtifacts()` — every Ascension export now ships 14 branded HTML documents.
+
+**[FACT] Convex Core docs audited.** CJPI v3 (Novelty/Utility/Complexity/Composability weights) confirmed accurate and distinct from lifecycle decomposed CJPI (Structural/Binding/Activation/Behavioral/Security). No updates needed.
+
+**[FACT] All Priority 1 and Priority 2 items from the April 12 plan are complete.** Zero remaining TODOs.
+
+**Build: clean. Zero TypeScript errors.**
 
 ---
 
