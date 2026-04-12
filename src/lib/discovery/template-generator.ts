@@ -182,10 +182,10 @@ export function clearRetired(): void {
 }
 
 /** Generate a single random template */
-function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, biasHigh: boolean): GeneratedTemplate {
+function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, biasHigh: boolean, modulePool: string[] = DEFAULT_MODULES): GeneratedTemplate {
   // Pick modules — bias toward category-affine modules
-  const affine = CATEGORY_AFFINITY[category] || MODULES;
-  const nonAffine = MODULES.filter(m => !affine.includes(m));
+  const affine = (CATEGORY_AFFINITY[category] || modulePool).filter(m => modulePool.includes(m));
+  const nonAffine = modulePool.filter(m => !affine.includes(m));
 
   // 70% chance each module comes from affine pool
   const selectedModules: string[] = [];
@@ -195,7 +195,7 @@ function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, b
     const pool = Math.random() < 0.7 ? affine : nonAffine;
     const candidates = pool.filter(m => !usedModules.has(m));
     if (candidates.length === 0) {
-      const fallback = MODULES.filter(m => !usedModules.has(m));
+      const fallback = modulePool.filter(m => !usedModules.has(m));
       if (fallback.length === 0) break;
       const m = pick(fallback);
       usedModules.add(m);
