@@ -948,3 +948,18 @@ export type {
   AscensionSession,
   SessionStatus,
 } from './production-provider';
+
+// ═══════════════════════════════════════════════════════════════
+// §18 — Behavioral Evidence Bridge
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  extractBehavioralEvidence,
+  hasBehavioralEvidence,
+  getVerifiedPrimitiveCount,
+} from './engines/behavioral-evidence-bridge';
+
+export type {
+  BridgedProbe,
+  BehavioralEvidencePackage,
+} from './engines/behavioral-evidence-bridge';
