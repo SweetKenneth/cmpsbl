@@ -119,11 +119,13 @@ export default function RestorationShop() {
 
   const handleScan = useCallback(async () => {
     if (!code.trim() || isScanning) return;
+    haptic('medium');
     setIsScanning(true);
     try {
       const result = await runScanTeam(code, fileName ?? undefined);
       setScanResult(result);
       setDetectedLang(result.metrics.language || 'TypeScript');
+      haptic('success');
       setPhase('diagnostic');
     } finally {
       setIsScanning(false);
@@ -133,6 +135,7 @@ export default function RestorationShop() {
   const handleSelectPrimitives = useCallback(async (selected: PrimitiveRecommendation[]) => {
     if (!scanResult || isRestoring) return;
     setIsRestoring(true);
+    haptic('medium');
     setSelectedPrims(selected);
 
     const entry = addToQueue('demo-user', 'builder', 'demo-hash', selected.map(s => s.name));
