@@ -71,6 +71,12 @@ export default function QuantumHome() {
       <Helmet>
         <title>CMPSBL QUANTUM™ — Cognitive Quantum Infrastructure</title>
         <meta name="description" content="CMPSBL QUANTUM™ — 16 specialized quantum physics primitives for particle simulation, quantum computing, and spectroscopy software. Reality Bends Here." />
+        <link rel="canonical" href="https://quantum.cmpsbl.com" />
+        <meta property="og:title" content="CMPSBL QUANTUM™ — Cognitive Quantum Infrastructure" />
+        <meta property="og:description" content="16 specialized quantum physics primitives for particle simulation, quantum computing, and spectroscopy." />
+        <meta property="og:url" content="https://quantum.cmpsbl.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
       <StructuredData type="webApplication" data={{ name: "CMPSBL QUANTUM™", description: "Cognitive quantum infrastructure — 16 specialized primitives for particle simulation, quantum computing, and spectroscopy software.", url: "https://quantum.cmpsbl.com", features: "Particle Simulation, Quantum Computing, Spectroscopy, Quantum Entanglement, Wave Function Analysis, Quantum Error Correction" }} />
 

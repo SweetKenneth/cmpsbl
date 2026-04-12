@@ -118,6 +118,12 @@ export default function UltimateHome() {
       <Helmet>
         <title>{`CMPSBL ULTIMATE™ — ${poolSize} Candidates · Dynamic Selection · Zero Restrictions`}</title>
         <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for selection. No spine lock. No category restrictions. The scanner selects only the primitives your code actually needs — up to 40.`} />
+        <link rel="canonical" href="https://ultimate.cmpsbl.com" />
+        <meta property="og:title" content="CMPSBL ULTIMATE™ — Universal Ascension" />
+        <meta property="og:description" content="Every candidate primitive from every source competes for selection. No spine lock. No restrictions." />
+        <meta property="og:url" content="https://ultimate.cmpsbl.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
       <StructuredData type="webApplication" data={{ name: "CMPSBL ULTIMATE™", description: "Universal Ascension — every candidate primitive from every source competes for selection. No spine lock. No restrictions. The scanner selects only what your code needs.", url: "https://ultimate.cmpsbl.com", features: "Universal Pool Selection, Dynamic Primitive Selection, Cross-Vertical Candidates, Zero Restrictions, Autonomous Scanning, Full Ascension" }} />
 
