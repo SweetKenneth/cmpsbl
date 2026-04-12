@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { Shield, Cpu, Activity, Zap, Lock, Eye, Server, Terminal, ArrowRight, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
