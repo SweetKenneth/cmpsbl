@@ -161,7 +161,9 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 - `loadArtifactPayload()` — Environment-agnostic loader (globalThis or explicit args)
 - `generateDeploymentManifest()` — Machine-readable integration contract (compatibility matrix, behavior counts, verification metadata)
 - `generateIntegrationCode()` — Copy-paste code for ESM, CJS, script tag, and global formats
-- `getHealthCheck()` — Production monitoring endpoint factory with status classification
+- `getGlobalHealthCheck()` — Global health endpoint (reads latched pipeline state)
+- `getArtifactHealthCheck()` — Session-scoped health endpoint (deterministic, no global reads)
+- `UNCOMPUTED_FINGERPRINT` — Null-safe sentinel for pre-ascension state
 - `generateDeploymentReadme()` — Human-readable deployment guide auto-generated per artifact
 
 **Exit criteria:**
@@ -181,11 +183,16 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 - ✅ Output is useful immediately
 
 **Delivered:**
-- `production-provider.ts` — Developer-facing API: `init()` returns a session with `.exports`, `.health()`, `.healthCheck()`, `.summary()`, `.verificationReport()`, `.destroy()`
+- `production-provider.ts` — Developer-facing API: `init()` returns a session with `.exports`, `.health()`, `.status()`, `.healthCheck()`, `.summary()`, `.verificationReport()`, `.destroy()`
 - `ascendQuick()` — One-shot helper for scripts/CLIs (ascend + return wrapped exports)
 - `AscensionConfig` — Developer-legible configuration (no engine jargon)
-- `AscensionSession` — Stateful handle with health monitoring, verification, and teardown
+- `AscensionSession` — Stateful handle with unified health monitoring, verification, and teardown
+- `SessionStatus` — Quick-glance status: `{ health, coverage, fingerprint, identity }`
+- `UNCOMPUTED_FINGERPRINT` — Null-safe sentinel eliminates consumer null-branching
 - AbortSignal support for graceful cancellation
+- Session-scoped `healthCheck()` uses `getArtifactHealthCheck()` — no global state dependency
+- `coverageRatio` stored in `PipelineTrace` — single source of truth, reused everywhere
+- Single active session per process constraint documented
 
 **Exit criteria:**
 - ✅ A developer can understand value in minutes (`init()` → `.exports` → done)
