@@ -383,6 +383,11 @@ export function CmpsblNav() {
                 ))}
               </div>
 
+              {/* Mobile Radio Player — centered */}
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.35 }} className="py-4 flex justify-center">
+                <AmbientMusicPlayer />
+              </motion.div>
+
               {/* Mobile Auth */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="pt-6 border-t border-border">
                 {user ? (
