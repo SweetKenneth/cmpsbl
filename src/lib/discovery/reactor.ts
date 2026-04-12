@@ -620,7 +620,33 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       const { error: discError } = await supabase.from('discoveries').upsert(rows, { onConflict: 'id' });
       if (discError) console.error('Failed to persist discoveries:', discError);
 
-      // 9. AUTO-PROMOTE — discoveries with CJPI ≥ 95 are promoted to S-Tier vault
+      // 8b. Persist sub-threshold discoveries as junkyard items (free software)
+      if (junkyardCandidates.length > 0 && !config.dryRun) {
+        const junkyardRows = junkyardCandidates.map(c => ({
+          id: c.id,
+          run_id: run.id,
+          name: c.name,
+          description: c.description,
+          category: c.category,
+          tier: c.tier,
+          cjpi: c.cjpi,
+          synergy_multiplier: c.synergyMultiplier,
+          components: JSON.parse(JSON.stringify({ entry: c.entryCapability, exit: c.exitCapability })),
+          module_chain: c.moduleChain,
+          rationale: c.rationale,
+          provenance: `Reactor v${config.scoringVersion || '1.0'} — junkyard`,
+          error_strategy: c.errorStrategy,
+          max_execution_ms: c.maxExecutionMs,
+          cjpi_breakdown: JSON.parse(JSON.stringify(c.cjpiBreakdown)),
+          discovered_by: c.discoveredBy,
+          status: 'junkyard',
+          written_to_registry: false,
+        }));
+        const { error: junkError } = await supabase.from('discoveries').upsert(junkyardRows, { onConflict: 'id' });
+        if (junkError) console.error('Failed to persist junkyard discoveries:', junkError);
+        else console.log(`[Reactor] Junkyard: ${junkyardCandidates.length} sub-threshold discoveries persisted`);
+      }
+
       if (!config.dryRun) {
         const promotable = accepted.filter(c => c.cjpi >= 95 && c.tier);
         if (promotable.length > 0) {
