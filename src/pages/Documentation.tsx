@@ -21,6 +21,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { SEO } from "@/components/SEO";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { useMetric } from "@/stores/publicMetricsStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -1357,8 +1358,14 @@ export default function Documentation() {
         image="https://cmpsbl.com/og/documentation.jpg"
         keywords={['CMPSBL documentation', 'platform docs', 'AI API reference', 'persistent memory API', 'AI module reference']}
       />
+      <StructuredData
+        type="breadcrumb"
+        data={{ items: [
+          { name: "Home", url: "https://cmpsbl.com" },
+          { name: "Documentation", url: "https://cmpsbl.com/documentation" },
+        ]}}
+      />
 
-      {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-80" />
         <div
