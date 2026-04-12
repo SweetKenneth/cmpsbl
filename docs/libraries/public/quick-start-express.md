@@ -60,6 +60,7 @@ app.listen(3000);
 > No changes to your original code. Same behavior, now governed.
 > No framework changes. No rewrites. No lock-in.
 > The original module is never modified — all behavior is attached at runtime.
+> Works with any existing Express app — no rebuild, no migration.
 
 ---
 
