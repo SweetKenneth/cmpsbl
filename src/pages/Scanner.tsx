@@ -101,6 +101,15 @@ export default function Scanner() {
         canonical="https://cmpsbl.com/scanner"
         keywords={['technical debt', 'evolution scanner', 'code quality', 'system evolution', 'AI diagnostics', 'vibe coding']}
       />
+      <StructuredData
+        type="webApplication"
+        data={{
+          name: "CMPSBL Evolution Scanner",
+          description: "Detect technical debt, diagnose root causes, generate governed fix plans with cryptographic proof, and track resolution across your entire codebase.",
+          url: "https://cmpsbl.com/scanner",
+          features: "Technical Debt Detection, Root Cause Diagnosis, Governed Fix Plans, Cryptographic Proof, Resolution Tracking, Automated Evolution",
+        }}
+      />
       <CmpsblNav />
 
       <main className="pt-24 sm:pt-28 pb-20 overflow-hidden">

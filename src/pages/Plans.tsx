@@ -34,6 +34,23 @@ export default function Plans() {
         canonical="https://cmpsbl.com/plans"
         image="https://cmpsbl.com/og/plans.jpg"
       />
+      <StructuredData
+        type="product"
+        data={{
+          name: "CMPSBL Subscription Plans",
+          description: "Governed cognitive infrastructure plans from free Builder to Enterprise. Persistent memory, AI routing, security hardening, and autonomous evolution.",
+          url: "https://cmpsbl.com/plans",
+          price: "0",
+          category: "Software",
+        }}
+      />
+      <StructuredData
+        type="breadcrumb"
+        data={{ items: [
+          { name: "Home", url: "https://cmpsbl.com" },
+          { name: "Plans", url: "https://cmpsbl.com/plans" },
+        ]}}
+      />
 
       <PublicNav />
 

@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from "react";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
@@ -102,6 +103,16 @@ export default function Store() {
           publisher: { "@type": "Organization", name: "CMPSBL", url: "https://cmpsbl.com" },
         })}</script>
       </Helmet>
+      <StructuredData
+        type="product"
+        data={{
+          name: "CMPSBL Runtime Agents & Engines",
+          description: "10 sealed AI products across 5 tiers. Runtime Agents learn and execute. Composable Engines power infrastructure.",
+          url: "https://cmpsbl.com/store",
+          price: "0",
+          category: "Software",
+        }}
+      />
 
       <PublicNav />
       <StoreOnboarding />

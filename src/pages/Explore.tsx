@@ -79,6 +79,9 @@ export default function Explore() {
           { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the intelligent router. Bring your own keys or use managed routing.' },
         ]}
       />
+      <StructuredData type="organization" />
+      <StructuredData type="webSite" />
+      <StructuredData type="softwareApplication" />
 
       <PublicNav />
       <CmpsblWelcome />
