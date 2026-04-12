@@ -111,6 +111,7 @@ export default function CyberSecurityHome() {
         }}
       />
 
+      <div className="cyber-substrate min-h-screen bg-background text-foreground font-sans">
 
         {/* Return Banner */}
         <VerticalReturnBanner verticalName="CMPSBL CYBER™" accentColor="hsl(0 85% 60%)" />
