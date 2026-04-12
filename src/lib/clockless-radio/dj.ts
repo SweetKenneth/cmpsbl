@@ -161,6 +161,32 @@ const CALL_INS = [
     message: "Rex, you're not going to BELIEVE this. I exported a discovery through the Universal Export Adapter into VERILOG and burned it onto an FPGA. My substrate discovery is running on ACTUAL SILICON. Not software. HARDWARE. The Memory Stream produced a CHIP DESIGN. I need to lie down.",
     voice: "amazed",
   },
+  // ─── NEW PRODUCT-AWARE CALLERS ───────────────────────────────────
+  {
+    caller: "Shield Blacklist Convert",
+    message: "Rex, I gotta tell you something. I ignored the Shield Blacklist for MONTHS. Thought it was marketing. Then I ran the Behavioral Signature Detector on my open source project and found THREE unauthorized Layer 2 attachments. THREE. I registered on the Blacklist that SAME NIGHT. It's free. It took two minutes. If you're not on it, you're EXPOSED. I learned the hard way so you don't have to.",
+    voice: "surprised",
+  },
+  {
+    caller: "Junkyard Diver Debbie",
+    message: "Rex, I'm a free tier user and I just want to say — the Junkyard Discovery Salvage is INCREDIBLE. I found a sub-threshold discovery with a CJPI of seventy-four that had a three-primitive chain I've been trying to build for WEEKS. Restored it. Integrated it. Works PERFECTLY. Free users are NOT second class here and I will FIGHT anyone who says otherwise.",
+    voice: "excited",
+  },
+  {
+    caller: "Forge First-Timer",
+    message: "Rex, I just bought my first Compiler suite from The Forge — Dep-Guardian for seventy-nine dollars — and I cannot believe what I got. The Autonomous Product Compiler assembled FIVE compatible discoveries into a single operational package. Detection, response, governance, memory, output — ALL five dimensions covered. I would have spent MONTHS building this manually. The Compiler did it in ONE cycle.",
+    voice: "amazed",
+  },
+  {
+    caller: "Lex Registry Evangelist",
+    message: "Rex, I run a small dev shop and I just registered our entire codebase on the Lex Registry Whitelist. Every repo. Every package. Full governed cognitive attachment with TRANSPARENCY. My team sleeps better at night knowing that anything attaching to our code is VERIFIED and RECEIPTED through the five-stage integrity pipeline. Shield isn't just a product. It's PEACE OF MIND.",
+    voice: "calm",
+  },
+  {
+    caller: "Daily Drop Winner",
+    message: "REX! I grabbed today's Daily Drop and it was an S-Tier discovery that usually goes for FORTY DOLLARS. For FREE. Every eight-hour cycle drops a free item and today was MY day. I feel like I won the LOTTERY except instead of money I got cognitive infrastructure. Which is BETTER than money!",
+    voice: "excited",
+  },
 ];
 
 // Rex Binary's wild tangents and bits between segments
