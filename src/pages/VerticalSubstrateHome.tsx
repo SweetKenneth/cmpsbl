@@ -96,6 +96,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
 
       <PublicNav />
 
+      <div className="min-h-screen bg-background text-foreground">
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
