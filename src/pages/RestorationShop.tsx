@@ -484,7 +484,7 @@ export default function RestorationShop() {
       {/* Main flow */}
       <section className="relative z-10 px-3 sm:px-6 pb-16 sm:pb-24">
         <div className="max-w-4xl mx-auto">
-          {/* Phase indicators */}
+          {/* Phase indicators — enterprise stepper with animated connectors */}
           <div className="flex items-center justify-center gap-1 mb-10">
             {PHASE_META.map((p, idx) => {
               const Icon = p.icon;
@@ -492,21 +492,39 @@ export default function RestorationShop() {
               const isPast = currentPhaseIdx > idx;
               return (
                 <div key={p.key} className="flex items-center">
-                  <div className={cn(
-                    "w-9 h-9 rounded-xl flex items-center justify-center transition-all border",
-                    isActive
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                      : isPast
-                        ? "bg-primary/15 text-primary border-primary/30"
-                        : "bg-card/40 text-muted-foreground/40 border-border/20",
+                  <button
+                    onClick={() => { if (isPast) haptic('light'); }}
+                    className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 border relative",
+                      isActive
+                        ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_hsl(var(--primary)/0.3)] scale-105"
+                        : isPast
+                          ? "bg-primary/15 text-primary border-primary/30"
+                          : "bg-card/40 text-muted-foreground/40 border-border/20",
+                    )}
+                  >
+                    <Icon className={cn("w-4 h-4 transition-transform", isActive && "animate-pulse")} />
+                    {isActive && (
+                      <div className="absolute inset-0 rounded-xl border-2 border-primary/30 animate-ping opacity-30 pointer-events-none" />
+                    )}
+                  </button>
+                  <span className={cn(
+                    "text-[9px] font-mono uppercase tracking-wider ml-1 hidden sm:inline transition-colors",
+                    isActive ? "text-primary font-bold" : isPast ? "text-primary/60" : "text-muted-foreground/30"
                   )}>
-                    <Icon className="w-4 h-4" />
-                  </div>
+                    {p.label}
+                  </span>
                   {idx < PHASE_META.length - 1 && (
-                    <div className={cn(
-                      "w-8 h-px mx-1 transition-colors",
-                      isPast ? "bg-primary/40" : "bg-border/30"
-                    )} />
+                    <div className="w-6 sm:w-10 h-[2px] mx-1.5 relative overflow-hidden rounded-full bg-border/20">
+                      <div
+                        className={cn(
+                          "absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out",
+                          isPast
+                            ? "w-full bg-gradient-to-r from-primary/60 to-primary/40"
+                            : "w-0 bg-primary/40"
+                        )}
+                      />
+                    </div>
                   )}
                 </div>
               );
