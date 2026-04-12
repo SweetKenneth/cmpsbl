@@ -62,6 +62,7 @@ const KeyboardShortcutsHelp = lazy(() => import("@/components/navigation/Keyboar
 const RateLimitFeedback = lazy(() => import("@/components/ui/RateLimitFeedback").then(m => ({ default: m.RateLimitFeedback })));
 const ClearCache = lazy(() => import("./pages/ClearCache"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const PersistentRadioPlayer = lazy(() => import("@/components/radio/PersistentRadioPlayer").then(m => ({ default: m.PersistentRadioPlayer })));
 
 // Scroll to top on route change
 const ScrollToTop = () => {
