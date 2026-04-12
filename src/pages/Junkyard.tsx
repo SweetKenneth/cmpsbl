@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Archive, ChevronLeft, ChevronRight, Search, X, Wrench,
