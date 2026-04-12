@@ -15,15 +15,11 @@ import { MEDIA_CROWN_JEWELS } from '../media-vertical-registry';
 import { QUANTUM_CROWN_JEWELS } from '../quantum-vertical-registry';
 import { ULTIMATE_CROWN_JEWELS } from '../ultimate-vertical-registry';
 import { FINTECH_CROWN_JEWELS } from '../fintech-vertical-registry';
+import { EDUCATION_CROWN_JEWELS } from '../education-vertical-registry';
+import { HEALTH_CROWN_JEWELS } from '../health-vertical-registry';
+import { GAMING_CROWN_JEWELS } from '../gaming-vertical-registry';
+import { LEGAL_CROWN_JEWELS } from '../legal-vertical-registry';
 import type { STierEntry } from '../types';
-
-export interface VerticalRegistrySummary {
-  vertical: string;
-  totalJewels: number;
-  primitives: number;
-  avgCjpi: number;
-  topJewel: { name: string; cjpi: number; primitive: string };
-}
 
 const REGISTRIES: Record<string, STierEntry[]> = {
   cyber: CYBER_CROWN_JEWELS,
@@ -34,6 +30,10 @@ const REGISTRIES: Record<string, STierEntry[]> = {
   quantum: QUANTUM_CROWN_JEWELS,
   ultimate: ULTIMATE_CROWN_JEWELS,
   fintech: FINTECH_CROWN_JEWELS,
+  education: EDUCATION_CROWN_JEWELS,
+  health: HEALTH_CROWN_JEWELS,
+  gaming: GAMING_CROWN_JEWELS,
+  legal: LEGAL_CROWN_JEWELS,
 };
 
 /** Get all S-Tier jewels for a specific vertical */
