@@ -125,17 +125,21 @@ export default function Store() {
             >
               <Badge variant="outline" className="mb-6 border-primary/30 px-4 py-1.5 inline-flex backdrop-blur-sm">
                 <ShoppingBag className="w-3.5 h-3.5 mr-2 text-primary" />
-                <span className="text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Platform</span>
+                <span className="text-xs font-semibold tracking-wide">Engines · Agents · Primitives</span>
               </Badge>
             </motion.div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6">
-              The <span className="text-primary">Store</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
+              Own Your
+              <br />
+              <span className="bg-gradient-to-r from-primary to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent">
+                Infrastructure
+              </span>
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              Sealed AI software you own forever. Agents learn and execute.
-              Engines power the infrastructure. Pick your tier.
+            <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed font-medium">
+              Sealed software you own forever. Runtime Agents learn and execute.
+              Composable Engines power the substrate. Pick your tier.
             </p>
           </motion.div>
 
