@@ -48,6 +48,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Identify or reset user in PostHog
+        if (session?.user) {
+          identifyUser(session.user.id, { email: session.user.email });
+        } else if (_event === 'SIGNED_OUT') {
+          resetPostHog();
+        }
         
         // Navigate ONLY on a genuine new sign-in (not token refresh / tab-switch / reload).
         // INITIAL_SESSION and TOKEN_REFRESHED fire on reload & visibility-change — never redirect for those.
