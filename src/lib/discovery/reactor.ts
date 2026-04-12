@@ -347,10 +347,8 @@ export function computeStableHash(name: string, moduleChain: string[], category:
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function computeSynergyMultiplier(moduleChain: string[]): number {
-  const uniqueModules = new Set(moduleChain);
-  if (uniqueModules.size >= 4) return 1.15;
-  if (uniqueModules.size >= 3) return 1.08;
-  return 1.0;
+  // Use expanded cross-vertical synergy computation
+  return computeExpandedSynergy(moduleChain);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
