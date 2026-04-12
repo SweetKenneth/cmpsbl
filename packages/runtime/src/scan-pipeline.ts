@@ -95,7 +95,103 @@ function detectBoundaries(source: string): DetectedBoundary[] {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — SIGNAL MATCHING (inline — deterministic, no external deps)
+// §2.1 — BODY SIGNAL EXTRACTION (AST-lite, regex-based)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface BodySignal {
+  readonly capability: string;
+  readonly primitive: string;
+  readonly confidence: number;
+}
+
+const BODY_PATTERNS: ReadonlyArray<{
+  readonly pattern: RegExp;
+  readonly signal: BodySignal;
+}> = [
+  {
+    pattern: /(req\.body|req\.query|JSON\.parse|deserialize)/i,
+    signal: { capability: 'defense_gate', primitive: 'DEFENSE', confidence: 0.9 },
+  },
+  {
+    pattern: /(\.save\(|\.update\(|\.delete\(|\.insert\(|setState\()/i,
+    signal: { capability: 'governance_hook', primitive: 'GOVERNANCE', confidence: 0.85 },
+  },
+  {
+    pattern: /(fetch\(|axios\.|http\.|await\s+\w+\()/i,
+    signal: { capability: 'circuit_breaker', primitive: 'FAILSAFE', confidence: 0.85 },
+  },
+  {
+    pattern: /(auth|token|jwt|isAuthorized|hasPermission)/i,
+    signal: { capability: 'shadow_rule', primitive: 'DEFENSE', confidence: 0.9 },
+  },
+  {
+    pattern: /(console\.log|logger\.|emit|track|metric)/i,
+    signal: { capability: 'audit_trail', primitive: 'AUDIT', confidence: 0.7 },
+  },
+];
+
+/** Extract capability signals from function body content (500-char window) */
+function extractBodySignals(
+  source: string,
+  boundaries: readonly DetectedBoundary[],
+): Map<string, BodySignal[]> {
+  const result = new Map<string, BodySignal[]>();
+
+  for (const boundary of boundaries) {
+    const fnIndex = source.indexOf(boundary.name);
+    if (fnIndex === -1) continue;
+
+    const snippet = source.slice(fnIndex, fnIndex + 500);
+
+    for (const { pattern, signal } of BODY_PATTERNS) {
+      pattern.lastIndex = 0;
+      if (pattern.test(snippet)) {
+        const existing = result.get(boundary.name) ?? [];
+        existing.push(signal);
+        result.set(boundary.name, existing);
+      }
+    }
+  }
+
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §2.2 — CALL GRAPH LITE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Lightweight intra-file call graph — detects which functions call which */
+function detectCallGraph(
+  source: string,
+  boundaries: readonly DetectedBoundary[],
+): Map<string, string[]> {
+  const calls = new Map<string, string[]>();
+
+  for (const boundary of boundaries) {
+    const fnIndex = source.indexOf(boundary.name);
+    if (fnIndex === -1) continue;
+
+    const snippet = source.slice(fnIndex, fnIndex + 500);
+    const called: string[] = [];
+
+    for (const other of boundaries) {
+      if (other.name === boundary.name) continue;
+      const regex = new RegExp(`\\b${other.name}\\(`);
+      if (regex.test(snippet)) {
+        called.push(other.name);
+      }
+    }
+
+    if (called.length > 0) {
+      calls.set(boundary.name, called);
+    }
+  }
+
+  return calls;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §3 — SIGNAL MATCHING (name + body + call graph)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 interface SignalRule {
@@ -157,13 +253,18 @@ const SIGNAL_RULES: readonly SignalRule[] = [
 ];
 
 function matchSignals(
+  sourceCode: string,
   boundaries: readonly DetectedBoundary[],
   activePrimitives?: ReadonlySet<string>,
 ): ScanFinding[] {
   const findings: ScanFinding[] = [];
   const assigned = new Set<string>();
 
+  // Phase 4.1: body-aware signal extraction
+  const bodySignals = extractBodySignals(sourceCode, boundaries);
+
   for (const boundary of boundaries) {
+    // Name-based matching
     for (const rule of SIGNAL_RULES) {
       if (activePrimitives && !activePrimitives.has(rule.primitive)) continue;
 
@@ -187,6 +288,23 @@ function matchSignals(
       });
     }
 
+    // Body-signal matching (supplements name-based)
+    const extraSignals = bodySignals.get(boundary.name) ?? [];
+    for (const sig of extraSignals) {
+      const key = `${boundary.name}:${sig.capability}`;
+      if (assigned.has(key)) continue;
+      assigned.add(key);
+
+      findings.push({
+        functionName: boundary.name,
+        primitive: sig.primitive,
+        capability: sig.capability,
+        reason: 'Detected from function body pattern',
+        confidence: sig.confidence,
+        line: boundary.line,
+      });
+    }
+
     // BEACON telemetry fallback for unmatched public functions
     const beaconKey = `${boundary.name}:beacon_telemetry`;
     if (!assigned.has(beaconKey)) {
@@ -203,6 +321,30 @@ function matchSignals(
       }
     }
   }
+
+  // Phase 4.1: call graph propagation
+  const callGraph = detectCallGraph(sourceCode, boundaries);
+  const propagated: ScanFinding[] = [];
+
+  for (const finding of findings) {
+    const downstream = callGraph.get(finding.functionName);
+    if (!downstream) continue;
+
+    for (const fn of downstream) {
+      const key = `${fn}:${finding.capability}`;
+      if (assigned.has(key)) continue;
+      assigned.add(key);
+
+      propagated.push({
+        ...finding,
+        functionName: fn,
+        reason: `Inherited from ${finding.functionName}`,
+        confidence: finding.confidence * 0.75,
+      });
+    }
+  }
+
+  findings.push(...propagated);
 
   return findings;
 }
