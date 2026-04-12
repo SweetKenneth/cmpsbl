@@ -247,7 +247,8 @@ export function ascend<T extends Record<string, unknown>>(
       `Low activation integrity (${coveragePct}%) — potential scan/runtime mismatch`, {
       wrappedCount: activation.wrappedCount,
       boundariesDetected: scan.meta.boundariesDetected,
-      coverage: coveragePct,
+      coveragePct,
+      coverageRatio,
     });
     console.warn(`CMPSBL: Low activation integrity (${coveragePct}%) — potential scan/runtime mismatch`);
   }
