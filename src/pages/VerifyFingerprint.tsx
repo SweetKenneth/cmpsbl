@@ -7,8 +7,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award, BarChart3 } from "lucide-react";
 import { lookupAnyFingerprint, type UnifiedLookupResult } from "@/lib/factory/restoration-session";
+import { computeDecomposedCJPI, type DecomposedCJPI } from "@/lib/capability-lifecycle";
 
 type VerifyState = "loading" | "verified" | "not-found";
 
@@ -152,6 +153,9 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
           <span className={`text-xs font-bold uppercase px-2 py-0.5 rounded-full ${tierBg}`}>{tier}-Tier</span>
         </div>
         <p className="text-[10px] text-muted-foreground uppercase tracking-widest">CJPI Score · Governed Cognitive Infrastructure</p>
+
+        {/* Decomposed CJPI Breakdown */}
+        <DecomposedCJPIBreakdown score={score} primitiveCount={primitives.length} />
       </div>
 
       {/* Details */}
