@@ -216,14 +216,34 @@ function startDJSegment(content: DJContent): void {
     finishDJSegment();
   }, content.duration + 6000);
 
-  void speakDJContent(content)
-    .catch(() => {
-      // Text stays visible even if TTS fails.
-    })
-    .finally(() => {
-      if (djToken !== activeDJToken) return;
-      finishDJSegment();
-    });
+  // Play intro SFX through AudioContext (routes to Bluetooth) BEFORE voice
+  const sfx = sharedEngine.sfx;
+  const sfxType = RadioSFX.sfxForDJ(content.type);
+  const sfxPromise = sfx ? sfx.play(sfxType) : Promise.resolve();
+
+  sfxPromise.then(() => {
+    if (djToken !== activeDJToken) return;
+
+    // SFX-only mode: skip TTS voice entirely (text still shows visually)
+    if (sharedEngine?.isSFXOnly) {
+      // Hold the text visible for the estimated duration then dismiss
+      setTimeout(() => {
+        if (djToken !== activeDJToken) return;
+        finishDJSegment();
+      }, content.duration);
+      return;
+    }
+
+    // Normal mode: speak through SpeechSynthesis
+    void speakDJContent(content)
+      .catch(() => {
+        // Text stays visible even if TTS fails.
+      })
+      .finally(() => {
+        if (djToken !== activeDJToken) return;
+        finishDJSegment();
+      });
+  });
 }
 
 function getSharedEngine(): ClocklessRadioEngine {
