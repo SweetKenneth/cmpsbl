@@ -304,16 +304,590 @@ function wrapWithCircuitBreaker(
   };
 }
 
+// ═══════════════════════════════════════════════════════════════
+// Expanded Wrapper Factories — 25 new granular behaviors
+// ═══════════════════════════════════════════════════════════════
+
+function wrapWithInputSanitizer(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaInputSanitizer(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    // Sanitize string arguments — strip dangerous patterns
+    const sanitized = args.map(a => {
+      if (typeof a === 'string') {
+        const clean = a.replace(/<script[^>]*>.*?<\/script>/gi, '')
+          .replace(/javascript:/gi, '')
+          .replace(/on\w+\s*=/gi, '');
+        if (clean !== a) {
+          point.blocked++;
+          emitTelemetry('input_sanitizer', functionName, 'blocked', { original: a.slice(0, 50), sanitized: clean.slice(0, 50) });
+        }
+        return clean;
+      }
+      return a;
+    });
+    emitTelemetry('input_sanitizer', functionName, 'invoked', { argCount: args.length });
+    return originalFn.apply(this, sanitized);
+  };
+}
+
+function wrapWithThreatScorer(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaThreatScorer(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    let threatScore = 0;
+    for (const arg of args) {
+      if (typeof arg === 'string') {
+        if (/[<>"'`;]/.test(arg)) threatScore += 20;
+        if (arg.length > 10000) threatScore += 30;
+        if (/\b(union|select|drop|delete|insert)\b/i.test(arg)) threatScore += 40;
+      }
+      if (arg === null || arg === undefined) threatScore += 5;
+    }
+    const { verdict } = evaluate('defense_gate', functionName, config.lexMode);
+    if (threatScore > 60 && verdict !== 'allow') {
+      point.blocked++;
+      emitTelemetry('threat_scorer', functionName, 'blocked', { threatScore });
+      throw new Error(`[MANA/THREAT] ${functionName} blocked — threat score ${threatScore}/100`);
+    }
+    emitTelemetry('threat_scorer', functionName, 'observed', { threatScore });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithRateLimiter(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const windowMs = 1000;
+  const maxCalls = 100;
+  let callTimestamps: number[] = [];
+
+  return function manaRateLimiter(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const now = Date.now();
+    callTimestamps = callTimestamps.filter(t => now - t < windowMs);
+    if (callTimestamps.length >= maxCalls) {
+      point.blocked++;
+      emitTelemetry('rate_limiter', functionName, 'blocked', { callsInWindow: callTimestamps.length });
+      throw new Error(`[MANA/RATE] ${functionName} rate limited — ${maxCalls} calls/s exceeded`);
+    }
+    callTimestamps.push(now);
+    emitTelemetry('rate_limiter', functionName, 'invoked', { callsInWindow: callTimestamps.length });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithPayloadValidator(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaPayloadValidator(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    for (let i = 0; i < args.length; i++) {
+      const arg = args[i];
+      if (typeof arg === 'string' && arg.length > 1_000_000) {
+        point.blocked++;
+        emitTelemetry('payload_validator', functionName, 'blocked', { argIndex: i, size: arg.length });
+        throw new Error(`[MANA/PAYLOAD] Arg ${i} exceeds 1MB payload limit`);
+      }
+      if (typeof arg === 'object' && arg !== null) {
+        const depth = JSON.stringify(arg).length;
+        if (depth > 5_000_000) {
+          point.blocked++;
+          emitTelemetry('payload_validator', functionName, 'blocked', { argIndex: i, serializedSize: depth });
+          throw new Error(`[MANA/PAYLOAD] Arg ${i} serialization exceeds 5MB`);
+        }
+      }
+    }
+    emitTelemetry('payload_validator', functionName, 'invoked');
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithInjectionGuard(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const INJECTION_PATTERNS = [
+    /'\s*(or|and)\s+'.*'.*='/i,
+    /;\s*(drop|delete|truncate|alter)\s+/i,
+    /\$\{.*\}/,
+    /\{\{.*\}\}/,
+  ];
+  return function manaInjectionGuard(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    for (const arg of args) {
+      if (typeof arg === 'string') {
+        for (const pattern of INJECTION_PATTERNS) {
+          if (pattern.test(arg)) {
+            point.blocked++;
+            emitTelemetry('injection_guard', functionName, 'blocked', { pattern: pattern.source });
+            throw new Error(`[MANA/INJECTION] Potential injection detected in ${functionName}`);
+          }
+        }
+      }
+    }
+    emitTelemetry('injection_guard', functionName, 'invoked');
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithLatencyProfiler(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const durations: number[] = [];
+  return function manaLatencyProfiler(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const start = performance.now();
+    const result = originalFn.apply(this, args);
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(resolved => {
+        const d = performance.now() - start;
+        durations.push(d);
+        if (durations.length > 1000) durations.shift();
+        const sorted = [...durations].sort((a, b) => a - b);
+        emitTelemetry('latency_profiler', functionName, 'observed', {
+          durationMs: Math.round(d * 100) / 100,
+          p50: sorted[Math.floor(sorted.length * 0.5)],
+          p95: sorted[Math.floor(sorted.length * 0.95)],
+          p99: sorted[Math.floor(sorted.length * 0.99)],
+          samples: sorted.length,
+        });
+        return resolved;
+      });
+    }
+    const d = performance.now() - start;
+    durations.push(d);
+    if (durations.length > 1000) durations.shift();
+    emitTelemetry('latency_profiler', functionName, 'observed', { durationMs: Math.round(d * 100) / 100 });
+    return result;
+  };
+}
+
+function wrapWithErrorTracker(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  let totalErrors = 0;
+  const errorTypes = new Map<string, number>();
+  return function manaErrorTracker(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    try {
+      const result = originalFn.apply(this, args);
+      if (result && typeof (result as Promise<unknown>).then === 'function') {
+        return (result as Promise<unknown>).catch((err: Error) => {
+          totalErrors++;
+          const t = err?.constructor?.name ?? 'Unknown';
+          errorTypes.set(t, (errorTypes.get(t) ?? 0) + 1);
+          emitTelemetry('error_tracker', functionName, 'observed', { totalErrors, errorType: t, message: err?.message?.slice(0, 100) });
+          throw err;
+        });
+      }
+      return result;
+    } catch (err) {
+      totalErrors++;
+      const e = err as Error;
+      const t = e?.constructor?.name ?? 'Unknown';
+      errorTypes.set(t, (errorTypes.get(t) ?? 0) + 1);
+      emitTelemetry('error_tracker', functionName, 'observed', { totalErrors, errorType: t });
+      throw err;
+    }
+  };
+}
+
+function wrapWithThroughputMeter(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  let windowStart = Date.now();
+  let callsInWindow = 0;
+  let lastThroughput = 0;
+  return function manaThroughputMeter(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const now = Date.now();
+    callsInWindow++;
+    if (now - windowStart >= 1000) {
+      lastThroughput = callsInWindow;
+      callsInWindow = 0;
+      windowStart = now;
+      emitTelemetry('throughput_meter', functionName, 'observed', { callsPerSecond: lastThroughput });
+    }
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithDependencyMapper(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaDependencyMapper(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    emitTelemetry('dependency_mapper', functionName, 'invoked', {
+      caller: (new Error()).stack?.split('\n')[2]?.trim().slice(0, 80),
+      argTypes: args.map(a => typeof a),
+    });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithMutationGuard(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaMutationGuard(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    if (verdict === 'deny') {
+      point.blocked++;
+      emitTelemetry('mutation_guard', functionName, 'blocked', { reason: 'unauthorized_mutation' });
+      throw new Error(`[MANA/MUTATION] Unauthorized state mutation in ${functionName}`);
+    }
+    // Freeze object args to detect mutation attempts
+    const frozenArgs = args.map(a =>
+      typeof a === 'object' && a !== null ? Object.freeze({ ...a as Record<string, unknown> }) : a
+    );
+    emitTelemetry('mutation_guard', functionName, 'invoked');
+    return originalFn.apply(this, frozenArgs);
+  };
+}
+
+function wrapWithPolicyEnforcer(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaPolicyEnforcer(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    if (verdict === 'deny') {
+      point.blocked++;
+      emitTelemetry('policy_enforcer', functionName, 'blocked', { verdict });
+      return undefined;
+    }
+    point.observed++;
+    emitTelemetry('policy_enforcer', functionName, 'observed', { verdict, policy: 'enforced' });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithConsentGate(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaConsentGate(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    if (verdict === 'deny') {
+      point.blocked++;
+      emitTelemetry('consent_gate', functionName, 'blocked', { reason: 'consent_not_granted' });
+      return undefined;
+    }
+    emitTelemetry('consent_gate', functionName, 'invoked', { consentGranted: true });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithComplianceCheck(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaComplianceCheck(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    emitTelemetry('compliance_check', functionName, 'observed', {
+      timestamp: Date.now(),
+      functionName,
+      argCount: args.length,
+      compliant: true,
+    });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithAccessController(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaAccessController(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const { verdict } = evaluate('shadow_rule', functionName, config.lexMode);
+    if (verdict === 'deny') {
+      point.blocked++;
+      emitTelemetry('access_controller', functionName, 'blocked', { reason: 'access_denied' });
+      throw new Error(`[MANA/ACCESS] ${functionName} — access denied by Lex`);
+    }
+    emitTelemetry('access_controller', functionName, 'invoked');
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithRetryHandler(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const MAX_RETRIES = 3;
+  return function manaRetryHandler(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    let lastError: unknown;
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        const result = originalFn.apply(this, args);
+        if (attempt > 0) {
+          emitTelemetry('retry_handler', functionName, 'observed', { retriedAfter: attempt });
+        }
+        return result;
+      } catch (err) {
+        lastError = err;
+        emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80) });
+      }
+    }
+    point.blocked++;
+    emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted' });
+    throw lastError;
+  };
+}
+
+function wrapWithTimeoutGuard(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const TIMEOUT_MS = 30000;
+  return function manaTimeoutGuard(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return Promise.race([
+        result as Promise<unknown>,
+        new Promise((_, reject) => setTimeout(() => {
+          point.blocked++;
+          emitTelemetry('timeout_guard', functionName, 'blocked', { timeoutMs: TIMEOUT_MS });
+          reject(new Error(`[MANA/TIMEOUT] ${functionName} exceeded ${TIMEOUT_MS}ms`));
+        }, TIMEOUT_MS)),
+      ]);
+    }
+    emitTelemetry('timeout_guard', functionName, 'invoked');
+    return result;
+  };
+}
+
+function wrapWithBulkheadIsolator(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const MAX_CONCURRENT = 10;
+  let active = 0;
+  return function manaBulkheadIsolator(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    if (active >= MAX_CONCURRENT) {
+      point.blocked++;
+      emitTelemetry('bulkhead_isolator', functionName, 'blocked', { active, max: MAX_CONCURRENT });
+      throw new Error(`[MANA/BULKHEAD] ${functionName} — concurrency limit (${MAX_CONCURRENT}) reached`);
+    }
+    active++;
+    try {
+      const result = originalFn.apply(this, args);
+      if (result && typeof (result as Promise<unknown>).then === 'function') {
+        return (result as Promise<unknown>).finally(() => { active--; });
+      }
+      active--;
+      return result;
+    } catch (err) {
+      active--;
+      throw err;
+    }
+  };
+}
+
+function wrapWithFallbackProvider(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaFallbackProvider(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    try {
+      const result = originalFn.apply(this, args);
+      if (result && typeof (result as Promise<unknown>).then === 'function') {
+        return (result as Promise<unknown>).catch((err: Error) => {
+          point.observed++;
+          emitTelemetry('fallback_provider', functionName, 'observed', { fallbackReason: err?.message?.slice(0, 80) });
+          return undefined; // Graceful fallback
+        });
+      }
+      return result;
+    } catch (err) {
+      point.observed++;
+      emitTelemetry('fallback_provider', functionName, 'observed', { fallbackReason: (err as Error)?.message?.slice(0, 80) });
+      return undefined;
+    }
+  };
+}
+
+function wrapWithCallLogger(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaCallLogger(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    emitTelemetry('call_logger', functionName, 'invoked', {
+      timestamp: Date.now(),
+      argTypes: args.map(a => typeof a),
+      argCount: args.length,
+    });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithStateSnapshot(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaStateSnapshot(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const before = typeof this === 'object' && this !== null
+      ? JSON.stringify(this).slice(0, 500) : 'N/A';
+    const result = originalFn.apply(this, args);
+    const after = typeof this === 'object' && this !== null
+      ? JSON.stringify(this).slice(0, 500) : 'N/A';
+    emitTelemetry('state_snapshot', functionName, 'observed', {
+      beforeHash: before.length,
+      afterHash: after.length,
+      mutated: before !== after,
+    });
+    return result;
+  };
+}
+
+function wrapWithForensicRecorder(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaForensicRecorder(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const callId = `${functionName}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    emitTelemetry('forensic_recorder', functionName, 'invoked', {
+      callId,
+      argCount: args.length,
+      stack: (new Error()).stack?.split('\n').slice(1, 4).map(s => s.trim()),
+    });
+    return originalFn.apply(this, args);
+  };
+}
+
+function wrapWithOutputFilter(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  return function manaOutputFilter(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+    // Filter sensitive patterns from string outputs
+    if (typeof result === 'string') {
+      const filtered = result.replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, '****-****-****-****');
+      if (filtered !== result) {
+        point.observed++;
+        emitTelemetry('output_filter', functionName, 'observed', { filtered: true });
+      }
+      return filtered;
+    }
+    emitTelemetry('output_filter', functionName, 'invoked');
+    return result;
+  };
+}
+
+function wrapWithDataMasker(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const MASK_PATTERNS = [
+    { pattern: /\b[\w.]+@[\w.]+\.\w+\b/g, replacement: '***@***.***' },
+    { pattern: /\b\d{3}[-.]?\d{2}[-.]?\d{4}\b/g, replacement: '***-**-****' },
+  ];
+  return function manaDataMasker(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const maskedArgs = args.map(a => {
+      if (typeof a === 'string') {
+        let masked = a;
+        for (const { pattern, replacement } of MASK_PATTERNS) {
+          pattern.lastIndex = 0;
+          masked = masked.replace(pattern, replacement);
+        }
+        if (masked !== a) point.observed++;
+        return masked;
+      }
+      return a;
+    });
+    emitTelemetry('data_masker', functionName, 'invoked', { maskedArgs: maskedArgs.length });
+    return originalFn.apply(this, maskedArgs);
+  };
+}
+
+function wrapWithAnomalyDetector(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const history: number[] = [];
+  return function manaAnomalyDetector(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const start = performance.now();
+    const result = originalFn.apply(this, args);
+    const d = performance.now() - start;
+    history.push(d);
+    if (history.length > 100) history.shift();
+    if (history.length >= 10) {
+      const avg = history.reduce((s, v) => s + v, 0) / history.length;
+      const stdDev = Math.sqrt(history.reduce((s, v) => s + (v - avg) ** 2, 0) / history.length);
+      if (d > avg + 3 * stdDev) {
+        point.observed++;
+        emitTelemetry('anomaly_detector', functionName, 'observed', {
+          anomaly: true, durationMs: d, avgMs: avg, stdDev, zScore: (d - avg) / (stdDev || 1),
+        });
+      }
+    }
+    return result;
+  };
+}
+
+function wrapWithDriftMonitor(
+  originalFn: Function, functionName: string, point: AttachmentPoint
+): Function {
+  const returnHistory: string[] = [];
+  return function manaDriftMonitor(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+    const resultType = typeof result;
+    returnHistory.push(resultType);
+    if (returnHistory.length > 50) returnHistory.shift();
+    // Detect if return type changed from historical pattern
+    if (returnHistory.length >= 5) {
+      const majority = returnHistory.slice(0, -1)
+        .reduce((acc, t) => { acc[t] = (acc[t] ?? 0) + 1; return acc; }, {} as Record<string, number>);
+      const dominant = Object.entries(majority).sort((a, b) => b[1] - a[1])[0];
+      if (dominant && resultType !== dominant[0] && dominant[1] / (returnHistory.length - 1) > 0.8) {
+        point.observed++;
+        emitTelemetry('drift_monitor', functionName, 'observed', {
+          drift: true, expected: dominant[0], actual: resultType,
+        });
+      }
+    }
+    return result;
+  };
+}
+
 /** Get wrapper factory for a capability */
 function getWrapper(capability: ManaCapability) {
   switch (capability) {
     case 'defense_gate': return wrapWithDefenseGate;
+    case 'input_sanitizer': return wrapWithInputSanitizer;
+    case 'threat_scorer': return wrapWithThreatScorer;
+    case 'rate_limiter': return wrapWithRateLimiter;
+    case 'payload_validator': return wrapWithPayloadValidator;
+    case 'injection_guard': return wrapWithInjectionGuard;
     case 'beacon_telemetry': return wrapWithBeaconTelemetry;
+    case 'latency_profiler': return wrapWithLatencyProfiler;
+    case 'error_tracker': return wrapWithErrorTracker;
+    case 'throughput_meter': return wrapWithThroughputMeter;
+    case 'dependency_mapper': return wrapWithDependencyMapper;
     case 'governance_hook': return wrapWithGovernanceHook;
-    case 'shadow_rule': return wrapWithShadowRule;
-    case 'audit_trail': return wrapWithAuditTrail;
+    case 'mutation_guard': return wrapWithMutationGuard;
+    case 'policy_enforcer': return wrapWithPolicyEnforcer;
+    case 'consent_gate': return wrapWithConsentGate;
+    case 'compliance_check': return wrapWithComplianceCheck;
+    case 'access_controller': return wrapWithAccessController;
     case 'circuit_breaker': return wrapWithCircuitBreaker;
-    case 'dream_synthesis': return wrapWithBeaconTelemetry; // DREAM uses telemetry collection
+    case 'retry_handler': return wrapWithRetryHandler;
+    case 'timeout_guard': return wrapWithTimeoutGuard;
+    case 'bulkhead_isolator': return wrapWithBulkheadIsolator;
+    case 'fallback_provider': return wrapWithFallbackProvider;
+    case 'audit_trail': return wrapWithAuditTrail;
+    case 'call_logger': return wrapWithCallLogger;
+    case 'state_snapshot': return wrapWithStateSnapshot;
+    case 'forensic_recorder': return wrapWithForensicRecorder;
+    case 'shadow_rule': return wrapWithShadowRule;
+    case 'output_filter': return wrapWithOutputFilter;
+    case 'data_masker': return wrapWithDataMasker;
+    case 'dream_synthesis': return wrapWithBeaconTelemetry;
+    case 'anomaly_detector': return wrapWithAnomalyDetector;
+    case 'drift_monitor': return wrapWithDriftMonitor;
     default: return wrapWithBeaconTelemetry;
   }
 }

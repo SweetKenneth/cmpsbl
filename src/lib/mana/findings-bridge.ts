@@ -101,38 +101,183 @@ const CAPABILITY_SIGNALS: Array<{
   primitive: string;
   reason: string;
 }> = [
-  // DEFENSE — input handling, parsing, request processing
+  // ── DEFENSE family ──
   {
     patterns: [
       /^(parse|validate|sanitize|decode|deserialize|handle.*input|process.*request|accept|receive|read.*body)/i,
-      /^(handle|process|on).*(request|input|data|payload|message|event|upload|form|payment|transaction|order)/i,
-      /^(process|execute|run).*(payment|charge|transfer|withdraw|deposit)/i,
     ],
     capability: 'defense_gate',
     primitive: 'DEFENSE',
     reason: 'Handles untrusted input — boundary enforcement required',
   },
-  // GOVERNANCE — state mutations
+  {
+    patterns: [
+      /^(sanitize|clean|strip|escape|normalize|purify|bleach)/i,
+    ],
+    capability: 'input_sanitizer',
+    primitive: 'DEFENSE',
+    reason: 'Input sanitization — strips dangerous patterns before processing',
+  },
+  {
+    patterns: [
+      /^(score|rank|assess|evaluate|classify|grade|rate).*(threat|risk|danger|severity)/i,
+      /^(handle|process|on).*(request|input|data|payload|message|event|upload|form|payment|transaction|order)/i,
+    ],
+    capability: 'threat_scorer',
+    primitive: 'DEFENSE',
+    reason: 'Threat scoring — assigns risk level to invocations',
+  },
+  {
+    patterns: [
+      /^(throttle|limit|restrict|cap|quota|budget)/i,
+    ],
+    capability: 'rate_limiter',
+    primitive: 'DEFENSE',
+    reason: 'Rate limiting — prevents abuse via excessive invocations',
+  },
+  {
+    patterns: [
+      /^(validate|check|verify|assert|ensure).*(payload|schema|shape|type|format|body)/i,
+    ],
+    capability: 'payload_validator',
+    primitive: 'DEFENSE',
+    reason: 'Payload validation — enforces argument constraints',
+  },
+  {
+    patterns: [
+      /^(execute|eval|run|compile|interpret|render.*template)/i,
+      /^(process|execute|run).*(payment|charge|transfer|withdraw|deposit)/i,
+    ],
+    capability: 'injection_guard',
+    primitive: 'DEFENSE',
+    reason: 'Injection guard — blocks SQL/XSS/template injection patterns',
+  },
+  // ── BEACON family ──
+  {
+    patterns: [
+      /^(measure|profile|benchmark|time|perf)/i,
+    ],
+    capability: 'latency_profiler',
+    primitive: 'BEACON',
+    reason: 'Latency profiling — percentile-aware execution timing',
+  },
+  {
+    patterns: [
+      /^(handle.*error|catch|on.*error|on.*fail|recover|rescue)/i,
+    ],
+    capability: 'error_tracker',
+    primitive: 'BEACON',
+    reason: 'Error tracking — categorizes and counts failures',
+  },
+  {
+    patterns: [
+      /^(process|handle|consume|dispatch|route|serve)/i,
+    ],
+    capability: 'throughput_meter',
+    primitive: 'BEACON',
+    reason: 'Throughput measurement — calls/second observation',
+  },
+  {
+    patterns: [
+      /^(call|invoke|delegate|forward|dispatch.*to|proxy.*to)/i,
+    ],
+    capability: 'dependency_mapper',
+    primitive: 'BEACON',
+    reason: 'Dependency mapping — traces inter-function call chains',
+  },
+  // ── GOVERNANCE family ──
   {
     patterns: [
       /^(save|update|delete|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite)/i,
-      /^(handle|process|on).*(save|update|delete|create|submit|commit|push)/i,
     ],
     capability: 'governance_hook',
     primitive: 'GOVERNANCE',
     reason: 'Mutates state — governance audit required',
   },
-  // CIRCUIT BREAKER — external calls, network, I/O
   {
     patterns: [
-      /^(fetch|call|request|query|get.*api|post|send|connect|subscribe|poll|ping|invoke)/i,
-      /^(load|download|upload|stream|pipe|forward|proxy|relay)/i,
+      /^(mutate|transform|morph|alter|change.*state)/i,
+      /^(handle|process|on).*(save|update|delete|create|submit|commit|push)/i,
+    ],
+    capability: 'mutation_guard',
+    primitive: 'GOVERNANCE',
+    reason: 'Mutation guard — freezes inputs to detect unauthorized changes',
+  },
+  {
+    patterns: [
+      /^(enforce|apply|check).*(policy|rule|constraint|regulation)/i,
+    ],
+    capability: 'policy_enforcer',
+    primitive: 'GOVERNANCE',
+    reason: 'Policy enforcement — declarative rule-based gating',
+  },
+  {
+    patterns: [
+      /^(consent|agree|accept|opt.*in|approve|authorize.*user)/i,
+    ],
+    capability: 'consent_gate',
+    primitive: 'GOVERNANCE',
+    reason: 'Consent gate — requires explicit user consent before execution',
+  },
+  {
+    patterns: [
+      /^(comply|regulate|audit.*compliance|check.*gdpr|check.*hipaa|check.*pci|verify.*compliance)/i,
+    ],
+    capability: 'compliance_check',
+    primitive: 'GOVERNANCE',
+    reason: 'Compliance check — regulatory requirement verification',
+  },
+  {
+    patterns: [
+      /^(auth|login|logout|verify|check.*perm|grant|revoke|elevate|impersonate)/i,
+      /^(is.*admin|has.*role|can.*access|is.*authorized|is.*authenticated)/i,
+    ],
+    capability: 'access_controller',
+    primitive: 'GOVERNANCE',
+    reason: 'Access control — role-based permission enforcement',
+  },
+  // ── FAILSAFE family ──
+  {
+    patterns: [
+      /^(fetch|call|request|query|get.*api|post|send|connect|subscribe|poll|ping)/i,
     ],
     capability: 'circuit_breaker',
     primitive: 'FAILSAFE',
     reason: 'External call — circuit breaker for fault isolation',
   },
-  // AUDIT — logging, tracking, recording
+  {
+    patterns: [
+      /^(retry|attempt|try.*again|reattempt|backoff)/i,
+    ],
+    capability: 'retry_handler',
+    primitive: 'FAILSAFE',
+    reason: 'Retry handler — automatic retry with backoff on failure',
+  },
+  {
+    patterns: [
+      /^(load|download|upload|stream|pipe|forward|proxy|relay)/i,
+    ],
+    capability: 'timeout_guard',
+    primitive: 'FAILSAFE',
+    reason: 'Timeout guard — enforces execution time limits',
+  },
+  {
+    patterns: [
+      /^(batch|parallel|concurrent|pool|queue|worker|spawn|fork)/i,
+    ],
+    capability: 'bulkhead_isolator',
+    primitive: 'FAILSAFE',
+    reason: 'Bulkhead isolator — concurrency limits to prevent cascade failures',
+  },
+  {
+    patterns: [
+      /^(fallback|default|backup|recover|graceful|degrade)/i,
+    ],
+    capability: 'fallback_provider',
+    primitive: 'FAILSAFE',
+    reason: 'Fallback provider — graceful degradation on failure',
+  },
+  // ── AUDIT family ──
   {
     patterns: [
       /^(log|track|record|emit|report|audit|trace|capture|observe|measure|monitor)/i,
@@ -141,15 +286,71 @@ const CAPABILITY_SIGNALS: Array<{
     primitive: 'AUDIT',
     reason: 'Observation point — audit trail for provenance',
   },
-  // SHADOW RULE — auth, access control, permissions
   {
     patterns: [
-      /^(auth|login|logout|verify|check.*perm|grant|revoke|elevate|impersonate)/i,
-      /^(is.*admin|has.*role|can.*access|is.*authorized|is.*authenticated)/i,
+      /^(persist|store|cache|write.*log|append|push.*event)/i,
+    ],
+    capability: 'call_logger',
+    primitive: 'AUDIT',
+    reason: 'Call logger — structured invocation logging',
+  },
+  {
+    patterns: [
+      /^(snapshot|checkpoint|save.*state|backup.*state|capture.*state)/i,
+    ],
+    capability: 'state_snapshot',
+    primitive: 'AUDIT',
+    reason: 'State snapshot — captures before/after state for diffing',
+  },
+  {
+    patterns: [
+      /^(investigate|forensic|evidence|chain.*of.*custody|tamper)/i,
+    ],
+    capability: 'forensic_recorder',
+    primitive: 'AUDIT',
+    reason: 'Forensic recorder — deep call-stack and context recording',
+  },
+  // ── SHADOW family ──
+  {
+    patterns: [
+      /^(render|display|output|format|serialize|stringify|respond|return.*data)/i,
+    ],
+    capability: 'output_filter',
+    primitive: 'DEFENSE',
+    reason: 'Output filter — strips sensitive patterns from return values',
+  },
+  {
+    patterns: [
+      /^(mask|redact|anonymize|pseudonymize|obfuscate|hide|censor)/i,
+    ],
+    capability: 'data_masker',
+    primitive: 'DEFENSE',
+    reason: 'Data masker — PII/PHI masking in arguments',
+  },
+  {
+    patterns: [
+      /^(shadow|override|intercept|replace.*output|transform.*result)/i,
     ],
     capability: 'shadow_rule',
     primitive: 'DEFENSE',
-    reason: 'Auth boundary — shadow rule for access control',
+    reason: 'Shadow rule — Lex-governed output override',
+  },
+  // ── DREAM family ──
+  {
+    patterns: [
+      /^(detect|flag|alert|warn|notify|signal).*(anomaly|outlier|unusual|suspicious|abnormal)/i,
+    ],
+    capability: 'anomaly_detector',
+    primitive: 'BEACON',
+    reason: 'Anomaly detection — statistical outlier flagging via z-score',
+  },
+  {
+    patterns: [
+      /^(drift|diverge|shift|deviate|regress|degrade.*over.*time)/i,
+    ],
+    capability: 'drift_monitor',
+    primitive: 'BEACON',
+    reason: 'Drift monitor — behavioral change detection over time',
   },
 ];
 

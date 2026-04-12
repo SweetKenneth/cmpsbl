@@ -11,15 +11,47 @@ export type AttachmentState = 'detached' | 'scanning' | 'attaching' | 'symbiotic
 /** Lex governance verdict */
 export type LexVerdict = 'allow' | 'deny' | 'observe';
 
-/** Layer 2 capability type */
+/** Layer 2 capability type — 32 granular attachment behaviors */
 export type ManaCapability =
+  // ── DEFENSE family ──
   | 'defense_gate'
+  | 'input_sanitizer'
+  | 'threat_scorer'
+  | 'rate_limiter'
+  | 'payload_validator'
+  | 'injection_guard'
+  // ── BEACON family ──
   | 'beacon_telemetry'
+  | 'latency_profiler'
+  | 'error_tracker'
+  | 'throughput_meter'
+  | 'dependency_mapper'
+  // ── GOVERNANCE family ──
   | 'governance_hook'
-  | 'dream_synthesis'
+  | 'mutation_guard'
+  | 'policy_enforcer'
+  | 'consent_gate'
+  | 'compliance_check'
+  | 'access_controller'
+  // ── FAILSAFE family ──
   | 'circuit_breaker'
+  | 'retry_handler'
+  | 'timeout_guard'
+  | 'bulkhead_isolator'
+  | 'fallback_provider'
+  // ── AUDIT family ──
   | 'audit_trail'
-  | 'shadow_rule';
+  | 'call_logger'
+  | 'state_snapshot'
+  | 'forensic_recorder'
+  // ── SHADOW family ──
+  | 'shadow_rule'
+  | 'output_filter'
+  | 'data_masker'
+  // ── DREAM family ──
+  | 'dream_synthesis'
+  | 'anomaly_detector'
+  | 'drift_monitor';
 
 /** A single Layer 2 attachment point on a host function */
 export interface AttachmentPoint {
