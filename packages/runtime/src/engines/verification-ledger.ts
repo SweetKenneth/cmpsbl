@@ -135,8 +135,8 @@ const SET_FIELDS: ReadonlySet<string> = new Set([
 function canonicalizeManifest(obj: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
-    if (SET_FIELDS.has(k) && Array.isArray(v)) {
-      result[k] = [...v].sort();
+    if (SET_FIELDS.has(k) && Array.isArray(v) && v.every(x => typeof x === 'string')) {
+      result[k] = [...new Set(v)].sort();
     } else {
       result[k] = v;
     }
