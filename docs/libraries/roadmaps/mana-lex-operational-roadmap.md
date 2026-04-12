@@ -312,14 +312,15 @@ All four must be met:
 ## The Flywheel (Updated)
 
 ```
-Ship Shield (free npm) → Security community distributes it
-    → Industry learns Mana exists (awareness)
-        → Fear drives blacklist registration (free)
-            → Registrations = qualified leads
-                → Leads convert to whitelist (licensed, $$$)
+Mana attaches to codebases → Ascension scans against 159 primitives
+    → Discoveries compound across 12 verticals
+        → Product Compiler assembles software suites autonomously
+            → ECONOMY auto-prices → Marketplace rotates
+                → Scanner learns from every scan result
                     → Revenue funds multi-language loaders
                         → More languages = more attack surface = more shields needed
-                            → Flywheel compounds
+                            → More shields = more scans = more discoveries
+                                → Flywheel compounds — zero AI, pure algorithmic curing
 ```
 
 ---

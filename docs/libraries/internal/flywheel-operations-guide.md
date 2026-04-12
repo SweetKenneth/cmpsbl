@@ -1,6 +1,6 @@
 # CMPSBL® Intelligence Flywheel — Operations Guide
 
-**Version**: 1.0.0 · April 2026  
+**Version**: 2.0.0 · April 2026  
 **Classification**: Governor-eyes-only  
 **Author**: Substrate Architecture
 
@@ -9,15 +9,17 @@
 ## TL;DR — What happens when you sleep
 
 Every 8 hours, the substrate autonomously:
-1. Generates 30 fresh discovery templates (2–12 primitives deep)
-2. Runs the Reactor to produce and score new discoveries
-3. Ingests the **entire vault backlog** — Crown Jewels (1,600+), Showroom, Junkyard, Retired, **AND all 4,000+ DB-stored discoveries** — as scanner training data
+1. Generates 30 fresh discovery templates (2–12 primitives deep, drawn from 159-primitive pool)
+2. Runs the Reactor to produce and score new discoveries via CJPI (deterministic, zero AI)
+3. Ingests the **entire vault backlog** — Crown Jewels (356+ federated), Showroom, Junkyard, Retired, **AND all 4,000+ DB-stored discoveries** — as scanner training data
 4. Feeds 126 memory chain templates as behavioral ground truth
-5. Cross-pollinates intelligence across all 6 vertical substrates
+5. Cross-pollinates intelligence across all **12 vertical substrates**
 6. Scans the 20 most recent Ascension node uploads for hidden capabilities
-7. Routes everything into the discovery ledger → Showroom → S-Tier Vault
+7. Routes discoveries into the ledger → Showroom → S-Tier Vault
+8. **Product Compiler** assembles compatible discoveries into software suites ($50–$99)
+9. **ECONOMY** auto-prices every product, **Marketplace** auto-rotates listings
 
-**You don't need to do anything.** The flywheel is self-sustaining.
+**You don't need to do anything.** The flywheel is self-sustaining. The substrate discovers, builds, prices, and sells software autonomously — no AI, no human intervention.
 
 ---
 
@@ -156,7 +158,7 @@ New Scan Results ──────────────┘
 
 ## System 4: Federation (Cross-Vertical Intelligence)
 
-**What it does**: Propagates scanner intelligence across 6 vertical substrates while keeping domain-specific learning isolated.
+**What it does**: Propagates scanner intelligence across **12 vertical substrates** while keeping domain-specific learning isolated.
 
 ### Two-layer architecture:
 
@@ -171,7 +173,7 @@ New Scan Results ──────────────┘
 - Each vertical maintains its own vocabulary overlay
 - Learning stays vertical-local unless manually promoted
 
-### Active verticals:
+### Active verticals (12):
 | Vertical | Expansion Examples | Vocabulary Focus |
 |----------|-------------------|-----------------|
 | Cyber | WATCHTOWER, FIREWALL | sigma rules, CVEs, MITRE ATT&CK |
@@ -180,6 +182,12 @@ New Scan Results ──────────────┘
 | LLM | TOKENIZE, PROMPT | attention, embeddings, RLHF |
 | Agency | DELEGATE, ORCHESTRATE | task routing, competency |
 | Media | RENDER, TRANSCODE | codecs, color space, HDR |
+| Gaming | PHYSICS, RENDER | game loops, ECS, shaders |
+| Education | CURRICULUM, ASSESS | learning paths, competency tracking |
+| Health | VITALS, DIAGNOSE | HL7/FHIR, clinical workflows |
+| Legal | STATUTE, CONTRACT | regulatory compliance, clause analysis |
+| Finance | LEDGER, RISK | transaction integrity, fraud detection |
+| Ultimate | SYNTHESIS, TRANSCEND | cross-domain fusion, meta-capability |
 
 ### Cross-pollination cycle:
 Each CDM cycle runs `runCrossPollinationCycle()` which:
@@ -225,13 +233,15 @@ Cycle N: Intelligence compounds exponentially
 
 ### Single CDM cycle execution order:
 ```
-1. generateTemplateBatch()          — 30 fresh templates
-2. runReactor()                     — Score & discover
+1. generateTemplateBatch()          — 30 fresh templates (159-primitive pool)
+2. runReactor()                     — Score & discover via CJPI
 3. runVaultBridge()                 — Ingest ENTIRE vault as training data
 4. runReactorChainBridge()          — Feed 126 chain templates
-5. runCrossPollinationCycle()       — Federate across 6 verticals
+5. runCrossPollinationCycle()       — Federate across 12 verticals
 6. runScannerOnAscensionNodes()     — Scan 20 most recent uploads
 7. addDiscovery() + routeDiscovery() — Route results to ledger/vault
+8. runProductCompiler()             — Assemble compatible chains into suites
+9. runMarketplaceRotation()         — Auto-price and rotate listings
 ```
 
 ### Client-side Shadow Mesh (supplemental):
