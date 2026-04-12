@@ -79,6 +79,10 @@ import {
   computeExpandedSynergy, getPrimitivePool,
 } from './expanded-primitives';
 import { generateTemplateBatch, type GeneratedTemplate } from './template-generator';
+import {
+  loadRetiredCombos, retireComboPermanently, isComboRetiredInMap,
+  comboHash as retirementHash,
+} from './combo-retirement';
 
 /** @deprecated — use getPrimitivePool() for dynamic resolution */
 const CANONICAL_MODULES = ALL_PRIMITIVES;
@@ -446,6 +450,9 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       .select('id');
     const knownIds = new Set((existingDiscoveries ?? []).map((d: any) => d.id));
 
+    // 3b. Load permanently retired combinations from DB
+    const retiredMap = await loadRetiredCombos();
+
     // 4. Generate candidates from templates (hardcoded + injected + exploratory), skipping already-known ones
     // Resolve the primitive pool for this run
     const activePool = getPrimitivePool((config.primitivePool as any) ?? 'full');
@@ -471,7 +478,14 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
     const allTemplates = [...baseTemplates, ...exploratoryTemplates];
     const candidates: ReactorCandidate[] = [];
     let skippedCount = 0;
+    let retiredSkipCount = 0;
     for (const template of allTemplates) {
+      // Skip permanently retired combinations
+      if (isComboRetiredInMap(retiredMap, template.modulePattern, template.category)) {
+        retiredSkipCount++;
+        continue;
+      }
+
       const stableId = computeStableHash(template.namePattern, template.modulePattern, template.category);
 
       // Skip if already promoted to vault or already discovered
@@ -507,7 +521,36 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       });
     }
 
-    console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known | ${candidates.length} new candidates`);
+    console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known + ${retiredSkipCount} retired | ${candidates.length} new candidates`);
+
+    // AUTO-RETIRE: If a template combo produced zero new candidates across this run, retire it permanently
+    // Track which combos from this run produced zero new discoveries
+    const comboHits = new Map<string, number>();
+    for (const template of allTemplates) {
+      const ch = retirementHash(template.modulePattern, template.category);
+      if (!comboHits.has(ch)) comboHits.set(ch, 0);
+    }
+    for (const c of candidates) {
+      const ch = retirementHash(c.moduleChain, c.category);
+      comboHits.set(ch, (comboHits.get(ch) ?? 0) + 1);
+    }
+    // Retire combos that yielded 0 new candidates
+    const retirementPromises: Promise<void>[] = [];
+    for (const [hash, hits] of comboHits.entries()) {
+      if (hits === 0 && !retiredMap.has(hash)) {
+        // Find the template to get module_chain and category
+        const tpl = allTemplates.find(t => retirementHash(t.modulePattern, t.category) === hash);
+        if (tpl) {
+          retirementPromises.push(
+            retireComboPermanently(tpl.modulePattern, tpl.category, 1, 0, 'reactor-auto')
+          );
+        }
+      }
+    }
+    if (retirementPromises.length > 0) {
+      await Promise.allSettled(retirementPromises);
+      console.log(`[Reactor] Auto-retired ${retirementPromises.length} exhausted combos permanently`);
+    }
 
     // 4. Sort by CJPI descending
     candidates.sort((a, b) => b.cjpi - a.cjpi);
