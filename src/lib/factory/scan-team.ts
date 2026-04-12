@@ -246,7 +246,7 @@ function toRecommendationCategory(
 /** Map vertical subdomain to scanner source label */
 const SUBDOMAIN_TO_SOURCE: Record<string, string> = {
   security: 'cyber', robotics: 'robotics', quantum: 'quantum',
-  llm: 'llm', agency: 'agency', media: 'media', ultimate: '',
+  llm: 'llm', agency: 'agency', media: 'media', fintech: 'fintech', ultimate: '',
 };
 
 function buildUltimateRecommendations(code: string): PrimitiveRecommendation[] {
