@@ -322,11 +322,12 @@ export function generateBootstrap(artifact: AscensionArtifact): string {
  * Render a human-readable pipeline summary.
  */
 export function renderPipelineSummary(artifact: AscensionArtifact): string {
-  const { pipeline: p, manifest: m } = artifact;
+  const { pipeline: p, manifest: m, verification: v, fingerprint: fp } = artifact;
   return [
     `═══ CMPSBL® Ascension Loop — ${m.name} v${m.version} ═══`,
     '',
     `Tier: ${m.tier} | CJPI: ${m.cjpi} | Primitives: ${m.modules.join(', ')}`,
+    `Fingerprint: ${fp.composite}`,
     '',
     `Pipeline: ${p.totalMs}ms total`,
     `  Scan:     ${p.phases.scanMs}ms → ${p.findingsGenerated} findings`,
@@ -335,6 +336,10 @@ export function renderPipelineSummary(artifact: AscensionArtifact): string {
     `  Proof:    ${p.phases.proofMs}ms`,
     '',
     `Behaviors: ${p.enforcingBehaviors} enforcing, ${p.observingBehaviors} observing`,
+    '',
+    `── Verification ──`,
+    `  Events: ${v.totalEvents} | Enforcements: ${v.enforcements} | Anomalies: ${v.anomalies}`,
+    `  Causal depth: ${v.causalChainDepth} | Integrity checks: ${v.integrityChecks}`,
     '',
     artifact.scan.behaviorReportText,
   ].join('\n');
