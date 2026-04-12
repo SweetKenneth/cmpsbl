@@ -47,13 +47,21 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { name: "Memory Stream", href: "/foundry", icon: Brain, badge: "LIVE", highlight: true },
+  // 1. Free value-first → lowest friction, highest CTR anchor
   { name: "Shield", href: "/shield", icon: Shield, badge: "FREE", highlight: true },
-  { name: "Mana", href: "/mana", icon: Layers, badge: "PATENT", highlight: true },
+  // 2. Live social proof → curiosity + FOMO
+  { name: "Memory Stream", href: "/foundry", icon: Brain, badge: "LIVE", highlight: true },
+  // 3. Browse intent → warm visitors ready to explore
   { name: "Store", href: "/store", icon: ShoppingBag, highlight: true },
-  { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
-  { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
+  // 4. Upgrade path → monetization after value demonstrated
   { name: "Ascension", href: "/ascension", icon: Sparkles, highlight: true },
+  // 5. Novel IP → differentiation hook
+  { name: "Mana", href: "/mana", icon: Layers, badge: "PATENT", highlight: true },
+  // 6. Curated showcase → discovery for engaged users
+  { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
+  // 7. External marketplace → committed buyers
+  { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
+  // 8-11. Lower-intent utility links
   { name: "Verticals", href: "/verticals", icon: Globe, badge: "EXPLORE" },
   { name: "Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
   { name: "Plans", href: "/plans", icon: CreditCard },
