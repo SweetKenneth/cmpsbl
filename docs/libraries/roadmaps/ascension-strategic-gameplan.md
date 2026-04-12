@@ -162,7 +162,7 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 - `generateDeploymentManifest()` — Machine-readable integration contract (compatibility matrix, behavior counts, verification metadata)
 - `generateIntegrationCode()` — Copy-paste code for ESM, CJS, script tag, and global formats
 - `getGlobalHealthCheck()` — Global health endpoint (reads latched pipeline state)
-- `getArtifactHealthCheck()` — Session-scoped health endpoint (deterministic, no global reads)
+- `getSessionHealthCheck()` — Session-scoped health endpoint (deterministic, no global reads, multi-tenant safe)
 - `UNCOMPUTED_FINGERPRINT` — Null-safe sentinel for pre-ascension state
 - `generateDeploymentReadme()` — Human-readable deployment guide auto-generated per artifact
 
@@ -190,7 +190,7 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 - `SessionStatus` — Quick-glance status: `{ health, coverage, fingerprint, identity }`
 - `UNCOMPUTED_FINGERPRINT` — Null-safe sentinel eliminates consumer null-branching
 - AbortSignal support for graceful cancellation
-- Session-scoped `healthCheck()` uses `getArtifactHealthCheck()` — no global state dependency
+- Session-scoped `healthCheck()` uses `getSessionHealthCheck()` — no global state dependency, multi-tenant safe
 - `coverageRatio` stored in `PipelineTrace` — single source of truth, reused everywhere
 - Single active session per process constraint documented
 
