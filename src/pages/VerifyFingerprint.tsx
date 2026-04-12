@@ -216,4 +216,48 @@ const Row = ({ label, value, mono }: { label: string; value: string; mono?: bool
   </div>
 );
 
+const CJPI_COMPONENTS = [
+  { key: 'structural' as const, label: 'Structural', weight: '25%', color: 'bg-blue-500' },
+  { key: 'binding' as const, label: 'Binding', weight: '25%', color: 'bg-purple-500' },
+  { key: 'activation' as const, label: 'Activation', weight: '25%', color: 'bg-emerald-500' },
+  { key: 'behavioral' as const, label: 'Behavioral', weight: '20%', color: 'bg-amber-500' },
+  { key: 'security' as const, label: 'Security', weight: '5%', color: 'bg-red-500' },
+];
+
+const DecomposedCJPIBreakdown = ({ score, primitiveCount }: { score: number; primitiveCount: number }) => {
+  const decomposed = computeDecomposedCJPI(score, primitiveCount);
+
+  return (
+    <div className="mt-4 pt-4 border-t border-border/50">
+      <div className="flex items-center justify-center gap-1.5 mb-3">
+        <BarChart3 className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          5-Component Decomposition
+        </span>
+      </div>
+      <div className="space-y-2">
+        {CJPI_COMPONENTS.map(({ key, label, weight, color }) => {
+          const value = decomposed[key];
+          return (
+            <div key={key} className="flex items-center gap-2 text-xs">
+              <span className="w-20 text-left text-muted-foreground">{label}</span>
+              <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full ${color} transition-all duration-500`}
+                  style={{ width: `${value}%` }}
+                />
+              </div>
+              <span className="w-8 text-right font-mono text-foreground">{value}</span>
+              <span className="w-8 text-right text-muted-foreground text-[10px]">{weight}</span>
+            </div>
+          );
+        })}
+      </div>
+      <p className="text-[10px] text-muted-foreground mt-2">
+        Weighted total: {decomposed.total} · Claim level: {decomposed.claimLevel}
+      </p>
+    </div>
+  );
+};
+
 export default VerifyFingerprint;
