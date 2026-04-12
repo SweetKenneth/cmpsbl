@@ -33,7 +33,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AmbientMusicPlayer } from "@/components/substrate-os/audio/AmbientMusicPlayer";
+
 
 const MARKETPLACE_URL = "https://marketplace.cmpsbl.com";
 
@@ -159,9 +159,6 @@ export function CmpsblNav() {
                   <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
                 </div>
               </Link>
-              <div className="border-l border-border/30 pl-2 ml-1">
-                <AmbientMusicPlayer />
-              </div>
             </div>
 
             {/* Desktop Links */}
