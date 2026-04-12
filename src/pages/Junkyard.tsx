@@ -1,8 +1,9 @@
 /**
  * The Junkyard — Raw, sub-threshold, and broken tech available for free
  * Browse categories, search items, download to workbench, or send to Restoration Lab.
+ * Includes LIVE discovery salvage — real sub-threshold discoveries from the reactor.
  */
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
