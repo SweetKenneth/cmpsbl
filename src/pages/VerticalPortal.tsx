@@ -125,7 +125,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(340 75% 55%)',
     primitiveCount: 16,
     capabilityCount: '100+',
-    status: 'Coming Soon' as const,
+    status: 'Active' as const,
   },
   {
     id: 'legal',
@@ -136,7 +136,7 @@ const STATIC_VERTICALS = [
     accentColor: 'hsl(220 60% 50%)',
     primitiveCount: 16,
     capabilityCount: '95+',
-    status: 'Coming Soon' as const,
+    status: 'Active' as const,
   },
   {
     id: 'gaming',
