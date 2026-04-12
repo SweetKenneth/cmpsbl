@@ -160,7 +160,7 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
       return 'BEACON';
     };
     const activePrimitives = new Set(
-      enabledRules.map(r => CAPABILITY_TO_PRIMITIVE[r.capability]).filter(Boolean)
+      enabledRules.map(r => capToPrimitive(r.capability)).filter(Boolean)
     );
 
     const findings = bridge.buildAttachmentPlan(boundaries, activePrimitives);
