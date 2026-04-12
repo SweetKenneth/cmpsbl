@@ -57,15 +57,16 @@ app.listen(3000);
 ```
 
 > No changes to your original code. Same behavior, now governed.
+> No framework changes. No rewrites. No lock-in.
 
 ---
 
 ## What changed
 
-- `handlers.getUsers` → `session.exports.getUsers` (no refactor required)
-- `/health` now reflects real system state, not a static response
-- `/status` returns `{ health, coverage, fingerprint, identity }` in one call
-- Every function call is verified against its behavioral contract
+- `handlers.getUsers` → `session.exports.getUsers` (drop-in, no refactor)
+- `/health` becomes authoritative — reflects real activation + runtime state
+- `/status` returns `{ health, coverage, fingerprint }` in one call
+- Every function call is evaluated and enforced against its behavioral contract
 
 ---
 
@@ -98,6 +99,8 @@ app.listen(3000);
 }
 ```
 
+> → This is not a heartbeat — it's a live report of what your system is actually doing.
+
 ---
 
 ## /status response
@@ -118,12 +121,14 @@ app.listen(3000);
 
 > `identity` gives advanced users full traceability without extra calls. `fingerprint` is always a string — never null.
 
+Use `/status` for dashboards, alerts, or deployment gates.
+
 ---
 
 ## Verification Report
 
 ```
-═══ CMPSBL® Verification Report ═══
+═══ CMPSBL® Verification Report (Runtime Proof) ═══
 
 Artifact: a3f8c1d2
 Events:   12 total
