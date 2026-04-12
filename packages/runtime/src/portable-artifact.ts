@@ -279,38 +279,42 @@ export interface HealthCheckResponse {
 
 const bootTime = Date.now();
 
+/** Sentinel fingerprint for pre-ascension / uncomputed state */
+export const UNCOMPUTED_FINGERPRINT: ArtifactFingerprint = Object.freeze({
+  manifestHash: 0,
+  attachmentHash: 0,
+  composite: 'uncomputed',
+  computedAt: 0,
+});
+
 /**
- * Generate a health check response for production monitoring.
- * Can be wired to any HTTP framework's /health endpoint.
- *
- * When called with an artifact fingerprint + coverage ratio,
- * the response is scoped to that session (no global state dependency).
- * Without arguments, falls back to global latched state.
+ * Artifact-scoped health check — deterministic, no global state reads.
+ * Use this inside an AscensionSession for accurate per-artifact health.
  */
-export function getHealthCheck(
-  opts?: {
-    readonly fingerprint: ArtifactFingerprint | null;
-    readonly coverageRatio: number;
-    readonly verification: VerificationSummary;
-  },
-): HealthCheckResponse {
+export function getArtifactHealthCheck(input: {
+  readonly fingerprint: ArtifactFingerprint | null;
+  readonly coverageRatio: number;
+  readonly verification: VerificationSummary;
+}): HealthCheckResponse {
   const env = detectEnvironment();
+  const unified = resolveHealthFromSummary(input.coverageRatio, input.verification);
+  return {
+    status: unified.status,
+    artifact: input.verification.artifactFingerprint,
+    fingerprint: (input.fingerprint ?? UNCOMPUTED_FINGERPRINT).composite,
+    environment: env,
+    uptime: Date.now() - bootTime,
+    verification: input.verification,
+    timestamp: new Date().toISOString(),
+  };
+}
 
-  // Session-scoped path — deterministic, no global reads
-  if (opts) {
-    const unified = resolveHealthFromSummary(opts.coverageRatio, opts.verification);
-    return {
-      status: unified.status,
-      artifact: opts.verification.artifactFingerprint,
-      fingerprint: opts.fingerprint?.composite ?? null,
-      environment: env,
-      uptime: Date.now() - bootTime,
-      verification: opts.verification,
-      timestamp: new Date().toISOString(),
-    };
-  }
-
-  // Global fallback path (backward compat)
+/**
+ * Global health check — reads latched pipeline state.
+ * Use when no session handle is available (e.g. standalone /health endpoint).
+ */
+export function getGlobalHealthCheck(): HealthCheckResponse {
+  const env = detectEnvironment();
   const fp = getActiveFingerprint();
 
   if (!fp) {
@@ -403,10 +407,10 @@ export function generateDeploymentReadme(
     '## Health Check',
     '',
     '```js',
-    `import { getHealthCheck } from '@cmpsbl/runtime';`,
+    `import { getGlobalHealthCheck } from '@cmpsbl/runtime';`,
     '',
     '// Wire to your framework (Express, Hono, etc.)',
-    `app.get('/health', (req, res) => res.json(getHealthCheck()));`,
+    `app.get('/health', (req, res) => res.json(getGlobalHealthCheck()));`,
     '```',
     '',
     '---',

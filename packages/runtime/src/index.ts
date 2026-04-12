@@ -900,7 +900,9 @@ export {
   generateDeploymentManifest,
   loadArtifactPayload,
   generateIntegrationCode,
-  getHealthCheck,
+  getGlobalHealthCheck,
+  getArtifactHealthCheck,
+  UNCOMPUTED_FINGERPRINT,
   generateDeploymentReadme,
 } from './portable-artifact';
 

@@ -64,31 +64,37 @@ app.listen(3000);
 
 - `handlers.getUsers` → `session.exports.getUsers` (no refactor required)
 - `/health` now reflects real system state, not a static response
-- `/status` returns `{ health, coverage, fingerprint }` in one call
+- `/status` returns `{ health, coverage, fingerprint, identity }` in one call
 - Every function call is verified against its behavioral contract
 
 ---
 
 ## /health response
 
+`session.healthCheck()` is **session-scoped** — it reads from this artifact's data, not global state. Safe for any deployment pattern.
+
 ```json
 {
   "status": "healthy",
-  "version": "2.0.0",
-  "timestamp": "2026-04-12T08:30:00.000Z",
+  "artifact": "a3f8c1d2",
+  "fingerprint": "a3f8c1d2",
   "environment": "node",
-  "activation": {
-    "status": "healthy",
-    "coverageRatio": 0.92,
-    "coveragePct": 92
-  },
-  "runtime": {
-    "status": "healthy",
-    "anomalies": 0,
+  "uptime": 12345,
+  "verification": {
+    "artifactFingerprint": "a3f8c1d2",
+    "totalEvents": 12,
+    "byKind": {
+      "attachment_applied": 4,
+      "activation_wrapped": 4,
+      "proof_generated": 1,
+      "integrity_check": 1,
+      "fingerprint_bound": 1,
+      "scan_completed": 1
+    },
     "enforcements": 4,
-    "totalEvents": 12
+    "anomalies": 0
   },
-  "fingerprint": "a3f8c1d2"
+  "timestamp": "2026-04-12T08:30:00.000Z"
 }
 ```
 
@@ -100,9 +106,17 @@ app.listen(3000);
 {
   "health": "healthy",
   "coverage": 0.92,
-  "fingerprint": "a3f8c1d2"
+  "fingerprint": "a3f8c1d2",
+  "identity": {
+    "manifestHash": 2918437651,
+    "attachmentHash": 1047293821,
+    "composite": "a3f8c1d2",
+    "computedAt": 1744444200000
+  }
 }
 ```
+
+> `identity` gives advanced users full traceability without extra calls. `fingerprint` is always a string — never null.
 
 ---
 
@@ -138,6 +152,7 @@ Status: HEALTHY
 | `anomalies: 0` | No runtime contract violations detected |
 | `enforcements: 4` | 4 behaviors actively enforcing (not just observing) |
 | `fingerprint` | Identity hash — proves artifact integrity |
+| `identity` | Full traceability: manifest hash, attachment hash, composite, timestamp |
 | `health: healthy` | Coverage ≥ 80% and zero anomalies |
 
 ---
@@ -152,6 +167,19 @@ Status: HEALTHY
 
 ---
 
+## API Reference
+
+| Method | Returns | Purpose |
+|--------|---------|---------|
+| `session.health()` | `HealthStatus` | Unified health verdict |
+| `session.status()` | `SessionStatus` | Quick-glance: health + coverage + fingerprint + identity |
+| `session.healthCheck()` | `HealthCheckResponse` | Full /health payload (session-scoped) |
+| `session.summary()` | `string` | Human-readable pipeline summary |
+| `session.verificationReport()` | `string` | Full verification audit trail |
+| `session.destroy()` | `void` | Teardown (resets global state) |
+
+---
+
 ## Teardown
 
 ```ts
@@ -162,6 +190,20 @@ process.on('SIGTERM', () => {
 ```
 
 > ⚠ Single active session per process. `destroy()` resets global verification state.
+
+---
+
+## Standalone (no session)
+
+If you don't need session management, use `getGlobalHealthCheck()`:
+
+```ts
+import { getGlobalHealthCheck } from '@cmpsbl/runtime';
+
+app.get('/health', (_, res) => res.json(getGlobalHealthCheck()));
+```
+
+> This reads from the global latched pipeline state. Use `session.healthCheck()` when a session is available.
 
 ---
 
