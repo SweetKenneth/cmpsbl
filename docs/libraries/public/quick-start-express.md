@@ -20,7 +20,12 @@ app.listen(3000);
 ```
 
 **What you have:** a working API.
-**What you don't have:** runtime verification, activation coverage, behavioral enforcement, or proof that your code is doing what it claims.
+
+**What you don't have:**
+- Runtime verification
+- Activation coverage
+- Behavioral enforcement
+- Proof your code is doing what it claims
 
 ---
 
@@ -38,11 +43,11 @@ const source = readFileSync('./handlers.ts', 'utf-8');
 // One call — Ascension wraps every export with verification
 const session = init(handlers, source, { name: 'api-handlers' });
 
-// session.exports is a drop-in replacement
+// Drop-in replacement — same signatures
 app.get('/users', session.exports.getUsers);
 app.post('/users', session.exports.createUser);
 
-// /health is now authoritative — unified activation + runtime signal
+// Authoritative system health (activation + runtime)
 app.get('/health', (_, res) => res.json(session.healthCheck()));
 
 // Quick-glance status for dashboards
@@ -51,9 +56,14 @@ app.get('/status', (_, res) => res.json(session.status()));
 app.listen(3000);
 ```
 
-**What changed:**
-- `handlers.getUsers` → `session.exports.getUsers` (drop-in, same signature)
-- `/health` returns real activation coverage + runtime anomaly detection
+> No changes to your original code. Same behavior, now governed.
+
+---
+
+## What changed
+
+- `handlers.getUsers` → `session.exports.getUsers` (no refactor required)
+- `/health` now reflects real system state, not a static response
 - `/status` returns `{ health, coverage, fingerprint }` in one call
 - Every function call is verified against its behavioral contract
 
@@ -120,32 +130,31 @@ Status: HEALTHY
 
 ---
 
-## What each piece tells you
+## What each signal means
 
 | Signal | Meaning |
 |--------|---------|
 | `coverage: 0.92` | 92% of detected function boundaries are wrapped and verified |
 | `anomalies: 0` | No runtime contract violations detected |
-| `enforcements: 4` | 4 behavioral rules actively enforcing (not just observing) |
-| `fingerprint` | Cryptographic identity — proves this artifact hasn't been tampered with |
-| `health: healthy` | Unified verdict: activation ≥ 80% AND zero anomalies |
+| `enforcements: 4` | 4 behaviors actively enforcing (not just observing) |
+| `fingerprint` | Identity hash — proves artifact integrity |
+| `health: healthy` | Coverage ≥ 80% and zero anomalies |
 
 ---
 
-## Three possible health states
+## Health states
 
 | Status | Meaning | Action |
 |--------|---------|--------|
-| `healthy` | Coverage ≥ 80%, no anomalies | Ship it |
-| `partial` | Coverage 50–79%, or no runtime events yet | Investigate gaps |
-| `degraded` | Coverage < 50%, or anomalies detected | Do not deploy |
+| `healthy` | Coverage ≥ 80%, no anomalies | Ship |
+| `partial` | Coverage 50–79% or low runtime signal | Investigate |
+| `degraded` | Coverage < 50% or anomalies detected | Do not deploy |
 
 ---
 
 ## Teardown
 
 ```ts
-// On graceful shutdown
 process.on('SIGTERM', () => {
   session.destroy();
   process.exit(0);
