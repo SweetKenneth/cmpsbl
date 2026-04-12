@@ -205,16 +205,72 @@ export function mapFindingsToPolicy(findings: readonly ScanFinding[]): ScanToPol
     return b.priority - a.priority;
   });
 
-  const enforcingCount = recommendations.filter(r => r.enforces).length;
+  // Phase 4.1: compose multi-capability recommendations per function
+  const composed = composePolicies(recommendations);
+  const enforcingCount = composed.filter(r => r.enforces).length;
 
   return {
-    recommendations,
+    recommendations: composed,
     enforcingCount,
-    observingCount: recommendations.length - enforcingCount,
+    observingCount: composed.length - enforcingCount,
     primitivesUsed: [...primitivesUsed].sort(),
     enginesActivated: [...enginesUsed].sort(),
     unmapped,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §4.1 — POLICY COMPOSITION (multi-capability per function)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Merge multiple capability recommendations targeting the same function
+ * into a single composed policy with a unified action chain.
+ */
+function composePolicies(
+  recommendations: PolicyRecommendation[],
+): PolicyRecommendation[] {
+  const grouped = new Map<string, PolicyRecommendation[]>();
+
+  for (const rec of recommendations) {
+    const existing = grouped.get(rec.functionName) ?? [];
+    existing.push(rec);
+    grouped.set(rec.functionName, existing);
+  }
+
+  const composed: PolicyRecommendation[] = [];
+
+  for (const [, recs] of grouped) {
+    if (recs.length === 1) {
+      composed.push(recs[0]);
+      continue;
+    }
+
+    // Merge action chains, deduplicate
+    const mergedActions = Array.from(new Set(
+      recs.flatMap(r =>
+        Array.isArray(r.policy.then)
+          ? (r.policy.then as OrchestrationAction[])
+          : [r.policy.then as OrchestrationAction]
+      )
+    ));
+
+    const enforcing = recs.some(r => r.enforces);
+
+    composed.push({
+      ...recs[0],
+      capability: 'composed',
+      policy: {
+        on: 'execution_started' as OrchestrationSignal,
+        then: mergedActions,
+      },
+      behaviorDescription: `Composed: ${recs.map(r => r.capability).join(' + ')}`,
+      priority: Math.max(...recs.map(r => r.priority)),
+      enforces: enforcing,
+    });
+  }
+
+  return composed;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
