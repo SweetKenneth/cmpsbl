@@ -288,10 +288,11 @@ export const UNCOMPUTED_FINGERPRINT: ArtifactFingerprint = Object.freeze({
 });
 
 /**
- * Artifact-scoped health check — deterministic, no global state reads.
- * Use this inside an AscensionSession for accurate per-artifact health.
+ * Session-scoped health check — deterministic, no global state reads.
+ * Use this inside an AscensionSession for accurate per-session health.
+ * Safe for multi-instance and multi-tenant environments.
  */
-export function getArtifactHealthCheck(input: {
+export function getSessionHealthCheck(input: {
   readonly fingerprint: ArtifactFingerprint | null;
   readonly coverageRatio: number;
   readonly verification: VerificationSummary;
