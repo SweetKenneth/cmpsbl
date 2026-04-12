@@ -15,11 +15,15 @@ import { LexRuleSelector, type LexRuleConfig } from '@/components/mana/LexRuleSe
 import { ManaAttachPhase, type AttachmentResult } from '@/components/mana/ManaAttachPhase';
 import { ManaExportPhase } from '@/components/mana/ManaExportPhase';
 import { motion } from 'framer-motion';
-import { Award } from 'lucide-react';
+import { Award, Construction, Lock } from 'lucide-react';
+import { useUserRole } from '@/hooks/useUserRole';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const PATENT_APP_NO = '64/031,637';
 
 export default function ManaLab() {
+  const { isGovernor, loading: roleLoading } = useUserRole();
   const [step, setStep] = useState(0);
   const [upload, setUpload] = useState<ManaUploadResult | null>(null);
   const [mergeResult, setMergeResult] = useState<ManaMergeResult | null>(null);
