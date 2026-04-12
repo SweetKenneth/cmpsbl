@@ -352,7 +352,7 @@ export default function Junkyard() {
             </div>
 
             <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-              {ARCHIVE_ITEMS.length} items · {ARCHIVE_ITEMS.filter(i => i.condition === 'broken' || i.condition === 'salvageable').length} restorable
+              {ARCHIVE_ITEMS.length + liveCount} items · {liveCount > 0 ? `${liveCount} from reactor · ` : ''}{ARCHIVE_ITEMS.filter(i => i.condition === 'broken' || i.condition === 'salvageable').length} restorable
             </p>
           </motion.div>
         </div>
