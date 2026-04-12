@@ -944,4 +944,5 @@ export {
 export type {
   AscensionConfig,
   AscensionSession,
+  SessionStatus,
 } from './production-provider';
