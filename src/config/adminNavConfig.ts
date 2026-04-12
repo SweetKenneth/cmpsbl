@@ -98,13 +98,14 @@ export const adminNavConfig: NavGroup[] = [
     id: "surfaces",
     title: "Surfaces",
     items: [
+      { id: "control-center", label: "Control Center", path: "/control", icon: Gauge, isNew: true },
+      { id: "posthog", label: "PostHog Analytics", path: "/admin/posthog", icon: BarChart3, isNew: true },
+      { id: "analytics", label: "Analytics Intelligence", path: "/admin/analytics", icon: Eye, isNew: true },
       { id: "system-feed", label: "System Feed", path: "/system-feed", icon: Brain },
       { id: "dream-eater", label: "Dream Eater", path: "/feed-dream-eater", icon: Moon },
       { id: "proof", label: "Proof Mode", path: "/proof", icon: Shield },
       { id: "demo", label: "Demo", path: "/demo", icon: Activity },
       { id: "lab", label: "Lab", path: "/lab", icon: HeartPulse },
-      { id: "analytics", label: "Analytics Intelligence", path: "/admin/analytics", icon: Eye, isNew: true },
-      { id: "posthog", label: "PostHog Analytics", path: "/admin/posthog", icon: BarChart3, isNew: true },
     ],
   },
   {
