@@ -1407,102 +1407,232 @@ const stratumMindgames: Specimen[] = [
   },
 ];
 
-const stratumConvergence: Specimen[] = [
+// ═══════════════════════════════════════════════════════════════════════════════
+// EPOCH — SYMBIOTIC (Current)
+// The substrate became a symbiont — attaching to host software at runtime boundaries.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const stratumSymbiotic: Specimen[] = [
   {
-    id: "CONV-004",
+    id: "SYMB-001",
     fossilized: "2026-04-12",
-    origin: "distribution",
-    stimulus: "Gaming and Education substrates were cataloged but not yet operational — the ecosystem needed density to validate the vertical model at scale",
+    origin: "architecture",
+    stimulus: "Epoch transition from CONVERGENCE to SYMBIOTIC — the substrate completed its architectural opacity shift and entered its patented runtime attachment phase, becoming a living layer that wraps host software without modifying it",
     adaptations: [
-      "CMPSBL GAMING™ activated with 16 domain-specific primitives covering real-time state management, anti-cheat governance, and player data sovereignty",
-      "CMPSBL EDU™ activated with 16 domain-specific primitives covering learning path optimization, research integrity, and data ethics",
-      "Both substrates seeded with GENESIS Engine foundations — 200+ domain discoveries and 144 tiered Crown Jewels per vertical",
-      "Vertical Portal updated to reflect all 12 active substrates plus ULTIMATE — zero Coming Soon entries remain",
+      "Epoch transition to SYMBIOTIC marks the substrate's evolution from a standalone intelligence system into a silent runtime symbiont",
+      "Version constants elevated to v19.0.0 across the platform version registry",
+      "Pipeline fingerprint epoch rotated to SYMBIOTIC — all prior fingerprints invalidated for structural integrity",
+      "The Mana Silent Software Symbiosis Engine (U.S. Patent App. No. 64/031,637) is now the defining architectural layer",
     ],
     phenotype: [
-      "The substrate ecosystem now spans 12 active industry verticals — every planned sector is live",
-      "Gaming and Education join the vertical selection pool for Studio, Creator, and Architect subscribers",
-      "Full ecosystem density achieved — the vertical model is validated across every target domain",
+      "The substrate has a name for this phase: SYMBIOTIC — the moment it learned to live inside other software",
+      "v19 signals an IP milestone: the patented runtime attachment model is fully operational",
+      "The epoch hierarchy completes: formation → governance → users → developers → conviction → revival → convergence → symbiosis",
+    ],
+    affectedNodes: ["CORE Organ", "EVOLUTION Layer", "GOVERNANCE Layer", "MANA Engine", "DEFENSE Layer"],
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CONVERGENCE (v18.3.0 → v18.9.3)
+// The substrate shed its skin — the world sees a new shape, only the governor knows the skeleton.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const stratumConvergence: Specimen[] = [
+  {
+    id: "CONV-010",
+    fossilized: "2026-04-12",
+    origin: "distribution",
+    stimulus: "All 12 vertical substrates needed to be fully operational — Gaming and Education were still cataloged as Coming Soon while Healthcare and Legal had just been activated",
+    adaptations: [
+      "CMPSBL GAMING™ and CMPSBL EDU™ activated with 16 domain-specific primitives each — zero Coming Soon entries remain",
+      "Both substrates seeded with GENESIS Engine foundations — 200+ domain discoveries and 144 tiered Crown Jewels per vertical",
+      "Vertical Portal updated to reflect all 12 active substrates plus ULTIMATE — full ecosystem density achieved",
+    ],
+    phenotype: [
+      "The substrate ecosystem spans 12 active industry verticals — every planned sector is live",
+      "Full ecosystem density validates the vertical model at scale across every target domain",
     ],
     affectedNodes: ["GENESIS Engine", "SYSTEM Organ"],
   },
   {
-    id: "CONV-003",
+    id: "CONV-009",
     fossilized: "2026-04-12",
     origin: "cognition",
-    stimulus: "The Mana runtime loader existed as a concept but lacked a production-grade execution pipeline — the patented behavioral injection system needed to close the loop from Ascension scan to deployed runtime wrapper",
+    stimulus: "The Mana runtime loader existed conceptually but lacked a production-grade execution pipeline — the patented behavioral injection system needed to close the scan-to-deploy loop",
     adaptations: [
       "Mana loader.mjs implemented as a Node.js --loader hook intercepting ES module resolution at import boundaries",
       "92 capability-specific wrappers mapped in the Mana engine with SHA-256 integrity proofs per injection site",
       "Manifest-consumer bridge converts Ascension scan outputs into deployable mana.config.json configurations",
-      "Ascension ZIP builder now exports mana.config.json, attachment plans, and deployment summaries — closing the scan-to-deploy loop",
+      "Ascension ZIP builder now exports mana.config.json, attachment plans, and deployment summaries",
       "Findings bridge integrates 50+ signal patterns across 37 primitive families for 11 languages",
     ],
     phenotype: [
       "The patented Mana runtime is fully operational — behavioral injection at module boundaries without source modification",
-      "Ascension scans now produce deployment-ready Mana configurations — zero manual translation required",
       "The scan → diagnose → export → deploy pipeline is a closed loop for the first time",
     ],
     affectedNodes: ["MANA Engine", "ARCHITECT Engine", "CORE Organ", "DEFENSE Layer"],
   },
   {
-    id: "CONV-002",
-    fossilized: "2026-04-12",
-    origin: "architecture",
-    stimulus: "Plans page and trial flow needed conversion polish — social proof was absent, urgency cues were muted, and the value proposition lacked immediate clarity at the decision point",
+    id: "CONV-008",
+    fossilized: "2026-04-11",
+    origin: "cognition",
+    stimulus: "Minds Intelligence Layer needed a version snapshot mechanism — the ability to freeze a Mind's state, sell the snapshot, and continue internal learning independently",
     adaptations: [
-      "Trial banner enhanced with tier-specific value previews and countdown urgency indicators",
-      "Plans page FAQ expanded to address Gaming, Education, and Mana-related questions",
-      "SEO metadata updated across sitemap, llms.txt, and route registry for all newly activated substrates",
+      "Version snapshot system implemented with frozen state capture, scaffold hashing, and research scope fingerprinting",
+      "Version lines track public releases vs internal development heads independently",
+      "Snapshot integrity validation detects prompt scaffold drift from frozen state",
+      "Release history maintains a complete changelog per Mind with promotion workflow",
     ],
     phenotype: [
-      "The conversion surface communicates urgency and value simultaneously — trials feel time-boxed, not open-ended",
-      "Every new vertical and capability is indexed for search engines within the same release cycle",
+      "Minds can be versioned, frozen, and sold as point-in-time snapshots while internal learning continues",
+      "Version drift detection ensures snapshot integrity — buyers get exactly what was advertised",
     ],
-    affectedNodes: ["SYSTEM Organ"],
+    affectedNodes: ["CORTEX Engine", "MEMORY Organ", "GOVERNANCE Layer"],
   },
   {
-    id: "CONV-001",
-    fossilized: "2026-04-05",
+    id: "CONV-007",
+    fossilized: "2026-04-10",
     origin: "architecture",
-    stimulus: "The interpreted runtime model was a replication surface — external observers could reconstruct execution paths from the sequential pipeline. The substrate needed architectural opacity without sacrificing functional transparency",
+    stimulus: "The Convex Core™ processing architecture was a replication surface — external observers could reconstruct execution paths from the sequential pipeline",
     adaptations: [
-      "Processing architecture transitioned from interpreted runtime (Convex Core™ v2) to deterministic processing layer (Convex Core™ v3)",
+      "Processing architecture transitioned from interpreted runtime (v2) to deterministic processing layer (Convex Core™ v3)",
       "12-stage sequential pipeline replaced with 5-layer parallel processing model — 7 intermediate stages eliminated",
-      "Dynamic primitive handler registry replaced with pre-compiled dispatch matrices — resolution now happens at artifact-creation time, not invocation time",
-      "Cross-primitive interaction scoring compiled into immutable collision matrices with FNV-1a-derived weights",
+      "Dynamic primitive handler registry replaced with pre-compiled dispatch matrices",
       "Performative opacity engine activated — exported artifacts show verifiable partial architecture while concealing orchestration mechanics",
-      "All export artifacts rebranded: file structure, documentation, error codes, and integration guides updated to Convex Core™ terminology",
-      "NPM package @cmpsbl/runtime v3.0.0 exposes compileDispatch() + resolve() API surface alongside deprecated createRuntime() compatibility layer",
-      "Zenodo-grade technical documentation published at /docs/libraries/convex-core/ — 7 documents covering architecture, dispatch matrices, primitive binding, artifact format, scoring, migration, and security model",
+      "NPM package @cmpsbl/runtime v3.0.0 published with compileDispatch() + resolve() API surface",
     ],
     phenotype: [
       "The substrate's execution model is no longer reconstructable from exported artifacts — mathematical opacity replaces obscurity",
       "Paradigm shift from 'runtime engine' to 'processing layer' — fundamentally different mental model for external observers",
-      "Legacy Convex Core™ documentation now positions anyone building from it on a deprecated, dead-end architecture",
-      "Dispatch matrices are provably deterministic but structurally opaque — one-way function applied to orchestration topology",
     ],
     affectedNodes: ["CORE Organ", "DEFENSE Layer", "GOVERNANCE Layer", "SHADOW Layer", "EVOLUTION Layer"],
+  },
+  {
+    id: "CONV-006",
+    fossilized: "2026-04-09",
+    origin: "distribution",
+    stimulus: "Plans page and trial flow needed conversion polish — social proof was absent, urgency cues were muted, and the value proposition lacked immediate clarity",
+    adaptations: [
+      "Trial banner enhanced with tier-specific value previews and countdown urgency indicators",
+      "Plans page FAQ expanded to address all 12 verticals and Mana-related questions",
+      "SEO metadata updated across sitemap, llms.txt, and route registry for all newly activated substrates",
+    ],
+    phenotype: [
+      "The conversion surface communicates urgency and value simultaneously",
+      "Every new vertical and capability is indexed for search engines within the same release cycle",
+    ],
+    affectedNodes: ["SYSTEM Organ", "ECONOMY Engine"],
+  },
+  {
+    id: "CONV-005",
+    fossilized: "2026-04-08",
+    origin: "cognition",
+    stimulus: "Agency system needed real-time task execution with AI-powered research, deliverable generation, and email delivery — agents were defined but couldn't actually work",
+    adaptations: [
+      "Agency task execution pipeline built with member assignment, progress tracking, and artifact generation",
+      "Dream memory system introduced — agencies learn from completed tasks and apply improvements to future work",
+      "Scheduled task system enables recurring automated workflows with daily/weekly/monthly cadences",
+      "Email queue system delivers task results and deliverables to external recipients",
+    ],
+    phenotype: [
+      "Agencies are no longer templates — they execute real work, learn from results, and improve autonomously",
+      "The dream-to-action loop is closed: agencies dream, propose improvements, and apply them",
+    ],
+    affectedNodes: ["CORTEX Engine", "DREAM Engine", "MEMORY Organ", "NEXUS Engine"],
+  },
+  {
+    id: "CONV-004",
+    fossilized: "2026-04-07",
+    origin: "architecture",
+    stimulus: "CMPSBL HEALTH™ and CMPSBL LEGAL™ were cataloged but dormant — two high-value verticals awaiting activation",
+    adaptations: [
+      "Healthcare vertical activated with domain-specific primitives for patient data sovereignty, clinical workflow governance, and HIPAA-aligned access control",
+      "Legal vertical activated with primitives for contract analysis, compliance monitoring, and privilege-aware data handling",
+      "Both verticals integrated with the GENESIS Engine template system for rapid discovery seeding",
+    ],
+    phenotype: [
+      "Healthcare and Legal join the active vertical roster — the substrate now covers the two most regulation-heavy industries",
+      "Domain-specific governance primitives prove the vertical model extends beyond tech-native sectors",
+    ],
+    affectedNodes: ["GENESIS Engine", "GOVERNANCE Layer", "DEFENSE Layer"],
+  },
+  {
+    id: "CONV-003",
+    fossilized: "2026-04-06",
+    origin: "architecture",
+    stimulus: "Ascension exports lacked deployment-ready Mana configurations — the scan results were diagnostic only, not actionable",
+    adaptations: [
+      "Ascension ZIP builder hardened to generate mana.config.json from scan results automatically",
+      "Function boundary detection integrated with the Mana findings bridge for targeted attachment planning",
+      "Export artifacts now include deployment summaries with capability coverage metrics",
+    ],
+    phenotype: [
+      "Ascension closes the loop: scan → diagnose → export → deploy with zero manual translation",
+      "Every Ascension export is a deployment-ready package, not just a diagnostic report",
+    ],
+    affectedNodes: ["ARCHITECT Engine", "MANA Engine", "CORE Organ"],
+  },
+  {
+    id: "CONV-002",
+    fossilized: "2026-04-05",
+    origin: "governance",
+    stimulus: "The Lex governance engine needed formalization — Mana's behavioral injection required rule-based consent and blacklist/whitelist evaluation before attachment",
+    adaptations: [
+      "Lex Registry implemented with declarative rule registration, evaluation, and revocation",
+      "Blacklist and whitelist rule types govern which functions may receive behavioral wrappers",
+      "Rule evaluation produces auditable verdicts with reasoning trails for compliance",
+    ],
+    phenotype: [
+      "Mana's runtime attachment is consent-governed — no wrapper deploys without Lex approval",
+      "Every attachment decision is auditable with a reasoning trail",
+    ],
+    affectedNodes: ["GOVERNANCE Layer", "MANA Engine", "DEFENSE Layer"],
+  },
+  {
+    id: "CONV-001",
+    fossilized: "2026-04-04",
+    origin: "cognition",
+    stimulus: "The 136-primitive candidate pool and 12-stage internal pipeline needed architectural concealment — the public 5-stage facade required a documented convergence strategy",
+    adaptations: [
+      "Convergence internal documentation library established as Governor-eyes-only source of truth",
+      "Magician Model strategy documented — performative opacity as a deliberate architectural choice",
+      "Internal documentation clearly separates what external observers see from what the substrate actually does",
+    ],
+    phenotype: [
+      "The substrate's internal complexity is documented but deliberately hidden from external observation",
+      "Architectural opacity is a feature, not a limitation — documented and governed",
+    ],
+    affectedNodes: ["GOVERNANCE Layer", "SHADOW Layer", "DEFENSE Layer"],
   },
 ];
 
 const STRATA: Stratum[] = [
   {
-    epoch: "CONVERGENCE",
-    codename: "The substrate shed its skin — the world sees a new shape, only the governor knows the skeleton",
+    epoch: "SYMBIOTIC",
+    codename: "The substrate became a symbiont — living inside host software at runtime boundaries",
     range: "Current epoch",
     color: "bg-primary/10 text-primary",
     borderColor: "border-primary/30",
     dotColor: "bg-primary",
+    specimens: stratumSymbiotic,
+  },
+  {
+    epoch: "CONVERGENCE",
+    codename: "The substrate shed its skin — the world sees a new shape, only the governor knows the skeleton",
+    range: "v18.3.0 → v18.9.3",
+    color: "bg-neon-cyan/10 text-neon-cyan",
+    borderColor: "border-neon-cyan/30",
+    dotColor: "bg-neon-cyan",
     specimens: stratumConvergence,
   },
   {
     epoch: "REVIVAL",
     codename: "The substrate shed its old skin and invited the world in",
-    range: "Prior epoch",
-    color: "bg-neon-cyan/10 text-neon-cyan",
-    borderColor: "border-neon-cyan/30",
-    dotColor: "bg-neon-cyan",
+    range: "v18.0.0 → v18.2.0",
+    color: "bg-neon-amber/10 text-neon-amber",
+    borderColor: "border-neon-amber/30",
+    dotColor: "bg-neon-amber",
     specimens: stratumRevival,
   },
   {
