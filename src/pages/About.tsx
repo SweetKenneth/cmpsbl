@@ -180,17 +180,19 @@ export default function About() {
             {...stagger(0.1)}
             className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.1] mb-5"
           >
-            Cognitive <span className="text-primary">Infrastructure</span>
-            <br className="hidden sm:block" />
-            {" "}for AI
+            Governed Cognitive
+            <br />
+            <span className="bg-gradient-to-r from-primary to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent">
+              Infrastructure
+            </span>
           </motion.h1>
 
            <motion.p
             {...stagger(0.15)}
-            className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8"
+            className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mb-8 font-medium"
           >
             CMPSBL is the substrate — composable{" "}
-            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>{" "}
             where your systems learn during downtime, self-tune within guardrails, and get smarter with every interaction. The{" "}
             <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
             captures what they discover.

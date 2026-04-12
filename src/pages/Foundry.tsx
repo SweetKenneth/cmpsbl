@@ -254,21 +254,24 @@ function ArchiveBrowseView() {
 
       {/* Hero */}
       <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-destructive/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
         <div className="relative container mx-auto max-w-5xl text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-destructive/20 bg-destructive/5 mb-5 sm:mb-6">
-              <Archive className="w-4 h-4 text-destructive" />
-              <span className="text-xs font-mono tracking-wider text-destructive">THE OPEN ARCHIVE</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5 sm:mb-6">
+              <Archive className="w-4 h-4 text-primary" />
+              <span className="text-xs font-semibold tracking-wide text-primary">Memory Stream</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 sm:mb-4">
-              Where <span className="text-destructive">Broken Tech</span> Gets a Second Life
+              The Open
+              <br />
+              <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent">
+                Archive
+              </span>
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
-              Raw discoveries scored below 68. Damaged runtimes pulled from production.
-              Legacy systems that shaped what we build today. Everything here is free to take —
-              or <Link to="/ascension" className="text-neon-amber hover:underline font-medium">send it to the Restoration Lab</Link> and
-              we'll bring it back to spec.
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed font-medium">
+              Raw discoveries, damaged runtimes, and legacy systems — everything here is free to take or{" "}
+              <Link to="/ascension" className="text-primary hover:underline font-semibold">send to the Restoration Lab</Link>{" "}
+              and we'll bring it back to spec.
             </p>
 
             {/* Stats pills */}

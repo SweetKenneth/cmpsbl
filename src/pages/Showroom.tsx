@@ -396,17 +396,21 @@ export default function Showroom() {
         <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative container mx-auto max-w-5xl text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-xs font-mono tracking-wider text-primary">THE SHOWROOM</span>
+                <span className="text-xs font-semibold tracking-wide text-primary">Certified Discoveries</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 sm:mb-4">
-                Find What Your Software <span className="text-primary">Needs</span>
+                Find What Your
+                <br />
+                <span className="bg-gradient-to-r from-primary to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+                  Software Needs
+                </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed font-medium">
                 Every discovery is a one-of-a-kind certified capability scored by CJPI.
                 Once purchased, it's retired from the catalog forever.
               </p>

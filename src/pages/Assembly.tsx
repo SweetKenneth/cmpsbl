@@ -143,18 +143,22 @@ export default function Assembly() {
           <div className="relative z-10 max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/10 mb-6">
               <Wrench className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-medium text-primary tracking-wide">Member Service</span>
+              <span className="text-xs font-semibold text-primary tracking-wide">Member Service</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6">
-              <span className="text-foreground">Code Assembly</span>
+              <span className="text-foreground">We Rebuild</span>
+              <br />
+              <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-magenta))] bg-clip-text text-transparent">
+                What Others Abandon
+              </span>
             </h1>
             
-            <p className="text-lg sm:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-4">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-4 font-medium">
               Broken, outdated, fragmented, or half-working code — we reconstruct it into something production-ready.
             </p>
-            <p className="text-base text-muted-foreground/60 max-w-xl mx-auto leading-relaxed mb-10">
-              A paid member service for reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
+            <p className="text-sm text-muted-foreground/70 max-w-xl mx-auto leading-relaxed mb-10">
+              Reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -179,9 +183,10 @@ export default function Assembly() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-3 text-foreground">
-                The One-Stop Shop for Code
+                The One-Stop Shop for
+                <span className="text-primary"> Code</span>
               </h2>
-              <p className="text-muted-foreground/70 max-w-xl mx-auto">
+              <p className="text-muted-foreground max-w-xl mx-auto font-medium">
                 Issues. Improvements. Assembly. We handle every pain point so you don't have to.
               </p>
             </div>

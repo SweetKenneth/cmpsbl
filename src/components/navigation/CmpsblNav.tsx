@@ -79,6 +79,7 @@ const NAV_SECTIONS: NavSection[] = [
       { name: "Showroom", href: "/showroom", icon: Eye, description: "Interactive capability showcase" },
       { name: "Verticals", href: "/verticals", icon: Globe, description: "Industry-specific substrates" },
       { name: "Marketplace", href: MARKETPLACE_URL, icon: Rocket, description: "Third-party substrate marketplace", badge: "NEW", external: true },
+      { name: "Use Cases", href: "/use-cases", icon: Cpu, description: "Real-world implementation examples" },
     ],
   },
   {
@@ -97,6 +98,7 @@ const NAV_SECTIONS: NavSection[] = [
       { name: "About", href: "/about", icon: Building2, description: "Our mission & story" },
       { name: "Plans", href: "/plans", icon: CreditCard, description: "Builder → Creator → Architect" },
       { name: "Software Symbiosis", href: "/software-symbiosis", icon: Layers, description: "The vision behind Mana" },
+      { name: "Investors", href: "/investors", icon: Award, description: "Investment thesis & traction" },
       { name: "Contact", href: "/contact", icon: Users, description: "Get in touch" },
     ],
   },
