@@ -28,6 +28,7 @@ import type { ArtifactManifest } from './artifact-initializer';
 import type { PolicyAttachmentEntry } from './scan-to-policy';
 import type { ArtifactFingerprint, VerificationSummary } from './engines/verification-ledger';
 import { generateVerificationSummary, getActiveFingerprint } from './engines/verification-ledger';
+import { resolveHealthFromSummary } from './engines/unified-health';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — ENVIRONMENT DETECTION
