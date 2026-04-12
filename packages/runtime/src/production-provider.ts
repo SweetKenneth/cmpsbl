@@ -1,0 +1,150 @@
+/**
+ * CMPSBL® Production Provider — Phase 8: Productization Layer
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Developer-facing API that makes the Ascension pipeline
+ * approachable in 3 calls: configure → init → execute.
+ *
+ * Design goals:
+ *   - A developer understands value in minutes
+ *   - Behavior is visible, not implied
+ *   - System feels like a tool, not a concept
+ *
+ * © CMPSBL® — All rights reserved.
+ */
+
+import type { AscensionArtifact, AscensionOptions } from './ascension-loop';
+import { ascend, renderPipelineSummary } from './ascension-loop';
+import type { HealthCheckResponse } from './portable-artifact';
+import { getHealthCheck, detectEnvironment, generateDeploymentManifest } from './portable-artifact';
+import { renderVerificationReport, resetVerificationLedger } from './engines/verification-ledger';
+import { getLatchedCoverageRatio } from './engines/unified-health';
+import type { HealthStatus } from './engines/unified-health';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §1 — CONFIGURATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** High-level configuration — developer-legible, no engine jargon */
+export interface AscensionConfig {
+  /** Human-readable project name */
+  readonly name: string;
+  /** Semantic version of the artifact */
+  readonly version?: string;
+  /** Optional CJPI override (auto-computed if omitted) */
+  readonly cjpi?: number;
+  /** Category tag for organization */
+  readonly category?: string;
+  /** Source language hint */
+  readonly sourceLanguage?: string;
+  /** AbortSignal for graceful cancellation */
+  readonly signal?: AbortSignal;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §2 — SESSION (stateful wrapper around an Ascension artifact)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Lightweight handle returned after initialization */
+export interface AscensionSession<T extends Record<string, unknown> = Record<string, unknown>> {
+  /** The wrapped module — drop-in replacement */
+  readonly exports: T;
+  /** Current health status */
+  health(): HealthStatus;
+  /** Full health check (for /health endpoint) */
+  healthCheck(): HealthCheckResponse;
+  /** Human-readable pipeline summary */
+  summary(): string;
+  /** Human-readable verification report */
+  verificationReport(): string;
+  /** Raw artifact (for advanced use) */
+  readonly artifact: AscensionArtifact<T>;
+  /** Tear down — release latches and clear ledger */
+  destroy(): void;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §3 — INIT (the developer entry point)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Initialize an Ascension session.
+ *
+ * ```ts
+ * import { init } from '@cmpsbl/runtime';
+ * import * as myLib from './my-lib';
+ *
+ * const session = init(myLib, sourceCode, { name: 'my-lib' });
+ * // session.exports is a drop-in replacement for myLib
+ * // session.health() returns 'healthy' | 'partial' | 'degraded'
+ * ```
+ */
+export function init<T extends Record<string, unknown>>(
+  moduleExports: T,
+  sourceCode: string,
+  config: AscensionConfig,
+): AscensionSession<T> {
+  // Respect cancellation
+  if (config.signal?.aborted) {
+    throw new Error('Ascension cancelled before init');
+  }
+
+  const options: AscensionOptions = {
+    name: config.name,
+    version: config.version,
+    cjpi: config.cjpi,
+    category: config.category,
+    sourceLanguage: config.sourceLanguage,
+  };
+
+  const artifact = ascend(sourceCode, moduleExports, options);
+
+  return {
+    exports: artifact.exports,
+
+    health(): HealthStatus {
+      const ratio = getLatchedCoverageRatio();
+      if (ratio === null) return 'partial';
+      if (ratio >= 0.8) return 'healthy';
+      if (ratio >= 0.5) return 'partial';
+      return 'degraded';
+    },
+
+    healthCheck(): HealthCheckResponse {
+      return getHealthCheck();
+    },
+
+    summary(): string {
+      return renderPipelineSummary(artifact);
+    },
+
+    verificationReport(): string {
+      return renderVerificationReport();
+    },
+
+    artifact,
+
+    destroy(): void {
+      resetVerificationLedger();
+    },
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §4 — QUICK-START HELPERS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * One-shot: ascend + return wrapped exports (no session management).
+ * For scripts and CLIs that don't need ongoing health checks.
+ */
+export function ascendQuick<T extends Record<string, unknown>>(
+  moduleExports: T,
+  sourceCode: string,
+  name: string,
+): T {
+  const artifact = ascend(sourceCode, moduleExports, { name });
+  return artifact.exports;
+}
+
+/** Re-export detectEnvironment for developer convenience */
+export { detectEnvironment } from './portable-artifact';
