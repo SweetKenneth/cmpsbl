@@ -1,7 +1,6 @@
 /**
  * Plans — Dedicated subscription plans page.
  * Wraps the shared UpgradeContent with full-page SEO, nav, and footer.
- * Linked from account popover and main nav.
  */
 import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
@@ -11,20 +10,17 @@ import { UpgradeContent } from '@/components/store/UpgradeContent';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { TrialBanner } from '@/components/adoption/TrialBanner';
 import { CompoundingValueDashboard } from '@/components/adoption/CompoundingValueDashboard';
+import { motion } from 'framer-motion';
+import { Zap } from 'lucide-react';
 
 export default function Plans() {
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Lab ambient glow */}
+      {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-60" />
         <div className="absolute top-40 left-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.04) 0%, transparent 60%)" }} />
         <div className="absolute bottom-40 right-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.03) 0%, transparent 60%)" }} />
-        {/* Scan line */}
-        <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
-          <div className="absolute inset-x-0 h-px lab-scan-line" style={{ animationDuration: "10s" }} />
-        </div>
-        {/* Dot grid texture */}
         <div className="absolute inset-0" style={{
           backgroundImage: "radial-gradient(circle, hsl(var(--primary) / 0.02) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
@@ -45,7 +41,33 @@ export default function Plans() {
           <PublicBreadcrumb />
           <TrialBanner />
         </div>
+
+        {/* Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="container mx-auto px-4 text-center mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary mb-4">
+            <Zap className="w-3.5 h-3.5" />
+            Substrate Access Plans
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3">
+            Start free.
+            <br />
+            <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+              Scale without limits.
+            </span>
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-medium">
+            Every plan includes Memory Stream, Ascension scanning, and Crown Jewel npm access.
+            Choose the substrate depth that matches your ambition.
+          </p>
+        </motion.div>
+
         <UpgradeContent />
+
         <div className="container mx-auto px-4 mt-12">
           <h2 className="text-lg font-bold text-foreground mb-4">Your Compounding Value</h2>
           <CompoundingValueDashboard />
