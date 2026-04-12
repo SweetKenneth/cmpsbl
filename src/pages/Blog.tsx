@@ -671,6 +671,45 @@ export default function Blog() {
   const humanCount = allPosts.filter(p => p.source === 'human').length;
   const aiCount = allPosts.filter(p => p.source === 'ai').length;
 
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "CMPSBL Research & Insights",
+    description: "Engineering deep-dives, research articles, and product updates covering persistent memory, smart routing, security, and cognitive infrastructure evolution.",
+    url: "https://cmpsbl.com/blog",
+    publisher: {
+      "@type": "Organization",
+      name: "CMPSBL",
+      url: "https://cmpsbl.com",
+      logo: "https://cmpsbl.com/og-image.png",
+    },
+    inLanguage: "en-US",
+    blogPost: featuredPosts.slice(0, 6).map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      description: p.excerpt,
+      url: `https://cmpsbl.com${p.href}`,
+      datePublished: p.date,
+      author: { "@type": p.source === "human" ? "Person" : "Organization", name: p.author || "CMPSBL" },
+    })),
+  };
+
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "CMPSBL Blog",
+    description: "Browse all research articles, engineering stories, and AI-generated insights from CMPSBL.",
+    url: "https://cmpsbl.com/blog",
+    isPartOf: { "@type": "WebSite", name: "CMPSBL", url: "https://cmpsbl.com" },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://cmpsbl.com" },
+        { "@type": "ListItem", position: 2, name: "Blog", item: "https://cmpsbl.com/blog" },
+      ],
+    },
+  };
+
   return (
     <>
       <SEO
@@ -680,6 +719,8 @@ export default function Blog() {
         image="https://cmpsbl.com/og/blog.jpg"
         keywords={['CMPSBL blog', 'AI infrastructure research', 'cognitive AI insights', 'persistent memory AI', 'agentic AI engineering']}
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
 
       <div className="min-h-screen bg-background flex flex-col">
         <PublicNav />
