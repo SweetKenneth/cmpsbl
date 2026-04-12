@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type DJContent } from '@/lib/clockless-radio';
+import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type DJContent, speakDJContent, cancelTTS } from '@/lib/clockless-radio';
 import { useRadioTimer } from '@/hooks/useRadioTimer';
 import { supabase } from '@/integrations/supabase/client';
 
