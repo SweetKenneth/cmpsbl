@@ -72,7 +72,7 @@ app.listen(3000);
 
 ## /health response
 
-`session.healthCheck()` is **session-scoped** — it reads from this artifact's data, not global state. Safe for any deployment pattern.
+`session.healthCheck()` is **session-scoped** — it reads from this artifact's data, not global state. Safe for any deployment pattern. This endpoint is safe to use in multi-instance or multi-tenant environments.
 
 ```json
 {
