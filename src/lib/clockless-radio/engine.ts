@@ -189,6 +189,9 @@ export class ClocklessRadioEngine {
   private async crossfadeToNext(): Promise<void> {
     if (this.state === 'stopped') return;
     
+    // Play transition swoosh through AudioContext (goes to Bluetooth)
+    void this._sfx?.transitionSwoosh();
+    
     this.setState('crossfading');
     
     // Advance playlist — reshuffle when exhausted for infinite random looping
