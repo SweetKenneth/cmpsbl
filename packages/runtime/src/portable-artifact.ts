@@ -302,11 +302,10 @@ export function getHealthCheck(): HealthCheckResponse {
   const verification = generateVerificationSummary();
 
   // Unified health — merge activation coverage with runtime verification
-  const { resolveHealthFromSummary: resolve } = await import('./engines/unified-health');
   const coverageRatio = verification.totalEvents > 0
     ? verification.enforcements / Math.max(verification.totalEvents, 1)
     : 0;
-  const unified = resolve(coverageRatio, verification);
+  const unified = resolveHealthFromSummary(coverageRatio, verification);
   const status = unified.status;
 
   return {
