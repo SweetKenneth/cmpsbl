@@ -52,10 +52,10 @@ function ClocklessRadioPlayer({ className }: { className?: string }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 className={cn(
-                  "fixed z-[10000]",
-                  "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-                  "sm:left-auto sm:top-12 sm:right-4 sm:translate-x-0 sm:translate-y-0",
-                  "w-80 max-w-[calc(100vw-2rem)] p-4 rounded-xl",
+                  "fixed z-[10000] inset-4 m-auto",
+                  "sm:inset-auto sm:top-12 sm:right-4",
+                  "w-80 max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] overflow-y-auto",
+                  "p-4 rounded-xl",
                   "bg-card backdrop-blur-xl border border-border/50",
                   "shadow-xl shadow-black/20"
                 )}
