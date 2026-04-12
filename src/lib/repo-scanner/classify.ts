@@ -236,11 +236,27 @@ export async function fetchGitHubTree(
       headers: { 'Accept': 'application/vnd.github.v3+json' },
     });
 
+    // Rate limit detection
+    if (res.status === 403) {
+      const resetHeader = res.headers.get('x-ratelimit-reset');
+      const resetIn = resetHeader ? Math.ceil((Number(resetHeader) * 1000 - Date.now()) / 60000) : null;
+      throw new Error(
+        `GitHub API rate limit exceeded.${resetIn ? ` Resets in ~${resetIn} min.` : ''} ` +
+        'Unauthenticated requests are limited to 60/hour. Try again later or use a smaller repository.'
+      );
+    }
+
     if (res.status === 404) continue;
     if (!res.ok) throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
 
     const data = await res.json();
     if (!data.tree) throw new Error('Invalid GitHub response');
+
+    // Handle truncated trees (repos with 100k+ files)
+    if (data.truncated) {
+      // eslint-disable-next-line no-console
+      console.warn(`[RepoScanner] Tree truncated for ${owner}/${repo} — showing partial results`);
+    }
 
     return data.tree
       .filter((node: { type: string }) => node.type === 'blob')
