@@ -376,8 +376,8 @@ export default function GamingSubstrate() {
           "game development AI", "world engine", "CMPSBL",
         ]}
       />
+      <StructuredData type="webApplication" data={{ name: "CMPSBL GAMING™", description: "Cognitive game infrastructure — NPC brains with persistent memory, overnight DREAM synthesis, and evolving personalities powered by the Clockless World Engine.", url: "https://cmpsbl.com/gaming", features: "NPC Memory, Cognitive Reality, Personality Evolution, Overnight DREAM Synthesis, Clockless World Engine, Persistent Game Worlds" }} />
 
-      <PublicNav />
 
       {/* Hero Section */}
       <section className="relative py-20 sm:py-24 md:py-28 overflow-hidden">
