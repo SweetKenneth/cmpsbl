@@ -68,12 +68,28 @@ export class ClocklessRadioEngine {
     return this.volume;
   }
 
+  /** Expose SFX engine for external use (e.g., hook layer) */
+  get sfx(): RadioSFX | null {
+    return this._sfx;
+  }
+
+  /** Toggle SFX-only mode (no TTS voice — for Bluetooth pairing) */
+  set sfxOnly(value: boolean) {
+    this._sfxOnly = value;
+  }
+
+  get isSFXOnly(): boolean {
+    return this._sfxOnly;
+  }
+
   private ensureContext(): AudioContext {
     if (!this.ctx || this.ctx.state === 'closed') {
       this.ctx = new AudioContext();
       this.masterGain = this.ctx.createGain();
       this.masterGain.gain.value = this.volume;
       this.masterGain.connect(this.ctx.destination);
+      // Initialize SFX engine on same AudioContext
+      this._sfx = new RadioSFX(this.ctx, this.masterGain);
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
