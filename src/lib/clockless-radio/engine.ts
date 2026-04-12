@@ -1,9 +1,12 @@
 /**
  * ClocklessRadioEngine — Web Audio API crossfade engine
  * Continuous streaming with dual-buffer crossfade, exponential ramps, preloading
+ * ALL audio (music, SFX, transitions) routes through one AudioContext
+ * so Bluetooth/Airplay devices receive everything on the same stream.
  */
 
 import { RADIO_TRACKS, shuffleTracks, type RadioTrack } from './tracks';
+import { RadioSFX } from './sfx';
 
 export type RadioState = 'stopped' | 'playing' | 'crossfading' | 'dj_speaking';
 
