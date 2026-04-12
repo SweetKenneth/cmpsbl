@@ -1,10 +1,88 @@
 /**
- * RadioTTS — Free browser-native speech synthesis for Clockless Radio
- * Uses Web Speech API (SpeechSynthesis) — zero cost, no API keys
+ * RadioTTS — Dual-mode TTS for Clockless Radio
+ *
+ * Mode 1 (default): FreeTTS via edge function proxy — returns MP3, plays
+ *   through AudioContext so it routes to Bluetooth/Airplay with the music.
+ * Mode 2 (fallback): Browser SpeechSynthesis — if the edge function fails
+ *   or is unreachable, falls back to the free browser API.
+ *
+ * The AudioContext + GainNode are injected by the engine so all audio
+ * shares the same output destination.
  */
 
 import type { DJContent } from './dj';
 
+// ─── AudioContext injection (set by engine) ─────────────────────────
+let sharedCtx: AudioContext | null = null;
+let sharedGain: GainNode | null = null;
+
+/** Call once from the engine to share its AudioContext */
+export function setTTSAudioContext(ctx: AudioContext, gain: GainNode): void {
+  sharedCtx = ctx;
+  sharedGain = gain;
+}
+
+// ─── FreeTTS edge-function client ───────────────────────────────────
+const TTS_ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/radio-tts`;
+
+async function fetchTTSAudio(
+  text: string,
+  segmentType: string
+): Promise<ArrayBuffer | null> {
+  try {
+    const response = await fetch(TTS_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      },
+      body: JSON.stringify({ text, segmentType }),
+    });
+
+    if (!response.ok) return null;
+
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('audio')) {
+      return response.arrayBuffer();
+    }
+
+    // Not audio — probably an error JSON
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function playAudioBuffer(buffer: ArrayBuffer): Promise<void> {
+  if (!sharedCtx || !sharedGain) {
+    // No shared context — play via HTML Audio as last resort
+    const blob = new Blob([buffer], { type: 'audio/mpeg' });
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    await audio.play();
+    await new Promise<void>((resolve) => {
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        resolve();
+      };
+    });
+    return;
+  }
+
+  // Decode and play through the shared AudioContext (Bluetooth-safe)
+  const audioBuffer = await sharedCtx.decodeAudioData(buffer.slice(0));
+  const source = sharedCtx.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(sharedGain);
+  source.start(0);
+
+  return new Promise<void>((resolve) => {
+    source.onended = () => resolve();
+  });
+}
+
+// ─── Browser SpeechSynthesis fallback ───────────────────────────────
 const VOICE_CONFIG: Record<string, { rate: number; pitch: number }> = {
   station_id: { rate: 1.05, pitch: 0.9 },
   system_shoutout: { rate: 1.0, pitch: 1.0 },
@@ -90,7 +168,7 @@ export async function primeTTS(): Promise<void> {
   isPrimed = true;
 }
 
-export function speakDJContent(content: DJContent): Promise<void> {
+function speakWithBrowserTTS(content: DJContent): Promise<void> {
   return new Promise((resolve, reject) => {
     if (!('speechSynthesis' in window)) {
       resolve();
@@ -155,6 +233,35 @@ export function speakDJContent(content: DJContent): Promise<void> {
 
     window.speechSynthesis.speak(utterance);
   });
+}
+
+// ─── Public API ─────────────────────────────────────────────────────
+
+/**
+ * Speak DJ content — tries FreeTTS (MP3 through AudioContext) first,
+ * falls back to browser SpeechSynthesis if the edge function fails.
+ */
+export async function speakDJContent(content: DJContent): Promise<void> {
+  // Build the full text for call-in segments
+  const fullText =
+    content.type === 'call_in' && content.caller
+      ? `We've got a caller. ${content.caller}, you're on Clockless Radio. ${content.text}`
+      : content.text;
+
+  const segmentType =
+    content.type === 'call_in' && content.caller
+      ? 'call_in_host' // Use the host voice for combined text
+      : content.type;
+
+  // Try FreeTTS first (routes through AudioContext → Bluetooth)
+  const audioData = await fetchTTSAudio(fullText, segmentType);
+  if (audioData) {
+    await playAudioBuffer(audioData);
+    return;
+  }
+
+  // Fallback to browser SpeechSynthesis
+  await speakWithBrowserTTS(content);
 }
 
 export function cancelTTS(): void {
