@@ -254,7 +254,7 @@ function ArchiveBrowseView() {
 
       {/* Hero */}
       <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-destructive/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
         <div className="relative container mx-auto max-w-5xl text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5 sm:mb-6">
