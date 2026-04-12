@@ -268,7 +268,14 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
     maxModules: config.maxModules ?? 12,
     minCjpiTarget: config.minCjpiTarget ?? 80,
     biasHighValue: config.biasHighValue ?? true,
+    primitivePool: config.primitivePool,
+    categoryFocus: config.categoryFocus,
   };
+
+  const pool = cfg.primitivePool ?? DEFAULT_MODULES;
+  const categoryPool = cfg.categoryFocus?.length
+    ? CATEGORIES.filter(c => cfg.categoryFocus!.includes(c))
+    : CATEGORIES;
 
   const templates: GeneratedTemplate[] = [];
   const seenHashes = new Set<string>();
@@ -277,9 +284,9 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
 
   while (templates.length < cfg.batchSize && attempts < maxAttempts) {
     attempts++;
-    const category = pick(CATEGORIES);
+    const category = pick(categoryPool);
     const moduleCount = randInt(cfg.minModules, cfg.maxModules);
-    const template = generateOneTemplate(category, moduleCount, cfg.biasHighValue);
+    const template = generateOneTemplate(category, moduleCount, cfg.biasHighValue, pool);
 
     // Skip retired combos
     if (isComboRetired(template.modulePattern, template.category)) continue;
@@ -305,12 +312,13 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
 }
 
 /** Get stats about the generator's state */
-export function getGeneratorStats() {
+export function getGeneratorStats(pool?: string[]) {
   const retired = getRetiredCombos();
-  const totalPossibleCombos = Math.pow(MODULES.length, 3) * CATEGORIES.length; // rough estimate
+  const moduleCount = pool?.length ?? DEFAULT_MODULES.length;
+  const totalPossibleCombos = Math.pow(moduleCount, 3) * CATEGORIES.length; // rough estimate
   return {
     retiredCount: retired.length,
-    totalModules: MODULES.length,
+    totalModules: moduleCount,
     totalCategories: CATEGORIES.length,
     estimatedCombos: totalPossibleCombos,
     exploredPercent: retired.length > 0 ? ((retired.length / totalPossibleCombos) * 100).toFixed(2) + '%' : '0%',
