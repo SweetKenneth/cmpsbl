@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { Layers, CheckCircle2, Shield, Activity, Eye, Zap, Scale, AlertTriangle, Loader2 } from 'lucide-react';
+import { Layers, CheckCircle2, Shield, Activity, Eye, Zap, Scale, AlertTriangle, Loader2, Lock, Timer, BarChart3, Search, FileCheck, Gauge, Bug, GitBranch, ShieldCheck, Gavel, UserCheck, Fingerprint, RotateCcw, Clock, Box, Umbrella, FileText, Camera, Microscope, Filter, EyeOff, Brain, TrendingDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,12 +17,37 @@ import type { ManaUploadResult } from './ManaUploadPhase';
 
 const CAPABILITY_ICONS: Record<ManaCapability, typeof Shield> = {
   defense_gate: Shield,
+  input_sanitizer: ShieldCheck,
+  threat_scorer: Gauge,
+  rate_limiter: Timer,
+  payload_validator: FileCheck,
+  injection_guard: Lock,
   beacon_telemetry: Activity,
+  latency_profiler: BarChart3,
+  error_tracker: Bug,
+  throughput_meter: TrendingDown,
+  dependency_mapper: GitBranch,
   governance_hook: Scale,
-  shadow_rule: Eye,
+  mutation_guard: Fingerprint,
+  policy_enforcer: Gavel,
+  consent_gate: UserCheck,
+  compliance_check: Search,
+  access_controller: Lock,
   circuit_breaker: Zap,
+  retry_handler: RotateCcw,
+  timeout_guard: Clock,
+  bulkhead_isolator: Box,
+  fallback_provider: Umbrella,
   audit_trail: AlertTriangle,
+  call_logger: FileText,
+  state_snapshot: Camera,
+  forensic_recorder: Microscope,
+  shadow_rule: Eye,
+  output_filter: Filter,
+  data_masker: EyeOff,
   dream_synthesis: Activity,
+  anomaly_detector: Brain,
+  drift_monitor: TrendingDown,
 };
 
 export interface AttachmentResult {
@@ -116,12 +141,37 @@ export function ManaAttachPhase({ upload, rules, mergeResult, onComplete }: Prop
     // Map enabled Lex rule capabilities → active primitives
     const CAPABILITY_TO_PRIMITIVE: Record<ManaCapability, string> = {
       defense_gate: 'DEFENSE',
+      input_sanitizer: 'DEFENSE',
+      threat_scorer: 'DEFENSE',
+      rate_limiter: 'DEFENSE',
+      payload_validator: 'DEFENSE',
+      injection_guard: 'DEFENSE',
       beacon_telemetry: 'BEACON',
+      latency_profiler: 'BEACON',
+      error_tracker: 'BEACON',
+      throughput_meter: 'BEACON',
+      dependency_mapper: 'BEACON',
       governance_hook: 'GOVERNANCE',
-      shadow_rule: 'DEFENSE',
+      mutation_guard: 'GOVERNANCE',
+      policy_enforcer: 'GOVERNANCE',
+      consent_gate: 'GOVERNANCE',
+      compliance_check: 'GOVERNANCE',
+      access_controller: 'GOVERNANCE',
       circuit_breaker: 'FAILSAFE',
+      retry_handler: 'FAILSAFE',
+      timeout_guard: 'FAILSAFE',
+      bulkhead_isolator: 'FAILSAFE',
+      fallback_provider: 'FAILSAFE',
       audit_trail: 'AUDIT',
+      call_logger: 'AUDIT',
+      state_snapshot: 'AUDIT',
+      forensic_recorder: 'AUDIT',
+      shadow_rule: 'DEFENSE',
+      output_filter: 'DEFENSE',
+      data_masker: 'DEFENSE',
       dream_synthesis: 'BEACON',
+      anomaly_detector: 'BEACON',
+      drift_monitor: 'BEACON',
     };
     const activePrimitives = new Set(
       enabledRules.map(r => CAPABILITY_TO_PRIMITIVE[r.capability]).filter(Boolean)
