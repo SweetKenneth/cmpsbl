@@ -702,22 +702,10 @@ export default function Blog() {
 
               {/* Supreme-style stacked type */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] mb-4">
-                <motion.span
-                  className="block font-mono uppercase tracking-[-0.05em]"
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                  Research
-                </motion.span>
-                <motion.span
-                  className="block text-primary font-mono uppercase tracking-[-0.05em]"
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  & Insights
-                </motion.span>
+                <span className="block">Research</span>
+                <span className="block bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+                  &amp; Insights
+                </span>
               </h1>
 
               {/* Animated counter badge */}

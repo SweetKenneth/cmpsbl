@@ -434,8 +434,11 @@ export default function UseCases() {
             </Badge>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">
-              <span className="text-primary">One Substrate,</span>
-              <br />Every Industry
+              One Substrate,
+              <br />
+              <span className="bg-gradient-to-r from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))] bg-clip-text text-transparent">
+                Every Industry
+              </span>
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
