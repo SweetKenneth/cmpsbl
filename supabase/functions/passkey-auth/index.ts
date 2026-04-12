@@ -236,6 +236,37 @@ Deno.serve(async (req) => {
       });
     }
 
+    // ─── LIST USER'S PASSKEYS ─────────────────────────────────────────
+    if (path === "list") {
+      const authHeader = req.headers.get("Authorization");
+      if (!authHeader?.startsWith("Bearer ")) {
+        return json({ error: "Unauthorized" }, 401);
+      }
+
+      const token = authHeader.replace("Bearer ", "");
+      let userId: string;
+      try {
+        const [_header, payload, _sig] = decodeJwt(token);
+        const claims = payload as Record<string, unknown>;
+        userId = claims.sub as string;
+        if (!userId) return json({ error: "Invalid token claims" }, 401);
+      } catch {
+        return json({ error: "Invalid token" }, 401);
+      }
+
+      const { data: passkeys, error: listError } = await adminClient
+        .from("passkey_credentials")
+        .select("id, credential_id, device_type, created_at, last_used_at")
+        .eq("user_id", userId);
+
+      if (listError) {
+        console.error("List passkeys error:", listError);
+        return json({ error: "Failed to list passkeys" }, 500);
+      }
+
+      return json({ passkeys: passkeys || [] });
+    }
+
     return json({ error: "Unknown endpoint" }, 404);
   } catch (err) {
     console.error("Passkey auth error:", err);
