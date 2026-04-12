@@ -14,6 +14,8 @@ import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getQuantumEngines, getQuantumAgents } from './verticals/quantum';
 import { getLLMEngines, getLLMAgents } from './verticals/llm';
 import { getAgencyEngines, getAgencyAgents } from './verticals/agency';
+import { getFintechEngines, getFintechAgents } from './verticals/fintech';
+import { getMediaEngines, getMediaAgents } from './verticals/media';
 import { getVerticalSubdomain } from '@/config/domains';
 import { getDynamicVerticalPrimitives, getDynamicSignalMap } from './vertical-factory-engine';
 import { runUniversalPoolScan } from './universal-pool-scanner';
@@ -189,6 +191,20 @@ function buildVerticalCatalog(): {
 
   // Dynamic verticals — auto-discovered from the factory engine
   if (vertical) {
+    // Fintech vertical
+    if (vertical === 'fintech') {
+      const finEngines = getFintechEngines().map(e => ({ primitiveId: e.id.toLowerCase(), name: e.name, category: 'Engine' as const }));
+      const finAgents = getFintechAgents().map(a => ({ primitiveId: a.id.toLowerCase(), name: a.name, category: 'Agent' as const }));
+      return { spine: [...SPINE_PRIMITIVES], expansion: [...finEngines, ...finAgents] };
+    }
+
+    // Media vertical
+    if (vertical === 'media') {
+      const medEngines = getMediaEngines().map(e => ({ primitiveId: e.id.toLowerCase(), name: e.name, category: 'Engine' as const }));
+      const medAgents = getMediaAgents().map(a => ({ primitiveId: a.id.toLowerCase(), name: a.name, category: 'Agent' as const }));
+      return { spine: [...SPINE_PRIMITIVES], expansion: [...medEngines, ...medAgents] };
+    }
+
     const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
     if (dynamicPrimitives) {
       const dynEngines = dynamicPrimitives.engines.map(e => ({
@@ -230,7 +246,7 @@ function toRecommendationCategory(
 /** Map vertical subdomain to scanner source label */
 const SUBDOMAIN_TO_SOURCE: Record<string, string> = {
   security: 'cyber', robotics: 'robotics', quantum: 'quantum',
-  llm: 'llm', agency: 'agency', media: 'media', ultimate: '',
+  llm: 'llm', agency: 'agency', media: 'media', fintech: 'fintech', ultimate: '',
 };
 
 function buildUltimateRecommendations(code: string): PrimitiveRecommendation[] {
@@ -817,6 +833,42 @@ function scorePrimitiveRelevance(
     warden: { signals: [code.includes('policy') || code.includes('rule') || code.includes('govern'), hasAuth], rationale: 'Governance enforcement and safety boundary management' },
     rogue: { signals: [code.includes('creative') || code.includes('alternative') || code.includes('experiment'), len > 200], rationale: 'Creative problem-solving and unconventional approach generation' },
     anchor: { signals: [code.includes('context') || code.includes('session') || code.includes('persist'), hasState], rationale: 'Context persistence and long-term memory for continuous agent operation' },
+    // Fintech vertical primitives — Engines
+    ledger: { signals: [hasDb || code.includes('transaction') || code.includes('ledger') || code.includes('accounting'), hasState], rationale: 'Double-entry ledger and transaction journaling for financial audit trails' },
+    vault_fin: { signals: [code.includes('vault') || code.includes('custody') || code.includes('escrow'), hasAuth], rationale: 'Custodial asset management with multi-signature authorization' },
+    ticker: { signals: [code.includes('price') || code.includes('market') || code.includes('quote') || code.includes('ticker'), hasAsync], rationale: 'Real-time market data feeds and price discovery with latency optimization' },
+    clearing: { signals: [code.includes('settle') || code.includes('clear') || code.includes('reconcil'), hasDb], rationale: 'Post-trade settlement and clearing with reconciliation workflows' },
+    riskcore: { signals: [code.includes('risk') || code.includes('exposure') || code.includes('var') || code.includes('stress'), len > 200], rationale: 'Risk quantification and stress testing for portfolio exposure analysis' },
+    payrail: { signals: [code.includes('payment') || code.includes('transfer') || code.includes('remit'), hasAsync], rationale: 'Payment processing and fund transfer orchestration across rail networks' },
+    taxengine: { signals: [code.includes('tax') || code.includes('withhold') || code.includes('jurisdiction'), hasDb], rationale: 'Tax computation and withholding across multi-jurisdictional compliance' },
+    matchbook: { signals: [code.includes('order') || code.includes('match') || code.includes('book') || code.includes('bid'), hasAsync], rationale: 'Order matching and limit order book management for exchange operations' },
+    // Fintech vertical primitives — Agents
+    sentinel_fin: { signals: [code.includes('fraud') || code.includes('aml') || code.includes('kyc') || code.includes('suspicious'), hasAuth], rationale: 'Fraud detection and AML/KYC compliance monitoring agent' },
+    regulator: { signals: [code.includes('compliance') || code.includes('regulat') || code.includes('license'), hasDb], rationale: 'Regulatory compliance enforcement and reporting automation' },
+    arbiter: { signals: [code.includes('dispute') || code.includes('chargeback') || code.includes('mediat'), hasAsync], rationale: 'Dispute resolution and chargeback arbitration with evidence collection' },
+    underwriter: { signals: [code.includes('underwrite') || code.includes('insur') || code.includes('premium') || code.includes('policy'), len > 200], rationale: 'Insurance underwriting and policy pricing with actuarial analysis' },
+    treasurer: { signals: [code.includes('treasury') || code.includes('cash') || code.includes('liquidity'), hasState], rationale: 'Treasury management and liquidity optimization across accounts' },
+    auditor: { signals: [code.includes('audit') || code.includes('reconcil') || code.includes('trail'), hasDb], rationale: 'Financial audit trail verification and reconciliation agent' },
+    portfolio: { signals: [code.includes('portfolio') || code.includes('allocat') || code.includes('rebalance'), hasState], rationale: 'Portfolio construction and dynamic rebalancing with optimization constraints' },
+    compliance: { signals: [code.includes('regulat') || code.includes('report') || code.includes('filing'), hasDb], rationale: 'Regulatory filing and compliance report generation' },
+    // Media vertical primitives — Engines
+    canvas: { signals: [code.includes('image') || code.includes('graphic') || code.includes('design') || code.includes('visual'), hasAsync], rationale: 'Visual content generation and design automation with asset management' },
+    score: { signals: [code.includes('audio') || code.includes('music') || code.includes('sound') || code.includes('mix'), hasAsync], rationale: 'Audio production and music composition with mixing and mastering' },
+    reel: { signals: [code.includes('video') || code.includes('edit') || code.includes('clip') || code.includes('frame'), hasAsync], rationale: 'Video editing and post-production with timeline composition' },
+    copy: { signals: [code.includes('content') || code.includes('write') || code.includes('headline') || code.includes('copy'), len > 100], rationale: 'Copywriting and content generation with brand voice alignment' },
+    campaign: { signals: [code.includes('campaign') || code.includes('market') || code.includes('target') || code.includes('audience'), hasAsync], rationale: 'Marketing campaign orchestration with audience targeting and scheduling' },
+    feed: { signals: [code.includes('feed') || code.includes('stream') || code.includes('timeline') || code.includes('content'), hasState], rationale: 'Content feed curation and algorithmic ranking for engagement optimization' },
+    palette: { signals: [code.includes('color') || code.includes('theme') || code.includes('brand') || code.includes('style'), hasState], rationale: 'Brand identity and color palette management with accessibility compliance' },
+    render: { signals: [code.includes('render') || code.includes('output') || code.includes('export') || code.includes('format'), hasAsync], rationale: 'Multi-format rendering and export pipeline for cross-platform distribution' },
+    // Media vertical primitives — Agents
+    curator: { signals: [code.includes('curate') || code.includes('select') || code.includes('recommend'), hasAsync], rationale: 'Content curation and editorial recommendation with quality scoring' },
+    critic: { signals: [code.includes('review') || code.includes('feedback') || code.includes('quality'), len > 100], rationale: 'Content quality assessment and constructive feedback generation' },
+    amplify: { signals: [code.includes('distribute') || code.includes('publish') || code.includes('share') || code.includes('social'), hasHttp], rationale: 'Content distribution and amplification across channels and platforms' },
+    persona: { signals: [code.includes('persona') || code.includes('avatar') || code.includes('voice') || code.includes('character'), hasState], rationale: 'Brand persona and character development for consistent voice' },
+    storyarc: { signals: [code.includes('story') || code.includes('narrative') || code.includes('arc') || code.includes('plot'), len > 200], rationale: 'Narrative structuring and story arc development for long-form content' },
+    muse: { signals: [code.includes('inspire') || code.includes('creative') || code.includes('brainstorm') || code.includes('ideate'), hasAsync], rationale: 'Creative ideation and inspiration engine for concept generation' },
+    comply: { signals: [code.includes('compliance') || code.includes('guideline') || code.includes('standard'), hasAuth], rationale: 'Content compliance and brand guidelines enforcement' },
+    metric: { signals: [code.includes('analytic') || code.includes('metric') || code.includes('kpi') || code.includes('performance'), hasState], rationale: 'Content performance analytics and KPI tracking with attribution' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
@@ -849,64 +901,100 @@ function generateRecommendations(
   rand: () => number,
 ): PrimitiveRecommendation[] {
   const MAX_TOTAL = 20;
-  const SPINE_SLOTS = 10;
-  const EXPANSION_SLOTS = 10;
 
   const { spine, expansion } = buildVerticalCatalog();
+  const allCatalog = [...spine, ...expansion];
 
-  // Score spine primitives (Organs + Layers) — stabilization
-  const scoredSpine = spine.map(p => {
-    const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
-    return { ...p, impactScore: score, rationale, chainPosition: 0, collisionScore: 0 };
-  });
+  // ═══ Phase 0: GUARANTEE every finding-recommended primitive is included ═══
+  // This closes the gap where the scanner identifies "DEFENSE can fix SQL injection"
+  // but DEFENSE gets bumped by category balancing. Finding-linked primitives are sacred.
+  const findingLinkedIds = new Set<string>();
+  const guaranteedResult: PrimitiveRecommendation[] = [];
+
+  for (const finding of findings) {
+    if (!finding.primitiveRecommendation) continue;
+    const recId = finding.primitiveRecommendation.toLowerCase();
+    if (findingLinkedIds.has(recId)) continue;
+
+    const catalogEntry = allCatalog.find(p => p.primitiveId === recId);
+    if (!catalogEntry) continue;
+
+    findingLinkedIds.add(recId);
+    const severityBoost = finding.severity === 'critical' ? 45 : finding.severity === 'warning' ? 30 : 18;
+    guaranteedResult.push({
+      ...catalogEntry,
+      impactScore: Math.min(99, 55 + severityBoost),
+      rationale: `🔍 ${finding.title}`,
+      chainPosition: 0,
+      collisionScore: 0,
+    });
+  }
+
+  // Score all remaining primitives
+  const scoredSpine = spine
+    .filter(p => !findingLinkedIds.has(p.primitiveId))
+    .map(p => {
+      const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
+      return { ...p, impactScore: score, rationale, chainPosition: 0, collisionScore: 0 };
+    });
   scoredSpine.sort((a, b) => b.impactScore - a.impactScore);
 
-  // Score expansion primitives (vertical Engines + Agents) — specialization
-  // Apply a vertical-specialization bonus to make these primitives more impactful
-  const scoredExpansion = expansion.map(p => {
-    const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
-    const verticalBonus = 10 + Math.floor(rand() * 15);
-    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale, chainPosition: 0, collisionScore: 0 };
-  });
+  const scoredExpansion = expansion
+    .filter(p => !findingLinkedIds.has(p.primitiveId))
+    .map(p => {
+      const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
+      const verticalBonus = 10 + Math.floor(rand() * 15);
+      return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale, chainPosition: 0, collisionScore: 0 };
+    });
   scoredExpansion.sort((a, b) => b.impactScore - a.impactScore);
 
-  const result: PrimitiveRecommendation[] = [];
+  const result: PrimitiveRecommendation[] = [...guaranteedResult];
+  const remaining = MAX_TOTAL - result.length;
 
-  // Phase 1: Fill SPINE slots — balanced Organ/Layer mix
-  const spineOrgans = scoredSpine.filter(p => p.category === 'Organ');
-  const spineLayers = scoredSpine.filter(p => p.category === 'Layer');
-  const minOrgans = 5;
-  const minLayers = 5;
+  if (remaining > 0) {
+    // Split remaining slots between spine and expansion
+    const spineSlots = Math.ceil(remaining / 2);
+    const expansionSlots = remaining - spineSlots;
 
-  for (const o of spineOrgans) {
-    if (result.filter(r => r.category === 'Organ').length < minOrgans) result.push(o);
-  }
-  for (const l of spineLayers) {
-    if (result.filter(r => r.category === 'Layer').length < minLayers) result.push(l);
-  }
-  // If either category is short, fill from the other
-  for (const p of scoredSpine) {
-    if (result.length >= SPINE_SLOTS) break;
-    if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
-  }
+    // Fill spine slots — balanced Organ/Layer mix
+    const addedSpine: PrimitiveRecommendation[] = [];
+    const spineOrgans = scoredSpine.filter(p => p.category === 'Organ');
+    const spineLayers = scoredSpine.filter(p => p.category === 'Layer');
+    const halfSpine = Math.ceil(spineSlots / 2);
 
-  // Phase 2: Fill EXPANSION slots — vertical-specific specialization
-  // These are the randomized primitives that define what the software becomes
-  const expansionEngines = scoredExpansion.filter(p => p.category === 'Engine');
-  const expansionAgents = scoredExpansion.filter(p => p.category === 'Agent');
-  const minEngines = 5;
-  const minAgents = 5;
+    for (const o of spineOrgans) {
+      if (addedSpine.length >= halfSpine) break;
+      if (!result.find(r => r.primitiveId === o.primitiveId)) addedSpine.push(o);
+    }
+    for (const l of spineLayers) {
+      if (addedSpine.length >= spineSlots) break;
+      if (!result.find(r => r.primitiveId === l.primitiveId) && !addedSpine.find(r => r.primitiveId === l.primitiveId)) addedSpine.push(l);
+    }
+    for (const p of scoredSpine) {
+      if (addedSpine.length >= spineSlots) break;
+      if (!result.find(r => r.primitiveId === p.primitiveId) && !addedSpine.find(r => r.primitiveId === p.primitiveId)) addedSpine.push(p);
+    }
+    result.push(...addedSpine);
 
-  for (const e of expansionEngines) {
-    if (result.filter(r => r.category === 'Engine').length < minEngines) result.push(e);
-  }
-  for (const a of expansionAgents) {
-    if (result.filter(r => r.category === 'Agent').length < minAgents) result.push(a);
-  }
-  // Fill remaining expansion slots
-  for (const p of scoredExpansion) {
-    if (result.length >= MAX_TOTAL) break;
-    if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
+    // Fill expansion slots — balanced Engine/Agent mix
+    const addedExpansion: PrimitiveRecommendation[] = [];
+    const expansionEngines = scoredExpansion.filter(p => p.category === 'Engine');
+    const expansionAgents = scoredExpansion.filter(p => p.category === 'Agent');
+    const halfExpansion = Math.ceil(expansionSlots / 2);
+
+    for (const e of expansionEngines) {
+      if (addedExpansion.length >= halfExpansion) break;
+      if (!result.find(r => r.primitiveId === e.primitiveId)) addedExpansion.push(e);
+    }
+    for (const a of expansionAgents) {
+      if (addedExpansion.length >= expansionSlots) break;
+      if (!result.find(r => r.primitiveId === a.primitiveId) && !addedExpansion.find(r => r.primitiveId === a.primitiveId)) addedExpansion.push(a);
+    }
+    for (const p of scoredExpansion) {
+      if (addedExpansion.length >= expansionSlots) break;
+      if (!result.find(r => r.primitiveId === p.primitiveId) && !addedExpansion.find(r => r.primitiveId === p.primitiveId)) addedExpansion.push(p);
+    }
+    result.push(...addedExpansion);
   }
 
   // Apply chain sequencing — deterministic execution order with cascading collision scores
