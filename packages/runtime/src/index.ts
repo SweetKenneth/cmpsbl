@@ -842,3 +842,21 @@ export type {
   ScanPipelineOptions,
   PipelineMeta,
 } from './scan-pipeline';
+
+// ═══════════════════════════════════════════════════════════════
+// §13 — Phase 5: Ascension Loop (end-to-end pipeline)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  ascend,
+  serializeArtifact,
+  generateBootstrap,
+  renderPipelineSummary,
+} from './ascension-loop';
+
+export type {
+  AscensionArtifact,
+  AscensionOptions,
+  PipelineTrace,
+  SerializedArtifact,
+} from './ascension-loop';
