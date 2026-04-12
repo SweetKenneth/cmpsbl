@@ -803,43 +803,63 @@ export default function RestorationShop() {
 
           {/* QUEUE PHASE */}
           {phase === 'queue' && (
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="max-w-2xl mx-auto space-y-6 phase-card-enter">
               <RestorationQueue
                 entry={queueEntry}
                 queuePosition={queueEntry ? getQueuePosition(queueEntry.id) : null}
                 estimatedWaitMs={estimateWaitTime('builder')}
               />
 
-              {/* Animated primitive activation */}
+              {/* Cinematic primitive activation sequence */}
               {processingPrimitives.length > 0 && (
-                <div className="rounded-xl border border-border/30 bg-card/20 p-4">
-                  <h4 className="text-xs font-bold text-foreground mb-3 flex items-center gap-2">
+                <div className="rounded-2xl border border-primary/20 bg-card/30 backdrop-blur-sm p-5 shadow-sm">
+                  <h4 className="text-xs font-bold text-foreground mb-1 flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-primary" />
                     Applying Primitives
                   </h4>
-                  <div className="space-y-1.5">
-                    {processingPrimitives.map((p) => (
-                      <div key={p.name} className="flex items-center gap-2">
+                  <p className="text-[10px] text-muted-foreground mb-4">
+                    Each primitive is being woven into your code's runtime behavior
+                  </p>
+                  {/* Progress bar */}
+                  <div className="h-1.5 rounded-full bg-border/20 mb-4 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-500 ease-out"
+                      style={{ width: `${(processingPrimitives.filter(p => p.status === 'done').length / processingPrimitives.length) * 100}%` }}
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    {processingPrimitives.map((p, idx) => (
+                      <div
+                        key={p.name}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-300",
+                          p.status === 'active' && "bg-primary/5 border border-primary/20 primitive-activate",
+                          p.status === 'done' && "primitive-seal-flash",
+                        )}
+                        style={{ animationDelay: `${idx * 50}ms` }}
+                      >
                         {p.status === 'done' ? (
-                          <div className="w-4 h-4 rounded-full bg-neon-green/20 flex items-center justify-center">
-                            <div className="w-2 h-2 rounded-full bg-neon-green" />
+                          <div className="w-5 h-5 rounded-full bg-[hsl(142_76%_36%/0.15)] flex items-center justify-center">
+                            <div className="w-2.5 h-2.5 rounded-full bg-[hsl(142_76%_36%)]" />
                           </div>
                         ) : p.status === 'active' ? (
-                          <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                          <div className="w-5 h-5 relative">
+                            <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                          </div>
                         ) : (
-                          <div className="w-4 h-4 rounded-full border border-border/40" />
+                          <div className="w-5 h-5 rounded-full border border-border/30 bg-muted/10" />
                         )}
                         <span className={cn(
-                          "text-xs font-mono",
-                          p.status === 'done' ? "text-foreground" : p.status === 'active' ? "text-primary font-bold" : "text-muted-foreground/50"
+                          "text-xs font-mono flex-1",
+                          p.status === 'done' ? "text-foreground" : p.status === 'active' ? "text-primary font-bold" : "text-muted-foreground/40"
                         )}>
                           {p.name}
                         </span>
                         {p.status === 'active' && (
-                          <span className="text-[9px] text-primary/70 ml-auto">activating...</span>
+                          <span className="text-[9px] text-primary/60 font-mono animate-pulse">activating...</span>
                         )}
                         {p.status === 'done' && (
-                          <span className="text-[9px] text-neon-green/70 ml-auto">sealed</span>
+                          <span className="text-[9px] text-[hsl(142_76%_36%/0.7)] font-mono font-semibold">✓ sealed</span>
                         )}
                       </div>
                     ))}
