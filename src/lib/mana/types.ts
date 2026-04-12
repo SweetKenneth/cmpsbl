@@ -2,6 +2,9 @@
  * Mana — Silent Software Symbiosis Engine · Type Definitions
  * U.S. Patent App. No. 64/031,637
  * 
+ * Unified with Ascension Discovery — every discoverable primitive
+ * maps to deployable Mana wrappers. No gap between scan and deploy.
+ * 
  * © CMPSBL® — All rights reserved.
  */
 
@@ -11,47 +14,147 @@ export type AttachmentState = 'detached' | 'scanning' | 'attaching' | 'symbiotic
 /** Lex governance verdict */
 export type LexVerdict = 'allow' | 'deny' | 'observe';
 
-/** Layer 2 capability type — 32 granular attachment behaviors */
+/**
+ * Layer 2 capability type — 92 granular attachment behaviors
+ * Unified across ALL Ascension-discoverable primitives.
+ * Every capability Ascension can find, Mana can deploy.
+ */
 export type ManaCapability =
-  // ── DEFENSE family ──
+  // ── DEFENSE family (6) ──
   | 'defense_gate'
   | 'input_sanitizer'
   | 'threat_scorer'
   | 'rate_limiter'
   | 'payload_validator'
   | 'injection_guard'
-  // ── BEACON family ──
+  // ── BEACON family (5) ──
   | 'beacon_telemetry'
   | 'latency_profiler'
   | 'error_tracker'
   | 'throughput_meter'
   | 'dependency_mapper'
-  // ── GOVERNANCE family ──
+  // ── GOVERNANCE family (6) ──
   | 'governance_hook'
   | 'mutation_guard'
   | 'policy_enforcer'
   | 'consent_gate'
   | 'compliance_check'
   | 'access_controller'
-  // ── FAILSAFE family ──
+  // ── FAILSAFE family (5) ──
   | 'circuit_breaker'
   | 'retry_handler'
   | 'timeout_guard'
   | 'bulkhead_isolator'
   | 'fallback_provider'
-  // ── AUDIT family ──
+  // ── AUDIT family (4) ──
   | 'audit_trail'
   | 'call_logger'
   | 'state_snapshot'
   | 'forensic_recorder'
-  // ── SHADOW family ──
+  // ── SHADOW family (3) ──
   | 'shadow_rule'
   | 'output_filter'
   | 'data_masker'
-  // ── DREAM family ──
+  // ── DREAM family (3) ──
   | 'dream_synthesis'
   | 'anomaly_detector'
-  | 'drift_monitor';
+  | 'drift_monitor'
+  // ── MEMORY family (3) ──
+  | 'memory_cache'
+  | 'memory_ttl'
+  | 'memory_state_track'
+  // ── NEXUS family (3) ──
+  | 'nexus_router'
+  | 'nexus_cost_gate'
+  | 'nexus_fallback'
+  // ── BRAIN family (3) ──
+  | 'brain_reasoning_trace'
+  | 'brain_context_guard'
+  | 'brain_confidence_gate'
+  // ── ORACLE family (3) ──
+  | 'oracle_predictor'
+  | 'oracle_anomaly_alert'
+  | 'oracle_causal_trace'
+  // ── CORTEX family (3) ──
+  | 'cortex_orchestrator'
+  | 'cortex_resource_gate'
+  | 'cortex_planning_trace'
+  // ── ECHO family (2) ──
+  | 'echo_amplifier'
+  | 'echo_resonance'
+  // ── HARVEST family (2) ──
+  | 'harvest_quality_gate'
+  | 'harvest_dedup'
+  // ── PHANTOM family (2) ──
+  | 'phantom_stealth'
+  | 'phantom_fingerprint_mask'
+  // ── LINGUA family (2) ──
+  | 'lingua_normalizer'
+  | 'lingua_encoding_guard'
+  // ── NERVE family (2) ──
+  | 'nerve_priority_router'
+  | 'nerve_backpressure'
+  // ── COMPASS family (2) ──
+  | 'compass_intent_resolver'
+  | 'compass_goal_validator'
+  // ── SANDBOX family (2) ──
+  | 'sandbox_isolator'
+  | 'sandbox_resource_limit'
+  // ── RIPPLE family (2) ──
+  | 'ripple_impact_tracer'
+  | 'ripple_dependency_check'
+  // ── IDENTITY family (2) ──
+  | 'identity_session_bind'
+  | 'identity_auth_gate'
+  // ── VISION family (2) ──
+  | 'vision_perf_monitor'
+  | 'vision_accessibility_check'
+  // ── INCLUSIVE family (2) ──
+  | 'inclusive_i18n_guard'
+  | 'inclusive_contrast_check'
+  // ── RELAY family (2) ──
+  | 'relay_sync'
+  | 'relay_offline_cache'
+  // ── INTEGRATION family (2) ──
+  | 'integration_bridge'
+  | 'integration_webhook'
+  // ── ATLAS family (2) ──
+  | 'atlas_complexity_check'
+  | 'atlas_dependency_map'
+  // ── MEDIC family (2) ──
+  | 'medic_health_check'
+  | 'medic_memory_guard'
+  // ── SYSTEM family (2) ──
+  | 'system_telemetry'
+  | 'system_feature_flag'
+  // ── IMMUNITY family (3) ──
+  | 'immunity_self_heal'
+  | 'immunity_quarantine'
+  | 'immunity_vaccination'
+  // ── REFLEX family (2) ──
+  | 'reflex_circuit_breaker'
+  | 'reflex_fallback_chain'
+  // ── EVOLUTION family (2) ──
+  | 'evolution_patch'
+  | 'evolution_rollback'
+  // ── TREATY family (2) ──
+  | 'treaty_contract_check'
+  | 'treaty_sla_monitor'
+  // ── SOVEREIGN family (2) ──
+  | 'sovereign_encrypt'
+  | 'sovereign_tenant_isolate'
+  // ── CORE family (2) ──
+  | 'core_lifecycle_guard'
+  | 'core_state_validator'
+  // ── ACCESS family (2) ──
+  | 'access_rbac_gate'
+  | 'access_api_key_check'
+  // ── CONSCIENCE family (2) ──
+  | 'conscience_ethics_gate'
+  | 'conscience_bias_check'
+  // ── FORGE family (2) ──
+  | 'forge_package_seal'
+  | 'forge_integrity_check';
 
 /** A single Layer 2 attachment point on a host function */
 export interface AttachmentPoint {
