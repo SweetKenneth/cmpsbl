@@ -533,11 +533,16 @@ export default function RestorationShop() {
 
           {/* UPLOAD PHASE */}
           {phase === 'upload' && (
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="rounded-xl border border-border/40 bg-card/20 p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <Upload className="w-5 h-5 text-primary" />
-                  <h2 className="text-sm font-bold text-foreground">Upload Your Code</h2>
+            <div className="max-w-2xl mx-auto space-y-6 phase-card-enter">
+              <div className="rounded-2xl border border-border/30 bg-card/20 backdrop-blur-sm p-6 sm:p-8 shadow-sm">
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <Upload className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-foreground">Upload Your Code</h2>
+                    <p className="text-[10px] text-muted-foreground">Any language, any stack — we'll handle the rest</p>
+                  </div>
                 </div>
 
                 <input
@@ -549,45 +554,55 @@ export default function RestorationShop() {
                 />
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => { haptic('light'); fileInputRef.current?.click(); }}
                   className={cn(
-                    "w-full rounded-xl border-2 border-dashed p-6 mb-4 text-center transition-colors",
-                    "hover:border-primary/40 hover:bg-primary/5",
-                    fileName ? "border-primary/30 bg-primary/5" : "border-border/40 bg-background/30"
+                    "w-full rounded-2xl border-2 border-dashed p-8 mb-5 text-center transition-all duration-300 group",
+                    "hover:border-primary/40 hover:bg-primary/5 hover:shadow-[0_0_30px_hsl(var(--primary)/0.08)]",
+                    fileName ? "border-primary/30 bg-primary/5" : "border-border/30 bg-background/20 drop-zone-idle"
                   )}
                 >
-                  <FileUp className={cn("w-8 h-8 mx-auto mb-2", fileName ? "text-primary" : "text-muted-foreground/40")} />
+                  <div className={cn(
+                    "w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center transition-all duration-300",
+                    fileName
+                      ? "bg-primary/15 border border-primary/20"
+                      : "bg-muted/20 border border-border/20 group-hover:bg-primary/10 group-hover:border-primary/20"
+                  )}>
+                    <FileUp className={cn(
+                      "w-6 h-6 transition-all duration-300",
+                      fileName ? "text-primary" : "text-muted-foreground/40 group-hover:text-primary/60"
+                    )} />
+                  </div>
                   {fileName ? (
                     <div>
-                      <p className="text-sm font-semibold text-foreground">{fileName}</p>
-                      <p className="text-[10px] text-muted-foreground mt-1">Click to choose a different file</p>
+                      <p className="text-sm font-bold text-foreground">{fileName}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1.5">Click to choose a different file</p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm font-medium text-foreground">Click to upload a file</p>
-                      <p className="text-[10px] text-muted-foreground mt-1">
+                      <p className="text-sm font-semibold text-foreground">Click to upload a file</p>
+                      <p className="text-[10px] text-muted-foreground mt-1.5">
                         Any of 90+ supported languages · Max 1MB
                       </p>
                     </div>
                   )}
                 </button>
 
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex-1 h-px bg-border/30" />
-                  <span className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">or paste code</span>
-                  <div className="flex-1 h-px bg-border/30" />
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+                  <span className="text-[9px] text-muted-foreground/50 uppercase tracking-[0.2em] font-mono">or paste code</span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
                 </div>
 
                 <Textarea
                   value={code}
                   onChange={(e) => { setCode(e.target.value); setFileName(null); }}
                   placeholder="Paste your code here — any language, any stack..."
-                  className="min-h-[160px] bg-background/50 font-mono text-xs mb-4"
+                  className="min-h-[160px] bg-background/50 font-mono text-xs mb-5 rounded-xl border-border/30 focus:border-primary/40 transition-colors"
                 />
                 <Button
                   onClick={handleScan}
                   disabled={!code.trim() || isScanning}
-                  className="w-full rounded-xl font-bold gap-2"
+                  className="w-full rounded-xl font-bold gap-2.5 h-12 text-sm shadow-[0_0_20px_hsl(var(--primary)/0.15)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.25)] transition-all"
                 >
                   {isScanning ? (
                     <>
