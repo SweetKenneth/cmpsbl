@@ -3,6 +3,7 @@
  * Wraps the shared UpgradeContent with full-page SEO, nav, and footer.
  */
 import { SEO } from '@/components/SEO';
+import { StructuredData } from '@/components/seo/StructuredData';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
@@ -32,6 +33,23 @@ export default function Plans() {
         description="Choose your substrates: Free (Prime), Studio ($29 — 3 verticals), Creator ($49 — 6 verticals), Architect ($79 — all + ULTIMATE), Enterprise ($999+ — white-label). Memory Stream, Ascension, and Crown Jewel npm free for all."
         canonical="https://cmpsbl.com/plans"
         image="https://cmpsbl.com/og/plans.jpg"
+      />
+      <StructuredData
+        type="product"
+        data={{
+          name: "CMPSBL Subscription Plans",
+          description: "Governed cognitive infrastructure plans from free Builder to Enterprise. Persistent memory, AI routing, security hardening, and autonomous evolution.",
+          url: "https://cmpsbl.com/plans",
+          price: "0",
+          category: "Software",
+        }}
+      />
+      <StructuredData
+        type="breadcrumb"
+        data={{ items: [
+          { name: "Home", url: "https://cmpsbl.com" },
+          { name: "Plans", url: "https://cmpsbl.com/plans" },
+        ]}}
       />
 
       <PublicNav />

@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -100,6 +101,15 @@ export default function CyberSecurityHome() {
         <meta name="author" content="CMPSBL® · PromptFluid™" />
         <link rel="dns-prefetch" href="https://cmpsbl.com" />
       </Helmet>
+      <StructuredData
+        type="webApplication"
+        data={{
+          name: "CMPSBL CYBER™",
+          description: "Enterprise cognitive security infrastructure — 16 purpose-built security primitives, autonomous threat detection, and zero-trust defense.",
+          url: "https://security.cmpsbl.com",
+          features: "Threat Detection, Digital Forensics, Zero-Trust Architecture, Autonomous Defense, Security Primitives, Vulnerability Assessment",
+        }}
+      />
 
       <div className="cyber-substrate min-h-screen bg-background text-foreground font-sans">
 

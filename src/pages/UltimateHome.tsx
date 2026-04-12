@@ -9,6 +9,7 @@
 
 import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -118,6 +119,7 @@ export default function UltimateHome() {
         <title>{`CMPSBL ULTIMATE™ — ${poolSize} Candidates · Dynamic Selection · Zero Restrictions`}</title>
         <meta name="description" content={`CMPSBL ULTIMATE™ — The ceiling of Ascension. ${poolSize} candidate primitives from every source compete for selection. No spine lock. No category restrictions. The scanner selects only the primitives your code actually needs — up to 40.`} />
       </Helmet>
+      <StructuredData type="webApplication" data={{ name: "CMPSBL ULTIMATE™", description: "Universal Ascension — every candidate primitive from every source competes for selection. No spine lock. No restrictions. The scanner selects only what your code needs.", url: "https://ultimate.cmpsbl.com", features: "Universal Pool Selection, Dynamic Primitive Selection, Cross-Vertical Candidates, Zero Restrictions, Autonomous Scanning, Full Ascension" }} />
 
       <VerticalReturnBanner verticalName="CMPSBL ULTIMATE™" accentColor={ACCENT} />
       <PublicNav />

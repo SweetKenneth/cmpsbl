@@ -9,6 +9,7 @@
 
 import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -93,6 +94,7 @@ export default function MediaHome() {
         <title>CMPSBL MEDIA™ — Cognitive Media & Content Infrastructure</title>
         <meta name="description" content="CMPSBL MEDIA™ — 16 specialized primitives powering AI-driven content creation for music, video, images, ad copy, social media campaigns, and brand management. Content Creates Itself." />
       </Helmet>
+      <StructuredData type="webApplication" data={{ name: "CMPSBL MEDIA™", description: "Cognitive media infrastructure — 16 specialized primitives for AI-driven music, video, image, ad copy, and brand management.", url: "https://media.cmpsbl.com", features: "AI Music Production, Video Generation, Image Synthesis, Ad Copy, Social Media Campaigns, Brand Management" }} />
 
       <VerticalReturnBanner verticalName="CMPSBL MEDIA™" accentColor={ACCENT} />
       <PublicNav />

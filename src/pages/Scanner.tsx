@@ -4,6 +4,7 @@
  */
 
 import { SEO } from '@/components/SEO';
+import { StructuredData } from '@/components/seo/StructuredData';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
@@ -99,6 +100,15 @@ export default function Scanner() {
         description="CMPSBL's Evolution Scanner detects technical debt, diagnoses root causes, generates governed fix plans with cryptographic proof, and tracks resolution across your entire codebase automatically."
         canonical="https://cmpsbl.com/scanner"
         keywords={['technical debt', 'evolution scanner', 'code quality', 'system evolution', 'AI diagnostics', 'vibe coding']}
+      />
+      <StructuredData
+        type="webApplication"
+        data={{
+          name: "CMPSBL Evolution Scanner",
+          description: "Detect technical debt, diagnose root causes, generate governed fix plans with cryptographic proof, and track resolution across your entire codebase.",
+          url: "https://cmpsbl.com/scanner",
+          features: "Technical Debt Detection, Root Cause Diagnosis, Governed Fix Plans, Cryptographic Proof, Resolution Tracking, Automated Evolution",
+        }}
       />
       <CmpsblNav />
 

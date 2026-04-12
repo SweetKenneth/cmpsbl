@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 
 // Above-fold: eager
@@ -78,6 +79,9 @@ export default function Explore() {
           { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the intelligent router. Bring your own keys or use managed routing.' },
         ]}
       />
+      <StructuredData type="organization" />
+      <StructuredData type="webSite" />
+      <StructuredData type="softwareApplication" />
 
       <PublicNav />
       <CmpsblWelcome />

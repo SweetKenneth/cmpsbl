@@ -6,6 +6,7 @@
 
 import { useState, useMemo, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { StructuredData } from '@/components/seo/StructuredData';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -153,6 +154,13 @@ export default function MarketplaceHome() {
         <title>CMPSBL Marketplace — Premium Software from Every Substrate</title>
         <meta name="description" content="Shop the best cognitive software from across the CMPSBL ecosystem. Enterprise-grade engines, agents, and memory chains — $10 to $50." />
       </Helmet>
+      <StructuredData
+        type="breadcrumb"
+        data={{ items: [
+          { name: "Home", url: "https://cmpsbl.com" },
+          { name: "Marketplace", url: "https://marketplace.cmpsbl.com" },
+        ]}}
+      />
 
       <PublicNav />
 
