@@ -76,19 +76,24 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 
 ---
 
-## Phase 4 — Make Scanning Actionable
+## Phase 4 — Make Scanning Actionable ✅ COMPLETE
 
 **Goal:** Scanning produces behavior-ready outputs, not just analysis.
 
 **Key outcomes:**
-- Scan identifies: critical functions, risk surfaces, attachable primitives
-- Scan output maps directly to attachments and policies
-- Introduce "recommended behaviors" (not just findings)
+- ✅ Scan identifies: critical functions, risk surfaces, attachable primitives
+- ✅ Scan output maps directly to attachments and policies (`scan-to-policy.ts`)
+- ✅ "Recommended behaviors" generator (`recommended-behaviors.ts`)
+
+**Delivered:**
+- `scan-to-policy.ts` — Deterministic capability→policy template mapping (7 templates, priority-sorted)
+- `recommended-behaviors.ts` — Risk-classified behavior reports (critical/high/medium/low/info)
+- `scan-pipeline.ts` — Unified entry: `runScanPipeline(source)` → attachments + policies + report
 
 **Exit criteria:**
-- Scan → Attachment is a natural pipeline
-- Minimal human interpretation required
-- Scanning becomes the entry point to Ascension
+- ✅ Scan → Attachment is a natural pipeline (`scanToAttachments()`)
+- ✅ Minimal human interpretation required (what/why/ifSkipped per recommendation)
+- ✅ Scanning becomes the entry point to Ascension (`runScanPipeline()`)
 
 ---
 
