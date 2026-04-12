@@ -33,6 +33,8 @@ export interface GeneratorConfig {
   maxModules: number;        // maximum modules in chain (2-12)
   minCjpiTarget: number;     // minimum CJPI to target (e.g. 80)
   biasHighValue: boolean;    // bias toward higher scoring combos
+  primitivePool?: string[];  // override the default module pool
+  categoryFocus?: string[];  // limit to specific categories
 }
 
 export interface RetiredCombo {
