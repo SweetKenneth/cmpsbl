@@ -443,7 +443,65 @@ Artifact declares:
 
 ---
 
-## 16. Migration Status
+## 16. Runtime Deployment Layer (Phase 8 — April 12, 2026)
+
+The Ascension runtime now includes a **production-ready deployment layer** that bridges the pipeline output to real-world environments.
+
+### Production Provider (`packages/runtime/src/production-provider.ts`)
+
+Developer-facing API: `init()` → `AscensionSession`
+
+```typescript
+import { init } from '@cmpsbl/runtime';
+import * as handlers from './handlers';
+import { readFileSync } from 'fs';
+
+const session = init(handlers, readFileSync('./handlers.ts', 'utf-8'), { name: 'api-handlers' });
+
+// Drop-in replacement — same signatures
+app.get('/users', session.exports.getUsers);
+
+// Authoritative health (unified activation + runtime)
+app.get('/health', (_, res) => res.json(session.healthCheck()));
+
+// Quick-glance status for dashboards
+app.get('/status', (_, res) => res.json(session.status()));
+```
+
+### Session API Surface
+
+| Method | Returns | Purpose |
+|--------|---------|---------|
+| `session.health()` | `HealthStatus` | Unified health verdict (activation + runtime) |
+| `session.status()` | `SessionStatus` | `{ health, coverage, fingerprint, identity }` |
+| `session.healthCheck()` | `HealthCheckResponse` | Full /health payload (session-scoped via `getSessionHealthCheck()`) |
+| `session.summary()` | `string` | Human-readable pipeline summary |
+| `session.verificationReport()` | `string` | Full verification audit trail |
+| `session.destroy()` | `void` | Teardown (resets global verification state) |
+
+### Unified Health System (`packages/runtime/src/engines/unified-health.ts`)
+
+Health is resolved from two independent signals merged via worst-of-both:
+
+| Signal | Source | Healthy | Partial | Degraded |
+|--------|--------|---------|---------|----------|
+| **Activation** | `coverageRatio` (wrappedCount / boundariesDetected) | ≥ 0.80 | ≥ 0.50 | < 0.50 |
+| **Runtime** | Verification ledger events | Events + zero anomalies | No events yet | Anomalies > 0 |
+
+- `coverageRatio` is latched once during pipeline execution and stored in `PipelineTrace`
+- Session health reads from the artifact's own data via `getSessionHealthCheck()` — no global state dependency
+- `getGlobalHealthCheck()` exists for standalone /health endpoints without session context
+- `UNCOMPUTED_FINGERPRINT` sentinel eliminates null-branching for consumers
+
+### Key Design Decisions
+
+- **Single active session per process** — the verification ledger is global. Scoped ledgers are a future enhancement.
+- **Fingerprint identity is never null** — `UNCOMPUTED_FINGERPRINT` provides `{ manifestHash: 0, attachmentHash: 0, composite: 'uncomputed', computedAt: 0 }`
+- **Session-scoped health** — `session.healthCheck()` is safe for multi-instance and multi-tenant deployments
+
+---
+
+## 17. Migration Status
 
 | Phase | Status | Description |
 |---|---|---|
@@ -453,11 +511,14 @@ Artifact declares:
 | 4 — Generic Activation Engine | ✅ Complete | generic-activation, generic-wrapper, auto-activation in export-bridge |
 | 5 — Behavior Engine Layer | ✅ Complete | 5 engines: Interception, Execution, State, Analysis, Orchestration (Phase 5) |
 | 5b — CORTEX Phases 2–5 | ✅ Complete | Action execution, auto-binding, declarative policies, action chains |
-| 6 — Wire into Ascension pipeline | 🔲 Next | Feed real pipeline data into ledger builder |
-| 7 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
-| 8 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
-| 9 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
-| 10 — Export uniformity audit | 🔲 Pending | Ensure all scanners (Prime, Cyber, Ultimate, etc.) produce identical artifact structure |
+| 6 — Ascension Runtime Pipeline | ✅ Complete | 8-phase pipeline: scan → attach → activate → verify → fingerprint → health → deploy |
+| 7 — Unified Health + Deployment | ✅ Complete | Unified health resolver, environment detection, portable artifacts, deployment manifests |
+| 8 — Production Provider | ✅ Complete | `init()` API, `AscensionSession`, `getSessionHealthCheck()`, `getGlobalHealthCheck()`, `UNCOMPUTED_FINGERPRINT` |
+| 9 — Wire lifecycle ledger into pipeline | 🔲 Next | Feed real pipeline data into capability lifecycle ledger builder |
+| 10 — Include ledger JSON in export ZIPs | 🔲 Pending | Add `capability-ledger.json` to artifact package |
+| 11 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
+| 12 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
+| 13 — Export uniformity audit | 🔲 Pending | Ensure all scanners produce identical artifact structure |
 
 ---
 
