@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
     }
 
     // Step 2: Download the MP3
-    const dlResponse = await fetch(`${FREETTS_BASE}/download/${fileId}`);
+    const dlResponse = await fetch(`${FREETTS_BASE}/audio/${fileId}`);
     if (!dlResponse.ok) {
       const dlError = await dlResponse.text();
       console.error(`FreeTTS download error [${dlResponse.status}]:`, dlError);
