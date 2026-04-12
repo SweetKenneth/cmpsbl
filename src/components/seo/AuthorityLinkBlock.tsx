@@ -163,8 +163,7 @@ export function AuthorityLinkBlock({
             <a
               key={link.href}
               href={link.href}
-              target="_blank"
-              rel={link.rel ?? 'noopener noreferrer'}
+              target="_blank" rel={link.rel ?? 'noopener noreferrer'}
               className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] sm:text-xs rounded-md text-muted-foreground/60 hover:text-muted-foreground hover:bg-muted/30 transition-all duration-200"
             >
               {link.label}
