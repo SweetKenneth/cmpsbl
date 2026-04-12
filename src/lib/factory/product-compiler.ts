@@ -2,8 +2,11 @@
  * CMPSBL® Autonomous Product Compiler
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Reads discoveries from the vault, identifies groups of 5-10 whose
- * primitive chains are compatible, and surfaces compiled product
- * proposals for governor review. Learns from every rated decision.
+ * primitive chains are compatible, and compiles them into software suites.
+ *
+ * AUTO-MODE (v2.0): No governor review needed. Products are auto-scored
+ * on rarity, uniqueness, and usefulness — then priced by ECONOMY and
+ * rotated through the Marketplace autonomously.
  *
  * © CMPSBL® — All rights reserved.
  */

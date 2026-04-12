@@ -5368,6 +5368,7 @@ export type Database = {
       }
       compiled_products: {
         Row: {
+          auto_score: number | null
           cdm_cycle_id: string | null
           coherence_score: number
           combined_chain: string[]
@@ -5378,15 +5379,23 @@ export type Database = {
           discovery_ids: string[]
           estimated_value_cents: number
           id: string
+          marketplace_listed_at: string | null
+          marketplace_price_cents: number | null
+          marketplace_slug: string | null
           name: string
           notes: string | null
+          rarity_score: number | null
           rated_at: string | null
           rating: number | null
+          rotation_priority: number | null
           status: string
+          uniqueness_score: number | null
           updated_at: string
+          usefulness_score: number | null
           vertical: string
         }
         Insert: {
+          auto_score?: number | null
           cdm_cycle_id?: string | null
           coherence_score?: number
           combined_chain?: string[]
@@ -5397,15 +5406,23 @@ export type Database = {
           discovery_ids?: string[]
           estimated_value_cents?: number
           id?: string
+          marketplace_listed_at?: string | null
+          marketplace_price_cents?: number | null
+          marketplace_slug?: string | null
           name: string
           notes?: string | null
+          rarity_score?: number | null
           rated_at?: string | null
           rating?: number | null
+          rotation_priority?: number | null
           status?: string
+          uniqueness_score?: number | null
           updated_at?: string
+          usefulness_score?: number | null
           vertical?: string
         }
         Update: {
+          auto_score?: number | null
           cdm_cycle_id?: string | null
           coherence_score?: number
           combined_chain?: string[]
@@ -5416,12 +5433,19 @@ export type Database = {
           discovery_ids?: string[]
           estimated_value_cents?: number
           id?: string
+          marketplace_listed_at?: string | null
+          marketplace_price_cents?: number | null
+          marketplace_slug?: string | null
           name?: string
           notes?: string | null
+          rarity_score?: number | null
           rated_at?: string | null
           rating?: number | null
+          rotation_priority?: number | null
           status?: string
+          uniqueness_score?: number | null
           updated_at?: string
+          usefulness_score?: number | null
           vertical?: string
         }
         Relationships: []
