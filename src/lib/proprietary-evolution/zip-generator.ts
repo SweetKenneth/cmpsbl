@@ -1171,9 +1171,31 @@ const storage = createPersistentStorage({
 
   // ═══ Capability Activation Ledger + Guide + Verification (lifecycle artifacts) ═══
   try {
-    const { buildAscensionLifecycleArtifacts, generateVerificationScript } = await import('@/lib/capability-lifecycle/export-bridge');
+    const {
+      buildAscensionLifecycleArtifacts,
+      generateVerificationScript,
+      injectRuntimeEvidence,
+      clearRuntimeEvidence,
+    } = await import('@/lib/capability-lifecycle/export-bridge');
+
+    // Inject real behavioral evidence from runtime engines if available
+    try {
+      const runtimePath = 'packages/runtime/src/engines/behavioral-evidence-bridge';
+      const runtimeModule = await import(/* @vite-ignore */ `../../${runtimePath}`).catch(() => null);
+      if (runtimeModule?.hasBehavioralEvidence?.()) {
+        const evidence = runtimeModule.extractBehavioralEvidence();
+        injectRuntimeEvidence(evidence.probes);
+      }
+    } catch {
+      // Runtime not available — generic probes used
+    }
+
     const fingerprint = capabilities[0]?.fingerprint?.slice(0, 12).toUpperCase() ?? 'UNKNOWN';
     const lifecycle = buildAscensionLifecycleArtifacts(capabilities, fingerprint, targetLanguage);
+
+    // Clean up after use
+    clearRuntimeEvidence();
+
     zip.file('capability-ledger.json', lifecycle.ledgerJson);
     docsFolder.file('ACTIVATION-GUIDE.html', lifecycle.guideHtml);
     const allPrimitives = [...new Set(capabilities.flatMap(c => c.chain))];
