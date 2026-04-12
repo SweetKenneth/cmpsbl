@@ -547,6 +547,31 @@ export default function STierVault() {
   const aTierVerticals = aTierVault.verticals;
   const aTierPrimitives = useMemo(() => [...new Set(aTierVault.entries.map(e => e.module))].sort(), [aTierVault]);
 
+  // Federation: ALL vertical Crown Jewels
+  const [fedVerticalFilter, setFedVerticalFilter] = useState<string | null>(null);
+  const allVerticalJewels = useMemo(() => getAllVerticalJewels(), []);
+  const verticalSummaries = useMemo(() => getVerticalRegistrySummaries(), []);
+  const registeredVerticals = useMemo(() => getRegisteredVerticals(), []);
+
+  const filteredFederation = useMemo(() => {
+    let result = allVerticalJewels;
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(e =>
+        e.name.toLowerCase().includes(q) || e.id.toLowerCase().includes(q) ||
+        e.module.toLowerCase().includes(q) || e.description.toLowerCase().includes(q)
+      );
+    }
+    if (fedVerticalFilter) {
+      const prefix = fedVerticalFilter.toUpperCase();
+      result = result.filter(e => e.id.toUpperCase().startsWith(prefix) || e.cluster?.toLowerCase() === fedVerticalFilter);
+    }
+    return result;
+  }, [allVerticalJewels, search, fedVerticalFilter]);
+
+  // Unified totals
+  const unifiedTotal = entries.length + promoted.length + aTierVault.totalArtifacts + allVerticalJewels.length;
+
   const filteredATier = useMemo(() => {
     let result = aTierVault.entries;
     if (search) {
