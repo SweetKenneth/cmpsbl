@@ -210,11 +210,11 @@ function PostHogDashboardContent() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col gap-3">
         <div>
-          <h1 className="text-2xl font-bold">PostHog Analytics</h1>
-          <p className="text-sm text-muted-foreground">
-            Product analytics · Last refreshed {lastRefresh.toLocaleTimeString()}
+          <h1 className="text-xl sm:text-2xl font-bold">PostHog Analytics</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Product analytics · {lastRefresh.toLocaleTimeString()}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ function PostHogDashboardContent() {
 
       {/* Tabs */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 max-w-lg">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="pages">Pages</TabsTrigger>
           <TabsTrigger value="funnel">Funnel</TabsTrigger>
