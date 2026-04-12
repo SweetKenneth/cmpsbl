@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode, useRef } fro
 import type { User, Session, SupabaseClient } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { identifyUser, resetPostHog } from '@/lib/telemetry/posthog';
 
 interface AuthContextType {
   user: User | null;
