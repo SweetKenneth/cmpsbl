@@ -42,7 +42,31 @@ export interface UnifiedHealthResult {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §2 — INDIVIDUAL RESOLVERS
+// §2 — ACTIVATION COVERAGE LATCH
+// Pipeline writes once; /health reads back the real value.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let _latchedCoverageRatio: number | null = null;
+
+/**
+ * Called by the Ascension pipeline after computing real activation coverage.
+ * Stores `wrappedCount / boundariesDetected` so downstream consumers
+ * (e.g. /health) use the actual signal — not a proxy.
+ */
+export function latchActivationCoverage(coverageRatio: number): void {
+  _latchedCoverageRatio = coverageRatio;
+}
+
+/**
+ * Read the latched activation coverage ratio.
+ * Returns null if no pipeline has run yet (pre-ascension).
+ */
+export function getLatchedCoverageRatio(): number | null {
+  return _latchedCoverageRatio;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §3 — INDIVIDUAL RESOLVERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -66,7 +90,7 @@ export function computeRuntimeHealth(input: RuntimeHealthInput): HealthStatus {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — UNIFIED RESOLVER
+// §4 — UNIFIED RESOLVER
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**

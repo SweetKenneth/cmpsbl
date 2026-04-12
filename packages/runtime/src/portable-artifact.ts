@@ -28,7 +28,7 @@ import type { ArtifactManifest } from './artifact-initializer';
 import type { PolicyAttachmentEntry } from './scan-to-policy';
 import type { ArtifactFingerprint, VerificationSummary } from './engines/verification-ledger';
 import { generateVerificationSummary, getActiveFingerprint } from './engines/verification-ledger';
-import { resolveHealthFromSummary } from './engines/unified-health';
+import { resolveHealthFromSummary, getLatchedCoverageRatio } from './engines/unified-health';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — ENVIRONMENT DETECTION
@@ -301,10 +301,9 @@ export function getHealthCheck(): HealthCheckResponse {
 
   const verification = generateVerificationSummary();
 
-  // Unified health — merge activation coverage with runtime verification
-  const coverageRatio = verification.totalEvents > 0
-    ? verification.enforcements / Math.max(verification.totalEvents, 1)
-    : 0;
+  // Unified health — use the real activation coverage ratio latched by the pipeline.
+  // Falls back to 0 if no pipeline has run (pre-ascension / cold start).
+  const coverageRatio = getLatchedCoverageRatio() ?? 0;
   const unified = resolveHealthFromSummary(coverageRatio, verification);
   const status = unified.status;
 
