@@ -27,6 +27,9 @@ import registryData from "@/crownjewels/s-tier.registry.json";
 import type { STierEntry } from "@/crownjewels/types";
 import { getATierVault, type ATierEntry } from "@/crownjewels/a-tier";
 import {
+  getAllVerticalJewels, getVerticalRegistrySummaries, getRegisteredVerticals,
+} from "@/crownjewels/expansion-jewels";
+import {
   generateSingleExport, generateExportBundle, downloadBundle,
   getAllLanguages, getAllAdapters,
   type ExportLanguage, type ExportAdapter, type ExportableArtifact, type ExportTarget,
@@ -544,6 +547,31 @@ export default function STierVault() {
   const aTierVerticals = aTierVault.verticals;
   const aTierPrimitives = useMemo(() => [...new Set(aTierVault.entries.map(e => e.module))].sort(), [aTierVault]);
 
+  // Federation: ALL vertical Crown Jewels
+  const [fedVerticalFilter, setFedVerticalFilter] = useState<string | null>(null);
+  const allVerticalJewels = useMemo(() => getAllVerticalJewels(), []);
+  const verticalSummaries = useMemo(() => getVerticalRegistrySummaries(), []);
+  const registeredVerticals = useMemo(() => getRegisteredVerticals(), []);
+
+  const filteredFederation = useMemo(() => {
+    let result = allVerticalJewels;
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(e =>
+        e.name.toLowerCase().includes(q) || e.id.toLowerCase().includes(q) ||
+        e.module.toLowerCase().includes(q) || e.description.toLowerCase().includes(q)
+      );
+    }
+    if (fedVerticalFilter) {
+      const prefix = fedVerticalFilter.toUpperCase();
+      result = result.filter(e => e.id.toUpperCase().startsWith(prefix) || e.cluster?.toLowerCase() === fedVerticalFilter);
+    }
+    return result;
+  }, [allVerticalJewels, search, fedVerticalFilter]);
+
+  // Unified totals
+  const unifiedTotal = entries.length + promoted.length + aTierVault.totalArtifacts + allVerticalJewels.length;
+
   const filteredATier = useMemo(() => {
     let result = aTierVault.entries;
     if (search) {
@@ -928,19 +956,19 @@ export default function STierVault() {
   };
 
   const handleSaveOfflineManifest = async () => {
-    // Build a comprehensive offline manifest combining registry + promoted discoveries
+    // Build a comprehensive offline manifest combining ALL sources
     const manifest = {
       _meta: {
-        type: 'CMPSBL® Offline Vault Manifest',
-        purpose: 'Complete disaster-recovery snapshot of all discovered and curated software. If the server is ever lost, this file contains everything needed to reconstruct the vault.',
+        type: 'CMPSBL® Unified Vault Manifest',
+        purpose: 'Complete disaster-recovery snapshot of all discovered, curated, and federated software across all 12 vertical substrates.',
         generatedAt: new Date().toISOString(),
-        generatedBy: 'S-Tier Apex Discovery Vault — Offline Manifest System',
+        generatedBy: 'Crown Jewel Discovery Vault — Unified Manifest System',
         copyright: '© 2025–2026 CMPSBL®. All rights reserved.',
         architect: 'Kenneth E. Sweet Jr. — ORCID 0009-0001-4237-1243',
       },
       registry: {
         version: registryData.version,
-        totalArtifacts: entries.length + promoted.length,
+        totalArtifacts: entries.length,
         canonicalModules: registryData.canonicalModules,
         entries: entries.map(e => ({
           rank: e.rank, id: e.id, name: e.name, cjpi: e.cjpi,
@@ -957,10 +985,32 @@ export default function STierVault() {
         export_ready: d.export_ready, promoted_at: d.promoted_at,
         estimatedValue: formatMarketValue(estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length)),
       })),
+      aTier: {
+        totalArtifacts: aTierVault.totalArtifacts,
+        verticals: aTierVault.verticals,
+        entries: aTierVault.entries.map(e => ({
+          id: e.id, name: e.name, cjpi: e.cjpi, module: e.module,
+          type: e.type, description: e.description, cluster: e.cluster,
+        })),
+      },
+      federation: {
+        totalVerticals: registeredVerticals.length,
+        totalJewels: allVerticalJewels.length,
+        verticals: verticalSummaries.map(v => ({
+          vertical: v.vertical, totalJewels: v.totalJewels, primitives: v.primitives,
+          avgCjpi: v.avgCjpi, topJewel: v.topJewel,
+        })),
+        entries: allVerticalJewels.map(e => ({
+          id: e.id, name: e.name, cjpi: e.cjpi, module: e.module,
+          type: e.type, description: e.description, cluster: e.cluster,
+        })),
+      },
       summary: {
+        unifiedTotal,
         registryDiscoveries: entries.length,
         promotedDiscoveries: promoted.length,
-        totalSoftware: entries.length + promoted.length,
+        aTierJewels: aTierVault.totalArtifacts,
+        federatedJewels: allVerticalJewels.length,
         tiers: {
           apex: entries.filter(e => e.cjpi >= 95).length + promoted.filter(d => d.cjpi >= 95).length,
           enterprise: entries.filter(e => e.cjpi >= 85 && e.cjpi < 95).length + promoted.filter(d => d.cjpi >= 85 && d.cjpi < 95).length,
@@ -972,11 +1022,13 @@ export default function STierVault() {
           totalCombinations: '90+ languages × 8 adapters = 200 outputs',
         },
         categories: [...new Set(promoted.map(d => d.category))].sort(),
+        verticals: registeredVerticals,
       },
       instructions: {
-        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
-        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries. The Convex Core™ Processing Layer (included in ZIP exports) provides CJPI scoring and pipeline orchestration.',
+        howToUse: 'Each entry in "registry", "discoveries", "aTier", and "federation" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
+        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries.',
         howToExport: 'Each discovery can be exported to any of 90+ languages (18 software + 7 hardware/HDL) using the CMPSBL® Substrate.',
+        aiValueAnalysis: 'Feed this manifest to an AI model and ask it to: (1) rank discoveries by commercial value, (2) identify high-synergy clusters, (3) recommend packaging strategies for maximum revenue.',
       },
     };
 
@@ -984,17 +1036,41 @@ export default function STierVault() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `cmpsbl-vault-manifest-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `cmpsbl-unified-vault-manifest-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
 
-    // Also save to localStorage for true offline access
     try {
       localStorage.setItem('cmpsbl-vault-offline-manifest', JSON.stringify(manifest));
-      toast.success(`Offline manifest saved — ${entries.length + promoted.length} artifacts cached locally + downloaded`);
+      toast.success(`Unified manifest saved — ${unifiedTotal} artifacts across ${registeredVerticals.length} verticals cached locally + downloaded`);
     } catch {
-      toast.success(`Manifest downloaded — ${entries.length + promoted.length} artifacts`);
+      toast.success(`Manifest downloaded — ${unifiedTotal} artifacts`);
     }
+  };
+
+  const handleExportUnifiedCSV = () => {
+    const rows: string[] = ['source,id,name,cjpi,module,category,tier,description,vertical'];
+    for (const e of entries) {
+      rows.push(`registry,"${e.id}","${e.name.replace(/"/g, '""')}",${e.cjpi},"${e.module}","${e.type}","${getTierLabel(e.cjpi)}","${e.description.replace(/"/g, '""')}",primary`);
+    }
+    for (const d of promoted) {
+      rows.push(`discovered,"${d.discovery_id}","${d.name.replace(/"/g, '""')}",${d.cjpi},"${(d.module_chain || [])[0] || ''}","${d.category}","${d.tier}","${(d.description || '').replace(/"/g, '""')}",primary`);
+    }
+    for (const e of aTierVault.entries) {
+      rows.push(`a-tier,"${e.id}","${e.name.replace(/"/g, '""')}",${e.cjpi},"${e.module}","${e.type}","A-Tier","${e.description.replace(/"/g, '""')}","${e.cluster || ''}"`)
+    }
+    for (const e of allVerticalJewels) {
+      const vertical = e.cluster || e.id.split('-')[0] || '';
+      rows.push(`federation,"${e.id}","${e.name.replace(/"/g, '""')}",${e.cjpi},"${e.module}","${e.type}","${getTierLabel(e.cjpi)}","${e.description.replace(/"/g, '""')}","${vertical}"`);
+    }
+    const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cmpsbl-unified-vault-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${rows.length - 1} artifacts to CSV`);
   };
 
   return (
@@ -1007,7 +1083,7 @@ export default function STierVault() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">Crown Jewel Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {liveCounts.total} total capabilities • {liveCounts.registry} registry • {liveCounts.showroom} showroom • {liveCounts.crownJewels} Crown Jewels • {liveCounts.aTier} A-Tier
+                {unifiedTotal} unified artifacts • {liveCounts.crownJewels} Crown Jewels (DB) • {allVerticalJewels.length} federated • {promoted.length} discovered • {aTierVault.totalArtifacts} A-Tier
               </p>
             </div>
           </div>
@@ -1024,7 +1100,10 @@ export default function STierVault() {
               <BarChart3 className="w-4 h-4" /> {showAnalytics ? 'Hide' : 'Show'} Stats
             </Button>
             <Button variant="outline" size="sm" onClick={handleSaveOfflineManifest} className="gap-1.5">
-              <Download className="w-4 h-4" /> Offline Manifest
+              <Download className="w-4 h-4" /> Unified Manifest
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleExportUnifiedCSV} className="gap-1.5">
+              <Download className="w-4 h-4" /> Unified CSV
             </Button>
             <Button variant="outline" size="sm" onClick={handleExportManifest} className="gap-1.5">
               <Download className="w-4 h-4" /> Registry JSON
@@ -1043,10 +1122,11 @@ export default function STierVault() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="w-full sm:w-auto">
-            <TabsTrigger value="registry" className="gap-1.5"><Shield className="w-3.5 h-3.5" /> Registry ({filtered.length})</TabsTrigger>
-            <TabsTrigger value="promoted" className="gap-1.5"><Zap className="w-3.5 h-3.5" /> Discovered ({filteredPromoted.length})</TabsTrigger>
-            <TabsTrigger value="a-tier" className="gap-1.5"><Package className="w-3.5 h-3.5" /> A-Tier ({filteredATier.length})</TabsTrigger>
+          <TabsList className="w-full sm:w-auto grid grid-cols-4 sm:flex">
+            <TabsTrigger value="registry" className="gap-1 text-xs sm:text-sm"><Shield className="w-3.5 h-3.5" /><span className="hidden sm:inline">Registry ({filtered.length})</span><span className="sm:hidden">{filtered.length}</span></TabsTrigger>
+            <TabsTrigger value="promoted" className="gap-1 text-xs sm:text-sm"><Zap className="w-3.5 h-3.5" /><span className="hidden sm:inline">Discovered ({filteredPromoted.length})</span><span className="sm:hidden">{filteredPromoted.length}</span></TabsTrigger>
+            <TabsTrigger value="federation" className="gap-1 text-xs sm:text-sm"><Globe className="w-3.5 h-3.5" /><span className="hidden sm:inline">Federation ({filteredFederation.length})</span><span className="sm:hidden">{filteredFederation.length}</span></TabsTrigger>
+            <TabsTrigger value="a-tier" className="gap-1 text-xs sm:text-sm"><Package className="w-3.5 h-3.5" /><span className="hidden sm:inline">A-Tier ({filteredATier.length})</span><span className="sm:hidden">{filteredATier.length}</span></TabsTrigger>
           </TabsList>
 
           {/* ─── Registry Tab ─── */}
@@ -1204,6 +1284,57 @@ export default function STierVault() {
                   </div>
                 )}
               </>
+            )}
+          </TabsContent>
+
+          {/* ─── Federation Tab — ALL vertical Crown Jewels ─── */}
+          <TabsContent value="federation" className="space-y-4 mt-4">
+            {/* Vertical summaries */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+              {verticalSummaries.map(v => (
+                <Card
+                  key={v.vertical}
+                  className={`cursor-pointer border-border/50 hover:border-primary/30 transition-all duration-200 ${fedVerticalFilter === v.vertical ? 'border-primary ring-1 ring-primary/20' : ''}`}
+                  onClick={() => setFedVerticalFilter(fedVerticalFilter === v.vertical ? null : v.vertical)}
+                >
+                  <CardContent className="p-2.5 text-center">
+                    <div className="text-lg font-bold font-mono tabular-nums text-foreground">{v.totalJewels}</div>
+                    <div className="text-[10px] text-muted-foreground capitalize">{v.vertical}</div>
+                    <div className="text-[9px] text-primary font-mono">avg {v.avgCjpi}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              {filteredFederation.length} of {allVerticalJewels.length} federated Crown Jewels across {registeredVerticals.length} verticals
+              {fedVerticalFilter && <> • Filtered: <span className="capitalize font-semibold">{fedVerticalFilter}</span></>}
+            </p>
+
+            <div className="space-y-3">
+              {filteredFederation.slice(0, 100).map(entry => (
+                <ArtifactCard
+                  key={entry.id}
+                  entry={entry}
+                  onViewCode={handleViewCode}
+                  onExport={handleExport}
+                  loadingCode={loadingCode}
+                  expanded={expandedIds.has(entry.id)}
+                  onToggle={() => toggleExpand(entry.id)}
+                />
+              ))}
+              {filteredFederation.length > 100 && (
+                <p className="text-xs text-center text-muted-foreground py-4">
+                  Showing 100 of {filteredFederation.length} — use search or vertical filter to narrow
+                </p>
+              )}
+            </div>
+
+            {filteredFederation.length === 0 && (
+              <div className="text-center py-12">
+                <Globe className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
+                <p className="text-muted-foreground">No federated jewels match your filters</p>
+              </div>
             )}
           </TabsContent>
 
