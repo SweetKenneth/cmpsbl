@@ -97,8 +97,8 @@ export function ExportCenter({ tier }: { tier: string }) {
                 locked ? "border-border/30 opacity-60" : "border-border/40 hover:border-primary/20"
               )}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3 flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                <div className="flex items-start gap-3 flex-1 min-w-0">
                   <div className={cn(
                     "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border",
                     locked ? "bg-muted/30 border-border/30" : "bg-primary/10 border-primary/20"
@@ -106,12 +106,12 @@ export function ExportCenter({ tier }: { tier: string }) {
                     <tmpl.icon className={cn("w-5 h-5", locked ? "text-muted-foreground" : "text-primary")} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm font-bold">{tmpl.name}</h3>
-                      <Badge variant="outline" className="text-[9px] px-1.5">{tmpl.format}</Badge>
-                      {locked && <Badge variant="secondary" className="text-[9px] px-1.5 capitalize">{tmpl.minTier}+</Badge>}
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <h3 className="text-sm font-bold break-words">{tmpl.name}</h3>
+                      <Badge variant="outline" className="text-[9px] px-1.5 shrink-0">{tmpl.format}</Badge>
+                      {locked && <Badge variant="secondary" className="text-[9px] px-1.5 capitalize shrink-0">{tmpl.minTier}+</Badge>}
                     </div>
-                    <p className="text-[11px] text-muted-foreground mb-2">{tmpl.description}</p>
+                    <p className="text-[11px] text-muted-foreground mb-2 break-words">{tmpl.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {tmpl.fields.map(f => (
                         <span key={f} className="text-[9px] px-2 py-0.5 rounded-full bg-muted/50 text-muted-foreground border border-border/20">
@@ -124,7 +124,7 @@ export function ExportCenter({ tier }: { tier: string }) {
                 <Button
                   size="sm"
                   variant={locked ? "ghost" : "default"}
-                  className="h-9 gap-1.5 text-xs shrink-0"
+                  className="h-9 gap-1.5 text-xs shrink-0 w-full sm:w-auto"
                   disabled={locked || isExporting}
                   onClick={() => handleExport(tmpl)}
                 >
