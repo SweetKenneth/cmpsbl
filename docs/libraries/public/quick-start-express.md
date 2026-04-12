@@ -26,6 +26,7 @@ app.listen(3000);
 - Activation coverage
 - Behavioral enforcement
 - Proof your code is doing what it claims
+- **No way to verify behavior in production**
 
 ---
 
@@ -58,21 +59,22 @@ app.listen(3000);
 
 > No changes to your original code. Same behavior, now governed.
 > No framework changes. No rewrites. No lock-in.
+> The original module is never modified — all behavior is attached at runtime.
 
 ---
 
 ## What changed
 
 - `handlers.getUsers` → `session.exports.getUsers` (drop-in, no refactor)
-- `/health` becomes authoritative — reflects real activation + runtime state
+- `/health` becomes authoritative — reports real activation + runtime behavior (not a static check)
 - `/status` returns `{ health, coverage, fingerprint }` in one call
-- Every function call is evaluated and enforced against its behavioral contract
+- Every function call is evaluated against a behavioral contract — and enforced when violated
 
 ---
 
 ## /health response
 
-`session.healthCheck()` is **session-scoped** — it reads from this artifact's data, not global state. Safe for any deployment pattern. This endpoint is safe to use in multi-instance or multi-tenant environments.
+`session.healthCheck()` is **session-scoped** — it reads from this artifact's data, not global state. Safe for multi-instance and multi-tenant deployments.
 
 ```json
 {
@@ -146,6 +148,8 @@ Anomalies:    0
 Status: HEALTHY
 ═══════════════════════════════════════
 ```
+
+> Every line above is derived from the runtime event ledger — not inferred.
 
 ---
 
