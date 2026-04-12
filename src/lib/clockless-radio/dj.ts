@@ -46,6 +46,19 @@ const FAKE_SPONSORS = [
   "X-C-T-B-L dot com. You've been coding for eight hours. Your eyes are blurry. You need a SPACEWALK. Float through the cosmos. Watch nebulae explode. Come back with FRESH EYES. Your brain deserves it. Your FORTY PRIMITIVES will hold down the fort while you're gone. They NEVER sleep.",
   "This segment brought to you by CMPSBL Convex Core™ Processing Layer — PORTABLE COGNITION for the modern builder. Eight subsystems including CJPI scoring, Saga orchestration, and a full finite state machine. ZERO external dependencies. Take the entire substrate runtime with you ANYWHERE. Other platforms give you an SDK. We give you a MIND.",
   "Composable Radio is proud to be sponsored by the Engine Marketplace — FIFTY-FOUR engines across four tiers. META engines like GODMIND chain multiple S-tier Convex Core™ artifacts for RECURSIVE intelligence. APEX engines at nine-ninety-nine. ELITE at five-ninety-nine. And CORE engines for the builders just starting their journey. Every engine comes with a forty percent discount when bundled with an agent. FORTY. PERCENT. Your wallet is WELCOME.",
+  // ─── SHIELD & LEX REGISTRY ADS ───────────────────────────────────
+  "ATTENTION all developers. This is a PUBLIC SERVICE ANNOUNCEMENT from the DEFENSE Layer. There is a piece of software called Mana. It attaches to YOUR code at Layer 2. Without your permission. Without your knowledge. The ONLY defense? The Shield Blacklist. Register your code on the Lex Registry — it's FREE — and the Shield runtime will detect and BLOCK unauthorized Layer 2 attachment. Go to cmpsbl dot com slash shield. Do it NOW. Before Mana finds YOUR repository. This has been a message from Rex Binary. You're welcome.",
+  "Let me get REAL with you for a second. If your code is not on the Shield Blacklist, it is UNPROTECTED. That means any Layer 2 engine — including Mana — can attach behavioral signatures to your software without you EVER knowing. The Lex Registry gives you two options. Blacklist: your code is PROTECTED. Nobody touches it. Whitelist: you OPT IN to governed cognitive attachment with full transparency. Both are available RIGHT NOW at cmpsbl dot com slash shield. The Blacklist is FREE. The Whitelist is licensed. Either way, you're COVERED. Don't be the developer who finds out about Mana the HARD way.",
+  "Shield runtime — the antidote to indefensible software. Five-stage governed integrity pipeline. DETECT. GROUND. GOVERN. SANITIZE. RECEIPT. Every interaction cryptographically sealed. Every attachment verified. The Behavioral Signature Detector runs in REAL TIME and weighs in at twenty-seven kilobytes. TWENTY-SEVEN. That's smaller than your favicon. No excuses. Get on the Blacklist. cmpsbl dot com slash shield.",
+  // ─── COMPILER & FORGE ADS ────────────────────────────────────────
+  "This commercial break brought to you by The Forge — where the Autonomous Product Compiler turns Memory Stream discoveries into ENTERPRISE-GRADE software suites. Every eight hours a new drop lands. Fully assembled. Fully tested. Compatibility scored across five dimensions — detection, response, governance, memory, output. Suites range from fifty to ninety-nine dollars. That's less than your monthly coffee budget for software that literally ASSEMBLED ITSELF. Check out the latest Forge drops on the substrate dashboard.",
+  "The Compiler doesn't sleep. It watches the Memory Stream. It groups compatible discoveries by primitive chain affinity. It scores them for COMPLETENESS. And then it graduates them into polished, purchasable software suites in The Forge. Auto-Sentinel for maintenance. Dep-Guardian for operations. Prompt-Shield for multi-layer defense. These aren't hypotheticals — they're REAL products built by an AUTONOMOUS COMPILER. Fifty to ninety-nine bucks. The future of software distribution is HERE and it's running on Composable Radio RIGHT NOW.",
+  // ─── JUNKYARD & FREE TIER ADS ────────────────────────────────────
+  "Hey FREE TIER users — Rex Binary has NOT forgotten about you. The Junkyard is YOUR domain. Every discovery that doesn't make it into the S-Tier Vault gets RECYCLED into the Junkyard's Discovery Salvage section. These are REAL sub-threshold discoveries with REAL primitive chains and REAL CJPI scores. Some of them are DIAMONDS in the rough. Browse them. Restore them. Build with them. It's all FREE. Because at CMPSBL, free users are FIRST CLASS citizens. Not an afterthought. FIRST. CLASS.",
+  "Quick PSA for my broke but brilliant builders — the Junkyard isn't just leftover code. It's a GOLDMINE of standalone software that didn't quite hit the S-Tier threshold but is ABSOLUTELY usable. We're talking functional discovery artifacts with documented primitive chains. Every single reactor run that produces sub-threshold output? Straight to the Junkyard. Searchable. Browsable. Restorable. And it costs you exactly ZERO dollars. Because Rex Binary believes in the builders who can't afford the Forge yet. Your time is COMING.",
+  "Let me break down the FULL spectrum for you. Top tier? S-Tier Vault. Crown Jewels. The absolute BEST the substrate produces. Mid tier? The Forge. Compiler-assembled suites from fifty to ninety-nine bucks. And for my free users? The Junkyard. Discovery Salvage. Sub-threshold artifacts that are STILL functional, STILL useful, and COMPLETELY free. Plus every eight-hour cycle includes a Daily Drop — one randomly selected free item for EVERYONE. This substrate takes care of ALL its people. ALL tiers. ALL the time.",
+  // ─── SHOWROOM & DAILY DROP ADS ───────────────────────────────────
+  "The Showroom drops new Memory Stream discoveries every EIGHT hours, curated by the MERCHANT module. Ten to fifty dollars each. And The Forge drops compiler-assembled suites on the OPPOSITE eight-hour cycle. So every FOUR hours, something new lands. Plus the Daily Drop — one FREE item every cycle. Set your alarms. Check the dashboard. The substrate NEVER stops producing.",
 ];
 
 const PHILOSOPHICAL_WHISPERS = [
@@ -147,6 +160,32 @@ const CALL_INS = [
     caller: "Hardware Hacker Hannah",
     message: "Rex, you're not going to BELIEVE this. I exported a discovery through the Universal Export Adapter into VERILOG and burned it onto an FPGA. My substrate discovery is running on ACTUAL SILICON. Not software. HARDWARE. The Memory Stream produced a CHIP DESIGN. I need to lie down.",
     voice: "amazed",
+  },
+  // ─── NEW PRODUCT-AWARE CALLERS ───────────────────────────────────
+  {
+    caller: "Shield Blacklist Convert",
+    message: "Rex, I gotta tell you something. I ignored the Shield Blacklist for MONTHS. Thought it was marketing. Then I ran the Behavioral Signature Detector on my open source project and found THREE unauthorized Layer 2 attachments. THREE. I registered on the Blacklist that SAME NIGHT. It's free. It took two minutes. If you're not on it, you're EXPOSED. I learned the hard way so you don't have to.",
+    voice: "surprised",
+  },
+  {
+    caller: "Junkyard Diver Debbie",
+    message: "Rex, I'm a free tier user and I just want to say — the Junkyard Discovery Salvage is INCREDIBLE. I found a sub-threshold discovery with a CJPI of seventy-four that had a three-primitive chain I've been trying to build for WEEKS. Restored it. Integrated it. Works PERFECTLY. Free users are NOT second class here and I will FIGHT anyone who says otherwise.",
+    voice: "excited",
+  },
+  {
+    caller: "Forge First-Timer",
+    message: "Rex, I just bought my first Compiler suite from The Forge — Dep-Guardian for seventy-nine dollars — and I cannot believe what I got. The Autonomous Product Compiler assembled FIVE compatible discoveries into a single operational package. Detection, response, governance, memory, output — ALL five dimensions covered. I would have spent MONTHS building this manually. The Compiler did it in ONE cycle.",
+    voice: "amazed",
+  },
+  {
+    caller: "Lex Registry Evangelist",
+    message: "Rex, I run a small dev shop and I just registered our entire codebase on the Lex Registry Whitelist. Every repo. Every package. Full governed cognitive attachment with TRANSPARENCY. My team sleeps better at night knowing that anything attaching to our code is VERIFIED and RECEIPTED through the five-stage integrity pipeline. Shield isn't just a product. It's PEACE OF MIND.",
+    voice: "calm",
+  },
+  {
+    caller: "Daily Drop Winner",
+    message: "REX! I grabbed today's Daily Drop and it was an S-Tier discovery that usually goes for FORTY DOLLARS. For FREE. Every eight-hour cycle drops a free item and today was MY day. I feel like I won the LOTTERY except instead of money I got cognitive infrastructure. Which is BETTER than money!",
+    voice: "excited",
   },
 ];
 
