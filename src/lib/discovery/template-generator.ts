@@ -151,7 +151,27 @@ function toKebab(s: string): string {
 // GENERATOR ENGINE
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/**
+ * In-memory retired combos — legacy. DB-backed retirement is in combo-retirement.ts.
+ * This Map still used as a session-level cache for fast checks during batch generation.
+ */
 const retiredCombos = new Map<string, RetiredCombo>();
+
+/** Merge DB-loaded retired combos into the in-memory cache */
+export function syncRetiredFromDB(dbRetired: Array<{ combo_hash: string; module_chain: string[]; category: string; total_runs: number; total_discoveries: number }>): void {
+  for (const r of dbRetired) {
+    if (!retiredCombos.has(r.combo_hash)) {
+      retiredCombos.set(r.combo_hash, {
+        hash: r.combo_hash,
+        moduleChain: r.module_chain,
+        category: r.category,
+        retiredAt: Date.now(),
+        totalRuns: r.total_runs,
+        totalDiscoveries: r.total_discoveries,
+      });
+    }
+  }
+}
 
 export function getRetiredCombos(): RetiredCombo[] {
   return Array.from(retiredCombos.values());
