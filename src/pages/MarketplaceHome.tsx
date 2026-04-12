@@ -376,6 +376,7 @@ export default function MarketplaceHome() {
         )}
       </section>
 
+      <JunkyardCTA />
       <EnhancedFooter />
     </>
   );

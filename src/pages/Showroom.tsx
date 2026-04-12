@@ -644,6 +644,7 @@ export default function Showroom() {
           )}
         </main>
 
+        <JunkyardCTA />
         <RelatedCapabilities />
         <PageSEOBlock path="/showroom" title="Showroom — Certified Discoveries" faq={[
           { question: "What are CMPSBL discoveries?", answer: "Discoveries are one-of-a-kind certified software capabilities found by the Memory Stream. Each is scored by CJPI (Crown Jewel Performance Index) and priced by tier." },
