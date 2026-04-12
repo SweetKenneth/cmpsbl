@@ -1431,6 +1431,44 @@ const stratumSymbiotic: Specimen[] = [
     ],
     affectedNodes: ["CORE Organ", "EVOLUTION Layer", "GOVERNANCE Layer", "MANA Engine", "DEFENSE Layer"],
   },
+  {
+    id: "SYMB-002",
+    fossilized: "2026-04-12",
+    origin: "distribution",
+    stimulus: "Clockless Radio's DJ voice and music routed through separate audio pipelines — Bluetooth/AirPlay users heard music on their paired device but Rex Binary's voice stayed on the phone speaker",
+    adaptations: [
+      "Deployed a neural TTS backend function proxying to Microsoft Neural voices — Rex Binary now speaks with a natural human voice instead of robotic browser synthesis",
+      "All TTS audio decoded via AudioContext and routed through the shared masterGain node — voice and music flow through the same hardware output",
+      "Voice presets per segment type: station IDs energetic, philosophical segments slow and deep, call-in callers use a distinct female voice",
+      "Graceful fallback preserves browser SpeechSynthesis when neural TTS is unavailable",
+      "Radio ad content rewritten to reflect current system state — Shield Blacklist, Forge Compiler, Junkyard free tier, and Showroom daily drops are now ambient product education",
+      "Five new call-in segments with contextual discussions about real features",
+    ],
+    phenotype: [
+      "The radio is now a unified audio experience — Rex Binary's voice travels with the music to any paired device",
+      "Product awareness is embedded in entertainment — listeners learn about Shield, Forge, and Junkyard through radio ads and call-in segments",
+      "Neural TTS transforms Rex from a robotic novelty into a believable radio personality",
+    ],
+    affectedNodes: ["ENCODE Agent", "RELAY Organ", "ECHO Layer"],
+  },
+  {
+    id: "SYMB-003",
+    fossilized: "2026-04-12",
+    origin: "cognition",
+    stimulus: "Sub-S-tier discoveries were silently discarded after scoring — viable software components were lost because they didn't meet the Crown Jewels threshold",
+    adaptations: [
+      "Discovery Junkyard concept designed as a rotation destination for discoveries below S-tier threshold",
+      "Free users gain browse access to the Junkyard — usable standalone software stages available at no cost",
+      "Value funnel formalized: Junkyard (free salvage) → Showroom (curated drops) → Crown Jewels (premium vault)",
+      "Discoveries re-score and recount on rotation into the Junkyard section",
+    ],
+    phenotype: [
+      "No discovery is wasted — every scored artifact has a destination in the ecosystem",
+      "Free-tier users have a genuine reason to explore the substrate's output",
+      "The Junkyard creates an on-ramp from free browsing to paid commitment",
+    ],
+    affectedNodes: ["FORGE Engine", "ECONOMY Agent", "EVOLUTION Layer"],
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════

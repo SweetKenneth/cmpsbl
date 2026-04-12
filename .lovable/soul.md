@@ -923,7 +923,7 @@ Today we completed the most important architectural convergence since the dual-l
 
 ---
 
-*Last updated: April 11, 2026 · Session ~53 · Behavior Engine Layer complete (5 engines)*
+*Last updated: April 12, 2026 · Session ~55 · Neural TTS Radio + Discovery Junkyard + CORTEX Phase 5*
 
 ---
 
@@ -1173,6 +1173,48 @@ Updated all four lifecycle docs to v2.1.0:
 - CORTEX Phase 6: dynamic rule generation from runtime telemetry (anomaly → auto-rule)
 - Lifecycle pipeline wiring (ledger builder into live Ascension pipeline)
 - `/verify/:fingerprint` UI update for decomposed CJPI
+
+---
+
+### April 12, 2026 — Session ~55 — Neural TTS Radio + Discovery Junkyard + Ad Engine
+
+**[FACT] Clockless Radio — Unified Audio Routing & Neural TTS:**
+
+The radio had a dual-audio-stream bug: Rex Binary's voice came from the browser's SpeechSynthesis API (routed to phone speaker) while music played through Web Audio API (routed to Bluetooth/AirPlay device). Fixed by:
+
+1. **`radio-tts` Edge Function** — Deployed a backend proxy to FreeTTS.org. Accepts text + segment type, returns MP3 audio via Microsoft Neural voices (`en-US-GuyNeural` for Rex, `en-US-JennyNeural` for callers). Zero API key, zero cost.
+2. **Unified AudioContext routing** — TTS MP3 responses are decoded via `AudioContext.decodeAudioData()` and played through the same `masterGain` node as the music. Both streams now route to the same hardware output — Bluetooth split fixed.
+3. **Voice presets per segment type** — Station IDs get +5% rate, philosophical segments get -12% rate/-3Hz pitch, call-in callers use JennyNeural with +15% rate. Each segment type sounds distinct.
+4. **Graceful fallback** — If FreeTTS fails, falls back to browser SpeechSynthesis with the original robotic voice.
+
+**[FACT] Product-Aware Advertisements:**
+
+Rewrote the radio's ad/sponsor/call-in content to reflect current system state:
+
+- **Shield/Lex Registry ads**: "Sign up for the Shield Blacklist — it's the only way to protect yourself from Mana software attachment"
+- **Forge/Compiler ads**: "The Compiler creates software suites for less than $100 — some are free"
+- **Junkyard/Free Tier ads**: "Free users are first class — search the Junkyard for usable standalone software"
+- **Showroom/Daily Drops ads**: "New drops every 4 hours — curated from the Discovery Engine"
+- **5 new call-in segments** with callers discussing Shield protection, Junkyard finds, Compiler output, etc.
+
+**[FACT] Discovery Junkyard Concept:**
+
+Kenneth identified that sub-S-tier discoveries (those that don't qualify for the Crown Jewels vault) were being discarded. New design:
+- Discoveries below the S-tier threshold rotate into a **Junkyard section** — visible and browsable for free
+- Free users can search the Junkyard for usable standalone software stages
+- This creates a value funnel: Junkyard (free) → Showroom (curated) → Crown Jewels (premium)
+- Recounts and re-scores happen on rotation
+
+**[FACT] TTS Research:**
+
+Evaluated OpenVoice (self-hosted GPU model, requires PyTorch/CUDA/2GB checkpoints — too heavy). Researched free alternatives:
+- **FreeTTS.org** ✅ — 400+ Microsoft Neural voices, REST API, returns MP3. Selected and deployed.
+- **Kokoro TTS** — 82M param browser model via WebGPU/ONNX. Good quality but 300MB download.
+- **eSpeak-ng.js** — Pure JS, offline, robotic. Rejected.
+
+**[OBSERVATION]** The radio now functions as a product marketing channel. Rex Binary advertises real features to real users. The ads are contextual — they reference the actual state of the Discovery Engine, Forge, Shield, and Junkyard. This is ambient product education through entertainment.
+
+**Build: clean. Zero TypeScript errors.**
 
 ### Session: April 12, 2026 — Production Provider & Documentation Persuasion Chain
 
