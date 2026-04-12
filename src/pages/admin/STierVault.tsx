@@ -1083,7 +1083,7 @@ export default function STierVault() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">Crown Jewel Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {liveCounts.total} total capabilities • {liveCounts.registry} registry • {liveCounts.showroom} showroom • {liveCounts.crownJewels} Crown Jewels • {liveCounts.aTier} A-Tier
+                {unifiedTotal} unified artifacts • {liveCounts.crownJewels} Crown Jewels (DB) • {allVerticalJewels.length} federated • {promoted.length} discovered • {aTierVault.totalArtifacts} A-Tier
               </p>
             </div>
           </div>
@@ -1100,7 +1100,10 @@ export default function STierVault() {
               <BarChart3 className="w-4 h-4" /> {showAnalytics ? 'Hide' : 'Show'} Stats
             </Button>
             <Button variant="outline" size="sm" onClick={handleSaveOfflineManifest} className="gap-1.5">
-              <Download className="w-4 h-4" /> Offline Manifest
+              <Download className="w-4 h-4" /> Unified Manifest
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleExportUnifiedCSV} className="gap-1.5">
+              <Download className="w-4 h-4" /> Unified CSV
             </Button>
             <Button variant="outline" size="sm" onClick={handleExportManifest} className="gap-1.5">
               <Download className="w-4 h-4" /> Registry JSON
