@@ -18,7 +18,43 @@ import { buildLedger } from './ledger-builder';
 import { generateActivationGuide, renderActivationGuideHtml } from './activation-guide';
 import { runAutoActivation, runGenericBehavioralProbes, getSpecializedPrimitives } from './generic-activation';
 import type { CapabilityActivationLedger } from './types';
+import type { BehavioralProbe } from './types';
 import type { CapabilityActivationGuide } from './activation-guide';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §0 — RUNTIME EVIDENCE INJECTION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Optional runtime evidence injector.
+ * When the Behavior Engines have produced real evidence, it can be
+ * injected here to replace synthetic generic probes in exports.
+ *
+ * This is set by the runtime package when behavioral evidence is available.
+ */
+let injectedRuntimeProbes: BehavioralProbe[] | null = null;
+
+/**
+ * Inject real behavioral probes from the runtime verification ledger.
+ * Call this before export generation to include real engine evidence.
+ */
+export function injectRuntimeEvidence(probes: BehavioralProbe[]): void {
+  injectedRuntimeProbes = probes;
+}
+
+/**
+ * Clear injected runtime evidence (e.g., after export generation).
+ */
+export function clearRuntimeEvidence(): void {
+  injectedRuntimeProbes = null;
+}
+
+/**
+ * Check if runtime evidence has been injected.
+ */
+export function hasInjectedEvidence(): boolean {
+  return injectedRuntimeProbes !== null && injectedRuntimeProbes.length > 0;
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — INPUT ADAPTERS
@@ -95,9 +131,22 @@ export function buildAscensionLifecycleArtifacts(
 
   // Auto-activation: generically activate all bound primitives without specialized runtimes
   const autoActivations = runAutoActivation(bindings, []);
-  const genericProbes = runGenericBehavioralProbes(autoActivations, getSpecializedPrimitives());
 
-  const ledger = buildLedger(fingerprintId, detections, generations, bindings, autoActivations, genericProbes);
+  // Behavioral probes: prefer real runtime evidence over synthetic generic probes
+  let probes: BehavioralProbe[];
+  if (injectedRuntimeProbes && injectedRuntimeProbes.length > 0) {
+    // Merge real runtime probes with generic probes for primitives not covered by runtime
+    const runtimePrimitives = new Set(injectedRuntimeProbes.map(p => p.primitiveName));
+    const genericProbes = runGenericBehavioralProbes(
+      autoActivations.filter(a => !runtimePrimitives.has(a.primitiveName)),
+      getSpecializedPrimitives(),
+    );
+    probes = [...injectedRuntimeProbes, ...genericProbes];
+  } else {
+    probes = runGenericBehavioralProbes(autoActivations, getSpecializedPrimitives());
+  }
+
+  const ledger = buildLedger(fingerprintId, detections, generations, bindings, autoActivations, probes);
   const guide = generateActivationGuide(ledger, sourceLanguage);
   const guideHtml = renderActivationGuideHtml(guide);
   const ledgerJson = JSON.stringify(ledger, null, 2);

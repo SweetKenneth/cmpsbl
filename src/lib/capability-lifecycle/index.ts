@@ -98,4 +98,7 @@ export {
   buildScannerDetectionRecords,
   buildReporterLifecycleSummary,
   generateVerificationScript,
+  injectRuntimeEvidence,
+  clearRuntimeEvidence,
+  hasInjectedEvidence,
 } from './export-bridge';

@@ -469,6 +469,20 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   // Lifecycle artifacts (capability ledger, activation guide, verification script)
   try {
     const lifecycleModule = await import('@/lib/capability-lifecycle/export-bridge');
+
+    // Inject real behavioral evidence from runtime engines if available
+    try {
+      // Dynamic import — runtime package may not be available in all environments
+      const runtimePath = 'packages/runtime/src/engines/behavioral-evidence-bridge';
+      const runtimeModule = await import(/* @vite-ignore */ `../../${runtimePath}`).catch(() => null);
+      if (runtimeModule?.hasBehavioralEvidence?.()) {
+        const evidence = runtimeModule.extractBehavioralEvidence();
+        lifecycleModule.injectRuntimeEvidence(evidence.probes);
+      }
+    } catch {
+      // Runtime not available — will use generic probes (graceful degradation)
+    }
+
     const lifecycle = lifecycleModule.buildAscensionLifecycleArtifacts(
       report.primitiveManifest.map(p => ({
         chain: [p.name],
@@ -480,6 +494,10 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
       fingerprint,
       detectedLang || 'typescript',
     );
+
+    // Clean up injected evidence after use
+    lifecycleModule.clearRuntimeEvidence();
+
     zip.file('verification/capability-ledger.json', lifecycle.ledgerJson);
     zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
     zip.file('verification/RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(
