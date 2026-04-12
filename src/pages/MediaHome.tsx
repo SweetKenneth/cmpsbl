@@ -93,6 +93,12 @@ export default function MediaHome() {
       <Helmet>
         <title>CMPSBL MEDIA™ — Cognitive Media & Content Infrastructure</title>
         <meta name="description" content="CMPSBL MEDIA™ — 16 specialized primitives powering AI-driven content creation for music, video, images, ad copy, social media campaigns, and brand management. Content Creates Itself." />
+        <link rel="canonical" href="https://media.cmpsbl.com" />
+        <meta property="og:title" content="CMPSBL MEDIA™ — Cognitive Media & Content Infrastructure" />
+        <meta property="og:description" content="16 specialized primitives for AI-driven music, video, image, ad copy, and brand management." />
+        <meta property="og:url" content="https://media.cmpsbl.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
       <StructuredData type="webApplication" data={{ name: "CMPSBL MEDIA™", description: "Cognitive media infrastructure — 16 specialized primitives for AI-driven music, video, image, ad copy, and brand management.", url: "https://media.cmpsbl.com", features: "AI Music Production, Video Generation, Image Synthesis, Ad Copy, Social Media Campaigns, Brand Management" }} />
 

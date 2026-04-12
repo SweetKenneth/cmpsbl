@@ -154,6 +154,11 @@ export default function MarketplaceHome() {
         <title>CMPSBL Marketplace — Premium Software from Every Substrate</title>
         <meta name="description" content="Shop the best cognitive software from across the CMPSBL ecosystem. Enterprise-grade engines, agents, and memory chains — $10 to $50." />
         <link rel="canonical" href="https://marketplace.cmpsbl.com" />
+        <meta property="og:title" content="CMPSBL Marketplace — Premium Cognitive Software" />
+        <meta property="og:description" content="Enterprise-grade engines, agents, and memory chains curated by MERCHANT™. $10 to $50." />
+        <meta property="og:url" content="https://marketplace.cmpsbl.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
       <StructuredData
         type="breadcrumb"

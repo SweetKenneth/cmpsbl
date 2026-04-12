@@ -94,6 +94,12 @@ export default function LLMHome() {
       <Helmet>
         <title>CMPSBL LLM™ — Cognitive LLM Infrastructure</title>
         <meta name="description" content="CMPSBL LLM™ — 16 specialized primitives targeting every flaw in modern Large Language Models. Hallucination, injection, bias, alignment drift — Models Break Here, Not in Production." />
+        <link rel="canonical" href="https://llm.cmpsbl.com" />
+        <meta property="og:title" content="CMPSBL LLM™ — Cognitive LLM Infrastructure" />
+        <meta property="og:description" content="16 specialized primitives targeting hallucination, injection, bias, and alignment drift in Large Language Models." />
+        <meta property="og:url" content="https://llm.cmpsbl.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
       <StructuredData type="webApplication" data={{ name: "CMPSBL LLM™", description: "Cognitive LLM infrastructure — 16 specialized primitives targeting hallucination, injection, bias, and alignment drift in Large Language Models.", url: "https://llm.cmpsbl.com", features: "Hallucination Detection, Prompt Injection Defense, Bias Mitigation, Alignment Drift Monitoring, LLM Orchestration, Model Routing" }} />
 

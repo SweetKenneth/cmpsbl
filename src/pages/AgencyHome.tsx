@@ -93,6 +93,12 @@ export default function AgencyHome() {
       <Helmet>
         <title>CMPSBL AGENCY™ — Governed Autonomous Agent Infrastructure</title>
         <meta name="description" content="CMPSBL AGENCY™ — 16 specialized primitives empowering autonomous AI agents with research, collaboration, tool mastery, self-healing, and governed autonomy. Agents That Learn, Collaborate, and Ship." />
+        <link rel="canonical" href="https://agency.cmpsbl.com" />
+        <meta property="og:title" content="CMPSBL AGENCY™ — Governed Autonomous Agent Infrastructure" />
+        <meta property="og:description" content="16 specialized primitives for autonomous AI agents — research, collaboration, tool mastery, and self-healing." />
+        <meta property="og:url" content="https://agency.cmpsbl.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
       <StructuredData type="webApplication" data={{ name: "CMPSBL AGENCY™", description: "Governed autonomous agent infrastructure — 16 specialized primitives for research, collaboration, tool mastery, and self-healing AI agents.", url: "https://agency.cmpsbl.com", features: "Autonomous Research, Agent Collaboration, Tool Mastery, Self-Healing, Governed Autonomy, Task Orchestration" }} />
 
