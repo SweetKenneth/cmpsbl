@@ -28,14 +28,8 @@ import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
-import { generateRefurbishedCode as generateAscendedCode, generateLicense, getRefurbishedExtension as getAscendedExtension } from "@/lib/factory/generate-refurbished-code";
-import { generateHtmlReport } from "@/lib/factory/html-report-generator";
+import { generateRefurbishedCode as generateAscendedCode, getRefurbishedExtension as getAscendedExtension } from "@/lib/factory/generate-refurbished-code";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
-import { wrapPremiumDocPage } from "@/lib/export/premium-html-wrapper";
-import { generateUniversalUserGuide } from "@/lib/export/universal-user-guide";
-import { generateProofCertificate } from "@/lib/export/proof-certificate";
-import { serializeCmpsblManifest } from "@/lib/export/cmpsbl-manifest";
-import { generateIntegrationGuide } from "@/lib/export/integration-guide-generator";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
@@ -179,7 +173,7 @@ export default function RestorationShop() {
     setIsRestoring(false);
   }, [scanResult, isRestoring, code, fileName]);
 
-  const handleExport = useCallback(() => {
+  const handleExport = useCallback(async () => {
     const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator' || identityRole === 'studio';
 
     if (!isSubscribed) {
@@ -195,222 +189,24 @@ export default function RestorationShop() {
     if (!report) return;
     toast.success('Preparing your ascended code package for download...');
 
-    import('jszip').then(async ({ default: JSZip }) => {
-      const zip = new JSZip();
-      const fingerprint = report.cjpiCertificate.fingerprint;
-
-      // ═══ Regenerate ascended code fresh at export time ═══
-      // This ensures the latest generator logic is always used,
-      // preventing stale cached state from earlier sessions.
-      // The generator now THROWS on L2 validation failure — catch it.
-      let freshAscended: string;
-      try {
-        freshAscended = selectedPrims.length > 0
-          ? generateAscendedCode(code, selectedPrims, fingerprint, undefined, fileName ?? undefined)
-          : ascendedCode;
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
-        toast.error('Export blocked — Layer 2 validation failed. Your code is safe.', {
-          description: msg.slice(0, 200),
-          duration: 10000,
-        });
-        return;
-      }
-
-      // ═══ LICENSE (styled HTML) ═══
-      zip.file('LICENSE.html', wrapDocHtml('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
-
-      // ═══ Dual-Layer Source ═══
-      const refExt = getAscendedExtension(detectedLang);
-      zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file(`src/ascended-source${refExt}`, freshAscended || '// Ascended code not generated');
-
-      // ═══ Restoration Report (JSON) ═══
-      zip.file('restoration-report.json', JSON.stringify(report, null, 2));
-
-      // ═══ Pipeline Details (styled HTML) ═══
-      const pipelineHtml = report.pipelineDetails.map(
-        p => `<div class="step"><span class="step-num">${p.order}</span><div><strong>${p.primitiveName}</strong><span class="dim"> — ${p.durationMs}ms</span><div class="detail">${p.action}</div></div></div>`
-      ).join('\n');
-      zip.file('docs/pipeline-details.html', wrapDocHtml('Pipeline Details', `<p>Fingerprint: <code>${fingerprint}</code><br/>Serial: <code>${report.id}</code></p>\n${pipelineHtml}`));
-
-      // ═══ New Capabilities (styled HTML) ═══
-      const capsHtml = report.newCapabilities.map(
-        c => `<div class="card"><h3>${c.name}</h3><p>${c.description}</p><pre><code>${escHtml(c.usageExample)}</code></pre></div>`
-      ).join('\n');
-      zip.file('docs/new-capabilities.html', wrapDocHtml('New Capabilities', capsHtml));
-
-      // ═══ Testing Guide (styled HTML) ═══
-      const testHtml = [
-        `<p>Install: <code>${report.testingGuide.installCommand}</code></p>`,
-        `<p>Run: <code>${report.testingGuide.testCommand}</code></p>`,
-        `<h2>Steps</h2><ol>`,
-        ...report.testingGuide.steps.map(s => `<li>${s}</li>`),
-        `</ol>`,
-      ].join('\n');
-      zip.file('docs/testing-guide.html', wrapDocHtml('Testing Guide', testHtml));
-
-      // ═══ Test Harness Config ═══
-      const testConfig = {
-        serialNumber: report.id,
-        fingerprint,
-        configPath: report.testingGuide.configPath,
-        primitives: report.primitiveManifest.map(p => p.name),
-        testCommand: report.testingGuide.testCommand,
-      };
-      zip.file('test-harness.config.json', JSON.stringify(testConfig, null, 2));
-
-      // ═══ CJPI Certificate ═══
-      zip.file('docs/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
-
-      // ═══ HTML Ascension Report (styled, self-contained) ═══
-      zip.file('ascension-report.html', generateHtmlReport(report));
-
-      // ═══ Error Codes (styled HTML) ═══
-      const errorHtml = report.errorCodes.map(
-        e => `<div class="card"><h3>${e.code}</h3><p><strong>Trigger:</strong> ${e.trigger}</p><p><strong>Resolution:</strong> ${e.resolution}</p></div>`
-      ).join('\n');
-      zip.file('docs/error-codes.html', wrapDocHtml('Error Codes', errorHtml));
-
-      // ═══ Vulnerability Assessment (styled HTML) ═══
-      const vulnHtml = report.vulnerabilityAssessment.map(
-        v => `<div class="card"><h3>${v.title}</h3><span class="badge badge-${v.severity}">${v.severity}</span> <span class="badge badge-${v.status}">${v.status}</span><p>${v.details}</p></div>`
-      ).join('\n');
-      zip.file('docs/vulnerability-assessment.html', wrapDocHtml('Vulnerability Assessment', vulnHtml));
-
-      // ═══ Primitive Manifest (styled HTML) ═══
-      const manifestHtml = `<table><thead><tr><th>Primitive</th><th>Category</th><th>Contribution</th></tr></thead><tbody>${
-        report.primitiveManifest.map(p => `<tr><td><strong>${p.name}</strong></td><td>${p.category}</td><td>${p.contribution}</td></tr>`).join('\n')
-      }</tbody></table>`;
-      zip.file('docs/primitive-manifest.html', wrapDocHtml('Primitive Manifest', manifestHtml));
-
-      // ═══ PROOF.txt — Cryptographic Provenance Certificate ═══
-      zip.file('PROOF.txt', generateProofCertificate({
-        serial: report.id,
-        fingerprint,
-        tier: report.cjpiCertificate.tier,
-        cjpi: report.cjpiCertificate.score,
-        primitives: report.primitiveManifest.map(p => p.name),
-        source: 'CMPSBL® Ascension Lab',
-        language: detectedLang || undefined,
-      }));
-
-      // ═══ README.html — Premium themed README (replaces markdown) ═══
-      const year = new Date().getFullYear();
-      const readmeBody = [
-        `<div class="grid-2" style="margin-bottom:1.5rem;">`,
-        `<div class="card"><div class="card-label">Serial</div><div class="card-value" style="font-size:0.875rem;font-family:'JetBrains Mono',monospace;">${report.id}</div></div>`,
-        `<div class="card"><div class="card-label">Fingerprint</div><div class="card-value" style="font-size:0.875rem;font-family:'JetBrains Mono',monospace;">${fingerprint}</div></div>`,
-        `<div class="card"><div class="card-label">CJPI Score</div><div class="card-value">${report.cjpiCertificate.score}/100 <span class="badge badge-accent">${report.cjpiCertificate.tier}</span></div></div>`,
-        `<div class="card"><div class="card-label">Primitives</div><div class="card-value">${report.primitiveManifest.length} applied</div></div>`,
-        `<div class="card"><div class="card-label">Language</div><div class="card-value">${detectedLang || 'N/A'}</div></div>`,
-        `<div class="card"><div class="card-label">Generated</div><div class="card-value" style="font-size:0.875rem;">${new Date().toISOString().slice(0, 10)}</div></div>`,
-        `</div>`,
-        `<h2><span class="dot"></span> What's Inside</h2>`,
-        `<table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>`,
-        `<tr><td><code>src/original-source.txt</code></td><td>Your original code (unmodified Layer 1)</td></tr>`,
-        `<tr><td><code>src/ascended-source${getAscendedExtension(detectedLang)}</code></td><td>Hardened code with primitive guards (Layer 2)</td></tr>`,
-        `<tr><td><code>PROOF.txt</code></td><td>Cryptographic provenance certificate</td></tr>`,
-        `<tr><td><code>ascension-report.html</code></td><td>Branded Ascension report</td></tr>`,
-        `<tr><td><code>docs/USER-GUIDE.html</code></td><td>Deployment and testing guide</td></tr>`,
-        `<tr><td><code>docs/</code></td><td>Pipeline details, capabilities, error codes, CJPI cert</td></tr>`,
-        `<tr><td><code>restoration-report.json</code></td><td>Machine-readable report</td></tr>`,
-        `<tr><td><code>test-harness.config.json</code></td><td>Config for @cmpsbl/test-harness</td></tr>`,
-        `</tbody></table>`,
-        `<h2><span class="dot"></span> Quick Start</h2>`,
-        `<pre><code>npm install @cmpsbl/test-harness\nnpx cmpsbl-test --config ./restoration-report.json</code></pre>`,
-        `<h2><span class="dot"></span> Verify This Artifact</h2>`,
-        `<p><strong>Online:</strong> <a href="https://cmpsbl.com/verify/${fingerprint}" target="_blank">https://cmpsbl.com/verify/${fingerprint}</a></p>`,
-        `<p><strong>Local:</strong> Run the ascended source with <code>--verify</code> flag</p>`,
-        `<h2><span class="dot"></span> Intellectual Property</h2>`,
-        `<p>Inventor: <strong>Kenneth E. Sweet Jr.</strong><br/>`,
-        `U.S. Patent App. No. 64/029,678 · No. 64/031,637</p>`,
-        `<h2><span class="dot"></span> Support</h2>`,
-        `<p>Visit <a href="https://cmpsbl.com" target="_blank">cmpsbl.com</a> · Dev@CMPSBL.com · (760) FLUID-AI<br/>`,
-        `Use your fingerprint ID (<code>${fingerprint}</code>) for instant lookup.</p>`,
-      ].join('\n');
-      zip.file('README.html', wrapDocHtml('CMPSBL® Ascended Code Package', readmeBody));
-
-      // ═══ manifest.json — CMPSBL® Software Manifest ═══
-      const safeName = (fileName?.replace(/\.[^.]+$/, '') || 'ascended')
-        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      zip.file('manifest.json', serializeCmpsblManifest({
-        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
-        cjpi: report.cjpiCertificate.score,
-        primitives: report.primitiveManifest.map(p => p.name),
-        targets: [detectedLang || 'typescript'],
-        category: 'ascension',
-        fingerprint,
-        source: 'CMPSBL® Ascension Lab',
-        serial: report.id,
-      }));
-
-      // ═══ INTEGRATION.html — Step-by-step deployment guide (premium HTML) ═══
-      const integrationMd = generateIntegrationGuide({
-        kind: 'ascension',
-        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
-        slug: safeName,
-        languages: [detectedLang || 'typescript'],
-        systemChain: report.primitiveManifest.map(p => p.name),
-        score: report.cjpiCertificate.score,
-        category: 'ascension',
+    try {
+      const { buildAscensionZip } = await import('@/lib/export/ascension-zip-builder');
+      const result = await buildAscensionZip({
+        code,
+        fileName,
+        report,
+        selectedPrims,
+        detectedLang,
+        ascendedCode,
       });
-      // Convert markdown integration guide to premium HTML
-      const integrationBody = integrationMd
-        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-        .replace(/^## (.+)$/gm, '<h2><span class="dot"></span> $1</h2>')
-        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-        .replace(/^> (.+)$/gm, '<div class="callout"><p>$1</p></div>')
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        .replace(/^- (.+)$/gm, '<li>$1</li>')
-        .replace(/(<li>.*<\/li>\n?)+/g, (m) => `<ul>${m}</ul>`)
-        .replace(/```(\w*)\n([\s\S]*?)```/g, (_m, _lang, code) => `<pre><code>${escHtml(code.trim())}</code></pre>`)
-        .replace(/\n{2,}/g, '\n')
-        .replace(/^(?!<[a-z])(.*[^\n])$/gm, (m) => m.trim() ? `<p>${m}</p>` : '');
-      zip.file('INTEGRATION.html', wrapDocHtml('Integration Guide', integrationBody));
 
-      // ═══ Capability Activation Ledger + Guide + Verification ═══
-      try {
-        const lifecycleModule = await import('@/lib/capability-lifecycle/export-bridge');
-        const lifecycle = lifecycleModule.buildAscensionLifecycleArtifacts(
-          report.primitiveManifest.map(p => ({
-            chain: [p.name],
-            fingerprint,
-            name: p.name,
-            description: p.contribution,
-            archetype: 'Active' as const,
-          })),
-          fingerprint,
-          detectedLang || 'typescript',
-        );
-        zip.file('capability-ledger.json', lifecycle.ledgerJson);
-        zip.file('docs/ACTIVATION-GUIDE.html', lifecycle.guideHtml);
-        const allPrimitives = report.primitiveManifest.map(p => p.name);
-        zip.file('RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(fingerprint, allPrimitives));
-      } catch {
-        // Graceful degradation — lifecycle artifacts are supplementary
-      }
-
-      zip.file('docs/USER-GUIDE.html', generateUniversalUserGuide({
-        name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
-        slug: `ascended-${report.id}`,
-        kind: 'ascension',
-        tier: report.cjpiCertificate.tier,
-        cjpi: report.cjpiCertificate.score,
-        fingerprint,
-        modules: report.primitiveManifest.map(p => p.name),
-      }));
-
-      // Dynamic ZIP naming: use the source file name, not generic serial
-
-      zip.generateAsync({ type: 'blob' }).then(blob => {
-        import('file-saver').then(({ saveAs }) => {
-          saveAs(blob, `cmpsbl-${safeName}-${report.cjpiCertificate.tier.toLowerCase()}.zip`);
-          toast.success('Export complete. Your ascended code package has been downloaded.');
-        });
-      });
-    });
+      const { saveAs } = await import('file-saver');
+      saveAs(result.blob, result.zipName);
+      toast.success(`Export complete — ${result.fileCount} files in your ascended code package.`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error('Export failed.', { description: msg.slice(0, 200), duration: 10000 });
+    }
   }, [report, code, ascendedCode, identityRole, selectedPrims, fileName, detectedLang]);
 
   const resetFlow = useCallback(() => {
