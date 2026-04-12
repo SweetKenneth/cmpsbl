@@ -240,7 +240,8 @@ export function ascend<T extends Record<string, unknown>>(
   // Pipeline integrity check — sanity guard with quantified coverage
   const coverageRatio = activation.wrappedCount / Math.max(scan.meta.boundariesDetected, 1);
   const coveragePct = Math.round(coverageRatio * 100);
-  const integrityOk = coverageRatio >= 0.5 && proof.totalPrimitives > 0;
+  const health = coverageRatio >= 0.8 ? 'healthy' : coverageRatio >= 0.5 ? 'partial' : 'degraded';
+  const integrityOk = health !== 'degraded' && proof.totalPrimitives > 0;
 
   if (!integrityOk) {
     record('integrity_check', 'SYSTEM', 'verification',
@@ -249,8 +250,9 @@ export function ascend<T extends Record<string, unknown>>(
       boundariesDetected: scan.meta.boundariesDetected,
       coveragePct,
       coverageRatio,
+      health,
     });
-    console.warn(`CMPSBL: Low activation integrity (${coveragePct}%) — potential scan/runtime mismatch`);
+    console.warn(`CMPSBL: Low activation integrity (${coveragePct}%, ${health}) — potential scan/runtime mismatch`);
   }
 
   return {
