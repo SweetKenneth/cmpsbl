@@ -216,7 +216,7 @@ export function ascend<T extends Record<string, unknown>>(
 
   // Record activation events into verification ledger
   const activationSeq = record('function_wrapped', 'SYSTEM', 'ascension',
-    `${activation.wrappedCount} functions wrapped across ${activation.primitivesUsed} primitives`, {
+    `${activation.wrappedCount} functions wrapped across ${manifest.modules.length} primitives`, {
     wrappedCount: activation.wrappedCount,
     skippedCount: activation.skippedCount,
   });
