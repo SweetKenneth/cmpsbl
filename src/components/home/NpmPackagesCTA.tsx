@@ -145,8 +145,7 @@ export function NpmPackagesCTA() {
           {/* CLI Card */}
           <a 
             href="https://www.npmjs.com/package/@cmpsbl/cli" 
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-cyan)/0.25)] bg-[hsl(var(--neon-cyan)/0.04)] hover:border-[hsl(var(--neon-cyan)/0.5)] hover:bg-[hsl(var(--neon-cyan)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-cyan)/0.05)]"
           >
             <Terminal className="w-8 h-8 text-[hsl(var(--neon-cyan))]" />
@@ -162,8 +161,7 @@ export function NpmPackagesCTA() {
           {/* SDK Card */}
           <a 
             href="https://www.npmjs.com/package/@cmpsbl/sdk" 
-            target="_blank"
-            rel="noopener noreferrer"
+            target="_blank" rel="noopener noreferrer"
             className="group flex flex-col items-center gap-3 p-6 rounded-2xl border-2 border-[hsl(var(--neon-purple)/0.25)] bg-[hsl(var(--neon-purple)/0.04)] hover:border-[hsl(var(--neon-purple)/0.5)] hover:bg-[hsl(var(--neon-purple)/0.08)] transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-[hsl(var(--neon-purple)/0.05)]"
           >
             <Code className="w-8 h-8 text-[hsl(var(--neon-purple))]" />

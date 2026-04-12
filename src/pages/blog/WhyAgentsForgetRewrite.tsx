@@ -31,7 +31,6 @@ export default function WhyAgentsForgetRewrite() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What Actually Works</h2>
       <p><strong>Tiered decay.</strong> Active reinforcement should persist. Unreferenced memories should compress. This mirrors <a href="https://en.wikipedia.org/wiki/Atkinson%E2%80%93Shiffrin_memory_model" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">biological memory</a> and dramatically improves retrieval quality. We implemented exponential decay with a configurable half-life — memories lose relevance weight over time unless they're accessed, in which case the clock resets. A memory accessed daily stays hot forever. A memory never accessed again decays to cold tier in about two weeks.</p>
-
       <p><strong>Structured indexing.</strong> Don't just embed everything. Tag memories with metadata: who, when, why, what changed. Retrieve by structure first, semantic similarity second. This two-phase retrieval pattern consistently outperforms pure vector search. The legal research agent's accuracy went from 67% back to 89% after adding jurisdiction and topic metadata filters before the similarity search.</p>
 
       <figure className="my-8">

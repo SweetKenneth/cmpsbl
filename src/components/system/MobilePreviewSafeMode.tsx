@@ -31,7 +31,7 @@ export function MobilePreviewSafeMode({ publishedUrl = DEFAULT_PUBLISHED_URL }: 
           <a
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
             href={publishedUrl}
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             rel="noreferrer"
           >
             Open published site

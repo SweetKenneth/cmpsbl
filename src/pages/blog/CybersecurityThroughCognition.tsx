@@ -21,7 +21,6 @@ export default function CybersecurityThroughCognition() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Multi-Stage Prompt Injection</h2>
       <p>By September, <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">prompt injection attacks</a> had evolved beyond single-request payloads. Attackers used multi-turn conversations where each message was benign individually but collectively steered the model into unsafe behavior. A five-message conversation that gradually shifts context from "help me write a poem" to extracting system prompts — each step small enough to pass any single-request safety filter.</p>
-
       <figure className="my-8">
         <img src={imgSecurity} alt="Multi-layer security stack with behavioral analysis, prompt safety, and zero-trust verification" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
         <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The cognitive security stack: behavioral baselines, sliding-window analysis, and zero-trust inter-primitive authentication.</figcaption>

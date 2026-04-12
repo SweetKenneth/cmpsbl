@@ -99,6 +99,7 @@ export function SubstratePackageManager() {
         link.href = data.download_url;
         link.download = `substrate-${data.package_id || 'package'}.json`;
         link.target = '_blank';
+        link.rel = 'noopener noreferrer';
         document.body.appendChild(link);
         link.click();
         setTimeout(() => document.body.removeChild(link), 100);

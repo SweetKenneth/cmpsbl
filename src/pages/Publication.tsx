@@ -164,8 +164,7 @@ export default function Publication() {
                         <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Digital Object Identifier</p>
                         <a
                           href={DOI_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          target="_blank" rel="noopener noreferrer"
                           className="text-lg md:text-xl font-mono font-semibold text-foreground hover:text-primary transition-colors"
                         >
                           {DOI}

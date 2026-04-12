@@ -188,7 +188,7 @@ export function PluginMarketplace() {
                       <div className="flex items-center gap-2">
                         {plugin.documentation_url && (
                           <Button variant="ghost" size="icon" asChild>
-                            <a href={plugin.documentation_url} target="_blank" rel="noopener">
+                            <a href={plugin.documentation_url} target="_blank" rel="noopener"rel="noopener noreferrer">
                               <BookOpen className="h-4 w-4" />
                             </a>
                           </Button>
