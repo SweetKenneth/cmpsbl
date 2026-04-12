@@ -215,14 +215,6 @@ const Row = ({ label, value, mono }: { label: string; value: string; mono?: bool
   </div>
 );
 
-const CJPI_COMPONENTS = [
-  { key: 'structural' as const, label: 'Structural', weight: '25%', color: 'bg-blue-500' },
-  { key: 'binding' as const, label: 'Binding', weight: '25%', color: 'bg-purple-500' },
-  { key: 'activation' as const, label: 'Activation', weight: '25%', color: 'bg-emerald-500' },
-  { key: 'behavioral' as const, label: 'Behavioral', weight: '20%', color: 'bg-amber-500' },
-  { key: 'security' as const, label: 'Security', weight: '5%', color: 'bg-red-500' },
-];
-
 const DecomposedCJPIBreakdown = ({ score, primitiveCount }: { score: number; primitiveCount: number }) => {
   // Estimate component scores from the composite score and primitive count
   // Higher primitive counts imply deeper binding/activation coverage
