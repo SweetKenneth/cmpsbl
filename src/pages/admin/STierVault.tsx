@@ -956,19 +956,19 @@ export default function STierVault() {
   };
 
   const handleSaveOfflineManifest = async () => {
-    // Build a comprehensive offline manifest combining registry + promoted discoveries
+    // Build a comprehensive offline manifest combining ALL sources
     const manifest = {
       _meta: {
-        type: 'CMPSBL® Offline Vault Manifest',
-        purpose: 'Complete disaster-recovery snapshot of all discovered and curated software. If the server is ever lost, this file contains everything needed to reconstruct the vault.',
+        type: 'CMPSBL® Unified Vault Manifest',
+        purpose: 'Complete disaster-recovery snapshot of all discovered, curated, and federated software across all 12 vertical substrates.',
         generatedAt: new Date().toISOString(),
-        generatedBy: 'S-Tier Apex Discovery Vault — Offline Manifest System',
+        generatedBy: 'Crown Jewel Discovery Vault — Unified Manifest System',
         copyright: '© 2025–2026 CMPSBL®. All rights reserved.',
         architect: 'Kenneth E. Sweet Jr. — ORCID 0009-0001-4237-1243',
       },
       registry: {
         version: registryData.version,
-        totalArtifacts: entries.length + promoted.length,
+        totalArtifacts: entries.length,
         canonicalModules: registryData.canonicalModules,
         entries: entries.map(e => ({
           rank: e.rank, id: e.id, name: e.name, cjpi: e.cjpi,
@@ -985,10 +985,32 @@ export default function STierVault() {
         export_ready: d.export_ready, promoted_at: d.promoted_at,
         estimatedValue: formatMarketValue(estimateMarketValue(d.cjpi, d.category, (d.module_chain || []).length)),
       })),
+      aTier: {
+        totalArtifacts: aTierVault.totalArtifacts,
+        verticals: aTierVault.verticals,
+        entries: aTierVault.entries.map(e => ({
+          id: e.id, name: e.name, cjpi: e.cjpi, module: e.module,
+          type: e.type, description: e.description, cluster: e.cluster,
+        })),
+      },
+      federation: {
+        totalVerticals: registeredVerticals.length,
+        totalJewels: allVerticalJewels.length,
+        verticals: verticalSummaries.map(v => ({
+          vertical: v.vertical, totalJewels: v.totalJewels, primitives: v.primitives,
+          avgCjpi: v.avgCjpi, topJewel: v.topJewel,
+        })),
+        entries: allVerticalJewels.map(e => ({
+          id: e.id, name: e.name, cjpi: e.cjpi, module: e.module,
+          type: e.type, description: e.description, cluster: e.cluster,
+        })),
+      },
       summary: {
+        unifiedTotal,
         registryDiscoveries: entries.length,
         promotedDiscoveries: promoted.length,
-        totalSoftware: entries.length + promoted.length,
+        aTierJewels: aTierVault.totalArtifacts,
+        federatedJewels: allVerticalJewels.length,
         tiers: {
           apex: entries.filter(e => e.cjpi >= 95).length + promoted.filter(d => d.cjpi >= 95).length,
           enterprise: entries.filter(e => e.cjpi >= 85 && e.cjpi < 95).length + promoted.filter(d => d.cjpi >= 85 && d.cjpi < 95).length,
@@ -1000,11 +1022,13 @@ export default function STierVault() {
           totalCombinations: '90+ languages × 8 adapters = 200 outputs',
         },
         categories: [...new Set(promoted.map(d => d.category))].sort(),
+        verticals: registeredVerticals,
       },
       instructions: {
-        howToUse: 'Each entry in "registry" and "discoveries" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
-        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries. The Convex Core™ Processing Layer (included in ZIP exports) provides CJPI scoring and pipeline orchestration.',
+        howToUse: 'Each entry in "registry", "discoveries", "aTier", and "federation" is a standalone software discovery. Use the name, description, and module_chain to understand what it does. Use the cjpi score to assess quality (0-100, higher is better).',
+        howToRebuild: 'Import this manifest into any CMPSBL Substrate instance to re-score and re-tier all entries.',
         howToExport: 'Each discovery can be exported to any of 90+ languages (18 software + 7 hardware/HDL) using the CMPSBL® Substrate.',
+        aiValueAnalysis: 'Feed this manifest to an AI model and ask it to: (1) rank discoveries by commercial value, (2) identify high-synergy clusters, (3) recommend packaging strategies for maximum revenue.',
       },
     };
 
@@ -1012,17 +1036,41 @@ export default function STierVault() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `cmpsbl-vault-manifest-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `cmpsbl-unified-vault-manifest-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
 
-    // Also save to localStorage for true offline access
     try {
       localStorage.setItem('cmpsbl-vault-offline-manifest', JSON.stringify(manifest));
-      toast.success(`Offline manifest saved — ${entries.length + promoted.length} artifacts cached locally + downloaded`);
+      toast.success(`Unified manifest saved — ${unifiedTotal} artifacts across ${registeredVerticals.length} verticals cached locally + downloaded`);
     } catch {
-      toast.success(`Manifest downloaded — ${entries.length + promoted.length} artifacts`);
+      toast.success(`Manifest downloaded — ${unifiedTotal} artifacts`);
     }
+  };
+
+  const handleExportUnifiedCSV = () => {
+    const rows: string[] = ['source,id,name,cjpi,module,category,tier,description,vertical'];
+    for (const e of entries) {
+      rows.push(`registry,"${e.id}","${e.name.replace(/"/g, '""')}",${e.cjpi},"${e.module}","${e.type}","${getTierLabel(e.cjpi)}","${e.description.replace(/"/g, '""')}",primary`);
+    }
+    for (const d of promoted) {
+      rows.push(`discovered,"${d.discovery_id}","${d.name.replace(/"/g, '""')}",${d.cjpi},"${(d.module_chain || [])[0] || ''}","${d.category}","${d.tier}","${(d.description || '').replace(/"/g, '""')}",primary`);
+    }
+    for (const e of aTierVault.entries) {
+      rows.push(`a-tier,"${e.id}","${e.name.replace(/"/g, '""')}",${e.cjpi},"${e.module}","${e.type}","A-Tier","${e.description.replace(/"/g, '""')}","${e.cluster || ''}"`)
+    }
+    for (const e of allVerticalJewels) {
+      const vertical = e.cluster || e.id.split('-')[0] || '';
+      rows.push(`federation,"${e.id}","${e.name.replace(/"/g, '""')}",${e.cjpi},"${e.module}","${e.type}","${getTierLabel(e.cjpi)}","${e.description.replace(/"/g, '""')}","${vertical}"`);
+    }
+    const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cmpsbl-unified-vault-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${rows.length - 1} artifacts to CSV`);
   };
 
   return (
