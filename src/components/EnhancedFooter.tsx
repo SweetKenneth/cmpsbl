@@ -35,8 +35,8 @@ export function EnhancedFooter() {
       links: [
         { name: "Showroom", href: "/showroom" },
         { name: "Code Ascension", href: "/ascension" },
-        { name: "Code Assembly", href: "/assembly" },
         { name: "Memory Stream", href: "/foundry" },
+        { name: "Junkyard", href: "/junkyard" },
         { name: "Marketplace", href: "https://marketplace.cmpsbl.com", external: true },
         { name: "Plans & Pricing", href: "/plans", highlight: true },
       ]

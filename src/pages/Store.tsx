@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { StoreOnboarding } from "@/components/onboarding/StoreOnboarding";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
+import { JunkyardCTA } from "@/components/shared/JunkyardCTA";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { UpgradeContent } from "@/components/store/UpgradeContent";
@@ -434,6 +435,7 @@ export default function Store() {
         </div>
       </main>
 
+      <JunkyardCTA />
       <EnhancedFooter />
     </>
   );

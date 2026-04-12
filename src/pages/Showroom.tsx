@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { SEO } from '@/components/SEO';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { JunkyardCTA } from '@/components/shared/JunkyardCTA';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
@@ -644,6 +645,7 @@ export default function Showroom() {
           )}
         </main>
 
+        <JunkyardCTA />
         <RelatedCapabilities />
         <PageSEOBlock path="/showroom" title="Showroom — Certified Discoveries" faq={[
           { question: "What are CMPSBL discoveries?", answer: "Discoveries are one-of-a-kind certified software capabilities found by the Memory Stream. Each is scored by CJPI (Crown Jewel Performance Index) and priced by tier." },

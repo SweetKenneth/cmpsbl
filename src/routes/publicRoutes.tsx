@@ -26,6 +26,7 @@ const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
 const TryIt = lazy(() => import("@/pages/TryIt"));
 
 const Foundry = lazy(() => import("@/pages/Foundry"));
+const JunkyardPage = lazy(() => import("@/pages/Junkyard"));
 const ProofMode = lazy(() => import("@/pages/ProofMode"));
 const STierDemos = lazy(() => import("@/pages/STierDemos"));
 const Publication = lazy(() => import("@/pages/Publication"));
@@ -278,7 +279,7 @@ export const publicRoutes = (
     <Route path="/ascension" element={<RestorationShop />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
-    <Route path="/junkyard" element={<Navigate to="/foundry" replace />} />
+    <Route path="/junkyard" element={<JunkyardPage />} />
     <Route path="/restoration-shop" element={<Navigate to="/ascension" replace />} />
     <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
     <Route path="/restore-kit" element={
