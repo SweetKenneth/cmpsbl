@@ -126,15 +126,33 @@ function stableStringify(obj: unknown): string {
   return JSON.stringify(obj);
 }
 
+/** Fields known to be unordered sets — safe to sort before hashing */
+const SET_FIELDS: ReadonlySet<string> = new Set([
+  'modules', 'primitivesUsed', 'enginesActivated', 'targets', 'scopes',
+]);
+
+/** Canonicalize set-like string arrays (never execution chains) */
+function canonicalizeManifest(obj: Record<string, unknown>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (SET_FIELDS.has(k) && Array.isArray(v)) {
+      result[k] = [...v].sort();
+    } else {
+      result[k] = v;
+    }
+  }
+  return result;
+}
+
 /**
  * Calculate a fingerprint without mutating active state.
- * Uses stable serialization to ensure portability across environments.
+ * Canonicalizes set-like fields before hashing for order-independent stability.
  */
 function calculateFingerprint(
   manifest: Record<string, unknown>,
   attachments: readonly Record<string, unknown>[],
 ): ArtifactFingerprint {
-  const manifestHash = fnv1a(stableStringify(manifest));
+  const manifestHash = fnv1a(stableStringify(canonicalizeManifest(manifest)));
   const attachmentHash = fnv1a(stableStringify(attachments));
   return {
     manifestHash,
