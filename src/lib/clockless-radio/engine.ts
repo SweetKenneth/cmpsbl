@@ -45,8 +45,11 @@ export class ClocklessRadioEngine {
   private currentTrackDuration = 0;
   private currentStartTime = 0;
   private _isDJDucked = false;
-  private hiddenAudio: HTMLAudioElement | null = null; // keeps Media Session alive
+  private hiddenAudio: HTMLAudioElement | null = null;
   private effectTimer: ReturnType<typeof setTimeout> | null = null;
+  private _sfx: RadioSFX | null = null;
+  private earCandyInterval: ReturnType<typeof setInterval> | null = null;
+  private _sfxOnly = false; // When true, skip TTS and use only SFX for DJ breaks
 
   constructor(callbacks: RadioEngineCallbacks) {
     this.callbacks = callbacks;
