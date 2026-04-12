@@ -479,6 +479,37 @@ export default function Junkyard() {
           </div>
         )}
 
+        {/* ═══ LIVE DISCOVERY SALVAGE — real sub-threshold discoveries from the reactor ═══ */}
+        {!liveLoading && liveDiscoveries.length > 0 && (
+          <section className="mb-10 border-t border-neon-cyan/10 pt-10">
+            <div className="container mx-auto px-4 mb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-neon-cyan/10">
+                    <Zap className="w-4 h-4 text-neon-cyan" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-lg">Discovery Salvage</h2>
+                    <p className="text-xs text-muted-foreground">
+                      {liveCount} real discoveries scored below threshold — free to take or restore
+                    </p>
+                  </div>
+                </div>
+                <Badge variant="outline" className="border-neon-cyan/20 text-neon-cyan text-[10px]">
+                  LIVE FROM REACTOR
+                </Badge>
+              </div>
+            </div>
+            <div className="container mx-auto px-4">
+              <ScrollCarousel>
+                {liveDiscoveries.map(d => (
+                  <LiveDiscoveryCard key={d.id} item={d} />
+                ))}
+              </ScrollCarousel>
+            </div>
+          </section>
+        )}
+
         {/* Restoration CTA */}
         <section className="border-t border-border/50 bg-card/30">
           <div className="container mx-auto px-3 sm:px-4 py-12 sm:py-16">
