@@ -219,6 +219,22 @@ function buildWebApplication(data: WebAppProps["data"]) {
       name: "CMPSBL",
       url: "https://cmpsbl.com",
     },
+    publisher: {
+      "@type": "Organization",
+      name: "CMPSBL",
+      url: "https://cmpsbl.com",
+      logo: { "@type": "ImageObject", url: "https://cmpsbl.com/logo.png" },
+    },
+    sourceOrganization: {
+      "@type": "Organization",
+      name: "CMPSBL",
+      url: "https://cmpsbl.com",
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      name: "CMPSBL",
+      url: "https://cmpsbl.com",
+    },
   };
 }
 
