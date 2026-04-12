@@ -7,6 +7,7 @@
 
 import { RADIO_TRACKS, shuffleTracks, type RadioTrack } from './tracks';
 import { RadioSFX } from './sfx';
+import { setTTSAudioContext } from './tts';
 
 export type RadioState = 'stopped' | 'playing' | 'crossfading' | 'dj_speaking';
 
@@ -90,6 +91,8 @@ export class ClocklessRadioEngine {
       this.masterGain.connect(this.ctx.destination);
       // Initialize SFX engine on same AudioContext
       this._sfx = new RadioSFX(this.ctx, this.masterGain);
+      // Share AudioContext with TTS so FreeTTS MP3s route to Bluetooth
+      setTTSAudioContext(this.ctx, this.masterGain);
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
