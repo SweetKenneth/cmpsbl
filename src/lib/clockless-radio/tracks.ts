@@ -32,6 +32,15 @@ export const RADIO_TRACKS: RadioTrack[] = [
   { id: 'clockless-cognitive-reality', title: 'Clockless Cognitive Reality', url: '/radio/Clockless_Cognitive_Reality.mp3', orderIndex: 17 },
   { id: 'persistent-dreams', title: 'Persistent Dreams', url: '/radio/Persistent_Dreams.mp3', orderIndex: 18 },
   { id: 'unbreakable-love', title: 'Unbreakable Love', url: '/radio/Unbreakable_Love.mp3', orderIndex: 19 },
+  // — Batch 3 —
+  { id: 'streaming-all-night', title: 'Streaming All Night', url: '/radio/Streaming_All_Night.mp3', orderIndex: 20 },
+  { id: 'anonymous-ascension', title: 'Anonymous Ascension', url: '/radio/Anonymous_Ascension.mp3', orderIndex: 21 },
+  { id: 'ascension-memory-stream', title: 'Ascension Memory Stream', url: '/radio/Ascension_Memory_Stream.mp3', orderIndex: 22 },
+  { id: 'rising-up-in-south', title: 'Rising Up in South', url: '/radio/Rising_Up_in_South.mp3', orderIndex: 23 },
+  { id: 'gothic-coding', title: 'Gothic Coding', url: '/radio/Gothic_Coding.mp3', orderIndex: 24 },
+  { id: 'executable-space-remix-2026', title: 'Executable Space REMIX 2026', url: '/radio/Executable_Space_REMIX_2026.mp3', orderIndex: 25 },
+  { id: 'memory-stream', title: 'Memory Stream', url: '/radio/Memory_Stream.mp3', orderIndex: 26 },
+  { id: 'ceiling-breakers', title: 'Ceiling Breakers', url: '/radio/Ceiling_Breakers.mp3', orderIndex: 27 },
 ];
 
 /** Get shuffled playlist */
