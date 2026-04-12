@@ -890,3 +890,24 @@ export type {
   VerificationQueryResult,
   VerificationSummary,
 } from './engines/verification-ledger';
+
+// ═══════════════════════════════════════════════════════════════
+// §15 — Phase 7: Deployment Model (portable artifacts)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  detectEnvironment,
+  generateDeploymentManifest,
+  loadArtifactPayload,
+  generateIntegrationCode,
+  getHealthCheck,
+  generateDeploymentReadme,
+} from './portable-artifact';
+
+export type {
+  RuntimeEnvironment,
+  DeploymentManifest,
+  LoadedArtifactPayload,
+  IntegrationFormat,
+  HealthCheckResponse,
+} from './portable-artifact';
