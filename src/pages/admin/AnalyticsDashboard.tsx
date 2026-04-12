@@ -1024,7 +1024,7 @@ function ExclusionsView() {
     setLoading(false);
   }, []);
 
-  // Detect current fingerprint from localStorage (set by site-tracker)
+  // Detect current fingerprint from localStorage (legacy, kept for exclusion management)
   useEffect(() => {
     const stored = localStorage.getItem('cmpsbl_fp');
     if (stored) setMyFingerprint(stored);

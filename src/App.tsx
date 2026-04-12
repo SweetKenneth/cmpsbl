@@ -191,13 +191,9 @@ const App = () => {
       });
     }, 100);
 
-    // Tier 3: Analytics & diagnostics (after 1s)
+    // Tier 3: Diagnostics (after 1s) — session/pageview analytics now handled by PostHog
     setTimeout(() => {
-      Promise.all([
-        import("@/lib/analytics/site-tracker"),
-        import("@/lib/client/diag"),
-      ]).then(([analytics, diag]) => {
-        analytics.initSiteAnalytics();
+      import("@/lib/client/diag").then((diag) => {
         if (diag.diagEnabled()) {
           diag.diagLog("log", "App mounted", {
             timestamp: new Date().toISOString(),
