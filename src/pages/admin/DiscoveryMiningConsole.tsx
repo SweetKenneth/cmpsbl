@@ -810,11 +810,23 @@ export default function DiscoveryMiningConsole() {
 
   const [dryRun, setDryRun] = useState(true);
   const [exploratoryMode, setExploratoryMode] = useState(false);
+  const [primitivePool, setPrimitivePool] = useState<string>('full');
+  const [batchSize, setBatchSize] = useState(200);
+  const [minDepth, setMinDepth] = useState(2);
+  const [maxDepth, setMaxDepth] = useState(8);
 
   useEffect(() => { fetchRuns(); }, [fetchRuns]);
 
   const handleRun = () => {
-    executeRun({ dryRun, exploratoryMode, scoringVersion: '1.0' });
+    executeRun({
+      dryRun,
+      exploratoryMode,
+      scoringVersion: '2.0',
+      primitivePool,
+      exploratoryBatchSize: batchSize,
+      exploratoryMinDepth: minDepth,
+      exploratoryMaxDepth: maxDepth,
+    });
   };
 
   const exportJson = () => {
@@ -831,7 +843,7 @@ export default function DiscoveryMiningConsole() {
   return (
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6">
-        {/* Header — stacks on mobile */}
+        {/* Header */}
         <div className="space-y-3">
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
@@ -839,33 +851,85 @@ export default function DiscoveryMiningConsole() {
               Discovery Mining Console
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Capability Synthesis Reactor — one-click auto-discovery of Apex Discovery memories
+              Capability Synthesis Reactor — 159-Primitive combinatorial discovery engine
             </p>
           </div>
 
-          {/* Controls — full width on mobile */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Switch id="dry-run" checked={dryRun} onCheckedChange={setDryRun} />
-                <Label htmlFor="dry-run" className="text-xs sm:text-sm">Dry Run</Label>
+          {/* Controls */}
+          <Card className="border-primary/20 bg-primary/5">
+            <CardContent className="pt-4 pb-4 space-y-3">
+              {/* Row 1: Toggles + Run */}
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
+                <div className="flex items-center gap-4 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <Switch id="dry-run" checked={dryRun} onCheckedChange={setDryRun} />
+                    <Label htmlFor="dry-run" className="text-xs sm:text-sm">Dry Run</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch id="exploratory" checked={exploratoryMode} onCheckedChange={setExploratoryMode} />
+                    <Label htmlFor="exploratory" className="text-xs sm:text-sm font-semibold text-primary">Exploratory</Label>
+                  </div>
+                </div>
+                <div className="flex gap-2 w-full sm:w-auto">
+                  <Button onClick={handleRun} disabled={isRunning} className="gap-2 flex-1 sm:flex-none">
+                    {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+                    Run Discovery
+                  </Button>
+                  <Button onClick={backfillLearning} disabled={isBackfilling} variant="outline" className="gap-2 flex-1 sm:flex-none">
+                    {isBackfilling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
+                    Teach Past Runs
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Switch id="exploratory" checked={exploratoryMode} onCheckedChange={setExploratoryMode} />
-                <Label htmlFor="exploratory" className="text-xs sm:text-sm">Exploratory</Label>
-              </div>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto">
-              <Button onClick={handleRun} disabled={isRunning} className="gap-2 flex-1 sm:flex-none">
-                {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-                Run Discovery
-              </Button>
-              <Button onClick={backfillLearning} disabled={isBackfilling} variant="outline" className="gap-2 flex-1 sm:flex-none">
-                {isBackfilling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Brain className="w-4 h-4" />}
-                Teach Past Runs
-              </Button>
-            </div>
-          </div>
+
+              {/* Row 2: Primitive Pool + Depth + Batch (shown when exploratory) */}
+              {exploratoryMode && (
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2 border-t border-border/50">
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Primitive Pool</Label>
+                    <Select value={primitivePool} onValueChange={setPrimitivePool}>
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="core">Core 40</SelectItem>
+                        <SelectItem value="full">Full 159</SelectItem>
+                        <SelectItem value="cyber">Cyber</SelectItem>
+                        <SelectItem value="robotics">Robotics</SelectItem>
+                        <SelectItem value="quantum">Quantum</SelectItem>
+                        <SelectItem value="llm">LLM Safety</SelectItem>
+                        <SelectItem value="agency">Agency</SelectItem>
+                        <SelectItem value="media">Media</SelectItem>
+                        <SelectItem value="fintech">Fintech</SelectItem>
+                        <SelectItem value="ultimate">Ultimate</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Batch Size: {batchSize}</Label>
+                    <Slider
+                      value={[batchSize]} onValueChange={([v]) => setBatchSize(v)}
+                      min={50} max={1000} step={50} className="py-2"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Min Depth: {minDepth}</Label>
+                    <Slider
+                      value={[minDepth]} onValueChange={([v]) => setMinDepth(v)}
+                      min={2} max={6} step={1} className="py-2"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">Max Depth: {maxDepth}</Label>
+                    <Slider
+                      value={[maxDepth]} onValueChange={([v]) => setMaxDepth(v)}
+                      min={4} max={12} step={1} className="py-2"
+                    />
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         <Tabs defaultValue="auto-mine" className="w-full">
