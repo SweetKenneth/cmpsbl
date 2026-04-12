@@ -1,30 +1,40 @@
 /**
- * CmpsblNav — Factory-Era Flat Navigation
- * Clean dark command bar with quick-link grid on mobile.
- * Radio toggle sits next to the logo for all substrates.
+ * CmpsblNav — Enterprise-Grade Sectioned Navigation
+ * Desktop: Grouped dropdown menus with mega-menu feel
+ * Mobile: Full-screen accordion sections with quick-link grid
+ * 
+ * v19.0.0 — SYMBIOTIC Epoch
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NpmAnnouncementBanner } from "./NpmAnnouncementBanner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu,
   X,
   ArrowRight,
-  Wrench,
   LogOut,
   Command,
   Sparkles,
-  Play,
-  FileText,
   CreditCard,
   Package,
   Globe,
-  ScrollText,
   ShoppingBag,
   Layers,
   Brain,
   Shield,
+  Wrench,
+  ChevronDown,
+  BookOpen,
+  Building2,
+  Users,
+  Newspaper,
+  Cpu,
+  Rocket,
+  ScrollText,
+  Award,
+  Eye,
+  ExternalLink,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -34,47 +44,78 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-
 const MARKETPLACE_URL = "https://marketplace.cmpsbl.com";
 
-interface NavLink {
+interface NavItem {
   name: string;
   href: string;
   icon: React.ElementType;
+  description?: string;
   badge?: string;
-  highlight?: boolean;
   external?: boolean;
 }
 
-const NAV_LINKS: NavLink[] = [
-  // 1. Free value-first → lowest friction, highest CTR anchor
-  { name: "Shield", href: "/shield", icon: Shield, badge: "FREE", highlight: true },
-  // 2. Live social proof → curiosity + FOMO
-  { name: "Memory Stream", href: "/foundry", icon: Brain, badge: "LIVE", highlight: true },
-  // 3. Browse intent → warm visitors ready to explore
-  { name: "Store", href: "/store", icon: ShoppingBag, highlight: true },
-  // 4. Upgrade path → monetization after value demonstrated
-  { name: "Ascension", href: "/ascension", icon: Sparkles, highlight: true },
-  // 5. Novel IP → differentiation hook
-  { name: "Mana", href: "/mana", icon: Layers, badge: "PATENT", highlight: true },
-  // 6. Curated showcase → discovery for engaged users
-  { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
-  // 7. External marketplace → committed buyers
-  { name: "Marketplace", href: MARKETPLACE_URL, icon: ShoppingBag, badge: "NEW", highlight: true, external: true },
-  // 8-11. Lower-intent utility links
-  { name: "Verticals", href: "/verticals", icon: Globe, badge: "EXPLORE" },
-  { name: "Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
-  { name: "Plans", href: "/plans", icon: CreditCard },
-  { name: "Docs", href: "/documentation", icon: FileText },
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+/** ─── NAV SECTIONS ─── */
+const NAV_SECTIONS: NavSection[] = [
+  {
+    title: "Products",
+    items: [
+      { name: "Shield", href: "/shield", icon: Shield, description: "Free code security scanner", badge: "FREE" },
+      { name: "Ascension", href: "/ascension", icon: Sparkles, description: "Code diagnostic & transformation engine" },
+      { name: "Mana", href: "/mana", icon: Layers, description: "Silent Layer 2 attachment engine", badge: "PATENT" },
+      { name: "Memory Stream", href: "/foundry", icon: Brain, description: "Live cognitive processing feed", badge: "LIVE" },
+      { name: "Assembly", href: "/assembly", icon: Wrench, description: "Custom substrate engineering service", badge: "SERVICE" },
+    ],
+  },
+  {
+    title: "Explore",
+    items: [
+      { name: "Store", href: "/store", icon: ShoppingBag, description: "Browse engines, agents & primitives" },
+      { name: "Showroom", href: "/showroom", icon: Eye, description: "Interactive capability showcase" },
+      { name: "Verticals", href: "/verticals", icon: Globe, description: "Industry-specific substrates" },
+      { name: "Marketplace", href: MARKETPLACE_URL, icon: Rocket, description: "Third-party substrate marketplace", badge: "NEW", external: true },
+    ],
+  },
+  {
+    title: "Resources",
+    items: [
+      { name: "Documentation", href: "/documentation", icon: BookOpen, description: "Technical guides & API reference" },
+      { name: "Blog", href: "/blog", icon: Newspaper, description: "Engineering insights & updates" },
+      { name: "Architecture", href: "/architecture", icon: Cpu, description: "40-Primitive substrate topology" },
+      { name: "Changelog", href: "/changelog", icon: ScrollText, description: "Version history & release notes" },
+      { name: "Heritage Paper", href: "/heritage-paper", icon: Award, description: "The founding technical paper" },
+    ],
+  },
+  {
+    title: "Company",
+    items: [
+      { name: "About", href: "/about", icon: Building2, description: "Our mission & story" },
+      { name: "Plans", href: "/plans", icon: CreditCard, description: "Builder → Creator → Architect" },
+      { name: "Software Symbiosis", href: "/software-symbiosis", icon: Layers, description: "The vision behind Mana" },
+      { name: "Contact", href: "/contact", icon: Users, description: "Get in touch" },
+    ],
+  },
 ];
 
-/** Top 4 routes for the mobile quick-link grid */
-const QUICK_LINKS = NAV_LINKS.slice(0, 4);
-const REST_LINKS = NAV_LINKS.slice(4);
+/** Flat list for quick access */
+const ALL_NAV_ITEMS = NAV_SECTIONS.flatMap((s) => s.items);
+
+/** Top quick-links for mobile grid */
+const MOBILE_QUICK_LINKS = ALL_NAV_ITEMS.filter((i) =>
+  ["/shield", "/ascension", "/store", "/mana"].includes(i.href)
+);
 
 export function CmpsblNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
@@ -87,6 +128,7 @@ export function CmpsblNav() {
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    setOpenSection(null);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -96,24 +138,46 @@ export function CmpsblNav() {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
+    navigate("/");
   };
 
   const isActive = (path: string) => location.pathname === path;
-
   const bannerHeight = 36;
 
-  /** Render a nav link — handles external vs internal */
-  const NavAnchor = ({ link, children, className }: { link: NavLink; children: React.ReactNode; className?: string }) => {
-    if (link.external) {
+  const handleSectionEnter = (title: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpenSection(title);
+  };
+
+  const handleSectionLeave = () => {
+    timeoutRef.current = setTimeout(() => setOpenSection(null), 150);
+  };
+
+  const handleDropdownEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
+
+  /** Render nav link — external vs internal */
+  const NavAnchor = ({
+    item,
+    children,
+    className,
+    onClick,
+  }: {
+    item: NavItem;
+    children: React.ReactNode;
+    className?: string;
+    onClick?: () => void;
+  }) => {
+    if (item.external) {
       return (
-        <a href={link.href} rel="noopener noreferrer" className={className}>
+        <a href={item.href} rel="noopener noreferrer" className={className} onClick={onClick}>
           {children}
         </a>
       );
     }
     return (
-      <Link to={link.href} className={className}>
+      <Link to={item.href} className={className} onClick={onClick}>
         {children}
       </Link>
     );
@@ -136,6 +200,7 @@ export function CmpsblNav() {
             : "bg-background/80 backdrop-blur-md"
         )}
       >
+        {/* Shimmer bar */}
         <div className={cn(
           "absolute inset-x-0 -bottom-px h-px transition-opacity duration-500",
           scrolled ? "opacity-100" : "opacity-0"
@@ -146,7 +211,7 @@ export function CmpsblNav() {
         <div className="container mx-auto px-4 lg:px-6">
           <nav className="flex items-center justify-between h-16 lg:h-[72px]" role="navigation" aria-label="Main navigation">
 
-            {/* Logo + Radio */}
+            {/* Logo */}
             <div className="flex items-center gap-2 shrink-0">
               <Link
                 to="/"
@@ -161,36 +226,93 @@ export function CmpsblNav() {
               </Link>
             </div>
 
-            {/* Desktop Links */}
-            <div className="hidden lg:flex items-center gap-1">
-              {NAV_LINKS.map((link) => (
-                <NavAnchor
-                  key={link.href}
-                  link={link}
-                  className={cn(
-                    "relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
-                    !link.external && isActive(link.href)
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
+            {/* ─── Desktop Section Dropdowns ─── */}
+            <div className="hidden lg:flex items-center gap-0.5" ref={dropdownRef}>
+              {NAV_SECTIONS.map((section) => (
+                <div
+                  key={section.title}
+                  className="relative"
+                  onMouseEnter={() => handleSectionEnter(section.title)}
+                  onMouseLeave={handleSectionLeave}
                 >
-                  <span>{link.name}</span>
-                  {link.badge && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
-                      {link.badge}
-                    </span>
-                  )}
-                  {!link.external && isActive(link.href) && (
-                    <motion.span
-                      layoutId="nav-indicator"
-                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
-                    />
-                  )}
-                </NavAnchor>
+                  <button
+                    className={cn(
+                      "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200",
+                      openSection === section.title
+                        ? "text-foreground bg-secondary/50"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                    onClick={() => setOpenSection(openSection === section.title ? null : section.title)}
+                    aria-expanded={openSection === section.title}
+                  >
+                    {section.title}
+                    <ChevronDown className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-200",
+                      openSection === section.title && "rotate-180"
+                    )} />
+                  </button>
+
+                  <AnimatePresence>
+                    {openSection === section.title && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        onMouseEnter={handleDropdownEnter}
+                        onMouseLeave={handleSectionLeave}
+                        className="absolute top-full left-0 mt-1 w-72 rounded-xl border border-border bg-card/95 backdrop-blur-xl shadow-xl shadow-black/10 p-2 z-50"
+                      >
+                        {section.items.map((item) => (
+                          <NavAnchor
+                            key={item.href}
+                            item={item}
+                            className={cn(
+                              "group flex items-start gap-3 p-3 rounded-lg transition-all duration-150",
+                              !item.external && isActive(item.href)
+                                ? "bg-primary/10"
+                                : "hover:bg-secondary/80"
+                            )}
+                          >
+                            <div className={cn(
+                              "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors",
+                              !item.external && isActive(item.href)
+                                ? "bg-primary/15 text-primary"
+                                : "bg-secondary text-muted-foreground group-hover:text-primary group-hover:bg-primary/10"
+                            )}>
+                              <item.icon className="w-4 h-4" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <span className={cn(
+                                  "text-sm font-semibold",
+                                  !item.external && isActive(item.href) && "text-primary"
+                                )}>
+                                  {item.name}
+                                </span>
+                                {item.badge && (
+                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+                                    {item.badge}
+                                  </span>
+                                )}
+                                {item.external && (
+                                  <ExternalLink className="w-3 h-3 text-muted-foreground/50" />
+                                )}
+                              </div>
+                              {item.description && (
+                                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{item.description}</p>
+                              )}
+                            </div>
+                          </NavAnchor>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ))}
             </div>
 
-            {/* Right Section */}
+            {/* ─── Right Section ─── */}
             <div className="flex items-center gap-2">
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (
@@ -199,7 +321,7 @@ export function CmpsblNav() {
                       <button className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" aria-label="Account menu">
                         <Avatar className="h-9 w-9 border-2 border-border hover:border-primary transition-colors cursor-pointer">
                           <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
-                            {user.email?.charAt(0).toUpperCase() || 'U'}
+                            {user.email?.charAt(0).toUpperCase() || "U"}
                           </AvatarFallback>
                         </Avatar>
                       </button>
@@ -273,7 +395,7 @@ export function CmpsblNav() {
         </div>
       </motion.header>
 
-      {/* ═══ MOBILE NAV ═══ */}
+      {/* ═══ MOBILE NAV — Full-screen Accordion ═══ */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -291,7 +413,7 @@ export function CmpsblNav() {
               exit={{ opacity: 0 }}
               transition={{ delay: 0.05 }}
               className="relative h-full pt-28 pb-[env(safe-area-inset-bottom,2rem)] px-5 overflow-y-auto overscroll-contain"
-              style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px) + 2rem, 6rem)' }}
+              style={{ paddingBottom: "max(env(safe-area-inset-bottom, 0px) + 2rem, 6rem)" }}
             >
               {/* Mobile Header */}
               <div className="mb-6">
@@ -299,7 +421,7 @@ export function CmpsblNav() {
                   <CmpsblLogo size="md" />
                   <div>
                     <div className="text-xl font-bold tracking-tight">CMPSBL</div>
-                    <div className="text-xs text-muted-foreground font-medium">Software Ascension Center</div>
+                    <div className="text-xs text-muted-foreground font-medium">Governed Cognitive Infrastructure</div>
                   </div>
                 </motion.div>
               </div>
@@ -311,73 +433,108 @@ export function CmpsblNav() {
                 transition={{ delay: 0.12 }}
                 className="grid grid-cols-2 gap-2.5 mb-6"
               >
-                {QUICK_LINKS.map((link, idx) => (
+                {MOBILE_QUICK_LINKS.map((item) => (
                   <NavAnchor
-                    key={link.href}
-                    link={link}
+                    key={item.href}
+                    item={item}
                     className={cn(
                       "group relative overflow-hidden flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border transition-all touch-manipulation",
                       "bg-card hover:bg-secondary border-border",
-                      !link.external && isActive(link.href) && "border-primary/40 bg-primary/5"
+                      !item.external && isActive(item.href) && "border-primary/40 bg-primary/5"
                     )}
                   >
-                    {/* Glimmer sweep effect */}
                     <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-                    {/* Subtle corner glow */}
-                    <span className="pointer-events-none absolute -top-3 -right-3 w-12 h-12 rounded-full bg-primary/8 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center transition-colors",
-                      !link.external && isActive(link.href) ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground group-hover:text-primary group-hover:bg-primary/10"
+                      !item.external && isActive(item.href) ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground group-hover:text-primary group-hover:bg-primary/10"
                     )}>
-                      <link.icon className="w-5 h-5" />
+                      <item.icon className="w-5 h-5" />
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-semibold text-center leading-tight">{link.name}</span>
-                      {link.badge && (
-                        <span className="text-[8px] font-bold px-1 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">{link.badge}</span>
+                      <span className="text-xs font-semibold text-center leading-tight">{item.name}</span>
+                      {item.badge && (
+                        <span className="text-[8px] font-bold px-1 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">{item.badge}</span>
                       )}
                     </div>
                   </NavAnchor>
                 ))}
               </motion.div>
 
-              {/* ── Remaining Links (list) ── */}
-              <div className="space-y-1 mb-8">
-                {REST_LINKS.map((link, idx) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 + idx * 0.03 }}
-                  >
-                    <NavAnchor
-                      link={link}
-                      className={cn(
-                        "group relative overflow-hidden flex items-center gap-3 p-4 rounded-xl transition-all touch-manipulation",
-                        !link.external && isActive(link.href)
-                          ? "bg-primary/10 border border-primary/30"
-                          : "bg-card hover:bg-secondary border border-border"
-                      )}
+              {/* ── Section Accordions ── */}
+              <div className="space-y-2 mb-8">
+                {NAV_SECTIONS.map((section, sIdx) => {
+                  const isSectionOpen = openSection === section.title;
+                  return (
+                    <motion.div
+                      key={section.title}
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.15 + sIdx * 0.04 }}
+                      className="rounded-xl border border-border bg-card overflow-hidden"
                     >
-                      {/* Glimmer sweep */}
-                      <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out bg-gradient-to-r from-transparent via-primary/8 to-transparent" />
+                      <button
+                        onClick={() => setOpenSection(isSectionOpen ? null : section.title)}
+                        className="w-full flex items-center justify-between px-4 py-3.5 touch-manipulation"
+                        aria-expanded={isSectionOpen}
+                      >
+                        <span className="text-sm font-bold tracking-wide uppercase text-muted-foreground">{section.title}</span>
+                        <ChevronDown className={cn(
+                          "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                          isSectionOpen && "rotate-180"
+                        )} />
+                      </button>
 
-                      <div className={cn(
-                        "w-9 h-9 rounded-lg flex items-center justify-center",
-                        !link.external && isActive(link.href) ? "bg-primary/10" : "bg-secondary"
-                      )}>
-                        <link.icon className={cn("w-4.5 h-4.5", !link.external && isActive(link.href) ? "text-primary" : "text-muted-foreground")} />
-                      </div>
-                      <div className="flex items-center gap-2 flex-1">
-                        <span className={cn("text-sm font-semibold", !link.external && isActive(link.href) && "text-primary")}>{link.name}</span>
-                        {link.badge && (
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">{link.badge}</span>
+                      <AnimatePresence initial={false}>
+                        {isSectionOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeInOut" }}
+                          >
+                            <div className="px-2 pb-2 space-y-0.5">
+                              {section.items.map((item) => (
+                                <NavAnchor
+                                  key={item.href}
+                                  item={item}
+                                  className={cn(
+                                    "group relative overflow-hidden flex items-center gap-3 p-3 rounded-lg transition-all touch-manipulation",
+                                    !item.external && isActive(item.href)
+                                      ? "bg-primary/10"
+                                      : "hover:bg-secondary/80"
+                                  )}
+                                >
+                                  <div className={cn(
+                                    "w-9 h-9 rounded-lg flex items-center justify-center shrink-0",
+                                    !item.external && isActive(item.href) ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground"
+                                  )}>
+                                    <item.icon className="w-4 h-4" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                      <span className={cn("text-sm font-semibold", !item.external && isActive(item.href) && "text-primary")}>
+                                        {item.name}
+                                      </span>
+                                      {item.badge && (
+                                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">
+                                          {item.badge}
+                                        </span>
+                                      )}
+                                      {item.external && <ExternalLink className="w-3 h-3 text-muted-foreground/50" />}
+                                    </div>
+                                    {item.description && (
+                                      <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">{item.description}</p>
+                                    )}
+                                  </div>
+                                </NavAnchor>
+                              ))}
+                            </div>
+                          </motion.div>
                         )}
-                      </div>
-                    </NavAnchor>
-                  </motion.div>
-                ))}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* Mobile Auth */}
