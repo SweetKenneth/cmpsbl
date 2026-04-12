@@ -58,29 +58,8 @@ const CATEGORIES: DiscoveryCategory[] = EXPANDED_CATEGORIES;
 
 const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as const;
 
-// Module affinity map — which modules naturally pair for each category
-const CATEGORY_AFFINITY: Record<string, string[]> = {
-  cognitive: ['BRAIN', 'CORTEX', 'MEMORY', 'DREAM', 'DECODE', 'ORACLE'],
-  evolution: ['EVOLUTION', 'CORTEX', 'BRAIN', 'VISION', 'DREAM', 'ANALYTICS', 'FORGE'],
-  security: ['DEFENSE', 'ACCESS', 'GOVERNANCE', 'AUDIT', 'SYSTEM', 'IDENTITY', 'PHANTOM'],
-  routing: ['NEXUS', 'CORTEX', 'ANALYTICS', 'SYSTEM', 'GOVERNANCE', 'REFLEX'],
-  learning: ['BRAIN', 'DREAM', 'CORTEX', 'MEMORY', 'EVOLUTION', 'ANALYTICS', 'ECHO'],
-  orchestration: ['CORTEX', 'SYSTEM', 'ANALYTICS', 'NEXUS', 'VISION', 'NERVE', 'REFLEX'],
-  integration: ['INTEGRATION', 'DECODE', 'NEXUS', 'BRAIN', 'VISION', 'LINGUA', 'TREATY'],
-  observability: ['VISION', 'ANALYTICS', 'CORTEX', 'BRAIN', 'NERVE', 'ECHO'],
-  governance: ['GOVERNANCE', 'BRAIN', 'DEFENSE', 'CORTEX', 'AUDIT', 'ACCESS', 'SOVEREIGN', 'CONSCIENCE'],
-  compliance: ['SOVEREIGN', 'GOVERNANCE', 'AUDIT', 'DEFENSE', 'ACCESS', 'CONSCIENCE'],
-  prediction: ['ORACLE', 'BRAIN', 'ANALYTICS', 'CORTEX', 'VISION', 'DREAM'],
-  ethics: ['CONSCIENCE', 'GOVERNANCE', 'BRAIN', 'CORTEX', 'SOVEREIGN', 'AUDIT'],
-  privacy: ['PHANTOM', 'DEFENSE', 'ACCESS', 'IDENTITY', 'SOVEREIGN', 'GOVERNANCE'],
-  synthesis: ['FORGE', 'BRAIN', 'DREAM', 'CORTEX', 'EVOLUTION', 'INTEGRATION'],
-  localization: ['LINGUA', 'DECODE', 'BRAIN', 'INTEGRATION', 'COMPASS'],
-  geospatial: ['COMPASS', 'ANALYTICS', 'VISION', 'ORACLE', 'HARVEST'],
-  simulation: ['ECHO', 'BRAIN', 'CORTEX', 'ORACLE', 'ANALYTICS', 'VISION'],
-  contracts: ['TREATY', 'GOVERNANCE', 'SOVEREIGN', 'ACCESS', 'AUDIT'],
-  acquisition: ['HARVEST', 'INTEGRATION', 'DECODE', 'ANALYTICS', 'VISION', 'COMPASS'],
-  edge: ['REFLEX', 'NEXUS', 'SYSTEM', 'NERVE', 'CORTEX', 'ANALYTICS'],
-};
+// Module affinity map — use expanded version with vertical primitives
+const CATEGORY_AFFINITY: Record<string, string[]> = EXPANDED_AFFINITY;
 
 // Pipeline name vocabulary
 const ADJECTIVES = [
