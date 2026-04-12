@@ -101,6 +101,56 @@ The export contains:
 
 ---
 
+## Runtime Integration (Production API)
+
+For runtime governance — activation coverage, behavioral enforcement, and authoritative health monitoring — use the production provider:
+
+```typescript
+import { init } from '@cmpsbl/runtime';
+import * as handlers from './handlers';
+import { readFileSync } from 'fs';
+
+const source = readFileSync('./handlers.ts', 'utf-8');
+const session = init(handlers, source, { name: 'api-handlers' });
+
+// Drop-in replacement — same signatures, now governed
+app.get('/users', session.exports.getUsers);
+app.post('/users', session.exports.createUser);
+
+// Authoritative system health (activation + runtime)
+app.get('/health', (_, res) => res.json(session.healthCheck()));
+
+// Quick-glance status for dashboards, alerts, or deployment gates
+app.get('/status', (_, res) => res.json(session.status()));
+
+app.listen(3000);
+```
+
+> No changes to your original code. Same behavior, now governed.
+> No framework changes. No rewrites. No lock-in.
+> The original module is never modified — all behavior is attached at runtime.
+
+### Session API
+
+| Method | Returns | Purpose |
+|--------|---------|---------|
+| `session.health()` | `HealthStatus` | Unified health verdict |
+| `session.status()` | `SessionStatus` | `{ health, coverage, fingerprint, identity }` |
+| `session.healthCheck()` | `HealthCheckResponse` | Full /health payload (session-scoped, multi-tenant safe) |
+| `session.summary()` | `string` | Human-readable pipeline summary |
+| `session.verificationReport()` | `string` | Full verification audit trail |
+| `session.destroy()` | `void` | Teardown (resets global state) |
+
+### Health States
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| `healthy` | Coverage ≥ 80%, no anomalies | Ship |
+| `partial` | Coverage 50–79% or low runtime signal | Investigate |
+| `degraded` | Coverage < 50% or anomalies detected | Do not deploy |
+
+---
+
 ## Best Practices
 
 1. **Upload working code** — Ascension evolves functional software, not broken scripts
