@@ -118,7 +118,9 @@ export default function RestorationShop() {
   const handleFetchRepo = useCallback(async () => {
     const parsed = parseGitHubUrl(repoUrl);
     if (!parsed) {
-      toast.error('Invalid GitHub URL. Example: https://github.com/owner/repo');
+      toast.error('Invalid GitHub URL', {
+        description: 'Example: https://github.com/owner/repo',
+      });
       return;
     }
     setIsFetchingTree(true);
@@ -126,12 +128,28 @@ export default function RestorationShop() {
     setRepoConfirmed(false);
     try {
       const tree = await fetchGitHubTree(parsed.owner, parsed.repo);
+      if (tree.length === 0) {
+        toast.error('Empty repository', {
+          description: 'No files found. Make sure the repository is public and not empty.',
+        });
+        return;
+      }
       const classified = classifyRepoTree(tree);
+      const coreCount = classified.filter(f => f.category === 'core').length;
       setRepoFiles(classified);
       setRepoOwner(parsed.owner);
       setRepoName(parsed.repo);
+      toast.success(`Mapped ${classified.length} files`, {
+        description: `${coreCount} core · ${classified.length - coreCount} supporting/skipped`,
+      });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to fetch repository');
+      const msg = err instanceof Error ? err.message : 'Failed to fetch repository';
+      const isRateLimit = msg.includes('rate limit');
+      const isNotFound = msg.includes('not found');
+      toast.error(isRateLimit ? 'Rate Limited' : isNotFound ? 'Repository Not Found' : 'Load Failed', {
+        description: msg,
+        duration: isRateLimit ? 10000 : 5000,
+      });
     } finally {
       setIsFetchingTree(false);
     }
@@ -154,34 +172,56 @@ export default function RestorationShop() {
       return;
     }
     if (coreFiles.length > 30) {
-      toast.error('Too many core files selected. Please narrow to 30 or fewer.');
+      toast.error('Too many core files', {
+        description: `${coreFiles.length} selected — narrow to 30 or fewer for best results.`,
+      });
       return;
     }
     setIsDownloadingFiles(true);
     setRepoConfirmed(true);
+    const contents: string[] = [];
+    const fileNames: string[] = [];
+    const failedFiles: string[] = [];
     try {
-      const contents: string[] = [];
-      const fileNames: string[] = [];
       for (const file of coreFiles) {
         if (!file.sha) continue;
         try {
           const content = await fetchGitHubFileContent(repoOwner, repoName, file.sha);
           contents.push(`// ═══ FILE: ${file.path} ═══\n${content}`);
           fileNames.push(file.path);
-        } catch {
-          // Skip files that fail to download
+        } catch (fileErr) {
+          failedFiles.push(file.path);
+          const msg = fileErr instanceof Error ? fileErr.message : '';
+          // Abort early on rate limit — no point continuing
+          if (msg.includes('rate limit')) {
+            toast.error('Rate Limited', {
+              description: `Downloaded ${contents.length}/${coreFiles.length} files before hitting GitHub rate limit. Try again later.`,
+              duration: 10000,
+            });
+            break;
+          }
         }
       }
       if (contents.length === 0) {
-        toast.error('Could not download any files from the repository');
+        toast.error('Download Failed', {
+          description: 'Could not download any files. GitHub may be rate-limiting or the repository may be private.',
+        });
         return;
       }
       const merged = contents.join('\n\n');
       setCode(merged);
       setFileName(`${repoOwner}/${repoName} (${contents.length} files)`);
-      toast.success(`Downloaded ${contents.length} core files — ready to scan`);
+      if (failedFiles.length > 0) {
+        toast.success(`Downloaded ${contents.length} core files`, {
+          description: `${failedFiles.length} files skipped (download errors). Ready to scan.`,
+        });
+      } else {
+        toast.success(`Downloaded ${contents.length} core files — ready to scan`);
+      }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to download files');
+      toast.error('Download Failed', {
+        description: err instanceof Error ? err.message : 'Failed to download files',
+      });
     } finally {
       setIsDownloadingFiles(false);
     }
