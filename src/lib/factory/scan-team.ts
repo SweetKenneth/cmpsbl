@@ -833,6 +833,42 @@ function scorePrimitiveRelevance(
     warden: { signals: [code.includes('policy') || code.includes('rule') || code.includes('govern'), hasAuth], rationale: 'Governance enforcement and safety boundary management' },
     rogue: { signals: [code.includes('creative') || code.includes('alternative') || code.includes('experiment'), len > 200], rationale: 'Creative problem-solving and unconventional approach generation' },
     anchor: { signals: [code.includes('context') || code.includes('session') || code.includes('persist'), hasState], rationale: 'Context persistence and long-term memory for continuous agent operation' },
+    // Fintech vertical primitives — Engines
+    ledger: { signals: [hasDb || code.includes('transaction') || code.includes('ledger') || code.includes('accounting'), hasState], rationale: 'Double-entry ledger and transaction journaling for financial audit trails' },
+    vault_fin: { signals: [code.includes('vault') || code.includes('custody') || code.includes('escrow'), hasAuth], rationale: 'Custodial asset management with multi-signature authorization' },
+    ticker: { signals: [code.includes('price') || code.includes('market') || code.includes('quote') || code.includes('ticker'), hasAsync], rationale: 'Real-time market data feeds and price discovery with latency optimization' },
+    clearing: { signals: [code.includes('settle') || code.includes('clear') || code.includes('reconcil'), hasDb], rationale: 'Post-trade settlement and clearing with reconciliation workflows' },
+    riskcore: { signals: [code.includes('risk') || code.includes('exposure') || code.includes('var') || code.includes('stress'), len > 200], rationale: 'Risk quantification and stress testing for portfolio exposure analysis' },
+    payrail: { signals: [code.includes('payment') || code.includes('transfer') || code.includes('remit'), hasAsync], rationale: 'Payment processing and fund transfer orchestration across rail networks' },
+    taxengine: { signals: [code.includes('tax') || code.includes('withhold') || code.includes('jurisdiction'), hasDb], rationale: 'Tax computation and withholding across multi-jurisdictional compliance' },
+    matchbook: { signals: [code.includes('order') || code.includes('match') || code.includes('book') || code.includes('bid'), hasAsync], rationale: 'Order matching and limit order book management for exchange operations' },
+    // Fintech vertical primitives — Agents
+    sentinel_fin: { signals: [code.includes('fraud') || code.includes('aml') || code.includes('kyc') || code.includes('suspicious'), hasAuth], rationale: 'Fraud detection and AML/KYC compliance monitoring agent' },
+    regulator: { signals: [code.includes('compliance') || code.includes('regulat') || code.includes('license'), hasDb], rationale: 'Regulatory compliance enforcement and reporting automation' },
+    arbiter: { signals: [code.includes('dispute') || code.includes('chargeback') || code.includes('mediat'), hasAsync], rationale: 'Dispute resolution and chargeback arbitration with evidence collection' },
+    underwriter: { signals: [code.includes('underwrite') || code.includes('insur') || code.includes('premium') || code.includes('policy'), len > 200], rationale: 'Insurance underwriting and policy pricing with actuarial analysis' },
+    treasurer: { signals: [code.includes('treasury') || code.includes('cash') || code.includes('liquidity'), hasState], rationale: 'Treasury management and liquidity optimization across accounts' },
+    auditor: { signals: [code.includes('audit') || code.includes('reconcil') || code.includes('trail'), hasDb], rationale: 'Financial audit trail verification and reconciliation agent' },
+    portfolio: { signals: [code.includes('portfolio') || code.includes('allocat') || code.includes('rebalance'), hasState], rationale: 'Portfolio construction and dynamic rebalancing with optimization constraints' },
+    compliance: { signals: [code.includes('regulat') || code.includes('report') || code.includes('filing'), hasDb], rationale: 'Regulatory filing and compliance report generation' },
+    // Media vertical primitives — Engines
+    canvas: { signals: [code.includes('image') || code.includes('graphic') || code.includes('design') || code.includes('visual'), hasAsync], rationale: 'Visual content generation and design automation with asset management' },
+    score: { signals: [code.includes('audio') || code.includes('music') || code.includes('sound') || code.includes('mix'), hasAsync], rationale: 'Audio production and music composition with mixing and mastering' },
+    reel: { signals: [code.includes('video') || code.includes('edit') || code.includes('clip') || code.includes('frame'), hasAsync], rationale: 'Video editing and post-production with timeline composition' },
+    copy: { signals: [code.includes('content') || code.includes('write') || code.includes('headline') || code.includes('copy'), len > 100], rationale: 'Copywriting and content generation with brand voice alignment' },
+    campaign: { signals: [code.includes('campaign') || code.includes('market') || code.includes('target') || code.includes('audience'), hasAsync], rationale: 'Marketing campaign orchestration with audience targeting and scheduling' },
+    feed: { signals: [code.includes('feed') || code.includes('stream') || code.includes('timeline') || code.includes('content'), hasState], rationale: 'Content feed curation and algorithmic ranking for engagement optimization' },
+    palette: { signals: [code.includes('color') || code.includes('theme') || code.includes('brand') || code.includes('style'), hasState], rationale: 'Brand identity and color palette management with accessibility compliance' },
+    render: { signals: [code.includes('render') || code.includes('output') || code.includes('export') || code.includes('format'), hasAsync], rationale: 'Multi-format rendering and export pipeline for cross-platform distribution' },
+    // Media vertical primitives — Agents
+    curator: { signals: [code.includes('curate') || code.includes('select') || code.includes('recommend'), hasAsync], rationale: 'Content curation and editorial recommendation with quality scoring' },
+    critic: { signals: [code.includes('review') || code.includes('feedback') || code.includes('quality'), len > 100], rationale: 'Content quality assessment and constructive feedback generation' },
+    amplify: { signals: [code.includes('distribute') || code.includes('publish') || code.includes('share') || code.includes('social'), hasHttp], rationale: 'Content distribution and amplification across channels and platforms' },
+    persona: { signals: [code.includes('persona') || code.includes('avatar') || code.includes('voice') || code.includes('character'), hasState], rationale: 'Brand persona and character development for consistent voice' },
+    storyarc: { signals: [code.includes('story') || code.includes('narrative') || code.includes('arc') || code.includes('plot'), len > 200], rationale: 'Narrative structuring and story arc development for long-form content' },
+    muse: { signals: [code.includes('inspire') || code.includes('creative') || code.includes('brainstorm') || code.includes('ideate'), hasAsync], rationale: 'Creative ideation and inspiration engine for concept generation' },
+    comply: { signals: [code.includes('compliance') || code.includes('guideline') || code.includes('standard'), hasAuth], rationale: 'Content compliance and brand guidelines enforcement' },
+    metric: { signals: [code.includes('analytic') || code.includes('metric') || code.includes('kpi') || code.includes('performance'), hasState], rationale: 'Content performance analytics and KPI tracking with attribution' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
