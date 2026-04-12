@@ -89,8 +89,11 @@ function autoComputeCJPI(scan: ScanPipelineResult): number {
   const { meta, policyResult } = scan;
   if (meta.findingsCount === 0) return 10;
 
-  // Density: how many findings per function boundary (0–1)
-  const density = Math.min(meta.findingsCount / Math.max(meta.attachmentsGenerated, 1), 1);
+  // Density: findings per function boundary (0–1)
+  const density = Math.min(
+    meta.findingsCount / Math.max(meta.boundariesDetected, 1),
+    1
+  );
 
   // Enforcement ratio: enforcing vs total
   const enforcementRatio = meta.enforcingCount / Math.max(meta.attachmentsGenerated, 1);
@@ -111,7 +114,9 @@ function autoComputeCJPI(scan: ScanPipelineResult): number {
     engineDiversity * 25
   );
 
-  return Math.max(10, Math.min(100, raw));
+  // Stabilize score (avoid noisy spikes from small samples)
+  const smoothed = Math.round(raw * 0.9 + 10);
+  return Math.max(10, Math.min(100, smoothed));
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -192,6 +197,15 @@ export function ascend<T extends Record<string, unknown>>(
 
   const totalMs = Math.round(performance.now() - pipelineStart);
 
+  // Pipeline integrity check — sanity guard
+  const integrityOk =
+    activation.wrappedCount >= scan.meta.boundariesDetected * 0.5 &&
+    proof.totalPrimitives > 0;
+
+  if (!integrityOk) {
+    console.warn('CMPSBL: Low activation integrity — potential scan/runtime mismatch');
+  }
+
   return {
     exports: wrapped,
     manifest,
@@ -202,7 +216,7 @@ export function ascend<T extends Record<string, unknown>>(
     pipeline: {
       totalMs,
       phases: { scanMs, buildMs, activateMs, proofMs },
-      functionsDetected: scan.meta.findingsCount,
+      functionsDetected: scan.meta.boundariesDetected,
       findingsGenerated: scan.meta.findingsCount,
       attachmentsProduced: scan.meta.attachmentsGenerated,
       exportsWrapped: activation.wrappedCount,
