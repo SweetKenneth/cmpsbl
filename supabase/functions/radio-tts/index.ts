@@ -5,7 +5,10 @@
  * We proxy to avoid CORS and to keep the endpoint abstracted.
  */
 
-import { corsHeaders } from '@supabase/supabase-js/cors';
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+};
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts';
 
 const FREETTS_API = 'https://freetts.org/api/tts';
