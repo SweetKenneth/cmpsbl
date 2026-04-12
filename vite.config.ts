@@ -81,6 +81,10 @@ export default defineConfig(({ mode }) => ({
       "@tanstack/react-query", "zustand", "framer-motion",
     ],
   },
+  esbuild: {
+    // Strip console.* and debugger in production builds
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
+  },
   build: {
     // Disable automatic modulepreload to prevent eager loading of lazy chunks (charts, motion)
     // This reduces unused JS on landing page by ~200KB
