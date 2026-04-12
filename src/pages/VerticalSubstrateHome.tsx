@@ -94,7 +94,8 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
       </Helmet>
       <StructuredData type="webApplication" data={{ name: displayName, description: tagline, url: `https://cmpsbl.com/vertical/${verticalKey}`, features: "40-Primitive Substrate, Persistent Memory, Governed Cognitive Infrastructure, Autonomous Evolution, Security Hardening" }} />
 
-      <div className="min-h-screen bg-background text-foreground">
+      <PublicNav />
+
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-border">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
