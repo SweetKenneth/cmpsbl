@@ -299,14 +299,14 @@ export function getHealthCheck(): HealthCheckResponse {
   }
 
   const verification = generateVerificationSummary();
-  const hasEnforcements = verification.enforcements > 0;
-  const hasAnomalies = verification.anomalies > 0;
 
-  const status = hasAnomalies
-    ? 'degraded'
-    : hasEnforcements || verification.totalEvents > 0
-      ? 'healthy'
-      : 'partial';
+  // Unified health — merge activation coverage with runtime verification
+  const { resolveHealthFromSummary: resolve } = await import('./engines/unified-health');
+  const coverageRatio = verification.totalEvents > 0
+    ? verification.enforcements / Math.max(verification.totalEvents, 1)
+    : 0;
+  const unified = resolve(coverageRatio, verification);
+  const status = unified.status;
 
   return {
     status,

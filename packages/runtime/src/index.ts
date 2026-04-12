@@ -911,3 +911,21 @@ export type {
   IntegrationFormat,
   HealthCheckResponse,
 } from './portable-artifact';
+
+// ═══════════════════════════════════════════════════════════════
+// §16 — Unified Health Resolver
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  computeActivationHealth,
+  computeRuntimeHealth,
+  resolveUnifiedHealth,
+  resolveHealthFromSummary,
+} from './engines/unified-health';
+
+export type {
+  HealthStatus,
+  ActivationHealthInput,
+  RuntimeHealthInput,
+  UnifiedHealthResult,
+} from './engines/unified-health';
