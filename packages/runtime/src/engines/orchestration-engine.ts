@@ -227,6 +227,20 @@ export function getOrchestrationEventsForPrimitive(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// §4b — RULE QUERIES (Phase 3 — Activation Proof)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Total registered rule count */
+export function getRegisteredRuleCount(): number {
+  return rules.length;
+}
+
+/** All registered rule IDs */
+export function getRegisteredRuleIds(): readonly string[] {
+  return rules.map(r => r.id);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // §5 — RESET (TESTING ONLY)
 // ═══════════════════════════════════════════════════════════════════════════════
 
