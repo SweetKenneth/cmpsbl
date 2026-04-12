@@ -1,8 +1,9 @@
 /**
  * The Junkyard — Raw, sub-threshold, and broken tech available for free
  * Browse categories, search items, download to workbench, or send to Restoration Lab.
+ * Includes LIVE discovery salvage — real sub-threshold discoveries from the reactor.
  */
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -17,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Archive, ChevronLeft, ChevronRight, Search, X, Wrench,
   AlertTriangle, Zap, Package, ArrowRight, Shield, Brain,
@@ -195,9 +197,84 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
   );
 }
 
+interface LiveDiscovery {
+  id: string;
+  name: string;
+  description: string | null;
+  category: string;
+  cjpi: number;
+  module_chain: string[];
+  tier: string | null;
+  created_at: string;
+}
+
+function useJunkyardDiscoveries() {
+  const [discoveries, setDiscoveries] = useState<LiveDiscovery[]>([]);
+  const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      const [{ data, error }, { count: total }] = await Promise.all([
+        supabase
+          .from('discoveries')
+          .select('id, name, description, category, cjpi, module_chain, tier, created_at')
+          .eq('status', 'junkyard')
+          .order('cjpi', { ascending: false })
+          .limit(50),
+        supabase
+          .from('discoveries')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'junkyard'),
+      ]);
+      if (!error && data) setDiscoveries(data as LiveDiscovery[]);
+      setCount(total ?? 0);
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  return { discoveries, count, loading };
+}
+
+function LiveDiscoveryCard({ item }: { item: LiveDiscovery }) {
+  const chainStr = item.module_chain.slice(0, 4).join(' → ');
+  const hasMore = item.module_chain.length > 4;
+
+  return (
+    <div className="min-w-[260px] max-w-[320px] snap-start flex-shrink-0 rounded-xl border border-neon-cyan/20 bg-card overflow-hidden group hover:border-neon-cyan/40 transition-all">
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-2">
+          <Badge variant="outline" className="text-[10px] border-neon-cyan/30 text-neon-cyan bg-neon-cyan/5">
+            CJPI {item.cjpi}
+          </Badge>
+          <span className="text-[10px] text-muted-foreground font-mono">FREE</span>
+        </div>
+        <h3 className="font-bold text-sm mb-1 line-clamp-1">{item.name}</h3>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+          {item.description || 'Sub-threshold discovery — free to take.'}
+        </p>
+        <div className="text-[10px] font-mono text-muted-foreground/60 mb-3 line-clamp-1">
+          {chainStr}{hasMore ? ' …' : ''}
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] text-muted-foreground capitalize">{item.category}</span>
+          <Button variant="ghost" size="sm" className="h-7 text-xs gap-1 text-neon-cyan hover:text-neon-cyan hover:bg-neon-cyan/10" asChild>
+            <Link to="/ascension">
+              <Wrench className="w-3 h-3" />
+              Restore
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Junkyard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ArchiveCategory | null>(null);
+  const { discoveries: liveDiscoveries, count: liveCount, loading: liveLoading } = useJunkyardDiscoveries();
 
   const groupedByCategory: Record<string, ArchiveItem[]> = {};
   ARCHIVE_ITEMS.forEach(item => {
@@ -275,7 +352,7 @@ export default function Junkyard() {
             </div>
 
             <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-              {ARCHIVE_ITEMS.length} items · {ARCHIVE_ITEMS.filter(i => i.condition === 'broken' || i.condition === 'salvageable').length} restorable
+              {ARCHIVE_ITEMS.length + liveCount} items · {liveCount > 0 ? `${liveCount} from reactor · ` : ''}{ARCHIVE_ITEMS.filter(i => i.condition === 'broken' || i.condition === 'salvageable').length} restorable
             </p>
           </motion.div>
         </div>
@@ -400,6 +477,37 @@ export default function Junkyard() {
               </div>
             )}
           </div>
+        )}
+
+        {/* ═══ LIVE DISCOVERY SALVAGE — real sub-threshold discoveries from the reactor ═══ */}
+        {!liveLoading && liveDiscoveries.length > 0 && (
+          <section className="mb-10 border-t border-neon-cyan/10 pt-10">
+            <div className="container mx-auto px-4 mb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-neon-cyan/10">
+                    <Zap className="w-4 h-4 text-neon-cyan" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-lg">Discovery Salvage</h2>
+                    <p className="text-xs text-muted-foreground">
+                      {liveCount} real discoveries scored below threshold — free to take or restore
+                    </p>
+                  </div>
+                </div>
+                <Badge variant="outline" className="border-neon-cyan/20 text-neon-cyan text-[10px]">
+                  LIVE FROM REACTOR
+                </Badge>
+              </div>
+            </div>
+            <div className="container mx-auto px-4">
+              <ScrollCarousel>
+                {liveDiscoveries.map(d => (
+                  <LiveDiscoveryCard key={d.id} item={d} />
+                ))}
+              </ScrollCarousel>
+            </div>
+          </section>
         )}
 
         {/* Restoration CTA */}
