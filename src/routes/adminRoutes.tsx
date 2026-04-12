@@ -24,6 +24,7 @@ const EvolutionCycleReport = lazy(() => import("@/components/evolution/Evolution
 const AscensionObservatory = lazy(() => import("@/pages/admin/AscensionObservatory"));
 const ProductCompilerDashboard = lazy(() => import("@/pages/admin/ProductCompilerDashboard"));
 const VerticalFactoryPage = lazy(() => import("@/pages/admin/VerticalFactoryPage"));
+const PostHogDashboard = lazy(() => import("@/pages/admin/PostHogDashboard"));
 
 export const adminRoutes = (
   <>
@@ -50,6 +51,7 @@ export const adminRoutes = (
     <Route path="/admin/ascension-observatory" element={<AdminRoute><AscensionObservatory /></AdminRoute>} />
     <Route path="/admin/compiler" element={<AdminRoute><ProductCompilerDashboard /></AdminRoute>} />
     <Route path="/admin/vertical-factory" element={<AdminRoute><VerticalFactoryPage /></AdminRoute>} />
+    <Route path="/admin/posthog" element={<AdminRoute><PostHogDashboard /></AdminRoute>} />
     <Route path="/audit" element={<Navigate to="/admin/audit-center" replace />} />
   </>
 );
