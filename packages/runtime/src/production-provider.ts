@@ -19,7 +19,7 @@
 import type { AscensionArtifact, AscensionOptions } from './ascension-loop';
 import { ascend, renderPipelineSummary } from './ascension-loop';
 import type { HealthCheckResponse } from './portable-artifact';
-import { getArtifactHealthCheck, UNCOMPUTED_FINGERPRINT, detectEnvironment } from './portable-artifact';
+import { getSessionHealthCheck, UNCOMPUTED_FINGERPRINT, detectEnvironment } from './portable-artifact';
 import type { ArtifactFingerprint } from './engines/verification-ledger';
 import { renderVerificationReport, resetVerificationLedger } from './engines/verification-ledger';
 import { resolveHealthFromSummary } from './engines/unified-health';
@@ -151,7 +151,7 @@ export function init<T extends Record<string, unknown>>(
 
     healthCheck(): HealthCheckResponse {
       // Session-scoped — uses this artifact's data, not global state
-      return getArtifactHealthCheck({
+      return getSessionHealthCheck({
         fingerprint: identity,
         coverageRatio: artifact.pipeline.coverageRatio,
         verification: artifact.verification,

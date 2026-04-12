@@ -901,7 +901,7 @@ export {
   loadArtifactPayload,
   generateIntegrationCode,
   getGlobalHealthCheck,
-  getArtifactHealthCheck,
+  getSessionHealthCheck,
   UNCOMPUTED_FINGERPRINT,
   generateDeploymentReadme,
 } from './portable-artifact';
