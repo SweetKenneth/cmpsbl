@@ -9,6 +9,7 @@
 
 import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -71,6 +72,7 @@ export default function QuantumHome() {
         <title>CMPSBL QUANTUM™ — Cognitive Quantum Infrastructure</title>
         <meta name="description" content="CMPSBL QUANTUM™ — 16 specialized quantum physics primitives for particle simulation, quantum computing, and spectroscopy software. Reality Bends Here." />
       </Helmet>
+      <StructuredData type="webApplication" data={{ name: "CMPSBL QUANTUM™", description: "Cognitive quantum infrastructure — 16 specialized primitives for particle simulation, quantum computing, and spectroscopy software.", url: "https://quantum.cmpsbl.com", features: "Particle Simulation, Quantum Computing, Spectroscopy, Quantum Entanglement, Wave Function Analysis, Quantum Error Correction" }} />
 
       <VerticalReturnBanner verticalName="CMPSBL QUANTUM™" accentColor="hsl(270 90% 60%)" />
       <PublicNav />

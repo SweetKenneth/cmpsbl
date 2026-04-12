@@ -9,6 +9,7 @@
 
 import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -93,6 +94,7 @@ export default function AgencyHome() {
         <title>CMPSBL AGENCY™ — Governed Autonomous Agent Infrastructure</title>
         <meta name="description" content="CMPSBL AGENCY™ — 16 specialized primitives empowering autonomous AI agents with research, collaboration, tool mastery, self-healing, and governed autonomy. Agents That Learn, Collaborate, and Ship." />
       </Helmet>
+      <StructuredData type="webApplication" data={{ name: "CMPSBL AGENCY™", description: "Governed autonomous agent infrastructure — 16 specialized primitives for research, collaboration, tool mastery, and self-healing AI agents.", url: "https://agency.cmpsbl.com", features: "Autonomous Research, Agent Collaboration, Tool Mastery, Self-Healing, Governed Autonomy, Task Orchestration" }} />
 
       <VerticalReturnBanner verticalName="CMPSBL AGENCY™" accentColor={ACCENT} />
       <PublicNav />

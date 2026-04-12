@@ -10,6 +10,7 @@
 import { useRef } from "react";
 import { useSSORelay } from "@/hooks/useSSORelay";
 import { Helmet } from "react-helmet-async";
+import { StructuredData } from "@/components/seo/StructuredData";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -87,6 +88,7 @@ export default function RoboticsHome() {
         <meta property="og:type" content="website" />
         <meta name="author" content="CMPSBL® · PromptFluid™" />
       </Helmet>
+      <StructuredData type="webApplication" data={{ name: "CMPSBL ROBOTICS™", description: "Cognitive robotics infrastructure — 16 purpose-built primitives for motion planning, sensor fusion, fleet coordination, and safety compliance.", url: "https://robotics.cmpsbl.com", features: "Motion Planning, Sensor Fusion, Fleet Coordination, Safety Compliance, Autonomous Navigation, Precision Calibration" }} />
 
       <div className="robotics-substrate min-h-screen font-sans" style={{
         background: 'hsl(215 25% 5%)',
