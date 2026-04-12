@@ -527,7 +527,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       candidates.push(candidate);
     }
 
-    console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known + ${retiredSkipCount} retired | ${candidates.length} new candidates`);
+    console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known + ${retiredSkipCount} retired | ${candidates.length} accepted + ${junkyardCandidates.length} junkyard`);
 
     // AUTO-RETIRE: If a template combo produced zero new candidates across this run, retire it permanently
     // Track which combos from this run produced zero new discoveries
