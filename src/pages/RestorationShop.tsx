@@ -104,6 +104,89 @@ export default function RestorationShop() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const identityRole = useDecodeStore(s => s.identityRole);
 
+  // ═══ REPO SCAN STATE ═══
+  const [uploadMode, setUploadMode] = useState<'file' | 'paste' | 'repo'>('file');
+  const [repoUrl, setRepoUrl] = useState('');
+  const [repoFiles, setRepoFiles] = useState<ClassifiedFile[]>([]);
+  const [repoConfirmed, setRepoConfirmed] = useState(false);
+  const [isFetchingTree, setIsFetchingTree] = useState(false);
+  const [isDownloadingFiles, setIsDownloadingFiles] = useState(false);
+  const [repoOwner, setRepoOwner] = useState('');
+  const [repoName, setRepoName] = useState('');
+
+  /** Fetch GitHub repo tree and classify files */
+  const handleFetchRepo = useCallback(async () => {
+    const parsed = parseGitHubUrl(repoUrl);
+    if (!parsed) {
+      toast.error('Invalid GitHub URL. Example: https://github.com/owner/repo');
+      return;
+    }
+    setIsFetchingTree(true);
+    setRepoFiles([]);
+    setRepoConfirmed(false);
+    try {
+      const tree = await fetchGitHubTree(parsed.owner, parsed.repo);
+      const classified = classifyRepoTree(tree);
+      setRepoFiles(classified);
+      setRepoOwner(parsed.owner);
+      setRepoName(parsed.repo);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to fetch repository');
+    } finally {
+      setIsFetchingTree(false);
+    }
+  }, [repoUrl]);
+
+  /** Toggle a file's category between core/supporting/skipped */
+  const toggleFileCategory = useCallback((path: string) => {
+    setRepoFiles(prev => prev.map(f => {
+      if (f.path !== path) return f;
+      const next: FileCategory = f.category === 'core' ? 'skipped' : f.category === 'skipped' ? 'core' : 'core';
+      return { ...f, category: next, reason: next === 'core' ? 'User selected' : 'User excluded' };
+    }));
+  }, []);
+
+  /** Download confirmed core files and concatenate for scanning */
+  const handleConfirmAndScan = useCallback(async () => {
+    const coreFiles = repoFiles.filter(f => f.category === 'core');
+    if (coreFiles.length === 0) {
+      toast.error('Select at least one core file to scan');
+      return;
+    }
+    if (coreFiles.length > 30) {
+      toast.error('Too many core files selected. Please narrow to 30 or fewer.');
+      return;
+    }
+    setIsDownloadingFiles(true);
+    setRepoConfirmed(true);
+    try {
+      const contents: string[] = [];
+      const fileNames: string[] = [];
+      for (const file of coreFiles) {
+        if (!file.sha) continue;
+        try {
+          const content = await fetchGitHubFileContent(repoOwner, repoName, file.sha);
+          contents.push(`// ═══ FILE: ${file.path} ═══\n${content}`);
+          fileNames.push(file.path);
+        } catch {
+          // Skip files that fail to download
+        }
+      }
+      if (contents.length === 0) {
+        toast.error('Could not download any files from the repository');
+        return;
+      }
+      const merged = contents.join('\n\n');
+      setCode(merged);
+      setFileName(`${repoOwner}/${repoName} (${contents.length} files)`);
+      toast.success(`Downloaded ${contents.length} core files — ready to scan`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to download files');
+    } finally {
+      setIsDownloadingFiles(false);
+    }
+  }, [repoFiles, repoOwner, repoName]);
+
   const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
