@@ -849,64 +849,100 @@ function generateRecommendations(
   rand: () => number,
 ): PrimitiveRecommendation[] {
   const MAX_TOTAL = 20;
-  const SPINE_SLOTS = 10;
-  const EXPANSION_SLOTS = 10;
 
   const { spine, expansion } = buildVerticalCatalog();
+  const allCatalog = [...spine, ...expansion];
 
-  // Score spine primitives (Organs + Layers) — stabilization
-  const scoredSpine = spine.map(p => {
-    const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
-    return { ...p, impactScore: score, rationale, chainPosition: 0, collisionScore: 0 };
-  });
+  // ═══ Phase 0: GUARANTEE every finding-recommended primitive is included ═══
+  // This closes the gap where the scanner identifies "DEFENSE can fix SQL injection"
+  // but DEFENSE gets bumped by category balancing. Finding-linked primitives are sacred.
+  const findingLinkedIds = new Set<string>();
+  const guaranteedResult: PrimitiveRecommendation[] = [];
+
+  for (const finding of findings) {
+    if (!finding.primitiveRecommendation) continue;
+    const recId = finding.primitiveRecommendation.toLowerCase();
+    if (findingLinkedIds.has(recId)) continue;
+
+    const catalogEntry = allCatalog.find(p => p.primitiveId === recId);
+    if (!catalogEntry) continue;
+
+    findingLinkedIds.add(recId);
+    const severityBoost = finding.severity === 'critical' ? 45 : finding.severity === 'warning' ? 30 : 18;
+    guaranteedResult.push({
+      ...catalogEntry,
+      impactScore: Math.min(99, 55 + severityBoost),
+      rationale: `🔍 ${finding.title}`,
+      chainPosition: 0,
+      collisionScore: 0,
+    });
+  }
+
+  // Score all remaining primitives
+  const scoredSpine = spine
+    .filter(p => !findingLinkedIds.has(p.primitiveId))
+    .map(p => {
+      const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
+      return { ...p, impactScore: score, rationale, chainPosition: 0, collisionScore: 0 };
+    });
   scoredSpine.sort((a, b) => b.impactScore - a.impactScore);
 
-  // Score expansion primitives (vertical Engines + Agents) — specialization
-  // Apply a vertical-specialization bonus to make these primitives more impactful
-  const scoredExpansion = expansion.map(p => {
-    const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
-    const verticalBonus = 10 + Math.floor(rand() * 15);
-    return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale, chainPosition: 0, collisionScore: 0 };
-  });
+  const scoredExpansion = expansion
+    .filter(p => !findingLinkedIds.has(p.primitiveId))
+    .map(p => {
+      const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
+      const verticalBonus = 10 + Math.floor(rand() * 15);
+      return { ...p, impactScore: Math.min(99, score + verticalBonus), rationale, chainPosition: 0, collisionScore: 0 };
+    });
   scoredExpansion.sort((a, b) => b.impactScore - a.impactScore);
 
-  const result: PrimitiveRecommendation[] = [];
+  const result: PrimitiveRecommendation[] = [...guaranteedResult];
+  const remaining = MAX_TOTAL - result.length;
 
-  // Phase 1: Fill SPINE slots — balanced Organ/Layer mix
-  const spineOrgans = scoredSpine.filter(p => p.category === 'Organ');
-  const spineLayers = scoredSpine.filter(p => p.category === 'Layer');
-  const minOrgans = 5;
-  const minLayers = 5;
+  if (remaining > 0) {
+    // Split remaining slots between spine and expansion
+    const spineSlots = Math.ceil(remaining / 2);
+    const expansionSlots = remaining - spineSlots;
 
-  for (const o of spineOrgans) {
-    if (result.filter(r => r.category === 'Organ').length < minOrgans) result.push(o);
-  }
-  for (const l of spineLayers) {
-    if (result.filter(r => r.category === 'Layer').length < minLayers) result.push(l);
-  }
-  // If either category is short, fill from the other
-  for (const p of scoredSpine) {
-    if (result.length >= SPINE_SLOTS) break;
-    if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
-  }
+    // Fill spine slots — balanced Organ/Layer mix
+    const addedSpine: PrimitiveRecommendation[] = [];
+    const spineOrgans = scoredSpine.filter(p => p.category === 'Organ');
+    const spineLayers = scoredSpine.filter(p => p.category === 'Layer');
+    const halfSpine = Math.ceil(spineSlots / 2);
 
-  // Phase 2: Fill EXPANSION slots — vertical-specific specialization
-  // These are the randomized primitives that define what the software becomes
-  const expansionEngines = scoredExpansion.filter(p => p.category === 'Engine');
-  const expansionAgents = scoredExpansion.filter(p => p.category === 'Agent');
-  const minEngines = 5;
-  const minAgents = 5;
+    for (const o of spineOrgans) {
+      if (addedSpine.length >= halfSpine) break;
+      if (!result.find(r => r.primitiveId === o.primitiveId)) addedSpine.push(o);
+    }
+    for (const l of spineLayers) {
+      if (addedSpine.length >= spineSlots) break;
+      if (!result.find(r => r.primitiveId === l.primitiveId) && !addedSpine.find(r => r.primitiveId === l.primitiveId)) addedSpine.push(l);
+    }
+    for (const p of scoredSpine) {
+      if (addedSpine.length >= spineSlots) break;
+      if (!result.find(r => r.primitiveId === p.primitiveId) && !addedSpine.find(r => r.primitiveId === p.primitiveId)) addedSpine.push(p);
+    }
+    result.push(...addedSpine);
 
-  for (const e of expansionEngines) {
-    if (result.filter(r => r.category === 'Engine').length < minEngines) result.push(e);
-  }
-  for (const a of expansionAgents) {
-    if (result.filter(r => r.category === 'Agent').length < minAgents) result.push(a);
-  }
-  // Fill remaining expansion slots
-  for (const p of scoredExpansion) {
-    if (result.length >= MAX_TOTAL) break;
-    if (!result.find(r => r.primitiveId === p.primitiveId)) result.push(p);
+    // Fill expansion slots — balanced Engine/Agent mix
+    const addedExpansion: PrimitiveRecommendation[] = [];
+    const expansionEngines = scoredExpansion.filter(p => p.category === 'Engine');
+    const expansionAgents = scoredExpansion.filter(p => p.category === 'Agent');
+    const halfExpansion = Math.ceil(expansionSlots / 2);
+
+    for (const e of expansionEngines) {
+      if (addedExpansion.length >= halfExpansion) break;
+      if (!result.find(r => r.primitiveId === e.primitiveId)) addedExpansion.push(e);
+    }
+    for (const a of expansionAgents) {
+      if (addedExpansion.length >= expansionSlots) break;
+      if (!result.find(r => r.primitiveId === a.primitiveId) && !addedExpansion.find(r => r.primitiveId === a.primitiveId)) addedExpansion.push(a);
+    }
+    for (const p of scoredExpansion) {
+      if (addedExpansion.length >= expansionSlots) break;
+      if (!result.find(r => r.primitiveId === p.primitiveId) && !addedExpansion.find(r => r.primitiveId === p.primitiveId)) addedExpansion.push(p);
+    }
+    result.push(...addedExpansion);
   }
 
   // Apply chain sequencing — deterministic execution order with cascading collision scores
