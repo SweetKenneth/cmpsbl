@@ -283,15 +283,13 @@ export interface SerializedArtifact {
   readonly __MANA_ATTACHMENTS__: readonly PolicyAttachmentEntry[];
   readonly __MANA_BEHAVIOR_REPORT__: string;
   readonly __MANA_PROOF__: ActivationReport;
+  readonly __MANA_FINGERPRINT__: ArtifactFingerprint;
+  readonly __MANA_VERIFICATION__: VerificationSummary;
   readonly __MANA_PIPELINE_TRACE__: PipelineTrace;
 }
 
 /**
  * Serialize an Ascension artifact for embedding in export ZIPs.
- *
- * The serialized payload can be injected into `globalThis` at load time,
- * enabling `initializeArtifact()` to auto-detect and activate without
- * any manual configuration.
  */
 export function serializeArtifact(artifact: AscensionArtifact): SerializedArtifact {
   return {
@@ -299,6 +297,8 @@ export function serializeArtifact(artifact: AscensionArtifact): SerializedArtifa
     __MANA_ATTACHMENTS__: artifact.attachments,
     __MANA_BEHAVIOR_REPORT__: artifact.scan.behaviorReportText,
     __MANA_PROOF__: artifact.proof,
+    __MANA_FINGERPRINT__: artifact.fingerprint,
+    __MANA_VERIFICATION__: artifact.verification,
     __MANA_PIPELINE_TRACE__: artifact.pipeline,
   };
 }
