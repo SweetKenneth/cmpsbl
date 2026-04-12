@@ -54,12 +54,7 @@ import { ALL_PRIMITIVES, EXPANDED_CATEGORIES, EXPANDED_AFFINITY } from './expand
 
 const DEFAULT_MODULES = ALL_PRIMITIVES;
 
-const CATEGORIES: DiscoveryCategory[] = [
-  'cognitive', 'evolution', 'security', 'routing', 'learning',
-  'orchestration', 'integration', 'observability', 'governance',
-  'compliance', 'prediction', 'ethics', 'privacy', 'synthesis',
-  'localization', 'geospatial', 'simulation', 'contracts', 'acquisition', 'edge',
-];
+const CATEGORIES: DiscoveryCategory[] = EXPANDED_CATEGORIES;
 
 const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as const;
 
