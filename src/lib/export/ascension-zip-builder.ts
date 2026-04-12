@@ -549,6 +549,7 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
     const { serializeAttachmentPlan } = await import('@/lib/mana/findings-bridge');
     const findings = report.primitiveManifest.map(p => ({
       functionName: p.name.toLowerCase().replace(/[^a-z0-9]+/g, '_'),
+      capability: p.name.toLowerCase().replace(/[^a-z0-9]+/g, '_') as any,
       capabilities: [p.name.toLowerCase().replace(/[^a-z0-9]+/g, '_') as any],
       primitive: p.name,
       confidence: 0.95,
