@@ -27,7 +27,7 @@ import {
   generateVerificationSummary,
   renderVerificationReport,
 } from './engines/verification-ledger';
-import { resolveHealthFromSummary } from './engines/unified-health';
+import { resolveHealthFromSummary, latchActivationCoverage } from './engines/unified-health';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -240,6 +240,7 @@ export function ascend<T extends Record<string, unknown>>(
 
   // Pipeline integrity check — unified health resolver (activation + runtime)
   const coverageRatio = activation.wrappedCount / Math.max(scan.meta.boundariesDetected, 1);
+  latchActivationCoverage(coverageRatio);
   const unified = resolveHealthFromSummary(coverageRatio, verification);
   const { status: health, detail: { coveragePct } } = unified;
   const integrityOk =

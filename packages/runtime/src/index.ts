@@ -921,6 +921,8 @@ export {
   computeRuntimeHealth,
   resolveUnifiedHealth,
   resolveHealthFromSummary,
+  latchActivationCoverage,
+  getLatchedCoverageRatio,
 } from './engines/unified-health';
 
 export type {
