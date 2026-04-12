@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { JunkyardCTA } from '@/components/shared/JunkyardCTA';
 import { cn } from '@/lib/utils';
 import {
   Search, ShoppingCart, Star, TrendingUp, X, ChevronLeft, ChevronRight,

@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { SEO } from '@/components/SEO';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { JunkyardCTA } from '@/components/shared/JunkyardCTA';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
