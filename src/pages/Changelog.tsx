@@ -1519,6 +1519,22 @@ const stratumSymbiotic: Specimen[] = [
     ],
     affectedNodes: ["ENCODE Agent", "BEACON Engine"],
   },
+  {
+    id: "SYMB-007",
+    fossilized: "2026-04-12",
+    origin: "distribution",
+    stimulus: "Four critical internal specifications existed only as raw Markdown — lifecycle docs, correction spec, and exposure spec lacked the branded HTML treatment required for enterprise export packages",
+    adaptations: [
+      "Capability Lifecycle Internal Reference (doc 20), Developer Reference (doc 21), Correction Spec, and Architecture Exposure Spec converted to branded HTML generators",
+      "All 4 docs now included in generateHTMLArtifacts() — every Ascension export contains the full documentation suite",
+      "Convex Core docs audited for accuracy — CJPI v3 weights and artifact format confirmed current",
+    ],
+    phenotype: [
+      "Every export artifact now ships with 14 branded HTML documents — zero raw Markdown in customer-facing packages",
+      "Internal architecture documentation is presentation-grade and print-ready",
+    ],
+    affectedNodes: ["ENCODE Agent", "SYSTEM Organ"],
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
