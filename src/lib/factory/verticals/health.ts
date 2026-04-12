@@ -68,7 +68,7 @@ export function getHealthSubstrate(): VerticalSubstrateConfig {
     verticalId: 'health-v1',
     name: 'CMPSBL HEALTH™',
     tagline: 'Cognitive Health Infrastructure — Care Learns Continuously',
-    domain: 'health',
+    domain: 'healthcare',
     subdomain: 'health',
     url: 'https://health.cmpsbl.com',
     status: 'active',
