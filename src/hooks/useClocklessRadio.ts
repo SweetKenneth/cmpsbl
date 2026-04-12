@@ -1,13 +1,22 @@
 /**
- * useClocklessRadio — React hook for the Composable Radio Engine
- * Manages engine lifecycle, DJ interjections with TTS audio, tier-based time limits,
- * and daily broadcast integration
+ * useClocklessRadio — Shared Clockless Radio hook
+ * Persists playback across route changes on the public site.
  */
 
-import { useState, useRef, useCallback, useEffect } from 'react';
-import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type DJContent, speakDJContent, cancelTTS } from '@/lib/clockless-radio';
-import { useRadioTimer } from '@/hooks/useRadioTimer';
-import { supabase } from '@/integrations/supabase/client';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  ClocklessRadioEngine,
+  RadioDJ,
+  type RadioTrack,
+  type RadioState,
+  type DJContent,
+  speakDJContent,
+  cancelTTS,
+  primeTTS,
+} from '@/lib/clockless-radio';
+import { useUserRole, type SubstrateRole } from '@/hooks/useUserRole';
+import { getUserLimits } from '@/lib/substrate/product-limits';
+import { toast } from 'sonner';
 
 export interface ClocklessRadioState {
   isPlaying: boolean;
@@ -21,226 +30,315 @@ export interface ClocklessRadioState {
   limitReached: boolean;
 }
 
+interface RadioTimerData {
+  windowStart: number;
+  secondsUsed: number;
+}
 
-export function useClocklessRadio() {
-  const [radioState, setRadioState] = useState<ClocklessRadioState>({
-    isPlaying: false,
-    state: 'stopped',
-    currentTrack: null,
-    volume: 0.7,
+type RadioListener = (state: ClocklessRadioState) => void;
+
+const STORAGE_KEY = 'cmpsbl_radio_timer';
+
+const initialState: ClocklessRadioState = {
+  isPlaying: false,
+  state: 'stopped',
+  currentTrack: null,
+  volume: 0.7,
+  djContent: null,
+  isDJSpeaking: false,
+  minutesRemaining: -1,
+  totalMinutes: -1,
+  limitReached: false,
+};
+
+let sharedState: ClocklessRadioState = { ...initialState };
+const listeners = new Set<RadioListener>();
+let sharedEngine: ClocklessRadioEngine | null = null;
+let sharedDJ: RadioDJ | null = null;
+let sharedRole: SubstrateRole = 'free';
+let timerInterval: ReturnType<typeof setInterval> | null = null;
+let songsSinceStart = 0;
+let hasWarnedOneMinute = false;
+let activeDJToken = 0;
+let djSafetyTimeout: ReturnType<typeof setTimeout> | null = null;
+
+function emitState(): void {
+  listeners.forEach((listener) => listener(sharedState));
+}
+
+function updateSharedState(
+  next:
+    | Partial<ClocklessRadioState>
+    | ((prev: ClocklessRadioState) => ClocklessRadioState)
+): void {
+  sharedState =
+    typeof next === 'function'
+      ? next(sharedState)
+      : { ...sharedState, ...next };
+  emitState();
+}
+
+function getTimerData(): RadioTimerData {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw) as RadioTimerData;
+      if (Date.now() - data.windowStart > 24 * 60 * 60 * 1000) {
+        return { windowStart: Date.now(), secondsUsed: 0 };
+      }
+      return data;
+    }
+  } catch {
+    // noop
+  }
+
+  return { windowStart: Date.now(), secondsUsed: 0 };
+}
+
+function saveTimerData(data: RadioTimerData): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function getTimerSnapshot(role: SubstrateRole = sharedRole): Pick<ClocklessRadioState, 'minutesRemaining' | 'totalMinutes' | 'limitReached'> {
+  if (role === 'governor') {
+    return { minutesRemaining: -1, totalMinutes: -1, limitReached: false };
+  }
+
+  const totalMinutes = getUserLimits(role).radioMinutesPerDay;
+  if (totalMinutes < 0) {
+    return { minutesRemaining: -1, totalMinutes: -1, limitReached: false };
+  }
+
+  const timerData = getTimerData();
+  const totalSeconds = totalMinutes * 60;
+  const limitReached = timerData.secondsUsed >= totalSeconds;
+  const minutesRemaining = Math.max(0, totalMinutes - Math.floor(timerData.secondsUsed / 60));
+
+  return {
+    minutesRemaining,
+    totalMinutes,
+    limitReached,
+  };
+}
+
+function syncTimerState(): void {
+  updateSharedState((prev) => ({
+    ...prev,
+    ...getTimerSnapshot(),
+  }));
+}
+
+function stopSharedTimer(): void {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function tickTimer(): boolean {
+  if (sharedRole === 'governor') {
+    syncTimerState();
+    return true;
+  }
+
+  const totalMinutes = getUserLimits(sharedRole).radioMinutesPerDay;
+  const totalSeconds = totalMinutes * 60;
+  const timerData = getTimerData();
+  timerData.secondsUsed += 1;
+  saveTimerData(timerData);
+
+  const remainingSeconds = totalSeconds - timerData.secondsUsed;
+
+  if (remainingSeconds === 60 && !hasWarnedOneMinute) {
+    hasWarnedOneMinute = true;
+    toast.warning('Clockless Radio', {
+      description: `1 minute remaining on your ${totalMinutes}-minute daily radio limit.`,
+      duration: 8000,
+    });
+  }
+
+  syncTimerState();
+
+  if (remainingSeconds <= 0) {
+    toast.error('Radio limit reached', {
+      description: `You've used your ${totalMinutes} minutes of radio for today.`,
+      duration: 10000,
+    });
+    return false;
+  }
+
+  return true;
+}
+
+function startSharedTimer(): void {
+  stopSharedTimer();
+  timerInterval = setInterval(() => {
+    const ok = tickTimer();
+    if (!ok) {
+      stopSharedRadio();
+    }
+  }, 1000);
+}
+
+function finishDJSegment(): void {
+  if (djSafetyTimeout) {
+    clearTimeout(djSafetyTimeout);
+    djSafetyTimeout = null;
+  }
+
+  if (sharedEngine && sharedState.isDJSpeaking) {
+    sharedEngine.unduckFromDJ();
+  }
+
+  updateSharedState((prev) => ({
+    ...prev,
     djContent: null,
     isDJSpeaking: false,
-    minutesRemaining: -1,
-    totalMinutes: -1,
-    limitReached: false,
-  });
-  
-  const engineRef = useRef<ClocklessRadioEngine | null>(null);
-  const djRef = useRef<RadioDJ>(new RadioDJ());
-  
-  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const dailyBroadcastPlayedRef = useRef(false);
-  const dailyBroadcastUrlRef = useRef<string | null>(null);
-  const songCountRef = useRef(0);
+  }));
+}
 
-  const radioTimer = useRadioTimer();
+function startDJSegment(content: DJContent): void {
+  if (!sharedEngine) return;
 
-  // Fetch daily broadcast URL once on mount
+  const djToken = ++activeDJToken;
+
+  updateSharedState((prev) => ({
+    ...prev,
+    djContent: content,
+    isDJSpeaking: true,
+  }));
+
+  sharedEngine.duckForDJ();
+
+  djSafetyTimeout = setTimeout(() => {
+    if (djToken !== activeDJToken) return;
+    finishDJSegment();
+  }, content.duration + 6000);
+
+  void speakDJContent(content)
+    .catch(() => {
+      // Text stays visible even if TTS fails.
+    })
+    .finally(() => {
+      if (djToken !== activeDJToken) return;
+      finishDJSegment();
+    });
+}
+
+function getSharedEngine(): ClocklessRadioEngine {
+  if (!sharedEngine) {
+    sharedDJ = new RadioDJ();
+    sharedEngine = new ClocklessRadioEngine({
+      onTrackChange: (track) => {
+        updateSharedState((prev) => ({ ...prev, currentTrack: track }));
+        songsSinceStart += 1;
+
+        const djContent = sharedDJ?.onTrackChange();
+        if (djContent) {
+          window.setTimeout(() => {
+            startDJSegment(djContent);
+          }, 1500);
+        }
+      },
+      onStateChange: (state) => {
+        updateSharedState((prev) => ({
+          ...prev,
+          state,
+          isPlaying: state !== 'stopped',
+        }));
+      },
+      onDJStart: () => {},
+      onDJEnd: () => {},
+    });
+
+    sharedEngine.setVolume(sharedState.volume);
+  }
+
+  return sharedEngine;
+}
+
+async function playSharedRadio(): Promise<void> {
+  const timerSnapshot = getTimerSnapshot();
+  if (timerSnapshot.limitReached) {
+    toast.error('Radio limit reached', {
+      description: `You've used your ${timerSnapshot.totalMinutes} minutes of radio for today.`,
+      duration: 10000,
+    });
+    syncTimerState();
+    return;
+  }
+
+  await primeTTS();
+  const engine = getSharedEngine();
+  await engine.play();
+  startSharedTimer();
+  syncTimerState();
+}
+
+function stopSharedRadio(): void {
+  activeDJToken += 1;
+  finishDJSegment();
+  cancelTTS();
+  stopSharedTimer();
+  sharedEngine?.stop();
+}
+
+function skipSharedRadio(): void {
+  sharedEngine?.skip();
+}
+
+function setSharedVolume(volume: number): void {
+  const nextVolume = Math.max(0, Math.min(1, volume));
+  sharedEngine?.setVolume(nextVolume);
+  updateSharedState((prev) => ({ ...prev, volume: nextVolume }));
+}
+
+export function useClocklessRadio() {
+  const { role } = useUserRole();
+  const [radioState, setRadioState] = useState<ClocklessRadioState>(() => ({
+    ...sharedState,
+    ...getTimerSnapshot(role),
+  }));
+
   useEffect(() => {
-    async function fetchDailyBroadcast() {
-      const { data } = await (supabase as any)
-        .from('radio_broadcasts')
-        .select('audio_url, status')
-        .eq('status', 'complete')
-        .order('broadcast_date', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (data?.audio_url) {
-        dailyBroadcastUrlRef.current = data.audio_url;
-        console.log('[Radio] Daily broadcast available for merge');
-      }
-    }
-    fetchDailyBroadcast();
-  }, []);
+    listeners.add(setRadioState);
+    setRadioState({ ...sharedState, ...getTimerSnapshot(role) });
 
-  // Sync timer state
+    return () => {
+      listeners.delete(setRadioState);
+    };
+  }, [role]);
+
   useEffect(() => {
-    setRadioState(prev => ({
-      ...prev,
-      minutesRemaining: radioTimer.minutesRemaining,
-      totalMinutes: radioTimer.totalMinutes,
-      limitReached: radioTimer.limitReached,
-    }));
-  }, [radioTimer.minutesRemaining, radioTimer.totalMinutes, radioTimer.limitReached]);
-  
-  const getEngine = useCallback(() => {
-    if (!engineRef.current) {
-      engineRef.current = new ClocklessRadioEngine({
-        onTrackChange: (track) => {
-          setRadioState(prev => ({ ...prev, currentTrack: track }));
-          songCountRef.current++;
-
-          // Maybe play daily broadcast instead of DJ (once per session, random timing)
-          if (
-            !dailyBroadcastPlayedRef.current &&
-            dailyBroadcastUrlRef.current &&
-            songCountRef.current >= 3 && // Not too early
-            Math.random() < 0.3 // 30% chance per track change after song 3
-          ) {
-            dailyBroadcastPlayedRef.current = true;
-            playDailyBroadcast();
-            return;
-          }
-          
-          // Standard DJ interjection with TTS
-          const djContent = djRef.current.onTrackChange();
-          if (djContent && engineRef.current) {
-            setTimeout(() => {
-              const engine = engineRef.current;
-              if (!engine) return;
-              setRadioState(prev => ({ ...prev, djContent, isDJSpeaking: true }));
-              engine.duckForDJ();
-
-              // Speak the DJ content via Web Speech API
-              speakDJContent(djContent)
-                .catch(() => {}) // Graceful fallback — text still shows
-                .finally(() => {
-                  // Always unduck after speech ends (or after timeout as safety net)
-                  engine.unduckFromDJ();
-                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                });
-
-              // Safety timeout: if speech hangs, force unduck after content.duration + buffer
-              setTimeout(() => {
-                if (engine) {
-                  engine.unduckFromDJ();
-                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                }
-              }, djContent.duration + 10000);
-            }, 1500);
-          }
-        },
-        onStateChange: (state) => {
-          setRadioState(prev => ({ ...prev, state, isPlaying: state !== 'stopped' }));
-        },
-        onDJStart: () => {},
-        onDJEnd: () => {},
-      });
-    }
-    return engineRef.current;
-  }, []);
-
-  /** Play the daily broadcast as a mid-session segment */
-  const playDailyBroadcast = useCallback(() => {
-    const engine = engineRef.current;
-    const url = dailyBroadcastUrlRef.current;
-    if (!engine || !url) return;
-
-    console.log('[Radio] 📻 Playing daily broadcast segment');
-    setRadioState(prev => ({
-      ...prev,
-      djContent: { type: 'station_id', text: 'Daily substrate intelligence report incoming...', duration: 5000 },
-      isDJSpeaking: true,
-    }));
-
-    engine.duckForDJ();
-
-    const ctx = (engine as any).ctx as AudioContext | null;
-    if (!ctx) {
-      engine.unduckFromDJ();
-      setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-      return;
-    }
-
-    // Load and play the daily broadcast audio
-    fetch(url)
-      .then(r => r.arrayBuffer())
-      .then(buf => ctx.decodeAudioData(buf))
-      .then(audioBuffer => {
-        const djGain = ctx.createGain();
-        djGain.gain.value = 1.0;
-        djGain.connect(ctx.destination);
-
-        const source = ctx.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(djGain);
-
-        source.onended = () => {
-          engine.unduckFromDJ();
-          setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-          try { djGain.disconnect(); } catch {}
-        };
-
-        source.start(0);
-        console.log(`[Radio] Daily broadcast playing: ${audioBuffer.duration.toFixed(1)}s`);
-      })
-      .catch(err => {
-        console.error('[Radio] Daily broadcast playback failed:', err);
-        engine.unduckFromDJ();
-        setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-      });
-  }, []);
-  
-  const startTimer = useCallback(() => {
-    if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-    timerIntervalRef.current = setInterval(() => {
-      const ok = radioTimer.tick();
-      if (!ok) {
-        // Limit reached — stop the radio
-        stopRadio();
-      }
-    }, 1000);
-  }, [radioTimer]);
-
-  const stopRadio = useCallback(() => {
-    if (timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
-      timerIntervalRef.current = null;
-    }
-    cancelTTS();
-    engineRef.current?.stop();
-  }, []);
+    sharedRole = role;
+    syncTimerState();
+  }, [role]);
 
   const play = useCallback(async () => {
-    if (radioTimer.limitReached) {
-      radioTimer.tick(); // Will show the toast
+    await playSharedRadio();
+  }, []);
+
+  const stop = useCallback(() => {
+    stopSharedRadio();
+  }, []);
+
+  const skip = useCallback(() => {
+    skipSharedRadio();
+  }, []);
+
+  const setVolume = useCallback((volume: number) => {
+    setSharedVolume(volume);
+  }, []);
+
+  const toggle = useCallback(async () => {
+    if (sharedState.isPlaying) {
+      stopSharedRadio();
       return;
     }
-    const engine = getEngine();
-    await engine.play();
-    startTimer();
-  }, [getEngine, radioTimer, startTimer]);
-  
-  const stop = useCallback(() => {
-    stopRadio();
-  }, [stopRadio]);
-  
-  const skip = useCallback(() => {
-    engineRef.current?.skip();
+
+    await playSharedRadio();
   }, []);
-  
-  const setVolume = useCallback((v: number) => {
-    engineRef.current?.setVolume(v);
-    setRadioState(prev => ({ ...prev, volume: v }));
-  }, []);
-  
-  const toggle = useCallback(async () => {
-    if (radioState.isPlaying) {
-      stop();
-    } else {
-      await play();
-    }
-  }, [radioState.isPlaying, play, stop]);
-  
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-      engineRef.current?.destroy();
-      engineRef.current = null;
-    };
-  }, []);
-  
+
   return {
     ...radioState,
     play,
