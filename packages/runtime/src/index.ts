@@ -803,3 +803,42 @@ export type {
   PrimitiveClassification,
   PrimitiveSource,
 } from './primitives';
+
+// ═══════════════════════════════════════════════════════════════
+// §12 — Phase 4: Scan-to-Policy Pipeline
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  mapFindingsToPolicy,
+  scanToAttachments,
+  recommendationsToAttachments,
+} from './scan-to-policy';
+
+export type {
+  ScanFinding,
+  PolicyRecommendation,
+  ScanToPolicyResult,
+  PolicyAttachmentEntry,
+} from './scan-to-policy';
+
+export {
+  generateBehaviorReport,
+  renderBehaviorReportText,
+} from './recommended-behaviors';
+
+export type {
+  RiskLevel,
+  BehaviorRecommendation,
+  BehaviorReport,
+} from './recommended-behaviors';
+
+export {
+  runScanPipeline,
+  runScanPipelineFromFindings,
+} from './scan-pipeline';
+
+export type {
+  ScanPipelineResult,
+  ScanPipelineOptions,
+  PipelineMeta,
+} from './scan-pipeline';
