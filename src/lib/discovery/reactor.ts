@@ -26,6 +26,16 @@ export interface ReactorConfig {
   scoringVersion?: string;
   /** Injected templates from the auto-generator (used alongside hardcoded ones) */
   injectedTemplates?: SynthesisTemplate[];
+  /** Primitive pool mode — 'core' (40), 'full' (159), or a vertical ID */
+  primitivePool?: 'core' | 'full' | string;
+  /** Number of random templates to generate in exploratory mode (default 200) */
+  exploratoryBatchSize?: number;
+  /** Minimum chain depth for exploratory generation */
+  exploratoryMinDepth?: number;
+  /** Maximum chain depth for exploratory generation */
+  exploratoryMaxDepth?: number;
+  /** Category focus — limit exploratory to specific categories */
+  categoryFocus?: string[];
 }
 
 export interface ReactorCandidate {
@@ -61,23 +71,19 @@ export interface ReactorRunResult {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CANONICAL MODULES — used for combinatorial synthesis
+// PRIMITIVES & CATEGORIES — sourced from expanded pool
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const CANONICAL_MODULES = [
-  // Full 40-primitive matrix
-  'CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE', 'ENCODE', 'CORTEX', 'DEFENSE', 'ORACLE', 'CONSCIENCE',
-  'PHANTOM', 'HARVEST', 'EVOLUTION', 'SHADOW', 'IMMUNITY', 'INTENT', 'GOVERNANCE', 'ATLAS', 'FORGE', 'LINGUA',
-  'ECHO', 'SOVEREIGN', 'REFLEX', 'TREATY', 'ENGINEER', 'COMPASS', 'OBSERVER', 'RELAY', 'NEXUS', 'DREAM',
-  'PRISM', 'AUDIT', 'IDENTITY', 'MESH', 'ECONOMY', 'ACCESS', 'VISION', 'ANALYTICS', 'MEDIC', 'RIPPLE',
-];
+import {
+  ALL_PRIMITIVES, CORE_PRIMITIVES, EXPANDED_CATEGORIES, EXPANDED_AFFINITY,
+  computeExpandedSynergy, getPrimitivePool,
+} from './expanded-primitives';
+import { generateTemplateBatch, type GeneratedTemplate } from './template-generator';
 
-const CATEGORIES: DiscoveryCategory[] = [
-  'cognitive', 'evolution', 'security', 'routing', 'learning',
-  'orchestration', 'integration', 'observability', 'governance',
-  'compliance', 'prediction', 'ethics', 'privacy', 'synthesis',
-  'localization', 'geospatial', 'simulation', 'contracts', 'acquisition', 'edge',
-];
+/** @deprecated — use getPrimitivePool() for dynamic resolution */
+const CANONICAL_MODULES = ALL_PRIMITIVES;
+
+const CATEGORIES: DiscoveryCategory[] = EXPANDED_CATEGORIES;
 
 const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as const;
 
@@ -341,10 +347,8 @@ export function computeStableHash(name: string, moduleChain: string[], category:
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function computeSynergyMultiplier(moduleChain: string[]): number {
-  const uniqueModules = new Set(moduleChain);
-  if (uniqueModules.size >= 4) return 1.15;
-  if (uniqueModules.size >= 3) return 1.08;
-  return 1.0;
+  // Use expanded cross-vertical synergy computation
+  return computeExpandedSynergy(moduleChain);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -442,9 +446,29 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       .select('id');
     const knownIds = new Set((existingDiscoveries ?? []).map((d: any) => d.id));
 
-    // 4. Generate candidates from templates, skipping already-known ones
-    // 4. Generate candidates from templates (hardcoded + injected), skipping already-known ones
-    const allTemplates = [...SYNTHESIS_TEMPLATES, ...(config.injectedTemplates || [])];
+    // 4. Generate candidates from templates (hardcoded + injected + exploratory), skipping already-known ones
+    // Resolve the primitive pool for this run
+    const activePool = getPrimitivePool((config.primitivePool as any) ?? 'full');
+
+    // Build template sources
+    const baseTemplates = [...SYNTHESIS_TEMPLATES, ...(config.injectedTemplates || [])];
+
+    // EXPLORATORY MODE: Generate random templates from the full/selected primitive pool
+    let exploratoryTemplates: GeneratedTemplate[] = [];
+    if (config.exploratoryMode) {
+      const batchSize = config.exploratoryBatchSize ?? 200;
+      exploratoryTemplates = generateTemplateBatch({
+        batchSize,
+        minModules: config.exploratoryMinDepth ?? 2,
+        maxModules: config.exploratoryMaxDepth ?? 8,
+        minCjpiTarget: 75,
+        biasHighValue: true,
+        primitivePool: activePool,
+        categoryFocus: config.categoryFocus,
+      });
+    }
+
+    const allTemplates = [...baseTemplates, ...exploratoryTemplates];
     const candidates: ReactorCandidate[] = [];
     let skippedCount = 0;
     for (const template of allTemplates) {
@@ -483,7 +507,7 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       });
     }
 
-    console.log(`[Reactor] Skipped ${skippedCount} already-known discoveries, ${candidates.length} new candidates`);
+    console.log(`[Reactor] Pool: ${activePool.length} primitives | Templates: ${baseTemplates.length} base + ${exploratoryTemplates.length} exploratory | Skipped ${skippedCount} known | ${candidates.length} new candidates`);
 
     // 4. Sort by CJPI descending
     candidates.sort((a, b) => b.cjpi - a.cjpi);

@@ -33,6 +33,8 @@ export interface GeneratorConfig {
   maxModules: number;        // maximum modules in chain (2-12)
   minCjpiTarget: number;     // minimum CJPI to target (e.g. 80)
   biasHighValue: boolean;    // bias toward higher scoring combos
+  primitivePool?: string[];  // override the default module pool
+  categoryFocus?: string[];  // limit to specific categories
 }
 
 export interface RetiredCombo {
@@ -45,49 +47,19 @@ export interface RetiredCombo {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// BUILDING BLOCKS
+// BUILDING BLOCKS — defaults (overridden by config.primitivePool)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const MODULES = [
-  // Full 40-primitive matrix
-  'CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE', 'ENCODE', 'CORTEX', 'DEFENSE', 'ORACLE', 'CONSCIENCE',
-  'PHANTOM', 'HARVEST', 'EVOLUTION', 'SHADOW', 'IMMUNITY', 'INTENT', 'GOVERNANCE', 'ATLAS', 'FORGE', 'LINGUA',
-  'ECHO', 'SOVEREIGN', 'REFLEX', 'TREATY', 'ENGINEER', 'COMPASS', 'OBSERVER', 'RELAY', 'NEXUS', 'DREAM',
-  'PRISM', 'AUDIT', 'IDENTITY', 'MESH', 'ECONOMY', 'ACCESS', 'VISION', 'ANALYTICS', 'MEDIC', 'RIPPLE',
-];
+import { ALL_PRIMITIVES, EXPANDED_CATEGORIES, EXPANDED_AFFINITY } from './expanded-primitives';
 
-const CATEGORIES: DiscoveryCategory[] = [
-  'cognitive', 'evolution', 'security', 'routing', 'learning',
-  'orchestration', 'integration', 'observability', 'governance',
-  'compliance', 'prediction', 'ethics', 'privacy', 'synthesis',
-  'localization', 'geospatial', 'simulation', 'contracts', 'acquisition', 'edge',
-];
+const DEFAULT_MODULES = ALL_PRIMITIVES;
+
+const CATEGORIES: DiscoveryCategory[] = EXPANDED_CATEGORIES;
 
 const ERROR_STRATEGIES = ['retry', 'skip', 'abort', 'rollback', 'fallback'] as const;
 
-// Module affinity map — which modules naturally pair for each category
-const CATEGORY_AFFINITY: Record<string, string[]> = {
-  cognitive: ['BRAIN', 'CORTEX', 'MEMORY', 'DREAM', 'DECODE', 'ORACLE'],
-  evolution: ['EVOLUTION', 'CORTEX', 'BRAIN', 'VISION', 'DREAM', 'ANALYTICS', 'FORGE'],
-  security: ['DEFENSE', 'ACCESS', 'GOVERNANCE', 'AUDIT', 'SYSTEM', 'IDENTITY', 'PHANTOM'],
-  routing: ['NEXUS', 'CORTEX', 'ANALYTICS', 'SYSTEM', 'GOVERNANCE', 'REFLEX'],
-  learning: ['BRAIN', 'DREAM', 'CORTEX', 'MEMORY', 'EVOLUTION', 'ANALYTICS', 'ECHO'],
-  orchestration: ['CORTEX', 'SYSTEM', 'ANALYTICS', 'NEXUS', 'VISION', 'NERVE', 'REFLEX'],
-  integration: ['INTEGRATION', 'DECODE', 'NEXUS', 'BRAIN', 'VISION', 'LINGUA', 'TREATY'],
-  observability: ['VISION', 'ANALYTICS', 'CORTEX', 'BRAIN', 'NERVE', 'ECHO'],
-  governance: ['GOVERNANCE', 'BRAIN', 'DEFENSE', 'CORTEX', 'AUDIT', 'ACCESS', 'SOVEREIGN', 'CONSCIENCE'],
-  compliance: ['SOVEREIGN', 'GOVERNANCE', 'AUDIT', 'DEFENSE', 'ACCESS', 'CONSCIENCE'],
-  prediction: ['ORACLE', 'BRAIN', 'ANALYTICS', 'CORTEX', 'VISION', 'DREAM'],
-  ethics: ['CONSCIENCE', 'GOVERNANCE', 'BRAIN', 'CORTEX', 'SOVEREIGN', 'AUDIT'],
-  privacy: ['PHANTOM', 'DEFENSE', 'ACCESS', 'IDENTITY', 'SOVEREIGN', 'GOVERNANCE'],
-  synthesis: ['FORGE', 'BRAIN', 'DREAM', 'CORTEX', 'EVOLUTION', 'INTEGRATION'],
-  localization: ['LINGUA', 'DECODE', 'BRAIN', 'INTEGRATION', 'COMPASS'],
-  geospatial: ['COMPASS', 'ANALYTICS', 'VISION', 'ORACLE', 'HARVEST'],
-  simulation: ['ECHO', 'BRAIN', 'CORTEX', 'ORACLE', 'ANALYTICS', 'VISION'],
-  contracts: ['TREATY', 'GOVERNANCE', 'SOVEREIGN', 'ACCESS', 'AUDIT'],
-  acquisition: ['HARVEST', 'INTEGRATION', 'DECODE', 'ANALYTICS', 'VISION', 'COMPASS'],
-  edge: ['REFLEX', 'NEXUS', 'SYSTEM', 'NERVE', 'CORTEX', 'ANALYTICS'],
-};
+// Module affinity map — use expanded version with vertical primitives
+const CATEGORY_AFFINITY: Record<string, string[]> = EXPANDED_AFFINITY;
 
 // Pipeline name vocabulary
 const ADJECTIVES = [
@@ -210,10 +182,10 @@ export function clearRetired(): void {
 }
 
 /** Generate a single random template */
-function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, biasHigh: boolean): GeneratedTemplate {
+function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, biasHigh: boolean, modulePool: string[] = DEFAULT_MODULES): GeneratedTemplate {
   // Pick modules — bias toward category-affine modules
-  const affine = CATEGORY_AFFINITY[category] || MODULES;
-  const nonAffine = MODULES.filter(m => !affine.includes(m));
+  const affine = (CATEGORY_AFFINITY[category] || modulePool).filter(m => modulePool.includes(m));
+  const nonAffine = modulePool.filter(m => !affine.includes(m));
 
   // 70% chance each module comes from affine pool
   const selectedModules: string[] = [];
@@ -223,7 +195,7 @@ function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, b
     const pool = Math.random() < 0.7 ? affine : nonAffine;
     const candidates = pool.filter(m => !usedModules.has(m));
     if (candidates.length === 0) {
-      const fallback = MODULES.filter(m => !usedModules.has(m));
+      const fallback = modulePool.filter(m => !usedModules.has(m));
       if (fallback.length === 0) break;
       const m = pick(fallback);
       usedModules.add(m);
@@ -296,7 +268,14 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
     maxModules: config.maxModules ?? 12,
     minCjpiTarget: config.minCjpiTarget ?? 80,
     biasHighValue: config.biasHighValue ?? true,
+    primitivePool: config.primitivePool,
+    categoryFocus: config.categoryFocus,
   };
+
+  const pool = cfg.primitivePool ?? DEFAULT_MODULES;
+  const categoryPool = cfg.categoryFocus?.length
+    ? CATEGORIES.filter(c => cfg.categoryFocus!.includes(c))
+    : CATEGORIES;
 
   const templates: GeneratedTemplate[] = [];
   const seenHashes = new Set<string>();
@@ -305,9 +284,9 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
 
   while (templates.length < cfg.batchSize && attempts < maxAttempts) {
     attempts++;
-    const category = pick(CATEGORIES);
+    const category = pick(categoryPool);
     const moduleCount = randInt(cfg.minModules, cfg.maxModules);
-    const template = generateOneTemplate(category, moduleCount, cfg.biasHighValue);
+    const template = generateOneTemplate(category, moduleCount, cfg.biasHighValue, pool);
 
     // Skip retired combos
     if (isComboRetired(template.modulePattern, template.category)) continue;
@@ -333,12 +312,13 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
 }
 
 /** Get stats about the generator's state */
-export function getGeneratorStats() {
+export function getGeneratorStats(pool?: string[]) {
   const retired = getRetiredCombos();
-  const totalPossibleCombos = Math.pow(MODULES.length, 3) * CATEGORIES.length; // rough estimate
+  const moduleCount = pool?.length ?? DEFAULT_MODULES.length;
+  const totalPossibleCombos = Math.pow(moduleCount, 3) * CATEGORIES.length; // rough estimate
   return {
     retiredCount: retired.length,
-    totalModules: MODULES.length,
+    totalModules: moduleCount,
     totalCategories: CATEGORIES.length,
     estimatedCombos: totalPossibleCombos,
     exploredPercent: retired.length > 0 ? ((retired.length / totalPossibleCombos) * 100).toFixed(2) + '%' : '0%',
