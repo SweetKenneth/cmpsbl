@@ -97,19 +97,26 @@ Ascension becomes a **runtime behavior deployment and governance layer** for exi
 
 ---
 
-## Phase 5 — Close the Ascension Loop
+## Phase 5 — Close the Ascension Loop ✅ COMPLETE
 
 **Goal:** Unify scanning, attachment, and runtime into one flow.
 
 **Key outcomes:**
-- Pipeline: Scan → Generate attachments → Produce artifact (L1 + L2) → Activate runtime
-- Behavior declared at build time executes at runtime automatically
-- No drift between what is declared and what runs
+- ✅ Pipeline: Scan → Generate attachments → Produce artifact (L1 + L2) → Activate runtime
+- ✅ Behavior declared at build time executes at runtime automatically
+- ✅ No drift between what is declared and what runs
+
+**Delivered:**
+- `ascension-loop.ts` — Unified `ascend(sourceCode, moduleExports)` entry point
+- Auto-computed CJPI from scan quality (density, enforcement ratio, confidence, engine diversity)
+- `serializeArtifact()` — Embeddable payload for artifact ZIPs
+- `generateBootstrap()` — Auto-generated globalThis injection code for artifact boot
+- `renderPipelineSummary()` — Human-readable pipeline trace
 
 **Exit criteria:**
-- End-to-end flow works on real software repeatedly
-- No manual stitching between phases
-- Output artifact is self-contained and executable
+- ✅ End-to-end flow works on real software repeatedly
+- ✅ No manual stitching between phases (single `ascend()` call)
+- ✅ Output artifact is self-contained and executable (serialized + bootstrap)
 
 ---
 
