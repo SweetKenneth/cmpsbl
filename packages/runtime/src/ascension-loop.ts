@@ -27,6 +27,7 @@ import {
   generateVerificationSummary,
   renderVerificationReport,
 } from './engines/verification-ledger';
+import { resolveHealthFromSummary } from './engines/unified-health';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -237,10 +238,10 @@ export function ascend<T extends Record<string, unknown>>(
 
   const totalMs = Math.round(performance.now() - pipelineStart);
 
-  // Pipeline integrity check — sanity guard with quantified coverage
+  // Pipeline integrity check — unified health resolver (activation + runtime)
   const coverageRatio = activation.wrappedCount / Math.max(scan.meta.boundariesDetected, 1);
-  const coveragePct = Math.round(coverageRatio * 100);
-  const health = coverageRatio >= 0.8 ? 'healthy' : coverageRatio >= 0.5 ? 'partial' : 'degraded';
+  const unified = resolveHealthFromSummary(coverageRatio, verification);
+  const { status: health, detail: { coveragePct } } = unified;
   const integrityOk =
     (manifest.tier === 'Apex' ? health === 'healthy' : health !== 'degraded')
     && proof.totalPrimitives > 0;
@@ -250,9 +251,10 @@ export function ascend<T extends Record<string, unknown>>(
       `Low activation integrity (${coveragePct}%) — potential scan/runtime mismatch`, {
       wrappedCount: activation.wrappedCount,
       boundariesDetected: scan.meta.boundariesDetected,
-      coveragePct,
-      coverageRatio,
-      health,
+      ...unified.detail,
+      health: unified.status,
+      activationHealth: unified.activation,
+      runtimeHealth: unified.runtime,
     });
     console.warn(`CMPSBL: Low activation integrity (${coveragePct}%, ${health}) — potential scan/runtime mismatch`);
   }
