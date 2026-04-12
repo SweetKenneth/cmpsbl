@@ -241,7 +241,9 @@ export function ascend<T extends Record<string, unknown>>(
   const coverageRatio = activation.wrappedCount / Math.max(scan.meta.boundariesDetected, 1);
   const coveragePct = Math.round(coverageRatio * 100);
   const health = coverageRatio >= 0.8 ? 'healthy' : coverageRatio >= 0.5 ? 'partial' : 'degraded';
-  const integrityOk = health !== 'degraded' && proof.totalPrimitives > 0;
+  const integrityOk =
+    (manifest.tier === 'Apex' ? health === 'healthy' : health !== 'degraded')
+    && proof.totalPrimitives > 0;
 
   if (!integrityOk) {
     record('integrity_check', 'SYSTEM', 'verification',
