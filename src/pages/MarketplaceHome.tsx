@@ -173,6 +173,8 @@ export default function MarketplaceHome() {
       />
 
 
+      <PublicNav />
+
       {/* Hero — full bleed with MERCHANT Agent background */}
       <section className="relative overflow-hidden border-b border-border/30">
         <img
