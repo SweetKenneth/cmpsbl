@@ -2,17 +2,43 @@
  * HTML Ascension Report Generator
  * Generates branded, self-contained HTML documents for export
  * using the premium HTML wrapper for visual consistency.
+ *
+ * v2.0.0 — Now includes lifecycle-aware constrained reporting
+ * and decomposed CJPI breakdown.
  */
 
 import type { RestorationReport } from './restoration-docs';
 import { wrapPremiumHtml } from '@/lib/export/premium-html-wrapper';
+import { buildAscensionLifecycleArtifacts } from '@/lib/capability-lifecycle/export-bridge';
+import { generateConstrainedReport } from '@/lib/capability-lifecycle/constrained-reporter';
+import { computeDecomposedCJPI } from '@/lib/capability-lifecycle/types';
 
 /**
  * Generate a styled HTML Ascension report.
  * Self-contained — no external CSS or JS dependencies.
  * Uses the premium wrapper for site-consistent branding.
+ *
+ * v2.0.0: Includes lifecycle-constrained capability reporting
+ * and decomposed CJPI to prevent overclaiming.
  */
 export function generateHtmlReport(report: RestorationReport): string {
+  // Build lifecycle artifacts for constrained reporting
+  const fingerprint = report.cjpiCertificate.fingerprint;
+  const lifecycle = buildAscensionLifecycleArtifacts(
+    report.primitiveManifest.map(p => ({
+      chain: [p.name],
+      fingerprint,
+      name: p.name,
+      description: p.contribution,
+      archetype: 'Active' as const,
+    })),
+    fingerprint,
+    'typescript',
+  );
+
+  const constrained = generateConstrainedReport(lifecycle.ledger);
+  const decomposed = computeDecomposedCJPI(lifecycle.ledger);
+
   const bodyContent = `
   <!-- CJPI Certificate -->
   <div class="section">
@@ -35,6 +61,74 @@ export function generateHtmlReport(report: RestorationReport): string {
       <div class="card-label">Fingerprint</div>
       <code style="font-size: 0.75rem">${report.cjpiCertificate.fingerprint}</code>
     </div>
+  </div>
+
+  <!-- Decomposed CJPI (Lifecycle-Aware) -->
+  <div class="section">
+    <div class="section-title"><span class="dot"></span> Decomposed CJPI Breakdown</div>
+    <div class="card">
+      <div class="card-label">Qualification</div>
+      <div class="card-value" style="font-size: 0.85rem; color: var(--text)">${constrained.qualificationLabel}</div>
+    </div>
+    <div class="grid-3" style="margin-top: 0.5rem;">
+      <div class="card">
+        <div class="card-label">Structural (25%)</div>
+        <div class="card-value">${decomposed.structuralScore}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Binding (25%)</div>
+        <div class="card-value">${decomposed.bindingScore}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Activation (25%)</div>
+        <div class="card-value">${decomposed.activationScore}</div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top: 0.5rem;">
+      <div class="card">
+        <div class="card-label">Behavioral (20%)</div>
+        <div class="card-value">${decomposed.behavioralScore}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Security (5%)</div>
+        <div class="card-value">${decomposed.securityScore}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Composite</div>
+        <div class="card-value" style="color: var(--accent)">${decomposed.composite}</div>
+      </div>
+    </div>
+    ${!decomposed.impliesRuntimeCapability ? `
+    <div class="card" style="margin-top: 0.5rem; border-color: var(--warning, #f59e0b);">
+      <div class="card-label" style="color: var(--warning, #f59e0b)">⚠ Structural Only</div>
+      <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0.25rem 0 0 0;">
+        This score reflects structural coverage. Runtime behavior requires explicit activation and integration by the consuming application.
+      </p>
+    </div>` : ''}
+  </div>
+
+  <!-- Lifecycle-Constrained Capabilities -->
+  <div class="section">
+    <div class="section-title"><span class="dot"></span> Capability Lifecycle Status</div>
+    <table>
+      <thead><tr><th>Primitive</th><th>Claim Level</th><th>Status</th></tr></thead>
+      <tbody>
+        ${constrained.capabilities.map(cap => `
+        <tr>
+          <td><strong style="color:var(--text)">${cap.primitiveName}</strong></td>
+          <td><span class="badge badge-${cap.claimLevel === 'behavioral' ? 'success' : cap.claimLevel === 'runtime' ? 'warning' : 'info'}">${cap.claimLevel}</span></td>
+          <td style="color: var(--text-muted); font-size: 0.85rem;">${cap.statement}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    ${constrained.aggregateGaps.length > 0 ? `
+    <div class="card" style="margin-top: 0.5rem;">
+      <div class="card-label">Gaps (${constrained.aggregateGaps.length})</div>
+      <ul style="font-size: 0.8rem; color: var(--text-muted); padding-left: 1rem; margin: 0.25rem 0 0 0;">
+        ${constrained.aggregateGaps.slice(0, 10).map(g => `<li>${g}</li>`).join('')}
+        ${constrained.aggregateGaps.length > 10 ? `<li>...and ${constrained.aggregateGaps.length - 10} more</li>` : ''}
+      </ul>
+    </div>` : ''}
   </div>
 
   <!-- Ascension Pipeline -->
@@ -125,6 +219,16 @@ export function generateHtmlReport(report: RestorationReport): string {
         </tr>`).join('')}
       </tbody>
     </table>
+  </div>
+
+  <!-- System Limitations -->
+  <div class="section">
+    <div class="section-title"><span class="dot"></span> System Limitations</div>
+    <div class="card">
+      <ul style="font-size: 0.8rem; color: var(--text-muted); padding-left: 1rem; margin: 0;">
+        ${constrained.limitations.map(l => `<li style="margin-bottom: 0.375rem;">${l}</li>`).join('')}
+      </ul>
+    </div>
   </div>
   `;
 
