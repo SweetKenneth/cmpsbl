@@ -3,6 +3,7 @@
  * Wraps the shared UpgradeContent with full-page SEO, nav, and footer.
  */
 import { SEO } from '@/components/SEO';
+import { StructuredData } from '@/components/seo/StructuredData';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';

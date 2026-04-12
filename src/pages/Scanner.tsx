@@ -4,6 +4,7 @@
  */
 
 import { SEO } from '@/components/SEO';
+import { StructuredData } from '@/components/seo/StructuredData';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
