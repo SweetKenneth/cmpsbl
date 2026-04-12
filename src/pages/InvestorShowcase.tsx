@@ -1,14 +1,17 @@
 /**
- * Investor Showcase — PIN-gated entry with responsive mobile/desktop layouts
+ * Investor Showcase — PIN-gated entry with secret link bypass
+ * Secret link: /investor-showcase?access=a24b89d0a4e108a46259478b9a2d7f7150d4e3fc4676f85a99f87deea91c816b
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSearchParams } from "react-router-dom";
 import { ShowcaseMobile } from "@/components/investor/ShowcaseMobile";
 import { ShowcaseDesktop } from "@/components/investor/ShowcaseDesktop";
 
 const SHOWCASE_PIN = "8888";
+const SECRET_ACCESS_TOKEN = "a24b89d0a4e108a46259478b9a2d7f7150d4e3fc4676f85a99f87deea91c816b";
 
 // ─── PIN Gate ────────────────────────────────────────────────
 const PinGate = ({ onSuccess }: { onSuccess: () => void }) => {
@@ -108,7 +111,15 @@ const PinGate = ({ onSuccess }: { onSuccess: () => void }) => {
 // ─── Root ────────────────────────────────────────────────────
 const InvestorShowcase = () => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [searchParams] = useSearchParams();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const accessToken = searchParams.get("access");
+    if (accessToken === SECRET_ACCESS_TOKEN) {
+      setAuthenticated(true);
+    }
+  }, [searchParams]);
 
   if (!authenticated) {
     return <PinGate onSuccess={() => setAuthenticated(true)} />;

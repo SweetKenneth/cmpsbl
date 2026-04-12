@@ -1,10 +1,10 @@
 /**
  * Investor Showcase — Desktop Layout
- * Glass-morphism, gradient meshes, fluid typography, Revival Epoch aesthetic
+ * Updated with live stats, verticals, and marketplace preview
  */
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye, BookOpen } from "lucide-react";
+import { motion } from "framer-motion";
+import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye, BookOpen, Globe, Store, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -15,6 +15,9 @@ import { DreamEngineDemo } from "./DreamEngineDemo";
 import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { InvestorDocLibrary } from "./InvestorDocLibrary";
+import { InvestorLiveStats } from "./InvestorLiveStats";
+import { VerticalShowcase } from "./VerticalShowcase";
+import { MarketplacePreview } from "./MarketplacePreview";
 import { TIER_1_DEMOS, TIER_2_DEMOS, DEMO_ROUTE_MAP } from "./showcaseData";
 
 export function ShowcaseDesktop() {
@@ -26,10 +29,9 @@ export function ShowcaseDesktop() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Ambient gradient mesh */}
       <div className="fixed inset-0 pointer-events-none" style={{ background: "var(--gradient-mesh)" }} />
 
-      {/* Top bar — glass */}
+      {/* Top bar */}
       <div className="sticky top-0 z-40 border-b border-border/30 bg-background/60 backdrop-blur-xl px-8 py-3 flex items-center justify-between">
         <span className="text-sm font-mono font-bold tracking-wider text-foreground">
           CMPSBL<span className="text-primary">®</span>
@@ -45,7 +47,7 @@ export function ShowcaseDesktop() {
       </div>
 
       <div className="relative flex flex-1 min-h-[calc(100vh-49px)]">
-        {/* ─── Sidebar ─── */}
+        {/* Sidebar */}
         <aside className="w-72 border-r border-border/20 bg-card/30 backdrop-blur-sm flex flex-col shrink-0 overflow-y-auto">
           {/* WOW CTA */}
           <div className="p-5 border-b border-border/20">
@@ -119,7 +121,7 @@ export function ShowcaseDesktop() {
           </div>
         </aside>
 
-        {/* ─── Main Content ─── */}
+        {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-5xl mx-auto px-8 py-12 space-y-12">
             {/* Hero */}
@@ -131,7 +133,7 @@ export function ShowcaseDesktop() {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-[10px] font-mono uppercase tracking-widest text-primary">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Cognitive Infrastructure Substrate
+                Governed Cognitive Infrastructure
               </div>
               <h1 className="text-4xl font-black text-foreground tracking-tight leading-tight">
                 Software that discovers,<br />improves, and exports{" "}
@@ -140,7 +142,7 @@ export function ShowcaseDesktop() {
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                40 specialized AI primitives coordinate through a live mesh to autonomously discover new capabilities, improve existing code, and export production-ready software.
+                40 specialized AI primitives coordinate through a live mesh to autonomously discover new capabilities, improve existing code, and export production-ready software — across 12 industry verticals.
               </p>
 
               {/* Pipeline flow */}
@@ -164,6 +166,19 @@ export function ShowcaseDesktop() {
               </div>
             </motion.div>
 
+            {/* ── Live Stats ── */}
+            <section className="space-y-5">
+              <div className="flex items-center gap-3">
+                <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold flex items-center gap-2">
+                  <BarChart3 className="w-3.5 h-3.5" />
+                  Live System Metrics
+                </h2>
+                <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+                <span className="text-[9px] font-mono text-muted-foreground/50">Real-time · Verified</span>
+              </div>
+              <InvestorLiveStats />
+            </section>
+
             {/* ── Core Demos Grid ── */}
             <section className="space-y-5">
               <div className="flex items-center gap-3">
@@ -183,6 +198,31 @@ export function ShowcaseDesktop() {
                   />
                 ))}
               </div>
+            </section>
+
+            {/* ── Industry Verticals ── */}
+            <section className="space-y-5">
+              <div className="flex items-center gap-3">
+                <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold flex items-center gap-2">
+                  <Globe className="w-3.5 h-3.5" />
+                  12 Industry Verticals
+                </h2>
+                <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+                <span className="text-[9px] font-mono text-muted-foreground/50">Each a full 40-Primitive substrate</span>
+              </div>
+              <VerticalShowcase />
+            </section>
+
+            {/* ── Marketplace & Revenue ── */}
+            <section className="space-y-5">
+              <div className="flex items-center gap-3">
+                <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold flex items-center gap-2">
+                  <Store className="w-3.5 h-3.5" />
+                  Marketplace Ecosystem
+                </h2>
+                <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+              </div>
+              <MarketplacePreview />
             </section>
 
             {/* ── Supporting Grid ── */}
@@ -206,7 +246,7 @@ export function ShowcaseDesktop() {
               </div>
             </section>
 
-            {/* ── Why CMPSBL Wins ── */}
+            {/* ── Competitive Moat ── */}
             <section className="relative rounded-2xl border border-primary/20 overflow-hidden">
               <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, hsl(var(--primary) / 0.06), hsl(var(--neon-purple) / 0.04), hsl(var(--neon-cyan) / 0.03))" }} />
               <div className="relative p-8 space-y-6">
@@ -215,10 +255,10 @@ export function ShowcaseDesktop() {
                   {[
                     { label: "Self-Discovering Software", desc: "Finds new capabilities humans never programmed.", color: "bg-primary" },
                     { label: "Self-Improving Codebase", desc: "AI generates, validates, and applies its own patches.", color: "bg-[hsl(var(--neon-cyan))]" },
-                    { label: "25-Language Portable Export", desc: "Single-file, zero-dependency distributions in any stack.", color: "bg-[hsl(var(--neon-magenta))]" },
+                    { label: "90+ Language Export", desc: "Single-file, zero-dependency distributions in any stack.", color: "bg-[hsl(var(--neon-magenta))]" },
                     { label: "IP-Protected Artifacts", desc: "Hex-encoded proprietary logic in every export.", color: "bg-[hsl(var(--neon-purple))]" },
                     { label: "Constitutional Governance", desc: "Safety rails are structural, not afterthoughts.", color: "bg-[hsl(var(--neon-amber))]" },
-                    { label: "Enterprise Security", desc: "Defense mesh with O(1) threat scoring built in.", color: "bg-[hsl(var(--neon-green))]" },
+                    { label: "Solo Founder", desc: "200k+ LOC built by one person. Lean, fast, decisive.", color: "bg-[hsl(var(--neon-green))]" },
                   ].map(({ label, desc, color }) => (
                     <div key={label} className="flex items-start gap-3">
                       <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${color}`} />
@@ -230,6 +270,16 @@ export function ShowcaseDesktop() {
                   ))}
                 </div>
               </div>
+            </section>
+
+            {/* ── Founder Note ── */}
+            <section className="relative rounded-2xl border border-border/20 bg-card/40 backdrop-blur-sm p-8 space-y-4">
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold">From the Founder</p>
+              <blockquote className="text-base text-foreground/90 leading-relaxed italic">
+                "CMPSBL is not an AI wrapper or another SaaS tool. It's a cognitive substrate — infrastructure that thinks, learns, and evolves. Every discovery it makes is IP we own. Every export it ships is revenue. The system is the product, and the product improves itself."
+              </blockquote>
+              <p className="text-sm font-bold text-foreground">Kenneth E. Sweet Jr.</p>
+              <p className="text-xs text-muted-foreground">Founder & Governor · PromptFluid™ TX</p>
             </section>
 
             <p className="text-center text-[10px] text-muted-foreground/40 font-mono pb-8">

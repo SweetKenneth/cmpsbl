@@ -1,10 +1,10 @@
 /**
  * Investor Showcase — Mobile Layout
- * Glass-morphism, gradient meshes, fluid typography, Revival Epoch aesthetic
+ * Updated with live stats, verticals, and marketplace preview
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye, BookOpen } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye, BookOpen, Globe, Store, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -15,6 +15,9 @@ import { DreamEngineDemo } from "./DreamEngineDemo";
 import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { InvestorDocLibrary } from "./InvestorDocLibrary";
+import { InvestorLiveStats } from "./InvestorLiveStats";
+import { VerticalShowcase } from "./VerticalShowcase";
+import { MarketplacePreview } from "./MarketplacePreview";
 import { TIER_1_DEMOS, TIER_2_DEMOS, DEMO_ROUTE_MAP } from "./showcaseData";
 
 const EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
@@ -34,10 +37,9 @@ export function ShowcaseMobile() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Ambient gradient mesh background */}
       <div className="fixed inset-0 pointer-events-none" style={{ background: "var(--gradient-mesh)" }} />
 
-      {/* Top bar — glass */}
+      {/* Top bar */}
       <div className="sticky top-0 z-40 border-b border-border/40 bg-background/70 backdrop-blur-xl px-4 py-2.5 flex items-center justify-between">
         <span className="text-xs font-mono font-bold tracking-wider text-foreground">CMPSBL<span className="text-primary">®</span></span>
         <span className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
@@ -47,9 +49,8 @@ export function ShowcaseMobile() {
       </div>
 
       <div className="relative px-4 py-6 space-y-8">
-        {/* ── Hero / WOW CTA ── */}
+        {/* Hero / WOW CTA */}
         <motion.div {...fadeUp} className="relative rounded-2xl border border-primary/20 overflow-hidden">
-          {/* Glow border effect */}
           <div className="absolute inset-0 rounded-2xl" style={{ background: "var(--gradient-primary)", opacity: 0.06 }} />
           <div className="relative p-6 text-center space-y-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/10 text-[10px] font-mono uppercase tracking-widest text-primary">
@@ -73,16 +74,14 @@ export function ShowcaseMobile() {
           </div>
         </motion.div>
 
-        {/* ── What is CMPSBL ── */}
+        {/* What is CMPSBL */}
         <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="space-y-4">
           <h2 className="text-xl font-bold text-foreground tracking-tight">
-            A Cognitive <span className="text-primary">Operating System</span>
+            Governed Cognitive <span className="text-primary">Infrastructure</span>
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            40 AI primitives that discover, improve, and export software capabilities autonomously — coordinating through a live mesh architecture.
+            40 AI primitives that discover, improve, and export software capabilities autonomously — across 12 industry verticals. 200k+ lines of code. Solo founder.
           </p>
-
-          {/* 3-step pipeline */}
           <div className="flex items-center justify-between py-3">
             {["Discover", "Improve", "Export"].map((step, i) => (
               <div key={step} className="flex items-center gap-1.5">
@@ -96,7 +95,19 @@ export function ShowcaseMobile() {
           </div>
         </motion.div>
 
-        {/* ── Core Demos ── */}
+        {/* Live Stats */}
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.15 }} className="space-y-3">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold flex items-center gap-2">
+              <BarChart3 className="w-3 h-3" />
+              Live Metrics
+            </h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+          </div>
+          <InvestorLiveStats compact />
+        </motion.section>
+
+        {/* Core Demos */}
         <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.2 }} className="space-y-4">
           <div className="flex items-center gap-3">
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Core Capabilities</h2>
@@ -117,7 +128,32 @@ export function ShowcaseMobile() {
           </div>
         </motion.section>
 
-        {/* ── Supporting Demos ── */}
+        {/* Industry Verticals */}
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.22 }} className="space-y-3">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold flex items-center gap-2">
+              <Globe className="w-3 h-3" />
+              12 Verticals
+            </h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+          </div>
+          <VerticalShowcase compact />
+          <p className="text-[10px] text-muted-foreground/60 text-center font-mono">+ 6 more verticals · Each a full 40-Primitive substrate</p>
+        </motion.section>
+
+        {/* Marketplace */}
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.24 }} className="space-y-3">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold flex items-center gap-2">
+              <Store className="w-3 h-3" />
+              Marketplace
+            </h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+          </div>
+          <MarketplacePreview compact />
+        </motion.section>
+
+        {/* Supporting Demos */}
         <section className="space-y-3">
           <button
             onClick={() => setShowTier2(!showTier2)}
@@ -152,7 +188,7 @@ export function ShowcaseMobile() {
           </AnimatePresence>
         </section>
 
-        {/* ── Investor Documents ── */}
+        {/* Investor Documents */}
         <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.25 }} className="space-y-3">
           <div className="flex items-center gap-3">
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Investor Documents</h2>
@@ -172,7 +208,7 @@ export function ShowcaseMobile() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-foreground text-sm">Investor Library</h3>
-                   <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
                     12 docs
                   </span>
                 </div>
@@ -184,7 +220,7 @@ export function ShowcaseMobile() {
           </motion.button>
         </motion.section>
 
-        {/* ── Why CMPSBL Wins ── */}
+        {/* Competitive Moat */}
         <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.3 }}>
           <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-sm p-5 space-y-4 shadow-sm" style={{ background: "linear-gradient(135deg, hsl(var(--card) / 0.6), hsl(var(--primary) / 0.03))" }}>
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Why CMPSBL Wins</h2>
@@ -192,9 +228,10 @@ export function ShowcaseMobile() {
               {[
                 { label: "Self-discovering", desc: "Finds new software capabilities autonomously", color: "bg-primary" },
                 { label: "Self-improving", desc: "AI patches and upgrades its own code", color: "bg-[hsl(var(--neon-cyan))]" },
-                { label: "25-language export", desc: "Single-file, zero-dependency distributions", color: "bg-[hsl(var(--neon-magenta))]" },
+                { label: "90+ language export", desc: "Single-file, zero-dependency distributions", color: "bg-[hsl(var(--neon-magenta))]" },
                 { label: "IP-protected", desc: "Hex-encoded proprietary logic in every export", color: "bg-[hsl(var(--neon-purple))]" },
-                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "bg-[hsl(var(--neon-amber))]" },
+                { label: "Solo founder", desc: "200k+ LOC, 40 primitives, 12 verticals — one person", color: "bg-[hsl(var(--neon-amber))]" },
+                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "bg-[hsl(var(--neon-green))]" },
               ].map(({ label, desc, color }) => (
                 <div key={label} className="flex items-start gap-3 py-1">
                   <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${color}`} />
@@ -204,6 +241,20 @@ export function ShowcaseMobile() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Founder Note */}
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.35 }}>
+          <div className="rounded-2xl border border-border/20 bg-card/40 backdrop-blur-sm p-5 space-y-3">
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold">From the Founder</p>
+            <blockquote className="text-sm text-foreground/90 leading-relaxed italic">
+              "CMPSBL is not an AI wrapper. It's cognitive infrastructure that thinks, learns, and evolves. Every discovery is IP we own. Every export is revenue. The system is the product."
+            </blockquote>
+            <div>
+              <p className="text-sm font-bold text-foreground">Kenneth E. Sweet Jr.</p>
+              <p className="text-[11px] text-muted-foreground">Founder & Governor · PromptFluid™ TX</p>
             </div>
           </div>
         </motion.section>
