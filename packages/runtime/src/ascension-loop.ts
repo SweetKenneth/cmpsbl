@@ -20,6 +20,13 @@ import type { ArtifactManifest, InitializationResult } from './artifact-initiali
 import { initializeArtifact } from './artifact-initializer';
 import type { ActivationReport } from './engines/activation-proof';
 import { generateActivationReport } from './engines/activation-proof';
+import type { VerificationSummary, ArtifactFingerprint } from './engines/verification-ledger';
+import {
+  computeFingerprint,
+  record,
+  generateVerificationSummary,
+  renderVerificationReport,
+} from './engines/verification-ledger';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -39,6 +46,10 @@ export interface AscensionArtifact<T extends Record<string, unknown> = Record<st
   readonly activation: InitializationResult;
   /** Activation proof (what primitives are active, what rules are registered) */
   readonly proof: ActivationReport;
+  /** Phase 6: Artifact fingerprint for identity verification */
+  readonly fingerprint: ArtifactFingerprint;
+  /** Phase 6: Verification summary — what was attached, executed, blocked, and why */
+  readonly verification: VerificationSummary;
   /** Pipeline execution metadata */
   readonly pipeline: PipelineTrace;
 }
@@ -181,7 +192,20 @@ export function ascend<T extends Record<string, unknown>>(
   }));
   const buildMs = Math.round(performance.now() - buildStart);
 
-  // ── Phase C: Activate runtime ──────────────────────────────
+  // ── Phase C: Fingerprint (Phase 6) ─────────────────────────
+  const fingerprint = computeFingerprint(
+    manifest as unknown as Record<string, unknown>,
+    attachmentEntries as unknown as Record<string, unknown>[],
+  );
+
+  record('artifact_bound', 'SYSTEM', 'ascension', 'Artifact manifest and attachments bound', {
+    name: manifest.name,
+    cjpi,
+    attachmentCount: attachmentEntries.length,
+    primitivesUsed: scan.policyResult.primitivesUsed,
+  });
+
+  // ── Phase D: Activate runtime ──────────────────────────────
   const activateStart = performance.now();
   const { wrapped, result: activation } = initializeArtifact(
     moduleExports,
@@ -190,10 +214,26 @@ export function ascend<T extends Record<string, unknown>>(
   );
   const activateMs = Math.round(performance.now() - activateStart);
 
-  // ── Phase D: Generate proof ────────────────────────────────
+  // Record activation events into verification ledger
+  const activationSeq = record('function_wrapped', 'SYSTEM', 'ascension',
+    `${activation.wrappedCount} functions wrapped across ${activation.primitivesUsed} primitives`, {
+    wrappedCount: activation.wrappedCount,
+    skippedCount: activation.skippedCount,
+  });
+
+  // ── Phase E: Generate proof ────────────────────────────────
   const proofStart = performance.now();
   const proof = generateActivationReport();
   const proofMs = Math.round(performance.now() - proofStart);
+
+  record('proof_generated', 'SYSTEM', 'ascension',
+    `Activation proof: ${proof.activatedCount} activated, ${proof.boundCount} bound, ${proof.unresolvedCount} unresolved`, {
+    dropInSuccess: proof.dropInSuccess,
+    totalPrimitives: proof.totalPrimitives,
+  }, { causedBy: activationSeq });
+
+  // ── Phase F: Verification summary ──────────────────────────
+  const verification = generateVerificationSummary();
 
   const totalMs = Math.round(performance.now() - pipelineStart);
 
@@ -203,6 +243,11 @@ export function ascend<T extends Record<string, unknown>>(
     proof.totalPrimitives > 0;
 
   if (!integrityOk) {
+    record('integrity_check', 'SYSTEM', 'verification',
+      'Low activation integrity — potential scan/runtime mismatch', {
+      wrappedCount: activation.wrappedCount,
+      boundariesDetected: scan.meta.boundariesDetected,
+    });
     console.warn('CMPSBL: Low activation integrity — potential scan/runtime mismatch');
   }
 
@@ -213,6 +258,8 @@ export function ascend<T extends Record<string, unknown>>(
     scan,
     activation,
     proof,
+    fingerprint,
+    verification,
     pipeline: {
       totalMs,
       phases: { scanMs, buildMs, activateMs, proofMs },
@@ -236,15 +283,13 @@ export interface SerializedArtifact {
   readonly __MANA_ATTACHMENTS__: readonly PolicyAttachmentEntry[];
   readonly __MANA_BEHAVIOR_REPORT__: string;
   readonly __MANA_PROOF__: ActivationReport;
+  readonly __MANA_FINGERPRINT__: ArtifactFingerprint;
+  readonly __MANA_VERIFICATION__: VerificationSummary;
   readonly __MANA_PIPELINE_TRACE__: PipelineTrace;
 }
 
 /**
  * Serialize an Ascension artifact for embedding in export ZIPs.
- *
- * The serialized payload can be injected into `globalThis` at load time,
- * enabling `initializeArtifact()` to auto-detect and activate without
- * any manual configuration.
  */
 export function serializeArtifact(artifact: AscensionArtifact): SerializedArtifact {
   return {
@@ -252,6 +297,8 @@ export function serializeArtifact(artifact: AscensionArtifact): SerializedArtifa
     __MANA_ATTACHMENTS__: artifact.attachments,
     __MANA_BEHAVIOR_REPORT__: artifact.scan.behaviorReportText,
     __MANA_PROOF__: artifact.proof,
+    __MANA_FINGERPRINT__: artifact.fingerprint,
+    __MANA_VERIFICATION__: artifact.verification,
     __MANA_PIPELINE_TRACE__: artifact.pipeline,
   };
 }
@@ -275,11 +322,12 @@ export function generateBootstrap(artifact: AscensionArtifact): string {
  * Render a human-readable pipeline summary.
  */
 export function renderPipelineSummary(artifact: AscensionArtifact): string {
-  const { pipeline: p, manifest: m } = artifact;
+  const { pipeline: p, manifest: m, verification: v, fingerprint: fp } = artifact;
   return [
     `═══ CMPSBL® Ascension Loop — ${m.name} v${m.version} ═══`,
     '',
     `Tier: ${m.tier} | CJPI: ${m.cjpi} | Primitives: ${m.modules.join(', ')}`,
+    `Fingerprint: ${fp.composite}`,
     '',
     `Pipeline: ${p.totalMs}ms total`,
     `  Scan:     ${p.phases.scanMs}ms → ${p.findingsGenerated} findings`,
@@ -288,6 +336,10 @@ export function renderPipelineSummary(artifact: AscensionArtifact): string {
     `  Proof:    ${p.phases.proofMs}ms`,
     '',
     `Behaviors: ${p.enforcingBehaviors} enforcing, ${p.observingBehaviors} observing`,
+    '',
+    `── Verification ──`,
+    `  Events: ${v.totalEvents} | Enforcements: ${v.enforcements} | Anomalies: ${v.anomalies}`,
+    `  Causal depth: ${v.causalChainDepth} | Integrity checks: ${v.integrityChecks}`,
     '',
     artifact.scan.behaviorReportText,
   ].join('\n');

@@ -860,3 +860,33 @@ export type {
   PipelineTrace,
   SerializedArtifact,
 } from './ascension-loop';
+
+// ═══════════════════════════════════════════════════════════════
+// §14 — Phase 6: Verification & Proof Layer
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  computeFingerprint,
+  getActiveFingerprint,
+  record as recordVerificationEvent,
+  queryByKind,
+  queryByPrimitive,
+  queryByFunction,
+  getCausalChain,
+  getEnforcements,
+  getRecentEntries,
+  getLedgerSnapshot,
+  getLedgerSize,
+  generateVerificationSummary,
+  verifyIntegrity,
+  renderVerificationReport,
+  resetVerificationLedger,
+} from './engines/verification-ledger';
+
+export type {
+  VerificationEventKind,
+  VerificationEntry,
+  ArtifactFingerprint,
+  VerificationQueryResult,
+  VerificationSummary,
+} from './engines/verification-ledger';
