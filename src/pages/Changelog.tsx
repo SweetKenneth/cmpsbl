@@ -1409,6 +1409,59 @@ const stratumMindgames: Specimen[] = [
 
 const stratumConvergence: Specimen[] = [
   {
+    id: "CONV-004",
+    fossilized: "2026-04-12",
+    origin: "distribution",
+    stimulus: "Gaming and Education substrates were cataloged but not yet operational — the ecosystem needed density to validate the vertical model at scale",
+    adaptations: [
+      "CMPSBL GAMING™ activated with 16 domain-specific primitives covering real-time state management, anti-cheat governance, and player data sovereignty",
+      "CMPSBL EDU™ activated with 16 domain-specific primitives covering learning path optimization, research integrity, and data ethics",
+      "Both substrates seeded with GENESIS Engine foundations — 200+ domain discoveries and 144 tiered Crown Jewels per vertical",
+      "Vertical Portal updated to reflect all 12 active substrates plus ULTIMATE — zero Coming Soon entries remain",
+    ],
+    phenotype: [
+      "The substrate ecosystem now spans 12 active industry verticals — every planned sector is live",
+      "Gaming and Education join the vertical selection pool for Studio, Creator, and Architect subscribers",
+      "Full ecosystem density achieved — the vertical model is validated across every target domain",
+    ],
+    affectedNodes: ["GENESIS Engine", "SYSTEM Organ"],
+  },
+  {
+    id: "CONV-003",
+    fossilized: "2026-04-12",
+    origin: "cognition",
+    stimulus: "The Mana runtime loader existed as a concept but lacked a production-grade execution pipeline — the patented behavioral injection system needed to close the loop from Ascension scan to deployed runtime wrapper",
+    adaptations: [
+      "Mana loader.mjs implemented as a Node.js --loader hook intercepting ES module resolution at import boundaries",
+      "92 capability-specific wrappers mapped in the Mana engine with SHA-256 integrity proofs per injection site",
+      "Manifest-consumer bridge converts Ascension scan outputs into deployable mana.config.json configurations",
+      "Ascension ZIP builder now exports mana.config.json, attachment plans, and deployment summaries — closing the scan-to-deploy loop",
+      "Findings bridge integrates 50+ signal patterns across 37 primitive families for 11 languages",
+    ],
+    phenotype: [
+      "The patented Mana runtime is fully operational — behavioral injection at module boundaries without source modification",
+      "Ascension scans now produce deployment-ready Mana configurations — zero manual translation required",
+      "The scan → diagnose → export → deploy pipeline is a closed loop for the first time",
+    ],
+    affectedNodes: ["MANA Engine", "ARCHITECT Engine", "CORE Organ", "DEFENSE Layer"],
+  },
+  {
+    id: "CONV-002",
+    fossilized: "2026-04-12",
+    origin: "architecture",
+    stimulus: "Plans page and trial flow needed conversion polish — social proof was absent, urgency cues were muted, and the value proposition lacked immediate clarity at the decision point",
+    adaptations: [
+      "Trial banner enhanced with tier-specific value previews and countdown urgency indicators",
+      "Plans page FAQ expanded to address Gaming, Education, and Mana-related questions",
+      "SEO metadata updated across sitemap, llms.txt, and route registry for all newly activated substrates",
+    ],
+    phenotype: [
+      "The conversion surface communicates urgency and value simultaneously — trials feel time-boxed, not open-ended",
+      "Every new vertical and capability is indexed for search engines within the same release cycle",
+    ],
+    affectedNodes: ["SYSTEM Organ"],
+  },
+  {
     id: "CONV-001",
     fossilized: "2026-04-05",
     origin: "architecture",

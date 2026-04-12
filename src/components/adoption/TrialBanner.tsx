@@ -63,7 +63,7 @@ export function TrialBanner() {
           <div>
             <p className="text-sm font-bold text-foreground">Try any paid tier free for 7 days</p>
             <p className="text-xs text-muted-foreground">
-              Full access to substrates, memory, and radio. No credit card required.
+              Full access to all 12 industry substrates, memory, and radio. No credit card required.
             </p>
           </div>
         </div>
