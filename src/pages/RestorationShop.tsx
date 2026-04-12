@@ -61,6 +61,16 @@ function wrapDocHtml(title: string, bodyContent: string): string {
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
 type ProcessingPrimitive = { name: string; status: 'pending' | 'active' | 'done' };
 
+/** Trigger subtle haptic feedback for key interactions */
+function haptic(pattern: 'light' | 'medium' | 'success' = 'light') {
+  try {
+    if ('vibrate' in navigator) {
+      const patterns = { light: [8], medium: [15], success: [10, 30, 10] };
+      navigator.vibrate(patterns[pattern]);
+    }
+  } catch { /* non-critical */ }
+}
+
 const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
   { key: 'upload', label: 'Upload', icon: Upload },
   { key: 'diagnostic', label: 'Diagnostic', icon: Search },

@@ -166,6 +166,123 @@
   animation: ascensionScaleIn 0.8s ease-out 0.5s both;
 }
 
+/* ── Ascension CJPI Score Reveal ─────────────────────────────────────── */
+@keyframes cjpiCountUp {
+  0% { opacity: 0; transform: scale(0.5) translateY(20px); filter: blur(8px); }
+  60% { opacity: 1; transform: scale(1.08) translateY(-4px); filter: blur(0); }
+  80% { transform: scale(0.97) translateY(1px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+.cjpi-score-reveal {
+  animation: cjpiCountUp 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+@keyframes cjpiTierBadge {
+  0% { opacity: 0; transform: scale(0.7); }
+  70% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.cjpi-tier-reveal {
+  animation: cjpiTierBadge 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+}
+
+@keyframes cjpiGlowPulse {
+  0%, 100% { box-shadow: 0 0 30px hsl(var(--primary) / 0.1), 0 0 60px hsl(var(--primary) / 0.05); }
+  50% { box-shadow: 0 0 50px hsl(var(--primary) / 0.2), 0 0 100px hsl(var(--primary) / 0.1); }
+}
+
+.cjpi-glow-pulse {
+  animation: cjpiGlowPulse 3s ease-in-out infinite;
+}
+
+/* ── Ascension Phase Card Entrance ───────────────────────────────────── */
+@keyframes phaseCardEnter {
+  0% { opacity: 0; transform: translateY(16px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.phase-card-enter {
+  animation: phaseCardEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Primitive Activation Sequence ───────────────────────────────────── */
+@keyframes primitiveActivate {
+  0% { opacity: 0.3; transform: translateX(-8px); }
+  50% { opacity: 1; transform: translateX(2px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.primitive-activate {
+  animation: primitiveActivate 0.35s ease-out both;
+}
+
+@keyframes primitiveSeal {
+  0% { background-color: hsl(var(--primary) / 0.1); }
+  50% { background-color: hsl(142 76% 36% / 0.15); }
+  100% { background-color: transparent; }
+}
+
+.primitive-seal-flash {
+  animation: primitiveSeal 0.6s ease-out both;
+}
+
+/* ── Selection Pulse ─────────────────────────────────────────────────── */
+@keyframes selectionPulse {
+  0% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4); }
+  70% { box-shadow: 0 0 0 8px hsl(var(--primary) / 0); }
+  100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0); }
+}
+
+.selection-pulse {
+  animation: selectionPulse 0.4s ease-out;
+}
+
+/* ── Finding Card Entrance ───────────────────────────────────────────── */
+@keyframes findingSlideIn {
+  0% { opacity: 0; transform: translateX(-12px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Stepper Connector Fill ──────────────────────────────────────────── */
+@keyframes connectorFill {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* ── Upload Drop Zone Breathing ──────────────────────────────────────── */
+@keyframes dropZoneBreathe {
+  0%, 100% { border-color: hsl(var(--border) / 0.3); }
+  50% { border-color: hsl(var(--primary) / 0.25); }
+}
+
+.drop-zone-idle {
+  animation: dropZoneBreathe 4s ease-in-out infinite;
+}
+
+/* ── Stats Counter Pop ───────────────────────────────────────────────── */
+@keyframes statPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.stat-pop {
+  animation: statPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Export Success Celebration ───────────────────────────────────────── */
+@keyframes exportCelebrate {
+  0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+  60% { transform: scale(1.05) rotate(1deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.export-celebrate {
+  animation: exportCelebrate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
 /* ── Ascension Page Transitions (pure CSS, no framer-motion) ──────────── */
 
 /* Hero show/hide */
