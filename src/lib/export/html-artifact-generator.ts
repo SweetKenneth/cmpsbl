@@ -553,6 +553,56 @@ export interface HTMLArtifactsInput {
   languages?: string[];
 }
 
+export function generateMemorySetupHTML(name: string, slug: string): string {
+  const agentId = slug.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+  return htmlShell('Persistent Memory Setup', `Cross-session memory for ${esc(name)}`, `
+  <h2>Zero Setup Required</h2>
+  <p>Your export includes the <strong>CMPSBL® Persistent Memory Adapter</strong> — a tiered,
+  file-backed storage engine that gives every agent cross-session memory out of the box.</p>
+
+  <h3>Memory Tiers</h3>
+  <table>
+    <thead><tr><th>Tier</th><th>Age</th><th>Storage</th><th>Access Speed</th></tr></thead>
+    <tbody>
+      <tr><td><strong>HOT</strong></td><td>&lt; 24h</td><td>In-memory + disk</td><td>Instant</td></tr>
+      <tr><td><strong>WARM</strong></td><td>1–7 days</td><td>Disk only</td><td>Fast</td></tr>
+      <tr><td><strong>COLD</strong></td><td>7–90 days</td><td>Compressed (gzip)</td><td>Deep recall</td></tr>
+      <tr><td>Expired</td><td>&gt; 90 days</td><td>Auto-purged</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Quick Start</h3>
+  <pre>import { createPersistentStorage } from './_runtime/persistent-memory';
+import { init } from './_runtime/convex-core';
+
+const storage = createPersistentStorage({
+  agentId: '${esc(agentId)}',
+});
+
+const instance = init({ storage });
+// Your agent now remembers across sessions.</pre>
+
+  <h3>Configuration</h3>
+  <table>
+    <thead><tr><th>Environment Variable</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>CMPSBL_MEMORY_TTL_DAYS</code></td><td>90</td><td>Max memory retention in days</td></tr>
+      <tr><td><code>CMPSBL_MEMORY_SHARED</code></td><td>false</td><td>Share memory across all agents</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Memory Location</h3>
+  <pre>~/.cmpsbl/memory/${esc(agentId)}/</pre>
+  <p>Each tier has its own subdirectory: <code>hot/</code>, <code>warm/</code>, <code>cold/</code>.</p>
+
+  <h3>Shared Memory Mode</h3>
+  <pre>const storage = createPersistentStorage({
+  agentId: '${esc(agentId)}',
+  sharedMemory: true,
+});</pre>
+  `);
+}
+
 export function generateHTMLArtifacts(input: HTMLArtifactsInput): Record<string, string> {
   return {
     'ERROR-CODES.html': generateErrorCodesHTML(),
@@ -564,5 +614,6 @@ export function generateHTMLArtifacts(input: HTMLArtifactsInput): Record<string,
     'CHANGELOG.html': generateChangelogHTML(input.name, input.version || '1.0.0', input.kind, input.score, input.tier, input.languages),
     'DISCOVERY-CONTEXT.html': generateDiscoveryContextHTML(input.name, input.score, input.tier),
     'TIER-MIGRATION.html': generateTierMigrationHTML(),
+    'MEMORY-SETUP.html': generateMemorySetupHTML(input.name, input.slug),
   };
 }
