@@ -174,6 +174,7 @@ export default function RestorationShop() {
 
     entry.status = 'complete';
     setQueueEntry({ ...entry });
+    haptic('success');
     setPhase('debrief');
     setIsRestoring(false);
   }, [scanResult, isRestoring, code, fileName]);

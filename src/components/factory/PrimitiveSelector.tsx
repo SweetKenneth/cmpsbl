@@ -86,6 +86,8 @@ export function PrimitiveSelector({
   }, [general, searchQuery]);
 
   const toggle = useCallback((id: string) => {
+    // Haptic feedback on toggle
+    try { if ('vibrate' in navigator) navigator.vibrate([8]); } catch { /* non-critical */ }
     setSelected(prev => {
       const next = new Set(prev);
       if (next.has(id)) {
