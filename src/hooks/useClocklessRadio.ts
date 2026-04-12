@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type DJContent } from '@/lib/clockless-radio';
+import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type DJContent, speakDJContent, cancelTTS } from '@/lib/clockless-radio';
 import { useRadioTimer } from '@/hooks/useRadioTimer';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -92,7 +92,7 @@ export function useClocklessRadio() {
             return;
           }
           
-          // Standard DJ interjection
+          // Standard DJ interjection with TTS
           const djContent = djRef.current.onTrackChange();
           if (djContent && engineRef.current) {
             setTimeout(() => {
@@ -100,11 +100,23 @@ export function useClocklessRadio() {
               if (!engine) return;
               setRadioState(prev => ({ ...prev, djContent, isDJSpeaking: true }));
               engine.duckForDJ();
-              // Display text overlay for the content's duration, then unduck
+
+              // Speak the DJ content via Web Speech API
+              speakDJContent(djContent)
+                .catch(() => {}) // Graceful fallback — text still shows
+                .finally(() => {
+                  // Always unduck after speech ends (or after timeout as safety net)
+                  engine.unduckFromDJ();
+                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
+                });
+
+              // Safety timeout: if speech hangs, force unduck after content.duration + buffer
               setTimeout(() => {
-                engine.unduckFromDJ();
-                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-              }, djContent.duration);
+                if (engine) {
+                  engine.unduckFromDJ();
+                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
+                }
+              }, djContent.duration + 10000);
             }, 1500);
           }
         },
@@ -185,6 +197,7 @@ export function useClocklessRadio() {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
+    cancelTTS();
     engineRef.current?.stop();
   }, []);
 

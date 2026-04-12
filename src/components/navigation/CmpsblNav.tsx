@@ -159,7 +159,7 @@ export function CmpsblNav() {
                   <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Signal → Silicon</span>
                 </div>
               </Link>
-              <div className="border-l border-border/30 pl-2 ml-1">
+              <div className="border-l border-border/30 pl-2 ml-1 hidden sm:block">
                 <AmbientMusicPlayer />
               </div>
             </div>
@@ -382,6 +382,11 @@ export function CmpsblNav() {
                   </motion.div>
                 ))}
               </div>
+
+              {/* Mobile Radio Player — centered */}
+              <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.35 }} className="py-4 flex justify-center">
+                <AmbientMusicPlayer />
+              </motion.div>
 
               {/* Mobile Auth */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="pt-6 border-t border-border">
