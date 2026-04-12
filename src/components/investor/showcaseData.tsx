@@ -1,7 +1,7 @@
 /**
  * Shared demo data for Investor Showcase layouts
  */
-import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity, BookOpen } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity, BookOpen, Globe, Store } from "lucide-react";
 
 export interface DemoCardData {
   title: string;
@@ -20,7 +20,7 @@ export const TIER_1_DEMOS: DemoCardData[] = [
     subtitle: "Autonomous Discovery",
     icon: <Brain className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
-    what: "The system observes its own behavior and discovers new software pipelines autonomously.",
+    what: "The system observes its own behavior and discovers new software pipelines autonomously — 8-hour cycles, no human trigger.",
     why: "No other system discovers its own capabilities. This is self-improving infrastructure.",
     value: "Every discovery is a potential product. The system generates its own IP.",
   },
@@ -29,7 +29,7 @@ export const TIER_1_DEMOS: DemoCardData[] = [
     subtitle: "Self-Improving Code",
     icon: <Zap className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
-    what: "System scans its codebase, AI generates real patches, validates, scores, approve/reject.",
+    what: "System scans its codebase, AI generates real patches, validates, scores, approve/reject — 34 proposals processed to date.",
     why: "Software that fixes and improves itself. The core promise.",
     value: "Reduces engineering costs, eliminates tech debt, scales without hiring.",
   },
@@ -59,8 +59,8 @@ export const TIER_2_DEMOS: DemoCardData[] = [
     subtitle: "Background Learning",
     icon: <Eye className="w-4 h-4 text-primary" />,
     tier: 2, status: "live",
-    what: "The system consolidates learning during idle time — dream cycles, memory synthesis.",
-    why: "Autonomous background improvement. No other system does this.",
+    what: "The system consolidates learning during idle time — dream cycles, memory synthesis. No AI inside — pure algorithmic.",
+    why: "Autonomous background improvement. No other system does this. Patentable.",
     value: "Compound intelligence — the system gets smarter every day without intervention.",
   },
   {
@@ -68,7 +68,7 @@ export const TIER_2_DEMOS: DemoCardData[] = [
     subtitle: "Enterprise Security",
     icon: <Shield className="w-4 h-4 text-primary" />,
     tier: 2, status: "live",
-    what: "Live threat score calculation. O(1) Trie-based evaluation, anomaly detection.",
+    what: "6-layer Cognitive Security Matrix. O(1) Trie-based evaluation. 2,976+ events processed live.",
     why: "Enterprise-grade security baked into the substrate, not bolted on.",
     value: "Security is the #1 enterprise concern. Prerequisite for adoption.",
   },
@@ -77,7 +77,7 @@ export const TIER_2_DEMOS: DemoCardData[] = [
     subtitle: "Governance Rails",
     icon: <Activity className="w-4 h-4 text-primary" />,
     tier: 2, status: "live",
-    what: "7-gate promotion pipeline. Real pass/fail history.",
+    what: "7-gate promotion pipeline. Real pass/fail history. Constitutional AI governance.",
     why: "AI mutations can't bypass governance. Safety rails are structural.",
     value: "Regulatory compliance, auditability, risk mitigation.",
   },
