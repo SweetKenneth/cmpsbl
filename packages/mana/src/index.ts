@@ -622,7 +622,8 @@ function wrapBlockComment(d: SignalData, style: 'c' | 'hash' | 'dash' | 'doc'): 
 }
 
 function emitTypeScript(d: SignalData): string {
-  return `/**\n * ${HEADER.split('\n').join('\n * ')}\n */\n
+  return `${wrapBlockComment(d, 'c')}
+
 export const MANA_SIGNAL = {
   active: true,
   project: ${JSON.stringify(d.project)},
@@ -643,7 +644,8 @@ export type ManaGroups = typeof MANA_SIGNAL.groups;
 }
 
 function emitJavaScript(d: SignalData): string {
-  return `/**\n * ${HEADER.split('\n').join('\n * ')}\n */\n
+  return `${wrapBlockComment(d, 'c')}
+
 export const MANA_SIGNAL = Object.freeze({
   active: true,
   project: ${JSON.stringify(d.project)},
@@ -663,7 +665,7 @@ export const MANA_SIGNAL = Object.freeze({
 function emitPython(d: SignalData): string {
   const pyGroups = d.groups.map(g => `"${g}"`).join(', ');
   return `"""
-${HEADER}
+${brandedBlockComment(d)}
 """
 
 MANA_SIGNAL = {
@@ -684,7 +686,7 @@ MANA_SIGNAL = {
 
 function emitRust(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `//! ${HEADER.split('\n').join('\n//! ')}
+  return `${wrapBlockComment(d, 'doc')}
 
 pub struct ManaSignal {
     pub active: bool,
@@ -718,7 +720,7 @@ pub const MANA_SIGNAL: ManaSignal = ManaSignal {
 
 function emitGo(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `// ${HEADER.split('\n').join('\n// ')}
+  return `${wrapBlockComment(d, 'c')}
 
 package mana
 
@@ -753,7 +755,7 @@ var ManaSignal = struct {
 
 function emitRuby(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `# ${HEADER.split('\n').join('\n# ')}
+  return `${wrapBlockComment(d, 'hash')}
 
 module Mana
   SIGNAL = {
@@ -776,9 +778,7 @@ end
 function emitPHP(d: SignalData): string {
   const groups = d.groups.map(g => `'${g}'`).join(', ');
   return `<?php
-/**
- * ${HEADER.split('\n').join('\n * ')}
- */
+${wrapBlockComment(d, 'c')}
 
 return [
     'active' => true,
@@ -798,9 +798,7 @@ return [
 
 function emitJava(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `/**
- * ${HEADER.split('\n').join('\n * ')}
- */
+  return `${wrapBlockComment(d, 'c')}
 package mana;
 
 import java.util.List;
@@ -825,7 +823,7 @@ public final class ManaSignal {
 
 function emitCSharp(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `// ${HEADER.split('\n').join('\n// ')}
+  return `${wrapBlockComment(d, 'c')}
 
 namespace Mana;
 
@@ -848,7 +846,7 @@ public static class ManaSignal
 
 function emitSwift(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `// ${HEADER.split('\n').join('\n// ')}
+  return `${wrapBlockComment(d, 'c')}
 
 struct ManaSignal {
     static let active = true
@@ -868,7 +866,7 @@ struct ManaSignal {
 
 function emitDart(d: SignalData): string {
   const groups = d.groups.map(g => `'${g}'`).join(', ');
-  return `// ${HEADER.split('\n').join('\n// ')}
+  return `${wrapBlockComment(d, 'c')}
 
 class ManaSignal {
   static const active = true;
@@ -888,7 +886,7 @@ class ManaSignal {
 
 function emitElixir(d: SignalData): string {
   const groups = d.groups.map(g => `"${g}"`).join(', ');
-  return `# ${HEADER.split('\n').join('\n# ')}
+  return `${wrapBlockComment(d, 'hash')}
 
 defmodule Mana.Signal do
   @signal %{
