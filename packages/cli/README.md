@@ -15,8 +15,7 @@ npm install -g @cmpsbl/cli
 ## Dependency Tier
 
 ```
-Tier 1 (install first)          Tier 2 (install after Tier 1)
-└── @cmpsbl/runtime      ──→    @cmpsbl/cli  ← YOU ARE HERE
+@cmpsbl/runtime is bundled inside @cmpsbl/cli — no separate install.
 ```
 
 ## Quick Start
