@@ -36,6 +36,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 19 | [Backup & Disaster Recovery](19-backup-disaster-recovery.md) | Complete 3-layer backup architecture, restore kit, DR procedures |
 | 20 | [Capability Lifecycle E2E — Internal](20-capability-lifecycle-e2e-internal.md) | Governor reference: complete lifecycle system, all modules, data flows, security properties |
 | 21 | [Capability Lifecycle E2E — Developer](21-capability-lifecycle-e2e-developer.md) | Shareable developer reference: 5-state model, integration workflow, verification guide |
+| 22 | [Mana + Lex E2E Architecture](22-mana-lex-e2e-architecture.md) | Governor reference: complete Mana/Lex execution model, wrapper composition, proof system, invariants |
 
 ---
 
