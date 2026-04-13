@@ -366,12 +366,15 @@ export function createSession(sessionId?: string): ManaSession {
           continue;
         }
 
-        originals.set(cap.functionName, originalFn);
+        if (!originals.has(cap.functionName)) {
+          originals.set(cap.functionName, originalFn);
+        }
 
         const point: AttachmentPoint = {
           functionName: cap.functionName,
           capability: cap.capability,
           phase: CAPABILITY_PHASE[cap.capability] ?? 3,
+          position: position++,
           active: true,
           invocations: 0,
           blocked: 0,

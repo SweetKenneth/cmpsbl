@@ -21,8 +21,9 @@ import type {
   ManaTelemetryEvent,
   LexEvalContext,
   AnyFn,
+  CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, WrapperPhase } from './types';
+import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, WrapperPhase } from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
@@ -59,9 +60,22 @@ const originals: Map<string, AnyFn> = new Map();
 let traceLog: string[] = [];
 let traceEnabled = false;
 
+/** Last generated proof — integrated into manifest */
+let lastProof: ManaProof | null = null;
+
 // ═══════════════════════════════════════════════════════════════
-// Promise-Aware Wrapper Helper
+// Primitives — Type-Safe Helpers
 // ═══════════════════════════════════════════════════════════════
+
+/** Type-narrowing promise check — replaces all manual .then typeof checks */
+function isThenable(val: unknown): val is Promise<unknown> {
+  return val != null && typeof val === 'object' && typeof (val as Promise<unknown>).then === 'function';
+}
+
+/** Backoff delay for retry logic */
+function delay(ms: number): Promise<void> {
+  return new Promise(r => setTimeout(r, ms));
+}
 
 /**
  * Normalize sync/async execution for wrappers.
@@ -73,14 +87,58 @@ function withAsyncSafety(
   onSync: (value: unknown) => void,
   onError: (err: unknown) => void,
 ): unknown {
-  if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
-    return (result as Promise<unknown>).then(
+  if (isThenable(result)) {
+    return result.then(
       (resolved) => { onSync(resolved); return resolved; },
       (err) => { onError(err); throw err; },
     );
   }
   onSync(result);
   return result;
+}
+
+/**
+ * Deterministic secondary sort for capabilities.
+ * Primary: phase (ascending). Secondary: capability name (alphabetical).
+ * Guarantees equivalent manifests always produce identical execution order.
+ */
+function byPhaseThenName(
+  a: { capability: ManaCapability },
+  b: { capability: ManaCapability },
+): number {
+  const phaseA = CAPABILITY_PHASE[a.capability] ?? 3;
+  const phaseB = CAPABILITY_PHASE[b.capability] ?? 3;
+  if (phaseA !== phaseB) return phaseA - phaseB;
+  return a.capability.localeCompare(b.capability);
+}
+
+/** Look up the contract for a capability */
+function getContract(capability: ManaCapability): CapabilityContract | undefined {
+  return CAPABILITY_CONTRACTS.find(c => c.capability === capability);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Assertions — Structural Integrity Checks
+// ═══════════════════════════════════════════════════════════════
+
+/** Verify every capability in CAPABILITY_PHASE has a corresponding contract */
+function assertAllContractsExist(): void {
+  const mapped = new Set(CAPABILITY_CONTRACTS.map(c => c.capability));
+  const allCaps = Object.keys(CAPABILITY_PHASE) as ManaCapability[];
+  for (const cap of allCaps) {
+    if (!mapped.has(cap)) {
+      throw new Error(`[MANA] Missing contract for capability: ${cap}`);
+    }
+  }
+}
+
+/** Verify CAPABILITY_PHASE covers all capabilities from contracts */
+function assertAllPhasesMapped(): void {
+  for (const contract of CAPABILITY_CONTRACTS) {
+    if (!(contract.capability in CAPABILITY_PHASE)) {
+      throw new Error(`[MANA] Missing phase mapping: ${contract.capability}`);
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -105,7 +163,7 @@ function generateFingerprintId(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Telemetry
+// Telemetry — Expanded with phase, position, and rule context
 // ═══════════════════════════════════════════════════════════════
 
 function emitTelemetry(
@@ -117,13 +175,21 @@ function emitTelemetry(
 ): void {
   if (!config.telemetry) return;
 
+  // Enrich metadata with structural context from the attachment point
+  const point = attachmentPoints.get(`${functionName}:${capability}`);
+  const enriched: Record<string, unknown> = {
+    ...metadata,
+    phase: point?.phase ?? CAPABILITY_PHASE[capability],
+    position: point?.position ?? -1,
+  };
+
   telemetry.push({
     timestamp: Date.now(),
     capability,
     functionName,
     action,
     evalContext,
-    metadata,
+    metadata: enriched,
   });
 
   if (telemetry.length > config.maxTelemetryEvents) {
@@ -132,7 +198,7 @@ function emitTelemetry(
 
   // Trace mode — human-readable debug output
   if (traceEnabled) {
-    traceLog.push(`[${new Date().toISOString()}] ${action.toUpperCase()} ${capability}::${functionName}${evalContext ? ` (${evalContext})` : ''}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`);
+    traceLog.push(`[${new Date().toISOString()}] ${action.toUpperCase()} ${capability}::${functionName}${evalContext ? ` (${evalContext})` : ''} phase=${enriched.phase} pos=${enriched.position}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`);
   }
 }
 
@@ -149,15 +215,15 @@ function wrapWithDefenseGate(
     point.invocations++;
     emitTelemetry('defense_gate', functionName, 'invoked', { args: args.length });
 
-    const { verdict } = evaluate('defense_gate', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('defense_gate', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry('defense_gate', functionName, 'blocked');
+      emitTelemetry('defense_gate', functionName, 'blocked', { ruleId: rule?.id });
       throw new Error(`[MANA/DEFENSE] Lex denied invocation of ${functionName}`);
     }
     if (verdict === 'observe') {
       point.observed++;
-      emitTelemetry('defense_gate', functionName, 'observed', { note: 'Lex observing — execution allowed' });
+      emitTelemetry('defense_gate', functionName, 'observed', { note: 'Lex observing — execution allowed', ruleId: rule?.id });
     }
 
     return originalFn.apply(this, args);
@@ -174,39 +240,24 @@ function wrapWithBeaconTelemetry(
     const start = performance.now();
     const result = originalFn.apply(this, args);
 
-    // Handle async returns — measure duration after resolution
-    if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
-      return (result as Promise<unknown>).then(
-        (resolved) => {
-          const duration = performance.now() - start;
-          emitTelemetry('beacon_telemetry', functionName, 'observed', {
-            durationMs: Math.round(duration * 100) / 100,
-            argCount: args.length,
-            returnType: 'promise',
-            async: true,
-          });
-          return resolved;
-        },
-        (err) => {
-          const duration = performance.now() - start;
-          emitTelemetry('beacon_telemetry', functionName, 'observed', {
-            durationMs: Math.round(duration * 100) / 100,
-            error: true,
-            async: true,
-          });
-          throw err;
-        }
-      );
-    }
-
-    const duration = performance.now() - start;
-    emitTelemetry('beacon_telemetry', functionName, 'observed', {
-      durationMs: Math.round(duration * 100) / 100,
-      argCount: args.length,
-      returnType: typeof result,
-    });
-
-    return result;
+    return withAsyncSafety(
+      result,
+      () => {
+        const duration = performance.now() - start;
+        emitTelemetry('beacon_telemetry', functionName, 'observed', {
+          durationMs: Math.round(duration * 100) / 100,
+          argCount: args.length,
+          returnType: isThenable(result) ? 'promise' : typeof result,
+        });
+      },
+      () => {
+        const duration = performance.now() - start;
+        emitTelemetry('beacon_telemetry', functionName, 'observed', {
+          durationMs: Math.round(duration * 100) / 100,
+          error: true,
+        });
+      },
+    );
   };
 }
 
@@ -218,16 +269,16 @@ function wrapWithGovernanceHook(
   return function manaGovernance(this: unknown, ...args: unknown[]) {
     point.invocations++;
 
-    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('governance_hook', functionName, config.lexMode);
 
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry('governance_hook', functionName, 'blocked', { verdict });
+      emitTelemetry('governance_hook', functionName, 'blocked', { verdict, ruleId: rule?.id });
       return undefined;
     }
     if (verdict === 'observe') {
       point.observed++;
-      emitTelemetry('governance_hook', functionName, 'observed', { note: 'Governance observation — mutation logged' });
+      emitTelemetry('governance_hook', functionName, 'observed', { note: 'Governance observation — mutation logged', ruleId: rule?.id });
     } else {
       emitTelemetry('governance_hook', functionName, 'invoked', { verdict });
     }
@@ -245,18 +296,18 @@ function wrapWithShadowRule(
     point.invocations++;
     emitTelemetry('shadow_rule', functionName, 'invoked');
 
-    const { verdict } = evaluate('shadow_rule', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('shadow_rule', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
       const message = typeof point.rulePayload === 'string'
         ? point.rulePayload
         : `[MANA] Simon says no — ${functionName} is governed.`;
-      emitTelemetry('shadow_rule', functionName, 'blocked', { message });
+      emitTelemetry('shadow_rule', functionName, 'blocked', { message, ruleId: rule?.id });
       return message;
     }
     if (verdict === 'observe') {
       point.observed++;
-      emitTelemetry('shadow_rule', functionName, 'observed', { note: 'Shadow rule observing — passthrough with logging' });
+      emitTelemetry('shadow_rule', functionName, 'observed', { note: 'Shadow rule observing — passthrough with logging', ruleId: rule?.id });
     }
 
     return originalFn.apply(this, args);
@@ -307,9 +358,8 @@ function wrapWithCircuitBreaker(
     try {
       const result = originalFn.apply(this, args);
 
-      // Handle async — track rejections as failures
-      if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
-        return (result as Promise<unknown>).then(
+      if (isThenable(result)) {
+        return result.then(
           (resolved) => {
             failures = 0;
             emitTelemetry('circuit_breaker', functionName, 'invoked', { async: true });
@@ -343,7 +393,7 @@ function wrapWithCircuitBreaker(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Expanded Wrapper Factories — 25 new granular behaviors
+// Expanded Wrapper Factories — 25 granular behaviors
 // ═══════════════════════════════════════════════════════════════
 
 function wrapWithInputSanitizer(
@@ -351,7 +401,6 @@ function wrapWithInputSanitizer(
 ): Function {
   return function manaInputSanitizer(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    // Sanitize string arguments — strip dangerous patterns
     const sanitized = args.map(a => {
       if (typeof a === 'string') {
         const clean = a.replace(/<script[^>]*>.*?<\/script>/gi, '')
@@ -478,8 +527,10 @@ function wrapWithLatencyProfiler(
     point.invocations++;
     const start = performance.now();
     const result = originalFn.apply(this, args);
-    if (result && typeof (result as Promise<unknown>).then === 'function') {
-      return (result as Promise<unknown>).then(resolved => {
+
+    return withAsyncSafety(
+      result,
+      () => {
         const d = performance.now() - start;
         durations.push(d);
         if (durations.length > 1000) durations.shift();
@@ -491,14 +542,12 @@ function wrapWithLatencyProfiler(
           p99: sorted[Math.floor(sorted.length * 0.99)],
           samples: sorted.length,
         });
-        return resolved;
-      });
-    }
-    const d = performance.now() - start;
-    durations.push(d);
-    if (durations.length > 1000) durations.shift();
-    emitTelemetry('latency_profiler', functionName, 'observed', { durationMs: Math.round(d * 100) / 100 });
-    return result;
+      },
+      () => {
+        const d = performance.now() - start;
+        emitTelemetry('latency_profiler', functionName, 'observed', { durationMs: Math.round(d * 100) / 100, error: true });
+      },
+    );
   };
 }
 
@@ -511,8 +560,8 @@ function wrapWithErrorTracker(
     point.invocations++;
     try {
       const result = originalFn.apply(this, args);
-      if (result && typeof (result as Promise<unknown>).then === 'function') {
-        return (result as Promise<unknown>).catch((err: Error) => {
+      if (isThenable(result)) {
+        return result.catch((err: Error) => {
           totalErrors++;
           const t = err?.constructor?.name ?? 'Unknown';
           errorTypes.set(t, (errorTypes.get(t) ?? 0) + 1);
@@ -570,13 +619,12 @@ function wrapWithMutationGuard(
 ): Function {
   return function manaMutationGuard(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('governance_hook', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry('mutation_guard', functionName, 'blocked', { reason: 'unauthorized_mutation' });
+      emitTelemetry('mutation_guard', functionName, 'blocked', { reason: 'unauthorized_mutation', ruleId: rule?.id });
       throw new Error(`[MANA/MUTATION] Unauthorized state mutation in ${functionName}`);
     }
-    // Freeze object args to detect mutation attempts
     const frozenArgs = args.map(a =>
       typeof a === 'object' && a !== null ? Object.freeze({ ...a as Record<string, unknown> }) : a
     );
@@ -590,10 +638,10 @@ function wrapWithPolicyEnforcer(
 ): Function {
   return function manaPolicyEnforcer(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('governance_hook', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry('policy_enforcer', functionName, 'blocked', { verdict });
+      emitTelemetry('policy_enforcer', functionName, 'blocked', { verdict, ruleId: rule?.id });
       return undefined;
     }
     point.observed++;
@@ -607,10 +655,10 @@ function wrapWithConsentGate(
 ): Function {
   return function manaConsentGate(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    const { verdict } = evaluate('governance_hook', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('governance_hook', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry('consent_gate', functionName, 'blocked', { reason: 'consent_not_granted' });
+      emitTelemetry('consent_gate', functionName, 'blocked', { reason: 'consent_not_granted', ruleId: rule?.id });
       return undefined;
     }
     emitTelemetry('consent_gate', functionName, 'invoked', { consentGranted: true });
@@ -638,10 +686,10 @@ function wrapWithAccessController(
 ): Function {
   return function manaAccessController(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    const { verdict } = evaluate('shadow_rule', functionName, config.lexMode);
+    const { verdict, rule } = evaluate('shadow_rule', functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry('access_controller', functionName, 'blocked', { reason: 'access_denied' });
+      emitTelemetry('access_controller', functionName, 'blocked', { reason: 'access_denied', ruleId: rule?.id });
       throw new Error(`[MANA/ACCESS] ${functionName} — access denied by Lex`);
     }
     emitTelemetry('access_controller', functionName, 'invoked');
@@ -659,10 +707,10 @@ function wrapWithRetryHandler(
     const attemptSync = (attempt: number): unknown => {
       try {
         const result = originalFn.apply(this, args);
-        // Handle async — retry on rejection too
-        if (result && typeof (result as Promise<unknown>).then === 'function') {
-          return (result as Promise<unknown>).catch((err: unknown) => {
+        if (isThenable(result)) {
+          return result.catch(async (err: unknown) => {
             if (attempt < MAX_RETRIES) {
+              await delay(10 * (attempt + 1));
               emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80), async: true });
               return attemptSync(attempt + 1);
             }
@@ -697,9 +745,9 @@ function wrapWithTimeoutGuard(
   return function manaTimeoutGuard(this: unknown, ...args: unknown[]) {
     point.invocations++;
     const result = originalFn.apply(this, args);
-    if (result && typeof (result as Promise<unknown>).then === 'function') {
+    if (isThenable(result)) {
       return Promise.race([
-        result as Promise<unknown>,
+        result,
         new Promise((_, reject) => setTimeout(() => {
           point.blocked++;
           emitTelemetry('timeout_guard', functionName, 'blocked', { timeoutMs: TIMEOUT_MS });
@@ -727,8 +775,8 @@ function wrapWithBulkheadIsolator(
     active++;
     try {
       const result = originalFn.apply(this, args);
-      if (result && typeof (result as Promise<unknown>).then === 'function') {
-        return (result as Promise<unknown>).finally(() => { active--; });
+      if (isThenable(result)) {
+        return result.finally(() => { active--; });
       }
       active--;
       return result;
@@ -746,11 +794,11 @@ function wrapWithFallbackProvider(
     point.invocations++;
     try {
       const result = originalFn.apply(this, args);
-      if (result && typeof (result as Promise<unknown>).then === 'function') {
-        return (result as Promise<unknown>).catch((err: Error) => {
+      if (isThenable(result)) {
+        return result.catch((err: Error) => {
           point.observed++;
           emitTelemetry('fallback_provider', functionName, 'observed', { fallbackReason: err?.message?.slice(0, 80) });
-          return undefined; // Graceful fallback
+          return undefined;
         });
       }
       return result;
@@ -795,16 +843,7 @@ function wrapWithStateSnapshot(
       });
     };
 
-    // Handle async — snapshot after resolution
-    if (result && typeof (result as Promise<unknown>).then === 'function') {
-      return (result as Promise<unknown>).then(
-        (resolved) => { emitSnapshot(); return resolved; },
-        (err) => { emitSnapshot(); throw err; },
-      );
-    }
-
-    emitSnapshot();
-    return result;
+    return withAsyncSafety(result, emitSnapshot, emitSnapshot);
   };
 }
 
@@ -829,7 +868,6 @@ function wrapWithOutputFilter(
   return function manaOutputFilter(this: unknown, ...args: unknown[]) {
     point.invocations++;
     const result = originalFn.apply(this, args);
-    // Filter sensitive patterns from string outputs
     if (typeof result === 'string') {
       const filtered = result.replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, '****-****-****-****');
       if (filtered !== result) {
@@ -894,16 +932,7 @@ function wrapWithAnomalyDetector(
       }
     };
 
-    // Handle async — measure duration after resolution
-    if (result && typeof (result as Promise<unknown>).then === 'function') {
-      return (result as Promise<unknown>).then(
-        (resolved) => { checkAnomaly(); return resolved; },
-        (err) => { checkAnomaly(); throw err; },
-      );
-    }
-
-    checkAnomaly();
-    return result;
+    return withAsyncSafety(result, checkAnomaly, checkAnomaly);
   };
 }
 
@@ -932,21 +961,16 @@ function wrapWithDriftMonitor(
     point.invocations++;
     const result = originalFn.apply(this, args);
 
-    // Handle async — check drift on resolved type, not 'object' (Promise)
-    if (result && typeof (result as Promise<unknown>).then === 'function') {
-      return (result as Promise<unknown>).then(
-        (resolved) => { checkDrift(typeof resolved); return resolved; },
-        (err) => { checkDrift('error'); throw err; },
-      );
-    }
-
-    checkDrift(typeof result);
-    return result;
+    return withAsyncSafety(
+      result,
+      (resolved) => { checkDrift(typeof resolved); },
+      () => { checkDrift('error'); },
+    );
   };
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Primitive-Family Wrapper Factories — 60 new deployable behaviors
+// Primitive-Family Wrapper Factories — 60 deployable behaviors
 // ═══════════════════════════════════════════════════════════════
 
 /** Generic observation wrapper — emits telemetry for any capability */
@@ -957,20 +981,22 @@ function wrapWithObservation(
     point.invocations++;
     const start = performance.now();
     const result = originalFn.apply(this, args);
-    if (result && typeof (result as Promise<unknown>).then === 'function') {
-      return (result as Promise<unknown>).then(resolved => {
+
+    return withAsyncSafety(
+      result,
+      () => {
         emitTelemetry(capName, functionName, 'observed', {
           durationMs: Math.round((performance.now() - start) * 100) / 100,
           argCount: args.length,
         });
-        return resolved;
-      });
-    }
-    emitTelemetry(capName, functionName, 'observed', {
-      durationMs: Math.round((performance.now() - start) * 100) / 100,
-      argCount: args.length,
-    });
-    return result;
+      },
+      () => {
+        emitTelemetry(capName, functionName, 'observed', {
+          durationMs: Math.round((performance.now() - start) * 100) / 100,
+          error: true,
+        });
+      },
+    );
   };
 }
 
@@ -980,15 +1006,15 @@ function wrapWithGate(
 ): Function {
   return function manaGate(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    const { verdict } = evaluate(lexKey, functionName, config.lexMode);
+    const { verdict, rule } = evaluate(lexKey, functionName, config.lexMode);
     if (verdict === 'deny') {
       point.blocked++;
-      emitTelemetry(capName, functionName, 'blocked', { reason: `${capName}_denied` });
+      emitTelemetry(capName, functionName, 'blocked', { reason: `${capName}_denied`, ruleId: rule?.id });
       throw new Error(`[MANA/${capName.toUpperCase()}] ${functionName} blocked by Lex`);
     }
     if (verdict === 'observe') {
       point.observed++;
-      emitTelemetry(capName, functionName, 'observed', { note: 'Lex observation mode' });
+      emitTelemetry(capName, functionName, 'observed', { note: 'Lex observation mode', ruleId: rule?.id });
     }
     return originalFn.apply(this, args);
   };
@@ -1025,7 +1051,7 @@ function wrapWithNexusCostGate(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
   let totalCost = 0;
-  const BUDGET = 10000; // millicents
+  const BUDGET = 10000;
   return function manaNexusCostGate(this: unknown, ...args: unknown[]) {
     point.invocations++;
     if (totalCost >= BUDGET) {
@@ -1034,7 +1060,7 @@ function wrapWithNexusCostGate(
       throw new Error(`[MANA/NEXUS] ${functionName} budget exhausted (${totalCost}/${BUDGET} millicents)`);
     }
     const result = originalFn.apply(this, args);
-    totalCost += 10; // default per-call cost
+    totalCost += 10;
     emitTelemetry('nexus_cost_gate', functionName, 'invoked', { totalCost });
     return result;
   };
@@ -1047,7 +1073,6 @@ function wrapWithBrainConfidenceGate(
   return function manaBrainConfidence(this: unknown, ...args: unknown[]) {
     point.invocations++;
     const result = originalFn.apply(this, args);
-    // If result has a confidence field, gate on it
     if (result && typeof result === 'object' && 'confidence' in (result as Record<string, unknown>)) {
       const conf = (result as Record<string, unknown>).confidence;
       if (typeof conf === 'number' && conf < 0.5) {
@@ -1071,8 +1096,8 @@ function wrapWithImmunitySelfHeal(
     point.invocations++;
     try {
       const result = originalFn.apply(this, args);
-      if (result && typeof (result as Promise<unknown>).then === 'function') {
-        return (result as Promise<unknown>).then(resolved => {
+      if (isThenable(result)) {
+        return result.then(resolved => {
           consecutiveFailures = 0;
           return resolved;
         }).catch((err: Error) => {
@@ -1083,7 +1108,7 @@ function wrapWithImmunitySelfHeal(
               consecutiveFailures, action: 'self_heal_triggered',
             });
             consecutiveFailures = 0;
-            return undefined; // graceful recovery
+            return undefined;
           }
           throw err;
         });
@@ -1105,10 +1130,14 @@ function wrapWithImmunitySelfHeal(
   };
 }
 
-/** Get wrapper factory for a capability — unified across all 92 capabilities */
+// ═══════════════════════════════════════════════════════════════
+// Wrapper Routing — Contract-Driven with Dedicated Overrides
+// ═══════════════════════════════════════════════════════════════
+
+/** Get wrapper factory for a capability — uses contracts for routing */
 function getWrapper(capability: ManaCapability) {
+  // Dedicated wrappers for capabilities with specialized logic
   switch (capability) {
-    // ── Original 32 with dedicated wrappers ──
     case 'defense_gate': return wrapWithDefenseGate;
     case 'input_sanitizer': return wrapWithInputSanitizer;
     case 'threat_scorer': return wrapWithThreatScorer;
@@ -1140,193 +1169,39 @@ function getWrapper(capability: ManaCapability) {
     case 'data_masker': return wrapWithDataMasker;
     case 'anomaly_detector': return wrapWithAnomalyDetector;
     case 'drift_monitor': return wrapWithDriftMonitor;
-
-    // ── MEMORY family ──
     case 'memory_cache': return wrapWithMemoryCache;
-    case 'memory_ttl': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'memory_ttl');
-    case 'memory_state_track': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'memory_state_track');
-
-    // ── NEXUS family ──
-    case 'nexus_router': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'nexus_router');
     case 'nexus_cost_gate': return wrapWithNexusCostGate;
-    case 'nexus_fallback': return (fn: Function, name: string, pt: AttachmentPoint) => {
-      const wrapped = wrapWithFallbackProvider(fn, name, pt);
-      return function manaNextFallback(this: unknown, ...args: unknown[]) {
-        emitTelemetry('nexus_fallback', name, 'invoked');
-        return wrapped.apply(this, args);
-      };
-    };
-
-    // ── BRAIN family ──
-    case 'brain_reasoning_trace': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'brain_reasoning_trace');
-    case 'brain_context_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'brain_context_guard', 'governance_hook');
     case 'brain_confidence_gate': return wrapWithBrainConfidenceGate;
-    case 'dream_synthesis': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'dream_synthesis');
-
-    // ── ORACLE family ──
-    case 'oracle_predictor': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'oracle_predictor');
-    case 'oracle_anomaly_alert': return wrapWithAnomalyDetector;
-    case 'oracle_causal_trace': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'oracle_causal_trace');
-
-    // ── CORTEX family ──
-    case 'cortex_orchestrator': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'cortex_orchestrator');
-    case 'cortex_resource_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'cortex_resource_gate', 'governance_hook');
-    case 'cortex_planning_trace': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'cortex_planning_trace');
-
-    // ── ECHO family ──
-    case 'echo_amplifier': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'echo_amplifier');
-    case 'echo_resonance': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'echo_resonance');
-
-    // ── HARVEST family ──
-    case 'harvest_quality_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'harvest_quality_gate', 'governance_hook');
-    case 'harvest_dedup': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'harvest_dedup');
-
-    // ── PHANTOM family ──
-    case 'phantom_stealth': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'phantom_stealth');
-    case 'phantom_fingerprint_mask': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'phantom_fingerprint_mask');
-
-    // ── LINGUA family ──
-    case 'lingua_normalizer': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'lingua_normalizer');
-    case 'lingua_encoding_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'lingua_encoding_guard');
-
-    // ── NERVE family ──
-    case 'nerve_priority_router': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'nerve_priority_router');
-    case 'nerve_backpressure': return wrapWithBulkheadIsolator;
-
-    // ── COMPASS family ──
-    case 'compass_intent_resolver': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'compass_intent_resolver');
-    case 'compass_goal_validator': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'compass_goal_validator', 'governance_hook');
-
-    // ── SANDBOX family ──
-    case 'sandbox_isolator': return wrapWithBulkheadIsolator;
-    case 'sandbox_resource_limit': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'sandbox_resource_limit', 'governance_hook');
-
-    // ── RIPPLE family ──
-    case 'ripple_impact_tracer': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'ripple_impact_tracer');
-    case 'ripple_dependency_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'ripple_dependency_check');
-
-    // ── IDENTITY family ──
-    case 'identity_session_bind': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'identity_session_bind');
-    case 'identity_auth_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'identity_auth_gate', 'access_controller');
-
-    // ── VISION family ──
-    case 'vision_perf_monitor': return wrapWithLatencyProfiler;
-    case 'vision_accessibility_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'vision_accessibility_check');
-
-    // ── INCLUSIVE family ──
-    case 'inclusive_i18n_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'inclusive_i18n_guard');
-    case 'inclusive_contrast_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'inclusive_contrast_check');
-
-    // ── RELAY family ──
-    case 'relay_sync': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'relay_sync');
-    case 'relay_offline_cache': return wrapWithMemoryCache;
-
-    // ── INTEGRATION family ──
-    case 'integration_bridge': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'integration_bridge');
-    case 'integration_webhook': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'integration_webhook');
-
-    // ── ATLAS family ──
-    case 'atlas_complexity_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'atlas_complexity_check');
-    case 'atlas_dependency_map': return wrapWithDependencyMapper;
-
-    // ── MEDIC family ──
-    case 'medic_health_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'medic_health_check');
-    case 'medic_memory_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'medic_memory_guard');
-
-    // ── SYSTEM family ──
-    case 'system_telemetry': return wrapWithBeaconTelemetry;
-    case 'system_feature_flag': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'system_feature_flag', 'governance_hook');
-
-    // ── IMMUNITY family ──
     case 'immunity_self_heal': return wrapWithImmunitySelfHeal;
-    case 'immunity_quarantine': return wrapWithBulkheadIsolator;
-    case 'immunity_vaccination': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'immunity_vaccination');
 
-    // ── REFLEX family ──
+    // Aliases — reuse dedicated wrappers with matching semantics
     case 'reflex_circuit_breaker': return wrapWithCircuitBreaker;
     case 'reflex_fallback_chain': return wrapWithFallbackProvider;
+    case 'immunity_quarantine': return wrapWithBulkheadIsolator;
+    case 'sandbox_isolator': return wrapWithBulkheadIsolator;
+    case 'nerve_backpressure': return wrapWithBulkheadIsolator;
+    case 'system_telemetry': return wrapWithBeaconTelemetry;
+    case 'vision_perf_monitor': return wrapWithLatencyProfiler;
+    case 'atlas_dependency_map': return wrapWithDependencyMapper;
+    case 'relay_offline_cache': return wrapWithMemoryCache;
+    case 'oracle_anomaly_alert': return wrapWithAnomalyDetector;
 
-    // ── EVOLUTION family ──
-    case 'evolution_patch': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'evolution_patch');
-    case 'evolution_rollback': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'evolution_rollback');
-
-    // ── TREATY family ──
-    case 'treaty_contract_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'treaty_contract_check', 'governance_hook');
-    case 'treaty_sla_monitor': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'treaty_sla_monitor');
-
-    // ── SOVEREIGN family ──
-    case 'sovereign_encrypt': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'sovereign_encrypt');
-    case 'sovereign_tenant_isolate': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'sovereign_tenant_isolate', 'access_controller');
-
-    // ── CORE family ──
-    case 'core_lifecycle_guard': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'core_lifecycle_guard', 'governance_hook');
-    case 'core_state_validator': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'core_state_validator');
-
-    // ── ACCESS family ──
-    case 'access_rbac_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'access_rbac_gate', 'access_controller');
-    case 'access_api_key_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'access_api_key_check', 'access_controller');
-
-    // ── CONSCIENCE family ──
-    case 'conscience_ethics_gate': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithGate(fn, name, pt, 'conscience_ethics_gate', 'governance_hook');
-    case 'conscience_bias_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'conscience_bias_check');
-
-    // ── FORGE family ──
-    case 'forge_package_seal': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'forge_package_seal');
-    case 'forge_integrity_check': return (fn: Function, name: string, pt: AttachmentPoint) =>
-      wrapWithObservation(fn, name, pt, 'forge_integrity_check');
-
-    default: return wrapWithBeaconTelemetry;
+    // Contract-driven routing — all remaining capabilities
+    default: {
+      const contract = getContract(capability);
+      if (contract) {
+        if (contract.blocking) {
+          // Gate wrapper — uses contract's lexKey for evaluation
+          return (fn: Function, name: string, pt: AttachmentPoint) =>
+            wrapWithGate(fn, name, pt, capability, contract.lexKey);
+        }
+        // Observation wrapper — non-blocking telemetry
+        return (fn: Function, name: string, pt: AttachmentPoint) =>
+          wrapWithObservation(fn, name, pt, capability);
+      }
+      // Ultimate fallback — should never reach here if contracts are complete
+      return wrapWithBeaconTelemetry;
+    }
   }
 }
 
@@ -1334,9 +1209,18 @@ function getWrapper(capability: ManaCapability) {
 // Public API
 // ═══════════════════════════════════════════════════════════════
 
-/** Configure the Mana Engine */
+/** Configure the Mana Engine — runs structural assertions on first call */
+let assertionsVerified = false;
 export function configure(partial: Partial<ManaConfig>): ManaConfig {
   config = { ...config, ...partial };
+
+  // Run structural integrity checks once
+  if (!assertionsVerified) {
+    assertAllContractsExist();
+    assertAllPhasesMapped();
+    assertionsVerified = true;
+  }
+
   return { ...config };
 }
 
@@ -1371,33 +1255,24 @@ export function scan(hostModule: Record<string, unknown>, packageName: string, v
 }
 
 /**
- * Attach Layer 2 capabilities to a host module's function boundaries.
- * The host module object is wrapped in-place — original source untouched.
+ * Attach Layer 2 capabilities to a host module.
+ * Functions are wrapped at their boundaries — source is NEVER modified.
  * 
- * Supports recursive composition: calling attach() on an already-wrapped
- * module increments layerDepth and chains parent hashes.
+ * Execution order is deterministic:
+ *   Sort ascending by phase → reverse → wrap
+ *   Result: GATE is outermost (executes first), ANALYZE is innermost (executes last)
  */
 export async function attach(
   hostModule: Record<string, unknown>,
-  capabilities: Array<{
-    functionName: string;
-    capability: ManaCapability;
-    rulePayload?: unknown;
-  }>,
-  sourceForHash: string
+  capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }>,
+  sourceForHash: string,
 ): Promise<ManaManifest> {
-  if (state === 'symbiotic') {
-    // Recursive attach — V3 wraps V2: store current layer as parent
-    parentLayerHash = hostSourceHash || null;
-    layerDepth++;
-  } else {
-    // Detect if host is already a Mana-wrapped module (recursive layer)
-    const hasManaWraps = Object.values(hostModule).some(
-      v => typeof v === 'function' && (v as Function).name?.startsWith('mana')
-    );
-    if (hasManaWraps) {
-      parentLayerHash = hostSourceHash || null;
+  // Detect recursive layering — if host already has Mana wrappers
+  for (const [, val] of Object.entries(hostModule)) {
+    if (typeof val === 'function' && val.name?.startsWith('mana')) {
+      parentLayerHash = await computeHash(sourceForHash);
       layerDepth++;
+      break;
     }
   }
 
@@ -1407,14 +1282,12 @@ export async function attach(
   originals.clear();
   telemetry.length = 0;
 
-  // Sort capabilities by deterministic execution phase before wrapping
-  // This ensures GATE → VALIDATE → FAILSAFE → OBSERVE → ANALYZE order
-  const sorted = [...capabilities].sort((a, b) => {
-    const phaseA = CAPABILITY_PHASE[a.capability] ?? 3;
-    const phaseB = CAPABILITY_PHASE[b.capability] ?? 3;
-    return phaseA - phaseB;
-  });
+  // Deterministic sort: primary by phase (ascending), secondary by capability name
+  // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
+  // When called: GATE → VALIDATE → FAILSAFE → [original] → OBSERVE → ANALYZE
+  const sorted = [...capabilities].sort(byPhaseThenName).reverse();
 
+  let position = 0;
   for (const cap of sorted) {
     const { functionName, capability, rulePayload } = cap;
     const originalFn = hostModule[functionName] as AnyFn;
@@ -1430,14 +1303,17 @@ export async function attach(
       continue;
     }
 
-    // Store original for clean detachment
-    originals.set(functionName, originalFn);
+    // Store original for clean detachment — only the FIRST (real) original
+    if (!originals.has(functionName)) {
+      originals.set(functionName, originalFn);
+    }
 
-    // Create attachment point
+    // Create attachment point with position tracking
     const point: AttachmentPoint = {
       functionName,
       capability,
       phase: CAPABILITY_PHASE[capability] ?? 3,
+      position,
       active: true,
       invocations: 0,
       blocked: 0,
@@ -1450,7 +1326,8 @@ export async function attach(
     const wrapper = getWrapper(capability);
     hostModule[functionName] = wrapper(originalFn, functionName, point);
 
-    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth }, 'attachment');
+    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth, position }, 'attachment');
+    position++;
   }
 
   state = 'symbiotic';
@@ -1471,7 +1348,7 @@ export function detach(hostModule: Record<string, unknown>): ManaManifest {
 
   state = 'detaching';
 
-  // Restore all originals
+  // Restore all originals — these are the FIRST (real) originals, not intermediate wrappers
   for (const [functionName, originalFn] of originals.entries()) {
     hostModule[functionName] = originalFn;
   }
@@ -1481,7 +1358,6 @@ export function detach(hostModule: Record<string, unknown>): ManaManifest {
 
   const manifest = getManifest();
 
-  // Clean up — decrement layer depth on detach
   originals.clear();
   attachmentPoints.clear();
   if (layerDepth > 0) layerDepth--;
@@ -1491,17 +1367,35 @@ export function detach(hostModule: Record<string, unknown>): ManaManifest {
 
 /**
  * Generate cryptographic proof of non-modification.
- * Includes recursive layer tracking — each layer proves its host.
+ * Deterministic: sorted attachment points ensure identical manifests produce identical hashes.
  */
 export async function generateProof(sourceForHash: string): Promise<ManaProof> {
   const currentHash = await computeHash(sourceForHash);
   const points = Array.from(attachmentPoints.values());
-  const capabilities = [...new Set(points.map(p => p.capability))];
-  const manifestForHash = {
-    hostPackage, hostVersion, attachmentState: state,
-    attachmentPoints: points, layerDepth,
+
+  // Deterministic sort for proof — by functionName then capability
+  points.sort((a, b) =>
+    a.functionName.localeCompare(b.functionName) || a.capability.localeCompare(b.capability)
+  );
+
+  const capabilities = [...new Set(points.map(p => p.capability))].sort();
+
+  // Deterministic snapshot — field order and sort order are canonical
+  const snapshot = {
+    hostPackage,
+    hostVersion,
+    attachmentPoints: points.map(p => ({
+      functionName: p.functionName,
+      capability: p.capability,
+      phase: p.phase,
+      position: p.position,
+    })),
+    capabilities,
+    telemetryCount: telemetry.length,
+    layerDepth,
+    parentLayerHash,
   };
-  const manifestHash = await computeHash(JSON.stringify(manifestForHash));
+  const manifestHash = await computeHash(JSON.stringify(snapshot));
 
   const proof: ManaProof = {
     hostHashBefore: hostSourceHash,
@@ -1519,7 +1413,6 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
     telemetryEventCount: telemetry.length,
   };
 
-  // Store proof for manifest integration
   lastProof = proof;
   return proof;
 }
@@ -1539,9 +1432,6 @@ export function getManifest(): ManaManifest {
     layerDepth,
   };
 }
-
-/** Last generated proof — integrated into manifest */
-let lastProof: ManaProof | null = null;
 
 /** Get telemetry events */
 export function getTelemetry(): ReadonlyArray<ManaTelemetryEvent> {
@@ -1579,12 +1469,13 @@ export function reset(): void {
   telemetry.length = 0;
   traceLog = [];
   traceEnabled = false;
+  assertionsVerified = false;
   resetLex();
   config = { ...DEFAULT_CONFIG };
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Debug / Trace Mode — Item #17
+// Debug / Trace Mode
 // ═══════════════════════════════════════════════════════════════
 
 /** Enable debug trace mode — captures human-readable execution log */
@@ -1612,12 +1503,13 @@ export function getTrace(): ReadonlyArray<string> {
 
 /**
  * Inspect a specific function — returns all wrappers attached,
- * their phases, and current invocation stats.
+ * their phases, positions, and current invocation stats.
  */
 export function inspectFunction(functionName: string): ReadonlyArray<{
   capability: ManaCapability;
   phase: number;
   phaseName: string;
+  position: number;
   invocations: number;
   blocked: number;
   observed: number;
@@ -1627,17 +1519,19 @@ export function inspectFunction(functionName: string): ReadonlyArray<{
     capability: ManaCapability;
     phase: number;
     phaseName: string;
+    position: number;
     invocations: number;
     blocked: number;
     observed: number;
   }> = [];
 
-  for (const [key, point] of attachmentPoints.entries()) {
+  for (const point of attachmentPoints.values()) {
     if (point.functionName === functionName) {
       results.push({
         capability: point.capability,
         phase: point.phase,
         phaseName: PHASE_NAMES[point.phase] ?? 'UNKNOWN',
+        position: point.position,
         invocations: point.invocations,
         blocked: point.blocked,
         observed: point.observed,
@@ -1646,4 +1540,29 @@ export function inspectFunction(functionName: string): ReadonlyArray<{
   }
 
   return results.sort((a, b) => a.phase - b.phase);
+}
+
+/**
+ * Get the full execution chain for a function — ordered by phase.
+ * Shows the deterministic wrapper stack from outermost (GATE) to innermost (ANALYZE).
+ */
+export function getExecutionChain(functionName: string): ReadonlyArray<{
+  capability: ManaCapability;
+  phase: WrapperPhase;
+  phaseName: string;
+  position: number;
+  contract: CapabilityContract | undefined;
+}> {
+  const PHASE_NAMES = ['GATE', 'VALIDATE', 'FAILSAFE', 'OBSERVE', 'ANALYZE'];
+
+  return Array.from(attachmentPoints.values())
+    .filter(p => p.functionName === functionName)
+    .sort((a, b) => a.phase - b.phase)
+    .map(p => ({
+      capability: p.capability,
+      phase: p.phase as WrapperPhase,
+      phaseName: PHASE_NAMES[p.phase] ?? 'UNKNOWN',
+      position: p.position,
+      contract: getContract(p.capability),
+    }));
 }

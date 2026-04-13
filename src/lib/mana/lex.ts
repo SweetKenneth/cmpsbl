@@ -69,7 +69,9 @@ export function evaluate(
   });
 
   for (const rule of sorted) {
-    const capMatch = rule.capability === capability || rule.capability === ('*' as ManaCapability);
+    // Capability matching is EXACT — no wildcards on capability.
+    // Wildcards are allowed ONLY on target.
+    const capMatch = rule.capability === capability;
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
       return { verdict: rule.verdict, rule, context };

@@ -39,117 +39,6 @@ export enum WrapperPhase {
   ANALYZE = 4,
 }
 
-/** Maps each capability to its deterministic execution phase */
-export const CAPABILITY_PHASE: Record<ManaCapability, WrapperPhase> = {
-  // ── GATE phase (0) ──
-  defense_gate: WrapperPhase.GATE,
-  access_controller: WrapperPhase.GATE,
-  governance_hook: WrapperPhase.GATE,
-  shadow_rule: WrapperPhase.GATE,
-  policy_enforcer: WrapperPhase.GATE,
-  consent_gate: WrapperPhase.GATE,
-  access_rbac_gate: WrapperPhase.GATE,
-  access_api_key_check: WrapperPhase.GATE,
-  identity_auth_gate: WrapperPhase.GATE,
-  conscience_ethics_gate: WrapperPhase.GATE,
-  core_lifecycle_guard: WrapperPhase.GATE,
-  sovereign_tenant_isolate: WrapperPhase.GATE,
-  brain_context_guard: WrapperPhase.GATE,
-  cortex_resource_gate: WrapperPhase.GATE,
-  compass_goal_validator: WrapperPhase.GATE,
-  sandbox_resource_limit: WrapperPhase.GATE,
-  system_feature_flag: WrapperPhase.GATE,
-  treaty_contract_check: WrapperPhase.GATE,
-  harvest_quality_gate: WrapperPhase.GATE,
-  brain_confidence_gate: WrapperPhase.GATE,
-  nexus_cost_gate: WrapperPhase.GATE,
-
-  // ── VALIDATE phase (1) ──
-  input_sanitizer: WrapperPhase.VALIDATE,
-  threat_scorer: WrapperPhase.VALIDATE,
-  payload_validator: WrapperPhase.VALIDATE,
-  injection_guard: WrapperPhase.VALIDATE,
-  data_masker: WrapperPhase.VALIDATE,
-  mutation_guard: WrapperPhase.VALIDATE,
-  lingua_normalizer: WrapperPhase.VALIDATE,
-  lingua_encoding_guard: WrapperPhase.VALIDATE,
-  output_filter: WrapperPhase.VALIDATE,
-  rate_limiter: WrapperPhase.VALIDATE,
-
-  // ── FAILSAFE phase (2) ──
-  circuit_breaker: WrapperPhase.FAILSAFE,
-  retry_handler: WrapperPhase.FAILSAFE,
-  timeout_guard: WrapperPhase.FAILSAFE,
-  bulkhead_isolator: WrapperPhase.FAILSAFE,
-  fallback_provider: WrapperPhase.FAILSAFE,
-  reflex_circuit_breaker: WrapperPhase.FAILSAFE,
-  reflex_fallback_chain: WrapperPhase.FAILSAFE,
-  immunity_self_heal: WrapperPhase.FAILSAFE,
-  immunity_quarantine: WrapperPhase.FAILSAFE,
-  sandbox_isolator: WrapperPhase.FAILSAFE,
-  nerve_backpressure: WrapperPhase.FAILSAFE,
-  nexus_fallback: WrapperPhase.FAILSAFE,
-
-  // ── OBSERVE phase (3) ──
-  beacon_telemetry: WrapperPhase.OBSERVE,
-  latency_profiler: WrapperPhase.OBSERVE,
-  error_tracker: WrapperPhase.OBSERVE,
-  throughput_meter: WrapperPhase.OBSERVE,
-  dependency_mapper: WrapperPhase.OBSERVE,
-  audit_trail: WrapperPhase.OBSERVE,
-  call_logger: WrapperPhase.OBSERVE,
-  state_snapshot: WrapperPhase.OBSERVE,
-  forensic_recorder: WrapperPhase.OBSERVE,
-  compliance_check: WrapperPhase.OBSERVE,
-  vision_perf_monitor: WrapperPhase.OBSERVE,
-  vision_accessibility_check: WrapperPhase.OBSERVE,
-  inclusive_i18n_guard: WrapperPhase.OBSERVE,
-  inclusive_contrast_check: WrapperPhase.OBSERVE,
-  system_telemetry: WrapperPhase.OBSERVE,
-  medic_health_check: WrapperPhase.OBSERVE,
-  medic_memory_guard: WrapperPhase.OBSERVE,
-  treaty_sla_monitor: WrapperPhase.OBSERVE,
-  forge_package_seal: WrapperPhase.OBSERVE,
-  forge_integrity_check: WrapperPhase.OBSERVE,
-  core_state_validator: WrapperPhase.OBSERVE,
-  conscience_bias_check: WrapperPhase.OBSERVE,
-  relay_sync: WrapperPhase.OBSERVE,
-  relay_offline_cache: WrapperPhase.OBSERVE,
-  integration_bridge: WrapperPhase.OBSERVE,
-  integration_webhook: WrapperPhase.OBSERVE,
-  atlas_complexity_check: WrapperPhase.OBSERVE,
-  atlas_dependency_map: WrapperPhase.OBSERVE,
-  identity_session_bind: WrapperPhase.OBSERVE,
-  phantom_stealth: WrapperPhase.OBSERVE,
-  phantom_fingerprint_mask: WrapperPhase.OBSERVE,
-  nerve_priority_router: WrapperPhase.OBSERVE,
-  compass_intent_resolver: WrapperPhase.OBSERVE,
-  nexus_router: WrapperPhase.OBSERVE,
-  echo_amplifier: WrapperPhase.OBSERVE,
-  echo_resonance: WrapperPhase.OBSERVE,
-  cortex_orchestrator: WrapperPhase.OBSERVE,
-  cortex_planning_trace: WrapperPhase.OBSERVE,
-  sovereign_encrypt: WrapperPhase.OBSERVE,
-  evolution_patch: WrapperPhase.OBSERVE,
-  evolution_rollback: WrapperPhase.OBSERVE,
-  immunity_vaccination: WrapperPhase.OBSERVE,
-  ripple_impact_tracer: WrapperPhase.OBSERVE,
-  ripple_dependency_check: WrapperPhase.OBSERVE,
-  harvest_dedup: WrapperPhase.OBSERVE,
-
-  // ── ANALYZE phase (4) ──
-  dream_synthesis: WrapperPhase.ANALYZE,
-  anomaly_detector: WrapperPhase.ANALYZE,
-  drift_monitor: WrapperPhase.ANALYZE,
-  memory_cache: WrapperPhase.ANALYZE,
-  memory_ttl: WrapperPhase.ANALYZE,
-  memory_state_track: WrapperPhase.ANALYZE,
-  brain_reasoning_trace: WrapperPhase.ANALYZE,
-  oracle_predictor: WrapperPhase.ANALYZE,
-  oracle_anomaly_alert: WrapperPhase.ANALYZE,
-  oracle_causal_trace: WrapperPhase.ANALYZE,
-};
-
 /**
  * Layer 2 capability type — 92 granular attachment behaviors
  * Unified across ALL Ascension-discoverable primitives.
@@ -292,6 +181,117 @@ export type ManaCapability =
   | 'forge_package_seal'
   | 'forge_integrity_check';
 
+/** Maps each capability to its deterministic execution phase */
+export const CAPABILITY_PHASE: Record<ManaCapability, WrapperPhase> = {
+  // ── GATE phase (0) ──
+  defense_gate: WrapperPhase.GATE,
+  access_controller: WrapperPhase.GATE,
+  governance_hook: WrapperPhase.GATE,
+  shadow_rule: WrapperPhase.GATE,
+  policy_enforcer: WrapperPhase.GATE,
+  consent_gate: WrapperPhase.GATE,
+  access_rbac_gate: WrapperPhase.GATE,
+  access_api_key_check: WrapperPhase.GATE,
+  identity_auth_gate: WrapperPhase.GATE,
+  conscience_ethics_gate: WrapperPhase.GATE,
+  core_lifecycle_guard: WrapperPhase.GATE,
+  sovereign_tenant_isolate: WrapperPhase.GATE,
+  brain_context_guard: WrapperPhase.GATE,
+  cortex_resource_gate: WrapperPhase.GATE,
+  compass_goal_validator: WrapperPhase.GATE,
+  sandbox_resource_limit: WrapperPhase.GATE,
+  system_feature_flag: WrapperPhase.GATE,
+  treaty_contract_check: WrapperPhase.GATE,
+  harvest_quality_gate: WrapperPhase.GATE,
+  brain_confidence_gate: WrapperPhase.GATE,
+  nexus_cost_gate: WrapperPhase.GATE,
+
+  // ── VALIDATE phase (1) ──
+  input_sanitizer: WrapperPhase.VALIDATE,
+  threat_scorer: WrapperPhase.VALIDATE,
+  payload_validator: WrapperPhase.VALIDATE,
+  injection_guard: WrapperPhase.VALIDATE,
+  data_masker: WrapperPhase.VALIDATE,
+  mutation_guard: WrapperPhase.VALIDATE,
+  lingua_normalizer: WrapperPhase.VALIDATE,
+  lingua_encoding_guard: WrapperPhase.VALIDATE,
+  output_filter: WrapperPhase.VALIDATE,
+  rate_limiter: WrapperPhase.VALIDATE,
+
+  // ── FAILSAFE phase (2) ──
+  circuit_breaker: WrapperPhase.FAILSAFE,
+  retry_handler: WrapperPhase.FAILSAFE,
+  timeout_guard: WrapperPhase.FAILSAFE,
+  bulkhead_isolator: WrapperPhase.FAILSAFE,
+  fallback_provider: WrapperPhase.FAILSAFE,
+  reflex_circuit_breaker: WrapperPhase.FAILSAFE,
+  reflex_fallback_chain: WrapperPhase.FAILSAFE,
+  immunity_self_heal: WrapperPhase.FAILSAFE,
+  immunity_quarantine: WrapperPhase.FAILSAFE,
+  sandbox_isolator: WrapperPhase.FAILSAFE,
+  nerve_backpressure: WrapperPhase.FAILSAFE,
+  nexus_fallback: WrapperPhase.FAILSAFE,
+
+  // ── OBSERVE phase (3) ──
+  beacon_telemetry: WrapperPhase.OBSERVE,
+  latency_profiler: WrapperPhase.OBSERVE,
+  error_tracker: WrapperPhase.OBSERVE,
+  throughput_meter: WrapperPhase.OBSERVE,
+  dependency_mapper: WrapperPhase.OBSERVE,
+  audit_trail: WrapperPhase.OBSERVE,
+  call_logger: WrapperPhase.OBSERVE,
+  state_snapshot: WrapperPhase.OBSERVE,
+  forensic_recorder: WrapperPhase.OBSERVE,
+  compliance_check: WrapperPhase.OBSERVE,
+  vision_perf_monitor: WrapperPhase.OBSERVE,
+  vision_accessibility_check: WrapperPhase.OBSERVE,
+  inclusive_i18n_guard: WrapperPhase.OBSERVE,
+  inclusive_contrast_check: WrapperPhase.OBSERVE,
+  system_telemetry: WrapperPhase.OBSERVE,
+  medic_health_check: WrapperPhase.OBSERVE,
+  medic_memory_guard: WrapperPhase.OBSERVE,
+  treaty_sla_monitor: WrapperPhase.OBSERVE,
+  forge_package_seal: WrapperPhase.OBSERVE,
+  forge_integrity_check: WrapperPhase.OBSERVE,
+  core_state_validator: WrapperPhase.OBSERVE,
+  conscience_bias_check: WrapperPhase.OBSERVE,
+  relay_sync: WrapperPhase.OBSERVE,
+  relay_offline_cache: WrapperPhase.OBSERVE,
+  integration_bridge: WrapperPhase.OBSERVE,
+  integration_webhook: WrapperPhase.OBSERVE,
+  atlas_complexity_check: WrapperPhase.OBSERVE,
+  atlas_dependency_map: WrapperPhase.OBSERVE,
+  identity_session_bind: WrapperPhase.OBSERVE,
+  phantom_stealth: WrapperPhase.OBSERVE,
+  phantom_fingerprint_mask: WrapperPhase.OBSERVE,
+  nerve_priority_router: WrapperPhase.OBSERVE,
+  compass_intent_resolver: WrapperPhase.OBSERVE,
+  nexus_router: WrapperPhase.OBSERVE,
+  echo_amplifier: WrapperPhase.OBSERVE,
+  echo_resonance: WrapperPhase.OBSERVE,
+  cortex_orchestrator: WrapperPhase.OBSERVE,
+  cortex_planning_trace: WrapperPhase.OBSERVE,
+  sovereign_encrypt: WrapperPhase.OBSERVE,
+  evolution_patch: WrapperPhase.OBSERVE,
+  evolution_rollback: WrapperPhase.OBSERVE,
+  immunity_vaccination: WrapperPhase.OBSERVE,
+  ripple_impact_tracer: WrapperPhase.OBSERVE,
+  ripple_dependency_check: WrapperPhase.OBSERVE,
+  harvest_dedup: WrapperPhase.OBSERVE,
+
+  // ── ANALYZE phase (4) ──
+  dream_synthesis: WrapperPhase.ANALYZE,
+  anomaly_detector: WrapperPhase.ANALYZE,
+  drift_monitor: WrapperPhase.ANALYZE,
+  memory_cache: WrapperPhase.ANALYZE,
+  memory_ttl: WrapperPhase.ANALYZE,
+  memory_state_track: WrapperPhase.ANALYZE,
+  brain_reasoning_trace: WrapperPhase.ANALYZE,
+  oracle_predictor: WrapperPhase.ANALYZE,
+  oracle_anomaly_alert: WrapperPhase.ANALYZE,
+  oracle_causal_trace: WrapperPhase.ANALYZE,
+};
+
 /** Blocking semantics for deny verdicts */
 export type DenySemantic = 'throw' | 'return_undefined' | 'return_message' | 'swallow';
 
@@ -308,9 +308,8 @@ export interface CapabilityContract {
 }
 
 /**
- * Capability Contracts Table — Item #15/#16
+ * Capability Contracts Table — COMPLETE for all 92 capabilities.
  * Formalizes the mapping: capability → wrapper family → Lex key → phase → blocking semantics.
- * Makes the 92-capability system explainable and maintainable.
  */
 export const CAPABILITY_CONTRACTS: ReadonlyArray<CapabilityContract> = [
   // ── GATE phase — blocking gates ──
@@ -375,14 +374,51 @@ export const CAPABILITY_CONTRACTS: ReadonlyArray<CapabilityContract> = [
   { capability: 'compliance_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'compliance_check' },
   { capability: 'system_telemetry', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'beacon_telemetry' },
   { capability: 'core_state_validator', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'core_state_validator' },
+  { capability: 'vision_perf_monitor', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'latency_profiler' },
+  { capability: 'vision_accessibility_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'vision_accessibility_check' },
+  { capability: 'inclusive_i18n_guard', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'inclusive_i18n_guard' },
+  { capability: 'inclusive_contrast_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'inclusive_contrast_check' },
+  { capability: 'medic_health_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'medic_health_check' },
+  { capability: 'medic_memory_guard', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'medic_memory_guard' },
+  { capability: 'treaty_sla_monitor', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'treaty_sla_monitor' },
+  { capability: 'forge_package_seal', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'forge_package_seal' },
+  { capability: 'forge_integrity_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'forge_integrity_check' },
+  { capability: 'conscience_bias_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'conscience_bias_check' },
+  { capability: 'relay_sync', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'relay_sync' },
+  { capability: 'relay_offline_cache', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'relay_offline_cache' },
+  { capability: 'integration_bridge', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'integration_bridge' },
+  { capability: 'integration_webhook', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'integration_webhook' },
+  { capability: 'atlas_complexity_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'atlas_complexity_check' },
+  { capability: 'atlas_dependency_map', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'dependency_mapper' },
+  { capability: 'identity_session_bind', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'identity_session_bind' },
+  { capability: 'phantom_stealth', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'phantom_stealth' },
+  { capability: 'phantom_fingerprint_mask', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'phantom_fingerprint_mask' },
+  { capability: 'nerve_priority_router', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'nerve_priority_router' },
+  { capability: 'compass_intent_resolver', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'compass_intent_resolver' },
+  { capability: 'nexus_router', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'nexus_router' },
+  { capability: 'echo_amplifier', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'echo_amplifier' },
+  { capability: 'echo_resonance', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'echo_resonance' },
+  { capability: 'cortex_orchestrator', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'cortex_orchestrator' },
+  { capability: 'cortex_planning_trace', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'cortex_planning_trace' },
+  { capability: 'sovereign_encrypt', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'sovereign_encrypt' },
+  { capability: 'evolution_patch', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'evolution_patch' },
+  { capability: 'evolution_rollback', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'evolution_rollback' },
+  { capability: 'immunity_vaccination', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'immunity_vaccination' },
+  { capability: 'ripple_impact_tracer', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'ripple_impact_tracer' },
+  { capability: 'ripple_dependency_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'ripple_dependency_check' },
+  { capability: 'harvest_dedup', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'harvest_dedup' },
 
   // ── ANALYZE phase — post-processing (never blocking) ──
   { capability: 'dream_synthesis', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'dream_synthesis' },
   { capability: 'anomaly_detector', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'anomaly_detector' },
   { capability: 'drift_monitor', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'drift_monitor' },
   { capability: 'memory_cache', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'memory_cache' },
+  { capability: 'memory_ttl', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'memory_ttl' },
+  { capability: 'memory_state_track', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'memory_state_track' },
   { capability: 'brain_reasoning_trace', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'brain_reasoning_trace' },
   { capability: 'oracle_predictor', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_predictor' },
+  { capability: 'oracle_anomaly_alert', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'anomaly_detector' },
+  { capability: 'oracle_causal_trace', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_causal_trace' },
 ];
 
 /** A single Layer 2 attachment point on a host function */
@@ -393,6 +429,8 @@ export interface AttachmentPoint {
   readonly capability: ManaCapability;
   /** Execution phase for deterministic ordering */
   readonly phase: WrapperPhase;
+  /** Wrapper position index — order in which this wrapper was applied */
+  position: number;
   /** Whether the gate is currently active */
   active: boolean;
   /** Invocation count since attachment */

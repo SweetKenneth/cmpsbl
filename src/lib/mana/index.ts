@@ -29,6 +29,7 @@ export {
   disableTrace,
   getTrace,
   inspectFunction,
+  getExecutionChain,
 } from './engine';
 
 // Findings bridge — Ascension ↔ Mana convergence
