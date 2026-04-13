@@ -5588,6 +5588,7 @@ async function cmdVerify(args: string[]): Promise<void> {
   }
 }
 
+/**
  * Narrates what the substrate is doing in real-time.
  */
 async function cmdWitness(args: string[]): Promise<void> {

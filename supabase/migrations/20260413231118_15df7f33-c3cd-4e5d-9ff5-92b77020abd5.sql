@@ -1,0 +1,1 @@
+UPDATE access_api_keys SET is_active = true WHERE id = '58a8da91-b9ba-4e90-b0db-a1f5841a8920';
