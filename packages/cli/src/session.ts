@@ -122,7 +122,7 @@ const DEFAULT_STATE: SessionState = {
   sessionHistory: [],
 };
 
-function loadState(): SessionState {
+export function loadState(): SessionState {
   try {
     if (!fs.existsSync(STATE_FILE)) return { ...DEFAULT_STATE, todos: [], pins: [], dreamDigest: [], sessionHistory: [] };
     const raw = fs.readFileSync(STATE_FILE, 'utf-8');
@@ -144,7 +144,7 @@ function loadState(): SessionState {
   }
 }
 
-function saveState(state: SessionState): void {
+export function saveState(state: SessionState): void {
   ensureDir();
   // Cap history to prevent unbounded growth
   if (state.sessionHistory.length > 90) {
@@ -160,6 +160,55 @@ function saveState(state: SessionState): void {
     state.pins = state.pins.slice(-50);
   }
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+/** Merge cloud state into local, preferring newer data */
+export function mergeCloudState(cloudState: Partial<SessionState>): void {
+  const local = loadState();
+  
+  // Merge streak: take higher values
+  if (cloudState.streak) {
+    local.streak.totalSessions = Math.max(local.streak.totalSessions, cloudState.streak.totalSessions ?? 0);
+    local.streak.totalMemoriesStored = Math.max(local.streak.totalMemoriesStored, cloudState.streak.totalMemoriesStored ?? 0);
+    local.streak.totalTasksCompleted = Math.max(local.streak.totalTasksCompleted, cloudState.streak.totalTasksCompleted ?? 0);
+    local.streak.totalPins = Math.max(local.streak.totalPins, cloudState.streak.totalPins ?? 0);
+    local.streak.longestStreak = Math.max(local.streak.longestStreak, cloudState.streak.longestStreak ?? 0);
+  }
+
+  // Merge todos: union by id, prefer newer completedAt
+  if (Array.isArray(cloudState.todos)) {
+    const localMap = new Map(local.todos.map(t => [t.id, t]));
+    for (const ct of cloudState.todos) {
+      const lt = localMap.get(ct.id);
+      if (!lt) { local.todos.push(ct); }
+      else if (ct.completedAt && !lt.completedAt) { lt.completedAt = ct.completedAt; }
+    }
+  }
+
+  // Merge pins: union by id
+  if (Array.isArray(cloudState.pins)) {
+    const localPinIds = new Set(local.pins.map(p => p.id));
+    for (const cp of cloudState.pins) {
+      if (!localPinIds.has(cp.id)) local.pins.push(cp);
+    }
+  }
+
+  // Merge identity: prefer cloud if local is empty
+  if (!local.identity && cloudState.identity) {
+    local.identity = cloudState.identity;
+  }
+
+  // Merge goal: prefer cloud if local is empty
+  if (!local.goal && cloudState.goal) {
+    local.goal = cloudState.goal;
+  }
+
+  // Merge bookmark: prefer most recent
+  if (cloudState.bookmark && (!local.bookmark || new Date(cloudState.bookmark.timestamp) > new Date(local.bookmark.timestamp))) {
+    local.bookmark = cloudState.bookmark;
+  }
+
+  saveState(local);
 }
 
 // ═══════════════════════════════════════════════════════════════

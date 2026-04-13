@@ -128,6 +128,7 @@ const REGISTRATION_ENDPOINT = 'https://bxodolqqczjuahwdrswy.supabase.co/function
 interface StoredCredentials {
   apiKey: string;
   displayName?: string;
+  developerId?: string;
   savedAt?: string;
   lastCommand?: string;
   lastCommandAt?: string;
@@ -161,6 +162,7 @@ function loadStoredCredentials(): StoredCredentials | undefined {
     return {
       apiKey,
       displayName: typeof parsed.displayName === 'string' ? parsed.displayName : undefined,
+      developerId: typeof parsed.developerId === 'string' ? parsed.developerId : undefined,
       savedAt: typeof parsed.savedAt === 'string' ? parsed.savedAt : undefined,
     };
   } catch {

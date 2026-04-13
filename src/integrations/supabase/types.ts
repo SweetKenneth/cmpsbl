@@ -5137,6 +5137,36 @@ export type Database = {
         }
         Relationships: []
       }
+      cli_sessions: {
+        Row: {
+          created_at: string
+          developer_id: string
+          id: string
+          last_synced_at: string
+          session_state: Json
+          state_version: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          developer_id: string
+          id?: string
+          last_synced_at?: string
+          session_state?: Json
+          state_version?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          developer_id?: string
+          id?: string
+          last_synced_at?: string
+          session_state?: Json
+          state_version?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       client_error_log: {
         Row: {
           component_stack: string | null

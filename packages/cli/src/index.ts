@@ -37,7 +37,8 @@ import {
   setGoal, getGoal, advanceGoal, clearGoal,
   getDreamDigestSinceLastSession, markDreamDigestChecked, addDreamDigestEntry,
   isFirstRun, hasIntroduced, markIntroduced,
-  type WelcomeBackData,
+  loadState, mergeCloudState,
+  type WelcomeBackData, type SessionState,
 } from './session';
 import { runInstallWizard } from './install-wizard';
 import {
@@ -130,12 +131,21 @@ function jsonOut(data: unknown) {
 const CREDS_DIR = path.join(os.homedir(), '.cmpsbl');
 const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
 
+interface ValidationResult {
+  valid: boolean;
+  displayName?: string;
+  substrateRole?: string;
+  developerId?: string;
+  error?: string;
+}
+
 type ApiKeySource = 'env' | 'credentials' | 'none';
 
 type StoredCredentials = {
   apiKey: string;
   savedAt?: string;
   displayName?: string;
+  developerId?: string;
 };
 
 function normalizeApiKey(value: unknown): string | undefined {
@@ -175,6 +185,7 @@ function parseStoredCredentials(raw: string): StoredCredentials | undefined {
       apiKey,
       savedAt: typeof metadata?.savedAt === 'string' ? metadata.savedAt : undefined,
       displayName: metadata ? extractDisplayName(metadata) : undefined,
+      developerId: typeof metadata?.developerId === 'string' ? metadata.developerId : undefined,
     };
   };
 
@@ -219,14 +230,16 @@ function loadStoredKey(): string | undefined {
   return loadStoredCredentials()?.apiKey;
 }
 
-function saveStoredKey(key: string, displayName?: string): void {
+function saveStoredKey(key: string, displayName?: string, developerId?: string): void {
   const apiKey = normalizeApiKey(key);
   if (!apiKey) throw new Error('Invalid API key');
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
   const existing = loadStoredCredentials();
   const name = displayName ?? existing?.displayName;
+  const devId = developerId ?? existing?.developerId;
   const payload: Record<string, unknown> = { apiKey, api_key: apiKey, savedAt: new Date().toISOString() };
   if (name) payload.displayName = name;
+  if (devId) payload.developerId = devId;
   fs.writeFileSync(CREDS_FILE, JSON.stringify(payload, null, 2));
   try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* ignore platform-specific chmod failures */ }
 }
@@ -331,12 +344,7 @@ function getAccessValidationEndpoint(): string {
   return SUBSTRATE_ENDPOINT_FALLBACK;
 }
 
-interface ValidationResult {
-  valid: boolean;
-  displayName?: string;
-  substrateRole?: string;
-  error?: string;
-}
+// ValidationResult defined above
 
 async function validateApiKeyWithBackend(apiKey: string): Promise<ValidationResult> {
   const normalized = normalizeApiKey(apiKey);
@@ -369,13 +377,12 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<ValidationResu
       ) as string | undefined;
 
       const substrateRole = typeof result.substrate_role === 'string' ? result.substrate_role : 'builder';
+      const developerId = (result.developer_id ?? devRecord?.id) as string | undefined;
 
-      /* Update stored credentials with confirmed display name */
-      if (displayName) {
-        saveStoredKey(normalized, displayName);
-      }
+      /* Update stored credentials with confirmed display name + developer ID */
+      saveStoredKey(normalized, displayName, developerId);
 
-      return { valid: true, displayName, substrateRole };
+      return { valid: true, displayName, substrateRole, developerId };
     }
 
     return {
@@ -550,6 +557,8 @@ async function requireApiKey(): Promise<string> {
     const validation = await validateApiKeyWithBackend(existing);
 
     if (validation.valid) {
+      /* Set active developer for cloud sync */
+      if (validation.developerId) _activeDeveloperId = validation.developerId;
       /* Governor ceremony — supreme authority recognized */
       if (validation.substrateRole === 'governor' && !JSON_MODE && isInteractiveTTY()) {
         await governorCeremony(validation.displayName ?? 'Governor');
@@ -658,15 +667,76 @@ async function requireApiKey(): Promise<string> {
     process.exit(1);
   }
 
-  // Save persistently
-  saveStoredKey(key);
+  // Save persistently with developer ID
+  if (validation.developerId) _activeDeveloperId = validation.developerId;
+  saveStoredKey(key, validation.displayName, validation.developerId);
   blank();
   say('  ✓ API key saved to ~/.cmpsbl/credentials');
   say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
+
+  // Pull cloud session state immediately after first auth
+  const pulled = await pullCloudSession().catch(() => false);
+  if (pulled) say('  ✓ Cloud session restored');
   blank();
 
   CLI_CONFIG.apiKey = key;
   return key;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Cloud Session Sync — persistent memory across machines
+// ═══════════════════════════════════════════════════════════════
+
+let _activeDeveloperId: string | undefined;
+
+function getActiveDeveloperId(): string | undefined {
+  if (_activeDeveloperId) return _activeDeveloperId;
+  return loadStoredCredentials()?.developerId;
+}
+
+async function pullCloudSession(): Promise<boolean> {
+  const devId = getActiveDeveloperId();
+  if (!devId) return false;
+
+  try {
+    const res = await fetch(getAccessValidationEndpoint(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        module: 'session',
+        action: 'pull',
+        developer_id: devId,
+      }),
+    });
+    const result = await res.json() as Record<string, unknown>;
+    if (result.success && result.found && result.session && typeof result.session === 'object') {
+      mergeCloudState(result.session as Partial<SessionState>);
+      return true;
+    }
+  } catch { /* silent — local state is the fallback */ }
+  return false;
+}
+
+async function pushCloudSession(): Promise<boolean> {
+  const devId = getActiveDeveloperId();
+  if (!devId) return false;
+
+  try {
+    const state = loadState();
+    const res = await fetch(getAccessValidationEndpoint(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        module: 'session',
+        action: 'push',
+        developer_id: devId,
+        session_state: state,
+      }),
+    });
+    const result = await res.json() as Record<string, unknown>;
+    return result.success === true;
+  } catch { /* silent */ }
+  return false;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -822,9 +892,13 @@ export async function run(args: string[]): Promise<void> {
 
   const command = args[0]?.toLowerCase();
 
-  // Record session start for streak tracking
+  // Record session start for streak tracking + pull cloud state
   if (command && command !== 'version' && command !== '--version' && command !== '-v') {
     recordSessionStart();
+    // Pull cloud session if authenticated (non-blocking on failure)
+    if (getActiveDeveloperId()) {
+      await pullCloudSession().catch(() => {});
+    }
   }
 
   // First-run detection
@@ -1066,6 +1140,11 @@ export async function run(args: string[]): Promise<void> {
     // Print next-step suggestions (unless JSON mode)
     if (!JSON_MODE && command !== 'help' && command !== 'shell') {
       printSuggestions(command);
+    }
+
+    // Push session state to cloud (non-blocking)
+    if (getActiveDeveloperId()) {
+      await pushCloudSession().catch(() => {});
     }
   } catch (err) {
     if (JSON_MODE) {

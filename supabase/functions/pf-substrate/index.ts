@@ -1037,6 +1037,9 @@ serve(async (req) => {
           case "ascension":
             return await handleAscension(supabase, action, params, corsHeaders);
 
+          case "session":
+            return await handleSession(supabase, action, params, corsHeaders);
+
           // ═══════════════════════════════════════════════════════════
           // UNIVERSAL RESOLVER — Real DB-backed handlers for ALL modules
           // Every module queries live data instead of returning stubs
@@ -3343,7 +3346,6 @@ async function emitHeartbeat(
     diagnostics: { row_count: recordCount, legacy: true },
   });
 }
-
 
 
 // deno-lint-ignore no-explicit-any
@@ -21921,6 +21923,138 @@ async function handleAscension(
     default:
       return new Response(
         JSON.stringify({ success: false, error: `Unknown ascension action: ${action}` }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SESSION MODULE — Persistent CLI session state sync
+// ═══════════════════════════════════════════════════════════════
+
+async function handleSession(
+  supabase: any,
+  action: string,
+  params: Record<string, any>,
+  corsHeaders: Record<string, string>,
+): Promise<Response> {
+  const developerId = params.developer_id ?? params.developerId;
+  if (!developerId) {
+    return new Response(
+      JSON.stringify({ success: false, error: "developer_id required" }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  }
+
+  switch (action) {
+    case "pull": {
+      const { data, error } = await supabase
+        .from("cli_sessions")
+        .select("session_state, state_version, last_synced_at, updated_at")
+        .eq("developer_id", developerId)
+        .maybeSingle();
+
+      if (error) {
+        return new Response(
+          JSON.stringify({ success: false, error: error.message }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          module: "session",
+          action: "pull",
+          found: !!data,
+          session: data?.session_state ?? null,
+          version: data?.state_version ?? 0,
+          lastSynced: data?.last_synced_at ?? null,
+          timestamp: new Date().toISOString(),
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    case "push": {
+      const state = params.session_state ?? params.sessionState;
+      if (!state || typeof state !== "object") {
+        return new Response(
+          JSON.stringify({ success: false, error: "session_state object required" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+
+      // Upsert — one record per developer
+      const { data: existing } = await supabase
+        .from("cli_sessions")
+        .select("id, state_version")
+        .eq("developer_id", developerId)
+        .maybeSingle();
+
+      const now = new Date().toISOString();
+      const nextVersion = (existing?.state_version ?? 0) + 1;
+
+      if (existing) {
+        const { error } = await supabase
+          .from("cli_sessions")
+          .update({
+            session_state: state,
+            state_version: nextVersion,
+            last_synced_at: now,
+            updated_at: now,
+          })
+          .eq("id", existing.id);
+
+        if (error) {
+          return new Response(
+            JSON.stringify({ success: false, error: error.message }),
+            { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+          );
+        }
+      } else {
+        const { error } = await supabase.from("cli_sessions").insert({
+          developer_id: developerId,
+          session_state: state,
+          state_version: 1,
+          last_synced_at: now,
+        });
+
+        if (error) {
+          return new Response(
+            JSON.stringify({ success: false, error: error.message }),
+            { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+          );
+        }
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          module: "session",
+          action: "push",
+          version: existing ? nextVersion : 1,
+          timestamp: now,
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    case "status":
+      return new Response(
+        JSON.stringify({
+          success: true,
+          module: "session",
+          action: "status",
+          version: "1.0.0",
+          timestamp: new Date().toISOString(),
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+
+    default:
+      return new Response(
+        JSON.stringify({ success: false, error: `Unknown session action: ${action}` }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
   }
