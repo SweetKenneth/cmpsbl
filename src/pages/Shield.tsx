@@ -9,6 +9,8 @@
  */
 
 import { useState } from 'react';
+import { lookupRegistry, registerPackage, generatePackageHash } from '@/services/lex-registry';
+import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { PublicNav } from '@/components/PublicNav';
@@ -134,28 +136,71 @@ const SHIELD_FAQ = [
 
 export default function ShieldPage() {
   const [lookupHash, setLookupHash] = useState('');
-  const [lookupResult, setLookupResult] = useState<null | { status: string }>(null);
+  const [lookupResult, setLookupResult] = useState<null | { status: string; package_name?: string | null; registered_at?: string | null }>(null);
   const [isLooking, setIsLooking] = useState(false);
   const [registrationEmail, setRegistrationEmail] = useState('');
+  const [registrationPackage, setRegistrationPackage] = useState('');
   const [registrationType, setRegistrationType] = useState<'blacklist' | 'whitelist'>('blacklist');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLookup = async () => {
     if (!lookupHash.trim()) return;
     setIsLooking(true);
-    await new Promise(r => setTimeout(r, 800));
-    setLookupResult({ status: 'unregistered' });
-    setIsLooking(false);
+    try {
+      const isHash = /^[a-f0-9]{64}$/i.test(lookupHash.trim());
+      const result = await lookupRegistry(
+        isHash ? { hash: lookupHash.trim().toLowerCase() } : { name: lookupHash.trim() }
+      );
+      setLookupResult(result);
+    } catch {
+      toast.error('Registry lookup failed. Please try again.');
+    } finally {
+      setIsLooking(false);
+    }
   };
 
-  const handleRegistration = () => {
-    if (!registrationEmail.trim()) return;
-    toast.success(
-      registrationType === 'blacklist'
-        ? 'Blacklist registration submitted — your software is now protected.'
-        : 'Whitelist application submitted — we\'ll review and confirm.',
-      { duration: 5000 }
-    );
-    setRegistrationEmail('');
+  const handleRegistration = async () => {
+    if (!registrationPackage.trim()) {
+      toast.error('Package name is required.');
+      return;
+    }
+
+    // Check auth
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('Please sign in to register packages.', {
+        action: { label: 'Sign In', onClick: () => window.location.href = '/auth' },
+      });
+      return;
+    }
+
+    setIsRegistering(true);
+    try {
+      const hash = await generatePackageHash(registrationPackage.trim());
+      await registerPackage({
+        package_name: registrationPackage.trim(),
+        package_hash: hash,
+        status: registrationType === 'blacklist' ? 'protected' : 'licensed',
+        metadata: { registrant_email: registrationEmail || user.email },
+      });
+      toast.success(
+        registrationType === 'blacklist'
+          ? 'Blacklist registration complete — your software is now protected on the Lex governance layer.'
+          : 'Whitelist application submitted — your package is licensed for governed attachment.',
+        { duration: 5000 }
+      );
+      setRegistrationEmail('');
+      setRegistrationPackage('');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Registration failed';
+      if (message.includes('already registered')) {
+        toast.error('This package is already registered on the Lex Registry.');
+      } else {
+        toast.error(message);
+      }
+    } finally {
+      setIsRegistering(false);
+    }
   };
 
   const copyInstall = () => {
