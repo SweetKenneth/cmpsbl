@@ -4,73 +4,71 @@
 
 ## 1. Create an Account
 
-Sign up at cmpsbl.com. Free tier gives you immediate access to core primitives.
+Sign up at [cmpsbl.com](https://cmpsbl.com). Free tier gives you immediate access to the Substrate Terminal and core primitives.
 
 ## 2. Get Your API Key
 
-After signup, generate an API key from your dashboard. Keys are prefixed:
-- `pf_live_` — Production access
-- `pf_test_` — Development/staging access
+After signup, generate an API key from your [Developer Portal](https://cmpsbl.com/api-access). Keys are prefixed:
+- `cmpsbl_gov_` — Governor (full access)
+- `cmpsbl_arc_` — Architect tier
+- `cmpsbl_cre_` — Creator tier
+- `cmpsbl_std_` — Studio tier
+- `cmpsbl_bld_` — Builder (free tier)
+
+Or generate one instantly through the CLI:
+```bash
+npx mana attach
+# or
+npx @cmpsbl/cli login
+```
 
 ## 3. Authenticate
 
-Include your key in every request:
-
-```
-Authorization: Bearer pf_live_xxxxxxxxxxxxx
-```
-
-## 4. Your First API Call
+Set your key as an environment variable:
 
 ```bash
-curl -X POST https://api.cmpsbl.com/api/v1/decode/process \
-  -H "Authorization: Bearer pf_live_xxx" \
-  -H "Content-Type: application/json" \
-  -d '{"action": "process", "payload": {"input": "Hello, CMPSBL"}}'
+export CMPSBL_API_KEY=your_key_here
 ```
 
-### Response
+Or let the CLI store it automatically in `~/.cmpsbl/credentials` (file permissions: 600).
 
-```json
-{
-  "success": true,
-  "data": { "output": "..." },
-  "metadata": {
-    "request_id": "uuid",
-    "primitive": "DECODE",
-    "latency_ms": 245,
-    "tokens_used": 42
-  }
-}
-```
+## 4. Your First Interaction
 
-## 5. Available Primitives (API)
+### Option A: Ascension (upload your code)
 
-| Primitive | What It Does | Endpoint |
-|-----------|-------------|----------|
-| DECODE Agent | Understand natural language | `/api/v1/decode/process` |
-| ENCODE Agent | Generate code and content | `/api/v1/encode/generate` |
-| NEXUS Engine | Route to optimal AI provider | `/api/v1/nexus/route` |
-| CORTEX Engine | Multi-step orchestration | `/api/v1/cortex/pipeline` |
-| MEMORY Organ | Store and retrieve data | `/api/v1/memory/store` |
-| VISION Agent | Telemetry and analysis | `/api/v1/vision/analyze` |
-| FORGE Engine | Generate artifacts | `/api/v1/forge/generate` |
-| LINGUA Agent | Translation | `/api/v1/lingua/translate` |
-| ORACLE Engine | Predictions | `/api/v1/oracle/predict` |
+Visit [cmpsbl.com/explore](https://cmpsbl.com/explore) → Upload code → Ascension scans, classifies, and produces an enhanced capability pack.
 
-## 6. Check Your Usage
+### Option B: CLI
 
 ```bash
-curl -X POST https://api.cmpsbl.com/api/v1/economy/usage \
-  -H "Authorization: Bearer pf_live_xxx"
+# Install the CLI
+npm install -g @cmpsbl/cli
+
+# Run Ascension on a file
+cmpsbl ascend your-file.ts
+
+# Or attach Layer 2 governance
+npx mana attach
 ```
 
-## 7. Next Steps
+### Option C: Substrate Terminal
 
-- Read the [API Reference](02-api-reference.md) for full endpoint documentation
-- Explore the [Primitives Guide](03-primitives-guide.md) to understand each primitive
-- Set up [Webhooks](06-webhooks-events.md) for async notifications
-- Install the [CLI & SDK](07-cli-and-sdk.md) for local development
+Log into [cmpsbl.com](https://cmpsbl.com) and use the browser-based Substrate Terminal for ~600 commands across all 40 primitives.
+
+## 5. Access Surfaces
+
+| Surface | Where | Commands | Best For |
+|---------|-------|----------|----------|
+| **Website** | cmpsbl.com | Full Ascension, export, terminal | Code analysis, export, exploration |
+| **CLI** | Your terminal | 66 commands | Local development, automation |
+| **Mana** | Your terminal | 7 commands | Layer 2 attachment, configuration |
+
+## 6. Next Steps
+
+- Upload code to [Ascension](https://cmpsbl.com/explore) and get your first capability pack
+- Read the [Ascension User Guide](08-ascension-integration.md) to understand what you get
+- Install [Mana](11-agent-installation.md) to add Defense and Governance
+- Explore the [CLI & SDK](07-cli-and-sdk.md) for local development
 
 ---
 
