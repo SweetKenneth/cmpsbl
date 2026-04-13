@@ -14,6 +14,21 @@
 
 ---
 
+### Two Patents, Two Products, Two Purposes
+
+| | **Ascension** (Patent 1 · 64/029,678) | **Mana** (Patent 2 · 64/031,637) |
+|---|---|---|
+| **Question** | *"What does this code need?"* | *"How do I integrate software without developers?"* |
+| **Product** | Discovery + Diagnosis Engine | Autonomous Software Integration SDK |
+| **Flow** | Upload code → 40-primitive scan → CJPI score → export cured artifact | Upload package → Merge capabilities → Configure Lex → Attach Layer 2 → Export governed package |
+| **User** | Developers who want their code analyzed and hardened | Anyone — developers or non-developers — who wants to integrate packages with other software |
+| **Key Insight** | Ascension tells you what your code needs | Mana lets you do it without writing code or hiring engineers |
+| **Interface** | Restoration Shop (`/explore`) | Mana Lab (`/mana/lab`) |
+
+These are **separate products with separate flows**, not sequential steps in one pipeline. Ascension is the intelligence. Mana is the integration layer — "The Real Product."
+
+---
+
 ## Table of Contents
 
 1. [Where We Stand — April 2026](#1-where-we-stand)
