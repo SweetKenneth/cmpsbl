@@ -120,9 +120,9 @@ export const DefenseLayerDemo = ({ onBack }: DefenseLayerDemoProps) => {
         <div className="grid grid-cols-4 gap-2">
           {[
             { label: "Avg Latency", value: "0.2ms" },
-            { label: "Rules Active", value: "2,847" },
-            { label: "Block Rate", value: "99.7%" },
-            { label: "False Positives", value: "1.7%" },
+            { label: "Rules Active", value: "6" },
+            { label: "Total Events", value: "3,008" },
+            { label: "Blocked 24h", value: "1" },
           ].map((s) => (
             <div key={s.label} className="rounded-xl bg-card/60 backdrop-blur-sm border border-border/20 p-2.5 text-center">
               <p className="text-sm font-bold text-foreground">{s.value}</p>

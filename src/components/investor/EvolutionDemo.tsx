@@ -167,7 +167,7 @@ export const EvolutionDemo = ({ onBack }: EvolutionDemoProps) => {
 
         {/* Patches */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="space-y-3">
-          <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-primary font-bold">AI-Generated Patches — Deterministic Analysis</p>
+          <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-primary font-bold">System-Generated Patches — Deterministic Analysis</p>
 
           {PATCHES.map((patch, idx) => {
             const isSelected = selectedPatch === patch.id;

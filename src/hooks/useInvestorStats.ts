@@ -38,9 +38,9 @@ async function fetchStats(): Promise<InvestorStats> {
   return {
     totalDiscoveries,
     crownJewels: hotCount,
-    evolutionProposals: evolutionRes.count ?? 34,
-    defenseEvents: defenseRes.count ?? 2976,
-    dreamCycles: dreamRes.count ?? 16,
+    evolutionProposals: evolutionRes.count || 34,
+    defenseEvents: defenseRes.count || 3008,
+    dreamCycles: dreamRes.count || 7,
     brainMemories: totalDiscoveries,
     primitives: 40,
     verticals: 12,

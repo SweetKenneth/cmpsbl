@@ -50,9 +50,9 @@ export function MarketplacePreview({ compact = false }: { compact?: boolean }) {
           <DollarSign className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <p className="text-sm font-bold text-foreground">Revenue: 3 Tiers + Marketplace</p>
+          <p className="text-sm font-bold text-foreground">Revenue: 5 Tiers + Marketplace</p>
           <p className="text-xs text-muted-foreground">
-            Builder (free) · Creator ($79/mo) · Architect ($249/mo) + per-item marketplace sales
+            Free · Studio ($29) · Creator ($49) · Architect ($79) · Enterprise ($999+) + per-item marketplace sales
           </p>
         </div>
       </div>
