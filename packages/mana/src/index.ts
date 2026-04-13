@@ -1985,7 +1985,9 @@ function commandHelp(): void {
   blank();
   say('  After activation, Mana exports a native source file you can import:');
   say(`  ${c.muted('TypeScript → mana.signal.ts  ·  Python → mana_signal.py')}`);
-  say(`  ${c.muted('Rust → mana_signal.rs  ·  Go → mana_signal.go  ·  + more')}`);
+  say(`  ${c.muted('Rust → mana_signal.rs  ·  Go → mana_signal.go')}`);
+  say(`  ${c.muted('C → mana_signal.h  ·  C++ → mana_signal.hpp  ·  + 30 more')}`);
+  say(`  ${c.muted('Unsupported → mana.signal.json (branded JSON)')}`);
   blank();
 
   say(c.dim('─────────────────────────────────────────────────'));
