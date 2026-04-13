@@ -13,7 +13,7 @@ import type { VerticalCollisionResult } from '@/lib/ascension/vertical-collision
 
 import { useState, useEffect, useMemo } from 'react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
-import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, Lock, AlertTriangle, Trash2, Code2, Flame, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ExportWarpTunnel, type WarpState } from './ExportWarpTunnel';
 import { supabase } from '@/integrations/supabase/client';
@@ -541,6 +541,27 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
               Pack ID: {exportResult.packId}
             </p>
           </div>
+        </div>
+      )}
+
+      {/* ═══ MANA NEXT-STEP CTA ═══ */}
+      {exportResult && (
+        <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-5 space-y-3">
+          <div className="flex items-center gap-2">
+            <Flame className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-foreground">Want more than Enhanced?</span>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Your ascended file ships with <strong className="text-foreground">Observability + Performance</strong> already active.
+            To unlock <strong className="text-foreground">Defense</strong>, <strong className="text-foreground">Governance</strong>, or fine-tune individual capability groups, run:
+          </p>
+          <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-background border border-border/30 font-mono text-sm">
+            <Terminal className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+            <code className="text-primary font-bold select-all">npx mana attach</code>
+          </div>
+          <p className="text-[10px] text-muted-foreground">
+            No dependencies added. No source code modified. Takes 10 seconds.
+          </p>
         </div>
       )}
 
