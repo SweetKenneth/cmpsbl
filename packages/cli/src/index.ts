@@ -666,11 +666,16 @@ async function requireApiKey(): Promise<string> {
     process.exit(1);
   }
 
-  // Save persistently
-  saveStoredKey(key);
+  // Save persistently with developer ID
+  if (validation.developerId) _activeDeveloperId = validation.developerId;
+  saveStoredKey(key, validation.displayName, validation.developerId);
   blank();
   say('  ✓ API key saved to ~/.cmpsbl/credentials');
   say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
+
+  // Pull cloud session state immediately after first auth
+  const pulled = await pullCloudSession().catch(() => false);
+  if (pulled) say('  ✓ Cloud session restored');
   blank();
 
   CLI_CONFIG.apiKey = key;
