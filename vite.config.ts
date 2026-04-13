@@ -33,7 +33,19 @@ export default defineConfig(({ mode }) => ({
           cleanupOutdatedCaches: true,
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
+          // Only precache the HTML shell + critical CSS/JS — NOT every chunk
+          globPatterns: ['**/*.html', 'assets/index-*.js', 'assets/index-*.css', 'assets/react-vendor-*.js', 'assets/ui-radix-*.js'],
+          maximumFileSizeToCacheInBytes: 500_000, // skip chunks > 500KB
           runtimeCaching: [
+            {
+              // Lazy-load all other JS chunks on demand
+              urlPattern: /\/assets\/.*\.js$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'js-chunks-v1',
+                expiration: { maxEntries: 200, maxAgeSeconds: 30 * 24 * 3600 },
+              },
+            },
             {
               urlPattern: /^https:\/\/bxodolqqczjuahwdrswy\.supabase\.co\/rest\/v1\/.*/i,
               handler: 'NetworkFirst',
