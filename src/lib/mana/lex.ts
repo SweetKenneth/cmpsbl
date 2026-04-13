@@ -8,7 +8,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type { LexRule, LexVerdict, ManaCapability } from './types';
+import type { LexRule, LexVerdict, LexEvalContext, ManaCapability } from './types';
 
 /** Internal rule store */
 const rules: Map<string, LexRule> = new Map();
@@ -49,11 +49,19 @@ export function registerRule(
  * Evaluate whether a capability may be applied to a target function.
  * Returns the verdict and the rule that produced it.
  */
+/**
+ * Evaluate whether a capability may be applied/invoked.
+ * @param context - 'attachment' = may this wrapper be applied?
+ *                  'runtime' = may this invocation proceed right now?
+ * These are semantically different — a capability may be allowed to attach
+ * but a specific runtime call may be denied (e.g., budget exhausted).
+ */
 export function evaluate(
   capability: ManaCapability,
   target: string,
-  mode: 'permissive' | 'strict'
-): { verdict: LexVerdict; rule: LexRule | null } {
+  mode: 'permissive' | 'strict',
+  context: LexEvalContext = 'runtime'
+): { verdict: LexVerdict; rule: LexRule | null; context: LexEvalContext } {
   // Sort rules by priority (lower = higher priority), then creation order
   const sorted = Array.from(rules.values()).sort((a, b) => {
     if (a.priority !== b.priority) return a.priority - b.priority;
@@ -64,7 +72,7 @@ export function evaluate(
     const capMatch = rule.capability === capability || rule.capability === ('*' as ManaCapability);
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
-      return { verdict: rule.verdict, rule };
+      return { verdict: rule.verdict, rule, context };
     }
   }
 
@@ -72,6 +80,7 @@ export function evaluate(
   return {
     verdict: mode === 'permissive' ? 'allow' : 'deny',
     rule: null,
+    context,
   };
 }
 
