@@ -356,6 +356,7 @@ export function createSession(sessionId?: string): ManaSession {
         (CAPABILITY_PHASE[a.capability] ?? 3) - (CAPABILITY_PHASE[b.capability] ?? 3),
       );
 
+      let position = 0;
       for (const cap of sorted) {
         const originalFn = hostModule[cap.functionName] as AnyFn;
         if (typeof originalFn !== 'function') continue;
