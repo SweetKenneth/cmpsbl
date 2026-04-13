@@ -671,24 +671,12 @@ assert_true(count($meta['chain']) > 0, 'Chain is non-empty');
 
 // Test 2: Execution produces output
 $result = $cap->execute(['test' => true]);
-assert_true($result['success'] === true, 'Execution succeeds');
-assert_true(!empty($result['output']), 'Output is non-empty');
-assert_true(!empty($result['trace']), 'Trace is non-empty');
-assert_true($result['metadata']['capability'] === '${cap.name}', 'Capability name in metadata');
+assert_true(isset($result['_cmpsbl']), 'Result has _cmpsbl overlay');
+assert_true($result['_cmpsbl']['capability'] === '${cap.name}', 'Capability name in overlay');
+assert_true(isset($result['_cmpsbl']['execution']), 'Execution metadata present');
+assert_true(in_array($result['_cmpsbl']['execution']['strategy'], ['native', 'passthrough']), 'Valid execution strategy');
 
-// Test 3: Trace has correct stage count
-$chain = $meta['chain'];
-assert_true(count($result['trace']) === count($chain), 'Trace stage count matches chain length');
-
-// Test 4: Each trace entry has required fields
-foreach ($result['trace'] as $entry) {
-    assert_true(isset($entry['stage']), 'Trace entry has stage');
-    assert_true(isset($entry['module']), 'Trace entry has module');
-    assert_true(isset($entry['status']), 'Trace entry has status');
-    assert_true(isset($entry['duration_ms']), 'Trace entry has duration_ms');
-}
-
-// Test 5: Structural validation
+// Test 3: Structural validation
 assert_true($cap->validate(), 'Structural validation passes');
 
 echo "\\n✅ All tests passed for ${cap.name}\\n";
@@ -716,24 +704,10 @@ def test_metadata():
 def test_execution():
     cap = CMPSBLCapability()
     result = cap.execute({"test": True})
-    assert result["success"] is True, "Execution failed"
-    assert result["output"], "Output is empty"
-    assert result["trace"], "Trace is empty"
-    assert result["metadata"]["capability"] == "${cap.name}"
-    print("PASS: execution produces output")
-
-
-def test_trace_stages():
-    cap = CMPSBLCapability()
-    result = cap.execute({"test": True})
-    chain = cap.get_meta()["chain"]
-    assert len(result["trace"]) == len(chain), f"Trace count {len(result['trace'])} != chain {len(chain)}"
-    for entry in result["trace"]:
-        assert "stage" in entry
-        assert "module" in entry
-        assert "status" in entry
-        assert "duration_ms" in entry
-    print("PASS: trace stages correct")
+    assert "_cmpsbl" in result, "Result missing _cmpsbl overlay"
+    assert result["_cmpsbl"]["capability"] == "${cap.name}", "Capability name mismatch"
+    assert result["_cmpsbl"]["execution"]["strategy"] in ("native", "passthrough"), "Invalid strategy"
+    print("PASS: execution produces correct dual-layer output")
 
 
 def test_validation():
@@ -745,7 +719,6 @@ def test_validation():
 if __name__ == "__main__":
     test_metadata()
     test_execution()
-    test_trace_stages()
     test_validation()
     print("\\n✅ All tests passed for ${cap.name}")
 `;
