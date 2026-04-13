@@ -24,7 +24,7 @@ import type {
   AnyFn,
   CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, CONTRACT_MAP, WrapperPhase } from './types';
+import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase } from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
