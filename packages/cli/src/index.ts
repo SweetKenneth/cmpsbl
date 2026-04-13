@@ -457,9 +457,21 @@ async function inlineRegister(): Promise<string | null> {
     sayOk(`  ✓ API key generated: ${data.key_prefix}...`);
     blank();
 
-    // Auto-save the key with developer name
-    const devName = (data.display_name as string) || (data.developer?.display_name as string) || name || email.split('@')[0];
+    // Auto-save the key with developer name — exhaustive extraction from API response
+    const devRecord = typeof data.developer === 'object' && data.developer !== null
+      ? data.developer as Record<string, unknown>
+      : undefined;
+    const devName = (
+      data.display_name as string ??
+      data.displayName as string ??
+      devRecord?.display_name as string ??
+      devRecord?.displayName as string ??
+      devRecord?.name as string ??
+      name ??
+      email.split('@')[0]
+    );
     saveStoredKey(data.api_key, devName);
+    sayOk(`  ✓ Developer: ${devName}`);
     say('  ✓ Key saved to ~/.cmpsbl/credentials');
     say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
     blank();
