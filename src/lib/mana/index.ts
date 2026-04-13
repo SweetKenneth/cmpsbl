@@ -25,6 +25,10 @@ export {
   getTelemetry,
   getTelemetrySummary,
   reset,
+  enableTrace,
+  disableTrace,
+  getTrace,
+  inspectFunction,
 } from './engine';
 
 // Findings bridge — Ascension ↔ Mana convergence

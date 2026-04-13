@@ -25,17 +25,22 @@ import {
 } from '../index';
 import type { ManaCapability, ManaProof, ManaManifest } from '../types';
 
-/** Lodash source fingerprint — we hash the function.toString() of key exports */
+/**
+ * Lodash source fingerprint — hash actual fn.toString() content.
+ * IMPORTANT: Uses real source text, not just name+length.
+ * This is a demo fingerprint — production would use full module source.
+ */
 function collectLodashSource(): string {
   const fns = ['get', 'set', 'merge', 'cloneDeep', 'debounce', 'throttle', 'groupBy', 'sortBy', 'uniq', 'flatten'];
   const sources: string[] = [];
   for (const name of fns) {
     const fn = (lodash as Record<string, unknown>)[name];
     if (typeof fn === 'function') {
-      sources.push(`${name}:${fn.toString().length}`);
+      // Use actual source text for stronger fingerprint
+      sources.push(`${name}:${fn.toString()}`);
     }
   }
-  return sources.join('|');
+  return sources.join('||');
 }
 
 /** Attachment configuration — which functions get which Layer 2 capabilities */
