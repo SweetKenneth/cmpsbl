@@ -21926,6 +21926,7 @@ async function handleAscension(
         JSON.stringify({ success: false, error: `Unknown ascension action: ${action}` }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
