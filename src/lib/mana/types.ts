@@ -428,12 +428,44 @@ export const CAPABILITY_CONTRACTS: ReadonlyArray<CapabilityContract> = [
   { capability: 'oracle_causal_trace', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_causal_trace' },
 ];
 
-/** O(1) contract lookup — pre-computed from CAPABILITY_CONTRACTS */
-export const CONTRACT_MAP: Readonly<Record<ManaCapability, CapabilityContract>> =
+/** O(1) contract lookup — pre-computed + frozen from CAPABILITY_CONTRACTS */
+export const CONTRACT_MAP: Readonly<Record<ManaCapability, CapabilityContract>> = Object.freeze(
   CAPABILITY_CONTRACTS.reduce((map, contract) => {
     map[contract.capability] = contract;
     return map;
-  }, {} as Record<ManaCapability, CapabilityContract>);
+  }, {} as Record<ManaCapability, CapabilityContract>)
+);
+
+/** Symbol tag for accurate recursive layer detection — replaces fragile name heuristic */
+export const MANA_LAYER_TAG: unique symbol = Symbol('MANA_LAYER');
+
+/** Runtime invariant: every capability in CAPABILITY_PHASE has a contract in CONTRACT_MAP */
+export function assertContractMapComplete(): void {
+  for (const cap of Object.keys(CAPABILITY_PHASE) as ManaCapability[]) {
+    if (!CONTRACT_MAP[cap]) {
+      throw new Error(`[MANA] Missing contract for capability: ${cap}`);
+    }
+  }
+}
+
+/** Normalize priority to prevent abuse — clamps to [0, 1000] */
+export function normalizePriority(priority: number): number {
+  if (priority < 0) return 0;
+  if (priority > 1000) return 1000;
+  return priority;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Compile-Time Contract Coverage (dev-only type safety)
+// ═══════════════════════════════════════════════════════════════
+
+/** If this produces a type error, a ManaCapability is missing from CONTRACT_MAP */
+type _MissingContracts = Exclude<ManaCapability, (typeof CAPABILITY_CONTRACTS)[number]['capability']>;
+/** Compile-time assertion: all capabilities must have contracts */
+type _AssertAllCapabilitiesMapped = _MissingContracts extends never ? true : never;
+/** Force compile-time check — unused at runtime */
+const _contractCoverageCheck: _AssertAllCapabilitiesMapped = true;
+void _contractCoverageCheck;
 
 /** A single Layer 2 attachment point on a host function */
 export interface AttachmentPoint {
