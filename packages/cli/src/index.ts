@@ -556,6 +556,8 @@ async function requireApiKey(): Promise<string> {
     const validation = await validateApiKeyWithBackend(existing);
 
     if (validation.valid) {
+      /* Set active developer for cloud sync */
+      if (validation.developerId) _activeDeveloperId = validation.developerId;
       /* Governor ceremony — supreme authority recognized */
       if (validation.substrateRole === 'governor' && !JSON_MODE && isInteractiveTTY()) {
         await governorCeremony(validation.displayName ?? 'Governor');
