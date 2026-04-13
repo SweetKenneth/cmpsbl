@@ -642,6 +642,9 @@ async function firstContactCeremony(project: DetectedProject, operatorName: stri
     '  This layer enhances and protects your software',
     '  without modifying a single line of your code.',
     '',
+    `  ${c.green('✔')} Observability and Performance are already active.`,
+    `  ${c.muted('  Use Mana to add Defense, Governance, or Memory.')}`,
+    '',
     `  ${c.muted(`${project.files.length} files · ${project.language}${project.framework ? ` · ${project.framework}` : ''}`)}`,
     '',
   ], 'MANA — LAYER DETECTED');
@@ -655,34 +658,33 @@ async function firstContactCeremony(project: DetectedProject, operatorName: stri
 // ═══════════════════════════════════════════════════════════════
 
 async function screenLevelSelection(): Promise<CapabilityLevel> {
-  say(c.bold('Choose your activation level:'));
+  say(c.bold('Your ascended file already has Enhanced capabilities active.'));
+  say(c.muted('Mana lets you override this. Choose a level:'));
   blank();
 
   say(`  ${c.cyan('1.')} ${c.bold('Safe')}`);
-  say(`     ${c.muted('Minimal protection')}`);
-  say(`     ${c.muted('Basic validation + telemetry')}`);
+  say(`     ${c.muted('Scale back to minimal — basic validation + telemetry only')}`);
   blank();
 
-  say(`  ${c.green('2.')} ${c.bold('Enhanced')}  ${c.green('← recommended')}`);
-  say(`     ${c.muted('Adds observability + stability')}`);
-  say(`     ${c.muted('Best balance for most projects')}`);
+  say(`  ${c.green('2.')} ${c.bold('Enhanced')}  ${c.green('← already active')}`);
+  say(`     ${c.muted('Observability + Performance (current default)')}`);
   blank();
 
   say(`  ${c.amber('3.')} ${c.bold('Protected')}`);
-  say(`     ${c.muted('Full defense + governance')}`);
+  say(`     ${c.muted('Add Defense + Governance on top of Enhanced')}`);
   say(`     ${c.muted('Blocks unsafe execution paths')}`);
   blank();
 
   say(`  ${c.purple('4.')} ${c.bold('Advanced Configuration')}`);
-  say(`     ${c.muted('Fine-grained control over capability groups')}`);
+  say(`     ${c.muted('Pick exactly which groups to enable/disable')}`);
   blank();
 
-  const answer = await prompt('Select level (1-4): ');
+  const answer = await prompt('Select level (1-4, Enter to keep Enhanced): ');
   const map: Record<string, CapabilityLevel> = { '1': 'safe', '2': 'enhanced', '3': 'protected', '4': 'advanced' };
   const level = map[answer];
 
   if (!level) {
-    say(c.muted('Defaulting to Enhanced.'));
+    say(c.green('Keeping Enhanced (default).'));
     return 'enhanced';
   }
 
