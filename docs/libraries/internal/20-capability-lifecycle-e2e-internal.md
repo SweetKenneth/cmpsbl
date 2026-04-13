@@ -519,7 +519,84 @@ Health is resolved from two independent signals merged via worst-of-both:
 | 11 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
 | 12 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
 | 13 — Export uniformity audit | 🔲 Pending | Ensure all scanners produce identical artifact structure |
+| 14 — Smart Repo Scanner (Beta) | ✅ Complete | GitHub URL → classify → confirm → download → scan (Phase 9, see §18) |
 
 ---
 
 *© 2025–2026 CMPSBL®. Governor Eyes Only.*
+
+## 18. Smart Repository Scanner (Beta) — Phase 9
+
+**Status:** PRODUCTION (Beta)
+**Added:** April 2026
+**Location:** `src/lib/repo-scanner/classify.ts` + `src/pages/RestorationShop.tsx`
+
+### What It Does
+
+Allows users to paste a GitHub URL instead of uploading a single file. The scanner fetches the repo tree via the GitHub API, classifies every file, lets the user review/override, then downloads confirmed core files and concatenates them for the Ascension diagnostic pipeline.
+
+### Workflow
+
+```
+GitHub URL → Parse owner/repo → Fetch tree (API) → Classify files → User confirms → Download core files → Concatenate → Run scan
+```
+
+### Classification Engine (`classify.ts`)
+
+Pure algorithmic classification — zero AI. Uses five tiers of heuristics:
+
+| Tier | What It Checks | Example |
+|------|---------------|---------|
+| **Skip Dirs** | `node_modules`, `.git`, `__pycache__`, `vendor`, etc. | `node_modules/lodash/index.js` → skipped |
+| **Skip Files** | Lock files, licenses, changelogs | `package-lock.json` → skipped |
+| **Skip Extensions** | Binary, media, fonts, maps | `.png`, `.woff2`, `.map` → skipped |
+| **Entry Points** | `src/core/`, `lib/`, `cmd/`, `pkg/`, `app/` | `src/core/engine.ts` → core |
+| **Monorepo Detection** | `libs/name/src/`, `packages/name/src/`, Python `__init__.py` sibling | `libs/langgraph/langgraph/graph/state.py` → core |
+
+### Monorepo Support (April 13, 2026 Fix)
+
+Original classifier used a depth-3 heuristic that failed for monorepos like LangGraph (`libs/langgraph/langgraph/...`). Fixed with:
+
+1. **Monorepo path patterns** — `libs/*/src/`, `packages/*/src/`, `libs/X/X/` (Python convention)
+2. **Python package detection** — Builds a `Set<string>` of all file paths; if a file's directory contains `__init__.py`, it's classified as core
+3. **Relaxed depth** — Source files at depth ≤ 5 are core (was 3)
+4. **Auto-promotion fallback** — If 0 core files found, all supporting source files auto-promote to core with a user notification
+
+### Base64 Decoding Fix
+
+GitHub returns blob content as base64. Original used bare `atob()` which corrupts non-ASCII (UTF-8 multi-byte sequences). Fixed to use proper `TextDecoder`:
+
+```typescript
+const bytes = Uint8Array.from(atob(raw), c => c.charCodeAt(0));
+return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
+```
+
+### Error Handling
+
+- **Rate limit (403)** — Detects `x-ratelimit-reset` header, shows minutes until reset
+- **404** — Falls back from `main` to `master` branch, then surfaces "not found" error
+- **Truncated trees** — Warns but continues with partial results (repos with 100k+ files)
+- **Per-file download failure** — Logs and skips; aborts early if rate limit hit mid-download
+- **Scan failures** — `handleScan` now has try/catch with descriptive toast (was silent)
+- **Empty content** — Returns placeholder instead of throwing
+
+### Smoke Test Results (April 13, 2026)
+
+| Repo | Total Files | Core | Supporting | Skipped |
+|------|------------|------|-----------|---------|
+| `langchain-ai/langgraph` | 533 | 315 | 8 | 210 |
+| `microsoft/TypeScript` | 53,308 | 695 | 10 | 52,603 |
+| `pallets/flask` | 236 | 42 | 0 | 194 |
+
+### Guardrails
+
+- **Max 30 core files** per scan (UI enforced) — prevents rate limit exhaustion
+- **Max 500KB per file** — auto-skips likely generated/minified files
+- **Public repos only** — no auth token required (60 req/hour unauthenticated)
+
+### Known Limitations
+
+- No GitHub auth token support yet (would raise limit to 5,000 req/hour)
+- No branch selection UI (defaults to `main` → `master` fallback)
+- Large repos (100k+ files) may have truncated trees
+- File concatenation loses module boundaries — future improvement: per-file scanning

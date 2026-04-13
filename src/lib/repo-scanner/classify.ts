@@ -111,6 +111,22 @@ const ENTRY_PATTERNS = [
   /^internal\//,
 ];
 
+// Monorepo / nested package patterns → treat inner source as core
+const MONOREPO_CORE_PATTERNS = [
+  // libs/package-name/src/...
+  /^libs\/[^/]+\/src\//,
+  // libs/package-name/package-name/... (Python convention)
+  /^libs\/([^/]+)\/\1\//,
+  // packages/name/src/...
+  /^packages\/[^/]+\/src\//,
+  // crates/name/src/...
+  /^crates\/[^/]+\/src\//,
+  // modules/name/src/...
+  /^modules\/[^/]+\/src\//,
+  // Python namespace packages: any dir containing __init__.py siblings
+  // Handled separately in classifyFile
+];
+
 const SUPPORTING_PATTERNS = [
   /^src\/(utils|helpers|constants|types|hooks)\//,
   /^(utils|helpers|constants|types)\//,
@@ -142,8 +158,8 @@ function getFileName(path: string): string {
   return path.split('/').pop() ?? path;
 }
 
-/** Classify a single file path */
-export function classifyFile(path: string, size?: number): ClassifiedFile {
+/** Classify a single file path (with optional sibling awareness for monorepos) */
+export function classifyFile(path: string, size?: number, siblingPaths?: Set<string>): ClassifiedFile {
   const ext = getExtension(path);
   const name = getFileName(path);
   const parts = path.split('/');
@@ -193,18 +209,31 @@ export function classifyFile(path: string, size?: number): ClassifiedFile {
     return { path, category: 'core', reason: 'Entry point / core module', size };
   }
 
+  // Monorepo patterns → Core (even if deeply nested)
+  if (MONOREPO_CORE_PATTERNS.some(p => p.test(path))) {
+    return { path, category: 'core', reason: 'Monorepo core module', size };
+  }
+
+  // Python package detection: if sibling __init__.py exists, this is a real package → core
+  if (siblingPaths && SOURCE_EXTENSIONS.has(ext)) {
+    const dir = parts.slice(0, -1).join('/');
+    if (dir && siblingPaths.has(dir + '/__init__.py')) {
+      return { path, category: 'core', reason: 'Python package module', size };
+    }
+  }
+
   // Supporting patterns
   if (SUPPORTING_PATTERNS.some(p => p.test(path))) {
     return { path, category: 'supporting', reason: 'Utility / helper', size };
   }
 
-  // Source file in src/ or root → core by default
+  // Source file — use relaxed depth for monorepos
   if (SOURCE_EXTENSIONS.has(ext)) {
     const depth = parts.length;
-    if (depth <= 3) {
+    if (depth <= 5) {
       return { path, category: 'core', reason: 'Source file', size };
     }
-    return { path, category: 'supporting', reason: 'Nested source file', size };
+    return { path, category: 'supporting', reason: 'Deeply nested source file', size };
   }
 
   return { path, category: 'skipped', reason: 'Unknown type', size };
@@ -214,10 +243,13 @@ export function classifyFile(path: string, size?: number): ClassifiedFile {
 export function classifyRepoTree(
   files: { path: string; size?: number; sha?: string }[]
 ): ClassifiedFile[] {
+  // Build sibling path set for Python package detection
+  const allPaths = new Set(files.map(f => f.path));
+
   return files
     .filter(f => f.path) // Guard against empty paths
     .map(f => {
-      const classified = classifyFile(f.path, f.size);
+      const classified = classifyFile(f.path, f.size, allPaths);
       classified.sha = f.sha;
       return classified;
     });
@@ -288,9 +320,17 @@ export async function fetchGitHubFileContent(
   if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
 
   const data = await res.json();
-  // GitHub returns base64-encoded content — handle large files gracefully
+
+  if (!data.content) {
+    return `// [Empty or inaccessible file — sha: ${sha}]`;
+  }
+
+  // GitHub returns base64-encoded content — decode safely
   try {
-    return atob(data.content.replace(/\n/g, ''));
+    // Handle UTF-8 properly via TextDecoder
+    const raw = data.content.replace(/\n/g, '');
+    const bytes = Uint8Array.from(atob(raw), c => c.charCodeAt(0));
+    return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
   } catch {
     // Binary or oversized file — return placeholder
     return `// [Binary or non-decodable file — ${data.size ?? 'unknown'} bytes]`;
