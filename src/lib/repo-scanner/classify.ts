@@ -111,6 +111,22 @@ const ENTRY_PATTERNS = [
   /^internal\//,
 ];
 
+// Monorepo / nested package patterns → treat inner source as core
+const MONOREPO_CORE_PATTERNS = [
+  // libs/package-name/src/...
+  /^libs\/[^/]+\/src\//,
+  // libs/package-name/package-name/... (Python convention)
+  /^libs\/([^/]+)\/\1\//,
+  // packages/name/src/...
+  /^packages\/[^/]+\/src\//,
+  // crates/name/src/...
+  /^crates\/[^/]+\/src\//,
+  // modules/name/src/...
+  /^modules\/[^/]+\/src\//,
+  // Python namespace packages: any dir containing __init__.py siblings
+  // Handled separately in classifyFile
+];
+
 const SUPPORTING_PATTERNS = [
   /^src\/(utils|helpers|constants|types|hooks)\//,
   /^(utils|helpers|constants|types)\//,
@@ -142,8 +158,8 @@ function getFileName(path: string): string {
   return path.split('/').pop() ?? path;
 }
 
-/** Classify a single file path */
-export function classifyFile(path: string, size?: number): ClassifiedFile {
+/** Classify a single file path (with optional sibling awareness for monorepos) */
+export function classifyFile(path: string, size?: number, siblingPaths?: Set<string>): ClassifiedFile {
   const ext = getExtension(path);
   const name = getFileName(path);
   const parts = path.split('/');
@@ -193,18 +209,31 @@ export function classifyFile(path: string, size?: number): ClassifiedFile {
     return { path, category: 'core', reason: 'Entry point / core module', size };
   }
 
+  // Monorepo patterns → Core (even if deeply nested)
+  if (MONOREPO_CORE_PATTERNS.some(p => p.test(path))) {
+    return { path, category: 'core', reason: 'Monorepo core module', size };
+  }
+
+  // Python package detection: if sibling __init__.py exists, this is a real package → core
+  if (siblingPaths && SOURCE_EXTENSIONS.has(ext)) {
+    const dir = parts.slice(0, -1).join('/');
+    if (dir && siblingPaths.has(dir + '/__init__.py')) {
+      return { path, category: 'core', reason: 'Python package module', size };
+    }
+  }
+
   // Supporting patterns
   if (SUPPORTING_PATTERNS.some(p => p.test(path))) {
     return { path, category: 'supporting', reason: 'Utility / helper', size };
   }
 
-  // Source file in src/ or root → core by default
+  // Source file — use relaxed depth for monorepos
   if (SOURCE_EXTENSIONS.has(ext)) {
     const depth = parts.length;
-    if (depth <= 3) {
+    if (depth <= 5) {
       return { path, category: 'core', reason: 'Source file', size };
     }
-    return { path, category: 'supporting', reason: 'Nested source file', size };
+    return { path, category: 'supporting', reason: 'Deeply nested source file', size };
   }
 
   return { path, category: 'skipped', reason: 'Unknown type', size };
