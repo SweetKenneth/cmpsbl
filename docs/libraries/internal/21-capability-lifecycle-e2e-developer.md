@@ -272,7 +272,77 @@ If no policy is declared, behavior is derived automatically from the capability 
 
 ---
 
-## 11. Patent Attribution
+## 11. Documentation & Activation Standard (v3.0)
+
+As of April 2026, all user-facing Ascension documentation has been consolidated to a minimal, authoritative set. This section records the decisions and rationale.
+
+### 11.1 What Ships to Users
+
+Every Ascension export contains exactly four items:
+
+1. **User Guide** (`docs/libraries/users/08-ascension-integration.md`) — The single document covering what Ascension is, how to install, how to use, and capability levels.
+2. **License** — Usage terms.
+3. **Original File** — The unmodified Layer 1 source code (proof artifact).
+4. **Ascended File** — The governed Layer 2 version (proof artifact).
+
+Nothing else. No overlapping guides, no architecture references, no internal terminology.
+
+### 11.2 Installation Flow
+
+Standardized on a guided terminal experience:
+
+```
+npx mana attach
+  → Detection screen (confirms second layer)
+  → Capability selection (Safe / Enhanced / Protected / Advanced)
+  → Confirmation screen
+  → Persistent access via @cmpsbl/config
+```
+
+**Capability Levels:**
+
+| Level | Behavior |
+|-------|----------|
+| Safe | Minimal protection — basic validation + telemetry |
+| Enhanced | Observability + stability (recommended) |
+| Protected | Full defense + governance, blocks unsafe execution |
+| Advanced | Toggle capability groups: Defense, Observability, Memory, Governance, Performance |
+
+### 11.3 What Is NOT Exposed
+
+- No mention of runtime internals
+- No mention of how capabilities are implemented
+- No exposure of primitive names, counts, or topology
+- No legacy terminology (Convex Core, Mini Runtime, Sealed Runtime)
+- No requirement to read documentation to proceed with install
+
+### 11.4 Rationale
+
+Previous documentation surface area created:
+- Overlapping explanations across 08, 11, and 12
+- Conflicting mental models between Convex Core / Mini Runtime branding
+- Reconstructable architecture hints from implementation details
+- Developer friction from multi-document reading requirements
+
+The consolidated model ensures a developer can: **run one command → pick a level → be done.**
+
+### 11.5 Advanced Configuration Grouping
+
+When "Advanced" is selected, capabilities are grouped — never exposed individually:
+
+| Group | What It Controls |
+|-------|-----------------|
+| Defense | Threat detection, circuit breakers, execution blocking |
+| Observability | Telemetry, health signals, runtime tracing |
+| Memory | Persistent recall, session history, knowledge retention |
+| Governance | Policy enforcement, compliance checks, audit trails |
+| Performance | Caching, optimization hints, resource efficiency |
+
+Users toggle groups. They never see or interact with individual primitives.
+
+---
+
+## 12. Patent Attribution
 
 CMPSBL artifacts are protected under two U.S. patent applications:
 
