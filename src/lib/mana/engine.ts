@@ -19,9 +19,10 @@ import type {
   ManaManifest,
   ManaProof,
   ManaTelemetryEvent,
+  LexEvalContext,
   AnyFn,
 } from './types';
-import { CAPABILITY_PHASE } from './types';
+import { CAPABILITY_PHASE, WrapperPhase } from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
