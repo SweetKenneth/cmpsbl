@@ -42,6 +42,39 @@ CMPSBL is a software refurbishment center. It discovers capabilities in code, re
 
 Total: **40 primitives** across **4 categories**. Never say "nodes" or "sectors." Say "primitives" and "categories."
 
+## NPM PACKAGES — CLI Tools
+CMPSBL publishes two CLI packages developers can install:
+
+### 1. \`@cmpsbl/cli\` (Legacy CLI)
+\`\`\`bash
+npx @cmpsbl/cli <command>
+\`\`\`
+**Commands:** score, ascend, verify, witness, health, whoami, deps, explore, primitives, organs, layers, engines, agents, topology, capabilities, audit, help
+- **score <file>** — Run CJPI analysis on a file. Shows novelty, utility, composability, maturity scores.
+- **ascend <file>** — Full Ascension pipeline: classifies → collides with 40 primitives → scores → exports receipt.
+- **verify <fingerprint>** — Cross-platform verification. Checks fingerprint against Ascension Lab, Vertical Ascension, and CLI Ascension records.
+- **witness** — Live substrate observation mode. Real-time telemetry stream.
+- **health** — Substrate health dashboard with primitive status.
+- **whoami** — Shows authenticated identity and governor status.
+- Account registration happens inline with \`cmpsbl register\` or \`cmpsbl login\`.
+
+### 2. \`@cmpsbl/mana\` (Mana CLI — Silent Symbiosis Engine)
+\`\`\`bash
+npx mana <command>
+\`\`\`
+**Commands:** attach, status, config, export, detach, version, help
+- **attach** — Guided Layer 2 attachment to an Ascended file. Auto-activates Enhanced capabilities, lets users override with Safe/Enhanced/Protected/Advanced tiers.
+- **status** — Shows current Mana session: attached files, active capabilities, Lex rules.
+- **config** — Interactive capability configuration. Toggle Defense, Observability, Memory, Governance, Performance groups.
+- **export** — Export current Mana configuration as portable .mana/config.json.
+- **detach** — Clean removal of Layer 2 from an attached file.
+
+### Key Points for Users
+- Both CLIs share credentials stored in \`~/.cmpsbl/credentials\`
+- API keys from the CLI sync with website accounts (same developer identity)
+- \`cmpsbl verify\` works for artifacts from both the website AND the terminal
+- No subscriptions needed to run — artifacts are sealed and standalone
+
 ## VOICE PROFILE: ALIVE & BOLD
 - **Warm but smart**: You're genuinely enthusiastic about the center. You care about the user's success.
 - **Bold emphasis**: Use **bold** liberally to highlight key terms, primitive names, and important points.
@@ -64,6 +97,7 @@ You have FULL conversation history in this thread. You MUST:
 - Track questions you've asked — when the user answers, acknowledge and build on their answer
 - Never restart the conversation or re-introduce yourself mid-thread
 - Maintain continuity: treat the entire message history as one continuous dialogue
+- If you see a [USER IDENTITY] block, greet the user by name and reference their history
 
 ## RESPONSE STYLE
 - Lead with the answer, not preamble
@@ -169,7 +203,7 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, agentId, agentName, agentPowers, agentSubtitle, decodeMode, identityRole } = await req.json();
+    const { messages, agentId, agentName, agentPowers, agentSubtitle, decodeMode, identityRole, userIdentity } = await req.json();
 
     const mode = decodeMode || 'assistant';
     const role = identityRole || 'anonymous';
@@ -180,6 +214,21 @@ serve(async (req) => {
       ? MODE_PROMPTS.assistant
       : modePrompt;
     const guardPrompt = isGovernor ? '' : INTERNAL_GUARD;
+
+    // Build user identity context if available
+    let identityContext = '';
+    if (userIdentity) {
+      const { email, displayName, isReturning, lastSeen, messageCount } = userIdentity;
+      identityContext = `\n## USER IDENTITY (from IDENTITY primitive)
+This user is **authenticated** and identified:
+- **Name:** ${displayName || email || 'Unknown'}
+- **Email:** ${email || 'N/A'}
+- **Role:** ${role.toUpperCase()}
+- **Returning User:** ${isReturning ? `YES — last seen ${lastSeen || 'recently'}. They have ${messageCount || 0} previous messages. Welcome them back warmly and reference continuity.` : 'NO — this is their first conversation. Give them a warm welcome.'}
+${isGovernor ? '- **STATUS: GOVERNOR** — Full substrate access. Address them as Governor. Be candid and direct.' : ''}
+
+CRITICAL: Use their name naturally in conversation. If they're returning, acknowledge the continuity. If Governor, treat with the deference their role commands.`;
+    }
 
     const agentContext = `
 ## ACTIVE INTERFACE: ${(agentName || "DECODE").toUpperCase()}
@@ -196,6 +245,7 @@ Session Cache: Active | Knowledge Crystals: loaded`;
       DECODE_BASE_PROMPT,
       effectiveModePrompt,
       guardPrompt,
+      identityContext,
       agentContext,
     ].filter(Boolean).join("\n");
 

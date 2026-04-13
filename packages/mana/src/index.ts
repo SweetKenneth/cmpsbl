@@ -129,6 +129,8 @@ interface StoredCredentials {
   apiKey: string;
   displayName?: string;
   savedAt?: string;
+  lastCommand?: string;
+  lastCommandAt?: string;
 }
 
 function normalizeApiKey(value: unknown): string | undefined {
@@ -168,7 +170,18 @@ function loadStoredCredentials(): StoredCredentials | undefined {
 
 function saveCredentials(apiKey: string, displayName?: string): void {
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
+
+  // Preserve existing fields
+  let existing: Record<string, unknown> = {};
+  try {
+    if (fs.existsSync(CREDS_FILE)) {
+      const raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
+      if (raw.startsWith('{')) existing = JSON.parse(raw);
+    }
+  } catch { /* ignore */ }
+
   const payload: Record<string, unknown> = {
+    ...existing,
     apiKey,
     api_key: apiKey,
     savedAt: new Date().toISOString(),
@@ -176,6 +189,18 @@ function saveCredentials(apiKey: string, displayName?: string): void {
   if (displayName) payload.displayName = displayName;
   fs.writeFileSync(CREDS_FILE, JSON.stringify(payload, null, 2));
   try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* platform-specific */ }
+}
+
+function trackLastCommand(command: string): void {
+  try {
+    if (!fs.existsSync(CREDS_FILE)) return;
+    const raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
+    if (!raw.startsWith('{')) return;
+    const parsed = JSON.parse(raw);
+    parsed.lastCommand = command;
+    parsed.lastCommandAt = new Date().toISOString();
+    fs.writeFileSync(CREDS_FILE, JSON.stringify(parsed, null, 2));
+  } catch { /* silent */ }
 }
 
 function resolveApiKey(): string | undefined {
@@ -1492,6 +1517,23 @@ function commandVersion(): void {
 
 export async function run(args: string[]): Promise<void> {
   const command = args[0]?.toLowerCase();
+
+  // Welcome-back: if user has stored credentials, greet them silently
+  if (command && command !== 'help' && command !== '--help' && command !== '-h'
+    && command !== 'version' && command !== '--version' && command !== '-v') {
+    const creds = loadStoredCredentials();
+    if (creds?.displayName && creds.lastCommandAt) {
+      const lastDate = new Date(creds.lastCommandAt);
+      const hoursSince = (Date.now() - lastDate.getTime()) / (1000 * 60 * 60);
+      if (hoursSince > 1) {
+        const timeAgo = hoursSince < 24
+          ? `${Math.floor(hoursSince)}h ago`
+          : `${Math.floor(hoursSince / 24)}d ago`;
+        say(c.dim(`Welcome back, ${c.cyan(creds.displayName)} · last seen ${timeAgo}`));
+      }
+    }
+    trackLastCommand(command);
+  }
 
   switch (command) {
     case 'attach':

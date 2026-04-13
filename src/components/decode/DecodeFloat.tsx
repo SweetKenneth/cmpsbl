@@ -33,13 +33,13 @@ const SESSION_STORAGE_KEY = 'decode_float_messages';
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode-chat`;
 
 const MODE_GREETINGS: Record<DecodeMode, string> = {
-  assistant: "Hey! 👋 I'm **DECODE** — your guide to the CMPSBL factory.\n\nAsk me about **Memory Stream** discoveries, **Ascension** restorations, the **Showroom**, or how to get started. I'm here to help! ✨",
+  assistant: "Hey! 👋 I'm **DECODE** — your guide to the CMPSBL® substrate.\n\nAsk me about **Memory Stream** discoveries, **Ascension** refurbishments, the **Catalog**, or how to get started. I'm here to help! ✨",
   support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nTell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
-  builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with **Showroom** browsing, **Ascension** submissions, diagnostics, and Memory Stream monitoring. What are we working on?",
+  builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with **Catalog** browsing, **Ascension** submissions, diagnostics, and Memory Stream monitoring. What are we working on?",
   governor: "**DECODE** online — **governor mode** active 👑\n\nFull substrate telemetry and governance controls are live. All **40 primitives** across **4 categories** reporting.\n\nUse slash commands like `/health`, `/caps`, `/govern` for live data — or just talk to me. What do you need, Governor?",
 };
 
-function persistMessages(msgs: Message[]) {
+function persistMessagesToSession(msgs: Message[]) {
   try { sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(msgs.slice(-60))); } catch {}
 }
 
@@ -216,11 +216,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   const { isOpen, mode, identityRole, open, close, toggle, setIdentityRole, pendingModeOnOpen } = useDecodeStore();
   const { user } = useAuth();
 
-  const [messages, setMessages] = useState<Message[]>(() => {
-    const persisted = loadPersistedMessages();
-    if (persisted.length > 0) return persisted;
-    return [{ role: "assistant", content: MODE_GREETINGS.assistant }];
-  });
+  const [messages, setMessages] = useState<Message[]>([{ role: "assistant", content: MODE_GREETINGS.assistant }]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
@@ -229,6 +225,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   const inputRef = useRef<HTMLInputElement>(null);
   const [mounted, setMounted] = useState(false);
   const lastModeRef = useRef<DecodeMode>(mode);
+  const dbLoadedRef = useRef(false);
 
   // Stable session ID
   const sessionId = useRef<string>('');
@@ -238,6 +235,46 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     if (!sid) { sid = `anon_${crypto.randomUUID()}`; sessionStorage.setItem(key, sid); }
     sessionId.current = sid;
   }, []);
+
+  // Load persisted messages — DB first (for logged-in users), then sessionStorage fallback
+  useEffect(() => {
+    if (dbLoadedRef.current) return;
+    (async () => {
+      if (user) {
+        try {
+          const { data } = await supabase
+            .from('decode_conversations')
+            .select('messages, last_message_at')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          if (data?.messages && Array.isArray(data.messages) && (data.messages as unknown as Message[]).length > 0) {
+            const restored = data.messages as unknown as Message[];
+            // Add a welcome-back message
+            const lastSeen = data.last_message_at
+              ? new Date(data.last_message_at as string).toLocaleDateString()
+              : 'recently';
+            const welcomeBack: Message = {
+              role: 'assistant',
+              content: identityRole === 'governor'
+                ? `Welcome back, **Governor** 👑 — the substrate awaits your command. Last session: ${lastSeen}. ${restored.length} messages in memory. Picking up where we left off.`
+                : `Welcome back! 👋 I remember our last conversation (${lastSeen}). ${restored.length} messages loaded. What would you like to pick up on?`,
+            };
+            setMessages([...restored.slice(-50), welcomeBack]);
+            dbLoadedRef.current = true;
+            return;
+          }
+        } catch {
+          // Fall through to sessionStorage
+        }
+      }
+      // Fallback: sessionStorage
+      const persisted = loadPersistedMessages();
+      if (persisted.length > 0) {
+        setMessages(persisted);
+      }
+      dbLoadedRef.current = true;
+    })();
+  }, [user, identityRole]);
 
   // Sync identity role from auth
   useEffect(() => {
@@ -302,10 +339,27 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
   useEffect(() => { scrollToBottom(); }, [messages, scrollToBottom]);
 
-  // Persist messages
+  // Persist messages — both sessionStorage and DB
   useEffect(() => {
-    if (messages.length > 1) persistMessages(messages);
-  }, [messages]);
+    if (messages.length <= 1) return;
+    persistMessagesToSession(messages);
+    // Debounced DB persist for logged-in users
+    if (!user) return;
+    const timeout = setTimeout(async () => {
+      try {
+        const trimmed = messages.slice(-60);
+        await supabase.from('decode_conversations').upsert([{
+          user_id: user.id,
+          messages: JSON.parse(JSON.stringify(trimmed)),
+          mode,
+          message_count: trimmed.length,
+          last_message_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }], { onConflict: 'user_id' });
+      } catch { /* silent */ }
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, [messages, user, mode]);
 
   // Lock scroll when chat is open
   useEffect(() => {
@@ -533,6 +587,15 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         .filter(m => m.role === 'user' || m.role === 'assistant')
         .map(m => ({ role: m.role, content: m.content }));
 
+      // Build user identity context for the AI
+      const userIdentity = user ? {
+        email: user.email,
+        displayName: user.user_metadata?.display_name || user.user_metadata?.full_name || user.email,
+        isReturning: dbLoadedRef.current && messages.length > 3,
+        lastSeen: new Date().toISOString(),
+        messageCount: messages.length,
+      } : undefined;
+
       const resp = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
@@ -547,6 +610,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           agentPowers: ["Intent Interpretation", "Memory Recall", "Primitive Routing", "Personality Engine"],
           decodeMode: mode,
           identityRole: identityRole,
+          userIdentity,
         }),
       });
 
