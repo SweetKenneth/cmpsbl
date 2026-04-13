@@ -10,22 +10,33 @@ CMPSBL provides three access surfaces:
 |------|-----------|---------------|
 | **Substrate Terminal** | Browser-based command console (~600 commands) | Browser (cmpsbl.com) |
 | **CLI** | `@cmpsbl/cli` npm package (66 commands) | Developer's machine |
-| **SDK** | Full `@cmpsbl/*` package ecosystem (11 packages) | Developer's machine / CI/CD |
+| **Mana** | `@cmpsbl/mana` npm package (7 commands) | Developer's machine |
 
 ---
 
 ## Installation
 
 ```bash
+# CLI — terminal interface for the substrate
 npm install -g @cmpsbl/cli
+
+# Mana — Layer 2 attachment engine
+npx mana attach
+# (no global install needed — npx runs it directly)
 ```
 
 ## Authentication
 
 ```bash
+# Option 1: Interactive login (recommended)
 cmpsbl auth login
-# Or set environment variable:
-export CMPSBL_API_KEY=pf_live_xxxxxxxxxxxxx
+
+# Option 2: Environment variable
+export CMPSBL_API_KEY=your_key_here
+
+# Option 3: Register through Mana
+npx mana attach
+# → walks you through email registration → instant API key
 ```
 
 ---
@@ -58,9 +69,10 @@ cmpsbl forge generate [spec]     # Generate artifact
 
 ### Ascension
 ```bash
-cmpsbl ascension upload [file]   # Upload code for evolution
+cmpsbl ascend [file]             # Run Ascension on a file
 cmpsbl ascension status [id]     # Check discovery status
 cmpsbl ascension export [id]     # Export artifact pack
+cmpsbl verify [fingerprint]      # Verify any fingerprint
 ```
 
 ### Diagnostics
@@ -73,21 +85,27 @@ cmpsbl audit recent              # Recent audit entries
 
 ---
 
-## SDK Packages (11)
+## Mana Commands (7)
 
-| Package | Tier | Purpose |
-|---------|------|---------|
-| `@cmpsbl/cli` | Free | Command-line interface |
-| `@cmpsbl/sdk` | Free | Core SDK library |
-| `@cmpsbl/types` | Free | TypeScript type definitions |
-| `@cmpsbl/memory` | Studio | Memory operations |
-| `@cmpsbl/agents` | Creator | Agent deployment and management |
-| `@cmpsbl/ascension` | Creator | Ascension Engine integration |
-| `@cmpsbl/cortex` | Architect | Pipeline orchestration |
-| `@cmpsbl/nexus` | Architect | Provider routing |
-| `@cmpsbl/forge` | Architect | Artifact manufacturing |
-| `@cmpsbl/governance` | Governor | Governance controls |
-| `@cmpsbl/evolution` | Governor | Evolution pipeline management |
+| Command | Description |
+|---------|-------------|
+| `mana attach` | Detect project, authenticate, activate Layer 2 |
+| `mana status` | Show current layer status and active capabilities |
+| `mana config` | View or change your activation level |
+| `mana export` | Re-export the signal file |
+| `mana detach` | Remove the secondary layer (code untouched) |
+| `mana version` | Show version |
+| `mana help` | Show help |
+
+---
+
+## Published npm Packages
+
+| Package | Purpose | Status |
+|---------|---------|--------|
+| `@cmpsbl/cli` | Command-line interface (66 commands) | ✅ Published |
+| `@cmpsbl/mana` | Layer 2 attachment engine | ✅ Published |
+| `@cmpsbl/runtime` | Dual-layer runtime (bundled with CLI) | ✅ Published |
 
 ---
 
@@ -96,12 +114,12 @@ cmpsbl audit recent              # Recent audit entries
 Every user falls into one tier. Higher tiers inherit all permissions from lower:
 
 ```
-Governor ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
+Enterprise ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 ```
 
 | Tier | Terminal Commands | CLI Commands | Key Capabilities |
 |------|-------------------|-------------|-----------------|
-| **Builder** (Included) | ~45 (read-only) | 12 | Dashboard view, status, basic recall |
+| **Builder** (Free) | ~45 (read-only) | 12 | Dashboard view, status, basic recall |
 | **Studio** ($29) | ~120 | 24 | Terminal access, SDK templates, crystallization |
 | **Creator** ($49) | ~280 | 38 | Ascension, agent deployment, DECODE Agent channel |
 | **Architect** ($79) | ~450 | 52 | EVOLUTION Layer proposals, SHADOW Layer runs, mesh telemetry |

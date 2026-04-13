@@ -2,20 +2,48 @@
 
 ---
 
-## Endpoint Pattern
+## Access Model
 
-All requests route through the NEXUS Engine: `POST /api/v1/{primitive}/{action}`
+CMPSBL® uses a **substrate-routed API** — all requests flow through the `pf-substrate` backend function. There is no standalone REST API at a separate domain. All API interactions happen through:
 
-## Request Format
+1. **The website** (cmpsbl.com) — browser-based terminal and Ascension
+2. **The CLI** (`@cmpsbl/cli`) — terminal commands that call the substrate
+3. **Mana** (`@cmpsbl/mana`) — Layer 2 attachment and configuration
+
+## Request Format (CLI / Internal)
+
+All CLI and internal requests use a unified envelope:
 
 ```json
 {
+  "module": "string",
   "action": "string",
-  "payload": {},
-  "options": {
-    "provider": "string (optional)",
-    "model": "string (optional)",
-    "timeout_ms": "number (optional)"
+  "payload": {}
+}
+```
+
+### Example: Validate an API Key
+
+```json
+{
+  "module": "access",
+  "action": "validate_key",
+  "payload": {
+    "api_key": "cmpsbl_bld_xxxxx"
+  }
+}
+```
+
+### Example: Register a Developer
+
+```json
+{
+  "module": "access",
+  "action": "create_key",
+  "payload": {
+    "email": "developer@example.com",
+    "display_name": "Jane Developer",
+    "scopes": ["substrate.read", "substrate.write"]
   }
 }
 ```
@@ -26,12 +54,7 @@ All requests route through the NEXUS Engine: `POST /api/v1/{primitive}/{action}`
 {
   "success": true,
   "data": {},
-  "metadata": {
-    "request_id": "uuid",
-    "primitive": "string",
-    "latency_ms": "number",
-    "tokens_used": "number"
-  }
+  "api_key": "cmpsbl_bld_xxxxx"
 }
 ```
 
@@ -40,78 +63,49 @@ All requests route through the NEXUS Engine: `POST /api/v1/{primitive}/{action}`
 ```json
 {
   "success": false,
-  "error": {
-    "code": "RATE_LIMITED",
-    "message": "Rate limit exceeded. Retry after 30 seconds.",
-    "details": {},
-    "request_id": "uuid"
-  }
+  "error": "Description of what went wrong"
 }
 ```
 
-## Error Codes
+## Authentication
 
-| HTTP | Code | Description |
-|------|------|-------------|
-| 400 | `INVALID_REQUEST` | Malformed request body |
-| 401 | `UNAUTHORIZED` | Missing or invalid API key |
-| 403 | `FORBIDDEN` | Key lacks required scope |
-| 404 | `NOT_FOUND` | Resource does not exist |
-| 422 | `VALIDATION_ERROR` | Request failed validation |
-| 429 | `RATE_LIMITED` | Rate limit exceeded |
-| 500 | `INTERNAL_ERROR` | System error |
-| 502 | `PROVIDER_ERROR` | AI provider returned error |
-| 503 | `SERVICE_UNAVAILABLE` | Primitive circuit breaker open |
-| 504 | `TIMEOUT` | Request exceeded timeout |
+Include your API key in requests:
 
-## Rate Limit Headers
+```bash
+# Via environment variable (recommended)
+export CMPSBL_API_KEY=your_key_here
 
-Every response includes:
-```
-X-RateLimit-Limit: 60
-X-RateLimit-Remaining: 45
-X-RateLimit-Reset: 1709312400
+# Via CLI stored credentials
+# Keys are saved to ~/.cmpsbl/credentials after login
 ```
 
-## Primitive Endpoints
+## Available Modules
 
-### Agents
+| Module | Actions | Access |
+|--------|---------|--------|
+| `access` | `validate_key`, `create_key`, `revoke_key` | All tiers |
+| `memory` | `store`, `retrieve`, `search` | Studio+ |
+| `ascension` | `upload`, `status`, `export` | Creator+ |
+| `cli` | `sync_state`, `pull_state`, `push_state` | All tiers |
 
-| Primitive | Actions | Description |
-|-----------|---------|-------------|
-| DECODE | `process`, `stream` | Natural language understanding |
-| ENCODE | `generate`, `format` | Content and code generation |
-| VISION | `analyze`, `render` | Telemetry and visual processing |
-| HARVEST | `ingest`, `normalize` | Data collection and ETL |
-| LINGUA | `translate`, `detect` | Translation and language detection |
-| COMPASS | `trends`, `navigate` | Strategic trend analysis |
-| SOVEREIGN | `classify`, `comply` | Jurisdiction compliance |
-| MEDIC | `diagnose`, `repair` | Diagnostics and self-repair |
-| INCLUSIVE | `scan`, `report` | Accessibility scanning |
+## Rate Limits
 
-### Engines
+| Tier | Requests/Minute | Requests/Day |
+|------|----------------|--------------|
+| Builder (free) | 10 | 100 |
+| Studio ($29) | 30 | 1,000 |
+| Creator ($49) | 60 | 5,000 |
+| Architect ($79) | 120 | 20,000 |
+| Enterprise | Custom | Custom |
 
-| Primitive | Actions | Description |
-|-----------|---------|-------------|
-| NEXUS | `route`, `health`, `consensus` | Routing, health, multi-model consensus |
-| CORTEX | `pipeline`, `compose` | Multi-step orchestration |
-| ORACLE | `predict`, `simulate` | Forecasting and scenarios |
-| FORGE | `generate`, `template` | Artifact manufacturing |
-| ECONOMY | `usage`, `quota`, `cost` | Usage tracking and billing |
+## API Key Scopes
 
-### Organs
-
-| Primitive | Actions | Description |
-|-----------|---------|-------------|
-| MEMORY | `store`, `retrieve`, `search` | Persistent memory operations |
-| BRAIN | `reason`, `learn` | Reasoning and pattern recognition |
-
-## Versioning
-
-- API versions in URL: `/api/v1/`, `/api/v2/`
-- Minor changes are backward compatible
-- Breaking changes require a new version
-- Deprecated versions supported for 6 months
+| Scope | Description |
+|-------|-------------|
+| `substrate.read` | Read access to primitives and status |
+| `substrate.write` | Write access (store memory, submit jobs) |
+| `ascension` | Run Ascension scans |
+| `mana.attach` | Configure Layer 2 attachment |
 
 ---
 
