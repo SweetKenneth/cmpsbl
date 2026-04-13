@@ -1,5 +1,5 @@
 {
-  "name": "mana",
+  "name": "@cmpsbl/mana",
   "version": "1.0.0",
   "description": "Mana — Silent software symbiosis. One command to enhance and protect your code without modifying it.",
   "main": "dist/index.js",
