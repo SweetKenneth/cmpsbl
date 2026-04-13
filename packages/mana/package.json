@@ -21,14 +21,16 @@
   "keywords": [
     "mana",
     "cmpsbl",
-    "ascension",
-    "governance",
-    "observability",
-    "defense",
     "layer2",
     "code-protection",
     "runtime-enhancement",
-    "software-symbiosis"
+    "software-symbiosis",
+    "observability",
+    "defense",
+    "governance",
+    "ascension",
+    "developer-tools",
+    "cli"
   ],
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
