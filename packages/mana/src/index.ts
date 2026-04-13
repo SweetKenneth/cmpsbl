@@ -365,6 +365,10 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
       if (validation.displayName) {
         saveCredentials(existing, validation.displayName);
       }
+      /* Governor ceremony — supreme authority recognized */
+      if (validation.substrateRole === 'governor' && isTTY()) {
+        await manaGovernorCeremony(validation.displayName ?? 'Governor');
+      }
       return existing;
     }
     try { fs.unlinkSync(CREDS_FILE); } catch { /* already gone */ }
