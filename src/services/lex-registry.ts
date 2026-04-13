@@ -117,3 +117,32 @@ export async function generatePackageHash(content: string): Promise<string> {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
+
+/** Audit chain verification result */
+export interface ChainVerificationResult {
+  registry_id: string;
+  chain_intact: boolean;
+  total_events: number;
+  verified_events: number;
+  first_break_at: number | null;
+  first_break_event_id: string | null;
+  expected_hash: string | null;
+  actual_hash: string | null;
+  terminal_hash: string | null;
+}
+
+/** Verify audit chain integrity for a registry entry */
+export async function verifyAuditChain(registryId: string): Promise<ChainVerificationResult> {
+  const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+  const url = new URL(`https://${projectId}.supabase.co/functions/v1/lex-registry-verify-chain`);
+  url.searchParams.set("registry_id", registryId);
+
+  const res = await fetch(url.toString(), {
+    headers: {
+      apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+
+  if (!res.ok) throw new Error("Chain verification failed");
+  return res.json();
+}

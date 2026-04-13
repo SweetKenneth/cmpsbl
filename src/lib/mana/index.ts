@@ -95,3 +95,17 @@ export type {
   AscensionManifest,
   DeploymentSummary,
 } from './manifest-consumer';
+
+// Session-scoped engine (Item #3 — replaces global state for multi-module safety)
+export { createSession } from './session';
+export type { ManaSession } from './session';
+
+// Registry-to-runtime bridge (Item #11 — Lex Registry → runtime enforcement)
+export {
+  enforceRegistryStatus,
+  clearHydratedRules,
+  hasRegistryEnforcement,
+  getEnforcedPackages,
+  clearAllRegistryRules,
+} from './registry-bridge';
+export type { RegistryEnforcementResult } from './registry-bridge';
