@@ -22059,4 +22059,3 @@ async function handleSession(
       );
   }
 }
-}
