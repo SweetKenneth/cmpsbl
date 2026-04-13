@@ -29,16 +29,6 @@ export interface LexRegistration {
 export async function lookupRegistry(
   params: { hash?: string; name?: string }
 ): Promise<LexRegistryEntry> {
-  const { data, error } = await supabase.functions.invoke("lex-registry-lookup", {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-  });
-
-  if (error) throw new Error("Registry lookup failed");
-
-  // Edge function returns via GET — supabase.functions.invoke sends POST by default,
-  // so we use the query-param approach via direct fetch instead
   const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
   const url = new URL(`https://${projectId}.supabase.co/functions/v1/lex-registry-lookup`);
   if (params.hash) url.searchParams.set("hash", params.hash);
@@ -77,26 +67,46 @@ export async function getMyRegistrations(): Promise<LexRegistryEntry[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await supabase
-    .from("lex_registry" as string)
-    .select("*")
-    .eq("registrant_user_id", user.id)
-    .order("registered_at", { ascending: false });
+  // Use rpc-style query to avoid type issues with new tables
+  const { data, error } = await (supabase as unknown as { from: (t: string) => unknown })
+    .from("lex_registry") as { data: unknown; error: unknown };
 
-  if (error) throw new Error("Failed to fetch registrations");
-  return data as unknown as LexRegistryEntry[];
+  // Direct fetch approach for type safety
+  const projectUrl = import.meta.env.VITE_SUPABASE_URL;
+  const apiKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const session = await supabase.auth.getSession();
+  const token = session.data.session?.access_token;
+
+  const res = await fetch(
+    `${projectUrl}/rest/v1/lex_registry?registrant_user_id=eq.${user.id}&order=registered_at.desc`,
+    {
+      headers: {
+        apikey: apiKey,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch registrations");
+  return res.json();
 }
 
 /** Get audit trail for a registry entry */
-export async function getRegistryAudit(registryId: string) {
-  const { data, error } = await supabase
-    .from("lex_registry_events" as string)
-    .select("*")
-    .eq("registry_id", registryId)
-    .order("created_at", { ascending: true });
+export async function getRegistryAudit(registryId: string): Promise<unknown[]> {
+  const projectUrl = import.meta.env.VITE_SUPABASE_URL;
+  const apiKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-  if (error) throw new Error("Failed to fetch audit trail");
-  return data;
+  const res = await fetch(
+    `${projectUrl}/rest/v1/lex_registry_events?registry_id=eq.${registryId}&order=created_at.asc`,
+    {
+      headers: {
+        apikey: apiKey,
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch audit trail");
+  return res.json();
 }
 
 /** Generate SHA-256 hash of a string (for client-side hash generation) */
