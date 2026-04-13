@@ -331,7 +331,7 @@ function getAccessValidationEndpoint(): string {
   return SUBSTRATE_ENDPOINT_FALLBACK;
 }
 
-async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boolean; error?: string }> {
+async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boolean; displayName?: string; error?: string }> {
   const normalized = normalizeApiKey(apiKey);
   if (!normalized || normalized.startsWith('local-')) {
     return { valid: false, error: 'Invalid API key' };
@@ -350,7 +350,23 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boole
 
     const result = await res.json() as Record<string, unknown>;
     if (result.success === true && result.valid === true) {
-      return { valid: true };
+      const devRecord = typeof result.developer === 'object' && result.developer !== null
+        ? result.developer as Record<string, unknown>
+        : undefined;
+      const displayName = (
+        result.display_name ??
+        result.displayName ??
+        devRecord?.display_name ??
+        devRecord?.displayName ??
+        devRecord?.name
+      ) as string | undefined;
+
+      /* Update stored credentials with confirmed display name */
+      if (displayName) {
+        saveStoredKey(normalized, displayName);
+      }
+
+      return { valid: true, displayName };
     }
 
     return {
