@@ -258,6 +258,12 @@ export default function RestorationShop() {
       setDetectedLang(result.metrics.language || 'TypeScript');
       haptic('success');
       setPhase('diagnostic');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Scan failed unexpectedly';
+      toast.error('Diagnostic Scan Failed', {
+        description: msg.slice(0, 300),
+        duration: 8000,
+      });
     } finally {
       setIsScanning(false);
     }
