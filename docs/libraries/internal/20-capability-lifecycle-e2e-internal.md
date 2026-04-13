@@ -519,6 +519,7 @@ Health is resolved from two independent signals merged via worst-of-both:
 | 11 — Migrate product reporters | 🔲 Pending | Replace ad-hoc report generation with constrained reporter |
 | 12 — Update verification UI | 🔲 Pending | Show decomposed CJPI on `/verify/:fingerprint` |
 | 13 — Export uniformity audit | 🔲 Pending | Ensure all scanners produce identical artifact structure |
+| 14 — Smart Repo Scanner (Beta) | ✅ Complete | GitHub URL → classify → confirm → download → scan (Phase 9, see §18) |
 
 ---
 
