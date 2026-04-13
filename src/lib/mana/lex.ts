@@ -29,7 +29,8 @@ export function registerRule(
   capability: ManaCapability,
   target: string,
   verdict: LexVerdict,
-  reason: string
+  reason: string,
+  priority = 100
 ): LexRule {
   const rule: LexRule = {
     id: generateRuleId(),
@@ -38,6 +39,7 @@ export function registerRule(
     verdict,
     reason,
     createdAt: Date.now(),
+    priority,
   };
   rules.set(rule.id, rule);
   return rule;
@@ -52,7 +54,13 @@ export function evaluate(
   target: string,
   mode: 'permissive' | 'strict'
 ): { verdict: LexVerdict; rule: LexRule | null } {
-  for (const rule of rules.values()) {
+  // Sort rules by priority (lower = higher priority), then creation order
+  const sorted = Array.from(rules.values()).sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority - b.priority;
+    return a.createdAt - b.createdAt;
+  });
+
+  for (const rule of sorted) {
     const capMatch = rule.capability === capability || rule.capability === ('*' as ManaCapability);
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
