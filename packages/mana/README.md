@@ -2,9 +2,9 @@
 
 > **Silent Software Symbiosis** — One command to enhance and protect your code.
 
-[![npm](https://img.shields.io/npm/v/mana)](https://www.npmjs.com/package/mana)
-[![license](https://img.shields.io/npm/l/mana)](https://opensource.org/licenses/Apache-2.0)
-[![node](https://img.shields.io/node/v/mana)](https://nodejs.org)
+[![npm](https://img.shields.io/npm/v/@cmpsbl/mana)](https://www.npmjs.com/package/@cmpsbl/mana)
+[![license](https://img.shields.io/npm/l/@cmpsbl/mana)](https://opensource.org/licenses/Apache-2.0)
+[![node](https://img.shields.io/node/v/@cmpsbl/mana)](https://nodejs.org)
 
 Mana attaches an invisible second layer to your software. Your original source code is **never modified**. Capabilities like observability, defense, governance, and performance activate at the function boundary — not inside your files.
 
