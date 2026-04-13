@@ -426,7 +426,7 @@ export const CAPABILITY_CONTRACTS: ReadonlyArray<CapabilityContract> = [
   { capability: 'oracle_predictor', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_predictor' },
   { capability: 'oracle_anomaly_alert', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'anomaly_detector' },
   { capability: 'oracle_causal_trace', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_causal_trace' },
-];
+] as const);
 
 /** O(1) contract lookup — pre-computed + frozen from CAPABILITY_CONTRACTS */
 export const CONTRACT_MAP: Readonly<Record<ManaCapability, CapabilityContract>> = Object.freeze(
