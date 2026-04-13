@@ -37,7 +37,8 @@ import {
   setGoal, getGoal, advanceGoal, clearGoal,
   getDreamDigestSinceLastSession, markDreamDigestChecked, addDreamDigestEntry,
   isFirstRun, hasIntroduced, markIntroduced,
-  type WelcomeBackData,
+  loadState, mergeCloudState,
+  type WelcomeBackData, type SessionState,
 } from './session';
 import { runInstallWizard } from './install-wizard';
 import {
