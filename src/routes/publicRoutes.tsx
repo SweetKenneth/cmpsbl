@@ -79,6 +79,7 @@ const AdminCognitiveUploads = lazy(() => import("@/pages/AdminCognitiveUploads")
 const PersistentMemoryDocs = lazy(() => import("@/pages/docs/PersistentMemoryDocs"));
 const DocsReader = lazy(() => import("@/pages/docs/DocsReader"));
 const UserDocsReader = lazy(() => import("@/pages/docs/UserDocsReader"));
+const EnterpriseDocs = lazy(() => import("@/pages/docs/EnterpriseDocs"));
 const AcademicV13Docs = lazy(() => import("@/pages/docs/AcademicV13Docs"));
 const RuntimeReference = lazy(() => import("@/pages/docs/RuntimeReference"));
 const EngineDocsPage = lazy(() => import("@/pages/docs/EngineDocsPage"));
@@ -191,7 +192,8 @@ export const publicRoutes = (
     <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
     <Route path="/lab" element={<PhaseGateRoute><ExperimentationLab /></PhaseGateRoute>} />
     <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
-    <Route path="/docs" element={<Navigate to="/documentation" replace />} />
+    <Route path="/docs" element={<EnterpriseDocs />} />
+    <Route path="/docs/:slug" element={<EnterpriseDocs />} />
     <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
     <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
     <Route path="/docs/runtime" element={<RuntimeReference />} />
