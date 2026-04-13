@@ -15,6 +15,7 @@ import type {
   AttachmentState,
   AttachmentPoint,
   ManaCapability,
+  ManaCapabilityOrWildcard,
   ManaConfig,
   ManaManifest,
   ManaProof,
