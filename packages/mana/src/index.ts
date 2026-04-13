@@ -566,9 +566,18 @@ function detectSourceFiles(dir: string): DetectedProject {
   const langMap: Record<string, string> = {
     '.ts': 'TypeScript', '.js': 'JavaScript', '.tsx': 'TypeScript', '.jsx': 'JavaScript',
     '.py': 'Python', '.rs': 'Rust', '.go': 'Go', '.rb': 'Ruby', '.php': 'PHP',
-    '.java': 'Java', '.kt': 'Kotlin', '.scala': 'Scala', '.cs': 'C#', '.swift': 'Swift',
-    '.dart': 'Dart', '.c': 'C', '.cpp': 'C++', '.sol': 'Solidity', '.zig': 'Zig',
-    '.hs': 'Haskell', '.ex': 'Elixir', '.erl': 'Erlang', '.lua': 'Lua',
+    '.java': 'Java', '.kt': 'Kotlin', '.scala': 'Scala', '.cs': 'C#', '.fs': 'F#',
+    '.swift': 'Swift', '.dart': 'Dart', '.c': 'C', '.cpp': 'C++', '.h': 'C',
+    '.hpp': 'C++', '.sol': 'Solidity', '.zig': 'Zig', '.hs': 'Haskell',
+    '.ex': 'Elixir', '.exs': 'Elixir', '.erl': 'Erlang', '.lua': 'Lua',
+    '.ml': 'OCaml', '.nim': 'Nim', '.cr': 'Crystal', '.d': 'D',
+    '.jl': 'Julia', '.r': 'R', '.pl': 'Perl', '.clj': 'Clojure',
+    '.f90': 'Fortran', '.f95': 'Fortran', '.f03': 'Fortran',
+    '.v': 'Verilog', '.sv': 'SystemVerilog', '.vhd': 'VHDL', '.vhdl': 'VHDL',
+    '.cu': 'CUDA', '.glsl': 'GLSL', '.hlsl': 'HLSL', '.wgsl': 'WGSL',
+    '.metal': 'Metal', '.cl': 'OpenCL',
+    '.sh': 'Bash', '.bash': 'Bash', '.ps1': 'PowerShell',
+    '.groovy': 'Groovy', '.vy': 'Vyper', '.move': 'Move', '.cairo': 'Cairo',
   };
   const language = langMap[topExt] ?? 'Source Code';
 
@@ -972,6 +981,446 @@ end
 `;
 }
 
+function emitScala(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'c')}
+
+package mana
+
+object ManaSignal {
+  val active: Boolean = true
+  val project: String = ${JSON.stringify(d.project)}
+  val language: String = ${JSON.stringify(d.language)}
+  val framework: Option[String] = ${d.framework ? `Some(${JSON.stringify(d.framework)})` : 'None'}
+  val entryPoint: Option[String] = ${d.entryPoint ? `Some(${JSON.stringify(d.entryPoint)})` : 'None'}
+  val fileCount: Int = ${d.fileCount}
+  val level: String = ${JSON.stringify(d.level)}
+  val groups: Seq[String] = Seq(${groups})
+  val operator: String = ${JSON.stringify(d.operator)}
+  val fingerprint: String = ${JSON.stringify(d.fingerprint)}
+  val activatedAt: String = ${JSON.stringify(d.activatedAt)}
+}
+`;
+}
+
+function emitHaskell(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'dash')}
+
+module Mana.Signal where
+
+manaSignal :: [(String, String)]
+manaSignal =
+  [ ("active", "true")
+  , ("project", ${JSON.stringify(d.project)})
+  , ("language", ${JSON.stringify(d.language)})
+  , ("framework", ${JSON.stringify(d.framework ?? '')})
+  , ("entryPoint", ${JSON.stringify(d.entryPoint ?? '')})
+  , ("fileCount", "${d.fileCount}")
+  , ("level", ${JSON.stringify(d.level)})
+  , ("operator", ${JSON.stringify(d.operator)})
+  , ("fingerprint", ${JSON.stringify(d.fingerprint)})
+  , ("activatedAt", ${JSON.stringify(d.activatedAt)})
+  ]
+
+manaGroups :: [String]
+manaGroups = [${groups}]
+`;
+}
+
+function emitZig(d: SignalData): string {
+  return `${wrapBlockComment(d, 'c')}
+
+pub const ManaSignal = struct {
+    active: bool = true,
+    project: []const u8 = ${JSON.stringify(d.project)},
+    language: []const u8 = ${JSON.stringify(d.language)},
+    file_count: usize = ${d.fileCount},
+    level: []const u8 = ${JSON.stringify(d.level)},
+    operator: []const u8 = ${JSON.stringify(d.operator)},
+    fingerprint: []const u8 = ${JSON.stringify(d.fingerprint)},
+    activated_at: []const u8 = ${JSON.stringify(d.activatedAt)},
+};
+
+pub const MANA_SIGNAL = ManaSignal{};
+`;
+}
+
+function emitC(d: SignalData): string {
+  return `${wrapBlockComment(d, 'c')}
+
+#ifndef MANA_SIGNAL_H
+#define MANA_SIGNAL_H
+
+#define MANA_ACTIVE         1
+#define MANA_PROJECT        ${JSON.stringify(d.project)}
+#define MANA_LANGUAGE       ${JSON.stringify(d.language)}
+#define MANA_FRAMEWORK      ${d.framework ? JSON.stringify(d.framework) : '""'}
+#define MANA_FILE_COUNT     ${d.fileCount}
+#define MANA_LEVEL          ${JSON.stringify(d.level)}
+#define MANA_OPERATOR       ${JSON.stringify(d.operator)}
+#define MANA_FINGERPRINT    ${JSON.stringify(d.fingerprint)}
+#define MANA_ACTIVATED_AT   ${JSON.stringify(d.activatedAt)}
+
+#endif /* MANA_SIGNAL_H */
+`;
+}
+
+function emitCpp(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'c')}
+
+#pragma once
+#include <string>
+#include <vector>
+
+namespace mana {
+
+struct Signal {
+    static constexpr bool active = true;
+    static constexpr const char* project = ${JSON.stringify(d.project)};
+    static constexpr const char* language = ${JSON.stringify(d.language)};
+    static constexpr const char* framework = ${d.framework ? JSON.stringify(d.framework) : '""'};
+    static constexpr const char* entryPoint = ${d.entryPoint ? JSON.stringify(d.entryPoint) : '""'};
+    static constexpr int fileCount = ${d.fileCount};
+    static constexpr const char* level = ${JSON.stringify(d.level)};
+    static constexpr const char* operatorName = ${JSON.stringify(d.operator)};
+    static constexpr const char* fingerprint = ${JSON.stringify(d.fingerprint)};
+    static constexpr const char* activatedAt = ${JSON.stringify(d.activatedAt)};
+};
+
+inline std::vector<std::string> groups() { return {${groups}}; }
+
+} // namespace mana
+`;
+}
+
+function emitLua(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'dash')}
+
+local ManaSignal = {
+  active = true,
+  project = ${JSON.stringify(d.project)},
+  language = ${JSON.stringify(d.language)},
+  framework = ${d.framework ? JSON.stringify(d.framework) : 'nil'},
+  entry_point = ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'nil'},
+  file_count = ${d.fileCount},
+  level = ${JSON.stringify(d.level)},
+  groups = {${groups}},
+  operator = ${JSON.stringify(d.operator)},
+  fingerprint = ${JSON.stringify(d.fingerprint)},
+  activated_at = ${JSON.stringify(d.activatedAt)},
+}
+
+return ManaSignal
+`;
+}
+
+function emitErlang(d: SignalData): string {
+  const groups = d.groups.map(g => `<<"${g}">>`).join(', ');
+  return `${wrapBlockComment(d, 'c')}
+
+-module(mana_signal).
+-export([get/0]).
+
+get() ->
+  #{
+    active => true,
+    project => <<"${d.project}">>,
+    language => <<"${d.language}">>,
+    framework => ${d.framework ? `<<"${d.framework}">>` : 'undefined'},
+    file_count => ${d.fileCount},
+    level => <<"${d.level}">>,
+    groups => [${groups}],
+    operator => <<"${d.operator}">>,
+    fingerprint => <<"${d.fingerprint}">>,
+    activated_at => <<"${d.activatedAt}">>
+  }.
+`;
+}
+
+function emitKotlin(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'c')}
+
+package mana
+
+object ManaSignal {
+    const val ACTIVE = true
+    const val PROJECT = ${JSON.stringify(d.project)}
+    const val LANGUAGE = ${JSON.stringify(d.language)}
+    val FRAMEWORK: String? = ${d.framework ? JSON.stringify(d.framework) : 'null'}
+    val ENTRY_POINT: String? = ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'null'}
+    const val FILE_COUNT = ${d.fileCount}
+    const val LEVEL = ${JSON.stringify(d.level)}
+    val GROUPS = listOf(${groups})
+    const val OPERATOR = ${JSON.stringify(d.operator)}
+    const val FINGERPRINT = ${JSON.stringify(d.fingerprint)}
+    const val ACTIVATED_AT = ${JSON.stringify(d.activatedAt)}
+}
+`;
+}
+
+function emitNim(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'hash')}
+
+const
+  manaActive* = true
+  manaProject* = ${JSON.stringify(d.project)}
+  manaLanguage* = ${JSON.stringify(d.language)}
+  manaFramework* = ${d.framework ? JSON.stringify(d.framework) : '""'}
+  manaFileCount* = ${d.fileCount}
+  manaLevel* = ${JSON.stringify(d.level)}
+  manaGroups* = @[${groups}]
+  manaOperator* = ${JSON.stringify(d.operator)}
+  manaFingerprint* = ${JSON.stringify(d.fingerprint)}
+  manaActivatedAt* = ${JSON.stringify(d.activatedAt)}
+`;
+}
+
+function emitSolidity(d: SignalData): string {
+  return `// SPDX-License-Identifier: Apache-2.0
+${wrapBlockComment(d, 'c')}
+
+pragma solidity ^0.8.20;
+
+library ManaSignal {
+    string constant PROJECT = ${JSON.stringify(d.project)};
+    string constant LANGUAGE = ${JSON.stringify(d.language)};
+    uint256 constant FILE_COUNT = ${d.fileCount};
+    string constant LEVEL = ${JSON.stringify(d.level)};
+    string constant OPERATOR = ${JSON.stringify(d.operator)};
+    string constant FINGERPRINT = ${JSON.stringify(d.fingerprint)};
+    string constant ACTIVATED_AT = ${JSON.stringify(d.activatedAt)};
+}
+`;
+}
+
+function emitR(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'hash')}
+
+mana_signal <- list(
+  active = TRUE,
+  project = ${JSON.stringify(d.project)},
+  language = ${JSON.stringify(d.language)},
+  framework = ${d.framework ? JSON.stringify(d.framework) : 'NA'},
+  entry_point = ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'NA'},
+  file_count = ${d.fileCount}L,
+  level = ${JSON.stringify(d.level)},
+  groups = c(${groups}),
+  operator = ${JSON.stringify(d.operator)},
+  fingerprint = ${JSON.stringify(d.fingerprint)},
+  activated_at = ${JSON.stringify(d.activatedAt)}
+)
+`;
+}
+
+function emitJulia(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'hash')}
+
+module ManaSignal
+
+const ACTIVE = true
+const PROJECT = ${JSON.stringify(d.project)}
+const LANGUAGE = ${JSON.stringify(d.language)}
+const FRAMEWORK = ${d.framework ? JSON.stringify(d.framework) : 'nothing'}
+const ENTRY_POINT = ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'nothing'}
+const FILE_COUNT = ${d.fileCount}
+const LEVEL = ${JSON.stringify(d.level)}
+const GROUPS = [${groups}]
+const OPERATOR = ${JSON.stringify(d.operator)}
+const FINGERPRINT = ${JSON.stringify(d.fingerprint)}
+const ACTIVATED_AT = ${JSON.stringify(d.activatedAt)}
+
+end # module
+`;
+}
+
+function emitPerl(d: SignalData): string {
+  const groups = d.groups.map(g => `'${g}'`).join(', ');
+  return `${wrapBlockComment(d, 'hash')}
+
+package Mana::Signal;
+use strict;
+use warnings;
+
+use constant MANA_SIGNAL => {
+    active       => 1,
+    project      => ${JSON.stringify(d.project)},
+    language     => ${JSON.stringify(d.language)},
+    framework    => ${d.framework ? JSON.stringify(d.framework) : 'undef'},
+    entry_point  => ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'undef'},
+    file_count   => ${d.fileCount},
+    level        => ${JSON.stringify(d.level)},
+    groups       => [${groups}],
+    operator     => ${JSON.stringify(d.operator)},
+    fingerprint  => ${JSON.stringify(d.fingerprint)},
+    activated_at => ${JSON.stringify(d.activatedAt)},
+};
+
+1;
+`;
+}
+
+function emitOCaml(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join('; ');
+  return `${wrapBlockComment(d, 'c')}
+
+let mana_signal = object
+  method active = true
+  method project = ${JSON.stringify(d.project)}
+  method language = ${JSON.stringify(d.language)}
+  method framework = ${d.framework ? `Some ${JSON.stringify(d.framework)}` : 'None'}
+  method file_count = ${d.fileCount}
+  method level = ${JSON.stringify(d.level)}
+  method groups = [${groups}]
+  method operator_ = ${JSON.stringify(d.operator)}
+  method fingerprint = ${JSON.stringify(d.fingerprint)}
+  method activated_at = ${JSON.stringify(d.activatedAt)}
+end
+`;
+}
+
+function emitFSharp(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join('; ');
+  return `${wrapBlockComment(d, 'c')}
+
+module Mana.Signal
+
+let manaSignal = {|
+    Active = true
+    Project = ${JSON.stringify(d.project)}
+    Language = ${JSON.stringify(d.language)}
+    Framework = ${d.framework ? `Some ${JSON.stringify(d.framework)}` : 'None'}
+    EntryPoint = ${d.entryPoint ? `Some ${JSON.stringify(d.entryPoint)}` : 'None'}
+    FileCount = ${d.fileCount}
+    Level = ${JSON.stringify(d.level)}
+    Groups = [${groups}]
+    Operator = ${JSON.stringify(d.operator)}
+    Fingerprint = ${JSON.stringify(d.fingerprint)}
+    ActivatedAt = ${JSON.stringify(d.activatedAt)}
+|}
+`;
+}
+
+function emitCrystal(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'hash')}
+
+module Mana
+  SIGNAL = {
+    active:       true,
+    project:      ${JSON.stringify(d.project)},
+    language:     ${JSON.stringify(d.language)},
+    framework:    ${d.framework ? JSON.stringify(d.framework) : 'nil'},
+    entry_point:  ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'nil'},
+    file_count:   ${d.fileCount},
+    level:        ${JSON.stringify(d.level)},
+    groups:       [${groups}],
+    operator:     ${JSON.stringify(d.operator)},
+    fingerprint:  ${JSON.stringify(d.fingerprint)},
+    activated_at: ${JSON.stringify(d.activatedAt)},
+  }
+end
+`;
+}
+
+function emitD(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(', ');
+  return `${wrapBlockComment(d, 'c')}
+
+module mana_signal;
+
+enum MANA_PROJECT = ${JSON.stringify(d.project)};
+enum MANA_LANGUAGE = ${JSON.stringify(d.language)};
+enum MANA_FILE_COUNT = ${d.fileCount};
+enum MANA_LEVEL = ${JSON.stringify(d.level)};
+enum MANA_OPERATOR = ${JSON.stringify(d.operator)};
+enum MANA_FINGERPRINT = ${JSON.stringify(d.fingerprint)};
+enum MANA_ACTIVATED_AT = ${JSON.stringify(d.activatedAt)};
+immutable string[] MANA_GROUPS = [${groups}];
+`;
+}
+
+function emitFortran(d: SignalData): string {
+  return `! ${brandedBlockComment(d).split('\\n').join('\\n! ')}
+
+module mana_signal
+  implicit none
+  character(len=*), parameter :: MANA_PROJECT = ${JSON.stringify(d.project)}
+  character(len=*), parameter :: MANA_LANGUAGE = ${JSON.stringify(d.language)}
+  integer, parameter :: MANA_FILE_COUNT = ${d.fileCount}
+  character(len=*), parameter :: MANA_LEVEL = ${JSON.stringify(d.level)}
+  character(len=*), parameter :: MANA_OPERATOR = ${JSON.stringify(d.operator)}
+  character(len=*), parameter :: MANA_FINGERPRINT = ${JSON.stringify(d.fingerprint)}
+  character(len=*), parameter :: MANA_ACTIVATED_AT = ${JSON.stringify(d.activatedAt)}
+end module mana_signal
+`;
+}
+
+function emitBash(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(' ');
+  return `#!/usr/bin/env bash
+${wrapBlockComment(d, 'hash')}
+
+MANA_ACTIVE=true
+MANA_PROJECT=${JSON.stringify(d.project)}
+MANA_LANGUAGE=${JSON.stringify(d.language)}
+MANA_FRAMEWORK=${d.framework ? JSON.stringify(d.framework) : '""'}
+MANA_FILE_COUNT=${d.fileCount}
+MANA_LEVEL=${JSON.stringify(d.level)}
+MANA_GROUPS=(${groups})
+MANA_OPERATOR=${JSON.stringify(d.operator)}
+MANA_FINGERPRINT=${JSON.stringify(d.fingerprint)}
+MANA_ACTIVATED_AT=${JSON.stringify(d.activatedAt)}
+`;
+}
+
+function emitClojure(d: SignalData): string {
+  const groups = d.groups.map(g => `"${g}"`).join(' ');
+  return `${wrapBlockComment(d, 'c')}
+
+(ns mana.signal)
+
+(def mana-signal
+  {:active       true
+   :project      ${JSON.stringify(d.project)}
+   :language     ${JSON.stringify(d.language)}
+   :framework    ${d.framework ? JSON.stringify(d.framework) : 'nil'}
+   :entry-point  ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'nil'}
+   :file-count   ${d.fileCount}
+   :level        ${JSON.stringify(d.level)}
+   :groups       [${groups}]
+   :operator     ${JSON.stringify(d.operator)}
+   :fingerprint  ${JSON.stringify(d.fingerprint)}
+   :activated-at ${JSON.stringify(d.activatedAt)}})
+`;
+}
+
+function emitGroovy(d: SignalData): string {
+  const groups = d.groups.map(g => `'${g}'`).join(', ');
+  return `${wrapBlockComment(d, 'c')}
+
+class ManaSignal {
+    static final ACTIVE = true
+    static final PROJECT = ${JSON.stringify(d.project)}
+    static final LANGUAGE = ${JSON.stringify(d.language)}
+    static final FRAMEWORK = ${d.framework ? JSON.stringify(d.framework) : 'null'}
+    static final ENTRY_POINT = ${d.entryPoint ? JSON.stringify(d.entryPoint) : 'null'}
+    static final FILE_COUNT = ${d.fileCount}
+    static final LEVEL = ${JSON.stringify(d.level)}
+    static final GROUPS = [${groups}]
+    static final OPERATOR = ${JSON.stringify(d.operator)}
+    static final FINGERPRINT = ${JSON.stringify(d.fingerprint)}
+    static final ACTIVATED_AT = ${JSON.stringify(d.activatedAt)}
+}
+`;
+}
+
 /** Fallback: JSON with a branded wrapper for unsupported languages */
 function emitFallbackJSON(d: SignalData): string {
   return JSON.stringify({
@@ -1001,15 +1450,55 @@ function getEmitter(language: string): LangEmitter {
     case 'Java':
       return { filename: 'ManaSignal.java', emit: emitJava };
     case 'Kotlin':
-      return { filename: 'ManaSignal.kt', emit: emitJava }; // Kotlin reads Java fine
+      return { filename: 'ManaSignal.kt', emit: emitKotlin };
     case 'C#':
       return { filename: 'ManaSignal.cs', emit: emitCSharp };
+    case 'F#':
+      return { filename: 'ManaSignal.fs', emit: emitFSharp };
     case 'Swift':
       return { filename: 'ManaSignal.swift', emit: emitSwift };
     case 'Dart':
       return { filename: 'mana_signal.dart', emit: emitDart };
     case 'Elixir':
       return { filename: 'mana_signal.ex', emit: emitElixir };
+    case 'Erlang':
+      return { filename: 'mana_signal.erl', emit: emitErlang };
+    case 'Scala':
+      return { filename: 'ManaSignal.scala', emit: emitScala };
+    case 'Haskell':
+      return { filename: 'ManaSignal.hs', emit: emitHaskell };
+    case 'Zig':
+      return { filename: 'mana_signal.zig', emit: emitZig };
+    case 'C':
+      return { filename: 'mana_signal.h', emit: emitC };
+    case 'C++':
+      return { filename: 'mana_signal.hpp', emit: emitCpp };
+    case 'Lua':
+      return { filename: 'mana_signal.lua', emit: emitLua };
+    case 'Nim':
+      return { filename: 'mana_signal.nim', emit: emitNim };
+    case 'Crystal':
+      return { filename: 'mana_signal.cr', emit: emitCrystal };
+    case 'D':
+      return { filename: 'mana_signal.d', emit: emitD };
+    case 'Solidity':
+      return { filename: 'ManaSignal.sol', emit: emitSolidity };
+    case 'R':
+      return { filename: 'mana_signal.R', emit: emitR };
+    case 'Julia':
+      return { filename: 'ManaSignal.jl', emit: emitJulia };
+    case 'Perl':
+      return { filename: 'Mana/Signal.pm', emit: emitPerl };
+    case 'OCaml':
+      return { filename: 'mana_signal.ml', emit: emitOCaml };
+    case 'Clojure':
+      return { filename: 'mana_signal.clj', emit: emitClojure };
+    case 'Fortran':
+      return { filename: 'mana_signal.f90', emit: emitFortran };
+    case 'Bash':
+      return { filename: 'mana_signal.sh', emit: emitBash };
+    case 'Groovy':
+      return { filename: 'ManaSignal.groovy', emit: emitGroovy };
     default:
       return { filename: 'mana.signal.json', emit: emitFallbackJSON };
   }
@@ -1496,7 +1985,9 @@ function commandHelp(): void {
   blank();
   say('  After activation, Mana exports a native source file you can import:');
   say(`  ${c.muted('TypeScript → mana.signal.ts  ·  Python → mana_signal.py')}`);
-  say(`  ${c.muted('Rust → mana_signal.rs  ·  Go → mana_signal.go  ·  + more')}`);
+  say(`  ${c.muted('Rust → mana_signal.rs  ·  Go → mana_signal.go')}`);
+  say(`  ${c.muted('C → mana_signal.h  ·  C++ → mana_signal.hpp  ·  + 30 more')}`);
+  say(`  ${c.muted('Unsupported → mana.signal.json (branded JSON)')}`);
   blank();
 
   say(c.dim('─────────────────────────────────────────────────'));
