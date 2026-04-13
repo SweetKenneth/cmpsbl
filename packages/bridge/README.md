@@ -29,7 +29,7 @@ const result = await python.executePrimitive('analyze', { data: [1, 2, 3] }, 0.9
 
 ## Supported Languages
 
-TypeScript · JavaScript · Python · Go · Rust · Java · C# · Ruby · PHP · Swift · Kotlin · Scala · Dart · Elixir · C++ · C · Zig · Lua · R · Julia · Haskell · OCaml · Verilog · VHDL
+TypeScript · JavaScript · Python · Go · Rust · Java · C# · F# · Ruby · PHP · Swift · Kotlin · Scala · Dart · Elixir · Erlang · C++ · C · Zig · Lua · R · Julia · Haskell · OCaml · Nim · Crystal · D · Perl · Clojure · Groovy · Fortran · Objective-C · Bash · PowerShell · Solidity · Vyper · Move · Cairo · CUDA · GLSL · HLSL · WGSL · Metal · OpenCL · Verilog · VHDL · SystemVerilog · Chisel · Amaranth · SPICE · SystemC · FIRRTL · Bluespec
 
 ## License
 
