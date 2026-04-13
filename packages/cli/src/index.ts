@@ -375,13 +375,12 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<ValidationResu
       ) as string | undefined;
 
       const substrateRole = typeof result.substrate_role === 'string' ? result.substrate_role : 'builder';
+      const developerId = (result.developer_id ?? devRecord?.id) as string | undefined;
 
-      /* Update stored credentials with confirmed display name */
-      if (displayName) {
-        saveStoredKey(normalized, displayName);
-      }
+      /* Update stored credentials with confirmed display name + developer ID */
+      saveStoredKey(normalized, displayName, developerId);
 
-      return { valid: true, displayName, substrateRole };
+      return { valid: true, displayName, substrateRole, developerId };
     }
 
     return {
