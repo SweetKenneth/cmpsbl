@@ -36,7 +36,7 @@
 | Ascension Engine v21.0.0 (159 primitives, 90+ languages) | Production | Crown jewel — patent pending |
 | Memory Stream (8hr CDM, 12 verticals) | Autonomous | Revenue printer — needs storefront |
 | Product Compiler + ECONOMY auto-pricing ($10–$99) | Production | Autonomous listing engine |
-| Mana Engine (92 wrappers, SHA-256 proof, Lex governance) | Engine complete | "The Real Product" — needs loader + landing |
+| Mana Engine (92 wrappers, SHA-256 proof, Lex governance) | Engine complete | "The Real Product" — autonomous software integration without developers |
 | GENESIS Vertical Factory (10-min deployment) | Production | Speed moat |
 | 12 Vertical Substrates | Live | Market coverage |
 | 11 `@cmpsbl/*` npm packages | Published | Developer distribution channel |
@@ -52,7 +52,7 @@
 | **No revenue** — zero paying customers | Fatal | P0 |
 | **No Stripe checkout flow** for subscriptions | Blocks all revenue | P0 |
 | **Shield landing page** (`/shield`) missing | Blocks GTM flywheel entry point | P0 |
-| **Mana landing page** (`/mana`) incomplete | Blocks "The Real Product" narrative | P0 |
+| **Mana landing page** (`/mana`) incomplete | Blocks "The Real Product" narrative — autonomous integration SDK | P0 |
 | **Lex Registry UI** (`/registry`) missing | Blocks blacklist lead funnel | P0 |
 | **No onboarding flow** for developers | Blocks adoption | P1 |
 | **Store/Marketplace** not connected to real data | Blocks discovery monetization | P1 |
@@ -73,7 +73,7 @@
 | Page/Feature | Status | Fix |
 |---|---|---|
 | `/shield` | Missing | Build: hero + install snippet + detection demo + CTA |
-| `/mana` | Placeholder TODO | Build: product page with "The Real Product" narrative |
+| `/mana` | Placeholder TODO | Build: product page — autonomous software integration without developers, Mana Lab flow (Upload → Merge → Lex → Attach → Export) |
 | `/registry` | Missing | Build: Lex Registry lookup UI + status badges |
 | `/store` | Shell only | Connect to real Memory Stream discovery data |
 | `/case-studies` | Placeholder | Build template + 3 initial case studies |
@@ -87,7 +87,7 @@
 
 | System | Gap | Fix |
 |---|---|---|
-| Mana Loader | No live npm interception | Build `loader.mjs` for Node.js `--loader` hook |
+| Mana Loader | No live npm interception | Build `loader.mjs` for Node.js `--loader` hook — enables non-developer integration of packages with other software |
 | Shield Package | `@cmpsbl/shield` not published | Build + publish: Proxy Trap Detector + Lex Heartbeat |
 | Lex Registry API | No backend endpoint | Edge function: `GET /registry/{hash}` |
 | Subscription billing | No Stripe integration | Edge functions for checkout + webhook |
