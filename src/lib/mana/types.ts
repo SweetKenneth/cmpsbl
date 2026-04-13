@@ -307,6 +307,84 @@ export interface CapabilityContract {
   readonly lexKey: ManaCapability;
 }
 
+/**
+ * Capability Contracts Table — Item #15/#16
+ * Formalizes the mapping: capability → wrapper family → Lex key → phase → blocking semantics.
+ * Makes the 92-capability system explainable and maintainable.
+ */
+export const CAPABILITY_CONTRACTS: ReadonlyArray<CapabilityContract> = [
+  // ── GATE phase — blocking gates ──
+  { capability: 'defense_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'defense_gate' },
+  { capability: 'access_controller', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'shadow_rule' },
+  { capability: 'governance_hook', phase: WrapperPhase.GATE, denySemantic: 'return_undefined', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'shadow_rule', phase: WrapperPhase.GATE, denySemantic: 'return_message', blocking: true, lexKey: 'shadow_rule' },
+  { capability: 'policy_enforcer', phase: WrapperPhase.GATE, denySemantic: 'return_undefined', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'consent_gate', phase: WrapperPhase.GATE, denySemantic: 'return_undefined', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'access_rbac_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'access_controller' },
+  { capability: 'access_api_key_check', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'access_controller' },
+  { capability: 'identity_auth_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'access_controller' },
+  { capability: 'conscience_ethics_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'core_lifecycle_guard', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'sovereign_tenant_isolate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'access_controller' },
+  { capability: 'brain_context_guard', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'cortex_resource_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'compass_goal_validator', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'sandbox_resource_limit', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'system_feature_flag', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'treaty_contract_check', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'harvest_quality_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'brain_confidence_gate', phase: WrapperPhase.GATE, denySemantic: 'return_undefined', blocking: true, lexKey: 'brain_confidence_gate' },
+  { capability: 'nexus_cost_gate', phase: WrapperPhase.GATE, denySemantic: 'throw', blocking: true, lexKey: 'nexus_cost_gate' },
+
+  // ── VALIDATE phase — input cleaning ──
+  { capability: 'input_sanitizer', phase: WrapperPhase.VALIDATE, denySemantic: 'throw', blocking: true, lexKey: 'input_sanitizer' },
+  { capability: 'threat_scorer', phase: WrapperPhase.VALIDATE, denySemantic: 'throw', blocking: true, lexKey: 'defense_gate' },
+  { capability: 'payload_validator', phase: WrapperPhase.VALIDATE, denySemantic: 'throw', blocking: true, lexKey: 'payload_validator' },
+  { capability: 'injection_guard', phase: WrapperPhase.VALIDATE, denySemantic: 'throw', blocking: true, lexKey: 'injection_guard' },
+  { capability: 'data_masker', phase: WrapperPhase.VALIDATE, denySemantic: 'swallow', blocking: false, lexKey: 'data_masker' },
+  { capability: 'mutation_guard', phase: WrapperPhase.VALIDATE, denySemantic: 'throw', blocking: true, lexKey: 'governance_hook' },
+  { capability: 'lingua_normalizer', phase: WrapperPhase.VALIDATE, denySemantic: 'swallow', blocking: false, lexKey: 'lingua_normalizer' },
+  { capability: 'lingua_encoding_guard', phase: WrapperPhase.VALIDATE, denySemantic: 'swallow', blocking: false, lexKey: 'lingua_encoding_guard' },
+  { capability: 'output_filter', phase: WrapperPhase.VALIDATE, denySemantic: 'swallow', blocking: false, lexKey: 'output_filter' },
+  { capability: 'rate_limiter', phase: WrapperPhase.VALIDATE, denySemantic: 'throw', blocking: true, lexKey: 'rate_limiter' },
+
+  // ── FAILSAFE phase — resilience ──
+  { capability: 'circuit_breaker', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'circuit_breaker' },
+  { capability: 'retry_handler', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'retry_handler' },
+  { capability: 'timeout_guard', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'timeout_guard' },
+  { capability: 'bulkhead_isolator', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'bulkhead_isolator' },
+  { capability: 'fallback_provider', phase: WrapperPhase.FAILSAFE, denySemantic: 'return_undefined', blocking: false, lexKey: 'fallback_provider' },
+  { capability: 'reflex_circuit_breaker', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'circuit_breaker' },
+  { capability: 'reflex_fallback_chain', phase: WrapperPhase.FAILSAFE, denySemantic: 'return_undefined', blocking: false, lexKey: 'fallback_provider' },
+  { capability: 'immunity_self_heal', phase: WrapperPhase.FAILSAFE, denySemantic: 'return_undefined', blocking: false, lexKey: 'immunity_self_heal' },
+  { capability: 'immunity_quarantine', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'bulkhead_isolator' },
+  { capability: 'sandbox_isolator', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'bulkhead_isolator' },
+  { capability: 'nerve_backpressure', phase: WrapperPhase.FAILSAFE, denySemantic: 'throw', blocking: true, lexKey: 'bulkhead_isolator' },
+  { capability: 'nexus_fallback', phase: WrapperPhase.FAILSAFE, denySemantic: 'return_undefined', blocking: false, lexKey: 'fallback_provider' },
+
+  // ── OBSERVE phase — telemetry (never blocking) ──
+  { capability: 'beacon_telemetry', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'beacon_telemetry' },
+  { capability: 'latency_profiler', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'latency_profiler' },
+  { capability: 'error_tracker', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'error_tracker' },
+  { capability: 'throughput_meter', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'throughput_meter' },
+  { capability: 'dependency_mapper', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'dependency_mapper' },
+  { capability: 'audit_trail', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'audit_trail' },
+  { capability: 'call_logger', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'call_logger' },
+  { capability: 'state_snapshot', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'state_snapshot' },
+  { capability: 'forensic_recorder', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'forensic_recorder' },
+  { capability: 'compliance_check', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'compliance_check' },
+  { capability: 'system_telemetry', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'beacon_telemetry' },
+  { capability: 'core_state_validator', phase: WrapperPhase.OBSERVE, denySemantic: 'swallow', blocking: false, lexKey: 'core_state_validator' },
+
+  // ── ANALYZE phase — post-processing (never blocking) ──
+  { capability: 'dream_synthesis', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'dream_synthesis' },
+  { capability: 'anomaly_detector', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'anomaly_detector' },
+  { capability: 'drift_monitor', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'drift_monitor' },
+  { capability: 'memory_cache', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'memory_cache' },
+  { capability: 'brain_reasoning_trace', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'brain_reasoning_trace' },
+  { capability: 'oracle_predictor', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_predictor' },
+];
+
 /** A single Layer 2 attachment point on a host function */
 export interface AttachmentPoint {
   /** Original function name on the host */
