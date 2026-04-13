@@ -1133,6 +1133,11 @@ export async function run(args: string[]): Promise<void> {
     if (!JSON_MODE && command !== 'help' && command !== 'shell') {
       printSuggestions(command);
     }
+
+    // Push session state to cloud (non-blocking)
+    if (getActiveDeveloperId()) {
+      await pushCloudSession().catch(() => {});
+    }
   } catch (err) {
     if (JSON_MODE) {
       jsonOut({ error: err instanceof Error ? err.message : String(err) });
