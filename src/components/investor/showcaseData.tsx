@@ -62,7 +62,7 @@ export const TIER_1_DEMOS: DemoCardData[] = [
     subtitle: "Platform Proof",
     icon: <ArrowRight className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
-    what: "One click generates a working app with memory, learning, and security wired in across 12 verticals and 159 primitives.",
+    what: "One click generates a working app with memory, learning, and security wired in across 12 verticals and 40 Primitives.",
     why: "Bridges 'impressive system' to 'investable platform.' Apps export and run anywhere — no vendor lock-in.",
     value: "Platform economics — every app built on the substrate is recurring revenue. Every export proves independence.",
   },
