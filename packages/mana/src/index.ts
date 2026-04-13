@@ -1327,7 +1327,7 @@ async function commandAttach(): Promise<void> {
     groups,
     attachedFiles: project.files.slice(0, 100),
     attachedAt: new Date().toISOString(),
-    version: '1.0.0',
+    version: '1.1.0',
     operator: operatorName,
     language: project.language,
     framework: project.framework,
@@ -1462,7 +1462,7 @@ function commandHelp(): void {
     '',
     'Layer 2 runtime enhancement for any codebase.',
     'Your original source code is never modified.',
-  ], 'MANA · v1.0.0');
+  ], 'MANA · v1.1.0');
   blank();
 
   say(c.bold('COMMANDS'));
@@ -1512,7 +1512,7 @@ function commandHelp(): void {
 
 function commandVersion(): void {
   blank();
-  say(`${c.bold('mana')} ${c.cyan('v1.0.0')}`);
+  say(`${c.bold('mana')} ${c.cyan('v1.1.0')}`);
   say(c.muted('Silent Software Symbiosis · © CMPSBL®'));
   blank();
 }

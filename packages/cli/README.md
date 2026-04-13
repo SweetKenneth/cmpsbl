@@ -6,15 +6,11 @@
 
 ## Install
 
-> ⚠️ **Install peer dependency first:**
-
 ```bash
-# Step 1: Install runtime (Tier 1)
-npm install @cmpsbl/runtime
-
-# Step 2: Install CLI
 npm install -g @cmpsbl/cli
 ```
+
+> `@cmpsbl/runtime` is bundled automatically — no separate install needed.
 
 ## Dependency Tier
 
