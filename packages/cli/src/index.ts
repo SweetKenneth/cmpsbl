@@ -331,7 +331,7 @@ function getAccessValidationEndpoint(): string {
   return SUBSTRATE_ENDPOINT_FALLBACK;
 }
 
-async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boolean; error?: string }> {
+async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boolean; displayName?: string; error?: string }> {
   const normalized = normalizeApiKey(apiKey);
   if (!normalized || normalized.startsWith('local-')) {
     return { valid: false, error: 'Invalid API key' };
@@ -350,7 +350,23 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boole
 
     const result = await res.json() as Record<string, unknown>;
     if (result.success === true && result.valid === true) {
-      return { valid: true };
+      const devRecord = typeof result.developer === 'object' && result.developer !== null
+        ? result.developer as Record<string, unknown>
+        : undefined;
+      const displayName = (
+        result.display_name ??
+        result.displayName ??
+        devRecord?.display_name ??
+        devRecord?.displayName ??
+        devRecord?.name
+      ) as string | undefined;
+
+      /* Update stored credentials with confirmed display name */
+      if (displayName) {
+        saveStoredKey(normalized, displayName);
+      }
+
+      return { valid: true, displayName };
     }
 
     return {
@@ -457,9 +473,21 @@ async function inlineRegister(): Promise<string | null> {
     sayOk(`  ✓ API key generated: ${data.key_prefix}...`);
     blank();
 
-    // Auto-save the key with developer name
-    const devName = (data.display_name as string) || (data.developer?.display_name as string) || name || email.split('@')[0];
+    // Auto-save the key with developer name — exhaustive extraction from API response
+    const devRecord = typeof data.developer === 'object' && data.developer !== null
+      ? data.developer as Record<string, unknown>
+      : undefined;
+    const devName = (
+      data.display_name as string ??
+      data.displayName as string ??
+      devRecord?.display_name as string ??
+      devRecord?.displayName as string ??
+      devRecord?.name as string ??
+      name ??
+      email.split('@')[0]
+    );
     saveStoredKey(data.api_key, devName);
+    sayOk(`  ✓ Developer: ${devName}`);
     say('  ✓ Key saved to ~/.cmpsbl/credentials');
     say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
     blank();
