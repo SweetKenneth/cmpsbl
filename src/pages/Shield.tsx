@@ -629,8 +629,22 @@ export default function ShieldPage() {
                 <div className="mt-4 p-3 rounded-lg bg-muted/20 border border-border/20">
                   <p className="text-sm">
                     <span className="text-muted-foreground">Status: </span>
-                    <span className="font-bold text-foreground capitalize">{lookupResult.status}</span>
+                    <span className={`font-bold capitalize ${
+                      lookupResult.status === 'protected' ? 'text-destructive' :
+                      lookupResult.status === 'licensed' ? 'text-[hsl(var(--neon-cyan))]' :
+                      'text-muted-foreground'
+                    }`}>{lookupResult.status}</span>
                   </p>
+                  {lookupResult.package_name && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Package: <span className="font-mono text-foreground">{lookupResult.package_name}</span>
+                    </p>
+                  )}
+                  {lookupResult.registered_at && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Registered: {new Date(lookupResult.registered_at).toLocaleDateString()}
+                    </p>
+                  )}
                   {lookupResult.status === 'unregistered' && (
                     <p className="text-xs text-muted-foreground mt-1">
                       This package is <span className="text-destructive font-semibold">not protected</span>. 
