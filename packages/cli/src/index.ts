@@ -340,12 +340,7 @@ function getAccessValidationEndpoint(): string {
   return SUBSTRATE_ENDPOINT_FALLBACK;
 }
 
-interface ValidationResult {
-  valid: boolean;
-  displayName?: string;
-  substrateRole?: string;
-  error?: string;
-}
+// ValidationResult defined above
 
 async function validateApiKeyWithBackend(apiKey: string): Promise<ValidationResult> {
   const normalized = normalizeApiKey(apiKey);
