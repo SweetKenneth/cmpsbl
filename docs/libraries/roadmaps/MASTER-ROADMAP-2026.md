@@ -137,7 +137,7 @@ Month 12:  $83K      ($1M ARR run-rate)
 | # | Deliverable | Type | Owner | Status |
 |---|---|---|---|---|
 | 1.1 | **Shield Landing Page** (`/shield`) — hero, `npm install`, detection demo, CTA to registry | Lovable | Build | ☐ |
-| 1.2 | **Mana Landing Page** (`/mana`) — "The Real Product" narrative, lodge attachment demo, patent badge | Lovable | Build | ☐ |
+| 1.2 | **Mana Landing Page** (`/mana`) — "The Real Product" narrative: autonomous software integration without developers. Mana Lab flow demo (Upload → Merge → Lex → Attach → Export). Patent badge. | Lovable | Build | ☐ |
 | 1.3 | **Lex Registry UI** (`/registry`) — package hash lookup, status badges (protected/licensed/unregistered) | Lovable | Build | ☐ |
 | 1.4 | **Lex Registry API** — edge function `GET /registry/{hash}`, database table for registrations | Backend | Build | ☐ |
 | 1.5 | **Fix all build errors** — clean `tsc --noEmit`, zero warnings | Lovable | Fix | ☐ |
@@ -211,8 +211,8 @@ Month 12:  $83K      ($1M ARR run-rate)
 
 | # | Deliverable | Type | Owner | Status |
 |---|---|---|---|---|
-| 5.1 | **Mana runtime loader** — Node.js `--loader` hook for live npm interception | Engine | Build | ☐ |
-| 5.2 | **Mana Lab** (`/mana/lab`) — self-service attachment pipeline (Governor-gated initially) | Lovable | Build | ☐ |
+| 5.1 | **Mana runtime loader** — Node.js `--loader` hook for live npm interception. Enables non-developer software integration at the package level. | Engine | Build | ☐ |
+| 5.2 | **Mana Lab** (`/mana/lab`) — self-service integration pipeline: Upload any SDK → Merge capabilities → Configure Lex governance → Attach Layer 2 → Export governed package. No developer required. (Governor-gated initially) | Lovable | Build | ☐ |
 | 5.3 | **Enterprise pricing page** — $999+/mo tier with white-label, custom substrates | Lovable | Build | ☐ |
 | 5.4 | **Security conference materials** — slide deck + demo script for lightning talks | Content | Create | ☐ |
 | 5.5 | **Shield → Whitelist conversion flow** — blacklisted packages → "opt into Mana" CTA | Lovable | Build | ☐ |
