@@ -185,6 +185,7 @@ function parseStoredCredentials(raw: string): StoredCredentials | undefined {
       apiKey,
       savedAt: typeof metadata?.savedAt === 'string' ? metadata.savedAt : undefined,
       displayName: metadata ? extractDisplayName(metadata) : undefined,
+      developerId: typeof metadata?.developerId === 'string' ? metadata.developerId : undefined,
     };
   };
 
