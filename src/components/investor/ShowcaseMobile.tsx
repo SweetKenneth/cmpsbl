@@ -15,6 +15,7 @@ import { DreamEngineDemo } from "./DreamEngineDemo";
 import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { InvestorDocLibrary } from "./InvestorDocLibrary";
+import { ManaDemo } from "./ManaDemo";
 import { InvestorLiveStats } from "./InvestorLiveStats";
 import { VerticalShowcase } from "./VerticalShowcase";
 import { MarketplacePreview } from "./MarketplacePreview";
@@ -77,10 +78,10 @@ export function ShowcaseMobile() {
         {/* What is CMPSBL */}
         <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="space-y-4">
           <h2 className="text-xl font-bold text-foreground tracking-tight">
-            Governed Cognitive <span className="text-primary">Infrastructure</span>
+            Deterministic Curing. <span className="text-primary">Not AI.</span>
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            40 AI primitives that discover, improve, and export software capabilities autonomously — across 12 industry verticals. 200k+ lines of code. Solo founder.
+            40 primitives that discover, compile, price, and export software autonomously — across 12 industry verticals. Pure algorithmic curing. 200k+ LOC. Solo founder.
           </p>
           <div className="flex items-center justify-between py-3">
             {["Discover", "Improve", "Export"].map((step, i) => (
@@ -226,12 +227,12 @@ export function ShowcaseMobile() {
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Why CMPSBL Wins</h2>
             <div className="space-y-2.5">
               {[
-                { label: "Self-discovering", desc: "Finds new software capabilities autonomously", color: "bg-primary" },
-                { label: "Self-improving", desc: "AI patches and upgrades its own code", color: "bg-[hsl(var(--neon-cyan))]" },
-                { label: "90+ language export", desc: "Single-file, zero-dependency distributions", color: "bg-[hsl(var(--neon-magenta))]" },
-                { label: "IP-protected", desc: "Hex-encoded proprietary logic in every export", color: "bg-[hsl(var(--neon-purple))]" },
+                { label: "Deterministic curing", desc: "Not AI — verifiable algorithmic analysis", color: "bg-primary" },
+                { label: "Compounding autonomy", desc: "Discover → Score → Compile → Price → List → Learn", color: "bg-[hsl(var(--neon-cyan))]" },
+                { label: "Mana — The Real Product", desc: "Silent symbiont. Fear = free advertising", color: "bg-[hsl(var(--neon-magenta))]" },
+                { label: "IP-protected", desc: "Hex-encoded logic in every export. Patent pending", color: "bg-[hsl(var(--neon-purple))]" },
                 { label: "Solo founder", desc: "200k+ LOC, 40 primitives, 12 verticals — one person", color: "bg-[hsl(var(--neon-amber))]" },
-                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "bg-[hsl(var(--neon-green))]" },
+                { label: "Governed & secure", desc: "Constitutional governance with enterprise security", color: "bg-[hsl(var(--neon-green))]" },
               ].map(({ label, desc, color }) => (
                 <div key={label} className="flex items-start gap-3 py-1">
                   <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${color}`} />
@@ -345,6 +346,7 @@ function renderDemo(id: string, onBack: () => void) {
     case "dream-engine": return <DreamEngineDemo onBack={onBack} />;
     case "defense-layer": return <DefenseLayerDemo onBack={onBack} />;
     case "seba-pipeline": return <SebaPipelineDemo onBack={onBack} />;
+    case "mana": return <ManaDemo onBack={onBack} />;
     case "doc-library": return <InvestorDocLibrary onBack={onBack} />;
     default: return null;
   }
