@@ -21,6 +21,13 @@ export type LexEvalContext = 'attachment' | 'runtime';
 export type AnyFn = (...args: unknown[]) => unknown;
 
 /**
+ * Capability or wildcard — used in Lex rules.
+ * Wildcards match ALL capabilities when used in rule definitions.
+ * Actual wrapper capabilities are always ManaCapability (never '*').
+ */
+export type ManaCapabilityOrWildcard = ManaCapability | '*';
+
+/**
  * Wrapper execution phase — deterministic ordering.
  * Lower numbers execute first (outermost wrapper).
  * Original function executes between PHASE_FAILSAFE and PHASE_OBSERVE.
@@ -443,10 +450,11 @@ export interface AttachmentPoint {
   rulePayload?: unknown;
 }
 
-/** Lex governance rule */
+/** Lex governance rule — supports wildcard capabilities via ManaCapabilityOrWildcard */
 export interface LexRule {
   readonly id: string;
-  readonly capability: ManaCapability;
+  /** Capability this rule governs. Use '*' for all capabilities (via ManaCapabilityOrWildcard). */
+  readonly capability: ManaCapabilityOrWildcard;
   readonly target: string;
   readonly verdict: LexVerdict;
   readonly reason: string;
