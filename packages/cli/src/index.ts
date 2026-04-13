@@ -897,6 +897,7 @@ export async function run(args: string[]): Promise<void> {
       case 'treaty':       await cmdTreaty(args.slice(1)); break;
       // ── Signature ──
       case 'ascend':       await cmdAscend(args.slice(1)); break;
+      case 'verify':       await cmdVerify(args.slice(1)); break;
       case 'witness':      await cmdWitness(args.slice(1)); break;
       case 'crown':        await cmdCrown(args.slice(1)); break;
       case 'recall':       await cmdRecall(args.slice(1)); break;
