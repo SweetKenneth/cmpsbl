@@ -1,10 +1,14 @@
-# Ascension Integration
+# Ascension — User Guide
 
 ---
 
-## Overview
+## What Is Ascension?
 
-The Ascension Engine lets you upload working source code and have the substrate's 40-primitive matrix discover, augment, and export enhanced capabilities. This guide covers the developer workflow.
+Ascension adds a second layer to your code. This layer enhances and protects your software without modifying it.
+
+Your original file stays exactly as it is. A new governed layer wraps around it — adding validation, observability, stability, and defense depending on the level you choose.
+
+One command. One choice. Done.
 
 ---
 
@@ -12,98 +16,115 @@ The Ascension Engine lets you upload working source code and have the substrate'
 
 - **Creator tier** or above
 - API key with `ascension` scope
-- Source files in any of 90+ supported languages
+- Working source code (any of 90+ supported languages)
 
 ---
 
-## Workflow
-
-### 1. Upload
+## Install
 
 ```bash
-# Via CLI
-cmpsbl ascension upload ./my-trading-bot.py
-
-# Via API
-curl -X POST https://api.cmpsbl.com/api/v1/ascension/upload \
-  -H "Authorization: Bearer pf_live_xxx" \
-  -F "file=@my-trading-bot.py"
+npx mana attach
 ```
 
-### 2. Monitor Discovery
+That's it. The CLI handles everything from here.
+
+---
+
+## What Happens
+
+### 1. Detection
+
+After running the command, the CLI detects your file and confirms:
+
+```
+Ascension has detected that your file now has a second layer.
+
+This layer enhances and protects your code without modifying it.
+```
+
+### 2. Choose Your Level
+
+You're presented with four options:
+
+| Level | What It Does |
+|-------|-------------|
+| **Safe** | Minimal protection — basic validation + telemetry |
+| **Enhanced** | Adds observability + stability — recommended for most users |
+| **Protected** | Full defense + governance — blocks unsafe execution paths |
+| **Advanced** | Fine-grained control over capability groups |
+
+Pick one. Move on.
+
+### 3. Confirmation
+
+```
+Ascension is now active.
+
+Your file is running with a secondary layer.
+
+Original code remains unchanged.
+```
+
+### 4. Return Anytime
+
+To reopen the configuration menu:
 
 ```bash
-# Check status
-cmpsbl ascension status <discovery-id>
-
-# Or watch in real-time
-cmpsbl ascension watch <discovery-id>
+@cmpsbl/config
 ```
 
-The 40-primitive matrix tests your code. Each primitive asks whether your code's behavior combines meaningfully with its capabilities. Results include:
+---
 
-- **CJPI Score** — novelty, utility, complexity, composability
-- **Execution trace** — exactly which primitives participated
-- **Execution strategy** — native, bridge, or simulated
+## Advanced Configuration
 
-### 3. Export
+If you selected **Advanced**, you toggle capability groups — not individual primitives.
 
-```bash
-cmpsbl ascension export <discovery-id> --format zip
-```
+| Group | What It Controls |
+|-------|-----------------|
+| **Defense** | Threat detection, circuit breakers, execution blocking |
+| **Observability** | Telemetry, health signals, runtime tracing |
+| **Memory** | Persistent recall, session history, knowledge retention |
+| **Governance** | Policy enforcement, compliance checks, audit trails |
+| **Performance** | Caching, optimization hints, resource efficiency |
 
-The export contains:
-1. Original source code (untouched)
-2. Convex Core™ Processing Layer
-3. Cognitive layer (substrate augmentations)
-4. Auto-generated documentation
-5. Test bench
+Enable or disable entire groups. No deeper configuration required.
 
 ---
 
-## Supported Languages (90+ extensions)
+## What Ships
 
-**Web / Scripting (16):** JavaScript, TypeScript, Python, Ruby, PHP, Lua, Perl, R, Julia, Groovy, CoffeeScript, Elm, PureScript, Racket, Scheme, Lisp
+Every Ascension export contains:
 
-**Systems (8):** Rust, Go, C, C++, Zig, Nim, Crystal, D
+1. **Your original source code** — untouched, unmodified
+2. **Your ascended file** — the governed version with Layer 2 active
+3. **User guide** — this document
+4. **License** — usage terms
 
-**JVM (4):** Java, Kotlin, Scala, Clojure
-
-**.NET (4):** C#, F#, Visual Basic, PowerShell
-
-**Apple / Mobile (3):** Swift, Dart, Objective-C
-
-**Functional (5):** Haskell, OCaml, Erlang, Elixir, PureScript
-
-**Blockchain (5):** Solidity, Vyper, Move, Cairo, Fe
-
-**Hardware Description (7):** VHDL, Verilog, SystemVerilog, Chisel, Bluespec, SPICE, FIRRTL
-
-**Scientific / HPC (4):** Fortran, MATLAB, Mathematica, Wolfram
-
-**Shell (4):** Bash, Zsh, Fish, Batch
-
-**GPU / Shaders (6):** GLSL, HLSL, WGSL, CUDA, OpenCL, Metal
-
-**Infrastructure (6):** Terraform/HCL, Protobuf, SQL, GraphQL, Prisma, Dockerfile
-
-**WebAssembly (2):** WAT, WAST
+That's the complete package.
 
 ---
 
-## Execution Strategies
+## Supported Languages
 
-| Strategy | When Used | How It Works |
-|----------|----------|-------------|
-| **Native** | JavaScript/TypeScript | Code runs directly in substrate runtime |
-| **Bridge** | Other languages | Substrate wraps execution, captures I/O |
-| **Simulated** | HDL / edge cases | Behavioral modeling of code patterns |
+90+ languages across every major category:
+
+- **Web / Scripting:** JavaScript, TypeScript, Python, Ruby, PHP, Lua, Perl, R, Julia, and more
+- **Systems:** Rust, Go, C, C++, Zig, Nim, Crystal, D
+- **JVM:** Java, Kotlin, Scala, Clojure
+- **.NET:** C#, F#, Visual Basic, PowerShell
+- **Mobile:** Swift, Dart, Objective-C
+- **Functional:** Haskell, OCaml, Erlang, Elixir
+- **Blockchain:** Solidity, Vyper, Move, Cairo, Fe
+- **Hardware Description:** VHDL, Verilog, SystemVerilog, Chisel, and more
+- **Scientific / HPC:** Fortran, MATLAB, Mathematica
+- **GPU / Shaders:** GLSL, HLSL, WGSL, CUDA, OpenCL, Metal
+- **Infrastructure:** Terraform/HCL, Protobuf, SQL, GraphQL, Prisma, Dockerfile
 
 ---
 
-## Runtime Integration (Production API)
+## Runtime Integration
 
-For runtime governance — activation coverage, behavioral enforcement, and authoritative health monitoring — use the production provider:
+For production use, the governed layer works as a drop-in replacement:
 
 ```typescript
 import { init } from '@cmpsbl/runtime';
@@ -113,51 +134,26 @@ import { readFileSync } from 'fs';
 const source = readFileSync('./handlers.ts', 'utf-8');
 const session = init(handlers, source, { name: 'api-handlers' });
 
-// Drop-in replacement — same signatures, now governed
+// Same signatures, now governed
 app.get('/users', session.exports.getUsers);
 app.post('/users', session.exports.createUser);
 
-// Authoritative system health (activation + runtime)
+// Health and status
 app.get('/health', (_, res) => res.json(session.healthCheck()));
-
-// Quick-glance status for dashboards, alerts, or deployment gates
 app.get('/status', (_, res) => res.json(session.status()));
 
 app.listen(3000);
 ```
 
-> No changes to your original code. Same behavior, now governed.
-> No framework changes. No rewrites. No lock-in.
-> The original module is never modified — all behavior is attached at runtime.
-
-### Session API
-
-| Method | Returns | Purpose |
-|--------|---------|---------|
-| `session.health()` | `HealthStatus` | Unified health verdict |
-| `session.status()` | `SessionStatus` | `{ health, coverage, fingerprint, identity }` |
-| `session.healthCheck()` | `HealthCheckResponse` | Full /health payload (session-scoped, multi-tenant safe) |
-| `session.summary()` | `string` | Human-readable pipeline summary |
-| `session.verificationReport()` | `string` | Full verification audit trail |
-| `session.destroy()` | `void` | Teardown (resets global state) |
-
-### Health States
-
-| Status | Meaning | Action |
-|--------|---------|--------|
-| `healthy` | Coverage ≥ 80%, no anomalies | Ship |
-| `partial` | Coverage 50–79% or low runtime signal | Investigate |
-| `degraded` | Coverage < 50% or anomalies detected | Do not deploy |
+No changes to your original code. No framework changes. No rewrites. No lock-in.
 
 ---
 
-## Best Practices
+## Support
 
-1. **Upload working code** — Ascension evolves functional software, not broken scripts
-2. **Use descriptive file names** — helps the discovery engine understand context
-3. **Start with familiar code** — verify discoveries against known behavior
-4. **Check execution traces** — understand exactly what the substrate found
-5. **Review exported capabilities** — verify the augmented code matches your expectations
+- **Email:** support@cmpsbl.com
+- **CLI:** `cmpsbl help`
+- **Config:** `@cmpsbl/config`
 
 ---
 
