@@ -49,7 +49,25 @@ mana help      Show help
 
 ## Signal File
 
-After activation, Mana exports `mana.signal.json` to your project root. This is your activation receipt — it contains your configuration, an integrity seal, and project metadata. Commit it or `.gitignore` it — your choice.
+After activation, Mana exports a **native source file** in your project's language:
+
+| Language | File Created |
+|---|---|
+| TypeScript | `mana.signal.ts` |
+| JavaScript | `mana.signal.js` |
+| Python | `mana_signal.py` |
+| Rust | `mana_signal.rs` |
+| Go | `mana_signal.go` |
+| Ruby | `mana_signal.rb` |
+| PHP | `mana_signal.php` |
+| Java | `ManaSignal.java` |
+| C# | `ManaSignal.cs` |
+| Swift | `ManaSignal.swift` |
+| Dart | `mana_signal.dart` |
+| Elixir | `mana_signal.ex` |
+| Other | `mana.signal.json` |
+
+Import it directly — it's a real, typed constant you can reference in your code.
 
 ---
 
