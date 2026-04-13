@@ -78,10 +78,10 @@ export function ShowcaseMobile() {
         {/* What is CMPSBL */}
         <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="space-y-4">
           <h2 className="text-xl font-bold text-foreground tracking-tight">
-            Deterministic Curing. <span className="text-primary">Not AI.</span>
+            Deterministic Coding. <span className="text-primary">Not AI.</span>
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            40 primitives that discover, compile, price, and export software autonomously — across 12 industry verticals. Pure algorithmic curing. 200k+ LOC. Solo founder.
+            40 primitives that discover, compile, price, and export software autonomously — across 12 industry verticals. Pure algorithmic coding. 200k+ LOC. Solo founder.
           </p>
           <div className="flex items-center justify-between py-3">
             {["Discover", "Improve", "Export"].map((step, i) => (
@@ -227,7 +227,7 @@ export function ShowcaseMobile() {
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Why CMPSBL Wins</h2>
             <div className="space-y-2.5">
               {[
-                { label: "Deterministic curing", desc: "Not AI — verifiable algorithmic analysis", color: "bg-primary" },
+                { label: "Deterministic coding", desc: "Not AI — verifiable algorithmic analysis", color: "bg-primary" },
                 { label: "Compounding autonomy", desc: "Discover → Score → Compile → Price → List → Learn", color: "bg-[hsl(var(--neon-cyan))]" },
                 { label: "Mana — The Real Product", desc: "Silent symbiont. Fear = free advertising", color: "bg-[hsl(var(--neon-magenta))]" },
                 { label: "IP-protected", desc: "Hex-encoded logic in every export. Patent pending", color: "bg-[hsl(var(--neon-purple))]" },

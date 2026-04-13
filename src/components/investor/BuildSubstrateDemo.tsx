@@ -87,7 +87,7 @@ export const BuildSubstrateDemo = ({ onBack }: BuildSubstrateDemoProps) => {
             </div>
             <div>
               <h1 className="text-xl md:text-2xl font-black text-foreground">Build With the Substrate</h1>
-              <p className="text-xs text-muted-foreground">12 verticals · 40 primitives each · Deterministic curing</p>
+              <p className="text-xs text-muted-foreground">12 verticals · 40 primitives each · Deterministic coding</p>
             </div>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -176,7 +176,7 @@ export const BuildSubstrateDemo = ({ onBack }: BuildSubstrateDemoProps) => {
           {currentStep === 2 && (
             <motion.div key="s2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-5">
               <div className="space-y-2">
-                <p className="text-[10px] font-mono uppercase tracking-wider text-primary">Step 2 — Deterministic Curing</p>
+                <p className="text-[10px] font-mono uppercase tracking-wider text-primary">Step 2 — Deterministic Coding</p>
                 <p className="text-sm text-muted-foreground">
                   CJPI scoring formula analyzes each discovery — not probabilities, not guesswork. 
                   <span className="font-semibold text-foreground"> Verifiable algorithmic analysis.</span>
@@ -368,7 +368,7 @@ export const BuildSubstrateDemo = ({ onBack }: BuildSubstrateDemoProps) => {
         </motion.div>
 
         <p className="text-center text-[9px] text-muted-foreground/40 font-mono pb-4">
-          © 2025–2026 CMPSBL® · Deterministic Curing · Not AI · Confidential
+          © 2025–2026 CMPSBL® · Deterministic Coding · Not AI · Confidential
         </p>
       </div>
     </div>

@@ -106,7 +106,7 @@ export const ManaDemo = ({ onBack }: ManaDemoProps) => {
           className="rounded-xl border border-primary/20 bg-primary/5 p-4 flex items-start gap-3">
           <Zap className="w-5 h-5 text-primary shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-bold text-foreground">Not AI — Deterministic Curing</p>
+            <p className="text-sm font-bold text-foreground">Not AI — Deterministic Coding</p>
             <p className="text-xs text-muted-foreground leading-relaxed mt-1">
               Mana uses lexical analysis, structural pattern matching, and CJPI scoring formulas — not neural networks, not LLMs. 
               Every attachment is verifiable, reproducible, and non-stochastic. The output is deterministic code, not probability.

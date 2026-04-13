@@ -137,13 +137,13 @@ export function ShowcaseDesktop() {
                 Governed Cognitive Infrastructure
               </div>
               <h1 className="text-4xl font-black text-foreground tracking-tight leading-tight">
-                Deterministic curing.<br />Not AI.{" "}
+                Deterministic coding.<br />Not AI.{" "}
                 <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>
                   Real software production.
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                40 specialized primitives coordinate through a governed substrate to autonomously discover, compile, price, and export production-ready software — across 12 industry verticals. Zero stochastic AI. Pure algorithmic curing.
+                40 specialized primitives coordinate through a governed substrate to autonomously discover, compile, price, and export production-ready software — across 12 industry verticals. Zero stochastic AI. Pure algorithmic coding.
               </p>
 
               {/* Pipeline flow */}
@@ -254,7 +254,7 @@ export function ShowcaseDesktop() {
                 <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Competitive Moat</h2>
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { label: "Deterministic Curing", desc: "Not AI — verifiable algorithmic analysis, not probabilistic guesswork.", color: "bg-primary" },
+                    { label: "Deterministic Coding", desc: "Not AI — verifiable algorithmic analysis, not probabilistic guesswork.", color: "bg-primary" },
                     { label: "Self-Improving Codebase", desc: "Generates, validates, and applies its own patches through 7 gates.", color: "bg-[hsl(var(--neon-cyan))]" },
                     { label: "Mana — The Real Product", desc: "Silent Layer 2 symbiont attaches to any codebase. Fear = free advertising.", color: "bg-[hsl(var(--neon-magenta))]" },
                     { label: "IP-Protected Artifacts", desc: "Hex-encoded proprietary logic in every export. Patent pending.", color: "bg-[hsl(var(--neon-purple))]" },
@@ -277,7 +277,7 @@ export function ShowcaseDesktop() {
             <section className="relative rounded-2xl border border-border/20 bg-card/40 backdrop-blur-sm p-8 space-y-4">
               <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold">From the Founder</p>
               <blockquote className="text-base text-foreground/90 leading-relaxed italic">
-                "CMPSBL is not an AI wrapper. It's governed cognitive infrastructure built on deterministic curing — not probabilistic guesswork. Every discovery is IP we own. Every export is revenue. The system manufactures, prices, and sells software autonomously. Mana is the real product — and fear of what it can do is free advertising."
+                "CMPSBL is not an AI wrapper. It's governed cognitive infrastructure built on deterministic coding — not probabilistic guesswork. Every discovery is IP we own. Every export is revenue. The system manufactures, prices, and sells software autonomously. Mana is the real product — and fear of what it can do is free advertising."
               </blockquote>
               <p className="text-sm font-bold text-foreground">Kenneth E. Sweet Jr.</p>
               <p className="text-xs text-muted-foreground">Founder & Governor · PromptFluid™ TX</p>

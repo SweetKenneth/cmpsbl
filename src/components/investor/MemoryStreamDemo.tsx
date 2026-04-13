@@ -253,7 +253,7 @@ export const MemoryStreamDemo = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[
             { label: "How It Works", desc: "8-hour autonomous cycles explore 10²³ primitive combinations. Every cycle surfaces novel capabilities the system invented itself." },
-            { label: "Not AI", desc: "Deterministic curing — lexical analysis, structural pattern matching, and CJPI scoring. No neural networks, no LLMs, no probability." },
+            { label: "Not AI", desc: "Deterministic coding — lexical analysis, structural pattern matching, and CJPI scoring. No neural networks, no LLMs, no probability." },
             { label: "Business Value", desc: "Every discovery is IP. The system manufactures sellable software products from its own patterns — compounding revenue." },
           ].map((card) => (
             <div key={card.label} className="rounded-xl border border-border/20 bg-card/60 backdrop-blur-sm p-4 space-y-1.5">

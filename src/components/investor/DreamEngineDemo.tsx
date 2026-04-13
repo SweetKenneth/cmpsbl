@@ -112,7 +112,7 @@ export const DreamEngineDemo = ({ onBack }: DreamEngineDemoProps) => {
             </div>
           </div>
           <p className="text-base text-muted-foreground leading-relaxed max-w-2xl">
-            During idle time, the system enters dream cycles — consolidating memories, finding patterns across primitives, and synthesizing improvements. Like biological sleep, this is where learning becomes permanent. <span className="font-bold text-foreground">Zero AI calls. Pure algorithmic curing.</span>
+            During idle time, the system enters dream cycles — consolidating memories, finding patterns across primitives, and synthesizing improvements. Like biological sleep, this is where learning becomes permanent. <span className="font-bold text-foreground">Zero AI calls. Pure algorithmic coding.</span>
           </p>
         </motion.div>
 
@@ -207,7 +207,7 @@ export const DreamEngineDemo = ({ onBack }: DreamEngineDemoProps) => {
           <div className="space-y-1">
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-primary font-bold">Why It Matters</p>
             <p className="text-xs text-foreground/80 leading-relaxed">
-              The system improves during downtime — no human intervention, no cost. Pure algorithmic curing, not AI inference. Like sleep for biological brains, dream cycles consolidate learning and surface latent patterns.
+              The system improves during downtime — no human intervention, no cost. Pure algorithmic coding, not AI inference. Like sleep for biological brains, dream cycles consolidate learning and surface latent patterns.
             </p>
           </div>
           <div className="space-y-1">
