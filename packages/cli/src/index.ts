@@ -676,6 +676,62 @@ async function requireApiKey(): Promise<string> {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Cloud Session Sync — persistent memory across machines
+// ═══════════════════════════════════════════════════════════════
+
+let _activeDeveloperId: string | undefined;
+
+function getActiveDeveloperId(): string | undefined {
+  if (_activeDeveloperId) return _activeDeveloperId;
+  return loadStoredCredentials()?.developerId;
+}
+
+async function pullCloudSession(): Promise<boolean> {
+  const devId = getActiveDeveloperId();
+  if (!devId) return false;
+
+  try {
+    const res = await fetch(getAccessValidationEndpoint(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        module: 'session',
+        action: 'pull',
+        developer_id: devId,
+      }),
+    });
+    const result = await res.json() as Record<string, unknown>;
+    if (result.success && result.found && result.session && typeof result.session === 'object') {
+      mergeCloudState(result.session as Partial<SessionState>);
+      return true;
+    }
+  } catch { /* silent — local state is the fallback */ }
+  return false;
+}
+
+async function pushCloudSession(): Promise<boolean> {
+  const devId = getActiveDeveloperId();
+  if (!devId) return false;
+
+  try {
+    const state = loadState();
+    const res = await fetch(getAccessValidationEndpoint(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        module: 'session',
+        action: 'push',
+        developer_id: devId,
+        session_state: state,
+      }),
+    });
+    const result = await res.json() as Record<string, unknown>;
+    return result.success === true;
+  } catch { /* silent */ }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Config & Primitives
 // ═══════════════════════════════════════════════════════════════
 
