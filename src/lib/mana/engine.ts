@@ -1288,47 +1288,61 @@ export async function attach(
   // When called: GATE → VALIDATE → FAILSAFE → [original] → OBSERVE → ANALYZE
   const sorted = [...capabilities].sort(byPhaseThenName).reverse();
 
-  let position = 0;
+  // Group by function name for proper wrapper composition
+  const capsByFunction = new Map<string, typeof sorted>();
   for (const cap of sorted) {
-    const { functionName, capability, rulePayload } = cap;
-    const originalFn = hostModule[functionName] as AnyFn;
+    const list = capsByFunction.get(cap.functionName) ?? [];
+    list.push(cap);
+    capsByFunction.set(cap.functionName, list);
+  }
 
-    if (typeof originalFn !== 'function') {
-      continue;
-    }
+  let position = 0;
+  for (const [functionName, caps] of Array.from(capsByFunction.entries())) {
+    const rawOriginal = hostModule[functionName] as AnyFn;
+    if (typeof rawOriginal !== 'function') continue;
 
-    // Lex governance check — ATTACHMENT-TIME verdict
-    const { verdict } = evaluate(capability, functionName, config.lexMode, 'attachment');
-    if (verdict === 'deny') {
-      emitTelemetry(capability, functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
-      continue;
-    }
-
-    // Store original for clean detachment — only the FIRST (real) original
+    // Store the true original ONCE — before any wrapping
     if (!originals.has(functionName)) {
-      originals.set(functionName, originalFn);
+      originals.set(functionName, rawOriginal);
     }
 
-    // Create attachment point with position tracking
-    const point: AttachmentPoint = {
-      functionName,
-      capability,
-      phase: CAPABILITY_PHASE[capability] ?? 3,
-      position,
-      active: true,
-      invocations: 0,
-      blocked: 0,
-      observed: 0,
-      rulePayload,
-    };
-    attachmentPoints.set(`${functionName}:${capability}`, point);
+    // Compose wrappers: each wraps the result of the previous
+    let wrapped: AnyFn = rawOriginal;
+    for (const cap of caps) {
+      // Lex governance check — ATTACHMENT-TIME verdict
+      const { verdict } = evaluate(cap.capability, functionName, config.lexMode, 'attachment');
+      if (verdict === 'deny') {
+        emitTelemetry(cap.capability, functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
+        continue;
+      }
 
-    // Wrap the function — Layer 2 boundary injection
-    const wrapper = getWrapper(capability);
-    hostModule[functionName] = wrapper(originalFn, functionName, point);
+      // Create attachment point with position tracking
+      const point: AttachmentPoint = {
+        functionName,
+        capability: cap.capability,
+        phase: CAPABILITY_PHASE[cap.capability] ?? 3,
+        position,
+        active: true,
+        invocations: 0,
+        blocked: 0,
+        observed: 0,
+        rulePayload: cap.rulePayload,
+      };
+      attachmentPoints.set(`${functionName}:${cap.capability}`, point);
 
-    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth, position }, 'attachment');
-    position++;
+      // Wrap the PREVIOUS result — composing, not overwriting
+      const wrapper = getWrapper(cap.capability);
+      wrapped = wrapper(wrapped as Function, functionName, point) as AnyFn;
+
+      emitTelemetry(cap.capability, functionName, 'invoked', {
+        action: 'attached', layerDepth, position,
+        phase: point.phase,
+      }, 'attachment');
+      position++;
+    }
+
+    // Apply the fully composed wrapper stack
+    hostModule[functionName] = wrapped;
   }
 
   state = 'symbiotic';
