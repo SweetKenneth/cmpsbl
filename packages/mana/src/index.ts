@@ -1277,7 +1277,8 @@ async function commandStatus(): Promise<void> {
   }
 
   /* Check signal file */
-  const signalExists = fs.existsSync(path.join(cwd, SIGNAL_FILE));
+  const signalFile = getSignalFilename(config.language ?? 'Unknown');
+  const signalExists = fs.existsSync(path.join(cwd, signalFile));
 
   blank();
   box([
@@ -1291,15 +1292,17 @@ async function commandStatus(): Promise<void> {
     `Framework: ${config.framework ?? 'None'}`,
     `Since:     ${config.attachedAt}`,
     '',
-    `Signal:    ${signalExists ? c.green(SIGNAL_FILE) : c.amber('not found — run `mana attach`')}`,
+    `Signal:    ${signalExists ? c.green(signalFile) : c.amber('not found — run `mana attach`')}`,
   ], 'MANA STATUS');
   blank();
 }
 
 async function commandDetach(): Promise<void> {
   const cwd = process.cwd();
+  const config = loadConfig();
+  const signalFile = getSignalFilename(config?.language ?? 'Unknown');
 
-  if (!fs.existsSync(CONFIG_FILE) && !fs.existsSync(path.join(cwd, SIGNAL_FILE))) {
+  if (!fs.existsSync(CONFIG_FILE) && !fs.existsSync(path.join(cwd, signalFile))) {
     say(c.muted('No active Mana layer to detach.'));
     return;
   }
@@ -1318,12 +1321,12 @@ async function commandDetach(): Promise<void> {
 
   /* Remove signal file */
   try {
-    const signalPath = path.join(cwd, SIGNAL_FILE);
+    const signalPath = path.join(cwd, signalFile);
     if (fs.existsSync(signalPath)) fs.unlinkSync(signalPath);
   } catch { /* already gone */ }
 
   blank();
-  say(`${c.green('✔')} Layer detached. Signal file removed.`);
+  say(`${c.green('✔')} Layer detached. ${signalFile} removed.`);
   say(`${c.green('✔')} Original code was never modified.`);
   blank();
 }
