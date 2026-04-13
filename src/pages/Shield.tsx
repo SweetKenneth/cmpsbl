@@ -581,19 +581,25 @@ export default function ShieldPage() {
                 </button>
               </div>
 
-              <div className="flex gap-2">
+              <div className="space-y-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Package name (e.g. lodash, express, my-app)"
+                  value={registrationPackage}
+                  onChange={(e) => setRegistrationPackage(e.target.value)}
+                  className="w-full bg-background border border-border/30 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/40"
+                />
                 <input
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder="Contact email (optional if signed in)"
                   value={registrationEmail}
                   onChange={(e) => setRegistrationEmail(e.target.value)}
-                  className="flex-1 bg-background border border-border/30 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/40"
-                  onKeyDown={(e) => e.key === 'Enter' && handleRegistration()}
+                  className="w-full bg-background border border-border/30 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/40"
                 />
-                <Button onClick={handleRegistration} disabled={!registrationEmail.trim()} className="gap-1.5 font-bold">
-                  Register <ArrowRight className="w-3.5 h-3.5" />
-                </Button>
               </div>
+              <Button onClick={handleRegistration} disabled={!registrationPackage.trim() || isRegistering} className="w-full gap-1.5 font-bold">
+                {isRegistering ? 'Registering...' : 'Register'} <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
               <p className="text-[10px] text-muted-foreground/50 mt-3">
                 {registrationType === 'blacklist'
                   ? 'Blacklist is free forever. Your software will be flagged as protected on the Lex governance layer.'
