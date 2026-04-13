@@ -287,28 +287,46 @@ Every Ascension export contains exactly four items:
 
 Nothing else. No overlapping guides, no architecture references, no internal terminology.
 
-### 11.2 Installation Flow
+### 11.2 Auto-Activation Model (Zero-Setup UX)
 
-Standardized on a guided terminal experience:
+**Critical decision:** Ascended files ship with **Enhanced** capabilities already active. Users get value with zero configuration:
+
+| Auto-Activated | Capability |
+|---------------|------------|
+| ✅ | Telemetry (function calls, errors, timing) |
+| ✅ | Health Signals (healthy/degraded reporting) |
+| ✅ | Runtime Tracing (execution path recording) |
+| ✅ | Caching (repeated result storage) |
+| ✅ | Optimization Hints (efficiency suggestions) |
+
+This means:
+- Users without terminal access still get real capabilities
+- No registration, API key, or CLI required for the default level
+- The ascended file works out of the box
+
+### 11.3 Override Model (Mana CLI)
+
+The Mana CLI (`npx mana attach`) is an **optional override** — not a requirement. Users who want to change what's active use it to:
+
+- **Downgrade** to Safe (remove Performance, keep only Observability)
+- **Keep** Enhanced (already active — Enter to confirm)
+- **Upgrade** to Protected (add Defense + Governance)
+- **Fine-tune** via Advanced (toggle individual groups)
 
 ```
 npx mana attach
-  → Detection screen (confirms second layer)
-  → Capability selection (Safe / Enhanced / Protected / Advanced)
-  → Confirmation screen
-  → Persistent access via @cmpsbl/config
+  → Registration (email + name → instant API key)
+  → Environment detection (git config / OS username pre-fill)
+  → First-contact ceremony (project scan, signal intercept)
+  → Level selection (override of current defaults)
+  → Activation ceremony
+  → Persistent config at .mana/config.json
+  → Reconfigure anytime via npx mana config
 ```
 
-**Capability Levels:**
+**Override behavior:** Choosing a level replaces the auto-activated defaults entirely. If a user picks Safe, Performance capabilities are deactivated. If they pick Protected, Defense and Governance are added.
 
-| Level | Behavior |
-|-------|----------|
-| Safe | Minimal protection — basic validation + telemetry |
-| Enhanced | Observability + stability (recommended) |
-| Protected | Full defense + governance, blocks unsafe execution |
-| Advanced | Toggle capability groups: Defense, Observability, Memory, Governance, Performance |
-
-### 11.3 What Is NOT Exposed
+### 11.4 What Is NOT Exposed
 
 - No mention of runtime internals
 - No mention of how capabilities are implemented
@@ -316,7 +334,7 @@ npx mana attach
 - No legacy terminology (Convex Core, Mini Runtime, Sealed Runtime)
 - No requirement to read documentation to proceed with install
 
-### 11.4 Rationale
+### 11.5 Rationale
 
 Previous documentation surface area created:
 - Overlapping explanations across 08, 11, and 12
@@ -324,9 +342,12 @@ Previous documentation surface area created:
 - Reconstructable architecture hints from implementation details
 - Developer friction from multi-document reading requirements
 
-The consolidated model ensures a developer can: **run one command → pick a level → be done.**
+The consolidated model ensures:
+- **No terminal?** → Enhanced capabilities work out of the box
+- **Have terminal?** → `npx mana attach` → pick a level → done
+- **Want to change?** → `npx mana config`
 
-### 11.5 Advanced Configuration Grouping
+### 11.6 Advanced Configuration Grouping
 
 When "Advanced" is selected, capabilities are grouped — never exposed individually:
 
