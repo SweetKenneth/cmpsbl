@@ -140,21 +140,83 @@ export async function lookupVerticalAscensionByFingerprint(
 }
 
 /**
- * Universal fingerprint lookup — checks BOTH tables.
+ * CLI Ascension Session — records from terminal-based Ascension runs
+ */
+export interface CliAscensionSession {
+  id: string;
+  fingerprint: string;
+  fileName: string;
+  archetype: string | null;
+  nodeId: string | null;
+  collisions: number;
+  discoveries: number;
+  cjpiTotal: number;
+  cjpiNovelty: number;
+  cjpiUtility: number;
+  cjpiComposability: number;
+  cjpiMaturity: number;
+  cjpiTier: string;
+  fileLines: number;
+  fileSizeKb: number;
+  outputFile: string | null;
+  operator: string | null;
+  language: string | null;
+  createdAt: string;
+}
+
+export async function lookupCliAscensionByFingerprint(
+  fingerprint: string,
+): Promise<CliAscensionSession | null> {
+  const { data, error } = await supabase
+    .rpc('lookup_cli_ascension_by_fingerprint', { p_fingerprint: fingerprint });
+
+  const row = (data as unknown as Record<string, unknown>[] | null)?.[0];
+  if (error || !row) return null;
+
+  return {
+    id: row.id as string,
+    fingerprint: row.fingerprint as string,
+    fileName: row.file_name as string,
+    archetype: (row.archetype as string) ?? null,
+    nodeId: (row.node_id as string) ?? null,
+    collisions: Number(row.collisions ?? 0),
+    discoveries: Number(row.discoveries ?? 0),
+    cjpiTotal: Number(row.cjpi_total ?? 0),
+    cjpiNovelty: Number(row.cjpi_novelty ?? 0),
+    cjpiUtility: Number(row.cjpi_utility ?? 0),
+    cjpiComposability: Number(row.cjpi_composability ?? 0),
+    cjpiMaturity: Number(row.cjpi_maturity ?? 0),
+    cjpiTier: (row.cjpi_tier as string) ?? 'C',
+    fileLines: Number(row.file_lines ?? 0),
+    fileSizeKb: Number(row.file_size_kb ?? 0),
+    outputFile: (row.output_file as string) ?? null,
+    operator: (row.operator as string) ?? null,
+    language: (row.language as string) ?? null,
+    createdAt: row.created_at as string,
+  };
+}
+
+/**
+ * Universal fingerprint lookup — checks ALL THREE tables.
  * Returns whichever record matches, with a discriminator field.
  */
 export type UnifiedLookupResult =
   | { source: 'restoration'; session: RestorationSession }
-  | { source: 'vertical_ascension'; session: VerticalAscensionSession };
+  | { source: 'vertical_ascension'; session: VerticalAscensionSession }
+  | { source: 'cli_ascension'; session: CliAscensionSession };
 
 export async function lookupAnyFingerprint(fingerprint: string): Promise<UnifiedLookupResult | null> {
-  // Try restoration_sessions first (most common)
+  // Try restoration_sessions first (most common from website)
   const restoration = await lookupByFingerprint(fingerprint);
   if (restoration) return { source: 'restoration', session: restoration };
 
-  // Fallback: check vertical_ascension_sessions
+  // Check vertical_ascension_sessions
   const ascension = await lookupVerticalAscensionByFingerprint(fingerprint);
   if (ascension) return { source: 'vertical_ascension', session: ascension };
+
+  // Check CLI ascension sessions (terminal-originated)
+  const cliAscension = await lookupCliAscensionByFingerprint(fingerprint);
+  if (cliAscension) return { source: 'cli_ascension', session: cliAscension };
 
   return null;
 }

@@ -159,8 +159,34 @@ export function DecodeChat() {
             setMessages(prev => [...prev, { role: 'assistant', content: contextBlock }, { role: 'assistant', content: lookupReply }]);
             setIsLoading(false);
             return;
-          } else {
+          } else if (result.source === 'cli_ascension') {
             const s = result.session;
+            const cjpiDisplay = `${s.cjpiTotal}/100 ${s.cjpiTier}-Tier`;
+
+            const contextBlock = `[DECODE SESSION CONTEXT — fingerprint ${s.fingerprint}]\n` +
+              `Source: CLI Ascension\nFingerprint: ${s.fingerprint}\n` +
+              `CJPI: ${cjpiDisplay}\nFile: ${s.fileName}\nLanguage: ${s.language ?? 'unknown'}\n` +
+              `Archetype: ${s.archetype ?? 'N/A'}\nOperator: ${s.operator ?? 'N/A'}\n` +
+              `Collisions: ${s.collisions}\nDiscoveries: ${s.discoveries}\n` +
+              `[END SESSION CONTEXT]`;
+
+            lookupReply = `Found it! 🔍 This is a **CLI Ascension** record:\n\n` +
+              `**Fingerprint:** \`${s.fingerprint}\`\n` +
+              `**CJPI:** ${cjpiDisplay}\n` +
+              `**File:** ${s.fileName}\n` +
+              (s.language ? `**Language:** ${s.language}\n` : '') +
+              (s.archetype ? `**Archetype:** ${s.archetype}\n` : '') +
+              (s.operator ? `**Operator:** ${s.operator}\n` : '') +
+              `**Collisions:** ${s.collisions}/${40}\n` +
+              `**Discoveries:** ${s.discoveries}\n` +
+              `**Date:** ${new Date(s.createdAt).toLocaleDateString()}\n\n` +
+              `This ascension was run from the CLI terminal. What would you like to know?`;
+
+            setMessages(prev => [...prev, { role: 'assistant', content: contextBlock }, { role: 'assistant', content: lookupReply }]);
+            setIsLoading(false);
+            return;
+          } else {
+            const s = result.session as import('@/lib/factory/restoration-session').VerticalAscensionSession;
             const primList = s.primitivesApplied.length > 0 ? s.primitivesApplied.join(', ') : 'See metadata';
             const capList = s.capabilitiesAdded.length > 0 ? s.capabilitiesAdded.join(', ') : 'N/A';
             const cjpiDisplay = s.finalCjpi != null

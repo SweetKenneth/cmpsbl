@@ -897,6 +897,7 @@ export async function run(args: string[]): Promise<void> {
       case 'treaty':       await cmdTreaty(args.slice(1)); break;
       // ── Signature ──
       case 'ascend':       await cmdAscend(args.slice(1)); break;
+      case 'verify':       await cmdVerify(args.slice(1)); break;
       case 'witness':      await cmdWitness(args.slice(1)); break;
       case 'crown':        await cmdCrown(args.slice(1)); break;
       case 'recall':       await cmdRecall(args.slice(1)); break;
@@ -5361,7 +5362,153 @@ async function cmdAscend(args: string[]): Promise<void> {
 }
 
 /**
- * WITNESS — Live substrate observation mode.
+ * VERIFY — Cross-platform artifact verification.
+ * Checks fingerprints against all sources: website Ascension Lab,
+ * Vertical Ascension, and CLI Ascension sessions.
+ */
+async function cmdVerify(args: string[]): Promise<void> {
+  const fp = args[0];
+
+  if (!fp) {
+    if (JSON_MODE) { jsonOut({ error: 'fingerprint required' }); return; }
+    blank();
+    say(c.bold('  ◈ VERIFY — Artifact Provenance'));
+    blank();
+    say('  Usage:');
+    say(`    ${c.cyan('cmpsbl verify <fingerprint>')}`);
+    blank();
+    say('  Verifies any CMPSBL® Ascension artifact against');
+    say('  the substrate registry — regardless of origin.');
+    blank();
+    say(c.dim('  Sources checked:'));
+    say(c.dim('    • Ascension Lab (website)'));
+    say(c.dim('    • Vertical Ascension'));
+    say(c.dim('    • CLI Ascension'));
+    blank();
+    say(`  Fingerprint is in your receipt file or at:`);
+    say(`    ${c.cyan('cmpsbl.com/verify/<fingerprint>')}`);
+    blank();
+    return;
+  }
+
+  if (JSON_MODE) {
+    try {
+      const endpoint = getSubstrateEndpoint();
+      const apiKey = loadStoredCredentials()?.apiKey;
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['X-Engine-Key'] = apiKey;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ module: 'ascension', action: 'verify', fingerprint: fp }),
+      });
+      const data = await res.json();
+      jsonOut(data);
+    } catch (e: unknown) {
+      jsonOut({ error: 'verification failed', details: (e as Error).message });
+    }
+    return;
+  }
+
+  blank();
+  const s = spinner(`Verifying fingerprint ${c.cyan(fp)}...`);
+
+  try {
+    const endpoint = getSubstrateEndpoint();
+    const apiKey = loadStoredCredentials()?.apiKey;
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (apiKey) headers['X-Engine-Key'] = apiKey;
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ module: 'ascension', action: 'verify', fingerprint: fp }),
+    });
+    const data = await res.json() as {
+      success: boolean;
+      found: boolean;
+      source?: string;
+      record?: Record<string, unknown>;
+    };
+
+    s.stop('Verification complete');
+    blank();
+
+    if (data.found && data.record) {
+      const r = data.record;
+      const source = data.source === 'restoration' ? 'Ascension Lab (Website)'
+        : data.source === 'vertical_ascension' ? 'Vertical Ascension'
+        : data.source === 'cli_ascension' ? 'CLI Ascension'
+        : String(data.source);
+
+      // Determine CJPI based on source
+      const cjpiTotal = data.source === 'cli_ascension'
+        ? Number(r.cjpi_total ?? 0)
+        : data.source === 'restoration'
+        ? Number(r.cjpi_score ?? 0)
+        : Number(r.final_cjpi ?? r.original_cjpi ?? 0);
+
+      const cjpiTier = data.source === 'cli_ascension'
+        ? String(r.cjpi_tier ?? 'C')
+        : data.source === 'restoration'
+        ? String(r.cjpi_tier ?? 'C')
+        : cjpiTotal >= 90 ? 'S' : cjpiTotal >= 75 ? 'A' : cjpiTotal >= 60 ? 'B' : 'C';
+
+      const tierColor = cjpiTier === 'S' ? c.amber
+        : cjpiTier === 'A' ? c.green
+        : cjpiTier === 'B' ? c.cyan
+        : c.dim;
+
+      say(c.bold(c.green('  ╔═══════════════════════════════════════════════════╗')));
+      say(c.bold(c.green('  ║  ✓ VERIFIED AUTHENTIC                            ║')));
+      say(c.bold(c.green('  ╚═══════════════════════════════════════════════════╝')));
+      blank();
+      say(`    ${c.dim('Fingerprint:')}   ${c.cyan(fp)}`);
+      say(`    ${c.dim('Source:')}        ${source}`);
+      say(`    ${c.dim('CJPI Score:')}    ${tierColor(`${cjpiTotal}/100 ${cjpiTier}-Tier`)}`);
+
+      if (r.file_name) say(`    ${c.dim('File:')}          ${String(r.file_name)}`);
+      if (r.original_language || r.language) say(`    ${c.dim('Language:')}      ${String(r.original_language ?? r.language)}`);
+      if (r.archetype) say(`    ${c.dim('Archetype:')}     ${String(r.archetype)}`);
+      if (r.operator) say(`    ${c.dim('Operator:')}      ${String(r.operator)}`);
+      if (r.serial_number) say(`    ${c.dim('Serial:')}        ${String(r.serial_number)}`);
+
+      const date = r.created_at ? new Date(String(r.created_at)).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric',
+      }) : null;
+      if (date) say(`    ${c.dim('Processed:')}     ${date}`);
+
+      // Primitives
+      const prims = (r.selected_primitives ?? r.primitives_applied ?? []) as string[];
+      if (prims.length > 0) {
+        blank();
+        say(`    ${c.dim('Primitives:')}    ${prims.join(', ')}`);
+      }
+
+      blank();
+      say(c.dim(`    Also verifiable online:`));
+      say(`    ${c.cyan(`cmpsbl.com/verify/${fp}`)}`);
+    } else {
+      say(c.bold(c.error('  ╔═══════════════════════════════════════════════════╗')));
+      say(c.bold(c.error('  ║  ✗ NOT FOUND                                     ║')));
+      say(c.bold(c.error('  ╚═══════════════════════════════════════════════════╝')));
+      blank();
+      say(`    ${c.dim('Fingerprint:')}   ${fp}`);
+      blank();
+      say('    No artifact matches this fingerprint.');
+      say('    It may have been entered incorrectly or');
+      say('    the Ascension was run while offline.');
+    }
+    blank();
+  } catch {
+    s.stop(c.error('Verification failed'));
+    blank();
+    say(c.error('  Unable to reach the substrate registry.'));
+    say(c.dim('  Check your internet connection and try again.'));
+    blank();
+  }
+}
+
  * Narrates what the substrate is doing in real-time.
  */
 async function cmdWitness(args: string[]): Promise<void> {

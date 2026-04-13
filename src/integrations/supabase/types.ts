@@ -5062,6 +5062,81 @@ export type Database = {
         }
         Relationships: []
       }
+      cli_ascension_sessions: {
+        Row: {
+          api_key_prefix: string | null
+          archetype: string | null
+          cjpi_composability: number | null
+          cjpi_maturity: number | null
+          cjpi_novelty: number | null
+          cjpi_tier: string | null
+          cjpi_total: number | null
+          cjpi_utility: number | null
+          collisions: number | null
+          created_at: string
+          developer_id: string | null
+          discoveries: number | null
+          file_lines: number | null
+          file_name: string
+          file_size_kb: number | null
+          fingerprint: string
+          id: string
+          language: string | null
+          metadata: Json | null
+          node_id: string | null
+          operator: string | null
+          output_file: string | null
+        }
+        Insert: {
+          api_key_prefix?: string | null
+          archetype?: string | null
+          cjpi_composability?: number | null
+          cjpi_maturity?: number | null
+          cjpi_novelty?: number | null
+          cjpi_tier?: string | null
+          cjpi_total?: number | null
+          cjpi_utility?: number | null
+          collisions?: number | null
+          created_at?: string
+          developer_id?: string | null
+          discoveries?: number | null
+          file_lines?: number | null
+          file_name: string
+          file_size_kb?: number | null
+          fingerprint: string
+          id?: string
+          language?: string | null
+          metadata?: Json | null
+          node_id?: string | null
+          operator?: string | null
+          output_file?: string | null
+        }
+        Update: {
+          api_key_prefix?: string | null
+          archetype?: string | null
+          cjpi_composability?: number | null
+          cjpi_maturity?: number | null
+          cjpi_novelty?: number | null
+          cjpi_tier?: string | null
+          cjpi_total?: number | null
+          cjpi_utility?: number | null
+          collisions?: number | null
+          created_at?: string
+          developer_id?: string | null
+          discoveries?: number | null
+          file_lines?: number | null
+          file_name?: string
+          file_size_kb?: number | null
+          fingerprint?: string
+          id?: string
+          language?: string | null
+          metadata?: Json | null
+          node_id?: string | null
+          operator?: string | null
+          output_file?: string | null
+        }
+        Relationships: []
+      }
       client_error_log: {
         Row: {
           component_stack: string | null
@@ -19158,6 +19233,39 @@ export type Database = {
         Returns: boolean
       }
       is_disposable_email: { Args: { email_addr: string }; Returns: boolean }
+      lookup_cli_ascension_by_fingerprint: {
+        Args: { p_fingerprint: string }
+        Returns: {
+          api_key_prefix: string | null
+          archetype: string | null
+          cjpi_composability: number | null
+          cjpi_maturity: number | null
+          cjpi_novelty: number | null
+          cjpi_tier: string | null
+          cjpi_total: number | null
+          cjpi_utility: number | null
+          collisions: number | null
+          created_at: string
+          developer_id: string | null
+          discoveries: number | null
+          file_lines: number | null
+          file_name: string
+          file_size_kb: number | null
+          fingerprint: string
+          id: string
+          language: string | null
+          metadata: Json | null
+          node_id: string | null
+          operator: string | null
+          output_file: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "cli_ascension_sessions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       lookup_restoration_by_fingerprint: {
         Args: { p_fingerprint: string }
         Returns: {
