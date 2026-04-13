@@ -2,37 +2,31 @@
  * Registry-to-Runtime Bridge — Lex Registry → Mana Runtime Enforcement
  * U.S. Patent App. No. 64/031,637
  *
- * Connects the Lex Registry (backend) to runtime Lex rules (engine).
+ * Connects the Lex Registry (backend) to runtime Lex rules (engine or session).
  * When a package is looked up in the registry, its protection status
  * is hydrated into live Lex governance rules that govern runtime behavior.
  *
  * This turns the registry from a record system into an execution authority.
  *
+ * Session-aware: when a ManaSession is provided, rules are scoped to that session.
+ * Falls back to global Lex only when no session is given.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { ManaCapability, LexRule } from './types';
-import { registerRule, revokeRule } from './lex';
+import type { LexRule, LexVerdict, ManaCapabilityOrWildcard } from './types';
+import { registerRule as globalRegisterRule, revokeRule as globalRevokeRule } from './lex';
 import type { LexRegistryEntry, LexRegistryStatus } from '@/services/lex-registry';
 import { lookupRegistry } from '@/services/lex-registry';
+import type { ManaSession } from './session';
 
 // ═══════════════════════════════════════════════════════════════
 // Registry Status → Lex Rule Mapping
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Policy map: how each registry status translates to runtime governance.
- *
- * - protected → all capabilities denied unless explicitly allowed
- * - licensed → observation mode (capabilities allowed but audited)
- * - unregistered → permissive (no registry-driven restrictions)
- */
 interface RegistryPolicy {
-  /** Default Lex verdict for all capabilities on this package */
-  readonly defaultVerdict: 'allow' | 'deny' | 'observe';
-  /** Lex rule priority — lower = higher precedence */
+  readonly defaultVerdict: LexVerdict;
   readonly priority: number;
-  /** Human-readable reason for audit trail */
   readonly reason: string;
 }
 
@@ -62,19 +56,37 @@ const REGISTRY_POLICIES: Record<LexRegistryStatus, RegistryPolicy> = {
 const hydratedRuleIds = new Map<string, string[]>();
 
 // ═══════════════════════════════════════════════════════════════
+// Rule Registration Abstraction (session-aware)
+// ═══════════════════════════════════════════════════════════════
+
+interface RuleOps {
+  register(capability: ManaCapabilityOrWildcard, target: string, verdict: LexVerdict, reason: string, priority: number): LexRule;
+  revoke(ruleId: string): boolean;
+}
+
+function getOps(session?: ManaSession): RuleOps {
+  if (session) {
+    return {
+      register: (cap, target, verdict, reason, priority) =>
+        session.registerRule(cap as Parameters<typeof session.registerRule>[0], target, verdict, reason, priority),
+      revoke: (ruleId) => session.revokeRule(ruleId),
+    };
+  }
+  return {
+    register: globalRegisterRule,
+    revoke: globalRevokeRule,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Public API
 // ═══════════════════════════════════════════════════════════════
 
 export interface RegistryEnforcementResult {
-  /** Registry status resolved */
   readonly status: LexRegistryStatus;
-  /** Number of Lex rules hydrated */
   readonly rulesCreated: number;
-  /** Rule IDs for later revocation */
   readonly ruleIds: ReadonlyArray<string>;
-  /** Policy applied */
   readonly policy: RegistryPolicy;
-  /** Package identifier used for lookup */
   readonly packageKey: string;
 }
 
@@ -84,11 +96,13 @@ export interface RegistryEnforcementResult {
  *
  * Call this BEFORE attach() to ensure registry governance is in place.
  *
+ * @param session - Optional ManaSession for session-scoped enforcement (recommended)
  * @param packageHash - SHA-256 hash of the package source (authoritative lookup)
  * @param packageName - Package name (convenience fallback, non-authoritative)
  * @param targetFunctions - Function names to apply rules to (use '*' for all)
  */
 export async function enforceRegistryStatus(
+  session?: ManaSession,
   packageHash?: string,
   packageName?: string,
   targetFunctions: string[] = ['*'],
@@ -97,7 +111,6 @@ export async function enforceRegistryStatus(
     throw new Error('[MANA/REGISTRY-BRIDGE] Must provide packageHash or packageName for lookup');
   }
 
-  // Look up in the registry — hash is authoritative, name is fallback
   const entry: LexRegistryEntry = await lookupRegistry({
     hash: packageHash,
     name: packageName,
@@ -106,18 +119,19 @@ export async function enforceRegistryStatus(
   const status = entry.status;
   const policy = REGISTRY_POLICIES[status];
   const packageKey = packageHash ?? packageName ?? 'unknown';
+  const ops = getOps(session);
 
   // Revoke any previously hydrated rules for this package
-  clearHydratedRules(packageKey);
+  clearHydratedRules(packageKey, session);
 
   // Hydrate Lex rules based on policy
   const ruleIds: string[] = [];
 
   if (status !== 'unregistered') {
     for (const target of targetFunctions) {
-      // Apply wildcard capability rule — governs ALL capabilities on this target
-      const rule = registerRule(
-        '*' as ManaCapability,
+      // Wildcard capability — properly typed as ManaCapabilityOrWildcard
+      const rule = ops.register(
+        '*',
         target,
         policy.defaultVerdict,
         policy.reason,
@@ -140,15 +154,15 @@ export async function enforceRegistryStatus(
 
 /**
  * Remove all registry-hydrated rules for a package.
- * Call this before re-hydrating or when detaching.
  */
-export function clearHydratedRules(packageKey: string): number {
+export function clearHydratedRules(packageKey: string, session?: ManaSession): number {
   const ids = hydratedRuleIds.get(packageKey);
   if (!ids) return 0;
 
+  const ops = getOps(session);
   let removed = 0;
   for (const id of ids) {
-    if (revokeRule(id)) removed++;
+    if (ops.revoke(id)) removed++;
   }
   hydratedRuleIds.delete(packageKey);
   return removed;
@@ -172,10 +186,10 @@ export function getEnforcedPackages(): ReadonlyArray<string> {
 /**
  * Clear all registry-hydrated rules across all packages.
  */
-export function clearAllRegistryRules(): number {
+export function clearAllRegistryRules(session?: ManaSession): number {
   let total = 0;
-  for (const key of hydratedRuleIds.keys()) {
-    total += clearHydratedRules(key);
+  for (const key of Array.from(hydratedRuleIds.keys())) {
+    total += clearHydratedRules(key, session);
   }
   return total;
 }

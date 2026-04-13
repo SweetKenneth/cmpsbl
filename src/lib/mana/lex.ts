@@ -8,7 +8,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type { LexRule, LexVerdict, LexEvalContext, ManaCapability } from './types';
+import type { LexRule, LexVerdict, LexEvalContext, ManaCapability, ManaCapabilityOrWildcard } from './types';
 
 /** Internal rule store */
 const rules: Map<string, LexRule> = new Map();
@@ -23,10 +23,11 @@ function generateRuleId(): string {
 
 /**
  * Register a governance rule.
- * Lex evaluates rules in insertion order — first match wins.
+ * Capability can be a specific ManaCapability or '*' (wildcard — matches all capabilities).
+ * Target can be a specific function name or '*' (wildcard — matches all functions).
  */
 export function registerRule(
-  capability: ManaCapability,
+  capability: ManaCapabilityOrWildcard,
   target: string,
   verdict: LexVerdict,
   reason: string,
@@ -46,15 +47,14 @@ export function registerRule(
 }
 
 /**
- * Evaluate whether a capability may be applied to a target function.
- * Returns the verdict and the rule that produced it.
- */
-/**
  * Evaluate whether a capability may be applied/invoked.
  * @param context - 'attachment' = may this wrapper be applied?
  *                  'runtime' = may this invocation proceed right now?
- * These are semantically different — a capability may be allowed to attach
- * but a specific runtime call may be denied (e.g., budget exhausted).
+ *
+ * Wildcard rules:
+ * - capability '*' matches any capability
+ * - target '*' matches any function name
+ * - Both are explicitly handled — no casting required
  */
 export function evaluate(
   capability: ManaCapability,
@@ -69,9 +69,9 @@ export function evaluate(
   });
 
   for (const rule of sorted) {
-    // Capability matching is EXACT — no wildcards on capability.
-    // Wildcards are allowed ONLY on target.
-    const capMatch = rule.capability === capability;
+    // Explicit wildcard handling on capability — '*' matches any capability
+    const capMatch = rule.capability === capability || rule.capability === '*';
+    // Explicit wildcard handling on target — '*' matches any function name
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
       return { verdict: rule.verdict, rule, context };
