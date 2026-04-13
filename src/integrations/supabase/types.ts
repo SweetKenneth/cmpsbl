@@ -9959,6 +9959,7 @@ export type Database = {
           id: string
           metadata: Json | null
           new_status: Database["public"]["Enums"]["lex_registry_status"] | null
+          previous_hash: string | null
           previous_status:
             | Database["public"]["Enums"]["lex_registry_status"]
             | null
@@ -9972,6 +9973,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           new_status?: Database["public"]["Enums"]["lex_registry_status"] | null
+          previous_hash?: string | null
           previous_status?:
             | Database["public"]["Enums"]["lex_registry_status"]
             | null
@@ -9985,6 +9987,7 @@ export type Database = {
           id?: string
           metadata?: Json | null
           new_status?: Database["public"]["Enums"]["lex_registry_status"] | null
+          previous_hash?: string | null
           previous_status?:
             | Database["public"]["Enums"]["lex_registry_status"]
             | null

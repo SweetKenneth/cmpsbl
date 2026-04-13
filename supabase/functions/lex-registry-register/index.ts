@@ -3,8 +3,8 @@
  * POST /lex-registry-register
  * Body: { package_name, package_hash, status?, org?, metadata? }
  * 
- * Registers a package on the Lex Blacklist (free) or requests Whitelist (licensed).
- * Requires authentication.
+ * FIX #3: Rate limiting (5 req/min per user)
+ * FIX #4: Metadata sanitization (size cap, key whitelist, depth limit)
  * 
  * U.S. Patent App. No. 64/031,637
  * © CMPSBL® — All rights reserved.
@@ -12,6 +12,48 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.101.1";
 import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.0/cors";
+
+/* ── Rate limiter (in-memory, per-isolate) ── */
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60_000;
+
+function checkRateLimit(userId: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(userId);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(userId, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return true;
+  }
+  entry.count += 1;
+  return entry.count <= RATE_LIMIT;
+}
+
+/* ── Metadata sanitization ── */
+const METADATA_MAX_SIZE = 5000;
+const METADATA_ALLOWED_KEYS = new Set([
+  "registrant_email", "version", "description", "repository",
+  "homepage", "license", "keywords", "scope", "registry",
+]);
+
+function sanitizeMetadata(raw: unknown): Record<string, string | string[]> {
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) return {};
+
+  const serialized = JSON.stringify(raw);
+  if (serialized.length > METADATA_MAX_SIZE) return {};
+
+  const result: Record<string, string | string[]> = {};
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (!METADATA_ALLOWED_KEYS.has(key)) continue;
+    if (typeof value === "string") {
+      result[key] = value.slice(0, 500);
+    } else if (Array.isArray(value) && value.every((v) => typeof v === "string")) {
+      result[key] = value.slice(0, 20).map((v: string) => v.slice(0, 100));
+    }
+    // Skip non-string, non-string-array values (no nested objects)
+  }
+  return result;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -49,6 +91,14 @@ Deno.serve(async (req) => {
     );
   }
 
+  /* ── Rate limit check (per user) ── */
+  if (!checkRateLimit(user.id)) {
+    return new Response(
+      JSON.stringify({ error: "Rate limit exceeded. Max 5 registrations per minute." }),
+      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json", "Retry-After": "60" } }
+    );
+  }
+
   // Parse and validate body
   let body: Record<string, unknown>;
   try {
@@ -64,11 +114,21 @@ Deno.serve(async (req) => {
   const packageHash = typeof body.package_hash === "string" ? body.package_hash.trim() : "";
   const status = body.status === "licensed" ? "licensed" : "protected";
   const org = typeof body.org === "string" ? body.org.trim().slice(0, 255) : null;
-  const metadata = typeof body.metadata === "object" && body.metadata !== null ? body.metadata : {};
+
+  // FIX #4: Sanitized metadata — whitelisted keys, flat structure, size capped
+  const metadata = sanitizeMetadata(body.metadata);
 
   if (!packageName || packageName.length > 255) {
     return new Response(
       JSON.stringify({ error: "package_name is required (max 255 chars)" }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
+  // Validate package name format (alphanumeric, dashes, dots, slashes for scoped packages)
+  if (!/^[@a-zA-Z0-9][\w./-]{0,254}$/.test(packageName)) {
+    return new Response(
+      JSON.stringify({ error: "Invalid package name format" }),
       { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
@@ -103,7 +163,7 @@ Deno.serve(async (req) => {
       );
     }
     return new Response(
-      JSON.stringify({ error: "Registration failed", detail: error.message }),
+      JSON.stringify({ error: "Registration failed" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
