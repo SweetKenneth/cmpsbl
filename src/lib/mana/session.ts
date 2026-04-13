@@ -16,6 +16,7 @@ import type {
   AttachmentState,
   AttachmentPoint,
   ManaCapability,
+  ManaCapabilityOrWildcard,
   ManaConfig,
   ManaManifest,
   ManaProof,
@@ -117,7 +118,7 @@ function createSessionLex(): SessionLex {
 
 function lexRegisterRule(
   lex: SessionLex,
-  capability: ManaCapability,
+  capability: ManaCapabilityOrWildcard,
   target: string,
   verdict: LexVerdict,
   reason: string,
@@ -139,8 +140,9 @@ function lexRegisterRule(
 
 /**
  * Session-scoped Lex evaluation.
- * Capability matching is EXACT — no wildcards on capability.
- * Wildcards are allowed ONLY on target.
+ * Wildcards:
+ * - capability '*' matches any capability (explicit, not cast)
+ * - target '*' matches any function name
  */
 function lexEvaluate(
   lex: SessionLex,
@@ -155,9 +157,9 @@ function lexEvaluate(
   });
 
   for (const rule of sorted) {
-    // EXACT capability match — no wildcard on capability
-    const capMatch = rule.capability === capability;
-    // Wildcards allowed ONLY on target
+    // Explicit wildcard handling — '*' on capability matches any
+    const capMatch = rule.capability === capability || rule.capability === '*';
+    // Wildcards on target — '*' matches any function name
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
       return { verdict: rule.verdict, rule, context };
@@ -213,7 +215,7 @@ export interface ManaSession {
   configure(partial: Partial<ManaConfig>): ManaConfig;
 
   // ── Lex ──
-  registerRule(capability: ManaCapability, target: string, verdict: LexVerdict, reason: string, priority?: number): LexRule;
+  registerRule(capability: ManaCapabilityOrWildcard, target: string, verdict: LexVerdict, reason: string, priority?: number): LexRule;
   revokeRule(ruleId: string): boolean;
   getRules(): ReadonlyArray<LexRule>;
 
@@ -306,6 +308,7 @@ export function createSession(sessionId?: string): ManaSession {
   /**
    * Contract-driven wrapper factory — uses session-scoped Lex.
    * Behavior determined by CapabilityContract, not hardcoded switches.
+   * ALL wrappers use withAsyncSafety — no manual promise checks.
    */
   function wrapFunction(
     originalFn: AnyFn, functionName: string, capability: ManaCapability, point: AttachmentPoint,
@@ -338,16 +341,20 @@ export function createSession(sessionId?: string): ManaSession {
       } as AnyFn;
     }
 
-    // ── VALIDATE phase ──
+    // ── VALIDATE phase — async-safe ──
     if (phase === WrapperPhase.VALIDATE) {
       return function manaSessionValidate(this: unknown, ...args: unknown[]) {
         point.invocations++;
-        emitTelemetry(capability, functionName, 'invoked', { argCount: args.length });
-        return originalFn.apply(this, args);
+        const result = originalFn.apply(this, args);
+        return withAsyncSafety(
+          result,
+          () => { emitTelemetry(capability, functionName, 'invoked', { argCount: args.length }); },
+          () => { emitTelemetry(capability, functionName, 'observed', { error: true }); },
+        );
       } as AnyFn;
     }
 
-    // ── FAILSAFE phase — async-safe with withAsyncSafety ──
+    // ── FAILSAFE phase — async-safe ──
     if (phase === WrapperPhase.FAILSAFE) {
       // Retry handler gets special treatment — needs backoff
       if (capability === 'retry_handler') {
@@ -384,7 +391,7 @@ export function createSession(sessionId?: string): ManaSession {
         } as AnyFn;
       }
 
-      // Generic failsafe — catch and swallow
+      // Generic failsafe — catch and swallow, async-safe
       return function manaSessionFailsafe(this: unknown, ...args: unknown[]) {
         point.invocations++;
         try {
@@ -405,7 +412,7 @@ export function createSession(sessionId?: string): ManaSession {
       } as AnyFn;
     }
 
-    // ── ANALYZE phase — async-safe with withAsyncSafety ──
+    // ── ANALYZE phase — async-safe ──
     if (phase === WrapperPhase.ANALYZE) {
       return function manaSessionAnalyze(this: unknown, ...args: unknown[]) {
         point.invocations++;
@@ -428,7 +435,7 @@ export function createSession(sessionId?: string): ManaSession {
       } as AnyFn;
     }
 
-    // ── OBSERVE phase (default) — async-safe with withAsyncSafety ──
+    // ── OBSERVE phase (default) — async-safe ──
     return function manaSessionObserve(this: unknown, ...args: unknown[]) {
       point.invocations++;
       const start = performance.now();
@@ -507,37 +514,57 @@ export function createSession(sessionId?: string): ManaSession {
       // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
       const sorted = [...capabilities].sort(byPhaseThenName).reverse();
 
-      let position = 0;
+      // Group by function name for proper wrapper COMPOSITION
+      const capsByFunction = new Map<string, typeof sorted>();
       for (const cap of sorted) {
-        const originalFn = hostModule[cap.functionName] as AnyFn;
-        if (typeof originalFn !== 'function') continue;
+        const list = capsByFunction.get(cap.functionName) ?? [];
+        list.push(cap);
+        capsByFunction.set(cap.functionName, list);
+      }
 
-        // Lex governance — ATTACHMENT-TIME verdict
-        const { verdict } = lexEvaluate(lex, cap.capability, cap.functionName, config.lexMode, 'attachment');
-        if (verdict === 'deny') {
-          emitTelemetry(cap.capability, cap.functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
-          continue;
+      let position = 0;
+      for (const [functionName, caps] of Array.from(capsByFunction.entries())) {
+        const rawOriginal = hostModule[functionName] as AnyFn;
+        if (typeof rawOriginal !== 'function') continue;
+
+        // Store the true original ONCE — before any wrapping
+        if (!originals.has(functionName)) {
+          originals.set(functionName, rawOriginal);
         }
 
-        if (!originals.has(cap.functionName)) {
-          originals.set(cap.functionName, originalFn);
+        // Compose wrappers: each wraps the result of the previous
+        let wrapped: AnyFn = rawOriginal;
+        for (const cap of caps) {
+          // Lex governance — ATTACHMENT-TIME verdict
+          const { verdict } = lexEvaluate(lex, cap.capability, cap.functionName, config.lexMode, 'attachment');
+          if (verdict === 'deny') {
+            emitTelemetry(cap.capability, cap.functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
+            continue;
+          }
+
+          const point: AttachmentPoint = {
+            functionName: cap.functionName,
+            capability: cap.capability,
+            phase: CAPABILITY_PHASE[cap.capability] ?? 3,
+            position: position++,
+            active: true,
+            invocations: 0,
+            blocked: 0,
+            observed: 0,
+            rulePayload: cap.rulePayload,
+          };
+          attachmentPoints.set(`${cap.functionName}:${cap.capability}`, point);
+
+          // Compose — wrap the previous wrapped result, not the original
+          wrapped = wrapFunction(wrapped, cap.functionName, cap.capability, point);
+          emitTelemetry(cap.capability, cap.functionName, 'invoked', {
+            action: 'attached', layerDepth, position: point.position,
+            phase: point.phase,
+          }, 'attachment');
         }
 
-        const point: AttachmentPoint = {
-          functionName: cap.functionName,
-          capability: cap.capability,
-          phase: CAPABILITY_PHASE[cap.capability] ?? 3,
-          position: position++,
-          active: true,
-          invocations: 0,
-          blocked: 0,
-          observed: 0,
-          rulePayload: cap.rulePayload,
-        };
-        attachmentPoints.set(`${cap.functionName}:${cap.capability}`, point);
-
-        hostModule[cap.functionName] = wrapFunction(originalFn, cap.functionName, cap.capability, point);
-        emitTelemetry(cap.capability, cap.functionName, 'invoked', { action: 'attached', layerDepth, position: point.position }, 'attachment');
+        // Apply the fully composed wrapper stack
+        hostModule[functionName] = wrapped;
       }
 
       sessionState = 'symbiotic';
@@ -551,7 +578,7 @@ export function createSession(sessionId?: string): ManaSession {
         throw new Error(`[MANA/SESSION:${id}] Not attached.`);
       }
       sessionState = 'detaching';
-      for (const [functionName, originalFn] of originals.entries()) {
+      for (const [functionName, originalFn] of Array.from(originals.entries())) {
         hostModule[functionName] = originalFn;
       }
       sessionState = 'detached';
@@ -567,12 +594,12 @@ export function createSession(sessionId?: string): ManaSession {
       const currentHash = await computeHash(sourceForHash);
       const points = Array.from(attachmentPoints.values());
 
-      // Deterministic sort for proof
+      // Deterministic sort for proof — by functionName then capability
       points.sort((a, b) =>
         a.functionName.localeCompare(b.functionName) || a.capability.localeCompare(b.capability)
       );
 
-      const capabilities = [...new Set(points.map(p => p.capability))].sort();
+      const capabilities = Array.from(new Set(points.map(p => p.capability))).sort();
 
       const snapshot = {
         hostPackage: hostPkg,
@@ -627,7 +654,7 @@ export function createSession(sessionId?: string): ManaSession {
     getTelemetry() { return [...telemetry]; },
     getTelemetrySummary() {
       const summary: Record<string, { invocations: number; blocked: number; observed: number }> = {};
-      for (const point of attachmentPoints.values()) {
+      for (const point of Array.from(attachmentPoints.values())) {
         summary[point.functionName] = {
           invocations: point.invocations,
           blocked: point.blocked,
@@ -647,7 +674,7 @@ export function createSession(sessionId?: string): ManaSession {
         capability: ManaCapability; phase: number; phaseName: string;
         position: number; invocations: number; blocked: number; observed: number;
       }> = [];
-      for (const point of attachmentPoints.values()) {
+      for (const point of Array.from(attachmentPoints.values())) {
         if (point.functionName === functionName) {
           results.push({
             capability: point.capability,
