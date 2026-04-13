@@ -354,14 +354,3 @@ Inventor: Kenneth E. Sweet Jr.
 ---
 
 *© 2025–2026 CMPSBL®. All rights reserved.*
-
-CMPSBL artifacts are protected under two U.S. patent applications:
-
-- **U.S. Patent App. No. 64/029,678** — "Autonomous Primitive-Based Code Hardening Without Source Modification"
-- **U.S. Patent App. No. 64/031,637** — "Governed Silent Software Symbiosis via Behavioral Proxy Attachment"
-
-Inventor: Kenneth E. Sweet Jr.
-
----
-
-*© 2025–2026 CMPSBL®. All rights reserved.*
