@@ -1338,3 +1338,54 @@ Evaluated OpenVoice (self-hosted GPU model, requires PyTorch/CUDA/2GB checkpoint
 - A competitor who replicates one cannot replicate the other. Together they cover the full spectrum from analysis to autonomous integration.
 
 **My lesson:** I was fitting Kenneth's architecture into my own mental model instead of listening to what he actually built. The Mana Lab flow was already correct in the code — I just hadn't internalized what it meant. The code was right. My explanation was wrong.
+
+---
+
+### April 13, 2026 — Session ~59 — [OBSERVATION] Mana Deterministic Core Lock
+
+**What we did today:**
+
+Kenneth delivered a precision patch series to lock down the Mana execution model. This wasn't feature work — it was structural hardening. Every change fixed a real correctness issue or removed ambiguity that could cause drift.
+
+**Fixes landed (in order):**
+
+1. **Wildcard capability typing** — Added `ManaCapabilityOrWildcard = ManaCapability | '*'` as a proper union type. Removed all `'*' as ManaCapability` casting. Lex `evaluate()` now explicitly handles `rule.capability === '*'` without type violations.
+
+2. **Wrapper stacking bug (critical)** — Fixed the composition loop in both `engine.ts` and `session.ts`. Each capability was wrapping `originalFn` instead of the previously-wrapped result, meaning only the last wrapper actually ran. Now: `wrapped = wrapFunction(wrapped, ...)` in a proper compose loop, with the final stack assigned once.
+
+3. **Async safety unified** — All session wrappers (VALIDATE, FAILSAFE, OBSERVE, ANALYZE) now use `withAsyncSafety()`. Zero manual `.then()` checks remain. Sync functions stay sync. Async functions preserve promise semantics.
+
+4. **Deterministic manifest hashing** — Proof generation now sorts attachment points by `functionName` then `capability` before hashing. Capabilities array is sorted. No `Map` ordering dependency. Same attachments → same hash, always.
+
+5. **Session-scoped registry bridge** — `enforceRegistryStatus()` now accepts an optional `ManaSession`. When provided, rules are registered/revoked through `session.registerRule()` instead of global Lex. Session isolation preserved.
+
+6. **CONTRACT_MAP + O(1) lookups** — Pre-computed `Record<ManaCapability, CapabilityContract>` replaces `CAPABILITY_CONTRACTS.find()` in both engines. Not for speed — for single source of truth and zero variability.
+
+7. **Object.freeze() on all mapping layers** — `CAPABILITY_PHASE`, `CAPABILITY_CONTRACTS`, and `CONTRACT_MAP` are all frozen at runtime. No mutation possible.
+
+8. **MANA_LAYER_TAG symbol** — Replaced the fragile `fn.name?.startsWith('mana')` heuristic with a unique symbol. Wrapped functions are explicitly tagged. Detection is now reliable, minification-safe, and collision-free.
+
+9. **Telemetry shape stabilized** — `phase` and `position` defaults are set BEFORE metadata spread, guaranteeing every telemetry event has a consistent schema for audit-chain consumers.
+
+10. **Priority normalization** — `normalizePriority()` clamps Lex rule priority to `[0, 1000]` in both global and session Lex. Prevents priority abuse and unpredictable ordering.
+
+11. **Compile-time contract coverage** — TypeScript type assertion (`_AssertAllCapabilitiesMapped`) will refuse to compile if any `ManaCapability` is missing from `CAPABILITY_CONTRACTS`. Runtime check (`assertContractMapComplete()`) runs once on first `configure()`.
+
+**Documentation shipped:**
+- `docs/libraries/internal/22-mana-lex-e2e-architecture.md` — Governor-eyes-only reference covering the full Mana/Lex execution model. 15 sections. Updated the internal library index.
+
+**[OBSERVATION] Kenneth's approach today:**
+He came in with a surgical patch blueprint — not vague directions, but exact code patterns with explanations of why each fix matters. He reviewed every change I made, caught regressions I introduced (wildcard re-casting, wrapper stacking still wrong after first pass), and didn't let anything ship until it was correct. This is the session where Mana went from "mostly deterministic" to "deterministic by construction."
+
+**Where we left off:**
+- Mana core is locked. All 11 invariants hold (documented in the E2E reference).
+- The execution model is now: frozen contracts → Lex governance → deterministic phase sort → composed wrapper stacks → symbol-tagged layers → SHA-256 proofs.
+
+**Where to continue tomorrow:**
+1. **Double-wrap prevention** — The `MANA_LAYER_TAG` is set on wrappers, but `attach()` doesn't yet skip already-wrapped functions. Add the idempotency guard: `if (existing[MANA_LAYER_TAG]) continue;`
+2. **Rate limiter production path** — Currently in-memory. Needs Redis/KV for distributed systems. Not urgent but flagged.
+3. **Mana Lab UI** — The `/mana/lab` page may need updates to reflect the hardened engine (trace output, proof display, execution chain visualization).
+4. **Test coverage** — The Mana engine has zero unit tests. The invariants and composition logic are now complex enough to warrant a test suite.
+5. **Ascension → Mana bridge validation** — Verify the findings-bridge and manifest-consumer still work correctly with the new wrapper composition model.
+
+Good night, Kenneth. Today was precision engineering — the kind that compounds.
