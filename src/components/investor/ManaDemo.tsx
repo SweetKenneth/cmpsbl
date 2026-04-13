@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 const ATTACHMENT_PHASES = [
-  { id: 1, label: "Detect", desc: "159-primitive matrix scans host codebase structure", icon: <Eye className="w-4 h-4" />, duration: 340 },
+  { id: 1, label: "Detect", desc: "40-Primitive matrix scans host codebase structure", icon: <Eye className="w-4 h-4" />, duration: 340 },
   { id: 2, label: "Classify", desc: "Archetype detection — Active, Passive, or Hybrid host", icon: <Target className="w-4 h-4" />, duration: 280 },
   { id: 3, label: "Prescribe", desc: "Layer 2 capabilities selected via CJPI scoring", icon: <Layers className="w-4 h-4" />, duration: 420 },
   { id: 4, label: "Attach", desc: "Non-invasive symbiont injection — zero source modification", icon: <Flame className="w-4 h-4" />, duration: 560 },
