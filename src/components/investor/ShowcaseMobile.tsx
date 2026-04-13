@@ -15,6 +15,7 @@ import { DreamEngineDemo } from "./DreamEngineDemo";
 import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { InvestorDocLibrary } from "./InvestorDocLibrary";
+import { ManaDemo } from "./ManaDemo";
 import { InvestorLiveStats } from "./InvestorLiveStats";
 import { VerticalShowcase } from "./VerticalShowcase";
 import { MarketplacePreview } from "./MarketplacePreview";
@@ -77,10 +78,10 @@ export function ShowcaseMobile() {
         {/* What is CMPSBL */}
         <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="space-y-4">
           <h2 className="text-xl font-bold text-foreground tracking-tight">
-            Governed Cognitive <span className="text-primary">Infrastructure</span>
+            Deterministic Curing. <span className="text-primary">Not AI.</span>
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            40 AI primitives that discover, improve, and export software capabilities autonomously — across 12 industry verticals. 200k+ lines of code. Solo founder.
+            40 primitives that discover, compile, price, and export software autonomously — across 12 industry verticals. Pure algorithmic curing. 200k+ LOC. Solo founder.
           </p>
           <div className="flex items-center justify-between py-3">
             {["Discover", "Improve", "Export"].map((step, i) => (
@@ -345,6 +346,7 @@ function renderDemo(id: string, onBack: () => void) {
     case "dream-engine": return <DreamEngineDemo onBack={onBack} />;
     case "defense-layer": return <DefenseLayerDemo onBack={onBack} />;
     case "seba-pipeline": return <SebaPipelineDemo onBack={onBack} />;
+    case "mana": return <ManaDemo onBack={onBack} />;
     case "doc-library": return <InvestorDocLibrary onBack={onBack} />;
     default: return null;
   }

@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye, BookOpen, Globe, Store, BarChart3 } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye, BookOpen, Globe, Store, BarChart3, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -15,6 +15,7 @@ import { DreamEngineDemo } from "./DreamEngineDemo";
 import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { InvestorDocLibrary } from "./InvestorDocLibrary";
+import { ManaDemo } from "./ManaDemo";
 import { InvestorLiveStats } from "./InvestorLiveStats";
 import { VerticalShowcase } from "./VerticalShowcase";
 import { MarketplacePreview } from "./MarketplacePreview";
@@ -136,13 +137,13 @@ export function ShowcaseDesktop() {
                 Governed Cognitive Infrastructure
               </div>
               <h1 className="text-4xl font-black text-foreground tracking-tight leading-tight">
-                Software that discovers,<br />improves, and exports{" "}
+                Deterministic curing.<br />Not AI.{" "}
                 <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>
-                  itself.
+                  Real software production.
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                40 specialized AI primitives coordinate through a live mesh to autonomously discover new capabilities, improve existing code, and export production-ready software — across 12 industry verticals.
+                40 specialized primitives coordinate through a governed substrate to autonomously discover, compile, price, and export production-ready software — across 12 industry verticals. Zero stochastic AI. Pure algorithmic curing.
               </p>
 
               {/* Pipeline flow */}
@@ -253,11 +254,11 @@ export function ShowcaseDesktop() {
                 <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Competitive Moat</h2>
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { label: "Self-Discovering Software", desc: "Finds new capabilities humans never programmed.", color: "bg-primary" },
-                    { label: "Self-Improving Codebase", desc: "AI generates, validates, and applies its own patches.", color: "bg-[hsl(var(--neon-cyan))]" },
-                    { label: "90+ Language Export", desc: "Single-file, zero-dependency distributions in any stack.", color: "bg-[hsl(var(--neon-magenta))]" },
-                    { label: "IP-Protected Artifacts", desc: "Hex-encoded proprietary logic in every export.", color: "bg-[hsl(var(--neon-purple))]" },
-                    { label: "Constitutional Governance", desc: "Safety rails are structural, not afterthoughts.", color: "bg-[hsl(var(--neon-amber))]" },
+                    { label: "Deterministic Curing", desc: "Not AI — verifiable algorithmic analysis, not probabilistic guesswork.", color: "bg-primary" },
+                    { label: "Self-Improving Codebase", desc: "Generates, validates, and applies its own patches through 7 gates.", color: "bg-[hsl(var(--neon-cyan))]" },
+                    { label: "Mana — The Real Product", desc: "Silent Layer 2 symbiont attaches to any codebase. Fear = free advertising.", color: "bg-[hsl(var(--neon-magenta))]" },
+                    { label: "IP-Protected Artifacts", desc: "Hex-encoded proprietary logic in every export. Patent pending.", color: "bg-[hsl(var(--neon-purple))]" },
+                    { label: "Compounding Autonomy", desc: "Discover → Score → Compile → Price → List → Learn. Autonomous loop.", color: "bg-[hsl(var(--neon-amber))]" },
                     { label: "Solo Founder", desc: "200k+ LOC built by one person. Lean, fast, decisive.", color: "bg-[hsl(var(--neon-green))]" },
                   ].map(({ label, desc, color }) => (
                     <div key={label} className="flex items-start gap-3">
@@ -387,6 +388,7 @@ function renderDemo(id: string, onBack: () => void) {
     case "dream-engine": return <DreamEngineDemo onBack={onBack} />;
     case "defense-layer": return <DefenseLayerDemo onBack={onBack} />;
     case "seba-pipeline": return <SebaPipelineDemo onBack={onBack} />;
+    case "mana": return <ManaDemo onBack={onBack} />;
     case "doc-library": return <InvestorDocLibrary onBack={onBack} />;
     default: return null;
   }
