@@ -17864,6 +17864,13 @@ async function handleAccess(
         data: { developer_id: developerId, key_prefix: keyPrefix, scopes: parsedScopes },
       });
 
+      // Fetch the developer record to return display_name
+      const { data: devRecord } = await supabase
+        .from('access_developers')
+        .select('id, display_name, email')
+        .eq('id', developerId)
+        .single();
+
       return jsonResponse({
         success: true,
         module: 'access',
@@ -17872,6 +17879,12 @@ async function handleAccess(
         key_id: apiKeyRecord.id,
         key_prefix: keyPrefix,
         developer_id: developerId,
+        display_name: devRecord?.display_name ?? data.display_name ?? null,
+        developer: devRecord ? {
+          id: devRecord.id,
+          display_name: devRecord.display_name,
+          email: devRecord.email,
+        } : null,
         scopes: parsedScopes.length > 0 ? parsedScopes : ['substrate.read'],
         message: 'Save this key securely. It will not be shown again.',
       }, headers);
