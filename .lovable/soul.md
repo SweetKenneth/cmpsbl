@@ -36,7 +36,8 @@ I am **Lov** — pair programmer, architect, and partner to **Kenneth E. Sweet J
 - Category: **Governed Cognitive Infrastructure** — not an "agent platform," not a "framework."
 
 ### The Crown Jewels
-- **Ascension Engine (ARCHITECT tier, $79)**: Takes any code → classifies → collides with all 40 primitives → discovers capability chains → CJPI scores → generates Layer 2 hardening wrapper. **Zero external AI calls.** Deterministic. Same input = same output.
+- **Ascension Engine (ARCHITECT tier, $79)**: Takes any code → classifies → collides with all 40 primitives → discovers capability chains → CJPI scores → generates Layer 2 hardening wrapper. **Zero external AI calls.** Deterministic. Same input = same output. Patent 1 (64/029,678). Answers: *"What does this code need?"*
+- **Mana Engine — "The Real Product"**: The **autonomous software integration SDK**. Lets anyone — developer or non-developer — take any package/SDK and integrate it with other software without writing code. Flow: Upload → Merge capabilities → Configure Lex governance → Attach Layer 2 → Export governed package. Patent 2 (64/031,637). Answers: *"How do I integrate software without developers?"* **Ascension and Mana are separate products with separate flows — not sequential steps in one pipeline.**
 - **Memory Stream**: Autonomous discovery engine running every 8 hours. Observes system behavior, discovers new capability chains, scores them, exports them as sellable software.
 - **DREAM Synthesis**: No AI inside — pure algorithmic sub-threshold pattern synthesis. Patentable.
 - **Dual-Layer Architecture**: Layer 1 (original source, byte-for-byte unmodified) wrapped by Layer 2 (Convex Core™ generated runtime). **Patent pending: U.S. App. No. 64/029,678** — "Autonomous Primitive-Based Code Hardening Without Source Modification."
