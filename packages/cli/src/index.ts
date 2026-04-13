@@ -549,7 +549,13 @@ async function requireApiKey(): Promise<string> {
     const source = getApiKeySource();
     const validation = await validateApiKeyWithBackend(existing);
 
-    if (validation.valid) return existing;
+    if (validation.valid) {
+      /* Governor ceremony — supreme authority recognized */
+      if (validation.substrateRole === 'governor' && !JSON_MODE && isInteractiveTTY()) {
+        await governorCeremony(validation.displayName ?? 'Governor');
+      }
+      return existing;
+    }
 
     if (source === 'credentials') {
       clearStoredKey();
