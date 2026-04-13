@@ -1317,7 +1317,15 @@ export async function attach(
   originals.clear();
   telemetry.length = 0;
 
-  for (const cap of capabilities) {
+  // Sort capabilities by deterministic execution phase before wrapping
+  // This ensures GATE → VALIDATE → FAILSAFE → OBSERVE → ANALYZE order
+  const sorted = [...capabilities].sort((a, b) => {
+    const phaseA = CAPABILITY_PHASE[a.capability] ?? 3;
+    const phaseB = CAPABILITY_PHASE[b.capability] ?? 3;
+    return phaseA - phaseB;
+  });
+
+  for (const cap of sorted) {
     const { functionName, capability, rulePayload } = cap;
     const originalFn = hostModule[functionName];
 
