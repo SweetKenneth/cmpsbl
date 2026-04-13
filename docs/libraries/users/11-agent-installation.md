@@ -2,26 +2,78 @@
 
 ---
 
-## Install
+## You Might Not Need This
+
+Your ascended file ships with **Enhanced** capabilities already active:
+- ✅ Telemetry, health signals, runtime tracing
+- ✅ Caching, optimization hints
+
+**If that's enough, skip this page entirely.** Just use your ascended file.
+
+This guide is only for developers who want to:
+- **Add** Defense or Governance capabilities
+- **Change** which capabilities are active
+- **Fine-tune** their configuration
+
+---
+
+## Install (One Command)
 
 ```bash
 npx mana attach
 ```
 
-The CLI detects your file, confirms the second layer, and walks you through activation.
+That's all. The CLI walks you through everything:
+
+1. **Register** — enter your email and name → get an API key instantly
+2. **Detect** — scans your project and shows what it found
+3. **Choose** — pick your activation level
+4. **Done** — Layer 2 configured
 
 ---
 
 ## Activation Levels
 
-| Level | What It Does |
-|-------|-------------|
-| **Safe** | Minimal protection — basic validation + telemetry |
-| **Enhanced** | Adds observability + stability — recommended for most users |
-| **Protected** | Full defense + governance — blocks unsafe execution paths |
-| **Advanced** | Fine-grained control over capability groups |
+| Level | What's Active | When to Use |
+|-------|-------------|-------------|
+| **Safe** | Observability only | You want minimal footprint |
+| **Enhanced** | Observability + Performance | **Already active by default** |
+| **Protected** | + Defense + Governance | You want full protection |
+| **Advanced** | You choose each group | You want total control |
 
-Pick a level during install. Change it anytime with `@cmpsbl/config`.
+Choosing a level **overrides** the defaults. If you pick Safe, it turns off Performance. If you pick Protected, it turns on Defense and Governance.
+
+---
+
+## Change Your Level Later
+
+```bash
+npx mana config
+```
+
+---
+
+## Check Status
+
+```bash
+npx mana status
+```
+
+---
+
+## Remove Layer 2
+
+```bash
+npx mana detach
+```
+
+Your original code was never modified. Detaching just removes the configuration.
+
+---
+
+## No Terminal?
+
+If you don't have terminal access, your ascended file already works with Enhanced capabilities. No setup needed.
 
 ---
 
@@ -29,55 +81,14 @@ Pick a level during install. Change it anytime with `@cmpsbl/config`.
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `CMPSBL_API_KEY` | ✓ | — | Your API key from cmpsbl.com/api-access |
-| `CMPSBL_ENDPOINT` | — | Production | Custom endpoint override |
-
----
-
-## Production Integration
-
-```typescript
-import { init } from '@cmpsbl/runtime';
-import * as handlers from './handlers';
-import { readFileSync } from 'fs';
-
-const source = readFileSync('./handlers.ts', 'utf-8');
-const session = init(handlers, source, { name: 'api-handlers' });
-
-// Drop-in replacement — same signatures, now governed
-app.get('/users', session.exports.getUsers);
-app.post('/users', session.exports.createUser);
-
-app.get('/health', (_, res) => res.json(session.healthCheck()));
-app.get('/status', (_, res) => res.json(session.status()));
-```
-
-No code modification. No framework changes. No lock-in.
-
----
-
-## Verify
-
-```bash
-cmpsbl health
-```
-
----
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| `CMPSBL_API_KEY not set` | Add to `.env` or `export CMPSBL_API_KEY=...` |
-| CLI not responding | Run `npx mana attach` again from the project root |
-| Level not applying | Run `@cmpsbl/config` to reconfigure |
+| `CMPSBL_API_KEY` | Only for Mana CLI | — | Your API key (free — register with email) |
 
 ---
 
 ## Support
 
 - **Email:** support@cmpsbl.com
-- **CLI:** `cmpsbl help`
+- **CLI:** `npx mana help`
 
 ---
 

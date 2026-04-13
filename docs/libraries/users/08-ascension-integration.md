@@ -2,129 +2,66 @@
 
 ---
 
-## What Is Ascension?
+## What Does This Do?
 
-Ascension adds a second layer to your code. This layer enhances and protects your software without modifying it.
+Ascension adds an invisible second layer around your code. This layer:
 
-Your original file stays exactly as it is. A new governed layer wraps around it — adding validation, observability, stability, and defense depending on the level you choose.
+- **Watches** your code for problems (telemetry + health signals)
+- **Protects** your code from unsafe behavior (validation + circuit breakers)
+- **Governs** your code with policy enforcement (if you choose to enable it)
 
-One command. One choice. Done.
-
----
-
-## Requirements
-
-- **Creator tier** or above
-- API key with `ascension` scope
-- Working source code (any of 90+ supported languages)
+Your original code is **never changed**. Not one line. The layer wraps around it.
 
 ---
 
-## Install
+## What You Get Right Now (No Setup Required)
 
-```bash
-npx mana attach
-```
+Your ascended file already has capabilities activated out of the box:
 
-That's it. The CLI handles everything from here.
+| Capability | What It Does | Status |
+|-----------|-------------|--------|
+| **Telemetry** | Tracks function calls, errors, and timing | ✅ Active |
+| **Health Signals** | Reports whether your code is healthy or degraded | ✅ Active |
+| **Runtime Tracing** | Records execution paths for debugging | ✅ Active |
+| **Caching** | Stores repeated results for faster performance | ✅ Active |
+| **Optimization Hints** | Suggests where your code can be more efficient | ✅ Active |
+
+**You don't have to do anything.** These are already working in your ascended file.
+
+If you want to add more capabilities (defense, governance, memory) or change what's active, see **Step 3** below.
 
 ---
 
-## What Happens
+## Step 1: Look at Your Files
 
-### 1. Detection
-
-After running the command, the CLI detects your file and confirms:
-
-```
-Ascension has detected that your file now has a second layer.
-
-This layer enhances and protects your code without modifying it.
-```
-
-### 2. Choose Your Level
-
-You're presented with four options:
-
-| Level | What It Does |
-|-------|-------------|
-| **Safe** | Minimal protection — basic validation + telemetry |
-| **Enhanced** | Adds observability + stability — recommended for most users |
-| **Protected** | Full defense + governance — blocks unsafe execution paths |
-| **Advanced** | Fine-grained control over capability groups |
-
-Pick one. Move on.
-
-### 3. Confirmation
+After Ascension, you have two files:
 
 ```
-Ascension is now active.
-
-Your file is running with a secondary layer.
-
-Original code remains unchanged.
+your-project/
+├── your-file.ts          ← Your original code (untouched)
+└── your-file.ascended.ts ← Your code with Layer 2 (the enhanced version)
 ```
 
-### 4. Return Anytime
+**Your original file** is exactly how you left it. Nothing was changed.
 
-To reopen the configuration menu:
+**Your ascended file** is the new version with the second layer active. Use this one in production.
 
-```bash
-@cmpsbl/config
+---
+
+## Step 2: Use the Ascended File
+
+Replace your original import with the ascended version. That's it.
+
+### Before (your original code):
+
+```typescript
+import * as handlers from './handlers';
+
+app.get('/users', handlers.getUsers);
+app.post('/users', handlers.createUser);
 ```
 
----
-
-## Advanced Configuration
-
-If you selected **Advanced**, you toggle capability groups — not individual primitives.
-
-| Group | What It Controls |
-|-------|-----------------|
-| **Defense** | Threat detection, circuit breakers, execution blocking |
-| **Observability** | Telemetry, health signals, runtime tracing |
-| **Memory** | Persistent recall, session history, knowledge retention |
-| **Governance** | Policy enforcement, compliance checks, audit trails |
-| **Performance** | Caching, optimization hints, resource efficiency |
-
-Enable or disable entire groups. No deeper configuration required.
-
----
-
-## What Ships
-
-Every Ascension export contains:
-
-1. **Your original source code** — untouched, unmodified
-2. **Your ascended file** — the governed version with Layer 2 active
-3. **User guide** — this document
-4. **License** — usage terms
-
-That's the complete package.
-
----
-
-## Supported Languages
-
-90+ languages across every major category:
-
-- **Web / Scripting:** JavaScript, TypeScript, Python, Ruby, PHP, Lua, Perl, R, Julia, and more
-- **Systems:** Rust, Go, C, C++, Zig, Nim, Crystal, D
-- **JVM:** Java, Kotlin, Scala, Clojure
-- **.NET:** C#, F#, Visual Basic, PowerShell
-- **Mobile:** Swift, Dart, Objective-C
-- **Functional:** Haskell, OCaml, Erlang, Elixir
-- **Blockchain:** Solidity, Vyper, Move, Cairo, Fe
-- **Hardware Description:** VHDL, Verilog, SystemVerilog, Chisel, and more
-- **Scientific / HPC:** Fortran, MATLAB, Mathematica
-- **GPU / Shaders:** GLSL, HLSL, WGSL, CUDA, OpenCL, Metal
-- **Infrastructure:** Terraform/HCL, Protobuf, SQL, GraphQL, Prisma, Dockerfile
-
----
-
-## Runtime Integration
-
-For production use, the governed layer works as a drop-in replacement:
+### After (using ascended version):
 
 ```typescript
 import { init } from '@cmpsbl/runtime';
@@ -134,26 +71,151 @@ import { readFileSync } from 'fs';
 const source = readFileSync('./handlers.ts', 'utf-8');
 const session = init(handlers, source, { name: 'api-handlers' });
 
-// Same signatures, now governed
 app.get('/users', session.exports.getUsers);
 app.post('/users', session.exports.createUser);
 
-// Health and status
+// See if your code is healthy
 app.get('/health', (_, res) => res.json(session.healthCheck()));
-app.get('/status', (_, res) => res.json(session.status()));
-
-app.listen(3000);
 ```
 
-No changes to your original code. No framework changes. No rewrites. No lock-in.
+**What changed:**
+- Line 1: Added the runtime import
+- Line 4-5: Wrapped your handlers in a session
+- Lines 7-8: Used `session.exports` instead of `handlers` directly
+- Line 11: Added a health endpoint (optional but recommended)
+
+**What didn't change:**
+- Your original `handlers.ts` file — completely untouched
+- Your route structure — same paths, same HTTP methods
+- Your function signatures — same inputs, same outputs
+
+---
+
+## Step 3: Want More Capabilities? (Optional)
+
+Your file already ships with **Enhanced** capabilities active (observability + performance). If you want to go further — adding defense, governance, or memory — you have two options:
+
+### Option A: Use the Terminal (Recommended)
+
+If you have a terminal (command line), run:
+
+```bash
+npx mana attach
+```
+
+This will:
+1. Ask you to register (just your email + name → instant API key)
+2. Show you what was detected in your project
+3. Let you pick a level:
+
+| Level | What It Adds Beyond Default |
+|-------|---------------------------|
+| **Safe** | Nothing extra — keeps only the defaults |
+| **Enhanced** | Already active — this is what you have |
+| **Protected** | Adds Defense + Governance on top |
+| **Advanced** | You pick exactly which groups to turn on/off |
+
+4. Save your choice
+5. Done
+
+**To change your level later**, run:
+
+```bash
+npx mana config
+```
+
+### Option B: No Terminal Access
+
+If you can't use a terminal, you already have the **Enhanced** level active. Your code has observability and performance capabilities working right now. No action needed.
+
+---
+
+## What Each Level Includes
+
+| Group | Safe | Enhanced (Default) | Protected | Advanced |
+|-------|------|-------------------|-----------|----------|
+| **Observability** (telemetry, health, tracing) | ✅ | ✅ | ✅ | You choose |
+| **Performance** (caching, optimization) | — | ✅ | ✅ | You choose |
+| **Defense** (threat detection, circuit breakers) | — | — | ✅ | You choose |
+| **Governance** (policy enforcement, audit trails) | — | — | ✅ | You choose |
+| **Memory** (persistent recall, session history) | — | — | — | You choose |
+
+---
+
+## Checking Your Status
+
+### In code:
+
+```typescript
+// Quick health check
+const health = session.healthCheck();
+console.log(health);
+// → { status: 'healthy', coverage: 85, ... }
+
+// One-line status
+const status = session.status();
+console.log(status);
+// → { health: 'healthy', coverage: 85, fingerprint: '...', identity: {...} }
+```
+
+### In terminal (if using Mana):
+
+```bash
+npx mana status
+```
+
+---
+
+## Requirements
+
+- Your ascended file (you already have it)
+- Node.js 18 or newer
+- `@cmpsbl/runtime` package (included in your export)
+
+For the terminal experience (optional):
+- Any terminal / command line
+- An API key (free — register with your email)
+
+---
+
+## Supported Languages
+
+Your original code can be in any of 90+ languages. The ascended layer works with all of them.
+
+**Most common:** JavaScript, TypeScript, Python, Rust, Go, Java, C#, Ruby, PHP, Swift, Kotlin, Dart, C, C++, Solidity
+
+---
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Not sure which file to use | Use the `.ascended` version. Your original is the backup. |
+| Health endpoint returns errors | Make sure `@cmpsbl/runtime` is installed: `npm install @cmpsbl/runtime` |
+| `npx mana attach` not working | Make sure you're in your project directory with source files |
+| Want to go back to original | Just switch your import back to the original file. Nothing was modified. |
+| Don't have terminal access | No problem — Enhanced capabilities are already active in your ascended file |
+
+---
+
+## Summary
+
+| What | How |
+|------|-----|
+| **Get capabilities** | Already active — use the ascended file |
+| **Use in production** | Import from `session.exports` instead of directly |
+| **Check health** | `session.healthCheck()` or `npx mana status` |
+| **Add more capabilities** | `npx mana attach` → choose Protected or Advanced |
+| **Change configuration** | `npx mana config` |
+| **Go back to original** | Switch your import — original file was never touched |
 
 ---
 
 ## Support
 
 - **Email:** support@cmpsbl.com
-- **CLI:** `cmpsbl help`
-- **Config:** `@cmpsbl/config`
+- **CLI:** `npx mana help`
+- **Reconfigure:** `npx mana config`
 
 ---
 
