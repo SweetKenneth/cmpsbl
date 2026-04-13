@@ -884,9 +884,13 @@ export async function run(args: string[]): Promise<void> {
 
   const command = args[0]?.toLowerCase();
 
-  // Record session start for streak tracking
+  // Record session start for streak tracking + pull cloud state
   if (command && command !== 'version' && command !== '--version' && command !== '-v') {
     recordSessionStart();
+    // Pull cloud session if authenticated (non-blocking on failure)
+    if (getActiveDeveloperId()) {
+      await pullCloudSession().catch(() => {});
+    }
   }
 
   // First-run detection
