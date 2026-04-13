@@ -200,10 +200,22 @@ export function createBridge(config: BridgeConfig): BridgeAdapter {
 // ═══════════════════════════════════════════════════════════════
 
 export const SUPPORTED_LANGUAGES = [
+  // Software — Core
   'typescript', 'javascript', 'python', 'go', 'rust', 'java', 'csharp',
   'ruby', 'php', 'swift', 'kotlin', 'scala', 'dart', 'elixir',
   'cpp', 'c', 'zig', 'lua', 'r', 'julia', 'haskell', 'ocaml',
-  'verilog', 'vhdl',
+  // Software — Extended
+  'perl', 'nim', 'crystal', 'fsharp', 'clojure', 'erlang', 'groovy',
+  'd', 'fortran', 'objective-c',
+  // Shell / Infra
+  'bash', 'powershell',
+  // Blockchain
+  'solidity', 'vyper', 'move', 'cairo',
+  // GPU / Shaders
+  'cuda', 'glsl', 'hlsl', 'wgsl', 'metal', 'opencl',
+  // Hardware / HDL
+  'verilog', 'vhdl', 'systemverilog', 'chisel', 'amaranth',
+  'spice', 'systemc', 'firrtl', 'bluespec',
 ] as const;
 
 export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
