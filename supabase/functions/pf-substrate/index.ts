@@ -17920,6 +17920,17 @@ async function handleAccess(
         last_used_at: new Date().toISOString(),
       }).eq('id', keyRecord.id);
 
+      // Fetch developer record to return display_name for CLI sync
+      let developer: { id: string; display_name: string; email: string | null } | null = null;
+      if (keyRecord.developer_id) {
+        const { data: devRecord } = await supabase
+          .from('access_developers')
+          .select('id, display_name, email')
+          .eq('id', keyRecord.developer_id)
+          .single();
+        developer = devRecord;
+      }
+
       return jsonResponse({
         success: true,
         module: 'access',
@@ -17927,6 +17938,12 @@ async function handleAccess(
         valid: true,
         key_id: keyRecord.id,
         developer_id: keyRecord.developer_id,
+        display_name: developer?.display_name ?? null,
+        developer: developer ? {
+          id: developer.id,
+          display_name: developer.display_name,
+          email: developer.email,
+        } : null,
         scopes: keyRecord.scopes,
         rate_limits: {
           per_minute: keyRecord.rate_limit_per_minute,
