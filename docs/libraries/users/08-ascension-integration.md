@@ -28,8 +28,6 @@ Your ascended file already has capabilities activated out of the box:
 
 **You don't have to do anything.** These are already working in your ascended file.
 
-If you want to add more capabilities (defense, governance, memory) or change what's active, see **Step 3** below.
-
 ---
 
 ## Step 1: Look at Your Files
@@ -48,7 +46,38 @@ your-project/
 
 ---
 
-## Step 2: Use the Ascended File
+## Step 2: Check Your Ascension Receipt
+
+Ascension generates a **native-language receipt file** — not a generic JSON file. It matches the language of the code you uploaded:
+
+| Your Language | Receipt File Generated |
+|---|---|
+| TypeScript | `ascension.receipt.ts` |
+| JavaScript | `ascension.receipt.js` |
+| Python | `ascension_receipt.py` |
+| Rust | `ascension_receipt.rs` |
+| Go | `ascension_receipt.go` |
+| Ruby | `ascension_receipt.rb` |
+| PHP | `ascension_receipt.php` |
+| Java / Kotlin | `AscensionReceipt.java` |
+| C# | `AscensionReceipt.cs` |
+| Swift | `AscensionReceipt.swift` |
+| Dart | `ascension_receipt.dart` |
+| Elixir | `ascension_receipt.ex` |
+| Other | `ascension.receipt.json` |
+
+**This file is importable.** It's a real typed constant you can reference in your code:
+
+```typescript
+import { ASCENSION_RECEIPT } from './ascension.receipt';
+
+console.log(ASCENSION_RECEIPT.cjpi);
+// → { novelty: 18, utility: 21, composability: 15, maturity: 14, total: 68, tier: "A-TIER" }
+```
+
+---
+
+## Step 3: Use the Ascended File
 
 Replace your original import with the ascended version. That's it.
 
@@ -91,13 +120,13 @@ app.get('/health', (_, res) => res.json(session.healthCheck()));
 
 ---
 
-## Step 3: Want More Capabilities? (Optional)
+## Step 4: Want More Capabilities? (Optional)
 
 Your file already ships with **Enhanced** capabilities active (observability + performance). If you want to go further — adding defense, governance, or memory — you have two options:
 
-### Option A: Use the Terminal (Recommended)
+### Option A: Use Mana CLI (Recommended)
 
-If you have a terminal (command line), run:
+Mana is the Layer 2 attachment engine. Run:
 
 ```bash
 npx mana attach
@@ -115,8 +144,19 @@ This will:
 | **Protected** | Adds Defense + Governance on top |
 | **Advanced** | You pick exactly which groups to turn on/off |
 
-4. Save your choice
+4. Export a native-language signal file (e.g., `mana.signal.ts`)
 5. Done
+
+Mana also generates a **native-language signal file** — not a JSON file:
+
+| Your Language | Mana Signal File |
+|---|---|
+| TypeScript | `mana.signal.ts` |
+| JavaScript | `mana.signal.js` |
+| Python | `mana_signal.py` |
+| Rust | `mana_signal.rs` |
+| Go | `mana_signal.go` |
+| Other | See full list in Mana README |
 
 **To change your level later**, run:
 
@@ -166,6 +206,31 @@ npx mana status
 
 ---
 
+## Using the Legacy CLI for Ascension
+
+You can also run Ascension directly from the CMPSBL CLI:
+
+```bash
+npx @cmpsbl/cli ascend your-file.ts
+```
+
+This runs the full 8-stage pipeline (upload, classify, register, collide, discover, score, export, protect) and generates a native-language ascension receipt in your project directory.
+
+After Ascension completes, you'll be invited to install Mana for persistent Layer 2 governance.
+
+---
+
+## Your API Key & Developer Account
+
+Your developer account is **the same** whether you register through:
+- The CMPSBL website (cmpsbl.com/api-access)
+- The Mana CLI (`npx mana attach`)
+- The Legacy CLI (`npx @cmpsbl/cli login`)
+
+One email = one developer profile. All your API keys, usage, and history are tracked in the same place.
+
+---
+
 ## Requirements
 
 - Your ascended file (you already have it)
@@ -195,6 +260,7 @@ Your original code can be in any of 90+ languages. The ascended layer works with
 | `npx mana attach` not working | Make sure you're in your project directory with source files |
 | Want to go back to original | Just switch your import back to the original file. Nothing was modified. |
 | Don't have terminal access | No problem — Enhanced capabilities are already active in your ascended file |
+| Receipt file is .json | Update to the latest CLI — native-language receipts are now standard |
 
 ---
 
@@ -208,6 +274,7 @@ Your original code can be in any of 90+ languages. The ascended layer works with
 | **Add more capabilities** | `npx mana attach` → choose Protected or Advanced |
 | **Change configuration** | `npx mana config` |
 | **Go back to original** | Switch your import — original file was never touched |
+| **Run Ascension from terminal** | `cmpsbl ascend <file>` or use the website |
 
 ---
 
