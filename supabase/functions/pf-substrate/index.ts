@@ -17934,14 +17934,31 @@ async function handleAccess(
       }).eq('id', keyRecord.id);
 
       // Fetch developer record to return display_name for CLI sync
-      let developer: { id: string; display_name: string; email: string | null } | null = null;
+      let developer: { id: string; display_name: string; email: string | null; user_id?: string | null } | null = null;
       if (keyRecord.developer_id) {
         const { data: devRecord } = await supabase
           .from('access_developers')
-          .select('id, display_name, email')
+          .select('id, display_name, email, user_id')
           .eq('id', keyRecord.developer_id)
           .single();
         developer = devRecord;
+      }
+
+      // Resolve substrate role from user_roles table
+      let substrate_role = 'builder';
+      if (developer?.user_id) {
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', developer.user_id);
+        
+        if (roles && roles.length > 0) {
+          const roleSet = new Set(roles.map((r: { role: string }) => r.role));
+          if (roleSet.has('admin')) substrate_role = 'governor';
+          else if (roleSet.has('moderator')) substrate_role = 'architect';
+          else if (roleSet.has('operator')) substrate_role = 'creator';
+          else if (roleSet.has('user')) substrate_role = 'studio';
+        }
       }
 
       return jsonResponse({
@@ -17952,6 +17969,7 @@ async function handleAccess(
         key_id: keyRecord.id,
         developer_id: keyRecord.developer_id,
         display_name: developer?.display_name ?? null,
+        substrate_role,
         developer: developer ? {
           id: developer.id,
           display_name: developer.display_name,

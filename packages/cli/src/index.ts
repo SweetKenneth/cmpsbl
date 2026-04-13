@@ -331,7 +331,14 @@ function getAccessValidationEndpoint(): string {
   return SUBSTRATE_ENDPOINT_FALLBACK;
 }
 
-async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boolean; displayName?: string; error?: string }> {
+interface ValidationResult {
+  valid: boolean;
+  displayName?: string;
+  substrateRole?: string;
+  error?: string;
+}
+
+async function validateApiKeyWithBackend(apiKey: string): Promise<ValidationResult> {
   const normalized = normalizeApiKey(apiKey);
   if (!normalized || normalized.startsWith('local-')) {
     return { valid: false, error: 'Invalid API key' };
@@ -361,12 +368,14 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boole
         devRecord?.name
       ) as string | undefined;
 
+      const substrateRole = typeof result.substrate_role === 'string' ? result.substrate_role : 'builder';
+
       /* Update stored credentials with confirmed display name */
       if (displayName) {
         saveStoredKey(normalized, displayName);
       }
 
-      return { valid: true, displayName };
+      return { valid: true, displayName, substrateRole };
     }
 
     return {
@@ -376,6 +385,33 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<{ valid: boole
   } catch {
     return { valid: false, error: 'Unable to verify API key' };
   }
+}
+
+/** Governor Welcome Ceremony — displayed when the Governor authenticates */
+async function governorCeremony(displayName: string): Promise<void> {
+  blank();
+  say(c.dim('  ─────────────────────────────────────────────────'));
+  say('');
+  await sleep(300);
+  say(`  ${c.green('◆')} ${c.bold(c.green('GOVERNOR AUTHENTICATED'))}`);
+  await sleep(200);
+  say('');
+  say(`  ${c.cyan('  Welcome back, Governor')} ${c.bold(c.cyan(displayName))}`);
+  say('');
+  await sleep(400);
+  say(`  ${c.muted('  ┌──────────────────────────────────────────┐')}`);
+  say(`  ${c.muted('  │')}  ${c.green('●')} The substrate is under your control.   ${c.muted('│')}`);
+  say(`  ${c.muted('  │')}  ${c.green('●')} All 40 primitives report to you.       ${c.muted('│')}`);
+  say(`  ${c.muted('  │')}  ${c.green('●')} Full access unlocked.                  ${c.muted('│')}`);
+  say(`  ${c.muted('  │')}  ${c.green('●')} Governor-tier commands active.          ${c.muted('│')}`);
+  say(`  ${c.muted('  └──────────────────────────────────────────┘')}`);
+  await sleep(400);
+  say('');
+  say(`  ${c.dim('  12 Organs · 12 Layers · 8 Engines · 8 Agents')}`);
+  say(`  ${c.dim('  DEFENSE perimeter: active · GOVERNANCE: your word is law')}`);
+  say('');
+  say(c.dim('  ─────────────────────────────────────────────────'));
+  blank();
 }
 
 /**
@@ -513,7 +549,13 @@ async function requireApiKey(): Promise<string> {
     const source = getApiKeySource();
     const validation = await validateApiKeyWithBackend(existing);
 
-    if (validation.valid) return existing;
+    if (validation.valid) {
+      /* Governor ceremony — supreme authority recognized */
+      if (validation.substrateRole === 'governor' && !JSON_MODE && isInteractiveTTY()) {
+        await governorCeremony(validation.displayName ?? 'Governor');
+      }
+      return existing;
+    }
 
     if (source === 'credentials') {
       clearStoredKey();

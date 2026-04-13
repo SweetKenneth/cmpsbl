@@ -190,7 +190,14 @@ function getStoredDisplayName(): string | undefined {
 // API Key Validation
 // ═══════════════════════════════════════════════════════════════
 
-async function validateApiKey(apiKey: string): Promise<{ valid: boolean; displayName?: string; error?: string }> {
+interface ManaValidationResult {
+  valid: boolean;
+  displayName?: string;
+  substrateRole?: string;
+  error?: string;
+}
+
+async function validateApiKey(apiKey: string): Promise<ManaValidationResult> {
   const normalized = normalizeApiKey(apiKey);
   if (!normalized || normalized.startsWith('local-')) {
     return { valid: false, error: 'Invalid API key' };
@@ -220,13 +227,38 @@ async function validateApiKey(apiKey: string): Promise<{ valid: boolean; display
         devRecord?.name
       ) as string | undefined;
 
-      return { valid: true, displayName };
+      const substrateRole = typeof result.substrate_role === 'string' ? result.substrate_role : 'builder';
+
+      return { valid: true, displayName, substrateRole };
     }
 
     return { valid: false, error: typeof result.error === 'string' ? result.error : 'Invalid API key' };
   } catch {
     return { valid: false, error: 'Unable to reach the substrate' };
   }
+}
+
+/** Governor Welcome Ceremony — exclusive to the Governor */
+async function manaGovernorCeremony(displayName: string): Promise<void> {
+  blank();
+  say(c.dim('─────────────────────────────────────────────────'));
+  say('');
+  await sleep(300);
+  say(`  ${c.green('◆')} ${c.bold(c.green('GOVERNOR RECOGNIZED'))}`);
+  await sleep(200);
+  say('');
+  say(`  ${c.cyan('Welcome back, Governor')} ${c.bold(c.cyan(displayName))}`);
+  say('');
+  await sleep(400);
+  say(`  ${c.muted('┌──────────────────────────────────────────┐')}`);
+  say(`  ${c.muted('│')}  ${c.green('●')} The substrate answers to you.          ${c.muted('│')}`);
+  say(`  ${c.muted('│')}  ${c.green('●')} Layer 2 governance: supreme authority. ${c.muted('│')}`);
+  say(`  ${c.muted('│')}  ${c.green('●')} All access unlocked. Lex defers.       ${c.muted('│')}`);
+  say(`  ${c.muted('└──────────────────────────────────────────┘')}`);
+  await sleep(400);
+  say('');
+  say(c.dim('─────────────────────────────────────────────────'));
+  blank();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -332,6 +364,10 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
     if (validation.valid) {
       if (validation.displayName) {
         saveCredentials(existing, validation.displayName);
+      }
+      /* Governor ceremony — supreme authority recognized */
+      if (validation.substrateRole === 'governor' && isTTY()) {
+        await manaGovernorCeremony(validation.displayName ?? 'Governor');
       }
       return existing;
     }
