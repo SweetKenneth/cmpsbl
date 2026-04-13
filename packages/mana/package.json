@@ -1,16 +1,22 @@
 {
   "name": "mana",
   "version": "1.0.0",
-  "description": "Mana — Silent software symbiosis. One command to enhance and protect your code.",
+  "description": "Mana — Silent software symbiosis. One command to enhance and protect your code without modifying it.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
     "mana": "dist/bin.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "keywords": [
     "mana",
@@ -19,11 +25,21 @@
     "governance",
     "observability",
     "defense",
-    "layer2"
+    "layer2",
+    "code-protection",
+    "runtime-enhancement",
+    "software-symbiosis"
   ],
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
   "homepage": "https://cmpsbl.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmpsbl/mana"
+  },
+  "bugs": {
+    "url": "https://github.com/cmpsbl/mana/issues"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0"
   }
