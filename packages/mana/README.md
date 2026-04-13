@@ -1,10 +1,14 @@
 # mana
 
-> Silent Software Symbiosis — One command to enhance and protect your code.
+> **Silent Software Symbiosis** — One command to enhance and protect your code.
+
+[![npm](https://img.shields.io/npm/v/mana)](https://www.npmjs.com/package/mana)
+[![license](https://img.shields.io/npm/l/mana)](https://opensource.org/licenses/Apache-2.0)
+[![node](https://img.shields.io/node/v/mana)](https://nodejs.org)
 
 Mana attaches an invisible second layer to your software. Your original source code is **never modified**. Capabilities like observability, defense, governance, and performance activate at the function boundary — not inside your files.
 
-**U.S. Patent App. No. 64/031,637** · © CMPSBL®
+**U.S. Patent App. No. 64/031,637** · © CMPSBL® · [cmpsbl.com](https://cmpsbl.com)
 
 ---
 
@@ -19,7 +23,9 @@ That's it. Mana will:
 1. **Detect** your project (language, framework, entry points)
 2. **Authenticate** you (email → instant API key, 10 seconds)
 3. **Ask** which level of protection you want
-4. **Export** a `mana.signal.json` — your activation receipt
+4. **Export** a native signal file in your project's language
+
+No dependencies added. No source code modified. No runtime agent required.
 
 ---
 
@@ -36,20 +42,21 @@ That's it. Mana will:
 
 ## Commands
 
-```
-mana attach    Detect files and activate Layer 2
-mana config    View or change your activation level
-mana status    Show current layer status
-mana export    Re-export the signal file
-mana detach    Remove the secondary layer
-mana help      Show help
-```
+| Command | Description |
+|---|---|
+| `mana attach` | Detect files and activate Layer 2 |
+| `mana status` | Show current layer status and active capabilities |
+| `mana config` | View or change your activation level |
+| `mana export` | Re-export the signal file |
+| `mana detach` | Remove the secondary layer (code untouched) |
+| `mana version` | Show version |
+| `mana help` | Show help |
 
 ---
 
 ## Signal File
 
-After activation, Mana exports a **native source file** in your project's language:
+After activation, Mana exports a **native source file** in your project's language — not JSON. Import it directly as a typed constant.
 
 | Language | File Created |
 |---|---|
@@ -67,13 +74,20 @@ After activation, Mana exports a **native source file** in your project's langua
 | Elixir | `mana_signal.ex` |
 | Other | `mana.signal.json` |
 
-Import it directly — it's a real, typed constant you can reference in your code.
+```typescript
+// TypeScript example
+import { MANA_SIGNAL } from './mana.signal';
+
+if (MANA_SIGNAL.active) {
+  console.log(`Layer 2 active — ${MANA_SIGNAL.level}`);
+}
+```
 
 ---
 
-## API Key
+## Authentication
 
-Get one instantly during `mana attach` (just your email), or visit [cmpsbl.com/api-access](https://cmpsbl.com/api-access).
+Get an API key instantly during `mana attach` (just your email), or visit [cmpsbl.com/api-access](https://cmpsbl.com/api-access).
 
 You can also set it via environment variable:
 
@@ -81,7 +95,17 @@ You can also set it via environment variable:
 export CMPSBL_API_KEY=your_key_here
 ```
 
+Credentials are stored locally in `~/.cmpsbl/credentials` (file permissions: 600).
+
 ---
+
+## What Mana Does
+
+- ✅ Detects your project structure automatically (90+ file types)
+- ✅ Exports a branded, typed activation receipt in your language
+- ✅ Provides four tiers of capability activation
+- ✅ Stores configuration in `.mana/config.json`
+- ✅ Recognizes returning operators across sessions
 
 ## What Mana Does NOT Do
 
@@ -89,6 +113,24 @@ export CMPSBL_API_KEY=your_key_here
 - ❌ Add dependencies to your project
 - ❌ Require a runtime agent
 - ❌ Phone home without your consent
+
+---
+
+## Ecosystem
+
+Mana is the **Layer 2 deployment engine** of the CMPSBL® substrate.
+
+- **Ascension** discovers what your code needs → [cmpsbl.com](https://cmpsbl.com)
+- **Mana** deploys the integration silently → `npx mana attach`
+
+Together they form a complete code enhancement pipeline — scan, score, attach — without touching your source.
+
+---
+
+## Requirements
+
+- Node.js 18+
+- Any project with source files
 
 ---
 
