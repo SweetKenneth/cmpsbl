@@ -1341,6 +1341,8 @@ async function commandExport(): Promise<void> {
   }
 
   const project = detectSourceFiles(cwd);
+  /* Use the language from config (what the user chose) rather than re-detecting */
+  if (config.language) project.language = config.language;
   const operatorName = config.operator ?? 'Operator';
 
   const signalPath = exportSignalFile(cwd, project, config.level, config.groups, operatorName);
