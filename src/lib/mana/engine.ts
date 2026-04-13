@@ -53,7 +53,35 @@ const attachmentPoints: Map<string, AttachmentPoint> = new Map();
 const telemetry: ManaTelemetryEvent[] = [];
 
 /** Original unwrapped functions — for clean detachment */
-const originals: Map<string, Function> = new Map();
+const originals: Map<string, AnyFn> = new Map();
+
+/** Debug trace log — populated when trace mode is on */
+let traceLog: string[] = [];
+let traceEnabled = false;
+
+// ═══════════════════════════════════════════════════════════════
+// Promise-Aware Wrapper Helper
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * Normalize sync/async execution for wrappers.
+ * Guarantees: sync → handled inline; thenable → preserves exact async semantics;
+ * rejection → onError still fires; never silently converts async to sync.
+ */
+function withAsyncSafety(
+  result: unknown,
+  onSync: (value: unknown) => void,
+  onError: (err: unknown) => void,
+): unknown {
+  if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+    return (result as Promise<unknown>).then(
+      (resolved) => { onSync(resolved); return resolved; },
+      (err) => { onError(err); throw err; },
+    );
+  }
+  onSync(result);
+  return result;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Hashing — SHA-256 proof of non-modification
@@ -84,7 +112,8 @@ function emitTelemetry(
   capability: ManaCapability,
   functionName: string,
   action: ManaTelemetryEvent['action'],
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown>,
+  evalContext?: LexEvalContext
 ): void {
   if (!config.telemetry) return;
 
@@ -93,11 +122,17 @@ function emitTelemetry(
     capability,
     functionName,
     action,
+    evalContext,
     metadata,
   });
 
   if (telemetry.length > config.maxTelemetryEvents) {
     telemetry.splice(0, telemetry.length - config.maxTelemetryEvents);
+  }
+
+  // Trace mode — human-readable debug output
+  if (traceEnabled) {
+    traceLog.push(`[${new Date().toISOString()}] ${action.toUpperCase()} ${capability}::${functionName}${evalContext ? ` (${evalContext})` : ''}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`);
   }
 }
 
