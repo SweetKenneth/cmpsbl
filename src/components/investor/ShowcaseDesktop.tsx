@@ -277,7 +277,7 @@ export function ShowcaseDesktop() {
             <section className="relative rounded-2xl border border-border/20 bg-card/40 backdrop-blur-sm p-8 space-y-4">
               <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold">From the Founder</p>
               <blockquote className="text-base text-foreground/90 leading-relaxed italic">
-                "CMPSBL is not an AI wrapper or another SaaS tool. It's a cognitive substrate — infrastructure that thinks, learns, and evolves. Every discovery it makes is IP we own. Every export it ships is revenue. The system is the product, and the product improves itself."
+                "CMPSBL is not an AI wrapper. It's governed cognitive infrastructure built on deterministic curing — not probabilistic guesswork. Every discovery is IP we own. Every export is revenue. The system manufactures, prices, and sells software autonomously. Mana is the real product — and fear of what it can do is free advertising."
               </blockquote>
               <p className="text-sm font-bold text-foreground">Kenneth E. Sweet Jr.</p>
               <p className="text-xs text-muted-foreground">Founder & Governor · PromptFluid™ TX</p>
