@@ -15,7 +15,7 @@ const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24h
 export function ExitIntentCapture() {
   const [show, setShow] = useState(false);
   const { pathname } = useLocation();
-  const shouldDisableOnRoute = pathname.startsWith('/foundry') || pathname.startsWith('/memory-stream');
+  const shouldDisableOnRoute = pathname.startsWith('/foundry') || pathname.startsWith('/memory-stream') || pathname.startsWith('/investor-showcase');
 
   const wasRecentlyShown = useCallback(() => {
     try {
