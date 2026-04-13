@@ -19,7 +19,9 @@ import type {
   ManaManifest,
   ManaProof,
   ManaTelemetryEvent,
+  AnyFn,
 } from './types';
+import { CAPABILITY_PHASE } from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
@@ -1337,6 +1339,7 @@ export async function attach(
     const point: AttachmentPoint = {
       functionName,
       capability,
+      phase: CAPABILITY_PHASE[capability] ?? 3,
       active: true,
       invocations: 0,
       blocked: 0,
@@ -1396,6 +1399,8 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
   const currentHash = await computeHash(sourceForHash);
   const points = Array.from(attachmentPoints.values());
   const capabilities = [...new Set(points.map(p => p.capability))];
+  const manifest = getManifest();
+  const manifestHash = await computeHash(JSON.stringify(manifest));
 
   return {
     hostHashBefore: hostSourceHash,
@@ -1409,6 +1414,8 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
     fingerprintId: generateFingerprintId(),
     layerDepth,
     parentLayerHash,
+    manifestHash,
+    telemetryEventCount: telemetry.length,
   };
 }
 
