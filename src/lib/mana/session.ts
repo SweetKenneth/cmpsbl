@@ -27,7 +27,10 @@ import type {
   AnyFn,
   CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase } from './types';
+import {
+  CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase,
+  MANA_LAYER_TAG, assertContractMapComplete, normalizePriority,
+} from './types';
 
 // ═══════════════════════════════════════════════════════════════
 // Primitives — Type-Safe Helpers (mirrored from engine.ts)
@@ -82,19 +85,10 @@ function getContract(capability: ManaCapability): CapabilityContract | undefined
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Assertions — Structural Integrity Checks
+// Assertions — delegates to shared assertContractMapComplete from types.ts
 // ═══════════════════════════════════════════════════════════════
 
-function assertAllContractsExist(): void {
-  const mapped = new Set(CAPABILITY_CONTRACTS.map(c => c.capability));
-  const allCaps = Object.keys(CAPABILITY_PHASE) as ManaCapability[];
-  for (const cap of allCaps) {
-    if (!mapped.has(cap)) {
-      throw new Error(`[MANA/SESSION] Missing contract for capability: ${cap}`);
-    }
-  }
-}
-
+/** Verify CAPABILITY_PHASE covers all capabilities from contracts */
 function assertAllPhasesMapped(): void {
   for (const contract of CAPABILITY_CONTRACTS) {
     if (!(contract.capability in CAPABILITY_PHASE)) {
@@ -124,6 +118,7 @@ function lexRegisterRule(
   reason: string,
   priority = 100,
 ): LexRule {
+  const safePriority = normalizePriority(priority);
   lex.idCounter++;
   const rule: LexRule = {
     id: `lex-${Date.now().toString(36)}-${lex.idCounter.toString(36)}`,
@@ -132,7 +127,7 @@ function lexRegisterRule(
     verdict,
     reason,
     createdAt: Date.now(),
-    priority,
+    priority: safePriority,
   };
   lex.rules.set(rule.id, rule);
   return rule;
