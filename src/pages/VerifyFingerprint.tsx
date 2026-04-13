@@ -292,4 +292,40 @@ const DecomposedCJPIBreakdown = ({ score, primitiveCount }: { score: number; pri
   );
 };
 
+
+const CliCJPIBreakdown = ({ session }: { session: import("@/lib/factory/restoration-session").CliAscensionSession }) => {
+  const components = [
+    { label: 'Novelty', value: session.cjpiNovelty, weight: '25%', color: 'bg-blue-500' },
+    { label: 'Utility', value: session.cjpiUtility, weight: '25%', color: 'bg-purple-500' },
+    { label: 'Composability', value: session.cjpiComposability, weight: '25%', color: 'bg-emerald-500' },
+    { label: 'Maturity', value: session.cjpiMaturity, weight: '25%', color: 'bg-amber-500' },
+  ];
+
+  return (
+    <div className="mt-4 pt-4 border-t border-border/50">
+      <div className="flex items-center justify-center gap-1.5 mb-3">
+        <BarChart3 className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          CJPI Breakdown
+        </span>
+      </div>
+      <div className="space-y-2">
+        {components.map(({ label, value, weight, color }) => (
+          <div key={label} className="flex items-center gap-2 text-xs">
+            <span className="w-24 text-left text-muted-foreground">{label}</span>
+            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+              <div className={`h-full rounded-full ${color} transition-all duration-500`} style={{ width: `${(value / 25) * 100}%` }} />
+            </div>
+            <span className="w-8 text-right font-mono text-foreground">{value}</span>
+            <span className="w-8 text-right text-muted-foreground text-[10px]">{weight}</span>
+          </div>
+        ))}
+      </div>
+      <p className="text-[10px] text-muted-foreground mt-2">
+        Composite: {session.cjpiTotal} · CLI Terminal Origin
+      </p>
+    </div>
+  );
+};
+
 export default VerifyFingerprint;
