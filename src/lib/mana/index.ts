@@ -83,7 +83,7 @@ export type {
   ManaAttachmentEntry,
 } from './types';
 
-export { WrapperPhase, CAPABILITY_PHASE, CAPABILITY_CONTRACTS } from './types';
+export { WrapperPhase, CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP } from './types';
 
 // Config types (Phase 1)
 export type {

@@ -428,6 +428,13 @@ export const CAPABILITY_CONTRACTS: ReadonlyArray<CapabilityContract> = [
   { capability: 'oracle_causal_trace', phase: WrapperPhase.ANALYZE, denySemantic: 'swallow', blocking: false, lexKey: 'oracle_causal_trace' },
 ];
 
+/** O(1) contract lookup — pre-computed from CAPABILITY_CONTRACTS */
+export const CONTRACT_MAP: Readonly<Record<ManaCapability, CapabilityContract>> =
+  CAPABILITY_CONTRACTS.reduce((map, contract) => {
+    map[contract.capability] = contract;
+    return map;
+  }, {} as Record<ManaCapability, CapabilityContract>);
+
 /** A single Layer 2 attachment point on a host function */
 export interface AttachmentPoint {
   /** Original function name on the host */

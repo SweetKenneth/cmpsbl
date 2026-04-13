@@ -27,7 +27,7 @@ import type {
   AnyFn,
   CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, WrapperPhase } from './types';
+import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase } from './types';
 
 // ═══════════════════════════════════════════════════════════════
 // Primitives — Type-Safe Helpers (mirrored from engine.ts)
@@ -76,9 +76,9 @@ function byPhaseThenName(
   return a.capability.localeCompare(b.capability);
 }
 
-/** Look up the contract for a capability */
+/** O(1) contract lookup via pre-computed map */
 function getContract(capability: ManaCapability): CapabilityContract | undefined {
-  return CAPABILITY_CONTRACTS.find(c => c.capability === capability);
+  return CONTRACT_MAP[capability];
 }
 
 // ═══════════════════════════════════════════════════════════════
