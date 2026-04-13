@@ -227,12 +227,12 @@ export function ShowcaseMobile() {
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Why CMPSBL Wins</h2>
             <div className="space-y-2.5">
               {[
-                { label: "Self-discovering", desc: "Finds new software capabilities autonomously", color: "bg-primary" },
-                { label: "Self-improving", desc: "AI patches and upgrades its own code", color: "bg-[hsl(var(--neon-cyan))]" },
-                { label: "90+ language export", desc: "Single-file, zero-dependency distributions", color: "bg-[hsl(var(--neon-magenta))]" },
-                { label: "IP-protected", desc: "Hex-encoded proprietary logic in every export", color: "bg-[hsl(var(--neon-purple))]" },
+                { label: "Deterministic curing", desc: "Not AI — verifiable algorithmic analysis", color: "bg-primary" },
+                { label: "Compounding autonomy", desc: "Discover → Score → Compile → Price → List → Learn", color: "bg-[hsl(var(--neon-cyan))]" },
+                { label: "Mana — The Real Product", desc: "Silent symbiont. Fear = free advertising", color: "bg-[hsl(var(--neon-magenta))]" },
+                { label: "IP-protected", desc: "Hex-encoded logic in every export. Patent pending", color: "bg-[hsl(var(--neon-purple))]" },
                 { label: "Solo founder", desc: "200k+ LOC, 40 primitives, 12 verticals — one person", color: "bg-[hsl(var(--neon-amber))]" },
-                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "bg-[hsl(var(--neon-green))]" },
+                { label: "Governed & secure", desc: "Constitutional governance with enterprise security", color: "bg-[hsl(var(--neon-green))]" },
               ].map(({ label, desc, color }) => (
                 <div key={label} className="flex items-start gap-3 py-1">
                   <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${color}`} />
