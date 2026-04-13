@@ -247,8 +247,8 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
             .select('messages, last_message_at')
             .eq('user_id', user.id)
             .maybeSingle();
-          if (data?.messages && Array.isArray(data.messages) && (data.messages as Message[]).length > 0) {
-            const restored = data.messages as Message[];
+          if (data?.messages && Array.isArray(data.messages) && (data.messages as unknown as Message[]).length > 0) {
+            const restored = data.messages as unknown as Message[];
             // Add a welcome-back message
             const lastSeen = data.last_message_at
               ? new Date(data.last_message_at as string).toLocaleDateString()
@@ -348,14 +348,14 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
     const timeout = setTimeout(async () => {
       try {
         const trimmed = messages.slice(-60);
-        await supabase.from('decode_conversations').upsert({
+        await supabase.from('decode_conversations').upsert([{
           user_id: user.id,
-          messages: trimmed as unknown as Record<string, unknown>[],
+          messages: trimmed as unknown as Record<string, unknown>,
           mode,
           message_count: trimmed.length,
           last_message_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'user_id' });
+        }], { onConflict: 'user_id' });
       } catch { /* silent */ }
     }, 2000);
     return () => clearTimeout(timeout);
