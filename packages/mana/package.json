@@ -1,0 +1,30 @@
+{
+  "name": "mana",
+  "version": "1.0.0",
+  "description": "Mana — Silent software symbiosis. One command to enhance and protect your code.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "mana": "dist/bin.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mana",
+    "cmpsbl",
+    "ascension",
+    "governance",
+    "observability",
+    "defense",
+    "layer2"
+  ],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}
