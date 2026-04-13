@@ -1363,16 +1363,16 @@ export async function attach(
 
   for (const cap of sorted) {
     const { functionName, capability, rulePayload } = cap;
-    const originalFn = hostModule[functionName];
+    const originalFn = hostModule[functionName] as AnyFn;
 
     if (typeof originalFn !== 'function') {
       continue;
     }
 
-    // Lex governance check
-    const { verdict } = evaluate(capability, functionName, config.lexMode);
+    // Lex governance check — ATTACHMENT-TIME verdict
+    const { verdict } = evaluate(capability, functionName, config.lexMode, 'attachment');
     if (verdict === 'deny') {
-      emitTelemetry(capability, functionName, 'blocked', { reason: 'lex_denied_attachment' });
+      emitTelemetry(capability, functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
       continue;
     }
 
@@ -1396,7 +1396,7 @@ export async function attach(
     const wrapper = getWrapper(capability);
     hostModule[functionName] = wrapper(originalFn, functionName, point);
 
-    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth });
+    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth }, 'attachment');
   }
 
   state = 'symbiotic';
@@ -1443,10 +1443,13 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
   const currentHash = await computeHash(sourceForHash);
   const points = Array.from(attachmentPoints.values());
   const capabilities = [...new Set(points.map(p => p.capability))];
-  const manifest = getManifest();
-  const manifestHash = await computeHash(JSON.stringify(manifest));
+  const manifestForHash = {
+    hostPackage, hostVersion, attachmentState: state,
+    attachmentPoints: points, layerDepth,
+  };
+  const manifestHash = await computeHash(JSON.stringify(manifestForHash));
 
-  return {
+  const proof: ManaProof = {
     hostHashBefore: hostSourceHash,
     hostHashAfter: currentHash,
     verified: hostSourceHash === currentHash,
@@ -1461,9 +1464,13 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
     manifestHash,
     telemetryEventCount: telemetry.length,
   };
+
+  // Store proof for manifest integration
+  lastProof = proof;
+  return proof;
 }
 
-/** Get full attachment manifest */
+/** Get full attachment manifest — includes proof when in symbiotic state */
 export function getManifest(): ManaManifest {
   return {
     hostPackage,
@@ -1471,13 +1478,16 @@ export function getManifest(): ManaManifest {
     attachmentState: state,
     attachmentPoints: Array.from(attachmentPoints.values()),
     lexRules: getRules(),
-    proof: null,
+    proof: lastProof,
     telemetry: [...telemetry],
     attachedAt,
     detachedAt,
     layerDepth,
   };
 }
+
+/** Last generated proof — integrated into manifest */
+let lastProof: ManaProof | null = null;
 
 /** Get telemetry events */
 export function getTelemetry(): ReadonlyArray<ManaTelemetryEvent> {
@@ -1499,7 +1509,7 @@ export function getTelemetrySummary(): Record<string, { invocations: number; blo
   return summary;
 }
 
-/** Full engine reset */
+/** Full engine reset — clears ALL state back to defaults */
 export function reset(): void {
   state = 'detached';
   hostPackage = '';
@@ -1509,9 +1519,77 @@ export function reset(): void {
   detachedAt = null;
   layerDepth = 0;
   parentLayerHash = null;
+  lastProof = null;
   attachmentPoints.clear();
   originals.clear();
   telemetry.length = 0;
+  traceLog = [];
+  traceEnabled = false;
   resetLex();
   config = { ...DEFAULT_CONFIG };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Debug / Trace Mode — Item #17
+// ═══════════════════════════════════════════════════════════════
+
+/** Enable debug trace mode — captures human-readable execution log */
+export function enableTrace(): void {
+  traceEnabled = true;
+  traceLog = [];
+}
+
+/** Disable debug trace mode */
+export function disableTrace(): void {
+  traceEnabled = false;
+}
+
+/**
+ * Get trace execution log — answers:
+ * - Which wrappers are attached to each function?
+ * - In what order?
+ * - Which Lex rule fired?
+ * - Why was something blocked?
+ * - What telemetry was emitted?
+ */
+export function getTrace(): ReadonlyArray<string> {
+  return [...traceLog];
+}
+
+/**
+ * Inspect a specific function — returns all wrappers attached,
+ * their phases, and current invocation stats.
+ */
+export function inspectFunction(functionName: string): ReadonlyArray<{
+  capability: ManaCapability;
+  phase: number;
+  phaseName: string;
+  invocations: number;
+  blocked: number;
+  observed: number;
+}> {
+  const PHASE_NAMES = ['GATE', 'VALIDATE', 'FAILSAFE', 'OBSERVE', 'ANALYZE'];
+  const results: Array<{
+    capability: ManaCapability;
+    phase: number;
+    phaseName: string;
+    invocations: number;
+    blocked: number;
+    observed: number;
+  }> = [];
+
+  for (const [key, point] of attachmentPoints.entries()) {
+    if (point.functionName === functionName) {
+      results.push({
+        capability: point.capability,
+        phase: point.phase,
+        phaseName: PHASE_NAMES[point.phase] ?? 'UNKNOWN',
+        invocations: point.invocations,
+        blocked: point.blocked,
+        observed: point.observed,
+      });
+    }
+  }
+
+  return results.sort((a, b) => a.phase - b.phase);
 }
