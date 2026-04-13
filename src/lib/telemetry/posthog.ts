@@ -21,31 +21,29 @@ function isEditorPreview(): boolean {
 export function initPostHog(): void {
   if (initialized || initPromise || isEditorPreview()) return;
 
-  initPromise = (async () => {
-    try {
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      if (!supabaseUrl) return;
+  try {
+    const POSTHOG_KEY = 'phx_DLkUnFN3bQyZHcggpNxJjyhqNYcZz7hK3ANpFFWL9NYwhzJZ';
+    const POSTHOG_HOST = 'https://us.i.posthog.com';
 
-      const res = await fetch(`${supabaseUrl}/functions/v1/posthog-config`);
-      if (!res.ok) return;
+    posthog.init(POSTHOG_KEY, {
+      api_host: POSTHOG_HOST,
+      autocapture: true,
+      capture_pageview: true,
+      capture_pageleave: true,
+      persistence: 'localStorage+cookie',
+      loaded: (ph) => {
+        initialized = true;
+        // Ensure anonymous users get a stable distinct_id
+        if (!ph.get_distinct_id()) {
+          ph.reset();
+        }
+      },
+    });
 
-      const { key, host } = await res.json();
-      if (!key) return;
-
-      posthog.init(key, {
-        api_host: host || 'https://us.i.posthog.com',
-        autocapture: true,
-        capture_pageview: true,
-        capture_pageleave: true,
-        persistence: 'localStorage+cookie',
-        loaded: () => {
-          initialized = true;
-        },
-      });
-    } catch {
-      // Silent fail — analytics should never break the app
-    }
-  })();
+    initialized = true;
+  } catch {
+    // Silent fail — analytics should never break the app
+  }
 }
 
 export function identifyUser(userId: string, traits?: Record<string, unknown>): void {
