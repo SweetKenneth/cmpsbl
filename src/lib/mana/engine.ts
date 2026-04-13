@@ -655,22 +655,38 @@ function wrapWithRetryHandler(
   const MAX_RETRIES = 3;
   return function manaRetryHandler(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    let lastError: unknown;
-    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+
+    const attemptSync = (attempt: number): unknown => {
       try {
         const result = originalFn.apply(this, args);
+        // Handle async — retry on rejection too
+        if (result && typeof (result as Promise<unknown>).then === 'function') {
+          return (result as Promise<unknown>).catch((err: unknown) => {
+            if (attempt < MAX_RETRIES) {
+              emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80), async: true });
+              return attemptSync(attempt + 1);
+            }
+            point.blocked++;
+            emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted', async: true });
+            throw err;
+          });
+        }
         if (attempt > 0) {
           emitTelemetry('retry_handler', functionName, 'observed', { retriedAfter: attempt });
         }
         return result;
       } catch (err) {
-        lastError = err;
-        emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80) });
+        if (attempt < MAX_RETRIES) {
+          emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80) });
+          return attemptSync(attempt + 1);
+        }
+        point.blocked++;
+        emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted' });
+        throw err;
       }
-    }
-    point.blocked++;
-    emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted' });
-    throw lastError;
+    };
+
+    return attemptSync(0);
   };
 }
 
@@ -768,13 +784,26 @@ function wrapWithStateSnapshot(
     const before = typeof this === 'object' && this !== null
       ? JSON.stringify(this).slice(0, 500) : 'N/A';
     const result = originalFn.apply(this, args);
-    const after = typeof this === 'object' && this !== null
-      ? JSON.stringify(this).slice(0, 500) : 'N/A';
-    emitTelemetry('state_snapshot', functionName, 'observed', {
-      beforeHash: before.length,
-      afterHash: after.length,
-      mutated: before !== after,
-    });
+
+    const emitSnapshot = () => {
+      const after = typeof this === 'object' && this !== null
+        ? JSON.stringify(this).slice(0, 500) : 'N/A';
+      emitTelemetry('state_snapshot', functionName, 'observed', {
+        beforeHash: before.length,
+        afterHash: after.length,
+        mutated: before !== after,
+      });
+    };
+
+    // Handle async — snapshot after resolution
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => { emitSnapshot(); return resolved; },
+        (err) => { emitSnapshot(); throw err; },
+      );
+    }
+
+    emitSnapshot();
     return result;
   };
 }
@@ -848,19 +877,32 @@ function wrapWithAnomalyDetector(
     point.invocations++;
     const start = performance.now();
     const result = originalFn.apply(this, args);
-    const d = performance.now() - start;
-    history.push(d);
-    if (history.length > 100) history.shift();
-    if (history.length >= 10) {
-      const avg = history.reduce((s, v) => s + v, 0) / history.length;
-      const stdDev = Math.sqrt(history.reduce((s, v) => s + (v - avg) ** 2, 0) / history.length);
-      if (d > avg + 3 * stdDev) {
-        point.observed++;
-        emitTelemetry('anomaly_detector', functionName, 'observed', {
-          anomaly: true, durationMs: d, avgMs: avg, stdDev, zScore: (d - avg) / (stdDev || 1),
-        });
+
+    const checkAnomaly = () => {
+      const d = performance.now() - start;
+      history.push(d);
+      if (history.length > 100) history.shift();
+      if (history.length >= 10) {
+        const avg = history.reduce((s, v) => s + v, 0) / history.length;
+        const stdDev = Math.sqrt(history.reduce((s, v) => s + (v - avg) ** 2, 0) / history.length);
+        if (d > avg + 3 * stdDev) {
+          point.observed++;
+          emitTelemetry('anomaly_detector', functionName, 'observed', {
+            anomaly: true, durationMs: d, avgMs: avg, stdDev, zScore: (d - avg) / (stdDev || 1),
+          });
+        }
       }
+    };
+
+    // Handle async — measure duration after resolution
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => { checkAnomaly(); return resolved; },
+        (err) => { checkAnomaly(); throw err; },
+      );
     }
+
+    checkAnomaly();
     return result;
   };
 }
@@ -869,13 +911,10 @@ function wrapWithDriftMonitor(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
   const returnHistory: string[] = [];
-  return function manaDriftMonitor(this: unknown, ...args: unknown[]) {
-    point.invocations++;
-    const result = originalFn.apply(this, args);
-    const resultType = typeof result;
+
+  const checkDrift = (resultType: string) => {
     returnHistory.push(resultType);
     if (returnHistory.length > 50) returnHistory.shift();
-    // Detect if return type changed from historical pattern
     if (returnHistory.length >= 5) {
       const majority = returnHistory.slice(0, -1)
         .reduce((acc, t) => { acc[t] = (acc[t] ?? 0) + 1; return acc; }, {} as Record<string, number>);
@@ -887,6 +926,21 @@ function wrapWithDriftMonitor(
         });
       }
     }
+  };
+
+  return function manaDriftMonitor(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+
+    // Handle async — check drift on resolved type, not 'object' (Promise)
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => { checkDrift(typeof resolved); return resolved; },
+        (err) => { checkDrift('error'); throw err; },
+      );
+    }
+
+    checkDrift(typeof result);
     return result;
   };
 }
