@@ -278,6 +278,7 @@ async function inlineRegister(identity: EnvironmentIdentity): Promise<string | n
           display_name: displayName,
           name: `Mana Key — ${displayName}`,
           scopes: ['substrate.read', 'substrate.write', 'ascension', 'mana.attach'],
+          source: 'mana_cli',
         },
       }),
     });
