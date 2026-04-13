@@ -130,12 +130,21 @@ function jsonOut(data: unknown) {
 const CREDS_DIR = path.join(os.homedir(), '.cmpsbl');
 const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
 
+interface ValidationResult {
+  valid: boolean;
+  displayName?: string;
+  substrateRole?: string;
+  developerId?: string;
+  error?: string;
+}
+
 type ApiKeySource = 'env' | 'credentials' | 'none';
 
 type StoredCredentials = {
   apiKey: string;
   savedAt?: string;
   displayName?: string;
+  developerId?: string;
 };
 
 function normalizeApiKey(value: unknown): string | undefined {
