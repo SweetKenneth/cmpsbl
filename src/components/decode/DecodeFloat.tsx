@@ -350,7 +350,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         const trimmed = messages.slice(-60);
         await supabase.from('decode_conversations').upsert([{
           user_id: user.id,
-          messages: trimmed as unknown as Record<string, unknown>,
+          messages: JSON.parse(JSON.stringify(trimmed)),
           mode,
           message_count: trimmed.length,
           last_message_at: new Date().toISOString(),
