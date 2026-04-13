@@ -53,7 +53,7 @@ export function evaluate(
   mode: 'permissive' | 'strict'
 ): { verdict: LexVerdict; rule: LexRule | null } {
   for (const rule of rules.values()) {
-    const capMatch = rule.capability === capability || rule.target === '*';
+    const capMatch = rule.capability === capability || rule.capability === ('*' as ManaCapability);
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
       return { verdict: rule.verdict, rule };
