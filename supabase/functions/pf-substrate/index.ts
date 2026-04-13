@@ -3345,7 +3345,6 @@ async function emitHeartbeat(
     status: healthScore >= 80 ? 'healthy' : healthScore >= 40 ? 'degraded' : 'critical',
     diagnostics: { row_count: recordCount, legacy: true },
   });
-  }
 }
 
 
