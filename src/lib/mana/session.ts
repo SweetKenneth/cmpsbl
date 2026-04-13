@@ -24,8 +24,83 @@ import type {
   LexVerdict,
   LexEvalContext,
   AnyFn,
+  CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, WrapperPhase } from './types';
+import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, WrapperPhase } from './types';
+
+// ═══════════════════════════════════════════════════════════════
+// Primitives — Type-Safe Helpers (mirrored from engine.ts)
+// ═══════════════════════════════════════════════════════════════
+
+/** Type-narrowing promise check */
+function isThenable(val: unknown): val is Promise<unknown> {
+  return val != null && typeof val === 'object' && typeof (val as Promise<unknown>).then === 'function';
+}
+
+/**
+ * Normalize sync/async execution for wrappers.
+ * Guarantees: sync → handled inline; thenable → preserves exact async semantics.
+ */
+function withAsyncSafety(
+  result: unknown,
+  onSync: (value: unknown) => void,
+  onError: (err: unknown) => void,
+): unknown {
+  if (isThenable(result)) {
+    return result.then(
+      (resolved) => { onSync(resolved); return resolved; },
+      (err) => { onError(err); throw err; },
+    );
+  }
+  onSync(result);
+  return result;
+}
+
+/** Backoff delay for retry logic */
+function delay(ms: number): Promise<void> {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+/**
+ * Deterministic secondary sort for capabilities.
+ * Primary: phase (ascending). Secondary: capability name (alphabetical).
+ */
+function byPhaseThenName(
+  a: { capability: ManaCapability },
+  b: { capability: ManaCapability },
+): number {
+  const phaseA = CAPABILITY_PHASE[a.capability] ?? 3;
+  const phaseB = CAPABILITY_PHASE[b.capability] ?? 3;
+  if (phaseA !== phaseB) return phaseA - phaseB;
+  return a.capability.localeCompare(b.capability);
+}
+
+/** Look up the contract for a capability */
+function getContract(capability: ManaCapability): CapabilityContract | undefined {
+  return CAPABILITY_CONTRACTS.find(c => c.capability === capability);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Assertions — Structural Integrity Checks
+// ═══════════════════════════════════════════════════════════════
+
+function assertAllContractsExist(): void {
+  const mapped = new Set(CAPABILITY_CONTRACTS.map(c => c.capability));
+  const allCaps = Object.keys(CAPABILITY_PHASE) as ManaCapability[];
+  for (const cap of allCaps) {
+    if (!mapped.has(cap)) {
+      throw new Error(`[MANA/SESSION] Missing contract for capability: ${cap}`);
+    }
+  }
+}
+
+function assertAllPhasesMapped(): void {
+  for (const contract of CAPABILITY_CONTRACTS) {
+    if (!(contract.capability in CAPABILITY_PHASE)) {
+      throw new Error(`[MANA/SESSION] Missing phase mapping: ${contract.capability}`);
+    }
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Session-Scoped Lex Governor
@@ -62,6 +137,11 @@ function lexRegisterRule(
   return rule;
 }
 
+/**
+ * Session-scoped Lex evaluation.
+ * Capability matching is EXACT — no wildcards on capability.
+ * Wildcards are allowed ONLY on target.
+ */
 function lexEvaluate(
   lex: SessionLex,
   capability: ManaCapability,
@@ -75,7 +155,9 @@ function lexEvaluate(
   });
 
   for (const rule of sorted) {
-    const capMatch = rule.capability === capability || rule.capability === ('*' as ManaCapability);
+    // EXACT capability match — no wildcard on capability
+    const capMatch = rule.capability === capability;
+    // Wildcards allowed ONLY on target
     const targetMatch = rule.target === target || rule.target === '*';
     if (capMatch && targetMatch) {
       return { verdict: rule.verdict, rule, context };
@@ -160,7 +242,11 @@ export interface ManaSession {
   getTrace(): ReadonlyArray<string>;
   inspectFunction(functionName: string): ReadonlyArray<{
     capability: ManaCapability; phase: number; phaseName: string;
-    invocations: number; blocked: number; observed: number;
+    position: number; invocations: number; blocked: number; observed: number;
+  }>;
+  getExecutionChain(functionName: string): ReadonlyArray<{
+    capability: ManaCapability; phase: WrapperPhase; phaseName: string;
+    position: number; contract: CapabilityContract | undefined;
   }>;
 
   // ── Cleanup ──
@@ -186,6 +272,7 @@ export function createSession(sessionId?: string): ManaSession {
   let lastProof: ManaProof | null = null;
   let traceEnabled = false;
   let traceLog: string[] = [];
+  let assertionsVerified = false;
 
   const lex = createSessionLex();
   const attachmentPoints = new Map<string, AttachmentPoint>();
@@ -199,30 +286,49 @@ export function createSession(sessionId?: string): ManaSession {
     metadata?: Record<string, unknown>, evalContext?: LexEvalContext,
   ): void {
     if (!config.telemetry) return;
-    telemetry.push({ timestamp: Date.now(), capability, functionName, action, evalContext, metadata });
+
+    const point = attachmentPoints.get(`${functionName}:${capability}`);
+    const enriched: Record<string, unknown> = {
+      ...metadata,
+      phase: point?.phase ?? CAPABILITY_PHASE[capability],
+      position: point?.position ?? -1,
+    };
+
+    telemetry.push({ timestamp: Date.now(), capability, functionName, action, evalContext, metadata: enriched });
     if (telemetry.length > config.maxTelemetryEvents) {
       telemetry.splice(0, telemetry.length - config.maxTelemetryEvents);
     }
     if (traceEnabled) {
-      traceLog.push(`[${new Date().toISOString()}] ${action.toUpperCase()} ${capability}::${functionName}${evalContext ? ` (${evalContext})` : ''}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`);
+      traceLog.push(`[${new Date().toISOString()}] ${action.toUpperCase()} ${capability}::${functionName}${evalContext ? ` (${evalContext})` : ''} phase=${enriched.phase} pos=${enriched.position}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`);
     }
   }
 
-  /** Simplified wrapper factory — uses session-scoped Lex */
+  /**
+   * Contract-driven wrapper factory — uses session-scoped Lex.
+   * Behavior determined by CapabilityContract, not hardcoded switches.
+   */
   function wrapFunction(
     originalFn: AnyFn, functionName: string, capability: ManaCapability, point: AttachmentPoint,
   ): AnyFn {
+    const contract = getContract(capability);
     const phase = CAPABILITY_PHASE[capability] ?? WrapperPhase.OBSERVE;
 
-    // GATE phase — blocking
+    // ── GATE phase — blocking ──
     if (phase === WrapperPhase.GATE) {
+      const denySemantic = contract?.denySemantic ?? 'throw';
+      const lexKey = contract?.lexKey ?? capability;
       return function manaSessionGate(this: unknown, ...args: unknown[]) {
         point.invocations++;
-        const { verdict } = lexEvaluate(lex, capability, functionName, config.lexMode, 'runtime');
+        const { verdict } = lexEvaluate(lex, lexKey, functionName, config.lexMode, 'runtime');
         if (verdict === 'deny') {
           point.blocked++;
-          emitTelemetry(capability, functionName, 'blocked', { reason: `${capability}_denied` }, 'runtime');
-          throw new Error(`[MANA/${capability.toUpperCase()}] ${functionName} blocked by Lex`);
+          emitTelemetry(capability, functionName, 'blocked', { reason: `${capability}_denied`, denySemantic }, 'runtime');
+          switch (denySemantic) {
+            case 'return_undefined': return undefined;
+            case 'return_message': return `[MANA/${capability.toUpperCase()}] ${functionName} is governed.`;
+            case 'swallow': return undefined;
+            default: throw new Error(`[MANA/${capability.toUpperCase()}] ${functionName} blocked by Lex`);
+          }
         }
         if (verdict === 'observe') {
           point.observed++;
@@ -232,7 +338,7 @@ export function createSession(sessionId?: string): ManaSession {
       } as AnyFn;
     }
 
-    // VALIDATE phase
+    // ── VALIDATE phase ──
     if (phase === WrapperPhase.VALIDATE) {
       return function manaSessionValidate(this: unknown, ...args: unknown[]) {
         point.invocations++;
@@ -241,20 +347,56 @@ export function createSession(sessionId?: string): ManaSession {
       } as AnyFn;
     }
 
-    // FAILSAFE phase
+    // ── FAILSAFE phase — async-safe with withAsyncSafety ──
     if (phase === WrapperPhase.FAILSAFE) {
+      // Retry handler gets special treatment — needs backoff
+      if (capability === 'retry_handler') {
+        const MAX_RETRIES = 3;
+        return function manaSessionRetry(this: unknown, ...args: unknown[]) {
+          point.invocations++;
+          const attemptSync = (attempt: number): unknown => {
+            try {
+              const result = originalFn.apply(this, args);
+              if (isThenable(result)) {
+                return result.catch(async (err: unknown) => {
+                  if (attempt < MAX_RETRIES) {
+                    await delay(10 * (attempt + 1));
+                    emitTelemetry(capability, functionName, 'observed', { attempt, async: true });
+                    return attemptSync(attempt + 1);
+                  }
+                  point.blocked++;
+                  emitTelemetry(capability, functionName, 'blocked', { reason: 'max_retries_exhausted' });
+                  throw err;
+                });
+              }
+              return result;
+            } catch (err) {
+              if (attempt < MAX_RETRIES) {
+                emitTelemetry(capability, functionName, 'observed', { attempt });
+                return attemptSync(attempt + 1);
+              }
+              point.blocked++;
+              emitTelemetry(capability, functionName, 'blocked', { reason: 'max_retries_exhausted' });
+              throw err;
+            }
+          };
+          return attemptSync(0);
+        } as AnyFn;
+      }
+
+      // Generic failsafe — catch and swallow
       return function manaSessionFailsafe(this: unknown, ...args: unknown[]) {
         point.invocations++;
         try {
           const result = originalFn.apply(this, args);
-          if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
-            return (result as Promise<unknown>).catch((err: unknown) => {
+          return withAsyncSafety(
+            result,
+            () => { /* success — no action */ },
+            (err) => {
               point.observed++;
               emitTelemetry(capability, functionName, 'observed', { error: (err as Error)?.message?.slice(0, 80) });
-              return undefined;
-            });
-          }
-          return result;
+            },
+          );
         } catch (err) {
           point.observed++;
           emitTelemetry(capability, functionName, 'observed', { error: (err as Error)?.message?.slice(0, 80) });
@@ -263,46 +405,49 @@ export function createSession(sessionId?: string): ManaSession {
       } as AnyFn;
     }
 
-    // ANALYZE phase
+    // ── ANALYZE phase — async-safe with withAsyncSafety ──
     if (phase === WrapperPhase.ANALYZE) {
       return function manaSessionAnalyze(this: unknown, ...args: unknown[]) {
         point.invocations++;
         const start = performance.now();
         const result = originalFn.apply(this, args);
-        if (result && typeof (result as Promise<unknown>).then === 'function') {
-          return (result as Promise<unknown>).then(resolved => {
+        return withAsyncSafety(
+          result,
+          () => {
             emitTelemetry(capability, functionName, 'observed', {
               durationMs: Math.round((performance.now() - start) * 100) / 100,
             });
-            return resolved;
-          });
-        }
-        emitTelemetry(capability, functionName, 'observed', {
-          durationMs: Math.round((performance.now() - start) * 100) / 100,
-        });
-        return result;
+          },
+          () => {
+            emitTelemetry(capability, functionName, 'observed', {
+              durationMs: Math.round((performance.now() - start) * 100) / 100,
+              error: true,
+            });
+          },
+        );
       } as AnyFn;
     }
 
-    // OBSERVE phase (default)
+    // ── OBSERVE phase (default) — async-safe with withAsyncSafety ──
     return function manaSessionObserve(this: unknown, ...args: unknown[]) {
       point.invocations++;
       const start = performance.now();
       const result = originalFn.apply(this, args);
-      if (result && typeof (result as Promise<unknown>).then === 'function') {
-        return (result as Promise<unknown>).then(resolved => {
+      return withAsyncSafety(
+        result,
+        () => {
           emitTelemetry(capability, functionName, 'observed', {
             durationMs: Math.round((performance.now() - start) * 100) / 100,
             argCount: args.length,
           });
-          return resolved;
-        });
-      }
-      emitTelemetry(capability, functionName, 'observed', {
-        durationMs: Math.round((performance.now() - start) * 100) / 100,
-        argCount: args.length,
-      });
-      return result;
+        },
+        () => {
+          emitTelemetry(capability, functionName, 'observed', {
+            durationMs: Math.round((performance.now() - start) * 100) / 100,
+            error: true,
+          });
+        },
+      );
     } as AnyFn;
   }
 
@@ -313,6 +458,11 @@ export function createSession(sessionId?: string): ManaSession {
 
     configure(partial) {
       config = { ...config, ...partial };
+      if (!assertionsVerified) {
+        assertAllContractsExist();
+        assertAllPhasesMapped();
+        assertionsVerified = true;
+      }
       return { ...config };
     },
 
@@ -343,6 +493,7 @@ export function createSession(sessionId?: string): ManaSession {
         if (typeof val === 'function' && val.name?.startsWith('mana')) {
           parentLayerHash = await computeHash(sourceForHash);
           layerDepth++;
+          break;
         }
       }
 
@@ -352,15 +503,16 @@ export function createSession(sessionId?: string): ManaSession {
       originals.clear();
       telemetry.length = 0;
 
-      const sorted = [...capabilities].sort((a, b) =>
-        (CAPABILITY_PHASE[a.capability] ?? 3) - (CAPABILITY_PHASE[b.capability] ?? 3),
-      );
+      // Deterministic sort: primary by phase (ascending), secondary by capability name
+      // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
+      const sorted = [...capabilities].sort(byPhaseThenName).reverse();
 
       let position = 0;
       for (const cap of sorted) {
         const originalFn = hostModule[cap.functionName] as AnyFn;
         if (typeof originalFn !== 'function') continue;
 
+        // Lex governance — ATTACHMENT-TIME verdict
         const { verdict } = lexEvaluate(lex, cap.capability, cap.functionName, config.lexMode, 'attachment');
         if (verdict === 'deny') {
           emitTelemetry(cap.capability, cap.functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
@@ -385,7 +537,7 @@ export function createSession(sessionId?: string): ManaSession {
         attachmentPoints.set(`${cap.functionName}:${cap.capability}`, point);
 
         hostModule[cap.functionName] = wrapFunction(originalFn, cap.functionName, cap.capability, point);
-        emitTelemetry(cap.capability, cap.functionName, 'invoked', { action: 'attached', layerDepth }, 'attachment');
+        emitTelemetry(cap.capability, cap.functionName, 'invoked', { action: 'attached', layerDepth, position: point.position }, 'attachment');
       }
 
       sessionState = 'symbiotic';
@@ -414,9 +566,29 @@ export function createSession(sessionId?: string): ManaSession {
     async generateProof(sourceForHash) {
       const currentHash = await computeHash(sourceForHash);
       const points = Array.from(attachmentPoints.values());
-      const capabilities = [...new Set(points.map(p => p.capability))];
-      const manifestForHash = { hostPackage: hostPkg, hostVersion: hostVer, attachmentState: sessionState, attachmentPoints: points, layerDepth };
-      const manifestHash = await computeHash(JSON.stringify(manifestForHash));
+
+      // Deterministic sort for proof
+      points.sort((a, b) =>
+        a.functionName.localeCompare(b.functionName) || a.capability.localeCompare(b.capability)
+      );
+
+      const capabilities = [...new Set(points.map(p => p.capability))].sort();
+
+      const snapshot = {
+        hostPackage: hostPkg,
+        hostVersion: hostVer,
+        attachmentPoints: points.map(p => ({
+          functionName: p.functionName,
+          capability: p.capability,
+          phase: p.phase,
+          position: p.position,
+        })),
+        capabilities,
+        telemetryCount: telemetry.length,
+        layerDepth,
+        parentLayerHash,
+      };
+      const manifestHash = await computeHash(JSON.stringify(snapshot));
 
       const proof: ManaProof = {
         hostHashBefore: hostSourceHash,
@@ -473,7 +645,7 @@ export function createSession(sessionId?: string): ManaSession {
       const PHASE_NAMES = ['GATE', 'VALIDATE', 'FAILSAFE', 'OBSERVE', 'ANALYZE'];
       const results: Array<{
         capability: ManaCapability; phase: number; phaseName: string;
-        invocations: number; blocked: number; observed: number;
+        position: number; invocations: number; blocked: number; observed: number;
       }> = [];
       for (const point of attachmentPoints.values()) {
         if (point.functionName === functionName) {
@@ -481,6 +653,7 @@ export function createSession(sessionId?: string): ManaSession {
             capability: point.capability,
             phase: point.phase,
             phaseName: PHASE_NAMES[point.phase] ?? 'UNKNOWN',
+            position: point.position,
             invocations: point.invocations,
             blocked: point.blocked,
             observed: point.observed,
@@ -488,6 +661,20 @@ export function createSession(sessionId?: string): ManaSession {
         }
       }
       return results.sort((a, b) => a.phase - b.phase);
+    },
+
+    getExecutionChain(functionName) {
+      const PHASE_NAMES = ['GATE', 'VALIDATE', 'FAILSAFE', 'OBSERVE', 'ANALYZE'];
+      return Array.from(attachmentPoints.values())
+        .filter(p => p.functionName === functionName)
+        .sort((a, b) => a.phase - b.phase)
+        .map(p => ({
+          capability: p.capability,
+          phase: p.phase as WrapperPhase,
+          phaseName: PHASE_NAMES[p.phase] ?? 'UNKNOWN',
+          position: p.position,
+          contract: getContract(p.capability),
+        }));
     },
 
     destroy() {
@@ -507,6 +694,7 @@ export function createSession(sessionId?: string): ManaSession {
       lex.idCounter = 0;
       traceLog = [];
       traceEnabled = false;
+      assertionsVerified = false;
     },
   };
 
