@@ -69,6 +69,7 @@ export type {
   LexVerdict,
   LexEvalContext,
   ManaCapability,
+  ManaCapabilityOrWildcard,
   AnyFn,
   DenySemantic,
   CapabilityContract,
