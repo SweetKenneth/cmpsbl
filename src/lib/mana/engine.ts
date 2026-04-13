@@ -19,7 +19,9 @@ import type {
   ManaManifest,
   ManaProof,
   ManaTelemetryEvent,
+  AnyFn,
 } from './types';
+import { CAPABILITY_PHASE } from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
@@ -1315,7 +1317,15 @@ export async function attach(
   originals.clear();
   telemetry.length = 0;
 
-  for (const cap of capabilities) {
+  // Sort capabilities by deterministic execution phase before wrapping
+  // This ensures GATE → VALIDATE → FAILSAFE → OBSERVE → ANALYZE order
+  const sorted = [...capabilities].sort((a, b) => {
+    const phaseA = CAPABILITY_PHASE[a.capability] ?? 3;
+    const phaseB = CAPABILITY_PHASE[b.capability] ?? 3;
+    return phaseA - phaseB;
+  });
+
+  for (const cap of sorted) {
     const { functionName, capability, rulePayload } = cap;
     const originalFn = hostModule[functionName];
 
@@ -1337,6 +1347,7 @@ export async function attach(
     const point: AttachmentPoint = {
       functionName,
       capability,
+      phase: CAPABILITY_PHASE[capability] ?? 3,
       active: true,
       invocations: 0,
       blocked: 0,
@@ -1396,6 +1407,8 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
   const currentHash = await computeHash(sourceForHash);
   const points = Array.from(attachmentPoints.values());
   const capabilities = [...new Set(points.map(p => p.capability))];
+  const manifest = getManifest();
+  const manifestHash = await computeHash(JSON.stringify(manifest));
 
   return {
     hostHashBefore: hostSourceHash,
@@ -1409,6 +1422,8 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
     fingerprintId: generateFingerprintId(),
     layerDepth,
     parentLayerHash,
+    manifestHash,
+    telemetryEventCount: telemetry.length,
   };
 }
 

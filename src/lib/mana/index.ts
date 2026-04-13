@@ -62,7 +62,11 @@ export {
 export type {
   AttachmentState,
   LexVerdict,
+  LexEvalContext,
   ManaCapability,
+  AnyFn,
+  DenySemantic,
+  CapabilityContract,
   AttachmentPoint,
   LexRule,
   ManaProof,
@@ -72,6 +76,8 @@ export type {
   AscensionFinding,
   ManaAttachmentEntry,
 } from './types';
+
+export { WrapperPhase, CAPABILITY_PHASE } from './types';
 
 // Config types (Phase 1)
 export type {
