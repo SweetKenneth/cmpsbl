@@ -1483,6 +1483,13 @@ function commandHelp(): void {
 // Entry
 // ═══════════════════════════════════════════════════════════════
 
+function commandVersion(): void {
+  blank();
+  say(`${c.bold('mana')} ${c.cyan('v1.0.0')}`);
+  say(c.muted('Silent Software Symbiosis · © CMPSBL®'));
+  blank();
+}
+
 export async function run(args: string[]): Promise<void> {
   const command = args[0]?.toLowerCase();
 
@@ -1497,6 +1504,10 @@ export async function run(args: string[]): Promise<void> {
       return commandExport();
     case 'detach':
       return commandDetach();
+    case 'version':
+    case '--version':
+    case '-v':
+      return commandVersion();
     case 'help':
     case '--help':
     case '-h':
@@ -1505,6 +1516,8 @@ export async function run(args: string[]): Promise<void> {
       return commandHelp();
     default:
       say(c.amber(`Unknown command: ${command}`));
-      return commandHelp();
+      blank();
+      say(c.muted(`Run ${c.cyan('mana help')} for available commands.`));
+      blank();
   }
 }
