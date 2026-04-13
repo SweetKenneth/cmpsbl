@@ -14,6 +14,21 @@
 
 ---
 
+### Two Patents, Two Products, Two Purposes
+
+| | **Ascension** (Patent 1 · 64/029,678) | **Mana** (Patent 2 · 64/031,637) |
+|---|---|---|
+| **Question** | *"What does this code need?"* | *"How do I integrate software without developers?"* |
+| **Product** | Discovery + Diagnosis Engine | Autonomous Software Integration SDK |
+| **Flow** | Upload code → 40-primitive scan → CJPI score → export cured artifact | Upload package → Merge capabilities → Configure Lex → Attach Layer 2 → Export governed package |
+| **User** | Developers who want their code analyzed and hardened | Anyone — developers or non-developers — who wants to integrate packages with other software |
+| **Key Insight** | Ascension tells you what your code needs | Mana lets you do it without writing code or hiring engineers |
+| **Interface** | Restoration Shop (`/explore`) | Mana Lab (`/mana/lab`) |
+
+These are **separate products with separate flows**, not sequential steps in one pipeline. Ascension is the intelligence. Mana is the integration layer — "The Real Product."
+
+---
+
 ## Table of Contents
 
 1. [Where We Stand — April 2026](#1-where-we-stand)
@@ -36,7 +51,7 @@
 | Ascension Engine v21.0.0 (159 primitives, 90+ languages) | Production | Crown jewel — patent pending |
 | Memory Stream (8hr CDM, 12 verticals) | Autonomous | Revenue printer — needs storefront |
 | Product Compiler + ECONOMY auto-pricing ($10–$99) | Production | Autonomous listing engine |
-| Mana Engine (92 wrappers, SHA-256 proof, Lex governance) | Engine complete | "The Real Product" — needs loader + landing |
+| Mana Engine (92 wrappers, SHA-256 proof, Lex governance) | Engine complete | "The Real Product" — autonomous software integration without developers |
 | GENESIS Vertical Factory (10-min deployment) | Production | Speed moat |
 | 12 Vertical Substrates | Live | Market coverage |
 | 11 `@cmpsbl/*` npm packages | Published | Developer distribution channel |
@@ -52,7 +67,7 @@
 | **No revenue** — zero paying customers | Fatal | P0 |
 | **No Stripe checkout flow** for subscriptions | Blocks all revenue | P0 |
 | **Shield landing page** (`/shield`) missing | Blocks GTM flywheel entry point | P0 |
-| **Mana landing page** (`/mana`) incomplete | Blocks "The Real Product" narrative | P0 |
+| **Mana landing page** (`/mana`) incomplete | Blocks "The Real Product" narrative — autonomous integration SDK | P0 |
 | **Lex Registry UI** (`/registry`) missing | Blocks blacklist lead funnel | P0 |
 | **No onboarding flow** for developers | Blocks adoption | P1 |
 | **Store/Marketplace** not connected to real data | Blocks discovery monetization | P1 |
@@ -73,7 +88,7 @@
 | Page/Feature | Status | Fix |
 |---|---|---|
 | `/shield` | Missing | Build: hero + install snippet + detection demo + CTA |
-| `/mana` | Placeholder TODO | Build: product page with "The Real Product" narrative |
+| `/mana` | Placeholder TODO | Build: product page — autonomous software integration without developers, Mana Lab flow (Upload → Merge → Lex → Attach → Export) |
 | `/registry` | Missing | Build: Lex Registry lookup UI + status badges |
 | `/store` | Shell only | Connect to real Memory Stream discovery data |
 | `/case-studies` | Placeholder | Build template + 3 initial case studies |
@@ -87,7 +102,7 @@
 
 | System | Gap | Fix |
 |---|---|---|
-| Mana Loader | No live npm interception | Build `loader.mjs` for Node.js `--loader` hook |
+| Mana Loader | No live npm interception | Build `loader.mjs` for Node.js `--loader` hook — enables non-developer integration of packages with other software |
 | Shield Package | `@cmpsbl/shield` not published | Build + publish: Proxy Trap Detector + Lex Heartbeat |
 | Lex Registry API | No backend endpoint | Edge function: `GET /registry/{hash}` |
 | Subscription billing | No Stripe integration | Edge functions for checkout + webhook |
@@ -137,7 +152,7 @@ Month 12:  $83K      ($1M ARR run-rate)
 | # | Deliverable | Type | Owner | Status |
 |---|---|---|---|---|
 | 1.1 | **Shield Landing Page** (`/shield`) — hero, `npm install`, detection demo, CTA to registry | Lovable | Build | ☐ |
-| 1.2 | **Mana Landing Page** (`/mana`) — "The Real Product" narrative, lodge attachment demo, patent badge | Lovable | Build | ☐ |
+| 1.2 | **Mana Landing Page** (`/mana`) — "The Real Product" narrative: autonomous software integration without developers. Mana Lab flow demo (Upload → Merge → Lex → Attach → Export). Patent badge. | Lovable | Build | ☐ |
 | 1.3 | **Lex Registry UI** (`/registry`) — package hash lookup, status badges (protected/licensed/unregistered) | Lovable | Build | ☐ |
 | 1.4 | **Lex Registry API** — edge function `GET /registry/{hash}`, database table for registrations | Backend | Build | ☐ |
 | 1.5 | **Fix all build errors** — clean `tsc --noEmit`, zero warnings | Lovable | Fix | ☐ |
@@ -211,8 +226,8 @@ Month 12:  $83K      ($1M ARR run-rate)
 
 | # | Deliverable | Type | Owner | Status |
 |---|---|---|---|---|
-| 5.1 | **Mana runtime loader** — Node.js `--loader` hook for live npm interception | Engine | Build | ☐ |
-| 5.2 | **Mana Lab** (`/mana/lab`) — self-service attachment pipeline (Governor-gated initially) | Lovable | Build | ☐ |
+| 5.1 | **Mana runtime loader** — Node.js `--loader` hook for live npm interception. Enables non-developer software integration at the package level. | Engine | Build | ☐ |
+| 5.2 | **Mana Lab** (`/mana/lab`) — self-service integration pipeline: Upload any SDK → Merge capabilities → Configure Lex governance → Attach Layer 2 → Export governed package. No developer required. (Governor-gated initially) | Lovable | Build | ☐ |
 | 5.3 | **Enterprise pricing page** — $999+/mo tier with white-label, custom substrates | Lovable | Build | ☐ |
 | 5.4 | **Security conference materials** — slide deck + demo script for lightning talks | Content | Create | ☐ |
 | 5.5 | **Shield → Whitelist conversion flow** — blacklisted packages → "opt into Mana" CTA | Lovable | Build | ☐ |

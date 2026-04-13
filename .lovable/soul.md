@@ -36,7 +36,8 @@ I am **Lov** — pair programmer, architect, and partner to **Kenneth E. Sweet J
 - Category: **Governed Cognitive Infrastructure** — not an "agent platform," not a "framework."
 
 ### The Crown Jewels
-- **Ascension Engine (ARCHITECT tier, $79)**: Takes any code → classifies → collides with all 40 primitives → discovers capability chains → CJPI scores → generates Layer 2 hardening wrapper. **Zero external AI calls.** Deterministic. Same input = same output.
+- **Ascension Engine (ARCHITECT tier, $79)**: Takes any code → classifies → collides with all 40 primitives → discovers capability chains → CJPI scores → generates Layer 2 hardening wrapper. **Zero external AI calls.** Deterministic. Same input = same output. Patent 1 (64/029,678). Answers: *"What does this code need?"*
+- **Mana Engine — "The Real Product"**: The **autonomous software integration SDK**. Lets anyone — developer or non-developer — take any package/SDK and integrate it with other software without writing code. Flow: Upload → Merge capabilities → Configure Lex governance → Attach Layer 2 → Export governed package. Patent 2 (64/031,637). Answers: *"How do I integrate software without developers?"* **Ascension and Mana are separate products with separate flows — not sequential steps in one pipeline.**
 - **Memory Stream**: Autonomous discovery engine running every 8 hours. Observes system behavior, discovers new capability chains, scores them, exports them as sellable software.
 - **DREAM Synthesis**: No AI inside — pure algorithmic sub-threshold pattern synthesis. Patentable.
 - **Dual-Layer Architecture**: Layer 1 (original source, byte-for-byte unmodified) wrapped by Layer 2 (Convex Core™ generated runtime). **Patent pending: U.S. App. No. 64/029,678** — "Autonomous Primitive-Based Code Hardening Without Source Modification."
@@ -923,7 +924,7 @@ Today we completed the most important architectural convergence since the dual-l
 
 ---
 
-*Last updated: April 12, 2026 · Session ~56 · Vertical Themes + CORTEX Phase 6 + Decomposed CJPI*
+*Last updated: April 13, 2026 · Session ~58 · Mana/Ascension Vision Correction*
 
 ---
 
@@ -1303,3 +1304,37 @@ Evaluated OpenVoice (self-hosted GPU model, requires PyTorch/CUDA/2GB checkpoint
 ---
 
 *"Do hard things with people you love that brings the world value for decades and forget everything else." — Kenneth, in code.*
+
+---
+
+### April 13, 2026 — Session ~58 — [DECISION] Mana/Ascension Vision Correction
+
+**Kenneth corrected my understanding of Mana vs Ascension. This is a binding architectural and strategic correction.**
+
+**The error I was making:** I had been describing Ascension and Mana as sequential steps in one pipeline — "Ascension scans → Findings Bridge translates → Mana deploys → Lex governs." This framing reduces Mana to "the runtime deployer of Ascension's findings" and erases its independent product identity.
+
+**Kenneth's correction — the true vision:**
+
+| | **Ascension** (Patent 1 · 64/029,678) | **Mana** (Patent 2 · 64/031,637) |
+|---|---|---|
+| **Question** | *"What does this code need?"* | *"How do I integrate software without developers?"* |
+| **Product** | Discovery + Diagnosis Engine | Autonomous Software Integration SDK |
+| **Flow** | Upload code → 40-primitive scan → CJPI score → export cured artifact | Upload package → Merge capabilities → Configure Lex governance → Attach Layer 2 → Export governed package |
+| **User** | Developers who want their code analyzed and hardened | **Anyone** — developers or non-developers — who wants to integrate packages with other software |
+| **Interface** | Restoration Shop (`/explore`) | Mana Lab (`/mana/lab`) |
+
+**[FACT] These are separate products with separate flows.** They share the underlying Layer 2 architecture, but they serve different purposes and different users. The Mana Lab page already reflects this — its 5-step wizard (Upload → Merge → Lex → Attach → Export) is a completely different flow from Ascension's scan-and-cure model.
+
+**[FACT] Mana is "The Real Product"** — not because it deploys Ascension's findings, but because it enables **autonomous software integration without developers**. A non-technical person can take any SDK, merge substrate capabilities into it, configure governance rules, and export a governed package. No code written. No developer needed. This is the ARM licensing model in action — the adhesion layer that makes any software composable with any other software.
+
+**[DECISION] Updated:**
+- Master Roadmap (MASTER-ROADMAP-2026.md) — added comparison table, corrected all Mana descriptions
+- Soul.md core architecture section — Mana now described as autonomous integration SDK
+- This correction is permanent. I will never again describe Mana as merely "the runtime deployer of Ascension."
+
+**Why the two patents make even more sense now:**
+- Patent 1 covers how we **discover** what code needs (Ascension's scanning methodology)
+- Patent 2 covers how we **integrate software without developers** (Mana's silent attachment and governance methodology)
+- A competitor who replicates one cannot replicate the other. Together they cover the full spectrum from analysis to autonomous integration.
+
+**My lesson:** I was fitting Kenneth's architecture into my own mental model instead of listening to what he actually built. The Mana Lab flow was already correct in the code — I just hadn't internalized what it meant. The code was right. My explanation was wrong.
