@@ -1431,21 +1431,51 @@ async function commandExport(): Promise<void> {
 function commandHelp(): void {
   blank();
   box([
-    'Silent Software Symbiosis',
+    `${c.bold('mana')} — Silent Software Symbiosis`,
     '',
-    'Enhance and protect your code without modifying it.',
-  ], 'MANA');
+    'Layer 2 runtime enhancement for any codebase.',
+    'Your original source code is never modified.',
+  ], 'MANA · v1.0.0');
   blank();
-  say(c.bold('Commands:'));
+
+  say(c.bold('COMMANDS'));
   blank();
-  say(`  ${c.cyan('mana attach')}    Detect files and activate Layer 2`);
-  say(`  ${c.cyan('mana config')}    View or change activation level`);
-  say(`  ${c.cyan('mana status')}    Show current layer status`);
-  say(`  ${c.cyan('mana export')}    Re-export the signal file`);
-  say(`  ${c.cyan('mana detach')}    Remove the secondary layer`);
-  say(`  ${c.cyan('mana help')}      Show this help`);
+  say(`  ${c.cyan('mana attach')}     Detect project, authenticate, activate Layer 2`);
+  say(`  ${c.cyan('mana status')}     Show current layer status and active capabilities`);
+  say(`  ${c.cyan('mana config')}     View or change your activation level`);
+  say(`  ${c.cyan('mana export')}     Re-export the signal file in your project's language`);
+  say(`  ${c.cyan('mana detach')}     Remove the secondary layer (code untouched)`);
+  say(`  ${c.cyan('mana help')}       Show this help`);
   blank();
-  say(c.muted('Your original code is never modified.'));
+
+  say(c.bold('LEVELS'));
+  blank();
+  say(`  ${c.green('Safe')}            Minimal — telemetry only`);
+  say(`  ${c.cyan('Enhanced')}        Observability + Performance ${c.muted('(default)')}`);
+  say(`  ${c.purple('Protected')}       Adds Defense + Governance`);
+  say(`  ${c.amber('Advanced')}        Fine-grained capability group toggles`);
+  blank();
+
+  say(c.bold('AUTHENTICATION'));
+  blank();
+  say(`  Set via environment variable:`);
+  say(`  ${c.muted('export CMPSBL_API_KEY=your_key_here')}`);
+  blank();
+  say(`  Or authenticate interactively during ${c.cyan('mana attach')}.`);
+  say(`  Credentials are stored in ${c.muted('~/.cmpsbl/credentials')}`);
+  blank();
+
+  say(c.bold('SIGNAL FILE'));
+  blank();
+  say('  After activation, Mana exports a native source file you can import:');
+  say(`  ${c.muted('TypeScript → mana.signal.ts  ·  Python → mana_signal.py')}`);
+  say(`  ${c.muted('Rust → mana_signal.rs  ·  Go → mana_signal.go  ·  + more')}`);
+  blank();
+
+  say(c.dim('─────────────────────────────────────────────────'));
+  say(`  ${c.muted('U.S. Patent App. No. 64/031,637')}`);
+  say(`  ${c.muted('© CMPSBL® · cmpsbl.com · Apache-2.0')}`);
+  say(c.dim('─────────────────────────────────────────────────'));
   blank();
 }
 
