@@ -21796,3 +21796,132 @@ async function routeToProvider(
 }
 
 // (jsonResponse already defined above — removed duplicate)
+
+// ═══════════════════════════════════════════════════════════════
+// ASCENSION MODULE — Store and verify CLI Ascension results
+// ═══════════════════════════════════════════════════════════════
+
+async function handleAscension(
+  supabase: any,
+  action: string,
+  params: Record<string, any>,
+  corsHeaders: Record<string, string>,
+): Promise<Response> {
+  switch (action) {
+    case "submit": {
+      const p = params.payload ?? params;
+      const { error } = await supabase.from("cli_ascension_sessions").insert({
+        fingerprint: p.fingerprint,
+        file_name: p.fileName ?? p.file_name,
+        archetype: p.archetype ?? null,
+        node_id: p.nodeId ?? p.node_id ?? null,
+        collisions: p.collisions ?? 0,
+        discoveries: p.discoveries ?? 0,
+        cjpi_total: p.cjpi?.total ?? 0,
+        cjpi_novelty: p.cjpi?.novelty ?? 0,
+        cjpi_utility: p.cjpi?.utility ?? 0,
+        cjpi_composability: p.cjpi?.composability ?? 0,
+        cjpi_maturity: p.cjpi?.maturity ?? 0,
+        cjpi_tier: p.cjpi?.tier ?? "C",
+        file_lines: p.fileLines ?? p.file_lines ?? 0,
+        file_size_kb: p.fileSizeKb ?? p.file_size_kb ?? 0,
+        output_file: p.outputFile ?? p.output_file ?? null,
+        operator: p.operator ?? null,
+        language: p.language ?? null,
+        api_key_prefix: p.apiKeyPrefix ?? null,
+        developer_id: p.developerId ?? null,
+      });
+
+      if (error) {
+        // Duplicate fingerprint is OK — treat as success
+        if (error.code === "23505") {
+          return new Response(
+            JSON.stringify({ success: true, module: "ascension", action: "submit", status: "already_registered", fingerprint: p.fingerprint }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+          );
+        }
+        return new Response(
+          JSON.stringify({ success: false, error: error.message }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, module: "ascension", action: "submit", status: "registered", fingerprint: p.fingerprint }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    case "verify": {
+      const fp = params.fingerprint ?? params.fp;
+      if (!fp) {
+        return new Response(
+          JSON.stringify({ success: false, error: "fingerprint required" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+
+      // Check all three sources: restoration_sessions, vertical_ascension_sessions, cli_ascension_sessions
+      const sources: { name: string; table: string; fpCol: string }[] = [
+        { name: "restoration", table: "restoration_sessions", fpCol: "fingerprint" },
+        { name: "vertical_ascension", table: "vertical_ascension_sessions", fpCol: "fingerprint" },
+        { name: "cli_ascension", table: "cli_ascension_sessions", fpCol: "fingerprint" },
+      ];
+
+      for (const src of sources) {
+        const { data, error } = await supabase
+          .from(src.table)
+          .select("*")
+          .eq(src.fpCol, fp)
+          .limit(1)
+          .maybeSingle();
+
+        if (!error && data) {
+          return new Response(
+            JSON.stringify({
+              success: true,
+              module: "ascension",
+              action: "verify",
+              found: true,
+              source: src.name,
+              record: data,
+              timestamp: new Date().toISOString(),
+            }),
+            { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+          );
+        }
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          module: "ascension",
+          action: "verify",
+          found: false,
+          fingerprint: fp,
+          timestamp: new Date().toISOString(),
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    case "status":
+      return new Response(
+        JSON.stringify({
+          success: true,
+          module: "ascension",
+          action: "status",
+          version: "1.0.0",
+          sources: ["restoration_sessions", "vertical_ascension_sessions", "cli_ascension_sessions"],
+          timestamp: new Date().toISOString(),
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+
+    default:
+      return new Response(
+        JSON.stringify({ success: false, error: `Unknown ascension action: ${action}` }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+  }
+}
