@@ -1,6 +1,6 @@
 /**
  * Investor Showcase — 30-Second WOW Demo
- * SYMBIOTIC Epoch v19 — Cinematic before/after with curing narrative
+ * SYMBIOTIC Epoch v19 — Cinematic before/after with coding narrative
  */
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -107,7 +107,7 @@ export const WowDemo = ({ onBack }: { onBack: () => void }) => {
           <h1 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">
             Deterministic{" "}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>
-              Curing
+              Coding
             </span>
           </h1>
           <p className="text-sm text-muted-foreground max-w-lg mx-auto">
@@ -150,7 +150,7 @@ export const WowDemo = ({ onBack }: { onBack: () => void }) => {
               <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-sm p-5 space-y-4">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                  <span className="text-sm font-semibold text-foreground">Curing with 40 primitives…</span>
+                  <span className="text-sm font-semibold text-foreground">Coding with 40 primitives…</span>
                 </div>
                 <div className="space-y-2">
                   {ENHANCEMENTS.map((e, i) => (

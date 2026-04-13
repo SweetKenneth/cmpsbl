@@ -1,6 +1,6 @@
 /**
  * Shared demo data for Investor Showcase layouts
- * SYMBIOTIC Epoch v19.0.0 — Deterministic Curing Model
+ * SYMBIOTIC Epoch v19.0.0 — Deterministic Coding Model
  */
 import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity, BookOpen, Globe, Store, Flame, Scale } from "lucide-react";
 
@@ -23,7 +23,7 @@ export const TIER_1_DEMOS: DemoCardData[] = [
     icon: <Brain className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
     what: "8-hour autonomous cycles explore 10²³ primitive combinations — no human trigger. Every cycle surfaces novel software capabilities the system invented itself.",
-    why: "No other system discovers its own capabilities. This is genuine machine creativity through deterministic curing, not probabilistic AI.",
+    why: "No other system discovers its own capabilities. This is genuine machine creativity through deterministic coding, not probabilistic AI.",
     value: "Every discovery is IP. The system manufactures sellable software from its own patterns — compounding revenue.",
     badge: "autonomous",
   },
@@ -43,7 +43,7 @@ export const TIER_1_DEMOS: DemoCardData[] = [
     icon: <Sparkles className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
     what: "Upload code → CJPI scoring → capability injection → export as zero-dependency distribution in 90+ languages. Original code untouched.",
-    why: "The clearest proof of value. Input basic code, output IP-protected production software. Zero AI in the output — pure deterministic curing.",
+    why: "The clearest proof of value. Input basic code, output IP-protected production software. Zero AI in the output — pure deterministic coding.",
     value: "Every developer becomes 10x. Every script becomes a portable, sellable product across 12 industry verticals.",
     badge: "patent-pending",
   },
@@ -74,7 +74,7 @@ export const TIER_2_DEMOS: DemoCardData[] = [
     subtitle: "Background Learning",
     icon: <Eye className="w-4 h-4 text-primary" />,
     tier: 2, status: "live",
-    what: "Consolidates learning during idle time — dream cycles, memory synthesis. No AI inside — pure algorithmic curing.",
+    what: "Consolidates learning during idle time — dream cycles, memory synthesis. No AI inside — pure algorithmic coding.",
     why: "Autonomous background improvement. Patentable. The system gets smarter every day without intervention or compute cost.",
     value: "Compound intelligence — each cycle reduces future costs and increases capability.",
     badge: "no-ai-inside",
