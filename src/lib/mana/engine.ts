@@ -19,9 +19,10 @@ import type {
   ManaManifest,
   ManaProof,
   ManaTelemetryEvent,
+  LexEvalContext,
   AnyFn,
 } from './types';
-import { CAPABILITY_PHASE } from './types';
+import { CAPABILITY_PHASE, WrapperPhase } from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
@@ -52,7 +53,35 @@ const attachmentPoints: Map<string, AttachmentPoint> = new Map();
 const telemetry: ManaTelemetryEvent[] = [];
 
 /** Original unwrapped functions — for clean detachment */
-const originals: Map<string, Function> = new Map();
+const originals: Map<string, AnyFn> = new Map();
+
+/** Debug trace log — populated when trace mode is on */
+let traceLog: string[] = [];
+let traceEnabled = false;
+
+// ═══════════════════════════════════════════════════════════════
+// Promise-Aware Wrapper Helper
+// ═══════════════════════════════════════════════════════════════
+
+/**
+ * Normalize sync/async execution for wrappers.
+ * Guarantees: sync → handled inline; thenable → preserves exact async semantics;
+ * rejection → onError still fires; never silently converts async to sync.
+ */
+function withAsyncSafety(
+  result: unknown,
+  onSync: (value: unknown) => void,
+  onError: (err: unknown) => void,
+): unknown {
+  if (result && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+    return (result as Promise<unknown>).then(
+      (resolved) => { onSync(resolved); return resolved; },
+      (err) => { onError(err); throw err; },
+    );
+  }
+  onSync(result);
+  return result;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Hashing — SHA-256 proof of non-modification
@@ -83,7 +112,8 @@ function emitTelemetry(
   capability: ManaCapability,
   functionName: string,
   action: ManaTelemetryEvent['action'],
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown>,
+  evalContext?: LexEvalContext
 ): void {
   if (!config.telemetry) return;
 
@@ -92,11 +122,17 @@ function emitTelemetry(
     capability,
     functionName,
     action,
+    evalContext,
     metadata,
   });
 
   if (telemetry.length > config.maxTelemetryEvents) {
     telemetry.splice(0, telemetry.length - config.maxTelemetryEvents);
+  }
+
+  // Trace mode — human-readable debug output
+  if (traceEnabled) {
+    traceLog.push(`[${new Date().toISOString()}] ${action.toUpperCase()} ${capability}::${functionName}${evalContext ? ` (${evalContext})` : ''}${metadata ? ` ${JSON.stringify(metadata)}` : ''}`);
   }
 }
 
@@ -619,22 +655,38 @@ function wrapWithRetryHandler(
   const MAX_RETRIES = 3;
   return function manaRetryHandler(this: unknown, ...args: unknown[]) {
     point.invocations++;
-    let lastError: unknown;
-    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+
+    const attemptSync = (attempt: number): unknown => {
       try {
         const result = originalFn.apply(this, args);
+        // Handle async — retry on rejection too
+        if (result && typeof (result as Promise<unknown>).then === 'function') {
+          return (result as Promise<unknown>).catch((err: unknown) => {
+            if (attempt < MAX_RETRIES) {
+              emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80), async: true });
+              return attemptSync(attempt + 1);
+            }
+            point.blocked++;
+            emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted', async: true });
+            throw err;
+          });
+        }
         if (attempt > 0) {
           emitTelemetry('retry_handler', functionName, 'observed', { retriedAfter: attempt });
         }
         return result;
       } catch (err) {
-        lastError = err;
-        emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80) });
+        if (attempt < MAX_RETRIES) {
+          emitTelemetry('retry_handler', functionName, 'observed', { attempt, error: (err as Error)?.message?.slice(0, 80) });
+          return attemptSync(attempt + 1);
+        }
+        point.blocked++;
+        emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted' });
+        throw err;
       }
-    }
-    point.blocked++;
-    emitTelemetry('retry_handler', functionName, 'blocked', { reason: 'max_retries_exhausted' });
-    throw lastError;
+    };
+
+    return attemptSync(0);
   };
 }
 
@@ -732,13 +784,26 @@ function wrapWithStateSnapshot(
     const before = typeof this === 'object' && this !== null
       ? JSON.stringify(this).slice(0, 500) : 'N/A';
     const result = originalFn.apply(this, args);
-    const after = typeof this === 'object' && this !== null
-      ? JSON.stringify(this).slice(0, 500) : 'N/A';
-    emitTelemetry('state_snapshot', functionName, 'observed', {
-      beforeHash: before.length,
-      afterHash: after.length,
-      mutated: before !== after,
-    });
+
+    const emitSnapshot = () => {
+      const after = typeof this === 'object' && this !== null
+        ? JSON.stringify(this).slice(0, 500) : 'N/A';
+      emitTelemetry('state_snapshot', functionName, 'observed', {
+        beforeHash: before.length,
+        afterHash: after.length,
+        mutated: before !== after,
+      });
+    };
+
+    // Handle async — snapshot after resolution
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => { emitSnapshot(); return resolved; },
+        (err) => { emitSnapshot(); throw err; },
+      );
+    }
+
+    emitSnapshot();
     return result;
   };
 }
@@ -812,19 +877,32 @@ function wrapWithAnomalyDetector(
     point.invocations++;
     const start = performance.now();
     const result = originalFn.apply(this, args);
-    const d = performance.now() - start;
-    history.push(d);
-    if (history.length > 100) history.shift();
-    if (history.length >= 10) {
-      const avg = history.reduce((s, v) => s + v, 0) / history.length;
-      const stdDev = Math.sqrt(history.reduce((s, v) => s + (v - avg) ** 2, 0) / history.length);
-      if (d > avg + 3 * stdDev) {
-        point.observed++;
-        emitTelemetry('anomaly_detector', functionName, 'observed', {
-          anomaly: true, durationMs: d, avgMs: avg, stdDev, zScore: (d - avg) / (stdDev || 1),
-        });
+
+    const checkAnomaly = () => {
+      const d = performance.now() - start;
+      history.push(d);
+      if (history.length > 100) history.shift();
+      if (history.length >= 10) {
+        const avg = history.reduce((s, v) => s + v, 0) / history.length;
+        const stdDev = Math.sqrt(history.reduce((s, v) => s + (v - avg) ** 2, 0) / history.length);
+        if (d > avg + 3 * stdDev) {
+          point.observed++;
+          emitTelemetry('anomaly_detector', functionName, 'observed', {
+            anomaly: true, durationMs: d, avgMs: avg, stdDev, zScore: (d - avg) / (stdDev || 1),
+          });
+        }
       }
+    };
+
+    // Handle async — measure duration after resolution
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => { checkAnomaly(); return resolved; },
+        (err) => { checkAnomaly(); throw err; },
+      );
     }
+
+    checkAnomaly();
     return result;
   };
 }
@@ -833,13 +911,10 @@ function wrapWithDriftMonitor(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
   const returnHistory: string[] = [];
-  return function manaDriftMonitor(this: unknown, ...args: unknown[]) {
-    point.invocations++;
-    const result = originalFn.apply(this, args);
-    const resultType = typeof result;
+
+  const checkDrift = (resultType: string) => {
     returnHistory.push(resultType);
     if (returnHistory.length > 50) returnHistory.shift();
-    // Detect if return type changed from historical pattern
     if (returnHistory.length >= 5) {
       const majority = returnHistory.slice(0, -1)
         .reduce((acc, t) => { acc[t] = (acc[t] ?? 0) + 1; return acc; }, {} as Record<string, number>);
@@ -851,6 +926,21 @@ function wrapWithDriftMonitor(
         });
       }
     }
+  };
+
+  return function manaDriftMonitor(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+
+    // Handle async — check drift on resolved type, not 'object' (Promise)
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => { checkDrift(typeof resolved); return resolved; },
+        (err) => { checkDrift('error'); throw err; },
+      );
+    }
+
+    checkDrift(typeof result);
     return result;
   };
 }
@@ -1327,16 +1417,16 @@ export async function attach(
 
   for (const cap of sorted) {
     const { functionName, capability, rulePayload } = cap;
-    const originalFn = hostModule[functionName];
+    const originalFn = hostModule[functionName] as AnyFn;
 
     if (typeof originalFn !== 'function') {
       continue;
     }
 
-    // Lex governance check
-    const { verdict } = evaluate(capability, functionName, config.lexMode);
+    // Lex governance check — ATTACHMENT-TIME verdict
+    const { verdict } = evaluate(capability, functionName, config.lexMode, 'attachment');
     if (verdict === 'deny') {
-      emitTelemetry(capability, functionName, 'blocked', { reason: 'lex_denied_attachment' });
+      emitTelemetry(capability, functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
       continue;
     }
 
@@ -1360,7 +1450,7 @@ export async function attach(
     const wrapper = getWrapper(capability);
     hostModule[functionName] = wrapper(originalFn, functionName, point);
 
-    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth });
+    emitTelemetry(capability, functionName, 'invoked', { action: 'attached', layerDepth }, 'attachment');
   }
 
   state = 'symbiotic';
@@ -1407,10 +1497,13 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
   const currentHash = await computeHash(sourceForHash);
   const points = Array.from(attachmentPoints.values());
   const capabilities = [...new Set(points.map(p => p.capability))];
-  const manifest = getManifest();
-  const manifestHash = await computeHash(JSON.stringify(manifest));
+  const manifestForHash = {
+    hostPackage, hostVersion, attachmentState: state,
+    attachmentPoints: points, layerDepth,
+  };
+  const manifestHash = await computeHash(JSON.stringify(manifestForHash));
 
-  return {
+  const proof: ManaProof = {
     hostHashBefore: hostSourceHash,
     hostHashAfter: currentHash,
     verified: hostSourceHash === currentHash,
@@ -1425,9 +1518,13 @@ export async function generateProof(sourceForHash: string): Promise<ManaProof> {
     manifestHash,
     telemetryEventCount: telemetry.length,
   };
+
+  // Store proof for manifest integration
+  lastProof = proof;
+  return proof;
 }
 
-/** Get full attachment manifest */
+/** Get full attachment manifest — includes proof when in symbiotic state */
 export function getManifest(): ManaManifest {
   return {
     hostPackage,
@@ -1435,13 +1532,16 @@ export function getManifest(): ManaManifest {
     attachmentState: state,
     attachmentPoints: Array.from(attachmentPoints.values()),
     lexRules: getRules(),
-    proof: null,
+    proof: lastProof,
     telemetry: [...telemetry],
     attachedAt,
     detachedAt,
     layerDepth,
   };
 }
+
+/** Last generated proof — integrated into manifest */
+let lastProof: ManaProof | null = null;
 
 /** Get telemetry events */
 export function getTelemetry(): ReadonlyArray<ManaTelemetryEvent> {
@@ -1463,7 +1563,7 @@ export function getTelemetrySummary(): Record<string, { invocations: number; blo
   return summary;
 }
 
-/** Full engine reset */
+/** Full engine reset — clears ALL state back to defaults */
 export function reset(): void {
   state = 'detached';
   hostPackage = '';
@@ -1473,9 +1573,77 @@ export function reset(): void {
   detachedAt = null;
   layerDepth = 0;
   parentLayerHash = null;
+  lastProof = null;
   attachmentPoints.clear();
   originals.clear();
   telemetry.length = 0;
+  traceLog = [];
+  traceEnabled = false;
   resetLex();
   config = { ...DEFAULT_CONFIG };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Debug / Trace Mode — Item #17
+// ═══════════════════════════════════════════════════════════════
+
+/** Enable debug trace mode — captures human-readable execution log */
+export function enableTrace(): void {
+  traceEnabled = true;
+  traceLog = [];
+}
+
+/** Disable debug trace mode */
+export function disableTrace(): void {
+  traceEnabled = false;
+}
+
+/**
+ * Get trace execution log — answers:
+ * - Which wrappers are attached to each function?
+ * - In what order?
+ * - Which Lex rule fired?
+ * - Why was something blocked?
+ * - What telemetry was emitted?
+ */
+export function getTrace(): ReadonlyArray<string> {
+  return [...traceLog];
+}
+
+/**
+ * Inspect a specific function — returns all wrappers attached,
+ * their phases, and current invocation stats.
+ */
+export function inspectFunction(functionName: string): ReadonlyArray<{
+  capability: ManaCapability;
+  phase: number;
+  phaseName: string;
+  invocations: number;
+  blocked: number;
+  observed: number;
+}> {
+  const PHASE_NAMES = ['GATE', 'VALIDATE', 'FAILSAFE', 'OBSERVE', 'ANALYZE'];
+  const results: Array<{
+    capability: ManaCapability;
+    phase: number;
+    phaseName: string;
+    invocations: number;
+    blocked: number;
+    observed: number;
+  }> = [];
+
+  for (const [key, point] of attachmentPoints.entries()) {
+    if (point.functionName === functionName) {
+      results.push({
+        capability: point.capability,
+        phase: point.phase,
+        phaseName: PHASE_NAMES[point.phase] ?? 'UNKNOWN',
+        invocations: point.invocations,
+        blocked: point.blocked,
+        observed: point.observed,
+      });
+    }
+  }
+
+  return results.sort((a, b) => a.phase - b.phase);
 }
