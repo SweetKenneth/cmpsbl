@@ -1209,7 +1209,7 @@ export function configure(partial: Partial<ManaConfig>): ManaConfig {
 
   // Run structural integrity checks once
   if (!assertionsVerified) {
-    assertAllContractsExist();
+    assertContractMapComplete();
     assertAllPhasesMapped();
     assertionsVerified = true;
   }
@@ -1262,7 +1262,7 @@ export async function attach(
 ): Promise<ManaManifest> {
   // Detect recursive layering — symbol-based, not name heuristic
   for (const [, val] of Object.entries(hostModule)) {
-    if (typeof val === 'function' && (val as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
+    if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
       parentLayerHash = await computeHash(sourceForHash);
       layerDepth++;
       break;
@@ -1326,7 +1326,7 @@ export async function attach(
       const wrapper = getWrapper(cap.capability);
       wrapped = wrapper(wrapped as Function, functionName, point) as AnyFn;
       // Tag wrapper with symbol for accurate layer detection
-      (wrapped as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
+      (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
 
       emitTelemetry(cap.capability, functionName, 'invoked', {
         action: 'attached', layerDepth, position,
