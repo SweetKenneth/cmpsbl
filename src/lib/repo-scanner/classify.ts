@@ -243,10 +243,13 @@ export function classifyFile(path: string, size?: number, siblingPaths?: Set<str
 export function classifyRepoTree(
   files: { path: string; size?: number; sha?: string }[]
 ): ClassifiedFile[] {
+  // Build sibling path set for Python package detection
+  const allPaths = new Set(files.map(f => f.path));
+
   return files
     .filter(f => f.path) // Guard against empty paths
     .map(f => {
-      const classified = classifyFile(f.path, f.size);
+      const classified = classifyFile(f.path, f.size, allPaths);
       classified.sha = f.sha;
       return classified;
     });
@@ -317,9 +320,17 @@ export async function fetchGitHubFileContent(
   if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
 
   const data = await res.json();
-  // GitHub returns base64-encoded content — handle large files gracefully
+
+  if (!data.content) {
+    return `// [Empty or inaccessible file — sha: ${sha}]`;
+  }
+
+  // GitHub returns base64-encoded content — decode safely
   try {
-    return atob(data.content.replace(/\n/g, ''));
+    // Handle UTF-8 properly via TextDecoder
+    const raw = data.content.replace(/\n/g, '');
+    const bytes = Uint8Array.from(atob(raw), c => c.charCodeAt(0));
+    return new TextDecoder('utf-8', { fatal: false }).decode(bytes);
   } catch {
     // Binary or oversized file — return placeholder
     return `// [Binary or non-decodable file — ${data.size ?? 'unknown'} bytes]`;
