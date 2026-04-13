@@ -9911,6 +9911,95 @@ export type Database = {
         }
         Relationships: []
       }
+      lex_registry: {
+        Row: {
+          id: string
+          metadata: Json | null
+          package_hash: string
+          package_name: string
+          registered_at: string
+          registrant_email: string
+          registrant_org: string | null
+          registrant_user_id: string | null
+          status: Database["public"]["Enums"]["lex_registry_status"]
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          package_hash: string
+          package_name: string
+          registered_at?: string
+          registrant_email: string
+          registrant_org?: string | null
+          registrant_user_id?: string | null
+          status?: Database["public"]["Enums"]["lex_registry_status"]
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          package_hash?: string
+          package_name?: string
+          registered_at?: string
+          registrant_email?: string
+          registrant_org?: string | null
+          registrant_user_id?: string | null
+          status?: Database["public"]["Enums"]["lex_registry_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      lex_registry_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          event_type: string
+          hash_anchor: string
+          id: string
+          metadata: Json | null
+          new_status: Database["public"]["Enums"]["lex_registry_status"] | null
+          previous_status:
+            | Database["public"]["Enums"]["lex_registry_status"]
+            | null
+          registry_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          event_type: string
+          hash_anchor: string
+          id?: string
+          metadata?: Json | null
+          new_status?: Database["public"]["Enums"]["lex_registry_status"] | null
+          previous_status?:
+            | Database["public"]["Enums"]["lex_registry_status"]
+            | null
+          registry_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          event_type?: string
+          hash_anchor?: string
+          id?: string
+          metadata?: Json | null
+          new_status?: Database["public"]["Enums"]["lex_registry_status"] | null
+          previous_status?:
+            | Database["public"]["Enums"]["lex_registry_status"]
+            | null
+          registry_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lex_registry_events_registry_id_fkey"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "lex_registry"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       licensing_inquiries: {
         Row: {
           created_at: string | null
@@ -19280,6 +19369,7 @@ export type Database = {
         | "aborted"
         | "failed"
       evolution_risk_level: "low" | "medium" | "high"
+      lex_registry_status: "protected" | "licensed" | "unregistered"
       quarry_asset_type:
         | "capability"
         | "engine"
@@ -19449,6 +19539,7 @@ export const Constants = {
         "failed",
       ],
       evolution_risk_level: ["low", "medium", "high"],
+      lex_registry_status: ["protected", "licensed", "unregistered"],
       quarry_asset_type: [
         "capability",
         "engine",

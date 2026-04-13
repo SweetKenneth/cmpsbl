@@ -9,6 +9,8 @@
  */
 
 import { useState } from 'react';
+import { lookupRegistry, registerPackage, generatePackageHash } from '@/services/lex-registry';
+import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { PublicNav } from '@/components/PublicNav';
@@ -134,28 +136,71 @@ const SHIELD_FAQ = [
 
 export default function ShieldPage() {
   const [lookupHash, setLookupHash] = useState('');
-  const [lookupResult, setLookupResult] = useState<null | { status: string }>(null);
+  const [lookupResult, setLookupResult] = useState<null | { status: string; package_name?: string | null; registered_at?: string | null }>(null);
   const [isLooking, setIsLooking] = useState(false);
   const [registrationEmail, setRegistrationEmail] = useState('');
+  const [registrationPackage, setRegistrationPackage] = useState('');
   const [registrationType, setRegistrationType] = useState<'blacklist' | 'whitelist'>('blacklist');
+  const [isRegistering, setIsRegistering] = useState(false);
 
   const handleLookup = async () => {
     if (!lookupHash.trim()) return;
     setIsLooking(true);
-    await new Promise(r => setTimeout(r, 800));
-    setLookupResult({ status: 'unregistered' });
-    setIsLooking(false);
+    try {
+      const isHash = /^[a-f0-9]{64}$/i.test(lookupHash.trim());
+      const result = await lookupRegistry(
+        isHash ? { hash: lookupHash.trim().toLowerCase() } : { name: lookupHash.trim() }
+      );
+      setLookupResult(result);
+    } catch {
+      toast.error('Registry lookup failed. Please try again.');
+    } finally {
+      setIsLooking(false);
+    }
   };
 
-  const handleRegistration = () => {
-    if (!registrationEmail.trim()) return;
-    toast.success(
-      registrationType === 'blacklist'
-        ? 'Blacklist registration submitted — your software is now protected.'
-        : 'Whitelist application submitted — we\'ll review and confirm.',
-      { duration: 5000 }
-    );
-    setRegistrationEmail('');
+  const handleRegistration = async () => {
+    if (!registrationPackage.trim()) {
+      toast.error('Package name is required.');
+      return;
+    }
+
+    // Check auth
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('Please sign in to register packages.', {
+        action: { label: 'Sign In', onClick: () => window.location.href = '/auth' },
+      });
+      return;
+    }
+
+    setIsRegistering(true);
+    try {
+      const hash = await generatePackageHash(registrationPackage.trim());
+      await registerPackage({
+        package_name: registrationPackage.trim(),
+        package_hash: hash,
+        status: registrationType === 'blacklist' ? 'protected' : 'licensed',
+        metadata: { registrant_email: registrationEmail || user.email },
+      });
+      toast.success(
+        registrationType === 'blacklist'
+          ? 'Blacklist registration complete — your software is now protected on the Lex governance layer.'
+          : 'Whitelist application submitted — your package is licensed for governed attachment.',
+        { duration: 5000 }
+      );
+      setRegistrationEmail('');
+      setRegistrationPackage('');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Registration failed';
+      if (message.includes('already registered')) {
+        toast.error('This package is already registered on the Lex Registry.');
+      } else {
+        toast.error(message);
+      }
+    } finally {
+      setIsRegistering(false);
+    }
   };
 
   const copyInstall = () => {
@@ -536,19 +581,25 @@ export default function ShieldPage() {
                 </button>
               </div>
 
-              <div className="flex gap-2">
+              <div className="space-y-2 mb-2">
+                <input
+                  type="text"
+                  placeholder="Package name (e.g. lodash, express, my-app)"
+                  value={registrationPackage}
+                  onChange={(e) => setRegistrationPackage(e.target.value)}
+                  className="w-full bg-background border border-border/30 rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/40"
+                />
                 <input
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder="Contact email (optional if signed in)"
                   value={registrationEmail}
                   onChange={(e) => setRegistrationEmail(e.target.value)}
-                  className="flex-1 bg-background border border-border/30 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/40"
-                  onKeyDown={(e) => e.key === 'Enter' && handleRegistration()}
+                  className="w-full bg-background border border-border/30 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/40"
                 />
-                <Button onClick={handleRegistration} disabled={!registrationEmail.trim()} className="gap-1.5 font-bold">
-                  Register <ArrowRight className="w-3.5 h-3.5" />
-                </Button>
               </div>
+              <Button onClick={handleRegistration} disabled={!registrationPackage.trim() || isRegistering} className="w-full gap-1.5 font-bold">
+                {isRegistering ? 'Registering...' : 'Register'} <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
               <p className="text-[10px] text-muted-foreground/50 mt-3">
                 {registrationType === 'blacklist'
                   ? 'Blacklist is free forever. Your software will be flagged as protected on the Lex governance layer.'
@@ -578,8 +629,22 @@ export default function ShieldPage() {
                 <div className="mt-4 p-3 rounded-lg bg-muted/20 border border-border/20">
                   <p className="text-sm">
                     <span className="text-muted-foreground">Status: </span>
-                    <span className="font-bold text-foreground capitalize">{lookupResult.status}</span>
+                    <span className={`font-bold capitalize ${
+                      lookupResult.status === 'protected' ? 'text-destructive' :
+                      lookupResult.status === 'licensed' ? 'text-[hsl(var(--neon-cyan))]' :
+                      'text-muted-foreground'
+                    }`}>{lookupResult.status}</span>
                   </p>
+                  {lookupResult.package_name && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Package: <span className="font-mono text-foreground">{lookupResult.package_name}</span>
+                    </p>
+                  )}
+                  {lookupResult.registered_at && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Registered: {new Date(lookupResult.registered_at).toLocaleDateString()}
+                    </p>
+                  )}
                   {lookupResult.status === 'unregistered' && (
                     <p className="text-xs text-muted-foreground mt-1">
                       This package is <span className="text-destructive font-semibold">not protected</span>. 
