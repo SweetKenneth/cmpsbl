@@ -134,13 +134,31 @@ export default function RestorationShop() {
         });
         return;
       }
-      const classified = classifyRepoTree(tree);
-      const coreCount = classified.filter(f => f.category === 'core').length;
+      let classified = classifyRepoTree(tree);
+      let coreCount = classified.filter(f => f.category === 'core').length;
+
+      // Auto-promote: if no core files found, promote supporting source files to core
+      if (coreCount === 0) {
+        const supportingSourceCount = classified.filter(f => f.category === 'supporting').length;
+        if (supportingSourceCount > 0) {
+          classified = classified.map(f =>
+            f.category === 'supporting'
+              ? { ...f, category: 'core' as const, reason: 'Auto-promoted (no entry points detected)' }
+              : f
+          );
+          coreCount = classified.filter(f => f.category === 'core').length;
+          toast.info('Auto-classified source files as Core', {
+            description: `No standard entry points detected. ${coreCount} source files promoted — review and adjust below.`,
+            duration: 6000,
+          });
+        }
+      }
+
       setRepoFiles(classified);
       setRepoOwner(parsed.owner);
       setRepoName(parsed.repo);
       toast.success(`Mapped ${classified.length} files`, {
-        description: `${coreCount} core · ${classified.length - coreCount} supporting/skipped`,
+        description: `${coreCount} core · ${classified.filter(f => f.category === 'supporting').length} supporting · ${classified.filter(f => f.category === 'skipped').length} skipped`,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to fetch repository';
