@@ -566,9 +566,18 @@ function detectSourceFiles(dir: string): DetectedProject {
   const langMap: Record<string, string> = {
     '.ts': 'TypeScript', '.js': 'JavaScript', '.tsx': 'TypeScript', '.jsx': 'JavaScript',
     '.py': 'Python', '.rs': 'Rust', '.go': 'Go', '.rb': 'Ruby', '.php': 'PHP',
-    '.java': 'Java', '.kt': 'Kotlin', '.scala': 'Scala', '.cs': 'C#', '.swift': 'Swift',
-    '.dart': 'Dart', '.c': 'C', '.cpp': 'C++', '.sol': 'Solidity', '.zig': 'Zig',
-    '.hs': 'Haskell', '.ex': 'Elixir', '.erl': 'Erlang', '.lua': 'Lua',
+    '.java': 'Java', '.kt': 'Kotlin', '.scala': 'Scala', '.cs': 'C#', '.fs': 'F#',
+    '.swift': 'Swift', '.dart': 'Dart', '.c': 'C', '.cpp': 'C++', '.h': 'C',
+    '.hpp': 'C++', '.sol': 'Solidity', '.zig': 'Zig', '.hs': 'Haskell',
+    '.ex': 'Elixir', '.exs': 'Elixir', '.erl': 'Erlang', '.lua': 'Lua',
+    '.ml': 'OCaml', '.nim': 'Nim', '.cr': 'Crystal', '.d': 'D',
+    '.jl': 'Julia', '.r': 'R', '.pl': 'Perl', '.clj': 'Clojure',
+    '.f90': 'Fortran', '.f95': 'Fortran', '.f03': 'Fortran',
+    '.v': 'Verilog', '.sv': 'SystemVerilog', '.vhd': 'VHDL', '.vhdl': 'VHDL',
+    '.cu': 'CUDA', '.glsl': 'GLSL', '.hlsl': 'HLSL', '.wgsl': 'WGSL',
+    '.metal': 'Metal', '.cl': 'OpenCL',
+    '.sh': 'Bash', '.bash': 'Bash', '.ps1': 'PowerShell',
+    '.groovy': 'Groovy', '.vy': 'Vyper', '.move': 'Move', '.cairo': 'Cairo',
   };
   const language = langMap[topExt] ?? 'Source Code';
 
