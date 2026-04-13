@@ -188,8 +188,8 @@ export type ManaCapability =
   | 'forge_package_seal'
   | 'forge_integrity_check';
 
-/** Maps each capability to its deterministic execution phase */
-export const CAPABILITY_PHASE: Record<ManaCapability, WrapperPhase> = {
+/** Maps each capability to its deterministic execution phase — FROZEN at runtime */
+export const CAPABILITY_PHASE: Readonly<Record<ManaCapability, WrapperPhase>> = Object.freeze({
   // ── GATE phase (0) ──
   defense_gate: WrapperPhase.GATE,
   access_controller: WrapperPhase.GATE,
@@ -297,7 +297,7 @@ export const CAPABILITY_PHASE: Record<ManaCapability, WrapperPhase> = {
   oracle_predictor: WrapperPhase.ANALYZE,
   oracle_anomaly_alert: WrapperPhase.ANALYZE,
   oracle_causal_trace: WrapperPhase.ANALYZE,
-};
+} as Record<ManaCapability, WrapperPhase>);
 
 /** Blocking semantics for deny verdicts */
 export type DenySemantic = 'throw' | 'return_undefined' | 'return_message' | 'swallow';
