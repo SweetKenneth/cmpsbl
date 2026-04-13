@@ -1037,6 +1037,9 @@ serve(async (req) => {
           case "ascension":
             return await handleAscension(supabase, action, params, corsHeaders);
 
+          case "session":
+            return await handleSession(supabase, action, params, corsHeaders);
+
           // ═══════════════════════════════════════════════════════════
           // UNIVERSAL RESOLVER — Real DB-backed handlers for ALL modules
           // Every module queries live data instead of returning stubs
