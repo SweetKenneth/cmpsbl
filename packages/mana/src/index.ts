@@ -11,6 +11,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as readline from 'readline';
 import { execSync } from 'child_process';
+import * as crypto from 'crypto';
 
 // ═══════════════════════════════════════════════════════════════
 // ANSI helpers (zero-dependency)
@@ -88,7 +89,6 @@ interface EnvironmentIdentity {
 }
 
 function detectIdentity(): EnvironmentIdentity {
-  /* 1. Try git config */
   try {
     const gitName = execSync('git config user.name', { encoding: 'utf-8', timeout: 3000 }).trim();
     const gitEmail = execSync('git config user.email', { encoding: 'utf-8', timeout: 3000 }).trim();
@@ -97,18 +97,15 @@ function detectIdentity(): EnvironmentIdentity {
     }
   } catch { /* git not installed or not in a repo */ }
 
-  /* 2. Try environment variables */
   const envName = process.env.USER_DISPLAY_NAME || process.env.GIT_AUTHOR_NAME || process.env.GIT_COMMITTER_NAME;
   const envEmail = process.env.GIT_AUTHOR_EMAIL || process.env.GIT_COMMITTER_EMAIL;
   if (envName || envEmail) {
     return { name: envName || null, email: envEmail || null, source: 'env' };
   }
 
-  /* 3. Try OS username */
   try {
     const info = os.userInfo();
     if (info.username && info.username !== 'root') {
-      /* Capitalize first letter of each word */
       const formatted = info.username
         .replace(/[._-]/g, ' ')
         .replace(/\b\w/g, ch => ch.toUpperCase());
@@ -243,7 +240,6 @@ async function inlineRegister(identity: EnvironmentIdentity): Promise<string | n
   say('No passwords. No accounts. Just your email → instant API key.');
   blank();
 
-  /* Pre-fill email from environment if available */
   let email: string;
   if (identity.email) {
     const confirm = await prompt(`Email ${c.muted(`(${identity.email})`)} [Enter to confirm]: `);
@@ -257,7 +253,6 @@ async function inlineRegister(identity: EnvironmentIdentity): Promise<string | n
     return null;
   }
 
-  /* Pre-fill name from environment */
   let name: string;
   if (identity.name) {
     const confirm = await prompt(`Name ${c.muted(`(${identity.name})`)} [Enter to confirm]: `);
@@ -295,7 +290,6 @@ async function inlineRegister(identity: EnvironmentIdentity): Promise<string | n
       return null;
     }
 
-    /* Extract the developer name the API actually returned */
     const devRecord = typeof data.developer === 'object' && data.developer !== null
       ? data.developer as Record<string, unknown>
       : undefined;
@@ -309,8 +303,6 @@ async function inlineRegister(identity: EnvironmentIdentity): Promise<string | n
     ) as string;
 
     const apiKey = data.api_key as string;
-
-    /* Save with the name the API confirmed */
     saveCredentials(apiKey, returnedName);
 
     blank();
@@ -337,19 +329,16 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
   if (existing) {
     const validation = await validateApiKey(existing);
     if (validation.valid) {
-      /* Update stored display name if API returned one */
       if (validation.displayName) {
         saveCredentials(existing, validation.displayName);
       }
       return existing;
     }
-    /* Invalid — clear and re-auth */
     try { fs.unlinkSync(CREDS_FILE); } catch { /* already gone */ }
     say(c.amber('Saved API key is no longer valid. Let\'s get you a new one.'));
     blank();
   }
 
-  /* No key — show auth options */
   blank();
   box([
     '◈  WELCOME TO MANA',
@@ -378,7 +367,6 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
     blank();
   }
 
-  /* Manual paste (choice 2 or fallback) */
   const key = await prompt('Paste your API key: ');
 
   if (!key || key.length < 10) {
@@ -480,6 +468,7 @@ interface DetectedProject {
   language: string;
   framework: string | null;
   entryPoint: string | null;
+  projectName: string;
 }
 
 function detectSourceFiles(dir: string): DetectedProject {
@@ -508,7 +497,6 @@ function detectSourceFiles(dir: string): DetectedProject {
 
   walk(dir, 0);
 
-  /* Determine primary language */
   const sorted = Object.entries(extCounts).sort((a, b) => b[1] - a[1]);
   const topExt = sorted[0]?.[0] ?? '';
   const langMap: Record<string, string> = {
@@ -520,7 +508,6 @@ function detectSourceFiles(dir: string): DetectedProject {
   };
   const language = langMap[topExt] ?? 'Source Code';
 
-  /* Detect framework hints */
   let framework: string | null = null;
   const hasFile = (name: string) => fs.existsSync(path.join(dir, name));
   if (hasFile('next.config.js') || hasFile('next.config.ts') || hasFile('next.config.mjs')) framework = 'Next.js';
@@ -534,7 +521,6 @@ function detectSourceFiles(dir: string): DetectedProject {
   else if (hasFile('Package.swift')) framework = 'Swift Package';
   else if (hasFile('docker-compose.yml') || hasFile('Dockerfile')) framework = 'Docker';
 
-  /* Find entry point */
   const entryHints = ['index.ts', 'index.js', 'main.ts', 'main.js', 'app.ts', 'app.js', 'server.ts', 'server.js', 'main.py', 'app.py', 'main.rs', 'main.go'];
   let entryPoint: string | null = null;
   for (const hint of entryHints) {
@@ -542,11 +528,113 @@ function detectSourceFiles(dir: string): DetectedProject {
     if (match) { entryPoint = match; break; }
   }
 
-  return { files, language, framework, entryPoint };
+  /* Derive a project name from package.json or directory name */
+  let projectName = path.basename(dir);
+  try {
+    const pkgPath = path.join(dir, 'package.json');
+    if (fs.existsSync(pkgPath)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8')) as Record<string, unknown>;
+      if (typeof pkg.name === 'string' && pkg.name.length > 0) {
+        projectName = pkg.name.replace(/^@[^/]+\//, ''); // strip npm scope
+      }
+    }
+  } catch { /* use directory name */ }
+
+  try {
+    const cargoPath = path.join(dir, 'Cargo.toml');
+    if (!projectName && fs.existsSync(cargoPath)) {
+      const cargoRaw = fs.readFileSync(cargoPath, 'utf-8');
+      const nameMatch = cargoRaw.match(/name\s*=\s*"([^"]+)"/);
+      if (nameMatch) projectName = nameMatch[1];
+    }
+  } catch { /* skip */ }
+
+  return { files, language, framework, entryPoint, projectName };
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Config persistence (.mana/)
+// Signal File Export  (mana.signal.json)
+// ═══════════════════════════════════════════════════════════════
+
+const SIGNAL_FILE = 'mana.signal.json';
+
+interface ManaSignal {
+  /** Branded header */
+  $schema: string;
+  signal: string;
+  version: string;
+  /** Project identification */
+  project: {
+    name: string;
+    language: string;
+    framework: string | null;
+    entryPoint: string | null;
+    fileCount: number;
+  };
+  /** Capability configuration */
+  layer: {
+    level: string;
+    groups: string[];
+    activatedAt: string;
+  };
+  /** Operator */
+  operator: {
+    name: string;
+    source: string;
+  };
+  /** Integrity seal */
+  seal: {
+    fingerprint: string;
+    generatedAt: string;
+  };
+}
+
+function generateFingerprint(projectName: string, level: string, groups: string[]): string {
+  const payload = `${projectName}:${level}:${groups.sort().join(',')}:${Date.now()}`;
+  return crypto.createHash('sha256').update(payload).digest('hex').slice(0, 16);
+}
+
+function exportSignalFile(
+  dir: string,
+  project: DetectedProject,
+  level: CapabilityLevel,
+  groups: string[],
+  operatorName: string,
+): string {
+  const now = new Date().toISOString();
+  const signal: ManaSignal = {
+    $schema: 'https://cmpsbl.com/schemas/mana-signal-v1.json',
+    signal: 'MANA_LAYER_ACTIVE',
+    version: '1.0.0',
+    project: {
+      name: project.projectName,
+      language: project.language,
+      framework: project.framework,
+      entryPoint: project.entryPoint,
+      fileCount: project.files.length,
+    },
+    layer: {
+      level: LEVELS[level].name,
+      groups,
+      activatedAt: now,
+    },
+    operator: {
+      name: operatorName,
+      source: 'mana-cli',
+    },
+    seal: {
+      fingerprint: generateFingerprint(project.projectName, level, groups),
+      generatedAt: now,
+    },
+  };
+
+  const outPath = path.join(dir, SIGNAL_FILE);
+  fs.writeFileSync(outPath, JSON.stringify(signal, null, 2) + '\n');
+  return outPath;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Internal config persistence (.mana/)
 // ═══════════════════════════════════════════════════════════════
 
 interface ManaConfig {
@@ -588,15 +676,17 @@ async function firstContactCeremony(project: DetectedProject, operatorName: stri
   say(c.muted('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌'));
   blank();
 
-  /* Phase 1: Recognition */
   say(`  ${c.cyan('◈')} Operator identified: ${c.bold(operatorName)}`);
   await sleep(400);
 
-  say(`  ${c.cyan('◈')} Project language: ${c.bold(project.language)}`);
+  say(`  ${c.cyan('◈')} Project: ${c.bold(project.projectName)}`);
+  await sleep(300);
+
+  say(`  ${c.cyan('◈')} Language: ${c.bold(project.language)}`);
   await sleep(300);
 
   if (project.framework) {
-    say(`  ${c.cyan('◈')} Framework detected: ${c.bold(project.framework)}`);
+    say(`  ${c.cyan('◈')} Framework: ${c.bold(project.framework)}`);
     await sleep(300);
   }
 
@@ -611,7 +701,6 @@ async function firstContactCeremony(project: DetectedProject, operatorName: stri
   blank();
   await sleep(500);
 
-  /* Phase 2: Layer Analysis */
   say(c.muted('  ── Analyzing code boundaries ──'));
   blank();
   await sleep(600);
@@ -633,7 +722,6 @@ async function firstContactCeremony(project: DetectedProject, operatorName: stri
   blank();
   await sleep(400);
 
-  /* Phase 3: Detection Confirmation */
   box([
     '',
     '  Ascension has detected that your code is ready',
@@ -719,32 +807,44 @@ async function screenAdvancedConfig(): Promise<string[]> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Activation Ceremony
+// Activation Ceremony + Signal Export
 // ═══════════════════════════════════════════════════════════════
 
-async function activationCeremony(level: CapabilityLevel, groups: string[], project: DetectedProject, operatorName: string): Promise<void> {
-  if (!isTTY()) return;
+async function activationCeremony(
+  level: CapabilityLevel,
+  groups: string[],
+  project: DetectedProject,
+  operatorName: string,
+): Promise<void> {
+  const cwd = process.cwd();
 
-  blank();
-  say(c.muted('  ── Attaching Layer 2 ──'));
-  blank();
-  await sleep(500);
+  if (isTTY()) {
+    blank();
+    say(c.muted('  ── Attaching Layer 2 ──'));
+    blank();
+    await sleep(500);
 
-  const steps = [
-    { icon: '◈', text: 'Binding function boundaries...' },
-    { icon: '◈', text: `Activating ${groups.length} capability group${groups.length === 1 ? '' : 's'}...` },
-    { icon: '◈', text: 'Establishing behavioral contracts...' },
-    { icon: '◈', text: 'Sealing governance layer...' },
-    { icon: '◈', text: 'Layer 2 operational.' },
-  ];
+    const steps = [
+      { icon: '◈', text: 'Binding function boundaries...' },
+      { icon: '◈', text: `Activating ${groups.length} capability group${groups.length === 1 ? '' : 's'}...` },
+      { icon: '◈', text: 'Establishing behavioral contracts...' },
+      { icon: '◈', text: 'Sealing governance layer...' },
+      { icon: '◈', text: 'Generating signal file...' },
+      { icon: '◈', text: 'Layer 2 operational.' },
+    ];
 
-  for (const step of steps) {
-    say(`  ${c.cyan(step.icon)} ${step.text}`);
-    await sleep(350);
+    for (const step of steps) {
+      say(`  ${c.cyan(step.icon)} ${step.text}`);
+      await sleep(350);
+    }
+
+    blank();
+    await sleep(400);
   }
 
-  blank();
-  await sleep(400);
+  /* Export the signal file */
+  const signalPath = exportSignalFile(cwd, project, level, groups, operatorName);
+  const relPath = path.relative(cwd, signalPath);
 
   /* Final confirmation */
   box([
@@ -754,18 +854,20 @@ async function activationCeremony(level: CapabilityLevel, groups: string[], proj
     '  Your code is running with a secondary layer.',
     '  Original source code remains unchanged.',
     '',
-    `  ${c.muted(`Operator: ${operatorName}`)}`,
-    `  ${c.muted(`Level:    ${LEVELS[level].name}`)}`,
-    `  ${c.muted(`Groups:   ${groups.join(', ') || 'none'}`)}`,
-    `  ${c.muted(`Files:    ${project.files.length}`)}`,
-    `  ${c.muted(`Language: ${project.language}`)}`,
+    `  ${c.muted(`Operator:  ${operatorName}`)}`,
+    `  ${c.muted(`Level:     ${LEVELS[level].name}`)}`,
+    `  ${c.muted(`Groups:    ${groups.join(', ') || 'none'}`)}`,
+    `  ${c.muted(`Files:     ${project.files.length}`)}`,
+    `  ${c.muted(`Language:  ${project.language}`)}`,
+    '',
+    `  ${c.green('→')} Signal exported: ${c.bold(relPath)}`,
     '',
   ], 'MANA — ACTIVE');
 
   blank();
-  say(`  ${c.muted('To reconfigure at any time:')} ${c.cyan('@cmpsbl/config')}`);
-  say(`  ${c.muted('To check status:')}            ${c.cyan('mana status')}`);
-  say(`  ${c.muted('To detach:')}                   ${c.cyan('mana detach')}`);
+  say(`  ${c.muted('To reconfigure:')}  ${c.cyan('npx mana config')}`);
+  say(`  ${c.muted('To check status:')} ${c.cyan('npx mana status')}`);
+  say(`  ${c.muted('To detach:')}        ${c.cyan('npx mana detach')}`);
   blank();
 
   say(c.dim('  ── Your code. Enhanced. Protected. Unchanged. ──'));
@@ -789,20 +891,15 @@ async function commandAttach(): Promise<void> {
     process.exit(1);
   }
 
-  /* Gate: require API key */
   const apiKey = await requireApiKey(identity);
 
-  /* Resolve operator name */
   const storedName = getStoredDisplayName();
   const operatorName = storedName || identity.name || 'Operator';
 
-  /* First Contact Ceremony */
   await firstContactCeremony(project, operatorName);
 
-  /* Level Selection */
   const level = await screenLevelSelection();
 
-  /* Advanced config if selected */
   let groups: string[];
   if (level === 'advanced') {
     groups = await screenAdvancedConfig();
@@ -810,7 +907,7 @@ async function commandAttach(): Promise<void> {
     groups = [...LEVELS[level].groups];
   }
 
-  /* Save config */
+  /* Save internal config */
   const config: ManaConfig = {
     level,
     groups,
@@ -823,8 +920,11 @@ async function commandAttach(): Promise<void> {
   };
   saveConfig(config);
 
-  /* Activation Ceremony */
+  /* Activation + signal export */
   await activationCeremony(level, groups, project, operatorName);
+
+  /* Suppress apiKey unused lint — it's stored via requireApiKey for future commands */
+  void apiKey;
 }
 
 async function commandConfig(): Promise<void> {
@@ -856,11 +956,15 @@ async function commandConfig(): Promise<void> {
 
 async function commandStatus(): Promise<void> {
   const config = loadConfig();
+  const cwd = process.cwd();
 
   if (!config) {
     say(c.muted('No active Mana layer. Run `npx mana attach` to begin.'));
     return;
   }
+
+  /* Check signal file */
+  const signalExists = fs.existsSync(path.join(cwd, SIGNAL_FILE));
 
   blank();
   box([
@@ -873,12 +977,16 @@ async function commandStatus(): Promise<void> {
     `Language:  ${config.language ?? 'Unknown'}`,
     `Framework: ${config.framework ?? 'None'}`,
     `Since:     ${config.attachedAt}`,
+    '',
+    `Signal:    ${signalExists ? c.green(SIGNAL_FILE) : c.amber('not found — run `mana attach`')}`,
   ], 'MANA STATUS');
   blank();
 }
 
 async function commandDetach(): Promise<void> {
-  if (!fs.existsSync(CONFIG_FILE)) {
+  const cwd = process.cwd();
+
+  if (!fs.existsSync(CONFIG_FILE) && !fs.existsSync(path.join(cwd, SIGNAL_FILE))) {
     say(c.muted('No active Mana layer to detach.'));
     return;
   }
@@ -889,13 +997,42 @@ async function commandDetach(): Promise<void> {
     return;
   }
 
+  /* Remove internal config */
   try {
     fs.unlinkSync(CONFIG_FILE);
     try { fs.rmdirSync(CONFIG_DIR); } catch { /* not empty */ }
   } catch { /* already gone */ }
 
+  /* Remove signal file */
+  try {
+    const signalPath = path.join(cwd, SIGNAL_FILE);
+    if (fs.existsSync(signalPath)) fs.unlinkSync(signalPath);
+  } catch { /* already gone */ }
+
   blank();
-  say(`${c.green('✔')} Layer detached. Original code was never modified.`);
+  say(`${c.green('✔')} Layer detached. Signal file removed.`);
+  say(`${c.green('✔')} Original code was never modified.`);
+  blank();
+}
+
+async function commandExport(): Promise<void> {
+  const cwd = process.cwd();
+  const config = loadConfig();
+
+  if (!config) {
+    say(c.amber('No active configuration. Run `npx mana attach` first.'));
+    return;
+  }
+
+  const project = detectSourceFiles(cwd);
+  const operatorName = config.operator ?? 'Operator';
+
+  const signalPath = exportSignalFile(cwd, project, config.level, config.groups, operatorName);
+  const relPath = path.relative(cwd, signalPath);
+
+  blank();
+  say(`${c.green('✔')} Signal exported: ${c.bold(relPath)}`);
+  say(c.muted(`   ${config.groups.length} groups · ${LEVELS[config.level].name} level`));
   blank();
 }
 
@@ -912,6 +1049,7 @@ function commandHelp(): void {
   say(`  ${c.cyan('mana attach')}    Detect files and activate Layer 2`);
   say(`  ${c.cyan('mana config')}    View or change activation level`);
   say(`  ${c.cyan('mana status')}    Show current layer status`);
+  say(`  ${c.cyan('mana export')}    Re-export the signal file`);
   say(`  ${c.cyan('mana detach')}    Remove the secondary layer`);
   say(`  ${c.cyan('mana help')}      Show this help`);
   blank();
@@ -933,6 +1071,8 @@ export async function run(args: string[]): Promise<void> {
       return commandConfig();
     case 'status':
       return commandStatus();
+    case 'export':
+      return commandExport();
     case 'detach':
       return commandDetach();
     case 'help':
