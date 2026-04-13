@@ -27,7 +27,10 @@ import type {
   AnyFn,
   CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase } from './types';
+import {
+  CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase,
+  MANA_LAYER_TAG, assertContractMapComplete, normalizePriority,
+} from './types';
 
 // ═══════════════════════════════════════════════════════════════
 // Primitives — Type-Safe Helpers (mirrored from engine.ts)
@@ -82,19 +85,10 @@ function getContract(capability: ManaCapability): CapabilityContract | undefined
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Assertions — Structural Integrity Checks
+// Assertions — delegates to shared assertContractMapComplete from types.ts
 // ═══════════════════════════════════════════════════════════════
 
-function assertAllContractsExist(): void {
-  const mapped = new Set(CAPABILITY_CONTRACTS.map(c => c.capability));
-  const allCaps = Object.keys(CAPABILITY_PHASE) as ManaCapability[];
-  for (const cap of allCaps) {
-    if (!mapped.has(cap)) {
-      throw new Error(`[MANA/SESSION] Missing contract for capability: ${cap}`);
-    }
-  }
-}
-
+/** Verify CAPABILITY_PHASE covers all capabilities from contracts */
 function assertAllPhasesMapped(): void {
   for (const contract of CAPABILITY_CONTRACTS) {
     if (!(contract.capability in CAPABILITY_PHASE)) {
@@ -124,6 +118,7 @@ function lexRegisterRule(
   reason: string,
   priority = 100,
 ): LexRule {
+  const safePriority = normalizePriority(priority);
   lex.idCounter++;
   const rule: LexRule = {
     id: `lex-${Date.now().toString(36)}-${lex.idCounter.toString(36)}`,
@@ -132,7 +127,7 @@ function lexRegisterRule(
     verdict,
     reason,
     createdAt: Date.now(),
-    priority,
+    priority: safePriority,
   };
   lex.rules.set(rule.id, rule);
   return rule;
@@ -290,10 +285,11 @@ export function createSession(sessionId?: string): ManaSession {
     if (!config.telemetry) return;
 
     const point = attachmentPoints.get(`${functionName}:${capability}`);
+    // Defaults BEFORE spread — guarantees stable telemetry shape
     const enriched: Record<string, unknown> = {
-      ...metadata,
-      phase: point?.phase ?? CAPABILITY_PHASE[capability],
+      phase: point?.phase ?? CAPABILITY_PHASE[capability] ?? -1,
       position: point?.position ?? -1,
+      ...metadata,
     };
 
     telemetry.push({ timestamp: Date.now(), capability, functionName, action, evalContext, metadata: enriched });
@@ -466,7 +462,7 @@ export function createSession(sessionId?: string): ManaSession {
     configure(partial) {
       config = { ...config, ...partial };
       if (!assertionsVerified) {
-        assertAllContractsExist();
+        assertContractMapComplete();
         assertAllPhasesMapped();
         assertionsVerified = true;
       }
@@ -495,9 +491,9 @@ export function createSession(sessionId?: string): ManaSession {
     },
 
     async attach(hostModule, capabilities, sourceForHash) {
-      // Detect recursive layering
+      // Detect recursive layering — symbol-based, not name heuristic
       for (const [, val] of Object.entries(hostModule)) {
-        if (typeof val === 'function' && val.name?.startsWith('mana')) {
+        if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
           parentLayerHash = await computeHash(sourceForHash);
           layerDepth++;
           break;
@@ -557,6 +553,8 @@ export function createSession(sessionId?: string): ManaSession {
 
           // Compose — wrap the previous wrapped result, not the original
           wrapped = wrapFunction(wrapped, cap.functionName, cap.capability, point);
+          // Tag wrapper with symbol for accurate layer detection
+          (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
           emitTelemetry(cap.capability, cap.functionName, 'invoked', {
             action: 'attached', layerDepth, position: point.position,
             phase: point.phase,

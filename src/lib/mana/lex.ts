@@ -9,6 +9,7 @@
  */
 
 import type { LexRule, LexVerdict, LexEvalContext, ManaCapability, ManaCapabilityOrWildcard } from './types';
+import { normalizePriority } from './types';
 
 /** Internal rule store */
 const rules: Map<string, LexRule> = new Map();
@@ -33,6 +34,7 @@ export function registerRule(
   reason: string,
   priority = 100
 ): LexRule {
+  const safePriority = normalizePriority(priority);
   const rule: LexRule = {
     id: generateRuleId(),
     capability,
@@ -40,7 +42,7 @@ export function registerRule(
     verdict,
     reason,
     createdAt: Date.now(),
-    priority,
+    priority: safePriority,
   };
   rules.set(rule.id, rule);
   return rule;

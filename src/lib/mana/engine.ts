@@ -24,7 +24,10 @@ import type {
   AnyFn,
   CapabilityContract,
 } from './types';
-import { CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase } from './types';
+import {
+  CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase,
+  MANA_LAYER_TAG, assertContractMapComplete, normalizePriority,
+} from './types';
 import { evaluate, getRules, resetLex } from './lex';
 
 // ═══════════════════════════════════════════════════════════════
@@ -119,19 +122,8 @@ function getContract(capability: ManaCapability): CapabilityContract | undefined
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Assertions — Structural Integrity Checks
+// Assertions — Structural Integrity Checks (delegated to types.ts)
 // ═══════════════════════════════════════════════════════════════
-
-/** Verify every capability in CAPABILITY_PHASE has a corresponding contract */
-function assertAllContractsExist(): void {
-  const mapped = new Set(CAPABILITY_CONTRACTS.map(c => c.capability));
-  const allCaps = Object.keys(CAPABILITY_PHASE) as ManaCapability[];
-  for (const cap of allCaps) {
-    if (!mapped.has(cap)) {
-      throw new Error(`[MANA] Missing contract for capability: ${cap}`);
-    }
-  }
-}
 
 /** Verify CAPABILITY_PHASE covers all capabilities from contracts */
 function assertAllPhasesMapped(): void {
@@ -176,12 +168,12 @@ function emitTelemetry(
 ): void {
   if (!config.telemetry) return;
 
-  // Enrich metadata with structural context from the attachment point
+  // Enrich metadata with structural context — defaults BEFORE spread to guarantee shape
   const point = attachmentPoints.get(`${functionName}:${capability}`);
   const enriched: Record<string, unknown> = {
-    ...metadata,
-    phase: point?.phase ?? CAPABILITY_PHASE[capability],
+    phase: point?.phase ?? CAPABILITY_PHASE[capability] ?? -1,
     position: point?.position ?? -1,
+    ...metadata,
   };
 
   telemetry.push({
@@ -1217,7 +1209,7 @@ export function configure(partial: Partial<ManaConfig>): ManaConfig {
 
   // Run structural integrity checks once
   if (!assertionsVerified) {
-    assertAllContractsExist();
+    assertContractMapComplete();
     assertAllPhasesMapped();
     assertionsVerified = true;
   }
@@ -1268,9 +1260,9 @@ export async function attach(
   capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }>,
   sourceForHash: string,
 ): Promise<ManaManifest> {
-  // Detect recursive layering — if host already has Mana wrappers
+  // Detect recursive layering — symbol-based, not name heuristic
   for (const [, val] of Object.entries(hostModule)) {
-    if (typeof val === 'function' && val.name?.startsWith('mana')) {
+    if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
       parentLayerHash = await computeHash(sourceForHash);
       layerDepth++;
       break;
@@ -1333,6 +1325,8 @@ export async function attach(
       // Wrap the PREVIOUS result — composing, not overwriting
       const wrapper = getWrapper(cap.capability);
       wrapped = wrapper(wrapped as Function, functionName, point) as AnyFn;
+      // Tag wrapper with symbol for accurate layer detection
+      (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
 
       emitTelemetry(cap.capability, functionName, 'invoked', {
         action: 'attached', layerDepth, position,
