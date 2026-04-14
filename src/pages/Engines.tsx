@@ -4,7 +4,7 @@
  * Inspired by Blog page's category layout.
  */
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { SubstrateClassBadge } from "@/components/ui/substrate-class-badge";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
