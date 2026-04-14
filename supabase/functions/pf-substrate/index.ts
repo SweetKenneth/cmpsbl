@@ -2755,20 +2755,20 @@ async function executeGovernedWrite(
       break;
     }
 
-    // ═══ MEMORY — Store, update, purge memories ═══
+    // ═══ MEMORY — Store, update, purge memories (governed write — uses resolvedUserId from universal handler) ═══
     case 'memory': {
       if (action === 'store' || action === 'create' || action === 'ingest') {
-        const tier = params.tier || 'hot';
+        const tier = (params.tier || 'hot').toLowerCase();
         const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
         const { data, error } = await supabase.from(tableName).insert({
           content: params.content || '',
-          context: params.context || module,
-          importance: params.importance || 0.5,
-          user_id: params.user_id || params.actor_id,
+          context: params.context || params.source || module,
+          importance: params.importance || 0.7,
+          user_id: params.user_id || params.actor_id || null,
           metadata: params.metadata || {},
         }).select('id').single();
         if (error) throw new Error(error.message);
-        return { success: true, message: `Memory stored in ${tier} tier.`, data: { memory: data, tier }, entity_id: data.id, affected: 1 };
+        return { success: true, message: `Memory stored in ${tier} tier.`, data: { memory: data, tier: tier.toUpperCase() }, entity_id: data.id, affected: 1 };
       }
       if (action === 'update' || action === 'patch') {
         const updates: Record<string, unknown> = {};
@@ -2781,18 +2781,17 @@ async function executeGovernedWrite(
         if (error) throw new Error(error.message);
         return { success: true, message: `Memory updated in ${tier} tier.`, data: updates, entity_id: params.id, affected: 1 };
       }
-      if (action === 'delete' || action === 'purge') {
-        const tier = params.tier || 'hot';
-        const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
-        if (params.id) {
-          const { error } = await supabase.from(tableName).delete().eq('id', params.id);
-          if (error) throw new Error(error.message);
-          return { success: true, message: `Memory purged from ${tier}.`, data: {}, entity_id: params.id, affected: 1 };
+      if (action === 'prune' || action === 'delete' || action === 'purge') {
+        const chainId = params.chain_id || params.id;
+        if (chainId) {
+          for (const t of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
+            await supabase.from(t).delete().eq('id', chainId);
+          }
+          return { success: true, message: `Chain ${chainId} pruned.`, data: {}, entity_id: chainId, affected: 1 };
         }
-        // Purge old memories (>30 days) if no specific ID
         const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
-        const { count } = await supabase.from(tableName).delete().lt('created_at', cutoff).select('id', { count: 'exact', head: true });
-        return { success: true, message: `Purged stale memories from ${tier} (older than 30d).`, data: { cutoff }, affected: count || 0 };
+        const { count } = await supabase.from('brain_memory_hot').delete().lt('created_at', cutoff).select('id', { count: 'exact', head: true });
+        return { success: true, message: `Purged stale memories older than 30d.`, data: { cutoff }, affected: count || 0 };
       }
       break;
     }
