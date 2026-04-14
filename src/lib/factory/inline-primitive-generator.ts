@@ -1244,7 +1244,9 @@ function generateCSharp(name: string, spec: PrimitiveSpec): string {
   const fieldDecls = fields.map(f => `    private static ${f.ty} ${f.k} = ${f.def};`).join('\n');
   const methods = spec.methods.map(m => {
     const csName = m.name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-    return `    /// <summary>${m.description}</summary>\n    public static ${name} ${csName}() => new ${name}();`;
+    const fieldsForBody = fields.map(f => ({ k: f.k, v: spec.stateFields.find(sf => sf.startsWith(f.k.charAt(0).toLowerCase() + f.k.slice(1)))?.split(':')[1] ?? '', def: f.def }));
+    const body = generateJvmMethodBody(name, m, csName, fieldsForBody, 'csharp');
+    return `    /// <summary>${m.description}</summary>\n${body}`;
   }).join('\n\n');
   return `using System;
 using System.Collections.Generic;
