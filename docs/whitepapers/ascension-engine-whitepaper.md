@@ -829,7 +829,7 @@ The complete Ascension lifecycle:
 
 ## 17. Commercial Context
 
-Ascension is included in the Architect subscription tier ($249/month) and above. It is not priced per-export — subscribers receive unlimited access to the transformation pipeline. Near-zero marginal cost per export makes every export a potential revenue event for the developer: a standalone, sellable software product produced by a subscription.
+Ascension is included in the Architect subscription tier ($79/month) and above. It is not priced per-export — subscribers receive unlimited access to the transformation pipeline. Near-zero marginal cost per export makes every export a potential revenue event for the developer: a standalone, sellable software product produced by a subscription.
 
 ---
 

@@ -267,7 +267,7 @@ export default function AgentForge() {
               <ArrowRight className="w-5 h-5" />
             </Button>
             <p className="mt-3 text-[11px] text-muted-foreground">
-              Discovery is free on Builder tier. Export requires Architect ($249).
+              Discovery is free on Builder tier. Export requires Architect ($79).
             </p>
           </div>
         </div>

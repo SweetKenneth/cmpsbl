@@ -99,7 +99,7 @@ export CMPSBL_API_KEY=your_key_here
 | Builder (Free) | 10 | 100 |
 | Builder (Free) | 30 | 1,000 |
 | Creator ($49) | 60 | 5,000 |
-| Architect ($249) | 120 | 20,000 |
+| Architect ($79) | 120 | 20,000 |
 | Enterprise | Custom | Custom |
 
 ## API Key Scopes

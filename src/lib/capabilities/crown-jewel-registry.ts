@@ -10,7 +10,7 @@
  * 
  * B. EXPERIENCE CROWN JEWELS — Released as SEALED (black-boxed) artifacts.
  *    Execution-only, no source visibility, no config exposure, no export.
- *    Tiered: Builder (free, 8 CJs), Creator ($29, +20 CJs), Studio ($49, +40 CJs), Architect ($79, all Experience CJs)
+ *    Tiered: Builder (free, 8 CJs), Studio ($29, +20 CJs), Creator ($49, +40 CJs), Architect ($79, all Experience CJs)
  */
 
 export type CrownJewelClassification = 'architecture' | 'experience';

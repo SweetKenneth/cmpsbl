@@ -176,10 +176,10 @@ A finished CMPSBL product is a **cognitive artifact** — a loadout that has bee
 
 | Product | Description | Estimated Tier |
 |---------|-------------|----------------|
-| **Cognitive Threat Profiler** | Real-time threat analysis using DEFENSE + ORACLE + SIGNAL | Architect ($249) |
+| **Cognitive Threat Profiler** | Real-time threat analysis using DEFENSE + ORACLE + SIGNAL | Architect ($79) |
 | **Contract Risk Engine** | Automated contract analysis with TREATY + RECALL + BEACON | Enterprise |
 | **Drift Detection Suite** | Production monitoring via SHADOW + WATCH + FAILSAFE | Creator ($79) |
-| **Memory-Augmented Agent** | Persistent cognitive agent using BRAIN + MEMORY + CORTEX | Architect ($249) |
+| **Memory-Augmented Agent** | Persistent cognitive agent using BRAIN + MEMORY + CORTEX | Architect ($79) |
 | **Compliance Validator** | Governance enforcement with SOVEREIGN + TREATY + DEFENSE | Enterprise |
 
 ---
