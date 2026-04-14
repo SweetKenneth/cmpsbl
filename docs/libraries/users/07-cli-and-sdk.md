@@ -124,7 +124,7 @@ Enterprise ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 | Tier | Terminal Commands | CLI Commands | Key Capabilities |
 |------|-------------------|-------------|-----------------|
 | **Builder** (Free) | ~45 (read-only) | 12 | Dashboard view, status, basic recall |
-| **Studio** ($29) | ~120 | 24 | Terminal access, SDK templates, crystallization |
+| **Studio** ($29) | ~60 | 12 | Terminal access, SDK templates, crystallization |
 | **Creator** ($49) | ~280 | 38 | Ascension, agent deployment, DECODE Agent channel |
 | **Architect** ($79) | ~450 | 52 | EVOLUTION Layer proposals, SHADOW Layer runs, mesh telemetry |
 | **Enterprise** (Custom) | ~550 | 60 | Federated substrates, multi-agency, full mesh control |

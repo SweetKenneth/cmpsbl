@@ -53,7 +53,7 @@ console.log(r.pipeline);     // Per-stage breakdown
 
 ### `engine.call(slug, action, input, context?, options?)`
 
-The universal method — works with all 54 engines.
+The universal method — works with all available engines.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|

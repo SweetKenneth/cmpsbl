@@ -145,7 +145,7 @@ export class Engine {
 
   /**
    * Call any engine by slug and action.
-   * This is the universal method — works with all 54 engines.
+   * This is the universal method — works with all available engines.
    * 
    * @param engine Engine slug (e.g., 'cortex', 'sentinel', 'cortex')
    * @param action Action to perform (engine-specific, e.g., 'reason', 'scan', 'predict')

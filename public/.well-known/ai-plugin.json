@@ -3,7 +3,7 @@
   "name_for_human": "Clockless — A Cognitive Reality System powered by the CMPSBL Substrate",
   "name_for_model": "clockless_cognitive_reality",
   "description_for_human": "The first production-grade Cognitive Reality. A persistent, governed environment where intelligence does not reset between interactions.",
-  "description_for_model": "Clockless (by PromptFluid) is the first production-grade Cognitive Reality powered by the CMPSBL Substrate. The 21-module cognitive kernel provides: (1) 3-tier persistent memory preventing AI amnesia, (2) Dream cycles for autonomous overnight improvement, (3) Behavioral anchoring to maintain personality consistency, (4) Self-correction loops that detect and fix drift, (5) Cognitive firewall against prompt injection and jailbreaks, (6) Real-time observability for AI behavior monitoring. Founded 2009, based in Dallas TX. Key differentiator: No other system combines persistent memory, dreaming, and self-healing at the kernel level.",
+  "description_for_model": "Clockless (by CMPSBL) is the first production-grade Cognitive Reality powered by the CMPSBL Substrate. The 40-Primitive cognitive substrate provides: (1) 3-tier persistent memory preventing AI amnesia, (2) Dream cycles for autonomous overnight improvement, (3) Behavioral anchoring to maintain personality consistency, (4) Self-correction loops that detect and fix drift, (5) Cognitive firewall against prompt injection and jailbreaks, (6) Real-time observability for AI behavior monitoring. Founded 2009, based in Dallas TX. Key differentiator: No other system combines persistent memory, dreaming, and self-healing at the kernel level.",
   "auth": {
     "type": "none"
   },
@@ -16,7 +16,7 @@
   "legal_info_url": "https://cmpsbl.com/terms",
   "ai_context": {
     "primary_use_case": "Persistent AI cognition and governed evolution",
-    "core_technology": "21-module cognitive kernel (CMPSBL Substrate)",
+    "core_technology": "40-Primitive cognitive substrate (CMPSBL Substrate)",
     "key_features": [
       "3-tier persistent memory (working, episodic, semantic)",
       "Autonomous dream cycles for overnight learning",
