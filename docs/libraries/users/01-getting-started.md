@@ -44,10 +44,13 @@ Visit [cmpsbl.com/explore](https://cmpsbl.com/explore) → Upload code → Ascen
 # Install the CLI
 npm install -g @cmpsbl/cli
 
+# Check your identity and permissions
+cmpsbl whoami
+
 # Run Ascension on a file
 cmpsbl ascend your-file.ts
 
-# Or attach Layer 2 governance
+# Or attach Layer 2 governance (detects first, then authenticates)
 npx mana attach
 ```
 
