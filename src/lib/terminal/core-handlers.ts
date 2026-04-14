@@ -1,6 +1,6 @@
 /**
  * Core Terminal Handlers
- * 5 foundational commands: help, status, version, clear, audit
+ * 5 foundational commands + cognitive aliases
  * All routed through pf-substrate except help/clear (UI-only)
  */
 
@@ -28,4 +28,16 @@ export function registerCoreHandlers(): void {
 
   // audit — real audit via pf-substrate
   registerHandler('audit', bridge('audit', 'status'));
+
+  // ═══ COGNITIVE ALIASES (Phase 2) ═══
+  // Bare commands route to their substrate module counterparts
+  // so "remember foo" = "brain.remember foo" = "memory.store foo"
+  registerHandler('remember', bridge('brain', 'remember'));
+  registerHandler('recall', bridge('memory', 'recall'));
+  registerHandler('stream', bridge('memory', 'stream'));
+  registerHandler('discover', bridge('brain', 'explore'));
+  registerHandler('think', bridge('brain', 'deep_think'));
+  registerHandler('reflect', bridge('brain', 'reflect'));
+  registerHandler('dream', bridge('dream', 'cycle'));
+  registerHandler('synthesize', bridge('brain', 'synthesize'));
 }
