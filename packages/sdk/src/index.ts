@@ -52,8 +52,8 @@ export interface CeremonyEvent {
   detail?: string;
   progress?: number;
   sector?: string;
-  nodesOnline?: number;
-  totalNodes?: number;
+  primitivesOnline?: number;
+  totalPrimitives?: number;
 }
 
 export interface FirstContactConfig {
@@ -403,7 +403,7 @@ export class EngineAPIError extends Error {
  * @example
  * ```typescript
  * const engine = new Engine('your-api-key');
- * const result = await engine.godmind.reason('Analyze this data');
+ * const result = await engine.call('cortex', 'analyze', 'Analyze this data');
  * ```
  */
 export class Engine {
