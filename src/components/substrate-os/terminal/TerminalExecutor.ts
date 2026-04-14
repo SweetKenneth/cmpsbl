@@ -15,6 +15,7 @@ import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } fro
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
 import { labelPrimitive, labelDescription } from '@/lib/export/primitive-labels';
 import { debugMode } from '@/lib/debug-mode';
+import { log } from '@/lib/system/log';
 
 // Mobile-first evolution log formatter (organism-focused, no implementation details)
 function formatEvolutionLogForTerminal(): string {
