@@ -39,11 +39,13 @@ export interface MemoryRecallInput {
   query: string;
   limit?: number;
   category?: string;
+  [key: string]: unknown;
 }
 
 export interface DreamDigestInput {
   depth?: 'shallow' | 'standard' | 'deep';
   limit?: number;
+  [key: string]: unknown;
 }
 
 export interface SubstrateClientConfig {
