@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/shield",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Cross-Vertical LLM Prompt Defense System \u2014 injection detection, hallucination grounding, output sanitization, and governance-gated audit receipts.",
   "license": "SEE LICENSE IN LICENSE",
   "author": "Kenneth E. Sweet Jr. <hello@cmpsbl.com>",
