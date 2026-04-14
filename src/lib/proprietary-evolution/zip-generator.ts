@@ -2,26 +2,17 @@
  * Proprietary Evolution — ZIP Bundle Generator
  * Generates downloadable Capability Pack ZIPs with:
  * - Unified Single-File Distribution (cmpsbl.*) — Runtime + Effects + Bridge + API built-in
- * - License in HTML + MD
- * - README in HTML + MD
- * - Pipeline Details HTML (per capability)
- * - Valuation data
- * - Source code, test harnesses, manifest
- * - Black-box obfuscation for IP protection
+ * - Per-capability source files (Layer 2) + original source (Layer 1)
+ * - Test harnesses, manifest, license, proof certificate
  */
 
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
-import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
-import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
-import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
-import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 
 export interface CapabilityForExport {
   id: string;
