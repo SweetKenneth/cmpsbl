@@ -279,7 +279,12 @@ export const publicRoutes = (
     <Route path="/api-access" element={<ApiAccess />} />
     <Route path="/keys" element={<Navigate to="/api-access" replace />} />
     <Route path="/careers" element={<Navigate to="/about" replace />} />
-    <Route path="/x" element={<ProprietaryEvolution />} />
+    {/* #11: /ascension = customer-facing simplified wizard. /x = internal/dev debug surface (PIN-gated) */}
+    <Route path="/x" element={
+      <PinGate pin="2026" storageKey="ascension_dev_unlock">
+        <ProprietaryEvolution />
+      </PinGate>
+    } />
     <Route path="/ascension" element={<ProprietaryEvolution />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
