@@ -139,7 +139,7 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 
 #### 5.2 — Real-Time Substrate Pulse ✅
 - [x] Realtime subscriptions enabled for `brain_memories`, `cascade_dreams`
-- [ ] Web Terminal shows live memory writes as they happen
+- [x] Web Terminal shows live memory writes and dream completions as they happen
 - [ ] CLI gets push notifications for dream completions
 
 #### 5.3 — Documentation & Developer Experience
