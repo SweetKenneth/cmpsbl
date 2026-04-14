@@ -33,17 +33,20 @@ export interface MemoryStoreInput {
   category?: string;
   confidence?: number;
   metadata?: Record<string, unknown>;
+  [key: string]: unknown;
 }
 
 export interface MemoryRecallInput {
   query: string;
   limit?: number;
   category?: string;
+  [key: string]: unknown;
 }
 
 export interface DreamDigestInput {
   depth?: 'shallow' | 'standard' | 'deep';
   limit?: number;
+  [key: string]: unknown;
 }
 
 export interface SubstrateClientConfig {
