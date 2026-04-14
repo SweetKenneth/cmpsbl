@@ -12,7 +12,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { broadcastIntent, registerResolver, type IntentResolution, type ResolverHandler } from '@cmpsbl/intent';
 import { subscribe, emit, getEventLog, createSignal, type MeshEventHandler, type MeshFilter } from '@cmpsbl/mesh';
-import { createRuntime, computeCJPI, type ConvexCore, initFirstContact, discoverMemory, captureMemory, applyMemory, exportMemory, getMemoryStream, getFirstContactSession, DOMAIN_PATTERNS } from '@cmpsbl/runtime';
+import { createRuntime, computeCJPI, initFirstContact, discoverMemory, captureMemory, applyMemory, exportMemory, getMemoryStream, getFirstContactSession, DOMAIN_PATTERNS } from '@cmpsbl/runtime';
 import type { MeshCommEvent } from '@cmpsbl/mesh';
 import type { MeshIntent } from '@cmpsbl/intent';
 
@@ -152,7 +152,7 @@ export function useMesh(filter?: MeshFilter, maxEvents = 100): UseMeshReturn {
 // useRuntime
 // ═══════════════════════════════════════════════════════════════
 
-export function useRuntime(): ConvexCore {
+export function useRuntime(): ReturnType<typeof createRuntime> {
   const [runtime] = useState(() => createRuntime());
   return runtime;
 }
