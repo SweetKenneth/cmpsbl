@@ -1,100 +1,36 @@
 /**
- * ResultsStep — Clean summary + export
- * Shows what was discovered in simple terms + download button
+ * ResultsStep — #15: Consumes canonical AscensionResults, not raw DB artifacts
+ * 
+ * Summary, quality metrics, and export all derive from one result object.
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Download, Sparkles, Shield, CheckCircle2, Loader2, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
-
+import type { AscensionResults } from '@/lib/ascension/orchestrator';
 
 interface Props {
-  stats: { discovered: number; ascended: number; topScore: number };
+  results: AscensionResults | null;
   onReset: () => void;
 }
 
-interface AscendedItem {
-  name: string;
-  score: number;
-  tier: string;
-  description: string;
-}
-
-export function ResultsStep({ stats, onReset }: Props) {
-  const [items, setItems] = useState<AscendedItem[]>([]);
-  const [loading, setLoading] = useState(true);
+export function ResultsStep({ results, onReset }: Props) {
   const [exporting, setExporting] = useState(false);
-  const [sourceLanguage, setSourceLanguage] = useState<string>('typescript');
-  const [sourceFiles, setSourceFiles] = useState<Array<{ name: string; content: string }>>([]);
   const { toast } = useToast();
-  const { user } = useAuth();
 
-  useEffect(() => {
-    if (!user) return;
-    (async () => {
-      // Fetch ascended capabilities
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data } = await (supabase as any)
-        .from('artifact_registry')
-        .select('name, metadata, tier, description')
-        .eq('user_id', user.id)
-        .eq('category', 'proprietary-ascended')
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (data) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setItems(data.map((d: any) => ({
-          name: d.name?.replace(/_/g, ' ') || 'Capability',
-          score: Number(d.metadata?.cjpi_score || 0),
-          tier: d.tier || 'mint',
-          description: d.description || '',
-        })));
-      }
-
-      // Get source language + files from candidate
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: candidate } = await (supabase as any)
-        .from('artifact_registry')
-        .select('metadata')
-        .eq('user_id', user.id)
-        .eq('category', 'proprietary-evolution')
-        .eq('tier', 'candidate')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (candidate?.metadata) {
-        setSourceLanguage(candidate.metadata.source_export_language || 'typescript');
-        if (candidate.metadata.source_files) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          setSourceFiles(candidate.metadata.source_files.map((f: any) => ({
-            name: f.name,
-            content: f.content || '',
-          })));
-        }
-      }
-
-      setLoading(false);
-    })();
-  }, [user]);
+  const items = results?.capabilities ?? [];
 
   const scoreColor = (s: number) =>
     s >= 85 ? 'text-neon-amber' : s >= 60 ? 'text-primary' : 'text-muted-foreground';
 
-  const avgScore = useMemo(() => {
-    if (items.length === 0) return 0;
-    return Math.round(items.reduce((sum, i) => sum + i.score, 0) / items.length);
-  }, [items]);
+  const avgScore = useMemo(() => results?.avgScore ?? 0, [results]);
 
   const handleExportAll = async () => {
-    if (!user || items.length === 0) return;
+    if (!results || items.length === 0) return;
     setExporting(true);
 
     try {
@@ -111,16 +47,11 @@ export function ResultsStep({ stats, onReset }: Props) {
       }));
 
       await generateCapabilityPackZip({
-        targetLanguage: sourceLanguage,
+        targetLanguage: results.sourceLanguage,
         capabilities: caps,
-        candidateName: 'ascension_export',
-        userSourceFiles: sourceFiles.map(f => ({
-          name: f.name,
-          extension: f.name.split('.').pop() || '',
-          language: sourceLanguage,
-          content: f.content,
-        })),
-        sourceLanguage,
+        candidateName: results.candidateName || 'ascension_export',
+        userSourceFiles: [],
+        sourceLanguage: results.sourceLanguage,
       });
 
       toast({ title: 'Export complete', description: `${items.length} capabilities exported.` });
@@ -131,7 +62,7 @@ export function ResultsStep({ stats, onReset }: Props) {
     }
   };
 
-  if (loading) {
+  if (!results) {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
@@ -155,25 +86,25 @@ export function ResultsStep({ stats, onReset }: Props) {
         </p>
       </div>
 
-      {/* Summary stats */}
+      {/* Summary stats — #15: derived from canonical results */}
       {items.length > 0 && (
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">
-            <p className="text-xl font-bold text-foreground">{items.length}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">Capabilities</p>
+            <p className="text-xl font-bold text-foreground">{results.discovered}</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">Discovered</p>
           </div>
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">
             <p className={cn("text-xl font-bold", scoreColor(avgScore))}>{avgScore}</p>
             <p className="text-[10px] text-muted-foreground mt-0.5">Avg Score</p>
           </div>
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">
-            <p className={cn("text-xl font-bold", scoreColor(stats.topScore))}>{stats.topScore}</p>
+            <p className={cn("text-xl font-bold", scoreColor(results.topScore))}>{results.topScore}</p>
             <p className="text-[10px] text-muted-foreground mt-0.5">Top Score</p>
           </div>
         </div>
       )}
 
-      {/* Capability list — clean & simple */}
+      {/* Capability list */}
       {items.length > 0 && (
         <div className="space-y-1.5 max-h-[280px] overflow-y-auto">
           {items.map((item, i) => (
