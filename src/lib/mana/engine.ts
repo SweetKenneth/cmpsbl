@@ -1467,7 +1467,8 @@ export function getTelemetrySummary(): Record<string, { invocations: number; blo
   const summary: Record<string, { invocations: number; blocked: number; observed: number }> = {};
 
   for (const point of attachmentPoints.values()) {
-    summary[point.functionName] = {
+    const key = `${point.functionName}:${point.capability}`;
+    summary[key] = {
       invocations: point.invocations,
       blocked: point.blocked,
       observed: point.observed,
