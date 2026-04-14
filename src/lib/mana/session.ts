@@ -33,7 +33,8 @@ import {
 } from './types';
 import {
   verifyFingerprint,
-  registerFingerprint,
+  registerCandidateBaseline,
+  checkIdentity,
   type FingerprintResult,
 } from '../../core/boot/fingerprintGate';
 import { recordAuditEvent } from '../../core/audit/auditChain';
