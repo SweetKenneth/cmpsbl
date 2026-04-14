@@ -21,9 +21,10 @@ npx mana attach
 That's it. Mana will:
 
 1. **Detect** your project (language, framework, entry points)
-2. **Authenticate** you (email → instant API key, 10 seconds)
-3. **Ask** which level of protection you want
-4. **Export** a native signal file in your project's language
+2. **First Contact** — a cinematic introduction to what Mana found
+3. **Authenticate** you (email → instant API key, 10 seconds)
+4. **Ask** which level of protection you want
+5. **Export** a native signal file in your project's language
 
 No dependencies added. No source code modified. No runtime agent required.
 

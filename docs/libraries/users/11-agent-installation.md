@@ -25,8 +25,8 @@ npx mana attach
 
 That's all. The CLI walks you through everything:
 
-1. **Register** — enter your email and name → get an API key instantly
-2. **Detect** — scans your project and shows what it found
+1. **Detect** — scans your project and shows what it found (First Contact)
+2. **Authenticate** — enter your email and name → get an API key instantly
 3. **Choose** — pick your activation level
 4. **Done** — Layer 2 configured
 
