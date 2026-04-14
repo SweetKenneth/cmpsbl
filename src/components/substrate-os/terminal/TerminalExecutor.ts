@@ -5551,7 +5551,13 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} memor
         const handler = getHandler(base);
         
         if (handler) {
-          const handlerResult = await handler();
+          // Build structured args from positional arguments
+          const structuredArgs: Record<string, unknown> = {};
+          args.forEach((arg, i) => { structuredArgs[`arg${i}`] = arg; });
+          if (args[0]) structuredArgs.input = args[0];
+          if (args[1]) structuredArgs.type = args[1];
+          if (args[2]) structuredArgs.confidence = args[2];
+          const handlerResult = await handler(structuredArgs);
           const data = handlerResult as Record<string, unknown>;
           
           // If handler returned a formatted output, use it directly
