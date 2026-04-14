@@ -1270,7 +1270,9 @@ function generateKotlin(name: string, spec: PrimitiveSpec): string {
   const fieldDecls = fields.map(f => `    private var ${f.k}: ${f.ty} = ${f.def}`).join('\n');
   const methods = spec.methods.map(m => {
     const kName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
-    return `    /** ${m.description} */\n    fun ${kName}(): ${name} = this`;
+    const fieldsForBody = fields.map(f => ({ k: f.k, v: spec.stateFields.find(sf => sf.startsWith(f.k))?.split(':')[1] ?? '', def: f.def }));
+    const body = generateJvmMethodBody(name, m, kName, fieldsForBody, 'kotlin');
+    return `    /** ${m.description} */\n${body}`;
   }).join('\n\n');
   return `/** CMPSBL® Convex Core™ — ${spec.description} */
 object ${name} {
