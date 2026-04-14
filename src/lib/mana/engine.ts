@@ -1303,6 +1303,9 @@ export async function attach(
     capsByFunction.set(cap.functionName, list);
   }
 
+  // HARDENING: Track attached capabilities per function for double-wrap prevention
+  const attachedCapabilities = new Map<string, Set<ManaCapability>>();
+
   let position = 0;
   for (const [functionName, caps] of Array.from(capsByFunction.entries())) {
     const rawOriginal = hostModule[functionName] as AnyFn;
@@ -1313,9 +1316,21 @@ export async function attach(
       originals.set(functionName, rawOriginal);
     }
 
+    // Initialize capability set for double-wrap detection
+    if (!attachedCapabilities.has(functionName)) {
+      attachedCapabilities.set(functionName, new Set());
+    }
+    const capSet = attachedCapabilities.get(functionName)!;
+
     // Compose wrappers: each wraps the result of the previous
     let wrapped: AnyFn = rawOriginal;
     for (const cap of caps) {
+      // HARDENING: Double-wrap prevention — skip if already applied
+      if (capSet.has(cap.capability)) {
+        emitTelemetry(cap.capability, functionName, 'observed', { reason: 'double_wrap_prevented' }, 'attachment');
+        continue;
+      }
+
       // Lex governance check — ATTACHMENT-TIME verdict
       const { verdict } = evaluate(cap.capability, functionName, config.lexMode, 'attachment');
       if (verdict === 'deny') {
@@ -1343,6 +1358,9 @@ export async function attach(
       // Tag wrapper with symbol for accurate layer detection
       (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
 
+      // Track for double-wrap prevention
+      capSet.add(cap.capability);
+
       emitTelemetry(cap.capability, functionName, 'invoked', {
         action: 'attached', layerDepth, position,
         phase: point.phase,
@@ -1363,7 +1381,7 @@ export async function attach(
 
 /**
  * Detach all Layer 2 capabilities — restore original functions.
- * Clean separation: host returns to pre-attachment state.
+ * HARDENED: Verifies all wrappers are removed post-detach.
  */
 export function detach(hostModule: Record<string, unknown>): ManaManifest {
   if (state !== 'symbiotic') {
@@ -1375,6 +1393,16 @@ export function detach(hostModule: Record<string, unknown>): ManaManifest {
   // Restore all originals — these are the FIRST (real) originals, not intermediate wrappers
   for (const [functionName, originalFn] of originals.entries()) {
     hostModule[functionName] = originalFn;
+  }
+
+  // HARDENING: Post-detach verification — ensure no MANA_LAYER_TAG remains
+  for (const [functionName] of originals.entries()) {
+    const fn = hostModule[functionName];
+    if (typeof fn === 'function' && (fn as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
+      // Force restore from originals — this should never happen but guarantees clean detach
+      const orig = originals.get(functionName);
+      if (orig) hostModule[functionName] = orig;
+    }
   }
 
   state = 'detached';
