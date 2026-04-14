@@ -3607,7 +3607,7 @@ export function generateRefurbishedCode(
     adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
-    verbatimSource,
+    finalVerbatim,
     '',
     verifyBlock,
     '',
