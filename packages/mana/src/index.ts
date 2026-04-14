@@ -439,8 +439,12 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
   box([
     '◈  WELCOME TO MANA',
     '',
+    `${c.bold(c.cyan('Silent Software Symbiosis'))}`,
+    '',
     'Get your API key in 10 seconds.',
     'Already have one? Choose option 2.',
+    '',
+    `${c.dim('U.S. Patent App. No. 64/031,637 · © CMPSBL®')}`,
   ], 'ACCESS');
   blank();
 
@@ -487,10 +491,24 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
 
   saveCredentials(key, validation.displayName, validation.developerId, validation.substrateRole);
 
+  // ── PERSISTENT MEMORY ACTIVATED — standout ceremony ──
   blank();
-  say(`${c.green('✔')} API key saved to ~/.cmpsbl/credentials`);
-  if (validation.displayName) {
-    say(`${c.green('✔')} Welcome, ${c.bold(validation.displayName)}`);
+  if (isTTY()) {
+    say(c.dim('  ┌───────────────────────────────────────────────────┐'));
+    say(`  │  ${c.bold(c.green('◈ PERSISTENT MEMORY ACTIVATED'))}                    │`);
+    say(`  │                                                     │`);
+    say(`  │  ${c.green('✔')} API key saved to ~/.cmpsbl/credentials           │`);
+    if (validation.displayName) {
+      say(`  │  ${c.green('✔')} Identity: ${c.bold(c.amber(validation.displayName))}${' '.repeat(Math.max(0, 30 - (validation.displayName?.length ?? 0)))}│`);
+    }
+    say(`  │  ${c.green('✔')} Memory: ${c.bold(c.cyan('PERSISTENT'))} · Substrate: ${c.bold(c.green('LIVE'))}         │`);
+    say(`  │                                                     │`);
+    say(`  │  ${c.dim('Your substrate will remember you across sessions.')}  │`);
+    say(`  │  ${c.dim('Every command compounds. Every dream persists.')}     │`);
+    say(c.dim('  └───────────────────────────────────────────────────┘'));
+  } else {
+    say(`${c.green('✔')} API key saved to ~/.cmpsbl/credentials`);
+    if (validation.displayName) say(`${c.green('✔')} Welcome, ${c.bold(validation.displayName)}`);
   }
   blank();
 
