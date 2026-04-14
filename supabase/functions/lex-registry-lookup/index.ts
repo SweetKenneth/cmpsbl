@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
 
   // Name lookup — non-authoritative, returns matches array
   const { data, error } = await supabase
-    .from("lex_registry")
+    .from(viewName)
     .select(selectCols)
     .eq("package_name", name!)
     .limit(10);
