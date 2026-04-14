@@ -263,3 +263,24 @@ export type {
 } from './first-contact';
 
 export { DOMAIN_PATTERNS } from './first-contact';
+
+// ═══════════════════════════════════════════════════════════════
+// Topology — 40-Primitive Architecture, Tiers, Cognitive Loop
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  ORGANS, LAYERS, ENGINES, AGENTS, ALL_PRIMITIVES,
+  IRON_LAW_PRIMITIVES, TIER_DEFINITIONS,
+  getPrimitiveCategory, getPrimitiveCounts,
+  getTierDefinition, tierHasAccess,
+} from './topology';
+
+export type {
+  PrimitiveCategory, PrimitiveDefinition,
+  Organ, Layer, SubstrateEngine, Agent, Primitive,
+  AccessTier, TierDefinition,
+  CognitiveAction, CognitiveRequest, CognitiveResponse,
+  MemoryEntry as TopologyMemoryEntry,
+  DreamEntry, StreamEntry,
+  SubstrateCommand, SubstrateResponse, SubstrateHealthReport,
+} from './topology';

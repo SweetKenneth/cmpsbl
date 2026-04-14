@@ -1459,3 +1459,22 @@ export class CMPSBL {
     return { primitive: prim?.id ?? primitiveId, role: prim?.role ?? 'unknown', sector: prim?.sector ?? 'unknown', latencyMs: 0 };
   }
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Substrate Client — Unified Bridge to pf-substrate
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  SubstrateClient,
+  createSubstrateClient,
+} from './substrate-client';
+
+export type {
+  SubstrateClientConfig,
+  SubstrateResponse as SubstrateBridgeResponse,
+  MemoryStoreInput,
+  MemoryRecallInput,
+  DreamDigestInput,
+  CognitiveAction,
+  AccessTier,
+} from './substrate-client';
