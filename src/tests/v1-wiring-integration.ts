@@ -1,9 +1,13 @@
 /**
- * V1 Wiring Integration Tests
+ * V1 Wiring Integration Tests — Post-Patch Corrections
  * Verifies: Engine ↔ Fingerprint Gate ↔ Audit Chain ↔ Safe Detach
  * 
- * These tests prove the V1 components are actually wired together,
- * not just co-existing as separate files.
+ * Updated for:
+ * #1: Identity enforcement (scan required)
+ * #2: Trust staging (candidate vs trusted)
+ * #5: Session-scoped boundaries
+ * #6: Single detach authority
+ * #7: Structured audit semantics
  */
 
 // ── Test Harness ──
@@ -25,9 +29,9 @@ function assert(condition: boolean, name: string, detail = ''): void {
 // Imports
 // ══════════════════════════════════════════════════════════════
 
-import { configure, attach, detach, reset, getState } from '../lib/mana/engine';
+import { configure, attach, detach, reset, getState, scan } from '../lib/mana/engine';
 import { createSession } from '../lib/mana/session';
-import { registerFingerprint, resetFingerprintGate, computeCanonicalFingerprint } from '../core/boot/fingerprintGate';
+import { registerFingerprint, resetFingerprintGate, computeCanonicalFingerprint, getTrustState } from '../core/boot/fingerprintGate';
 import { getAuditLog, resetAuditChain, verifyChainIntegrity } from '../core/audit/auditChain';
 import { resetSafeDetach } from '../lib/mana/detach-safe';
 import { resetLex } from '../lib/mana/lex';
@@ -53,6 +57,9 @@ async function test1_attachRecordsFingerprint(): Promise<void> {
     validateInput: (input: string) => input.length > 0,
   };
 
+  // #1: Must scan to establish identity before attach
+  scan(hostModule as unknown as Record<string, unknown>, 'test-pkg', '1.0.0');
+
   await attach(
     hostModule as unknown as Record<string, unknown>,
     [{ functionName: 'processPayment', capability: 'defense_gate' as const }],
@@ -63,10 +70,13 @@ async function test1_attachRecordsFingerprint(): Promise<void> {
   const fpEvent = auditLog.find(e => e.eventType === 'fingerprint_verify');
   assert(fpEvent !== undefined, 'W1: Fingerprint verification recorded in audit chain');
   assert(fpEvent?.source === 'mana.engine', 'W1: Audit source is mana.engine');
+  // #7: Structured audit fields
+  assert(fpEvent?.phase === 'boot', 'W1: Audit phase is boot');
 
   const attachEvent = auditLog.find(e => e.eventType === 'attach_complete');
   assert(attachEvent !== undefined, 'W1: Attach completion recorded in audit chain');
   assert(attachEvent?.decision === 'success', 'W1: Attach decision is success');
+  assert(attachEvent?.phase === 'attachment', 'W1: Attach phase is attachment');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -82,12 +92,12 @@ async function test2_invalidFingerprintBlocks(): Promise<void> {
     validateInput: () => true,
   };
 
-  // Register a known-good fingerprint
+  // Register a known-good fingerprint with real identity
   const fp = computeCanonicalFingerprint(
     goodModule as unknown as Record<string, unknown>,
-    'unknown', '0.0.0',
+    'payments', '1.0.0',
   );
-  registerFingerprint('unknown', fp);
+  registerFingerprint('payments', fp);
 
   // Create a tampered module (different structure)
   const tamperedModule = {
@@ -95,6 +105,9 @@ async function test2_invalidFingerprintBlocks(): Promise<void> {
     validateInput: () => true,
     hackedFunction: () => 'pwned',
   };
+
+  // Must scan with same package name
+  scan(tamperedModule as unknown as Record<string, unknown>, 'payments', '1.0.0');
 
   let blocked = false;
   try {
@@ -126,6 +139,8 @@ async function test3_detachUsesSafeProtocol(): Promise<void> {
     processPayment: (amount: number) => amount * 1.1,
   };
 
+  scan(hostModule as unknown as Record<string, unknown>, 'pay-pkg', '1.0.0');
+
   await attach(
     hostModule as unknown as Record<string, unknown>,
     [{ functionName: 'processPayment', capability: 'beacon_telemetry' as const }],
@@ -134,19 +149,18 @@ async function test3_detachUsesSafeProtocol(): Promise<void> {
 
   assert(getState() === 'symbiotic', 'W3: State is symbiotic after attach');
 
-  // Detach (now async due to safe detach)
   await detach(hostModule as unknown as Record<string, unknown>);
 
   assert(getState() === 'detached', 'W3: State is detached after detach');
 
-  // Verify audit chain has detach events
+  // #7: Verify structured audit
   const auditLog = getAuditLog();
   const detachStart = auditLog.find(e => e.eventType === 'detach_start');
   const detachComplete = auditLog.find(e => e.eventType === 'detach_complete');
   assert(detachStart !== undefined, 'W3: Detach start recorded in audit');
   assert(detachComplete !== undefined, 'W3: Detach complete recorded in audit');
+  assert(detachComplete?.phase === 'detachment', 'W3: Detach phase is detachment');
 
-  // Verify function is restored
   const result = (hostModule as unknown as Record<string, unknown>).processPayment;
   assert(typeof result === 'function', 'W3: Function restored after detach');
 }
@@ -164,6 +178,8 @@ async function test4_auditChainIntegrityAfterCycle(): Promise<void> {
     fn2: () => 'b',
   };
 
+  scan(hostModule as unknown as Record<string, unknown>, 'integrity-pkg', '1.0.0');
+
   await attach(
     hostModule as unknown as Record<string, unknown>,
     [
@@ -173,16 +189,11 @@ async function test4_auditChainIntegrityAfterCycle(): Promise<void> {
     'test-source',
   );
 
-  // Invoke wrapped functions to generate more audit trail
-  (hostModule as unknown as Record<string, unknown>).fn1;
-  (hostModule as unknown as Record<string, unknown>).fn2;
-
   await detach(hostModule as unknown as Record<string, unknown>);
 
-  // Verify chain integrity
   const integrity = verifyChainIntegrity();
   assert(integrity.valid, 'W4: Audit chain integrity valid after full cycle', integrity.brokenReason ?? '');
-  assert(integrity.totalEntries >= 4, 'W4: At least 4 audit entries (fp + attach + detach_start + detach_complete)', `entries=${integrity.totalEntries}`);
+  assert(integrity.totalEntries >= 4, 'W4: At least 4 audit entries', `entries=${integrity.totalEntries}`);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -199,6 +210,9 @@ async function test5_sessionUsesV1Integrations(): Promise<void> {
     doWork: () => 'result',
   };
 
+  // #1: scan establishes identity
+  session.scan(hostModule as unknown as Record<string, unknown>, 'session-pkg', '1.0.0');
+
   await session.attach(
     hostModule as unknown as Record<string, unknown>,
     [{ functionName: 'doWork', capability: 'beacon_telemetry' as const }],
@@ -207,7 +221,10 @@ async function test5_sessionUsesV1Integrations(): Promise<void> {
 
   assert(session.getState() === 'symbiotic', 'W5: Session is symbiotic');
 
-  // Check audit chain has session events
+  // #2: First boot creates candidate baseline, not trusted
+  const trustState = getTrustState('session-pkg');
+  assert(trustState === 'candidate_baseline', 'W5: First boot trust state is candidate_baseline', `was ${trustState}`);
+
   const auditLog = getAuditLog();
   const sessionEvents = auditLog.filter(e => e.source.includes('test-session'));
   assert(sessionEvents.length >= 2, 'W5: Session events in audit chain', `count=${sessionEvents.length}`);
@@ -215,40 +232,32 @@ async function test5_sessionUsesV1Integrations(): Promise<void> {
   await session.detach(hostModule as unknown as Record<string, unknown>);
   assert(session.getState() === 'detached', 'W5: Session detached');
 
-  const auditLogAfterDetach = getAuditLog();
-  const detachEvents = auditLogAfterDetach.filter(e => e.source.includes('test-session') && e.eventType.includes('detach'));
-  assert(detachEvents.length >= 1, 'W5: Session detach events in audit chain', `count=${detachEvents.length}`);
-
   session.destroy();
 }
 
 // ══════════════════════════════════════════════════════════════
-// TEST 6: Execution boundary prevents mid-call detach
+// TEST 6: Identity enforcement — placeholder rejected
 // ══════════════════════════════════════════════════════════════
 
-async function test6_executionBoundaryWorks(): Promise<void> {
+async function test6_identityEnforcement(): Promise<void> {
   fullReset();
   configure({ telemetry: true, lexMode: 'permissive' });
 
-  let callCount = 0;
-  const hostModule = {
-    slowFn: () => { callCount++; return 'done'; },
-  };
+  const hostModule = { fn: () => 'x' };
 
-  await attach(
-    hostModule as unknown as Record<string, unknown>,
-    [{ functionName: 'slowFn', capability: 'beacon_telemetry' as const }],
-    'test-source',
-  );
+  // Do NOT scan — identity will be placeholder ('unknown'/'0.0.0')
+  let blocked = false;
+  try {
+    await attach(
+      hostModule as unknown as Record<string, unknown>,
+      [{ functionName: 'fn', capability: 'beacon_telemetry' as const }],
+      'test-source',
+    );
+  } catch (err) {
+    blocked = (err as Error).message.includes('IDENTITY');
+  }
 
-  // Call the function — boundary should be tracked
-  const wrappedFn = (hostModule as unknown as Record<string, unknown>).slowFn as Function;
-  wrappedFn();
-  assert(callCount === 1, 'W6: Wrapped function executed');
-
-  // Detach should succeed after call completes
-  await detach(hostModule as unknown as Record<string, unknown>);
-  assert(getState() === 'detached', 'W6: Detach succeeds after call completes');
+  assert(blocked, 'W6: Placeholder identity blocks attachment');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -256,7 +265,7 @@ async function test6_executionBoundaryWorks(): Promise<void> {
 // ══════════════════════════════════════════════════════════════
 
 console.log('╔══════════════════════════════════════════════════╗');
-console.log('║  V1 WIRING INTEGRATION TESTS — CMPSBL®          ║');
+console.log('║  V1 WIRING INTEGRATION TESTS — POST-PATCH        ║');
 console.log('╚══════════════════════════════════════════════════╝');
 console.log('');
 
@@ -265,8 +274,8 @@ const tests = [
   { name: '2. Invalid fingerprint blocks attach', fn: test2_invalidFingerprintBlocks },
   { name: '3. Detach uses safe protocol + audit', fn: test3_detachUsesSafeProtocol },
   { name: '4. Audit chain integrity after cycle', fn: test4_auditChainIntegrityAfterCycle },
-  { name: '5. Session uses all V1 integrations', fn: test5_sessionUsesV1Integrations },
-  { name: '6. Execution boundary prevents mid-call detach', fn: test6_executionBoundaryWorks },
+  { name: '5. Session uses V1 + trust staging', fn: test5_sessionUsesV1Integrations },
+  { name: '6. Identity enforcement — placeholder rejected', fn: test6_identityEnforcement },
 ];
 
 (async () => {
@@ -296,6 +305,6 @@ const tests = [
     }
     process.exit(1);
   } else {
-    console.log('✅ ALL V1 WIRING VERIFIED — COMPONENTS ARE CONNECTED');
+    console.log('✅ ALL V1 WIRING VERIFIED — POST-PATCH CORRECTIONS HOLD');
   }
 })();

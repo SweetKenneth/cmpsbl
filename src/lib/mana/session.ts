@@ -661,16 +661,10 @@ export function createSession(sessionId?: string): ManaSession {
 
       recordAuditEvent(`mana.session.${id}`, 'detach_start', 'initiated', {
         hostPackage: hostPkg, attachmentPointCount: attachmentPoints.size,
-      });
+      }, undefined, undefined, { phase: 'detachment', outcome: 'success' });
 
+      // #6: safeDetach is the SINGLE detach authority
       const receipt = await safeDetach(hostModule, originals, `${hostPkg}-${id}`, manifest);
-
-      if (!receipt.success) {
-        // Fallback: direct restore
-        for (const [functionName, originalFn] of Array.from(originals.entries())) {
-          hostModule[functionName] = originalFn;
-        }
-      }
 
       sessionState = 'detached';
       detachedAt = Date.now();
@@ -679,6 +673,11 @@ export function createSession(sessionId?: string): ManaSession {
         receiptId: receipt.receiptId,
         restoredFunctions: receipt.restoredFunctions,
         verificationPassed: receipt.verificationPassed,
+        recoveryPath: receipt.recoveryPath,
+      }, undefined, undefined, {
+        phase: 'detachment',
+        outcome: receipt.success ? 'success' : 'degraded',
+        recoveryPath: receipt.recoveryPath,
       });
 
       originals.clear();
