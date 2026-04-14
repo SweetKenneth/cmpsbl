@@ -605,6 +605,25 @@ All colors MUST be HSL.
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
+
+  /* Thin scrollbar for horizontal carousels — visible hint */
+  .scroll-carousel-track {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scroll-carousel-track::-webkit-scrollbar {
+    height: 4px;
+  }
+  .scroll-carousel-track::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-carousel-track::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 2px;
+  }
+  .scroll-carousel-track::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.4);
+  }
   
   /* =========================================
    * MOBILE-FIRST UTILITIES

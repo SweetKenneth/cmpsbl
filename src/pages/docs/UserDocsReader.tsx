@@ -3,7 +3,7 @@
  * Mirrors DocsReader pattern with sidebar nav + markdown rendering
  */
 
-import { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { DocsMarkdown } from '@/components/docs/DocsMarkdown';
 import { cn } from '@/lib/utils';
@@ -40,9 +40,10 @@ export default function UserDocsReader() {
 
   const activeDoc = userDocs.find(d => d.slug === activeSlug);
 
-  useMemo(() => {
+  // biome-ignore: side-effect load must be useEffect, not useMemo
+  React.useEffect(() => {
     const entry = userDocs.find(d => d.slug === activeSlug);
-    if (!entry) return;
+    if (!entry) { setContent(''); return; }
     setLoading(true);
     entry.loader().then(md => {
       setContent(md);
