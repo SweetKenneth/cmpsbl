@@ -50,6 +50,7 @@ export interface InterceptionEvent {
 
 const rules: InterceptionRule[] = [];
 const events: InterceptionEvent[] = [];
+const MAX_EVENTS = 10_000;
 
 /** Register a new interception rule (sorted by descending priority) */
 export function registerRule(rule: InterceptionRule): void {

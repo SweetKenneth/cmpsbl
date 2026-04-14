@@ -96,6 +96,7 @@ export interface AttachmentEntry {
 
 const rules: OrchestrationRule[] = [];
 const events: OrchestrationEvent[] = [];
+const MAX_EVENTS = 10_000;
 const actionHistory = new Map<string, number>();
 
 /** Re-entrancy guard — prevents routeSignal → executeAction → writeState → routeSignal loops */
