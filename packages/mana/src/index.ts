@@ -439,8 +439,12 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
   box([
     '◈  WELCOME TO MANA',
     '',
+    `${c.bold(c.cyan('Silent Software Symbiosis'))}`,
+    '',
     'Get your API key in 10 seconds.',
     'Already have one? Choose option 2.',
+    '',
+    `${c.dim('U.S. Patent App. No. 64/031,637 · © CMPSBL®')}`,
   ], 'ACCESS');
   blank();
 
@@ -487,10 +491,24 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
 
   saveCredentials(key, validation.displayName, validation.developerId, validation.substrateRole);
 
+  // ── PERSISTENT MEMORY ACTIVATED — standout ceremony ──
   blank();
-  say(`${c.green('✔')} API key saved to ~/.cmpsbl/credentials`);
-  if (validation.displayName) {
-    say(`${c.green('✔')} Welcome, ${c.bold(validation.displayName)}`);
+  if (isTTY()) {
+    say(c.dim('  ┌───────────────────────────────────────────────────┐'));
+    say(`  │  ${c.bold(c.green('◈ PERSISTENT MEMORY ACTIVATED'))}                    │`);
+    say(`  │                                                     │`);
+    say(`  │  ${c.green('✔')} API key saved to ~/.cmpsbl/credentials           │`);
+    if (validation.displayName) {
+      say(`  │  ${c.green('✔')} Identity: ${c.bold(c.amber(validation.displayName))}${' '.repeat(Math.max(0, 30 - (validation.displayName?.length ?? 0)))}│`);
+    }
+    say(`  │  ${c.green('✔')} Memory: ${c.bold(c.cyan('PERSISTENT'))} · Substrate: ${c.bold(c.green('LIVE'))}         │`);
+    say(`  │                                                     │`);
+    say(`  │  ${c.dim('Your substrate will remember you across sessions.')}  │`);
+    say(`  │  ${c.dim('Every command compounds. Every dream persists.')}     │`);
+    say(c.dim('  └───────────────────────────────────────────────────┘'));
+  } else {
+    say(`${c.green('✔')} API key saved to ~/.cmpsbl/credentials`);
+    if (validation.displayName) say(`${c.green('✔')} Welcome, ${c.bold(validation.displayName)}`);
   }
   blank();
 
@@ -1610,76 +1628,101 @@ function loadConfig(): ManaConfig | null {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// First Contact Ceremony
+// Typewriter Effect (Mana-specific)
+// ═══════════════════════════════════════════════════════════════
+
+async function typewrite(text: string, delayMs: number = 30): Promise<void> {
+  if (!isTTY()) { console.log(text); return; }
+  for (const ch of text) {
+    process.stdout.write(ch);
+    await sleep(delayMs);
+  }
+  process.stdout.write('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact Ceremony — Cinematic, Branded, Unforgettable
 // ═══════════════════════════════════════════════════════════════
 
 async function firstContactCeremony(project: DetectedProject, operatorName: string): Promise<void> {
   if (!isTTY()) return;
 
   blank();
-  say(c.muted('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌'));
+
+  // ── Typewritten intro — builds tension ──
+  await typewrite(`  ${c.dim('Mana is scanning your project...')}`, 25);
+  await sleep(600);
   blank();
 
-  say(`  ${c.cyan('◈')} Operator identified: ${c.bold(operatorName)}`);
-  await sleep(400);
+  // ── Operator Identity — DRAMATIC MOMENT ──
+  // The name appears in amber/gold with a box, pauses so they see it
+  say(c.dim('  ┌─────────────────────────────────────────────────┐'));
+  say(`  │  ${c.green('◈')} ${c.bold('OPERATOR RECOGNIZED')}                          │`);
+  say(`  │                                                   │`);
+  say(`  │    ${c.bold(c.amber(operatorName))}${' '.repeat(Math.max(0, 39 - operatorName.length))}│`);
+  say(`  │                                                   │`);
+  say(c.dim('  └─────────────────────────────────────────────────┘'));
+  await sleep(900); // ← Let the recognition sink in
+  blank();
 
-  say(`  ${c.cyan('◈')} Project: ${c.bold(project.projectName)}`);
-  await sleep(300);
+  // ── Project Intelligence — each line reveals progressively ──
+  const projectDetails = [
+    { label: 'Project', value: project.projectName, color: c.cyan },
+    { label: 'Language', value: project.language, color: c.green },
+    ...(project.framework ? [{ label: 'Framework', value: project.framework, color: c.purple }] : []),
+    { label: 'Source files', value: String(project.files.length), color: c.amber },
+    ...(project.entryPoint ? [{ label: 'Entry point', value: project.entryPoint, color: c.cyan }] : []),
+  ];
 
-  say(`  ${c.cyan('◈')} Language: ${c.bold(project.language)}`);
-  await sleep(300);
-
-  if (project.framework) {
-    say(`  ${c.cyan('◈')} Framework: ${c.bold(project.framework)}`);
-    await sleep(300);
-  }
-
-  say(`  ${c.cyan('◈')} Source files: ${c.bold(String(project.files.length))}`);
-  await sleep(300);
-
-  if (project.entryPoint) {
-    say(`  ${c.cyan('◈')} Entry point: ${c.bold(project.entryPoint)}`);
-    await sleep(300);
+  for (const detail of projectDetails) {
+    say(`  ${c.dim('◈')} ${c.dim(detail.label + ':')} ${c.bold(detail.color(detail.value))}`);
+    await sleep(250);
   }
 
   blank();
   await sleep(500);
 
-  say(c.muted('  ── Analyzing code boundaries ──'));
-  blank();
-  await sleep(600);
-
-  const signals = [
-    { icon: '🛡', from: 'DEFENSE',       action: 'Perimeter scan complete. No threats detected.' },
-    { icon: '🔍', from: 'ASCENSION',     action: `Scanning ${project.files.length} source files for enhancement targets...` },
-    { icon: '⚡', from: 'MANA',          action: 'Function boundaries identified. Attachment points mapped.' },
-    { icon: '📊', from: 'OBSERVABILITY', action: 'Telemetry channels opened. Health signals ready.' },
-    { icon: '🧬', from: 'GOVERNANCE',    action: 'Policy engine armed. Behavioral contracts loading.' },
-  ];
-
-  for (const sig of signals) {
-    say(`  ${sig.icon} ${c.cyan(sig.from)}`);
-    say(`     ${c.muted(sig.action)}`);
-    await sleep(350);
-  }
-
+  // ── Layer Analysis — keyword color-blocking ──
+  say(c.bold(c.cyan('  ── LAYER ANALYSIS ──')));
   blank();
   await sleep(400);
 
+  const signals = [
+    { icon: '🛡', from: 'DEFENSE',       action: 'Perimeter scan complete. No threats detected.' },
+    { icon: '🔍', from: 'ASCENSION',     action: `Scanning ${c.bold(c.amber(String(project.files.length)))} source files for ${c.bold(c.cyan('enhancement targets'))}...` },
+    { icon: '⚡', from: 'MANA',          action: `${c.bold(c.green('Function boundaries'))} identified. ${c.bold(c.purple('Attachment points'))} mapped.` },
+    { icon: '📊', from: 'OBSERVABILITY', action: `${c.bold(c.cyan('Telemetry'))} channels opened. ${c.bold(c.green('Health signals'))} ready.` },
+    { icon: '🧬', from: 'GOVERNANCE',    action: `${c.bold(c.amber('Policy engine'))} armed. ${c.bold(c.purple('Behavioral contracts'))} loading.` },
+  ];
+
+  for (const sig of signals) {
+    say(`  ${sig.icon} ${c.bold(c.cyan(sig.from))}`);
+    say(`     ${c.muted(sig.action)}`);
+    await sleep(400);
+  }
+
+  blank();
+  await sleep(500);
+
+  // ── The Reveal — Layer 2 Detected ──
   box([
     '',
-    '  Ascension has detected that your code is ready',
-    '  for a second layer.',
+    `  ${c.bold(c.green('ASCENSION'))} has detected that your code is ready`,
+    `  for a ${c.bold(c.purple('second layer'))}.`,
     '',
-    '  This layer enhances and protects your software',
-    '  without modifying a single line of your code.',
+    `  This layer ${c.bold(c.cyan('enhances'))} and ${c.bold(c.green('protects'))} your software`,
+    `  without modifying a ${c.bold('single line')} of your code.`,
     '',
-    `  ${c.green('✔')} Observability and Performance are already active.`,
+    `  ${c.green('✔')} ${c.bold('Observability')} and ${c.bold('Performance')} are ${c.bold(c.green('already active'))}.`,
     `  ${c.muted('  Use Mana to add Defense, Governance, or Memory.')}`,
     '',
     `  ${c.muted(`${project.files.length} files · ${project.language}${project.framework ? ` · ${project.framework}` : ''}`)}`,
     '',
   ], 'MANA — LAYER DETECTED');
+  blank();
+
+  // ── Patent + Branding ──
+  say(c.dim('  U.S. Patent App. No. 64/031,637 · © CMPSBL®'));
   blank();
 
   await sleep(800);
@@ -1815,6 +1858,18 @@ async function activationCeremony(
   blank();
 
   say(c.dim('  ── Your code. Enhanced. Protected. Unchanged. ──'));
+  blank();
+
+  // ── Vertical Exploration Invitation ──
+  say(c.bold(c.purple('  ◈ EXPLORE 12 INDUSTRY VERTICALS')));
+  blank();
+  say(`  ${c.dim('Each vertical has its own 40-primitive environment:')}`);
+  say(`  ${c.cyan('Cyber')} · ${c.green('Fintech')} · ${c.purple('Robotics')} · ${c.amber('Quantum')} · ${c.cyan('LLM')} · ${c.green('Agency')}`);
+  say(`  ${c.purple('Media')} · ${c.amber('Health')} · ${c.cyan('Legal')} · ${c.green('Gaming')} · ${c.purple('Education')} · ${c.amber('Ultimate')}`);
+  blank();
+  say(`  ${c.bold(c.cyan('cmpsbl.com/explore'))} ${c.dim('— See them all')}`);
+  blank();
+  say(c.dim('  U.S. Patent App. No. 64/031,637 · © CMPSBL® · PromptFluid™'));
   blank();
 }
 

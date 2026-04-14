@@ -5495,6 +5495,17 @@ async function cmdAscend(args: string[]): Promise<void> {
   say(c.dim('  No framework changes. No lock-in.'));
   say(c.dim('  Same code. Now governed.'));
   blank();
+
+  // ── Vertical Exploration Invitation ──
+  say(c.bold(c.purple('  ◈ EXPLORE 12 INDUSTRY VERTICALS')));
+  blank();
+  say(`  ${c.dim('Each vertical has its own 40-primitive environment:')}`);
+  say(`  ${c.cyan('Cyber')} · ${c.green('Fintech')} · ${c.purple('Robotics')} · ${c.amber('Quantum')} · ${c.cyan('LLM')} · ${c.green('Agency')}`);
+  say(`  ${c.purple('Media')} · ${c.amber('Health')} · ${c.cyan('Legal')} · ${c.green('Gaming')} · ${c.purple('Education')} · ${c.amber('Ultimate')}`);
+  blank();
+  say(`  ${c.bold(c.cyan('cmpsbl.com/explore'))} ${c.dim('— Browse all verticals')}`);
+  say(`  ${c.dim('U.S. Patent App. No. 64/029,678 · 64/031,637 · © CMPSBL®')}`);
+  blank();
 }
 
 /**
