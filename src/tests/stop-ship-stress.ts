@@ -93,22 +93,30 @@ import { enterExecutionBoundary, exitExecutionBoundary, resetSafeDetach, isInExe
 function test3_concurrentAttachDetach(): void {
   resetSafeDetach();
 
-  // Simulate execution boundary
-  enterExecutionBoundary();
-  assert(isInExecutionBoundary(), 'T3: Execution boundary active');
+  const hostKey = 'test-host';
 
-  enterExecutionBoundary(); // nested
-  assert(isInExecutionBoundary(), 'T3: Nested boundary active');
+  // Simulate execution boundary — #5: now host-scoped
+  enterExecutionBoundary(hostKey);
+  assert(isInExecutionBoundary(hostKey), 'T3: Execution boundary active');
 
-  exitExecutionBoundary();
-  assert(isInExecutionBoundary(), 'T3: Still in boundary after one exit');
+  enterExecutionBoundary(hostKey); // nested
+  assert(isInExecutionBoundary(hostKey), 'T3: Nested boundary active');
 
-  exitExecutionBoundary();
-  assert(!isInExecutionBoundary(), 'T3: Boundary clear after all exits');
+  exitExecutionBoundary(hostKey);
+  assert(isInExecutionBoundary(hostKey), 'T3: Still in boundary after one exit');
+
+  exitExecutionBoundary(hostKey);
+  assert(!isInExecutionBoundary(hostKey), 'T3: Boundary clear after all exits');
 
   // Extra exit should not go negative
-  exitExecutionBoundary();
-  assert(!isInExecutionBoundary(), 'T3: Extra exit does not corrupt state');
+  exitExecutionBoundary(hostKey);
+  assert(!isInExecutionBoundary(hostKey), 'T3: Extra exit does not corrupt state');
+
+  // #5: Different host should be independent
+  enterExecutionBoundary('other-host');
+  assert(!isInExecutionBoundary(hostKey), 'T3: Boundary isolation — host A unaffected by host B');
+  assert(isInExecutionBoundary('other-host'), 'T3: Boundary isolation — host B is active');
+  exitExecutionBoundary('other-host');
 }
 
 // ══════════════════════════════════════════════════════════════
