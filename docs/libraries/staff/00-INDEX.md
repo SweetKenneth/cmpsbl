@@ -34,7 +34,7 @@ This library is the single onboarding resource for every CMPSBL team member — 
 ## How to Use This Library
 
 1. **First day**: Read documents 01 and 04. Understand what you're building and what you must never do.
-2. **First week**: Read 02, 03, 05, and 09. Know the architecture, the codebase, and your team.
+2. **First week**: Read 02, 03, 05, and 09. Know the architecture, the codebase, and your role.
 3. **First two weeks**: Read the rest based on your role — Sales reads 06–07, Engineering reads 02–03–05, Communications reads 08.
 4. **Always**: Reference document 04 before making any architectural or policy decision.
 

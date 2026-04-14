@@ -185,7 +185,7 @@ Reconstructs complete event timelines from fragmented audit records — fills te
 > *CJPI: 84 · Classification: Activated (Architect)*
 
 ### ECONOMY — Dynamic Pricing Engine
-Multi-model consensus pricing with IQR outlier rejection, market weight blending, and CJPI-anchored valuation. Real-time cost attribution across the 40-node matrix.
+Multi-model consensus pricing with IQR outlier rejection, market weight blending, and CJPI-anchored valuation. Real-time cost attribution across the 40-Primitive matrix.
 > *CJPI: 85 · Classification: Activated (Architect)*
 
 ### INCLUSIVE — Neurodiversity Adaptation Engine

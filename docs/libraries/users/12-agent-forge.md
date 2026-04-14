@@ -24,7 +24,7 @@ The Agent Forge lets you create **custom named agents** with globally unique ide
 ### Agency Names (Optional)
 - **3-16 characters**
 - Letters, numbers, spaces, and hyphens
-- **Globally unique** — claim your team's identity
+- **Globally unique** — claim your organization's identity
 - Theme your agency however you want: gaming clans, rock bands, spy networks
 
 ### Examples

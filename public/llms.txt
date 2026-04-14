@@ -270,7 +270,7 @@ Each vertical inherits the 24-primitive universal Spine and hot-swaps 16 domain-
 - Support: https://cmpsbl.com/support
 - Publication: https://cmpsbl.com/publication
 - Heritage Paper: https://cmpsbl.com/heritage-paper
-- PromptFluid: https://cmpsbl.com/promptfluid
+- 
 
 ## LEGAL
 

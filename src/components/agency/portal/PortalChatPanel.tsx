@@ -323,7 +323,7 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
               value={input}
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Message your team..."
+              placeholder="Message your agency..."
               rows={1}
               className={cn(
                 "flex-1 resize-none bg-transparent border-0 focus:ring-0 focus:outline-none",
