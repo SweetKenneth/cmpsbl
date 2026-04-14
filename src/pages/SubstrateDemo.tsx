@@ -209,7 +209,7 @@ export default function SubstrateDemo() {
                 transition={{ delay: 0.1 }}
                 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4"
               >
-                <span className="text-primary">40 Modules</span>
+                <span className="text-primary">40 Primitives</span>
                 <span className="text-foreground"> · 12 Groups · 675+ Capabilities</span>
               </motion.h1>
 

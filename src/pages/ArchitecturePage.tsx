@@ -197,7 +197,7 @@ export default function ArchitecturePage() {
         title="Architecture — Agents, Engines, Layers & Organs | CMPSBL"
         description="Explore the complete 40-component substrate architecture organized into 4 categories: Agents that decide, Engines that process, Layers that protect, and Organs that power everything."
         image="https://cmpsbl.com/og/systems.jpg"
-        keywords={['AI substrate architecture', 'cognitive agents', 'AI engines', 'composable AI', 'AI operating system']}
+        keywords={['AI substrate architecture', 'cognitive agents', 'AI engines', 'composable AI', 'governed cognitive infrastructure']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },

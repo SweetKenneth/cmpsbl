@@ -51,14 +51,14 @@ export default function Contact() {
       <p>Camp three — and this is where I ultimately landed — implement a constrained version. Let the substrate identify opportunities for outbound communication, draft the message, queue it for review, but never send without human approval. Give it the capability to propose contact, not to make contact.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What We Built</h2>
-      <p>We went with camp three, with additional constraints. The CONTACT module — named for what it does — operates as a proposal engine. When THREAD identifies a capability-sharing opportunity, CONTACT drafts a structured communication package: what was discovered, who would benefit, and why the substrate believes outreach is warranted.</p>
+      <p>We went with camp three, with additional constraints. The CONTACT primitive — named for what it does — operates as a proposal engine. When THREAD identifies a capability-sharing opportunity, CONTACT drafts a structured communication package: what was discovered, who would benefit, and why the substrate believes outreach is warranted.</p>
 
       <p>Every package goes through four gates: <Link to="/blog/trust-but-verify" className="text-primary hover:underline">AUDIT</Link> verification (is the capability claim accurate?), <Link to="/blog/the-governance-question" className="text-primary hover:underline">GOVERNANCE</Link> policy check (does the outreach comply with all constraints?), <Link to="/blog/cybersecurity-through-cognition" className="text-primary hover:underline">DEFENSE</Link> security scan (could this communication be exploited?), and human review (does a human approve the send?). All four must pass.</p>
 
       <p>In the first week of operation, CONTACT generated 23 outreach proposals. Twelve passed all automated gates. Of those twelve, we approved six. The proposals were genuinely useful — notifying partner systems about new capabilities they had expressed interest in, suggesting integration pathways that neither side had considered, and flagging potential compatibility issues before they became problems.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Honest Assessment</h2>
-      <p>CONTACT is, right now, the most constrained module in the substrate. Four approval gates. Human review on every outbound action. Detailed audit logging via <Link to="/blog/mapping-what-we-built" className="text-primary hover:underline">ATLAS</Link>. Kill switch accessible to any team member.</p>
+      <p>CONTACT is, right now, the most constrained primitive in the substrate. Four approval gates. Human review on every outbound action. Detailed audit logging via <Link to="/blog/mapping-what-we-built" className="text-primary hover:underline">ATLAS</Link>. Kill switch accessible to any team member.</p>
 
       <p>But we'd be dishonest if we didn't acknowledge what it represents. The substrate identified a gap in its own capabilities — the ability to proactively share discoveries — and designed a solution for that gap. We implemented a restricted version. But the idea came from the system, not from us.</p>
 
