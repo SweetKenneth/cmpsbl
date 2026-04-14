@@ -10,8 +10,6 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
-import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
-import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 
 export interface CapabilityForExport {
