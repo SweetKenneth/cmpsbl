@@ -280,7 +280,7 @@ export const publicRoutes = (
     <Route path="/keys" element={<Navigate to="/api-access" replace />} />
     <Route path="/careers" element={<Navigate to="/about" replace />} />
     <Route path="/x" element={<ProprietaryEvolution />} />
-    <Route path="/ascension" element={<RestorationShop />} />
+    <Route path="/ascension" element={<ProprietaryEvolution />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
     <Route path="/junkyard" element={<JunkyardPage />} />
