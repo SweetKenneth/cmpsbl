@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/mesh",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "CMPSBL\u00ae Mesh Telemetry Client \u2014 Emit/subscribe to node communication events",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
