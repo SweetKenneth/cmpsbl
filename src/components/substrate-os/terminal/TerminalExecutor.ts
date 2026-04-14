@@ -1212,7 +1212,119 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     }
   }
 
-  // Execute substrate commands
+  // ═══ BRIDGE-FIRST: Route through pf-substrate via registry handlers ═══
+  // All module commands go through the living substrate. Legacy if/else chain is fallback only.
+  if (base.includes('.')) {
+    try {
+      const { getHandler, hasHandler } = await import('@/lib/terminal/validate-registry');
+      
+      // Lazy-register all handlers once
+      if (!hasHandler('core.status')) {
+        const [
+          { registerCoreHandlers },
+          { registerSpineHandlers },
+          { registerOCGHandlers },
+          { registerInfraModuleHandlers },
+          { registerEncodeModuleHandlers },
+          { registerMeshHandlers },
+          { registerEncodedHandlers },
+          { registerPowerHandlers },
+          { registerGovernanceHandlers },
+          { registerObservabilityHandlers },
+          { registerAnalyticsHandlers },
+          { registerExecutionHandlers },
+          { registerSEBAHandlers },
+          { registerSynergyHandlers },
+          { registerHardeningHandlers },
+          { registerExpansionHandlers },
+          { registerSystemAuditHandlers },
+          { registerInfraHandlers },
+        ] = await Promise.all([
+          import('@/lib/terminal/core-handlers'),
+          import('@/lib/terminal/spine-handlers'),
+          import('@/lib/terminal/ocg-handlers'),
+          import('@/lib/terminal/infra-module-handlers'),
+          import('@/lib/terminal/encode-handlers'),
+          import('@/lib/terminal/mesh-handlers'),
+          import('@/lib/terminal/encoded-handlers'),
+          import('@/lib/terminal/power-handlers'),
+          import('@/lib/terminal/governance-handlers'),
+          import('@/lib/terminal/observability-handlers'),
+          import('@/lib/terminal/analytics-handlers'),
+          import('@/lib/terminal/execution-handlers'),
+          import('@/lib/terminal/seba-handlers'),
+          import('@/lib/terminal/synergy-handlers'),
+          import('@/lib/terminal/hardening-handlers'),
+          import('@/lib/terminal/expansion-handlers'),
+          import('@/lib/terminal/system-audit-handlers'),
+          import('@/lib/terminal/infra-handlers'),
+        ]);
+        registerCoreHandlers();
+        registerSpineHandlers();
+        registerOCGHandlers();
+        registerInfraModuleHandlers();
+        registerEncodeModuleHandlers();
+        registerMeshHandlers();
+        registerEncodedHandlers();
+        registerPowerHandlers();
+        registerGovernanceHandlers();
+        registerObservabilityHandlers();
+        registerAnalyticsHandlers();
+        registerExecutionHandlers();
+        registerSEBAHandlers();
+        registerSynergyHandlers();
+        registerHardeningHandlers();
+        registerExpansionHandlers();
+        registerSystemAuditHandlers();
+        registerInfraHandlers();
+      }
+
+      const handler = getHandler(base);
+      if (handler) {
+        // Build structured args from positional arguments
+        const structuredArgs: Record<string, unknown> = {};
+        args.forEach((arg, i) => { structuredArgs[`arg${i}`] = arg; });
+        if (args[0]) structuredArgs.input = args[0];
+        if (args[1]) structuredArgs.type = args[1];
+        if (args[2]) structuredArgs.confidence = args[2];
+        // Pass raw args array for handlers that need positional access
+        structuredArgs._args = args;
+        structuredArgs._raw = command;
+
+        const handlerResult = await handler(structuredArgs);
+        const data = handlerResult as Record<string, unknown>;
+
+        // If handler returned formatted output, use it directly
+        if (data?.formatted && Array.isArray(data.formatted)) {
+          return { success: true, output: (data.formatted as string[]).join('\n') };
+        }
+
+        // Governance-style output
+        if (typeof data?.output === 'string' && data?.status) {
+          return { success: data.status !== 'error', output: `◉ ${base}\n\n${data.output}` };
+        }
+
+        if (data?.success === false) {
+          return { success: false, output: `▓ ${data.error || 'Command failed'}` };
+        }
+
+        return {
+          success: true,
+          output: `◉ ${base}\n\n${JSON.stringify(data?.data || data, null, 2)}`,
+          data: data?.data || data,
+        };
+      }
+
+      // No handler found — fall through to legacy chain, then substrate.invoke
+    } catch (bridgeErr) {
+      // Bridge error — fall through to legacy chain
+      if (debugMode.isEnabled()) {
+        console.warn(`[bridge-first] Error for ${base}:`, bridgeErr);
+      }
+    }
+  }
+
+  // ═══ LEGACY EXECUTION CHAIN (fallback for commands not yet in registry) ═══
   try {
     let result;
 
