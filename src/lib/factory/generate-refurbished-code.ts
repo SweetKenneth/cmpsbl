@@ -36,6 +36,14 @@ interface LanguageAdapter {
   /** Transform a JS-syntax guard block into language-native call syntax */
   transformGuard: (jsGuard: string) => string;
   fileExtension: string;
+
+  // ── Extended adapter methods (polyglot unification) ──
+  /** Generate the opaque dispatch preamble in target-native syntax */
+  dispatchPreamble?: (dispatchTable: number[], collisionMatrix: number[], seeds: { iv: number; epoch: number }) => string;
+  /** Generate obfuscated scoring constants in target-native syntax */
+  obfuscatedConstants?: () => string;
+  /** Generate runnable self-verification block in target-native syntax */
+  selfVerifyBlock?: (fingerprint: string) => string;
 }
 
 // ── Guard Syntax Transform Helpers ──
