@@ -625,6 +625,18 @@ const EngineCard = ({ name, tag, duties, color }: { name: string; tag: string; d
   </div>
 );
 
+const ArsenalCard = ({ name, path, description, pipelineUse, color }: { name: string; path: string; description: string; pipelineUse: string; color: string }) => (
+  <div className="bg-card border border-border rounded-lg p-4">
+    <div className={`text-base font-bold ${color}`}>{name}</div>
+    <div className="text-[10px] font-mono text-muted-foreground mb-2">{path}</div>
+    <p className="text-xs text-muted-foreground mb-3">{description}</p>
+    <div className="border-t border-border/40 pt-2">
+      <div className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase mb-1">Pipeline Use</div>
+      <p className="text-xs text-foreground/80">{pipelineUse}</p>
+    </div>
+  </div>
+);
+
 const WiringRow = ({ num, from, to, description, status }: { num: number; from: string; to: string; description: string; status: string }) => (
   <div className="bg-card border border-border rounded-lg p-4 flex flex-col md:flex-row md:items-center gap-3">
     <div className="flex items-center gap-3 shrink-0">
