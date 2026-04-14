@@ -193,8 +193,7 @@ class EdgeHealthMonitor {
 
       const { error } = await supabase.functions.invoke(functionName, {
         body: { action: 'health_check' },
-        signal: controller.signal as any,
-      });
+      } as Record<string, unknown>);
 
       clearTimeout(timeout);
       const latency = Date.now() - start;
