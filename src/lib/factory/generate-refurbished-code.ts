@@ -212,9 +212,16 @@ function csharpGuard(g: string): string {
   return convertObjectArgs(g, toPascalCase, ' = ', (p) => `(new { ${p} })`);
 }
 
-/** PHP: `({ key: val })` → `(['key' => val])` */
+/** PHP: `.method({ key: val })` → `::method(['key' => val])` */
 function phpGuard(g: string): string {
-  return convertObjectArgs(g, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
+  // Convert JS dot-method to PHP static method syntax
+  let out = g.replace(/\.(\w+)\(/g, '::$1(');
+  // Convert JS object args to PHP associative array args
+  out = convertObjectArgs(out, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
+  // Convert JS booleans/null to PHP equivalents
+  out = out.replace(/\btrue\b/g, 'true').replace(/\bfalse\b/g, 'false').replace(/\bnull\b/g, 'null');
+  // Convert JS numeric separators: 3_600_000 is valid in PHP 7.4+, keep as-is
+  return out;
 }
 
 /**
