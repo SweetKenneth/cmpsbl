@@ -28,7 +28,7 @@ import {
 
 // ── Language Syntax Adapters ──
 
-interface LanguageAdapter {
+export interface LanguageAdapter {
   comment: (text: string) => string;
   blockComment: (lines: string[]) => string;
   importStatement: (module: string, symbols: string[]) => string;
@@ -3028,7 +3028,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 };
 
 /** Resolve the adapter for a detected language, falling back to TypeScript */
-function getAdapter(language: string): LanguageAdapter {
+export function getAdapter(language: string): LanguageAdapter {
   // Try exact match first, then case-insensitive lookup (handles 'python' → 'Python', etc.)
   if (ADAPTERS[language]) return ADAPTERS[language];
   const lower = language.toLowerCase();
