@@ -1320,7 +1320,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     } catch (bridgeErr) {
       // Bridge error — fall through to legacy chain
       if (debugMode.isEnabled()) {
-        console.warn(`[bridge-first] Error for ${base}:`, bridgeErr);
+        log.warn('terminal', `[bridge-first] Error for ${base}`, { error: bridgeErr instanceof Error ? bridgeErr.message : 'Unknown' });
       }
     }
   }
@@ -5548,7 +5548,12 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} memor
         const handler = getHandler(base);
         
         if (handler) {
-          const handlerResult = await handler();
+          const structuredInfraArgs: Record<string, unknown> = {};
+          args.forEach((arg, i) => { structuredInfraArgs[`arg${i}`] = arg; });
+          if (args[0]) structuredInfraArgs.input = args[0];
+          structuredInfraArgs._args = args;
+          structuredInfraArgs._raw = command;
+          const handlerResult = await handler(structuredInfraArgs);
           const data = handlerResult as Record<string, unknown>;
           
           // If handler returned a formatted output, use it directly
