@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 
-// Blog post images (chronological platform story)
+// Blog post images (chronological substrate story)
 import ch01Img from "@/assets/blog/promptfluid-market-disruptor.jpg";
 import ch02Img from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
 import ch03Img from "@/assets/blog/promptfluid-brain-learning-core.jpg";
@@ -425,7 +425,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
   );
 }
 
-// ─── Static human posts (chronological platform story) ───
+// ─── Static human posts (chronological substrate story) ───
 const HUMAN_POSTS: BlogPost[] = [
   {
     id: 'ch20-signal', title: "Signal to Silicon: The Complete Journey",
@@ -439,7 +439,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the substrate from scratch. Here's why, and what we learned.",
     href: "/blog/burning-it-down", category: "Technology",
     date: "2026-02-10", readTime: "20 min", image: ch19Img,
-    imageAlt: "Platform rebuild from scratch", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "Substrate rebuild from scratch", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch18-evolving', title: "When Software Starts Evolving",
@@ -467,7 +467,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "We built INCLUSIVE because accessibility shouldn't require a dedicated team. AI-powered scanning and remediation for every application.",
     href: "/blog/accessibility-is-infrastructure", category: "Accessibility",
     date: "2025-10-15", readTime: "10 min", image: ch15Img,
-    imageAlt: "INCLUSIVE module accessibility mission", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "INCLUSIVE primitive accessibility mission", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch14-cybersecurity', title: "Cybersecurity Through Cognition",
@@ -495,7 +495,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "An honest comparison against OpenAI, Anthropic, LangChain, and others. What we do better. What they do better.",
     href: "/blog/how-we-compare", category: "Research",
     date: "2025-06-20", readTime: "16 min", image: ch11Img,
-    imageAlt: "AI platform landscape comparison", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "AI substrate landscape comparison", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch10-forget', title: "Why Agents Forget",
@@ -509,7 +509,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "Eight modules and no documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure.",
     href: "/blog/building-on-the-substrate", category: "Development",
     date: "2025-05-25", readTime: "11 min", image: ch09Img,
-    imageAlt: "Developer building on the platform", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "Developer building on the substrate", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch08-dream', title: "What If Software Could Dream",
@@ -526,7 +526,7 @@ const HUMAN_POSTS: BlogPost[] = [
     imageAlt: "ACCESS Layer identity and entitlements", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
-    id: 'ch06-nodes-talk', title: "Modules That Talk",
+    id: 'ch06-nodes-talk', title: "Primitives That Talk",
     excerpt: "Five modules needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the platform.",
     href: "/blog/nodes-that-talk", category: "Technology",
     date: "2025-04-02", readTime: "12 min", image: ch06Img,
@@ -544,14 +544,14 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "We didn't plan to build a security module. Then automated attacks found our API endpoints before we'd even launched.",
     href: "/blog/when-bots-found-us-first", category: "Security",
     date: "2025-03-05", readTime: "14 min", image: ch04Img,
-    imageAlt: "DEFENSE module security architecture", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "DEFENSE primitive security architecture", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch03-remember', title: "Teaching Machines to Remember",
     excerpt: "The hardest problem in AI isn't intelligence — it's continuity. How we built a three-tier memory architecture for persistent recall.",
     href: "/blog/teaching-machines-to-remember", category: "AI Technology",
     date: "2025-02-08", readTime: "15 min", image: ch03Img,
-    imageAlt: "BRAIN module memory architecture", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "BRAIN primitive memory architecture", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch02-routing', title: "Routing the Unknown",
@@ -565,12 +565,12 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL platform. This is the honest story of why.",
     href: "/blog/the-first-line-of-code", category: "Platform",
     date: "2024-12-15", readTime: "12 min", image: ch01Img,
-    imageAlt: "The beginning of the CMPSBL platform", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
+    imageAlt: "The beginning of the CMPSBL substrate", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   // ─── Chapters 21-40 ───
   { id: 'ch21-cascade', title: "When One Model Isn't Enough", excerpt: "A single LLM can't handle everything. CASCADE chains multiple models into adaptive processes that match complexity to capability.", href: "/blog/when-one-model-isnt-enough", category: "AI Technology", date: "2025-03-25", readTime: "12 min", image: ch21Img, imageAlt: "CASCADE adaptive processing", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch22-decode', title: "Breaking Problems Apart", excerpt: "Complex prompts fail. DECODE decomposes them into sub-tasks, routes each to the right model, and reassembles coherent responses.", href: "/blog/breaking-problems-apart", category: "AI Technology", date: "2025-04-08", readTime: "11 min", image: ch22Img, imageAlt: "DECODE task decomposition", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
-  { id: 'ch23-proof', title: "Trust But Verify", excerpt: "AI outputs are probabilistic. PROOF validates them against constraints, catches hallucinations, and ensures quality thresholds.", href: "/blog/trust-but-verify", category: "AI Technology", date: "2025-05-18", readTime: "13 min", image: ch23Img, imageAlt: "PROOF validation module", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
+  { id: 'ch23-proof', title: "Trust But Verify", excerpt: "AI outputs are probabilistic. PROOF validates them against constraints, catches hallucinations, and ensures quality thresholds.", href: "/blog/trust-but-verify", category: "AI Technology", date: "2025-05-18", readTime: "13 min", image: ch23Img, imageAlt: "PROOF validation primitive", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch24-atlas', title: "Mapping What We Built", excerpt: "With twelve modules running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time.", href: "/blog/mapping-what-we-built", category: "Platform", date: "2025-06-14", readTime: "10 min", image: ch24Img, imageAlt: "ATLAS capability map", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch25-cognitives', title: "The Composable Agent", excerpt: "Composable Cognitives are personality-infused, skill-weighted AI agents assembled from platform modules.", href: "/blog/the-composable-agent", category: "AI Technology", date: "2025-07-20", readTime: "14 min", image: ch25Img, imageAlt: "Composable Cognitive agents", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch26-agency', title: "Teams of Machines", excerpt: "One agent isn't enough for real work. The Agency system orchestrates teams of cognitives with leaders, specialists, and shared learning.", href: "/blog/teams-of-machines", category: "AI Technology", date: "2025-08-12", readTime: "15 min", image: ch26Img, imageAlt: "Agency system", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
@@ -579,7 +579,7 @@ const HUMAN_POSTS: BlogPost[] = [
   { id: 'ch29-store', title: "The Marketplace", excerpt: "We built discoveries nobody could find. The Store became a discovery layer — browse, preview, purchase, and deploy platform-generated software.", href: "/blog/the-marketplace", category: "Platform", date: "2025-10-25", readTime: "10 min", image: ch29Img, imageAlt: "CMPSBL Store", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch30-packs', title: "Packing Intelligence", excerpt: "Individual discoveries are useful. Packs bundle related capabilities into themed collections — curated, priced, and instantly deployable.", href: "/blog/packing-intelligence", category: "Platform", date: "2025-11-05", readTime: "9 min", image: ch30Img, imageAlt: "Capability Packs", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch31-intent', title: "The Intent Layer", excerpt: "Users say what they want, not how to get it. The Intent Mesh translates natural language into platform operations across any number of modules.", href: "/blog/the-intent-layer", category: "AI Technology", date: "2025-11-20", readTime: "13 min", image: ch31Img, imageAlt: "Intent Mesh", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
-  { id: 'ch32-architecture', title: "The Full Architecture", excerpt: "From one function to a fully interconnected platform. A technical map of the complete cognitive architecture and how it all fits together.", href: "/blog/thirty-eight-nodes-deep", category: "Technology", date: "2025-12-15", readTime: "18 min", image: ch32Img, imageAlt: "Platform architecture map", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
+  { id: 'ch32-architecture', title: "The Full Architecture", excerpt: "From one function to a fully interconnected platform. A technical map of the complete cognitive architecture and how it all fits together.", href: "/blog/thirty-eight-nodes-deep", category: "Technology", date: "2025-12-15", readTime: "18 min", image: ch32Img, imageAlt: "Substrate architecture map", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch33-stream', title: "The Memory Stream", excerpt: "Every interaction feeds the stream. Memory Stream crystallizes cognitive signals into scored, tiered, exportable software memories.", href: "/blog/the-memory-stream", category: "Technology", date: "2026-01-05", readTime: "14 min", image: ch33Img, imageAlt: "Memory Stream crystallization", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch34-economics', title: "The Economics of Intelligence", excerpt: "Running cognitive infrastructure isn't free. How we track cost per request, optimize model selection, and make AI economically sustainable.", href: "/blog/the-economics-of-intelligence", category: "Research", date: "2026-01-20", readTime: "12 min", image: ch34Img, imageAlt: "AI economics", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch35-gaming', title: "Gaming the Platform", excerpt: "Games need real-time AI that remembers, adapts, and creates. The Gaming Engine applies cognitive infrastructure to interactive entertainment.", href: "/blog/gaming-the-substrate", category: "Technology", date: "2026-01-30", readTime: "11 min", image: ch35Img, imageAlt: "Gaming engine", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
@@ -587,7 +587,7 @@ const HUMAN_POSTS: BlogPost[] = [
   { id: 'ch37-standards', title: "Open Standards", excerpt: "We registered governance domains, published protocol specs, and open-sourced our terminology. Building standards, not moats.", href: "/blog/open-standards", category: "Governance", date: "2026-02-15", readTime: "10 min", image: ch37Img, imageAlt: "Open standards", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch38-wrong', title: "What We Got Wrong", excerpt: "Not everything worked. Over-engineered modules, premature abstractions, and architectural decisions we'd reverse if we could.", href: "/blog/what-we-got-wrong", category: "Research", date: "2026-02-22", readTime: "15 min", image: ch38Img, imageAlt: "Engineering retrospective", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch39-scanner', title: "The Scanner", excerpt: "Security and accessibility scanning shouldn't require consultants. The Scanner runs automated audits and generates actionable fix reports.", href: "/blog/the-scanner", category: "Security", date: "2026-03-01", readTime: "11 min", image: ch39Img, imageAlt: "The Scanner", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
-  { id: 'ch40-now', title: "Where We Are Now", excerpt: "Forty chapters later. The current state of the platform, what's running in production, and what comes next.", href: "/blog/where-we-are-now", category: "Platform", date: "2026-03-07", readTime: "16 min", image: ch40Img, imageAlt: "Current state of the platform", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
+  { id: 'ch40-now', title: "Where We Are Now", excerpt: "Forty chapters later. The current state of the platform, what's running in production, and what comes next.", href: "/blog/where-we-are-now", category: "Platform", date: "2026-03-07", readTime: "16 min", image: ch40Img, imageAlt: "Current state of the substrate", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch41-thread', title: "Following the Thread", excerpt: "DREAM produced a composition blueprint connecting two independent subsystems. Two engineers traced the signal. What they found changed the roadmap.", href: "/blog/following-the-thread", category: "Research", date: "2026-03-12", readTime: "18 min", image: ch41Img, imageAlt: "The DREAM signal convergence", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch42-contact', title: "Contact", excerpt: "The substrate proposed outbound communication — reaching out to external systems on its own initiative. The room went quiet.", href: "/blog/contact", category: "Research", date: "2026-03-17", readTime: "16 min", image: ch42Img, imageAlt: "Substrate autonomous outreach", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
   { id: 'ch43-epoch', title: "The CONTACT Epoch", excerpt: "Self-composition, proactive intelligence, recursive discovery. The substrate isn't just running — it's participating in its own development.", href: "/blog/the-contact-epoch", category: "Platform", date: "2026-03-22", readTime: "14 min", image: ch43Img, imageAlt: "The CONTACT epoch begins", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering" },
