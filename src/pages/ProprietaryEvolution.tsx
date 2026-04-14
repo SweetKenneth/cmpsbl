@@ -2,14 +2,18 @@
  * Ascension — /ascension
  * Simplified 4-step wizard: Upload → Trace (optional) → Processing → Results
  * 
- * Hides all internal complexity. Users see clean progress and results.
+ * #12: UI consumes orchestration service, not internal table semantics
+ * #13: Run-scoped reset via orchestrator
+ * #14: Milestone-based progress anchored to real backend transitions
+ * #15: Canonical results payload — one object everywhere
+ * 
  * PERF: Pure CSS animations — no framer-motion dependency.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Upload, Link2, Activity, Sparkles, Check } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
@@ -21,6 +25,17 @@ import { ProcessingStep } from '@/components/proprietary-evolution/ProcessingSte
 import { ResultsStep } from '@/components/proprietary-evolution/ResultsStep';
 import type { TraceContext } from '@/lib/vision/trace';
 import type { CandidateAnalysis } from '@/components/proprietary-evolution/ingest-utils';
+import {
+  createRun,
+  acceptInput,
+  attachTrace,
+  storeCandidate,
+  runAnalysis,
+  getResults,
+  resetRun,
+  type AscensionRun,
+  type AscensionResults,
+} from '@/lib/ascension/orchestrator';
 
 const STEPS = [
   { id: 'upload', label: 'Upload', icon: Upload },
@@ -31,52 +46,60 @@ const STEPS = [
 
 export default function ProprietaryEvolution() {
   const [step, setStep] = useState(0);
-  const [trace, setTrace] = useState<TraceContext | null>(null);
-  const [resultStats, setResultStats] = useState<{ discovered: number; ascended: number; topScore: number } | null>(null);
+  const [results, setResults] = useState<AscensionResults | null>(null);
+  const runRef = useRef<AscensionRun | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
-  const handleUploadComplete = useCallback((_analysis: CandidateAnalysis) => {
+  const handleUploadComplete = useCallback((analysis: CandidateAnalysis) => {
+    if (!user) {
+      toast({ title: 'Not signed in', variant: 'destructive' });
+      return;
+    }
+    // Create run and accept input
+    const run = createRun(user.id);
+    acceptInput(
+      run,
+      analysis.candidateNode || 'UPLOADED',
+      analysis.language || 'typescript',
+      analysis.files?.map(f => ({ name: f.name, content: f.content || '' })) || [],
+    );
+    runRef.current = run;
     setStep(1);
-  }, []);
+  }, [user, toast]);
 
   const handleTraceAttach = useCallback((t: TraceContext) => {
-    setTrace(t);
+    if (runRef.current) attachTrace(runRef.current, t);
     setStep(2);
   }, []);
 
   const handleTraceSkip = useCallback(() => {
-    setTrace(null);
     setStep(2);
   }, []);
 
-  const handleProcessingComplete = useCallback((stats: { discovered: number; ascended: number; topScore: number }) => {
-    setResultStats(stats);
+  const handleProcessingComplete = useCallback((resultData: AscensionResults) => {
+    setResults(resultData);
     setStep(3);
   }, []);
 
   const handleReset = useCallback(async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any)
-          .from('artifact_registry')
-          .delete()
-          .eq('user_id', user.id)
-          .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
-      }
-    } catch { /* non-fatal */ }
+    // #13: Run-scoped reset — only this run's artifacts
+    if (runRef.current) {
+      try {
+        await resetRun(runRef.current);
+      } catch { /* non-fatal */ }
+    }
+    runRef.current = null;
     setStep(0);
-    setTrace(null);
-    setResultStats(null);
+    setResults(null);
     toast({ title: 'Reset complete', description: 'Ready for a new analysis.' });
   }, [toast]);
 
   const phases = [
     <SimpleUploadStep key="upload" onComplete={handleUploadComplete} />,
     <TraceAttachStep key="trace" onAttach={handleTraceAttach} onSkip={handleTraceSkip} />,
-    <ProcessingStep key="process" trace={trace} onComplete={handleProcessingComplete} />,
-    <ResultsStep key="results" stats={resultStats || { discovered: 0, ascended: 0, topScore: 0 }} onReset={handleReset} />,
+    <ProcessingStep key="process" run={runRef.current} onComplete={handleProcessingComplete} />,
+    <ResultsStep key="results" results={results} onReset={handleReset} />,
   ];
 
   return (
