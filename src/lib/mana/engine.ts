@@ -1458,34 +1458,63 @@ export async function attach(
 
 /**
  * Detach all Layer 2 capabilities — restore original functions.
- * HARDENED: Verifies all wrappers are removed post-detach.
+ * V1 WIRING: Uses Safe Detach protocol + Audit Chain integration.
+ * 
+ * HARDENED GUARANTEES:
+ * - Will not detach mid-execution (waits for boundary clear)
+ * - Idempotent — same host returns same receipt
+ * - Post-detach verification that all wrappers are removed
+ * - Audit trail for every detach operation
  */
-export function detach(hostModule: Record<string, unknown>): ManaManifest {
+export async function detach(hostModule: Record<string, unknown>): Promise<ManaManifest> {
   if (state !== 'symbiotic') {
     throw new Error('[MANA] Not attached. Nothing to detach.');
   }
 
   state = 'detaching';
+  const manifest = getManifest();
 
-  // Restore all originals — these are the FIRST (real) originals, not intermediate wrappers
-  for (const [functionName, originalFn] of originals.entries()) {
-    hostModule[functionName] = originalFn;
-  }
+  // V1 WIRING: Audit event before detach
+  recordAuditEvent('mana.engine', 'detach_start', 'initiated', {
+    hostPackage,
+    hostVersion,
+    attachmentPointCount: attachmentPoints.size,
+  });
 
-  // HARDENING: Post-detach verification — ensure no MANA_LAYER_TAG remains
-  for (const [functionName] of originals.entries()) {
-    const fn = hostModule[functionName];
-    if (typeof fn === 'function' && (fn as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
-      // Force restore from originals — this should never happen but guarantees clean detach
-      const orig = originals.get(functionName);
-      if (orig) hostModule[functionName] = orig;
+  // V1 WIRING: Use safe detach protocol — transactional with boundary wait
+  const receipt = await safeDetach(hostModule, originals, hostPackage, manifest);
+
+  if (!receipt.success) {
+    // Safe detach failed — fall back to direct restoration
+    for (const [functionName, originalFn] of originals.entries()) {
+      hostModule[functionName] = originalFn;
     }
+
+    // Post-detach verification — ensure no MANA_LAYER_TAG remains
+    for (const [functionName] of originals.entries()) {
+      const fn = hostModule[functionName];
+      if (typeof fn === 'function' && (fn as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
+        const orig = originals.get(functionName);
+        if (orig) hostModule[functionName] = orig;
+      }
+    }
+
+    recordAuditEvent('mana.engine', 'detach_fallback', 'fallback_used', {
+      reason: receipt.error,
+      receiptId: receipt.receiptId,
+    });
   }
 
   state = 'detached';
   detachedAt = Date.now();
 
-  const manifest = getManifest();
+  // V1 WIRING: Audit event for completed detach
+  recordAuditEvent('mana.engine', 'detach_complete', receipt.success ? 'clean' : 'fallback', {
+    receiptId: receipt.receiptId,
+    restoredFunctions: receipt.restoredFunctions,
+    verificationPassed: receipt.verificationPassed,
+    idempotencyKey: receipt.idempotencyKey,
+  });
 
   originals.clear();
   attachmentPoints.clear();
