@@ -50,13 +50,15 @@ install → configure → attach(target) → Lex evaluates → execute safely
 
 ### V1 Acceptance Criteria
 
-- [ ] All verdicts deterministic — one event, one outcome
-- [ ] No double wrapping possible
-- [ ] No mid-execution detach
-- [ ] Detach fully restores originals (verified)
-- [ ] Fingerprint gate blocks invalid, limits suspect
-- [ ] Audit chain is tamper-evident and replayable
-- [ ] All 12 stress tests pass
+- [x] All verdicts deterministic — one event, one outcome
+- [x] No double wrapping possible
+- [x] No mid-execution detach (execution boundary tracking)
+- [x] Detach fully restores originals (verified via safe detach protocol)
+- [x] Fingerprint gate blocks invalid, limits suspect
+- [x] Audit chain is tamper-evident and replayable
+- [x] All 12 stress tests pass (70 assertions)
+- [x] V1 wiring verified — 6 integration tests (19 assertions)
+- [x] Engine → Fingerprint Gate → Audit Chain → Safe Detach all connected
 
 ---
 
