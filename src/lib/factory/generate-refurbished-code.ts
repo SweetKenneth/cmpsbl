@@ -3573,8 +3573,13 @@ export function generateRefurbishedCode(
   }
 
   // ── PHP: Single opening tag ────────────────────────────────────────
-  // PHP files need exactly ONE <?php tag at the very top.
-  const phpOpenTag = detected.toLowerCase() === 'php' ? '<?php\n' : '';
+  // PHP files need exactly ONE <?php tag at the very top. Strip any from
+  // the verbatim source since we control the opening tag.
+  const isPhp = detected.toLowerCase() === 'php';
+  const phpOpenTag = isPhp ? '<?php\n' : '';
+  const finalVerbatim = isPhp
+    ? verbatimSource.replace(/^<\?php\s*/gm, '').trimStart()
+    : verbatimSource;
 
   // ── Orchestrator: Connects Layer 2 to Layer 1 ────────────────────
   // Generates the CMPSBLOrchestrator class that wraps the original code's
