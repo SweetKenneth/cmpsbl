@@ -315,7 +315,7 @@ export default function RestorationShop() {
     setReport(restorationReport);
 
     const fingerprint = restorationReport.cjpiCertificate.fingerprint;
-    const hardened = generateAscendedCode(code, selected, fingerprint, undefined, fileName ?? undefined);
+    const hardened = generateAscendedCode(code, selected, fingerprint, detectedLang, fileName ?? undefined);
     setAscendedCode(hardened);
 
     await saveRestorationSession({
