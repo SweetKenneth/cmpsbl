@@ -143,7 +143,7 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [ ] CLI gets push notifications for dream completions
 
 #### 5.3 — Documentation & Developer Experience
-- [x] Ship `cmpsbl doctor` command that validates full substrate connectivity (17 primitives, parallel health check)
+- [x] Ship `cmpsbl doctor` command that validates full substrate connectivity (40 Primitives: 12 Organs, 12 Layers, 8 Engines, 8 Agents — categorized parallel health check)
 - [ ] Update `@cmpsbl/cli` README with cognitive loop examples
 - [ ] Publish "The Living Substrate" architecture doc
 
