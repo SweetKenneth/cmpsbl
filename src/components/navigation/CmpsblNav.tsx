@@ -86,6 +86,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: "Resources",
     items: [
       { name: "User Guides", href: "/docs", icon: BookOpen, description: "Developer guides, API reference & tutorials" },
+      { name: "Case Studies", href: "/case-studies", icon: Eye, description: "Real-world Ascension results" },
       { name: "Blog", href: "/blog", icon: Newspaper, description: "Engineering insights & updates" },
       { name: "Changelog", href: "/changelog", icon: ScrollText, description: "Version history & release notes" },
       { name: "Heritage Paper", href: "/heritage-paper", icon: Award, description: "The founding technical paper" },
