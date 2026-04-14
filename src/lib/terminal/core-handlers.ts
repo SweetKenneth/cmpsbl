@@ -123,14 +123,26 @@ ${lines.join('\n')}
   registerHandler('dream', bridge('dream', 'cycle'));
   registerHandler('synthesize', bridge('brain', 'synthesize'));
 
-  // ═══ DOCTOR — Full substrate connectivity validator (Phase 5) ═══
+  // ═══ DOCTOR — Full 40-Primitive substrate connectivity validator (Phase 5) ═══
   registerHandler('doctor', async () => {
-    const modules = [
-      'core', 'brain', 'dream', 'decode', 'defense', 'nexus',
-      'vision', 'cortex', 'evolution', 'governance', 'economy',
-      'inclusive', 'integration', 'intent', 'immunity', 'encode',
-      'sandbox',
+    // 12 Organs + 12 Layers + 8 Engines + 8 Agents = 40 Primitives
+    const ORGANS = [
+      'core', 'system', 'brain', 'memory', 'dream', 'nerve',
+      'identity', 'relay', 'audit', 'ripple', 'access', 'governance',
     ];
+    const LAYERS = [
+      'defense', 'immunity', 'intent', 'atlas', 'engineer', 'decode',
+      'encode', 'vision', 'economy', 'sandbox', 'inclusive', 'medic',
+    ];
+    const ENGINES = [
+      'cortex', 'nexus', 'evolution', 'conscience', 'sovereign',
+      'shadow', 'reflex', 'compass',
+    ];
+    const AGENTS = [
+      'beacon', 'watchtower', 'integration', 'dispatch',
+      'marshal', 'pioneer', 'herald', 'overseer',
+    ];
+    const modules = [...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS];
 
     const results: Array<{ module: string; ok: boolean; latencyMs: number; error?: string }> = [];
     const startAll = Date.now();
