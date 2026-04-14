@@ -361,7 +361,7 @@ export default function SubstrateCapabilitiesDocs() {
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-primary">14</p>
-              <p className="text-xs text-muted-foreground">Modules</p>
+              <p className="text-xs text-muted-foreground">Primitives</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-primary">TS</p>

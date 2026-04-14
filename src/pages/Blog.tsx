@@ -337,7 +337,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
                 isHuman ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
               )}>
                 {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
-                {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
+                {isHuman ? (post.author || 'Kenneth Sweet') : 'AI Generated'}
               </Badge>
             </div>
             <div className="absolute bottom-3 left-3">
@@ -405,7 +405,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
               isHuman ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
             )}>
               {isHuman ? <User className="w-3 h-3 mr-1" /> : <Bot className="w-3 h-3 mr-1" />}
-              {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
+              {isHuman ? (post.author || 'Kenneth Sweet') : 'AI Generated'}
             </Badge>
           </div>
 
