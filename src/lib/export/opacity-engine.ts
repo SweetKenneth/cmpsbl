@@ -99,6 +99,37 @@ export function generateCompiledPreamble(
     ].join('\n');
   }
 
+  if (lang === 'php') {
+    return [
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Tampering invalidates      ║`,
+      `${c} ║ artifact integrity and voids certification  ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
+      '',
+      `$_CMPSBL_DT = array(${dispatchTable.join(', ')});`,
+      `$_CMPSBL_CM = array(${collisionMatrix.join(', ')});`,
+      `$_CMPSBL_IV = ${seeds.iv};`,
+      `$_CMPSBL_EPOCH = ${seeds.epoch};`,
+      '',
+      `function _cmpsbl_resolve(int $idx, int $ctx = 0): int {`,
+      `    global $_CMPSBL_DT, $_CMPSBL_CM, $_CMPSBL_IV;`,
+      `    $v = ($_CMPSBL_DT[$idx % count($_CMPSBL_DT)] ^ $_CMPSBL_IV) & 0xFFFF;`,
+      `    return ($_CMPSBL_CM[$v % count($_CMPSBL_CM)] + $ctx) >> 2;`,
+      `}`,
+      '',
+      `function _cmpsbl_gate(int $stage, $payload) {`,
+      `    global $_CMPSBL_EPOCH;`,
+      `    $seq = _cmpsbl_resolve($stage, is_array($payload) ? count($payload) : 0);`,
+      `    if ($seq < $_CMPSBL_EPOCH) { return $payload; }`,
+      `    if (is_array($payload)) {`,
+      `        return array_merge($payload, ['_sealed' => true, '_seq' => $seq]);`,
+      `    }`,
+      `    return $payload;`,
+      `}`,
+      '',
+    ].join('\n');
+  }
+
   // Default: TypeScript/JavaScript
   return [
     `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,

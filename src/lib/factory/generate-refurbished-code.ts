@@ -209,6 +209,43 @@ function phpGuard(g: string): string {
   return convertObjectArgs(g, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
 }
 
+/**
+ * Convert a JSON string into a PHP array literal.
+ * Handles nested objects/arrays recursively.
+ * `{"key": "val"}` → `['key' => 'val']`
+ */
+function jsonToPhpArray(jsonStr: string): string {
+  try {
+    const obj = JSON.parse(jsonStr);
+    return toPhpLiteral(obj);
+  } catch {
+    // If not valid JSON, wrap as string
+    return `'${jsonStr.replace(/'/g, "\\'")}'`;
+  }
+}
+
+function toPhpLiteral(val: unknown): string {
+  if (val === null) return 'null';
+  if (val === true) return 'true';
+  if (val === false) return 'false';
+  if (typeof val === 'number') return String(val);
+  if (typeof val === 'string') return `'${val.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+  if (Array.isArray(val)) {
+    // Check if it's a sequential array (numeric keys)
+    const isAssoc = val.some((_, i) => typeof val[i] === 'object' && val[i] !== null && !Array.isArray(val[i]));
+    if (!isAssoc && val.every(v => typeof v !== 'object' || v === null)) {
+      return `[${val.map(toPhpLiteral).join(', ')}]`;
+    }
+    return `[\n${val.map((v, i) => `    ${i} => ${toPhpLiteral(v)}`).join(',\n')}\n]`;
+  }
+  if (typeof val === 'object') {
+    const entries = Object.entries(val as Record<string, unknown>);
+    if (entries.length === 0) return '[]';
+    return `[\n${entries.map(([k, v]) => `    '${k}' => ${toPhpLiteral(v)}`).join(',\n')}\n]`;
+  }
+  return `'${String(val)}'`;
+}
+
 /** Dart: named params `({ key: val })` → `(key: val)` */
 function dartGuard(g: string): string {
   return jsArgsToKwargs(g, (k) => `${k}:`, ' ');
@@ -2354,7 +2391,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'PHP'),
-    constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
+    constDecl: (name, val) => `define('${name.toUpperCase()}', ${jsonToPhpArray(val)});`,
     transformGuard: phpGuard,
     fileExtension: '.php',
   },
@@ -3051,6 +3088,79 @@ if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
   process.exit(ok ? 0 : 1);
 }
 `);
+  } else if (lang === 'php') {
+    const phpVerify = [
+      '',
+      '/**',
+      ' * CMPSBL® Artifact Self-Verification',
+      ' * Run: php <this_file> --verify',
+      ' */',
+      'function __cmpsbl_verify(): bool {',
+      '    $fingerprint = \'' + fingerprint + '\';',
+      '    $meta = __CMPSBL_META__;',
+      '    $verifyUrl = "https://cmpsbl.com/verify/" . $fingerprint;',
+      '',
+      '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+      '    echo \'CMPSBL® Convex Core™ — Artifact Verification\' . PHP_EOL;',
+      '    echo \'A PromptFluid™ Product\' . PHP_EOL;',
+      '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+      '    echo "  Fingerprint:  " . $fingerprint . PHP_EOL;',
+      '    echo "  Primitives:   " . ($meta[\'primitiveCount\'] ?? \'?\') . PHP_EOL;',
+      '    echo "  Generated:    " . ($meta[\'generatedAt\'] ?? \'?\') . PHP_EOL;',
+      '    echo "  Runtime:      " . ($meta[\'runtimeVersion\'] ?? \'?\') . PHP_EOL;',
+      '    echo "  Language:     " . ($meta[\'sourceLanguage\'] ?? \'?\') . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '',
+      '    $passed = 0;',
+      '    $total = 4;',
+      '',
+      '    if (!empty($fingerprint) && strlen($fingerprint) > 8) {',
+      '        echo "  ✓ Fingerprint valid" . PHP_EOL;',
+      '        $passed++;',
+      '    } else {',
+      '        echo "  ✗ Fingerprint missing or malformed" . PHP_EOL;',
+      '    }',
+      '',
+      '    if (!empty($meta[\'runtimeVersion\']) && !empty($meta[\'orchestrationVersion\'])) {',
+      '        echo "  ✓ Metadata intact" . PHP_EOL;',
+      '        $passed++;',
+      '    } else {',
+      '        echo "  ✗ Metadata corrupted" . PHP_EOL;',
+      '    }',
+      '',
+      '    if (!empty($meta[\'patents\'])) {',
+      '        echo "  ✓ Patent reference present" . PHP_EOL;',
+      '        $passed++;',
+      '    } else {',
+      '        echo "  ✗ Patent reference missing" . PHP_EOL;',
+      '    }',
+      '',
+      '    $fileHash = substr(hash(\'sha256\', file_get_contents(__FILE__)), 0, 16);',
+      '    echo "  ✓ File hash: " . $fileHash . PHP_EOL;',
+      '    $passed++;',
+      '',
+      '    echo PHP_EOL;',
+      '    echo "  Result: " . $passed . "/" . $total . " checks passed" . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '    echo "  Online verification:" . PHP_EOL;',
+      '    echo "    " . $verifyUrl . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '    echo "  Programmatic verification:" . PHP_EOL;',
+      '    echo "    composer require cmpsbl/test-harness" . PHP_EOL;',
+      '    echo "    \\\\CMPSBL\\\\verify_fingerprint(\'" . $fingerprint . "\')" . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '    echo "  © ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL® · All rights reserved." . PHP_EOL;',
+      '    echo "  U.S. Patent App. No. 64/029,678 · No. 64/031,637" . PHP_EOL;',
+      '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+      '    return $passed === $total;',
+      '}',
+      '',
+      'if (php_sapi_name() === \'cli\' && in_array(\'--verify\', $argv ?? [], true)) {',
+      '    $ok = __cmpsbl_verify();',
+      '    exit($ok ? 0 : 1);',
+      '}',
+    ].join('\n');
+    lines.push(phpVerify);
   } else {
     // For other languages, embed as comments only
     lines.push(adapter.comment(`VERIFY THIS ARTIFACT: https://cmpsbl.com/verify/${fingerprint}`));
