@@ -248,7 +248,7 @@ export default function ModulesHub() {
         title="All 40 Primitives — Full Matrix Architecture | CMPSBL"
         description="Explore the complete 40-primitive substrate matrix across 4 categories — Organs, Layers, Engines, and Agents — organized into 12 operational zones."
         image="https://cmpsbl.com/og/systems.jpg"
-        keywords={['AI substrate architecture', '40-primitive matrix', 'composable AI', 'cognitive kernel', 'AI operating system']}
+        keywords={['AI substrate architecture', '40-primitive matrix', 'composable AI', 'cognitive kernel', 'governed cognitive infrastructure']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Modules', url: 'https://cmpsbl.com/modules' },

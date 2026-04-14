@@ -62,7 +62,7 @@ export default function DocsReader() {
         <SEO
           title="Documentation — CMPSBL®"
           description="Comprehensive public documentation for the CMPSBL Substrate — v16.7.0 CONTACT Epoch. Learn how it works, explore the 40 primitives, and get started."
-          keywords={['documentation', 'CMPSBL', 'substrate', 'primitives', 'AI operating system']}
+          keywords={['documentation', 'CMPSBL', 'substrate', 'primitives', 'governed cognitive infrastructure']}
         />
         <CmpsblNav />
 
