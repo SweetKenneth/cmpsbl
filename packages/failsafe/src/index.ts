@@ -1,9 +1,12 @@
 /**
- * @cmpsbl/failsafe — Disaster Recovery & Platform Migration Engine
- * Zero-dependency backup, restore, and migration toolkit.
- * Includes first-contact Memory Stream integration.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Failsafe — Governed Cognitive Infrastructure       │
+ * │  Disaster recovery & platform migration engine.             │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 // ═══════════════════════════════════════════════════════════════

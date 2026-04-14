@@ -1,8 +1,12 @@
 /**
- * @cmpsbl/types — Shared TypeScript Types
- * CMPSBL® Substrate Type Definitions
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Types — Governed Cognitive Infrastructure          │
+ * │  Shared TypeScript type contracts for the substrate.         │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 // ═══════════════════════════════════════════════════════════════

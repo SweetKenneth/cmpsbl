@@ -1,14 +1,14 @@
 /**
- * @cmpsbl/runtime — Convex Core™ Processing Layer v2.1.0
- * CMPSBL® Core Execution Runtime
- *
- * Zero-dependency CJPI scoring, auto-tiering, manifest parsing,
- * state machine, saga orchestration, pipeline execution,
- * telemetry compression, circuit breaker persistence,
- * timeout governance, and Convex Core™ artifact integrity verification.
- *
- * Patent Pending — U.S. App. No. 64/029,678
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Runtime — Governed Cognitive Infrastructure        │
+ * │  Core execution: CJPI scoring, state machine, sagas,        │
+ * │  telemetry, circuit breakers & artifact verification.       │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 (Ascension™ Discovery)     │
+ * │  U.S. Patent App. No. 64/031,637 (Mana™ Silent Symbiosis)   │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 import { PRIMITIVE_CATALOG, registerAllPrimitives } from './primitives';

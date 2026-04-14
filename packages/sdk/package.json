@@ -1,13 +1,30 @@
 {
   "name": "@cmpsbl/sdk",
   "version": "2.2.0",
-  "description": "CMPSBL® Engine SDK — Authenticated client for hosted CMPSBL engines (GODMIND, FORTRESS, etc.)",
+  "description": "CMPSBL\u00ae Engine SDK \u2014 Authenticated client for hosted CMPSBL engines (GODMIND, FORTRESS, etc.)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
-  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
-  "keywords": ["cmpsbl", "sdk", "engine", "ai", "godmind"],
-  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
-  "license": "Apache-2.0",
-  "homepage": "https://cmpsbl.com/engines"
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cmpsbl",
+    "sdk",
+    "engine",
+    "ai",
+    "godmind",
+    "governed-cognitive-infrastructure",
+    "substrate",
+    "promptfluid"
+  ],
+  "author": "Kenneth E. Sweet Jr. <hello@cmpsbl.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://cmpsbl.com",
+  "bugs": {
+    "url": "https://cmpsbl.com/support"
+  }
 }

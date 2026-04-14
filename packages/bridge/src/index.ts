@@ -1,9 +1,12 @@
 /**
- * @cmpsbl/bridge — Bridge Adapter Framework
- * Wire any language runtime to the CMPSBL® substrate delegation protocol.
- * Includes first-contact Memory Stream integration.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Bridge — Governed Cognitive Infrastructure         │
+ * │  Wire any language runtime to the 40-Primitive substrate.   │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 // ═══════════════════════════════════════════════════════════════

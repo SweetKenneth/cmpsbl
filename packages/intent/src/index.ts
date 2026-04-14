@@ -1,9 +1,12 @@
 /**
- * @cmpsbl/intent — Standalone Intent Router
- * Brings CMPSBL's broadcastIntent() + resolver dispatch to any app.
- * Includes first-contact Memory Stream integration.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Intent — Governed Cognitive Infrastructure         │
+ * │  broadcastIntent() + resolver dispatch for any app.         │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 // ═══════════════════════════════════════════════════════════════

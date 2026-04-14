@@ -1,9 +1,12 @@
 /**
- * @cmpsbl/discovery — Pipeline Discovery Engine
- * CJPI scoring, crystallization, and foundry pipeline management.
- * Self-contained — no external @cmpsbl dependencies required to build.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Discovery — Governed Cognitive Infrastructure      │
+ * │  CJPI scoring, crystallization & foundry pipeline engine.   │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 // ═══════════════════════════════════════════════════════════════

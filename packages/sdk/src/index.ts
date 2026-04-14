@@ -1,12 +1,15 @@
 /**
- * @cmpsbl/sdk — Engine SDK Client (Enhanced)
- * Authenticated access to hosted CMPSBL® engines.
- * Includes first-contact, system introspection, middleware hooks,
- * serializable responses, and comprehensive JSDoc.
- *
- * Self-contained: all types and runtime inlined for zero external dependencies.
- *
- * © CMPSBL® — All rights reserved.
+ * ╔══════════════════════════════════════════════════════════════╗
+ * ║  CMPSBL® SDK — Governed Cognitive Infrastructure            ║
+ * ║  Authenticated access to the 40-Primitive substrate.        ║
+ * ║                                                              ║
+ * ║  Patent Pending:                                             ║
+ * ║    U.S. App. No. 64/029,678 — Ascension™ Discovery          ║
+ * ║    U.S. App. No. 64/031,637 — Mana™ Silent Symbiosis        ║
+ * ║                                                              ║
+ * ║  https://cmpsbl.com          npm i @cmpsbl/cli               ║
+ * ║  © 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.  ║
+ * ╚══════════════════════════════════════════════════════════════╝
  */
 
 // ═══════════════════════════════════════════════════════════════

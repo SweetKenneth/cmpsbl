@@ -1,17 +1,36 @@
 {
   "name": "@cmpsbl/test-harness",
   "version": "1.5.0",
-  "description": "CMPSBL® Test Harness — Validate pipelines, bridge adapters, and verify Ascension fingerprints",
+  "description": "CMPSBL\u00ae Test Harness \u2014 Validate pipelines, bridge adapters, and verify Ascension fingerprints",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
-  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
-  "keywords": ["cmpsbl", "test", "harness", "validation", "pipeline", "fingerprint", "ascension"],
-  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
-  "license": "Apache-2.0",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cmpsbl",
+    "test",
+    "harness",
+    "validation",
+    "pipeline",
+    "fingerprint",
+    "ascension",
+    "governed-cognitive-infrastructure",
+    "substrate",
+    "promptfluid"
+  ],
+  "author": "Kenneth E. Sweet Jr. <hello@cmpsbl.com>",
+  "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://cmpsbl.com",
   "peerDependencies": {
     "@cmpsbl/runtime": ">=1.3.0",
     "@cmpsbl/bridge": ">=1.4.0"
+  },
+  "bugs": {
+    "url": "https://cmpsbl.com/support"
   }
 }

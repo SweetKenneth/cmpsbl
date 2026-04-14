@@ -1,8 +1,12 @@
 /**
- * @cmpsbl/react — React Hooks for the CMPSBL® Substrate
- * Includes first-contact Memory Stream hooks.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® React — Governed Cognitive Infrastructure          │
+ * │  React hooks for the 40-Primitive substrate.                │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
