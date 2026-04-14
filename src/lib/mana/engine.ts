@@ -29,6 +29,20 @@ import {
   MANA_LAYER_TAG, assertContractMapComplete, normalizePriority,
 } from './types';
 import { evaluate, getRules, resetLex } from './lex';
+import {
+  verifyFingerprint,
+  registerFingerprint,
+  computeCanonicalFingerprint,
+  type FingerprintResult,
+  type FingerprintVerdict,
+} from '../../core/boot/fingerprintGate';
+import { recordAuditEvent } from '../../core/audit/auditChain';
+import {
+  safeDetach,
+  enterExecutionBoundary,
+  exitExecutionBoundary,
+  resetSafeDetach,
+} from './detach-safe';
 
 // ═══════════════════════════════════════════════════════════════
 // Engine State
