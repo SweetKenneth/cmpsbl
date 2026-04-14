@@ -202,12 +202,16 @@ ${lines.join('\n')}
       return `│  ┌─ ${label} (${sectionHealthy}/${ids.length}) ${'─'.repeat(Math.max(1, 40 - label.length))}\n${lines.join('\n')}\n│  └${'─'.repeat(50)}`;
     };
 
-    const sections = [
-      formatSection('ORGANS', ORGANS),
-      formatSection('LAYERS', LAYERS),
-      formatSection('ENGINES', ENGINES),
-      formatSection('AGENTS', AGENTS),
-    ];
+    // Only include sections that are in scope
+    const sections: string[] = [];
+    if (!isEngines) {
+      sections.push(formatSection('ORGANS', ORGANS));
+      if (!isQuick) sections.push(formatSection('LAYERS', LAYERS));
+    }
+    if (!isQuick || isEngines) {
+      sections.push(formatSection('ENGINES', ENGINES));
+      sections.push(formatSection('AGENTS', AGENTS));
+    }
 
     return {
       success: true,
@@ -215,9 +219,10 @@ ${lines.join('\n')}
 ┌─ SUBSTRATE DOCTOR ───────────────────────────────────────────
 │
 │  Status:       ${allGood ? '✅ ALL SYSTEMS NOMINAL' : `⚠️  ${healthy}/${total} HEALTHY`}
-│  Primitives:   ${healthy}/${total} responding (40-Primitive architecture)
+│  Primitives:   ${healthy}/${total} responding (${scopeLabel})
 │  Avg Latency:  ${avgLatency}ms
 │  Total Check:  ${totalTime}ms
+│  Flags:        ${isQuick ? '--quick' : isEngines ? '--engines' : 'full scan'}
 │
 ${sections.join('\n│\n')}
 │
