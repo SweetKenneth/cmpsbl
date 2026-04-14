@@ -89,9 +89,8 @@ export function registerCoreHandlers(): void {
 
     const tiers = [
       { name: 'FREE', engines: ['FAILSAFE', 'BEACON', 'PRIMITIVE'], unlocked: true },
-      { name: 'CREATOR ($29)', engines: ['AUTOMATON', 'WRAITH'], unlocked: ['creator', 'studio', 'architect', 'governor'].includes(tier as string) },
-      { name: 'STUDIO ($49)', engines: ['CORTEX', 'OBSIDIAN'], unlocked: ['studio', 'architect', 'governor'].includes(tier as string) },
-      { name: 'ARCHITECT ($79)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'governor'].includes(tier as string) },
+      { name: 'CREATOR ($79)', engines: ['AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN'], unlocked: ['creator', 'architect', 'governor'].includes(tier as string) },
+      { name: 'ARCHITECT ($249)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'governor'].includes(tier as string) },
     ];
 
     const lines = tiers.map(t => {
