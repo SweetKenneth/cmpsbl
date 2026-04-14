@@ -37,16 +37,13 @@ export function registerVerificationHandlers(): void {
       };
     }
 
-    // Step 2: Read back via pf-substrate
-    const readResult = await callSubstrate('memory', 'recall', {
-      query: testKey,
-      limit: 1,
-    });
+    // Steps 2 & 3: Recall + Stream in parallel (independent reads)
+    const [readResult, streamResult] = await Promise.all([
+      callSubstrate('memory', 'recall', { query: testKey, limit: 1 }),
+      callSubstrate('memory', 'stream', { limit: 5 }),
+    ]);
 
     const readOk = readResult.success;
-
-    // Step 3: Verify stream shows recent
-    const streamResult = await callSubstrate('memory', 'stream', { limit: 5 });
     const streamOk = streamResult.success;
 
     return {
