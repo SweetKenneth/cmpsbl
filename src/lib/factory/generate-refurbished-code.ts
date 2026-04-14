@@ -2915,7 +2915,8 @@ function generateSelfVerifyBlock(adapter: LanguageAdapter, fingerprint: string, 
   lines.push(adapter.comment('Run this file to verify the artifact integrity.'));
   lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
 
-  if (language === 'Python') {
+  const lang = language.toLowerCase();
+  if (lang === 'python') {
     lines.push(`
 def __cmpsbl_verify__():
     """
@@ -2997,7 +2998,7 @@ if __name__ == "__main__":
         success = __cmpsbl_verify__()
         sys.exit(0 if success else 1)
 `);
-  } else if (language === 'TypeScript' || language === 'JavaScript') {
+  } else if (lang === 'typescript' || lang === 'javascript') {
     lines.push(`
 /**
  * CMPSBL® Artifact Self-Verification
