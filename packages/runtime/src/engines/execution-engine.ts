@@ -174,6 +174,8 @@ export function resetExecutionEngine(): void {
 // §4 — HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+const MAX_EVENTS = 10_000;
+
 function emitEvent(
   primitive: string,
   effect: ExecutionEffect,
@@ -181,6 +183,9 @@ function emitEvent(
   ruleId?: string,
   error?: unknown,
 ): void {
+  if (executionEvents.length >= MAX_EVENTS) {
+    executionEvents.splice(0, Math.floor(MAX_EVENTS * 0.25));
+  }
   executionEvents.push({
     primitive,
     ruleId,
