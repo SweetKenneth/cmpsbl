@@ -71,7 +71,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         table: {
           headers: ["Revenue Stream", "Description"],
           rows: [
-            ["Platform Subscriptions", "Builder → Studio ($29) → Creator ($49) → Architect ($79) → Governor"],
+            ["Platform Subscriptions", "Builder → Studio ($29) → Creator ($49) → Architect ($79) → Enterprise ($999+) → Governor"],
             ["Agent Marketplace", "20 agents across 4 price tiers ($79–$249/agent)"],
             ["Engine Marketplace", "54 premium engines across META, APEX, ELITE, CORE"],
             ["Ascension Exports", "Single-file, IP-protected capability artifacts in 90+ languages"],
