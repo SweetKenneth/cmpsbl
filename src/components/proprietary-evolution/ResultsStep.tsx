@@ -1,6 +1,7 @@
 /**
- * ResultsStep — #15: Consumes canonical AscensionResults, not raw DB artifacts
+ * ResultsStep — Consumes canonical AscensionResults
  * 
+ * E2: Uses deterministicFingerprint for export
  * Summary, quality metrics, and export all derive from one result object.
  */
 
@@ -11,7 +12,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
-import type { AscensionResults } from '@/lib/ascension/orchestrator';
+import { deterministicFingerprint, type AscensionResults } from '@/lib/ascension/orchestrator';
 
 interface Props {
   results: AscensionResults | null;
@@ -34,15 +35,15 @@ export function ResultsStep({ results, onReset }: Props) {
     setExporting(true);
 
     try {
-      const caps: CapabilityForExport[] = items.map((item, i) => ({
-        id: `asc_${i}_${Date.now().toString(36)}`,
+      const caps: CapabilityForExport[] = items.map((item) => ({
+        id: deterministicFingerprint(item.name, item.nodeA, item.nodeB, results.runId),
         name: item.name.replace(/\s+/g, '_'),
         tier: item.tier,
         cjpiScore: item.score,
         description: item.description,
         chain: [],
-        fingerprint: `fp_${item.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now().toString(36)}`,
-        moatSignature: `moat_${Date.now().toString(36)}`,
+        fingerprint: deterministicFingerprint(item.name, item.nodeA, item.nodeB, results.runId),
+        moatSignature: `moat_${deterministicFingerprint(item.name, item.nodeA, item.nodeB, results.runId)}`,
         capabilityType: 'ascended',
       }));
 
@@ -86,7 +87,7 @@ export function ResultsStep({ results, onReset }: Props) {
         </p>
       </div>
 
-      {/* Summary stats — #15: derived from canonical results */}
+      {/* Summary stats */}
       {items.length > 0 && (
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">

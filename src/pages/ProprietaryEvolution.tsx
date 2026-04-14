@@ -2,10 +2,9 @@
  * Ascension — /ascension
  * Simplified 4-step wizard: Upload → Trace (optional) → Processing → Results
  * 
- * #12: UI consumes orchestration service, not internal table semantics
- * #13: Run-scoped reset via orchestrator
- * #14: Milestone-based progress anchored to real backend transitions
- * #15: Canonical results payload — one object everywhere
+ * A1: Immutable run state via commitRun()
+ * D1: UI calls executeRun() — not a controller
+ * C1: Run-scoped everything
  * 
  * PERF: Pure CSS animations — no framer-motion dependency.
  */
@@ -29,9 +28,6 @@ import {
   createRun,
   acceptInput,
   attachTrace,
-  storeCandidate,
-  runAnalysis,
-  getResults,
   resetRun,
   type AscensionRun,
   type AscensionResults,
@@ -56,20 +52,23 @@ export default function ProprietaryEvolution() {
       toast({ title: 'Not signed in', variant: 'destructive' });
       return;
     }
-    // Create run and accept input
+    // A1: Immutable — acceptInput returns new run
     const run = createRun(user.id);
-    acceptInput(
+    const accepted = acceptInput(
       run,
       analysis.name || 'UPLOADED',
       analysis.language || 'typescript',
       analysis.ingestedFiles?.map(f => ({ name: f.name, content: f.content || '' })) || [],
     );
-    runRef.current = run;
+    runRef.current = accepted;
     setStep(1);
   }, [user, toast]);
 
   const handleTraceAttach = useCallback((t: TraceContext) => {
-    if (runRef.current) attachTrace(runRef.current, t);
+    if (runRef.current) {
+      // A1: Immutable — attachTrace returns new run
+      runRef.current = attachTrace(runRef.current, t);
+    }
     setStep(2);
   }, []);
 
@@ -83,7 +82,7 @@ export default function ProprietaryEvolution() {
   }, []);
 
   const handleReset = useCallback(async () => {
-    // #13: Run-scoped reset — only this run's artifacts
+    // C1: Run-scoped reset — only this run's artifacts
     if (runRef.current) {
       try {
         await resetRun(runRef.current);
