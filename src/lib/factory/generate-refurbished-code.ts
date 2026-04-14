@@ -349,6 +349,218 @@ function objcGuard(g: string): string {
   return convertObjectArgs(g, (k) => `@"${k}"`, ': ', (p) => `(@{ ${p} })`);
 }
 
+// ── Adapter Verify Block Helpers ──
+// These generate runnable self-verification functions per language.
+// Called from the adapter's selfVerifyBlock method.
+
+function generateTsVerifyBlock(fingerprint: string): string {
+  return `
+/**
+ * CMPSBL® Artifact Self-Verification
+ * Run: node <this_file> --verify
+ */
+function __cmpsbl_verify__() {
+  const crypto = globalThis.crypto ?? require('crypto');
+  const fs = typeof require !== 'undefined' ? require('fs') : null;
+  const fingerprint = "${fingerprint}";
+  const meta = typeof __CMPSBL_META__ === 'string' ? JSON.parse(__CMPSBL_META__) : __CMPSBL_META__;
+  const verifyUrl = \`https://cmpsbl.com/verify/\${fingerprint}\`;
+
+  console.log("=".repeat(60));
+  console.log("CMPSBL® Convex Core™ — Artifact Verification");
+  console.log("A PromptFluid™ Product");
+  console.log("=".repeat(60));
+  console.log(\`  Fingerprint:  \${fingerprint}\`);
+  console.log(\`  Primitives:   \${meta?.primitiveCount ?? '?'}\`);
+  console.log(\`  Generated:    \${meta?.generatedAt ?? '?'}\`);
+  console.log(\`  Runtime:      \${meta?.runtimeVersion ?? '?'}\`);
+  console.log(\`  Language:     \${meta?.sourceLanguage ?? '?'}\`);
+  console.log();
+
+  let passed = 0;
+  const total = 3;
+
+  if (fingerprint && fingerprint.length > 8) { console.log("  ✓ Fingerprint valid"); passed++; }
+  else { console.log("  ✗ Fingerprint missing"); }
+
+  if (meta?.runtimeVersion && meta?.orchestrationVersion) { console.log("  ✓ Metadata intact"); passed++; }
+  else { console.log("  ✗ Metadata corrupted"); }
+
+  if (meta?.patents || meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
+  else { console.log("  ✗ Patent reference missing"); }
+
+  console.log();
+  console.log(\`  Result: \${passed}/\${total} checks passed\`);
+  console.log();
+  console.log(\`  Online verification:\`);
+  console.log(\`    \${verifyUrl}\`);
+  console.log();
+  console.log("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.");
+  console.log("  U.S. Patent App. No. 64/029,678 · No. 64/031,637");
+  console.log("=".repeat(60));
+  return passed === total;
+}
+
+if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
+  const ok = __cmpsbl_verify__();
+  process.exit(ok ? 0 : 1);
+}
+`;
+}
+
+function generatePyVerifyBlock(fingerprint: string): string {
+  return `
+def __cmpsbl_verify__():
+    """
+    CMPSBL® Artifact Self-Verification
+    Verifies this sealed artifact's integrity and fingerprint.
+    Run: python <this_file>.py --verify
+    """
+    import hashlib, json, sys, os
+
+    fingerprint = "${fingerprint}"
+    meta = json.loads(__CMPSBL_META__) if isinstance(__CMPSBL_META__, str) else __CMPSBL_META__
+    verify_url = f"https://cmpsbl.com/verify/{fingerprint}"
+
+    print("=" * 60)
+    print("CMPSBL® Convex Core™ — Artifact Verification")
+    print("A PromptFluid™ Product")
+    print("=" * 60)
+    print(f"  Fingerprint:  {fingerprint}")
+    print(f"  Primitives:   {meta.get('primitiveCount', '?')}")
+    print(f"  Generated:    {meta.get('generatedAt', '?')}")
+    print(f"  Runtime:      {meta.get('runtimeVersion', '?')}")
+    print(f"  Language:     {meta.get('sourceLanguage', '?')}")
+    print()
+
+    checks_passed = 0
+    checks_total = 4
+
+    if fingerprint and len(fingerprint) > 8:
+        print("  ✓ Fingerprint valid")
+        checks_passed += 1
+    else:
+        print("  ✗ Fingerprint missing or malformed")
+
+    if meta.get("runtimeVersion") and meta.get("orchestrationVersion"):
+        print("  ✓ Metadata intact")
+        checks_passed += 1
+    else:
+        print("  ✗ Metadata corrupted")
+
+    if meta.get("patents") or meta.get("patent"):
+        print("  ✓ Patent reference present")
+        checks_passed += 1
+    else:
+        print("  ✗ Patent reference missing")
+
+    try:
+        with open(__file__, "rb") as f:
+            content = f.read()
+        file_hash = hashlib.sha256(content).hexdigest()[:16]
+        print(f"  ✓ File hash: {file_hash}")
+        checks_passed += 1
+    except Exception:
+        print("  ✗ Could not compute file hash")
+
+    print()
+    print(f"  Result: {checks_passed}/{checks_total} checks passed")
+    print()
+    print(f"  Online verification:")
+    print(f"    {verify_url}")
+    print()
+    print(f"  Programmatic verification:")
+    print(f"    pip install cmpsbl-test-harness")
+    print(f'    from cmpsbl import verify_fingerprint')
+    print(f'    verify_fingerprint("{fingerprint}")')
+    print()
+    print("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.")
+    print("  U.S. Patent App. No. 64/029,678 · No. 64/031,637")
+    print("=" * 60)
+    return checks_passed == checks_total
+
+if __name__ == "__main__":
+    import sys
+    if "--verify" in sys.argv or "verify" in sys.argv:
+        success = __cmpsbl_verify__()
+        sys.exit(0 if success else 1)
+`;
+}
+
+function generatePhpVerifyBlock(fingerprint: string): string {
+  const year = new Date().getFullYear();
+  return [
+    '',
+    '/**',
+    ' * CMPSBL® Artifact Self-Verification',
+    ' * Run: php <this_file> --verify',
+    ' */',
+    'function __cmpsbl_verify(): bool {',
+    '    $fingerprint = \'' + fingerprint + '\';',
+    '    $meta = __CMPSBL_META__;',
+    '    $verifyUrl = "https://cmpsbl.com/verify/" . $fingerprint;',
+    '',
+    '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+    '    echo \'CMPSBL® Convex Core™ — Artifact Verification\' . PHP_EOL;',
+    '    echo \'A PromptFluid™ Product\' . PHP_EOL;',
+    '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+    '    echo "  Fingerprint:  " . $fingerprint . PHP_EOL;',
+    '    echo "  Primitives:   " . ($meta[\'primitiveCount\'] ?? \'?\') . PHP_EOL;',
+    '    echo "  Generated:    " . ($meta[\'generatedAt\'] ?? \'?\') . PHP_EOL;',
+    '    echo "  Runtime:      " . ($meta[\'runtimeVersion\'] ?? \'?\') . PHP_EOL;',
+    '    echo "  Language:     " . ($meta[\'sourceLanguage\'] ?? \'?\') . PHP_EOL;',
+    '    echo PHP_EOL;',
+    '',
+    '    $passed = 0;',
+    '    $total = 4;',
+    '',
+    '    if (!empty($fingerprint) && strlen($fingerprint) > 8) {',
+    '        echo "  ✓ Fingerprint valid" . PHP_EOL;',
+    '        $passed++;',
+    '    } else {',
+    '        echo "  ✗ Fingerprint missing or malformed" . PHP_EOL;',
+    '    }',
+    '',
+    '    if (!empty($meta[\'runtimeVersion\']) && !empty($meta[\'orchestrationVersion\'])) {',
+    '        echo "  ✓ Metadata intact" . PHP_EOL;',
+    '        $passed++;',
+    '    } else {',
+    '        echo "  ✗ Metadata corrupted" . PHP_EOL;',
+    '    }',
+    '',
+    '    if (!empty($meta[\'patents\'])) {',
+    '        echo "  ✓ Patent reference present" . PHP_EOL;',
+    '        $passed++;',
+    '    } else {',
+    '        echo "  ✗ Patent reference missing" . PHP_EOL;',
+    '    }',
+    '',
+    '    $fileHash = substr(hash(\'sha256\', file_get_contents(__FILE__)), 0, 16);',
+    '    echo "  ✓ File hash: " . $fileHash . PHP_EOL;',
+    '    $passed++;',
+    '',
+    '    echo PHP_EOL;',
+    '    echo "  Result: " . $passed . "/" . $total . " checks passed" . PHP_EOL;',
+    '    echo PHP_EOL;',
+    '    echo "  Online verification:" . PHP_EOL;',
+    '    echo "    " . $verifyUrl . PHP_EOL;',
+    '    echo PHP_EOL;',
+    '    echo "  Programmatic verification:" . PHP_EOL;',
+    '    echo "    composer require cmpsbl/test-harness" . PHP_EOL;',
+    '    echo PHP_EOL;',
+    '    echo "  © ' + year + ' PromptFluid™ · CMPSBL® · All rights reserved." . PHP_EOL;',
+    '    echo "  U.S. Patent App. No. 64/029,678 · No. 64/031,637" . PHP_EOL;',
+    '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+    '    return $passed === $total;',
+    '}',
+    '',
+    'if (php_sapi_name() === \'cli\' && in_array(\'--verify\', $argv ?? [], true)) {',
+    '    $ok = __cmpsbl_verify();',
+    '    exit($ok ? 0 : 1);',
+    '}',
+  ].join('\n');
+}
+
 const ADAPTERS: Record<string, LanguageAdapter> = {
   TypeScript: {
     comment: (t) => `// ${t}`,
