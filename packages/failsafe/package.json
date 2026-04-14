@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/failsafe",
-  "version": "3.5.0",
+  "version": "4.0.0",
   "description": "CMPSBL\u00ae FAILSAFE \u2014 Zero-dependency disaster recovery & platform migration engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
