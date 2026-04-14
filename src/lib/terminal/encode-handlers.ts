@@ -127,7 +127,7 @@ export function registerEncodeModuleHandlers(): void {
   // encode.run — Lightweight CLI endpoint
   registerHandler('encode.run', async (args?: Record<string, unknown>) => {
     const { executeEncodeCLI } = await import('@/lib/substrate/encode-module/orchestration');
-    const parts = (args || '').trim().split(/\s+/);
+    const parts = ((args?.input as string) || '').trim().split(/\s+/);
     const command = (parts[0] || 'status') as any;
     const target = parts.slice(1).join(' ') || undefined;
     return executeEncodeCLI(command, target);
@@ -158,14 +158,14 @@ export function registerEncodeModuleHandlers(): void {
   // encode.contract — Build awareness contract for a module
   registerHandler('encode.contract', async (args?: Record<string, unknown>) => {
     const { buildAwarenessContract } = await import('@/lib/substrate/encode-module/orchestration');
-    const module = (args || '').trim() || 'encode';
+    const module = ((args?.input as string) || '').trim() || 'encode';
     return { success: true, data: buildAwarenessContract(module) };
   });
 
   // encode.mode — Set ENCODE mode
   registerHandler('encode.mode', async (args?: Record<string, unknown>) => {
     const { setEncodeMode, getEncodeMode } = await import('@/lib/substrate/encode-module/orchestration');
-    const mode = (args || '').trim();
+    const mode = ((args?.input as string) || '').trim();
     if (!mode) return { success: true, data: { current_mode: getEncodeMode() } };
     return setEncodeMode(mode as any);
   });
@@ -271,7 +271,7 @@ export function registerEncodeModuleHandlers(): void {
 
   // encode.navigate — Substrate Navigator: resolve intent to file targets
   registerHandler('encode.navigate', async (args?: Record<string, unknown>) => {
-    const query = (args || '').trim();
+    const query = ((args?.input as string) || '').trim();
     if (!query) {
       return {
         success: false,
@@ -305,7 +305,7 @@ export function registerEncodeModuleHandlers(): void {
 
   // encode.whereis — Quick "where does X live?" lookup
   registerHandler('encode.whereis', async (args?: Record<string, unknown>) => {
-    const query = (args || '').trim();
+    const query = ((args?.input as string) || '').trim();
     if (!query) {
       return { success: false, error: 'Usage: encode.whereis <module or concept>' };
     }
