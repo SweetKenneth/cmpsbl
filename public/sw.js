@@ -1,12 +1,12 @@
 /**
  * Service Worker — CMPSBL Substrate
  * Item #25: Scan result caching for offline/slow connections
- * v11: Force cache bust — terminology & SEO audit (April 14, 2026)
+ * v12: Force cache bust — PHP guard syntax fix (April 14, 2026)
  */
 
-const CACHE_NAME = 'cmpsbl-v11';
-const SCAN_CACHE = 'cmpsbl-scans-v11';
-const STATIC_CACHE = 'cmpsbl-static-v11';
+const CACHE_NAME = 'cmpsbl-v12';
+const SCAN_CACHE = 'cmpsbl-scans-v12';
+const STATIC_CACHE = 'cmpsbl-static-v12';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [
