@@ -1219,7 +1219,9 @@ function generateJava(name: string, spec: PrimitiveSpec): string {
   const fieldDecls = fields.map(f => `    private static ${f.ty} ${f.k} = ${f.def};`).join('\n');
   const methods = spec.methods.map(m => {
     const jName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
-    return `    /** ${m.description} */\n    public static ${name} ${jName}() {\n        return new ${name}();\n    }`;
+    const fieldsForBody = fields.map(f => ({ k: f.k, v: spec.stateFields.find(sf => sf.startsWith(f.k))?.split(':')[1] ?? '', def: f.def }));
+    const body = generateJvmMethodBody(name, m, jName, fieldsForBody, 'java');
+    return `    /** ${m.description} */\n${body}`;
   }).join('\n\n');
   return `import java.util.*;
 
