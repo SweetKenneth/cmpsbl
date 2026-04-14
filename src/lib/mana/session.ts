@@ -31,6 +31,17 @@ import {
   CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase,
   MANA_LAYER_TAG, assertContractMapComplete, normalizePriority,
 } from './types';
+import {
+  verifyFingerprint,
+  registerFingerprint,
+  type FingerprintResult,
+} from '../../core/boot/fingerprintGate';
+import { recordAuditEvent } from '../../core/audit/auditChain';
+import {
+  safeDetach,
+  enterExecutionBoundary,
+  exitExecutionBoundary,
+} from './detach-safe';
 
 // ═══════════════════════════════════════════════════════════════
 // Primitives — Type-Safe Helpers (mirrored from engine.ts)
