@@ -1268,7 +1268,7 @@ function printHelp() {
     mode [get|set <mode>]   Governance mode (ACTIVE/MAINTENANCE/etc)
 
   ── Signature ────────────────────────────────────
-    ascend <file>           Ascension pipeline — collide code with 40 primitives
+    ascend <file> [--export] Ascension pipeline — collide code with 40 primitives
     witness [seconds]       Live observation of substrate activity
     crown [tier]            Crown Jewel capability registry
     recall <query>          Semantic memory search across all tiers
