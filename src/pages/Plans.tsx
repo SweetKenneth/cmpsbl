@@ -98,7 +98,7 @@ export default function Plans() {
         { question: "Can I upgrade later?", answer: "Yes. Start free and upgrade anytime. All paid plans include a 7-day free trial." },
         { question: "What is CMPSBL ULTIMATE™?", answer: "The universal substrate tier with all 143+ primitives across every industry vertical. Available on Architect ($79/mo) and Enterprise plans." },
         { question: "How many industry verticals are available?", answer: "12 active verticals: Cyber, Fintech, Robotics, Quantum, LLM, Agency, Media, Health, Legal, Gaming, Education — plus ULTIMATE which combines all primitives." },
-        { question: "What is CMPSBL Mana?", answer: "Mana is the patented runtime loader that injects behavioral wrappers at module boundaries without source modification. Ascension scans export deployment-ready Mana configurations." },
+        { question: "What is CMPSBL Mana?", answer: "Mana is the patented runtime loader that injects behavioral wrappers at export boundaries without source modification. Ascension scans export deployment-ready Mana configurations." },
       ]} />
 
       <EnhancedFooter />

@@ -78,8 +78,8 @@ const solutions = [
     icon: Globe,
     name: "Self-Hosted Deployment",
     tagline: "Your Infrastructure, Full Control",
-    description: "Deploy the complete CMPSBL platform on your own servers. Air-gapped, sovereign, and fully compliant. Contact enterprise@CMPSBL.com for pricing.",
-    features: ["Full platform deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
+    description: "Deploy the complete CMPSBL substrate on your own servers. Air-gapped, sovereign, and fully compliant. Contact enterprise@CMPSBL.com for pricing.",
+    features: ["Full substrate deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
     metrics: ["Self-Hosted", "Sovereign", "40 Primitives"],
     link: "/enterprise",
     color: "from-neon-green to-neon-green",
@@ -136,7 +136,7 @@ export default function Solutions() {
               Intelligent routing. Offline learning. Governed evolution.{" "}
               <Link to="/enterprise" className="text-primary hover:underline font-medium">Self-hosted deployment</Link>.{" "}
               All production-ready. Built on the{" "}
-              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">CMPSBL cognitive platform</Link>.
+              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">CMPSBL cognitive substrate</Link>.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">

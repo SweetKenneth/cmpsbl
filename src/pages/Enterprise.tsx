@@ -27,7 +27,7 @@ const capabilities = [
   {
     icon: Server,
     title: "Deploy on Your Servers",
-    description: "Run the complete platform on your own infrastructure. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter. Works with AWS, GCP, Azure, and bare-metal.",
+    description: "Run the complete substrate on your own infrastructure. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter. Works with AWS, GCP, Azure, and bare-metal.",
   },
   {
     icon: Layers,
@@ -67,7 +67,7 @@ const capabilities = [
   {
     icon: Cpu,
     title: "Bring Your Own Keys",
-    description: "Route to 14+ AI providers with your own API keys. Budget-aware routing, automatic failover, and task-based model selection — zero AI costs to platform operators.",
+    description: "Route to 14+ AI providers with your own API keys. Budget-aware routing, automatic failover, and task-based model selection — zero AI costs to substrate operators.",
   },
 ];
 

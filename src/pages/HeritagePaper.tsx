@@ -306,13 +306,13 @@ const HeritagePaper = () => {
               These edge functions established the <strong className="text-foreground">edge-function-as-resolver</strong> pattern. Clarity proved that AI could detect problems, propose fixes, validate them, and apply them autonomously — the <em>detect → propose → validate → apply → audit</em> pipeline that became the universal governance model for the entire CMPSBL substrate.
             </p>
             <ContributionBox>
-              Established <em>AI-driven automated remediation under governance</em> — the concept that became the EVOLUTION module's governed self-modification pipeline. The INCLUSIVE node carries the <code className="bg-muted px-1 rounded text-xs font-mono">@origin(cmptbl)</code> annotation.
+              Established <em>AI-driven automated remediation under governance</em> — the concept that became the EVOLUTION layer's governed self-modification pipeline. The INCLUSIVE node carries the <code className="bg-muted px-1 rounded text-xs font-mono">@origin(cmptbl)</code> annotation.
             </ContributionBox>
 
             {/* Phase 0.5: WebAdoption */}
             <PhaseHeader num="0.5" title="WebAdoption — The Living Directory (July 2025)" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites — featuring automated audits, live compliance badges, and public listings. Proof replaced promises. WebAdoption established the principle of <em>continuous verification</em> — the idea that compliance is not a one-time event but an ongoing process. This principle directly informed the SHADOW layer's continuous monitoring architecture and the INCLUSIVE drift-detector module.
+              WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites — featuring automated audits, live compliance badges, and public listings. Proof replaced promises. WebAdoption established the principle of <em>continuous verification</em> — the idea that compliance is not a one-time event but an ongoing process. This principle directly informed the SHADOW layer's continuous monitoring architecture and the INCLUSIVE drift-detector primitive.
             </p>
 
             {/* Phase 1: Cascade */}
@@ -651,7 +651,7 @@ const HeritagePaper = () => {
               { title: "Three-Tier Bounded Autonomy", origin: "SimNap's sandboxed dream mode + Dream Privacy.", evolution: "Supervised → Bounded → Full with policy evaluation, shadow verification, and audit chains." },
               { title: "Intent Mesh", origin: "Cascade's orchestration layer + Conversational Administrator.", evolution: "Decentralized coordination with DAG-based action plans and 3-phase reality protocol." },
               { title: "Governed Self-Evolution", origin: "Cascade's autonomous reasoning + CMPTBL's remediation + Verify's sandbox.", evolution: "EVOLUTION node with SEBA 7-gate pipeline, fitness scoring, and governed mutation." },
-              { title: "INCLUSIVE Accessibility Node", origin: "CMPTBL's WCAG scanner, AI auto-fixer, and compliance reporting (July 2025).", evolution: "17 specialized modules: scanning, repair, validation, adaptive interface, drift detection." },
+              { title: "INCLUSIVE Accessibility Agent", origin: "CMPTBL's WCAG scanner, AI auto-fixer, and compliance reporting (July 2025).", evolution: "17 specialized capabilities: scanning, repair, validation, adaptive interface, drift detection." },
               { title: "NEXUS Multi-Provider Intelligence", origin: "23-provider routing mesh (October 2025).", evolution: "Cost budgeting, quota management, provider health monitoring, telemetry-driven optimization." },
             ].map((item, i) => (
               <div key={i} className="mb-5">
@@ -710,7 +710,7 @@ const HeritagePaper = () => {
                   <tr><td className="p-2 border border-border">Adaptive interface</td><td className="p-2 border border-border"><code className="text-[10px] font-mono">adaptiveInterface.ts</code> — user-profile UI</td></tr>
                   <tr><td className="p-2 border border-border">Contrast analysis</td><td className="p-2 border border-border"><code className="text-[10px] font-mono">contrast-engine.ts</code> — WCAG color verification</td></tr>
                   <tr><td className="p-2 border border-border">Drift detection</td><td className="p-2 border border-border"><code className="text-[10px] font-mono">drift-detector.ts</code> — continuous monitoring</td></tr>
-                  <tr><td className="p-2 border border-border">Cross-module glue</td><td className="p-2 border border-border"><code className="text-[10px] font-mono">glue.ts</code> — SYSTEM/VISION/DEFENSE/EVOLUTION</td></tr>
+                  <tr><td className="p-2 border border-border">Cross-primitive glue</td><td className="p-2 border border-border"><code className="text-[10px] font-mono">glue.ts</code> — SYSTEM/VISION/DEFENSE/EVOLUTION</td></tr>
                 </tbody>
               </table>
             </div>
@@ -745,7 +745,7 @@ const HeritagePaper = () => {
                   <th className="text-left p-2 border border-border font-semibold text-foreground">v14.2 (Mar '26)</th>
                 </tr></thead>
                 <tbody className="text-muted-foreground">
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 primitives, 4 categories</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-primitive</td><td className="p-2 border border-border font-medium text-foreground">40 primitives, 4 categories</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">AI Providers</td><td className="p-2 border border-border">None (deterministic)</td><td className="p-2 border border-border">1 (Nexus)</td><td className="p-2 border border-border">23-provider mesh</td><td className="p-2 border border-border">Single</td><td className="p-2 border border-border font-medium text-foreground">NEXUS multi-provider</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">Autonomy</td><td className="p-2 border border-border">N/A</td><td className="p-2 border border-border">User-initiated</td><td className="p-2 border border-border">Dreaming + proactive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">3-tier bounded</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">Memory</td><td className="p-2 border border-border">Hash-embed, crystals</td><td className="p-2 border border-border">Scan storage</td><td className="p-2 border border-border">Episodic + LT + meta</td><td className="p-2 border border-border">Multi-tier</td><td className="p-2 border border-border font-medium text-foreground">4-stage crystallization</td></tr>
@@ -767,7 +767,7 @@ const HeritagePaper = () => {
               { title: "Governed Autonomy", text: "Cascade's Dream Protocol demonstrated AI can act autonomously. AetherionShield demonstrated autonomous action must be governed. CMPTBL demonstrated AI can detect, fix, and validate autonomously. CMPSBL synthesizes all three into three-tier bounded autonomy." },
               { title: "Additive Hardening", text: "AetherionShield's stealth→shield inversion established that security should be additive — each layer strengthens without modifying existing layers. IRONCLAD wraps node logic without modification." },
               { title: "Discovery as First-Class Output", text: "SimNap's morning reports were the first expression of a cognitive system producing its own deliverables. In CMPSBL, this evolved into the Foundry, CJPI scoring, and 25-language universal export." },
-              { title: "Human Compatibility as Substrate Primitive", text: "CMPTBL — the very first product — established accessibility as a core capability. The INCLUSIVE node operates as a first-class primitive with 17 modules, carrying @origin(cmptbl)." },
+              { title: "Human Compatibility as Substrate Primitive", text: "CMPTBL — the very first product — established accessibility as a core capability. The INCLUSIVE node operates as a first-class primitive with 17 capabilities, carrying @origin(cmptbl)." },
               { title: "Consolidation as Architecture", text: "The Great Consolidation proved that compression creates capability. 252 functions became 40 primitives with composable resolvers — fewer parts, more power." },
             ].map((item, i) => (
               <div key={i} className="mb-4">
