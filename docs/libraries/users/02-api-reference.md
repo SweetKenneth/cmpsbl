@@ -2,6 +2,10 @@
 
 ---
 
+> **CMPSBL®** — Governed Cognitive Infrastructure · PromptFluid™
+> U.S. Patent App. No. 64/029,678 · 64/031,637
+
+
 ## Access Model
 
 CMPSBL® uses a **substrate-routed API** — all requests flow through the `pf-substrate` backend function. There is no standalone REST API at a separate domain. All API interactions happen through:
@@ -109,4 +113,6 @@ export CMPSBL_API_KEY=your_key_here
 
 ---
 
-© 2025–2026 CMPSBL®. All rights reserved.
+**CMPSBL®** · Governed Cognitive Infrastructure
+Protected under U.S. Patent App. No. 64/029,678 (Ascension™ Discovery) & 64/031,637 (Mana™ Silent Symbiosis)
+© 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.

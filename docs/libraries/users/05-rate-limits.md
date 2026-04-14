@@ -2,6 +2,10 @@
 
 ---
 
+> **CMPSBL®** — Governed Cognitive Infrastructure · PromptFluid™
+> U.S. Patent App. No. 64/029,678 · 64/031,637
+
+
 ## Tier Limits
 
 | Resource | Free | Pro | Enterprise |
@@ -53,4 +57,6 @@ Rate limiting is enforced by the Ironclad hardening fabric — a multi-layer pro
 
 ---
 
-© 2025–2026 CMPSBL®. All rights reserved.
+**CMPSBL®** · Governed Cognitive Infrastructure
+Protected under U.S. Patent App. No. 64/029,678 (Ascension™ Discovery) & 64/031,637 (Mana™ Silent Symbiosis)
+© 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.

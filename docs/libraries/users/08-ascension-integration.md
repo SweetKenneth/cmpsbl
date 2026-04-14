@@ -2,6 +2,10 @@
 
 ---
 
+> **CMPSBL®** — Governed Cognitive Infrastructure · PromptFluid™
+> U.S. Patent App. No. 64/029,678 · 64/031,637
+
+
 ## What Does This Do?
 
 Ascension adds an invisible second layer around your code. This layer:
@@ -286,4 +290,6 @@ Your original code can be in any of 90+ languages. The ascended layer works with
 
 ---
 
-© 2025–2026 CMPSBL®. All rights reserved.
+**CMPSBL®** · Governed Cognitive Infrastructure
+Protected under U.S. Patent App. No. 64/029,678 (Ascension™ Discovery) & 64/031,637 (Mana™ Silent Symbiosis)
+© 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.
