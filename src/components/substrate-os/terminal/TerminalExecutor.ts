@@ -1213,8 +1213,9 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
   }
 
   // ═══ BRIDGE-FIRST: Route through pf-substrate via registry handlers ═══
-  // All module commands go through the living substrate. Legacy if/else chain is fallback only.
-  if (base.includes('.')) {
+  // All module commands AND bare cognitive aliases go through the living substrate.
+  const COGNITIVE_ALIASES = ['remember', 'recall', 'stream', 'discover', 'think', 'reflect', 'dream', 'synthesize'];
+  if (base.includes('.') || COGNITIVE_ALIASES.includes(base)) {
     try {
       const { getHandler, hasHandler } = await import('@/lib/terminal/validate-registry');
       

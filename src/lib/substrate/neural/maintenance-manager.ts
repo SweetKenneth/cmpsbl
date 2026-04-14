@@ -53,6 +53,11 @@ async function logMaintenance(
   errorMessage?: string
 ): Promise<void> {
   try {
+    // Only write maintenance logs when an authenticated session exists
+    // Anon key writes are blocked by RLS — route through pf-substrate instead
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return; // Skip logging when unauthenticated
+
     await supabase.from('brain_maintenance_log').insert({
       task_type: taskType,
       status,
