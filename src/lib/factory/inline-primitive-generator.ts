@@ -1178,15 +1178,24 @@ function generateGo(name: string, spec: PrimitiveSpec): string {
     const [k, v] = f.split(':');
     const pk = k.charAt(0).toUpperCase() + k.slice(1);
     const ty = v === 'map' ? 'map[string]interface{}' : v === 'list' ? '[]interface{}' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'string' : 'int';
-    return { k: pk, ty };
+    return { k: pk, ty, v };
   });
   const structFields = fields.map(f => `\t${f.k} ${f.ty}`).join('\n');
+  const needsTime = name === 'CircuitBreaker' || name === 'FailoverManager';
+  const needsFmt = true;
+  const needsStrings = spec.methods.some(m => m.kind === 'check' && m.name === 'validate');
+  const importsGo: string[] = [];
+  if (needsFmt) importsGo.push('"fmt"');
+  if (needsTime) importsGo.push('"time"');
+  if (needsStrings) importsGo.push('"strings"');
+  const importBlock = importsGo.length > 0 ? `import (\n${importsGo.map(i => `\t${i}`).join('\n')}\n)\n\n` : '';
+
   const methods = spec.methods.map(m => {
     const funcName = m.name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-    return `// ${funcName} — ${m.description}\nfunc (s *${name}) ${funcName}() *${name} {\n\treturn s\n}`;
+    return `// ${funcName} — ${m.description}\n${generateGoMethodBody(name, m, funcName, fields)}`;
   }).join('\n\n');
   return `// CMPSBL® Convex Core™ — ${spec.description}
-type ${name} struct {
+${importBlock}type ${name} struct {
 ${structFields}
 }
 
@@ -1194,8 +1203,10 @@ func New${name}() *${name} {
 \treturn &${name}{}
 }
 
+// Ensure fmt is referenced
+var _ = fmt.Sprintf
+
 ${methods}`;
-}
 
 function generateJava(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
