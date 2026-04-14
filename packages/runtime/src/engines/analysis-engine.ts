@@ -46,6 +46,7 @@ const analysisEvents: AnalysisEvent[] = [];
 
 const WINDOW_SIZE = 20;
 const ANOMALY_THRESHOLD = 2.5;
+const MAX_EVENTS = 10_000;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §3 — EVENT EMISSION
@@ -56,6 +57,9 @@ function emit(
   effect: AnalysisEffect,
   value?: number,
 ): void {
+  if (analysisEvents.length >= MAX_EVENTS) {
+    analysisEvents.splice(0, Math.floor(MAX_EVENTS / 4));
+  }
   analysisEvents.push({
     primitive,
     effect,
@@ -163,7 +167,7 @@ export function resetAnalysisEngine(): void {
 /**
  * Wrap a function with deterministic analysis capture.
  *
- * Behavior:
+ * Handles both sync and async functions:
  *   1. Record execution start time
  *   2. Execute L1 function unchanged
  *   3. Capture duration into rolling metrics window
@@ -179,8 +183,25 @@ export function wrapAnalysis<T extends (...args: any[]) => any>(
 
     const result = targetFn.apply(this, args);
 
-    const duration = Date.now() - start;
+    /* Async safety: if the L1 function returns a Promise, measure after resolution */
+    if (result != null && typeof (result as any).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => {
+          const duration = Date.now() - start;
+          updateMetrics(primitiveName, duration);
+          detectAnomaly(primitiveName, duration);
+          return resolved;
+        },
+        (err) => {
+          const duration = Date.now() - start;
+          updateMetrics(primitiveName, duration);
+          detectAnomaly(primitiveName, duration);
+          throw err;
+        },
+      );
+    }
 
+    const duration = Date.now() - start;
     updateMetrics(primitiveName, duration);
     detectAnomaly(primitiveName, duration);
 

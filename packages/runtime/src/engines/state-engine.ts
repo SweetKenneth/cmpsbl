@@ -65,6 +65,7 @@ const stateEvents: StateEvent[] = [];
 
 const DEFAULT_NAMESPACE = 'default';
 const MAX_SNAPSHOTS = 50;
+const MAX_EVENTS = 10_000;
 
 function makeKey(primitive: string, namespace: string): string {
   return `${primitive}::${namespace}`;
@@ -79,6 +80,9 @@ function emitStateEvent(
   namespace: string,
   effect: StateEffect,
 ): void {
+  if (stateEvents.length >= MAX_EVENTS) {
+    stateEvents.splice(0, Math.floor(MAX_EVENTS / 4));
+  }
   stateEvents.push({
     primitive,
     namespace,
@@ -226,6 +230,20 @@ export function wrapState<T extends (...args: any[]) => any>(
 ): T {
   return function stateWrapper(this: any, ...args: any[]) {
     const result = targetFn.apply(this, args);
+
+    /* Async safety: if L1 returns a Promise, persist state after resolution */
+    if (result != null && typeof (result as any).then === 'function') {
+      return (result as Promise<unknown>).then(
+        (resolved) => {
+          writeState(primitiveName, resolved, policy);
+          return resolved;
+        },
+        (err) => {
+          /* On error, do not persist — but re-throw to preserve L1 semantics */
+          throw err;
+        },
+      );
+    }
 
     writeState(primitiveName, result, policy);
 
