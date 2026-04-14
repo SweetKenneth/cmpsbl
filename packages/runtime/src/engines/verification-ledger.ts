@@ -38,7 +38,9 @@ export type VerificationEventKind =
   | 'anomaly_detected'      // Analysis engine flagged deviation
   | 'circuit_tripped'       // Circuit breaker opened
   | 'integrity_check'       // Fingerprint verification event
-  | 'proof_generated';      // Activation proof was generated
+  | 'proof_generated'       // Activation proof was generated
+  | 'vertical_sync'         // Cross-vertical synchronization event
+  | 'vertical_handshake';   // Vertical initialization handshake
 
 export interface VerificationEntry {
   /** Monotonic sequence ID */
