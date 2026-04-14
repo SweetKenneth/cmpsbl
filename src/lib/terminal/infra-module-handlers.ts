@@ -9,22 +9,31 @@ import { bridge } from './substrate-bridge';
 import { log } from '@/lib/system/log';
 
 export function registerInfraModuleHandlers(): void {
-  // ═══ MEMORY ═══
+  // ═══ MEMORY — Cognitive Loop Persistence ═══
   registerHandler('memory.status', bridge('memory', 'status'));
   registerHandler('memory.search', bridge('memory', 'search'));
   registerHandler('memory.ingest', bridge('memory', 'ingest'));
   registerHandler('memory.pipelines', bridge('memory', 'pipelines'));
   registerHandler('memory.health', bridge('memory', 'health'));
+  // Cognitive loop commands (Phase 2 — unified persistence)
+  registerHandler('memory.store', bridge('memory', 'store'));
+  registerHandler('memory.stream', bridge('memory', 'stream'));
+  registerHandler('memory.recall', bridge('memory', 'recall'));
+  registerHandler('memory.prune', bridge('memory', 'prune'));
 
   registerHandler('memory.help', async () => ({
     success: true,
     formatted: [
-      '', '┌─ MEMORY — Vector/RAG Infrastructure ───────┐',
+      '', '┌─ MEMORY — Cognitive Loop Persistence ──────┐',
       '│  memory.status     Module health & vector stats │',
-      '│  memory.search     Semantic search              │',
-      '│  memory.ingest     Ingest knowledge source      │',
-      '│  memory.pipelines  List RAG pipelines           │',
-      '│  memory.health     Index health score            │',
+      '│  memory.store      Persist a memory to substrate│',
+      '│  memory.stream     Recent memory chain           │',
+      '│  memory.recall     Semantic memory recall        │',
+      '│  memory.search     Semantic search               │',
+      '│  memory.prune      Prune old memories            │',
+      '│  memory.ingest     Ingest knowledge source       │',
+      '│  memory.pipelines  List RAG pipelines            │',
+      '│  memory.health     Index health score             │',
       '└───────────────────────────────────────────────┘', '',
     ],
   }));
