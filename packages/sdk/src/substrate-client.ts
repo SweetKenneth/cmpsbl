@@ -33,6 +33,7 @@ export interface MemoryStoreInput {
   category?: string;
   confidence?: number;
   metadata?: Record<string, unknown>;
+  [key: string]: unknown;
 }
 
 export interface MemoryRecallInput {
