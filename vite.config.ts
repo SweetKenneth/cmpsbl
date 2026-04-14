@@ -95,7 +95,7 @@ export default defineConfig(({ mode }) => ({
   },
   esbuild: {
     // Strip console.* and debugger in production builds
-    drop: mode === 'production' ? ['console' as const, 'debugger' as const] : [],
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
   },
   build: {
     // Disable automatic modulepreload to prevent eager loading of lazy chunks (charts, motion)
