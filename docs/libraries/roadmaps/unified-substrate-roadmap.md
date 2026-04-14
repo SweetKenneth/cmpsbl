@@ -129,7 +129,7 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [ ] CLI uses chalk/color
 - [ ] API returns raw JSON
 
-### Phase 5: The Living Substrate (Week 9-10)
+### Phase 5: The Living Substrate (Week 9-10) 🔄 IN PROGRESS
 **Goal**: First persistent memory machine. Same memory, same dreams, same discoveries — everywhere.
 
 #### 5.1 — Cross-Surface Memory Verification
@@ -137,14 +137,14 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [ ] Discover something on website → CLI `recall` finds it → Dream synthesizes it
 - [ ] Full integration test suite proving cognitive loop continuity
 
-#### 5.2 — Real-Time Substrate Pulse
-- [ ] Realtime subscriptions for `brain_memories`, `cascade_dreams`, `discoveries`
+#### 5.2 — Real-Time Substrate Pulse ✅
+- [x] Realtime subscriptions enabled for `brain_memories`, `cascade_dreams`
 - [ ] Web Terminal shows live memory writes as they happen
 - [ ] CLI gets push notifications for dream completions
 
 #### 5.3 — Documentation & Developer Experience
+- [x] Ship `cmpsbl doctor` command that validates full substrate connectivity (17 primitives, parallel health check)
 - [ ] Update `@cmpsbl/cli` README with cognitive loop examples
-- [ ] Ship `cmpsbl doctor` command that validates full substrate connectivity
 - [ ] Publish "The Living Substrate" architecture doc
 
 ---

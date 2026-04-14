@@ -1215,7 +1215,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 
   // ═══ BRIDGE-FIRST: Route through pf-substrate via registry handlers ═══
   // All module commands AND bare cognitive aliases go through the living substrate.
-  const COGNITIVE_ALIASES = ['remember', 'recall', 'stream', 'discover', 'think', 'reflect', 'dream', 'synthesize', 'whoami'];
+  const COGNITIVE_ALIASES = ['remember', 'recall', 'stream', 'discover', 'think', 'reflect', 'dream', 'synthesize', 'whoami', 'doctor'];
   if (base.includes('.') || COGNITIVE_ALIASES.includes(base)) {
     try {
       const { getHandler, hasHandler } = await import('@/lib/terminal/validate-registry');
@@ -1327,8 +1327,10 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         const subData = substrateResult as Record<string, unknown>;
 
         if (subData?.success === false) {
-          // Fall through to legacy chain only if substrate returns explicit failure
-          // (might be a local-only command like autoblog, patch, matrix)
+          // Substrate explicitly rejected — log for diagnostics, fall through to legacy
+          if (debugMode.isEnabled()) {
+            log.debug('terminal', `[auto-bridge] ${mod}/${action} returned success:false, trying legacy`, { error: subData?.error });
+          }
         } else {
           // Use formatted output if substrate returned one
           const outputStr = typeof subData?.output === 'string'
@@ -1351,7 +1353,6 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     }
   }
 
-  // ═══ LEGACY EXECUTION CHAIN (fallback for commands not yet in registry) ═══
   // ═══ DEPRECATED LEGACY CHAIN ═══
   // These handlers are superseded by the bridge-first auto-route above.
   // They remain as fallback for: (1) commands where pf-substrate returns success:false,
