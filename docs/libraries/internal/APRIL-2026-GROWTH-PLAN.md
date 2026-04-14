@@ -28,7 +28,7 @@ At scale, each paying user funds 1.75 days of ads. The flywheel starts.
 
 ## Two Products, Two Messages
 
-### Ascension (Conversion product — Architect $249/mo value)
+### Ascension (Conversion product — Architect $79/mo value)
 > "Upload your code. Get back a portable, IP-protected artifact in 90+ languages. Your script becomes a product."
 
 ### Memory Stream (Retention product — included Pro+)

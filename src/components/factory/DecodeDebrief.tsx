@@ -236,7 +236,7 @@ function getContextualResponse(
 
   // Price / plan
   if (/price|cost|plan|subscribe|pay/i.test(q)) {
-    return `Exporting requires an active subscription. Studio ($29), Creator ($79), or Architect ($249) — all include unlimited ascensions. Visit the Plans section below to get started.`;
+    return `Exporting requires an active subscription. Studio ($29), Creator ($49), or Architect ($79) — all include unlimited ascensions. Visit the Plans section below to get started.`;
   }
 
   // Fallback — still contextual

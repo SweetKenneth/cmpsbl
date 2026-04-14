@@ -51,7 +51,7 @@ const STEPS: OnboardingStep[] = [
     icon: Layers,
     tag: 'Tiers',
     title: 'One Pricing Ladder',
-    body: 'Free → $79 → $129 → $159 → $249. Each product stands on its own — pick what you need. No hidden costs. FAILSAFE and BEACON are free for all authenticated users.',
+    body: 'Builder (Free) → Studio ($29) → Creator ($49) → Architect ($79) → Enterprise ($999+). Engines and agents are available as add-ons. FAILSAFE and BEACON are free for all authenticated users.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
