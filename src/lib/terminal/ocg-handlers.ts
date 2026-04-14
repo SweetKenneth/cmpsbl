@@ -1,272 +1,87 @@
 /**
  * OCG & Shell Terminal Handlers — RIPPLE, ACCESS, DEFENSE
- * Registers governance-gated handlers for OCG Grid + Shell nodes
- * 
- * Note: IDENTITY, RELAY, AUDIT are registered in infra-module-handlers.ts
+ * ALL routed through pf-substrate edge function
  */
 
 import { registerHandler } from './validate-registry';
+import { bridge } from './substrate-bridge';
 import { log } from '@/lib/system/log';
 
 export function registerOCGHandlers(): void {
-  // ═══════════════════════════════════════════════════════
-  // RIPPLE — Signal/event bus, inter-zone communication
-  // ═══════════════════════════════════════════════════════
+  // ═══ RIPPLE ═══
+  registerHandler('ripple.status', bridge('ripple', 'status'));
+  registerHandler('ripple.pulse', bridge('ripple', 'pulse'));
+  registerHandler('ripple.topics', bridge('ripple', 'topics'));
+  registerHandler('ripple.events', bridge('ripple', 'events'));
+  registerHandler('ripple.publish', bridge('ripple', 'publish'));
+  registerHandler('ripple.subscribe', bridge('ripple', 'subscribe'));
+  registerHandler('ripple.enqueue', bridge('ripple', 'enqueue'));
+  registerHandler('ripple.dequeue', bridge('ripple', 'dequeue'));
+  registerHandler('ripple.dead_letter', bridge('ripple', 'dead_letter'));
+  registerHandler('ripple.retry', bridge('ripple', 'retry'));
+  registerHandler('ripple.metrics', bridge('ripple', 'metrics'));
+  registerHandler('ripple.replay', bridge('ripple', 'replay'));
+  registerHandler('ripple.jobs', bridge('ripple', 'jobs'));
+  registerHandler('ripple.work', bridge('ripple', 'work'));
+  registerHandler('ripple.drain', bridge('ripple', 'drain'));
+  registerHandler('ripple.ack', bridge('ripple', 'ack'));
+  registerHandler('ripple.nack', bridge('ripple', 'nack'));
+  registerHandler('ripple.circuits', bridge('ripple', 'circuits'));
+  registerHandler('ripple.health', bridge('ripple', 'health'));
 
-  registerHandler('ripple.status', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.status();
-  });
+  // ═══ ACCESS ═══
+  registerHandler('access.status', bridge('access', 'status'));
+  registerHandler('access.pulse', bridge('access', 'pulse'));
+  registerHandler('access.create_key', bridge('access', 'create_key'));
+  registerHandler('access.validate_key', bridge('access', 'validate_key'));
+  registerHandler('access.revoke_key', bridge('access', 'revoke_key'));
+  registerHandler('access.list_keys', bridge('access', 'list_keys'));
+  registerHandler('access.usage', bridge('access', 'usage'));
+  registerHandler('access.quota', bridge('access', 'quota'));
+  registerHandler('access.subscription', bridge('access', 'subscription'));
+  registerHandler('access.register', bridge('access', 'register'));
+  registerHandler('access.bootstrap', bridge('access', 'bootstrap'));
+  registerHandler('access.developer', bridge('access', 'developer'));
+  registerHandler('access.developers', bridge('access', 'developers'));
+  registerHandler('access.identity', bridge('access', 'identity'));
+  registerHandler('access.entitlements', bridge('access', 'entitlements'));
+  registerHandler('access.products', bridge('access', 'products'));
+  registerHandler('access.health', bridge('access', 'health'));
 
-  registerHandler('ripple.pulse', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.pulse();
-  });
+  // ═══ DEFENSE ═══
+  registerHandler('defense.status', bridge('defense', 'status'));
+  registerHandler('defense.analyze', bridge('defense', 'analyze'));
+  registerHandler('defense.verify', bridge('defense', 'verify'));
+  registerHandler('defense.audit', bridge('defense', 'audit'));
+  registerHandler('defense.scan', bridge('defense', 'scan'));
+  registerHandler('defense.threats', bridge('defense', 'threats'));
+  registerHandler('defense.quarantine', bridge('defense', 'quarantine'));
+  registerHandler('defense.release', bridge('defense', 'release'));
+  registerHandler('defense.rates', bridge('defense', 'rates'));
+  registerHandler('defense.posture', bridge('defense', 'posture'));
+  registerHandler('defense.health', bridge('defense', 'health'));
 
-  registerHandler('ripple.topics', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.topics();
-  });
-
-  registerHandler('ripple.events', async () => {
-    return { success: false, error: 'Usage: ripple.events [topic] [limit]' };
-  });
-
-  registerHandler('ripple.publish', async () => {
-    return { success: false, error: 'Usage: ripple.publish <topic> <event_type> [payload]' };
-  });
-
-  registerHandler('ripple.subscribe', async () => {
-    return { success: false, error: 'Usage: ripple.subscribe <topic> <module> <action>' };
-  });
-
-  registerHandler('ripple.enqueue', async () => {
-    return { success: false, error: 'Usage: ripple.enqueue <queue> <payload>' };
-  });
-
-  registerHandler('ripple.dequeue', async () => {
-    return { success: false, error: 'Usage: ripple.dequeue <queue>' };
-  });
-
-  registerHandler('ripple.dead_letter', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.deadLetter();
-  });
-
-  registerHandler('ripple.retry', async () => {
-    return { success: false, error: 'Usage: ripple.retry <job_id>' };
-  });
-
-  registerHandler('ripple.metrics', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.metrics();
-  });
-
-  registerHandler('ripple.replay', async () => {
-    return { success: false, error: 'Usage: ripple.replay <topic> [limit]' };
-  });
-
-  registerHandler('ripple.jobs', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.jobs({});
-  });
-
-  registerHandler('ripple.work', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.work(undefined, true);
-  });
-
-  registerHandler('ripple.drain', async () => {
-    return { success: false, error: 'Usage: ripple.drain [queue]' };
-  });
-
-  registerHandler('ripple.ack', async () => {
-    return { success: false, error: 'Usage: ripple.ack <job_id>' };
-  });
-
-  registerHandler('ripple.nack', async () => {
-    return { success: false, error: 'Usage: ripple.nack <job_id> [reason]' };
-  });
-
-  registerHandler('ripple.circuits', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    return await ripple.circuits();
-  });
-
-  registerHandler('ripple.health', async () => {
-    const { ripple } = await import('@/lib/substrate');
-    const status = await ripple.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'RIPPLE', layer: 'OCG' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // ACCESS — API entitlements, developer keys, rate limiting
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('access.status', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.status();
-  });
-
-  registerHandler('access.pulse', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.pulse();
-  });
-
-  registerHandler('access.create_key', async () => {
-    return { success: false, error: 'Usage: access.create_key [name] [scopes...]' };
-  });
-
-  registerHandler('access.validate_key', async () => {
-    return { success: false, error: 'Usage: access.validate_key <api_key>' };
-  });
-
-  registerHandler('access.revoke_key', async () => {
-    return { success: false, error: 'Usage: access.revoke_key <key_id>' };
-  });
-
-  registerHandler('access.list_keys', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.listKeys();
-  });
-
-  registerHandler('access.usage', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.getUsage({});
-  });
-
-  registerHandler('access.quota', async () => {
-    return { success: false, error: 'Usage: access.quota [product_code]' };
-  });
-
-  registerHandler('access.subscription', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.subscription();
-  });
-
-  registerHandler('access.register', async () => {
-    return { success: false, error: 'Usage: access.register [display_name]' };
-  });
-
-  registerHandler('access.bootstrap', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.bootstrap();
-  });
-
-  registerHandler('access.developer', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.developer();
-  });
-
-  registerHandler('access.developers', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.developers();
-  });
-
-  registerHandler('access.identity', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.identity();
-  });
-
-  registerHandler('access.entitlements', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.entitlements();
-  });
-
-  registerHandler('access.products', async () => {
-    const { access } = await import('@/lib/substrate');
-    return await access.products();
-  });
-
-  registerHandler('access.health', async () => {
-    const { access } = await import('@/lib/substrate');
-    const status = await access.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'ACCESS', layer: 'OCG' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // DEFENSE (Shell) — Outer containment boundary
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('defense.status', async () => {
-    const { defense } = await import('@/lib/substrate');
-    return await defense.status();
-  });
-
-  registerHandler('defense.analyze', async () => {
-    return { success: false, error: 'Usage: defense.analyze <fingerprint> [ip]' };
-  });
-
-  registerHandler('defense.verify', async () => {
-    return { success: false, error: 'Usage: defense.verify <action_id>' };
-  });
-
-  registerHandler('defense.audit', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'defense', action: 'audit' });
-  });
-
-  registerHandler('defense.scan', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'defense', action: 'scan' });
-  });
-
-  registerHandler('defense.threats', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'defense', action: 'threats' });
-  });
-
-  registerHandler('defense.quarantine', async () => {
-    return { success: false, error: 'Usage: defense.quarantine <entity_id>' };
-  });
-
-  registerHandler('defense.release', async () => {
-    return { success: false, error: 'Usage: defense.release <entity_id>' };
-  });
-
-  registerHandler('defense.rates', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'defense', action: 'rates' });
-  });
-
-  registerHandler('defense.posture', async () => {
-    const { defense } = await import('@/lib/substrate');
-    return await defense.posture();
-  });
-
-  registerHandler('defense.health', async () => {
-    const { defense } = await import('@/lib/substrate');
-    const status = await defense.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DEFENSE', layer: 'Shell' } };
-  });
-
-  // ═══ HELP COMMANDS ═══
-
+  // ═══ HELP (local UI) ═══
   registerHandler('ripple.help', async () => ({
-    success: true,
-    formatted: [
+    success: true, formatted: [
       '', '┌─ RIPPLE — Signal Bus ──────────────────────┐',
       '│  ripple.status     Module status               │',
       '│  ripple.pulse      Heartbeat                   │',
       '│  ripple.topics     Active topics                │',
       '│  ripple.events     Event log                    │',
-      '│  ripple.publish    Publish event                │',
       '│  ripple.dead_letter Dead letter queue           │',
       '│  ripple.metrics    Bus metrics                  │',
       '│  ripple.jobs       Job queue                    │',
       '│  ripple.circuits   Circuit breaker states       │',
       '│  ripple.health     Health score                 │',
-      '│  ripple.hardening  Hardening (Tsunami)          │',
       '└───────────────────────────────────────────────┘', '',
     ],
   }));
 
   registerHandler('access.help', async () => ({
-    success: true,
-    formatted: [
+    success: true, formatted: [
       '', '┌─ ACCESS — API & Entitlements ──────────────┐',
       '│  access.status       Module status              │',
-      '│  access.pulse        Heartbeat                  │',
       '│  access.list_keys    List API keys              │',
       '│  access.usage        Usage metrics              │',
       '│  access.subscription Subscription info          │',
@@ -274,14 +89,12 @@ export function registerOCGHandlers(): void {
       '│  access.entitlements Active entitlements        │',
       '│  access.products     Product catalog            │',
       '│  access.health       Health score               │',
-      '│  access.hardening    Hardening status           │',
       '└───────────────────────────────────────────────┘', '',
     ],
   }));
 
   registerHandler('defense.help', async () => ({
-    success: true,
-    formatted: [
+    success: true, formatted: [
       '', '┌─ DEFENSE — Outer Shell ────────────────────┐',
       '│  defense.status      Module status              │',
       '│  defense.analyze     Fingerprint analysis       │',
@@ -291,10 +104,9 @@ export function registerOCGHandlers(): void {
       '│  defense.posture     Security posture           │',
       '│  defense.rates       Rate limit status          │',
       '│  defense.health      Health score               │',
-      '│  defense.hardening   Hardening (Fortress)       │',
       '└───────────────────────────────────────────────┘', '',
     ],
   }));
 
-  log.info('terminal', 'OCG & Shell handlers registered (RIPPLE, ACCESS, DEFENSE)', { count: 40 });
+  log.info('terminal', 'OCG & Shell handlers registered via substrate bridge (RIPPLE, ACCESS, DEFENSE)', { count: 40 });
 }
