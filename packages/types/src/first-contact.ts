@@ -56,8 +56,8 @@ export interface CeremonyEvent {
   detail?: string;
   progress?: number;       // 0–100
   sector?: string;
-  nodesOnline?: number;
-  totalNodes?: number;
+  primitivesOnline?: number;
+  totalPrimitives?: number;
 }
 
 export interface FirstContactConfig {
