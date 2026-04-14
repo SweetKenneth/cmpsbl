@@ -31,10 +31,12 @@ import {
 import { evaluate, getRules, resetLex } from './lex';
 import {
   verifyFingerprint,
-  registerFingerprint,
+  registerCandidateBaseline,
   computeCanonicalFingerprint,
+  checkIdentity,
   type FingerprintResult,
   type FingerprintVerdict,
+  type TrustState,
 } from '../../core/boot/fingerprintGate';
 import { recordAuditEvent } from '../../core/audit/auditChain';
 import {
@@ -1289,13 +1291,27 @@ export async function attach(
   capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }>,
   sourceForHash: string,
 ): Promise<ManaManifest> {
-  // ── V1 WIRING: Fingerprint Gate — verify before attaching ──
-  const fpResult = verifyFingerprint(hostModule, hostPackage || 'unknown', hostVersion || '0.0.0');
+  // ── #1: Identity enforcement — reject placeholder identity ──
+  const identity = checkIdentity(hostPackage, hostVersion);
+  if (!identity.complete) {
+    state = 'detached';
+    throw new Error(
+      `[MANA/IDENTITY] Attachment denied — ${identity.reason}. Call scan() or configure identity first.`
+    );
+  }
+
+  // ── Fingerprint Gate — verify before attaching ──
+  const fpResult = verifyFingerprint(hostModule, hostPackage, hostVersion);
   
   recordAuditEvent('mana.engine', 'fingerprint_verify', fpResult.verdict, {
     fingerprint: fpResult.fingerprint,
     expected: fpResult.expectedFingerprint,
     mismatchType: fpResult.mismatchType,
+    trustState: fpResult.trustState,
+  }, undefined, undefined, {
+    phase: 'boot',
+    outcome: fpResult.verdict === 'valid' ? 'success' : fpResult.verdict === 'suspect' ? 'degraded' : 'denied',
+    trustState: fpResult.trustState as 'candidate_baseline' | 'trusted_baseline' | 'uninitialized',
   });
 
   if (fpResult.verdict === 'invalid') {
@@ -1305,19 +1321,23 @@ export async function attach(
     );
   }
 
-  // Suspect = limited mode — filter out restricted capabilities
+  // #3: Suspect = limited mode — filter using domain-typed restrictions
   let filteredCapabilities = capabilities;
   if (fpResult.verdict === 'suspect') {
-    const limited = new Set(fpResult.limitedCapabilities);
-    filteredCapabilities = capabilities.filter(c => !limited.has(c.capability));
+    const restricted = new Set(fpResult.limitedCapabilities);
+    filteredCapabilities = capabilities.filter(c => !restricted.has(c.capability));
     
     recordAuditEvent('mana.engine', 'fingerprint_limited', 'suspect', {
       removedCapabilities: capabilities.length - filteredCapabilities.length,
-      limitedCapabilities: fpResult.limitedCapabilities,
+      restrictions: fpResult.restrictions,
+    }, undefined, undefined, {
+      phase: 'boot',
+      outcome: 'degraded',
+      trustState: fpResult.trustState as 'candidate_baseline' | 'trusted_baseline' | 'uninitialized',
     });
   }
 
-  // Detect recursive layering — symbol-based, not name heuristic
+  // Detect recursive layering
   for (const [, val] of Object.entries(hostModule)) {
     if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
       parentLayerHash = await computeHash(sourceForHash);
@@ -1332,12 +1352,8 @@ export async function attach(
   originals.clear();
   telemetry.length = 0;
 
-  // Deterministic sort: primary by phase (ascending), secondary by capability name
-  // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
-  // When called: GATE → VALIDATE → FAILSAFE → [original] → OBSERVE → ANALYZE
   const sorted = [...filteredCapabilities].sort(byPhaseThenName).reverse();
 
-  // Group by function name for proper wrapper composition
   const capsByFunction = new Map<string, typeof sorted>();
   for (const cap of sorted) {
     const list = capsByFunction.get(cap.functionName) ?? [];
@@ -1345,42 +1361,38 @@ export async function attach(
     capsByFunction.set(cap.functionName, list);
   }
 
-  // HARDENING: Track attached capabilities per function for double-wrap prevention
-  const attachedCapabilities = new Map<string, Set<ManaCapability>>();
+  // #8: Host-scoped double-wrap registry — persists across attach cycles
+  const hostKey = hostPackage;
 
   let position = 0;
   for (const [functionName, caps] of Array.from(capsByFunction.entries())) {
     const rawOriginal = hostModule[functionName] as AnyFn;
     if (typeof rawOriginal !== 'function') continue;
 
-    // Store the true original ONCE — before any wrapping
     if (!originals.has(functionName)) {
       originals.set(functionName, rawOriginal);
     }
 
-    // Initialize capability set for double-wrap detection
-    if (!attachedCapabilities.has(functionName)) {
-      attachedCapabilities.set(functionName, new Set());
-    }
-    const capSet = attachedCapabilities.get(functionName)!;
+    // #4 + #8: Compose all wrappers first, then apply ONE outer boundary
+    let composed: AnyFn = rawOriginal;
 
-    // Compose wrappers: each wraps the result of the previous
-    let wrapped: AnyFn = rawOriginal;
+    // #8: Check existing attached capabilities on the function itself
+    const existingCaps = (rawOriginal as unknown as Record<string, Set<ManaCapability>>).__mana_attached_caps;
+    const attachedSet = existingCaps instanceof Set ? new Set(existingCaps) : new Set<ManaCapability>();
+
     for (const cap of caps) {
-      // HARDENING: Double-wrap prevention — skip if already applied
-      if (capSet.has(cap.capability)) {
+      // #8: Persistent double-wrap prevention
+      if (attachedSet.has(cap.capability)) {
         emitTelemetry(cap.capability, functionName, 'observed', { reason: 'double_wrap_prevented' }, 'attachment');
         continue;
       }
 
-      // Lex governance check — ATTACHMENT-TIME verdict
       const { verdict } = evaluate(cap.capability, functionName, config.lexMode, 'attachment');
       if (verdict === 'deny') {
         emitTelemetry(cap.capability, functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
         continue;
       }
 
-      // Create attachment point with position tracking
       const point: AttachmentPoint = {
         functionName,
         capability: cap.capability,
@@ -1394,36 +1406,11 @@ export async function attach(
       };
       attachmentPoints.set(`${functionName}:${cap.capability}`, point);
 
-      // V1 WIRING: Wrap with execution boundary tracking for safe detach
+      // Wrap — NO boundary here, just the capability wrapper
       const wrapper = getWrapper(cap.capability);
-      const boundaryAwareWrapper = (origFn: Function, fname: string, pt: AttachmentPoint) => {
-        const innerWrapper = wrapper(origFn, fname, pt);
-        return function manaBoundaryTracked(this: unknown, ...args: unknown[]) {
-          enterExecutionBoundary();
-          try {
-            const result = (innerWrapper as Function).apply(this, args);
-            if (result != null && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
-              return (result as Promise<unknown>).then(
-                (v) => { exitExecutionBoundary(); return v; },
-                (e) => { exitExecutionBoundary(); throw e; },
-              );
-            }
-            exitExecutionBoundary();
-            return result;
-          } catch (err) {
-            exitExecutionBoundary();
-            throw err;
-          }
-        };
-      };
+      composed = wrapper(composed as Function, functionName, point) as AnyFn;
 
-      wrapped = boundaryAwareWrapper(wrapped as Function, functionName, point) as AnyFn;
-      // Tag wrapper with symbol for accurate layer detection
-      (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
-
-      // Track for double-wrap prevention
-      capSet.add(cap.capability);
-
+      attachedSet.add(cap.capability);
       emitTelemetry(cap.capability, functionName, 'invoked', {
         action: 'attached', layerDepth, position,
         phase: point.phase,
@@ -1431,26 +1418,54 @@ export async function attach(
       position++;
     }
 
-    // Apply the fully composed wrapper stack
-    hostModule[functionName] = wrapped;
+    // #4: Apply ONE outer execution boundary wrapper after all capabilities composed
+    const fullyComposed = composed;
+    const boundaryWrapped = function manaOuterBoundary(this: unknown, ...args: unknown[]) {
+      enterExecutionBoundary(hostKey);
+      try {
+        const result = (fullyComposed as Function).apply(this, args);
+        if (result != null && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+          return (result as Promise<unknown>).then(
+            (v) => { exitExecutionBoundary(hostKey); return v; },
+            (e) => { exitExecutionBoundary(hostKey); throw e; },
+          );
+        }
+        exitExecutionBoundary(hostKey);
+        return result;
+      } catch (err) {
+        exitExecutionBoundary(hostKey);
+        throw err;
+      }
+    } as AnyFn;
+
+    // Tag with MANA_LAYER_TAG
+    (boundaryWrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
+    // #8: Persist attached capability set on the function
+    (boundaryWrapped as unknown as Record<string, Set<ManaCapability>>).__mana_attached_caps = attachedSet;
+
+    hostModule[functionName] = boundaryWrapped;
   }
 
   state = 'symbiotic';
   attachedAt = Date.now();
   detachedAt = null;
 
-  // V1 WIRING: Auto-register fingerprint on first successful attach
+  // #2: First boot registers candidate baseline only — NOT trusted
   if (fpResult.verdict === 'suspect' && fpResult.expectedFingerprint === null) {
-    registerFingerprint(hostPackage, fpResult.fingerprint);
+    registerCandidateBaseline(hostPackage, fpResult.fingerprint, fpResult.integrityFingerprint);
   }
 
-  // V1 WIRING: Audit event for successful attachment
   recordAuditEvent('mana.engine', 'attach_complete', 'success', {
     hostPackage,
     hostVersion,
     attachmentPointCount: attachmentPoints.size,
     layerDepth,
     fingerprintVerdict: fpResult.verdict,
+    trustState: fpResult.trustState,
+  }, undefined, undefined, {
+    phase: 'attachment',
+    outcome: 'success',
+    trustState: fpResult.trustState as 'candidate_baseline' | 'trusted_baseline' | 'uninitialized',
   });
 
   return getManifest();
@@ -1474,46 +1489,32 @@ export async function detach(hostModule: Record<string, unknown>): Promise<ManaM
   state = 'detaching';
   const manifest = getManifest();
 
-  // V1 WIRING: Audit event before detach
   recordAuditEvent('mana.engine', 'detach_start', 'initiated', {
     hostPackage,
     hostVersion,
     attachmentPointCount: attachmentPoints.size,
+  }, undefined, undefined, {
+    phase: 'detachment',
+    outcome: 'success',
   });
 
-  // V1 WIRING: Use safe detach protocol — transactional with boundary wait
+  // #6: safeDetach is the SINGLE detach authority — no fallback logic here
   const receipt = await safeDetach(hostModule, originals, hostPackage, manifest);
-
-  if (!receipt.success) {
-    // Safe detach failed — fall back to direct restoration
-    for (const [functionName, originalFn] of originals.entries()) {
-      hostModule[functionName] = originalFn;
-    }
-
-    // Post-detach verification — ensure no MANA_LAYER_TAG remains
-    for (const [functionName] of originals.entries()) {
-      const fn = hostModule[functionName];
-      if (typeof fn === 'function' && (fn as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
-        const orig = originals.get(functionName);
-        if (orig) hostModule[functionName] = orig;
-      }
-    }
-
-    recordAuditEvent('mana.engine', 'detach_fallback', 'fallback_used', {
-      reason: receipt.error,
-      receiptId: receipt.receiptId,
-    });
-  }
 
   state = 'detached';
   detachedAt = Date.now();
 
-  // V1 WIRING: Audit event for completed detach
+  // #7: Structured audit event for detach completion
   recordAuditEvent('mana.engine', 'detach_complete', receipt.success ? 'clean' : 'fallback', {
     receiptId: receipt.receiptId,
     restoredFunctions: receipt.restoredFunctions,
     verificationPassed: receipt.verificationPassed,
     idempotencyKey: receipt.idempotencyKey,
+    recoveryPath: receipt.recoveryPath,
+  }, undefined, undefined, {
+    phase: 'detachment',
+    outcome: receipt.success ? 'success' : 'degraded',
+    recoveryPath: receipt.recoveryPath,
   });
 
   originals.clear();
