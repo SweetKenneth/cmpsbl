@@ -2,6 +2,10 @@
 
 ---
 
+> **CMPSBL®** — Governed Cognitive Infrastructure · PromptFluid™
+> U.S. Patent App. No. 64/029,678 · 64/031,637
+
+
 ## Organs — Internal Infrastructure
 
 | Primitive | Purpose | Key Actions |
@@ -83,4 +87,6 @@
 
 ---
 
-© 2025–2026 CMPSBL®. All rights reserved.
+**CMPSBL®** · Governed Cognitive Infrastructure
+Protected under U.S. Patent App. No. 64/029,678 (Ascension™ Discovery) & 64/031,637 (Mana™ Silent Symbiosis)
+© 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.

@@ -6,6 +6,10 @@
 
 ---
 
+> **CMPSBL®** — Governed Cognitive Infrastructure · PromptFluid™
+> U.S. Patent App. No. 64/029,678 · 64/031,637
+
+
 ## What "Building" Means Here
 
 Building on CMPSBL is not writing primitives from scratch — the 40 primitives already exist. Building means **composing, configuring, discovering, and packaging** unique cognitive artifacts that solve real problems.
@@ -215,3 +219,9 @@ Your artifact is **differentiated** when:
 ---
 
 © 2025–2026 CMPSBL® · PromptFluid™
+
+---
+
+**CMPSBL®** · Governed Cognitive Infrastructure
+Protected under U.S. Patent App. No. 64/029,678 (Ascension™ Discovery) & 64/031,637 (Mana™ Silent Symbiosis)
+© 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.

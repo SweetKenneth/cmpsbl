@@ -2,6 +2,10 @@
 
 ---
 
+> **CMPSBL®** — Governed Cognitive Infrastructure · PromptFluid™
+> U.S. Patent App. No. 64/029,678 · 64/031,637
+
+
 ## What Is the Agent Forge?
 
 The Agent Forge lets you create **custom named agents** with globally unique identities. Each agent gets a permanent name (3-8 characters) that becomes your CLI command identifier. Think of it as minting your own cognitive worker — named, specialized, and yours.
@@ -137,4 +141,6 @@ Forged agents are not templates. They inherit:
 
 ---
 
-© 2025–2026 CMPSBL®. All rights reserved.
+**CMPSBL®** · Governed Cognitive Infrastructure
+Protected under U.S. Patent App. No. 64/029,678 (Ascension™ Discovery) & 64/031,637 (Mana™ Silent Symbiosis)
+© 2025–2026 CMPSBL® · PromptFluid™ · All rights reserved.
