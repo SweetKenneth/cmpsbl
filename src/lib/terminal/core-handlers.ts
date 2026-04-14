@@ -51,8 +51,7 @@ export function registerCoreHandlers(): void {
     // Determine activated engines based on tier
     const tierEngines: Record<string, string[]> = {
       free: ['FAILSAFE', 'BEACON', 'PRIMITIVE'],
-      creator: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH'],
-      studio: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN'],
+      creator: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN'],
       architect: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN', 'NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'],
       governor: ['ALL — Full system authority'],
     };
