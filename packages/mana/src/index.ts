@@ -129,6 +129,7 @@ interface StoredCredentials {
   apiKey: string;
   displayName?: string;
   developerId?: string;
+  substrateRole?: string;
   savedAt?: string;
   lastCommand?: string;
   lastCommandAt?: string;
@@ -163,32 +164,54 @@ function loadStoredCredentials(): StoredCredentials | undefined {
       apiKey,
       displayName: typeof parsed.displayName === 'string' ? parsed.displayName : undefined,
       developerId: typeof parsed.developerId === 'string' ? parsed.developerId : undefined,
+      substrateRole:
+        typeof parsed.substrateRole === 'string'
+          ? parsed.substrateRole
+          : typeof parsed.substrate_role === 'string'
+            ? parsed.substrate_role
+            : undefined,
       savedAt: typeof parsed.savedAt === 'string' ? parsed.savedAt : undefined,
+      lastCommand: typeof parsed.lastCommand === 'string' ? parsed.lastCommand : undefined,
+      lastCommandAt: typeof parsed.lastCommandAt === 'string' ? parsed.lastCommandAt : undefined,
     };
   } catch {
     return undefined;
   }
 }
 
-function saveCredentials(apiKey: string, displayName?: string): void {
+function saveCredentials(apiKey: string, displayName?: string, developerId?: string, substrateRole?: string): void {
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
 
-  // Preserve existing fields
-  let existing: Record<string, unknown> = {};
+  let lastCommand: string | undefined;
+  let lastCommandAt: string | undefined;
   try {
     if (fs.existsSync(CREDS_FILE)) {
       const raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
-      if (raw.startsWith('{')) existing = JSON.parse(raw);
+      if (raw.startsWith('{')) {
+        const existing = JSON.parse(raw) as Record<string, unknown>;
+        lastCommand = typeof existing.lastCommand === 'string' ? existing.lastCommand : undefined;
+        lastCommandAt = typeof existing.lastCommandAt === 'string' ? existing.lastCommandAt : undefined;
+      }
     }
   } catch { /* ignore */ }
 
   const payload: Record<string, unknown> = {
-    ...existing,
     apiKey,
     api_key: apiKey,
     savedAt: new Date().toISOString(),
   };
   if (displayName) payload.displayName = displayName;
+  if (developerId) payload.developerId = developerId;
+  if (lastCommand) payload.lastCommand = lastCommand;
+  if (lastCommandAt) payload.lastCommandAt = lastCommandAt;
+  if (substrateRole) {
+    payload.substrateRole = substrateRole;
+    payload.substrate_role = substrateRole;
+  }
+  if (substrateRole === 'governor') {
+    payload.governor_verified = true;
+    payload.governor_verified_at = new Date().toISOString();
+  }
   fs.writeFileSync(CREDS_FILE, JSON.stringify(payload, null, 2));
   try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* platform-specific */ }
 }
@@ -220,6 +243,7 @@ function getStoredDisplayName(): string | undefined {
 interface ManaValidationResult {
   valid: boolean;
   displayName?: string;
+  developerId?: string;
   substrateRole?: string;
   error?: string;
 }
@@ -255,8 +279,9 @@ async function validateApiKey(apiKey: string): Promise<ManaValidationResult> {
       ) as string | undefined;
 
       const substrateRole = typeof result.substrate_role === 'string' ? result.substrate_role : 'builder';
+      const developerId = (result.developer_id ?? devRecord?.id) as string | undefined;
 
-      return { valid: true, displayName, substrateRole };
+      return { valid: true, displayName, developerId, substrateRole };
     }
 
     return { valid: false, error: typeof result.error === 'string' ? result.error : 'Invalid API key' };
@@ -363,7 +388,14 @@ async function inlineRegister(identity: EnvironmentIdentity): Promise<string | n
     ) as string;
 
     const apiKey = data.api_key as string;
-    saveCredentials(apiKey, returnedName);
+    const developerId =
+      typeof data.developer_id === 'string'
+        ? data.developer_id
+        : typeof devRecord?.id === 'string'
+          ? devRecord.id
+          : undefined;
+    const substrateRole = typeof data.substrate_role === 'string' ? data.substrate_role : undefined;
+    saveCredentials(apiKey, returnedName, developerId, substrateRole);
 
     blank();
     say(`${c.green('✔')} Developer profile created: ${c.bold(returnedName)}`);
@@ -389,8 +421,8 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
   if (existing) {
     const validation = await validateApiKey(existing);
     if (validation.valid) {
-      if (validation.displayName) {
-        saveCredentials(existing, validation.displayName);
+      if (validation.displayName || validation.developerId || validation.substrateRole) {
+        saveCredentials(existing, validation.displayName, validation.developerId, validation.substrateRole);
       }
       /* Governor ceremony — supreme authority recognized */
       if (validation.substrateRole === 'governor' && isTTY()) {
@@ -421,7 +453,16 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
 
   if (choice === '1' || choice === '') {
     const key = await inlineRegister(identity);
-    if (key) return key;
+    if (key) {
+      const validation = await validateApiKey(key);
+      if (validation.valid) {
+        saveCredentials(key, validation.displayName, validation.developerId, validation.substrateRole);
+        if (validation.substrateRole === 'governor' && isTTY()) {
+          await manaGovernorCeremony(validation.displayName ?? 'Governor');
+        }
+      }
+      return key;
+    }
   }
 
   if (choice === '3') {
@@ -444,7 +485,7 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
     process.exit(1);
   }
 
-  saveCredentials(key, validation.displayName);
+  saveCredentials(key, validation.displayName, validation.developerId, validation.substrateRole);
 
   blank();
   say(`${c.green('✔')} API key saved to ~/.cmpsbl/credentials`);
@@ -1794,12 +1835,13 @@ async function commandAttach(): Promise<void> {
     process.exit(1);
   }
 
+  const initialOperatorName = getStoredDisplayName() || identity.name || 'Operator';
+
+  await firstContactCeremony(project, initialOperatorName);
+
   const apiKey = await requireApiKey(identity);
 
-  const storedName = getStoredDisplayName();
-  const operatorName = storedName || identity.name || 'Operator';
-
-  await firstContactCeremony(project, operatorName);
+  const operatorName = getStoredDisplayName() || initialOperatorName;
 
   const level = await screenLevelSelection();
 

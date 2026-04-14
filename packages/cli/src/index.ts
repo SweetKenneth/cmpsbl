@@ -146,6 +146,9 @@ type StoredCredentials = {
   savedAt?: string;
   displayName?: string;
   developerId?: string;
+  substrateRole?: string;
+  governorVerified?: boolean;
+  governorVerifiedAt?: string;
 };
 
 function normalizeApiKey(value: unknown): string | undefined {
@@ -174,6 +177,16 @@ function extractDisplayName(record: Record<string, unknown>): string | undefined
   return typeof candidate === 'string' ? candidate.trim() : undefined;
 }
 
+function extractSubstrateRole(record: Record<string, unknown>): string | undefined {
+  const candidate = [
+    record.substrateRole,
+    record.substrate_role,
+    record.role,
+  ].find((value) => typeof value === 'string' && value.trim().length > 0);
+
+  return typeof candidate === 'string' ? candidate.trim() : undefined;
+}
+
 function parseStoredCredentials(raw: string): StoredCredentials | undefined {
   const trimmed = raw.trim();
   if (!trimmed) return undefined;
@@ -186,6 +199,14 @@ function parseStoredCredentials(raw: string): StoredCredentials | undefined {
       savedAt: typeof metadata?.savedAt === 'string' ? metadata.savedAt : undefined,
       displayName: metadata ? extractDisplayName(metadata) : undefined,
       developerId: typeof metadata?.developerId === 'string' ? metadata.developerId : undefined,
+      substrateRole: metadata ? extractSubstrateRole(metadata) : undefined,
+      governorVerified: metadata?.governor_verified === true || metadata?.governorVerified === true,
+      governorVerifiedAt:
+        typeof metadata?.governor_verified_at === 'string'
+          ? metadata.governor_verified_at
+          : typeof metadata?.governorVerifiedAt === 'string'
+            ? metadata.governorVerifiedAt
+            : undefined,
     };
   };
 
@@ -230,16 +251,26 @@ function loadStoredKey(): string | undefined {
   return loadStoredCredentials()?.apiKey;
 }
 
-function saveStoredKey(key: string, displayName?: string, developerId?: string): void {
+function saveStoredKey(key: string, displayName?: string, developerId?: string, substrateRole?: string): void {
   const apiKey = normalizeApiKey(key);
   if (!apiKey) throw new Error('Invalid API key');
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
   const existing = loadStoredCredentials();
+  const sameKey = existing?.apiKey === apiKey;
   const name = displayName ?? existing?.displayName;
-  const devId = developerId ?? existing?.developerId;
+  const devId = developerId ?? (sameKey ? existing?.developerId : undefined);
+  const role = substrateRole ?? (sameKey ? existing?.substrateRole : undefined);
   const payload: Record<string, unknown> = { apiKey, api_key: apiKey, savedAt: new Date().toISOString() };
   if (name) payload.displayName = name;
   if (devId) payload.developerId = devId;
+  if (role) {
+    payload.substrateRole = role;
+    payload.substrate_role = role;
+  }
+  if (role === 'governor') {
+    payload.governor_verified = true;
+    payload.governor_verified_at = new Date().toISOString();
+  }
   fs.writeFileSync(CREDS_FILE, JSON.stringify(payload, null, 2));
   try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* ignore platform-specific chmod failures */ }
 }
@@ -379,8 +410,8 @@ async function validateApiKeyWithBackend(apiKey: string): Promise<ValidationResu
       const substrateRole = typeof result.substrate_role === 'string' ? result.substrate_role : 'builder';
       const developerId = (result.developer_id ?? devRecord?.id) as string | undefined;
 
-      /* Update stored credentials with confirmed display name + developer ID */
-      saveStoredKey(normalized, displayName, developerId);
+      /* Update stored credentials with confirmed identity + role metadata */
+      saveStoredKey(normalized, displayName, developerId, substrateRole);
 
       return { valid: true, displayName, substrateRole, developerId };
     }
@@ -529,7 +560,14 @@ async function inlineRegister(): Promise<string | null> {
       name ??
       email.split('@')[0]
     );
-    saveStoredKey(data.api_key, devName);
+    const developerId =
+      typeof data.developer_id === 'string'
+        ? data.developer_id
+        : typeof devRecord?.id === 'string'
+          ? devRecord.id
+          : undefined;
+    const substrateRole = typeof data.substrate_role === 'string' ? data.substrate_role : undefined;
+    saveStoredKey(data.api_key, devName, developerId, substrateRole);
     sayOk(`  ✓ Developer: ${devName}`);
     say('  ✓ Key saved to ~/.cmpsbl/credentials');
     say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
@@ -618,7 +656,16 @@ async function requireApiKey(): Promise<string> {
   if (choice === '1' || choice === '') {
     // Inline registration
     const key = await inlineRegister();
-    if (key) return key;
+    if (key) {
+      const validation = await validateApiKeyWithBackend(key);
+      if (validation.valid) {
+        if (validation.developerId) _activeDeveloperId = validation.developerId;
+        if (validation.substrateRole === 'governor' && !JSON_MODE && isInteractiveTTY()) {
+          await governorCeremony(validation.displayName ?? 'Governor');
+        }
+      }
+      return key;
+    }
     // Fall through to manual paste if registration failed
   }
 
@@ -669,7 +716,7 @@ async function requireApiKey(): Promise<string> {
 
   // Save persistently with developer ID
   if (validation.developerId) _activeDeveloperId = validation.developerId;
-  saveStoredKey(key, validation.displayName, validation.developerId);
+  saveStoredKey(key, validation.displayName, validation.developerId, validation.substrateRole);
   blank();
   say('  ✓ API key saved to ~/.cmpsbl/credentials');
   say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
@@ -1718,6 +1765,7 @@ async function cmdWhoami() {
   const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
   let invalidKey = false;
+  let substrateRole = storedCredentials?.substrateRole ?? (storedCredentials?.governorVerified ? 'governor' : undefined);
 
   if (hasKey && (!session || !session.memoryBound || session.userId.startsWith('local-'))) {
     try {
@@ -1733,25 +1781,19 @@ async function cmdWhoami() {
     }
   }
 
-  // Resolve developer name: stored → API → git → fallback
+  // Resolve developer name + role from the same validator used by auth gating
   let developerName = storedCredentials?.displayName ?? null;
 
-  if (!developerName && hasKey) {
-    try {
-      const res = await fetch(getSubstrateEndpoint(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify({ module: 'access', action: 'identity' }),
-      });
-      const result = await res.json() as Record<string, any>;
-      if (result.success && result.developer?.display_name) {
-        developerName = result.developer.display_name;
-        // Persist for future calls
-        saveStoredKey(apiKey!, developerName!);
-      } else if (result.success === false && typeof result.error === 'string' && /invalid or missing api key/i.test(result.error)) {
-        invalidKey = true;
-      }
-    } catch { /* API unavailable — continue with fallback */ }
+  if (apiKey) {
+    const validation = await validateApiKeyWithBackend(apiKey);
+    if (validation.valid) {
+      developerName = validation.displayName ?? developerName;
+      substrateRole = validation.substrateRole ?? substrateRole;
+      if (validation.developerId) _activeDeveloperId = validation.developerId;
+    } else {
+      invalidKey = true;
+      substrateRole = undefined;
+    }
   }
 
   if (!developerName && !invalidKey) {
@@ -1761,9 +1803,21 @@ async function cmdWhoami() {
     } catch { /* git unavailable */ }
   }
 
+  const resolvedRole = invalidKey ? null : (substrateRole ?? (hasKey ? 'builder' : null));
+  const roleLabel = resolvedRole ? `${resolvedRole.charAt(0).toUpperCase()}${resolvedRole.slice(1)}` : 'Unknown';
+  const accessLabel = invalidKey
+    ? 'Re-authentication required'
+    : resolvedRole === 'governor'
+      ? 'Governor'
+      : hasKey
+        ? 'Standard'
+        : 'Local only';
+
   const data = {
     apiKey: maskApiKey(apiKey),
     developer: developerName,
+    role: resolvedRole,
+    access: accessLabel,
     endpoint: process.env.CMPSBL_ENDPOINT ?? 'substrate-api (live)',
     session: session?.sessionId ?? null,
     memoryBound: invalidKey ? false : (session?.memoryBound ?? false),
@@ -1776,11 +1830,14 @@ async function cmdWhoami() {
   say(`API Key:    ${hasKey ? `● Configured (${maskApiKey(apiKey)})` : '○ Not set'}`);
   say(`Source:     ${apiKeySource === 'env' ? 'Environment variable' : apiKeySource === 'credentials' ? '~/.cmpsbl/credentials' : 'None'}`);
   say(`Developer:  ${data.developer ?? 'Unknown'}`);
+  say(`Role:       ${roleLabel}`);
+  say(`Access:     ${data.access}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
   say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : data.invalidKey ? '○ Local (invalid key)' : '○ Local'}`);
   say(`Package:    @cmpsbl/cli v${CLI_VERSION}`);
   if (data.invalidKey) sayErr('Configured key is invalid — use the full secret API key, not just the visible prefix.');
+  if (data.role === 'governor') sayOk('Governor permissions active.');
   div();
   say(pick(V.idle));
   blank();
