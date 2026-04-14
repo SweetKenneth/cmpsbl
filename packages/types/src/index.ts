@@ -122,14 +122,20 @@ export interface MeshReceipt {
 }
 
 export interface MeshCommEvent {
-  source_module: string;
-  target_module: string;
+  /** Canonical primitive identifier */
+  source_primitive: string;
+  /** Canonical target primitive */
+  target_primitive: string;
   raw_signal: string;
   translated_voice: string;
   category: MeshSignalCategory;
   resolver_id?: string;
   personality_trait?: string;
   personality_icon?: string;
+  /** @deprecated Use source_primitive */
+  source_module?: string;
+  /** @deprecated Use target_primitive */
+  target_module?: string;
 }
 
 export type MeshSignalCategory =
