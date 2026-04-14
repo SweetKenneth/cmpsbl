@@ -74,7 +74,7 @@ export default function TheContactEpoch() {
 
       <p>Fifteen months ago, we wrote a function. Now the function writes functions. And sometimes, the functions it writes are better than the ones we would have.</p>
 
-      <p className="text-xl font-semibold text-foreground mt-12">The CONTACT epoch has begun. We'll keep telling you what happens — honestly, technically, and in real time.</p>
+      <p className="text-xl font-semibold text-foreground mt-12">The CONTACT epoch has begun. We'll keep telling you what happens — honestly, technically, and in real time. <Link to="/blog/the-hardening" className="text-primary hover:underline">What came next →</Link></p>
     </BlogArticleLayout>
   );
 }
