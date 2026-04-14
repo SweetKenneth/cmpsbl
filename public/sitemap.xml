@@ -22,7 +22,8 @@
   <url><loc>https://cmpsbl.com/persistent-memory</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
   <url><loc>https://cmpsbl.com/persistent-memory</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
   <url><loc>https://cmpsbl.com/documentation</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
-  <url><loc>https://cmpsbl.com/blog</loc><lastmod>2026-04-02</lastmod><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/blog</loc><lastmod>2026-04-14</lastmod><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/blog/the-hardening</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
   <url><loc>https://cmpsbl.com/os</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
   <url><loc>https://cmpsbl.com/packs</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
   <url><loc>https://cmpsbl.com/api-access</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
