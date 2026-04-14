@@ -234,7 +234,7 @@ export interface ManaSession {
     capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }>,
     sourceForHash: string,
   ): Promise<ManaManifest>;
-  detach(hostModule: Record<string, unknown>): ManaManifest;
+  detach(hostModule: Record<string, unknown>): Promise<ManaManifest>;
 
   // ── Proof ──
   generateProof(sourceForHash: string): Promise<ManaProof>;
