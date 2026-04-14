@@ -513,21 +513,21 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch08-dream', title: "What If Software Could Dream",
-    excerpt: "During off-peak hours, the platform processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
+    excerpt: "During off-peak hours, the substrate processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
     href: "/blog/what-if-software-could-dream", category: "Research",
     date: "2025-05-10", readTime: "13 min", image: ch08Img,
     imageAlt: "Autonomous self-improvement consolidation", source: 'human', featured: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch07-identity', title: "Identity at Every Layer",
-    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the platform safe to open to the world.",
+    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the substrate safe to open to the world.",
     href: "/blog/identity-at-every-layer", category: "Platform",
     date: "2025-04-15", readTime: "10 min", image: ch07Img,
     imageAlt: "ACCESS Layer identity and entitlements", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
   },
   {
     id: 'ch06-nodes-talk', title: "Primitives That Talk",
-    excerpt: "Five modules needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the platform.",
+    excerpt: "Five primitives needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate.",
     href: "/blog/nodes-that-talk", category: "Technology",
     date: "2025-04-02", readTime: "12 min", image: ch06Img,
     imageAlt: "RIPPLE event bus architecture", source: 'human', author: "Kenneth Sweet", authorRole: "Substrate Engineering",
@@ -562,7 +562,7 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch01-first', title: "The First Line of Code",
-    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL platform. This is the honest story of why.",
+    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL substrate. This is the honest story of why.",
     href: "/blog/the-first-line-of-code", category: "Platform",
     date: "2024-12-15", readTime: "12 min", image: ch01Img,
     imageAlt: "The beginning of the CMPSBL substrate", source: 'human', featured: true, pillar: true, author: "Kenneth Sweet", authorRole: "Substrate Engineering",
