@@ -29,6 +29,7 @@ const userDocs = [
   { slug: 'signal-forge-loadouts', title: 'Signal Forge & Loadouts', icon: Flame, description: 'Pre-built projects, ready to customize', loader: () => import('../../../docs/libraries/users/09-signal-forge-loadouts.md?raw').then(m => m.default) },
   { slug: 'troubleshooting', title: 'Troubleshooting', icon: AlertTriangle, description: 'Common errors, debugging, support', loader: () => import('../../../docs/libraries/users/10-troubleshooting.md?raw').then(m => m.default) },
   { slug: 'agent-installation', title: 'Agent Installation', icon: Bot, description: 'Install exported agents on any stack', loader: () => import('../../../docs/libraries/users/11-agent-installation.md?raw').then(m => m.default) },
+  { slug: 'ascension-guide', title: 'Ascension Guide', icon: Zap, description: 'Complete guide to Ascension — website & CLI flows, Mana, verticals', loader: () => import('../../../docs/libraries/public/ascension-user-guide.md?raw').then(m => m.default) },
 ];
 
 export default function UserDocsReader() {
