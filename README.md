@@ -1,70 +1,50 @@
 # CMPSBL®
 
-**Cognitive Substrate for AI Systems**
+**Governed Cognitive Infrastructure**
 
-v16.7.0 · CONTACT Epoch · 40 Primitives · 4 Categories
+40 Primitives · 4 Categories · Zero External AI Dependencies
 
 ---
 
-CMPSBL is a cognitive orchestration substrate — not a framework, not a wrapper. It's an operating system for AI that provides routing, memory, learning cycles, defense, and execution coordination. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
+CMPSBL is a cognitive substrate — not a framework, not a wrapper, not an agent platform. It provides deterministic orchestration for AI systems: routing, memory, learning cycles, defense, and execution coordination. Model-agnostic. Provider-agnostic. Built by one person.
 
-## Quick Start
+## What It Does
 
-```bash
-# Install the CLI
-npm install -g @cmpsbl/cli
-
-# Initialize (triggers First Contact ceremony + First Dream)
-npx cmpsbl init
-
-# Or use the SDK directly
-npm install @cmpsbl/core
-```
-
-```typescript
-import { createEngineClient } from '@cmpsbl/sdk';
-
-const client = createEngineClient({
-  engineKey: 'your-key', // from cmpsbl.com/api-access
-});
-
-// Make your machine dream
-const dream = await client.request('dream.cycle', {});
-console.log(dream.heuristic);   // discovered pattern
-console.log(dream.confidence);  // 0.87
-```
-
-Get your API key at **[cmpsbl.com/api-access](https://cmpsbl.com/api-access)**
+- **Intent Routing** — Every action flows through a governed intent mesh. Primitives never call each other directly.
+- **Memory & Learning** — Persistent memory chains with semantic retrieval. Autonomous learning cycles that build heuristics from observed behavior.
+- **Defense & Governance** — Security perimeter, threat detection, policy enforcement, and compliance logging baked into the substrate itself.
+- **Discovery** — The Memory Stream observes system behavior and crystallizes reusable software pipelines, scored by CJPI (Novelty · Utility · Complexity · Composability).
+- **Mana** — Silent Layer 2 attachment. One command to enhance and protect existing code without modifying it.
 
 ---
 
 ## Architecture — 40 Primitives, 4 Categories
 
-CMPSBL uses a strict **12·12·8·8** primitive matrix:
+CMPSBL enforces a strict **12·12·8·8** primitive matrix. Every primitive is independently deployable and composable.
 
 ### Layers (12) — Ambient Protection
-| Primitive | Role |
-|-----------|------|
+| Primitive | Purpose |
+|-----------|---------|
 | DEFENSE | Security perimeter, threat detection |
-| IMMUNITY | Behavioral immunity, anomaly response |
+| IMMUNITY | Behavioral anomaly response |
 | GOVERNANCE | Policy enforcement, constraint systems |
-| TREATY | Inter-system agreements, trust contracts |
-| EVOLUTION | Self-improvement, adaptation engine |
-| REFLEX | Reactive triggers, fast-path responses |
-| COMPASS | Navigation, intent guidance |
+| TREATY | Inter-system trust contracts |
+| EVOLUTION | Self-improvement, adaptation |
+| REFLEX | Fast-path reactive triggers |
+| COMPASS | Intent guidance, navigation |
 | INTEGRATION | External adapters, connectors |
-| INTENT | Intent resolution, routing mesh |
+| INTENT | Intent resolution, routing |
 | ACCESS | Authentication, API keys, entitlements |
 | VISION | Observability, metrics, tracing |
-| SHADOW | Stealth operations, adversarial testing |
+| SHADOW | Adversarial testing, stealth operations |
 
 ### Organs (12) — Vital Infrastructure
-| Primitive | Role |
-|-----------|------|
-| CORE | Foundation primitives, lifecycle |
-| SYSTEM | Runtime orchestration, health management |
-| BRAIN | Reasoning, knowledge graphs, learning |
-| MEMORY | Vector store, RAG, semantic retrieval |
+| Primitive | Purpose |
+|-----------|---------|
+| CORE | Foundation primitives, lifecycle management |
+| SYSTEM | Runtime orchestration, health |
+| BRAIN | Reasoning, knowledge graphs |
+| MEMORY | Semantic retrieval, memory chains |
 | NERVE | Signal pathways, neural routing |
 | NEXUS | Multi-provider AI fleet routing |
 | IDENTITY | Actor attribution, reputation |
@@ -74,10 +54,10 @@ CMPSBL uses a strict **12·12·8·8** primitive matrix:
 | RELAY | Webhooks, message delivery |
 | CONSCIENCE | Ethical reasoning, bias detection |
 
-### Engines (8) — Invoked Processing Power
-| Primitive | Role |
-|-----------|------|
-| DREAM | Autonomous synthesis, creative learning |
+### Engines (8) — Invoked Processing
+| Primitive | Purpose |
+|-----------|---------|
+| DREAM | Autonomous synthesis — pure algorithmic, no AI |
 | HARVEST | Data extraction, web intelligence |
 | FORGE | Blueprint fabrication, pipeline discovery |
 | LINGUA | Language processing, translation |
@@ -87,13 +67,13 @@ CMPSBL uses a strict **12·12·8·8** primitive matrix:
 | RIPPLE | Event propagation, message bus |
 
 ### Agents (8) — Autonomous Actors
-| Primitive | Role |
-|-----------|------|
+| Primitive | Purpose |
+|-----------|---------|
 | ENCODE | Governed code generation |
-| DECODE | NLU, conversational interaction |
+| DECODE | Conversational interaction, NLU |
 | AUDIT | Immutable compliance logging |
 | ECONOMY | Cost tracking, predictive forecasting |
-| INCLUSIVE | Accessibility, WCAG compliance |
+| INCLUSIVE | Accessibility scanning (WCAG 2.2) |
 | CORTEX | Meta-orchestration, workflow engine |
 | ORACLE | Prediction, forecasting |
 | ENGINEER | Infrastructure automation |
@@ -102,130 +82,85 @@ CMPSBL uses a strict **12·12·8·8** primitive matrix:
 
 ## Execution Model
 
-All system actions route through the **Intent Mesh**:
-
 ```
-User Action → broadcastIntent() → Intent Router → Resolver Execution
-    → Mesh Communications → Telemetry
+User Action → broadcastIntent() → Intent Router → Resolver Execution → Telemetry
 ```
 
-- **Nodes** expose capabilities through **Resolvers** (`brain.reasoning_context`, `defense.threat_score`)
-- **Nodes never call each other directly** — all interaction flows through the Intent Router
-- **Mesh Communications** are real system signals, not simulated telemetry
+- Primitives expose capabilities through **Resolvers** (e.g. `brain.reasoning_context`, `defense.threat_score`)
+- Primitives never call each other directly — all interaction routes through the Intent Router
+- Mesh communications are real system signals, not simulated telemetry
 
 ---
 
 ## NPM Packages
 
-| Package | Description |
-|---------|-------------|
-| `@cmpsbl/cli` | CLI tools with First Contact ceremony |
-| `@cmpsbl/core` | Core substrate runtime |
-| `@cmpsbl/runtime` | Manifest, CJPI scoring, memory chains |
-| `@cmpsbl/types` | TypeScript type definitions |
+13 packages. Self-contained builds. One substrate.
 
-All packages follow the **First Contact System** — live discovery, persistent identity, zero mock data.
+| Package | Version | Description |
+|---------|---------|-------------|
+| `@cmpsbl/types` | 3.0.0 | Shared TypeScript type definitions |
+| `@cmpsbl/runtime` | 4.0.0 | CJPI scoring, manifests, pipeline orchestration |
+| `@cmpsbl/sdk` | 4.0.0 | Unified SubstrateClient for all surfaces |
+| `@cmpsbl/intent` | 3.0.0 | Intent router + resolver dispatch |
+| `@cmpsbl/mesh` | 3.0.0 | Mesh telemetry events |
+| `@cmpsbl/bridge` | 3.0.0 | Polyglot bridge adapters (Python/Go/Rust) |
+| `@cmpsbl/discovery` | 3.0.0 | Pipeline crystallization engine |
+| `@cmpsbl/failsafe` | 5.0.0 | Disaster recovery & platform migration |
+| `@cmpsbl/shield` | 3.0.0 | LLM prompt defense + governance |
+| `@cmpsbl/mana` | 3.0.0 | Silent software symbiosis engine |
+| `@cmpsbl/cli` | 4.0.0 | CLI with guided onboarding |
+| `@cmpsbl/test-harness` | 3.0.0 | Pipeline & bridge validation |
+| `@cmpsbl/react` | 3.0.0 | React hooks (useIntent, useMesh, useRuntime) |
 
----
-
-## CLI Commands (42)
+### Install
 
 ```bash
-# ── Project ──
-cmpsbl init              # Initialize project + First Contact + First Dream
-cmpsbl dream             # Trigger a DREAM Engine cycle
-cmpsbl config            # View/set configuration
-cmpsbl login / logout    # Authenticate with CMPSBL API
+# Just the SDK
+npm install @cmpsbl/sdk
 
-# ── Cognitive ──
-cmpsbl think <prompt>    # BRAIN deep reasoning cycle
-cmpsbl reflect [topic]   # ECHO resonance & pattern replay
-cmpsbl remember <input>  # MEMORY store & semantic retrieval
-cmpsbl forget <chain-id> # MEMORY prune a chain
+# CLI
+npm install -g @cmpsbl/cli
 
-# ── Discovery ──
-cmpsbl discover <input>  # Live discovery on an input
-cmpsbl stream            # View Memory Stream
-cmpsbl score <n> <u> <c> <m>  # CJPI scoring
-
-# ── Engines ──
-cmpsbl forge [topic]     # Signal Forge blueprint synthesis
-cmpsbl harvest <url>     # HARVEST data extraction
-cmpsbl translate <text>  # LINGUA language processing
-cmpsbl sandbox <script>  # SANDBOX safe code execution
-
-# ── Agents ──
-cmpsbl scan <url>        # INCLUSIVE accessibility scan (WCAG 2.2)
-cmpsbl predict <scenario># ORACLE forecasting & what-if
-cmpsbl audit [scope]     # AUDIT compliance report
-cmpsbl cost [period]     # ECONOMY usage & cost report
-
-# ── Defense ──
-cmpsbl threat <input>    # DEFENSE threat scoring
-cmpsbl immune            # IMMUNITY health & anomalies
-
-# ── Governance ──
-cmpsbl govern            # GOVERNANCE policy check & mode
-cmpsbl treaty            # TREATY trust contracts
-
-# ── System ──
-cmpsbl status            # Full substrate status
-cmpsbl health            # Health check across all primitives
-cmpsbl nodes [filter]    # List all 40 primitives
-cmpsbl ping <node>       # Ping a specific primitive
-cmpsbl inspect <node>    # Deep-inspect a primitive
-cmpsbl topology          # Category topology map
-cmpsbl route <intent>    # Trace intent routing path
-cmpsbl benchmark         # Latency benchmark
-cmpsbl doctor            # Full diagnostic suite
-cmpsbl shell             # Interactive REPL
+# Mana (Layer 2 attachment)
+npm install -g @cmpsbl/mana
 ```
-
-All commands support `--json` for CI/CD integration.
 
 ---
 
 ## Key Systems
 
-| System | Description |
+| System | What It Does |
 |--------|-------------|
-| **Memory Stream** | Discovery engine that observes behavior and crystallizes software pipelines |
-| **CJPI Scoring** | Novelty · Utility · Complexity · Composability scoring for discoveries |
-| **Signal Forge** | One-button blueprint synthesis across the 40-primitive topology |
-| **Dream Cycles** | Autonomous learning with semantic drift detection and heuristic building |
-| **Mesh Communications** | Real-time node-to-node signaling with personality voice translation |
-| **First Contact** | 7-phase boot ceremony binding persistent identity across all touchpoints |
-
----
-
-## Developer Onboarding
-
-1. Get your API key at [cmpsbl.com/api-access](https://cmpsbl.com/api-access)
-2. Run `npx cmpsbl init` — authenticates, runs First Contact, scaffolds your first project
-3. The **First Dream** guided experience walks you through triggering your first dream cycle
-4. Use `cmpsbl discover` and `cmpsbl stream` to explore what the substrate learns
+| **Memory Stream** | Runs autonomously on 8-hour cycles. Observes behavior, crystallizes software pipelines. Dynamic values — never hardcoded. |
+| **CJPI Scoring** | Scores discoveries on four axes: Novelty, Utility, Complexity, Composability. |
+| **DREAM Engine** | Pure algorithmic synthesis. No AI calls inside — confirmed. Sub-threshold pattern emergence. |
+| **Ascension** | Code classification → collision against 40 Primitives → CJPI scored → certified. Zero external AI calls. |
+| **Shield** | Prompt injection detection, hallucination grounding, output sanitization, governance-gated audit receipts. |
+| **Mana + Lex** | Mana attaches silently to existing codebases. Lex governs what attaches via registry (allowlist/blocklist). |
 
 ---
 
 ## Technology
 
-- **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS
-- **Backend:** PostgreSQL + Edge Functions
-- **AI Routing:** Model-agnostic, provider-agnostic
-- **Infrastructure:** Commodity cloud (any provider)
+- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS
+- **Backend:** PostgreSQL, Edge Functions
+- **AI Routing:** Model-agnostic via NEXUS — provider-agnostic fleet routing
+- **Infrastructure:** Commodity cloud, any provider
+- **Codebase:** 200k+ lines, pure TypeScript
 
 ---
 
-## Ownership & Licensing
+## Ownership & License
 
-CMPSBL® is a registered trademark.
+CMPSBL® is a registered trademark. Parent entity: PromptFluid™ (TX).
 
-**Core Platform:** Apache License 2.0
+**License:** Apache License 2.0
 
-| Contact | Details |
-|---------|---------|
-| **Founder** | Kenneth E Sweet Jr |
+| | |
+|---|---|
+| **Founder** | Kenneth E. Sweet Jr. |
 | **Web** | [cmpsbl.com](https://cmpsbl.com) |
+| **Packages** | [npmjs.com/org/cmpsbl](https://www.npmjs.com/org/cmpsbl) |
 
 ---
 
