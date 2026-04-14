@@ -27,8 +27,8 @@
   "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://cmpsbl.com",
   "peerDependencies": {
-    "@cmpsbl/runtime": ">=3.0.0",
-    "@cmpsbl/bridge": ">=2.0.0"
+    "@cmpsbl/runtime": ">=4.0.0",
+    "@cmpsbl/bridge": ">=3.0.0"
   },
   "bugs": {
     "url": "https://cmpsbl.com/support"

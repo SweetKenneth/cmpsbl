@@ -28,7 +28,7 @@
   "license": "Apache-2.0",
   "homepage": "https://cmpsbl.com",
   "dependencies": {
-    "@cmpsbl/runtime": "^3.0.0"
+    "@cmpsbl/runtime": "^4.0.0"
   },
   "bundledDependencies": [
     "@cmpsbl/runtime"

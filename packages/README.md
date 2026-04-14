@@ -84,19 +84,19 @@ npm install -g @cmpsbl/mana
 
 | Package | Version | Tier | Dependencies |
 |---------|---------|------|-------------|
-| `@cmpsbl/types` | 2.0.0 | 1 | None |
-| `@cmpsbl/runtime` | 3.0.0 | 1 | None |
-| `@cmpsbl/sdk` | 3.0.0 | 1 | None |
-| `@cmpsbl/intent` | 1.4.0 | 1 | None |
-| `@cmpsbl/mesh` | 1.4.0 | 1 | None |
-| `@cmpsbl/bridge` | 1.4.0 | 1 | None |
-| `@cmpsbl/discovery` | 1.4.0 | 1 | None |
-| `@cmpsbl/failsafe` | 3.4.0 | 1 | None |
-| `@cmpsbl/shield` | 2.0.0 | 1 | None |
-| `@cmpsbl/mana` | 2.0.0 | 1 | None |
-| `@cmpsbl/cli` | 3.0.0 | 2 | runtime (bundled) |
-| `@cmpsbl/test-harness` | 1.4.0 | 2 | runtime, bridge |
-| `@cmpsbl/react` | 1.4.0 | 2 | intent, mesh, runtime, react |
+| `@cmpsbl/types` | 3.0.0 | 1 | None |
+| `@cmpsbl/runtime` | 4.0.0 | 1 | None |
+| `@cmpsbl/sdk` | 4.0.0 | 1 | None |
+| `@cmpsbl/intent` | 3.0.0 | 1 | None |
+| `@cmpsbl/mesh` | 3.0.0 | 1 | None |
+| `@cmpsbl/bridge` | 3.0.0 | 1 | None |
+| `@cmpsbl/discovery` | 3.0.0 | 1 | None |
+| `@cmpsbl/failsafe` | 5.0.0 | 1 | None |
+| `@cmpsbl/shield` | 3.0.0 | 1 | None |
+| `@cmpsbl/mana` | 3.0.0 | 1 | None |
+| `@cmpsbl/cli` | 4.0.0 | 2 | runtime (bundled) |
+| `@cmpsbl/test-harness` | 3.0.0 | 2 | runtime, bridge |
+| `@cmpsbl/react` | 3.0.0 | 2 | intent, mesh, runtime, react |
 
 ## License
 

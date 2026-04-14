@@ -27,9 +27,9 @@
   "homepage": "https://cmpsbl.com",
   "peerDependencies": {
     "react": ">=17.0.0",
-    "@cmpsbl/intent": ">=2.0.0",
-    "@cmpsbl/mesh": ">=2.0.0",
-    "@cmpsbl/runtime": ">=3.0.0"
+    "@cmpsbl/intent": ">=3.0.0",
+    "@cmpsbl/mesh": ">=3.0.0",
+    "@cmpsbl/runtime": ">=4.0.0"
   },
   "bugs": {
     "url": "https://cmpsbl.com/support"
