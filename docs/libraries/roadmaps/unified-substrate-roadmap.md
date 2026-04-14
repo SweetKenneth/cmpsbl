@@ -117,10 +117,10 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [x] Added formatted output detection (string `output` vs raw JSON)
 - [x] Marked legacy chain as deprecated with removal planned for Phase 5
 
-#### 4.2 — Migrate Remaining Commands
-- [ ] Remove legacy blocks for brain, decode, defense, nexus, vision, dream, system, evolution, ripple, access, integration, cortex, inclusive, seba (~4000 lines)
-- [ ] Keep local-only blocks: autoblog, matrix, patch, debug, alias, macro, schedule, watch
-- [ ] Delete local substrate client wrappers that duplicate pf-substrate logic
+#### 4.2 — Migrate Remaining Commands ✅
+- [x] Remove legacy blocks for defense, nexus, vision, dream, system, evolution, core, ripple, access, integration, cortex, inclusive, substrate fallback (~1800 lines removed, 5615→3809)
+- [x] Keep local-only blocks: decode.personality, debug, system.modules/capabilities, decode.inbox, mclm, clm, seba, autoblog, engine, infra, patch, matrix
+- [x] Removed unused substrate client imports (defense, nexus, vision, dream, etc.)
 
 #### 4.3 — Unified Output Formatting
 - [ ] pf-substrate returns structured data
