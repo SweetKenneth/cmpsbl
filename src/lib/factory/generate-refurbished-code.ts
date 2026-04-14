@@ -3072,7 +3072,7 @@ if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
 function generateOrchestrator(
   language: string,
   adapter: LanguageAdapter,
-  boundaries: Array<{ name: string; type: string }>,
+  boundaries: Array<{ name: string; line?: number }>,
   selectedPrimitives: PrimitiveRecommendation[],
   attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
   fingerprint: string,
@@ -3117,7 +3117,7 @@ function generateOrchestrator(
 }
 
 function generatePhpOrchestrator(
-  boundaries: Array<{ name: string; type: string }>,
+  boundaries: Array<{ name: string; line?: number }>,
   attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
   fingerprint: string,
   caps: { hasCB: boolean; hasMem: boolean; hasDef: boolean; hasObs: boolean; hasGov: boolean },
@@ -3253,7 +3253,7 @@ function generatePhpWrappedEntryPoints(
 }
 
 function generatePythonOrchestrator(
-  boundaries: Array<{ name: string; type: string }>,
+  boundaries: Array<{ name: string; line?: number }>,
   attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
   fingerprint: string,
   caps: { hasCB: boolean; hasMem: boolean; hasDef: boolean; hasObs: boolean; hasGov: boolean },
@@ -3332,7 +3332,7 @@ ${caps.hasMem ? `        if cls._memory:
 }
 
 function generateRustOrchestrator(
-  boundaries: Array<{ name: string; type: string }>,
+  boundaries: Array<{ name: string; line?: number }>,
   attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
   fingerprint: string,
   adapter: LanguageAdapter,
@@ -3348,7 +3348,7 @@ function generateRustOrchestrator(
 }
 
 function generateGoOrchestrator(
-  boundaries: Array<{ name: string; type: string }>,
+  boundaries: Array<{ name: string; line?: number }>,
   attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
   fingerprint: string,
   adapter: LanguageAdapter,
