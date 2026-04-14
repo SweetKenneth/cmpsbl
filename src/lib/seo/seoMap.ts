@@ -1291,7 +1291,7 @@ export const seoMap: Record<string, PageSEO> = {
     title: 'How We Compare — CMPSBL vs AI Platforms',
     description: 'Honest comparison of CMPSBL against OpenAI, Anthropic, LangChain. What CMPSBL does better, what they do better, and where we differ.',
     ogTitle: 'How We Compare — CMPSBL',
-    ogDescription: 'Honest platform comparison: strengths and differences.',
+    ogDescription: 'Honest substrate comparison: strengths and differences.',
     ogImage: OG_BLOG,
     keywords: ['AI platform comparison', 'CMPSBL vs OpenAI', 'cognitive infrastructure comparison'],
     schema: 'article',
