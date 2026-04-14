@@ -96,7 +96,7 @@ export function registerCoreHandlers(): void {
       { name: 'STUDIO ($29)', engines: ['AUTOMATON', 'WRAITH'], unlocked: ['studio', 'creator', 'architect', 'enterprise', 'governor'].includes(tier as string) },
       { name: 'CREATOR ($49)', engines: ['CORTEX', 'OBSIDIAN'], unlocked: ['creator', 'architect', 'enterprise', 'governor'].includes(tier as string) },
       { name: 'ARCHITECT ($79)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'enterprise', 'governor'].includes(tier as string) },
-      { name: 'ENTERPRISE ($999+)', engines: ['Full substrate authority'], unlocked: ['enterprise', 'governor'].includes(tier as string) },
+      { name: 'ENTERPRISE ($999+)', engines: ['ALL — Full substrate authority'], unlocked: ['enterprise', 'governor'].includes(tier as string) },
       { name: 'GOVERNOR (1 of 1)', engines: ['Unlimited · Supreme authority'], unlocked: ['governor'].includes(tier as string) },
     ];
 
