@@ -11,6 +11,9 @@ import { saveAs } from 'file-saver';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
+import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
+import { humanizeCapabilityName } from '@/lib/export/humanize-name';
 
 export interface CapabilityForExport {
   id: string;
