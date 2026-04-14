@@ -1072,7 +1072,7 @@ serve(async (req) => {
           case "engineer":
           case "atlas":
           case "observer": {
-            return await handleUniversalModule(supabase, module, action, params, corsHeaders, state);
+            return await handleUniversalModule(supabase, module, action, params, corsHeaders, state, resolvedUserId);
           }
           
           case "status":
