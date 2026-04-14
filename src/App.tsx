@@ -244,6 +244,10 @@ const App = () => {
                   <SmartToastRenderer />
                   <SonnerToaster />
                    <BrowserRouter>
+                    {/* Ascension maintenance banner */}
+                    <div className="w-full bg-amber-500/90 text-black text-center py-2 px-4 text-sm font-medium z-[9999] relative">
+                      ⚠️ Ascension is currently undergoing maintenance. Service will be restored shortly. We apologize for the inconvenience.
+                    </div>
                     <a href="#main-content" data-skip-nav className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:text-sm focus:font-medium focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none">
                       Skip to content
                     </a>
