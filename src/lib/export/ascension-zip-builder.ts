@@ -1,14 +1,22 @@
 /**
- * CMPSBL® Ascension ZIP Builder v3.0
+ * CMPSBL® Ascension ZIP Builder v4.0
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Streamlined export: source code, proof, manifest, license.
- * No bloated docs — just what developers need to drop back in their stack.
+ * Enterprise-grade export: Layer 2 wrapped source, branded HTML docs, verification proofs.
  *
- * Folder Structure:
- *   /src/             — Original + ascended source (dual-layer)
- *   /verification/    — CJPI certificate, test harness, Mana bridge
+ * Package Structure:
+ *   src/original-source.txt        — Layer 1 (unchanged)
+ *   src/ascended-source.*          — Layer 2 (wrapped with runtime + Enhanced mode)
+ *   USER-GUIDE.html                — Unified documentation (all sections, TOC)
+ *   LICENSE.html                   — Branded commercial license
+ *   README.html                    — Quick-start overview
+ *   manifest.json                  — Machine-readable metadata
+ *   PROOF.txt                      — Cryptographic verification certificate
+ *   restoration-report.json        — Full technical scan report
+ *   test-harness.config.json       — Test configuration
+ *   capability-ledger.json         — Lifecycle ledger (when available)
+ *   RUN_VERIFICATION.ts            — Verification script (when available)
  *
- * © CMPSBL® — All rights reserved.
+ * © CMPSBL® · PromptFluid™ — All rights reserved.
  */
 
 import type { RestorationReport } from '@/lib/factory/restoration-docs';
@@ -16,6 +24,8 @@ import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
 import { generateRefurbishedCode as generateAscendedCode, generateLicense, getRefurbishedExtension as getAscendedExtension } from '@/lib/factory/generate-refurbished-code';
 import { generateProofCertificate } from './proof-certificate';
 import { serializeCmpsblManifest } from './cmpsbl-manifest';
+import { generateLicenseHTML, generateReadmeHTML } from './elegant-html-docs';
+import { generateUnifiedGuideHTML } from './unified-guide-html';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -59,7 +69,7 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   const refExt = getAscendedExtension(detectedLang);
   let fileCount = 0;
 
-  // ── Fresh ascended code regeneration ──
+  // ── Fresh Layer 2 code regeneration ──
   let freshAscended: string;
   try {
     freshAscended = selectedPrims.length > 0
@@ -78,60 +88,56 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   fileCount += 2;
 
   // ═══════════════════════════════════════════════════════════
-  // Root Files — Essentials only
+  // HTML Documents — Enterprise-Grade Branded Output
   // ═══════════════════════════════════════════════════════════
 
-  // README.md — Concise quick-start
-  const year = new Date().getFullYear();
-  zip.file('README.md', [
-    `# CMPSBL® Ascended Code Package`,
-    '',
-    `**CJPI:** ${report.cjpiCertificate.score}/100 · **Tier:** ${report.cjpiCertificate.tier} · **Primitives:** ${report.primitiveManifest.length}`,
-    `**Fingerprint:** \`${fingerprint}\` · **Language:** ${detectedLang || 'N/A'}`,
-    '',
-    '## What\'s Inside',
-    '',
-    '| Folder | Contents |',
-    '|--------|----------|',
-    '| `src/` | Original source (Layer 1) + ascended source (Layer 2) |',
-    '| `verification/` | CJPI certificate, test harness, Mana attachment plan |',
-    '',
-    '## Dual-Layer Architecture',
-    '',
-    '- **Layer 1** — Your original code. Unchanged. Trusted.',
-    '- **Layer 2** — CMPSBL cognitive overlay. Observes, enriches, augments. Never substitutes your logic.',
-    '',
-    '## Quick Start',
-    '',
-    `1. Copy \`src/ascended-source${refExt}\` into your project`,
-    '2. Import the ascended version instead of your original file',
-    '3. Your original code runs first — Layer 2 adds cognitive enrichment on top',
-    '',
-    '## Verify This Artifact',
-    '',
-    `- **Online:** [cmpsbl.com/verify/${fingerprint}](https://cmpsbl.com/verify/${fingerprint})`,
-    `- **Local:** Run \`RUN_VERIFICATION.ts\` in the \`verification/\` folder`,
-    '',
-    '---',
-    `© ${year} CMPSBL® — All rights reserved.`,
-    'Inventor: Kenneth E. Sweet Jr. · U.S. Patent App. No. 64/029,678 · No. 64/031,637',
-  ].join('\n'));
+  // Unified User Guide — single document with ALL information + TOC
+  const guideHTML = generateUnifiedGuideHTML({
+    fileName: fileName || 'Ascended Code',
+    detectedLang: detectedLang || 'typescript',
+    report,
+    selectedPrims,
+    ascendedExt: refExt,
+  });
+  zip.file('USER-GUIDE.html', guideHTML);
   fileCount++;
 
-  // LICENSE
-  zip.file('LICENSE.txt', generateLicense(report.id, fingerprint));
+  // LICENSE.html — Branded commercial license
+  const licenseHTML = generateLicenseHTML(fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code');
+  zip.file('LICENSE.html', licenseHTML);
   fileCount++;
 
-  // PROOF.txt — Verification certificate
-  zip.file('PROOF.txt', generateProofCertificate({
-    serial: report.id,
-    fingerprint,
-    tier: report.cjpiCertificate.tier,
-    cjpi: report.cjpiCertificate.score,
-    primitives: report.primitiveManifest.map(p => p.name),
-    source: 'CMPSBL® Ascension Lab',
-    language: detectedLang || undefined,
-  }));
+  // README.html — Quick-start overview
+  const readmeHTML = generateReadmeHTML({
+    name: fileName?.replace(/\.[^.]+$/, '') || 'Ascended Code',
+    description: `CJPI ${report.cjpiCertificate.score}/100 · ${report.cjpiCertificate.tier} Tier · ${report.primitiveManifest.length} Primitives · ${detectedLang || 'TypeScript'}`,
+    category: 'Ascension',
+    modules: report.primitiveManifest.map(p => p.name),
+    files: [
+      { name: `src/ascended-source${refExt}`, purpose: 'Layer 2 wrapped code — Enhanced mode pre-activated' },
+      { name: 'src/original-source.txt', purpose: 'Your original source code — byte-identical, unchanged' },
+      { name: 'USER-GUIDE.html', purpose: 'Complete documentation — activation, integration, capabilities, troubleshooting' },
+      { name: 'LICENSE.html', purpose: 'CMPSBL® Commercial Distribution License' },
+      { name: 'manifest.json', purpose: 'Machine-readable artifact metadata' },
+      { name: 'PROOF.txt', purpose: 'Cryptographic verification certificate' },
+    ],
+    quickStart: [
+      `1. Copy src/ascended-source${refExt} into your project`,
+      '2. Import the ascended version instead of your original file',
+      '3. Your original code runs first — Layer 2 adds cognitive enrichment on top',
+      '',
+      `Verify: https://cmpsbl.com/verify/${fingerprint}`,
+    ].join('\n'),
+  });
+  zip.file('README.html', readmeHTML);
+  fileCount++;
+
+  // ═══════════════════════════════════════════════════════════
+  // Machine-Readable Metadata
+  // ═══════════════════════════════════════════════════════════
+
+  // restoration-report.json — Full scan data
+  zip.file('restoration-report.json', JSON.stringify(report, null, 2));
   fileCount++;
 
   // manifest.json
@@ -147,21 +153,32 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   }));
   fileCount++;
 
-  // ═══════════════════════════════════════════════════════════
-  // /verification/ — Proofs & Test Harness
-  // ═══════════════════════════════════════════════════════════
+  // PROOF.txt — Verification certificate
+  zip.file('PROOF.txt', generateProofCertificate({
+    serial: report.id,
+    fingerprint,
+    tier: report.cjpiCertificate.tier,
+    cjpi: report.cjpiCertificate.score,
+    primitives: report.primitiveManifest.map(p => p.name),
+    source: 'CMPSBL® Ascension Lab',
+    language: detectedLang || undefined,
+  }));
+  fileCount++;
 
-  zip.file('verification/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
-  zip.file('verification/test-harness.config.json', JSON.stringify({
+  // test-harness.config.json
+  zip.file('test-harness.config.json', JSON.stringify({
     serialNumber: report.id,
     fingerprint,
     configPath: report.testingGuide.configPath,
     primitives: report.primitiveManifest.map(p => p.name),
     testCommand: report.testingGuide.testCommand,
   }, null, 2));
-  fileCount += 2;
+  fileCount++;
 
-  // Capability ledger + verification script (lifecycle artifacts)
+  // ═══════════════════════════════════════════════════════════
+  // Lifecycle Artifacts — Capability Ledger & Verification
+  // ═══════════════════════════════════════════════════════════
+
   try {
     const lifecycleModule = await import('@/lib/capability-lifecycle/export-bridge');
 
@@ -190,8 +207,8 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
 
     lifecycleModule.clearRuntimeEvidence();
 
-    zip.file('verification/capability-ledger.json', lifecycle.ledgerJson);
-    zip.file('verification/RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(
+    zip.file('capability-ledger.json', lifecycle.ledgerJson);
+    zip.file('RUN_VERIFICATION.ts', lifecycleModule.generateVerificationScript(
       fingerprint,
       report.primitiveManifest.map(p => p.name),
     ));
@@ -212,9 +229,6 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
     const activePrimitives = new Set(report.primitiveManifest.map(p => p.name));
     const findings = buildAttachmentPlan(boundaries, activePrimitives);
     const plan = serializeAttachmentPlan(findings);
-
-    zip.file('verification/mana-attachment-plan.json', JSON.stringify(plan, null, 2));
-    fileCount++;
 
     if (plan.length > 0) {
       const manaConfig = manifestToConfig({

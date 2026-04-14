@@ -11,6 +11,9 @@ import { saveAs } from 'file-saver';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
+import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
+import { humanizeCapabilityName } from '@/lib/export/humanize-name';
 
 export interface CapabilityForExport {
   id: string;
@@ -913,11 +916,55 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     source: 'proprietary-evolution-lifecycle',
   }));
 
-  // ═══ README.md — Concise quick-start ═══
-  zip.file('README.md', generateReadmeMd(options));
+  // ═══ README.html — Branded quick-start ═══
+  const topTier = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
+  const totalValue = capabilities.reduce((sum, c) =>
+    sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
 
-  // ═══ LICENSE ═══
+  zip.file('README.html', generateReadmeHTML({
+    name: candidateName,
+    description: `Capability Pack · ${capabilities.length} capabilities · ${targetLanguage.toUpperCase()} · Est. ${formatMarketValue(totalValue)}`,
+    category: 'Proprietary Evolution',
+    modules: [...new Set(capabilities.flatMap(c => c.chain))],
+    files: [
+      { name: unifiedFilename, purpose: 'Single-file distribution — Runtime + Effects + Bridge + API (drop-in)' },
+      { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
+      { name: 'original/', purpose: 'Your original source files (unchanged)' },
+      { name: 'test/', purpose: 'Auto-generated test harnesses' },
+      { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability technical dossier with valuation' },
+      { name: 'LICENSE.html', purpose: 'CMPSBL® Commercial Distribution License' },
+      { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
+      { name: 'PROOF.txt', purpose: 'Cryptographic verification certificate' },
+    ],
+    quickStart: [
+      `// ONE FILE. Drop in, import, use.`,
+      `import { execute, executeChain } from './${unifiedFilename.replace(/\.[^.]+$/, '')}';`,
+      ``,
+      `const result = execute('${topTier.name}', { query: 'hello' });`,
+    ].join('\n'),
+  }));
+
+  // ═══ LICENSE.html — Branded commercial license ═══
+  zip.file('LICENSE.html', generateLicenseHTML(candidateName));
+
+  // ═══ LICENSE (plain text for compatibility) ═══
   zip.file('LICENSE', generateLicenseMd());
+
+  // ═══ PIPELINE-DETAILS.html — Valuation & provenance ═══
+  try {
+    zip.file('PIPELINE-DETAILS.html', generatePipelineDetailsHTML({
+      name: humanizeCapabilityName(topTier.name, topTier.chain, topTier.category || 'general'),
+      description: topTier.description || `${capabilities.length} capabilities discovered through collision testing`,
+      category: topTier.category || 'general',
+      score: avgCjpi,
+      tier: getTierFromScore(avgCjpi),
+      systemChain: [...new Set(capabilities.flatMap(c => c.chain))],
+      exportLanguages: [targetLanguage],
+      source: 'Proprietary Evolution Lifecycle',
+    }));
+  } catch {
+    // Pipeline details page is supplementary
+  }
 
   // ═══ PROOF.txt — Verification certificate ═══
   const { generateProofCertificate } = await import('@/lib/export/proof-certificate');
