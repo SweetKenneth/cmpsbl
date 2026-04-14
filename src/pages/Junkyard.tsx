@@ -3,7 +3,7 @@
  * Browse categories, search items, download to workbench, or send to Restoration Lab.
  * Includes LIVE discovery salvage — real sub-threshold discoveries from the reactor.
  */
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
