@@ -53,8 +53,8 @@ export interface CeremonyEvent {
   detail?: string;
   progress?: number;
   sector?: string;
-  nodesOnline?: number;
-  totalNodes?: number;
+  primitivesOnline?: number;
+  totalPrimitives?: number;
 }
 
 export interface FirstContactConfig {
@@ -159,7 +159,7 @@ const CEREMONY_SECTORS = [
   { sector: 'SHELL',  nodes: ['DEFENSE', 'VISION', 'ENGINEER'] },
 ] as const;
 
-const TOTAL_NODES = 40;
+const TOTAL_PRIMITIVES = 40;
 
 const PACKAGE_GREETINGS: Record<string, string> = {
   '@cmpsbl/cli':          'Terminal bridge established. You speak, the mesh listens.',
@@ -201,16 +201,16 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   });
   await delay(200);
 
-  let nodesOnline = 0;
+  let primitivesOnline = 0;
   for (const { sector, nodes } of CEREMONY_SECTORS) {
-    nodesOnline += nodes.length;
-    const progress = 15 + Math.round((nodesOnline / TOTAL_NODES) * 60);
+    primitivesOnline += nodes.length;
+    const progress = 15 + Math.round((primitivesOnline / TOTAL_PRIMITIVES) * 60);
     emitEvent({
       phase: 'sector_boot',
       message: `▸ Sector ${sector} — ${nodes.join(' · ')}`,
       sector,
-      nodesOnline,
-      totalNodes: TOTAL_NODES,
+      primitivesOnline,
+      totalPrimitives: TOTAL_PRIMITIVES,
       progress,
     });
     await delay(120);
@@ -221,8 +221,8 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
     message: '◈ Signal mesh binding...',
     detail: '40 primitives · 12 sectors · 4 categories',
     progress: 80,
-    nodesOnline: TOTAL_NODES,
-    totalNodes: TOTAL_NODES,
+    primitivesOnline: TOTAL_PRIMITIVES,
+    totalPrimitives: TOTAL_PRIMITIVES,
   });
   await delay(250);
 
@@ -243,8 +243,8 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
     message: `✔ ${greeting}`,
     detail: 'The mesh is alive.',
     progress: 100,
-    nodesOnline: TOTAL_NODES,
-    totalNodes: TOTAL_NODES,
+    primitivesOnline: TOTAL_PRIMITIVES,
+    totalPrimitives: TOTAL_PRIMITIVES,
   });
 }
 

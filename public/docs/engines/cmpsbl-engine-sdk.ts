@@ -9,10 +9,10 @@
  *   const engine = new Engine('your-api-key');
  * 
  *   // Call any engine by name:
- *   const result = await engine.call('godmind', 'reason', 'What are the implications of X?');
+ *   const result = await engine.call('cortex', 'reason', 'What are the implications of X?');
  * 
  *   // Or use typed helpers:
- *   const gm = engine.godmind;
+ *   const gm = engine.cortex;
  *   const result = await gm.reason('What are the implications of X?');
  * 
  * @version 1.0.0
@@ -76,40 +76,40 @@ class EngineProxy {
 
 // ─── META ENGINE PROXIES (4-stage superpipelines) ───
 
-class GodmindProxy extends EngineProxy {
-  constructor(client: Engine) { super(client, 'godmind', ['reason', 'analyze', 'plan', 'evaluate']); }
-  reason(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('godmind', 'reason', input, context, options); }
-  analyze(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('godmind', 'analyze', input, context, options); }
-  plan(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('godmind', 'plan', input, context, options); }
-  evaluate(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('godmind', 'evaluate', input, context, options); }
-  /** PANDORA stage only — quick hypothesis generation */
-  hypothesize(input: string, context?: Record<string, unknown>) { return this.client.call('godmind', 'reason', input, context, { stages: ['PANDORA'] }); }
+class CortexProxy extends EngineProxy {
+  constructor(client: Engine) { super(client, 'cortex', ['reason', 'analyze', 'plan', 'evaluate']); }
+  reason(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('cortex', 'reason', input, context, options); }
+  analyze(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('cortex', 'analyze', input, context, options); }
+  plan(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('cortex', 'plan', input, context, options); }
+  evaluate(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('cortex', 'evaluate', input, context, options); }
+  /** REASON stage only — quick hypothesis generation */
+  hypothesize(input: string, context?: Record<string, unknown>) { return this.client.call('cortex', 'reason', input, context, { stages: ['REASON'] }); }
   /** Full pipeline, deep mode — for critical decisions */
-  deepReason(input: string, context?: Record<string, unknown>) { return this.client.call('godmind', 'reason', input, context, { depth: 'deep' }); }
+  deepReason(input: string, context?: Record<string, unknown>) { return this.client.call('cortex', 'reason', input, context, { depth: 'deep' }); }
 }
 
-class FortressProxy extends EngineProxy {
-  constructor(client: Engine) { super(client, 'fortress', ['defend', 'audit', 'harden', 'assess']); }
-  defend(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('fortress', 'defend', input, context, options); }
-  audit(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('fortress', 'audit', input, context, options); }
-  harden(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('fortress', 'harden', input, context, options); }
-  assess(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('fortress', 'assess', input, context, options); }
+class DefenseProxy extends EngineProxy {
+  constructor(client: Engine) { super(client, 'defense', ['defend', 'audit', 'harden', 'assess']); }
+  defend(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('defense', 'defend', input, context, options); }
+  audit(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('defense', 'audit', input, context, options); }
+  harden(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('defense', 'harden', input, context, options); }
+  assess(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('defense', 'assess', input, context, options); }
 }
 
-class SingularityProxy extends EngineProxy {
-  constructor(client: Engine) { super(client, 'singularity', ['predict', 'fuse', 'optimize', 'synthesize']); }
-  predict(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('singularity', 'predict', input, context, options); }
-  fuse(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('singularity', 'fuse', input, context, options); }
-  optimize(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('singularity', 'optimize', input, context, options); }
-  synthesize(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('singularity', 'synthesize', input, context, options); }
+class OracleProxy extends EngineProxy {
+  constructor(client: Engine) { super(client, 'oracle', ['predict', 'fuse', 'optimize', 'synthesize']); }
+  predict(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('oracle', 'predict', input, context, options); }
+  fuse(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('oracle', 'fuse', input, context, options); }
+  optimize(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('oracle', 'optimize', input, context, options); }
+  synthesize(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('oracle', 'synthesize', input, context, options); }
 }
 
-class EternusProxy extends EngineProxy {
-  constructor(client: Engine) { super(client, 'eternus', ['govern', 'audit', 'comply', 'automate']); }
-  govern(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('eternus', 'govern', input, context, options); }
-  audit(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('eternus', 'audit', input, context, options); }
-  comply(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('eternus', 'comply', input, context, options); }
-  automate(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('eternus', 'automate', input, context, options); }
+class GovernanceProxy extends EngineProxy {
+  constructor(client: Engine) { super(client, 'governance', ['govern', 'audit', 'comply', 'automate']); }
+  govern(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('governance', 'govern', input, context, options); }
+  audit(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('governance', 'audit', input, context, options); }
+  comply(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('governance', 'comply', input, context, options); }
+  automate(input: string, context?: Record<string, unknown>, options?: EngineCallOptions) { return this.client.call('governance', 'automate', input, context, options); }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -121,10 +121,10 @@ export class Engine {
   private readonly baseUrl: string;
 
   // ─── Typed engine accessors ───
-  readonly godmind: GodmindProxy;
-  readonly fortress: FortressProxy;
-  readonly singularity: SingularityProxy;
-  readonly eternus: EternusProxy;
+  readonly cortex: CortexProxy;
+  readonly defense: DefenseProxy;
+  readonly oracle: OracleProxy;
+  readonly governance: GovernanceProxy;
 
   /**
    * Create a CMPSBL Engine client.
@@ -137,17 +137,17 @@ export class Engine {
     this.baseUrl = baseUrl || 'https://api.cmpsbl.com/v1/engine';
 
     // Initialize typed proxies for META engines
-    this.godmind = new GodmindProxy(this);
-    this.fortress = new FortressProxy(this);
-    this.singularity = new SingularityProxy(this);
-    this.eternus = new EternusProxy(this);
+    this.cortex = new CortexProxy(this);
+    this.defense = new DefenseProxy(this);
+    this.oracle = new OracleProxy(this);
+    this.governance = new GovernanceProxy(this);
   }
 
   /**
    * Call any engine by slug and action.
    * This is the universal method — works with all 54 engines.
    * 
-   * @param engine Engine slug (e.g., 'godmind', 'sentinel', 'cortex')
+   * @param engine Engine slug (e.g., 'cortex', 'sentinel', 'cortex')
    * @param action Action to perform (engine-specific, e.g., 'reason', 'scan', 'predict')
    * @param input The primary input text
    * @param context Optional context object passed to the engine
@@ -209,10 +209,10 @@ export class Engine {
   static get catalog(): Record<string, string[]> {
     return {
       // META ($1,999)
-      godmind: ['reason', 'analyze', 'plan', 'evaluate'],
-      fortress: ['defend', 'audit', 'harden', 'assess'],
-      singularity: ['predict', 'fuse', 'optimize', 'synthesize'],
-      eternus: ['govern', 'audit', 'comply', 'automate'],
+      cortex: ['reason', 'analyze', 'plan', 'evaluate'],
+      defense: ['defend', 'audit', 'harden', 'assess'],
+      oracle: ['predict', 'fuse', 'optimize', 'synthesize'],
+      governance: ['govern', 'audit', 'comply', 'automate'],
       // S-TIER / APEX ($599–$999)
       sentinel: ['scan', 'defend', 'monitor', 'respond'],
       phantom: ['heal', 'failover', 'monitor', 'recover'],

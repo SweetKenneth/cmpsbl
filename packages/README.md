@@ -1,6 +1,6 @@
 # @cmpsbl — Package Ecosystem
 
-> 11 packages. Self-contained builds. One substrate.
+> 13 packages. Self-contained builds. One substrate.
 
 ## Dependency Graph & Install Order
 
@@ -20,6 +20,8 @@ Tier 2 packages require their Tier 1 peer dependencies to be installed first.
 │  @cmpsbl/discovery  Pipeline crystallization          │
 │  @cmpsbl/failsafe   Disaster recovery & migration     │
 │  @cmpsbl/sdk        Engine SDK (self-contained)       │
+│  @cmpsbl/shield     LLM prompt defense + governance   │
+│  @cmpsbl/mana       Silent software symbiosis engine  │
 └──────────────┬──────────────────────┬────────────────┘
                │                      │
                ▼                      ▼
@@ -40,7 +42,7 @@ Tier 2 packages require their Tier 1 peer dependencies to be installed first.
 
 ```bash
 # Tier 1 — publish in any order (all standalone)
-for pkg in types runtime sdk intent mesh bridge discovery failsafe; do
+for pkg in types runtime sdk intent mesh bridge discovery failsafe shield mana; do
   cd packages/$pkg && npm run build && npm publish --access public && cd ../..
 done
 
@@ -59,7 +61,7 @@ npm install @cmpsbl/sdk
 
 ### Full substrate toolkit
 ```bash
-npm install @cmpsbl/types @cmpsbl/runtime @cmpsbl/intent @cmpsbl/mesh @cmpsbl/bridge @cmpsbl/discovery @cmpsbl/sdk
+npm install @cmpsbl/types @cmpsbl/runtime @cmpsbl/intent @cmpsbl/mesh @cmpsbl/bridge @cmpsbl/discovery @cmpsbl/sdk @cmpsbl/shield @cmpsbl/mana
 ```
 
 ### React app
@@ -73,19 +75,26 @@ npm install @cmpsbl/runtime
 npm install -g @cmpsbl/cli
 ```
 
+### Mana (Layer 2 attachment)
+```bash
+npm install -g @cmpsbl/mana
+```
+
 ## Package Versions
 
 | Package | Version | Tier | Dependencies |
 |---------|---------|------|-------------|
-| `@cmpsbl/types` | 1.3.0 | 1 | None |
-| `@cmpsbl/runtime` | 1.3.0 | 1 | None |
-| `@cmpsbl/sdk` | 2.2.0 | 1 | None |
+| `@cmpsbl/types` | 2.0.0 | 1 | None |
+| `@cmpsbl/runtime` | 3.0.0 | 1 | None |
+| `@cmpsbl/sdk` | 3.0.0 | 1 | None |
 | `@cmpsbl/intent` | 1.4.0 | 1 | None |
 | `@cmpsbl/mesh` | 1.4.0 | 1 | None |
 | `@cmpsbl/bridge` | 1.4.0 | 1 | None |
 | `@cmpsbl/discovery` | 1.4.0 | 1 | None |
 | `@cmpsbl/failsafe` | 3.4.0 | 1 | None |
-| `@cmpsbl/cli` | 2.4.0 | 2 | runtime (bundled) |
+| `@cmpsbl/shield` | 2.0.0 | 1 | None |
+| `@cmpsbl/mana` | 2.0.0 | 1 | None |
+| `@cmpsbl/cli` | 3.0.0 | 2 | runtime (bundled) |
 | `@cmpsbl/test-harness` | 1.4.0 | 2 | runtime, bridge |
 | `@cmpsbl/react` | 1.4.0 | 2 | intent, mesh, runtime, react |
 

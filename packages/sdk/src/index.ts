@@ -52,8 +52,8 @@ export interface CeremonyEvent {
   detail?: string;
   progress?: number;
   sector?: string;
-  nodesOnline?: number;
-  totalNodes?: number;
+  primitivesOnline?: number;
+  totalPrimitives?: number;
 }
 
 export interface FirstContactConfig {
@@ -403,7 +403,7 @@ export class EngineAPIError extends Error {
  * @example
  * ```typescript
  * const engine = new Engine('your-api-key');
- * const result = await engine.godmind.reason('Analyze this data');
+ * const result = await engine.call('cortex', 'analyze', 'Analyze this data');
  * ```
  */
 export class Engine {
@@ -503,7 +503,7 @@ export class Engine {
 
   /**
    * Call any engine action with retry, timeout, deduplication, and version headers.
-   * @param engine - Engine slug (e.g., 'godmind', 'fortress')
+   * @param engine - Engine slug (e.g., 'cortex', 'defense')
    * @param action - Action name (e.g., 'reason', 'defend')
    * @param input - Natural language input
    * @param context - Optional context object
@@ -705,14 +705,14 @@ export class Engine {
     };
   }
 
-  /** GODMIND — reasoning, planning, evaluation */
-  get godmind() { return this.typedProxy('godmind'); }
-  /** FORTRESS — security, hardening, auditing */
-  get fortress() { return this.typedProxy('fortress'); }
-  /** SINGULARITY — prediction, fusion, optimization */
-  get singularity() { return this.typedProxy('singularity'); }
-  /** ETERNUS — governance, compliance, automation */
-  get eternus() { return this.typedProxy('eternus'); }
+  /** CORTEX — reasoning, planning, evaluation */
+  get cortex() { return this.typedProxy('cortex'); }
+  /** DEFENSE — security, hardening, auditing */
+  get defense() { return this.typedProxy('defense'); }
+  /** ORACLE — prediction, fusion, optimization */
+  get oracle() { return this.typedProxy('oracle'); }
+  /** GOVERNANCE — governance, compliance, automation */
+  get governance() { return this.typedProxy('governance'); }
   /** CORTEX — orchestration, delegation, coordination */
   get cortex() { return this.typedProxy('cortex'); }
   /** SENTINEL — scanning, monitoring, response */
@@ -731,10 +731,10 @@ export class Engine {
   /** Available engines and their actions */
   static get catalog(): Record<string, string[]> {
     return {
-      godmind: ['reason', 'analyze', 'plan', 'evaluate'],
-      fortress: ['defend', 'audit', 'harden', 'assess'],
-      singularity: ['predict', 'fuse', 'optimize', 'synthesize'],
-      eternus: ['govern', 'audit', 'comply', 'automate'],
+      cortex: ['reason', 'analyze', 'plan', 'evaluate'],
+      defense: ['defend', 'audit', 'harden', 'assess'],
+      oracle: ['predict', 'fuse', 'optimize', 'synthesize'],
+      governance: ['govern', 'audit', 'comply', 'automate'],
       sentinel: ['scan', 'defend', 'monitor', 'respond'],
       cortex: ['orchestrate', 'delegate', 'coordinate', 'balance'],
       forge: ['generate', 'refactor', 'test', 'analyze'],

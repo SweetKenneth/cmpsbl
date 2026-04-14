@@ -1,8 +1,8 @@
 /**
- * promptfluid® Substrate Client SDK
- * v2026.02 — Cognitive Orchestration Substrate with BYOK
+ * CMPSBL® Substrate Client SDK
+ * v2026.04 — Governed Cognitive Infrastructure with BYOK
  * 
- * Standalone TypeScript SDK for integrating with the promptfluid substrate.
+ * Standalone TypeScript SDK for integrating with the CMPSBL substrate.
  * 
  * IMPORTANT: This is a BYOK (Bring Your Own Keys) architecture.
  * Developers pay their own LLM compute costs directly to providers.
@@ -27,7 +27,7 @@
  * await substrate.ai.chat([{ role: 'user', content: 'Hello!' }], { provider: 'openai', model: 'gpt-4' });
  */
 
-export type SubstrateModule = 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'modernizer';
+export type SubstrateModule = 'core' | 'ripple' | 'access' | 'brain' | 'decode' | 'defense' | 'nexus' | 'vision' | 'dream' | 'system' | 'evolution';
 
 export interface SubstrateConfig {
   url: string;
@@ -902,8 +902,8 @@ export class SubstrateClient {
       this.invoke({ module: 'evolution', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 
-  /** @deprecated Use evolution — MODERNIZER was absorbed by EVOLUTION */
-  get modernizer() { return this.evolution; }
+  /** @deprecated Use evolution — EVOLUTION was absorbed by EVOLUTION */
+  get evolution() { return this.evolution; }
 }
 
 // Export for module usage

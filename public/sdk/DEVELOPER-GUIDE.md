@@ -1,4 +1,4 @@
-# promptfluid® Substrate — Developer Guide
+# CMPSBL® Substrate — Developer Guide
 
 **v4.0.0 — Cognitive Orchestration Substrate for AI Systems**
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-The promptfluid® Substrate is a **cognitive operating system** that provides a unified API for AI memory, learning, security, routing, and observability. It consists of **11 modules** organized into 4 layers:
+The CMPSBL® Substrate is a **cognitive operating system** that provides a unified API for AI memory, learning, security, routing, and observability. It consists of **11 modules** organized into 4 layers:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -35,7 +35,7 @@ The promptfluid® Substrate is a **cognitive operating system** that provides a 
 │   └───────┴───────┴───────┴───────┴───────┴───────┴───────┘     │
 │                                                                  │
 │   ┌─────────────────────────────────────────────────────────┐   │
-│   │                     MODERNIZER                           │   │
+│   │                     EVOLUTION                           │   │
 │   │            Self-Improvement • Shadow Testing             │   │
 │   └─────────────────────────────────────────────────────────┘   │
 │                                                                  │
@@ -136,7 +136,7 @@ await core.schedule({
 
 | Module | Purpose | Key Actions |
 |--------|---------|-------------|
-| **MODERNIZER** | Self-Improvement | `status`, `pulse`, `scan`, `jobs`, `job`, `quota`, `analyze`, `propose`, `plans`, `review`, `apply`, `rollback`, `delete`, `archived`, `implement` |
+| **EVOLUTION** | Self-Improvement | `status`, `pulse`, `scan`, `jobs`, `job`, `quota`, `analyze`, `propose`, `plans`, `review`, `apply`, `rollback`, `delete`, `archived`, `implement` |
 
 ---
 
@@ -476,42 +476,42 @@ await system.restart('brain');
 
 ---
 
-## Module: MODERNIZER (Self-Improvement)
+## Module: EVOLUTION (Self-Improvement)
 
 Substrate code analysis and shadow-mode upgrades.
 
 ### Actions
 
 ```typescript
-// Check modernizer status
-await modernizer.status();
+// Check evolution status
+await evolution.status();
 
 // Scan for improvements
-await modernizer.scan({ depth: 'deep' });
+await evolution.scan({ depth: 'deep' });
 
 // List recent jobs
-await modernizer.jobs(10);
+await evolution.jobs(10);
 
 // Get specific job
-await modernizer.job('job-id');
+await evolution.job('job-id');
 
 // Propose upgrade (shadow mode)
-await modernizer.propose({ scope: 'brain', notes: 'Memory optimization' });
+await evolution.propose({ scope: 'brain', notes: 'Memory optimization' });
 
 // Review upgrade plan
-await modernizer.review('plan-id');
+await evolution.review('plan-id');
 
 // Apply approved plan
-await modernizer.apply('plan-id');
+await evolution.apply('plan-id');
 
 // Rollback applied plan
-await modernizer.rollback('plan-id');
+await evolution.rollback('plan-id');
 
 // Scan archived functions
-await modernizer.archived();
+await evolution.archived();
 
 // Implement archived function
-await modernizer.implement('cascade-dream', 'dream.cycle');
+await evolution.implement('cascade-dream', 'dream.cycle');
 ```
 
 ---
@@ -596,7 +596,7 @@ fetch('/functions/v1/pf-substrate', {
 | DEFENSE | 8 | Operational |
 | VISION | 15+ | Operational |
 | SYSTEM | 12 | Operational |
-| MODERNIZER | 15+ | Admin |
+| EVOLUTION | 15+ | Admin |
 | **TOTAL** | **100+** | — |
 
 ---
@@ -609,5 +609,5 @@ fetch('/functions/v1/pf-substrate', {
 
 ---
 
-**promptfluid® — The Cognitive Substrate OS**  
-*v4.0.0 — © 2025-2026 promptfluid. All rights reserved.*
+**CMPSBL® — The Cognitive Substrate OS**  
+*v4.0.0 — © 2025-2026 CMPSBL. All rights reserved.*

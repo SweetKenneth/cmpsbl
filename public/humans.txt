@@ -2,31 +2,29 @@
 
 /* TEAM */
 
-Organization: CMPSBL
-Role: Cognitive Infrastructure Lab
-Location: Dallas, Texas, USA
-Contact: hello@CMPSBL.com
+Organization: CMPSBL®
+Role: Governed Cognitive Infrastructure
+Location: Abilene, Texas, USA
+Contact: Dev@CMPSBL.com
 Phone: (760) FLUID-AI
 Twitter: @cmpsbl
 
-Founder & Chief Architect: Kenneth E. Sweet Jr.
+Founder & Governor: Kenneth E. Sweet Jr.
 ORCID: https://orcid.org/0009-0001-4237-1243
-
-Team: A small interdisciplinary team working across research, engineering, security, and operations.
 
 /* THANKS */
 
-Built with love, caffeine, and autonomous AI assistance.
+Built with precision, persistence, and autonomous cognitive loops.
 Special thanks to the open source community.
 To the dreamers building AI that actually remembers.
 
 /* SITE */
 
-Last update: 2026/03/12
+Last update: 2026/04/14
 Language: English
 Doctype: React + TypeScript + Tailwind
 Framework: Vite
-Backend: CMPSBL Cloud
+Backend: Lovable Cloud
 AI: Multi-provider orchestration via NEXUS
 
 Standards: HTML5, CSS3, ES2024
@@ -46,7 +44,7 @@ We believe in:
 - Security through behavioral analysis
 - Persistent memory and dream cycles
 
-/* SUBSTRATE NODES (40 Nodes / 12 Sectors) */
+/* SUBSTRATE PRIMITIVES (40 Primitives / 12 Sectors) */
 
 CORE: Kernel boot sequencing & lifecycle authority
 SYSTEM: Configuration management & diagnostics
@@ -91,9 +89,9 @@ ENGINEER: Engine & meta-engine maintenance intelligence
 
 /* COLOPHON */
 
-CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
-40 Nodes • 12 Sectors • 675+ Capabilities
-WCAG 2.2 Accessibility via INCLUSIVE Node
+CMPSBL® — Governed Cognitive Infrastructure · powered by the CMPSBL Substrate
+40 Primitives • 12 Sectors
+WCAG 2.2 Accessibility via INCLUSIVE Primitive
 
 CMPSBL® — Where Machines Learn To Dream.
 

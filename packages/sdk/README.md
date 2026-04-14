@@ -43,7 +43,7 @@ if (discovery.detected) {
 import { Engine } from '@cmpsbl/sdk';
 
 const engine = new Engine('your-api-key');
-const result = await engine.call('godmind', 'reason', 'Analyze market trends');
+const result = await engine.call('cortex', 'reason', 'Analyze market trends');
 ```
 
 ## License
