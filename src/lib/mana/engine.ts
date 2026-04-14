@@ -1289,6 +1289,34 @@ export async function attach(
   capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }>,
   sourceForHash: string,
 ): Promise<ManaManifest> {
+  // ── V1 WIRING: Fingerprint Gate — verify before attaching ──
+  const fpResult = verifyFingerprint(hostModule, hostPackage || 'unknown', hostVersion || '0.0.0');
+  
+  recordAuditEvent('mana.engine', 'fingerprint_verify', fpResult.verdict, {
+    fingerprint: fpResult.fingerprint,
+    expected: fpResult.expectedFingerprint,
+    mismatchType: fpResult.mismatchType,
+  });
+
+  if (fpResult.verdict === 'invalid') {
+    state = 'detached';
+    throw new Error(
+      `[MANA/FINGERPRINT] Attachment denied — invalid fingerprint: ${fpResult.mismatchDetails ?? 'hash tamper or structural change'}`
+    );
+  }
+
+  // Suspect = limited mode — filter out restricted capabilities
+  let filteredCapabilities = capabilities;
+  if (fpResult.verdict === 'suspect') {
+    const limited = new Set(fpResult.limitedCapabilities);
+    filteredCapabilities = capabilities.filter(c => !limited.has(c.capability));
+    
+    recordAuditEvent('mana.engine', 'fingerprint_limited', 'suspect', {
+      removedCapabilities: capabilities.length - filteredCapabilities.length,
+      limitedCapabilities: fpResult.limitedCapabilities,
+    });
+  }
+
   // Detect recursive layering — symbol-based, not name heuristic
   for (const [, val] of Object.entries(hostModule)) {
     if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
@@ -1307,7 +1335,7 @@ export async function attach(
   // Deterministic sort: primary by phase (ascending), secondary by capability name
   // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
   // When called: GATE → VALIDATE → FAILSAFE → [original] → OBSERVE → ANALYZE
-  const sorted = [...capabilities].sort(byPhaseThenName).reverse();
+  const sorted = [...filteredCapabilities].sort(byPhaseThenName).reverse();
 
   // Group by function name for proper wrapper composition
   const capsByFunction = new Map<string, typeof sorted>();
@@ -1366,9 +1394,30 @@ export async function attach(
       };
       attachmentPoints.set(`${functionName}:${cap.capability}`, point);
 
-      // Wrap the PREVIOUS result — composing, not overwriting
+      // V1 WIRING: Wrap with execution boundary tracking for safe detach
       const wrapper = getWrapper(cap.capability);
-      wrapped = wrapper(wrapped as Function, functionName, point) as AnyFn;
+      const boundaryAwareWrapper = (origFn: Function, fname: string, pt: AttachmentPoint) => {
+        const innerWrapper = wrapper(origFn, fname, pt);
+        return function manaBoundaryTracked(this: unknown, ...args: unknown[]) {
+          enterExecutionBoundary();
+          try {
+            const result = (innerWrapper as Function).apply(this, args);
+            if (result != null && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+              return (result as Promise<unknown>).then(
+                (v) => { exitExecutionBoundary(); return v; },
+                (e) => { exitExecutionBoundary(); throw e; },
+              );
+            }
+            exitExecutionBoundary();
+            return result;
+          } catch (err) {
+            exitExecutionBoundary();
+            throw err;
+          }
+        };
+      };
+
+      wrapped = boundaryAwareWrapper(wrapped as Function, functionName, point) as AnyFn;
       // Tag wrapper with symbol for accurate layer detection
       (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
 
@@ -1389,6 +1438,20 @@ export async function attach(
   state = 'symbiotic';
   attachedAt = Date.now();
   detachedAt = null;
+
+  // V1 WIRING: Auto-register fingerprint on first successful attach
+  if (fpResult.verdict === 'suspect' && fpResult.expectedFingerprint === null) {
+    registerFingerprint(hostPackage, fpResult.fingerprint);
+  }
+
+  // V1 WIRING: Audit event for successful attachment
+  recordAuditEvent('mana.engine', 'attach_complete', 'success', {
+    hostPackage,
+    hostVersion,
+    attachmentPointCount: attachmentPoints.size,
+    layerDepth,
+    fingerprintVerdict: fpResult.verdict,
+  });
 
   return getManifest();
 }
