@@ -3462,6 +3462,7 @@ ${adapter.comment('─── Governed Functions ───')}
 ${attachmentPlan.slice(0, 15).map(e => adapter.comment(`  ${e.functionName}() ← ${e.capability} [${e.primitive}]`)).join('\n')}
 `;
 
+}
 
 export function generateRefurbishedCode(
   originalCode: string,
