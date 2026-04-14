@@ -1281,18 +1281,17 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         registerInfraHandlers();
       }
 
+      // Build structured args from positional arguments
+      const structuredArgs: Record<string, unknown> = {};
+      args.forEach((arg, i) => { structuredArgs[`arg${i}`] = arg; });
+      if (args[0]) structuredArgs.input = args[0];
+      if (args[1]) structuredArgs.type = args[1];
+      if (args[2]) structuredArgs.confidence = args[2];
+      structuredArgs._args = args;
+      structuredArgs._raw = command;
+
       const handler = getHandler(base);
       if (handler) {
-        // Build structured args from positional arguments
-        const structuredArgs: Record<string, unknown> = {};
-        args.forEach((arg, i) => { structuredArgs[`arg${i}`] = arg; });
-        if (args[0]) structuredArgs.input = args[0];
-        if (args[1]) structuredArgs.type = args[1];
-        if (args[2]) structuredArgs.confidence = args[2];
-        // Pass raw args array for handlers that need positional access
-        structuredArgs._args = args;
-        structuredArgs._raw = command;
-
         const handlerResult = await handler(structuredArgs);
         const data = handlerResult as Record<string, unknown>;
 
@@ -1317,7 +1316,29 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         };
       }
 
-      // No handler found — fall through to legacy chain, then substrate.invoke
+      // ═══ AUTO-BRIDGE: No registered handler → route directly through pf-substrate ═══
+      // This eliminates the need for the legacy if/else chain for dotted commands
+      if (base.includes('.')) {
+        const { callSubstrate } = await import('@/lib/terminal/substrate-bridge');
+        const dotIdx = base.indexOf('.');
+        const mod = base.slice(0, dotIdx);
+        const action = base.slice(dotIdx + 1);
+        const substrateResult = await callSubstrate(mod, action, structuredArgs);
+        const subData = substrateResult as Record<string, unknown>;
+
+        if (subData?.success === false) {
+          // Fall through to legacy chain only if substrate returns explicit failure
+          // (might be a local-only command like autoblog, patch, matrix)
+        } else {
+          return {
+            success: true,
+            output: `◉ ${base}\n\n${JSON.stringify(subData?.data || subData, null, 2)}`,
+            data: subData?.data || subData,
+          };
+        }
+      }
+
+      // No handler and no substrate match — fall through to legacy chain
     } catch (bridgeErr) {
       // Bridge error — fall through to legacy chain
       if (debugMode.isEnabled()) {
