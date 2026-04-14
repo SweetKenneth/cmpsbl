@@ -312,10 +312,15 @@ export function generateVerificationSummary(): VerificationSummary {
     if (entry.kind === 'anomaly_detected') anomalies++;
     if (entry.kind === 'integrity_check') integrityChecks++;
 
-    // Track causal chain depth
+    // Track max causal chain depth via walk (bounded by ledger eviction)
     if (entry.causedBy !== null) {
-      const chain = getCausalChain(entry.seq);
-      maxChainDepth = Math.max(maxChainDepth, chain.length);
+      let depth = 1;
+      let cursor: VerificationEntry | undefined = entry;
+      while (cursor?.causedBy !== null && cursor?.causedBy !== undefined && depth < 50) {
+        cursor = ledger.find(e => e.seq === cursor!.causedBy);
+        depth++;
+      }
+      maxChainDepth = Math.max(maxChainDepth, depth);
     }
   }
 
