@@ -167,7 +167,7 @@ export async function runLodashDemoWithDetach(): Promise<{
 
   // Detach — restore lodash to original state
   const hostModule = lodash as unknown as Record<string, unknown>;
-  const detachManifest = detach(hostModule);
+  const detachManifest = await detach(hostModule);
 
   // Post-detach proof — hash should still match
   const postDetachProof = await generateProof(sourceFingerprint);
