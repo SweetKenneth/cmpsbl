@@ -110,6 +110,47 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     return () => clearInterval(interval);
   }, []);
 
+  // ═══ REALTIME SUBSTRATE PULSE — Live memory/dream events ═══
+  useEffect(() => {
+    let mounted = true;
+    import('@/integrations/supabase/client').then(({ supabase }) => {
+      if (!mounted) return;
+      const channel = supabase
+        .channel('terminal-pulse')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'brain_memories' }, (payload) => {
+          if (!mounted) return;
+          const mem = payload.new as Record<string, unknown>;
+          const preview = String(mem.content || '').slice(0, 80);
+          setHistory(prev => [...prev, {
+            id: `pulse-${Date.now()}`,
+            command: '◈ MEMORY WRITE',
+            status: 'success' as const,
+            output: `⟡ New memory persisted: "${preview}${String(mem.content || '').length > 80 ? '…' : ''}"`,
+            timestamp: new Date(),
+          }]);
+        })
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'cascade_dreams' }, (payload) => {
+          if (!mounted) return;
+          const dream = payload.new as Record<string, unknown>;
+          const title = String(dream.title || dream.dream_type || 'synthesis');
+          setHistory(prev => [...prev, {
+            id: `pulse-${Date.now()}`,
+            command: '◈ DREAM COMPLETE',
+            status: 'success' as const,
+            output: `⟡ Dream crystallized: "${title}"`,
+            timestamp: new Date(),
+          }]);
+        })
+        .subscribe();
+
+      return () => {
+        mounted = false;
+        supabase.removeChannel(channel);
+      };
+    });
+    return () => { mounted = false; };
+  }, []);
+
   // Copy to clipboard handler
   const handleCopy = useCallback((text: string, id: string) => {
     navigator.clipboard.writeText(text).then(() => {
