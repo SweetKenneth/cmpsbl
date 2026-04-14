@@ -123,7 +123,7 @@ function detectIdentity(): EnvironmentIdentity {
 const CREDS_DIR = path.join(os.homedir(), '.cmpsbl');
 const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
 const DEV_PORTAL_URL = 'https://cmpsbl.com/api-access';
-const REGISTRATION_ENDPOINT = 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate';
+const REGISTRATION_ENDPOINT = process.env.CMPSBL_ENDPOINT || 'https://api.cmpsbl.com/v1/substrate';
 
 interface StoredCredentials {
   apiKey: string;
@@ -145,8 +145,13 @@ function normalizeApiKey(value: unknown): string | undefined {
 
 function loadStoredCredentials(): StoredCredentials | undefined {
   try {
-    if (!fs.existsSync(CREDS_FILE)) return undefined;
-    const raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
+    // Read directly — avoids TOCTOU race between existsSync and readFileSync
+    let raw: string;
+    try {
+      raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
+    } catch {
+      return undefined; // file doesn't exist or unreadable
+    }
     if (!raw) return undefined;
 
     if (!raw.startsWith('{')) {
@@ -154,7 +159,12 @@ function loadStoredCredentials(): StoredCredentials | undefined {
       return key ? { apiKey: key } : undefined;
     }
 
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = JSON.parse(raw) as Record<string, unknown>;
+    } catch {
+      return undefined; // corrupted credentials file
+    }
     const apiKey = normalizeApiKey(
       parsed.apiKey ?? parsed.api_key ?? parsed.key ?? parsed.token
     );
@@ -218,11 +228,22 @@ function saveCredentials(apiKey: string, displayName?: string, developerId?: str
 
 function trackLastCommand(command: string): void {
   try {
-    if (!fs.existsSync(CREDS_FILE)) return;
-    const raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
+    let raw: string;
+    try {
+      raw = fs.readFileSync(CREDS_FILE, 'utf-8').trim();
+    } catch {
+      return; // file doesn't exist
+    }
     if (!raw.startsWith('{')) return;
-    const parsed = JSON.parse(raw);
-    parsed.lastCommand = command;
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = JSON.parse(raw) as Record<string, unknown>;
+    } catch {
+      return; // corrupted file — don't overwrite
+    }
+    // Sanitize command name to prevent injection into stored JSON
+    const safeCommand = command.replace(/[^\w.-]/g, '').slice(0, 50);
+    parsed.lastCommand = safeCommand;
     parsed.lastCommandAt = new Date().toISOString();
     fs.writeFileSync(CREDS_FILE, JSON.stringify(parsed, null, 2));
   } catch { /* silent */ }
@@ -517,10 +538,16 @@ async function requireApiKey(identity: EnvironmentIdentity): Promise<string> {
 
 function openBrowser(url: string): void {
   try {
+    // Sanitize URL to prevent command injection — only allow https:// URLs
+    const sanitized = url.replace(/[;&|`$(){}[\]!#]/g, '');
+    if (!/^https?:\/\//i.test(sanitized)) {
+      say(`Invalid URL: ${url}`);
+      return;
+    }
     const platform = process.platform;
-    if (platform === 'win32') execSync(`start "" "${url}"`);
-    else if (platform === 'darwin') execSync(`open "${url}"`);
-    else execSync(`xdg-open "${url}"`);
+    if (platform === 'win32') execSync(`start "" "${sanitized}"`, { stdio: 'ignore', timeout: 5000 });
+    else if (platform === 'darwin') execSync(`open "${sanitized}"`, { stdio: 'ignore', timeout: 5000 });
+    else execSync(`xdg-open "${sanitized}"`, { stdio: 'ignore', timeout: 5000 });
   } catch {
     say(`Could not open browser. Visit: ${url}`);
   }
@@ -598,13 +625,18 @@ function detectSourceFiles(dir: string): DetectedProject {
   const files: string[] = [];
   const extCounts: Record<string, number> = {};
 
+  const SKIP_DIRS = new Set(['.git', 'node_modules', 'dist', '__pycache__', 'target', 'build', '.next', '.cache', 'vendor', 'coverage']);
+
   function walk(currentDir: string, depth: number) {
     if (depth > 5) return;
     try {
       const entries = fs.readdirSync(currentDir, { withFileTypes: true });
       for (const entry of entries) {
-        if (entry.name.startsWith('.') || entry.name === 'node_modules' || entry.name === 'dist' || entry.name === '__pycache__' || entry.name === 'target' || entry.name === 'build') continue;
+        if (entry.name.startsWith('.') || SKIP_DIRS.has(entry.name)) continue;
         const fullPath = path.join(currentDir, entry.name);
+        // Guard against symlink traversal escaping the project root
+        const resolved = path.resolve(fullPath);
+        if (!resolved.startsWith(path.resolve(dir))) continue;
         if (entry.isDirectory()) {
           walk(fullPath, depth + 1);
         } else {
@@ -1913,7 +1945,7 @@ async function commandAttach(): Promise<void> {
     groups,
     attachedFiles: project.files.slice(0, 100),
     attachedAt: new Date().toISOString(),
-    version: '1.1.0',
+    version: '1.2.0',
     operator: operatorName,
     language: project.language,
     framework: project.framework,
@@ -2048,7 +2080,7 @@ function commandHelp(): void {
     '',
     'Layer 2 runtime enhancement for any codebase.',
     'Your original source code is never modified.',
-  ], 'MANA · v1.1.0');
+  ], 'MANA · v1.2.0');
   blank();
 
   say(c.bold('COMMANDS'));
@@ -2100,7 +2132,7 @@ function commandHelp(): void {
 
 function commandVersion(): void {
   blank();
-  say(`${c.bold('mana')} ${c.cyan('v1.1.0')}`);
+  say(`${c.bold('mana')} ${c.cyan('v1.2.0')}`);
   say(c.muted('Silent Software Symbiosis · © CMPSBL®'));
   blank();
 }
