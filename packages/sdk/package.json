@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/sdk",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "CMPSBL® Engine SDK — Unified SubstrateClient for cognitive loop operations (Memory, Dream, Discovery) and diagnostics across Web, CLI, and API surfaces.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
