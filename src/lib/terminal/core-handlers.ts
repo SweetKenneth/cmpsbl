@@ -170,11 +170,24 @@ ${lines.join('\n')}
     const totalTime = Date.now() - startAll;
     const allGood = healthy === total;
 
-    const lines = results.map(r => {
-      const icon = r.ok ? '✅' : '❌';
-      const lat = `${r.latencyMs}ms`.padStart(6);
-      return `│  ${icon} ${r.module.padEnd(14)} ${lat}${r.error ? ` — ${r.error}` : ''}`;
-    });
+    // Build categorized output
+    const formatSection = (label: string, ids: string[]) => {
+      const sectionResults = ids.map(id => results.find(r => r.module === id)).filter(Boolean) as typeof results;
+      const sectionHealthy = sectionResults.filter(r => r.ok).length;
+      const lines = sectionResults.map(r => {
+        const icon = r.ok ? '✅' : '❌';
+        const lat = `${r.latencyMs}ms`.padStart(6);
+        return `│  │  ${icon} ${r.module.toUpperCase().padEnd(14)} ${lat}${r.error ? ` — ${r.error}` : ''}`;
+      });
+      return `│  ┌─ ${label} (${sectionHealthy}/${ids.length}) ${'─'.repeat(Math.max(1, 40 - label.length))}\n${lines.join('\n')}\n│  └${'─'.repeat(50)}`;
+    };
+
+    const sections = [
+      formatSection('ORGANS', ORGANS),
+      formatSection('LAYERS', LAYERS),
+      formatSection('ENGINES', ENGINES),
+      formatSection('AGENTS', AGENTS),
+    ];
 
     return {
       success: true,
@@ -182,19 +195,17 @@ ${lines.join('\n')}
 ┌─ SUBSTRATE DOCTOR ───────────────────────────────────────────
 │
 │  Status:       ${allGood ? '✅ ALL SYSTEMS NOMINAL' : `⚠️  ${healthy}/${total} HEALTHY`}
-│  Primitives:   ${healthy}/${total} responding
+│  Primitives:   ${healthy}/${total} responding (40-Primitive architecture)
 │  Avg Latency:  ${avgLatency}ms
 │  Total Check:  ${totalTime}ms
 │
-│  ┌─ PRIMITIVE STATUS ──────────────────────────────────────
-${lines.join('\n')}
-│  └─────────────────────────────────────────────────────────
+${sections.join('\n│\n')}
 │
 │  Bridge:       pf-substrate (auto-bridge active)
 │  Realtime:     brain_memories, cascade_dreams
 │  Surfaces:     Web Terminal · CLI · API · Website
 │
-│  The substrate is ${allGood ? 'alive and unified' : 'partially degraded'}.
+│  The substrate is ${allGood ? 'alive and unified across all 40 Primitives' : 'partially degraded'}.
 │  CMPSBL® — where dreams come to adapt
 │
 └──────────────────────────────────────────────────────────────`,
