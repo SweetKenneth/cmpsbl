@@ -3089,83 +3089,85 @@ if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
 }
 `);
   } else if (lang === 'php') {
-    lines.push(`
-/**
- * CMPSBL® Artifact Self-Verification
- * Run: php <this_file> --verify
- */
-function __cmpsbl_verify(): bool {
-    $fingerprint = '${fingerprint}';
-    $meta = __CMPSBL_META__;
-    $verifyUrl = "https://cmpsbl.com/verify/{$fingerprint}";
-
-    echo str_repeat('=', 60) . PHP_EOL;
-    echo 'CMPSBL® Convex Core™ — Artifact Verification' . PHP_EOL;
-    echo 'A PromptFluid™ Product' . PHP_EOL;
-    echo str_repeat('=', 60) . PHP_EOL;
-    echo "  Fingerprint:  {$fingerprint}" . PHP_EOL;
-    echo "  Primitives:   " . ($meta['primitiveCount'] ?? '?') . PHP_EOL;
-    echo "  Generated:    " . ($meta['generatedAt'] ?? '?') . PHP_EOL;
-    echo "  Runtime:      " . ($meta['runtimeVersion'] ?? '?') . PHP_EOL;
-    echo "  Language:     " . ($meta['sourceLanguage'] ?? '?') . PHP_EOL;
-    echo PHP_EOL;
-
-    $passed = 0;
-    $total = 4;
-
-    if (!empty($fingerprint) && strlen($fingerprint) > 8) {
-        echo "  ✓ Fingerprint valid" . PHP_EOL;
-        $passed++;
-    } else {
-        echo "  ✗ Fingerprint missing or malformed" . PHP_EOL;
-    }
-
-    if (!empty($meta['runtimeVersion']) && !empty($meta['orchestrationVersion'])) {
-        echo "  ✓ Metadata intact" . PHP_EOL;
-        $passed++;
-    } else {
-        echo "  ✗ Metadata corrupted" . PHP_EOL;
-    }
-
-    if (!empty($meta['patents'])) {
-        echo "  ✓ Patent reference present" . PHP_EOL;
-        $passed++;
-    } else {
-        echo "  ✗ Patent reference missing" . PHP_EOL;
-    }
-
-    $fileHash = substr(hash('sha256', file_get_contents(__FILE__)), 0, 16);
-    echo "  ✓ File hash: {$fileHash}" . PHP_EOL;
-    $passed++;
-
-    echo PHP_EOL;
-    echo "  Result: {$passed}/{$total} checks passed" . PHP_EOL;
-    echo PHP_EOL;
-    echo "  Online verification:" . PHP_EOL;
-    echo "    {$verifyUrl}" . PHP_EOL;
-    echo PHP_EOL;
-    echo "  Programmatic verification:" . PHP_EOL;
-    echo '    composer require cmpsbl/test-harness' . PHP_EOL;
-    echo "    \\\\CMPSBL\\\\verify_fingerprint('{$fingerprint}');" . PHP_EOL;
-    echo PHP_EOL;
-    echo "  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved." . PHP_EOL;
-    echo "  U.S. Patent App. No. 64/029,678 · No. 64/031,637" . PHP_EOL;
-    echo str_repeat('=', 60) . PHP_EOL;
-    return $passed === $total;
-}
-
-if (php_sapi_name() === 'cli' && in_array('--verify', $argv ?? [], true)) {
-    $ok = __cmpsbl_verify();
-    exit($ok ? 0 : 1);
-}
-`);
+    const phpVerify = [
+      '',
+      '/**',
+      ' * CMPSBL® Artifact Self-Verification',
+      ' * Run: php <this_file> --verify',
+      ' */',
+      'function __cmpsbl_verify(): bool {',
+      '    $fingerprint = \'' + fingerprint + '\';',
+      '    $meta = __CMPSBL_META__;',
+      '    $verifyUrl = "https://cmpsbl.com/verify/" . $fingerprint;',
+      '',
+      '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+      '    echo \'CMPSBL® Convex Core™ — Artifact Verification\' . PHP_EOL;',
+      '    echo \'A PromptFluid™ Product\' . PHP_EOL;',
+      '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+      '    echo "  Fingerprint:  " . $fingerprint . PHP_EOL;',
+      '    echo "  Primitives:   " . ($meta[\'primitiveCount\'] ?? \'?\') . PHP_EOL;',
+      '    echo "  Generated:    " . ($meta[\'generatedAt\'] ?? \'?\') . PHP_EOL;',
+      '    echo "  Runtime:      " . ($meta[\'runtimeVersion\'] ?? \'?\') . PHP_EOL;',
+      '    echo "  Language:     " . ($meta[\'sourceLanguage\'] ?? \'?\') . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '',
+      '    $passed = 0;',
+      '    $total = 4;',
+      '',
+      '    if (!empty($fingerprint) && strlen($fingerprint) > 8) {',
+      '        echo "  ✓ Fingerprint valid" . PHP_EOL;',
+      '        $passed++;',
+      '    } else {',
+      '        echo "  ✗ Fingerprint missing or malformed" . PHP_EOL;',
+      '    }',
+      '',
+      '    if (!empty($meta[\'runtimeVersion\']) && !empty($meta[\'orchestrationVersion\'])) {',
+      '        echo "  ✓ Metadata intact" . PHP_EOL;',
+      '        $passed++;',
+      '    } else {',
+      '        echo "  ✗ Metadata corrupted" . PHP_EOL;',
+      '    }',
+      '',
+      '    if (!empty($meta[\'patents\'])) {',
+      '        echo "  ✓ Patent reference present" . PHP_EOL;',
+      '        $passed++;',
+      '    } else {',
+      '        echo "  ✗ Patent reference missing" . PHP_EOL;',
+      '    }',
+      '',
+      '    $fileHash = substr(hash(\'sha256\', file_get_contents(__FILE__)), 0, 16);',
+      '    echo "  ✓ File hash: " . $fileHash . PHP_EOL;',
+      '    $passed++;',
+      '',
+      '    echo PHP_EOL;',
+      '    echo "  Result: " . $passed . "/" . $total . " checks passed" . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '    echo "  Online verification:" . PHP_EOL;',
+      '    echo "    " . $verifyUrl . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '    echo "  Programmatic verification:" . PHP_EOL;',
+      '    echo "    composer require cmpsbl/test-harness" . PHP_EOL;',
+      '    echo "    \\\\CMPSBL\\\\verify_fingerprint(\'" . $fingerprint . "\')" . PHP_EOL;',
+      '    echo PHP_EOL;',
+      '    echo "  © ' + new Date().getFullYear() + ' PromptFluid™ · CMPSBL® · All rights reserved." . PHP_EOL;',
+      '    echo "  U.S. Patent App. No. 64/029,678 · No. 64/031,637" . PHP_EOL;',
+      '    echo str_repeat(\'=\', 60) . PHP_EOL;',
+      '    return $passed === $total;',
+      '}',
+      '',
+      'if (php_sapi_name() === \'cli\' && in_array(\'--verify\', $argv ?? [], true)) {',
+      '    $ok = __cmpsbl_verify();',
+      '    exit($ok ? 0 : 1);',
+      '}',
+    ].join('\n');
+    lines.push(phpVerify);
   } else {
     // For other languages, embed as comments only
-    lines.push(adapter.comment(\`VERIFY THIS ARTIFACT: https://cmpsbl.com/verify/\${fingerprint}\`));
-    lines.push(adapter.comment(\`Fingerprint: \${fingerprint}\`));
+    lines.push(adapter.comment(`VERIFY THIS ARTIFACT: https://cmpsbl.com/verify/${fingerprint}`));
+    lines.push(adapter.comment(`Fingerprint: ${fingerprint}`));
     lines.push(adapter.comment('Install: npm install @cmpsbl/test-harness'));
-    lines.push(adapter.comment(\`Run: verifyFingerprint("\${fingerprint}")\`));
-    lines.push(adapter.comment(\`© \${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.\`));
+    lines.push(adapter.comment(`Run: verifyFingerprint("${fingerprint}")`));
+    lines.push(adapter.comment(`© ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.`));
     lines.push(adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'));
   }
 
