@@ -4,7 +4,7 @@
  * 40 primitives | 500+ commands | 300 synergy memory chains
  */
 
-import { substrate, brain, decode, defense, nexus, vision, dream, system, evolutionClient as evolutionMod, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
+import { substrate, system, access, decode } from '@/lib/substrate';
 import { supabase } from '@/integrations/supabase/client';
 import { ALL_COMMANDS, COMMAND_CATEGORIES, type CommandDefinition, getCommandTier, meetsRequiredTier, getTierIcon, getTierLabel, type CommandTier } from './TerminalCommands';
 import { getRandomItem, PERSONALITY_RESPONSES } from './TerminalTypes';
