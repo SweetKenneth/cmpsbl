@@ -4,7 +4,7 @@
 
 ## The Short Version
 
-CMPSBL (pronounced "composable") is an **AI operating system** — a platform that lets AI agents run with persistent memory, governed behavior, and continuous self-improvement. Think of it as the infrastructure layer that makes AI systems production-ready.
+CMPSBL (pronounced "composable") is a **governed cognitive infrastructure** — infrastructure that lets AI agents run with persistent memory, governed behavior, and continuous self-improvement. Think of it as the infrastructure layer that makes AI systems production-ready.
 
 ---
 
