@@ -4,14 +4,13 @@
  * Generates the "split pipeline" — visible partial architecture
  * that demonstrates real effects while concealing orchestration.
  *
- * Strategy: Devs see 5 of 12 real pipeline stages in a plausible
- * but incomplete order. Critical stages (collision scoring, topology
- * resolution, sequencing engine) are compiled into opaque runtime
- * blocks that execute correctly but cannot be reverse-engineered.
+ * v3.1.0 — Routes all codegen through the unified LanguageAdapter.
  *
  * Patent Pending: U.S. App. No. 64/029,678
  * © CMPSBL® — All rights reserved.
  */
+
+import { getAdapter } from '../factory/generate-refurbished-code';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — Compiled Runtime Preamble
