@@ -18,15 +18,22 @@ export type MeshSignalCategory =
   | 'processing' | 'completion' | 'warning' | 'escalation'
   | 'discovery' | 'heartbeat';
 
+/** Primitive-to-primitive communication event */
 export interface MeshCommEvent {
-  source_module: string;
-  target_module: string;
+  /** Source primitive identifier */
+  source_primitive: string;
+  /** Target primitive identifier */
+  target_primitive: string;
   raw_signal: string;
   translated_voice: string;
   category: MeshSignalCategory;
   resolver_id?: string;
   personality_trait?: string;
   personality_icon?: string;
+  /** @deprecated Use source_primitive */
+  source_module?: string;
+  /** @deprecated Use target_primitive */
+  target_module?: string;
 }
 
 export type SubstratePrimitive =
@@ -97,6 +104,13 @@ export function configureMesh(config: { maxLogSize?: number }): void {
 }
 
 export function emit(event: MeshCommEvent): void {
+  // Normalize: populate deprecated fields for backward compat
+  if (event.source_primitive && !event.source_module) event.source_module = event.source_primitive;
+  if (event.target_primitive && !event.target_module) event.target_module = event.target_primitive;
+  // And vice versa for legacy callers
+  if (event.source_module && !event.source_primitive) event.source_primitive = event.source_module;
+  if (event.target_module && !event.target_primitive) event.target_primitive = event.target_module;
+
   eventLog.push(event);
   if (eventLog.length > maxLogSize) eventLog.shift();
 
@@ -135,8 +149,10 @@ export function getSubscriberCount(): number {
 
 function matchesFilter(event: MeshCommEvent, filter?: MeshFilter): boolean {
   if (!filter) return true;
-  if (filter.source && event.source_module !== filter.source) return false;
-  if (filter.target && event.target_module !== filter.target) return false;
+  const src = event.source_primitive ?? event.source_module ?? '';
+  const tgt = event.target_primitive ?? event.target_module ?? '';
+  if (filter.source && src !== filter.source) return false;
+  if (filter.target && tgt !== filter.target) return false;
   if (filter.category && event.category !== filter.category) return false;
   return true;
 }
@@ -153,6 +169,8 @@ export function createSignal(
   options?: { translated?: string; resolver_id?: string; personality_trait?: string; personality_icon?: string },
 ): MeshCommEvent {
   return {
+    source_primitive: source,
+    target_primitive: target,
     source_module: source,
     target_module: target,
     raw_signal: raw,
