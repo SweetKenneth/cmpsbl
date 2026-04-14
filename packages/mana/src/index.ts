@@ -1859,6 +1859,18 @@ async function activationCeremony(
 
   say(c.dim('  ── Your code. Enhanced. Protected. Unchanged. ──'));
   blank();
+
+  // ── Vertical Exploration Invitation ──
+  say(c.bold(c.purple('  ◈ EXPLORE 12 INDUSTRY VERTICALS')));
+  blank();
+  say(`  ${c.dim('Each vertical has its own 40-primitive environment:')}`);
+  say(`  ${c.cyan('Cyber')} · ${c.green('Fintech')} · ${c.purple('Robotics')} · ${c.amber('Quantum')} · ${c.cyan('LLM')} · ${c.green('Agency')}`);
+  say(`  ${c.purple('Media')} · ${c.amber('Health')} · ${c.cyan('Legal')} · ${c.green('Gaming')} · ${c.purple('Education')} · ${c.amber('Ultimate')}`);
+  blank();
+  say(`  ${c.bold(c.cyan('cmpsbl.com/explore'))} ${c.dim('— See them all')}`);
+  blank();
+  say(c.dim('  U.S. Patent App. No. 64/031,637 · © CMPSBL® · PromptFluid™'));
+  blank();
 }
 
 // ═══════════════════════════════════════════════════════════════
