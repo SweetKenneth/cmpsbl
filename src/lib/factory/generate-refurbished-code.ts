@@ -209,6 +209,43 @@ function phpGuard(g: string): string {
   return convertObjectArgs(g, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
 }
 
+/**
+ * Convert a JSON string into a PHP array literal.
+ * Handles nested objects/arrays recursively.
+ * `{"key": "val"}` → `['key' => 'val']`
+ */
+function jsonToPhpArray(jsonStr: string): string {
+  try {
+    const obj = JSON.parse(jsonStr);
+    return toPhpLiteral(obj);
+  } catch {
+    // If not valid JSON, wrap as string
+    return `'${jsonStr.replace(/'/g, "\\'")}'`;
+  }
+}
+
+function toPhpLiteral(val: unknown): string {
+  if (val === null) return 'null';
+  if (val === true) return 'true';
+  if (val === false) return 'false';
+  if (typeof val === 'number') return String(val);
+  if (typeof val === 'string') return `'${val.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+  if (Array.isArray(val)) {
+    // Check if it's a sequential array (numeric keys)
+    const isAssoc = val.some((_, i) => typeof val[i] === 'object' && val[i] !== null && !Array.isArray(val[i]));
+    if (!isAssoc && val.every(v => typeof v !== 'object' || v === null)) {
+      return `[${val.map(toPhpLiteral).join(', ')}]`;
+    }
+    return `[\n${val.map((v, i) => `    ${i} => ${toPhpLiteral(v)}`).join(',\n')}\n]`;
+  }
+  if (typeof val === 'object') {
+    const entries = Object.entries(val as Record<string, unknown>);
+    if (entries.length === 0) return '[]';
+    return `[\n${entries.map(([k, v]) => `    '${k}' => ${toPhpLiteral(v)}`).join(',\n')}\n]`;
+  }
+  return `'${String(val)}'`;
+}
+
 /** Dart: named params `({ key: val })` → `(key: val)` */
 function dartGuard(g: string): string {
   return jsArgsToKwargs(g, (k) => `${k}:`, ' ');
