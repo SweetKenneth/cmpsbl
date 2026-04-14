@@ -108,15 +108,21 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [x] Terminal shows upgrade CTA for locked tiers
 - [x] `whoami` routed through bridge-first (added to COGNITIVE_ALIASES)
 
-### Phase 4: Eliminate the Monolith (Week 7-8)
+### Phase 4: Eliminate the Monolith (Week 7-8) 🔄 IN PROGRESS
 **Goal**: TerminalExecutor.ts goes from 5658 lines to ~500.
 
-#### 4.1 — Migrate Remaining Commands
-- [ ] Move ALL remaining if/else command handlers into registry-backed handler files
-- [ ] Each handler calls `bridge(module, action)` — no local client calls
-- [ ] Delete the local substrate client wrappers that duplicate pf-substrate logic
+#### 4.1 — Auto-Bridge Fallback ✅
+- [x] When no registered handler exists, auto-route dotted commands through `callSubstrate(mod, action)` directly
+- [x] Legacy chain only fires if pf-substrate returns `success: false` (local-only commands)
+- [x] Added formatted output detection (string `output` vs raw JSON)
+- [x] Marked legacy chain as deprecated with removal planned for Phase 5
 
-#### 4.2 — Unified Output Formatting
+#### 4.2 — Migrate Remaining Commands
+- [ ] Remove legacy blocks for brain, decode, defense, nexus, vision, dream, system, evolution, ripple, access, integration, cortex, inclusive, seba (~4000 lines)
+- [ ] Keep local-only blocks: autoblog, matrix, patch, debug, alias, macro, schedule, watch
+- [ ] Delete local substrate client wrappers that duplicate pf-substrate logic
+
+#### 4.3 — Unified Output Formatting
 - [ ] pf-substrate returns structured data
 - [ ] Each surface (Web Terminal, CLI, API) formats it for its own display
 - [ ] Terminal uses box-drawing characters

@@ -1352,10 +1352,15 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
   }
 
   // ═══ LEGACY EXECUTION CHAIN (fallback for commands not yet in registry) ═══
+  // ═══ DEPRECATED LEGACY CHAIN ═══
+  // These handlers are superseded by the bridge-first auto-route above.
+  // They remain as fallback for: (1) commands where pf-substrate returns success:false,
+  // (2) local-only commands (autoblog, matrix, patch, debug, alias, macro, schedule, watch).
+  // Phase 5 will remove substrate-handled duplicates entirely.
   try {
     let result;
 
-    // BRAIN module
+    // BRAIN module (LEGACY — auto-bridge handles these via pf-substrate)
     if (base === 'brain.status') {
       result = await brain.status();
     } else if (base === 'brain.query') {
