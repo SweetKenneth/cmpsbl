@@ -2362,6 +2362,7 @@ async function dreamLiveWatch(apiKey: string): Promise<void> {
 
 async function cmdDiscover(args: string[]) {
   const input = args.join(' ') || 'general system analysis';
+  const apiKey = await requireApiKey();
   if (!JSON_MODE) header('Live Discovery');
 
   await initFirstContact({ ...CLI_CONFIG, silent: true });
@@ -2375,6 +2376,16 @@ async function cmdDiscover(args: string[]) {
   s?.stop('Discovery complete');
 
   if (result.detected && result.memory) {
+    // Persist discovery to substrate memory stream
+    try {
+      await substrateCall('memory', 'store', {
+        content: `Discovery: ${result.memory.pattern} — ${result.memory.adoption}`,
+        source: 'cli-discover',
+        tier: 'HOT',
+        metadata: { chain_id: result.memory.id, status: result.memory.status },
+      }, apiKey);
+    } catch { /* persist is best-effort */ }
+
     if (JSON_MODE) { jsonOut({ detected: true, memory: result.memory }); return; }
     if (isInteractiveTTY()) {
       await promptInteraction(result.memory);
@@ -2391,6 +2402,36 @@ async function cmdDiscover(args: string[]) {
 }
 
 async function cmdStream() {
+  const apiKey = resolveApiKey();
+
+  // Try fetching from substrate first
+  if (apiKey) {
+    const result = await substrateCall('memory', 'stream', { limit: 20 }, apiKey);
+    if (result.success && result.data) {
+      const chains = Array.isArray(result.data.chains) ? result.data.chains as Record<string, unknown>[] :
+        Array.isArray((result.data as any)) ? [] : [];
+      if (chains.length > 0) {
+        if (JSON_MODE) { jsonOut({ count: chains.length, chains }); return; }
+        header('Memory Stream');
+        say(`${chains.length} chain${chains.length > 1 ? 's' : ''} in stream:`);
+        blank();
+        for (const chain of chains) {
+          box([
+            `Pattern:  ${String(chain.pattern ?? chain.content ?? '')}`,
+            `Source:   ${String(chain.adoption ?? chain.context ?? 'unknown')}`,
+            `Tier:     ${String(chain.tier ?? 'HOT')}`,
+            `Status:   ${String(chain.status ?? 'captured')}`,
+            `Actions:  capture | apply | export`,
+          ], String(chain.id ?? '').slice(0, 8));
+          blank();
+        }
+        say(pick(V.idle));
+        return;
+      }
+    }
+  }
+
+  // Fallback to local memory stream
   const chains = getMemoryStream();
   if (JSON_MODE) { jsonOut({ count: chains.length, chains }); return; }
 
