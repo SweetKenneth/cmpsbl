@@ -981,3 +981,177 @@ export type {
   DynamicRuleConfig,
   GeneratedRuleResult,
 } from './engines/dynamic-rule-generator';
+
+// ═══════════════════════════════════════════════════════════════
+// §20 — Artifact Initializer (capability activation entry point)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  initializeArtifact,
+  activate,
+} from './artifact-initializer';
+
+export type {
+  ArtifactManifest,
+  ExportedFunction,
+  InitializationResult,
+} from './artifact-initializer';
+
+// ═══════════════════════════════════════════════════════════════
+// §21 — Generic Wrapper (universal primitive activation)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  wrapGeneric,
+  wrapGenericAsync,
+  getCollectedEffects,
+  getGenericTelemetry,
+  resetCollector,
+  isWrapped,
+  getWrappedPrimitives,
+  getWrapperHandle,
+  hasEmittedEffects,
+  getEffectsForPrimitive,
+} from './generic-wrapper';
+
+export type {
+  GenericEffect,
+  WrapperHandle,
+  GenericTelemetry,
+} from './generic-wrapper';
+
+// ═══════════════════════════════════════════════════════════════
+// §22 — Activation Proof (verification of capability activation)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  generateActivationReport,
+  isFullyActivated,
+  getActivationSummary,
+} from './engines/activation-proof';
+
+export type {
+  PrimitiveActivationProof,
+  ActivationReport,
+} from './engines/activation-proof';
+
+// ═══════════════════════════════════════════════════════════════
+// §23 — Capability Registry
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  registerCapability,
+  resolveCapabilityActions,
+  resolveCapabilitySignal,
+  isCapabilityRegistered,
+  getCapabilityDefinition,
+  isEnforcingCapability,
+  getRegisteredCapabilities,
+  getCapabilityDefinitions,
+  getCapabilitiesForCategory,
+  getRegistrySummary,
+  resetCapabilityRegistry,
+} from './engines/capability-registry';
+
+export type {
+  CapabilityDefinition,
+  CapabilityRegistrationInput,
+  CapabilityRegistrySummary,
+} from './engines/capability-registry';
+
+// ═══════════════════════════════════════════════════════════════
+// §24 — Capability Seeding & Decomposition
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  seedAllCapabilities,
+  isCapabilitySeeded,
+  resetCapabilitySeed,
+} from './engines/capability-seed';
+
+export type {
+  SeedResult,
+} from './engines/capability-seed';
+
+export {
+  seedDecomposedCapabilities,
+  getDecomposedCapabilities,
+  getSubCapabilitiesFor,
+  getDecompositionCount,
+} from './engines/capability-decomposition';
+
+export type {
+  SubCapabilityDef,
+} from './engines/capability-decomposition';
+
+// ═══════════════════════════════════════════════════════════════
+// §25 — Orchestration Engine (signal routing & attachment rules)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  registerOrchestrationRule,
+  removeOrchestrationRule,
+  getOrchestrationRules,
+  getOrchestrationEvents,
+  getOrchestrationEventsForPrimitive,
+  getRegisteredRuleCount,
+  getRegisteredRuleIds,
+  resetOrchestrationEngine,
+  routeSignal,
+  registerAttachmentRules,
+  wrapOrchestration,
+} from './engines/orchestration-engine';
+
+export type {
+  OrchestrationSignal,
+  OrchestrationAction,
+  OrchestrationEffect,
+  OrchestrationRule,
+  OrchestrationEvent,
+  AttachmentPolicy,
+  AttachmentEntry,
+} from './engines/orchestration-engine';
+
+// ═══════════════════════════════════════════════════════════════
+// §26 — Function Identity (idempotent wrapper tracking)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  resolveIdentity,
+  isAlreadyWrapped,
+  isSameSource,
+  getAllIdentities,
+  getIdentity,
+  getIdentitiesForPrimitive,
+  getWrappedFunctionCount,
+  resetIdentityRegistry,
+  fnv1a,
+  resolveFunctionName,
+} from './engines/function-identity';
+
+export type {
+  FunctionIdentity,
+} from './engines/function-identity';
+
+// ═══════════════════════════════════════════════════════════════
+// §27 — Primitive Engine Map (behavioral archetype resolution)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  resolveEngine,
+  classifyByAffinity,
+  CLASSIFIED_PRIMITIVE_COUNT,
+} from './engines/primitive-engine-map';
+
+export type {
+  BehaviorEngine,
+} from './engines/primitive-engine-map';
+
+// ═══════════════════════════════════════════════════════════════
+// §28 — Specialized Behavior Engines (interception, state, execution, analysis)
+// ═══════════════════════════════════════════════════════════════
+
+export { wrapInterception } from './engines/interception-engine';
+export { wrapState } from './engines/state-engine';
+export { wrapExecution } from './engines/execution-engine';
+export { wrapAnalysis } from './engines/analysis-engine';
