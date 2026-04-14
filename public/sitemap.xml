@@ -13,13 +13,13 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://cmpsbl.com/" />
   </url>
 
-  <url><loc>https://cmpsbl.com/architecture</loc><lastmod>2026-04-04</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
-  <url><loc>https://cmpsbl.com/store</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://cmpsbl.com/plans</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://cmpsbl.com/showroom</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.93</priority></url>
-  <url><loc>https://cmpsbl.com/foundry</loc><lastmod>2026-04-02</lastmod><changefreq>daily</changefreq><priority>0.95</priority></url>
-  <url><loc>https://cmpsbl.com/ascension</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.93</priority></url>
-  <url><loc>https://cmpsbl.com/architecture</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://cmpsbl.com/architecture</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://cmpsbl.com/store</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://cmpsbl.com/plans</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://cmpsbl.com/showroom</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.93</priority></url>
+  <url><loc>https://cmpsbl.com/foundry</loc><lastmod>2026-04-14</lastmod><changefreq>daily</changefreq><priority>0.95</priority></url>
+  <url><loc>https://cmpsbl.com/ascension</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.93</priority></url>
+  <url><loc>https://cmpsbl.com/persistent-memory</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
   <url><loc>https://cmpsbl.com/persistent-memory</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.92</priority></url>
   <url><loc>https://cmpsbl.com/documentation</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
   <url><loc>https://cmpsbl.com/blog</loc><lastmod>2026-04-02</lastmod><changefreq>daily</changefreq><priority>0.90</priority></url>
@@ -74,7 +74,15 @@
   <url><loc>https://cmpsbl.com/support</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>
   <url><loc>https://cmpsbl.com/heritage-paper</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
   <url><loc>https://cmpsbl.com/promptfluid</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.60</priority></url>
-  <url><loc>https://cmpsbl.com/privacy</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
-  <url><loc>https://cmpsbl.com/terms</loc><lastmod>2026-04-02</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://cmpsbl.com/privacy</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+  <url><loc>https://cmpsbl.com/terms</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.45</priority></url>
+
+  <!-- New routes -->
+  <url><loc>https://cmpsbl.com/mana</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://cmpsbl.com/software-symbiosis</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/restoration-shop</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/registry</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://cmpsbl.com/docs</loc><lastmod>2026-04-14</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://cmpsbl.com/careers</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>
 
 </urlset>
