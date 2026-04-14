@@ -1,9 +1,12 @@
 /**
- * @cmpsbl/test-harness — Test Utilities
- * Validate exported pipelines, manifests, bridge adapters, first-contact flows,
- * and Ascension fingerprint verification.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Test Harness — Governed Cognitive Infrastructure   │
+ * │  Validate pipelines, manifests, bridges & Ascension flows.  │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 import { parseManifest, executeChain, executePrimitive, initFirstContact, discoverMemory, getMemoryStream } from '@cmpsbl/runtime';

@@ -1,9 +1,12 @@
 /**
- * @cmpsbl/mesh — Mesh Telemetry Client
- * Emit and subscribe to node-to-node communication events.
- * Includes first-contact Memory Stream integration.
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Mesh — Governed Cognitive Infrastructure           │
+ * │  Primitive-to-primitive telemetry & signal substrate.        │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 // ═══════════════════════════════════════════════════════════════

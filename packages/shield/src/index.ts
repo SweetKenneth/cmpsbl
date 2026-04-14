@@ -1,15 +1,16 @@
 /**
- * PROMPT-SHIELD v1.0.0
- * Cross-Vertical LLM Prompt Defense System
- *
- * The first CMPSBL® product to require cross-vertical primitive selection.
- * Scanner must autonomously pull from LLM + Cyber + Spine pools.
- *
- * LLM Vertical:  VERITAS, RAMPART, SIEVE, GAUNTLET
- * Cyber Vertical: BASTION, WATCHTOWER
- * Spine:          DEFENSE, GOVERNANCE, CONSCIENCE, COMPASS, AUDIT, BEACON
- *
- * © CMPSBL® — All rights reserved.
+ * ┌──────────────────────────────────────────────────────────────┐
+ * │  CMPSBL® Prompt-Shield — Governed Cognitive Infrastructure  │
+ * │  Cross-vertical LLM prompt defense system.                  │
+ * │  Autonomously pulls from LLM + Cyber + Spine primitive      │
+ * │  pools: VERITAS, RAMPART, SIEVE, GAUNTLET, BASTION,         │
+ * │  WATCHTOWER, DEFENSE, GOVERNANCE, CONSCIENCE, COMPASS,      │
+ * │  AUDIT, BEACON.                                              │
+ * │                                                              │
+ * │  U.S. Patent App. No. 64/029,678 · 64/031,637               │
+ * │  https://cmpsbl.com · npm i @cmpsbl/cli                      │
+ * │  © 2025–2026 CMPSBL® · PromptFluid™                         │
+ * └──────────────────────────────────────────────────────────────┘
  */
 
 export { PromptShield } from './shield';
