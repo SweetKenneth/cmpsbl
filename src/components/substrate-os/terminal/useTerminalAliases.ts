@@ -99,6 +99,12 @@ const customAliases: Map<string, AliasDefinition> = new Map();
 
 export function resolveAlias(input: string): string {
   const parts = input.trim().split(/\s+/);
+  
+  // Strip 'cmpsbl' prefix — user typed "cmpsbl doctor" instead of "doctor"
+  if (parts[0].toLowerCase() === 'cmpsbl' && parts.length > 1) {
+    parts.shift();
+  }
+  
   const potentialAlias = parts[0].toLowerCase();
   
   // Check custom aliases first
