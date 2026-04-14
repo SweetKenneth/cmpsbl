@@ -1047,8 +1047,7 @@ export default function STierDemos() {
         {/* Horizontal Scroll Demo Cards */}
         <div
           ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory scroll-carousel-track -mx-4 px-4"
         >
           {DEMOS.map((demo, idx) => {
             const Icon = demo.icon;

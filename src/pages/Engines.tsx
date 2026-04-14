@@ -4,7 +4,7 @@
  * Inspired by Blog page's category layout.
  */
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { SubstrateClassBadge } from "@/components/ui/substrate-class-badge";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -80,41 +80,7 @@ const TIER_CONFIG = [
 
 type TierConfig = typeof TIER_CONFIG[number];
 
-// ─── Horizontal Scroll Carousel ───
-function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const scroll = (dir: 'left' | 'right') => {
-    if (!ref.current) return;
-    const amount = ref.current.clientWidth * 0.7;
-    ref.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
-  };
-
-  return (
-    <div className={cn("group relative", className)}>
-      <button
-        onClick={() => scroll('left')}
-        aria-label="Scroll left"
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <div
-        ref={ref}
-        className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {children}
-      </div>
-      <button
-        onClick={() => scroll('right')}
-        aria-label="Scroll right"
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-    </div>
-  );
-}
+import { ScrollCarousel } from '@/components/shared/ScrollCarousel';
 
 function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: number; tierConfig: TierConfig }) {
   const href = engine.externalPath || `/engines/${engine.slug}`;

@@ -6,7 +6,7 @@
  * Featured posts section + randomized blending of human & auto-blog posts.
  */
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -183,41 +183,7 @@ function normalizeBlogCategory(rawCategory?: string | null): string {
   return existingCategory?.id ?? 'Research';
 }
 
-// ─── Horizontal Scroll Carousel ───
-function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const scroll = (dir: 'left' | 'right') => {
-    if (!ref.current) return;
-    const amount = ref.current.clientWidth * 0.7;
-    ref.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
-  };
-
-  return (
-    <div className={cn("group relative", className)}>
-      <button
-        onClick={() => scroll('left')}
-        aria-label="Scroll left"
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <div
-        ref={ref}
-        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {children}
-      </div>
-      <button
-        onClick={() => scroll('right')}
-        aria-label="Scroll right"
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-    </div>
-  );
-}
+import { ScrollCarousel } from '@/components/shared/ScrollCarousel';
 
 // ─── Blog Post Card (carousel-sized, Supreme card style) ───
 function PostCard({ post, href }: { post: BlogPost; href: string }) {
