@@ -104,6 +104,65 @@ export interface EngineCallOptions {
   depth?: 'shallow' | 'standard' | 'deep';
   stages?: string[];
   temperature?: number;
+  /** Maximum retry attempts on transient failures (default: 3) */
+  retries?: number;
+  /** Request timeout in milliseconds (default: 30000) */
+  timeoutMs?: number;
+  /** Enable SSE streaming for engine responses */
+  stream?: boolean;
+}
+
+/** Configuration for retry behavior */
+export interface RetryConfig {
+  maxRetries: number;
+  baseDelayMs: number;
+  maxDelayMs: number;
+}
+
+/** Health check result from the substrate API */
+export interface SubstrateHealthCheck {
+  status: 'healthy' | 'degraded' | 'offline';
+  latencyMs: number;
+  version: string;
+  primitivesOnline: number;
+  timestamp: string;
+}
+
+/** Authenticated user profile and quota information */
+export interface WhoAmIResult {
+  authenticated: boolean;
+  userId: string | null;
+  tier: string | null;
+  quota: { used: number; limit: number; resetsAt: string } | null;
+  permissions: string[];
+  timestamp: string;
+}
+
+/** SSE stream event from an engine call */
+export interface EngineStreamEvent {
+  type: 'chunk' | 'stage_complete' | 'done' | 'error';
+  data: string;
+  stage?: string;
+  confidence?: number;
+}
+
+/** Callback for streaming engine responses */
+export type StreamCallback = (event: EngineStreamEvent) => void;
+
+/** Batch call request entry */
+export interface BatchCallEntry {
+  engine: string;
+  action: string;
+  input: string;
+  context?: Record<string, unknown>;
+  options?: EngineCallOptions;
+}
+
+/** Batch call result with per-entry status */
+export interface BatchCallResult {
+  results: Array<{ success: boolean; result?: EngineResult; error?: string }>;
+  totalMs: number;
+  timestamp: string;
 }
 
 export interface EngineStageResult {
@@ -350,20 +409,105 @@ export class EngineAPIError extends Error {
 export class Engine {
   private readonly apiKey: string;
   private readonly baseUrl: string;
+  private readonly retry: RetryConfig;
+  private readonly defaultTimeoutMs: number;
+  private readonly inflight = new Map<string, Promise<EngineResult>>();
 
-  constructor(apiKey: string, baseUrl = 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api/engine') {
+  /** SDK version injected into every request header */
+  static readonly SDK_VERSION = '2.3.0';
+
+  constructor(
+    apiKey: string,
+    baseUrl = 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api/engine',
+    retryConfig?: Partial<RetryConfig>,
+  ) {
     if (!apiKey) throw new Error('CMPSBL Engine SDK: API key is required');
     this.apiKey = apiKey;
     this.baseUrl = baseUrl;
+    this.retry = {
+      maxRetries: retryConfig?.maxRetries ?? 3,
+      baseDelayMs: retryConfig?.baseDelayMs ?? 500,
+      maxDelayMs: retryConfig?.maxDelayMs ?? 8000,
+    };
+    this.defaultTimeoutMs = 30_000;
+  }
+
+  // ── Request Headers ───────────────────────────────────────
+
+  private headers(): Record<string, string> {
+    return {
+      'Content-Type': 'application/json',
+      'X-Engine-Key': this.apiKey,
+      'X-SDK-Version': Engine.SDK_VERSION,
+      'X-Request-Id': typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    };
+  }
+
+  // ── Retry with Exponential Backoff ────────────────────────
+
+  private async fetchWithRetry(
+    body: Record<string, unknown>,
+    retries: number,
+    timeoutMs: number,
+  ): Promise<Response> {
+    let lastError: Error | undefined;
+    const maxAttempts = retries + 1;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+        const res = await fetch(this.baseUrl, {
+          method: 'POST',
+          headers: this.headers(),
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+        clearTimeout(timer);
+
+        // Retry on 429 and 5xx, but not on 4xx client errors
+        if (res.status === 429 || (res.status >= 500 && res.status < 600)) {
+          const retryAfter = parseInt(res.headers.get('retry-after') ?? '0', 10);
+          const backoff = retryAfter > 0
+            ? retryAfter * 1000
+            : Math.min(this.retry.baseDelayMs * Math.pow(2, attempt), this.retry.maxDelayMs);
+          if (attempt < maxAttempts - 1) {
+            await new Promise(r => setTimeout(r, backoff));
+            continue;
+          }
+        }
+
+        return res;
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        if (lastError.name === 'AbortError') {
+          lastError = new Error(`Request timed out after ${timeoutMs}ms`);
+        }
+        if (attempt < maxAttempts - 1) {
+          const backoff = Math.min(this.retry.baseDelayMs * Math.pow(2, attempt), this.retry.maxDelayMs);
+          await new Promise(r => setTimeout(r, backoff));
+        }
+      }
+    }
+    throw lastError ?? new Error('Request failed after retries');
+  }
+
+  // ── Deduplication Key ─────────────────────────────────────
+
+  private dedupeKey(engine: string, action: string, input: string): string {
+    return `${engine}:${action}:${input}`;
   }
 
   /**
-   * Call any engine action directly.
+   * Call any engine action with retry, timeout, deduplication, and version headers.
    * @param engine - Engine slug (e.g., 'godmind', 'fortress')
    * @param action - Action name (e.g., 'reason', 'defend')
    * @param input - Natural language input
    * @param context - Optional context object
-   * @param options - Optional call options (streaming, timeout)
+   * @param options - Optional call options (retries, timeout, streaming)
    */
   async call(
     engine: string,
@@ -372,18 +516,185 @@ export class Engine {
     context?: Record<string, unknown>,
     options?: EngineCallOptions,
   ): Promise<EngineResult> {
-    const res = await fetch(this.baseUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Engine-Key': this.apiKey },
-      body: JSON.stringify({ engine, action, input, context, options }),
-    });
+    const retries = options?.retries ?? this.retry.maxRetries;
+    const timeoutMs = options?.timeoutMs ?? this.defaultTimeoutMs;
+    const key = this.dedupeKey(engine, action, input);
 
-    if (!res.ok) {
-      const errBody = await res.json().catch(() => ({ error: `HTTP ${res.status}` })) as Record<string, string>;
-      throw new EngineAPIError(errBody.error || `Request failed: ${res.status}`, res.status);
+    // Request deduplication — collapse identical in-flight calls
+    const existing = this.inflight.get(key);
+    if (existing) return existing;
+
+    const promise = (async (): Promise<EngineResult> => {
+      try {
+        const body = { engine, action, input, context, options: { depth: options?.depth, stages: options?.stages, temperature: options?.temperature } };
+        const res = await this.fetchWithRetry(body, retries, timeoutMs);
+
+        if (!res.ok) {
+          const errBody = await res.json().catch(() => ({ error: `HTTP ${res.status}` })) as Record<string, string>;
+          throw new EngineAPIError(errBody.error || `Request failed: ${res.status}`, res.status);
+        }
+
+        return res.json() as Promise<EngineResult>;
+      } finally {
+        this.inflight.delete(key);
+      }
+    })();
+
+    this.inflight.set(key, promise);
+    return promise;
+  }
+
+  /**
+   * Stream an engine call via SSE-style chunked responses.
+   * @param engine - Engine slug
+   * @param action - Action name
+   * @param input - Natural language input
+   * @param onEvent - Callback invoked for each stream event
+   * @param context - Optional context
+   * @param options - Optional call options
+   */
+  async stream(
+    engine: string,
+    action: string,
+    input: string,
+    onEvent: StreamCallback,
+    context?: Record<string, unknown>,
+    options?: EngineCallOptions,
+  ): Promise<EngineResult> {
+    const timeoutMs = options?.timeoutMs ?? this.defaultTimeoutMs;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const res = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: { ...this.headers(), 'Accept': 'text/event-stream' },
+        body: JSON.stringify({ engine, action, input, context, options: { ...options, stream: true } }),
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({ error: `HTTP ${res.status}` })) as Record<string, string>;
+        throw new EngineAPIError(errBody.error || `Stream failed: ${res.status}`, res.status);
+      }
+
+      // If the server returns SSE, parse it; otherwise treat as normal JSON
+      const contentType = res.headers.get('content-type') ?? '';
+      if (contentType.includes('text/event-stream') && res.body) {
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let finalResult: EngineResult | undefined;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          const lines = buffer.split('\n');
+          buffer = lines.pop() ?? '';
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const event = JSON.parse(line.slice(6)) as EngineStreamEvent;
+                onEvent(event);
+                if (event.type === 'done') {
+                  finalResult = JSON.parse(event.data) as EngineResult;
+                }
+              } catch { /* skip malformed SSE lines */ }
+            }
+          }
+        }
+
+        if (finalResult) return finalResult;
+        throw new EngineAPIError('Stream ended without final result', 0);
+      }
+
+      // Fallback: non-streaming response
+      const result = await res.json() as EngineResult;
+      onEvent({ type: 'done', data: JSON.stringify(result) });
+      return result;
+    } finally {
+      clearTimeout(timer);
     }
+  }
 
-    return res.json() as Promise<EngineResult>;
+  /**
+   * Execute multiple engine calls in parallel.
+   * @param calls - Array of batch call entries
+   * @returns Aggregated results with per-entry success/error status
+   */
+  async batch(calls: BatchCallEntry[]): Promise<BatchCallResult> {
+    const start = Date.now();
+    const results = await Promise.allSettled(
+      calls.map(c => this.call(c.engine, c.action, c.input, c.context, c.options)),
+    );
+    return {
+      results: results.map(r =>
+        r.status === 'fulfilled'
+          ? { success: true, result: r.value }
+          : { success: false, error: r.reason instanceof Error ? r.reason.message : String(r.reason) },
+      ),
+      totalMs: Date.now() - start,
+      timestamp: new Date().toISOString(),
+    };
+  }
+
+  /**
+   * Check substrate API health and latency.
+   * Does not count against quota.
+   */
+  async healthCheck(): Promise<SubstrateHealthCheck> {
+    const start = Date.now();
+    try {
+      const res = await fetch(this.baseUrl.replace(/\/engine$/, '/health'), {
+        method: 'GET',
+        headers: this.headers(),
+      });
+      const latencyMs = Date.now() - start;
+      if (res.ok) {
+        const body = await res.json().catch(() => ({})) as Record<string, unknown>;
+        return {
+          status: (body.status as 'healthy' | 'degraded') ?? 'healthy',
+          latencyMs,
+          version: (body.version as string) ?? 'unknown',
+          primitivesOnline: (body.primitivesOnline as number) ?? 40,
+          timestamp: new Date().toISOString(),
+        };
+      }
+      return { status: 'degraded', latencyMs, version: 'unknown', primitivesOnline: 0, timestamp: new Date().toISOString() };
+    } catch {
+      return { status: 'offline', latencyMs: Date.now() - start, version: 'unknown', primitivesOnline: 0, timestamp: new Date().toISOString() };
+    }
+  }
+
+  /**
+   * Retrieve the authenticated user's profile, tier, and quota usage.
+   * Requires a valid API key.
+   */
+  async whoami(): Promise<WhoAmIResult> {
+    try {
+      const res = await fetch(this.baseUrl.replace(/\/engine$/, '/whoami'), {
+        method: 'GET',
+        headers: this.headers(),
+      });
+      if (res.ok) {
+        const body = await res.json() as Record<string, unknown>;
+        return {
+          authenticated: true,
+          userId: (body.userId as string) ?? null,
+          tier: (body.tier as string) ?? null,
+          quota: (body.quota as WhoAmIResult['quota']) ?? null,
+          permissions: (body.permissions as string[]) ?? [],
+          timestamp: new Date().toISOString(),
+        };
+      }
+      return { authenticated: false, userId: null, tier: null, quota: null, permissions: [], timestamp: new Date().toISOString() };
+    } catch {
+      return { authenticated: false, userId: null, tier: null, quota: null, permissions: [], timestamp: new Date().toISOString() };
+    }
   }
 
   /** Get a typed engine handle by slug */
@@ -429,6 +740,11 @@ export class Engine {
       forge: ['generate', 'refactor', 'test', 'analyze'],
       oracle: ['predict', 'detect', 'process', 'forecast'],
     };
+  }
+
+  /** Number of currently in-flight deduplicated requests */
+  get inflightCount(): number {
+    return this.inflight.size;
   }
 }
 
