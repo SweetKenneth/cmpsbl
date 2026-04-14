@@ -32,11 +32,11 @@ const fadeUp = (delay = 0) => ({
 const faqItems = [
   {
     question: "What is an AI Operating System?",
-    answer: "An AI Operating System is a platform that gives AI agents everything they need to work in production — persistent memory, smart routing, built-in security, monitoring, and self-improvement — all in one place. Think of it like how Windows or macOS unified computing: CMPSBL unifies AI infrastructure.",
+    answer: "An AI Operating System is a substrate that gives AI agents everything they need to work in production — persistent memory, smart routing, built-in security, monitoring, and self-improvement — all in one place. Think of it like how Windows or macOS unified computing: CMPSBL unifies AI infrastructure.",
   },
   {
     question: "How is an AI OS different from an AI framework?",
-    answer: "Frameworks like LangChain or CrewAI solve one problem at a time — chaining prompts, managing agents, or formatting outputs. An AI OS integrates all of these into a single platform where every part communicates and strengthens the others. The whole is greater than the sum of its parts.",
+    answer: "Frameworks like LangChain or CrewAI solve one problem at a time — chaining prompts, managing agents, or formatting outputs. An AI OS integrates all of these into a single substrate where every part communicates and strengthens the others. The whole is greater than the sum of its parts.",
   },
   {
     question: "What is the Memory Stream?",
@@ -55,7 +55,7 @@ const faqItems = [
     answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS Organ automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
-    question: "What is the platform architecture?",
+    question: "What is the substrate architecture?",
     answer: "40 specialized primitives organized into a symmetric 12·12·8·8 matrix across 4 categories — Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER). All primitives are weighted and coordinated by the CORE Organ.",
   },
 ];
@@ -103,7 +103,7 @@ export default function AIOperatingSystem() {
     "@type": "DefinedTerm",
     name: "AI Operating System",
     description:
-      "A unified software platform that provides all cognitive infrastructure AI agents need to operate in production — persistent memory, intelligent routing, security, observability, and autonomous optimization — integrated into a single coherent runtime.",
+      "A unified cognitive substrate that provides all cognitive infrastructure AI agents need to operate in production — persistent memory, intelligent routing, security, observability, and autonomous optimization — integrated into a single coherent runtime.",
     url: "https://cmpsbl.com/ai-operating-system",
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
@@ -167,7 +167,7 @@ export default function AIOperatingSystem() {
             </motion.h1>
 
             <motion.p {...fadeUp(0.1)} className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-4">
-              An <strong className="text-foreground">AI Operating System</strong> is a platform that gives AI agents everything they need to work in production — persistent memory, smart model routing, built-in security,
+              An <strong className="text-foreground">AI Operating System</strong> is a substrate that gives AI agents everything they need to work in production — persistent memory, smart model routing, built-in security,
               real-time monitoring, and automatic self-improvement — all in one place.
             </motion.p>
 

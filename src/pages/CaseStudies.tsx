@@ -260,7 +260,7 @@ const MSF_CAPABILITIES = [
   { name: 'Cryptographic Agility Layer', mode: 'Hybrid', desc: 'Manages key rotation, certificate lifecycle, and encryption protocol enforcement including quantum-resistant algorithm preparation.' },
   { name: 'Zero-Downtime Migrator', mode: 'Hybrid', desc: 'Dual-writes to old and new schemas during migration, seamlessly cutting over when parity is confirmed.' },
   { name: 'Rate Limit Intelligence', mode: 'Hybrid', desc: 'Learns traffic patterns and dynamically adjusts rate limits per client/endpoint. Prevents abuse while preserving legitimate spikes.' },
-  { name: 'Cognitive Load Profiler', mode: 'Passive', desc: 'Measures code complexity per module and identifies areas where cognitive load exceeds maintainability thresholds.' },
+  { name: 'Cognitive Load Profiler', mode: 'Passive', desc: 'Measures code complexity per function and identifies areas where cognitive load exceeds maintainability thresholds.' },
   { name: 'Device Fingerprint Layer', mode: 'Passive', desc: 'Unique device fingerprints from browser/OS signals for fraud detection and session binding with zero user-visible impact.' },
   { name: 'Compliance Continuous Validator', mode: 'Hybrid', desc: 'Validates security postures against SOC2, ISO 27001, NIST, and CIS benchmarks with gap analysis and remediation priorities.' },
 ];
@@ -296,7 +296,7 @@ const HF_PRIMITIVES = [
   { name: 'LINGUA', type: 'Organ', action: 'Text processing benefits from structured language interpretation' },
   { name: 'SYLLOGISM', type: 'Engine', action: 'Reasoning chain validation and logical consistency enforcement' },
   { name: 'CLARITY', type: 'Engine', action: 'Explainability and decision transparency for model outputs' },
-  { name: 'COMPASS', type: 'Organ', action: 'No module exports detected — module navigation and dependency mapping' },
+  { name: 'COMPASS', type: 'Organ', action: 'No module exports detected — primitive navigation and dependency mapping' },
   { name: 'IMMUNITY', type: 'Layer', action: 'Dependency chains need immunity against cascading failures' },
 ];
 
@@ -304,7 +304,7 @@ const HF_CAPABILITIES = [
   { name: 'Intelligent Retry Fabric', mode: 'Active', desc: 'Replaces naive retry loops with context-aware retry strategies. Backs off intelligently, switches fallback paths, and learns from failure patterns.' },
   { name: 'Chaos Pen Test Engine', mode: 'Active', desc: 'Automated penetration testing via chaos injection, adversarial simulation, blast radius analysis, and red team automation.' },
   { name: 'Silent Regression Scanner', mode: 'Passive', desc: 'Background scanner that detects behavioral regressions by comparing output signatures against historical baselines.' },
-  { name: 'Cognitive Load Profiler', mode: 'Passive', desc: 'Measures code complexity per module and identifies areas where developer cognitive load exceeds maintainability thresholds.' },
+  { name: 'Cognitive Load Profiler', mode: 'Passive', desc: 'Measures code complexity per function and identifies areas where developer cognitive load exceeds maintainability thresholds.' },
   { name: 'Canary Deployment Gate', mode: 'Hybrid', desc: 'Routes configurable traffic percentages to new code paths. Monitors for anomalies and auto-rolls back if thresholds are breached.' },
   { name: 'Intent Disambiguation Engine', mode: 'Hybrid', desc: 'Observes ambiguous user inputs and actively resolves intent through contextual analysis and confidence scoring.' },
   { name: 'Structural Drift Detector', mode: 'Passive', desc: 'Compares current architecture against the original blueprint and flags deviations to prevent architectural erosion.' },
@@ -530,7 +530,7 @@ const ORTOOLS_VULNERABILITIES = [
   { severity: 'warning' as const, title: 'Synchronous-only architecture', status: 'mitigated', details: 'No async patterns in a solver that can run for hours on complex optimization problems.' },
   { severity: 'warning' as const, title: 'High cyclomatic complexity (230)', status: 'mitigated', details: 'Extreme branching across model-building, constraint-posting, and solver-invocation paths.' },
   { severity: 'warning' as const, title: 'High dependency coupling (42 imports)', status: 'mitigated', details: '42 imports detected — high coupling increases blast radius of dependency failures.' },
-  { severity: 'warning' as const, title: 'Monolithic file (2,332 lines)', status: 'mitigated', details: 'Entire CP-SAT Python API in a single module. ENGINEER recommends decomposition.' },
+  { severity: 'warning' as const, title: 'Monolithic file (2,332 lines)', status: 'mitigated', details: 'Entire CP-SAT Python API in a single file. ENGINEER recommends decomposition.' },
   { severity: 'warning' as const, title: 'Deprecated API usage detected', status: 'mitigated', details: 'File implements its own deprecated decorator because warnings.deprecated is Python 3.13+ only.' },
   { severity: 'warning' as const, title: 'Insecure HTTP protocol usage', status: 'mitigated', details: 'Non-HTTPS URLs in license headers. Data in plaintext vulnerable to interception.' },
   { severity: 'info' as const, title: '9 classes in single file', status: 'monitor', details: 'CpModel, CpSolver, Constraint, LinearExpr, callbacks — God Object decomposition opportunities.' },
