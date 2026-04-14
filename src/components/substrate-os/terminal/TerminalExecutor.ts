@@ -1362,25 +1362,11 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     let result;
 
     // BRAIN module — REMOVED: All brain.* commands routed via bridge-first (spine-handlers.ts)
-    // 65+ registered handlers cover brain.status, brain.query, brain.remember, brain.recall, etc.
+    // DECODE basic commands — REMOVED: decode.status/chat/intent/dream/propose/learn via bridge-first
     // Auto-bridge catches any remaining dotted commands via callSubstrate(mod, action).
 
-    // DECODE module
-    else if (base === 'decode.status') {
-      result = await decode.status();
-    } else if (base === 'decode.chat') {
-      result = await decode.chat(args[0] || '');
-    } else if (base === 'decode.intent') {
-      result = await decode.intent(args[0] || '');
-    } else if (base === 'decode.dream') {
-      result = await decode.dream();
-    } else if (base === 'decode.propose') {
-      result = await decode.propose(args[0] || '');
-    } else if (base === 'decode.learn') {
-      result = await decode.learn(args[0] || '', args[1]);
-    }
-    // DECODE Personality subsystem
-    else if (base === 'decode.personality.list') {
+    // DECODE Personality subsystem — LOCAL (uses in-memory personalityEngine, not pf-substrate)
+    if (base === 'decode.personality.list') {
       const { personalityEngine } = await import('@/lib/substrate/decode');
       const profiles = personalityEngine.list();
       return {
