@@ -1,4 +1,4 @@
-# promptfluid® Substrate — User Manual
+# CMPSBL® Substrate — User Manual
 
 **v2026.01 — Cognitive Orchestration Substrate**
 
@@ -6,7 +6,7 @@
 
 ## What is the Substrate?
 
-The promptfluid® Substrate is a unified API gateway for cognitive AI operations. It provides:
+The CMPSBL® Substrate is a unified API gateway for cognitive AI operations. It provides:
 
 - **Memory & Learning** — Store, retrieve, and evolve knowledge
 - **Conversational AI** — Intent decoding and dream generation
@@ -454,7 +454,7 @@ Error response format:
 
 ### Installation
 
-The SDK is included in promptfluid® projects:
+The SDK is included in CMPSBL® projects:
 
 ```typescript
 import { substrate, brain, decode, defense, nexus, vision, dream, system } from '@/lib/substrate';
@@ -626,4 +626,4 @@ function Dashboard() {
 
 ---
 
-*promptfluid® — Cognitive Orchestration Substrate v2026.01*
+*CMPSBL® — Cognitive Orchestration Substrate v2026.01*

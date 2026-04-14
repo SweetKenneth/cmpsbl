@@ -902,8 +902,8 @@ export class SubstrateClient {
       this.invoke({ module: 'evolution', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 
-  /** @deprecated Use evolution — MODERNIZER was absorbed by EVOLUTION */
-  get modernizer() { return this.evolution; }
+  /** @deprecated Use evolution — EVOLUTION was absorbed by EVOLUTION */
+  get evolution() { return this.evolution; }
 }
 
 // Export for module usage

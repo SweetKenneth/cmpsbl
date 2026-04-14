@@ -1,4 +1,4 @@
-# promptfluid® Substrate — API Reference
+# CMPSBL® Substrate — API Reference
 
 **v4.1.1 — Complete Module & Action Reference (Brain v2.0)**
 
@@ -14,7 +14,7 @@ POST https://[your-project].supabase.co/functions/v1/pf-substrate
 
 ```json
 {
-  "module": "brain|decode|defense|nexus|vision|dream|system|core|ripple|access|modernizer",
+  "module": "brain|decode|defense|nexus|vision|dream|system|core|ripple|access|evolution",
   "action": "<action-name>",
   "payload": { /* action-specific parameters */ }
 }
@@ -232,7 +232,7 @@ POST https://[your-project].supabase.co/functions/v1/pf-substrate
 
 ---
 
-## Module: MODERNIZER (Self-Improvement)
+## Module: EVOLUTION (Self-Improvement)
 
 *Substrate code analysis and shadow-mode upgrades.*
 
@@ -311,10 +311,10 @@ POST https://[your-project].supabase.co/functions/v1/pf-substrate
 | DEFENSE | 10 | Operational |
 | VISION | 16 | Operational |
 | SYSTEM | 11 | Operational |
-| MODERNIZER | 16 | Admin |
+| EVOLUTION | 16 | Admin |
 | **TOTAL** | **124** | — |
 
 ---
 
-**promptfluid® — v4.0.0 Cognitive Substrate OS**  
-*© 2025-2026 promptfluid. All rights reserved.*
+**CMPSBL® — v4.0.0 Cognitive Substrate OS**  
+*© 2025-2026 CMPSBL. All rights reserved.*

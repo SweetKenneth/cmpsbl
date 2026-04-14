@@ -1,19 +1,19 @@
-# promptfluid® Substrate SDK
+# CMPSBL® Substrate SDK
 
 ## v4.1.1 — Cognitive Orchestration Substrate (Brain v2.0)
 
-A TypeScript client SDK for the promptfluid® Substrate — a unified API for cognitive AI operations with **11 modules** across 4 layers.
+A TypeScript client SDK for the CMPSBL® Substrate — a unified API for cognitive AI operations with **11 modules** across 4 layers.
 
 ---
 
 ## Overview
 
-The promptfluid® Substrate provides:
+The CMPSBL® Substrate provides:
 
 - **Kernel Layer**: CORE (scheduler), RIPPLE (message bus), ACCESS (identity)
 - **Cognitive Layer**: BRAIN (memory), DECODE (intent), NEXUS (AI routing), DREAM (evolution)
 - **Operational Layer**: DEFENSE (security), VISION (observability), SYSTEM (admin)
-- **Admin Layer**: MODERNIZER (self-improvement)
+- **Admin Layer**: EVOLUTION (self-improvement)
 
 All 11 modules accessed through a single endpoint.
 
@@ -224,22 +224,22 @@ await substrate.system.restart('brain');           // Restart service
 
 ## Admin Layer
 
-### MODERNIZER — Self-Improvement
+### EVOLUTION — Self-Improvement
 
 ```typescript
-await substrate.modernizer.status();               // Module status
-await substrate.modernizer.pulse();                // Heartbeat
-await substrate.modernizer.scan({ depth: 'deep' }); // Scan for improvements
-await substrate.modernizer.jobs(10);               // List jobs
-await substrate.modernizer.job('job-id');          // Get specific job
-await substrate.modernizer.quota();                // Check quota
-await substrate.modernizer.propose({ scope: 'brain' }); // Propose upgrade
-await substrate.modernizer.plans();                // List plans
-await substrate.modernizer.review('plan-id');      // Review plan
-await substrate.modernizer.apply('plan-id');       // Apply plan
-await substrate.modernizer.rollback('plan-id');    // Rollback
-await substrate.modernizer.archived();             // Scan archived
-await substrate.modernizer.implement('cascade-dream', 'dream.cycle');
+await substrate.evolution.status();               // Module status
+await substrate.evolution.pulse();                // Heartbeat
+await substrate.evolution.scan({ depth: 'deep' }); // Scan for improvements
+await substrate.evolution.jobs(10);               // List jobs
+await substrate.evolution.job('job-id');          // Get specific job
+await substrate.evolution.quota();                // Check quota
+await substrate.evolution.propose({ scope: 'brain' }); // Propose upgrade
+await substrate.evolution.plans();                // List plans
+await substrate.evolution.review('plan-id');      // Review plan
+await substrate.evolution.apply('plan-id');       // Apply plan
+await substrate.evolution.rollback('plan-id');    // Rollback
+await substrate.evolution.archived();             // Scan archived
+await substrate.evolution.implement('cascade-dream', 'dream.cycle');
 ```
 
 ---
@@ -281,5 +281,5 @@ interface SubstrateResponse<T> {
 
 ---
 
-**promptfluid® — Cognitive Substrate OS**  
-*v4.0.0 — © 2025-2026 promptfluid. All rights reserved.*
+**CMPSBL® — Cognitive Substrate OS**  
+*v4.0.0 — © 2025-2026 CMPSBL. All rights reserved.*
