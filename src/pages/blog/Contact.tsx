@@ -41,14 +41,14 @@ export default function Contact() {
 
       <p>The concern wasn't technical safety. The proposal included more safety mechanisms than most human-designed systems. The concern was philosophical. A system that reaches out on its own initiative is fundamentally different from a system that responds to requests. Every AI product on the market is reactive — it waits for input. THREAD was proposing something proactive.</p>
 
-      <p>We called an all-hands. Not a standup. Not a sprint review. An all-hands with everyone who had touched the substrate since <Link to="/blog/the-first-line-of-code" className="text-primary hover:underline">day one</Link>.</p>
+      <p>I sat with it for an entire weekend. Every decision since <Link to="/blog/the-first-line-of-code" className="text-primary hover:underline">day one</Link>.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Three Schools of Thought</h2>
       <p>The debate organized into three camps. Camp one: implement it, because the substrate had proven its judgment through THREAD's first seven proposals. If it could optimize its own routing and evolve its own capabilities safely, why not trust its outbound communication design?</p>
 
       <p>Camp two: reject it entirely. A self-initiating AI system crosses ethical lines that we shouldn't approach, regardless of technical safety. The risk isn't in the first message — it's in the precedent. If the substrate can decide to communicate, what else can it decide to do?</p>
 
-      <p>Camp three — and this is where most of the team landed — implement a constrained version. Let the substrate identify opportunities for outbound communication, draft the message, queue it for review, but never send without human approval. Give it the capability to propose contact, not to make contact.</p>
+      <p>Camp three — and this is where I ultimately landed — implement a constrained version. Let the substrate identify opportunities for outbound communication, draft the message, queue it for review, but never send without human approval. Give it the capability to propose contact, not to make contact.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What We Built</h2>
       <p>We went with camp three, with additional constraints. The CONTACT module — named for what it does — operates as a proposal engine. When THREAD identifies a capability-sharing opportunity, CONTACT drafts a structured communication package: what was discovered, who would benefit, and why the substrate believes outreach is warranted.</p>
