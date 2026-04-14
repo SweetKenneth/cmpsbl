@@ -15,6 +15,7 @@ import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } fro
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
 import { labelPrimitive, labelDescription } from '@/lib/export/primitive-labels';
 import { debugMode } from '@/lib/debug-mode';
+import { log } from '@/lib/system/log';
 
 // Mobile-first evolution log formatter (organism-focused, no implementation details)
 function formatEvolutionLogForTerminal(): string {
@@ -1214,7 +1215,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 
   // ═══ BRIDGE-FIRST: Route through pf-substrate via registry handlers ═══
   // All module commands AND bare cognitive aliases go through the living substrate.
-  const COGNITIVE_ALIASES = ['remember', 'recall', 'stream', 'discover', 'think', 'reflect', 'dream', 'synthesize'];
+  const COGNITIVE_ALIASES = ['remember', 'recall', 'stream', 'discover', 'think', 'reflect', 'dream', 'synthesize', 'whoami'];
   if (base.includes('.') || COGNITIVE_ALIASES.includes(base)) {
     try {
       const { getHandler, hasHandler } = await import('@/lib/terminal/validate-registry');
@@ -1320,7 +1321,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
     } catch (bridgeErr) {
       // Bridge error — fall through to legacy chain
       if (debugMode.isEnabled()) {
-        console.warn(`[bridge-first] Error for ${base}:`, bridgeErr);
+        log.warn('terminal', `[bridge-first] Error for ${base}`, { error: bridgeErr instanceof Error ? bridgeErr.message : 'Unknown' });
       }
     }
   }
@@ -5548,7 +5549,12 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} memor
         const handler = getHandler(base);
         
         if (handler) {
-          const handlerResult = await handler();
+          const structuredInfraArgs: Record<string, unknown> = {};
+          args.forEach((arg, i) => { structuredInfraArgs[`arg${i}`] = arg; });
+          if (args[0]) structuredInfraArgs.input = args[0];
+          structuredInfraArgs._args = args;
+          structuredInfraArgs._raw = command;
+          const handlerResult = await handler(structuredInfraArgs);
           const data = handlerResult as Record<string, unknown>;
           
           // If handler returned a formatted output, use it directly
