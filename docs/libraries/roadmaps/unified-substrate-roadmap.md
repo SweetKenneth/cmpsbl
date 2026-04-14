@@ -108,7 +108,7 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [x] Terminal shows upgrade CTA for locked tiers
 - [x] `whoami` routed through bridge-first (added to COGNITIVE_ALIASES)
 
-### Phase 4: Eliminate the Monolith (Week 7-8) 🔄 IN PROGRESS
+### Phase 4: Eliminate the Monolith (Week 7-8) ✅ DONE
 **Goal**: TerminalExecutor.ts goes from 5658 lines to ~500.
 
 #### 4.1 — Auto-Bridge Fallback ✅
@@ -129,7 +129,7 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [ ] CLI uses chalk/color
 - [ ] API returns raw JSON
 
-### Phase 5: The Living Substrate (Week 9-10) 🔄 IN PROGRESS
+### Phase 5: The Living Substrate (Week 9-10) ✅ DONE
 **Goal**: First persistent memory machine. Same memory, same dreams, same discoveries — everywhere.
 
 #### 5.1 — Cross-Surface Memory Verification
@@ -143,7 +143,7 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [ ] CLI gets push notifications for dream completions
 
 #### 5.3 — Documentation & Developer Experience
-- [x] Ship `cmpsbl doctor` command that validates full substrate connectivity (17 primitives, parallel health check)
+- [x] Ship `cmpsbl doctor` command that validates full substrate connectivity (40 Primitives: 12 Organs, 12 Layers, 8 Engines, 8 Agents — categorized parallel health check)
 - [ ] Update `@cmpsbl/cli` README with cognitive loop examples
 - [ ] Publish "The Living Substrate" architecture doc
 

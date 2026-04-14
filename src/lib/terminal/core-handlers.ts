@@ -123,14 +123,26 @@ ${lines.join('\n')}
   registerHandler('dream', bridge('dream', 'cycle'));
   registerHandler('synthesize', bridge('brain', 'synthesize'));
 
-  // ═══ DOCTOR — Full substrate connectivity validator (Phase 5) ═══
+  // ═══ DOCTOR — Full 40-Primitive substrate connectivity validator (Phase 5) ═══
   registerHandler('doctor', async () => {
-    const modules = [
-      'core', 'brain', 'dream', 'decode', 'defense', 'nexus',
-      'vision', 'cortex', 'evolution', 'governance', 'economy',
-      'inclusive', 'integration', 'intent', 'immunity', 'encode',
-      'sandbox',
+    // 12 Organs + 12 Layers + 8 Engines + 8 Agents = 40 Primitives
+    const ORGANS = [
+      'core', 'system', 'brain', 'memory', 'dream', 'nerve',
+      'identity', 'relay', 'audit', 'ripple', 'access', 'governance',
     ];
+    const LAYERS = [
+      'defense', 'immunity', 'intent', 'atlas', 'engineer', 'decode',
+      'encode', 'vision', 'economy', 'sandbox', 'inclusive', 'medic',
+    ];
+    const ENGINES = [
+      'cortex', 'nexus', 'evolution', 'conscience', 'sovereign',
+      'shadow', 'reflex', 'compass',
+    ];
+    const AGENTS = [
+      'beacon', 'watchtower', 'integration', 'dispatch',
+      'marshal', 'pioneer', 'herald', 'overseer',
+    ];
+    const modules = [...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS];
 
     const results: Array<{ module: string; ok: boolean; latencyMs: number; error?: string }> = [];
     const startAll = Date.now();
@@ -158,11 +170,24 @@ ${lines.join('\n')}
     const totalTime = Date.now() - startAll;
     const allGood = healthy === total;
 
-    const lines = results.map(r => {
-      const icon = r.ok ? '✅' : '❌';
-      const lat = `${r.latencyMs}ms`.padStart(6);
-      return `│  ${icon} ${r.module.padEnd(14)} ${lat}${r.error ? ` — ${r.error}` : ''}`;
-    });
+    // Build categorized output
+    const formatSection = (label: string, ids: string[]) => {
+      const sectionResults = ids.map(id => results.find(r => r.module === id)).filter(Boolean) as typeof results;
+      const sectionHealthy = sectionResults.filter(r => r.ok).length;
+      const lines = sectionResults.map(r => {
+        const icon = r.ok ? '✅' : '❌';
+        const lat = `${r.latencyMs}ms`.padStart(6);
+        return `│  │  ${icon} ${r.module.toUpperCase().padEnd(14)} ${lat}${r.error ? ` — ${r.error}` : ''}`;
+      });
+      return `│  ┌─ ${label} (${sectionHealthy}/${ids.length}) ${'─'.repeat(Math.max(1, 40 - label.length))}\n${lines.join('\n')}\n│  └${'─'.repeat(50)}`;
+    };
+
+    const sections = [
+      formatSection('ORGANS', ORGANS),
+      formatSection('LAYERS', LAYERS),
+      formatSection('ENGINES', ENGINES),
+      formatSection('AGENTS', AGENTS),
+    ];
 
     return {
       success: true,
@@ -170,19 +195,17 @@ ${lines.join('\n')}
 ┌─ SUBSTRATE DOCTOR ───────────────────────────────────────────
 │
 │  Status:       ${allGood ? '✅ ALL SYSTEMS NOMINAL' : `⚠️  ${healthy}/${total} HEALTHY`}
-│  Primitives:   ${healthy}/${total} responding
+│  Primitives:   ${healthy}/${total} responding (40-Primitive architecture)
 │  Avg Latency:  ${avgLatency}ms
 │  Total Check:  ${totalTime}ms
 │
-│  ┌─ PRIMITIVE STATUS ──────────────────────────────────────
-${lines.join('\n')}
-│  └─────────────────────────────────────────────────────────
+${sections.join('\n│\n')}
 │
 │  Bridge:       pf-substrate (auto-bridge active)
 │  Realtime:     brain_memories, cascade_dreams
 │  Surfaces:     Web Terminal · CLI · API · Website
 │
-│  The substrate is ${allGood ? 'alive and unified' : 'partially degraded'}.
+│  The substrate is ${allGood ? 'alive and unified across all 40 Primitives' : 'partially degraded'}.
 │  CMPSBL® — where dreams come to adapt
 │
 └──────────────────────────────────────────────────────────────`,
