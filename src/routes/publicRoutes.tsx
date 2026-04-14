@@ -140,6 +140,7 @@ export const publicRoutes = (
     <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/mana" element={<ManaPage />} />
+    <Route path="/pipeline" element={<PipelineRoadmap />} />
     <Route path="/shield" element={<ShieldPage />} />
     <Route path="/mana/proof" element={<ManaProofPage />} />
     <Route path="/mana/lab" element={<ManaLabPage />} />
