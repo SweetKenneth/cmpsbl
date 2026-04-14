@@ -2354,7 +2354,7 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'PHP'),
-    constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
+    constDecl: (name, val) => `define('${name.toUpperCase()}', ${jsonToPhpArray(val)});`,
     transformGuard: phpGuard,
     fileExtension: '.php',
   },
