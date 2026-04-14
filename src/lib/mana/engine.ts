@@ -858,19 +858,27 @@ function wrapWithForensicRecorder(
 function wrapWithOutputFilter(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
-  return function manaOutputFilter(this: unknown, ...args: unknown[]) {
-    point.invocations++;
-    const result = originalFn.apply(this, args);
-    if (typeof result === 'string') {
-      const filtered = result.replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, '****-****-****-****');
-      if (filtered !== result) {
+  const filterString = (val: unknown): unknown => {
+    if (typeof val === 'string') {
+      const filtered = val.replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, '****-****-****-****');
+      if (filtered !== val) {
         point.observed++;
         emitTelemetry('output_filter', functionName, 'observed', { filtered: true });
       }
       return filtered;
     }
-    emitTelemetry('output_filter', functionName, 'invoked');
-    return result;
+    return val;
+  };
+
+  return function manaOutputFilter(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+
+    if (isThenable(result)) {
+      return result.then((resolved) => filterString(resolved));
+    }
+
+    return filterString(result);
   };
 }
 
@@ -1063,11 +1071,9 @@ function wrapWithNexusCostGate(
 function wrapWithBrainConfidenceGate(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
-  return function manaBrainConfidence(this: unknown, ...args: unknown[]) {
-    point.invocations++;
-    const result = originalFn.apply(this, args);
-    if (result && typeof result === 'object' && 'confidence' in (result as Record<string, unknown>)) {
-      const conf = (result as Record<string, unknown>).confidence;
+  const checkConfidence = (val: unknown): void => {
+    if (val && typeof val === 'object' && 'confidence' in (val as Record<string, unknown>)) {
+      const conf = (val as Record<string, unknown>).confidence;
       if (typeof conf === 'number' && conf < 0.5) {
         point.observed++;
         emitTelemetry('brain_confidence_gate', functionName, 'observed', {
@@ -1075,8 +1081,17 @@ function wrapWithBrainConfidenceGate(
         });
       }
     }
-    emitTelemetry('brain_confidence_gate', functionName, 'invoked');
-    return result;
+  };
+
+  return function manaBrainConfidence(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+
+    return withAsyncSafety(
+      result,
+      (resolved) => { checkConfidence(resolved); },
+      () => { /* error path — no confidence to check */ },
+    );
   };
 }
 
@@ -1452,7 +1467,8 @@ export function getTelemetrySummary(): Record<string, { invocations: number; blo
   const summary: Record<string, { invocations: number; blocked: number; observed: number }> = {};
 
   for (const point of attachmentPoints.values()) {
-    summary[point.functionName] = {
+    const key = `${point.functionName}:${point.capability}`;
+    summary[key] = {
       invocations: point.invocations,
       blocked: point.blocked,
       observed: point.observed,
