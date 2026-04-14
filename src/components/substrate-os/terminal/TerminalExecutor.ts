@@ -1241,6 +1241,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           { registerExpansionHandlers },
           { registerSystemAuditHandlers },
           { registerInfraHandlers },
+          { registerVerificationHandlers },
         ] = await Promise.all([
           import('@/lib/terminal/core-handlers'),
           import('@/lib/terminal/spine-handlers'),
@@ -1260,6 +1261,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           import('@/lib/terminal/expansion-handlers'),
           import('@/lib/terminal/system-audit-handlers'),
           import('@/lib/terminal/infra-handlers'),
+          import('@/lib/terminal/verification-handlers'),
         ]);
         registerCoreHandlers();
         registerSpineHandlers();
@@ -1279,6 +1281,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         registerExpansionHandlers();
         registerSystemAuditHandlers();
         registerInfraHandlers();
+        registerVerificationHandlers();
       }
 
       // Build structured args from positional arguments
