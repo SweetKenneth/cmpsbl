@@ -4,7 +4,7 @@
 **Version**: 1.0.0  
 **Date**: 2026-04-14  
 **Author**: Kenneth E. Sweet Jr.  
-**Status**: IN PROGRESS (Phases 1–5 core complete, 4.2/5.1/5.3 remaining)  
+**Status**: IN PROGRESS (Phases 1–5 core complete, 4.3 done, 5.1/5.3 remaining)  
 
 ---
 
@@ -122,12 +122,12 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [x] Keep local-only blocks: decode.personality, debug, system.modules/capabilities, decode.inbox, mclm, clm, seba, autoblog, engine, infra, patch, matrix
 - [x] Removed unused substrate client imports (defense, nexus, vision, dream, etc.)
 
-#### 4.3 — Unified Output Formatting
-- [ ] pf-substrate returns structured data
-- [ ] Each surface (Web Terminal, CLI, API) formats it for its own display
-- [ ] Terminal uses box-drawing characters
-- [ ] CLI uses chalk/color
-- [ ] API returns raw JSON
+#### 4.3 — Unified Output Formatting ✅
+- [x] pf-substrate returns structured data
+- [x] `formatForTerminal()` renders box-drawing characters with health bars, diagnostics sections
+- [x] `formatForJson()` passthrough for API surface
+- [x] Auto-detect response shape: status, list, error, generic
+- [x] CLI uses its own chalk formatter (deferred to @cmpsbl/cli package)
 
 ### Phase 5: The Living Substrate (Week 9-10) ✅ DONE
 **Goal**: First persistent memory machine. Same memory, same dreams, same discoveries — everywhere.

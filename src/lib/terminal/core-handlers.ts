@@ -49,12 +49,14 @@ export function registerCoreHandlers(): void {
     const budget = econData?.budget || 'unknown';
 
     // Determine activated engines based on tier
+    // 5-tier model: Builder (free) · Studio ($29) · Creator ($49) · Architect ($79) · Enterprise ($999+)
     const tierEngines: Record<string, string[]> = {
       free: ['FAILSAFE', 'BEACON', 'PRIMITIVE'],
+      builder: ['FAILSAFE', 'BEACON', 'PRIMITIVE'],
       studio: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH'],
       creator: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN'],
       architect: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN', 'NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'],
-      governor: ['ALL — Full system authority'],
+      enterprise: ['ALL — Full substrate authority'],
     };
     const activated = tierEngines[tier as string] || tierEngines.free;
 
@@ -87,11 +89,13 @@ export function registerCoreHandlers(): void {
     const diagnostics = econ?.diagnostics as Record<string, unknown> | undefined;
     const tier = diagnostics?.tier || 'free';
 
+    // 5-tier model: Builder (free) · Studio ($29) · Creator ($49) · Architect ($79) · Enterprise ($999+)
     const tiers = [
-      { name: 'FREE', engines: ['FAILSAFE', 'BEACON', 'PRIMITIVE'], unlocked: true },
-      { name: 'STUDIO ($29)', engines: ['AUTOMATON', 'WRAITH'], unlocked: ['studio', 'creator', 'architect', 'governor'].includes(tier as string) },
-      { name: 'CREATOR ($49)', engines: ['CORTEX', 'OBSIDIAN'], unlocked: ['creator', 'architect', 'governor'].includes(tier as string) },
-      { name: 'ARCHITECT ($79)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'governor'].includes(tier as string) },
+      { name: 'BUILDER (FREE)', engines: ['FAILSAFE', 'BEACON', 'PRIMITIVE'], unlocked: true },
+      { name: 'STUDIO ($29)', engines: ['AUTOMATON', 'WRAITH'], unlocked: ['studio', 'creator', 'architect', 'enterprise'].includes(tier as string) },
+      { name: 'CREATOR ($49)', engines: ['CORTEX', 'OBSIDIAN'], unlocked: ['creator', 'architect', 'enterprise'].includes(tier as string) },
+      { name: 'ARCHITECT ($79)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'enterprise'].includes(tier as string) },
+      { name: 'ENTERPRISE ($999+)', engines: ['ALL — Full substrate authority'], unlocked: ['enterprise'].includes(tier as string) },
     ];
 
     const lines = tiers.map(t => {
