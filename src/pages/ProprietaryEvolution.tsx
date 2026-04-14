@@ -60,9 +60,9 @@ export default function ProprietaryEvolution() {
     const run = createRun(user.id);
     acceptInput(
       run,
-      analysis.candidateNode || 'UPLOADED',
+      analysis.name || 'UPLOADED',
       analysis.language || 'typescript',
-      analysis.files?.map(f => ({ name: f.name, content: f.content || '' })) || [],
+      analysis.ingestedFiles?.map(f => ({ name: f.name, content: f.content || '' })) || [],
     );
     runRef.current = run;
     setStep(1);
