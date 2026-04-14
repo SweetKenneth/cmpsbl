@@ -127,48 +127,14 @@ const CONSTANT_OBFUSCATION: [RegExp, string][] = [
  */
 function getObfuscatedConstants(lang: string): string {
   const c = getCommentPrefix(lang);
+  const adapter = getAdapter(lang);
   
-  if (lang === 'typescript' || lang === 'javascript') {
-    return `${c} Sealed scoring parameters — DO NOT MODIFY
-const _W = [0x1E, 0x1E, 0x14, 0x14].map(v => v / 100);
-const _T = [0x5C, 0x50, 0x41, 0x2D];
-const _MH = [0x18, 0x07, 0x5A, 0x5A];
-`;
+  // Route through the adapter's obfuscatedConstants if available
+  if (adapter.obfuscatedConstants) {
+    return adapter.obfuscatedConstants();
   }
   
-  if (lang === 'python') {
-    return `# Sealed scoring parameters — DO NOT MODIFY
-_W = [v / 100 for v in [0x1E, 0x1E, 0x14, 0x14]]
-_T = [0x5C, 0x50, 0x41, 0x2D]
-`;
-  }
-  
-  if (lang === 'php') {
-    return `// Sealed scoring parameters — DO NOT MODIFY
-define('CMPSBL_W', array_map(fn($v) => $v / 100, [0x1E, 0x1E, 0x14, 0x14]));
-define('CMPSBL_T', [0x5C, 0x50, 0x41, 0x2D]);
-`;
-  }
-  
-  if (lang === 'rust') {
-    return `// Sealed scoring parameters — DO NOT MODIFY
-const _W: [f64; 4] = [0x1Eu32 as f64 / 100.0, 0x1Eu32 as f64 / 100.0, 0x14u32 as f64 / 100.0, 0x14u32 as f64 / 100.0];
-const _T: [u32; 4] = [0x5C, 0x50, 0x41, 0x2D];
-`;
-  }
-  
-  if (lang === 'go') {
-    return `// Sealed scoring parameters — DO NOT MODIFY
-var _W = [4]float64{float64(0x1E) / 100, float64(0x1E) / 100, float64(0x14) / 100, float64(0x14) / 100}
-var _T = [4]int{0x5C, 0x50, 0x41, 0x2D}
-`;
-  }
-  
-  if (lang === 'java' || lang === 'kotlin' || lang === 'csharp' || lang === 'swift' || lang === 'scala' || lang === 'dart') {
-    return `${c} Sealed scoring parameters — DO NOT MODIFY
-`;
-  }
-  
+  // Fallback for languages without adapter coverage
   return `${c} Sealed scoring parameters (built-in)\n`;
 }
 
