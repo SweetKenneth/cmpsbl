@@ -888,15 +888,18 @@ function generateRust(name: string, spec: PrimitiveSpec): string {
     const [k, v] = f.split(':');
     const ty = v === 'map' ? 'HashMap<String, String>' : v === 'list' ? 'Vec<String>' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'String' : 'i64';
     const def = v === 'map' ? 'HashMap::new()' : v === 'list' ? 'Vec::new()' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `"${v}".to_string()` : v;
-    return { k, ty, def };
+    return { k, ty, def, v };
   });
   const structFields = fields.map(f => `    pub ${f.k}: ${f.ty},`).join('\n');
   const defaultFields = fields.map(f => `            ${f.k}: ${f.def},`).join('\n');
-  const methods = spec.methods.map(m =>
-    `    /// ${m.description}\n    pub fn ${m.name}(&mut self${m.args ? ', ' + m.args.split(', ').map(a => `${a}: &str`).join(', ') : ''}) -> &mut Self {\n        self\n    }`
-  ).join('\n\n');
-  const useStd = fields.some(f => f.ty === 'HashMap<String, String>') ? 'use std::collections::HashMap;\n\n' : '';
-  return `${useStd}/// CMPSBL® Convex Core™ — ${spec.description}
+  const methods = spec.methods.map(m => {
+    const body = generateRustMethodBody(name, m, fields);
+    return `    /// ${m.description}\n    pub fn ${m.name}(&mut self${m.args ? ', ' + m.args.split(', ').map(a => `${a}: &str`).join(', ') : ''})${body}`;
+  }).join('\n\n');
+  const useStd = fields.some(f => f.ty === 'HashMap<String, String>') ? 'use std::collections::HashMap;\n' : '';
+  const useTime = (name === 'CircuitBreaker' || name === 'FailoverManager') ? 'use std::time::{Instant, Duration};\n' : '';
+  return `${useStd}${useTime}
+/// CMPSBL® Convex Core™ — ${spec.description}
 pub struct ${name} {
 ${structFields}
 }
