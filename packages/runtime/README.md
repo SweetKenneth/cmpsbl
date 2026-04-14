@@ -1,4 +1,7 @@
 # @cmpsbl/runtime
+> **CMPSBL®** — Governed Cognitive Infrastructure · [cmpsbl.com](https://cmpsbl.com)
+> Protected under U.S. Patent App. No. 64/029,678 & 64/031,637 · PromptFluid™
+
 
 > CMPSBL® Convex Core™ Processing Layer — CJPI scoring, manifest parsing, pipeline execution, First Contact ceremony, and full 131-primitive catalog.
 
@@ -93,3 +96,12 @@ console.log(score.tier); // 'Mythic'
 ## License
 
 Apache-2.0 — © CMPSBL®
+
+---
+
+<p align="center">
+  <strong>CMPSBL®</strong> · Governed Cognitive Infrastructure<br>
+  U.S. Patent App. No. 64/029,678 (Ascension™) · 64/031,637 (Mana™)<br>
+  <a href="https://cmpsbl.com">cmpsbl.com</a> · <code>npm i @cmpsbl/cli</code><br>
+  © 2025–2026 CMPSBL® · PromptFluid™
+</p>
