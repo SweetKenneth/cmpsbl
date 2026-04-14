@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/cli",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "CMPSBL\u00ae CLI \u2014 The cognitive substrate in your terminal. One install, zero setup.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,7 +28,7 @@
   "license": "Apache-2.0",
   "homepage": "https://cmpsbl.com",
   "dependencies": {
-    "@cmpsbl/runtime": "^3.0.0"
+    "@cmpsbl/runtime": "^4.0.0"
   },
   "bundledDependencies": [
     "@cmpsbl/runtime"
