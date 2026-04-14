@@ -858,19 +858,27 @@ function wrapWithForensicRecorder(
 function wrapWithOutputFilter(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
-  return function manaOutputFilter(this: unknown, ...args: unknown[]) {
-    point.invocations++;
-    const result = originalFn.apply(this, args);
-    if (typeof result === 'string') {
-      const filtered = result.replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, '****-****-****-****');
-      if (filtered !== result) {
+  const filterString = (val: unknown): unknown => {
+    if (typeof val === 'string') {
+      const filtered = val.replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, '****-****-****-****');
+      if (filtered !== val) {
         point.observed++;
         emitTelemetry('output_filter', functionName, 'observed', { filtered: true });
       }
       return filtered;
     }
-    emitTelemetry('output_filter', functionName, 'invoked');
-    return result;
+    return val;
+  };
+
+  return function manaOutputFilter(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+
+    if (isThenable(result)) {
+      return result.then((resolved) => filterString(resolved));
+    }
+
+    return filterString(result);
   };
 }
 
