@@ -93,7 +93,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/modules': {
     title: 'Substrate Primitives — Layered Architecture | CMPSBL',
-    description: 'Browse Organs, Layers, Engines, and Agents organized by category. Each primitive is independently deployable and composable.',
+    description: 'Browse Organs, Layers, Engines, and Agents organized by category. Each primitive is independently deployable, composable, and production-tested across governed workloads.',
     ogTitle: 'Substrate Primitives — Layered Architecture',
     ogDescription: 'Independently deployable cognitive primitives by category.',
     ogImage: OG_FEATURE,
@@ -225,7 +225,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/gaming': {
     title: 'Gaming AI — Cognitive NPC Engine | CMPSBL',
-    description: 'Power game characters with persistent memory and adaptive behavior. Built for Unreal, Unity, and custom game engines.',
+    description: 'Power game characters with persistent memory, adaptive behavior, and dream-cycle learning. Built for Unreal, Unity, and custom game engines with SDK integration.',
     ogTitle: 'Gaming AI — Cognitive NPC Engine',
     ogDescription: 'Persistent-memory NPCs with adaptive behavior for game engines.',
     ogImage: OG_GAMING,
@@ -317,7 +317,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/changelog': {
     title: 'Changelog — Release History | CMPSBL',
-    description: 'Track every substrate release: new primitives, capability additions, security patches, and architectural refinements over time.',
+    description: 'Track every substrate release: new primitives, capability additions, security patches, and architectural refinements. Full version history with migration guides included.',
     ogTitle: 'Changelog — Release History',
     ogDescription: 'Complete release history for the cognitive substrate.',
     ogImage: OG_DOCS,
@@ -365,7 +365,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/substrate/licensing': {
     title: 'Enterprise Licensing & OEM | CMPSBL',
-    description: 'Volume licensing, OEM embedding, and white-label agreements for organizations deploying the substrate at infrastructure scale.',
+    description: 'Volume licensing, OEM embedding, and white-label agreements for organizations deploying the substrate at infrastructure scale. Custom SLAs and compliance packages available.',
     ogTitle: 'Enterprise Licensing & OEM',
     ogDescription: 'Volume licensing, OEM embedding, and white-label options.',
     ogImage: OG_PRICING,
@@ -376,7 +376,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/intelligence': {
     title: 'Substrate Intelligence — Validation | CMPSBL',
-    description: 'Architectural validation dashboard showing interaction graphs, capability coverage metrics, and infrastructure proof points.',
+    description: 'Architectural validation dashboard showing interaction graphs, capability coverage metrics, and infrastructure proof points. Verify substrate integrity across all categories.',
     ogTitle: 'Substrate Intelligence — Validation',
     ogDescription: 'Interaction graphs and capability coverage validation.',
     ogImage: OG_FEATURE,
@@ -738,7 +738,7 @@ export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
   '/auth': {
     title: 'Sign In | CMPSBL',
-    description: 'Sign in to access your substrate dashboard, manage cognitive agents, and monitor autonomous discovery workloads.',
+    description: 'Sign in to access your substrate dashboard, manage cognitive agents, and monitor autonomous discovery workloads. Secure authentication with MFA support.',
     ogTitle: 'Sign In — CMPSBL',
     ogDescription: 'Access your CMPSBL substrate dashboard.',
     ogImage: OG_HOME,
@@ -774,7 +774,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/clear-cache': {
     title: 'Clear Cache | CMPSBL',
-    description: 'Clear local cache and reset substrate state for troubleshooting.',
+    description: 'Clear local cache and reset substrate state for troubleshooting. Useful when debugging category health, stale telemetry, or connection issues with the cognitive substrate.',
     ogTitle: 'Clear Cache — CMPSBL',
     ogDescription: 'Reset local cache and substrate state.',
     ogImage: OG_HOME,
@@ -1311,7 +1311,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/blog/the-bot-wars': {
     title: 'The Bot Wars — Fighting AI-Powered Attacks',
-    description: 'By August 2025, AI-powered bots attacked the infrastructure daily. What I learned fighting them and how DEFENSE evolved.',
+    description: 'By August 2025, AI-powered bots attacked the infrastructure daily. What I learned fighting them, how DEFENSE evolved, and the behavioral patterns that stopped them.',
     ogTitle: 'The Bot Wars — CMPSBL',
     ogDescription: 'Lessons from fighting daily AI-powered bot attacks.',
     ogImage: OG_BLOG,
@@ -1344,7 +1344,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/blog/the-governance-question': {
     title: 'The Governance Question — AUDIT & IDENTITY',
-    description: 'AI governance as runtime property — cryptographic proof that guardrails were active, not whitepaper promises.',
+    description: 'AI governance as runtime property — cryptographic proof that guardrails were active, not whitepaper promises. AUDIT and IDENTITY deliver verifiable compliance at every layer.',
     ogTitle: 'The Governance Question — AUDIT',
     ogDescription: 'Runtime governance with cryptographic audit trails.',
     ogImage: OG_BLOG,
@@ -1476,7 +1476,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/blog/from-thought-to-artifact': {
     title: 'From Thought to Artifact — The FORGE Node',
-    description: 'FORGE turns substrate processing into downloadable, deployable software artifacts — scored, versioned, and ready to ship.',
+    description: 'FORGE turns substrate processing into downloadable, deployable software artifacts — scored, versioned, and ready to ship. Every artifact is cryptographically receipted.',
     ogTitle: 'From Thought to Artifact — FORGE',
     ogDescription: 'Turning cognitive processing into deployable software.',
     ogImage: OG_BLOG,
@@ -1597,7 +1597,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/blog/the-scanner': {
     title: 'The Scanner — Automated Security & Accessibility',
-    description: 'The Scanner runs automated security and accessibility audits and generates actionable fix reports. Free for basic scans.',
+    description: 'The Scanner runs automated security and accessibility audits and generates actionable fix reports with severity scoring and remediation guidance. Free for basic scans.',
     ogTitle: 'The Scanner — Automated Auditing',
     ogDescription: 'Automated security and accessibility auditing with fixes.',
     ogImage: OG_BLOG,
