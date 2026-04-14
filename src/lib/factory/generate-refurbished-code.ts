@@ -2683,7 +2683,11 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 
 /** Resolve the adapter for a detected language, falling back to TypeScript */
 function getAdapter(language: string): LanguageAdapter {
-  return ADAPTERS[language] ?? ADAPTERS['TypeScript'];
+  // Try exact match first, then case-insensitive lookup (handles 'python' → 'Python', etc.)
+  if (ADAPTERS[language]) return ADAPTERS[language];
+  const lower = language.toLowerCase();
+  const key = Object.keys(ADAPTERS).find(k => k.toLowerCase() === lower);
+  return key ? ADAPTERS[key] : ADAPTERS['TypeScript'];
 }
 
 /** Extract module path and symbol names from a TS import string */
