@@ -37,10 +37,10 @@ import { Engine } from './lib/cmpsbl-engine-sdk';
 const engine = new Engine('your-api-key');
 
 // Call any engine by slug:
-const result = await engine.call('godmind', 'reason', 'Analyze this market opportunity');
+const result = await engine.call('cortex', 'reason', 'Analyze this market opportunity');
 
 // Or use typed helpers for META engines:
-const r = await engine.godmind.reason('Strategic implications of vertical AI');
+const r = await engine.cortex.reason('Strategic implications of vertical AI');
 
 console.log(r.result);      // Final answer
 console.log(r.confidence);   // 0-1 score
@@ -57,7 +57,7 @@ The universal method — works with all 54 engines.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `slug` | `string` | Engine name (e.g., `'godmind'`, `'sentinel'`, `'cortex'`) |
+| `slug` | `string` | Engine name (e.g., `'cortex'`, `'sentinel'`, `'cortex'`) |
 | `action` | `string` | Engine-specific action (e.g., `'reason'`, `'scan'`, `'predict'`) |
 | `input` | `string` | The primary input text |
 | `context` | `object?` | Optional context passed to the engine pipeline |
@@ -82,7 +82,7 @@ The universal method — works with all 54 engines.
   confidence: number;     // 0-1 confidence score
   pipeline: {
     stages: [{
-      stage: string;      // Stage name (e.g., 'PANDORA')
+      stage: string;      // Stage name (e.g., 'REASON')
       output: string;     // Stage output
       confidence: number; // Stage confidence
       tokens: number;     // Tokens used
@@ -105,7 +105,7 @@ import { Engine, EngineAPIError } from './lib/cmpsbl-engine-sdk';
 const engine = new Engine('your-api-key');
 
 try {
-  const result = await engine.call('godmind', 'reason', 'Your input here');
+  const result = await engine.call('cortex', 'reason', 'Your input here');
   console.log(result.result);
 } catch (err) {
   if (err instanceof EngineAPIError) {
@@ -127,10 +127,10 @@ try {
 
 | Engine | Actions | Pipeline |
 |--------|---------|----------|
-| **GODMIND** | reason, analyze, plan, evaluate | PANDORA → AXIOM → SYNAPSE → ECHO |
-| **FORTRESS** | defend, audit, harden, assess | CERBERUS → WARDEN → CRUCIBLE → HYDRA |
-| **SINGULARITY** | predict, fuse, optimize, synthesize | OMNISCIENT → VORTEX → DYNAMO → PROGENITOR |
-| **ETERNUS** | govern, audit, comply, automate | SOVEREIGN → SERAPH → MONOLITH → GOLEM |
+| **CORTEX** | reason, analyze, plan, evaluate | REASON → AXIOM → SYNAPSE → ECHO |
+| **DEFENSE** | defend, audit, harden, assess | SHIELD → GUARD → HARDEN → ASSESS |
+| **ORACLE** | predict, fuse, optimize, synthesize | PREDICT → FUSE → OPTIMIZE → SYNTHESIZE |
+| **GOVERNANCE** | govern, audit, comply, automate | GOVERN → AUDIT → COMPLY → AUTOMATE |
 
 ### APEX Engines ($999 · 2-stage pipelines)
 
@@ -141,36 +141,36 @@ try {
 | NEXUS | route, optimize, balance, evaluate |
 | PRISM | search, extract, map, query |
 | GENESIS | triage, recover, analyze, prevent |
-| SOVEREIGN | govern, audit, comply, gate |
+| GOVERN | govern, audit, comply, gate |
 | COLOSSUS | orchestrate, scale, optimize, command |
 | HARBINGER | predict, detect, contain, neutralize |
 | PROMETHEUS | evolve, mutate, validate, improve |
-| OMNISCIENT | predict, forecast, analyze, simulate |
+| PREDICT | predict, forecast, analyze, simulate |
 | LEVIATHAN | remember, recall, synchronize, predict |
 | CHIMERA | adapt, personalize, detect, reshape |
 | TITAN | stabilize, consensus, optimize, regulate |
 | WRAITH | test, mutate, shadow, rollback |
 | APEX ONE | decide, explain, forecast, optimize |
-| PANDORA | hypothesize, plan, explore, bootstrap |
-| HYDRA | heal, isolate, fallback, repair |
+| REASON | hypothesize, plan, explore, bootstrap |
+| ASSESS | heal, isolate, fallback, repair |
 | SPECTER | stealth, trap, unmask, verify |
 | ATLAS | weave, search, compress, translate |
-| CERBERUS | guard, sanitize, validate, veto |
+| SHIELD | guard, sanitize, validate, veto |
 | OBELISK | audit, verify, attest, replay |
 | PHOENIX | triage, transplant, diagnose, predict |
 | NEXUS PRIME | consensus, route, optimize, prioritize |
 | CHRONOS | reason, trace, simulate, precompute |
-| GOLEM | compose, resolve, decompose, schedule |
+| AUTOMATE | compose, resolve, decompose, schedule |
 | AXIOM | prove, solve, deduce, infer |
-| DYNAMO | optimize, budget, arbitrage, detect |
-| WARDEN | enforce, isolate, propagate, arbitrate |
+| OPTIMIZE | optimize, budget, arbitrage, detect |
+| GUARD | enforce, isolate, propagate, arbitrate |
 | SYNAPSE | relay, bridge, thread, route |
-| CRUCIBLE | chaos, mutate, simulate, stress |
+| HARDEN | chaos, mutate, simulate, stress |
 | ECHO | track, learn, calibrate, correct |
-| VORTEX | fuse, correlate, synthesize, denoise |
-| MONOLITH | checkpoint, migrate, synchronize, compact |
-| SERAPH | evaluate, detect, audit, align |
-| PROGENITOR | genesis, evolve, harden, forge |
+| FUSE | fuse, correlate, synthesize, denoise |
+| COMPLY | checkpoint, migrate, synchronize, compact |
+| AUDIT | evaluate, detect, audit, align |
+| SYNTHESIZE | genesis, evolve, harden, forge |
 
 ### ELITE Engines ($599 · 2-stage pipelines)
 
@@ -203,23 +203,23 @@ try {
 META engines have typed proxy objects with autocomplete:
 
 ```typescript
-// GODMIND
-await engine.godmind.reason('...');
-await engine.godmind.analyze('...');
-await engine.godmind.hypothesize('...');  // PANDORA stage only
-await engine.godmind.deepReason('...');    // Full pipeline, deep mode
+// CORTEX
+await engine.cortex.reason('...');
+await engine.cortex.analyze('...');
+await engine.cortex.hypothesize('...');  // REASON stage only
+await engine.cortex.deepReason('...');    // Full pipeline, deep mode
 
-// FORTRESS
-await engine.fortress.defend('...');
-await engine.fortress.harden('...');
+// DEFENSE
+await engine.defense.defend('...');
+await engine.defense.harden('...');
 
-// SINGULARITY
-await engine.singularity.predict('...');
-await engine.singularity.fuse('...');
+// ORACLE
+await engine.oracle.predict('...');
+await engine.oracle.fuse('...');
 
-// ETERNUS
-await engine.eternus.govern('...');
-await engine.eternus.comply('...');
+// GOVERNANCE
+await engine.governance.govern('...');
+await engine.governance.comply('...');
 ```
 
 For all other engines, use the universal `engine.call()` method.

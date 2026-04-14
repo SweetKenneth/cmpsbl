@@ -54,7 +54,7 @@ async function engineExample() {
   const engine = new Engine(process.env.CMPSBL_API_KEY!);
 
   // Typed engine call
-  const analysis = await engine.godmind.analyze('Security audit of this codebase');
+  const analysis = await engine.cortex.analyze('Security audit of this codebase');
   console.log('Analysis:', analysis.result);
 
   // Browse catalog
