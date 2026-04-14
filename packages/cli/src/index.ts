@@ -1678,11 +1678,24 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
   const s = !JSON_MODE ? spinner('Generating manifest...') : null;
   await sleep(300);
 
-  const manifest = generateManifest({ name: 'my-cmpsbl-project', modules: ['SYSTEM'], version: '1.0.0' });
+  let manifest: ReturnType<typeof generateManifest>;
   const filePath = path.resolve('cmpsbl-manifest.json');
-  fs.writeFileSync(filePath, JSON.stringify(manifest, null, 2));
 
-  s?.stop('Project initialized');
+  try {
+    manifest = generateManifest({ name: 'my-cmpsbl-project', modules: ['SYSTEM'], version: '1.0.0' });
+    fs.writeFileSync(filePath, JSON.stringify(manifest, null, 2));
+    s?.stop('Project initialized');
+  } catch (manifestErr) {
+    s?.stop('Manifest generation failed');
+    const errMsg = manifestErr instanceof Error ? manifestErr.message : String(manifestErr);
+    if (JSON_MODE) {
+      jsonOut({ error: 'init_manifest_failed', detail: errMsg });
+      return;
+    }
+    say(`  ⚠ Could not generate manifest: ${errMsg}`);
+    say(`  ↳ Ensure @cmpsbl/runtime is installed: npm install @cmpsbl/runtime@^4.1.0`);
+    return;
+  }
 
   if (JSON_MODE) {
     jsonOut({ success: true, manifest: filePath, tier: manifest.tier, cjpi: manifest.cjpi, session: session.sessionId });

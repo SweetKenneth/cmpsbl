@@ -234,7 +234,7 @@ export interface RecoverySuggestion {
 const ERROR_PATTERNS: Array<{ pattern: RegExp; recovery: RecoverySuggestion }> = [
   { pattern: /api.key|CMPSBL_API_KEY|unauthorized|401/i, recovery: { message: 'API key is missing or invalid.', fix: 'Run `cmpsbl login` or set CMPSBL_API_KEY environment variable.' } },
   { pattern: /not found|404|no such/i, recovery: { message: 'Resource not found.', fix: 'Run `cmpsbl primitives` to see available primitives, or `cmpsbl help` for commands.' } },
-  { pattern: /manifest|cmpsbl-manifest/i, recovery: { message: 'Manifest file is missing or invalid.', fix: 'Run `cmpsbl init` to create a new project manifest.' } },
+  { pattern: /cmpsbl-manifest\.json|manifest.*not found|manifest.*invalid/i, recovery: { message: 'Manifest file is missing or invalid.', fix: 'Run `cmpsbl init` to create a new project manifest.' } },
   { pattern: /timeout|ETIMEDOUT|ECONNREFUSED/i, recovery: { message: 'Connection timed out.', fix: 'Check your network, or set CMPSBL_ENDPOINT for a custom endpoint.' } },
   { pattern: /permission|forbidden|403/i, recovery: { message: 'Permission denied.', fix: 'Your API key may lack the required scope. Check `cmpsbl whoami` for details.' } },
   { pattern: /rate.limit|429|too many/i, recovery: { message: 'Rate limit reached.', fix: 'Wait a moment and retry, or upgrade your tier for higher limits.' } },
