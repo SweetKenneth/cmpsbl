@@ -2853,6 +2853,11 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
     guard: "EventBus.init({ delivery: 'exactly-once', ordering: 'causal' });\nSignalPropagator.enable({ partitionTolerant: true, retryPolicy: 'bounded' });",
     wrapper: (code) => code,
   },
+  core: {
+    imports: "import { RuntimeKernel, BaseHardening } from '@cmpsbl/runtime/core';",
+    guard: "RuntimeKernel.init({ mode: 'hardened', strictTypes: true });\nBaseHardening.apply({ nullSafety: true, boundaryChecks: true });",
+    wrapper: (code) => code,
+  },
   primitive: {
     imports: "import { RuntimeKernel, BaseHardening } from '@cmpsbl/runtime/primitive';",
     guard: "RuntimeKernel.init({ mode: 'hardened', strictTypes: true });\nBaseHardening.apply({ nullSafety: true, boundaryChecks: true });",
