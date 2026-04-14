@@ -12106,7 +12106,42 @@ async function handleDream(
       }
     }
 
-    // ═══ REFLECT: Cross-dream reflection with insights ═══
+    // ═══ DIGEST: Return recent DREAM crystallizations for CLI dream --last ═══
+    case "digest": {
+      try {
+        const limit = data.limit || 10;
+        const { data: dreams } = await supabase
+          .from("cascade_dreams")
+          .select("id, dream_text, mood, insight, dream_type, created_at")
+          .order("created_at", { ascending: false })
+          .limit(limit);
+
+        const entries = (dreams || []).map((d: any) => ({
+          insight: d.insight || d.dream_text?.substring(0, 120) || '',
+          content: d.dream_text || '',
+          pattern: d.mood || 'synthesis',
+          source: 'dream',
+          crystallized_at: d.created_at,
+          created_at: d.created_at,
+          type: d.dream_type || 'dream',
+        }));
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "digest",
+          data: { entries, digest: entries },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false, module: "dream", action: "digest",
+          error: error instanceof Error ? error.message : "Digest failed",
+        }, headers);
+      }
+    }
+
+
     case "reflect": {
       try {
         // Get recent dreams
