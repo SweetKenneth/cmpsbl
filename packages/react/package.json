@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/react",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "CMPSBL\u00ae React Hooks \u2014 useIntent, useMesh, useRuntime for React apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,9 +27,9 @@
   "homepage": "https://cmpsbl.com",
   "peerDependencies": {
     "react": ">=17.0.0",
-    "@cmpsbl/intent": ">=3.0.0",
-    "@cmpsbl/mesh": ">=3.0.0",
-    "@cmpsbl/runtime": ">=4.0.0"
+    "@cmpsbl/intent": ">=3.1.0",
+    "@cmpsbl/mesh": ">=3.1.0",
+    "@cmpsbl/runtime": ">=4.1.0"
   },
   "bugs": {
     "url": "https://cmpsbl.com/support"
