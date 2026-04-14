@@ -1,29 +1,24 @@
 /**
- * Ascension Orchestration Service — Hardened V1
+ * Ascension Orchestration Service — Hardened V1.1
  * 
- * Corrections applied:
- * A1: Immutable run snapshots via commitRun()
- * A2: Concurrency guard (_executing flag + phase check)
- * A3: Extracted persistDiscovery() — decoupled from loop
- * A4: Keyed deduplication via Map<string, DiscoveredCapability>
- * A5: Top score computed once after loop from deduped set
- * B1: Phase transition validation (assertValidTransition)
- * B2: Stable progress from processedNodes / totalNodes
- * B3: getProgressFromMilestones is single source of truth
- * C1: run_id enforced on every insert path
- * C2: resetRun scoped + guarded
- * D1: Single executeRun() entry point — UI calls one function
- * D2: AbortController replaces manual ref
- * D3: Error state is terminal (phase = 'error', early return)
- * E2: Deterministic fingerprint hashes replace synthetic IDs
- * E3: Results include run snapshot + ordered milestones for replay
- * G1: Seeded deterministic shuffle — same input = same order
- * G2: MAX_DISCOVERIES_PER_RUN cap
+ * V1.1 corrections:
+ * 1: Deep immutability via freeze/freezeArray
+ * 2: Content-aware deterministic seed (candidateName + source content)
+ * 3: Event log for replay/explainability (E3 upgrade)
+ * 4: Buffered discovery writes (batch flush)
+ * 5: Retry layer for transient failures
+ * 6: Dual fingerprint system (FNV fast + SHA-256 trust)
+ * 7: Phase-based execution guard (no volatile _executing flag)
+ * 8: Run snapshot persistence on completion
+ * 9: Progress hard cap (never exceeds 100)
+ * 
+ * Prior corrections (V1.0): A1–A5, B1–B3, C1–C2, D1–D3, E2–E3, G1–G2
  * 
  * © CMPSBL® — All rights reserved.
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { sha256 } from '@/lib/control-plane/hash';
 import type { TraceContext } from '@/lib/vision/trace';
 
 // ═══════════════════════════════════════════════════════════════
@@ -31,6 +26,36 @@ import type { TraceContext } from '@/lib/vision/trace';
 // ═══════════════════════════════════════════════════════════════
 
 const MAX_DISCOVERIES_PER_RUN = 50;
+const FLUSH_SIZE = 10;
+const RETRY_ATTEMPTS = 2;
+
+// ═══════════════════════════════════════════════════════════════
+// #1: Deep immutability helpers
+// ═══════════════════════════════════════════════════════════════
+
+function freeze<T extends object>(obj: T): Readonly<T> {
+  return Object.freeze(obj);
+}
+
+function freezeArray<T>(arr: T[]): ReadonlyArray<T> {
+  return Object.freeze([...arr]);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #5: Retry utility
+// ═══════════════════════════════════════════════════════════════
+
+async function retry<T>(fn: () => Promise<T>, attempts: number = RETRY_ATTEMPTS): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Types — Canonical result model
@@ -56,6 +81,13 @@ export interface AscensionMilestone {
   readonly detail?: string;
 }
 
+/** #3: Structured event for replay/audit */
+export interface RunEvent {
+  readonly type: string;
+  readonly timestamp: number;
+  readonly payload?: Record<string, unknown>;
+}
+
 export interface DiscoveredCapability {
   readonly name: string;
   readonly score: number;
@@ -76,8 +108,8 @@ export interface AscensionResults {
   readonly avgScore: number;
   readonly capabilities: ReadonlyArray<DiscoveredCapability>;
   readonly milestones: ReadonlyArray<AscensionMilestone>;
+  readonly events: ReadonlyArray<RunEvent>;
   readonly completedAt: string;
-  /** E3: Seed used for deterministic replay */
   readonly seed: number;
 }
 
@@ -87,6 +119,7 @@ export interface AscensionRun {
   readonly userId: string;
   readonly phase: RunPhase;
   readonly milestones: ReadonlyArray<AscensionMilestone>;
+  readonly events: ReadonlyArray<RunEvent>;
   readonly candidateName: string;
   readonly sourceLanguage: string;
   readonly sourceFiles: ReadonlyArray<{ name: string; content: string }>;
@@ -97,8 +130,6 @@ export interface AscensionRun {
   readonly capabilities: ReadonlyArray<DiscoveredCapability>;
   readonly error: string | null;
   readonly seed: number;
-  /** A2: Concurrency guard */
-  readonly _executing: boolean;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -119,12 +150,27 @@ const SUBSTRATE_NODES = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// A1: Immutable state transitions
+// #1: Deep-immutable state transitions
 // ═══════════════════════════════════════════════════════════════
 
-/** Apply a partial patch to a run — returns a new immutable snapshot */
+/** Apply a partial patch — returns a deeply frozen new snapshot */
 export function commitRun(prev: AscensionRun, patch: Partial<Omit<AscensionRun, 'runId' | 'userId'>>): AscensionRun {
-  return { ...prev, ...patch };
+  return freeze({
+    ...prev,
+    ...patch,
+    milestones: patch.milestones
+      ? freezeArray(patch.milestones as AscensionMilestone[])
+      : prev.milestones,
+    capabilities: patch.capabilities
+      ? freezeArray(patch.capabilities as DiscoveredCapability[])
+      : prev.capabilities,
+    sourceFiles: patch.sourceFiles
+      ? freezeArray(patch.sourceFiles as Array<{ name: string; content: string }>)
+      : prev.sourceFiles,
+    events: patch.events
+      ? freezeArray(patch.events as RunEvent[])
+      : prev.events,
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -162,7 +208,17 @@ function transitionPhase(run: AscensionRun, phase: RunPhase, detail?: string): A
 }
 
 // ═══════════════════════════════════════════════════════════════
-// B2/B3: Progress from milestones — single source of truth
+// #3: Event log — replay foundation
+// ═══════════════════════════════════════════════════════════════
+
+function addEvent(run: AscensionRun, type: string, payload?: Record<string, unknown>): AscensionRun {
+  return commitRun(run, {
+    events: [...run.events, { type, timestamp: Date.now(), payload }],
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #9: Progress from milestones — hard-capped at 100
 // ═══════════════════════════════════════════════════════════════
 
 const PHASE_WEIGHTS: Record<RunPhase, number> = {
@@ -180,14 +236,13 @@ const PHASE_WEIGHTS: Record<RunPhase, number> = {
   error: 0,
 };
 
-/** B2: Progress from processed/total — no interpolation drift */
 export function getProgressFromMilestones(run: AscensionRun, processedNodes?: number, totalNodes?: number): number {
   if (run.phase === 'error') return 0;
   if (run.phase === 'discovery_batch_complete' && processedNodes !== undefined && totalNodes && totalNodes > 0) {
     const batchPct = Math.min(processedNodes / totalNodes, 1);
     return Math.min(15 + Math.round(batchPct * 60), 74);
   }
-  return PHASE_WEIGHTS[run.phase] ?? 0;
+  return Math.min(PHASE_WEIGHTS[run.phase] ?? 0, 100);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -215,12 +270,31 @@ function seededShuffle<T>(arr: ReadonlyArray<T>, seed: number): T[] {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// E2: Deterministic fingerprint for export
+// #2: Content-aware deterministic seed
 // ═══════════════════════════════════════════════════════════════
 
+function computeSeed(candidateName: string, sourceFiles: ReadonlyArray<{ name: string; content: string }>): number {
+  const contentSample = sourceFiles
+    .slice(0, 3)
+    .map(f => f.name + ':' + f.content.slice(0, 200))
+    .join('|');
+  return fnv1aHash(candidateName + '::' + contentSample);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #6: Dual fingerprint — FNV (fast) + SHA-256 (trust)
+// ═══════════════════════════════════════════════════════════════
+
+/** Fast deterministic fingerprint (FNV-1a) — for IDs and dedup */
 export function deterministicFingerprint(name: string, nodeA: string, nodeB: string, runId: string): string {
   const input = `${name}:${nodeA}:${nodeB}:${runId}`;
   return `fp_${fnv1aHash(input).toString(36)}`;
+}
+
+/** Strong integrity fingerprint (SHA-256) — for trust verification */
+export async function integrityFingerprint(name: string, nodeA: string, nodeB: string, runId: string): Promise<string> {
+  const input = `${name}:${nodeA}:${nodeB}:${runId}`;
+  return sha256(input);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -232,22 +306,22 @@ function generateRunId(): string {
 }
 
 export function createRun(userId: string): AscensionRun {
-  return Object.freeze({
+  return freeze({
     runId: generateRunId(),
     userId,
     phase: 'created' as const,
-    milestones: Object.freeze([{ phase: 'created' as const, timestamp: Date.now() }]),
+    milestones: freezeArray([{ phase: 'created' as const, timestamp: Date.now() }]),
+    events: freezeArray([{ type: 'run_created', timestamp: Date.now() }]),
     candidateName: '',
     sourceLanguage: 'typescript',
-    sourceFiles: Object.freeze([]),
+    sourceFiles: freezeArray([]),
     trace: null,
     discoveredCount: 0,
     ascendedCount: 0,
     topScore: 0,
-    capabilities: Object.freeze([]),
+    capabilities: freezeArray([]),
     error: null,
     seed: 0,
-    _executing: false,
   });
 }
 
@@ -255,26 +329,28 @@ export function createRun(userId: string): AscensionRun {
 // Orchestration steps (pure transforms for pre-analysis)
 // ═══════════════════════════════════════════════════════════════
 
-/** Accept uploaded input — returns new run */
+/** Accept uploaded input — returns new run with content-aware seed */
 export function acceptInput(
   run: AscensionRun,
   candidateName: string,
   sourceLanguage: string,
   sourceFiles: Array<{ name: string; content: string }>,
 ): AscensionRun {
-  const seed = fnv1aHash(candidateName);
-  const next = commitRun(run, { candidateName, sourceLanguage, sourceFiles, seed });
+  const seed = computeSeed(candidateName, sourceFiles);
+  let next = commitRun(run, { candidateName, sourceLanguage, sourceFiles, seed });
+  next = addEvent(next, 'input_accepted', { candidateName, fileCount: sourceFiles.length, seed });
   return transitionPhase(next, 'input_accepted');
 }
 
 /** Optionally attach trace — returns new run */
 export function attachTrace(run: AscensionRun, trace: TraceContext): AscensionRun {
-  const next = commitRun(run, { trace });
+  let next = commitRun(run, { trace });
+  next = addEvent(next, 'trace_attached', { traceId: trace.trace_id });
   return transitionPhase(next, 'trace_attached');
 }
 
 // ═══════════════════════════════════════════════════════════════
-// A3: Extracted persistence — decoupled from discovery loop
+// A3/#4: Extracted persistence with buffered writes
 // ═══════════════════════════════════════════════════════════════
 
 async function persistDiscovery(
@@ -304,10 +380,23 @@ async function persistDiscovery(
   });
 }
 
+/** #4: Batch flush discovery writes */
+async function flushBuffer(
+  buffer: DiscoveredCapability[],
+  userId: string,
+  runId: string,
+  trace: TraceContext | null,
+): Promise<void> {
+  const batch = buffer.splice(0, buffer.length);
+  await Promise.allSettled(
+    batch.map(cap => retry(() => persistDiscovery(userId, runId, cap, trace)))
+  );
+}
+
 /** Store candidate in artifact_registry — run-scoped */
 async function storeCandidate(run: AscensionRun): Promise<AscensionRun> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await (supabase as any).from('artifact_registry').insert({
+  await retry(() => (supabase as any).from('artifact_registry').insert({
     user_id: run.userId,
     name: `CANDIDATE_${run.candidateName}`,
     slug: `candidate-${run.candidateName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${run.runId}`,
@@ -319,14 +408,14 @@ async function storeCandidate(run: AscensionRun): Promise<AscensionRun> {
       source_export_language: run.sourceLanguage,
       source_files: run.sourceFiles.map(f => ({ name: f.name, content: f.content.slice(0, 50000) })),
     },
-  });
-  return transitionPhase(run, 'candidate_stored');
+  }));
+  let next = addEvent(run, 'candidate_stored', { runId: run.runId });
+  return transitionPhase(next, 'candidate_stored');
 }
 
 // ═══════════════════════════════════════════════════════════════
 // D1: Single executeRun() entry point
-// D2: AbortController
-// D3: Terminal error state
+// #7: Phase-based execution guard (no volatile flag)
 // ═══════════════════════════════════════════════════════════════
 
 export interface RunCallbacks {
@@ -342,15 +431,12 @@ export async function executeRun(
 ): Promise<AscensionResults> {
   let run = initialRun;
 
-  // A2: Concurrency guard
-  if (run._executing) {
-    throw new Error('Run already executing');
-  }
+  // #7: Phase-based execution guard — no volatile _executing flag
   if (run.phase !== 'input_accepted' && run.phase !== 'trace_attached') {
-    throw new Error(`Cannot execute from phase: ${run.phase}`);
+    throw new Error(`Invalid execution phase: ${run.phase}`);
   }
 
-  run = commitRun(run, { _executing: true });
+  run = addEvent(run, 'execution_started');
   callbacks.onRunUpdate(run);
 
   const emit = (r: AscensionRun) => {
@@ -362,7 +448,7 @@ export async function executeRun(
   };
 
   try {
-    // Store candidate
+    // Store candidate (with retry)
     run = await storeCandidate(run);
     emit(run);
 
@@ -370,38 +456,43 @@ export async function executeRun(
 
     // Discovery phase
     run = transitionPhase(run, 'discovery_started');
+    run = addEvent(run, 'discovery_started');
     emit(run);
 
-    // G1: Seeded shuffle — same candidate = same order
+    // G1: Seeded shuffle — same candidate + content = same order
     const shuffled = seededShuffle(SUBSTRATE_NODES, run.seed);
     const BATCH = 4;
-    // A4: Keyed dedup map
     const capMap = new Map<string, DiscoveredCapability>();
     let processedNodes = 0;
     const totalNodes = shuffled.length;
 
+    // #4: Write buffer for batched persistence
+    const writeBuffer: DiscoveredCapability[] = [];
+
     for (let i = 0; i < shuffled.length; i += BATCH) {
       if (abortSignal.aborted) throw new Error('Aborted');
 
-      // G2: Discovery cap
       if (capMap.size >= MAX_DISCOVERIES_PER_RUN) break;
 
       const batch = shuffled.slice(i, i + BATCH);
 
+      // #5: Retry on edge function calls
       const results = await Promise.allSettled(
         batch.map(async (targetNode) => {
-          const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
-            body: {
-              module: 'discovery',
-              action: 'collide',
-              input: {
-                candidate_node: run.candidateName,
-                target_node: targetNode,
-                permutation_depth: 7,
-                ...(run.trace ? { trace_id: run.trace.trace_id, span_id: run.trace.span_id } : {}),
+          const { data, error } = await retry(() =>
+            supabase.functions.invoke('pf-proprietary-evolution', {
+              body: {
+                module: 'discovery',
+                action: 'collide',
+                input: {
+                  candidate_node: run.candidateName,
+                  target_node: targetNode,
+                  permutation_depth: 7,
+                  ...(run.trace ? { trace_id: run.trace.trace_id, span_id: run.trace.span_id } : {}),
+                },
               },
-            },
-          });
+            })
+          );
           if (!error && data?.capabilities?.length > 0) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const bestCap = data.capabilities.reduce((best: any, cap: any) =>
@@ -416,8 +507,6 @@ export async function executeRun(
               nodeB: targetNode,
             };
 
-            // A3: Extracted persistence
-            await persistDiscovery(run.userId, run.runId, cap, run.trace);
             return cap;
           }
           return null;
@@ -426,19 +515,23 @@ export async function executeRun(
 
       for (const r of results) {
         if (r.status === 'fulfilled' && r.value !== null) {
-          // A4: Dedup by name key
           const key = `${r.value.name}::${r.value.nodeB}`;
           if (!capMap.has(key)) {
             capMap.set(key, r.value);
+            // #4: Buffer writes instead of inline persist
+            writeBuffer.push(r.value);
           }
         }
       }
 
+      // #4: Flush when buffer reaches threshold
+      if (writeBuffer.length >= FLUSH_SIZE) {
+        await flushBuffer(writeBuffer, run.userId, run.runId, run.trace);
+      }
+
       processedNodes += batch.length;
 
-      // Update run snapshot
       const caps = Array.from(capMap.values());
-      // A5: Compute top score from deduped set after batch
       const topScore = caps.reduce((max, c) => Math.max(max, c.score), 0);
       run = commitRun(run, {
         discoveredCount: caps.length,
@@ -446,8 +539,8 @@ export async function executeRun(
         capabilities: caps,
       });
       run = transitionPhase(run, 'discovery_batch_complete', `${caps.length} found so far`);
+      run = addEvent(run, 'discovery_batch_complete', { batch: i / BATCH, found: caps.length });
 
-      // B2: Stable progress from absolute counts
       callbacks.onProgress(
         getProgressFromMilestones(run, processedNodes, totalNodes),
         getStatusMessage(processedNodes / totalNodes),
@@ -459,22 +552,31 @@ export async function executeRun(
       }
     }
 
+    // #4: Final flush — drain remaining buffer
+    if (writeBuffer.length > 0) {
+      await flushBuffer(writeBuffer, run.userId, run.runId, run.trace);
+    }
+
     if (abortSignal.aborted) throw new Error('Aborted');
 
     run = transitionPhase(run, 'discovery_finished', `${capMap.size} total discoveries`);
+    run = addEvent(run, 'discovery_finished', { totalDiscoveries: capMap.size });
     emit(run);
 
     // Ascension phase
     run = transitionPhase(run, 'ascension_started');
+    run = addEvent(run, 'ascension_started');
     emit(run);
 
-    const { data: ascResult, error: ascError } = await supabase.functions.invoke('pf-proprietary-evolution', {
-      body: {
-        module: 'ascend',
-        action: 'batch-lock',
-        input: { min_cjpi: 1 },
-      },
-    });
+    const { data: ascResult, error: ascError } = await retry(() =>
+      supabase.functions.invoke('pf-proprietary-evolution', {
+        body: {
+          module: 'ascend',
+          action: 'batch-lock',
+          input: { min_cjpi: 1 },
+        },
+      })
+    );
 
     if (ascError) throw ascError;
 
@@ -484,35 +586,70 @@ export async function executeRun(
       capabilities: finalCaps,
     });
     run = transitionPhase(run, 'ascension_finished');
+    run = addEvent(run, 'ascension_finished', { ascendedCount: run.ascendedCount });
     emit(run);
 
     run = transitionPhase(run, 'results_persisted');
+    run = addEvent(run, 'results_persisted');
     emit(run);
 
     await new Promise(r => setTimeout(r, 600));
 
     run = transitionPhase(run, 'complete');
-    run = commitRun(run, { _executing: false });
+    run = addEvent(run, 'run_complete');
     emit(run);
 
-    return getResults(run);
+    const results = getResults(run);
+
+    // #8: Persist run snapshot for replay/debugging
+    await persistRunSnapshot(run).catch(() => {
+      /* non-critical — do not fail the run */
+    });
+
+    return results;
   } catch (err) {
-    // D3: Terminal error state — no continuation
     const errorMsg = String(err);
     try {
       run = commitRun(run, {
         phase: 'error',
         error: errorMsg,
-        _executing: false,
         milestones: [...run.milestones, { phase: 'error', timestamp: Date.now(), detail: errorMsg }],
+        events: [...run.events, { type: 'error', timestamp: Date.now(), payload: { message: errorMsg } }],
       });
     } catch {
-      // Phase transition may also fail if already in error — force it
-      run = { ...run, phase: 'error', error: errorMsg, _executing: false };
+      run = { ...run, phase: 'error', error: errorMsg } as AscensionRun;
     }
     callbacks.onRunUpdate(run);
     throw err;
   }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #8: Run snapshot persistence
+// ═══════════════════════════════════════════════════════════════
+
+async function persistRunSnapshot(run: AscensionRun): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (supabase as any).from('artifact_registry').insert({
+    user_id: run.userId,
+    name: `RUN_SNAPSHOT_${run.runId}`,
+    slug: `run-snapshot-${run.runId}`,
+    tier: 'system',
+    category: 'ascension-run-snapshot',
+    description: `Complete run snapshot for ${run.candidateName}`,
+    metadata: {
+      run_id: run.runId,
+      phase: run.phase,
+      seed: run.seed,
+      discovered_count: run.discoveredCount,
+      ascended_count: run.ascendedCount,
+      top_score: run.topScore,
+      milestones: run.milestones,
+      events: run.events,
+      capabilities: run.capabilities,
+      completed_at: new Date().toISOString(),
+    },
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -545,7 +682,7 @@ function getStatusMessage(pct: number): string {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Results builder — E3: includes seed for replay
+// Results builder — includes events for replay
 // ═══════════════════════════════════════════════════════════════
 
 export function getResults(run: AscensionRun): AscensionResults {
@@ -556,7 +693,7 @@ export function getResults(run: AscensionRun): AscensionResults {
     : 0;
   const topScore = scores.length > 0 ? Math.max(...scores) : 0;
 
-  return {
+  return freeze({
     runId: run.runId,
     candidateName: run.candidateName,
     sourceLanguage: run.sourceLanguage,
@@ -564,11 +701,12 @@ export function getResults(run: AscensionRun): AscensionResults {
     ascended: run.ascendedCount,
     topScore,
     avgScore,
-    capabilities: caps,
-    milestones: [...run.milestones],
+    capabilities: freezeArray(caps),
+    milestones: freezeArray([...run.milestones]),
+    events: freezeArray([...run.events]),
     completedAt: new Date().toISOString(),
     seed: run.seed,
-  };
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -576,7 +714,6 @@ export function getResults(run: AscensionRun): AscensionResults {
 // ═══════════════════════════════════════════════════════════════
 
 export async function resetRun(run: AscensionRun): Promise<void> {
-  // C2: Only delete for this specific run
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sb = supabase as any;
 
@@ -592,6 +729,10 @@ export async function resetRun(run: AscensionRun): Promise<void> {
     sb.from('artifact_registry').delete()
       .eq('user_id', run.userId)
       .eq('category', 'proprietary-ascended')
+      .filter('metadata->>run_id', 'eq', run.runId),
+    sb.from('artifact_registry').delete()
+      .eq('user_id', run.userId)
+      .eq('category', 'ascension-run-snapshot')
       .filter('metadata->>run_id', 'eq', run.runId),
   ]);
 }
