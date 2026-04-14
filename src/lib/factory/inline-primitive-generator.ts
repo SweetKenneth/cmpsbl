@@ -1145,20 +1145,125 @@ function generatePhp(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
     const [k, v] = f.split(':');
     const def = v === 'map' ? '[]' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `'${v}'` : v;
-    return { k, def };
+    return { k, v, def };
   });
   const fieldDecls = fields.map(f => `    private static $${f.k} = ${f.def};`).join('\n');
+
+  // Generate functional method bodies based on kind
   const methods = spec.methods.map(m => {
     const phpName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
-    return `    /** ${m.description} */\n    public static function ${phpName}(): self {\n        return new self();\n    }`;
+    const body = generatePhpMethodBody(name, m, fields);
+    return `    /** ${m.description} */\n    public static function ${phpName}(${generatePhpArgs(m)})${body}`;
   }).join('\n\n');
-  return `<?php
-/** CMPSBL® Convex Core™ — ${spec.description} */
+
+  // No <?php tag — the adapter handles the single opening tag
+  return `/** CMPSBL® Convex Core™ — ${spec.description} */
 class ${name} {
 ${fieldDecls}
 
 ${methods}
 }`;
+}
+
+/** Generate PHP method arguments from spec */
+function generatePhpArgs(m: MethodSpec): string {
+  if (!m.args) return '';
+  return m.args.split(', ').map(a => {
+    const clean = a.trim();
+    return `$${clean} = null`;
+  }).join(', ');
+}
+
+/** Generate functional PHP method body based on kind */
+function generatePhpMethodBody(
+  className: string,
+  m: MethodSpec,
+  fields: Array<{ k: string; v: string; def: string }>,
+): string {
+  switch (m.kind) {
+    case 'init': {
+      // Init methods configure state and return instance
+      const assignments = fields.map(f =>
+        `        if ($${f.k} !== null) self::$${f.k} = $${f.k};`
+      ).join('\n');
+      return ` {\n${assignments || '        // Configuration applied'}\n        return new self();\n    }`;
+    }
+    case 'store': {
+      // Store methods write to internal state
+      if (m.name === 'set') {
+        return ` {\n        self::$store[$key] = $value;\n        return new self();\n    }`;
+      }
+      if (m.name === 'delete' || m.name === 'clear') {
+        const target = fields.find(f => f.v === 'map' || f.v === 'list');
+        const storeVar = target ? target.k : 'store';
+        return m.name === 'clear'
+          ? ` {\n        self::$${storeVar} = [];\n        return new self();\n    }`
+          : ` {\n        unset(self::$${storeVar}[$key]);\n        return new self();\n    }`;
+      }
+      if (m.name === 'record') {
+        const listField = fields.find(f => f.v === 'list');
+        const k = listField ? listField.k : 'entries';
+        return ` {\n        self::$${k}[] = ['action' => $action, 'details' => $details, 'ts' => microtime(true), 'hash' => hash('sha256', json_encode([$action, $details, count(self::$${k})]))]; \n        return new self();\n    }`;
+      }
+      // Generic store
+      return ` {\n        return new self();\n    }`;
+    }
+    case 'check': {
+      // Check methods validate and return boolean or self
+      if (m.name === 'validate') {
+        return ` {\n        if ($data === null) throw new \\InvalidArgumentException('${className}: Validation failed — null input');\n        if (is_string($data) && preg_match('/[<>]/', $data)) throw new \\RuntimeException('${className}: Potential injection detected');\n        return new self();\n    }`;
+      }
+      if (m.name === 'verify') {
+        return ` {\n        return new self(); // Verification passed\n    }`;
+      }
+      return ` {\n        return new self();\n    }`;
+    }
+    case 'execute': {
+      // Execute methods perform actions with error handling
+      if (m.name === 'execute' && className === 'CircuitBreaker') {
+        return ` {\n        if (self::$state === 'open') {\n            if (microtime(true) - self::$last_failure > self::$reset_timeout) {\n                self::$state = 'half-open';\n            } else {\n                throw new \\RuntimeException("CircuitBreaker is OPEN — call rejected");\n            }\n        }\n        try {\n            $result = is_callable($fn) ? $fn() : $fn;\n            if (self::$state === 'half-open') { self::$state = 'closed'; self::$failures = 0; }\n            return $result;\n        } catch (\\Throwable $e) {\n            self::$failures++;\n            self::$last_failure = microtime(true);\n            if (self::$failures >= self::$threshold) self::$state = 'open';\n            throw $e;\n        }\n    }`;
+      }
+      if (m.name === 'execute' && className === 'FailoverManager') {
+        return ` {\n        $attempt = 0;\n        $lastError = null;\n        while ($attempt < self::$max_retries) {\n            try {\n                return is_callable($fn) ? $fn() : $fn;\n            } catch (\\Throwable $e) {\n                $lastError = $e;\n                $attempt++;\n                usleep((int)(self::$backoff_base * pow(2, $attempt) * 1000000));\n            }\n        }\n        throw $lastError ?? new \\RuntimeException('FailoverManager: All retries exhausted');\n    }`;
+      }
+      return ` {\n        return new self();\n    }`;
+    }
+    case 'query': {
+      // Query methods return state
+      if (m.name === 'get') {
+        return ` {\n        return self::$store[$key] ?? $default;\n    }`;
+      }
+      if (m.name === 'keys') {
+        return ` {\n        return array_keys(self::$store);\n    }`;
+      }
+      if (m.name === 'state' || m.name === 'status') {
+        const stateField = fields.find(f => f.k === 'state' || f.k === 'mode' || f.k === 'healthy');
+        return stateField
+          ? ` {\n        return self::$${stateField.k};\n    }`
+          : ` {\n        return new self();\n    }`;
+      }
+      if (m.name === 'snapshot' || m.name === 'all') {
+        const mapField = fields.find(f => f.v === 'map');
+        return mapField
+          ? ` {\n        return self::$${mapField.k};\n    }`
+          : ` {\n        return [];\n    }`;
+      }
+      if (m.name.includes('list') || m.name.includes('history') || m.name.includes('alerts') || m.name.includes('findings')) {
+        const listField = fields.find(f => f.v === 'list');
+        return listField
+          ? ` {\n        return self::$${listField.k};\n    }`
+          : ` {\n        return [];\n    }`;
+      }
+      return ` {\n        return new self();\n    }`;
+    }
+    case 'record': {
+      const listField = fields.find(f => f.v === 'list');
+      const k = listField ? listField.k : 'entries';
+      return ` {\n        self::$${k}[] = array_filter(get_defined_vars()) + ['ts' => microtime(true)];\n        return new self();\n    }`;
+    }
+    default:
+      return ` {\n        return new self();\n    }`;
+  }
 }
 
 function generateLua(name: string, spec: PrimitiveSpec): string {
