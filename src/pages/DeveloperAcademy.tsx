@@ -54,7 +54,7 @@ const DeveloperAcademy = () => {
         title="Academy — 8 Learning Tracks, Live Sandbox | CMPSBL"
         description="Master CMPSBL with 8 guided tracks: memory API, AI routing, self-improvement lifecycle, quality scoring, resolver patterns, and production hardening. Earn verifiable certifications."
         image="https://cmpsbl.com/og/academy.jpg"
-        keywords={['AI developer academy', 'platform SDK tutorials', 'interactive AI training', 'agentic AI course', 'CMPSBL']}
+        keywords={['AI developer academy', 'substrate SDK tutorials', 'interactive AI training', 'agentic AI course', 'CMPSBL']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Developers', url: 'https://cmpsbl.com/developers' },

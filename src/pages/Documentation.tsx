@@ -179,13 +179,13 @@ function OverviewSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Architecture at a Glance</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The platform is organized into four primitive categories following a symmetric 12·12·8·8 matrix.
+          The substrate is organized into four primitive categories following a symmetric 12·12·8·8 matrix.
           <strong className="text-foreground"> Organs</strong> provide vital internal infrastructure,
           <strong className="text-foreground"> Layers</strong> supply ambient overlays and protection,
           <strong className="text-foreground"> Engines</strong> are invoked processing powerhouses, and
           <strong className="text-foreground"> Agents</strong> are autonomous self-directed actors.
         </p>
-        <CodeBlock title="40-primitive / 4-category platform topology">{`┌─────────────────────────────────────────────────────────┐
+        <CodeBlock title="40-primitive / 4-category substrate topology">{`┌─────────────────────────────────────────────────────────┐
 │  ORGANS (12)     Vital internal infrastructure          │
 │  CORE · SYSTEM · BRAIN · MEMORY · NERVE · NEXUS        │
 │  IDENTITY · SOVEREIGN · ATLAS · MEDIC · RELAY ·         │
@@ -349,7 +349,7 @@ AUXILIARY:   SANDBOX Engine, RIPPLE Engine, etc.  (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Governance Modes</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The platform operates in one of four modes, controlled by the GOVERNANCE Layer.
+          The substrate operates in one of four modes, controlled by the GOVERNANCE Layer.
           Switching modes requires authorization and is logged for auditability.
         </p>
         <DocTable
@@ -373,7 +373,7 @@ function BYOKSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">BYOK Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           <strong className="text-foreground">Bring Your Own Keys</strong> — developers register their own AI provider API keys
-          and pay compute costs directly to providers. Zero LLM costs for platform operators.
+          and pay compute costs directly to providers. Zero LLM costs for substrate operators.
         </p>
       </div>
 
@@ -673,7 +673,7 @@ function DreamSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Self-Improvement Cycles</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Autonomous background processing. During idle periods, the platform consolidates patterns,
+          Autonomous background processing. During idle periods, the substrate consolidates patterns,
           compresses redundant memories, scores relevance, and surfaces lateral insights that wouldn't
           emerge from direct queries alone.
         </p>
@@ -759,8 +759,8 @@ function DefenseSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Layer</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Enterprise-grade security built into the platform core. DEFENSE is the outermost boundary —
-          the security layer that every request must pass through before reaching any other module.
+          Enterprise-grade security built into the substrate core. DEFENSE is the outermost boundary —
+          the security layer that every request must pass through before reaching any other primitive.
         </p>
       </div>
 
@@ -831,7 +831,7 @@ function EvolutionSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">EVOLUTION Layer</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Governed self-improvement. EVOLUTION manages version control, shadow testing, and promotion of
-          system changes — ensuring the platform improves over time while maintaining integrity guarantees.
+          system changes — ensuring the substrate improves over time while maintaining integrity guarantees.
         </p>
       </div>
 
@@ -918,7 +918,7 @@ function ExtensionsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Extensions</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Extend platform functionality with custom hooks that run before or after system actions.
+          Extend substrate functionality with custom hooks that run before or after system actions.
           Extensions are sandboxed and rate-limited to prevent interference with core operations.
         </p>
       </div>
@@ -1070,8 +1070,8 @@ function IntegrationsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Integrations</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Connect external services through the INTEGRATION module. Manage credentials, invoke APIs,
-          and receive webhooks — all within the platform's governance and audit boundaries.
+          Connect external services through the INTEGRATION layer. Manage credentials, invoke APIs,
+          and receive webhooks — all within the substrate's governance and audit boundaries.
         </p>
       </div>
 
@@ -1129,7 +1129,7 @@ const customer = await fetch(GATEWAY, {
 
       <Callout type="info">
         All integration credentials are encrypted at rest. API calls through integrations are logged to the
-        AUDIT chain and subject to the same rate limiting and governance policies as direct platform calls.
+        AUDIT chain and subject to the same rate limiting and governance policies as direct substrate calls.
       </Callout>
     </div>
   );
@@ -1161,7 +1161,7 @@ function APISection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">API Reference</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          All platform actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
+          All substrate actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
           single unified gateway endpoint. The <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">action</code> field
           in the JSON body determines which module handles the request.
         </p>
@@ -1356,7 +1356,7 @@ export default function Documentation() {
         description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, self-improvement cycles, DEFENSE security, EVOLUTION system, SDK guides, and full 40-module integration reference."
         canonical="https://cmpsbl.com/documentation"
         image="https://cmpsbl.com/og/documentation.jpg"
-        keywords={['CMPSBL documentation', 'platform docs', 'AI API reference', 'persistent memory API', 'AI module reference']}
+        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'persistent memory API', 'AI primitive reference']}
       />
       <StructuredData
         type="breadcrumb"
@@ -1660,8 +1660,8 @@ export default function Documentation() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/documentation" title="Documentation" faq={[
-        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com. You get 3 capability slots immediately with full platform access. No credit card required." },
-        { question: "Does CMPSBL have an API?", answer: "Yes. The CMPSBL platform exposes a RESTful API with authentication, rate limiting, and full documentation at cmpsbl.com/api-access." },
+        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com. You get 3 capability slots immediately with full substrate access. No credit card required." },
+        { question: "Does CMPSBL have an API?", answer: "Yes. The CMPSBL substrate exposes a RESTful API with authentication, rate limiting, and full documentation at cmpsbl.com/api-access." },
         { question: "What programming languages does CMPSBL support?", answer: "CMPSBL is language-agnostic. The API works with any language that can make HTTP requests. SDKs are available for JavaScript/TypeScript with more coming." },
       ]} />
       <EnhancedFooter />
