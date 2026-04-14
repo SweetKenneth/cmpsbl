@@ -4,12 +4,11 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Download, Sparkles, Shield, CheckCircle2, Loader2, RotateCcw, FileCode2 } from 'lucide-react';
+import { Download, Sparkles, Shield, CheckCircle2, Loader2, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
-import type { ExportOptions } from '@/lib/proprietary-evolution/zip-generator';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
