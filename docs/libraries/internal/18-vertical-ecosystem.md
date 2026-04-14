@@ -176,7 +176,7 @@ The engine itself instantiates in under 1 second. The intelligence moat builds o
 
 ### What This Means
 
-**One login. Every substrate.** A user with a Creator subscription at $79/month can access Ascension on cmpsbl.com, security.cmpsbl.com, and robotics.cmpsbl.com with the same session. Rate limits (3/6/9/12 rule) are consumed globally but purchases at each substrate's Showroom are independent and unlimited.
+**One login. Every substrate.** A user with a Creator subscription at $49/month can access Ascension on cmpsbl.com, security.cmpsbl.com, and robotics.cmpsbl.com with the same session. Rate limits (3/6/9/12 rule) are consumed globally but purchases at each substrate's Showroom are independent and unlimited.
 
 ---
 
