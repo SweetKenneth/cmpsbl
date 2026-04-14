@@ -73,7 +73,7 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   let freshAscended: string;
   try {
     freshAscended = selectedPrims.length > 0
-      ? generateAscendedCode(code, [...selectedPrims], fingerprint, undefined, fileName ?? undefined)
+      ? generateAscendedCode(code, [...selectedPrims], fingerprint, detectedLang, fileName ?? undefined)
       : ascendedCode;
   } catch (err) {
     throw new Error(`Layer 2 validation failed: ${err instanceof Error ? err.message : String(err)}`);
