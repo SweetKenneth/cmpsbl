@@ -129,7 +129,7 @@ const ManaProofPage = lazy(() => import("@/pages/ManaProof"));
 const ManaLabPage = lazy(() => import("@/pages/ManaLab"));
 const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
 const LabPage = lazy(() => import("@/pages/Lab"));
-const PipelineRoadmap = lazy(() => import("@/pages/PipelineRoadmap"));
+
 const ShieldPage = lazy(() => import("@/pages/Shield"));
 
 export const publicRoutes = (
