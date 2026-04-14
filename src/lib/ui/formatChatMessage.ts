@@ -1,7 +1,10 @@
 /**
  * Rich Chat Message Formatter — XSS-safe markdown rendering for all chat interfaces
  * Supports bold, italic, code, headers, lists, links, and blockquotes
+ * Defense-in-depth: escapeHtml first, DOMPurify as final sanitization gate
  */
+
+import DOMPurify from 'dompurify';
 
 // Escape HTML to prevent XSS attacks
 function escapeHtml(text: string): string {
