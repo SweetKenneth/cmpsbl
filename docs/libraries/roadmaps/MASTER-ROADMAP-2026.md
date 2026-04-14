@@ -189,7 +189,7 @@ Month 12:  $83K      ($1M ARR run-rate)
 
 | # | Deliverable | Type | Owner | Status |
 |---|---|---|---|---|
-| 3.1 | **Subscription checkout** — Stripe for Builder (free) / Creator ($79) / Architect ($249) tiers | Backend | Build | ☐ |
+| 3.1 | **Subscription checkout** — Stripe for Builder (free) / Studio ($29) / Creator ($49) / Architect ($79) / Enterprise ($999+) tiers | Backend | Build | ☐ |
 | 3.2 | **Store connected to live data** — Memory Stream discoveries → purchasable exports | Lovable+DB | Build | ☐ |
 | 3.3 | **Tier-gated access** — enforce quotas (Ascension runs, crystallizations, verticals) | Backend | Build | ☐ |
 | 3.4 | **Hacker News launch** — lodash demo + Shield + "We built something that can't be stopped" | Marketing | Execute | ☐ |
@@ -314,8 +314,9 @@ Month 12:  $83K      ($1M ARR run-rate)
 | Stream | Launch Month | Steady-State MRR | Notes |
 |---|---|---|---|
 | Code Diagnostics ($149 one-time) | Month 2 | $2K | Converts to subscriptions |
-| Creator subscriptions ($79/mo) | Month 3 | $8K | Core individual tier |
-| Architect subscriptions ($249/mo) | Month 3 | $15K | Power users + teams |
+| Studio subscriptions ($29/mo) | Month 3 | $3K | Entry paid tier |
+| Creator subscriptions ($49/mo) | Month 3 | $8K | Core individual tier |
+| Architect subscriptions ($79/mo) | Month 3 | $15K | Power users + teams |
 | Store exports ($10–$99 one-time) | Month 3 | $5K | Memory Stream monetization |
 | Shield Pro ($79/mo) | Month 6 | $8K | Enterprise monitoring |
 | Enterprise ($999+/mo) | Month 5 | $25K | White-label + custom |
@@ -328,8 +329,9 @@ Month 12:  $83K      ($1M ARR run-rate)
 Shield Install (free)
   → Blacklist Registration (free, captured lead)
     → Diagnostic Clinic ($149, one-time)
-      → Creator Subscription ($79/mo)
-        → Architect Subscription ($249/mo)
+      → Studio Subscription ($29/mo)
+        → Creator Subscription ($49/mo)
+          → Architect Subscription ($79/mo)
           → Enterprise Contract ($999+/mo)
             → Platform License ($10K+/mo)
 ```

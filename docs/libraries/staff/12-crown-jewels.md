@@ -64,10 +64,10 @@ These are the **substrate's immune system, nervous system, and evolutionary engi
 
 ### 🟢 EXPERIENCE Crown Jewels — 24 Total
 
-**Rule: Released ONLY as sealed, black-boxed artifacts. 4-tier access: Builder (8 free), Creator ($29, +20), Studio ($49, +40), Architect ($79, all).**
+**Rule: Released ONLY as sealed, black-boxed artifacts. 5-tier access: Builder (8 free), Studio ($29, +20 CJs), Creator ($49, +40 CJs), Architect ($79, all Experience CJs), Enterprise ($999+, all + custom).**
 - Execution-only (no source code visible)
 - Black-box enforcement via `blackbox.ts` (hex-encoded weights, stripped comments)
-- Tiered access: Creator ($49) and Architect ($149)
+- Tiered access: Studio ($29), Creator ($49), and Architect ($79)
 - Non-exportable — run ON the substrate, never AS the substrate
 
 ---
