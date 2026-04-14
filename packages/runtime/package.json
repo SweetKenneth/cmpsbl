@@ -1,17 +1,35 @@
 {
   "name": "@cmpsbl/runtime",
   "version": "2.0.0",
-  "description": "CMPSBL® Convex Core™ Processing Layer — CJPI scoring, auto-tiering, pipeline orchestration, manifest parsing, and full 131-primitive catalog. Zero dependencies.",
+  "description": "CMPSBL\u00ae Convex Core\u2122 Processing Layer \u2014 CJPI scoring, auto-tiering, pipeline orchestration, manifest parsing, and full 131-primitive catalog. Zero dependencies.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["cmpsbl", "runtime", "cjpi", "scoring", "pipeline", "orchestration"],
-  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
-  "license": "Apache-2.0",
-  "repository": { "type": "git", "url": "https://github.com/cmpsbl/runtime" },
-  "homepage": "https://cmpsbl.com"
+  "keywords": [
+    "cmpsbl",
+    "runtime",
+    "cjpi",
+    "scoring",
+    "pipeline",
+    "orchestration",
+    "governed-cognitive-infrastructure",
+    "substrate",
+    "promptfluid"
+  ],
+  "author": "Kenneth E. Sweet Jr. <hello@cmpsbl.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmpsbl/runtime"
+  },
+  "homepage": "https://cmpsbl.com",
+  "bugs": {
+    "url": "https://cmpsbl.com/support"
+  }
 }

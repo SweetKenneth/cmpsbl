@@ -1,17 +1,35 @@
 {
   "name": "@cmpsbl/failsafe",
   "version": "3.4.0",
-  "description": "CMPSBL® FAILSAFE — Zero-dependency disaster recovery & platform migration engine",
+  "description": "CMPSBL\u00ae FAILSAFE \u2014 Zero-dependency disaster recovery & platform migration engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["cmpsbl", "failsafe", "disaster-recovery", "migration", "backup", "restore"],
-  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
-  "license": "Apache-2.0",
-  "repository": { "type": "git", "url": "https://github.com/cmpsbl/failsafe" },
-  "homepage": "https://cmpsbl.com/engines/failsafe"
+  "keywords": [
+    "cmpsbl",
+    "failsafe",
+    "disaster-recovery",
+    "migration",
+    "backup",
+    "restore",
+    "governed-cognitive-infrastructure",
+    "substrate",
+    "promptfluid"
+  ],
+  "author": "Kenneth E. Sweet Jr. <hello@cmpsbl.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cmpsbl/failsafe"
+  },
+  "homepage": "https://cmpsbl.com",
+  "bugs": {
+    "url": "https://cmpsbl.com/support"
+  }
 }
