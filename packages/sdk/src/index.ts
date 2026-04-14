@@ -713,8 +713,8 @@ export class Engine {
   get oracle() { return this.typedProxy('oracle'); }
   /** GOVERNANCE — governance, compliance, automation */
   get governance() { return this.typedProxy('governance'); }
-  /** CORTEX — orchestration, delegation, coordination */
-  get cortex() { return this.typedProxy('cortex'); }
+  /** FORGE — generation, refactoring, testing */
+  get forge() { return this.typedProxy('forge'); }
   /** SENTINEL — scanning, monitoring, response */
   get sentinel() { return this.typedProxy('sentinel'); }
 
@@ -736,9 +736,7 @@ export class Engine {
       oracle: ['predict', 'fuse', 'optimize', 'synthesize'],
       governance: ['govern', 'audit', 'comply', 'automate'],
       sentinel: ['scan', 'defend', 'monitor', 'respond'],
-      cortex: ['orchestrate', 'delegate', 'coordinate', 'balance'],
       forge: ['generate', 'refactor', 'test', 'analyze'],
-      oracle: ['predict', 'detect', 'process', 'forecast'],
     };
   }
 
@@ -873,17 +871,17 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   for (const { sector, nodes } of CEREMONY_SECTORS) {
     primitivesOnline += nodes.length;
     const progress = 15 + Math.round((primitivesOnline / TOTAL_PRIMITIVES) * 60);
-    emit({ phase: 'sector_boot', message: `▸ Category ${sector} — ${nodes.join(' · ')}`, sector, nodesOnline: primitivesOnline, totalNodes: TOTAL_PRIMITIVES, progress });
+    emit({ phase: 'sector_boot', message: `▸ Category ${sector} — ${nodes.join(' · ')}`, sector, primitivesOnline, totalPrimitives: TOTAL_PRIMITIVES, progress });
     await delay(120);
   }
 
-  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 categories · 4 types', progress: 80, nodesOnline: TOTAL_PRIMITIVES, totalNodes: TOTAL_PRIMITIVES });
+  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 categories · 4 types', progress: 80, primitivesOnline: TOTAL_PRIMITIVES, totalPrimitives: TOTAL_PRIMITIVES });
   await delay(250);
   emit({ phase: 'memory_sync', message: config.apiKey ? '◈ Memory Stream connected — chains persisting' : '◈ Memory Stream local — connect API key to persist', progress: 90 });
   await delay(200);
   emit({ phase: 'discovery_arm', message: '◈ Discovery engine armed. Every interaction leaves a trace.', progress: 95 });
   await delay(150);
-  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, nodesOnline: TOTAL_PRIMITIVES, totalNodes: TOTAL_PRIMITIVES });
+  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, primitivesOnline: TOTAL_PRIMITIVES, totalPrimitives: TOTAL_PRIMITIVES });
 }
 
 async function initFirstContact(config: FirstContactConfig): Promise<FirstContactSession> {
