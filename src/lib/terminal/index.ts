@@ -29,21 +29,16 @@ export {
 // Synergy handlers
 export {
   registerSynergyHandlers,
-  executeSynergyCommand,
-  getSynergiesByModuleCommand,
 } from './synergy-handlers';
 
 // Encoded handlers
 export {
   registerEncodedHandlers,
-  executeEncodedCommand,
-  setEncodedMode,
 } from './encoded-handlers';
 
 // SEBA handlers
 export {
   registerSEBAHandlers,
-  executeSEBACommand,
 } from './seba-handlers';
 
 // Infrastructure handlers

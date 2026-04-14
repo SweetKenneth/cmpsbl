@@ -1,250 +1,73 @@
 /**
  * Infrastructure Terminal Handlers
- * Terminal commands for the 7 new infrastructure systems
+ * ALL routed through pf-substrate edge function
  */
 
 import { registerHandler } from './validate-registry';
+import { bridge } from './substrate-bridge';
 import { log } from '@/lib/system/log';
 
-/**
- * Register all infrastructure terminal commands
- */
 export function registerInfraHandlers(): void {
   // ═══ CRON RUNNER ═══
-  registerHandler('cron.list', async () => {
-    const { cronRunner } = await import('@/lib/substrate/cron-runner');
-    return { success: true, data: { jobs: cronRunner.list(), stats: cronRunner.stats() } };
-  });
-
-  registerHandler('cron.stats', async () => {
-    const { cronRunner } = await import('@/lib/substrate/cron-runner');
-    return { success: true, data: cronRunner.stats() };
-  });
-
-  registerHandler('cron.start', async () => {
-    const { cronRunner } = await import('@/lib/substrate/cron-runner');
-    cronRunner.start();
-    return { success: true, message: 'Cron runner started', data: cronRunner.stats() };
-  });
-
-  registerHandler('cron.stop', async () => {
-    const { cronRunner } = await import('@/lib/substrate/cron-runner');
-    cronRunner.stop();
-    return { success: true, message: 'Cron runner stopped' };
-  });
-
-  registerHandler('cron.trigger', async () => {
-    return { success: false, error: 'Usage: cron.trigger <job-id>', examples: ['cron.trigger health-check', 'cron.trigger memory-gc'] };
-  });
-
-  registerHandler('cron.history', async () => {
-    const { cronRunner } = await import('@/lib/substrate/cron-runner');
-    return { success: true, data: { history: cronRunner.history(20) } };
-  });
-
-  registerHandler('cron.enable', async () => {
-    return { success: false, error: 'Usage: cron.enable <job-id>' };
-  });
-
-  registerHandler('cron.disable', async () => {
-    return { success: false, error: 'Usage: cron.disable <job-id>' };
-  });
+  registerHandler('cron.list', bridge('cron', 'list'));
+  registerHandler('cron.stats', bridge('cron', 'stats'));
+  registerHandler('cron.start', bridge('cron', 'start'));
+  registerHandler('cron.stop', bridge('cron', 'stop'));
+  registerHandler('cron.trigger', bridge('cron', 'trigger'));
+  registerHandler('cron.history', bridge('cron', 'history'));
+  registerHandler('cron.enable', bridge('cron', 'enable'));
+  registerHandler('cron.disable', bridge('cron', 'disable'));
 
   // ═══ PERSISTENT RATE LIMITER ═══
-  registerHandler('ratelimit.status', async () => {
-    const { persistentRateLimiter } = await import('@/lib/substrate/persistent-rate-limit');
-    return { success: true, data: persistentRateLimiter.stats() };
-  });
-
-  registerHandler('ratelimit.buckets', async () => {
-    const { persistentRateLimiter } = await import('@/lib/substrate/persistent-rate-limit');
-    return { success: true, data: { buckets: persistentRateLimiter.getAllBuckets() } };
-  });
-
-  registerHandler('ratelimit.cleanup', async () => {
-    const { persistentRateLimiter } = await import('@/lib/substrate/persistent-rate-limit');
-    return { success: true, data: persistentRateLimiter.cleanup() };
-  });
+  registerHandler('ratelimit.status', bridge('ratelimit', 'status'));
+  registerHandler('ratelimit.buckets', bridge('ratelimit', 'buckets'));
+  registerHandler('ratelimit.cleanup', bridge('ratelimit', 'cleanup'));
 
   // ═══ ROLLBACK SNAPSHOTS ═══
-  registerHandler('snapshot.list', async () => {
-    const { rollbackSnapshots } = await import('@/lib/substrate/rollback-snapshots');
-    return { success: true, data: { snapshots: rollbackSnapshots.list(), stats: rollbackSnapshots.stats() } };
-  });
-
-  registerHandler('snapshot.capture', async () => {
-    const { rollbackSnapshots } = await import('@/lib/substrate/rollback-snapshots');
-    const snap = await rollbackSnapshots.capture({ label: 'Manual snapshot', trigger: 'manual' });
-    return { success: true, message: `Snapshot captured: ${snap.id}`, data: snap };
-  });
-
-  registerHandler('snapshot.stats', async () => {
-    const { rollbackSnapshots } = await import('@/lib/substrate/rollback-snapshots');
-    return { success: true, data: rollbackSnapshots.stats() };
-  });
-
-  registerHandler('snapshot.diff', async () => {
-    return { success: false, error: 'Usage: snapshot.diff <snapshot-id>' };
-  });
-
-  registerHandler('snapshot.restore', async () => {
-    return { success: false, error: 'Usage: snapshot.restore <snapshot-id>' };
-  });
-
-  registerHandler('snapshot.delete', async () => {
-    return { success: false, error: 'Usage: snapshot.delete <snapshot-id>' };
-  });
-
-  registerHandler('snapshot.prune', async () => {
-    const { rollbackSnapshots } = await import('@/lib/substrate/rollback-snapshots');
-    const pruned = rollbackSnapshots.prune(7 * 24 * 60 * 60 * 1000);
-    return { success: true, message: `Pruned ${pruned} old snapshots` };
-  });
+  registerHandler('snapshot.list', bridge('snapshot', 'list'));
+  registerHandler('snapshot.capture', bridge('snapshot', 'capture'));
+  registerHandler('snapshot.stats', bridge('snapshot', 'stats'));
+  registerHandler('snapshot.diff', bridge('snapshot', 'diff'));
+  registerHandler('snapshot.restore', bridge('snapshot', 'restore'));
+  registerHandler('snapshot.delete', bridge('snapshot', 'delete'));
+  registerHandler('snapshot.prune', bridge('snapshot', 'prune'));
 
   // ═══ CAPABILITY ANALYTICS ═══
-  registerHandler('cap.summary', async () => {
-    const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
-    return { success: true, data: capabilityAnalytics.summary(24) };
-  });
-
-  registerHandler('cap.top', async () => {
-    const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
-    const summary = capabilityAnalytics.summary(24);
-    return { success: true, data: { top: summary.topCapabilities } };
-  });
-
-  registerHandler('cap.dead', async () => {
-    const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
-    return { success: true, data: { dead: capabilityAnalytics.getDeadCapabilities() } };
-  });
-
-  registerHandler('cap.rising', async () => {
-    const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
-    return { success: true, data: { rising: capabilityAnalytics.getRisingCapabilities() } };
-  });
-
-  registerHandler('cap.flush', async () => {
-    const { capabilityAnalytics } = await import('@/lib/substrate/capability-analytics');
-    return { success: true, data: capabilityAnalytics.flush() };
-  });
+  registerHandler('cap.summary', bridge('cap', 'summary'));
+  registerHandler('cap.top', bridge('cap', 'top'));
+  registerHandler('cap.dead', bridge('cap', 'dead'));
+  registerHandler('cap.rising', bridge('cap', 'rising'));
+  registerHandler('cap.flush', bridge('cap', 'flush'));
 
   // ═══ STREAMING PIPELINE ═══
-  registerHandler('stream.status', async () => {
-    const { streamingPipeline } = await import('@/lib/substrate/streaming-pipeline');
-    return { success: true, data: streamingPipeline.stats() };
-  });
-
-  registerHandler('stream.active', async () => {
-    const { streamingPipeline } = await import('@/lib/substrate/streaming-pipeline');
-    return { success: true, data: { sessions: streamingPipeline.getActiveSessions() } };
-  });
+  registerHandler('stream.status', bridge('stream', 'status'));
+  registerHandler('stream.active', bridge('stream', 'active'));
 
   // ═══ FILE PROCESSING ═══
-  registerHandler('file.status', async () => {
-    const { fileProcessingPipeline } = await import('@/lib/substrate/file-processing');
-    return { success: true, data: fileProcessingPipeline.stats() };
-  });
-
-  registerHandler('file.history', async () => {
-    const { fileProcessingPipeline } = await import('@/lib/substrate/file-processing');
-    return { success: true, data: { history: fileProcessingPipeline.getHistory() } };
-  });
-
-  registerHandler('file.formats', async () => {
-    const { fileProcessingPipeline } = await import('@/lib/substrate/file-processing');
-    return { success: true, data: { formats: fileProcessingPipeline.supportedFormats() } };
-  });
+  registerHandler('file.status', bridge('file', 'status'));
+  registerHandler('file.history', bridge('file', 'history'));
+  registerHandler('file.formats', bridge('file', 'formats'));
 
   // ═══ NATURAL LANGUAGE TERMINAL ═══
-  registerHandler('nl.parse', async () => {
-    return { success: false, error: 'Usage: nl.parse <natural language query>' };
-  });
-
-  registerHandler('nl.intents', async () => {
-    const { nlTerminal } = await import('@/lib/substrate/nl-terminal');
-    return { success: true, data: { intents: nlTerminal.getKnownIntents() } };
-  });
-
-  registerHandler('nl.history', async () => {
-    const { nlTerminal } = await import('@/lib/substrate/nl-terminal');
-    return { success: true, data: { history: nlTerminal.history() } };
-  });
+  registerHandler('nl.parse', bridge('nl', 'parse'));
+  registerHandler('nl.intents', bridge('nl', 'intents'));
+  registerHandler('nl.history', bridge('nl', 'history'));
 
   // ═══ SUBSYSTEM HEALTH & HEALING ═══
-  registerHandler('system.subsystems', async () => {
-    const { getSubsystemDiagnostics } = await import('@/lib/substrate/subsystem-health');
-    const diag = getSubsystemDiagnostics();
-    return { success: true, data: diag };
-  });
+  registerHandler('system.subsystems', bridge('system', 'subsystems'));
+  registerHandler('system.heal.intent_mesh', bridge('system', 'heal_intent_mesh'));
+  registerHandler('system.heal.autoblog', bridge('system', 'heal_autoblog'));
+  registerHandler('system.heal.seba', bridge('system', 'heal_seba'));
+  registerHandler('system.heal.shadow_mesh', bridge('system', 'heal_shadow_mesh'));
+  registerHandler('system.heal.event_stream', bridge('system', 'heal_event_stream'));
+  registerHandler('system.heal.discovery_engine', bridge('system', 'heal_discovery_engine'));
+  registerHandler('system.heal.all_subsystems', bridge('system', 'heal_all_subsystems'));
 
-  registerHandler('system.heal.intent_mesh', async () => {
-    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
-    return await healSubsystem('intent_mesh');
-  });
+  // ═══ EVENT STREAM ═══
+  registerHandler('eventstream.status', bridge('eventstream', 'status'));
 
-  registerHandler('system.heal.autoblog', async () => {
-    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
-    return await healSubsystem('autoblog');
-  });
+  // ═══ DILIGENCE ═══
+  registerHandler('diligence.run', bridge('diligence', 'run'));
 
-  registerHandler('system.heal.seba', async () => {
-    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
-    return await healSubsystem('seba');
-  });
-
-  registerHandler('system.heal.shadow_mesh', async () => {
-    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
-    return await healSubsystem('shadow_mesh');
-  });
-
-  registerHandler('system.heal.event_stream', async () => {
-    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
-    return await healSubsystem('event_stream');
-  });
-
-  registerHandler('system.heal.discovery_engine', async () => {
-    const { healSubsystem } = await import('@/lib/substrate/subsystem-health');
-    return await healSubsystem('discovery_engine');
-  });
-
-  registerHandler('system.heal.all_subsystems', async () => {
-    const { healAllSubsystems } = await import('@/lib/substrate/subsystem-health');
-    const results = await healAllSubsystems();
-    return { success: results.every(r => r.ok), data: results };
-  });
-
-  registerHandler('eventstream.status', async () => {
-    const { getStreamStats } = await import('@/lib/substrate/module-bus/eventStream');
-    const stats = getStreamStats();
-    return {
-      success: true,
-      data: stats,
-      formatted: `Event Stream Status\n` +
-        `Buffer: ${stats.buffer_size}/${stats.max_size}\n` +
-        `Health: ${stats.health.score}/100 (${stats.health.status})\n` +
-        `Breaker: ${stats.breaker.state} (failures: ${stats.breaker.totalFailures})\n` +
-        `Captured: ${stats.total_captured}\n` +
-        `Dropped: ${stats.health.droppedSignals}\n` +
-        `Persistence: ${stats.persistence_enabled ? 'ON' : 'OFF'}`,
-    };
-  });
-
-  // ═══ DILIGENCE HARNESS ═══
-  registerHandler('diligence.run', async () => {
-    const { runDiligence } = await import('@/lib/diligence/run-diligence');
-    const report = await runDiligence();
-    return {
-      success: true,
-      data: report,
-      formatted:
-        `Diligence Harness\n` +
-        `Total: ${report.summary.total}\n` +
-        `PASS: ${report.summary.passed}\n` +
-        `MINOR: ${report.summary.minor}\n` +
-        `CRITICAL: ${report.summary.critical}\n\n` +
-        `JSON:\n${JSON.stringify(report, null, 2)}`,
-    };
-  });
-
-  log.info('terminal', 'Infrastructure + subsystem + diligence handlers registered', { count: 37 });
+  log.info('terminal', 'Infrastructure handlers registered via substrate bridge', { count: 42 });
 }

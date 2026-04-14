@@ -1,314 +1,87 @@
 /**
  * Execution Layer Terminal Handlers
  * DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION
- * 
- * Note: ENCODE is in encode-handlers.ts, ECONOMY/SANDBOX in infra-module-handlers.ts
+ * ALL routed through pf-substrate edge function
  */
 
 import { registerHandler } from './validate-registry';
+import { bridge } from './substrate-bridge';
 import { log } from '@/lib/system/log';
 
 export function registerExecutionHandlers(): void {
-  // ═══════════════════════════════════════════════════════
-  // DECODE — Intent translator
-  // ═══════════════════════════════════════════════════════
+  // ═══ DECODE ═══
+  registerHandler('decode.status', bridge('decode', 'status'));
+  registerHandler('decode.interpret', bridge('decode', 'interpret'));
+  registerHandler('decode.personality', bridge('decode', 'personality'));
+  registerHandler('decode.personality_set', bridge('decode', 'personality_set'));
+  registerHandler('decode.personality_detect', bridge('decode', 'personality_detect'));
+  registerHandler('decode.personality_lock', bridge('decode', 'personality_lock'));
+  registerHandler('decode.personality_unlock', bridge('decode', 'personality_unlock'));
+  registerHandler('decode.health', bridge('decode', 'health'));
 
-  registerHandler('decode.status', async () => {
-    const { decode } = await import('@/lib/substrate');
-    return await decode.status();
-  });
+  // ═══ NEXUS ═══
+  registerHandler('nexus.status', bridge('nexus', 'status'));
+  registerHandler('nexus.query', bridge('nexus', 'query'));
+  registerHandler('nexus.routes', bridge('nexus', 'routes'));
+  registerHandler('nexus.budget', bridge('nexus', 'budget'));
+  registerHandler('nexus.providers', bridge('nexus', 'providers'));
+  registerHandler('nexus.health', bridge('nexus', 'health'));
 
-  registerHandler('decode.interpret', async () => {
-    return { success: false, error: 'Usage: decode.interpret <text>' };
-  });
+  // ═══ VISION ═══
+  registerHandler('vision.status', bridge('vision', 'status'));
+  registerHandler('vision.scan', bridge('vision', 'scan'));
+  registerHandler('vision.screenshot', bridge('vision', 'screenshot'));
+  registerHandler('vision.accessibility', bridge('vision', 'accessibility'));
+  registerHandler('vision.health', bridge('vision', 'health'));
 
-  registerHandler('decode.personality', async () => {
-    const { decode } = await import('@/lib/substrate');
-    return await decode.personality.get();
-  });
+  // ═══ CORTEX ═══
+  registerHandler('cortex.status', bridge('cortex', 'status'));
+  registerHandler('cortex.pipeline', bridge('cortex', 'pipeline'));
+  registerHandler('cortex.pipelines', bridge('cortex', 'pipelines'));
+  registerHandler('cortex.cognitive', bridge('cortex', 'cognitive'));
+  registerHandler('cortex.health', bridge('cortex', 'health'));
 
-  registerHandler('decode.personality_set', async () => {
-    return { success: false, error: 'Usage: decode.personality_set <profile_id>' };
-  });
+  // ═══ INCLUSIVE ═══
+  registerHandler('inclusive.status', bridge('inclusive', 'status'));
+  registerHandler('inclusive.scan', bridge('inclusive', 'scan'));
+  registerHandler('inclusive.report', bridge('inclusive', 'report'));
+  registerHandler('inclusive.health', bridge('inclusive', 'health'));
 
-  registerHandler('decode.personality_detect', async () => {
-    return { success: false, error: 'Usage: decode.personality_detect <text>' };
-  });
+  // ═══ INTEGRATION ═══
+  registerHandler('integration.status', bridge('integration', 'status'));
+  registerHandler('integration.pulse', bridge('integration', 'pulse'));
+  registerHandler('integration.adapters', bridge('integration', 'adapters'));
+  registerHandler('integration.connections', bridge('integration', 'connections'));
+  registerHandler('integration.discovered', bridge('integration', 'discovered'));
+  registerHandler('integration.mapped_commands', bridge('integration', 'mapped_commands'));
+  registerHandler('integration.policies', bridge('integration', 'policies'));
+  registerHandler('integration.audit_log', bridge('integration', 'audit_log'));
+  registerHandler('integration.connect', bridge('integration', 'connect'));
+  registerHandler('integration.disconnect', bridge('integration', 'disconnect'));
+  registerHandler('integration.health', bridge('integration', 'health'));
 
-  registerHandler('decode.personality_lock', async () => {
-    const { decode } = await import('@/lib/substrate');
-    return await decode.personality.lock();
-  });
+  // ═══ EVOLUTION (canonical + legacy modernizer.* aliases) ═══
+  registerHandler('evolution.status', bridge('evolution', 'status'));
+  registerHandler('evolution.scan', bridge('evolution', 'scan'));
+  registerHandler('evolution.propose', bridge('evolution', 'propose'));
+  registerHandler('evolution.apply', bridge('evolution', 'apply'));
+  registerHandler('evolution.verify', bridge('evolution', 'verify'));
+  registerHandler('evolution.plans', bridge('evolution', 'plans'));
+  registerHandler('evolution.runs', bridge('evolution', 'runs'));
+  registerHandler('evolution.health', bridge('evolution', 'health'));
+  registerHandler('evolution.evolve', bridge('evolution', 'evolve'));
 
-  registerHandler('decode.personality_unlock', async () => {
-    const { decode } = await import('@/lib/substrate');
-    return await decode.personality.unlock();
-  });
+  // Legacy aliases
+  registerHandler('modernizer.status', bridge('evolution', 'status'));
+  registerHandler('modernizer.scan', bridge('evolution', 'scan'));
+  registerHandler('modernizer.propose', bridge('evolution', 'propose'));
+  registerHandler('modernizer.apply', bridge('evolution', 'apply'));
+  registerHandler('modernizer.verify', bridge('evolution', 'verify'));
+  registerHandler('modernizer.plans', bridge('evolution', 'plans'));
+  registerHandler('modernizer.runs', bridge('evolution', 'runs'));
+  registerHandler('modernizer.health', bridge('evolution', 'health'));
 
-  registerHandler('decode.health', async () => {
-    const { decode } = await import('@/lib/substrate');
-    const status = await decode.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'DECODE', layer: 'Execution' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // NEXUS — AI router
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('nexus.status', async () => {
-    const { nexus } = await import('@/lib/substrate');
-    return await nexus.status();
-  });
-
-  registerHandler('nexus.query', async () => {
-    return { success: false, error: 'Usage: nexus.query <prompt>' };
-  });
-
-  registerHandler('nexus.routes', async () => {
-    const { nexus } = await import('@/lib/substrate');
-    return await nexus.routeStats();
-  });
-
-  registerHandler('nexus.budget', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'nexus', action: 'budget' });
-  });
-
-  registerHandler('nexus.providers', async () => {
-    const { nexus } = await import('@/lib/substrate');
-    return await nexus.providers();
-  });
-
-  registerHandler('nexus.health', async () => {
-    const { nexus } = await import('@/lib/substrate');
-    const status = await nexus.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'NEXUS', layer: 'Execution' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // VISION — Perception engine
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('vision.status', async () => {
-    const { vision } = await import('@/lib/substrate');
-    return await vision.status();
-  });
-
-  registerHandler('vision.scan', async () => {
-    return { success: false, error: 'Usage: vision.scan <url>' };
-  });
-
-  registerHandler('vision.screenshot', async () => {
-    return { success: false, error: 'Usage: vision.screenshot <url>' };
-  });
-
-  registerHandler('vision.accessibility', async () => {
-    return { success: false, error: 'Usage: vision.accessibility <url>' };
-  });
-
-  registerHandler('vision.health', async () => {
-    const { vision } = await import('@/lib/substrate');
-    const status = await vision.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'VISION', layer: 'Execution' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // CORTEX — Orchestrator
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('cortex.status', async () => {
-    const { cortex } = await import('@/lib/substrate');
-    return await cortex.status();
-  });
-
-  registerHandler('cortex.pipeline', async () => {
-    return { success: false, error: 'Usage: cortex.pipeline <pipeline_id>' };
-  });
-
-  registerHandler('cortex.pipelines', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'cortex', action: 'pipelines' });
-  });
-
-  registerHandler('cortex.cognitive', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'cortex', action: 'cognitive' });
-  });
-
-  registerHandler('cortex.health', async () => {
-    const { cortex } = await import('@/lib/substrate');
-    const status = await cortex.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'CORTEX', layer: 'Execution' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // INCLUSIVE — Accessibility & compliance
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('inclusive.status', async () => {
-    const { inclusive } = await import('@/lib/substrate');
-    return await inclusive.status();
-  });
-
-  registerHandler('inclusive.scan', async () => {
-    return { success: false, error: 'Usage: inclusive.scan <url>' };
-  });
-
-  registerHandler('inclusive.report', async () => {
-    const { inclusive } = await import('@/lib/substrate');
-    return await inclusive.report('latest');
-  });
-
-  registerHandler('inclusive.health', async () => {
-    const { inclusive } = await import('@/lib/substrate');
-    const status = await inclusive.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'INCLUSIVE', layer: 'Execution' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // INTEGRATION — Enterprise adapters
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('integration.status', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.status();
-  });
-
-  registerHandler('integration.pulse', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.pulse();
-  });
-
-  registerHandler('integration.adapters', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.adapters();
-  });
-
-  registerHandler('integration.connections', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.connections();
-  });
-
-  registerHandler('integration.discovered', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.discovered();
-  });
-
-  registerHandler('integration.mapped_commands', async () => {
-    return { success: false, error: 'Usage: integration.mapped_commands [adapter_id]' };
-  });
-
-  registerHandler('integration.policies', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.policies();
-  });
-
-  registerHandler('integration.audit_log', async () => {
-    const { integration } = await import('@/lib/substrate');
-    return await integration.auditLog({});
-  });
-
-  registerHandler('integration.connect', async () => {
-    return { success: false, error: 'Usage: integration.connect <type> <name> <config>' };
-  });
-
-  registerHandler('integration.disconnect', async () => {
-    return { success: false, error: 'Usage: integration.disconnect <connection_id>' };
-  });
-
-  registerHandler('integration.health', async () => {
-    const { integration } = await import('@/lib/substrate');
-    const status = await integration.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'INTEGRATION', layer: 'Execution' } };
-  });
-
-  // ═══════════════════════════════════════════════════════
-  // EVOLUTION — Self-Improvement Engine (legacy modernizer.* aliases kept for backward compat)
-  // ═══════════════════════════════════════════════════════
-
-  registerHandler('modernizer.status', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.status();
-  });
-
-  registerHandler('modernizer.scan', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.scan();
-  });
-
-  registerHandler('modernizer.propose', async () => {
-    return { success: false, error: 'Usage: evolution.propose <description>' };
-  });
-
-  registerHandler('modernizer.apply', async () => {
-    return { success: false, error: 'Usage: evolution.apply <plan_id>' };
-  });
-
-  registerHandler('modernizer.verify', async () => {
-    return { success: false, error: 'Usage: evolution.verify <run_id>' };
-  });
-
-  registerHandler('modernizer.plans', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.jobs();
-  });
-
-  registerHandler('modernizer.runs', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'evolution', action: 'runs' });
-  });
-
-  registerHandler('modernizer.health', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    const status = await evolutionClient.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'EVOLUTION', layer: 'Execution' } };
-  });
-
-  // ── evolution.* canonical aliases (MODERNIZER → EVOLUTION migration) ──
-  registerHandler('evolution.status', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.status();
-  });
-
-  registerHandler('evolution.scan', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.scan();
-  });
-
-  registerHandler('evolution.propose', async () => {
-    return { success: false, error: 'Usage: evolution.propose <description>' };
-  });
-
-  registerHandler('evolution.apply', async () => {
-    return { success: false, error: 'Usage: evolution.apply <plan_id>' };
-  });
-
-  registerHandler('evolution.verify', async () => {
-    return { success: false, error: 'Usage: evolution.verify <run_id>' };
-  });
-
-  registerHandler('evolution.plans', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.jobs();
-  });
-
-  registerHandler('evolution.runs', async () => {
-    const { substrate } = await import('@/lib/substrate');
-    return await substrate.invoke({ module: 'evolution', action: 'runs' });
-  });
-
-  registerHandler('evolution.health', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    const status = await evolutionClient.status();
-    return { success: true, data: { health: (status as any)?.data?.health || 100, module: 'EVOLUTION', layer: 'Execution' } };
-  });
-
-  registerHandler('evolution.evolve', async () => {
-    const { evolutionClient } = await import('@/lib/substrate');
-    return await evolutionClient.scan();
-  });
-
-  // ═══ HELP COMMANDS ═══
+  // ═══ HELP COMMANDS (local UI formatting) ═══
 
   registerHandler('decode.help', async () => ({
     success: true,
@@ -401,17 +174,33 @@ export function registerExecutionHandlers(): void {
     success: true,
     formatted: [
       '', '┌─ EVOLUTION — Self-Improvement Engine ──────┐',
-      '│  evolution.status    Node status                │',
+      '│  evolution.status    Primitive status            │',
       '│  evolution.scan      Scan for upgrades          │',
-      '│  evolution.propose   Propose evolution           │',
-      '│  evolution.apply     Apply evolution              │',
-      '│  evolution.verify    Verify run                  │',
-      '│  evolution.plans     List plans                  │',
-      '│  evolution.runs      Execution history           │',
-      '│  evolution.health    Health score                │',
+      '│  evolution.propose   Propose evolution          │',
+      '│  evolution.apply     Apply plan                 │',
+      '│  evolution.verify    Verify run                 │',
+      '│  evolution.plans     Active plans               │',
+      '│  evolution.runs      Run history                │',
+      '│  evolution.health    Health score               │',
       '└───────────────────────────────────────────────┘', '',
     ],
   }));
 
-  log.info('terminal', 'Execution layer handlers registered (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION)', { count: 50 });
+  registerHandler('evolution.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ EVOLUTION — Self-Improvement Engine ──────┐',
+      '│  evolution.status    Primitive status            │',
+      '│  evolution.scan      Scan for upgrades          │',
+      '│  evolution.propose   Propose evolution          │',
+      '│  evolution.apply     Apply plan                 │',
+      '│  evolution.verify    Verify run                 │',
+      '│  evolution.plans     Active plans               │',
+      '│  evolution.runs      Run history                │',
+      '│  evolution.health    Health score               │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  log.info('terminal', 'Execution handlers registered via substrate bridge (DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION)', { count: 75 });
 }
