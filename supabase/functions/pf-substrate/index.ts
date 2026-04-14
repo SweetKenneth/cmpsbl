@@ -1072,7 +1072,7 @@ serve(async (req) => {
           case "engineer":
           case "atlas":
           case "observer": {
-            return await handleUniversalModule(supabase, module, action, params, corsHeaders, state);
+            return await handleUniversalModule(supabase, module, action, params, corsHeaders, state, resolvedUserId);
           }
           
           case "status":
@@ -1273,6 +1273,7 @@ async function handleUniversalModule(
   params: Record<string, any>,
   headers: Record<string, string>,
   substrateState: SubstrateState,
+  resolvedUserId?: string,
 ): Promise<Response> {
   const tableMap = MODULE_TABLE_MAP[module];
   const personality = MODULE_PERSONALITY[module];
@@ -1601,27 +1602,37 @@ async function handleUniversalModule(
 
       // ═══ MEMORY ═══
       case 'memory': {
-        if (action === 'recall_context' || action === 'semantic_search' || action === 'list') {
+        // ── recall (CLI sends memory.recall) ──
+        if (action === 'recall' || action === 'recall_context' || action === 'semantic_search' || action === 'list') {
           const query = params.query || params.topic || '';
           const limit = params.limit || 10;
           const memories: any[] = [];
           // Search across all tiers
           for (const tier of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
             try {
-              const { data } = await supabase
+              let q = supabase
                 .from(tier)
                 .select('id, content, context, importance, created_at, access_count')
                 .order('importance', { ascending: false })
                 .limit(Math.ceil(limit / 3));
-              if (data) memories.push(...data.map((m: any) => ({ ...m, tier })));
+              // Text filter when query provided
+              if (query) q = q.ilike('content', `%${query}%`);
+              const { data } = await q;
+              if (data) memories.push(...data.map((m: any) => ({ ...m, tier: tier.replace('brain_memory_', '').toUpperCase() })));
             } catch { /* tier may not exist */ }
           }
+          // Sort by importance descending
+          memories.sort((a: any, b: any) => (b.importance || 0) - (a.importance || 0));
           // Count per tier
           const { count: hotCount } = await supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true });
           const { count: warmCount } = await supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true });
           const { count: coldCount } = await supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true });
           return jsonResponse({
             success: true, module, action,
+            results: memories.slice(0, limit).map((m: any) => ({
+              ...m,
+              relevance: query ? (m.content?.toLowerCase().includes(query.toLowerCase()) ? 0.9 : 0.5) : m.importance || 0.5,
+            })),
             data: {
               memories: memories.slice(0, limit),
               tier_counts: { hot: hotCount || 0, warm: warmCount || 0, cold: coldCount || 0 },
@@ -1632,6 +1643,86 @@ async function handleUniversalModule(
               knowledge_density: memories.length / Math.max(1, limit),
               memory_freshness: memories.length > 0 ? 'recent' : 'stale',
             },
+            timestamp: new Date().toISOString(),
+          }, headers);
+        }
+
+        // ── store (CLI sends memory.store) — inject resolvedUserId ──
+        if (action === 'store' || action === 'create' || action === 'ingest') {
+          const tier = (params.tier || 'hot').toLowerCase();
+          const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
+          const userId = params.user_id || params.actor_id || resolvedUserId || null;
+          const { data: inserted, error } = await supabase.from(tableName).insert({
+            content: params.content || '',
+            context: params.context || params.source || 'cli',
+            importance: params.importance || 0.7,
+            user_id: userId,
+            metadata: params.metadata || {},
+          }).select('id').single();
+          if (error) throw new Error(error.message);
+          return jsonResponse({
+            success: true,
+            message: `Memory stored in ${tier} tier.`,
+            data: { memory: inserted, tier: tier.toUpperCase() },
+            chain_id: inserted.id,
+            tier: tier.toUpperCase(),
+            fingerprint: inserted.id?.slice(0, 8) || '',
+            entity_id: inserted.id,
+            affected: 1,
+          }, headers);
+        }
+
+        // ── prune (CLI sends memory.prune) ──
+        if (action === 'prune' || action === 'delete' || action === 'purge') {
+          const chainId = params.chain_id || params.id;
+          if (chainId) {
+            // Try delete across all tiers
+            for (const t of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
+              const { error } = await supabase.from(t).delete().eq('id', chainId);
+              if (!error) break;
+            }
+            return jsonResponse({
+              success: true,
+              message: `Chain ${chainId} pruned.`,
+              data: {},
+              entity_id: chainId,
+              affected: 1,
+            }, headers);
+          }
+          // Purge old memories (>30 days)
+          const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
+          const { count } = await supabase.from('brain_memory_hot').delete().lt('created_at', cutoff).select('id', { count: 'exact', head: true });
+          return jsonResponse({
+            success: true, message: `Purged stale memories older than 30d.`, data: { cutoff }, affected: count || 0,
+          }, headers);
+        }
+
+        // ── stream (CLI sends memory.stream) — list recent memories ──
+        if (action === 'stream' || action === 'chains') {
+          const limit = params.limit || 20;
+          const chains: any[] = [];
+          for (const tier of ['brain_memory_hot', 'brain_memory_warm']) {
+            try {
+              const { data } = await supabase
+                .from(tier)
+                .select('id, content, context, importance, created_at')
+                .order('created_at', { ascending: false })
+                .limit(limit);
+              if (data) chains.push(...data.map((m: any) => ({
+                id: m.id,
+                pattern: m.content?.slice(0, 80) || '',
+                adoption: m.context || 'unknown',
+                status: 'captured',
+                tier: tier.replace('brain_memory_', '').toUpperCase(),
+                importance: m.importance,
+                created_at: m.created_at,
+              })));
+            } catch { /* ignore */ }
+          }
+          return jsonResponse({
+            success: true, module, action,
+            count: chains.length,
+            chains: chains.slice(0, limit),
             timestamp: new Date().toISOString(),
           }, headers);
         }
@@ -2664,20 +2755,20 @@ async function executeGovernedWrite(
       break;
     }
 
-    // ═══ MEMORY — Store, update, purge memories ═══
+    // ═══ MEMORY — Store, update, purge memories (governed write — uses resolvedUserId from universal handler) ═══
     case 'memory': {
       if (action === 'store' || action === 'create' || action === 'ingest') {
-        const tier = params.tier || 'hot';
+        const tier = (params.tier || 'hot').toLowerCase();
         const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
         const { data, error } = await supabase.from(tableName).insert({
           content: params.content || '',
-          context: params.context || module,
-          importance: params.importance || 0.5,
-          user_id: params.user_id || params.actor_id,
+          context: params.context || params.source || module,
+          importance: params.importance || 0.7,
+          user_id: params.user_id || params.actor_id || null,
           metadata: params.metadata || {},
         }).select('id').single();
         if (error) throw new Error(error.message);
-        return { success: true, message: `Memory stored in ${tier} tier.`, data: { memory: data, tier }, entity_id: data.id, affected: 1 };
+        return { success: true, message: `Memory stored in ${tier} tier.`, data: { memory: data, tier: tier.toUpperCase() }, entity_id: data.id, affected: 1 };
       }
       if (action === 'update' || action === 'patch') {
         const updates: Record<string, unknown> = {};
@@ -2690,18 +2781,17 @@ async function executeGovernedWrite(
         if (error) throw new Error(error.message);
         return { success: true, message: `Memory updated in ${tier} tier.`, data: updates, entity_id: params.id, affected: 1 };
       }
-      if (action === 'delete' || action === 'purge') {
-        const tier = params.tier || 'hot';
-        const tableName = tier === 'warm' ? 'brain_memory_warm' : tier === 'cold' ? 'brain_memory_cold' : 'brain_memory_hot';
-        if (params.id) {
-          const { error } = await supabase.from(tableName).delete().eq('id', params.id);
-          if (error) throw new Error(error.message);
-          return { success: true, message: `Memory purged from ${tier}.`, data: {}, entity_id: params.id, affected: 1 };
+      if (action === 'prune' || action === 'delete' || action === 'purge') {
+        const chainId = params.chain_id || params.id;
+        if (chainId) {
+          for (const t of ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold']) {
+            await supabase.from(t).delete().eq('id', chainId);
+          }
+          return { success: true, message: `Chain ${chainId} pruned.`, data: {}, entity_id: chainId, affected: 1 };
         }
-        // Purge old memories (>30 days) if no specific ID
         const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
-        const { count } = await supabase.from(tableName).delete().lt('created_at', cutoff).select('id', { count: 'exact', head: true });
-        return { success: true, message: `Purged stale memories from ${tier} (older than 30d).`, data: { cutoff }, affected: count || 0 };
+        const { count } = await supabase.from('brain_memory_hot').delete().lt('created_at', cutoff).select('id', { count: 'exact', head: true });
+        return { success: true, message: `Purged stale memories older than 30d.`, data: { cutoff }, affected: count || 0 };
       }
       break;
     }
@@ -12016,7 +12106,42 @@ async function handleDream(
       }
     }
 
-    // ═══ REFLECT: Cross-dream reflection with insights ═══
+    // ═══ DIGEST: Return recent DREAM crystallizations for CLI dream --last ═══
+    case "digest": {
+      try {
+        const limit = data.limit || 10;
+        const { data: dreams } = await supabase
+          .from("cascade_dreams")
+          .select("id, dream_text, mood, insight, dream_type, created_at")
+          .order("created_at", { ascending: false })
+          .limit(limit);
+
+        const entries = (dreams || []).map((d: any) => ({
+          insight: d.insight || d.dream_text?.substring(0, 120) || '',
+          content: d.dream_text || '',
+          pattern: d.mood || 'synthesis',
+          source: 'dream',
+          crystallized_at: d.created_at,
+          created_at: d.created_at,
+          type: d.dream_type || 'dream',
+        }));
+
+        return jsonResponse({
+          success: true,
+          module: "dream",
+          action: "digest",
+          data: { entries, digest: entries },
+          timestamp: new Date().toISOString(),
+        }, headers);
+      } catch (error) {
+        return jsonResponse({
+          success: false, module: "dream", action: "digest",
+          error: error instanceof Error ? error.message : "Digest failed",
+        }, headers);
+      }
+    }
+
+
     case "reflect": {
       try {
         // Get recent dreams
