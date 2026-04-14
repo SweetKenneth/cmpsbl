@@ -1330,9 +1330,13 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           // Fall through to legacy chain only if substrate returns explicit failure
           // (might be a local-only command like autoblog, patch, matrix)
         } else {
+          // Use formatted output if substrate returned one
+          const outputStr = typeof subData?.output === 'string'
+            ? subData.output
+            : JSON.stringify(subData?.data || subData, null, 2);
           return {
             success: true,
-            output: `◉ ${base}\n\n${JSON.stringify(subData?.data || subData, null, 2)}`,
+            output: `◉ ${base}\n\n${outputStr}`,
             data: subData?.data || subData,
           };
         }
