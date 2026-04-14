@@ -113,9 +113,13 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
   // ═══ REALTIME SUBSTRATE PULSE — Live memory/dream events ═══
   useEffect(() => {
     let mounted = true;
+    let channelRef: ReturnType<typeof import('@/integrations/supabase/client').supabase.channel> | null = null;
+    let supabaseRef: typeof import('@/integrations/supabase/client').supabase | null = null;
+
     import('@/integrations/supabase/client').then(({ supabase }) => {
       if (!mounted) return;
-      const channel = supabase
+      supabaseRef = supabase;
+      channelRef = supabase
         .channel('terminal-pulse')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'brain_memories' }, (payload) => {
           if (!mounted) return;
@@ -142,13 +146,14 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           }]);
         })
         .subscribe();
-
-      return () => {
-        mounted = false;
-        supabase.removeChannel(channel);
-      };
     });
-    return () => { mounted = false; };
+
+    return () => {
+      mounted = false;
+      if (channelRef && supabaseRef) {
+        supabaseRef.removeChannel(channelRef);
+      }
+    };
   }, []);
 
   // Copy to clipboard handler
