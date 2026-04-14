@@ -24,10 +24,13 @@ export interface ValidationResult {
   warnings: string[];
 }
 
-// Track registered handlers
-const registeredHandlers = new Map<string, () => Promise<unknown>>();
+// Handler type accepts optional args
+export type CommandHandler = (args?: Record<string, unknown>) => Promise<unknown>;
 
-export function registerHandler(commandName: string, handler: () => Promise<unknown>): void {
+// Track registered handlers
+const registeredHandlers = new Map<string, CommandHandler>();
+
+export function registerHandler(commandName: string, handler: CommandHandler): void {
   registeredHandlers.set(commandName.toLowerCase(), handler);
 }
 
@@ -35,7 +38,7 @@ export function hasHandler(commandName: string): boolean {
   return registeredHandlers.has(commandName.toLowerCase());
 }
 
-export function getHandler(commandName: string): (() => Promise<unknown>) | undefined {
+export function getHandler(commandName: string): CommandHandler | undefined {
   return registeredHandlers.get(commandName.toLowerCase());
 }
 

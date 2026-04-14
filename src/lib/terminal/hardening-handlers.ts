@@ -1334,23 +1334,23 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: { messages: getAllMessages(20) } };
   });
 
-  registerHandler('intent.messages.node', async (_args?: string) => {
+  registerHandler('intent.messages.node', async (_args?: Record<string, unknown>) => {
     const { getMessagesByNode } = await import('@/lib/substrate/intent-mesh/intent-hub');
-    const node = _args?.trim() || 'ENGINEER';
+    const node = ((_args?.input as string) || '').trim() || 'ENGINEER';
     return { success: true, data: { node, messages: getMessagesByNode(node).slice(-20) } };
   });
 
-  registerHandler('intent.approve', async (_args?: string) => {
+  registerHandler('intent.approve', async (_args?: Record<string, unknown>) => {
     if (!_args) return { success: false, error: 'Usage: intent.approve <messageId> [note]' };
-    const [id, ...noteParts] = _args.split(' ');
+    const [id, ...noteParts] = ((_args?.input as string) || '').split(' ');
     const { approveMessage } = await import('@/lib/substrate/intent-mesh/intent-hub');
     const ok = approveMessage(id, noteParts.join(' ') || 'Approved via terminal');
     return ok ? { success: true, data: { approved: id } } : { success: false, error: 'Message not found or already reviewed' };
   });
 
-  registerHandler('intent.reject', async (_args?: string) => {
+  registerHandler('intent.reject', async (_args?: Record<string, unknown>) => {
     if (!_args) return { success: false, error: 'Usage: intent.reject <messageId> <reason>' };
-    const [id, ...reasonParts] = _args.split(' ');
+    const [id, ...reasonParts] = ((_args?.input as string) || '').split(' ');
     const { rejectMessage } = await import('@/lib/substrate/intent-mesh/intent-hub');
     const ok = rejectMessage(id, reasonParts.join(' ') || 'Rejected via terminal');
     return ok ? { success: true, data: { rejected: id } } : { success: false, error: 'Message not found or already reviewed' };
@@ -1451,17 +1451,17 @@ export function registerHardeningHandlers(): void {
     return { success: true, formatted: ['┌─ LIVE NODE FEED ─────────────────────┐', ...lines, '└──────────────────────────────────────┘'] };
   });
 
-  registerHandler('intent.translate', async (_args?: string) => {
+  registerHandler('intent.translate', async (_args?: Record<string, unknown>) => {
     if (!_args) return { success: false, error: 'Usage: intent.translate <messageId>' };
     const { getAllMessages } = await import('@/lib/substrate/intent-mesh/intent-hub');
-    const msg = getAllMessages(100).find(m => m.id === _args.trim());
+    const msg = getAllMessages(100).find(m => m.id === ((_args?.input as string) || '').trim());
     if (!msg) return { success: false, error: 'Message not found' };
     return { success: true, data: { humanSummary: msg.humanSummary, impact: msg.impact, from: msg.sourceNode } };
   });
 
-  registerHandler('intent.escalate', async (_args?: string) => {
+  registerHandler('intent.escalate', async (_args?: Record<string, unknown>) => {
     if (!_args) return { success: false, error: 'Usage: intent.escalate <messageId>' };
-    return { success: true, data: { escalated: _args.trim(), note: 'Message priority elevated' } };
+    return { success: true, data: { escalated: ((_args?.input as string) || '').trim(), note: 'Message priority elevated' } };
   });
 
   // ═══ ATLAS OPERATIONAL COMMANDS ═══
@@ -1511,11 +1511,11 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: { escalations: getUnresolvedEscalations() } };
   });
 
-  registerHandler('atlas.escalations.resolve', async (_args?: string) => {
+  registerHandler('atlas.escalations.resolve', async (_args?: Record<string, unknown>) => {
     if (!_args) return { success: false, error: 'Usage: atlas.escalations.resolve <source>' };
     const { resolveEscalation } = await import('@/lib/atlas/atlas-hardening');
-    resolveEscalation(_args.trim());
-    return { success: true, data: { resolved: _args.trim() } };
+    resolveEscalation(((_args?.input as string) || '').trim());
+    return { success: true, data: { resolved: ((_args?.input as string) || '').trim() } };
   });
 
   registerHandler('atlas.dry_run', async () => {
@@ -1558,9 +1558,9 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: { trend: getQueueDepthTrend() } };
   });
 
-  registerHandler('atlas.satisfaction', async (_args?: string) => {
+  registerHandler('atlas.satisfaction', async (_args?: Record<string, unknown>) => {
     const { getNodeSatisfaction } = await import('@/lib/atlas/atlas-hardening');
-    const node = _args?.trim() || 'ENGINEER';
+    const node = ((_args?.input as string) || '').trim() || 'ENGINEER';
     return { success: true, data: { node, score: getNodeSatisfaction(node) } };
   });
 

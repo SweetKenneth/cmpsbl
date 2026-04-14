@@ -1,33 +1,31 @@
 /**
  * Core Terminal Handlers
- * Registers the 5 foundational commands at boot: help, status, version, clear, audit
+ * 5 foundational commands: help, status, version, clear, audit
+ * All routed through pf-substrate except help/clear (UI-only)
  */
 
 import { registerHandler } from './validate-registry';
+import { bridge } from './substrate-bridge';
 
 export function registerCoreHandlers(): void {
+  // help — local UI formatting
   registerHandler('help', async () => ({
     success: true,
-    output: 'Use `help <module>` for module-specific commands.',
+    output: 'Use `help <module>` for module-specific commands. Modules: core, system, brain, dream, memory, defense, nexus, cortex, encode, decode, vision, inclusive, integration, evolution, governance, economy, ripple, access, mesh, obs, analytics, power, seba',
   }));
 
-  registerHandler('status', async () => ({
-    success: true,
-    output: 'System status: operational. Use `system.status` for full diagnostics.',
-  }));
+  // status — real substrate status via pf-substrate
+  registerHandler('status', bridge('core', 'status'));
 
-  registerHandler('version', async () => ({
-    success: true,
-    output: 'CMPSBL Substrate OS — Cognitive Infrastructure Standard',
-  }));
+  // version — real substrate version via pf-substrate
+  registerHandler('version', bridge('system', 'version'));
 
+  // clear — local UI action, no backend needed
   registerHandler('clear', async () => ({
     success: true,
     output: '',
   }));
 
-  registerHandler('audit', async () => ({
-    success: true,
-    output: 'Use `audit.run` to execute a full audit, or `audit.status` for current results.',
-  }));
+  // audit — real audit via pf-substrate
+  registerHandler('audit', bridge('audit', 'status'));
 }

@@ -103,8 +103,8 @@ export async function executeCommand(
   try {
     await emitStarted('terminal', commandName, { args: redactSecrets(args) }, trace_id);
 
-    // Execute with optional retry
-    const executor = async () => handler();
+    // Execute with optional retry — pass args through to handler
+    const executor = async () => handler(args);
     const output = options.retryable 
       ? await withRetry(executor, RetryPresets.fast, trace_id)
       : await executor();
