@@ -10139,6 +10139,13 @@ export type Database = {
             referencedRelation: "lex_registry"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "lex_registry_events_registry_id_fkey"
+            columns: ["registry_id"]
+            isOneToOne: false
+            referencedRelation: "lex_registry_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       licensing_inquiries: {
@@ -19033,6 +19040,39 @@ export type Database = {
       }
     }
     Views: {
+      lex_registry_public: {
+        Row: {
+          id: string | null
+          metadata: Json | null
+          package_hash: string | null
+          package_name: string | null
+          registered_at: string | null
+          registrant_org: string | null
+          status: Database["public"]["Enums"]["lex_registry_status"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          metadata?: Json | null
+          package_hash?: string | null
+          package_name?: string | null
+          registered_at?: string | null
+          registrant_org?: string | null
+          status?: Database["public"]["Enums"]["lex_registry_status"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          metadata?: Json | null
+          package_hash?: string | null
+          package_name?: string | null
+          registered_at?: string | null
+          registrant_org?: string | null
+          status?: Database["public"]["Enums"]["lex_registry_status"] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       tsac_executor_stats: {
         Row: {
           avg_intent_score: number | null
