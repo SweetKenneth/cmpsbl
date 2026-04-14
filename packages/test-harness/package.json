@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/test-harness",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "CMPSBL\u00ae Test Harness \u2014 Validate pipelines, bridge adapters, and verify Ascension fingerprints",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,8 +27,8 @@
   "license": "SEE LICENSE IN LICENSE",
   "homepage": "https://cmpsbl.com",
   "peerDependencies": {
-    "@cmpsbl/runtime": ">=1.3.0",
-    "@cmpsbl/bridge": ">=1.4.0"
+    "@cmpsbl/runtime": ">=3.0.0",
+    "@cmpsbl/bridge": ">=2.0.0"
   },
   "bugs": {
     "url": "https://cmpsbl.com/support"

@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/mana",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Mana \u2014 Silent software symbiosis. One command to enhance and protect your code without modifying it.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

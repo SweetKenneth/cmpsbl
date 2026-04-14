@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/runtime",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "CMPSBL\u00ae Convex Core\u2122 Processing Layer \u2014 CJPI scoring, auto-tiering, pipeline orchestration, manifest parsing, and full 131-primitive catalog. Zero dependencies.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
