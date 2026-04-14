@@ -502,7 +502,26 @@ export function createSession(sessionId?: string): ManaSession {
     },
 
     async attach(hostModule, capabilities, sourceForHash) {
-      // Detect recursive layering — symbol-based, not name heuristic
+      // V1 WIRING: Fingerprint gate
+      const fpResult = verifyFingerprint(hostModule, hostPkg || 'unknown', hostVer || '0.0.0');
+      
+      recordAuditEvent(`mana.session.${id}`, 'fingerprint_verify', fpResult.verdict, {
+        fingerprint: fpResult.fingerprint,
+        mismatchType: fpResult.mismatchType,
+      });
+
+      if (fpResult.verdict === 'invalid') {
+        sessionState = 'detached';
+        throw new Error(`[MANA/SESSION:${id}] Attachment denied — invalid fingerprint`);
+      }
+
+      let filteredCaps = capabilities;
+      if (fpResult.verdict === 'suspect') {
+        const limited = new Set(fpResult.limitedCapabilities);
+        filteredCaps = capabilities.filter(c => !limited.has(c.capability));
+      }
+
+      // Detect recursive layering
       for (const [, val] of Object.entries(hostModule)) {
         if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
           parentLayerHash = await computeHash(sourceForHash);
@@ -517,11 +536,8 @@ export function createSession(sessionId?: string): ManaSession {
       originals.clear();
       telemetry.length = 0;
 
-      // Deterministic sort: primary by phase (ascending), secondary by capability name
-      // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
-      const sorted = [...capabilities].sort(byPhaseThenName).reverse();
+      const sorted = [...filteredCaps].sort(byPhaseThenName).reverse();
 
-      // Group by function name for proper wrapper COMPOSITION
       const capsByFunction = new Map<string, typeof sorted>();
       for (const cap of sorted) {
         const list = capsByFunction.get(cap.functionName) ?? [];
@@ -534,15 +550,12 @@ export function createSession(sessionId?: string): ManaSession {
         const rawOriginal = hostModule[functionName] as AnyFn;
         if (typeof rawOriginal !== 'function') continue;
 
-        // Store the true original ONCE — before any wrapping
         if (!originals.has(functionName)) {
           originals.set(functionName, rawOriginal);
         }
 
-        // Compose wrappers: each wraps the result of the previous
         let wrapped: AnyFn = rawOriginal;
         for (const cap of caps) {
-          // Lex governance — ATTACHMENT-TIME verdict
           const { verdict } = lexEvaluate(lex, cap.capability, cap.functionName, config.lexMode, 'attachment');
           if (verdict === 'deny') {
             emitTelemetry(cap.capability, cap.functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
@@ -562,37 +575,80 @@ export function createSession(sessionId?: string): ManaSession {
           };
           attachmentPoints.set(`${cap.functionName}:${cap.capability}`, point);
 
-          // Compose — wrap the previous wrapped result, not the original
-          wrapped = wrapFunction(wrapped, cap.functionName, cap.capability, point);
-          // Tag wrapper with symbol for accurate layer detection
+          // V1 WIRING: Execution boundary tracking for safe detach
+          const innerWrapped = wrapFunction(wrapped, cap.functionName, cap.capability, point);
+          wrapped = function manaBoundaryTracked(this: unknown, ...args: unknown[]) {
+            enterExecutionBoundary();
+            try {
+              const result = (innerWrapped as Function).apply(this, args);
+              if (result != null && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
+                return (result as Promise<unknown>).then(
+                  (v) => { exitExecutionBoundary(); return v; },
+                  (e) => { exitExecutionBoundary(); throw e; },
+                );
+              }
+              exitExecutionBoundary();
+              return result;
+            } catch (err) {
+              exitExecutionBoundary();
+              throw err;
+            }
+          } as AnyFn;
+          
           (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
           emitTelemetry(cap.capability, cap.functionName, 'invoked', {
-            action: 'attached', layerDepth, position: point.position,
-            phase: point.phase,
+            action: 'attached', layerDepth, position: point.position, phase: point.phase,
           }, 'attachment');
         }
 
-        // Apply the fully composed wrapper stack
         hostModule[functionName] = wrapped;
       }
 
       sessionState = 'symbiotic';
       attachedAt = Date.now();
       detachedAt = null;
+
+      // Auto-register on first boot
+      if (fpResult.verdict === 'suspect' && fpResult.expectedFingerprint === null) {
+        registerFingerprint(hostPkg, fpResult.fingerprint);
+      }
+
+      recordAuditEvent(`mana.session.${id}`, 'attach_complete', 'success', {
+        hostPackage: hostPkg, attachmentPointCount: attachmentPoints.size,
+      });
+
       return session.getManifest();
     },
 
-    detach(hostModule) {
+    async detach(hostModule) {
       if (sessionState !== 'symbiotic') {
         throw new Error(`[MANA/SESSION:${id}] Not attached.`);
       }
       sessionState = 'detaching';
-      for (const [functionName, originalFn] of Array.from(originals.entries())) {
-        hostModule[functionName] = originalFn;
+      const manifest = session.getManifest();
+
+      recordAuditEvent(`mana.session.${id}`, 'detach_start', 'initiated', {
+        hostPackage: hostPkg, attachmentPointCount: attachmentPoints.size,
+      });
+
+      const receipt = await safeDetach(hostModule, originals, `${hostPkg}-${id}`, manifest);
+
+      if (!receipt.success) {
+        // Fallback: direct restore
+        for (const [functionName, originalFn] of Array.from(originals.entries())) {
+          hostModule[functionName] = originalFn;
+        }
       }
+
       sessionState = 'detached';
       detachedAt = Date.now();
-      const manifest = session.getManifest();
+
+      recordAuditEvent(`mana.session.${id}`, 'detach_complete', receipt.success ? 'clean' : 'fallback', {
+        receiptId: receipt.receiptId,
+        restoredFunctions: receipt.restoredFunctions,
+        verificationPassed: receipt.verificationPassed,
+      });
+
       originals.clear();
       attachmentPoints.clear();
       if (layerDepth > 0) layerDepth--;
