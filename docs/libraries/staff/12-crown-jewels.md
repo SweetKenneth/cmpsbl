@@ -206,7 +206,7 @@ These are the **substrate's immune system, nervous system, and evolutionary engi
 | **HARVEST** | 4 | Data Harvest Orchestrator, Adaptive Source Discovery, Freshness Arbitrage, Cross-Lingual Intelligence Miner |
 | **TREATY** | 4 | Negotiation Protocol, Breach Penalty Calculator, Contract Evolution Mediator, Fair Negotiation Protocol |
 | **INCLUSIVE** | 3 | Adaptive Accessibility, Universal Input Interpreter, Cognitive Load Accessibility Governor |
-| **MODERNIZER** | 4 | MODERNIZER Engine, Shadow Evolution, Technical Debt Quantifier, Legacy Transcoding Bridge |
+| **EVOLUTION** | 4 | EVOLUTION Engine, Shadow Evolution, Technical Debt Quantifier, Legacy Transcoding Bridge |
 | **OBSERVABILITY** | 3 | Full-Stack Observability Fabric, Distributed Tracing Synthesizer, Cognitive Flame Graph |
 | **ANALYTICS** | 3 | Real-Time Analytics Fusion, Predictive Trend Crystallizer, Cohort Intelligence |
 | **RIPPLE** | 3 | Causal Event Propagation, Temporal Ripple Analyzer, Event Storm Dampener |

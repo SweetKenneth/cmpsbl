@@ -398,7 +398,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
               <div>
                 <h3 className="text-lg font-semibold mb-2">Add Specialists</h3>
                 <p className="text-sm text-muted-foreground">
-                  Build your team with specialized cognitives. Each additional cognitive is {formatPrice(COGNITIVE_PRICE)}.
+                  Build your agency with specialized cognitives. Each additional cognitive is {formatPrice(COGNITIVE_PRICE)}.
                 </p>
               </div>
 

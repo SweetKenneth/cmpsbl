@@ -46,7 +46,7 @@ These 11 Crown Jewels involve **ungated code-writing, architecture mutation, or 
 | 107 | S-CJ107 | Autonomous Operator | SYSTEM | Fully autonomous system operator |
 | 119 | S-CJ119 | Autonomous Workflow Composer | CORTEX | Auto-creates executable workflows |
 | 130 | S-CJ130 | Topology Mutation | SYSTEM | Runtime topology rewrite |
-| 137 | S-CJ137 | Shadow Evolution | MODERNIZER | Shadow code mutations |
+| 137 | S-CJ137 | Shadow Evolution | EVOLUTION | Shadow code mutations |
 | 140 | S-CJ140 | Entropy Reversal | SYSTEM | Automated codebase cleanup |
 
 **Re-activation criteria:** These will be re-enabled ONLY when:

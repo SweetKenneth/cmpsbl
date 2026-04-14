@@ -69,7 +69,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   "/solutions": [
     { href: "/enterprise", title: "Enterprise", description: "Custom deployment and dedicated infrastructure" },
     { href: "/store", title: "Store & Plans", description: "Browse the engine and agent catalog", badge: "Store" },
-    { href: "/contact", title: "Contact Sales", description: "Discuss a custom solution for your team" },
+    { href: "/contact", title: "Contact Sales", description: "Discuss a custom solution for your organization" },
     { href: "/architecture", title: "Substrate Architecture", description: "The topology powering every solution" },
   ],
   "/docs": [

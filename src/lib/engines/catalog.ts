@@ -227,7 +227,7 @@ export const ENGINES: Engine[] = [
     priceStandalone: 900, priceBundled: 500, priceDisplay: "$9", bundleDisplay: "$5",
     priceId: "price_1T6MgjQ7FtTiAL4aO0YcTEEh", icon: Cog, color: "38 90% 50%", tier: "CORE",
     edition: "Edition 001 of ∞",
-    briefing: "AUTOMATON turns repetition into reliability. Conditional workflows, scheduled execution, and event-driven automation that handles the boring stuff so your team handles the brilliant stuff.",
+    briefing: "AUTOMATON turns repetition into reliability. Conditional workflows, scheduled execution, and event-driven automation that handles the boring stuff so your organization handles the brilliant stuff.",
     capabilities: ["Visual workflow composition", "Conditional branching logic", "Scheduled task execution", "Event-driven triggers", "Retry & error handling", "Parallel execution paths"],
     threatLevel: "LOW — AUTOMATION", clearance: "LEVEL 5 — STANDARD",
   },

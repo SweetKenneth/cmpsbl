@@ -70,7 +70,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
         const welcomeMsg: ChatMessage = {
           id: 'welcome',
           role: 'system',
-          content: `Welcome to **${agency.name}**! I'm ${leader?.specialization || 'your team lead'}.\n\nType \`/help\` to see available commands, or just tell me what you need — I'll assign tasks to the right team members.\n\n**What we can do:** Research, SEO audits, content generation, data extraction, and analysis.`,
+          content: `Welcome to **${agency.name}**! I'm ${leader?.specialization || 'your agency lead'}.\n\nType \`/help\` to see available commands, or just tell me what you need — I'll assign tasks to the right team members.\n\n**What we can do:** Research, SEO audits, content generation, data extraction, and analysis.`,
           timestamp: new Date().toISOString(),
         };
         setMessages([welcomeMsg]);
@@ -124,7 +124,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
     const welcomeMsg: ChatMessage = {
       id: 'welcome_new',
       role: 'system',
-      content: `Chat cleared. I'm ${leader?.specialization || 'your team lead'}, ready to help.`,
+      content: `Chat cleared. I'm ${leader?.specialization || 'your agency lead'}, ready to help.`,
       timestamp: new Date().toISOString(),
     };
     setMessages([welcomeMsg]);
