@@ -1207,6 +1207,7 @@ func New${name}() *${name} {
 var _ = fmt.Sprintf
 
 ${methods}`;
+}
 
 function generateJava(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
