@@ -1273,6 +1273,7 @@ async function handleUniversalModule(
   params: Record<string, any>,
   headers: Record<string, string>,
   substrateState: SubstrateState,
+  resolvedUserId?: string,
 ): Promise<Response> {
   const tableMap = MODULE_TABLE_MAP[module];
   const personality = MODULE_PERSONALITY[module];
