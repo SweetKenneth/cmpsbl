@@ -313,6 +313,242 @@ const PipelineRoadmap = () => {
           </div>
         </section>
 
+        {/* Hidden Arsenal — Discovered Components */}
+        <section>
+          <SectionHeader title="HIDDEN ARSENAL" subtitle="Built systems not yet wired into the pipeline — discovered via codebase audit" />
+          
+          {/* Tier 1: Direct Pipeline Amplifiers */}
+          <h3 className="text-xs tracking-[0.2em] text-muted-foreground uppercase mb-3 mt-2">Tier 1 — Direct Pipeline Amplifiers</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <ArsenalCard
+              name="NERVE"
+              path="src/lib/nerve/"
+              description="Autonomic activation engine + Enhancement Mesh. Transforms idle capabilities into event-reactive behaviors via signal routing, confidence gating, and always-on ambient amplifiers."
+              pipelineUse="Wire NERVE signals into Lex rule triggers. Enhancement Mesh provides passive uplift to all 40 primitives during Trace execution."
+              color="text-cyan-400"
+            />
+            <ArsenalCard
+              name="RELAY"
+              path="src/lib/relay/ultimate/"
+              description="Adaptive route optimizer, circuit breaker matrix, delivery guarantor, message compression, protocol translation, rate governor, sector gateway."
+              pipelineUse="Relay hardens all phone-home and RIPPLE broadcasts with delivery guarantees, compression, and rate limiting. Circuit breaker matrix protects against cascade failures."
+              color="text-indigo-400"
+            />
+            <ArsenalCard
+              name="TREATY"
+              path="src/lib/treaty/ultimate/"
+              description="Compliance prover, contract negotiation, dispute resolution, multi-party arbitration, penalty calculus, SLA forecaster, term optimizer, audit chain."
+              pipelineUse="Treaty IS the developer's custom Lex rule framework. Developers author treaties (SLA contracts) that Lex enforces. Dispute resolution handles Lex verdict appeals."
+              color="text-rose-400"
+            />
+            <ArsenalCard
+              name="CONTROL PLANE"
+              path="src/lib/control-plane/"
+              description="Write-Ahead Log (WAL), atomic versioned persistence, INTEL aggregation, ENGINEER maintenance node, CLM bridge, rehydration engine."
+              pipelineUse="WAL captures every Lex verdict mutation for tamper-evidence and replay. Persistence layer gives the pipeline crash-recovery and state rehydration."
+              color="text-orange-400"
+            />
+            <ArsenalCard
+              name="COMPASS"
+              path="src/lib/compass/ultimate/"
+              description="Drift compass, spatial anomaly detector, trajectory analyzer, bearing calculator, geofence engine, exploration frontier, proximity graph."
+              pipelineUse="Drift Compass detects when Trace behavior drifts from its fingerprint baseline. Spatial anomaly detector feeds VISION. Geofence engine adds jurisdiction-aware Lex rules."
+              color="text-teal-400"
+            />
+            <ArsenalCard
+              name="HARVEST"
+              path="src/lib/harvest/ultimate/"
+              description="Crawler swarm, anticipatory prefetch, deduplication forge, freshness oracle, provenance ledger, quality furnace, pipeline choreographer."
+              pipelineUse="Harvest feeds Ascension's scanner with pre-crawled, deduplicated, quality-scored code. Provenance ledger anchors source lineage for AUDIT chain."
+              color="text-lime-400"
+            />
+          </div>
+
+          {/* Tier 2: Governance & Validation */}
+          <h3 className="text-xs tracking-[0.2em] text-muted-foreground uppercase mb-3">Tier 2 — Governance & Validation Hardening</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <ArsenalCard
+              name="EVOLUTION MESH"
+              path="src/lib/evolution-mesh/"
+              description="Snapshot service, diff service, integrity service, promotion service, mutation engine, hardening registry, telemetry."
+              pipelineUse="Replaces ad-hoc EVOLUTION wiring with a full service mesh: snapshot before Trace deploy, diff against baseline, integrity check, gated promotion, automatic rollback."
+              color="text-yellow-400"
+            />
+            <ArsenalCard
+              name="CAPABILITY LIFECYCLE"
+              path="src/lib/capability-lifecycle/"
+              description="Activation guide, behavioral verifier, constrained reporter, export bridge, Mana bridge, ledger builder, generic activation."
+              pipelineUse="Manages the full lifecycle from discovery → activation → verification → export. The Mana bridge directly connects capability state to Mana's attachment engine."
+              color="text-sky-400"
+            />
+            <ArsenalCard
+              name="DILIGENCE"
+              path="src/lib/diligence/"
+              description="Investor-grade test battery across terminal, governance, and command paths. Runs all handler suites in parallel."
+              pipelineUse="Automated pre-deployment validation. Run Diligence before any Trace promotion to ensure governance paths are intact."
+              color="text-fuchsia-400"
+            />
+            <ArsenalCard
+              name="CONTRACTS"
+              path="src/lib/contracts/"
+              description="Decode Contract system with typed interfaces and RFC specification for interpreter-primitive binding."
+              pipelineUse="Contracts define the interface between DECODE (conversational agent) and the pipeline. Ensures API stability as Lex expands."
+              color="text-violet-400"
+            />
+            <ArsenalCard
+              name="ERROR RECOVERY"
+              path="src/lib/error-recovery/"
+              description="Global fetch interceptor for 429/5xx detection, rate-limit event emission, automatic retry with backoff."
+              pipelineUse="Wraps all pipeline HTTP calls (phone-home, NEXUS routing, RELAY broadcasts) with automatic recovery. Prevents silent failures."
+              color="text-red-300"
+            />
+            <ArsenalCard
+              name="PHANTOM"
+              path="src/lib/phantom/ultimate/"
+              description="10-system privacy suite: differential privacy, synthetic data forge, anonymization, privacy budget, data masking, canary tokens, consent registry, re-identification scoring, jurisdictional routing, telemetry."
+              pipelineUse="When Trace handles user data, PHANTOM enforces privacy automatically. Canary tokens detect data leaks. Jurisdictional router ensures Lex rules respect GDPR/CCPA boundaries."
+              color="text-gray-400"
+            />
+          </div>
+
+          {/* Tier 3: Production Infrastructure */}
+          <h3 className="text-xs tracking-[0.2em] text-muted-foreground uppercase mb-3">Tier 3 — Production Infrastructure</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <ArsenalCard
+              name="FORGE"
+              path="src/lib/forge/ultimate/"
+              description="Artifact foundry, blueprint genome, collaborative forge, fabrication pipeline, material science, pattern library, forge memory."
+              pipelineUse="Forge generates the actual deployment artifacts from Trace specs. Blueprint genome stores proven attachment patterns for reuse."
+              color="text-amber-300"
+            />
+            <ArsenalCard
+              name="FACTORY"
+              path="src/lib/factory/"
+              description="Collision engine, genesis seed engine, template mutation engine, vertical factory, incubator, product compiler, licensing engine."
+              pipelineUse="Collision Engine merges two codebases discovering capabilities neither has alone. Template Mutation Engine evolves attachment patterns across generations. Product Compiler graduates discoveries into products."
+              color="text-emerald-300"
+            />
+            <ArsenalCard
+              name="TELEMETRY"
+              path="src/lib/telemetry/"
+              description="Aggregate core, analytics events, error telemetry, web vitals, contract-based telemetry schema."
+              pipelineUse="Unified telemetry across the entire pipeline. Every Lex verdict, Trace deployment, VISION anomaly, and phone-home event flows through one telemetry contract."
+              color="text-blue-300"
+            />
+            <ArsenalCard
+              name="CASCADE"
+              path="src/lib/cascade/"
+              description="Coder logs, project management, sandbox execution environment."
+              pipelineUse="Sandbox provides isolated execution for SHADOW validation of Traces before production promotion."
+              color="text-pink-400"
+            />
+            <ArsenalCard
+              name="QUARRY"
+              path="src/lib/quarry/"
+              description="Pack density analysis, template policy enforcement, type system."
+              pipelineUse="Ensures attachment packs respect density limits and template policies before Lex approval."
+              color="text-stone-400"
+            />
+            <ArsenalCard
+              name="CLOCKLESS RADIO"
+              path="src/lib/clockless-radio/"
+              description="DJ engine, SFX system, TTS, track management — event-driven audio signaling."
+              pipelineUse="Provides audible alerts for critical Lex verdicts (detach, phone-home). Developer dashboard gets sonic feedback on pipeline state changes."
+              color="text-purple-300"
+            />
+          </div>
+        </section>
+
+        {/* Updated Architecture Diagram */}
+        <section>
+          <SectionHeader title="COMPLETE ARCHITECTURE" subtitle="Full system topology with all discovered components" />
+          <div className="bg-card border border-border rounded-lg p-6 overflow-x-auto">
+            <pre className="text-xs md:text-sm leading-relaxed text-foreground whitespace-pre">
+{`
+  ┌─────────────────────────────────────────────────────────────────────────────────────┐
+  │                    CMPSBL® COMPLETE SYSTEM TOPOLOGY v2.0.0                          │
+  │                    U.S. Patent App. No. 64/029,678 & 64/031,637                     │
+  └─────────────────────────────────────────────────────────────────────────────────────┘
+
+  ┌─ INTAKE ──────────────────────────────────────────────────────────────────────────┐
+  │                                                                                   │
+  │  HARVEST ──▶ ASCENSION ──▶ FACTORY ──▶ CAPABILITY LIFECYCLE                       │
+  │  (crawl,     (scan,        (collision,  (activation, ledger,                      │
+  │   dedup,      classify,     genesis,     behavioral verify,                       │
+  │   quality)    fingerprint)  mutation)    Mana bridge)                              │
+  │                                                                                   │
+  └──────────────────────────────────────────┬────────────────────────────────────────┘
+                                             │
+                                             ▼
+  ┌─ EXECUTION ───────────────────────────────────────────────────────────────────────┐
+  │                                                                                   │
+  │  ┌────────────────────────────────────────────────────────────────────────────┐    │
+  │  │                         MANA ENGINE                                       │    │
+  │  │  DEFENSE · CORTEX · NEXUS · BRAIN · ORACLE                                │    │
+  │  │  ──────────────────────────────────────                                   │    │
+  │  │  + NERVE (auto-activation + enhancement mesh)                             │    │
+  │  │  + COMPASS (drift detection + spatial anomaly)                            │    │
+  │  │  + FORGE (artifact generation + blueprint genome)                         │    │
+  │  └────────────────────────────────────────────────────────────────────────────┘    │
+  │                              │                                                    │
+  │                    ┌─────────┴─────────┐                                          │
+  │                    ▼                   ▼                                           │
+  │             ┌──────────┐        ┌──────────┐                                      │
+  │             │  TRACE   │        │ PURE L2  │                                      │
+  │             │  (SDK)   │        │ (no SDK) │                                      │
+  │             └──────────┘        └──────────┘                                      │
+  │                                                                                   │
+  └──────────────────────────────────────────┬────────────────────────────────────────┘
+                                             │
+                                             ▼
+  ┌─ GOVERNANCE ──────────────────────────────────────────────────────────────────────┐
+  │                                                                                   │
+  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────────┐              │
+  │  │   LEX   │──│  GATE   │──│ TREATY  │──│ PHANTOM  │──│ QUARRY   │              │
+  │  │governor │  │enforcer │  │SLA/rules│  │ privacy  │  │ density  │              │
+  │  │verdicts │  │arm      │  │disputes │  │ canary   │  │ policy   │              │
+  │  └────┬────┘  └─────────┘  └─────────┘  └──────────┘  └──────────┘              │
+  │       │                                                                           │
+  │       ▼ every verdict                                                             │
+  │  ┌─────────────────────────────────────────────────────────────────────────────┐  │
+  │  │  AUDIT CHAIN ──▶ CONTROL PLANE WAL ──▶ CONTRACTS (interface stability)     │  │
+  │  └─────────────────────────────────────────────────────────────────────────────┘  │
+  │                                                                                   │
+  └──────────────────────────────────────────┬────────────────────────────────────────┘
+                                             │
+                                             ▼
+  ┌─ RESPONSE ────────────────────────────────────────────────────────────────────────┐
+  │                                                                                   │
+  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────────┐              │
+  │  │ VISION  │──│ RIPPLE  │──│  MEDIC  │──│  RELAY   │──│  ERROR   │              │
+  │  │perceive │  │broadcast│  │ recover │  │ deliver  │  │ RECOVERY │              │
+  │  │baseline │  │phone-   │  │quarantin│  │guarantee │  │ retry    │              │
+  │  │anomaly  │  │home     │  │playbook │  │compress  │  │ intercept│              │
+  │  └─────────┘  └─────────┘  └─────────┘  └──────────┘  └──────────┘              │
+  │                                                                                   │
+  └──────────────────────────────────────────┬────────────────────────────────────────┘
+                                             │
+                                             ▼
+  ┌─ VALIDATION ──────────────────────────────────────────────────────────────────────┐
+  │                                                                                   │
+  │  ┌─────────┐  ┌─────────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐         │
+  │  │ SHADOW  │──│  EVOLUTION  │──│DILIGENCE │──│ CASCADE  │──│TELEMETRY │         │
+  │  │sandbox  │  │  MESH       │──│ test     │  │ sandbox  │  │ unified  │         │
+  │  │mutation │  │snapshot/diff│  │ battery  │  │ isolated │  │ contract │         │
+  │  │ probes  │  │promote/roll │  │ govnce   │  │ exec     │  │ events   │         │
+  │  └─────────┘  └─────────────┘  └──────────┘  └──────────┘  └──────────┘         │
+  │                                                                                   │
+  └──────────────────────────────────────────────────────────────────────────────────┘
+
+  ┌─ INFRASTRUCTURE ──────────────────────────────────────────────────────────────────┐
+  │  BOOT · CLOCK · GRAPH · HEARTBEAT · NERVE MESH · CLOCKLESS RADIO                 │
+  │  (ordered startup, causal ordering, dependency DAG, health pulse, ambient uplift) │
+  └───────────────────────────────────────────────────────────────────────────────────┘
+`}
+            </pre>
+          </div>
+        </section>
+
         {/* Patent Unification */}
         <section>
           <SectionHeader title="PATENT UNIFICATION" subtitle="Two patents, one system, two deployment modes" />
