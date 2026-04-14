@@ -19047,6 +19047,7 @@ export type Database = {
           package_hash: string | null
           package_name: string | null
           registered_at: string | null
+          registrant_org: string | null
           status: Database["public"]["Enums"]["lex_registry_status"] | null
           updated_at: string | null
         }
@@ -19056,6 +19057,7 @@ export type Database = {
           package_hash?: string | null
           package_name?: string | null
           registered_at?: string | null
+          registrant_org?: string | null
           status?: Database["public"]["Enums"]["lex_registry_status"] | null
           updated_at?: string | null
         }
@@ -19065,6 +19067,7 @@ export type Database = {
           package_hash?: string | null
           package_name?: string | null
           registered_at?: string | null
+          registrant_org?: string | null
           status?: Database["public"]["Enums"]["lex_registry_status"] | null
           updated_at?: string | null
         }
