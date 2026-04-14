@@ -82,7 +82,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.history [n] — Deep history with output data ═══
-  registerHandler('mesh.history', async (args?: string) => {
+  registerHandler('mesh.history', async (args?: Record<string, unknown>) => {
     const { getRecentReceipts } = await import('@/lib/substrate/intent-mesh');
     const limit = parseInt(args || '25', 10);
     const receipts = await getRecentReceipts(Math.min(limit, 100));
@@ -110,7 +110,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.replay <id> — Replay a specific receipt's intent ═══
-  registerHandler('mesh.replay', async (args?: string) => {
+  registerHandler('mesh.replay', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) {
       return { success: false, error: 'Usage: mesh.replay <receipt_id>. Get IDs from mesh.history.' };
     }
@@ -157,7 +157,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.save <name> — Save latest successful receipt as pipeline ═══
-  registerHandler('mesh.save', async (args?: string) => {
+  registerHandler('mesh.save', async (args?: Record<string, unknown>) => {
     const name = args?.trim();
     if (!name) {
       return { success: false, error: 'Usage: mesh.save <pipeline_name>. Saves the most recent successful receipt as a reusable pipeline.' };
@@ -215,7 +215,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.run <name_or_id> — Run a saved pipeline ═══
-  registerHandler('mesh.run', async (args?: string) => {
+  registerHandler('mesh.run', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) {
       return { success: false, error: 'Usage: mesh.run <pipeline_name_or_id>. See mesh.pipelines for available.' };
     }
@@ -294,7 +294,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.refine — Multi-turn refined broadcast ═══
-  registerHandler('mesh.refine', async (args?: string) => {
+  registerHandler('mesh.refine', async (args?: Record<string, unknown>) => {
     const { isMeshEnabled, resolveWithRefinement } = await import('@/lib/substrate/intent-mesh');
     if (!isMeshEnabled()) {
       return { success: false, error: 'Intent Mesh is disabled. Run mesh.on first.' };
@@ -324,7 +324,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.chains — Discover composite resolver chains ═══
-  registerHandler('mesh.chains', async (args?: string) => {
+  registerHandler('mesh.chains', async (args?: Record<string, unknown>) => {
     const { discoverChains, getChainSummary } = await import('@/lib/substrate/intent-mesh');
     
     if (args?.trim()) {
@@ -360,7 +360,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.chain.run <seed_keys> — Execute the optimal chain for given inputs ═══
-  registerHandler('mesh.chain.run', async (args?: string) => {
+  registerHandler('mesh.chain.run', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) {
       return { success: false, error: 'Usage: mesh.chain.run <key1,key2> — e.g., mesh.chain.run ip,actor_id' };
     }
@@ -425,7 +425,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.discover <module> — Self-discovery for one module ═══
-  registerHandler('mesh.discover.module', async (args?: string) => {
+  registerHandler('mesh.discover.module', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) return { success: false, error: 'Usage: mesh.discover.module <MODULE_NAME>' };
     const { runModuleDiscovery, persistProposals } = await import('@/lib/substrate/intent-mesh');
     const result = await runModuleDiscovery(args.trim());
@@ -470,7 +470,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.approve <resolver_id> — Approve a proposal ═══
-  registerHandler('mesh.approve', async (args?: string) => {
+  registerHandler('mesh.approve', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) return { success: false, error: 'Usage: mesh.approve <resolver_id>' };
     const { approveProposal } = await import('@/lib/substrate/intent-mesh');
     const ok = await approveProposal(args.trim());
@@ -478,7 +478,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.reject <resolver_id> — Reject a proposal ═══
-  registerHandler('mesh.reject', async (args?: string) => {
+  registerHandler('mesh.reject', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) return { success: false, error: 'Usage: mesh.reject <resolver_id>' };
     const { rejectProposal } = await import('@/lib/substrate/intent-mesh');
     const ok = await rejectProposal(args.trim());
@@ -486,7 +486,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.scheduler — View/control auto-expansion scheduler ═══
-  registerHandler('mesh.scheduler', async (args?: string) => {
+  registerHandler('mesh.scheduler', async (args?: Record<string, unknown>) => {
     const { meshScheduler } = await import('@/lib/substrate/intent-mesh');
     if (args?.trim() === 'start') { meshScheduler.start(); return { success: true, data: { message: 'Scheduler started' } }; }
     if (args?.trim() === 'stop') { meshScheduler.stop(); return { success: true, data: { message: 'Scheduler stopped' } }; }
@@ -564,7 +564,7 @@ export function registerMeshHandlers() {
   });
 
   // ═══ mesh.affinity <module> — Get affinity for specific module ═══
-  registerHandler('mesh.affinity.module', async (args?: string) => {
+  registerHandler('mesh.affinity.module', async (args?: Record<string, unknown>) => {
     if (!args?.trim()) return { success: false, error: 'Usage: mesh.affinity.module <MODULE_NAME>' };
     const { getModuleAffinity } = await import('@/lib/substrate/intent-mesh');
     const result = await getModuleAffinity(args.trim().toUpperCase());

@@ -125,7 +125,7 @@ export function registerEncodeModuleHandlers(): void {
   });
 
   // encode.run — Lightweight CLI endpoint
-  registerHandler('encode.run', async (args?: string) => {
+  registerHandler('encode.run', async (args?: Record<string, unknown>) => {
     const { executeEncodeCLI } = await import('@/lib/substrate/encode-module/orchestration');
     const parts = (args || '').trim().split(/\s+/);
     const command = (parts[0] || 'status') as any;
@@ -156,14 +156,14 @@ export function registerEncodeModuleHandlers(): void {
   });
 
   // encode.contract — Build awareness contract for a module
-  registerHandler('encode.contract', async (args?: string) => {
+  registerHandler('encode.contract', async (args?: Record<string, unknown>) => {
     const { buildAwarenessContract } = await import('@/lib/substrate/encode-module/orchestration');
     const module = (args || '').trim() || 'encode';
     return { success: true, data: buildAwarenessContract(module) };
   });
 
   // encode.mode — Set ENCODE mode
-  registerHandler('encode.mode', async (args?: string) => {
+  registerHandler('encode.mode', async (args?: Record<string, unknown>) => {
     const { setEncodeMode, getEncodeMode } = await import('@/lib/substrate/encode-module/orchestration');
     const mode = (args || '').trim();
     if (!mode) return { success: true, data: { current_mode: getEncodeMode() } };
@@ -270,7 +270,7 @@ export function registerEncodeModuleHandlers(): void {
   });
 
   // encode.navigate — Substrate Navigator: resolve intent to file targets
-  registerHandler('encode.navigate', async (args?: string) => {
+  registerHandler('encode.navigate', async (args?: Record<string, unknown>) => {
     const query = (args || '').trim();
     if (!query) {
       return {
@@ -304,7 +304,7 @@ export function registerEncodeModuleHandlers(): void {
   });
 
   // encode.whereis — Quick "where does X live?" lookup
-  registerHandler('encode.whereis', async (args?: string) => {
+  registerHandler('encode.whereis', async (args?: Record<string, unknown>) => {
     const query = (args || '').trim();
     if (!query) {
       return { success: false, error: 'Usage: encode.whereis <module or concept>' };
