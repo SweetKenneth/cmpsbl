@@ -87,12 +87,14 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_ANON_KEY")!
   );
 
+  // Use public view (excludes registrant_email, accessible to anon)
+  const viewName = "lex_registry_public";
   const selectCols = "package_name, package_hash, status, registrant_org, registered_at";
 
   // FIX #2: Hash = authoritative (single), Name = convenience (array)
   if (hash) {
     const { data, error } = await supabase
-      .from("lex_registry")
+      .from(viewName)
       .select(selectCols)
       .eq("package_hash", hash)
       .maybeSingle();
