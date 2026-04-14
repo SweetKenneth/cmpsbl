@@ -215,8 +215,9 @@ async function test5_sessionUsesV1Integrations(): Promise<void> {
   await session.detach(hostModule as unknown as Record<string, unknown>);
   assert(session.getState() === 'detached', 'W5: Session detached');
 
-  const detachEvents = auditLog.filter(e => e.source.includes('test-session') && e.eventType.includes('detach'));
-  assert(detachEvents.length >= 1, 'W5: Session detach events in audit chain');
+  const auditLogAfterDetach = getAuditLog();
+  const detachEvents = auditLogAfterDetach.filter(e => e.source.includes('test-session') && e.eventType.includes('detach'));
+  assert(detachEvents.length >= 1, 'W5: Session detach events in audit chain', `count=${detachEvents.length}`);
 
   session.destroy();
 }
