@@ -98,7 +98,8 @@ export function ResultsStep({ stats, onReset }: Props) {
     setExporting(true);
 
     try {
-      const caps: CapabilityForExport[] = items.map(item => ({
+      const caps: CapabilityForExport[] = items.map((item, i) => ({
+        id: `asc_${i}_${Date.now().toString(36)}`,
         name: item.name.replace(/\s+/g, '_'),
         tier: item.tier,
         cjpiScore: item.score,
@@ -109,18 +110,18 @@ export function ResultsStep({ stats, onReset }: Props) {
         capabilityType: 'ascended',
       }));
 
-      const blob = await generateCapabilityPackZip(
-        caps,
-        sourceLanguage as ExportLanguage,
-        sourceFiles,
-      );
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `ascended-capabilities-${Date.now()}.zip`;
-      a.click();
-      URL.revokeObjectURL(url);
+      await generateCapabilityPackZip({
+        targetLanguage: sourceLanguage,
+        capabilities: caps,
+        candidateName: 'ascension_export',
+        userSourceFiles: sourceFiles.map(f => ({
+          name: f.name,
+          extension: f.name.split('.').pop() || '',
+          language: sourceLanguage,
+          content: f.content,
+        })),
+        sourceLanguage,
+      });
 
       toast({ title: 'Export complete', description: `${items.length} capabilities exported.` });
     } catch (err) {
