@@ -3088,11 +3088,21 @@ function generateOrchestrator(
   lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
   lines.push('');
 
-  const hasCB = selectedPrimitives.some(p => p.primitiveId === 'system' || p.primitiveId === 'failsafe' || p.primitiveId === 'core');
-  const hasMem = selectedPrimitives.some(p => p.primitiveId === 'memory');
-  const hasDef = selectedPrimitives.some(p => p.primitiveId === 'defense');
-  const hasObs = selectedPrimitives.some(p => p.primitiveId === 'beacon' || p.primitiveId === 'echo');
-  const hasGov = selectedPrimitives.some(p => p.primitiveId === 'conscience' || p.primitiveId === 'sovereign');
+  // Detect which L2 capability classes were actually imported
+  const importedClasses = new Set<string>();
+  for (const p of selectedPrimitives) {
+    const wrapper = PRIMITIVE_WRAPPERS[p.primitiveId];
+    if (wrapper) {
+      const parsed = parseImport(wrapper.imports);
+      parsed.symbols.forEach(s => importedClasses.add(s));
+    }
+  }
+
+  const hasCB = importedClasses.has('CircuitBreaker');
+  const hasMem = importedClasses.has('PersistentMemory');
+  const hasDef = importedClasses.has('DefenseLayer') || importedClasses.has('DefenseGate');
+  const hasObs = importedClasses.has('HealthBeacon') || importedClasses.has('MetricsCollector');
+  const hasGov = importedClasses.has('GovernanceGate') || importedClasses.has('GovernancePolicy');
 
   if (lang === 'php') {
     lines.push(generatePhpOrchestrator(boundaries, attachmentPlan, fingerprint, { hasCB, hasMem, hasDef, hasObs, hasGov }));
