@@ -14,7 +14,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-// ═══════════════════════════════════════════════════════════════════════════════
+import { getAdapter } from '../factory/generate-refurbished-code';
 // §1 — Identifier Obfuscation Map
 // ═══════════════════════════════════════════════════════════════════════════════
 
