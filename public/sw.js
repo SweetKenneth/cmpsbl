@@ -1,12 +1,12 @@
 /**
  * Service Worker — CMPSBL Substrate
  * Item #25: Scan result caching for offline/slow connections
- * v10: DECODE persistent session context — full record injection for follow-ups
+ * v11: Force cache bust — terminology & SEO audit (April 14, 2026)
  */
 
-const CACHE_NAME = 'cmpsbl-v10';
-const SCAN_CACHE = 'cmpsbl-scans-v10';
-const STATIC_CACHE = 'cmpsbl-static-v10';
+const CACHE_NAME = 'cmpsbl-v11';
+const SCAN_CACHE = 'cmpsbl-scans-v11';
+const STATIC_CACHE = 'cmpsbl-static-v11';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [
