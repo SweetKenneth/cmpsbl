@@ -57,47 +57,8 @@ export function SimpleUploadStep({ onComplete }: Props) {
         return;
       }
 
-      // Clear previous cycle
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any)
-          .from('artifact_registry')
-          .delete()
-          .eq('user_id', user.id)
-          .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
-      } catch { /* non-fatal */ }
-
-      // Register candidate
-      const langKey = analysis.language.toLowerCase().replace(/\s+/g, '');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any).from('artifact_registry').insert({
-        user_id: user.id,
-        name: `CANDIDATE_${analysis.name}`,
-        slug: `candidate-${analysis.name.toLowerCase()}-${Date.now().toString(36)}`,
-        tier: 'candidate',
-        category: 'proprietary-evolution',
-        description: `${analysis.language} — ${analysis.fileCount} files, ${analysis.sizeKb}KB`,
-        metadata: {
-          phase: 'ingest',
-          language: analysis.language,
-          source_export_language: langKey,
-          file_count: analysis.fileCount,
-          resolver_count: analysis.resolverCount,
-          size_kb: analysis.sizeKb,
-          ingested_at: new Date().toISOString(),
-          source_files: analysis.ingestedFiles.map(f => ({
-            name: f.name,
-            extension: f.extension,
-            language: f.language,
-            size_bytes: f.sizeBytes,
-            char_count: f.charCount,
-            truncated: f.truncated,
-            content: f.content,
-          })),
-        },
-      });
-
-      if (error) throw new Error(error.message);
+      // C1: No broad delete here — run-scoped cleanup handled by orchestrator resetRun()
+      // Upload step only ingests and passes to orchestrator
 
       setDone(true);
       setTimeout(() => onComplete(analysis), 600);

@@ -1,8 +1,9 @@
 /**
- * ProcessingStep — Orchestrator-driven progress (#12, #14)
+ * ProcessingStep — Orchestrator-driven progress
  * 
- * #14: Progress tied to real milestones from the orchestrator.
- * UI smoothing still present but anchored to actual backend transitions.
+ * D1: Calls single executeRun() — no orchestration in UI
+ * D2: Uses AbortController
+ * B3: Progress derived from run milestones only
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -11,9 +12,8 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import {
-  storeCandidate,
-  runAnalysis,
-  getResults,
+  executeRun,
+  getProgressFromMilestones,
   type AscensionRun,
   type AscensionResults,
 } from '@/lib/ascension/orchestrator';
@@ -29,47 +29,52 @@ export function ProcessingStep({ run, onComplete }: Props) {
   const [phase, setPhase] = useState<'preparing' | 'running' | 'done'>('preparing');
   const [discovered, setDiscovered] = useState(0);
   const [topScore, setTopScore] = useState(0);
-  const abortRef = useRef({ current: false });
+  const executedRef = useRef(false);
   const { toast } = useToast();
 
-  const runPipeline = useCallback(async () => {
+  const runPipeline = useCallback(async (signal: AbortSignal) => {
     if (!run) {
       toast({ title: 'No run context', variant: 'destructive' });
       return;
     }
 
-    try {
-      // #14: Store candidate — real milestone
-      await storeCandidate(run);
-      setProgress(10);
-      setStatusMessage('Code stored. Starting analysis…');
+    // A2: Prevent double invocation
+    if (executedRef.current) return;
+    executedRef.current = true;
 
+    try {
       setPhase('running');
 
-      // #14: Progress callback anchored to real backend transitions
-      await runAnalysis(run, (pct, msg) => {
-        setProgress(pct);
-        setStatusMessage(msg);
-        setDiscovered(run.discoveredCount);
-        setTopScore(run.topScore);
-      }, abortRef.current);
+      // D1: Single entry point — UI is not a controller
+      const results = await executeRun(run, {
+        onRunUpdate: (updatedRun) => {
+          setDiscovered(updatedRun.discoveredCount);
+          setTopScore(updatedRun.topScore);
+          // B3: Progress derived from milestones
+          setProgress(getProgressFromMilestones(updatedRun));
+        },
+        onProgress: (pct, msg) => {
+          setProgress(pct);
+          setStatusMessage(msg);
+        },
+      }, signal);
 
       setPhase('done');
-
-      // #15: Canonical results
-      const results = getResults(run);
 
       setTimeout(() => {
         onComplete(results);
       }, 1000);
     } catch (err) {
+      if (signal.aborted) return;
       toast({ title: 'Analysis error', description: String(err), variant: 'destructive' });
     }
   }, [run, toast, onComplete]);
 
   useEffect(() => {
-    runPipeline();
-    return () => { abortRef.current.current = true; };
+    // D2: AbortController for clean cancellation
+    const controller = new AbortController();
+    runPipeline(controller.signal);
+    return () => { controller.abort(); };
   }, [runPipeline]);
 
   if (phase === 'done') {
@@ -97,7 +102,7 @@ export function ProcessingStep({ run, onComplete }: Props) {
         </p>
       </div>
 
-      {/* Main progress — #14: anchored to milestones */}
+      {/* Main progress — B3: derived from milestones */}
       <div className="space-y-4">
         <Progress value={progress} className="h-3 rounded-full" />
         <div className="flex items-center justify-between">
