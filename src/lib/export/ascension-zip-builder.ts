@@ -1,18 +1,12 @@
 /**
- * CMPSBL® Ascension ZIP Builder v2.0
+ * CMPSBL® Ascension ZIP Builder v3.0
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Enterprise-grade export builder for the Ascension Lab.
- * Generates a unified ZIP with professional folder structure,
- * premium-branded HTML docs, lifecycle artifacts, and Mana bridge data.
+ * Streamlined export: source code, proof, manifest, license.
+ * No bloated docs folders — just what developers need.
  *
  * Folder Structure:
  *   /src/             — Original + ascended source (dual-layer)
- *   /docs/            — Premium HTML guides & certificates
- *   /docs/guides/     — Detailed technical guides
- *   /verification/    — Ledger, proofs, test harness
- *   /reports/         — Machine-readable reports
- *   /lifecycle/       — Changelog, removal, bundle info
- *   /_runtime/        — Type definitions
+ *   /verification/    — CJPI certificate, test harness, Mana bridge
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -20,14 +14,8 @@
 import type { RestorationReport } from '@/lib/factory/restoration-docs';
 import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
 import { generateRefurbishedCode as generateAscendedCode, generateLicense, getRefurbishedExtension as getAscendedExtension } from '@/lib/factory/generate-refurbished-code';
-import { wrapPremiumDocPage } from './premium-html-wrapper';
-import { wrapPremiumHtml, type PremiumDocInput } from './premium-html-wrapper';
-import { generateUniversalUserGuide } from './universal-user-guide';
 import { generateProofCertificate } from './proof-certificate';
 import { serializeCmpsblManifest } from './cmpsbl-manifest';
-import { generateIntegrationGuide } from './integration-guide-generator';
-import { generateHtmlReport } from '@/lib/factory/html-report-generator';
-import { generateExportArtifacts, generateDiscoveryContext } from './export-artifacts-generator';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
