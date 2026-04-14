@@ -1,7 +1,7 @@
 {
   "name": "@cmpsbl/sdk",
   "version": "3.0.0",
-  "description": "CMPSBL\u00ae Engine SDK \u2014 Authenticated client for hosted CMPSBL engines (GODMIND, FORTRESS, etc.)",
+  "description": "CMPSBL® Engine SDK — Unified SubstrateClient for cognitive loop operations (Memory, Dream, Discovery) and diagnostics across Web, CLI, and API surfaces.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -16,7 +16,7 @@
     "sdk",
     "engine",
     "ai",
-    "godmind",
+    "cognitive-loop",
     "governed-cognitive-infrastructure",
     "substrate",
     "promptfluid"
