@@ -1071,11 +1071,9 @@ function wrapWithNexusCostGate(
 function wrapWithBrainConfidenceGate(
   originalFn: Function, functionName: string, point: AttachmentPoint
 ): Function {
-  return function manaBrainConfidence(this: unknown, ...args: unknown[]) {
-    point.invocations++;
-    const result = originalFn.apply(this, args);
-    if (result && typeof result === 'object' && 'confidence' in (result as Record<string, unknown>)) {
-      const conf = (result as Record<string, unknown>).confidence;
+  const checkConfidence = (val: unknown): void => {
+    if (val && typeof val === 'object' && 'confidence' in (val as Record<string, unknown>)) {
+      const conf = (val as Record<string, unknown>).confidence;
       if (typeof conf === 'number' && conf < 0.5) {
         point.observed++;
         emitTelemetry('brain_confidence_gate', functionName, 'observed', {
@@ -1083,8 +1081,17 @@ function wrapWithBrainConfidenceGate(
         });
       }
     }
-    emitTelemetry('brain_confidence_gate', functionName, 'invoked');
-    return result;
+  };
+
+  return function manaBrainConfidence(this: unknown, ...args: unknown[]) {
+    point.invocations++;
+    const result = originalFn.apply(this, args);
+
+    return withAsyncSafety(
+      result,
+      (resolved) => { checkConfidence(resolved); },
+      () => { /* error path — no confidence to check */ },
+    );
   };
 }
 
