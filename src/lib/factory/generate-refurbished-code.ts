@@ -3276,9 +3276,29 @@ export function generateRefurbishedCode(
     layer2Parts.push(adapter.comment(warnSummary));
   }
 
-  // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
+  // ── PHP: Single opening tag ────────────────────────────────────────
+  // PHP files need exactly ONE <?php tag at the very top.
+  const phpOpenTag = detected.toLowerCase() === 'php' ? '<?php\n' : '';
+
+  // ── Orchestrator: Connects Layer 2 to Layer 1 ────────────────────
+  // Generates the CMPSBLOrchestrator class that wraps the original code's
+  // entry points and integrates L2 capabilities (telemetry, governance,
+  // circuit breaking, memory) with L1 function calls.
+  const orchestrator = generateOrchestrator(
+    detected,
+    adapter,
+    boundaries,
+    selectedPrimitives,
+    attachmentPlan,
+    fingerprint,
+  );
+
+  // ── Final Assembly: Layer 2 + Orchestrator + Layer 1 (verbatim) ───
   return [
+    phpOpenTag,
     layer2Code,
+    '',
+    orchestrator,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
