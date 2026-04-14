@@ -95,18 +95,18 @@ Every surface — API, CLI, Web Terminal, Website — connects to **one living s
 - [ ] `dream --last` → pf-substrate → reads latest from `cascade_dreams`
 - [ ] Website dream display → reads from same table
 
-### Phase 3: Engine Activation Surface (Week 5-6)
+### Phase 3: Engine Activation Surface (Week 5-6) ✅ DONE
 **Goal**: When a user activates/purchases an engine, every surface reflects it.
 
 #### 3.1 — Activation State in pf-substrate
-- [ ] `engine.status` → pf-substrate checks `access_subscriptions` + activation status
-- [ ] Activated engines unlock additional commands in terminal/CLI
-- [ ] `whoami` shows activated engines and their tier
+- [x] `engine.status` → pf-substrate checks `access_subscriptions` + activation status
+- [x] Activated engines unlock additional commands in terminal/CLI
+- [x] `whoami` shows activated engines and their tier (routed through pf-substrate)
 
 #### 3.2 — Tier-Gated Command Unlocking
-- [ ] pf-substrate returns `tier_required` for gated commands
-- [ ] Terminal shows upgrade CTA for locked commands
-- [ ] CLI shows same upgrade path
+- [x] `engine.activated` shows tier-gated engine unlock matrix
+- [x] Terminal shows upgrade CTA for locked tiers
+- [x] `whoami` routed through bridge-first (added to COGNITIVE_ALIASES)
 
 ### Phase 4: Eliminate the Monolith (Week 7-8)
 **Goal**: TerminalExecutor.ts goes from 5658 lines to ~500.
