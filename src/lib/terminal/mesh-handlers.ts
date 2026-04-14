@@ -158,7 +158,7 @@ export function registerMeshHandlers() {
 
   // ═══ mesh.save <name> — Save latest successful receipt as pipeline ═══
   registerHandler('mesh.save', async (args?: Record<string, unknown>) => {
-    const name = args?.trim();
+    const name = ((args?.input as string) || '').trim();
     if (!name) {
       return { success: false, error: 'Usage: mesh.save <pipeline_name>. Saves the most recent successful receipt as a reusable pipeline.' };
     }
@@ -327,7 +327,7 @@ export function registerMeshHandlers() {
   registerHandler('mesh.chains', async (args?: Record<string, unknown>) => {
     const { discoverChains, getChainSummary } = await import('@/lib/substrate/intent-mesh');
     
-    if (args?.trim()) {
+    if (((args?.input as string) || '').trim()) {
       // Discover chains for specific seed inputs
       const seeds = ((args?.input as string) || '').split(',').map(s => s.trim());
       const chains = discoverChains(seeds, { maxDepth: 4, maxChains: 10 });
@@ -488,9 +488,10 @@ export function registerMeshHandlers() {
   // ═══ mesh.scheduler — View/control auto-expansion scheduler ═══
   registerHandler('mesh.scheduler', async (args?: Record<string, unknown>) => {
     const { meshScheduler } = await import('@/lib/substrate/intent-mesh');
-    if (args?.trim() === 'start') { meshScheduler.start(); return { success: true, data: { message: 'Scheduler started' } }; }
-    if (args?.trim() === 'stop') { meshScheduler.stop(); return { success: true, data: { message: 'Scheduler stopped' } }; }
-    if (args?.trim() === 'run') { const r = await meshScheduler.runOnce(); return { success: true, data: { message: 'Full cycle complete', ...r } }; }
+    const cmd = ((args?.input as string) || '').trim();
+    if (cmd === 'start') { meshScheduler.start(); return { success: true, data: { message: 'Scheduler started' } }; }
+    if (cmd === 'stop') { meshScheduler.stop(); return { success: true, data: { message: 'Scheduler stopped' } }; }
+    if (cmd === 'run') { const r = await meshScheduler.runOnce(); return { success: true, data: { message: 'Full cycle complete', ...r } }; }
     return { success: true, data: meshScheduler.getState() };
   });
 
