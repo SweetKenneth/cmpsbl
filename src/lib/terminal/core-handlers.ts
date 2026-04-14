@@ -124,7 +124,14 @@ ${lines.join('\n')}
   registerHandler('synthesize', bridge('brain', 'synthesize'));
 
   // ═══ DOCTOR — Full 40-Primitive substrate connectivity validator (Phase 5) ═══
-  registerHandler('doctor', async () => {
+  // Usage: doctor         → full 40-primitive check
+  //        doctor --quick  → organs-only fast check (12 primitives)
+  //        doctor --engines → engines + agents only (16 primitives)
+  registerHandler('doctor', async (args?: Record<string, unknown>) => {
+    const rawArgs = (args?._args as string[]) || [];
+    const isQuick = rawArgs.includes('--quick') || rawArgs.includes('-q');
+    const isEngines = rawArgs.includes('--engines') || rawArgs.includes('-e');
+
     // 12 Organs + 12 Layers + 8 Engines + 8 Agents = 40 Primitives
     const ORGANS = [
       'core', 'system', 'brain', 'memory', 'dream', 'nerve',
@@ -142,7 +149,20 @@ ${lines.join('\n')}
       'beacon', 'watchtower', 'integration', 'dispatch',
       'marshal', 'pioneer', 'herald', 'overseer',
     ];
-    const modules = [...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS];
+
+    // Select scope based on flags
+    let modules: string[];
+    let scopeLabel: string;
+    if (isQuick) {
+      modules = [...ORGANS];
+      scopeLabel = '12 Organs (quick)';
+    } else if (isEngines) {
+      modules = [...ENGINES, ...AGENTS];
+      scopeLabel = '16 Engines + Agents';
+    } else {
+      modules = [...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS];
+      scopeLabel = '40-Primitive architecture';
+    }
 
     const results: Array<{ module: string; ok: boolean; latencyMs: number; error?: string }> = [];
     const startAll = Date.now();
