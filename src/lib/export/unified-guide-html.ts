@@ -354,7 +354,7 @@ ${newCapabilities.map(cap => `
   <div class="tier-caps">
     <strong>Adds:</strong> Identity Resolution · Session Binding · Learning Engine · Adaptive Patterns · Anomaly Detection · Threat Scoring · Input Sanitization · Rate Limiting · Governance Checks · Policy Enforcement
   </div>
-  <p style="margin-top: 0.75rem; font-size: 0.8125rem;">Activate via: <code>npx mana attach --level protected</code> or at <a href="https://cmpsbl.com/activate" style="color: var(--primary);">cmpsbl.com/activate</a></p>
+  <p style="margin-top: 0.75rem; font-size: 0.8125rem;">Activate via: <code>npx mana attach --level protected</code> or at <a href="https://cmpsbl.com/ascension" style="color: var(--primary);">cmpsbl.com/ascension</a></p>
 </div>
 
 <div class="tier-card advanced">
@@ -363,69 +363,69 @@ ${newCapabilities.map(cap => `
   <div class="tier-caps">
     <strong>Adds:</strong> DREAM Synthesis · EVOLUTION Patching · SANDBOX Isolation · APEX Orchestration · Recursive Re-Ingestion · Cross-Layer Telemetry · Federated Governance · Custom Vertical Binding
   </div>
-  <p style="margin-top: 0.75rem; font-size: 0.8125rem;">Activate via: <code>npx mana attach --level advanced</code> or at <a href="https://cmpsbl.com/activate" style="color: var(--primary);">cmpsbl.com/activate</a></p>
+  <p style="margin-top: 0.75rem; font-size: 0.8125rem;">Activate via: <code>npx mana attach --level advanced</code> or at <a href="https://cmpsbl.com/ascension" style="color: var(--primary);">cmpsbl.com/ascension</a></p>
 </div>
 
 <!-- ═══ 5. INTEGRATION ═══ -->
 <h2 id="section-5"><span class="dot"></span> 5. Integration Guide</h2>
 
 <h3>Step 1 — Drop the Ascended File Into Your Project</h3>
-<p>Copy <code>src/ascended-source${esc(ascendedExt)}</code> into your project directory. This file is the Layer 2 version of your code — it runs your original logic first, then applies cognitive enrichment on top.</p>
+<p>Copy <code>src/ascended-source${esc(ascendedExt)}</code> into your project directory. This file contains your original source code (Layer 1) plus the CMPSBL® governance matrix (Layer 2) — all in one file.</p>
 
-<h3>Step 2 — Import and Use</h3>
+<h3>Step 2 — Use It as a Drop-In Replacement</h3>
+<p>The ascended file preserves your original code's interface exactly. Import or require the ascended version instead of your original file — everything works the same, with cognitive enrichment running silently on top.</p>
+
 ${detectedLang === 'python' ? `
-<pre><code># Python
-from ascended_source import CMPSBLOrchestrator
+<pre><code># Python — drop-in replacement
+# Before:  from my_module import my_function
+# After:   from ascended_source import my_function
+#
+# Your functions work identically — Layer 2 adds governance
+# (circuit breakers, health signals, telemetry) around them.
+from ascended_source import *
 
-orchestrator = CMPSBLOrchestrator()
-result = orchestrator.execute({"your": "input"})
-
-# Access your original result
-original = result.get("_original_result")
-
-# Access cognitive enrichment
-cmpsbl_data = result.get("_cmpsbl")
-print(f"CJPI: {cmpsbl_data['cjpi']}, Strategy: {cmpsbl_data['execution']['strategy']}")
+# All your original exports are available unchanged
+result = my_function(your_input)
 </code></pre>` : detectedLang === 'php' ? `
-<pre><code>// PHP
+<pre><code>// PHP — drop-in replacement
+// Before:  require_once 'my_module.php';
+// After:   require_once 'ascended-source.php';
+//
+// Your functions/classes work identically — Layer 2 adds
+// governance (circuit breakers, health signals, telemetry) around them.
 require_once __DIR__ . '/ascended-source.php';
 
-$orchestrator = new CMPSBLOrchestrator();
-$result = $orchestrator->execute(['your' => 'input']);
-
-// Access original result
-$original = $result['_original_result'];
-
-// Access cognitive enrichment
-$cmpsbl = $result['_cmpsbl'];
-echo "CJPI: {$cmpsbl['cjpi']}, Strategy: {$cmpsbl['execution']['strategy']}";
+// All your original exports are available unchanged
+$result = my_function($your_input);
 </code></pre>` : `
-<pre><code>// TypeScript / JavaScript
-import { CMPSBLOrchestrator } from './ascended-source';
+<pre><code>// TypeScript / JavaScript — drop-in replacement
+// Before:  import { myFunction } from './my-module';
+// After:   import { myFunction } from './ascended-source';
+//
+// Your functions work identically — Layer 2 adds governance
+// (circuit breakers, health signals, telemetry) around them.
+import { myFunction } from './ascended-source';
 
-const orchestrator = new CMPSBLOrchestrator();
-const result = await orchestrator.execute({ your: 'input' });
-
-// Access your original result
-const original = result._original_result;
-
-// Access cognitive enrichment
-console.log(\`CJPI: \${result._cmpsbl.cjpi}, Strategy: \${result._cmpsbl.execution.strategy}\`);
+// All your original exports are available unchanged
+const result = myFunction(yourInput);
 </code></pre>`}
+
+<div class="card">
+  <div class="card-header">What the Ascended File Contains</div>
+  <p><strong>Top of file:</strong> Layer 2 governance matrix — runtime imports, primitive guards, compiled dispatch tables, and Mana attachment manifest. These wrap around your functions silently.</p>
+  <p><strong>Bottom of file:</strong> Your original source code — byte-identical, unmodified. Clearly marked with <code>ORIGINAL SOURCE (UNMODIFIED — LAYER 1)</code> comments.</p>
+  <p><strong>Result:</strong> Your code runs first. Layer 2 observes, enriches, and protects without changing behavior.</p>
+</div>
 
 <h3>Step 3 — Verify the Artifact</h3>
 <pre><code># Online verification
 https://cmpsbl.com/verify/${esc(cert.fingerprint)}
 
 # CLI verification
-cmpsbl verify ${esc(cert.fingerprint)}
-
-# Programmatic verification (in your ascended file)
-${detectedLang === 'python' ? `python ascended_source.py --verify` : detectedLang === 'php' ? `php ascended-source.php --verify` : `npx tsx ascended-source.ts --verify`}
-</code></pre>
+cmpsbl verify ${esc(cert.fingerprint)}</code></pre>
 
 <h3>Step 4 — Framework Integration</h3>
-<p>The ascended file works as a <strong>drop-in replacement</strong>. Import the ascended version instead of your original file. Your original code runs first (Layer 1), then CMPSBL® adds its cognitive overlay (Layer 2). No framework changes, no migrations, no rebuilds.</p>
+<p>The ascended file works as a <strong>drop-in replacement</strong>. Your original code runs first (Layer 1), then CMPSBL® governance wraps around it (Layer 2). No framework changes, no migrations, no rebuilds.</p>
 
 <div class="card">
   <p><strong>Express/Node:</strong> Replace your middleware require with the ascended version</p>
@@ -570,8 +570,8 @@ cmpsbl ascension status</code></pre>
 # Option 1: Via Mana (recommended)
 npx mana attach --level protected
 
-# Option 2: Via the website
-# Visit cmpsbl.com/activate → enter your fingerprint → select tier
+# Option 2: Via the Ascension Lab on the website
+# Visit cmpsbl.com/ascension → re-ascend with different tier
 
 # Option 3: Via CLI
 cmpsbl config set activation-level protected</code></pre>
@@ -593,8 +593,8 @@ cmpsbl config set activation-level protected</code></pre>
     <tr><td><strong>Website</strong></td><td><a href="https://cmpsbl.com" style="color: var(--primary);">cmpsbl.com</a></td></tr>
     <tr><td><strong>Ascension Lab</strong></td><td><a href="https://cmpsbl.com/ascension" style="color: var(--primary);">cmpsbl.com/ascension</a></td></tr>
     <tr><td><strong>Verify Artifact</strong></td><td><a href="https://cmpsbl.com/verify/${esc(cert.fingerprint)}" style="color: var(--primary);">cmpsbl.com/verify/${esc(cert.fingerprint)}</a></td></tr>
-    <tr><td><strong>Documentation</strong></td><td><a href="https://cmpsbl.com/docs" style="color: var(--primary);">cmpsbl.com/docs</a></td></tr>
-    <tr><td><strong>Terminal</strong></td><td><a href="https://cmpsbl.com/terminal" style="color: var(--primary);">cmpsbl.com/terminal</a></td></tr>
+    <tr><td><strong>Documentation</strong></td><td><a href="https://cmpsbl.com/docs/system" style="color: var(--primary);">cmpsbl.com/docs/system</a></td></tr>
+    <tr><td><strong>DECODE Terminal</strong></td><td><a href="https://cmpsbl.com/decode" style="color: var(--primary);">cmpsbl.com/decode</a></td></tr>
     <tr><td><strong>Support</strong></td><td><a href="mailto:support@cmpsbl.com" style="color: var(--primary);">support@cmpsbl.com</a></td></tr>
     <tr><td><strong>CLI</strong></td><td><code>npm install -g @cmpsbl/cli</code></td></tr>
     <tr><td><strong>Mana</strong></td><td><code>npx mana attach</code></td></tr>
