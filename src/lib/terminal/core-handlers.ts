@@ -51,6 +51,7 @@ export function registerCoreHandlers(): void {
     // Determine activated engines based on tier
     const tierEngines: Record<string, string[]> = {
       free: ['FAILSAFE', 'BEACON', 'PRIMITIVE'],
+      studio: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH'],
       creator: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN'],
       architect: ['FAILSAFE', 'BEACON', 'PRIMITIVE', 'AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN', 'NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'],
       governor: ['ALL — Full system authority'],
@@ -88,8 +89,9 @@ export function registerCoreHandlers(): void {
 
     const tiers = [
       { name: 'FREE', engines: ['FAILSAFE', 'BEACON', 'PRIMITIVE'], unlocked: true },
-      { name: 'CREATOR ($79)', engines: ['AUTOMATON', 'WRAITH', 'CORTEX', 'OBSIDIAN'], unlocked: ['creator', 'architect', 'governor'].includes(tier as string) },
-      { name: 'ARCHITECT ($249)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'governor'].includes(tier as string) },
+      { name: 'STUDIO ($29)', engines: ['AUTOMATON', 'WRAITH'], unlocked: ['studio', 'creator', 'architect', 'governor'].includes(tier as string) },
+      { name: 'CREATOR ($49)', engines: ['CORTEX', 'OBSIDIAN'], unlocked: ['creator', 'architect', 'governor'].includes(tier as string) },
+      { name: 'ARCHITECT ($79)', engines: ['NEXUS', 'MONOLITH', 'ARCHITECT', 'RAPTOR'], unlocked: ['architect', 'governor'].includes(tier as string) },
     ];
 
     const lines = tiers.map(t => {
