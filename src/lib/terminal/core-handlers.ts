@@ -114,8 +114,6 @@ ${lines.join('\n')}
   });
 
   // ═══ COGNITIVE ALIASES (Phase 2) ═══
-  // Bare commands route to their substrate module counterparts
-  // so "remember foo" = "brain.remember foo" = "memory.store foo"
   registerHandler('remember', bridge('brain', 'remember'));
   registerHandler('recall', bridge('memory', 'recall'));
   registerHandler('stream', bridge('memory', 'stream'));
@@ -124,4 +122,70 @@ ${lines.join('\n')}
   registerHandler('reflect', bridge('brain', 'reflect'));
   registerHandler('dream', bridge('dream', 'cycle'));
   registerHandler('synthesize', bridge('brain', 'synthesize'));
+
+  // ═══ DOCTOR — Full substrate connectivity validator (Phase 5) ═══
+  registerHandler('doctor', async () => {
+    const modules = [
+      'core', 'brain', 'dream', 'decode', 'defense', 'nexus',
+      'vision', 'cortex', 'evolution', 'governance', 'economy',
+      'inclusive', 'integration', 'intent', 'immunity', 'encode',
+      'sandbox',
+    ];
+
+    const results: Array<{ module: string; ok: boolean; latencyMs: number; error?: string }> = [];
+    const startAll = Date.now();
+
+    // Parallel health check across all substrate primitives
+    const checks = await Promise.allSettled(
+      modules.map(async (mod) => {
+        const t0 = Date.now();
+        const res = await callSubstrate(mod, 'status');
+        return { module: mod, ok: res.success === true, latencyMs: Date.now() - t0 };
+      })
+    );
+
+    for (const c of checks) {
+      if (c.status === 'fulfilled') {
+        results.push(c.value);
+      } else {
+        results.push({ module: 'unknown', ok: false, latencyMs: 0, error: c.reason?.message || 'Failed' });
+      }
+    }
+
+    const healthy = results.filter(r => r.ok).length;
+    const total = results.length;
+    const avgLatency = Math.round(results.reduce((s, r) => s + r.latencyMs, 0) / total);
+    const totalTime = Date.now() - startAll;
+    const allGood = healthy === total;
+
+    const lines = results.map(r => {
+      const icon = r.ok ? '✅' : '❌';
+      const lat = `${r.latencyMs}ms`.padStart(6);
+      return `│  ${icon} ${r.module.padEnd(14)} ${lat}${r.error ? ` — ${r.error}` : ''}`;
+    });
+
+    return {
+      success: true,
+      output: `
+┌─ SUBSTRATE DOCTOR ───────────────────────────────────────────
+│
+│  Status:       ${allGood ? '✅ ALL SYSTEMS NOMINAL' : `⚠️  ${healthy}/${total} HEALTHY`}
+│  Primitives:   ${healthy}/${total} responding
+│  Avg Latency:  ${avgLatency}ms
+│  Total Check:  ${totalTime}ms
+│
+│  ┌─ PRIMITIVE STATUS ──────────────────────────────────────
+${lines.join('\n')}
+│  └─────────────────────────────────────────────────────────
+│
+│  Bridge:       pf-substrate (auto-bridge active)
+│  Realtime:     brain_memories, cascade_dreams
+│  Surfaces:     Web Terminal · CLI · API · Website
+│
+│  The substrate is ${allGood ? 'alive and unified' : 'partially degraded'}.
+│  CMPSBL® — where dreams come to adapt
+│
+└──────────────────────────────────────────────────────────────`,
+    };
+  });
 }
