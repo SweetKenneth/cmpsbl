@@ -5355,13 +5355,40 @@ function computeStructuralCJPI(profile: StructuralProfile, collisions: number, t
 /**
  * ASCEND — Real 8-stage Ascension pipeline from terminal.
  * Analyzes code structure, collides deterministically with 40 primitives, scores via CJPI,
- * and exports a native-language ascension receipt.
+ * and exports a native-language ascension receipt + optional full artifact package.
+ *
+ * Flags:
+ *   --export    Download the full Ascended Code Package (ZIP) after pipeline completes
  */
 async function cmdAscend(args: string[]): Promise<void> {
-  const filePath = args[0];
+  const wantsExport = args.includes('--export');
+  const filteredArgs = args.filter(a => a !== '--export');
+  const filePath = filteredArgs[0];
   if (!filePath) {
-    say('  Usage: cmpsbl ascend <file>');
-    say(c.dim('  Upload code to the Ascension pipeline for primitive collision.'));
+    say('  Usage: cmpsbl ascend <file> [--export]');
+    blank();
+    say(c.dim('  Ascension collides your code against the 40-primitive matrix,'));
+    say(c.dim('  scores it via CJPI, and exports an ascension receipt in your'));
+    say(c.dim('  code\'s native language.'));
+    blank();
+    say(c.bold('  What you get:'));
+    say(`    ${c.green('1.')} ${c.bold('Ascension Receipt')} — A typed constant you can import.`);
+    say(`       Contains your CJPI score, collision map, fingerprint, and tier.`);
+    say(`    ${c.green('2.')} ${c.bold('Full Artifact Package')} ${c.dim('(with --export)')}`);
+    say(`       Downloads the complete Ascended Code Package ZIP including:`);
+    say(`       • Original source code (Layer 1 — untouched)`);
+    say(`       • Ascended code (Layer 2 — generated orchestration)`);
+    say(`       • CJPI Certificate & Capability Ledger`);
+    say(`       • Premium HTML guides & verification suite`);
+    say(`       • Sealed runtime artifact (Convex Core™ DPL)`);
+    blank();
+    say(c.bold('  Examples:'));
+    say(`    ${c.cyan('cmpsbl ascend server.py')}            ${c.dim('— Receipt only')}`);
+    say(`    ${c.cyan('cmpsbl ascend server.py --export')}   ${c.dim('— Receipt + full ZIP')}`);
+    blank();
+    say(c.bold('  Next steps after Ascension:'));
+    say(`    ${c.cyan('npx mana attach')}                   ${c.dim('— Attach Layer 2 governance')}`);
+    say(`    ${c.cyan('cmpsbl verify <fingerprint>')}        ${c.dim('— Verify any artifact')}`);
     blank();
     return;
   }
@@ -5446,7 +5473,7 @@ async function cmdAscend(args: string[]): Promise<void> {
   const tierColor = cjpi.total >= 80 ? c.green : cjpi.total >= 60 ? c.cyan : cjpi.total >= 40 ? c.amber : c.dim;
   s6.stop(`Stage 6/8 — SCORE: CJPI ${cjpi.total}/100 → ${tierColor(cjpi.tier)}`);
 
-  // Stage 7: Export (native-language artifact)
+  // Stage 7: Export (native-language receipt)
   const s7 = spinner('Stage 7/8 — EXPORT: Generating native-language ascension receipt...');
   await sleep(900);
 
@@ -5500,9 +5527,13 @@ async function cmdAscend(args: string[]): Promise<void> {
   say(`    ${c.dim('  Composability:')} ${progressBar(cjpi.composability, 25, 15)} ${cjpi.composability}`);
   say(`    ${c.dim('  Maturity:')}     ${progressBar(cjpi.maturity, 25, 15)} ${cjpi.maturity}`);
   blank();
-  say(`    ${c.green('→')} Receipt exported: ${c.bold(emitter.filename)}`);
-  say(`    ${c.dim('  Fingerprint:')}  ${c.cyan(signalData.fingerprint)}`);
-  say(`    ${c.dim('  Operator:')}     ${operatorName}`);
+
+  // ── What Was Exported ──
+  say(c.bold('  📄 EXPORTED FILES'));
+  say(c.muted('  ─────────────────────────────────────────────'));
+  say(`    ${c.green('✓')} ${c.bold(emitter.filename)} ${c.dim('— Ascension receipt (importable typed constant)')}`);
+  say(`      ${c.dim('Contains: CJPI score, collision map, tier, fingerprint')}`);
+  say(`      ${c.dim('Usage: import and reference in your code for provenance')}`);
   blank();
 
   // Submit to substrate
@@ -5534,30 +5565,113 @@ async function cmdAscend(args: string[]): Promise<void> {
   }
   blank();
 
-  // ── Post-Ascension: Mana CLI Pipeline Invitation ──
+  // ── Full ZIP Export ──
+  if (wantsExport) {
+    say(c.bold('  📦 DOWNLOADING FULL ASCENDED CODE PACKAGE...'));
+    say(c.muted('  ─────────────────────────────────────────────'));
+    blank();
+
+    try {
+      const endpoint = getSubstrateEndpoint();
+      const exportRes = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': apiKey },
+        body: JSON.stringify({
+          module: 'ascension',
+          action: 'export',
+          payload: {
+            code: fileContent,
+            fileName,
+            language: fileExt,
+            fingerprint: signalData.fingerprint,
+            cjpi,
+            collisions: hits,
+            discoveries: Math.round(discoveries),
+            archetype,
+            nodeId,
+          },
+        }),
+      });
+
+      if (exportRes.ok) {
+        const contentType = exportRes.headers.get('content-type') || '';
+        if (contentType.includes('application/zip') || contentType.includes('octet-stream')) {
+          const buffer = Buffer.from(await exportRes.arrayBuffer());
+          const zipName = `${fileName.replace(/\.[^.]+$/, '')}-ascended.zip`;
+          const zipPath = path.join(process.cwd(), zipName);
+          fs.writeFileSync(zipPath, buffer);
+          say(`    ${c.green('✓')} ${c.bold(zipName)} ${c.dim('— Full Ascended Code Package')}`);
+          say(`      ${c.dim('Contains: Original code + Ascended Layer 2 + Sealed runtime')}`);
+          say(`      ${c.dim('          HTML guides + CJPI certificate + Verification suite')}`);
+        } else {
+          const body = await exportRes.json() as Record<string, unknown>;
+          if (body.downloadUrl && typeof body.downloadUrl === 'string') {
+            say(`    ${c.green('→')} Download your full package:`);
+            say(`      ${c.cyan(body.downloadUrl as string)}`);
+          } else {
+            say(c.dim('  → Full export queued. Download from cmpsbl.com/ascension'));
+          }
+        }
+      } else {
+        say(c.amber('  → Export service unavailable. Use the web Ascension Lab instead:'));
+        say(`    ${c.cyan('cmpsbl.com/ascension')}`);
+      }
+    } catch {
+      say(c.amber('  → Export requires network. Use the web Ascension Lab instead:'));
+      say(`    ${c.cyan('cmpsbl.com/ascension')}`);
+    }
+    blank();
+  }
+
+  // ── What To Do Next ──
+  say(c.bold('  🚀 WHAT TO DO NEXT'));
   say(c.muted('  ─────────────────────────────────────────────'));
   blank();
-  say(c.bold('  ◈ LAYER 2 — SILENT SOFTWARE SYMBIOSIS'));
-  blank();
-  say('  Your code has been analyzed and scored.');
-  say('  To attach a persistent governance layer that');
-  say('  enhances and protects your code at runtime:');
-  blank();
+
+  if (!wantsExport) {
+    say(`  ${c.bold('Option A:')} Download the full Ascended Code Package`);
+    say(`    ${c.cyan(`cmpsbl ascend ${filePath} --export`)}`);
+    say(c.dim('    Gets you the full ZIP with dual-layer source, sealed runtime,'));
+    say(c.dim('    HTML guides, CJPI certificate, and verification suite.'));
+    blank();
+    say(`  ${c.bold('Option B:')} Use the web Ascension Lab (visual, drag-and-drop)`);
+    say(`    ${c.cyan('cmpsbl.com/ascension')}`);
+    say(c.dim('    Upload your file or connect a GitHub repo for the same pipeline.'));
+    blank();
+  }
+
+  say(`  ${c.bold(wantsExport ? 'Option A:' : 'Option C:')} Attach Layer 2 governance (Mana)`);
   say(`    ${c.cyan('npx mana attach')}`);
-  blank();
-  say(c.dim('  No modifications to your source code.'));
-  say(c.dim('  No framework changes. No lock-in.'));
-  say(c.dim('  Same code. Now governed.'));
+  say(c.dim('    Adds persistent runtime governance — observability, defense,'));
+  say(c.dim('    and performance — without modifying your source code.'));
   blank();
 
-  // ── Vertical Exploration Invitation ──
-  say(c.bold(c.purple('  ◈ EXPLORE 12 INDUSTRY VERTICALS')));
+  say(`  ${c.bold(wantsExport ? 'Option B:' : 'Option D:')} Verify your artifact`);
+  say(`    ${c.cyan(`cmpsbl verify ${signalData.fingerprint}`)}`);
+  say(c.dim('    Confirms provenance across all Ascension sources.'));
   blank();
-  say(`  ${c.dim('Each vertical has its own 40-primitive environment:')}`);
-  say(`  ${c.cyan('Cyber')} · ${c.green('Fintech')} · ${c.purple('Robotics')} · ${c.amber('Quantum')} · ${c.cyan('LLM')} · ${c.green('Agency')}`);
-  say(`  ${c.purple('Media')} · ${c.amber('Health')} · ${c.cyan('Legal')} · ${c.green('Gaming')} · ${c.purple('Education')} · ${c.amber('Ultimate')}`);
+
+  // ── Vertical Exploration ──
+  say(c.muted('  ─────────────────────────────────────────────'));
+  say(c.bold(c.purple('  ◈ INDUSTRY VERTICALS — Specialized Primitive Environments')));
   blank();
-  say(`  ${c.bold(c.cyan('cmpsbl.com/explore'))} ${c.dim('— Browse all verticals')}`);
+  say(`  ${c.dim('Each vertical tailors the 40-primitive matrix for a specific domain,')}`);
+  say(`  ${c.dim('adding domain-specific vulnerability detection and capabilities:')}`);
+  blank();
+  say(`    ${c.cyan('Cyber')}       ${c.dim('Threat detection, intrusion defense, compliance')}`);
+  say(`    ${c.green('Fintech')}     ${c.dim('Transaction safety, fraud patterns, audit trails')}`);
+  say(`    ${c.purple('Robotics')}    ${c.dim('Real-time safety, sensor validation, control loops')}`);
+  say(`    ${c.amber('Quantum')}     ${c.dim('Qubit integrity, decoherence, circuit optimization')}`);
+  say(`    ${c.cyan('LLM')}         ${c.dim('Prompt injection, hallucination, token governance')}`);
+  say(`    ${c.green('Agency')}      ${c.dim('Agent boundaries, task safety, escalation control')}`);
+  say(`    ${c.purple('Media')}       ${c.dim('Content integrity, streaming resilience, DRM')}`);
+  say(`    ${c.amber('Health')}      ${c.dim('HIPAA compliance, clinical data, patient safety')}`);
+  say(`    ${c.cyan('Legal')}       ${c.dim('Contract analysis, regulatory, privilege detection')}`);
+  say(`    ${c.green('Gaming')}      ${c.dim('Anti-cheat, state sync, exploit prevention')}`);
+  say(`    ${c.purple('Education')}   ${c.dim('Content moderation, assessment integrity, privacy')}`);
+  say(`    ${c.amber('Ultimate')}    ${c.dim('All verticals combined — 120-primitive collision')}`);
+  blank();
+  say(`  ${c.dim('Unlock verticals at')} ${c.bold(c.cyan('cmpsbl.com/explore'))}`);
   say(`  ${c.dim('U.S. Patent App. No. 64/029,678 · 64/031,637 · © CMPSBL®')}`);
   blank();
 }
