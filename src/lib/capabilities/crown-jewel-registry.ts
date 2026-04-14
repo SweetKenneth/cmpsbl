@@ -223,7 +223,7 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cj-economy-value-attribution',       // Value attribution engine
 
   // v10.5.5 — Wave 2 Experience Crown Jewels (28 new)
-  // ── Architect Tier ($149) ──
+  // ── Architect Tier ($79) ──
   'cj2-nexus-provider-trust-scoring',
   'cj2-vision-anomaly-precognition',
   'cj2-memory-selective-amnesia',
@@ -255,7 +255,7 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cj2-medic-predictive-healing',
 
   // v10.6.0 — Wave 3 Experience Crown Jewels (28 new)
-  // ── Architect Tier ($149) ──
+  // ── Architect Tier ($79) ──
   'cj3-decode-cognitive-fatigue',
   'cj3-system-phantom-load',
   'cj3-dream-cross-tenant-patterns',
@@ -360,11 +360,11 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio
   'cj-economy-value-attribution': 'builder',
   'cj6-system-health-aggregation': 'builder',
   'cj6-decode-terminal-command-parser': 'builder',
-  // ── CREATOR TIER ($29) — Enhanced sealed capabilities ──
+  // ── CREATOR TIER ($49) — Enhanced sealed capabilities ──
   'recursive-self-healing-mesh': 'creator',
   'creative_evolution_engine': 'creator',
   'creative_forge': 'creator',
-  // Architect tier ($149)
+  // Architect tier ($79)
   'knowledge_graph_topology': 'architect',
   'stier-emergent-threat-anticipator': 'architect',
   'stier-audit-grade-decision-ledger': 'architect',
