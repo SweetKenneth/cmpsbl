@@ -1,8 +1,8 @@
 /**
  * ResultsStep — Consumes canonical AscensionResults
  * 
- * E2: Uses deterministicFingerprint for export
- * Summary, quality metrics, and export all derive from one result object.
+ * Now uses the unified Ascension + Mana export pipeline that produces
+ * wrapped code, original code, activation guide, and full docs.
  */
 
 import { useState, useMemo } from 'react';
@@ -11,15 +11,16 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import { generateCapabilityPackZip, type CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
-import { deterministicFingerprint, type AscensionResults } from '@/lib/ascension/orchestrator';
+import { generateUnifiedExport } from '@/lib/ascension/unified-export';
+import type { AscensionResults } from '@/lib/ascension/orchestrator';
 
 interface Props {
   results: AscensionResults | null;
+  sourceFiles?: ReadonlyArray<{ name: string; content: string }>;
   onReset: () => void;
 }
 
-export function ResultsStep({ results, onReset }: Props) {
+export function ResultsStep({ results, sourceFiles, onReset }: Props) {
   const [exporting, setExporting] = useState(false);
   const { toast } = useToast();
 
@@ -35,27 +36,12 @@ export function ResultsStep({ results, onReset }: Props) {
     setExporting(true);
 
     try {
-      const caps: CapabilityForExport[] = items.map((item) => ({
-        id: deterministicFingerprint(item.name, item.nodeA, item.nodeB, results.runId),
-        name: item.name.replace(/\s+/g, '_'),
-        tier: item.tier,
-        cjpiScore: item.score,
-        description: item.description,
-        chain: [],
-        fingerprint: deterministicFingerprint(item.name, item.nodeA, item.nodeB, results.runId),
-        moatSignature: `moat_${deterministicFingerprint(item.name, item.nodeA, item.nodeB, results.runId)}`,
-        capabilityType: 'ascended',
-      }));
-
-      await generateCapabilityPackZip({
-        targetLanguage: results.sourceLanguage,
-        capabilities: caps,
-        candidateName: results.candidateName || 'ascension_export',
-        userSourceFiles: [],
-        sourceLanguage: results.sourceLanguage,
+      await generateUnifiedExport({
+        results,
+        sourceFiles: sourceFiles ?? [],
       });
 
-      toast({ title: 'Export complete', description: `${items.length} capabilities exported.` });
+      toast({ title: 'Export complete', description: `${items.length} capabilities wrapped and exported.` });
     } catch (err) {
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
