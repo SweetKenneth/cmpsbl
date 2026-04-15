@@ -587,39 +587,6 @@ ${sourceFile.content}
 `;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §2 — Mana Manifest Builder (for lifecycle bridge)
-// ═══════════════════════════════════════════════════════════════
-
-function buildManaManifest(
-  findings: AscensionFinding[],
-  packageName: string,
-  _runId: string,
-): ManaManifest {
-  const attachmentPoints: AttachmentPoint[] = findings.map((f, i) => ({
-    functionName: f.functionName,
-    capability: f.capability as ManaCapability,
-    phase: WrapperPhase.OBSERVE,
-    position: i,
-    active: true,
-    invocations: 0,
-    blocked: 0,
-    observed: 0,
-  }));
-
-  return {
-    hostPackage: packageName,
-    hostVersion: '1.0.0',
-    attachmentState: 'symbiotic' as AttachmentState,
-    attachmentPoints,
-    lexRules: [],
-    proof: null,
-    telemetry: [],
-    attachedAt: Date.now(),
-    detachedAt: null,
-    layerDepth: 1,
-  };
-}
 
 // ═══════════════════════════════════════════════════════════════
 // §3 — Unified Export Generator
