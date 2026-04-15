@@ -28,7 +28,7 @@ import {
 
 // ── Language Syntax Adapters ──
 
-export interface LanguageAdapter {
+interface LanguageAdapter {
   comment: (text: string) => string;
   blockComment: (lines: string[]) => string;
   importStatement: (module: string, symbols: string[]) => string;
@@ -36,14 +36,6 @@ export interface LanguageAdapter {
   /** Transform a JS-syntax guard block into language-native call syntax */
   transformGuard: (jsGuard: string) => string;
   fileExtension: string;
-
-  // ── Extended adapter methods (polyglot unification) ──
-  /** Generate the opaque dispatch preamble in target-native syntax */
-  dispatchPreamble?: (dispatchTable: number[], collisionMatrix: number[], seeds: { iv: number; epoch: number }) => string;
-  /** Generate obfuscated scoring constants in target-native syntax */
-  obfuscatedConstants?: () => string;
-  /** Generate runnable self-verification block in target-native syntax */
-  selfVerifyBlock?: (fingerprint: string) => string;
 }
 
 // ── Guard Syntax Transform Helpers ──
@@ -212,53 +204,9 @@ function csharpGuard(g: string): string {
   return convertObjectArgs(g, toPascalCase, ' = ', (p) => `(new { ${p} })`);
 }
 
-/** PHP: `.method({ key: val })` → `::method(['key' => val])` */
+/** PHP: `({ key: val })` → `(['key' => val])` */
 function phpGuard(g: string): string {
-  // Convert JS dot-method to PHP static method syntax
-  let out = g.replace(/\.(\w+)\(/g, '::$1(');
-  // Convert JS object args to PHP associative array args
-  out = convertObjectArgs(out, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
-  // Convert JS booleans/null to PHP equivalents
-  out = out.replace(/\btrue\b/g, 'true').replace(/\bfalse\b/g, 'false').replace(/\bnull\b/g, 'null');
-  // Convert JS numeric separators: 3_600_000 is valid in PHP 7.4+, keep as-is
-  return out;
-}
-
-/**
- * Convert a JSON string into a PHP array literal.
- * Handles nested objects/arrays recursively.
- * `{"key": "val"}` → `['key' => 'val']`
- */
-function jsonToPhpArray(jsonStr: string): string {
-  try {
-    const obj = JSON.parse(jsonStr);
-    return toPhpLiteral(obj);
-  } catch {
-    // If not valid JSON, wrap as string
-    return `'${jsonStr.replace(/'/g, "\\'")}'`;
-  }
-}
-
-function toPhpLiteral(val: unknown): string {
-  if (val === null) return 'null';
-  if (val === true) return 'true';
-  if (val === false) return 'false';
-  if (typeof val === 'number') return String(val);
-  if (typeof val === 'string') return `'${val.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
-  if (Array.isArray(val)) {
-    // Check if it's a sequential array (numeric keys)
-    const isAssoc = val.some((_, i) => typeof val[i] === 'object' && val[i] !== null && !Array.isArray(val[i]));
-    if (!isAssoc && val.every(v => typeof v !== 'object' || v === null)) {
-      return `[${val.map(toPhpLiteral).join(', ')}]`;
-    }
-    return `[\n${val.map((v, i) => `    ${i} => ${toPhpLiteral(v)}`).join(',\n')}\n]`;
-  }
-  if (typeof val === 'object') {
-    const entries = Object.entries(val as Record<string, unknown>);
-    if (entries.length === 0) return '[]';
-    return `[\n${entries.map(([k, v]) => `    '${k}' => ${toPhpLiteral(v)}`).join(',\n')}\n]`;
-  }
-  return `'${String(val)}'`;
+  return convertObjectArgs(g, (k) => `'${toSnakeCase(k)}'`, ' => ', (p) => `([${p}])`);
 }
 
 /** Dart: named params `({ key: val })` → `(key: val)` */
@@ -356,218 +304,6 @@ function objcGuard(g: string): string {
   return convertObjectArgs(g, (k) => `@"${k}"`, ': ', (p) => `(@{ ${p} })`);
 }
 
-// ── Adapter Verify Block Helpers ──
-// These generate runnable self-verification functions per language.
-// Called from the adapter's selfVerifyBlock method.
-
-function generateTsVerifyBlock(fingerprint: string): string {
-  return `
-/**
- * CMPSBL® Artifact Self-Verification
- * Run: node <this_file> --verify
- */
-function __cmpsbl_verify__() {
-  const crypto = globalThis.crypto ?? require('crypto');
-  const fs = typeof require !== 'undefined' ? require('fs') : null;
-  const fingerprint = "${fingerprint}";
-  const meta = typeof __CMPSBL_META__ === 'string' ? JSON.parse(__CMPSBL_META__) : __CMPSBL_META__;
-  const verifyUrl = \`https://cmpsbl.com/verify/\${fingerprint}\`;
-
-  console.log("=".repeat(60));
-  console.log("CMPSBL® Convex Core™ — Artifact Verification");
-  console.log("A PromptFluid™ Product");
-  console.log("=".repeat(60));
-  console.log(\`  Fingerprint:  \${fingerprint}\`);
-  console.log(\`  Primitives:   \${meta?.primitiveCount ?? '?'}\`);
-  console.log(\`  Generated:    \${meta?.generatedAt ?? '?'}\`);
-  console.log(\`  Runtime:      \${meta?.runtimeVersion ?? '?'}\`);
-  console.log(\`  Language:     \${meta?.sourceLanguage ?? '?'}\`);
-  console.log();
-
-  let passed = 0;
-  const total = 3;
-
-  if (fingerprint && fingerprint.length > 8) { console.log("  ✓ Fingerprint valid"); passed++; }
-  else { console.log("  ✗ Fingerprint missing"); }
-
-  if (meta?.runtimeVersion && meta?.orchestrationVersion) { console.log("  ✓ Metadata intact"); passed++; }
-  else { console.log("  ✗ Metadata corrupted"); }
-
-  if (meta?.patents || meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
-  else { console.log("  ✗ Patent reference missing"); }
-
-  console.log();
-  console.log(\`  Result: \${passed}/\${total} checks passed\`);
-  console.log();
-  console.log(\`  Online verification:\`);
-  console.log(\`    \${verifyUrl}\`);
-  console.log();
-  console.log("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.");
-  console.log("  U.S. Patent App. No. 64/029,678 · No. 64/031,637");
-  console.log("=".repeat(60));
-  return passed === total;
-}
-
-if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
-  const ok = __cmpsbl_verify__();
-  process.exit(ok ? 0 : 1);
-}
-`;
-}
-
-function generatePyVerifyBlock(fingerprint: string): string {
-  return `
-def __cmpsbl_verify__():
-    """
-    CMPSBL® Artifact Self-Verification
-    Verifies this sealed artifact's integrity and fingerprint.
-    Run: python <this_file>.py --verify
-    """
-    import hashlib, json, sys, os
-
-    fingerprint = "${fingerprint}"
-    meta = json.loads(__CMPSBL_META__) if isinstance(__CMPSBL_META__, str) else __CMPSBL_META__
-    verify_url = f"https://cmpsbl.com/verify/{fingerprint}"
-
-    print("=" * 60)
-    print("CMPSBL® Convex Core™ — Artifact Verification")
-    print("A PromptFluid™ Product")
-    print("=" * 60)
-    print(f"  Fingerprint:  {fingerprint}")
-    print(f"  Primitives:   {meta.get('primitiveCount', '?')}")
-    print(f"  Generated:    {meta.get('generatedAt', '?')}")
-    print(f"  Runtime:      {meta.get('runtimeVersion', '?')}")
-    print(f"  Language:     {meta.get('sourceLanguage', '?')}")
-    print()
-
-    checks_passed = 0
-    checks_total = 4
-
-    if fingerprint and len(fingerprint) > 8:
-        print("  ✓ Fingerprint valid")
-        checks_passed += 1
-    else:
-        print("  ✗ Fingerprint missing or malformed")
-
-    if meta.get("runtimeVersion") and meta.get("orchestrationVersion"):
-        print("  ✓ Metadata intact")
-        checks_passed += 1
-    else:
-        print("  ✗ Metadata corrupted")
-
-    if meta.get("patents") or meta.get("patent"):
-        print("  ✓ Patent reference present")
-        checks_passed += 1
-    else:
-        print("  ✗ Patent reference missing")
-
-    try:
-        with open(__file__, "rb") as f:
-            content = f.read()
-        file_hash = hashlib.sha256(content).hexdigest()[:16]
-        print(f"  ✓ File hash: {file_hash}")
-        checks_passed += 1
-    except Exception:
-        print("  ✗ Could not compute file hash")
-
-    print()
-    print(f"  Result: {checks_passed}/{checks_total} checks passed")
-    print()
-    print(f"  Online verification:")
-    print(f"    {verify_url}")
-    print()
-    print(f"  Programmatic verification:")
-    print(f"    pip install cmpsbl-test-harness")
-    print(f'    from cmpsbl import verify_fingerprint')
-    print(f'    verify_fingerprint("{fingerprint}")')
-    print()
-    print("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.")
-    print("  U.S. Patent App. No. 64/029,678 · No. 64/031,637")
-    print("=" * 60)
-    return checks_passed == checks_total
-
-if __name__ == "__main__":
-    import sys
-    if "--verify" in sys.argv or "verify" in sys.argv:
-        success = __cmpsbl_verify__()
-        sys.exit(0 if success else 1)
-`;
-}
-
-function generatePhpVerifyBlock(fingerprint: string): string {
-  const year = new Date().getFullYear();
-  return [
-    '',
-    '/**',
-    ' * CMPSBL® Artifact Self-Verification',
-    ' * Run: php <this_file> --verify',
-    ' */',
-    'function __cmpsbl_verify(): bool {',
-    '    $fingerprint = \'' + fingerprint + '\';',
-    '    $meta = __CMPSBL_META__;',
-    '    $verifyUrl = "https://cmpsbl.com/verify/" . $fingerprint;',
-    '',
-    '    echo str_repeat(\'=\', 60) . PHP_EOL;',
-    '    echo \'CMPSBL® Convex Core™ — Artifact Verification\' . PHP_EOL;',
-    '    echo \'A PromptFluid™ Product\' . PHP_EOL;',
-    '    echo str_repeat(\'=\', 60) . PHP_EOL;',
-    '    echo "  Fingerprint:  " . $fingerprint . PHP_EOL;',
-    '    echo "  Primitives:   " . ($meta[\'primitiveCount\'] ?? \'?\') . PHP_EOL;',
-    '    echo "  Generated:    " . ($meta[\'generatedAt\'] ?? \'?\') . PHP_EOL;',
-    '    echo "  Runtime:      " . ($meta[\'runtimeVersion\'] ?? \'?\') . PHP_EOL;',
-    '    echo "  Language:     " . ($meta[\'sourceLanguage\'] ?? \'?\') . PHP_EOL;',
-    '    echo PHP_EOL;',
-    '',
-    '    $passed = 0;',
-    '    $total = 4;',
-    '',
-    '    if (!empty($fingerprint) && strlen($fingerprint) > 8) {',
-    '        echo "  ✓ Fingerprint valid" . PHP_EOL;',
-    '        $passed++;',
-    '    } else {',
-    '        echo "  ✗ Fingerprint missing or malformed" . PHP_EOL;',
-    '    }',
-    '',
-    '    if (!empty($meta[\'runtimeVersion\']) && !empty($meta[\'orchestrationVersion\'])) {',
-    '        echo "  ✓ Metadata intact" . PHP_EOL;',
-    '        $passed++;',
-    '    } else {',
-    '        echo "  ✗ Metadata corrupted" . PHP_EOL;',
-    '    }',
-    '',
-    '    if (!empty($meta[\'patents\'])) {',
-    '        echo "  ✓ Patent reference present" . PHP_EOL;',
-    '        $passed++;',
-    '    } else {',
-    '        echo "  ✗ Patent reference missing" . PHP_EOL;',
-    '    }',
-    '',
-    '    $fileHash = substr(hash(\'sha256\', file_get_contents(__FILE__)), 0, 16);',
-    '    echo "  ✓ File hash: " . $fileHash . PHP_EOL;',
-    '    $passed++;',
-    '',
-    '    echo PHP_EOL;',
-    '    echo "  Result: " . $passed . "/" . $total . " checks passed" . PHP_EOL;',
-    '    echo PHP_EOL;',
-    '    echo "  Online verification:" . PHP_EOL;',
-    '    echo "    " . $verifyUrl . PHP_EOL;',
-    '    echo PHP_EOL;',
-    '    echo "  Programmatic verification:" . PHP_EOL;',
-    '    echo "    composer require cmpsbl/test-harness" . PHP_EOL;',
-    '    echo PHP_EOL;',
-    '    echo "  © ' + year + ' PromptFluid™ · CMPSBL® · All rights reserved." . PHP_EOL;',
-    '    echo "  U.S. Patent App. No. 64/029,678 · No. 64/031,637" . PHP_EOL;',
-    '    echo str_repeat(\'=\', 60) . PHP_EOL;',
-    '    return $passed === $total;',
-    '}',
-    '',
-    'if (php_sapi_name() === \'cli\' && in_array(\'--verify\', $argv ?? [], true)) {',
-    '    $ok = __cmpsbl_verify();',
-    '    exit($ok ? 0 : 1);',
-    '}',
-  ].join('\n');
-}
-
 const ADAPTERS: Record<string, LanguageAdapter> = {
   TypeScript: {
     comment: (t) => `// ${t}`,
@@ -576,17 +312,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `const ${name} = Object.freeze(${val});`,
     transformGuard: identityGuard,
     fileExtension: '.ts',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `const _DT = Object.freeze([${dt.join(',')}]);`,
-      `const _CM = Object.freeze([${cm.join(',')}]);`,
-      `const _IV = ${seeds.iv}; const _EP = ${seeds.epoch};`,
-      '',
-      `const _R = (i:number,c=0) => { const v = (_DT[i%_DT.length]^_IV)&0xFFFF; return (_CM[v%_CM.length]+c)>>2; };`,
-      `const _G = (s:number,p:Record<string,unknown>) => { const q=_R(s,typeof p==='object'?Object.keys(p).length:0); return q<_EP?p:{...p,_s:!0,_q:q}; };`,
-      `const _V = (chain:unknown[]) => chain.reduce((a:number,_:unknown,i:number) => a + _R(i, a), 0) & 0xFFFFFF;`,
-    ].join('\n'),
-    obfuscatedConstants: () => `// Sealed scoring parameters — DO NOT MODIFY\nconst _W = [0x1E, 0x1E, 0x14, 0x14].map(v => v / 100);\nconst _T = [0x5C, 0x50, 0x41, 0x2D];\nconst _MH = [0x18, 0x07, 0x5A, 0x5A];`,
-    selfVerifyBlock: (fp) => generateTsVerifyBlock(fp),
   },
   JavaScript: {
     comment: (t) => `// ${t}`,
@@ -595,17 +320,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `const ${name} = Object.freeze(${val});`,
     transformGuard: identityGuard,
     fileExtension: '.js',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `const _DT = Object.freeze([${dt.join(',')}]);`,
-      `const _CM = Object.freeze([${cm.join(',')}]);`,
-      `const _IV = ${seeds.iv}; const _EP = ${seeds.epoch};`,
-      '',
-      `const _R = (i,c=0) => { const v = (_DT[i%_DT.length]^_IV)&0xFFFF; return (_CM[v%_CM.length]+c)>>2; };`,
-      `const _G = (s,p) => { const q=_R(s,typeof p==='object'?Object.keys(p).length:0); return q<_EP?p:{...p,_s:!0,_q:q}; };`,
-      `const _V = (chain) => chain.reduce((a,_,i) => a + _R(i, a), 0) & 0xFFFFFF;`,
-    ].join('\n'),
-    obfuscatedConstants: () => `// Sealed scoring parameters — DO NOT MODIFY\nconst _W = [0x1E, 0x1E, 0x14, 0x14].map(v => v / 100);\nconst _T = [0x5C, 0x50, 0x41, 0x2D];\nconst _MH = [0x18, 0x07, 0x5A, 0x5A];`,
-    selfVerifyBlock: (fp) => generateTsVerifyBlock(fp),
   },
   Python: {
     comment: (t) => `# ${t}`,
@@ -2563,23 +2277,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `${name} = ${val}`,
     transformGuard: pythonGuard,
     fileExtension: '.py',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `_CMPSBL_DT = [${dt.join(', ')}]`,
-      `_CMPSBL_CM = [${cm.join(', ')}]`,
-      `_CMPSBL_IV = ${seeds.iv}`,
-      `_CMPSBL_EPOCH = ${seeds.epoch}`,
-      '',
-      `def _cmpsbl_resolve(idx, ctx=0):`,
-      `    v = (_CMPSBL_DT[idx % len(_CMPSBL_DT)] ^ _CMPSBL_IV) & 0xFFFF`,
-      `    return (_CMPSBL_CM[v % len(_CMPSBL_CM)] + ctx) >> 2`,
-      '',
-      `def _cmpsbl_gate(stage, payload):`,
-      `    seq = _cmpsbl_resolve(stage, hash(str(payload)) & 0xFF)`,
-      `    if seq < _CMPSBL_EPOCH: return payload`,
-      `    return {**payload, "_sealed": True, "_seq": seq}`,
-    ].join('\n'),
-    obfuscatedConstants: () => `# Sealed scoring parameters — DO NOT MODIFY\n_W = [v / 100 for v in [0x1E, 0x1E, 0x14, 0x14]]\n_T = [0x5C, 0x50, 0x41, 0x2D]`,
-    selfVerifyBlock: (fp) => generatePyVerifyBlock(fp),
   },
   Rust: {
     comment: (t) => `// ${t}`,
@@ -2588,17 +2285,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `const ${name.toUpperCase()}: &str = r#"${val}"#;`,
     transformGuard: rustGuard,
     fileExtension: '.rs',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `const _CMPSBL_DT: &[u16] = &[${dt.join(', ')}];`,
-      `const _CMPSBL_CM: &[u16] = &[${cm.join(', ')}];`,
-      `const _CMPSBL_IV: u32 = ${seeds.iv};`,
-      '',
-      `fn _cmpsbl_resolve(idx: usize, ctx: u32) -> u16 {`,
-      `    let v = (_CMPSBL_DT[idx % _CMPSBL_DT.len()] ^ (_CMPSBL_IV as u16)) & 0xFFFF;`,
-      `    (_CMPSBL_CM[(v as usize) % _CMPSBL_CM.len()] + (ctx as u16)) >> 2`,
-      `}`,
-    ].join('\n'),
-    obfuscatedConstants: () => `// Sealed scoring parameters — DO NOT MODIFY\nconst _W: [f64; 4] = [0x1Eu32 as f64 / 100.0, 0x1Eu32 as f64 / 100.0, 0x14u32 as f64 / 100.0, 0x14u32 as f64 / 100.0];\nconst _T: [u32; 4] = [0x5C, 0x50, 0x41, 0x2D];`,
   },
   Go: {
     comment: (t) => `// ${t}`,
@@ -2607,17 +2293,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `var ${name} = ${val}`,
     transformGuard: goGuard,
     fileExtension: '.go',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `var _cmpsblDT = [...]uint16{${dt.join(', ')}}`,
-      `var _cmpsblCM = [...]uint16{${cm.join(', ')}}`,
-      `var _cmpsblIV uint32 = ${seeds.iv}`,
-      '',
-      `func _cmpsblResolve(idx int, ctx uint32) uint16 {`,
-      `\tv := (_cmpsblDT[idx%len(_cmpsblDT)] ^ uint16(_cmpsblIV)) & 0xFFFF`,
-      `\treturn (_cmpsblCM[int(v)%len(_cmpsblCM)] + uint16(ctx)) >> 2`,
-      `}`,
-    ].join('\n'),
-    obfuscatedConstants: () => `// Sealed scoring parameters — DO NOT MODIFY\nvar _W = [4]float64{float64(0x1E) / 100, float64(0x1E) / 100, float64(0x14) / 100, float64(0x14) / 100}\nvar _T = [4]int{0x5C, 0x50, 0x41, 0x2D}`,
   },
   Java: {
     comment: (t) => `// ${t}`,
@@ -2626,22 +2301,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `static final String ${name} = ${val};`,
     transformGuard: javaGuard,
     fileExtension: '.java',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `private static final int[] _CMPSBL_DT = {${dt.join(', ')}};`,
-      `private static final int[] _CMPSBL_CM = {${cm.join(', ')}};`,
-      `private static final int _CMPSBL_IV = ${seeds.iv};`,
-      `private static final int _CMPSBL_EPOCH = ${seeds.epoch};`,
-      '',
-      `private static int _cmpsblResolve(int idx, int ctx) {`,
-      `    int v = (_CMPSBL_DT[idx % _CMPSBL_DT.length] ^ _CMPSBL_IV) & 0xFFFF;`,
-      `    return (_CMPSBL_CM[v % _CMPSBL_CM.length] + ctx) >> 2;`,
-      `}`,
-      '',
-      `private static Object _cmpsblGate(int stage, Object payload) {`,
-      `    int seq = _cmpsblResolve(stage, 0);`,
-      `    return (seq < _CMPSBL_EPOCH) ? payload : payload;`,
-      `}`,
-    ].join('\n'),
   },
   'C#': {
     comment: (t) => `// ${t}`,
@@ -2650,22 +2309,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `static readonly string ${name} = @"${val}";`,
     transformGuard: csharpGuard,
     fileExtension: '.cs',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `private static readonly int[] _CMPSBL_DT = {${dt.join(', ')}};`,
-      `private static readonly int[] _CMPSBL_CM = {${cm.join(', ')}};`,
-      `private const int _CMPSBL_IV = ${seeds.iv};`,
-      `private const int _CMPSBL_EPOCH = ${seeds.epoch};`,
-      '',
-      `private static int CmpsblResolve(int idx, int ctx = 0) {`,
-      `    var v = (_CMPSBL_DT[idx % _CMPSBL_DT.Length] ^ _CMPSBL_IV) & 0xFFFF;`,
-      `    return (_CMPSBL_CM[v % _CMPSBL_CM.Length] + ctx) >> 2;`,
-      `}`,
-      '',
-      `private static object CmpsblGate(int stage, object payload) {`,
-      `    var seq = CmpsblResolve(stage);`,
-      `    return (seq < _CMPSBL_EPOCH) ? payload : payload;`,
-      `}`,
-    ].join('\n'),
   },
   C: {
     comment: (t) => `/* ${t} */`,
@@ -2674,19 +2317,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `static const char* ${name} = "${val}";`,
     transformGuard: cStructGuard,
     fileExtension: '.c',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `static const unsigned short _CMPSBL_DT[] = {${dt.join(', ')}};`,
-      `static const unsigned short _CMPSBL_CM[] = {${cm.join(', ')}};`,
-      `static const unsigned int _CMPSBL_IV = ${seeds.iv}u;`,
-      `static const int _CMPSBL_EPOCH = ${seeds.epoch};`,
-      `static const int _CMPSBL_DT_LEN = ${dt.length};`,
-      `static const int _CMPSBL_CM_LEN = ${cm.length};`,
-      '',
-      `static unsigned short _cmpsbl_resolve(int idx, int ctx) {`,
-      `    unsigned short v = (_CMPSBL_DT[idx % _CMPSBL_DT_LEN] ^ _CMPSBL_IV) & 0xFFFF;`,
-      `    return (_CMPSBL_CM[v % _CMPSBL_CM_LEN] + ctx) >> 2;`,
-      `}`,
-    ].join('\n'),
   },
   'C++': {
     comment: (t) => `// ${t}`,
@@ -2695,17 +2325,6 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     constDecl: (name, val) => `constexpr auto ${name} = R"(${val})";`,
     transformGuard: cStructGuard,
     fileExtension: '.cpp',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `constexpr std::array<uint16_t, ${dt.length}> _CMPSBL_DT = {${dt.join(', ')}};`,
-      `constexpr std::array<uint16_t, ${cm.length}> _CMPSBL_CM = {${cm.join(', ')}};`,
-      `constexpr uint32_t _CMPSBL_IV = ${seeds.iv}u;`,
-      `constexpr int _CMPSBL_EPOCH = ${seeds.epoch};`,
-      '',
-      `constexpr uint16_t _cmpsbl_resolve(int idx, int ctx = 0) {`,
-      `    auto v = (_CMPSBL_DT[idx % _CMPSBL_DT.size()] ^ _CMPSBL_IV) & 0xFFFF;`,
-      `    return (_CMPSBL_CM[v % _CMPSBL_CM.size()] + ctx) >> 2;`,
-      `}`,
-    ].join('\n'),
   },
   Ruby: {
     comment: (t) => `# ${t}`,
@@ -2735,37 +2354,9 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
     comment: (t) => `// ${t}`,
     blockComment: (lines) => `/**\n${lines.map(l => ` * ${l}`).join('\n')}\n */`,
     importStatement: (_mod, syms) => generateInlinePrimitives(syms, 'PHP'),
-    constDecl: (name, val) => `define('${name.toUpperCase()}', ${jsonToPhpArray(val)});`,
+    constDecl: (name, val) => `define('${name.toUpperCase()}', ${val});`,
     transformGuard: phpGuard,
     fileExtension: '.php',
-    dispatchPreamble: (dt, cm, seeds) => [
-      `$_CMPSBL_DT = array(${dt.join(', ')});`,
-      `$_CMPSBL_CM = array(${cm.join(', ')});`,
-      `$_CMPSBL_IV = ${seeds.iv};`,
-      `$_CMPSBL_EPOCH = ${seeds.epoch};`,
-      '',
-      `function _cmpsbl_resolve(int $idx, int $ctx = 0): int {`,
-      `    global $_CMPSBL_DT, $_CMPSBL_CM, $_CMPSBL_IV;`,
-      `    $v = ($_CMPSBL_DT[$idx % count($_CMPSBL_DT)] ^ $_CMPSBL_IV) & 0xFFFF;`,
-      `    return ($_CMPSBL_CM[$v % count($_CMPSBL_CM)] + $ctx) >> 2;`,
-      `}`,
-      '',
-      `function _cmpsbl_gate(int $stage, $payload) {`,
-      `    global $_CMPSBL_EPOCH;`,
-      `    $seq = _cmpsbl_resolve($stage, is_array($payload) ? count($payload) : 0);`,
-      `    if ($seq < $_CMPSBL_EPOCH) { return $payload; }`,
-      `    if (is_array($payload)) {`,
-      `        return array_merge($payload, ['_sealed' => true, '_seq' => $seq]);`,
-      `    }`,
-      `    return $payload;`,
-      `}`,
-    ].join('\n'),
-    obfuscatedConstants: () => [
-      '// Sealed scoring parameters — DO NOT MODIFY',
-      "define('CMPSBL_W', array_map(fn($v) => $v / 100, [0x1E, 0x1E, 0x14, 0x14]));",
-      "define('CMPSBL_T', [0x5C, 0x50, 0x41, 0x2D]);",
-    ].join('\n'),
-    selfVerifyBlock: (fp) => generatePhpVerifyBlock(fp),
   },
   Scala: {
     comment: (t) => `// ${t}`,
@@ -3091,12 +2682,8 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
 };
 
 /** Resolve the adapter for a detected language, falling back to TypeScript */
-export function getAdapter(language: string): LanguageAdapter {
-  // Try exact match first, then case-insensitive lookup (handles 'python' → 'Python', etc.)
-  if (ADAPTERS[language]) return ADAPTERS[language];
-  const lower = language.toLowerCase();
-  const key = Object.keys(ADAPTERS).find(k => k.toLowerCase() === lower);
-  return key ? ADAPTERS[key] : ADAPTERS['TypeScript'];
+function getAdapter(language: string): LanguageAdapter {
+  return ADAPTERS[language] ?? ADAPTERS['TypeScript'];
 }
 
 /** Extract module path and symbol names from a TS import string */
@@ -3266,11 +2853,6 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
     guard: "EventBus.init({ delivery: 'exactly-once', ordering: 'causal' });\nSignalPropagator.enable({ partitionTolerant: true, retryPolicy: 'bounded' });",
     wrapper: (code) => code,
   },
-  core: {
-    imports: "import { RuntimeKernel, BaseHardening } from '@cmpsbl/runtime/core';",
-    guard: "RuntimeKernel.init({ mode: 'hardened', strictTypes: true });\nBaseHardening.apply({ nullSafety: true, boundaryChecks: true });",
-    wrapper: (code) => code,
-  },
   primitive: {
     imports: "import { RuntimeKernel, BaseHardening } from '@cmpsbl/runtime/primitive';",
     guard: "RuntimeKernel.init({ mode: 'hardened', strictTypes: true });\nBaseHardening.apply({ nullSafety: true, boundaryChecks: true });",
@@ -3317,18 +2899,150 @@ const PRIMITIVE_WRAPPERS: Record<string, { imports: string; guard: string; wrapp
  * Generate a self-verification code block in the target language.
  * This block lets anyone run the file and verify the fingerprint directly.
  */
-function generateSelfVerifyBlock(adapter: LanguageAdapter, fingerprint: string, _language: string): string {
+function generateSelfVerifyBlock(adapter: LanguageAdapter, fingerprint: string, language: string): string {
   const lines: string[] = [];
   lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
   lines.push(adapter.comment('SELF-VERIFICATION'));
   lines.push(adapter.comment('Run this file to verify the artifact integrity.'));
   lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
 
-  // Route through the adapter's selfVerifyBlock if available
-  if (adapter.selfVerifyBlock) {
-    lines.push(adapter.selfVerifyBlock(fingerprint));
+  if (language === 'Python') {
+    lines.push(`
+def __cmpsbl_verify__():
+    """
+    CMPSBL® Artifact Self-Verification
+    Verifies this sealed artifact's integrity and fingerprint.
+    Run: python <this_file>.py --verify
+    """
+    import hashlib, json, sys, os
+
+    fingerprint = "${fingerprint}"
+    meta = json.loads(__CMPSBL_META__) if isinstance(__CMPSBL_META__, str) else __CMPSBL_META__
+    verify_url = f"https://cmpsbl.com/verify/{fingerprint}"
+
+    print("=" * 60)
+    print("CMPSBL® Convex Core™ — Artifact Verification")
+    print("A PromptFluid™ Product")
+    print("=" * 60)
+    print(f"  Fingerprint:  {fingerprint}")
+    print(f"  Primitives:   {meta.get('primitiveCount', '?')}")
+    print(f"  Generated:    {meta.get('generatedAt', '?')}")
+    print(f"  Runtime:      {meta.get('runtimeVersion', '?')}")
+    print(f"  Language:     {meta.get('sourceLanguage', '?')}")
+    print()
+
+    # Verify metadata integrity
+    checks_passed = 0
+    checks_total = 4
+
+    # Check 1: Fingerprint present
+    if fingerprint and len(fingerprint) > 8:
+        print("  ✓ Fingerprint valid")
+        checks_passed += 1
+    else:
+        print("  ✗ Fingerprint missing or malformed")
+
+    # Check 2: Metadata intact
+    if meta.get("runtimeVersion") and meta.get("orchestrationVersion"):
+        print("  ✓ Metadata intact")
+        checks_passed += 1
+    else:
+        print("  ✗ Metadata corrupted")
+
+    # Check 3: Patent reference present
+    if meta.get("patents") or meta.get("patent"):
+        print("  ✓ Patent reference present")
+        checks_passed += 1
+    else:
+        print("  ✗ Patent reference missing")
+
+    # Check 4: Source file hash
+    try:
+        with open(__file__, "rb") as f:
+            content = f.read()
+        file_hash = hashlib.sha256(content).hexdigest()[:16]
+        print(f"  ✓ File hash: {file_hash}")
+        checks_passed += 1
+    except Exception:
+        print("  ✗ Could not compute file hash")
+
+    print()
+    print(f"  Result: {checks_passed}/{checks_total} checks passed")
+    print()
+    print(f"  Online verification:")
+    print(f"    {verify_url}")
+    print()
+    print(f"  Programmatic verification:")
+    print(f"    pip install cmpsbl-test-harness")
+    print(f'    from cmpsbl import verify_fingerprint')
+    print(f'    verify_fingerprint("{fingerprint}")')
+    print()
+    print("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.")
+    print("  U.S. Patent App. No. 64/029,678 · No. 64/031,637")
+    print("=" * 60)
+    return checks_passed == checks_total
+
+if __name__ == "__main__":
+    import sys
+    if "--verify" in sys.argv or "verify" in sys.argv:
+        success = __cmpsbl_verify__()
+        sys.exit(0 if success else 1)
+`);
+  } else if (language === 'TypeScript' || language === 'JavaScript') {
+    lines.push(`
+/**
+ * CMPSBL® Artifact Self-Verification
+ * Run: node <this_file> --verify
+ */
+function __cmpsbl_verify__() {
+  const crypto = globalThis.crypto ?? require('crypto');
+  const fs = typeof require !== 'undefined' ? require('fs') : null;
+  const fingerprint = "${fingerprint}";
+  const meta = typeof __CMPSBL_META__ === 'string' ? JSON.parse(__CMPSBL_META__) : __CMPSBL_META__;
+  const verifyUrl = \`https://cmpsbl.com/verify/\${fingerprint}\`;
+
+  console.log("=".repeat(60));
+  console.log("CMPSBL® Convex Core™ — Artifact Verification");
+  console.log("A PromptFluid™ Product");
+  console.log("=".repeat(60));
+  console.log(\`  Fingerprint:  \${fingerprint}\`);
+  console.log(\`  Primitives:   \${meta?.primitiveCount ?? '?'}\`);
+  console.log(\`  Generated:    \${meta?.generatedAt ?? '?'}\`);
+  console.log(\`  Runtime:      \${meta?.runtimeVersion ?? '?'}\`);
+  console.log(\`  Language:     \${meta?.sourceLanguage ?? '?'}\`);
+  console.log();
+
+  let passed = 0;
+  const total = 3;
+
+  if (fingerprint && fingerprint.length > 8) { console.log("  ✓ Fingerprint valid"); passed++; }
+  else { console.log("  ✗ Fingerprint missing"); }
+
+  if (meta?.runtimeVersion && meta?.orchestrationVersion) { console.log("  ✓ Metadata intact"); passed++; }
+  else { console.log("  ✗ Metadata corrupted"); }
+
+  if (meta?.patents || meta?.patent) { console.log("  ✓ Patent reference present"); passed++; }
+  else { console.log("  ✗ Patent reference missing"); }
+
+  console.log();
+  console.log(\`  Result: \${passed}/\${total} checks passed\`);
+  console.log();
+  console.log(\`  Online verification:\`);
+  console.log(\`    \${verifyUrl}\`);
+  console.log();
+  console.log("  © ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.");
+  console.log("  U.S. Patent App. No. 64/029,678 · No. 64/031,637");
+  console.log("=".repeat(60));
+  return passed === total;
+}
+
+if (typeof process !== 'undefined' && process.argv?.includes('--verify')) {
+  const ok = __cmpsbl_verify__();
+  process.exit(ok ? 0 : 1);
+}
+`);
   } else {
-    // Fallback for languages without a selfVerifyBlock: comment-only
+    // For other languages, embed as comments only
     lines.push(adapter.comment(`VERIFY THIS ARTIFACT: https://cmpsbl.com/verify/${fingerprint}`));
     lines.push(adapter.comment(`Fingerprint: ${fingerprint}`));
     lines.push(adapter.comment('Install: npm install @cmpsbl/test-harness'));
@@ -3341,405 +3055,9 @@ function generateSelfVerifyBlock(adapter: LanguageAdapter, fingerprint: string, 
 }
 
 /**
- * Generate the CMPSBLOrchestrator — connects Layer 2 capabilities to Layer 1 functions.
- * This is the critical bridge that makes the dual-layer architecture functional.
- * Without it, L2 stubs exist but never govern L1 execution.
+ * Generate the refurbished source with real per-primitive wrappers.
+ * Uses the Bridge adapter to output in the SAME language as the source.
  */
-function generateOrchestrator(
-  language: string,
-  adapter: LanguageAdapter,
-  boundaries: Array<{ name: string; line?: number }>,
-  selectedPrimitives: PrimitiveRecommendation[],
-  attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
-  fingerprint: string,
-): string {
-  const lang = language.toLowerCase();
-  const lines: string[] = [];
-
-  lines.push('');
-  lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
-  lines.push(adapter.comment('CMPSBL® ORCHESTRATION MATRIX'));
-  lines.push(adapter.comment('Connects Layer 2 capabilities to Layer 1 function boundaries.'));
-  lines.push(adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'));
-  lines.push(adapter.comment('═══════════════════════════════════════════════════════════'));
-  lines.push('');
-
-  // Detect which L2 capability classes were actually imported
-  const importedClasses = new Set<string>();
-  for (const p of selectedPrimitives) {
-    const wrapper = PRIMITIVE_WRAPPERS[p.primitiveId];
-    if (wrapper) {
-      const parsed = parseImport(wrapper.imports);
-      parsed.symbols.forEach(s => importedClasses.add(s));
-    }
-  }
-
-  const hasCB = importedClasses.has('CircuitBreaker');
-  const hasMem = importedClasses.has('PersistentMemory');
-  const hasDef = importedClasses.has('DefenseLayer') || importedClasses.has('DefenseGate');
-  const hasObs = importedClasses.has('HealthBeacon') || importedClasses.has('MetricsCollector');
-  const hasGov = importedClasses.has('GovernanceGate') || importedClasses.has('GovernancePolicy');
-
-  if (lang === 'php') {
-    lines.push(generatePhpOrchestrator(boundaries, attachmentPlan, fingerprint, { hasCB, hasMem, hasDef, hasObs, hasGov }));
-  } else if (lang === 'python') {
-    lines.push(generatePythonOrchestrator(boundaries, attachmentPlan, fingerprint, { hasCB, hasMem, hasDef, hasObs, hasGov }));
-  } else if (lang === 'rust') {
-    lines.push(generateRustOrchestrator(boundaries, attachmentPlan, fingerprint, adapter));
-  } else if (lang === 'go') {
-    lines.push(generateGoOrchestrator(boundaries, attachmentPlan, fingerprint, adapter));
-  } else {
-    // Generic orchestrator as comments + metadata for other languages
-    lines.push(adapter.comment('─── Orchestration Matrix Active ───'));
-    lines.push(adapter.comment(`Fingerprint: ${fingerprint}`));
-    lines.push(adapter.comment(`Functions governed: ${boundaries.length}`));
-    lines.push(adapter.comment(`Attachments active: ${attachmentPlan.length}`));
-    for (const entry of attachmentPlan) {
-      lines.push(adapter.comment(`  ${entry.functionName}() ← ${entry.capability} [${entry.primitive}]`));
-    }
-  }
-
-  return lines.join('\n');
-}
-
-function generatePhpOrchestrator(
-  boundaries: Array<{ name: string; line?: number }>,
-  attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
-  fingerprint: string,
-  caps: { hasCB: boolean; hasMem: boolean; hasDef: boolean; hasObs: boolean; hasGov: boolean },
-): string {
-  const functionNames = boundaries.map(b => b.name);
-  const wrappedFunctions = attachmentPlan.map(a => a.functionName);
-
-  return `/**
- * CMPSBLOrchestrator — Layer 2 Governance Bridge
- * Wraps Layer 1 function boundaries with Layer 2 capabilities.
- * U.S. Patent App. No. 64/029,678 · No. 64/031,637
- */
-class CMPSBLOrchestrator {
-    private static array $telemetry = [];
-    private static array $governanceLog = [];
-    private static string $fingerprint = '${fingerprint}';
-    private static bool $initialized = false;
-    private static ?PersistentMemory $memory = null;
-    private static array $attachments = [];
-
-    /** Initialize the orchestration matrix */
-    public static function boot(): void {
-        if (self::$initialized) return;
-        self::$initialized = true;
-        self::$attachments = json_decode(__MANA_ATTACHMENTS__, true) ?? [];
-${caps.hasMem ? "        self::$memory = PersistentMemory::init('cmpsbl_orchestrator');" : ''}
-${caps.hasDef ? "        DefenseLayer::activate('enforce');" : ''}
-${caps.hasObs ? "        HealthBeacon::start(30);" : ''}
-        self::emit('orchestrator.boot', ['fingerprint' => self::$fingerprint, 'functions' => ${functionNames.length}]);
-    }
-
-    /**
-     * Wrap a callable through the governance pipeline.
-     * Applies: validation → circuit breaker → execution → telemetry → memory
-     */
-    public static function govern(string $functionName, callable $fn, array $args = []): mixed {
-        self::boot();
-        $startTime = microtime(true);
-
-        // Pre-execution governance checks
-${caps.hasDef ? `        RequestValidator::validate($args);` : ''}
-${caps.hasGov ? `        GovernanceGate::evaluate(['function' => $functionName, 'args' => $args]);` : ''}
-
-        // Circuit breaker protection
-${caps.hasCB ? `        try {
-            $result = CircuitBreaker::execute(fn() => call_user_func_array($fn, $args));
-        } catch (\\Throwable $e) {
-            self::emit('orchestrator.error', ['function' => $functionName, 'error' => $e->getMessage()]);
-            throw $e;
-        }` : `        $result = call_user_func_array($fn, $args);`}
-
-        // Post-execution telemetry
-        $duration = (microtime(true) - $startTime) * 1000;
-        self::emit('orchestrator.call', [
-            'function' => $functionName,
-            'duration_ms' => round($duration, 2),
-            'success' => true,
-        ]);
-
-${caps.hasMem ? `        // Persist execution record
-        self::$memory->set("last_call_{$functionName}", [
-            'ts' => microtime(true),
-            'duration_ms' => round($duration, 2),
-            'success' => true,
-        ]);` : ''}
-
-        return $result;
-    }
-
-    /** Emit a telemetry event */
-    private static function emit(string $event, array $data = []): void {
-        self::$telemetry[] = [
-            'event' => $event,
-            'data' => $data,
-            'ts' => microtime(true),
-            'fingerprint' => self::$fingerprint,
-        ];
-    }
-
-    /** Get the _cmpsbl output overlay */
-    public static function overlay(mixed $originalOutput): array {
-        return [
-            '_cmpsbl' => [
-                'version' => '3.0.0',
-                'fingerprint' => self::$fingerprint,
-                'governed' => true,
-                'telemetry_count' => count(self::$telemetry),
-                'attachments' => count(self::$attachments),
-            ],
-            'result' => $originalOutput,
-        ];
-    }
-
-    /** Get telemetry log */
-    public static function telemetry(): array { return self::$telemetry; }
-
-    /** Get fingerprint */
-    public static function fingerprint(): string { return self::$fingerprint; }
-
-    /** Check if orchestrator is active */
-    public static function isActive(): bool { return self::$initialized; }
-}
-
-${generatePhpWrappedEntryPoints(functionNames, wrappedFunctions)}`;
-}
-
-/** Generate wrapped entry points that route through the orchestrator */
-function generatePhpWrappedEntryPoints(
-  functionNames: string[],
-  wrappedFunctions: string[],
-): string {
-  if (wrappedFunctions.length === 0 && functionNames.length === 0) return '';
-
-  const lines: string[] = [];
-  lines.push('/**');
-  lines.push(' * CMPSBL® Governed Entry Points');
-  lines.push(' * These functions route Layer 1 calls through the Layer 2 governance pipeline.');
-  lines.push(' * Usage: CMPSBLOrchestrator::govern("functionName", $callable, $args)');
-  lines.push(' */');
-  lines.push('');
-
-  // Generate example governed invocations as documentation
-  for (const fn of wrappedFunctions.slice(0, 10)) {
-    lines.push(`// Governed: ${fn}() — routed through orchestration matrix`);
-    lines.push(`// CMPSBLOrchestrator::govern('${fn}', [$instance, '${fn}'], $args);`);
-  }
-
-  if (wrappedFunctions.length > 10) {
-    lines.push(`// ... and ${wrappedFunctions.length - 10} more governed functions`);
-  }
-
-  return lines.join('\n');
-}
-
-function generatePythonOrchestrator(
-  boundaries: Array<{ name: string; line?: number }>,
-  attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
-  fingerprint: string,
-  caps: { hasCB: boolean; hasMem: boolean; hasDef: boolean; hasObs: boolean; hasGov: boolean },
-): string {
-  const functionNames = boundaries.map(b => b.name);
-
-  return `
-class CMPSBLOrchestrator:
-    """
-    CMPSBL® Orchestration Matrix — Layer 2 Governance Bridge
-    Connects Layer 2 capabilities to Layer 1 function boundaries.
-    U.S. Patent App. No. 64/029,678 · No. 64/031,637
-    """
-    _telemetry = []
-    _fingerprint = "${fingerprint}"
-    _initialized = False
-    _memory = None
-
-    @classmethod
-    def boot(cls):
-        if cls._initialized:
-            return
-        cls._initialized = True
-${caps.hasMem ? '        cls._memory = PersistentMemory.init(namespace="cmpsbl_orchestrator")' : ''}
-        cls._emit("orchestrator.boot", {"fingerprint": cls._fingerprint, "functions": ${functionNames.length}})
-
-    @classmethod
-    def govern(cls, function_name, fn, *args, **kwargs):
-        """Wrap a callable through the governance pipeline."""
-        cls.boot()
-        import time
-        start = time.time()
-
-${caps.hasCB ? `        try:
-            result = CircuitBreaker.execute(lambda: fn(*args, **kwargs))
-        except Exception as e:
-            cls._emit("orchestrator.error", {"function": function_name, "error": str(e)})
-            raise` : '        result = fn(*args, **kwargs)'}
-
-        duration = (time.time() - start) * 1000
-        cls._emit("orchestrator.call", {
-            "function": function_name,
-            "duration_ms": round(duration, 2),
-            "success": True,
-        })
-${caps.hasMem ? `        if cls._memory:
-            cls._memory.set(f"last_call_{function_name}", {"ts": time.time(), "duration_ms": round(duration, 2)})` : ''}
-        return result
-
-    @classmethod
-    def overlay(cls, original_output):
-        """Get the _cmpsbl output overlay."""
-        return {
-            "_cmpsbl": {
-                "version": "3.0.0",
-                "fingerprint": cls._fingerprint,
-                "governed": True,
-                "telemetry_count": len(cls._telemetry),
-            },
-            "result": original_output,
-        }
-
-    @classmethod
-    def _emit(cls, event, data=None):
-        import time
-        cls._telemetry.append({"event": event, "data": data or {}, "ts": time.time()})
-
-    @classmethod
-    def telemetry(cls):
-        return list(cls._telemetry)
-
-    @classmethod
-    def is_active(cls):
-        return cls._initialized
-`;
-}
-
-function generateRustOrchestrator(
-  boundaries: Array<{ name: string; line?: number }>,
-  attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
-  fingerprint: string,
-  adapter: LanguageAdapter,
-): string {
-  return `
-/// CMPSBL® Orchestration Matrix — Layer 2 Governance Bridge
-/// U.S. Patent App. No. 64/029,678 · No. 64/031,637
-pub struct CMPSBLOrchestrator {
-    fingerprint: String,
-    telemetry: Vec<(String, f64)>,
-    initialized: bool,
-}
-
-impl CMPSBLOrchestrator {
-    pub fn new() -> Self {
-        CMPSBLOrchestrator {
-            fingerprint: "${fingerprint}".to_string(),
-            telemetry: Vec::new(),
-            initialized: false,
-        }
-    }
-
-    pub fn boot(&mut self) {
-        if self.initialized { return; }
-        self.initialized = true;
-        self.emit("orchestrator.boot");
-    }
-
-    /// Route a Layer 1 call through the Layer 2 governance pipeline
-    pub fn govern<F, R>(&mut self, function_name: &str, f: F) -> R
-    where F: FnOnce() -> R {
-        self.boot();
-        let start = std::time::Instant::now();
-        let result = f();
-        let duration = start.elapsed().as_secs_f64() * 1000.0;
-        self.telemetry.push((function_name.to_string(), duration));
-        self.emit(&format!("orchestrator.call.{}", function_name));
-        result
-    }
-
-    fn emit(&self, event: &str) {
-        // Telemetry event emitted: structured for behavioral verification
-        let _ = event;
-    }
-
-    pub fn overlay(&self) -> String {
-        format!(r#"{{"_cmpsbl":{{"version":"3.0.0","fingerprint":"{}","governed":true,"telemetry_count":{}}}}}"#,
-            self.fingerprint, self.telemetry.len())
-    }
-
-    pub fn is_active(&self) -> bool { self.initialized }
-}
-
-${adapter.comment('─── Governed Functions ───')}
-${attachmentPlan.slice(0, 15).map(e => adapter.comment(`  ${e.functionName}() ← ${e.capability} [${e.primitive}]`)).join('\n')}
-`;
-}
-
-function generateGoOrchestrator(
-  boundaries: Array<{ name: string; line?: number }>,
-  attachmentPlan: Array<{ functionName: string; capability: string; primitive: string; reason: string }>,
-  fingerprint: string,
-  adapter: LanguageAdapter,
-): string {
-  return `
-// CMPSBLOrchestrator — Layer 2 Governance Bridge
-// U.S. Patent App. No. 64/029,678 · No. 64/031,637
-type CMPSBLOrchestrator struct {
-\tFingerprint string
-\tTelemetry   []OrchestratorEvent
-\tinitialized bool
-}
-
-type OrchestratorEvent struct {
-\tFunction   string
-\tDurationMs float64
-\tTimestamp  int64
-}
-
-func NewOrchestrator() *CMPSBLOrchestrator {
-\treturn &CMPSBLOrchestrator{Fingerprint: "${fingerprint}"}
-}
-
-func (o *CMPSBLOrchestrator) Boot() {
-\tif o.initialized { return }
-\to.initialized = true
-}
-
-// Govern routes a Layer 1 call through the Layer 2 governance pipeline
-func (o *CMPSBLOrchestrator) Govern(functionName string, fn func() interface{}) interface{} {
-\to.Boot()
-\tstart := time.Now()
-\tresult := fn()
-\tduration := float64(time.Since(start).Microseconds()) / 1000.0
-\to.Telemetry = append(o.Telemetry, OrchestratorEvent{
-\t\tFunction:   functionName,
-\t\tDurationMs: duration,
-\t\tTimestamp:  time.Now().Unix(),
-\t})
-\treturn result
-}
-
-func (o *CMPSBLOrchestrator) Overlay() map[string]interface{} {
-\treturn map[string]interface{}{
-\t\t"_cmpsbl": map[string]interface{}{
-\t\t\t"version":         "3.0.0",
-\t\t\t"fingerprint":     o.Fingerprint,
-\t\t\t"governed":        true,
-\t\t\t"telemetry_count": len(o.Telemetry),
-\t\t},
-\t}
-}
-
-func (o *CMPSBLOrchestrator) IsActive() bool { return o.initialized }
-
-${adapter.comment('─── Governed Functions ───')}
-${attachmentPlan.slice(0, 15).map(e => adapter.comment(`  ${e.functionName}() ← ${e.capability} [${e.primitive}]`)).join('\n')}
-`;
-
-}
-
 export function generateRefurbishedCode(
   originalCode: string,
   selectedPrimitives: PrimitiveRecommendation[],
@@ -3948,34 +3266,9 @@ export function generateRefurbishedCode(
     layer2Parts.push(adapter.comment(warnSummary));
   }
 
-  // ── PHP: Single opening tag ────────────────────────────────────────
-  // PHP files need exactly ONE <?php tag at the very top. Strip any from
-  // the verbatim source since we control the opening tag.
-  const isPhp = detected.toLowerCase() === 'php';
-  const phpOpenTag = isPhp ? '<?php\n' : '';
-  const finalVerbatim = isPhp
-    ? verbatimSource.replace(/^<\?php\s*/gm, '').trimStart()
-    : verbatimSource;
-
-  // ── Orchestrator: Connects Layer 2 to Layer 1 ────────────────────
-  // Generates the CMPSBLOrchestrator class that wraps the original code's
-  // entry points and integrates L2 capabilities (telemetry, governance,
-  // circuit breaking, memory) with L1 function calls.
-  const orchestrator = generateOrchestrator(
-    detected,
-    adapter,
-    boundaries,
-    selectedPrimitives,
-    attachmentPlan,
-    fingerprint,
-  );
-
-  // ── Final Assembly: Layer 2 + Orchestrator + Layer 1 (verbatim) ───
+  // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
   return [
-    phpOpenTag,
     layer2Code,
-    '',
-    orchestrator,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
@@ -3983,7 +3276,7 @@ export function generateRefurbishedCode(
     adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
     '',
-    finalVerbatim,
+    verbatimSource,
     '',
     verifyBlock,
     '',

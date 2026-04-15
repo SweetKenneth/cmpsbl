@@ -881,264 +881,6 @@ const PRIMITIVE_SPECS: Record<string, PrimitiveSpec> = {
   },
 };
 
-// ── Functional Method Body Generators ──
-// These mirror the behavioral logic from Mana's dedicated wrappers and
-// the five behavior engines (Interception, Execution, State, Analysis,
-// Orchestration) to ensure exported primitives have real, runnable logic.
-
-type FieldInfo = { k: string; v: string; def: string; ty?: string };
-
-/** Generate functional Rust method body based on kind */
-function generateRustMethodBody(
-  className: string,
-  m: MethodSpec,
-  fields: FieldInfo[],
-): string {
-  if (m.kind === 'execute' && className === 'CircuitBreaker') {
-    return ` -> Result<String, String> {
-        if self.state == "open" {
-            return Err(format!("CircuitBreaker is OPEN — call rejected"));
-        }
-        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-            fn.to_string()
-        })) {
-            Ok(result) => {
-                if self.state == "half-open" { self.state = "closed".to_string(); self.failures = 0; }
-                Ok(result)
-            },
-            Err(_) => {
-                self.failures += 1;
-                if self.failures >= self.threshold { self.state = "open".to_string(); }
-                Err(format!("CircuitBreaker: failure #{}", self.failures))
-            }
-        }
-    }`;
-  }
-  if (m.kind === 'execute' && className === 'FailoverManager') {
-    return ` -> Result<String, String> {
-        let mut attempt = 0;
-        loop {
-            match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| fn.to_string())) {
-                Ok(result) => return Ok(result),
-                Err(_) => {
-                    attempt += 1;
-                    if attempt >= self.max_retries { return Err("All retries exhausted".to_string()); }
-                    std::thread::sleep(Duration::from_millis((50 * (1 << attempt)) as u64));
-                }
-            }
-        }
-    }`;
-  }
-  if (m.kind === 'store' && m.name === 'set') {
-    return ` -> &mut Self {
-        self.store.insert(key.to_string(), value.to_string());
-        self
-    }`;
-  }
-  if (m.kind === 'store' && m.name === 'delete') {
-    const target = fields.find(f => f.v === 'map' || f.v === 'list');
-    const k = target ? target.k : 'store';
-    return ` -> &mut Self {
-        self.${k}.remove(key);
-        self
-    }`;
-  }
-  if (m.kind === 'store' && m.name === 'clear') {
-    const target = fields.find(f => f.v === 'map' || f.v === 'list');
-    const k = target ? target.k : 'store';
-    return ` -> &mut Self {
-        self.${k}.clear();
-        self
-    }`;
-  }
-  if (m.kind === 'query' && m.name === 'get') {
-    return ` -> Option<&String> {
-        self.store.get(key)
-    }`;
-  }
-  if (m.kind === 'query' && m.name === 'keys') {
-    return ` -> Vec<&String> {
-        self.store.keys().collect()
-    }`;
-  }
-  if (m.kind === 'query' && (m.name === 'state' || m.name === 'status')) {
-    const sf = fields.find(f => f.k === 'state' || f.k === 'mode' || f.k === 'healthy');
-    return sf ? ` -> &${sf.ty || 'String'} {
-        &self.${sf.k}
-    }` : ` -> &mut Self {
-        self
-    }`;
-  }
-  if (m.kind === 'check' && m.name === 'validate') {
-    return ` -> Result<(), String> {
-        if data.is_empty() { return Err(format!("${className}: validation failed — empty input")); }
-        if data.contains('<') || data.contains('>') { return Err(format!("${className}: potential injection detected")); }
-        Ok(())
-    }`;
-  }
-  if (m.kind === 'record') {
-    const listField = fields.find(f => f.v === 'list');
-    const k = listField ? listField.k : 'entries';
-    return ` -> &mut Self {
-        self.${k}.push(format!("{}: {}", action, details));
-        self
-    }`;
-  }
-  return ` -> &mut Self {
-        self
-    }`;
-}
-
-/** Generate functional Go method body based on kind */
-function generateGoMethodBody(
-  className: string,
-  m: MethodSpec,
-  funcName: string,
-  fields: Array<{ k: string; ty: string; v?: string }>,
-): string {
-  if (m.kind === 'execute' && className === 'CircuitBreaker') {
-    return `func (s *${className}) ${funcName}(fn func() (interface{}, error)) (interface{}, error) {
-\tif s.State == "open" {
-\t\tif time.Since(s.LastFailure) > time.Duration(s.ResetTimeout)*time.Second {
-\t\t\ts.State = "half-open"
-\t\t} else {
-\t\t\treturn nil, fmt.Errorf("CircuitBreaker is OPEN — call rejected")
-\t\t}
-\t}
-\tresult, err := fn()
-\tif err != nil {
-\t\ts.Failures++
-\t\ts.LastFailure = time.Now()
-\t\tif s.Failures >= s.Threshold { s.State = "open" }
-\t\treturn nil, err
-\t}
-\tif s.State == "half-open" { s.State = "closed"; s.Failures = 0 }
-\treturn result, nil
-}`;
-  }
-  if (m.kind === 'execute' && className === 'FailoverManager') {
-    return `func (s *${className}) ${funcName}(fn func() (interface{}, error)) (interface{}, error) {
-\tvar lastErr error
-\tfor attempt := 0; attempt < s.MaxRetries; attempt++ {
-\t\tresult, err := fn()
-\t\tif err == nil { return result, nil }
-\t\tlastErr = err
-\t\ttime.Sleep(time.Duration(50*(1<<attempt)) * time.Millisecond)
-\t}
-\treturn nil, fmt.Errorf("all retries exhausted: %v", lastErr)
-}`;
-  }
-  if (m.kind === 'store' && m.name === 'set') {
-    return `func (s *${className}) ${funcName}(key string, value interface{}) *${className} {
-\ts.Store[key] = value
-\treturn s
-}`;
-  }
-  if (m.kind === 'query' && m.name === 'get') {
-    return `func (s *${className}) ${funcName}(key string) interface{} {
-\tif v, ok := s.Store[key]; ok { return v }
-\treturn nil
-}`;
-  }
-  if (m.kind === 'check' && m.name === 'validate') {
-    return `func (s *${className}) ${funcName}(data string) error {
-\tif len(data) == 0 { return fmt.Errorf("${className}: validation failed — empty input") }
-\tif strings.ContainsAny(data, "<>") { return fmt.Errorf("${className}: potential injection detected") }
-\treturn nil
-}`;
-  }
-  // Default
-  return `func (s *${className}) ${funcName}() *${className} {
-\treturn s
-}`;
-}
-
-/** Generate functional Java/C#/Kotlin method body based on kind */
-function generateJvmMethodBody(
-  className: string,
-  m: MethodSpec,
-  jvmName: string,
-  fields: FieldInfo[],
-  lang: 'java' | 'csharp' | 'kotlin',
-): string {
-  const throwKw = lang === 'kotlin' ? 'throw RuntimeException' : 'throw new RuntimeException';
-  const nullKw = lang === 'kotlin' ? 'null' : 'null';
-  
-  if (m.kind === 'execute' && className === 'CircuitBreaker') {
-    if (lang === 'kotlin') {
-      return `    fun execute(fn: () -> Any?): Any? {
-        if (state == "open") throw RuntimeException("CircuitBreaker is OPEN — call rejected")
-        return try {
-            val result = fn()
-            if (state == "half-open") { state = "closed"; failures = 0 }
-            result
-        } catch (e: Exception) {
-            failures++
-            if (failures >= threshold) state = "open"
-            throw e
-        }
-    }`;
-    }
-    return `    public static Object execute(Runnable fn) {
-        if ("open".equals(state)) ${throwKw}("CircuitBreaker is OPEN — call rejected");
-        try {
-            fn.run();
-            if ("half-open".equals(state)) { state = "closed"; failures = 0; }
-            return ${nullKw};
-        } catch (Exception e) {
-            failures++;
-            if (failures >= threshold) state = "open";
-            throw ${lang === 'csharp' ? 'e' : 'new RuntimeException(e)'};
-        }
-    }`;
-  }
-  if (m.kind === 'execute' && className === 'FailoverManager') {
-    if (lang === 'kotlin') {
-      return `    fun execute(fn: () -> Any?): Any? {
-        var lastError: Exception? = null
-        for (attempt in 0 until maxRetries) {
-            try { return fn() }
-            catch (e: Exception) { lastError = e; Thread.sleep(50L * (1 shl attempt)) }
-        }
-        throw RuntimeException("All retries exhausted", lastError)
-    }`;
-    }
-    return `    public static Object execute(Runnable fn) {
-        Exception lastError = ${nullKw};
-        for (int attempt = 0; attempt < max_retries; attempt++) {
-            try { fn.run(); return ${nullKw}; }
-            catch (Exception e) { lastError = e; try { Thread.sleep(50 * (1 << attempt)); } catch (InterruptedException ignored) {} }
-        }
-        ${throwKw}("All retries exhausted");
-    }`;
-  }
-  if (m.kind === 'store' && m.name === 'set') {
-    if (lang === 'kotlin') return `    fun set(key: String, value: Any?): ${className} { store[key] = value; return this }`;
-    return `    public static void set(String key, Object value) { store.put(key, value); }`;
-  }
-  if (m.kind === 'query' && m.name === 'get') {
-    if (lang === 'kotlin') return `    fun get(key: String, default: Any? = null): Any? = store.getOrDefault(key, default)`;
-    return `    public static Object get(String key) { return store.get(key); }`;
-  }
-  if (m.kind === 'check' && m.name === 'validate') {
-    if (lang === 'kotlin') {
-      return `    fun validate(data: Any?): ${className} {
-        if (data == null) throw IllegalArgumentException("${className}: validation failed — null input")
-        if (data is String && data.contains(Regex("[<>]"))) throw RuntimeException("${className}: potential injection detected")
-        return this
-    }`;
-    }
-    return `    public static ${className} validate(Object data) {
-        if (data == null) throw new IllegalArgumentException("${className}: validation failed — null input");
-        if (data instanceof String && ((String)data).matches(".*[<>].*")) ${throwKw}("${className}: potential injection detected");
-        return new ${className}();
-    }`;
-  }
-  // Default
-  if (lang === 'kotlin') return `    fun ${jvmName}(): ${className} = this`;
-  return `    public static ${className} ${jvmName}() { return new ${className}(); }`;
-}
-
 // ── Language Family Generators ──
 
 function generateRust(name: string, spec: PrimitiveSpec): string {
@@ -1146,18 +888,15 @@ function generateRust(name: string, spec: PrimitiveSpec): string {
     const [k, v] = f.split(':');
     const ty = v === 'map' ? 'HashMap<String, String>' : v === 'list' ? 'Vec<String>' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'String' : 'i64';
     const def = v === 'map' ? 'HashMap::new()' : v === 'list' ? 'Vec::new()' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `"${v}".to_string()` : v;
-    return { k, ty, def, v };
+    return { k, ty, def };
   });
   const structFields = fields.map(f => `    pub ${f.k}: ${f.ty},`).join('\n');
   const defaultFields = fields.map(f => `            ${f.k}: ${f.def},`).join('\n');
-  const methods = spec.methods.map(m => {
-    const body = generateRustMethodBody(name, m, fields);
-    return `    /// ${m.description}\n    pub fn ${m.name}(&mut self${m.args ? ', ' + m.args.split(', ').map(a => `${a}: &str`).join(', ') : ''})${body}`;
-  }).join('\n\n');
-  const useStd = fields.some(f => f.ty === 'HashMap<String, String>') ? 'use std::collections::HashMap;\n' : '';
-  const useTime = (name === 'CircuitBreaker' || name === 'FailoverManager') ? 'use std::time::{Instant, Duration};\n' : '';
-  return `${useStd}${useTime}
-/// CMPSBL® Convex Core™ — ${spec.description}
+  const methods = spec.methods.map(m =>
+    `    /// ${m.description}\n    pub fn ${m.name}(&mut self${m.args ? ', ' + m.args.split(', ').map(a => `${a}: &str`).join(', ') : ''}) -> &mut Self {\n        self\n    }`
+  ).join('\n\n');
+  const useStd = fields.some(f => f.ty === 'HashMap<String, String>') ? 'use std::collections::HashMap;\n\n' : '';
+  return `${useStd}/// CMPSBL® Convex Core™ — ${spec.description}
 pub struct ${name} {
 ${structFields}
 }
@@ -1178,33 +917,21 @@ function generateGo(name: string, spec: PrimitiveSpec): string {
     const [k, v] = f.split(':');
     const pk = k.charAt(0).toUpperCase() + k.slice(1);
     const ty = v === 'map' ? 'map[string]interface{}' : v === 'list' ? '[]interface{}' : v === 'true' || v === 'false' ? 'bool' : isNaN(Number(v)) ? 'string' : 'int';
-    return { k: pk, ty, v };
+    return { k: pk, ty };
   });
   const structFields = fields.map(f => `\t${f.k} ${f.ty}`).join('\n');
-  const needsTime = name === 'CircuitBreaker' || name === 'FailoverManager';
-  const needsFmt = true;
-  const needsStrings = spec.methods.some(m => m.kind === 'check' && m.name === 'validate');
-  const importsGo: string[] = [];
-  if (needsFmt) importsGo.push('"fmt"');
-  if (needsTime) importsGo.push('"time"');
-  if (needsStrings) importsGo.push('"strings"');
-  const importBlock = importsGo.length > 0 ? `import (\n${importsGo.map(i => `\t${i}`).join('\n')}\n)\n\n` : '';
-
   const methods = spec.methods.map(m => {
     const funcName = m.name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-    return `// ${funcName} — ${m.description}\n${generateGoMethodBody(name, m, funcName, fields)}`;
+    return `// ${funcName} — ${m.description}\nfunc (s *${name}) ${funcName}() *${name} {\n\treturn s\n}`;
   }).join('\n\n');
   return `// CMPSBL® Convex Core™ — ${spec.description}
-${importBlock}type ${name} struct {
+type ${name} struct {
 ${structFields}
 }
 
 func New${name}() *${name} {
 \treturn &${name}{}
 }
-
-// Ensure fmt is referenced
-var _ = fmt.Sprintf
 
 ${methods}`;
 }
@@ -1219,9 +946,7 @@ function generateJava(name: string, spec: PrimitiveSpec): string {
   const fieldDecls = fields.map(f => `    private static ${f.ty} ${f.k} = ${f.def};`).join('\n');
   const methods = spec.methods.map(m => {
     const jName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
-    const fieldsForBody = fields.map(f => ({ k: f.k, v: spec.stateFields.find(sf => sf.startsWith(f.k))?.split(':')[1] ?? '', def: f.def }));
-    const body = generateJvmMethodBody(name, m, jName, fieldsForBody, 'java');
-    return `    /** ${m.description} */\n${body}`;
+    return `    /** ${m.description} */\n    public static ${name} ${jName}() {\n        return new ${name}();\n    }`;
   }).join('\n\n');
   return `import java.util.*;
 
@@ -1244,9 +969,7 @@ function generateCSharp(name: string, spec: PrimitiveSpec): string {
   const fieldDecls = fields.map(f => `    private static ${f.ty} ${f.k} = ${f.def};`).join('\n');
   const methods = spec.methods.map(m => {
     const csName = m.name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-    const fieldsForBody = fields.map(f => ({ k: f.k, v: spec.stateFields.find(sf => sf.startsWith(f.k.charAt(0).toLowerCase() + f.k.slice(1)))?.split(':')[1] ?? '', def: f.def }));
-    const body = generateJvmMethodBody(name, m, csName, fieldsForBody, 'csharp');
-    return `    /// <summary>${m.description}</summary>\n${body}`;
+    return `    /// <summary>${m.description}</summary>\n    public static ${name} ${csName}() => new ${name}();`;
   }).join('\n\n');
   return `using System;
 using System.Collections.Generic;
@@ -1270,9 +993,7 @@ function generateKotlin(name: string, spec: PrimitiveSpec): string {
   const fieldDecls = fields.map(f => `    private var ${f.k}: ${f.ty} = ${f.def}`).join('\n');
   const methods = spec.methods.map(m => {
     const kName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
-    const fieldsForBody = fields.map(f => ({ k: f.k, v: spec.stateFields.find(sf => sf.startsWith(f.k))?.split(':')[1] ?? '', def: f.def }));
-    const body = generateJvmMethodBody(name, m, kName, fieldsForBody, 'kotlin');
-    return `    /** ${m.description} */\n${body}`;
+    return `    /** ${m.description} */\n    fun ${kName}(): ${name} = this`;
   }).join('\n\n');
   return `/** CMPSBL® Convex Core™ — ${spec.description} */
 object ${name} {
@@ -1424,125 +1145,20 @@ function generatePhp(name: string, spec: PrimitiveSpec): string {
   const fields = spec.stateFields.map(f => {
     const [k, v] = f.split(':');
     const def = v === 'map' ? '[]' : v === 'list' ? '[]' : v === 'true' ? 'true' : v === 'false' ? 'false' : isNaN(Number(v)) ? `'${v}'` : v;
-    return { k, v, def };
+    return { k, def };
   });
   const fieldDecls = fields.map(f => `    private static $${f.k} = ${f.def};`).join('\n');
-
-  // Generate functional method bodies based on kind
   const methods = spec.methods.map(m => {
     const phpName = m.name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
-    const body = generatePhpMethodBody(name, m, fields);
-    return `    /** ${m.description} */\n    public static function ${phpName}(${generatePhpArgs(m)})${body}`;
+    return `    /** ${m.description} */\n    public static function ${phpName}(): self {\n        return new self();\n    }`;
   }).join('\n\n');
-
-  // No <?php tag — the adapter handles the single opening tag
-  return `/** CMPSBL® Convex Core™ — ${spec.description} */
+  return `<?php
+/** CMPSBL® Convex Core™ — ${spec.description} */
 class ${name} {
 ${fieldDecls}
 
 ${methods}
 }`;
-}
-
-/** Generate PHP method arguments from spec */
-function generatePhpArgs(m: MethodSpec): string {
-  if (!m.args) return '';
-  return m.args.split(', ').map(a => {
-    const clean = a.trim();
-    return `$${clean} = null`;
-  }).join(', ');
-}
-
-/** Generate functional PHP method body based on kind */
-function generatePhpMethodBody(
-  className: string,
-  m: MethodSpec,
-  fields: Array<{ k: string; v: string; def: string }>,
-): string {
-  switch (m.kind) {
-    case 'init': {
-      // Init methods configure state and return instance
-      const assignments = fields.map(f =>
-        `        if ($${f.k} !== null) self::$${f.k} = $${f.k};`
-      ).join('\n');
-      return ` {\n${assignments || '        // Configuration applied'}\n        return new self();\n    }`;
-    }
-    case 'store': {
-      // Store methods write to internal state
-      if (m.name === 'set') {
-        return ` {\n        self::$store[$key] = $value;\n        return new self();\n    }`;
-      }
-      if (m.name === 'delete' || m.name === 'clear') {
-        const target = fields.find(f => f.v === 'map' || f.v === 'list');
-        const storeVar = target ? target.k : 'store';
-        return m.name === 'clear'
-          ? ` {\n        self::$${storeVar} = [];\n        return new self();\n    }`
-          : ` {\n        unset(self::$${storeVar}[$key]);\n        return new self();\n    }`;
-      }
-      if (m.name === 'record') {
-        const listField = fields.find(f => f.v === 'list');
-        const k = listField ? listField.k : 'entries';
-        return ` {\n        self::$${k}[] = ['action' => $action, 'details' => $details, 'ts' => microtime(true), 'hash' => hash('sha256', json_encode([$action, $details, count(self::$${k})]))]; \n        return new self();\n    }`;
-      }
-      // Generic store
-      return ` {\n        return new self();\n    }`;
-    }
-    case 'check': {
-      // Check methods validate and return boolean or self
-      if (m.name === 'validate') {
-        return ` {\n        if ($data === null) throw new \\InvalidArgumentException('${className}: Validation failed — null input');\n        if (is_string($data) && preg_match('/[<>]/', $data)) throw new \\RuntimeException('${className}: Potential injection detected');\n        return new self();\n    }`;
-      }
-      if (m.name === 'verify') {
-        return ` {\n        return new self(); // Verification passed\n    }`;
-      }
-      return ` {\n        return new self();\n    }`;
-    }
-    case 'execute': {
-      // Execute methods perform actions with error handling
-      if (m.name === 'execute' && className === 'CircuitBreaker') {
-        return ` {\n        if (self::$state === 'open') {\n            if (microtime(true) - self::$last_failure > self::$reset_timeout) {\n                self::$state = 'half-open';\n            } else {\n                throw new \\RuntimeException("CircuitBreaker is OPEN — call rejected");\n            }\n        }\n        try {\n            $result = is_callable($fn) ? $fn() : $fn;\n            if (self::$state === 'half-open') { self::$state = 'closed'; self::$failures = 0; }\n            return $result;\n        } catch (\\Throwable $e) {\n            self::$failures++;\n            self::$last_failure = microtime(true);\n            if (self::$failures >= self::$threshold) self::$state = 'open';\n            throw $e;\n        }\n    }`;
-      }
-      if (m.name === 'execute' && className === 'FailoverManager') {
-        return ` {\n        $attempt = 0;\n        $lastError = null;\n        while ($attempt < self::$max_retries) {\n            try {\n                return is_callable($fn) ? $fn() : $fn;\n            } catch (\\Throwable $e) {\n                $lastError = $e;\n                $attempt++;\n                usleep((int)(self::$backoff_base * pow(2, $attempt) * 1000000));\n            }\n        }\n        throw $lastError ?? new \\RuntimeException('FailoverManager: All retries exhausted');\n    }`;
-      }
-      return ` {\n        return new self();\n    }`;
-    }
-    case 'query': {
-      // Query methods return state
-      if (m.name === 'get') {
-        return ` {\n        return self::$store[$key] ?? $default;\n    }`;
-      }
-      if (m.name === 'keys') {
-        return ` {\n        return array_keys(self::$store);\n    }`;
-      }
-      if (m.name === 'state' || m.name === 'status') {
-        const stateField = fields.find(f => f.k === 'state' || f.k === 'mode' || f.k === 'healthy');
-        return stateField
-          ? ` {\n        return self::$${stateField.k};\n    }`
-          : ` {\n        return new self();\n    }`;
-      }
-      if (m.name === 'snapshot' || m.name === 'all') {
-        const mapField = fields.find(f => f.v === 'map');
-        return mapField
-          ? ` {\n        return self::$${mapField.k};\n    }`
-          : ` {\n        return [];\n    }`;
-      }
-      if (m.name.includes('list') || m.name.includes('history') || m.name.includes('alerts') || m.name.includes('findings')) {
-        const listField = fields.find(f => f.v === 'list');
-        return listField
-          ? ` {\n        return self::$${listField.k};\n    }`
-          : ` {\n        return [];\n    }`;
-      }
-      return ` {\n        return new self();\n    }`;
-    }
-    case 'record': {
-      const listField = fields.find(f => f.v === 'list');
-      const k = listField ? listField.k : 'entries';
-      return ` {\n        self::$${k}[] = array_filter(get_defined_vars()) + ['ts' => microtime(true)];\n        return new self();\n    }`;
-    }
-    default:
-      return ` {\n        return new self();\n    }`;
-  }
 }
 
 function generateLua(name: string, spec: PrimitiveSpec): string {

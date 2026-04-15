@@ -2,18 +2,26 @@
  * Proprietary Evolution — ZIP Bundle Generator
  * Generates downloadable Capability Pack ZIPs with:
  * - Unified Single-File Distribution (cmpsbl.*) — Runtime + Effects + Bridge + API built-in
- * - Per-capability source files (Layer 2) + original source (Layer 1)
- * - Test harnesses, manifest, license, proof certificate
+ * - License in HTML + MD
+ * - README in HTML + MD
+ * - Pipeline Details HTML (per capability)
+ * - Valuation data
+ * - Source code, test harnesses, manifest
+ * - Black-box obfuscation for IP protection
  */
 
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
-import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
-import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
-import { humanizeCapabilityName } from '@/lib/export/humanize-name';
+import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
+import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
+import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
+import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
+import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 
 export interface CapabilityForExport {
   id: string;
@@ -865,18 +873,24 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-capability-pack-${candidateName.toLowerCase()}-${timestamp}`;
 
-  // ═══ Unified Single-File Distribution (the main deliverable) ═══
+  // ═══ Unified Single-File Distribution ═══
   const unifiedCode = generateUnifiedCapabilityFile(capabilities, packName, targetLanguage, userSourceFiles);
   const unifiedFilename = getUnifiedFilename(targetLanguage);
   zip.file(unifiedFilename, unifiedCode);
 
-  // ═══ src/ — Per-capability source files (Layer 2) ═══
+  // src/ — Per-capability source files
   const srcFolder = zip.folder('src')!;
   for (const cap of capabilities) {
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
   }
 
-  // ═══ original/ — User's original source files (Layer 1) ═══
+  // test/ — Test harnesses
+  const testFolder = zip.folder('test')!;
+  for (const cap of capabilities) {
+    testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
+  }
+
+  // original/ — User's original source files
   if (userSourceFiles && userSourceFiles.length > 0) {
     const originalFolder = zip.folder('original')!;
     for (const file of userSourceFiles) {
@@ -889,22 +903,32 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       '',
       '## Dual-Layer Architecture',
       '',
-      '- **Layer 1** (this folder) — Your original code. Unchanged. Trusted.',
-      '- **Layer 2** (../src/) — CMPSBL cognitive overlay. Observes, enriches, augments.',
+      '```',
+      'Layer 1 — Native Execution (this folder)',
+      '  Your original code. Unchanged. Trusted. Deterministic.',
+      '',
+      'Layer 2 — Cognitive Overlay (../src/ folder)',
+      '  CMPSBL modules that observe, enrich, and augment.',
+      '  Never substitutes your original logic.',
+      '```',
+      '',
+      '## Files',
+      '',
+      ...userSourceFiles.map(f => `- **${f.name}** — ${f.language} (${f.content.length.toLocaleString()} chars)`),
       '',
       '---',
       '© Your original work. Cognitive overlay © 2025–2026 CMPSBL®.',
     ].join('\n'));
   }
 
-  // ═══ test/ — Test harnesses ═══
-  const testFolder = zip.folder('test')!;
-  for (const cap of capabilities) {
-    testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
-  }
+  // Forge/vertical discoveries are now merged into the main capabilities array
+  // so they flow through src/, test/, docs/, unified file, manifest, and valuation automatically.
 
-  // ═══ manifest.json ═══
+  // manifest.json
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
+  const totalValue = capabilities.reduce((sum, c) =>
+    sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
+
   zip.file('manifest.json', serializeCmpsblManifest({
     name: packName,
     cjpi: avgCjpi,
@@ -916,70 +940,244 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     source: 'proprietary-evolution-lifecycle',
   }));
 
-  // ═══ README.html — Branded quick-start ═══
-  const topTier = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
-  const totalValue = capabilities.reduce((sum, c) =>
-    sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
+  // ═══ docs/ — All documentation in a single organized folder ═══
+  const docsFolder = zip.folder('docs')!;
+  const humanizedPackName = humanizeCapabilityName(candidateName, capabilities[0]?.chain, capabilities[0]?.category);
+  const ascensionSlug = packName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  zip.file('README.html', generateReadmeHTML({
-    name: candidateName,
-    description: `Capability Pack · ${capabilities.length} capabilities · ${targetLanguage.toUpperCase()} · Est. ${formatMarketValue(totalValue)}`,
-    category: 'Proprietary Evolution',
-    modules: [...new Set(capabilities.flatMap(c => c.chain))],
+  // License (root + docs/)
+  zip.file('LICENSE', generateLicenseMd());
+  docsFolder.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${humanizedPackName}`));
+
+  // README (root + docs/)
+  zip.file('README.md', generateReadmeMd(options));
+  docsFolder.file('README.html', generateReadmeHTML({
+    name: `Capability Pack — ${humanizedPackName}`,
+    description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
       { name: unifiedFilename, purpose: 'Single-file distribution — Runtime + Effects + Bridge + API (drop-in)' },
       { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
-      { name: 'original/', purpose: 'Your original source files (unchanged)' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
-      { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability technical dossier with valuation' },
-      { name: 'LICENSE.html', purpose: 'CMPSBL® Commercial Distribution License' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
-      { name: 'PROOF.txt', purpose: 'Cryptographic verification certificate' },
+      { name: 'docs/', purpose: 'Full documentation suite (HTML + Markdown)' },
     ],
-    quickStart: [
-      `// ONE FILE. Drop in, import, use.`,
-      `import { execute, executeChain } from './${unifiedFilename.replace(/\.[^.]+$/, '')}';`,
-      ``,
-      `const result = execute('${topTier.name}', { query: 'hello' });`,
-    ].join('\n'),
+    quickStart: targetLanguage === 'php'
+      ? `require_once '${unifiedFilename}';\\n$result = cmpsbl_execute('my-capability', ['key' => 'value']);`
+      : targetLanguage === 'python'
+      ? `from cmpsbl import execute\\nresult = execute('my-capability', {"key": "value"})`
+      : `import { execute, executeChain } from './${unifiedFilename.replace(/\\.ts$/, '')}';\\nconst result = execute('my-capability', { key: 'value' });`,
+    category: 'proprietary-evolution',
+    modules: [...new Set(capabilities.flatMap(c => c.chain))],
+    version: '1.0.0',
   }));
 
-  // ═══ LICENSE.html — Branded commercial license ═══
-  zip.file('LICENSE.html', generateLicenseHTML(candidateName));
-
-  // ═══ LICENSE (plain text for compatibility) ═══
-  zip.file('LICENSE', generateLicenseMd());
-
-  // ═══ PIPELINE-DETAILS.html — Valuation & provenance ═══
-  try {
-    zip.file('PIPELINE-DETAILS.html', generatePipelineDetailsHTML({
-      name: humanizeCapabilityName(topTier.name, topTier.chain, topTier.category || 'general'),
-      description: topTier.description || `${capabilities.length} capabilities discovered through collision testing`,
-      category: topTier.category || 'general',
-      score: avgCjpi,
-      tier: getTierFromScore(avgCjpi),
-      systemChain: [...new Set(capabilities.flatMap(c => c.chain))],
+  // docs/details/ — Per-capability pipeline detail pages
+  const detailsFolder = docsFolder.folder('details')!;
+  for (const cap of capabilities) {
+    const displayName = humanizeCapabilityName(cap.name, cap.chain, cap.category);
+    const safeFilename = humanizeFilename(cap.name);
+    const detailsHTML = generatePipelineDetailsHTML({
+      name: displayName,
+      description: cap.description || `Evolved capability: ${cap.chain.join(' → ')}`,
+      category: cap.category || 'proprietary-evolution',
+      score: cap.cjpiScore,
+      tier: cap.tier || getTierFromScore(cap.cjpiScore),
+      systemChain: cap.chain,
+      fingerprint: cap.fingerprint,
       exportLanguages: [targetLanguage],
+      obtainedAt: new Date().toISOString(),
       source: 'Proprietary Evolution Lifecycle',
-    }));
-  } catch {
-    // Pipeline details page is supplementary
+    });
+    detailsFolder.file(`${safeFilename}-PIPELINE-DETAILS.html`, detailsHTML);
   }
 
-  // ═══ PROOF.txt — Verification certificate ═══
-  const { generateProofCertificate } = await import('@/lib/export/proof-certificate');
-  const fingerprint = capabilities[0]?.fingerprint?.slice(0, 12).toUpperCase() ?? 'UNKNOWN';
-  zip.file('PROOF.txt', generateProofCertificate({
-    serial: packName,
-    fingerprint,
-    tier: getTierFromScore(avgCjpi),
-    cjpi: avgCjpi,
-    primitives: [...new Set(capabilities.flatMap(c => c.chain))],
-    source: 'CMPSBL® Proprietary Evolution',
-    language: targetLanguage,
+  // export-tier.json
+  zip.file('export-tier.json', JSON.stringify({
+    pack: packName,
+    averageScore: avgCjpi,
+    averageTier: getTierFromScore(avgCjpi),
+    capabilities: capabilities.map(c => ({
+      name: c.name,
+      score: c.cjpiScore,
+      tier: c.tier,
+      valuation: {
+        estimated: estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length),
+        formatted: formatMarketValue(estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length)),
+        disclaimer: 'AI-generated estimate. Not financial advice.',
+      },
+    })),
+    totalValuation: {
+      estimated: totalValue,
+      formatted: formatMarketValue(totalValue),
+    },
+  }, null, 2));
+
+  // docs/guides/ — Integration guide + supplementary markdown artifacts
+  const guidesFolder = docsFolder.folder('guides')!;
+  guidesFolder.file('INTEGRATION.md', generateIntegrationGuide({
+    kind: 'ascension',
+    name: packName,
+    slug: ascensionSlug,
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
   }));
 
-  // ═══ Generate and download ═══
+  // Supplementary .md artifacts → docs/guides/
+  const artifacts = generateExportArtifacts({
+    kind: 'ascension',
+    name: packName,
+    slug: ascensionSlug,
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
+  });
+  for (const [filename, content] of Object.entries(artifacts)) {
+    if (filename.startsWith('_runtime/')) {
+      // _runtime files stay at root
+      zip.file(filename, content);
+    } else if (filename === 'quickstart.ts' || filename === 'package.json' || filename === '.env.example') {
+      // Executable/config files stay at root
+      zip.file(filename, content);
+    } else {
+      guidesFolder.file(filename, content);
+    }
+  }
+
+  // ═══ PERSISTENT MEMORY ADAPTER — auto-included for ALL agent exports ═══
+  {
+    const { generatePersistentMemoryAdapter, generateMemoryQuickstart } = await import('@/lib/export/persistent-memory-adapter');
+    const { blackboxFile } = await import('@/lib/export/blackbox');
+    zip.file('_runtime/persistent-memory.ts', blackboxFile(generatePersistentMemoryAdapter(), 'typescript'));
+    const agentId = ascensionSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+    zip.file('MEMORY-SETUP.md', `# Persistent Memory — ${packName}
+
+## Zero Setup Required
+
+Your Super Agent exports include the **CMPSBL® Persistent Memory Adapter** — a tiered,
+file-backed storage engine that gives every agent cross-session memory out of the box.
+
+### Memory Tiers
+
+| Tier | Age | Storage | Access Speed |
+|------|-----|---------|-------------|
+| **HOT** | < 24h | In-memory + disk | Instant |
+| **WARM** | 1–7 days | Disk only | Fast |
+| **COLD** | 7–90 days | Compressed (gzip) | Deep recall |
+| **Expired** | > 90 days | Auto-purged | — |
+
+### Quick Start
+
+\`\`\`typescript
+import { createPersistentStorage } from './_runtime/persistent-memory';
+import { init } from './_runtime/convex-core';
+
+const storage = createPersistentStorage({
+  agentId: '${agentId}',
+});
+
+const instance = init({ storage });
+// That's it. Your agent now remembers across sessions.
+\`\`\`
+
+### Configuration
+
+| Environment Variable | Default | Description |
+|---------------------|---------|-------------|
+| \`CMPSBL_MEMORY_TTL_DAYS\` | \`90\` | Max memory retention in days |
+| \`CMPSBL_MEMORY_SHARED\` | \`false\` | Share memory across all agents |
+
+### Memory Location
+
+\`~/.cmpsbl/memory/${agentId}/\`
+
+Each tier has its own subdirectory: \`hot/\`, \`warm/\`, \`cold/\`.
+
+### Shared Memory Mode
+
+To enable cross-agent recall (all agents share one memory pool):
+
+\`\`\`bash
+export CMPSBL_MEMORY_SHARED=true
+\`\`\`
+
+Or in code:
+
+\`\`\`typescript
+const storage = createPersistentStorage({
+  agentId: '${agentId}',
+  sharedMemory: true,
+});
+\`\`\`
+
+---
+
+© CMPSBL® — All rights reserved.
+`);
+  }
+
+  // Discovery context & tier migration → docs/guides/
+  const discoveryCtx = generateDiscoveryContext({
+    kind: 'ascension',
+    name: packName,
+    slug: ascensionSlug,
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
+  });
+  if (discoveryCtx) {
+    guidesFolder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
+  }
+  guidesFolder.file('TIER-MIGRATION.md', generateTierMigration());
+
+  // docs/html/ — Beautiful HTML versions of all guides
+  const htmlFolder = docsFolder.folder('html')!;
+  const htmlArtifacts = generateHTMLArtifacts({
+    name: packName,
+    slug: ascensionSlug,
+    kind: 'ascension',
+    version: '1.0.0',
+    score: avgCjpi,
+    tier: getTierFromScore(avgCjpi),
+    languages: [targetLanguage],
+  });
+  for (const [filename, content] of Object.entries(htmlArtifacts)) {
+    htmlFolder.file(filename, content);
+  }
+
+  // ═══ Capability Activation Ledger + Guide + Verification (lifecycle artifacts) ═══
+  try {
+    const {
+      buildAscensionLifecycleArtifacts,
+      generateVerificationScript,
+      injectRuntimeEvidence,
+      clearRuntimeEvidence,
+    } = await import('@/lib/capability-lifecycle/export-bridge');
+
+    // Inject real behavioral evidence from runtime engines if available
+    try {
+      const runtimePath = 'packages/runtime/src/engines/behavioral-evidence-bridge';
+      const runtimeModule = await import(/* @vite-ignore */ `../../${runtimePath}`).catch(() => null);
+      if (runtimeModule?.hasBehavioralEvidence?.()) {
+        const evidence = runtimeModule.extractBehavioralEvidence();
+        injectRuntimeEvidence(evidence.probes);
+      }
+    } catch {
+      // Runtime not available — generic probes used
+    }
+
+    const fingerprint = capabilities[0]?.fingerprint?.slice(0, 12).toUpperCase() ?? 'UNKNOWN';
+    const lifecycle = buildAscensionLifecycleArtifacts(capabilities, fingerprint, targetLanguage);
+
+    // Clean up after use
+    clearRuntimeEvidence();
+
+    zip.file('capability-ledger.json', lifecycle.ledgerJson);
+    docsFolder.file('ACTIVATION-GUIDE.html', lifecycle.guideHtml);
+    const allPrimitives = [...new Set(capabilities.flatMap(c => c.chain))];
+    zip.file('RUN_VERIFICATION.ts', generateVerificationScript(fingerprint, allPrimitives));
+  } catch {
+    // Graceful degradation — lifecycle artifacts are supplementary
+  }
+
+  // Generate and download
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });
   saveAs(blob, `${packName}.zip`);
 }

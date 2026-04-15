@@ -31,18 +31,6 @@ import {
   CAPABILITY_PHASE, CAPABILITY_CONTRACTS, CONTRACT_MAP, WrapperPhase,
   MANA_LAYER_TAG, assertContractMapComplete, normalizePriority,
 } from './types';
-import {
-  verifyFingerprint,
-  registerCandidateBaseline,
-  checkIdentity,
-  type FingerprintResult,
-} from '../../core/boot/fingerprintGate';
-import { recordAuditEvent } from '../../core/audit/auditChain';
-import {
-  safeDetach,
-  enterExecutionBoundary,
-  exitExecutionBoundary,
-} from './detach-safe';
 
 // ═══════════════════════════════════════════════════════════════
 // Primitives — Type-Safe Helpers (mirrored from engine.ts)
@@ -235,7 +223,7 @@ export interface ManaSession {
     capabilities: Array<{ functionName: string; capability: ManaCapability; rulePayload?: unknown }>,
     sourceForHash: string,
   ): Promise<ManaManifest>;
-  detach(hostModule: Record<string, unknown>): Promise<ManaManifest>;
+  detach(hostModule: Record<string, unknown>): ManaManifest;
 
   // ── Proof ──
   generateProof(sourceForHash: string): Promise<ManaProof>;
@@ -503,38 +491,7 @@ export function createSession(sessionId?: string): ManaSession {
     },
 
     async attach(hostModule, capabilities, sourceForHash) {
-      // #1: Identity enforcement
-      const identity = checkIdentity(hostPkg || 'unknown', hostVer || '0.0.0');
-      if (!identity.complete) {
-        sessionState = 'detached';
-        throw new Error(`[MANA/SESSION:${id}] Attachment denied — ${identity.reason}. Call scan() first.`);
-      }
-
-      const fpResult = verifyFingerprint(hostModule, hostPkg, hostVer);
-      
-      recordAuditEvent(`mana.session.${id}`, 'fingerprint_verify', fpResult.verdict, {
-        fingerprint: fpResult.fingerprint,
-        mismatchType: fpResult.mismatchType,
-        trustState: fpResult.trustState,
-      }, undefined, undefined, {
-        phase: 'boot',
-        outcome: fpResult.verdict === 'valid' ? 'success' : fpResult.verdict === 'suspect' ? 'degraded' : 'denied',
-        trustState: fpResult.trustState as 'candidate_baseline' | 'trusted_baseline' | 'uninitialized',
-      });
-
-      if (fpResult.verdict === 'invalid') {
-        sessionState = 'detached';
-        throw new Error(`[MANA/SESSION:${id}] Attachment denied — invalid fingerprint`);
-      }
-
-      // #3: Domain-typed restrictions
-      let filteredCaps = capabilities;
-      if (fpResult.verdict === 'suspect') {
-        const limited = new Set(fpResult.limitedCapabilities);
-        filteredCaps = capabilities.filter(c => !limited.has(c.capability));
-      }
-
-      // Detect recursive layering
+      // Detect recursive layering — symbol-based, not name heuristic
       for (const [, val] of Object.entries(hostModule)) {
         if (typeof val === 'function' && (val as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] === true) {
           parentLayerHash = await computeHash(sourceForHash);
@@ -549,8 +506,11 @@ export function createSession(sessionId?: string): ManaSession {
       originals.clear();
       telemetry.length = 0;
 
-      const sorted = [...filteredCaps].sort(byPhaseThenName).reverse();
+      // Deterministic sort: primary by phase (ascending), secondary by capability name
+      // Then REVERSE — so we wrap ANALYZE first (innermost) and GATE last (outermost)
+      const sorted = [...capabilities].sort(byPhaseThenName).reverse();
 
+      // Group by function name for proper wrapper COMPOSITION
       const capsByFunction = new Map<string, typeof sorted>();
       for (const cap of sorted) {
         const list = capsByFunction.get(cap.functionName) ?? [];
@@ -558,28 +518,20 @@ export function createSession(sessionId?: string): ManaSession {
         capsByFunction.set(cap.functionName, list);
       }
 
-      const hostKey = `${hostPkg}-${id}`;
       let position = 0;
       for (const [functionName, caps] of Array.from(capsByFunction.entries())) {
         const rawOriginal = hostModule[functionName] as AnyFn;
         if (typeof rawOriginal !== 'function') continue;
 
+        // Store the true original ONCE — before any wrapping
         if (!originals.has(functionName)) {
           originals.set(functionName, rawOriginal);
         }
 
-        // #4: Compose all wrappers first, then ONE outer boundary
-        let composed: AnyFn = rawOriginal;
-        const existingCaps = (rawOriginal as unknown as Record<string, Set<ManaCapability>>).__mana_attached_caps;
-        const attachedSet = existingCaps instanceof Set ? new Set(existingCaps) : new Set<ManaCapability>();
-
+        // Compose wrappers: each wraps the result of the previous
+        let wrapped: AnyFn = rawOriginal;
         for (const cap of caps) {
-          // #8: Persistent double-wrap prevention
-          if (attachedSet.has(cap.capability)) {
-            emitTelemetry(cap.capability, cap.functionName, 'observed', { reason: 'double_wrap_prevented' }, 'attachment');
-            continue;
-          }
-
+          // Lex governance — ATTACHMENT-TIME verdict
           const { verdict } = lexEvaluate(lex, cap.capability, cap.functionName, config.lexMode, 'attachment');
           if (verdict === 'deny') {
             emitTelemetry(cap.capability, cap.functionName, 'blocked', { reason: 'lex_denied_attachment' }, 'attachment');
@@ -599,87 +551,37 @@ export function createSession(sessionId?: string): ManaSession {
           };
           attachmentPoints.set(`${cap.functionName}:${cap.capability}`, point);
 
-          composed = wrapFunction(composed, cap.functionName, cap.capability, point);
-          attachedSet.add(cap.capability);
+          // Compose — wrap the previous wrapped result, not the original
+          wrapped = wrapFunction(wrapped, cap.functionName, cap.capability, point);
+          // Tag wrapper with symbol for accurate layer detection
+          (wrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
           emitTelemetry(cap.capability, cap.functionName, 'invoked', {
-            action: 'attached', layerDepth, position: point.position, phase: point.phase,
+            action: 'attached', layerDepth, position: point.position,
+            phase: point.phase,
           }, 'attachment');
         }
 
-        // #4: ONE outer execution boundary
-        const fullyComposed = composed;
-        const boundaryWrapped = function manaSessionOuterBoundary(this: unknown, ...args: unknown[]) {
-          enterExecutionBoundary(hostKey);
-          try {
-            const result = (fullyComposed as Function).apply(this, args);
-            if (result != null && typeof result === 'object' && typeof (result as Promise<unknown>).then === 'function') {
-              return (result as Promise<unknown>).then(
-                (v) => { exitExecutionBoundary(hostKey); return v; },
-                (e) => { exitExecutionBoundary(hostKey); throw e; },
-              );
-            }
-            exitExecutionBoundary(hostKey);
-            return result;
-          } catch (err) {
-            exitExecutionBoundary(hostKey);
-            throw err;
-          }
-        } as AnyFn;
-
-        (boundaryWrapped as unknown as Record<symbol, unknown>)[MANA_LAYER_TAG] = true;
-        (boundaryWrapped as unknown as Record<string, Set<ManaCapability>>).__mana_attached_caps = attachedSet;
-        hostModule[functionName] = boundaryWrapped;
+        // Apply the fully composed wrapper stack
+        hostModule[functionName] = wrapped;
       }
 
       sessionState = 'symbiotic';
       attachedAt = Date.now();
       detachedAt = null;
-
-      // #2: First boot registers candidate baseline only
-      if (fpResult.verdict === 'suspect' && fpResult.expectedFingerprint === null) {
-        registerCandidateBaseline(hostPkg, fpResult.fingerprint, fpResult.integrityFingerprint);
-      }
-
-      recordAuditEvent(`mana.session.${id}`, 'attach_complete', 'success', {
-        hostPackage: hostPkg, attachmentPointCount: attachmentPoints.size,
-        trustState: fpResult.trustState,
-      }, undefined, undefined, {
-        phase: 'attachment',
-        outcome: 'success',
-        trustState: fpResult.trustState as 'candidate_baseline' | 'trusted_baseline' | 'uninitialized',
-      });
-
       return session.getManifest();
     },
 
-    async detach(hostModule) {
+    detach(hostModule) {
       if (sessionState !== 'symbiotic') {
         throw new Error(`[MANA/SESSION:${id}] Not attached.`);
       }
       sessionState = 'detaching';
-      const manifest = session.getManifest();
-
-      recordAuditEvent(`mana.session.${id}`, 'detach_start', 'initiated', {
-        hostPackage: hostPkg, attachmentPointCount: attachmentPoints.size,
-      }, undefined, undefined, { phase: 'detachment', outcome: 'success' });
-
-      // #6: safeDetach is the SINGLE detach authority
-      const receipt = await safeDetach(hostModule, originals, `${hostPkg}-${id}`, manifest);
-
+      for (const [functionName, originalFn] of Array.from(originals.entries())) {
+        hostModule[functionName] = originalFn;
+      }
       sessionState = 'detached';
       detachedAt = Date.now();
-
-      recordAuditEvent(`mana.session.${id}`, 'detach_complete', receipt.success ? 'clean' : 'fallback', {
-        receiptId: receipt.receiptId,
-        restoredFunctions: receipt.restoredFunctions,
-        verificationPassed: receipt.verificationPassed,
-        recoveryPath: receipt.recoveryPath,
-      }, undefined, undefined, {
-        phase: 'detachment',
-        outcome: receipt.success ? 'success' : 'degraded',
-        recoveryPath: receipt.recoveryPath,
-      });
-
+      const manifest = session.getManifest();
       originals.clear();
       attachmentPoints.clear();
       if (layerDepth > 0) layerDepth--;

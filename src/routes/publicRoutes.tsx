@@ -129,7 +129,6 @@ const ManaProofPage = lazy(() => import("@/pages/ManaProof"));
 const ManaLabPage = lazy(() => import("@/pages/ManaLab"));
 const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
 const LabPage = lazy(() => import("@/pages/Lab"));
-
 const ShieldPage = lazy(() => import("@/pages/Shield"));
 
 export const publicRoutes = (
@@ -140,7 +139,6 @@ export const publicRoutes = (
     <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/mana" element={<ManaPage />} />
-    
     <Route path="/shield" element={<ShieldPage />} />
     <Route path="/mana/proof" element={<ManaProofPage />} />
     <Route path="/mana/lab" element={<ManaLabPage />} />
@@ -279,13 +277,8 @@ export const publicRoutes = (
     <Route path="/api-access" element={<ApiAccess />} />
     <Route path="/keys" element={<Navigate to="/api-access" replace />} />
     <Route path="/careers" element={<Navigate to="/about" replace />} />
-    {/* #11: /ascension = customer-facing simplified wizard. /x = internal/dev debug surface (PIN-gated) */}
-    <Route path="/x" element={
-      <PinGate pin="2026" storageKey="ascension_dev_unlock">
-        <ProprietaryEvolution />
-      </PinGate>
-    } />
-    <Route path="/ascension" element={<ProprietaryEvolution />} />
+    <Route path="/x" element={<ProprietaryEvolution />} />
+    <Route path="/ascension" element={<RestorationShop />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
     <Route path="/junkyard" element={<JunkyardPage />} />

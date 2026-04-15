@@ -4,13 +4,14 @@
  * Generates the "split pipeline" — visible partial architecture
  * that demonstrates real effects while concealing orchestration.
  *
- * v3.1.0 — Routes all codegen through the unified LanguageAdapter.
+ * Strategy: Devs see 5 of 12 real pipeline stages in a plausible
+ * but incomplete order. Critical stages (collision scoring, topology
+ * resolution, sequencing engine) are compiled into opaque runtime
+ * blocks that execute correctly but cannot be reverse-engineered.
  *
  * Patent Pending: U.S. App. No. 64/029,678
  * © CMPSBL® — All rights reserved.
  */
-
-import { getAdapter } from '../factory/generate-refurbished-code';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — Compiled Runtime Preamble
@@ -32,28 +33,79 @@ export function generateCompiledPreamble(
   lang: string,
 ): string {
   const c = commentPrefix(lang);
-  const adapter = getAdapter(lang);
 
   // Generate deterministic but opaque initialization vectors from the fingerprint
   const seeds = deriveSeeds(fingerprint, primitiveNames.length);
   const dispatchTable = generateDispatchTable(primitiveNames, seeds);
   const collisionMatrix = generateCollisionMatrix(primitiveNames, seeds);
 
-  const header = [
+  if (lang === 'python') {
+    return [
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Tampering invalidates      ║`,
+      `${c} ║ artifact integrity and voids certification  ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
+      '',
+      `_CMPSBL_DT = [${dispatchTable.join(', ')}]`,
+      `_CMPSBL_CM = [${collisionMatrix.join(', ')}]`,
+      `_CMPSBL_IV = ${seeds.iv}`,
+      `_CMPSBL_EPOCH = ${seeds.epoch}`,
+      '',
+      `def _cmpsbl_resolve(idx, ctx=0):`,
+      `    v = (_CMPSBL_DT[idx % len(_CMPSBL_DT)] ^ _CMPSBL_IV) & 0xFFFF`,
+      `    return (_CMPSBL_CM[v % len(_CMPSBL_CM)] + ctx) >> 2`,
+      '',
+      `def _cmpsbl_gate(stage, payload):`,
+      `    seq = _cmpsbl_resolve(stage, hash(str(payload)) & 0xFF)`,
+      `    if seq < _CMPSBL_EPOCH: return payload`,
+      `    return {**payload, "_sealed": True, "_seq": seq}`,
+      '',
+    ].join('\n');
+  }
+
+  if (lang === 'go') {
+    return [
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Do not modify.              ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
+      '',
+      `var _cmpsblDT = [...]uint16{${dispatchTable.join(', ')}}`,
+      `var _cmpsblCM = [...]uint16{${collisionMatrix.join(', ')}}`,
+      `var _cmpsblIV uint32 = ${seeds.iv}`,
+      '',
+      `func _cmpsblResolve(idx int, ctx uint32) uint16 {`,
+      `\tv := (_cmpsblDT[idx%len(_cmpsblDT)] ^ uint16(_cmpsblIV)) & 0xFFFF`,
+      `\treturn (_cmpsblCM[int(v)%len(_cmpsblCM)] + uint16(ctx)) >> 2`,
+      `}`,
+      '',
+    ].join('\n');
+  }
+
+  if (lang === 'rust') {
+    return [
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Do not modify.              ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
+      '',
+      `const _CMPSBL_DT: &[u16] = &[${dispatchTable.join(', ')}];`,
+      `const _CMPSBL_CM: &[u16] = &[${collisionMatrix.join(', ')}];`,
+      `const _CMPSBL_IV: u32 = ${seeds.iv};`,
+      '',
+      `fn _cmpsbl_resolve(idx: usize, ctx: u32) -> u16 {`,
+      `    let v = (_CMPSBL_DT[idx % _CMPSBL_DT.len()] ^ (_CMPSBL_IV as u16)) & 0xFFFF;`,
+      `    (_CMPSBL_CM[(v as usize) % _CMPSBL_CM.len()] + (ctx as u16)) >> 2`,
+      `}`,
+      '',
+    ].join('\n');
+  }
+
+  // Default: TypeScript/JavaScript
+  return [
     `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
     `${c} ║ Auto-generated. Tampering invalidates      ║`,
     `${c} ║ artifact integrity and voids certification  ║`,
     `${c} ╚═══════════════════════════════════════════╝`,
     '',
-  ].join('\n');
-
-  // Route through the adapter's dispatchPreamble if available
-  if (adapter.dispatchPreamble) {
-    return header + adapter.dispatchPreamble(dispatchTable, collisionMatrix, seeds) + '\n';
-  }
-
-  // Fallback for languages without a dispatchPreamble: JS/TS default
-  return header + [
     `const _DT = Object.freeze([${dispatchTable.join(',')}]);`,
     `const _CM = Object.freeze([${collisionMatrix.join(',')}]);`,
     `const _IV = ${seeds.iv}; const _EP = ${seeds.epoch};`,

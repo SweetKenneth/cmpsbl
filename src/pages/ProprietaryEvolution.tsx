@@ -1,198 +1,216 @@
 /**
- * Ascension — /ascension
- * Simplified 4-step wizard: Upload → Trace (optional) → Processing → Results
- * 
- * A1: Immutable run state via commitRun()
- * D1: UI calls executeRun() — not a controller
- * C1: Run-scoped everything
- * 
+ * Ascension — /x
+ * PIN-gated software evolution lifecycle within the CMPSBL cognitive substrate.
+ * Full-page step-by-step wizard: INGEST → DISCOVERY → ASCEND → FORGE → EXPORT
+ *
  * PERF: Pure CSS animations — no framer-motion dependency.
  */
 
-import { useState, useCallback, useRef } from 'react';
-import { Upload, Link2, Activity, Sparkles, Check } from 'lucide-react';
+import { useState, useCallback } from 'react';
+import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
+import { AscensionHero } from '@/components/proprietary-evolution/AscensionHero';
+import { IngestPhase } from '@/components/proprietary-evolution/IngestPhase';
+import { DiscoveryPhase } from '@/components/proprietary-evolution/DiscoveryPhase';
+import { CrystallizationPhase } from '@/components/proprietary-evolution/CrystallizationPhase';
+import { ExportPhase } from '@/components/proprietary-evolution/ExportPhase';
+import { AscensionStepper } from '@/components/proprietary-evolution/AscensionStepper';
 import { AscensionOnboarding } from '@/components/proprietary-evolution/AscensionOnboarding';
-import { SimpleUploadStep } from '@/components/proprietary-evolution/SimpleUploadStep';
-import { TraceAttachStep } from '@/components/proprietary-evolution/TraceAttachStep';
-import { ProcessingStep } from '@/components/proprietary-evolution/ProcessingStep';
-import { ResultsStep } from '@/components/proprietary-evolution/ResultsStep';
-import type { TraceContext } from '@/lib/vision/trace';
-import type { CandidateAnalysis } from '@/components/proprietary-evolution/ingest-utils';
-import {
-  createRun,
-  acceptInput,
-  attachTrace,
-  resetRun,
-  type AscensionRun,
-  type AscensionResults,
-} from '@/lib/ascension/orchestrator';
+import { AscensionEffectPanel } from '@/components/proprietary-evolution/AscensionEffectPanel';
+import { VerticalPackSelector } from '@/components/proprietary-evolution/VerticalPackSelector';
+import type { VerticalCollisionResult } from '@/lib/ascension/vertical-collision';
 
-const STEPS = [
-  { id: 'upload', label: 'Upload', icon: Upload },
-  { id: 'trace', label: 'Trace', icon: Link2 },
-  { id: 'analyze', label: 'Analyze', icon: Activity },
-  { id: 'results', label: 'Results', icon: Sparkles },
+const TOTAL_STEPS = 5;
+
+const PHASE_LABELS = ['Ingest', 'Discovery', 'Ascend', 'Forge', 'Export'] as const;
+
+const PHASE_DESCRIPTIONS = [
+  'Upload source files — your code becomes Primitive #41',
+  'Collide against 40 substrate primitives to discover capabilities',
+  'Ascend discovered capabilities into permanent memories',
+  'Stack specialized discoveries with a Vertical Pack',
+  'Export portable Ascended Memory packs',
 ] as const;
 
 export default function ProprietaryEvolution() {
-  const [step, setStep] = useState(0);
-  const [results, setResults] = useState<AscensionResults | null>(null);
-  const runRef = useRef<AscensionRun | null>(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [displayedStep, setDisplayedStep] = useState(0);
+  const [phaseAnimClass, setPhaseAnimClass] = useState('ascension-phase-idle');
+  const [showHero, setShowHero] = useState(true);
+  const [cycleKey, setCycleKey] = useState(0);
+  const [resetting, setResetting] = useState(false);
+  const [verticalResult, setVerticalResult] = useState<VerticalCollisionResult | null>(null);
   const { toast } = useToast();
-  const { user } = useAuth();
 
-  const handleUploadComplete = useCallback((analysis: CandidateAnalysis) => {
-    if (!user) {
-      toast({ title: 'Not signed in', variant: 'destructive' });
-      return;
+  const resetCycle = useCallback(async () => {
+    setResetting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any)
+        .from('artifact_registry')
+        .delete()
+        .eq('user_id', user.id)
+        .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
+      setCycleKey(k => k + 1);
+      setVerticalResult(null);
+      goTo(0);
+      toast({ title: 'Cycle reset', description: 'All discoveries and ascensions cleared. Ready for a fresh upload.' });
+    } catch (err) {
+      toast({ title: 'Reset failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setResetting(false);
     }
-    // A1: Immutable — acceptInput returns new run
-    const run = createRun(user.id);
-    const accepted = acceptInput(
-      run,
-      analysis.name || 'UPLOADED',
-      analysis.language || 'typescript',
-      analysis.ingestedFiles?.map(f => ({ name: f.name, content: f.content || '' })) || [],
-    );
-    runRef.current = accepted;
-    setStep(1);
-  }, [user, toast]);
-
-  const handleTraceAttach = useCallback((t: TraceContext) => {
-    if (runRef.current) {
-      // A1: Immutable — attachTrace returns new run
-      runRef.current = attachTrace(runRef.current, t);
-    }
-    setStep(2);
-  }, []);
-
-  const handleTraceSkip = useCallback(() => {
-    setStep(2);
-  }, []);
-
-  const handleProcessingComplete = useCallback((resultData: AscensionResults) => {
-    setResults(resultData);
-    setStep(3);
-  }, []);
-
-  const handleReset = useCallback(async () => {
-    // C1: Run-scoped reset — only this run's artifacts
-    if (runRef.current) {
-      try {
-        await resetRun(runRef.current);
-      } catch { /* non-fatal */ }
-    }
-    runRef.current = null;
-    setStep(0);
-    setResults(null);
-    toast({ title: 'Reset complete', description: 'Ready for a new analysis.' });
   }, [toast]);
 
+  const goTo = useCallback((step: number) => {
+    if (step === activeStep) return;
+    const dir = step > activeStep ? 1 : -1;
+    setDirection(dir);
+
+    setPhaseAnimClass(dir > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right');
+
+    setTimeout(() => {
+      setDisplayedStep(step);
+      setActiveStep(step);
+      setShowHero(step === 0);
+      setPhaseAnimClass(dir > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left');
+      setTimeout(() => setPhaseAnimClass('ascension-phase-idle'), 350);
+    }, 250);
+  }, [activeStep]);
+
+  const next = () => { if (activeStep < TOTAL_STEPS - 1) goTo(activeStep + 1); };
+  const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
+
+  const handleVerticalComplete = (result: VerticalCollisionResult | null) => {
+    setVerticalResult(result);
+    next();
+  };
+
+  const handleVerticalSkip = () => {
+    setVerticalResult(null);
+    next();
+  };
+
   const phases = [
-    <SimpleUploadStep key="upload" onComplete={handleUploadComplete} />,
-    <TraceAttachStep key="trace" onAttach={handleTraceAttach} onSkip={handleTraceSkip} />,
-    <ProcessingStep key="process" run={runRef.current} onComplete={handleProcessingComplete} />,
-    <ResultsStep key="results" results={results} sourceFiles={runRef.current?.sourceFiles} onReset={handleReset} />,
+    <IngestPhase key={`ingest-${cycleKey}`} />,
+    <DiscoveryPhase key={`discovery-${cycleKey}`} />,
+    <CrystallizationPhase key={`crystallize-${cycleKey}`} />,
+    <VerticalPackSelector
+      key={`forge-${cycleKey}`}
+      onComplete={handleVerticalComplete}
+      onSkip={handleVerticalSkip}
+    />,
+    <ExportPhase key={`export-${cycleKey}`} verticalResult={verticalResult} />,
   ];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Ascension — Code Transformation | CMPSBL"
-        description="Upload your code and discover new capabilities. The 40-Primitive substrate finds what your software can become — no LLM, pure deterministic analysis."
+        title="Ascension — Zero-LLM Code Transformation | CMPSBL"
+        description="Upload code in 90+ languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording. Export with sealed Convex Core™."
         canonical="https://cmpsbl.com/ascension"
         image="https://cmpsbl.com/og/ascension.jpg"
-        keywords={['code transformation', 'capability discovery', 'substrate collision', 'CJPI scoring', 'software augmentation']}
+        keywords={['code transformation', 'zero LLM', 'capability discovery', 'substrate collision', 'CJPI scoring', 'Convex Core™', 'software augmentation']}
         faq={[
-          { question: 'What is Ascension?', answer: 'Ascension discovers hidden capabilities in your code by analyzing it against a 40-Primitive cognitive substrate — with zero LLM involvement.' },
-          { question: 'How long does it take?', answer: 'Typically under 2 minutes. Upload your code, optionally attach a trace, and watch the analysis run.' },
-          { question: 'What do I get?', answer: 'A downloadable package containing discovered capabilities as source code, tests, and documentation.' },
+          { question: 'What is Ascension?', answer: 'Ascension is a code transformation engine that collides your source code against a 40-Primitive cognitive substrate to discover capabilities your software already had — with zero LLM involvement.' },
+          { question: 'Does Ascension use AI or LLMs?', answer: 'No. Ascension uses pure internal cording — deterministic collision cycles between your code and substrate primitives. No external AI calls are made at any point.' },
+          { question: 'What languages does Ascension support?', answer: 'Ascension supports 90+ languages including Python, TypeScript, Rust, Go, C++, and 7 hardware description languages like VHDL and Verilog.' },
+          { question: 'What do I get when I export?', answer: 'A single portable file containing your original code, discovered capabilities, tests, documentation, a CJPI-scored certificate, and a sealed Convex Core™ for zero-dependency deployment.' },
         ]}
       />
 
       <PublicNav />
       <AscensionOnboarding />
 
-      <section className="flex-1 flex flex-col">
-        {/* ═══ HERO — only on first step ═══ */}
-        {step === 0 && (
-          <div className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.06] via-background to-neon-purple/[0.04]" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_hsl(var(--primary)/0.08)_0%,_transparent_50%)]" />
-            <div className="relative max-w-3xl mx-auto px-4 pt-16 pb-10 sm:pt-24 sm:pb-14 text-center">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                <span className="text-primary">Ascend Your Software</span>
-              </h1>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Upload your code. We'll analyze it against the substrate and discover
-                capabilities your software already had — no AI, pure deterministic analysis.
+      {/* ═══ COMPACT HERO (only on step 0) ═══ */}
+      {showHero && (
+        <div className="ascension-hero-enter" style={{ overflow: 'hidden' }}>
+          <AscensionHero />
+        </div>
+      )}
+
+      {/* ═══ WIZARD SECTION ═══ */}
+      <section className="flex-1 flex flex-col mt-12 sm:mt-16">
+        {/* Stepper + phase header */}
+        <div className="bg-background/80 backdrop-blur-2xl border-b border-border/10 shadow-[0_1px_12px_hsl(var(--primary)/0.04)]">
+          <div className="max-w-4xl mx-auto px-4 pt-5 pb-4 space-y-4">
+            <AscensionStepper activeStep={activeStep} onStepClick={goTo} totalSteps={TOTAL_STEPS} />
+
+            <div className="text-center">
+              <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
+                {PHASE_LABELS[activeStep]}
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground font-mono mt-1 leading-relaxed">
+                {PHASE_DESCRIPTIONS[activeStep]}
               </p>
             </div>
           </div>
-        )}
 
-        {/* ═══ STEPPER ═══ */}
-        <div className="bg-background/80 backdrop-blur-2xl border-b border-border/10">
-          <div className="max-w-lg mx-auto px-4 py-4">
-            <div className="flex items-center w-full">
-              {STEPS.map((s, i) => {
-                const isActive = i === step;
-                const isComplete = i < step;
-                const Icon = isComplete ? Check : s.icon;
-
-                return (
-                  <div key={s.id} className="flex items-center flex-1 last:flex-none">
-                    <div className="flex flex-col items-center gap-1.5">
-                      <div
-                        className={cn(
-                          "w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300",
-                          isActive
-                            ? "border-primary bg-primary/15 shadow-[0_0_16px_hsl(var(--primary)/0.25)] scale-105"
-                            : isComplete
-                              ? "border-primary/50 bg-primary/10"
-                              : "border-border/30 bg-muted/15"
-                        )}
-                      >
-                        <Icon className={cn(
-                          "w-4 h-4 transition-colors",
-                          isActive ? "text-primary" : isComplete ? "text-primary/70" : "text-muted-foreground/40"
-                        )} />
-                      </div>
-                      <span className={cn(
-                        "text-[10px] font-mono uppercase tracking-wider whitespace-nowrap",
-                        isActive ? "text-primary font-bold" : isComplete ? "text-primary/60" : "text-muted-foreground/40"
-                      )}>
-                        {s.label}
-                      </span>
-                    </div>
-
-                    {i < STEPS.length - 1 && (
-                      <div className="flex-1 h-[2px] mx-2 sm:mx-3 mt-[-18px]">
-                        <div className={cn(
-                          "h-full rounded-full transition-all duration-500",
-                          i < step ? "bg-primary/40" : "bg-border/20"
-                        )} />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
 
-        {/* ═══ STEP CONTENT ═══ */}
+        {/* Phase content */}
         <main className="flex-1">
-          <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
-            {phases[step]}
+          <div className="max-w-4xl mx-auto px-4 py-6 sm:py-10">
+            <div className={phaseAnimClass}>
+              {phases[displayedStep]}
+            </div>
+
+            <div className="mt-10 pt-8 border-t border-border/10">
+              <AscensionEffectPanel />
+            </div>
           </div>
         </main>
+
+        {/* Bottom navigation */}
+        <div className="sticky bottom-0 z-30 bg-background/80 backdrop-blur-2xl border-t border-border/10 shadow-[0_-1px_12px_hsl(var(--primary)/0.04)]">
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={back}
+              disabled={activeStep === 0}
+              className="gap-1.5 text-xs h-11 min-w-[80px] min-h-[44px] rounded-xl"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={resetCycle}
+                disabled={resetting}
+                className="gap-1 text-[10px] h-8 min-h-[36px] text-destructive hover:text-destructive hover:bg-destructive/10 rounded-lg"
+              >
+                <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
+                Reset
+              </Button>
+              <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
+                Step {activeStep + 1}/{TOTAL_STEPS}
+              </span>
+            </div>
+
+            <Button
+              size="sm"
+              onClick={next}
+              disabled={activeStep === TOTAL_STEPS - 1 || activeStep === 3}
+              className="gap-1.5 text-xs h-11 min-w-[80px] min-h-[44px] rounded-xl shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
+            >
+              Next
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
       </section>
 
       <EnhancedFooter />

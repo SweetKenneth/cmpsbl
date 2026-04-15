@@ -84,7 +84,7 @@ function PillarRow({ category, pillars }: { category: PillarCategory; pillars: B
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight">{category.title}</h2>
             <p className="text-sm text-muted-foreground mt-1 max-w-lg">{category.description}</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
@@ -110,7 +110,7 @@ function PillarRow({ category, pillars }: { category: PillarCategory; pillars: B
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))] pb-4 scroll-carousel-track"
+        className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))] pb-4 no-scrollbar"
       >
         {pillars.map((pillar, i) => {
           const PIcon = ICON_MAP[pillar.icon] || Brain;
