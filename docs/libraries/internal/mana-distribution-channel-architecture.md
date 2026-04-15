@@ -485,5 +485,85 @@ more discoveries -> more products -> better inputs.
 
 ---
 
+## Unified S-Tier Vault — Prime Vault Architecture
+
+All vertical discovery engines feed into **one merged S-Tier vault** (the
+"Prime Vault"). This is the single canonical registry of all Crown Jewels
+and S-Tier artifacts across every vertical and the core substrate.
+
+### Auto-Population Flow
+
+```
+  ┌────────────┐  ┌────────────┐  ┌────────────┐
+  │  Cyber     │  │  Fintech   │  │  Robotics  │  ... x12 verticals
+  │  Engine    │  │  Engine    │  │  Engine    │
+  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘
+        │               │               │
+        └───────────────┼───────────────┘
+                        │
+                        v
+              ┌──────────────────┐
+              │   PRIME VAULT    │
+              │  (Merged S-Tier) │
+              │                  │
+              │  Auto-ingests    │
+              │  from all        │
+              │  vertical vaults │
+              │  + core vault    │
+              └────────┬─────────┘
+                       │
+                       v
+              ┌──────────────────┐
+              │ MERCHANT curates │
+              │ ECONOMY prices   │
+              │ Store surfaces   │
+              └──────────────────┘
+```
+
+### Vertical Substrate Access — Hidden Dual-Gate
+
+Each vertical substrate remains fully operational but is **invisible to
+the public**. Access requires two layers:
+
+1. **Secret URL Parameter**: `?1952=cmpsbl` — without this, the page
+   renders blank (no error, no hint, no 404)
+2. **6-Digit PIN**: After the URL gate passes, a PIN entry screen
+   appears before content renders
+
+Additionally:
+- All vertical routes are `noindex, nofollow` via meta robots
+- All vertical paths are `Disallow` in robots.txt
+- Session-scoped unlock (clears on tab close)
+- Debug bypass key available for automated tooling
+
+### Governor Access Pattern
+
+```
+Kenneth visits: /gaming?1952=cmpsbl
+→ Blank page transforms to PIN entry
+→ Enters 6-digit PIN
+→ Full vertical substrate loads with:
+   - Independent Memory Stream
+   - Discovery engine controls
+   - Vertical-specific primitive matrix
+   - S-Tier vault (auto-syncs to Prime Vault)
+```
+
+### Value of Keeping Full Copies
+
+Each vertical substrate maintains its own:
+- **40-Primitive matrix** (domain-specialized)
+- **Discovery engine** (can be manually triggered for on-demand discovery)
+- **Memory Stream** (domain-scoped, feeds into global stream)
+- **S-Tier vault** (local copy, auto-merges to Prime Vault)
+
+This allows the Governor to:
+- Manually run discovery against high-demand capabilities
+- Spin up intensive scans on specific verticals
+- Review vertical-specific Memory Streams separately
+- Operate the entire substrate without public exposure
+
+---
+
 (c) 2025-2026 CMPSBL® — PromptFluid™ · All rights reserved.
 U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 64/031,637

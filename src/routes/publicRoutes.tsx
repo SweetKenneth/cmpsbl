@@ -6,6 +6,7 @@ import { Route, Navigate } from "react-router-dom";
 import { PhaseGateRoute } from "@/components/gates/PhaseGateRoute";
 import { PackGate } from "@/components/slots/PackGate";
 import { PinGate } from "@/components/gates/PinGate";
+import { VerticalSecretGate } from "@/components/gates/VerticalSecretGate";
 
 // Core pages
 const AgentForgeDashboard = lazy(() => import("@/pages/AgentForgePage"));
@@ -177,9 +178,9 @@ export const publicRoutes = (
     <Route path="/devtools" element={<DevTools />} />
     <Route path="/academy" element={<Navigate to="/developers/guide" replace />} />
     <Route path="/audit" element={<Navigate to="/" replace />} />
-    <Route path="/gaming" element={<GamingSubstrate />} />
-    <Route path="/verticals" element={<VerticalPortal />} />
-    <Route path="/robotics" element={<RoboticsHome />} />
+    <Route path="/gaming" element={<VerticalSecretGate verticalId="gaming"><GamingSubstrate /></VerticalSecretGate>} />
+    <Route path="/verticals" element={<VerticalSecretGate verticalId="portal"><VerticalPortal /></VerticalSecretGate>} />
+    <Route path="/robotics" element={<VerticalSecretGate verticalId="robotics"><RoboticsHome /></VerticalSecretGate>} />
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />
@@ -240,7 +241,7 @@ export const publicRoutes = (
     <Route path="/support" element={<Support />} />
     <Route path="/explore" element={<Navigate to="/" replace />} />
     <Route path="/promptfluid" element={<PromptFluidHome />} />
-    <Route path="/security" element={<CyberSecurityHome />} />
+    <Route path="/security" element={<VerticalSecretGate verticalId="cyber"><CyberSecurityHome /></VerticalSecretGate>} />
 
     {/* System pages */}
     <Route path="/modules" element={<Navigate to="/architecture" replace />} />
