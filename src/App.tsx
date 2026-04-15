@@ -249,7 +249,6 @@ const App = () => {
                     </a>
                     <ScrollToTop />
                    <Routes>
-                   <Routes>
                     <Route path="/*" element={
                      <AuthProvider>
                        <Suspense fallback={null}>
