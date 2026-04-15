@@ -1,12 +1,13 @@
 /**
- * Agent Verify — Confirms payment, mints version, sends license email via Resend
+ * Agent Verify — Confirms payment, mints version, sends license email
  * For Sealed Runtime Agent purchases ($129 / $159)
+ * Uses Lovable email infrastructure
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { notifyOwnerPurchase } from "../_shared/purchase-alert.ts";
-
+import { sendBrandedEmail } from '../_shared/lovable-email-sender.ts';
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -42,11 +43,10 @@ serve(async (req) => {
     const mintId = `AGT-${agentName}-v1.0.0-${mintHash}`;
     const docsUrl = `https://cmpsbl.com/docs/agents/${(agent_id || agentName).toLowerCase()}`;
 
-    // Send license email via Resend
-    const resendKey = Deno.env.get("RESEND_API_KEY");
+    // Send license email
     let emailSent = false;
 
-    if (resendKey && customerEmail) {
+    if (customerEmail) {
       const emailHtml = `
         <div style="font-family:'SF Mono',SFMono-Regular,Menlo,monospace;background:#0a0a0a;color:#e5e5e5;padding:40px 24px;max-width:600px;margin:0 auto;">
           <div style="text-align:center;margin-bottom:32px;">
@@ -106,36 +106,26 @@ serve(async (req) => {
       `;
 
       try {
-        const emailRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${resendKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "Dev@CMPSBL.com",
-            to: [customerEmail],
-            subject: `${agentName} Agent — Version Minted | ${mintId}`,
-            html: emailHtml,
-          }),
+        emailSent = await sendBrandedEmail({
+          to: customerEmail,
+          subject: `${agentName} Agent — Version Minted | ${mintId}`,
+          html: emailHtml,
+          fromName: 'CMPSBL',
+          fromUser: 'dev',
+          idempotencyKey: `agent-verify-${mintId}`,
         });
-        emailSent = emailRes.ok;
-        console.log(`[AGENT-VERIFY] Email ${emailRes.ok ? "sent" : "failed"} to ${customerEmail} for ${agentName}`);
       } catch (e) {
         console.error("[AGENT-VERIFY] Email error:", e);
       }
     }
 
     // Notify owner of purchase
-    if (resendKey) {
-      await notifyOwnerPurchase({
-        product: `${agentName} Agent`,
-        customerEmail,
-        amount: pricePaid,
-        licenseId: mintId,
-        resendKey,
-      });
-    }
+    await notifyOwnerPurchase({
+      product: `${agentName} Agent`,
+      customerEmail,
+      amount: pricePaid,
+      licenseId: mintId,
+    });
 
     return new Response(
       JSON.stringify({

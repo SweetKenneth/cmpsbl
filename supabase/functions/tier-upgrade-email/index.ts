@@ -1,10 +1,13 @@
 /**
  * Tier Upgrade Email — Epic dark cinematic email sent when user upgrades tier
  * Triggered after successful tier-checkout verification
+ * Uses Lovable email infrastructure
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { corsHeaders, withMiddleware, jsonResponse } from "../_shared/edge-middleware.ts";
+import { sendBrandedEmail } from '../_shared/lovable-email-sender.ts';
+import { notifyOwnerPurchase } from '../_shared/purchase-alert.ts';
 
 const TIER_DATA: Record<string, { name: string; pulls: number; vault: string; color: string; price: string }> = {
   creator: { name: 'CREATOR', pulls: 9, vault: '75', color: '#3b82f6', price: '$9/mo' },
@@ -17,11 +20,7 @@ serve(withMiddleware(async (req) => {
   const { email, name, tier, previous_tier } = await req.json();
   if (!email || !tier) return jsonResponse({ error: 'Missing email or tier' }, 400);
 
-  const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-  if (!RESEND_API_KEY) {
-    console.warn("[TIER-UPGRADE-EMAIL] No RESEND_API_KEY");
-    return jsonResponse({ sent: false, reason: 'no_resend_key' });
-  }
+  // Email sending via Lovable infrastructure
 
   const displayName = name || email.split('@')[0];
   const tierInfo = TIER_DATA[tier] || TIER_DATA.creator;
@@ -204,38 +203,23 @@ serve(withMiddleware(async (req) => {
 </html>`;
 
   try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'CMPSBL <Dev@CMPSBL.com>',
-        to: [email],
-        subject: `You're now ${tierInfo.name} — Substrate Upgraded`,
-        html,
-      }),
+    const sent = await sendBrandedEmail({
+      to: email,
+      subject: `You're now ${tierInfo.name} — Substrate Upgraded`,
+      html,
+      fromName: 'CMPSBL',
+      fromUser: 'dev',
+      idempotencyKey: `tier-upgrade-${email}-${tier}-${Date.now()}`,
     });
 
-    const ok = res.ok;
-    if (!ok) {
-      const errText = await res.text();
-      console.error(`[TIER-UPGRADE-EMAIL] Resend error: ${res.status} - ${errText}`);
-    } else {
-      console.log(`[TIER-UPGRADE-EMAIL] Sent to ${email} for tier ${tier}`);
-    }
-
     // Notify owner
-    const { notifyOwnerPurchase } = await import('../_shared/purchase-alert.ts');
     await notifyOwnerPurchase({
       product: `Tier Upgrade → ${tierInfo.name}`,
       customerEmail: email,
       amount: tierInfo.price,
-      resendKey: RESEND_API_KEY,
     });
 
-    return jsonResponse({ sent: ok, tier: tierInfo.name });
+    return jsonResponse({ sent, tier: tierInfo.name });
   } catch (e) {
     console.error('[TIER-UPGRADE-EMAIL] Error:', e);
     return jsonResponse({ sent: false, error: String(e) }, 500);
