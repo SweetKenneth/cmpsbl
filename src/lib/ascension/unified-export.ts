@@ -30,16 +30,10 @@ import {
   buildAttachmentPlan,
   serializeAttachmentPlan,
 } from '@/lib/mana/findings-bridge';
-import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana-bridge';
-import {
-  buildAscensionLifecycleArtifacts,
-} from '@/lib/capability-lifecycle/export-bridge';
-// generateUnifiedCapabilityFile + getUnifiedFilename no longer needed — runtime is embedded
-import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
-import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
-import { humanizeCapabilityName } from '@/lib/export/humanize-name';
+import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
+import { generateUserGuideHTML } from '@/lib/export/user-guide';
 import type { AscensionResults, DiscoveredCapability } from './orchestrator';
 import { deterministicFingerprint } from './orchestrator';
 import type { ManaCapability, AscensionFinding, AttachmentPoint, AttachmentState, ManaManifest } from '@/lib/mana/types';
