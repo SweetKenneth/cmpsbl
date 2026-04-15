@@ -17,12 +17,15 @@ function TickerBar() {
 
   const items = [
     { name: 'Self-Healing Orchestrator', cjpi: 96, domain: 'IMMUNITY' },
-    { name: 'Oracle-Ripple Precognition Chain', cjpi: 96, domain: 'ORACLE×RIPPLE' },
-    { name: 'Adaptive Defense Breeding Suite', cjpi: 95, domain: 'IMMUNITY×EVOLUTION' },
-    { name: 'Continuous Learning Bridge', cjpi: 92, domain: 'BRAIN×MEMORY' },
-    { name: 'Autonomous Decision Loop', cjpi: 92, domain: 'CORTEX' },
-    { name: 'Memory Consolidation Layer', cjpi: 92, domain: 'MEMORY×DREAM' },
-    { name: 'Multi-Provider Failover', cjpi: 89, domain: 'FAILSAFE' },
+    { name: 'Oracle-Ripple Precognition', cjpi: 96, domain: 'ORACLE×RIPPLE' },
+    { name: 'Defense Breeding Suite', cjpi: 95, domain: 'IMMUNITY×EVOLUTION' },
+    { name: 'Fleet Intelligence', cjpi: 98, domain: 'NEXUS' },
+    { name: 'AI Safety Suite', cjpi: 95, domain: 'DREAM×DEFENSE' },
+    { name: 'Performance Surgery', cjpi: 96, domain: 'APEX×VISION' },
+    { name: 'Cyber Defense Suite', cjpi: 97, domain: 'WATCHTOWER×AEGIS' },
+    { name: 'Autonomous Triage', cjpi: 97, domain: 'MEDIC' },
+    { name: 'Self-Evolution Suite', cjpi: 95, domain: 'EVOLUTION' },
+    { name: 'Cognitive Memory', cjpi: 94, domain: 'BRAIN×MEMORY' },
   ];
 
   const doubled = [...items, ...items];
