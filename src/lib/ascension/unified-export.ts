@@ -653,17 +653,15 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
     activePrimitives,
   );
 
-  // ─── Step 3: Generate wrapped code per source file ───
-  const wrappedFolder = zip.folder('wrapped')!;
+  // ─── Step 3: Generate ascended code (runtime embedded, capabilities pre-activated) ───
+  // Each file is self-contained: original code + embedded runtime + active wrappers
+  const ascendedFolder = zip.folder('ascended')!;
   for (const sf of sourceFiles) {
-    const wrapped = generateWrappedFile(sf, allFindings, sourceLanguage, runId);
-    wrappedFolder.file(
-      sf.name.replace(/\.[^.]+$/, `_wrapped${ext}`),
-      wrapped,
-    );
+    const ascended = generateWrappedFile(sf, allFindings, sourceLanguage, runId);
+    ascendedFolder.file(sf.name, ascended);
   }
 
-  // ─── Step 4: Original source files (untouched) ───
+  // ─── Step 4: Original source files (untouched copy for reference) ───
   const originalFolder = zip.folder('original')!;
   for (const sf of sourceFiles) {
     originalFolder.file(sf.name, sf.content);
@@ -673,19 +671,19 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
     '',
     'These are your original source files — **unchanged and authoritative**.',
     '',
-    '## Dual-Layer Architecture',
+    '## How It Works',
     '',
-    '- **Layer 1** (this folder) — Your original code. Never modified.',
-    '- **Layer 2** (../wrapped/) — CMPSBL Mana wrappers. Observe, enrich, protect.',
+    '- **ascended/** — Your code with the CMPSBL® runtime embedded inline and all capabilities pre-activated.',
+    '- **original/** (this folder) — Your untouched source for reference and comparison.',
     '',
-    'The wrapped versions import from this folder and attach capabilities',
-    'at function boundaries without touching your source.',
+    'The ascended versions contain everything needed to run — no external imports required.',
+    'To deactivate capabilities, use the CMPSBL® Terminal.',
     '',
     '---',
     '© Your original work. Layer 2 overlay © 2025–2026 CMPSBL®.',
   ].join('\n'));
 
-  // ─── Step 5: Unified runtime (cmpsbl.*) ───
+  // ─── Step 5: Build capability index for docs ───
   const capabilitiesForExport = capabilities.map(cap => ({
     id: deterministicFingerprint(cap.name, cap.nodeA, cap.nodeB, runId),
     name: cap.name.replace(/\s+/g, '_'),
@@ -697,19 +695,6 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
     moatSignature: `moat_${deterministicFingerprint(cap.name, cap.nodeA, cap.nodeB, runId)}`,
     capabilityType: 'ascended',
   }));
-
-  const userSourceFiles = sourceFiles.map(f => ({
-    name: f.name,
-    extension: ext,
-    language: sourceLanguage,
-    content: f.content,
-  }));
-
-  const unifiedCode = generateUnifiedCapabilityFile(
-    capabilitiesForExport, packName, sourceLanguage, userSourceFiles,
-  );
-  const unifiedFilename = getUnifiedFilename(sourceLanguage);
-  zip.file(unifiedFilename, unifiedCode);
 
   // ─── Step 6: Activation Guide (lifecycle bridge) ───
   const manaManifest = buildManaManifest(allFindings, candidateName, runId);
