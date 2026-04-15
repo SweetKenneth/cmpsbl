@@ -342,35 +342,30 @@ ${line} ════════════════════════
 function buildManaManifest(
   findings: AscensionFinding[],
   packageName: string,
-  runId: string,
+  _runId: string,
 ): ManaManifest {
   const attachmentPoints: AttachmentPoint[] = findings.map((f, i) => ({
     functionName: f.functionName,
     capability: f.capability as ManaCapability,
-    phase: 0,
+    phase: WrapperPhase.OBSERVE,
     position: i,
-    wrappedAt: Date.now(),
+    active: true,
     invocations: 0,
     blocked: 0,
     observed: 0,
-    errors: 0,
-    lastInvokedAt: null,
-    averageLatencyMs: 0,
   }));
 
   return {
-    package: packageName,
-    version: '1.0.0',
-    sourceHash: runId,
-    attachedAt: Date.now(),
-    layerDepth: 1,
-    parentLayerHash: null,
+    hostPackage: packageName,
+    hostVersion: '1.0.0',
+    attachmentState: 'symbiotic' as AttachmentState,
     attachmentPoints,
-    totalWrappers: findings.length,
-    capabilities: [...new Set(findings.map(f => f.capability))] as ManaCapability[],
-    lexMode: 'permissive',
-    verified: true,
-    proofGenerated: true,
+    lexRules: [],
+    proof: null,
+    telemetry: [],
+    attachedAt: Date.now(),
+    detachedAt: null,
+    layerDepth: 1,
   };
 }
 
