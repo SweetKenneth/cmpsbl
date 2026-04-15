@@ -104,8 +104,10 @@ enhancement capability:
 |--------|-------------|---------|
 | Crown Jewels | 50+ highest-CJPI substrate algorithms | DEFENSE-class encryption primitive |
 | Memory Stream | COMPILER-built from autonomous discovery | Auto-generated caching optimizer |
-| Showroom | Curated substrate output | Enterprise audit logger |
+| COMPILER Software Suites | Full multi-capability packages built by COMPILER | Enterprise Security Suite (DEFENSE+GOVERNANCE+AUDIT) |
+| Showroom | MERCHANT-curated substrate output | Enterprise audit logger |
 | Junkyard | Lower-tier but functional items | Simple rate limiter |
+| SDK-Built (Community) | Developer-built packages using @cmpsbl/sdk | Custom domain-specific enhancer |
 
 **Purchase flow (future):**
 ```
@@ -113,6 +115,114 @@ User sees results → "Enhance with DEFENSE Shield" →
 Purchase ($29-$249 depending on tier) →
 Item Mana-wrapped → Re-run Ascension with enhancement →
 New ascended output includes purchased capability
+```
+
+## Primitive Roles in the Supply Chain
+
+### ECONOMY — Automatic Pricing Engine
+
+ECONOMY sets prices for all Store add-ons automatically based on:
+- **CJPI score** — higher-scoring capabilities command higher prices
+- **Tier classification** — Crown Jewels > COMPILER Suites > Showroom > Junkyard
+- **Demand signals** — purchase frequency, Ascension gap analysis data
+- **Complexity** — chain depth, number of primitives involved
+- **Competitive positioning** — no manual price-setting required
+
+ECONOMY ensures the marketplace self-regulates. When COMPILER produces
+a new capability, ECONOMY prices it immediately based on its CJPI score
+and tier. No human intervention needed for pricing decisions.
+
+### MERCHANT — Curation & Catalog Governance
+
+MERCHANT decides what appears in the Store catalog:
+- **Curates COMPILER output** — not everything COMPILER builds is Store-worthy
+- **Quality gate** — minimum CJPI threshold for Store listing
+- **Suite composition** — groups related capabilities into purchasable bundles
+- **Seasonal drops** — manages Showroom rotation and featured items
+- **Gap analysis** — identifies missing capabilities and requests COMPILER builds
+
+MERCHANT + ECONOMY work together: MERCHANT decides *what* sells,
+ECONOMY decides *at what price*.
+
+### SDK + DREAM + EVOLUTION — Developer Capability Loop
+
+Developers using `@cmpsbl/sdk` have access to substrate primitives
+that help them build better packages:
+
+| Primitive | SDK Developer Use |
+|-----------|-------------------|
+| DREAM | Sub-threshold synthesis — suggests capability combinations the developer hasn't considered |
+| EVOLUTION | Self-improvement — SDK packages can evolve their own algorithms over time |
+| CORTEX | Runtime orchestration — manages execution context for complex multi-capability packages |
+| DEFENSE | Security hardening — automatic vulnerability shielding in SDK-built packages |
+| ARCHITECT | Structural analysis — validates that SDK packages are architecturally sound |
+
+This means SDK-built packages that flow into Step 2 aren't just
+raw code — they're substrate-enhanced code built with the same
+primitives that Ascension uses to analyze them. The substrate
+helps developers build better inputs for its own pipeline.
+
+### COMPILER — Autonomous Software Factory
+
+COMPILER takes Memory Stream discoveries and builds them into
+production-ready software:
+
+```
+Memory Stream discovers capability pattern
+    → COMPILER builds standalone package
+    → MERCHANT curates into Store catalog
+    → ECONOMY prices automatically
+    → User purchases in Ascension Step 2
+    → Mana wraps and attaches
+    → Ascension processes combined codebase
+    → User gets enhanced output
+```
+
+COMPILER doesn't just build individual capabilities. It builds
+**Software Suites** — coherent bundles of related capabilities:
+- Security Suite (DEFENSE + GOVERNANCE + AUDIT + SIEVE)
+- Intelligence Suite (BRAIN + MEMORY + CORTEX + ORACLE)
+- Resilience Suite (FAILSAFE + BEACON + BASTION + WATCHTOWER)
+
+These suites are the premium tier of Store add-ons.
+
+## Complete Ecosystem Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   SUBSTRATE SUPPLY CHAIN                     │
+│                                                              │
+│  Memory Stream (8hr autonomous)                              │
+│       │                                                      │
+│       ▼                                                      │
+│  COMPILER (builds packages + suites)                         │
+│       │                                                      │
+│       ▼                                                      │
+│  MERCHANT (curates catalog, quality gates)                    │
+│       │                                                      │
+│       ▼                                                      │
+│  ECONOMY (auto-prices by CJPI + tier + demand)               │
+│       │                                                      │
+│       ▼                                                      │
+│  ┌─────────────────────────┐                                 │
+│  │     STORE CATALOG       │                                 │
+│  │  Crown Jewels           │                                 │
+│  │  COMPILER Suites        │◄──── SDK Devs (DREAM+EVOLUTION) │
+│  │  Showroom Items         │                                 │
+│  │  Community Packages     │                                 │
+│  └───────────┬─────────────┘                                 │
+│              │                                               │
+│              ▼                                               │
+│  ASCENSION Step 2 (Enhance)                                  │
+│       │                                                      │
+│       ▼                                                      │
+│  MANA WRAP → ASCENSION COLLISION → RESULTS                   │
+│       │                                                      │
+│       ▼                                                      │
+│  Richer output → More demand → More discoveries              │
+│       │                                                      │
+│       └──────────────► Memory Stream (cycle repeats)         │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## Data Architecture
@@ -235,13 +345,23 @@ Zero collision with V1 categories.
                    └──────────────┘
 ```
 
+| ECONOMY-Priced Add-On | Auto-priced by CJPI/tier/demand | ECONOMY sets |
+| COMPILER Suite | Multi-capability bundle | $149–$499 |
+| Architect Bundle | Full Ascension + all available add-ons | $249/mo |
+
 ## Key Insight
 
 Every product the substrate has ever built or will build now has a
 **concrete use case**: enhancing someone's ascended code. The Memory
 Stream's autonomous discoveries, the Crown Jewels, the COMPILER's
 output — all of it can flow through Mana into Ascension as purchasable
-capabilities. This transforms inventory into revenue.
+capabilities. ECONOMY prices it, MERCHANT curates it, COMPILER builds
+it, and the SDK lets developers contribute to it using the same
+primitives (DREAM, EVOLUTION) that power the pipeline itself.
+
+This transforms inventory into revenue and creates a self-reinforcing
+loop: better inputs → richer Ascension output → more demand →
+more discoveries → more products → better inputs.
 
 ---
 
