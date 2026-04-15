@@ -69,7 +69,7 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/dream-eater/archaeology", label: "Dream Archaeology", section: "product", priority: 0.65, changefreq: "monthly", description: "Historical dream pattern analysis" },
   { path: "/dream-eater/artifacts", label: "Dream Artifacts", section: "product", priority: 0.65, changefreq: "monthly", description: "Crystallized dream outputs" },
   { path: "/proof", label: "Proof Mode", section: "product", priority: 0, changefreq: "monthly", redirect: true },
-  { path: "/gaming", label: "Gaming Substrate", section: "product", priority: 0.78, changefreq: "monthly", description: "AI gaming infrastructure" },
+  { path: "/gaming", label: "Gaming Substrate", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
   { path: "/showcase", label: "Showcase", section: "product", priority: 0.82, changefreq: "weekly", description: "S-Tier demonstrations" },
   { path: "/intent-mesh", label: "Intent Mesh", section: "product", priority: 0.78, changefreq: "weekly", description: "Cross-node intent routing visualization" },
   { path: "/clockless-world-engine", label: "Clockless World Engine", section: "product", priority: 0, changefreq: "monthly", redirect: true },
@@ -132,6 +132,11 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/auth", label: "Auth", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
   { path: "/admin", label: "Admin", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
   { path: "/a/", label: "Agency Portals", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
+
+  // ── Hidden Vertical Substrates (dual-gated, noindex) ──
+  { path: "/verticals", label: "Vertical Portal", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
+  { path: "/robotics", label: "Robotics Substrate", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
+  { path: "/security", label: "Cyber Substrate", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
 ];
 
 // ─── DERIVED HELPERS ─────────────────────────────────────────
