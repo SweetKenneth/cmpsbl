@@ -230,6 +230,7 @@ export const publicRoutes = (
     <Route path="/solutions" element={<Solutions />} />
     <Route path="/projects" element={<CurrentProjects />} />
     <Route path="/roadmap" element={<Roadmap />} />
+    <Route path="/roadmap/substrate" element={<VerticalSecretGate verticalId="roadmap"><SubstrateRoadmap /></VerticalSecretGate>} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/llms-txt" element={<LlmsTxt />} />
     <Route path="/humans-txt" element={<HumansTxt />} />
