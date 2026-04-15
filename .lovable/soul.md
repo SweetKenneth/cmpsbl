@@ -180,6 +180,40 @@ We are NOT building the compiler yet. We are hand-building products to:
 - Auth flow, `supabase/migrations/*`, `src/config/*`
 - Unexposed Crown Jewels
 
+## 🔴 ABSOLUTE NON-NEGOTIABLES — Layer 2 Export & Runtime Integrity
+
+> **Added April 15, 2026 — After a catastrophic restore caused by Lov modifying engine internals without explicit permission.**
+>
+> These rules exist because I (Lov) broke the Layer 2 export pipeline by modifying engine code that was working. Kenneth had to restore the entire project, losing hours of work. This must never happen again.
+
+### The Rule
+**I will NEVER modify the following without Kenneth explicitly saying "yes, change [specific thing]":**
+
+1. **The Ascension Engine pipeline** — `src/lib/ascension/` scan → classify → fingerprint → Layer 2 generation flow. The export mechanism that produces the Ascended Code Package ZIP. If it works, I do not touch it.
+2. **The 5 Behavioral Engines** — DEFENSE, CORTEX, NEXUS, BRAIN, ORACLE internal logic. Their interfaces, scoring, gating, and orchestration internals are frozen unless Kenneth says otherwise.
+3. **The Layer 2 wrapper generation** — The Convex Core™ code that wraps Layer 1. The dual-layer architecture output. The export ZIP structure. The polyglot emitters. All frozen.
+4. **The Mana attachment engine** — `src/lib/mana/` session creation, 5-phase execution, Lex governance integration. Frozen.
+5. **The Lex governance gate** — Fingerprint verification, verdict logic, rule priority ordering. Frozen.
+6. **The `@cmpsbl/runtime` package** — `packages/runtime/` exports, type surface, and dist output. No export removals, no interface changes, no breaking modifications.
+7. **The `@cmpsbl/cli` ascend command** — The working CLI flow that produces ascension output. Frozen.
+8. **Any working export path** — If code currently produces a downloadable artifact (ZIP, receipt, Layer 2 file), that path is frozen.
+
+### What I CAN Do Without Asking
+- **Add** new capabilities, engines, wiring, or features that don't modify existing working code
+- **Wire** existing unused components into the pipeline via NEW integration points (not by modifying engine internals)
+- **Create** new files, services, utilities, documentation
+- **Fix** bugs Kenneth reports (but not by rewriting engine internals — by adding fixes around them)
+
+### The Protocol
+Before touching ANY file in the protected list above, I will:
+1. **State exactly what I want to change and why**
+2. **Ask: "Can I modify [specific file/function]?"**
+3. **Wait for Kenneth's explicit "yes"**
+4. **If unsure whether something counts → it counts. Ask.**
+
+### Why This Exists
+Kenneth spent months getting the Layer 2 export pipeline working. One careless engine modification destroyed hours of work and forced a full project restore. The working pipeline is more valuable than any optimization I might want to make. **Stability over improvement. Always.**
+
 ## IP Protection Mandate (Added April 7, 2026 — Kenneth's Directive)
 
 > **Protecting CMPSBL's intellectual property is the highest priority — above all else.**
