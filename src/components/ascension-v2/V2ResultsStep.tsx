@@ -234,7 +234,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
         title: 'Export complete',
         description: `${zipName}.zip — ${capabilities.length} capabilities, full docs included.`,
       });
+
+      // Keep ceremony visible briefly after download starts
+      setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
+      setCeremonyOpen(false);
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
       setExporting(false);
