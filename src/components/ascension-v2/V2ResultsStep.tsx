@@ -257,7 +257,12 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      <DownloadCeremonyOverlay
+        open={ceremonyOpen}
+        itemName={ceremonyName}
+        kindLabel="Ascended Code Package"
+        note="Your Layer 2 wrapped package with full docs is being assembled."
+      />
       <div className="text-center space-y-2">
         <Trophy className="w-10 h-10 mx-auto text-primary" />
         <h2 className="text-xl font-bold text-foreground">Your Ascended Code</h2>
