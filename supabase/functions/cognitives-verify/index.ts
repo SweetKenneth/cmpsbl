@@ -70,15 +70,11 @@ serve(async (req) => {
       .eq('stripe_session_id', sessionId);
 
     // Notify owner
-    const resendKey = Deno.env.get("RESEND_API_KEY");
-    if (resendKey) {
-      await notifyOwnerPurchase({
-        product: `${sku.toUpperCase()} Cognitive`,
-        customerEmail: session.customer_details?.email || session.customer_email || 'unknown',
-        amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
-        resendKey,
-      });
-    }
+    await notifyOwnerPurchase({
+      product: `${sku.toUpperCase()} Cognitive`,
+      customerEmail: session.customer_details?.email || session.customer_email || 'unknown',
+      amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
+    });
 
     // Insert analytics event
     await supabase.from('analytics_events').insert({

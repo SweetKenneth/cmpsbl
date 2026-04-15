@@ -1,11 +1,13 @@
 /**
  * CMPSBL Engine Verify — Verify Stripe session, record license, send thank-you email
+ * Uses Lovable email infrastructure
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
 import { notifyOwnerPurchase } from "../_shared/purchase-alert.ts";
+import { sendBrandedEmail } from '../_shared/lovable-email-sender.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -83,49 +85,31 @@ serve(async (req) => {
       console.error("Failed to record license:", dbError);
     }
 
-    // Send thank-you email via Resend
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    // Send thank-you email
     let emailSent = false;
 
-    if (RESEND_API_KEY && customerEmail) {
+    if (customerEmail) {
       try {
-        const emailRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "CMPSBL <Dev@CMPSBL.com>",
-            to: [customerEmail],
-            subject: "Your CMPSBL Engine License is Active 🚀",
-            html: buildThankYouEmail(customerName, licenseData.expires_at, customerEmail),
-          }),
+        emailSent = await sendBrandedEmail({
+          to: customerEmail,
+          subject: "Your CMPSBL Engine License is Active 🚀",
+          html: buildThankYouEmail(customerName, licenseData.expires_at, customerEmail),
+          fromName: 'CMPSBL',
+          fromUser: 'dev',
+          idempotencyKey: `engine-verify-${session.id}`,
         });
-
-        if (emailRes.ok) {
-          emailSent = true;
-          console.log(`Thank-you email sent to ${customerEmail}`);
-        } else {
-          const errText = await emailRes.text();
-          console.error(`Resend error: ${emailRes.status} - ${errText}`);
-        }
       } catch (emailErr) {
         console.error("Email send failed:", emailErr);
       }
     }
 
     // Notify owner of purchase
-    const resendKeyOwner = Deno.env.get("RESEND_API_KEY");
-    if (resendKeyOwner) {
-      await notifyOwnerPurchase({
-        product: 'CMPSBL Engine (Annual)',
-        customerEmail: customerEmail || 'unknown',
-        amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
-        licenseId: subscription?.id || session.id,
-        resendKey: resendKeyOwner,
-      });
-    }
+    await notifyOwnerPurchase({
+      product: 'CMPSBL Engine (Annual)',
+      customerEmail: customerEmail || 'unknown',
+      amount: session.amount_total ? `$${(session.amount_total / 100).toFixed(0)}` : undefined,
+      licenseId: subscription?.id || session.id,
+    });
 
     // Insert analytics event
     await supabase.from('analytics_events').insert({
