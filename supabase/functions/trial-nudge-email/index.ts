@@ -6,6 +6,7 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
+import { sendBrandedEmail } from '../_shared/lovable-email-sender.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -24,14 +25,7 @@ serve(async (req) => {
   try {
     logStep('Function started');
 
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-    if (!RESEND_API_KEY) {
-      logStep('No RESEND_API_KEY, skipping');
-      return new Response(JSON.stringify({ sent: 0, reason: 'no_resend_key' }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      });
-    }
+    // Using Lovable email infrastructure
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -183,23 +177,17 @@ serve(async (req) => {
 </html>`;
 
       try {
-        const res = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'CMPSBL <Dev@CMPSBL.com>',
-            to: [email],
-            subject: `${displayName}, your Memory Stream kept running ⚡`,
-            html,
-          }),
+        const sent = await sendBrandedEmail({
+          to: email,
+          subject: `${displayName}, your Memory Stream kept running ⚡`,
+          html,
+          fromName: 'CMPSBL',
+          fromUser: 'dev',
+          idempotencyKey: `trial-nudge-${user.id}-${Date.now()}`,
         });
 
-        if (res.ok) {
+        if (sent) {
           sentCount++;
-          // Record that we nudged this user
           await supabaseAdmin.from('analytics_events').insert({
             event_type: 'nudge_email_sent',
             category: 'conversion',
@@ -208,8 +196,7 @@ serve(async (req) => {
           });
           logStep('Sent nudge', { email });
         } else {
-          const errText = await res.text();
-          logStep('Send failed', { email, status: res.status, error: errText });
+          logStep('Send failed', { email });
         }
       } catch (e) {
         logStep('Send error', { email, error: String(e) });
