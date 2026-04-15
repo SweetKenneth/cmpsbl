@@ -34,7 +34,7 @@ import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { generateUserGuideHTML } from '@/lib/export/user-guide';
 import type { AscensionResults } from './orchestrator';
 import { deterministicFingerprint } from './orchestrator';
-import type { AscensionFinding } from '@/lib/mana/types';
+import type { AscensionFinding, ManaCapability } from '@/lib/mana/types';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
