@@ -1,20 +1,25 @@
 /**
- * V2 Processing Step — Discovery phase with orchestrator integration
- * Uses V2 orchestrator for deterministic node ordering and audit chain.
+ * V2 Processing Step — Discovery + Dedup + Auto-Lock
+ * Uses V2 orchestrator for deterministic ordering, dedup engine for
+ * collapsing duplicates, then auto-actuates the top 4–7 capabilities.
+ *
+ * No manual lock step — capabilities are sealed automatically.
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Loader2, Zap, CheckCircle2 } from 'lucide-react';
+import { Loader2, Zap, CheckCircle2, Filter } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import {
   registerDiscovery,
   beginLocking,
+  commitAscension,
   getNodeOrdering,
-  getSnapshot,
   retry,
+  deduplicateCapabilities,
   type DiscoveredCapability,
+  type DedupResult,
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
 
@@ -35,12 +40,13 @@ const STATUS_MESSAGES = [
   'Running 40-Primitive collision matrix…',
   'Scoring CJPI compatibility…',
   'Evaluating capability chains…',
-  'Quality-gating discoveries…',
-  'Finalizing analysis…',
+  'Deduplicating discoveries…',
+  'Auto-locking top capabilities…',
+  'Finalizing…',
 ];
 
 interface Props {
-  onComplete: (caps: DiscoveredCapability[]) => void;
+  onComplete: (caps: DiscoveredCapability[], dedup: DedupResult) => void;
 }
 
 export function V2ProcessingStep({ onComplete }: Props) {
@@ -48,6 +54,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
   const [statusIdx, setStatusIdx] = useState(0);
   const [discovered, setDiscovered] = useState(0);
   const [topScore, setTopScore] = useState(0);
+  const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const [done, setDone] = useState(false);
   const abortRef = useRef(false);
   const { toast } = useToast();
@@ -77,7 +84,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
     }
 
     const candidateNode = candidate.name.replace('CANDIDATE_', '');
-    
+
     // Use deterministic ordering from orchestrator (seeded by fingerprint)
     const orderedNodes = getNodeOrdering(SUBSTRATE_NODES);
     appendAudit('discovery_start', `${orderedNodes.length} primitives`);
@@ -87,13 +94,16 @@ export function V2ProcessingStep({ onComplete }: Props) {
     let bestScore = 0;
     const allCaps: DiscoveredCapability[] = [];
 
+    // ───────────────────────────────────────────────────────
+    // Phase 1: Discovery (0–70%)
+    // ───────────────────────────────────────────────────────
     for (let i = 0; i < orderedNodes.length; i += BATCH) {
       if (abortRef.current) return;
 
       const batch = orderedNodes.slice(i, i + BATCH);
-      const pct = Math.round(((i + batch.length) / orderedNodes.length) * 75);
+      const pct = Math.round(((i + batch.length) / orderedNodes.length) * 70);
       setProgress(pct);
-      setStatusIdx(Math.min(Math.floor(pct / 12), STATUS_MESSAGES.length - 2));
+      setStatusIdx(Math.min(Math.floor(pct / 14), 4));
 
       const results = await Promise.allSettled(
         batch.map(async (targetNode) => {
@@ -127,29 +137,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
               chainDepth: bestCap.chain_depth || 2,
             };
 
-            // Register in orchestrator audit chain
             registerDiscovery(cap);
-
-            // Persist to DB with v2 category
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            await (supabase as any).from('artifact_registry').insert({
-              user_id: user.id,
-              name: bestCap.name,
-              slug: `v2-discovery-${bestCap.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`,
-              tier: bestCap.tier,
-              category: 'proprietary-discovery-v2',
-              description: bestCap.description || '',
-              metadata: {
-                node_a: candidateNode,
-                node_b: targetNode,
-                cjpi_score: bestCap.cjpi_score,
-                chain: bestCap.chain || [candidateNode, targetNode],
-                chain_depth: bestCap.chain_depth || 2,
-                pipeline_version: 'v2',
-                persisted_at: new Date().toISOString(),
-              },
-            });
-
             allCaps.push(cap);
             return bestCap.cjpi_score as number;
           }
@@ -171,15 +159,70 @@ export function V2ProcessingStep({ onComplete }: Props) {
       }
     }
 
-    // Transition to locking
-    beginLocking();
-    setProgress(80);
-    setStatusIdx(STATUS_MESSAGES.length - 1);
+    appendAudit('discovery_complete', `${totalDiscovered} raw discoveries`);
 
-    appendAudit('discovery_complete', `${totalDiscovered} found, best=${bestScore}`);
+    // ───────────────────────────────────────────────────────
+    // Phase 2: Dedup (70–85%)
+    // ───────────────────────────────────────────────────────
+    setProgress(75);
+    setStatusIdx(5);
+
+    const dedup = deduplicateCapabilities(allCaps);
+    setDedupResult(dedup);
+    appendAudit('dedup_complete', `${dedup.rawCount} → ${dedup.capabilities.length} unique (${dedup.groupCount} groups)`);
+
+    setProgress(80);
+
+    // ───────────────────────────────────────────────────────
+    // Phase 3: Auto-Lock (85–95%)
+    // ───────────────────────────────────────────────────────
+    setStatusIdx(6);
+    setProgress(85);
+    beginLocking();
+
+    try {
+      // Persist deduped capabilities as ascended
+      for (const cap of dedup.capabilities) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any).from('artifact_registry').insert({
+          user_id: user.id,
+          name: cap.name,
+          slug: `v2-ascended-${cap.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`,
+          tier: cap.tier,
+          category: 'proprietary-ascended-v2',
+          description: cap.description || '',
+          metadata: {
+            cjpi_score: cap.cjpiScore,
+            chain: [...cap.chain],
+            chain_depth: cap.chainDepth,
+            pipeline_version: 'v2',
+            dedup_raw_count: dedup.rawCount,
+            dedup_group_count: dedup.groupCount,
+            persisted_at: new Date().toISOString(),
+          },
+        });
+      }
+
+      await supabase.functions.invoke('pf-proprietary-evolution', {
+        body: {
+          module: 'ascend',
+          action: 'batch-lock',
+          input: { min_cjpi: 1 },
+        },
+      });
+    } catch {
+      // Non-fatal — capabilities are still in memory
+      appendAudit('auto_lock_warning', 'Edge function lock call failed, proceeding with local caps');
+    }
+
+    commitAscension(dedup.capabilities.length);
+    appendAudit('auto_lock_complete', `${dedup.capabilities.length} sealed`);
+
+    setProgress(95);
+    setStatusIdx(7);
 
     setDone(true);
-    setTimeout(() => onComplete(allCaps), 800);
+    setTimeout(() => onComplete([...dedup.capabilities], dedup), 800);
   }, [toast, onComplete]);
 
   useEffect(() => {
@@ -187,12 +230,14 @@ export function V2ProcessingStep({ onComplete }: Props) {
     return () => { abortRef.current = true; };
   }, [runPipeline]);
 
-  if (done) {
+  if (done && dedupResult) {
     return (
       <div className="flex flex-col items-center gap-3 py-16 animate-in fade-in">
         <CheckCircle2 className="w-12 h-12 text-primary" />
         <p className="text-foreground font-medium">Analysis Complete</p>
-        <p className="text-muted-foreground text-xs">{discovered} capabilities discovered</p>
+        <p className="text-muted-foreground text-xs">
+          {dedupResult.rawCount} discoveries → {dedupResult.capabilities.length} unique capabilities locked
+        </p>
       </div>
     );
   }
@@ -228,15 +273,25 @@ export function V2ProcessingStep({ onComplete }: Props) {
         <div className="bg-muted/30 rounded-xl p-4 text-center">
           <Zap className="w-5 h-5 mx-auto mb-1 text-primary" />
           <p className="text-2xl font-bold text-foreground">{discovered}</p>
-          <p className="text-xs text-muted-foreground">Capabilities Found</p>
+          <p className="text-xs text-muted-foreground">Raw Discoveries</p>
         </div>
         <div className="bg-muted/30 rounded-xl p-4 text-center">
-          <div className={cn(
-            'w-5 h-5 mx-auto mb-1 rounded-full',
-            topScore >= 85 ? 'bg-amber-500' : topScore >= 60 ? 'bg-primary' : 'bg-muted-foreground'
-          )} />
-          <p className="text-2xl font-bold text-foreground">{topScore > 0 ? topScore : '—'}</p>
-          <p className="text-xs text-muted-foreground">Top Score</p>
+          {dedupResult ? (
+            <>
+              <Filter className="w-5 h-5 mx-auto mb-1 text-primary" />
+              <p className="text-2xl font-bold text-foreground">{dedupResult.capabilities.length}</p>
+              <p className="text-xs text-muted-foreground">Unique Locked</p>
+            </>
+          ) : (
+            <>
+              <div className={cn(
+                'w-5 h-5 mx-auto mb-1 rounded-full',
+                topScore >= 85 ? 'bg-amber-500' : topScore >= 60 ? 'bg-primary' : 'bg-muted-foreground'
+              )} />
+              <p className="text-2xl font-bold text-foreground">{topScore > 0 ? topScore : '—'}</p>
+              <p className="text-xs text-muted-foreground">Top Score</p>
+            </>
+          )}
         </div>
       </div>
     </div>

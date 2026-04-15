@@ -40,3 +40,7 @@ export {
   retry,
 } from './orchestrator';
 export type { RunPhase, RunSnapshot, DiscoveredCapability, OrchestratorCallbacks } from './orchestrator';
+
+// Deduplication — collapses raw discoveries to top 4–7 unique capabilities
+export { deduplicateCapabilities } from './dedup';
+export type { DedupResult } from './dedup';
