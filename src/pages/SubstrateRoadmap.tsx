@@ -19,7 +19,7 @@ interface MilestoneProps {
 
 function Milestone({ title, status, items, deliverables, dependencies }: MilestoneProps) {
   const borderColor = status === 'done' 
-    ? 'border-l-emerald-500' 
+    ? 'border-l-neon-green' 
     : status === 'active' 
     ? 'border-l-primary' 
     : 'border-l-border';
@@ -27,7 +27,7 @@ function Milestone({ title, status, items, deliverables, dependencies }: Milesto
   return (
     <div className={`border-l-4 ${borderColor} pl-5 sm:pl-7 py-1`}>
       <div className="flex items-center gap-2 mb-3">
-        {status === 'done' && <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />}
+        {status === 'done' && <CheckCircle2 className="w-5 h-5 text-neon-green shrink-0" />}
         {status === 'active' && <Clock className="w-5 h-5 text-primary shrink-0 animate-pulse" />}
         {status === 'upcoming' && <Circle className="w-5 h-5 text-muted-foreground shrink-0" />}
         <h3 className="text-lg sm:text-xl font-semibold text-foreground">{title}</h3>
@@ -36,7 +36,7 @@ function Milestone({ title, status, items, deliverables, dependencies }: Milesto
       <ul className="space-y-2 mb-4">
         {items.map((item, i) => (
           <li key={i} className="flex gap-2 text-[15px] leading-relaxed text-foreground">
-            <span className={`mt-0.5 shrink-0 ${item.done ? 'text-emerald-500' : 'text-muted-foreground'}`}>
+            <span className={`mt-0.5 shrink-0 ${item.done ? 'text-neon-green' : 'text-muted-foreground'}`}>
               {item.done ? '✓' : '○'}
             </span>
             <span className={item.done ? 'text-muted-foreground line-through' : ''}>{item.text}</span>
@@ -124,7 +124,7 @@ export default function SubstrateRoadmap() {
           {/* What's Already Done */}
           <section className="mb-12">
             <div className="flex items-center gap-2 mb-5">
-              <Calendar className="w-5 h-5 text-emerald-500" />
+              <Calendar className="w-5 h-5 text-neon-green" />
               <h2 className="text-xl sm:text-2xl font-bold text-foreground">Already Complete</h2>
             </div>
             <p className="text-[15px] text-muted-foreground mb-6 leading-relaxed">
