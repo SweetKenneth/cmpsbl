@@ -682,11 +682,38 @@ function getStatusMessage(pct: number): string {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Results builder — includes events for replay
+// Results builder — deduplicates + ranks capabilities
 // ═══════════════════════════════════════════════════════════════
 
+/** Maximum unique capabilities to surface — prevents noise, keeps top performers */
+const MAX_EXPORT_CAPABILITIES = 20;
+
+/**
+ * Deduplicate capabilities by name — keep the highest-scoring version.
+ * Then sort by score descending and cap at MAX_EXPORT_CAPABILITIES.
+ * This prevents 40+ near-duplicate entries from reaching the UI and export.
+ */
+function deduplicateCapabilities(caps: ReadonlyArray<DiscoveredCapability>): DiscoveredCapability[] {
+  const best = new Map<string, DiscoveredCapability>();
+
+  for (const cap of caps) {
+    // Normalize name for dedup — strip whitespace variants
+    const key = cap.name.trim().toLowerCase();
+    const existing = best.get(key);
+    if (!existing || cap.score > existing.score) {
+      best.set(key, cap);
+    }
+  }
+
+  return Array.from(best.values())
+    .sort((a, b) => b.score - a.score)
+    .slice(0, MAX_EXPORT_CAPABILITIES);
+}
+
 export function getResults(run: AscensionRun): AscensionResults {
-  const caps = Array.from(run.capabilities);
+  const rawCaps = Array.from(run.capabilities);
+  const caps = deduplicateCapabilities(rawCaps);
+
   const scores = caps.map(c => c.score);
   const avgScore = scores.length > 0
     ? Math.round(scores.reduce((s, v) => s + v, 0) / scores.length)
@@ -697,8 +724,8 @@ export function getResults(run: AscensionRun): AscensionResults {
     runId: run.runId,
     candidateName: run.candidateName,
     sourceLanguage: run.sourceLanguage,
-    discovered: caps.length,
-    ascended: run.ascendedCount,
+    discovered: rawCaps.length,
+    ascended: caps.length,
     topScore,
     avgScore,
     capabilities: freezeArray(caps),

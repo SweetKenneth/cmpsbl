@@ -64,10 +64,10 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
         <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
           <Sparkles className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-xl font-bold text-foreground">Your Results</h2>
+        <h2 className="text-xl font-bold text-foreground">Ascension Complete</h2>
         <p className="text-sm text-muted-foreground">
           {items.length > 0
-            ? `${items.length} capabilities discovered and locked`
+            ? `${items.length} capabilities selected and pre-activated`
             : 'No strong matches found — try richer source code'
           }
         </p>
@@ -78,15 +78,15 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">
             <p className="text-xl font-bold text-foreground">{results.discovered}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">Discovered</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">Scanned</p>
           </div>
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">
             <p className={cn("text-xl font-bold", scoreColor(avgScore))}>{avgScore}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">Avg Score</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">Avg CJPI</p>
           </div>
           <div className="rounded-xl border border-border/20 bg-card/40 p-3 text-center">
-            <p className={cn("text-xl font-bold", scoreColor(results.topScore))}>{results.topScore}</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">Top Score</p>
+            <p className={cn("text-xl font-bold text-foreground")}>{items.length}</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">Activated</p>
           </div>
         </div>
       )}
@@ -121,7 +121,7 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground flex items-center gap-1.5">
               <Shield className="w-3 h-3" />
-              Overall Quality
+              CJPI Quality
             </span>
             <span className={cn("font-bold", scoreColor(avgScore))}>
               {avgScore >= 85 ? 'Excellent' : avgScore >= 60 ? 'Good' : 'Fair'}
@@ -145,7 +145,7 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
             ) : (
               <Download className="w-4 h-4" />
             )}
-            {exporting ? 'Generating…' : 'Download All Capabilities'}
+            {exporting ? 'Generating…' : 'Download Ascended Code'}
           </Button>
         )}
 
@@ -156,7 +156,7 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
           onClick={onReset}
         >
           <RotateCcw className="w-4 h-4" />
-          Start Over with New Code
+          Start Over
         </Button>
       </div>
     </div>
