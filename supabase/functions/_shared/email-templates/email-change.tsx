@@ -12,6 +12,7 @@ import {
   Link,
   Preview,
   Text,
+  Hr,
 } from 'npm:@react-email/components@0.0.22'
 
 interface EmailChangeEmailProps {
@@ -29,33 +30,27 @@ export const EmailChangeEmail = ({
 }: EmailChangeEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Confirm your email change for {siteName}</Preview>
+    <Preview>Confirm your email change for CMPSBL®</Preview>
     <Body style={main}>
       <Container style={container}>
         <Text style={brand}>CMPSBL®</Text>
+        <Hr style={divider} />
         <Heading style={h1}>Confirm your email change</Heading>
         <Text style={text}>
-          You requested to change your email address for {siteName} from{' '}
-          <Link href={`mailto:${email}`} style={link}>
-            {email}
-          </Link>{' '}
+          You requested to change your email from{' '}
+          <Link href={`mailto:${email}`} style={link}>{email}</Link>{' '}
           to{' '}
-          <Link href={`mailto:${newEmail}`} style={link}>
-            {newEmail}
-          </Link>
-          .
-        </Text>
-        <Text style={text}>
-          Click the button below to confirm this change:
+          <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Confirm Email Change
         </Button>
         <Text style={footer}>
-          If you didn't request this change, please secure your account
-          immediately.
+          If you didn't request this change, please secure your account immediately.
         </Text>
-        <Text style={footerBrand}>CMPSBL® · PromptFluid™</Text>
+        <Text style={footerBrand}>
+          CMPSBL® · Governed Cognitive Infrastructure · PromptFluid™
+        </Text>
       </Container>
     </Body>
   </Html>
@@ -63,12 +58,13 @@ export const EmailChangeEmail = ({
 
 export default EmailChangeEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif" }
-const container = { padding: '40px 25px' }
-const brand = { fontSize: '14px', fontWeight: 'bold' as const, color: '#2E78C2', letterSpacing: '2px', margin: '0 0 30px' }
-const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: '#212733', margin: '0 0 20px' }
-const text = { fontSize: '14px', color: '#5C6370', lineHeight: '1.6', margin: '0 0 25px' }
-const link = { color: '#2E78C2', textDecoration: 'underline' }
-const button = { backgroundColor: '#2E78C2', color: '#ffffff', fontSize: '14px', borderRadius: '8px', padding: '12px 24px', textDecoration: 'none', fontWeight: 'bold' as const }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
-const footerBrand = { fontSize: '11px', color: '#bbb', margin: '10px 0 0', letterSpacing: '1px' }
+const main = { backgroundColor: '#ffffff', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }
+const container = { padding: '32px 28px', maxWidth: '480px', margin: '0 auto' }
+const brand = { fontSize: '18px', fontWeight: 'bold' as const, color: '#1a1f2e', letterSpacing: '2px', margin: '0 0 16px' }
+const divider = { borderColor: '#e2e4e9', margin: '0 0 28px' }
+const h1 = { fontSize: '24px', fontWeight: 'bold' as const, color: '#1a1f2e', margin: '0 0 16px' }
+const text = { fontSize: '15px', color: '#4a5060', lineHeight: '1.6', margin: '0 0 28px' }
+const link = { color: '#2d7abf', textDecoration: 'underline' }
+const button = { backgroundColor: '#2d7abf', color: '#ffffff', fontSize: '15px', fontWeight: '600' as const, borderRadius: '8px', padding: '14px 28px', textDecoration: 'none' }
+const footer = { fontSize: '13px', color: '#8b8f9a', margin: '32px 0 0', lineHeight: '1.5' }
+const footerBrand = { fontSize: '11px', color: '#b0b4be', margin: '16px 0 0', letterSpacing: '0.5px' }
