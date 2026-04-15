@@ -48,6 +48,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
   const [exporting, setExporting] = useState(false);
   const [ceremonyOpen, setCeremonyOpen] = useState(false);
   const [ceremonyName, setCeremonyName] = useState('');
+  const [integrityHash, setIntegrityHash] = useState('');
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
