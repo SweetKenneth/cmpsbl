@@ -137,6 +137,10 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/verticals", label: "Vertical Portal", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
   { path: "/robotics", label: "Robotics Substrate", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
   { path: "/security", label: "Cyber Substrate", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
+
+  // ── Hidden Internal Docs (dual-gated, noindex) ──
+  { path: "/roadmap/substrate", label: "Substrate Roadmap", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
+  { path: "/docs/internal/mana-distribution", label: "Mana Distribution Doc", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
 ];
 
 // ─── DERIVED HELPERS ─────────────────────────────────────────
