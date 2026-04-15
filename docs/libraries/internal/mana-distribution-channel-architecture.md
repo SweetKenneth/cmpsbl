@@ -295,58 +295,172 @@ Zero collision with V1 categories.
 - [ ] "Your code + this add-on = X% improvement" predictions
 - [ ] Subscription model for ongoing enhancements
 
-## ASCII Architecture Diagram
+## Vertical Substrates — Internal Engines, Not Products
+
+### Decision (April 15, 2026)
+
+The 12 vertical substrates (Cyber, Fintech, Robotics, Healthcare, etc.)
+are **internal discovery engines**, not user-facing products. They do not
+get their own subdomains, SSO configurations, stores, or showrooms.
+
+### What Was (Retired)
 
 ```
-                    ┌──────────────┐
-                    │  USER CODE   │
-                    └──────┬───────┘
-                           │
-                    ┌──────▼───────┐
-                    │   UPLOAD     │ Step 1
-                    │  Fingerprint │
-                    └──────┬───────┘
-                           │
-              ┌────────────▼────────────┐
-              │       ENHANCE?          │ Step 2 (Skippable)
-              │                         │
-              │  ┌─────────────────┐    │
-              │  │ SDK-Built Pkg   │◄───┤ Mode A: Developer upload
-              │  └────────┬────────┘    │
-              │           │             │
-              │  ┌────────▼────────┐    │
-              │  │ Store Add-On    │◄───┤ Mode B: Purchase (Future)
-              │  └────────┬────────┘    │
-              └───────────┼─────────────┘
-                          │
-               ┌──────────▼──────────┐
-               │   MANA WRAP         │
-               │  Function-boundary  │
-               │  attachment         │
-               └──────────┬──────────┘
-                          │
-           ┌──────────────▼──────────────┐
-           │       MERGED CODEBASE       │
-           │  User code + enhancements   │
-           └──────────────┬──────────────┘
-                          │
-                   ┌──────▼───────┐
-                   │   ANALYZE    │ Step 3
-                   │  40-Primitive│
-                   │  Collision   │
-                   │  + Dedup     │
-                   │  + Auto-Lock │
-                   └──────┬───────┘
-                          │
-                   ┌──────▼───────┐
-                   │   RESULTS    │ Step 4
-                   │  Single File │
-                   │  + Upsell    │
-                   └──────────────┘
+12 verticals x (subdomain + SSO + Store + Showroom + Memory Stream)
+= 48+ user-facing surfaces
+= confusing, unsellable, no clear value proposition
 ```
 
+### What Is Now
+
+```
+12 verticals = 12 internal capability factories
+Each runs its own Memory Stream internally
+GENESIS spins up new verticals on demand
+All output flows into ONE Store -> ONE Ascension pipeline
+```
+
+### How Verticals Feed the Pipeline
+
+```
++-------------------------------------------------------------+
+|              INTERNAL VERTICAL ENGINES                       |
+|                                                              |
+|  +------+ +------+ +------+ +------+ +------+ +------+     |
+|  |Cyber | |Fin-  | |Robot-| |Health| |  AI  | |  ... |     |
+|  |      | |tech  | |ics   | |care  | |      | |      |     |
+|  +--+---+ +--+---+ +--+---+ +--+---+ +--+---+ +--+---+    |
+|     |        |        |        |        |        |          |
+|     +--------+--------+---+----+--------+--------+          |
+|                            |                                 |
+|                    +-------v--------+                        |
+|                    | Memory Streams | (internal, per-vertical)|
+|                    +-------+--------+                        |
+|                            |                                 |
+|                    +-------v--------+                        |
+|                    |   COMPILER     | Builds packages + suites|
+|                    +-------+--------+                        |
+|                            |                                 |
+|                    +-------v--------+                        |
+|                    |   MERCHANT     | Curates, quality gates  |
+|                    +-------+--------+                        |
+|                            |                                 |
+|                    +-------v--------+                        |
+|                    |   ECONOMY      | Auto-prices by CJPI     |
+|                    +-------+--------+                        |
++----------------------------+-----------------------------   +
+                             |
+                    +--------v--------+
+                    |  ONE STORE      | Tagged by origin vertical
+                    |  One catalog    | User never sees "Cyber"
+                    |  One pipeline   | Just sees capabilities
+                    +--------+--------+
+                             |
+                    +--------v--------+
+                    | ASCENSION Step 2| Browse / Purchase / Attach
+                    +-----------------+
+```
+
+### GENESIS — On-Demand Vertical Factory
+
+GENESIS remains fully operational as an internal engine:
+
+- **Spin up** a new vertical (e.g., "Quantum Computing") at any time
+- New vertical immediately starts its own Memory Stream
+- COMPILER begins building domain-specific capabilities
+- MERCHANT curates them into the Store catalog
+- ECONOMY prices them automatically
+- Users see "Quantum-class capabilities" appear in Ascension Step 2
+
+**No new subdomain. No new SSO. No new store.** Just new capabilities
+in the existing pipeline.
+
+### What Users See
+
+Users never interact with verticals. They see:
+
+| In Ascension Step 2 | What It Really Is |
+|----------------------|-------------------|
+| "DEFENSE Shield — CJPI 98" | Cyber vertical Crown Jewel |
+| "Transaction Validator — CJPI 87" | Fintech vertical COMPILER output |
+| "Sensor Fusion Engine — CJPI 92" | Robotics vertical Memory Stream discovery |
+| "Compliance Auditor — CJPI 85" | Healthcare vertical Showroom item |
+
+The vertical origin is metadata (useful for internal tracking and
+MERCHANT curation) but invisible to the end user.
+
+### What Gets Removed
+
+| Removed | Reason |
+|---------|--------|
+| 12 vertical subdomains | No user-facing vertical products |
+| 12 SSO configurations | Single auth through cmpsbl.com |
+| 12 separate Stores | One unified Store catalog |
+| 12 separate Showrooms | One Showroom, tagged by vertical |
+| 12 separate Memory Stream UIs | Memory Streams run internally |
+| GENESIS as user-facing feature | GENESIS is governor-only internal tooling |
+
+### What Stays
+
+| Kept | Why |
+|------|-----|
+| GENESIS engine code | Spin up new verticals on demand |
+| Vertical Memory Streams | Internal discovery engines |
+| Vertical-specific 40-Primitive matrices | Domain-specialized collision |
+| Per-vertical CJPI scoring | Domain context improves accuracy |
+| Vertical metadata on Store items | MERCHANT uses it for curation |
+
+## Complete Pipeline Diagram
+
+```
++------------------------------------------------------------------+
+|                    SUBSTRATE (Internal)                            |
+|                                                                   |
+|  GENESIS --> Verticals --> Memory Streams --> COMPILER             |
+|                                                  |                |
+|                                          MERCHANT (curate)        |
+|                                                  |                |
+|                                          ECONOMY (auto-price)     |
+|                                                  |                |
+|                                          +-------v--------+       |
+|                                          |  STORE CATALOG  |      |
+|                                          +-------+--------+       |
++------------------------------------------+-------+---------------+
+                                                   |
+              +------------------------------------+
+              |         ASCENSION V2 PIPELINE      |
+              |                                    |
+              |  Step 1: UPLOAD (user code)         |
+              |         |                          |
+              |  Step 2: ENHANCE (skippable)        |
+              |         +-- SDK-built packages      |
+              |         +-- Store add-ons <---------+
+              |         |                          |
+              |  Step 3: ANALYZE                    |
+              |         | 40-Primitive collision     |
+              |         | Dedup + Auto-lock          |
+              |         |                          |
+              |  Step 4: RESULTS                    |
+              |         | Single wrapped file        |
+              |         +-- Post-results upsell     |
+              +------------------------------------+
+                         |
+                         v
+              Developer gets enhanced code
+              Demand data flows back to Memory Streams
+              Cycle repeats
+```
+
+## Revenue Model Integration
+
+| Tier | What They Get | Price |
+|------|---------------|-------|
+| Free Ascension | Upload -> Analyze -> Export (no enhancements) | $0 |
+| SDK Enhance | Attach own packages via Mana step | Free (SDK cost) |
+| Store Add-On | Single capability from Store | $29-$79 |
+| Crown Jewel Add-On | Premium substrate algorithm | $129-$249 |
 | ECONOMY-Priced Add-On | Auto-priced by CJPI/tier/demand | ECONOMY sets |
-| COMPILER Suite | Multi-capability bundle | $149–$499 |
+| COMPILER Suite | Multi-capability bundle | $149-$499 |
 | Architect Bundle | Full Ascension + all available add-ons | $249/mo |
 
 ## Key Insight
@@ -359,11 +473,17 @@ capabilities. ECONOMY prices it, MERCHANT curates it, COMPILER builds
 it, and the SDK lets developers contribute to it using the same
 primitives (DREAM, EVOLUTION) that power the pipeline itself.
 
+The 12 vertical substrates stop being confusing standalone products
+and become what they always should have been: **internal engines**
+that feed domain-specific capabilities into one unified pipeline.
+GENESIS stays as the governor's tool to spin up new capability
+lines whenever the market demands them.
+
 This transforms inventory into revenue and creates a self-reinforcing
-loop: better inputs → richer Ascension output → more demand →
-more discoveries → more products → better inputs.
+loop: better inputs -> richer Ascension output -> more demand ->
+more discoveries -> more products -> better inputs.
 
 ---
 
-© 2025–2026 CMPSBL® — PromptFluid™ · All rights reserved.
+(c) 2025-2026 CMPSBL® — PromptFluid™ · All rights reserved.
 U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 64/031,637
