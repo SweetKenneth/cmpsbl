@@ -2,7 +2,7 @@
  * Ascension V2 — Hardened Pipeline UI
  * Route: /ascension-v2 (isolated from /ascension)
  *
- * 3-step wizard: Upload → Analyze+Dedup+Lock → Results (single file)
+ * 4-step wizard: Upload → Enhance (skippable) → Analyze+Dedup+Lock → Results
  * Wired to V2 orchestrator with audit chain + fingerprint gate.
  *
  * Uses V2 category prefix in artifact_registry for data isolation.
@@ -11,7 +11,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { Upload, Search, Download, Check, RotateCcw } from 'lucide-react';
+import { Upload, Layers, Search, Download, Check, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -22,22 +22,23 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 
 import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
+import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 
 import {
   initRun,
-  type RunPhase,
   type DiscoveredCapability,
   type DedupResult,
 } from '@/lib/ascension-v2';
 
 // ═══════════════════════════════════════════════════════════════
-// Step config — 3 steps (Lock is now automatic inside Analyze)
+// Step config — 4 steps (Enhance is skippable)
 // ═══════════════════════════════════════════════════════════════
 
 const STEPS = [
   { label: 'Upload', icon: Upload },
+  { label: 'Enhance', icon: Layers },
   { label: 'Analyze', icon: Search },
   { label: 'Results', icon: Download },
 ] as const;
@@ -49,6 +50,7 @@ const STEPS = [
 export default function AscensionV2() {
   const [step, setStep] = useState(0);
   const [runId, setRunId] = useState('');
+  const [enhanced, setEnhanced] = useState(false);
   const [capabilities, setCapabilities] = useState<DiscoveredCapability[]>([]);
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
@@ -68,10 +70,15 @@ export default function AscensionV2() {
     setStep(1);
   }, []);
 
+  const handleEnhanceComplete = useCallback((wasEnhanced: boolean) => {
+    setEnhanced(wasEnhanced);
+    setStep(2);
+  }, []);
+
   const handleAnalysisComplete = useCallback((caps: DiscoveredCapability[], dedup: DedupResult) => {
     setCapabilities(caps);
     setDedupResult(dedup);
-    setStep(2);
+    setStep(3);
   }, []);
 
   const handleReset = useCallback(async () => {
@@ -86,6 +93,7 @@ export default function AscensionV2() {
             'proprietary-evolution-v2',
             'proprietary-discovery-v2',
             'proprietary-ascended-v2',
+            'proprietary-mana-attachment-v2',
           ]);
       }
     } catch { /* non-fatal */ }
@@ -93,6 +101,7 @@ export default function AscensionV2() {
     const id = initRun();
     setRunId(id);
     setStep(0);
+    setEnhanced(false);
     setCapabilities([]);
     setDedupResult(null);
     toast({ title: 'Reset complete', description: 'Ready for a new analysis.' });
@@ -100,11 +109,13 @@ export default function AscensionV2() {
 
   const phases = [
     <V2UploadStep key="upload" onComplete={handleUploadComplete} />,
+    <V2EnhanceStep key="enhance" onComplete={handleEnhanceComplete} />,
     <V2ProcessingStep key="process" onComplete={handleAnalysisComplete} />,
     <V2ResultsStep
       key="results"
       capabilities={capabilities}
       dedup={dedupResult || { capabilities: [], rawCount: 0, groupCount: 0 }}
+      enhanced={enhanced}
       onReset={handleReset}
     />,
   ];
@@ -113,7 +124,7 @@ export default function AscensionV2() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Ascension V2 — Code Evolution Pipeline | CMPSBL®"
-        description="Upload your code. Discover capabilities. Export a single wrapped ascension file."
+        description="Upload your code. Optionally enhance with Mana. Discover capabilities. Export a single wrapped ascension file."
       />
       <PublicNav />
 
@@ -126,13 +137,13 @@ export default function AscensionV2() {
                 Ascend Your Software
               </h1>
               <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
-                Upload your code. We analyze it against the 40-Primitive substrate,
-                deduplicate discoveries, and deliver one wrapped ascension file.
+                Upload your code, optionally enhance with Mana-wrapped software,
+                and we'll discover capabilities against the 40-Primitive substrate.
               </p>
             </div>
           )}
 
-          {/* Stepper — 3 steps */}
+          {/* Stepper — 4 steps */}
           <nav className="mb-8">
             <div className="flex items-center justify-center gap-0">
               {STEPS.map((s, i) => {
@@ -160,7 +171,7 @@ export default function AscensionV2() {
                     </div>
 
                     {i < STEPS.length - 1 && (
-                      <div className="w-16 sm:w-24 mx-1 mt-[-12px]">
+                      <div className="w-12 sm:w-20 mx-1 mt-[-12px]">
                         <div className={cn(
                           'h-0.5 rounded-full transition-colors',
                           i < step ? 'bg-primary' : 'bg-border'
@@ -179,7 +190,7 @@ export default function AscensionV2() {
           </div>
 
           {/* Reset button — visible during analysis only */}
-          {step === 1 && (
+          {step === 2 && (
             <div className="mt-6 text-center">
               <Button variant="ghost" size="sm" onClick={handleReset}>
                 <RotateCcw className="w-3 h-3 mr-1" />
