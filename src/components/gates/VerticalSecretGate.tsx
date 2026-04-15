@@ -16,7 +16,7 @@ import { PinGate } from './PinGate';
 const GATE_PARAM_KEY = '1952';
 const GATE_PARAM_VALUE = 'cmpsbl';
 
-/** PIN for all vertical substrate access — Kenneth's birth year reversed */
+/** PIN for all vertical substrate access — 1952 reversed: the year Geoffrey Dummer conceived the integrated circuit */
 const VERTICAL_PIN = '259100';
 
 /** Session key so the URL param isn't needed on every navigation */
