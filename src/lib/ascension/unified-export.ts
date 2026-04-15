@@ -639,7 +639,7 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
   const { results, sourceFiles } = input;
   const { runId, candidateName, sourceLanguage, capabilities } = results;
   
-  const ext = LANG_EXT[sourceLanguage] || '.ts';
+  const ext = LANG_EXT[sourceLanguage] || '.ts'; // Used for file naming context
   const zip = new JSZip();
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-ascended-${candidateName.toLowerCase()}-${timestamp}`;
