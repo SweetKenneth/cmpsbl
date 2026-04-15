@@ -286,10 +286,14 @@ export function HeroMetaSubstrate() {
             </FadeIn>
 
             {/* Trust line */}
-            <FadeIn delay={0.2} className="mt-3 mb-1">
-              <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold tracking-wide">
-                Diagnostic in seconds · Restoration in minutes · Your code is never stored or&nbsp;reused
-              </p>
+            <FadeIn delay={0.2} className="mt-4 mb-1">
+              <div className="flex items-center gap-3 text-[10px] sm:text-xs text-muted-foreground/50 font-medium tracking-wide">
+                <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-cyan)/0.5)]" />Diagnostic in seconds</span>
+                <span className="text-border/30">·</span>
+                <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-purple)/0.5)]" />Restoration in minutes</span>
+                <span className="text-border/30 hidden sm:inline">·</span>
+                <span className="hidden sm:flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-magenta)/0.5)]" />Code never stored</span>
+              </div>
             </FadeIn>
 
             {/* Zenodo */}
@@ -318,8 +322,8 @@ export function HeroMetaSubstrate() {
             </Suspense>
 
             {/* ─── How it works steps (desktop only, balances the column) ─── */}
-            <div className="hidden lg:block mt-6">
-              <div className="grid grid-cols-3 gap-3">
+            <div className="hidden lg:block mt-8">
+              <div className="grid grid-cols-3 gap-4">
                 {[
                   { icon: Scan, label: "Scan", desc: "40 Primitives analyze your codebase", color: "var(--neon-cyan)" },
                   { icon: ShieldCheck, label: "Ascend", desc: "Governance & security layers applied", color: "var(--neon-purple)" },
@@ -327,22 +331,24 @@ export function HeroMetaSubstrate() {
                 ].map((step, i) => (
                   <div
                     key={step.label}
-                    className="relative flex flex-col items-center text-center p-4 rounded-xl border border-border/20 bg-card/10 backdrop-blur-sm group hover:-translate-y-0.5 transition-all duration-300"
+                    className="relative flex flex-col items-center text-center p-5 rounded-xl border border-border/15 bg-card/5 backdrop-blur-sm group hover:-translate-y-1 hover:bg-card/15 transition-all duration-300"
                   >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-lg mb-2" style={{ background: `hsl(${step.color} / 0.12)` }}>
-                      <step.icon className="w-4 h-4" style={{ color: `hsl(${step.color})` }} />
+                    {/* Top accent line */}
+                    <div className="absolute inset-x-4 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, hsl(${step.color} / 0.3), transparent)` }} />
+                    <div className="flex items-center justify-center w-10 h-10 rounded-xl mb-3 border border-border/10" style={{ background: `hsl(${step.color} / 0.08)` }}>
+                      <step.icon className="w-5 h-5" style={{ color: `hsl(${step.color})` }} />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60 mb-0.5">Step {i + 1}</span>
-                    <span className="text-xs font-bold text-foreground">{step.label}</span>
-                    <span className="text-[10px] text-muted-foreground/70 font-medium mt-1 leading-tight">{step.desc}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 mb-1">Step {i + 1}</span>
+                    <span className="text-sm font-bold text-foreground">{step.label}</span>
+                    <span className="text-[10px] text-muted-foreground/60 font-medium mt-1.5 leading-snug">{step.desc}</span>
                   </div>
                 ))}
               </div>
 
               {/* Technology badges */}
-              <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
+              <div className="flex items-center justify-center gap-2.5 mt-5 flex-wrap">
                 {["Patent-Pending", "Zero AI in Output", "Dual-Layer Architecture", "8hr Autonomous Cycles"].map(tag => (
-                  <span key={tag} className="text-[9px] font-bold uppercase tracking-[0.1em] px-2.5 py-1 rounded-full border border-border/25 bg-card/15 text-muted-foreground/60">
+                  <span key={tag} className="text-[8px] font-bold uppercase tracking-[0.14em] px-3 py-1.5 rounded-full border border-border/15 bg-card/8 text-muted-foreground/50 backdrop-blur-sm">
                     {tag}
                   </span>
                 ))}
@@ -354,13 +360,14 @@ export function HeroMetaSubstrate() {
         {/* ─── Stats bar (full-width below both columns) ─── */}
         <FadeIn delay={0.35}>
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge max-w-3xl mx-auto"
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/15 rounded-2xl border border-border/20 bg-card/10 overflow-hidden shadow-2xl shadow-primary/[0.06] backdrop-blur-md max-w-3xl mx-auto"
           >
-            <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
-            <AnimatedStat value={40} label="Primitives" sublabel="core system modules" delay={0} />
-            <AnimatedStat value={25} label="Export Languages" sublabel="deployment targets" delay={1} />
-            <AnimatedStat value={8} label="Hour Cycles" sublabel="autonomous processing loop" suffix="hr" delay={2} />
-            <AnimatedStat value={6} label="ORCID Works" sublabel="academic lineage" delay={3} />
+            <div className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, hsl(var(--neon-cyan) / 0.4), hsl(var(--neon-purple) / 0.4), hsl(var(--neon-magenta) / 0.4), transparent)" }} />
+            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-border/20 to-transparent" />
+            <AnimatedStat value={40} label="Primitives" sublabel="core substrate modules" delay={0} />
+            <AnimatedStat value={90} label="Languages" sublabel="export targets" suffix="+" delay={1} />
+            <AnimatedStat value={8} label="Hour Cycles" sublabel="autonomous processing" suffix="hr" delay={2} />
+            <AnimatedStat value={2} label="Patents" sublabel="pending · dual-layer" delay={3} />
           </div>
         </FadeIn>
       </div>
