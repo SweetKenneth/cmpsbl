@@ -28,16 +28,13 @@ import { saveAs } from 'file-saver';
 import {
   detectFunctionBoundaries,
   buildAttachmentPlan,
-  serializeAttachmentPlan,
 } from '@/lib/mana/findings-bridge';
 import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
-import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { generateUserGuideHTML } from '@/lib/export/user-guide';
-import type { AscensionResults, DiscoveredCapability } from './orchestrator';
+import type { AscensionResults } from './orchestrator';
 import { deterministicFingerprint } from './orchestrator';
-import type { ManaCapability, AscensionFinding, AttachmentPoint, AttachmentState, ManaManifest } from '@/lib/mana/types';
-import { WrapperPhase } from '@/lib/mana/types';
+import type { AscensionFinding } from '@/lib/mana/types';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
