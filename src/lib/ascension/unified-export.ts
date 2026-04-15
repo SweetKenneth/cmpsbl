@@ -2,11 +2,11 @@
  * Unified Ascension + Mana Export Pipeline
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Produces a single export that combines:
- *   1. Mana-wrapped code (Layer 2 wrappers on user's functions)
- *   2. Original user code (unchanged)
- *   3. Unified runtime (cmpsbl.*)
- *   4. Activation guide (lifecycle docs)
- *   5. Existing docs (README, LICENSE, PROOF, PIPELINE-DETAILS)
+ *   1. Ascended code (runtime embedded inline, capabilities pre-activated)
+ *   2. Original user code (unchanged, byte-for-byte)
+ *   3. USER-GUIDE.html (single unified doc with TOC)
+ *   4. LICENSE.html (branded)
+ *   5. manifest.json (machine-readable)
  *
  * This is the convergence of both patents:
  *   - U.S. App. No. 64/029,678 (Ascension — discovery + transformation)
@@ -16,9 +16,9 @@
  *   Ascension discovers capabilities →
  *   findings-bridge detects function boundaries →
  *   attachment plan maps capabilities to functions →
- *   wrapper generator produces Layer 2 wrapped code →
- *   lifecycle bridge generates activation guide →
- *   ZIP bundles everything with docs
+ *   embedded runtime + wrappers inline into each file →
+ *   USER-GUIDE consolidates all documentation →
+ *   ZIP bundles ascended/ + original/ + docs
  *
  * © CMPSBL® — All rights reserved.
  */
