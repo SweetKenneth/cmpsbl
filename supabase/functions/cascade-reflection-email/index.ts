@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { callFreeTierAI } from '../_shared/free-tier-router.ts';
+import { sendBrandedEmail } from '../_shared/lovable-email-sender.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -282,23 +283,16 @@ Generated: ${now.toISOString()}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     `.trim();
 
-    // Send email via Resend API
-    const emailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Cascade AI <cascade@cmpsbl.com>',
-        to: ['kennethsweet214@gmail.com'],
-        subject: `🜂 Cascade 8-Hour Learning Report - ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
-        text: emailBody,
-      }),
+    // Send email via Lovable infrastructure
+    const emailSent = await sendBrandedEmail({
+      to: 'kennethsweet214@gmail.com',
+      subject: `🜂 Cascade 8-Hour Learning Report - ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
+      html: `<pre style="font-family:monospace;background:#0a0a0a;color:#e5e5e5;padding:24px;white-space:pre-wrap;max-width:600px;">${emailBody}</pre>`,
+      fromName: 'Cascade AI',
+      fromUser: 'cascade',
+      idempotencyKey: `cascade-reflection-${now.toISOString()}`,
     });
-
-    const emailData = await emailResponse.json();
-    console.log('✅ 8-hour reflection email sent:', emailData.id);
+    console.log('✅ 8-hour reflection email queued:', emailSent);
 
     // Post dream summaries to blog if any dreams exist
     const dreams = (recentDreams || []) as any[];

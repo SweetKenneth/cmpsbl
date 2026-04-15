@@ -1,7 +1,7 @@
 /**
- * pf-agency-send-email v1.0.0
+ * pf-agency-send-email v2.0.0
  * 
- * Process email queue and send via Resend:
+ * Process email queue and send via Lovable email infrastructure:
  * - Task completion notifications
  * - Daily/weekly briefs
  * - Deliverable delivery
@@ -9,6 +9,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.79.0";
+import { sendBrandedEmail } from '../_shared/lovable-email-sender.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -127,16 +128,7 @@ serve(async (req) => {
   }
 
   try {
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-    if (!RESEND_API_KEY) {
-      console.warn('⚠️ RESEND_API_KEY not configured, skipping email send');
-      return new Response(JSON.stringify({ 
-        success: false, 
-        error: 'Email service not configured' 
-      }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    // Using Lovable email infrastructure
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -170,36 +162,25 @@ serve(async (req) => {
           html = template.html(email.metadata || {});
         }
 
-        // Send via Resend
-        const response = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'Agency AI <notifications@cmpsbl.com>',
-            to: [email.recipient_email],
-            subject,
-            html: html || email.body_text,
-            text: email.body_text,
-          }),
+        // Send via Lovable email infrastructure
+        const sent = await sendBrandedEmail({
+          to: email.recipient_email,
+          subject: subject || 'Notification from CMPSBL',
+          html: html || email.body_text || '',
+          fromName: 'Agency AI',
+          fromUser: 'notifications',
+          idempotencyKey: `agency-email-${email.id}`,
         });
 
-        if (!response.ok) {
-          const errorData = await response.text();
-          throw new Error(`Resend error: ${response.status} - ${errorData}`);
+        if (!sent) {
+          throw new Error('Email enqueue failed');
         }
 
-        const sendResult = await response.json();
-
-        // Mark as sent
         await supabase
           .from('agency_email_queue')
           .update({
             status: 'sent',
             sent_at: new Date().toISOString(),
-            metadata: { ...email.metadata, resend_id: sendResult.id },
           })
           .eq('id', email.id);
 
