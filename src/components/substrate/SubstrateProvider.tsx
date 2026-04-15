@@ -101,11 +101,17 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
   const checkModule = useCallback(async (module: SubstrateModule): Promise<ModuleStatus> => {
     try {
       const substrate = await getSubstrate();
-      const response = await substrate.invoke({ module, action: 'status' });
+      // Per-module timeout to prevent one slow call from blocking the batch
+      const result = await Promise.race([
+        substrate.invoke({ module, action: 'status' }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('client_timeout')), 8000)
+        ),
+      ]);
       return {
-        active: response.success,
+        active: result.success,
         lastCheck: new Date().toISOString(),
-        health: response.success ? 100 : 0,
+        health: result.success ? 100 : 0,
       };
     } catch {
       return {
