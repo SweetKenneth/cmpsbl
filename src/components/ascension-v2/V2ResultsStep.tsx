@@ -10,6 +10,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { DownloadCeremonyOverlay } from '@/components/downloads/DownloadCeremonyOverlay';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,8 @@ interface SourceFileData {
 export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }: Props) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
+  const [ceremonyOpen, setCeremonyOpen] = useState(false);
+  const [ceremonyName, setCeremonyName] = useState('');
   const [integrityHash, setIntegrityHash] = useState('');
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
@@ -103,6 +106,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
     if (capabilities.length === 0) return;
     setExporting(true);
 
+    const baseName = (sourceFiles[0]?.name || 'source').replace(/\.[^.]+$/, '');
+    setCeremonyName(`cmpsbl-ascended-${baseName}`);
+    setCeremonyOpen(true);
     try {
       const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
 
@@ -228,7 +234,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
         title: 'Export complete',
         description: `${zipName}.zip — ${capabilities.length} capabilities, full docs included.`,
       });
+
+      // Keep ceremony visible briefly after download starts
+      setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
+      setCeremonyOpen(false);
       toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
     } finally {
       setExporting(false);
@@ -247,7 +257,12 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      <DownloadCeremonyOverlay
+        open={ceremonyOpen}
+        itemName={ceremonyName}
+        kindLabel="Ascended Code Package"
+        note="Your Layer 2 wrapped package with full docs is being assembled."
+      />
       <div className="text-center space-y-2">
         <Trophy className="w-10 h-10 mx-auto text-primary" />
         <h2 className="text-xl font-bold text-foreground">Your Ascended Code</h2>
