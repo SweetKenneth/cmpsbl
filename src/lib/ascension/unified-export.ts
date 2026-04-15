@@ -122,9 +122,9 @@ function generateEmbeddedRuntimeTS(): string {
 //   > mana detach <functionName> <capability>
 
 interface ManaLayer2Config {
-  readonly capabilities: string[];
+  capabilities: string[];
   readonly runId: string;
-  readonly active: boolean;
+  active: boolean;
 }
 
 const _manaRegistry = new Map<string, ManaLayer2Config>();
@@ -219,12 +219,35 @@ function generateEmbeddedRuntimePython(): string {
 #   > mana detach <function_name> <capability>
 
 import functools
+import asyncio
+import inspect
 
 _mana_registry = {}
 
 def mana_wrap(fn, name, capabilities, run_id):
     config = {"capabilities": list(capabilities), "run_id": run_id, "active": True}
     _mana_registry[name] = config
+
+    if inspect.iscoroutinefunction(fn):
+        @functools.wraps(fn)
+        async def wrapped_async(*args, **kwargs):
+            entry = _mana_registry.get(name)
+            if not entry or not entry["active"]:
+                return await fn(*args, **kwargs)
+
+            # Layer 2 pre-flight
+            for cap in entry["capabilities"]:
+                if "defense" in cap or "sanitizer" in cap:
+                    for arg in args:
+                        if isinstance(arg, str) and len(arg) > 1_000_000:
+                            raise ValueError(f"[CMPSBL® DEFENSE] Input exceeds safe boundary for {name}")
+
+            result = await fn(*args, **kwargs)
+            _mana_observe(name, entry["capabilities"], True)
+            return result
+
+        wrapped_async.__mana_name__ = f"mana_{name}"
+        return wrapped_async
 
     @functools.wraps(fn)
     def wrapped(*args, **kwargs):
@@ -239,10 +262,7 @@ def mana_wrap(fn, name, capabilities, run_id):
                     if isinstance(arg, str) and len(arg) > 1_000_000:
                         raise ValueError(f"[CMPSBL® DEFENSE] Input exceeds safe boundary for {name}")
 
-        # Layer 1: original function
         result = fn(*args, **kwargs)
-
-        # Layer 2 post-flight: observation
         _mana_observe(name, entry["capabilities"], True)
         return result
 
