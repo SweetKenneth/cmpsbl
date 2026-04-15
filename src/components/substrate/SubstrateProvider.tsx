@@ -121,18 +121,25 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     if (!mountedRef.current) return;
 
     const publicEntities: SubstrateModule[] = [
-      // CORE
       'core',
-      // 9 Matrix Nodes (INTEGRATION boots last)
       'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration',
-      // Fields
       'evolution', 'immunity', 'intent',
-      // Plane
       'governance',
-      // Shell
       'defense',
     ];
-    const results = await Promise.all(publicEntities.map(checkModule));
+
+    // Throttled sequential polling — max 2 concurrent to avoid edge function overload
+    const CONCURRENCY = 2;
+    const results: ModuleStatus[] = new Array(publicEntities.length);
+
+    for (let i = 0; i < publicEntities.length; i += CONCURRENCY) {
+      if (!mountedRef.current) return;
+      const batch = publicEntities.slice(i, i + CONCURRENCY);
+      const batchResults = await Promise.all(batch.map(checkModule));
+      batchResults.forEach((result, j) => {
+        results[i + j] = result;
+      });
+    }
 
     const newModules = publicEntities.reduce((acc, module, index) => {
       acc[module] = results[index];
