@@ -108,6 +108,7 @@ const Contact = lazy(() => import("@/pages/Contact"));
 const CurrentProjects = lazy(() => import("@/pages/CurrentProjects"));
 const Roadmap = lazy(() => import("@/pages/Roadmap"));
 const SubstrateRoadmap = lazy(() => import("@/pages/SubstrateRoadmap"));
+const ManaDistributionDoc = lazy(() => import("@/pages/ManaDistributionDoc"));
 const LlmsTxt = lazy(() => import("@/pages/LlmsTxt"));
 const HumansTxt = lazy(() => import("@/pages/HumansTxt"));
 const Foundations = lazy(() => import("@/pages/Foundations"));
