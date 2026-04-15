@@ -28,22 +28,13 @@ import { saveAs } from 'file-saver';
 import {
   detectFunctionBoundaries,
   buildAttachmentPlan,
-  serializeAttachmentPlan,
 } from '@/lib/mana/findings-bridge';
-import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana-bridge';
-import {
-  buildAscensionLifecycleArtifacts,
-} from '@/lib/capability-lifecycle/export-bridge';
-// generateUnifiedCapabilityFile + getUnifiedFilename no longer needed — runtime is embedded
-import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
-import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
-import { humanizeCapabilityName } from '@/lib/export/humanize-name';
+import { generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
-import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
-import type { AscensionResults, DiscoveredCapability } from './orchestrator';
+import { generateUserGuideHTML } from '@/lib/export/user-guide';
+import type { AscensionResults } from './orchestrator';
 import { deterministicFingerprint } from './orchestrator';
-import type { ManaCapability, AscensionFinding, AttachmentPoint, AttachmentState, ManaManifest } from '@/lib/mana/types';
-import { WrapperPhase } from '@/lib/mana/types';
+import type { AscensionFinding, ManaCapability } from '@/lib/mana/types';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -593,39 +584,6 @@ ${sourceFile.content}
 `;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// §2 — Mana Manifest Builder (for lifecycle bridge)
-// ═══════════════════════════════════════════════════════════════
-
-function buildManaManifest(
-  findings: AscensionFinding[],
-  packageName: string,
-  _runId: string,
-): ManaManifest {
-  const attachmentPoints: AttachmentPoint[] = findings.map((f, i) => ({
-    functionName: f.functionName,
-    capability: f.capability as ManaCapability,
-    phase: WrapperPhase.OBSERVE,
-    position: i,
-    active: true,
-    invocations: 0,
-    blocked: 0,
-    observed: 0,
-  }));
-
-  return {
-    hostPackage: packageName,
-    hostVersion: '1.0.0',
-    attachmentState: 'symbiotic' as AttachmentState,
-    attachmentPoints,
-    lexRules: [],
-    proof: null,
-    telemetry: [],
-    attachedAt: Date.now(),
-    detachedAt: null,
-    layerDepth: 1,
-  };
-}
 
 // ═══════════════════════════════════════════════════════════════
 // §3 — Unified Export Generator
@@ -696,40 +654,43 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
     capabilityType: 'ascended',
   }));
 
-  // ─── Step 6: Activation Guide (lifecycle bridge) ───
-  const manaManifest = buildManaManifest(allFindings, candidateName, runId);
-  const fingerprintId = deterministicFingerprint(candidateName, 'MANA', 'ASCENSION', runId);
-
-  const activationArtifacts = generateManaActivationArtifacts(
-    manaManifest,
-    fingerprintId,
-    sourceLanguage,
-  );
-
-  const docsFolder = zip.folder('docs')!;
-  docsFolder.file('ACTIVATION-GUIDE.html', activationArtifacts.guideHtml);
-  docsFolder.file('activation-ledger.json', activationArtifacts.ledgerJson);
-
-  // ─── Step 7: Attachment Plan (findings manifest) ───
-  const serializedPlan = serializeAttachmentPlan(allFindings);
-  docsFolder.file('attachment-plan.json', JSON.stringify({
-    runId,
-    candidateName,
-    sourceLanguage,
-    totalBoundaries: allBoundaries.length,
-    totalAttachments: allFindings.length,
-    attachments: serializedPlan,
-    generatedAt: new Date().toISOString(),
-  }, null, 2));
-
-  // ─── Step 8: Standard docs ───
+  // ─── Step 6: Compute summary values ───
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.score, 0) / capabilities.length);
-  const topCap = capabilities.reduce((a, b) => a.score > b.score ? a : b);
   const allModules = [...new Set(capabilities.flatMap(c => [c.nodeA, c.nodeB]))];
-  const totalValue = capabilitiesForExport.reduce((sum, c) =>
-    sum + estimateMarketValue(c.cjpiScore, 'general', c.chain.length), 0);
+  const packFingerprint = capabilitiesForExport[0]?.fingerprint?.slice(0, 12).toUpperCase() ?? 'UNKNOWN';
 
-  // Manifest
+  // ─── Step 7: USER-GUIDE.html (single unified doc — replaces all fragmented docs) ───
+  const attachmentEntries = allFindings.map(f => ({
+    functionName: f.functionName,
+    capability: f.capability,
+    primitive: f.primitive,
+    reason: f.reason,
+  }));
+
+  zip.file('USER-GUIDE.html', generateUserGuideHTML({
+    candidateName,
+    runId,
+    sourceLanguage,
+    capabilities: capabilities.map(c => ({
+      name: c.name,
+      description: c.description,
+      score: c.score,
+      tier: c.tier,
+      nodeA: c.nodeA,
+      nodeB: c.nodeB,
+      fingerprint: deterministicFingerprint(c.name, c.nodeA, c.nodeB, runId),
+    })),
+    attachments: attachmentEntries,
+    totalBoundaries: allBoundaries.length,
+    sourceFileNames: sourceFiles.map(f => f.name),
+    avgCjpi,
+    packFingerprint,
+  }));
+
+  // ─── Step 8: LICENSE.html (branded) ───
+  zip.file('LICENSE.html', generateLicenseHTML(candidateName));
+
+  // ─── Step 9: manifest.json (machine-readable only) ───
   zip.file('manifest.json', serializeCmpsblManifest({
     name: packName,
     cjpi: avgCjpi,
@@ -737,68 +698,8 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
     targets: [sourceLanguage],
     version: '1.0.0',
     category: 'ascended-wrapped',
-    fingerprint: capabilitiesForExport[0]?.fingerprint?.slice(0, 12).toUpperCase(),
+    fingerprint: packFingerprint,
     source: 'unified-ascension-mana-pipeline',
-  }));
-
-  // README.html
-  zip.file('README.html', generateReadmeHTML({
-    name: candidateName,
-    description: `Ascended & Wrapped Pack · ${capabilities.length} capabilities · ${sourceLanguage.toUpperCase()} · Est. ${formatMarketValue(totalValue)}`,
-    category: 'Unified Ascension + Mana',
-    modules: allModules,
-    files: [
-      { name: 'ascended/', purpose: 'Your code with embedded CMPSBL® runtime and all capabilities pre-activated' },
-      { name: 'original/', purpose: 'Your original source files (unchanged, authoritative)' },
-      { name: 'docs/ACTIVATION-GUIDE.html', purpose: 'Per-primitive integration and activation instructions' },
-      { name: 'docs/attachment-plan.json', purpose: 'Mana attachment plan — function-to-capability mapping' },
-      { name: 'docs/activation-ledger.json', purpose: 'Capability lifecycle ledger with full provenance' },
-      { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability technical dossier with valuation' },
-      { name: 'LICENSE.html', purpose: 'CMPSBL® Commercial Distribution License' },
-      { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
-      { name: 'PROOF.txt', purpose: 'Cryptographic verification certificate' },
-    ],
-    quickStart: [
-      `// Your ascended code is ready to use — runtime is embedded, capabilities are active.`,
-      `// Just import from ascended/ instead of your original files:`,
-      `import { yourFunction } from './ascended/${sourceFiles[0]?.name || 'module'}';`,
-      ``,
-      `// To inspect or deactivate capabilities, use the CMPSBL® Terminal:`,
-      `//   > mana inspect`,
-      `//   > mana detach <functionName> <capability>`,
-    ].join('\n'),
-  }));
-
-  // LICENSE
-  zip.file('LICENSE.html', generateLicenseHTML(candidateName));
-  zip.file('LICENSE', generateLicenseText());
-
-  // PIPELINE-DETAILS
-  try {
-    zip.file('PIPELINE-DETAILS.html', generatePipelineDetailsHTML({
-      name: humanizeCapabilityName(topCap.name, [topCap.nodeA, topCap.nodeB], 'general'),
-      description: `${capabilities.length} capabilities discovered and wrapped`,
-      category: 'general',
-      score: avgCjpi,
-      tier: getTierFromScore(avgCjpi),
-      systemChain: allModules,
-      exportLanguages: [sourceLanguage],
-      source: 'Unified Ascension + Mana Pipeline',
-    }));
-  } catch {
-    // Supplementary — non-fatal
-  }
-
-  // PROOF.txt
-  const { generateProofCertificate } = await import('@/lib/export/proof-certificate');
-  zip.file('PROOF.txt', generateProofCertificate({
-    serial: packName,
-    fingerprint: capabilitiesForExport[0]?.fingerprint?.slice(0, 12).toUpperCase() ?? 'UNKNOWN',
-    tier: getTierFromScore(avgCjpi),
-    cjpi: avgCjpi,
-    primitives: allModules,
-    source: 'CMPSBL® Unified Ascension + Mana',
-    language: sourceLanguage,
   }));
 
   // ─── Generate and download ───
@@ -810,37 +711,3 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
   saveAs(blob, `${packName}.zip`);
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Helpers
-// ═══════════════════════════════════════════════════════════════
-
-function generateLicenseText(): string {
-  return `CMPSBL® SOFTWARE LICENSE
-========================
-
-Copyright (c) 2025–2026 CMPSBL®. All rights reserved.
-
-This Ascended & Wrapped Pack was generated by the CMPSBL® Unified Pipeline
-combining Ascension (U.S. App. No. 64/029,678) and Mana (U.S. App. No. 64/031,637).
-
-GRANT OF LICENSE:
-Subject to the terms of this license, you are granted a non-exclusive,
-non-transferable license to use the enclosed software capabilities,
-Mana-wrapped code, and Convex Core™ Processing Layer in your own projects.
-
-RESTRICTIONS:
-1. You may not redistribute the Convex Core™ Processing Layer as a standalone product.
-2. You may not reverse-engineer the discovery or wrapping algorithms.
-3. You may not claim independent creation of the capability patterns herein.
-4. The Convex Core™ and Mana Layer 2 wrappers are sealed proprietary components.
-
-PROPRIETARY NOTICE:
-The structural fingerprints, attachment plans, and CJPI scores embedded in this
-pack are the intellectual property of the originating substrate instance.
-
-DISCLAIMER:
-THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
-
-CMPSBL® and Convex Core™ are trademarks of CMPSBL.
-`;
-}
