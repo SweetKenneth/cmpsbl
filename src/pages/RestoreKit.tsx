@@ -1,14 +1,40 @@
 /**
  * RestoreKit — PIN-protected page for downloading the standalone restore kit
+ * Files are embedded in the component (not in public/) to prevent unauthorized access.
  * PIN: 4645 — Governor access only
  */
 
-import { Shield, Download, FileCode, FileText, Terminal } from 'lucide-react';
+import { Shield, Download, FileCode, FileText, Terminal, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useCallback } from 'react';
+
+/** Trigger a browser download from a string */
+function downloadText(filename: string, content: string, mime = 'application/octet-stream') {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
 
 export default function RestoreKit() {
+  const handleDownload = useCallback(async (filename: string) => {
+    try {
+      const mod = await import(`@/data/restore-kit-files`);
+      const content = mod.FILES[filename];
+      if (!content) throw new Error(`File not found: ${filename}`);
+      downloadText(filename, content);
+    } catch (err) {
+      console.error('[RestoreKit] Download failed:', err);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-background p-6 md:p-12">
       <div className="max-w-3xl mx-auto space-y-8">
@@ -27,7 +53,30 @@ export default function RestoreKit() {
         </div>
 
         {/* Download cards */}
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card className="border-border/40">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Zap className="w-4 h-4 text-primary" />
+                Universal DR
+              </CardTitle>
+              <CardDescription className="text-xs">
+                All-in-one: download backup + restore + inspect + schema DDL
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full gap-2"
+                onClick={() => handleDownload('cmpsbl-disaster-recovery.mjs')}
+              >
+                <Download className="w-4 h-4" />
+                Download DR Script
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card className="border-border/40">
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
@@ -39,12 +88,15 @@ export default function RestoreKit() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <a href="/restore-kit/restore.mjs" download>
-                <Button variant="outline" size="sm" className="w-full gap-2">
-                  <Download className="w-4 h-4" />
-                  Download Script
-                </Button>
-              </a>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full gap-2"
+                onClick={() => handleDownload('restore.mjs')}
+              >
+                <Download className="w-4 h-4" />
+                Download Script
+              </Button>
             </CardContent>
           </Card>
 
@@ -59,12 +111,15 @@ export default function RestoreKit() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <a href="/restore-kit/README.md" download>
-                <Button variant="outline" size="sm" className="w-full gap-2">
-                  <Download className="w-4 h-4" />
-                  Download Guide
-                </Button>
-              </a>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full gap-2"
+                onClick={() => handleDownload('README.md')}
+              >
+                <Download className="w-4 h-4" />
+                Download Guide
+              </Button>
             </CardContent>
           </Card>
         </div>
@@ -74,25 +129,35 @@ export default function RestoreKit() {
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
               <Terminal className="w-4 h-4 text-primary" />
-              Quick Start
+              Quick Start — Universal DR
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <pre className="bg-muted/50 border border-border/30 rounded-lg p-4 text-xs font-mono overflow-x-auto">
-{`# 1. Download your latest backup ZIP from the admin panel
-# 2. Run the restore against any target project:
+{`# Download a fresh backup from the live substrate:
+node cmpsbl-disaster-recovery.mjs download \\
+  --email=you@example.com --password=secret
 
-node restore.mjs full-backup-2026-04-03.zip \\
-  https://YOUR-PROJECT.supabase.co \\
-  YOUR_SERVICE_ROLE_KEY
+# Restore to a new project:
+node cmpsbl-disaster-recovery.mjs restore backup.zip \\
+  --url=https://NEW-PROJECT.supabase.co \\
+  --key=SERVICE_ROLE_KEY
 
-# Optional flags:
-#   --dry-run          Validate without writing
-#   --skip=table1,t2   Skip specific tables`}
+# One-shot: download + restore:
+node cmpsbl-disaster-recovery.mjs full-recovery \\
+  --email=you@example.com --password=secret \\
+  --url=https://NEW-PROJECT.supabase.co \\
+  --key=SERVICE_ROLE_KEY
+
+# No repo? Generate schema DDL from backup:
+node cmpsbl-disaster-recovery.mjs schema-sql backup.zip
+
+# Inspect backup contents:
+node cmpsbl-disaster-recovery.mjs inspect backup.zip`}
             </pre>
             <p className="text-xs text-muted-foreground">
-              Requires Node.js 18+ and a target project service_role key.
-              Schema must exist first — run migrations before restoring data.
+              Requires Node.js 18+. Zero dependencies.
+              Schema must exist first — run migrations or use schema-sql mode.
             </p>
           </CardContent>
         </Card>
@@ -119,6 +184,10 @@ node restore.mjs full-backup-2026-04-03.zip \\
               <div className="flex justify-between border-b border-border/20 pb-1">
                 <span>RESTORE.md guide</span>
                 <Badge variant="default" className="text-xs">✓ Included</Badge>
+              </div>
+              <div className="flex justify-between border-b border-border/20 pb-1">
+                <span>Schema DDL generation</span>
+                <Badge variant="default" className="text-xs">✓ No repo needed</Badge>
               </div>
               <div className="flex justify-between border-b border-border/20 pb-1">
                 <span className="text-muted-foreground">Edge functions</span>
