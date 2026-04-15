@@ -34,7 +34,7 @@ import { generateManaActivationArtifacts } from '@/lib/capability-lifecycle/mana
 import {
   buildAscensionLifecycleArtifacts,
 } from '@/lib/capability-lifecycle/export-bridge';
-import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+// generateUnifiedCapabilityFile + getUnifiedFilename no longer needed — runtime is embedded
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { humanizeCapabilityName } from '@/lib/export/humanize-name';
