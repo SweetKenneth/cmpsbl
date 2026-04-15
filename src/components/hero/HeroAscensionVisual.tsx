@@ -110,16 +110,16 @@ const TOTAL_H = L1_LINES.length * LINE_H;
 
 const CodeLine = memo(({ line, index }: { line: typeof L1_LINES[0]; index: number }) => (
   <div
-    className="font-mono text-[10.5px] sm:text-[11.5px] leading-[22px] whitespace-pre select-none"
-    style={{ paddingLeft: `${line.indent * 16 + 12}px` }}
+    className="font-mono text-[10.5px] sm:text-[11.5px] leading-[22px] whitespace-pre select-none group/line hover:bg-foreground/[0.02] transition-colors duration-150"
+    style={{ paddingLeft: `${line.indent * 16 + 14}px` }}
   >
-    <span className="text-muted-foreground/25 mr-2.5 inline-block w-4 text-right tabular-nums text-[9px]">
+    <span className="text-muted-foreground/20 mr-3 inline-block w-4 text-right tabular-nums text-[9px] group-hover/line:text-muted-foreground/40 transition-colors">
       {index + 1}
     </span>
     {line.kw && (
       <span style={{ color: "hsl(var(--neon-purple))" }} className="font-semibold">{line.kw}</span>
     )}
-    <span className="text-foreground/75">{line.text}</span>
+    <span className="text-foreground/70">{line.text}</span>
   </div>
 ));
 CodeLine.displayName = "HeroCodeLine";
@@ -151,17 +151,17 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
         </div>
 
         {/* ── Header bar ── */}
-        <div className="flex items-center justify-between mb-2.5 px-1 relative z-10">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between mb-3 px-1.5 relative z-10">
+          <div className="flex items-center gap-2.5">
             <div
-              className="w-[5px] h-[5px] rounded-full"
-              style={{ background: "hsl(var(--neon-cyan))", boxShadow: "0 0 6px hsl(var(--neon-cyan) / 0.4)" }}
+              className="w-[6px] h-[6px] rounded-full"
+              style={{ background: "hsl(var(--neon-cyan))", boxShadow: "0 0 8px hsl(var(--neon-cyan) / 0.5)" }}
             />
-            <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
+            <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-muted-foreground/50">
               Layer 1 — Legacy Host
             </span>
           </div>
-          <span className="text-[9px] font-mono font-semibold text-muted-foreground/40 tracking-wider">life.js</span>
+          <span className="text-[9px] font-mono font-semibold text-muted-foreground/30 tracking-wider">life.js</span>
         </div>
 
         {/* ── Main container ── */}
@@ -220,15 +220,15 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
 
           {/* ── Code block ── */}
           <div
-            className="relative rounded-lg bg-background/90 backdrop-blur-md overflow-hidden"
+            className="relative rounded-xl bg-background/95 backdrop-blur-lg overflow-hidden border border-border/10"
             style={{ animation: `ha-glow 4s ease-in-out infinite` }}
           >
             {/* Terminal chrome */}
-            <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border/30 bg-card/30">
-              <div className="w-[9px] h-[9px] rounded-full bg-[hsl(0_70%_55%/0.7)]" />
-              <div className="w-[9px] h-[9px] rounded-full bg-[hsl(45_70%_55%/0.7)]" />
-              <div className="w-[9px] h-[9px] rounded-full bg-[hsl(140_60%_45%/0.7)]" />
-              <span className="ml-2 text-[9px] font-mono text-muted-foreground/35 tracking-wide">ascension — live</span>
+            <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-border/20 bg-card/20">
+              <div className="w-[10px] h-[10px] rounded-full bg-[hsl(0_70%_55%/0.6)]" />
+              <div className="w-[10px] h-[10px] rounded-full bg-[hsl(45_70%_55%/0.6)]" />
+              <div className="w-[10px] h-[10px] rounded-full bg-[hsl(140_60%_45%/0.6)]" />
+              <span className="ml-3 text-[9px] font-mono text-muted-foreground/30 tracking-wider">ascension — live</span>
             </div>
 
             {/* Code area */}
@@ -301,18 +301,18 @@ export const HeroAscensionVisual = memo(function HeroAscensionVisual() {
         </div>
 
         {/* ── Legend ── */}
-        <div className="flex items-center justify-center gap-4 sm:gap-5 mt-12 relative z-10">
+        <div className="flex items-center justify-center gap-5 sm:gap-6 mt-12 relative z-10">
           {[
             { color: "var(--neon-cyan)", label: "Scan · Verify" },
-            { color: "var(--neon-magenta)", label: "DREAM Defense" },
+            { color: "var(--neon-magenta)", label: "DREAM Synthesis" },
             { color: "var(--neon-purple)", label: "Governance" },
           ].map((item) => (
-            <div key={item.label} className="flex items-center gap-1.5">
+            <div key={item.label} className="flex items-center gap-2">
               <div
-                className="w-[5px] h-[5px] rounded-full"
-                style={{ background: `hsl(${item.color})`, boxShadow: `0 0 4px hsl(${item.color} / 0.3)` }}
+                className="w-[6px] h-[6px] rounded-full"
+                style={{ background: `hsl(${item.color})`, boxShadow: `0 0 6px hsl(${item.color} / 0.4)` }}
               />
-              <span className="text-[9px] font-semibold text-muted-foreground/50 tracking-wide">{item.label}</span>
+              <span className="text-[9px] font-semibold text-muted-foreground/45 tracking-[0.06em]">{item.label}</span>
             </div>
           ))}
         </div>
