@@ -748,9 +748,8 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
     category: 'Unified Ascension + Mana',
     modules: allModules,
     files: [
-      { name: 'wrapped/', purpose: 'Mana-wrapped versions of your code with Layer 2 capabilities attached' },
+      { name: 'ascended/', purpose: 'Your code with embedded CMPSBL® runtime and all capabilities pre-activated' },
       { name: 'original/', purpose: 'Your original source files (unchanged, authoritative)' },
-      { name: unifiedFilename, purpose: 'Single-file runtime — Convex Core™ + Effects + Bridge (drop-in)' },
       { name: 'docs/ACTIVATION-GUIDE.html', purpose: 'Per-primitive integration and activation instructions' },
       { name: 'docs/attachment-plan.json', purpose: 'Mana attachment plan — function-to-capability mapping' },
       { name: 'docs/activation-ledger.json', purpose: 'Capability lifecycle ledger with full provenance' },
@@ -760,12 +759,13 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
       { name: 'PROOF.txt', purpose: 'Cryptographic verification certificate' },
     ],
     quickStart: [
-      `// Wrapped code: import from wrapped/ to get Layer 2 capabilities`,
-      `import { yourFunction } from './wrapped/${sourceFiles[0]?.name.replace(/\.[^.]+$/, '_wrapped') || 'module'}';`,
+      `// Your ascended code is ready to use — runtime is embedded, capabilities are active.`,
+      `// Just import from ascended/ instead of your original files:`,
+      `import { yourFunction } from './ascended/${sourceFiles[0]?.name || 'module'}';`,
       ``,
-      `// Or use the unified runtime directly:`,
-      `import { execute, executeChain } from './${unifiedFilename.replace(/\.[^.]+$/, '')}';`,
-      `const result = execute('${topCap.name.replace(/\s+/g, '_')}', { query: 'hello' });`,
+      `// To inspect or deactivate capabilities, use the CMPSBL® Terminal:`,
+      `//   > mana inspect`,
+      `//   > mana detach <functionName> <capability>`,
     ].join('\n'),
   }));
 
