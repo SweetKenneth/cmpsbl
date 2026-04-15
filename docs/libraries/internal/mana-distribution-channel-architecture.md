@@ -345,13 +345,23 @@ Zero collision with V1 categories.
                    └──────────────┘
 ```
 
+| ECONOMY-Priced Add-On | Auto-priced by CJPI/tier/demand | ECONOMY sets |
+| COMPILER Suite | Multi-capability bundle | $149–$499 |
+| Architect Bundle | Full Ascension + all available add-ons | $249/mo |
+
 ## Key Insight
 
 Every product the substrate has ever built or will build now has a
 **concrete use case**: enhancing someone's ascended code. The Memory
 Stream's autonomous discoveries, the Crown Jewels, the COMPILER's
 output — all of it can flow through Mana into Ascension as purchasable
-capabilities. This transforms inventory into revenue.
+capabilities. ECONOMY prices it, MERCHANT curates it, COMPILER builds
+it, and the SDK lets developers contribute to it using the same
+primitives (DREAM, EVOLUTION) that power the pipeline itself.
+
+This transforms inventory into revenue and creates a self-reinforcing
+loop: better inputs → richer Ascension output → more demand →
+more discoveries → more products → better inputs.
 
 ---
 
