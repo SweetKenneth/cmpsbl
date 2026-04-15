@@ -98,7 +98,7 @@ export default function ProprietaryEvolution() {
     <SimpleUploadStep key="upload" onComplete={handleUploadComplete} />,
     <TraceAttachStep key="trace" onAttach={handleTraceAttach} onSkip={handleTraceSkip} />,
     <ProcessingStep key="process" run={runRef.current} onComplete={handleProcessingComplete} />,
-    <ResultsStep key="results" results={results} onReset={handleReset} />,
+    <ResultsStep key="results" results={results} sourceFiles={runRef.current?.sourceFiles} onReset={handleReset} />,
   ];
 
   return (
