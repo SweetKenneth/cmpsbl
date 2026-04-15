@@ -42,7 +42,8 @@ import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import type { AscensionResults, DiscoveredCapability } from './orchestrator';
 import { deterministicFingerprint } from './orchestrator';
-import type { ManaCapability, AscensionFinding, AttachmentPoint, ManaManifest } from '@/lib/mana/types';
+import type { ManaCapability, AscensionFinding, AttachmentPoint, AttachmentState, ManaManifest } from '@/lib/mana/types';
+import { WrapperPhase } from '@/lib/mana/types';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -484,7 +485,7 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
   const topCap = capabilities.reduce((a, b) => a.score > b.score ? a : b);
   const allModules = [...new Set(capabilities.flatMap(c => [c.nodeA, c.nodeB]))];
   const totalValue = capabilitiesForExport.reduce((sum, c) =>
-    sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
+    sum + estimateMarketValue(c.cjpiScore, 'general', c.chain.length), 0);
 
   // Manifest
   zip.file('manifest.json', serializeCmpsblManifest({
