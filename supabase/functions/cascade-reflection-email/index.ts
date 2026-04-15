@@ -22,7 +22,7 @@ serve(async (req) => {
     
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    // Using Lovable email infrastructure (currently disabled)
     
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
