@@ -106,6 +106,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
     if (capabilities.length === 0) return;
     setExporting(true);
 
+    const baseName = (sourceFiles[0]?.name || 'source').replace(/\.[^.]+$/, '');
+    setCeremonyName(`cmpsbl-ascended-${baseName}`);
+    setCeremonyOpen(true);
     try {
       const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
 
