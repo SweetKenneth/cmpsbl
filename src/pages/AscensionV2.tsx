@@ -2,7 +2,7 @@
  * Ascension V2 — Hardened Pipeline UI
  * Route: /ascension-v2 (isolated from /ascension)
  *
- * 4-step wizard: Upload → Analyze → Lock → Export
+ * 3-step wizard: Upload → Analyze+Dedup+Lock → Results (single file)
  * Wired to V2 orchestrator with audit chain + fingerprint gate.
  *
  * Uses V2 category prefix in artifact_registry for data isolation.
@@ -11,7 +11,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { Upload, Search, Lock, Download, Check, RotateCcw } from 'lucide-react';
+import { Upload, Search, Download, Check, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,24 +23,22 @@ import { SEO } from '@/components/SEO';
 
 import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
-import { V2LockStep } from '@/components/ascension-v2/V2LockStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 
 import {
   initRun,
-  getSnapshot,
   type RunPhase,
   type DiscoveredCapability,
+  type DedupResult,
 } from '@/lib/ascension-v2';
 
 // ═══════════════════════════════════════════════════════════════
-// Step config
+// Step config — 3 steps (Lock is now automatic inside Analyze)
 // ═══════════════════════════════════════════════════════════════
 
 const STEPS = [
   { label: 'Upload', icon: Upload },
   { label: 'Analyze', icon: Search },
-  { label: 'Lock', icon: Lock },
   { label: 'Results', icon: Download },
 ] as const;
 
@@ -51,22 +49,14 @@ const STEPS = [
 export default function AscensionV2() {
   const [step, setStep] = useState(0);
   const [runId, setRunId] = useState('');
-  const [discoveries, setDiscoveries] = useState<DiscoveredCapability[]>([]);
-  const [ascendedCount, setAscendedCount] = useState(0);
-  const [topScore, setTopScore] = useState(0);
+  const [capabilities, setCapabilities] = useState<DiscoveredCapability[]>([]);
+  const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
   // Init a fresh run on mount
   useEffect(() => {
     const id = initRun({
-      onPhaseChange: (phase: RunPhase) => {
-        // Phase changes drive step transitions via explicit callbacks
-      },
-      onDiscovery: (cap: DiscoveredCapability) => {
-        setDiscoveries(prev => [...prev, cap]);
-        if (cap.cjpiScore > topScore) setTopScore(cap.cjpiScore);
-      },
       onError: (error: string) => {
         toast({ title: 'Pipeline error', description: error, variant: 'destructive' });
       },
@@ -78,18 +68,10 @@ export default function AscensionV2() {
     setStep(1);
   }, []);
 
-  const handleAnalysisComplete = useCallback((caps: DiscoveredCapability[]) => {
-    setDiscoveries(caps);
-    if (caps.length > 0) {
-      const best = Math.max(...caps.map(c => c.cjpiScore));
-      setTopScore(best);
-    }
+  const handleAnalysisComplete = useCallback((caps: DiscoveredCapability[], dedup: DedupResult) => {
+    setCapabilities(caps);
+    setDedupResult(dedup);
     setStep(2);
-  }, []);
-
-  const handleLockComplete = useCallback((count: number) => {
-    setAscendedCount(count);
-    setStep(3);
   }, []);
 
   const handleReset = useCallback(async () => {
@@ -111,19 +93,18 @@ export default function AscensionV2() {
     const id = initRun();
     setRunId(id);
     setStep(0);
-    setDiscoveries([]);
-    setAscendedCount(0);
-    setTopScore(0);
+    setCapabilities([]);
+    setDedupResult(null);
     toast({ title: 'Reset complete', description: 'Ready for a new analysis.' });
   }, [user, toast]);
 
   const phases = [
     <V2UploadStep key="upload" onComplete={handleUploadComplete} />,
     <V2ProcessingStep key="process" onComplete={handleAnalysisComplete} />,
-    <V2LockStep key="lock" discoveries={discoveries} onComplete={handleLockComplete} />,
     <V2ResultsStep
       key="results"
-      stats={{ discovered: discoveries.length, ascended: ascendedCount, topScore }}
+      capabilities={capabilities}
+      dedup={dedupResult || { capabilities: [], rawCount: 0, groupCount: 0 }}
       onReset={handleReset}
     />,
   ];
@@ -132,7 +113,7 @@ export default function AscensionV2() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Ascension V2 — Code Evolution Pipeline | CMPSBL®"
-        description="Upload your code. Discover capabilities. Lock them permanently. Export hardened Layer 2 artifacts."
+        description="Upload your code. Discover capabilities. Export a single wrapped ascension file."
       />
       <PublicNav />
 
@@ -145,13 +126,13 @@ export default function AscensionV2() {
                 Ascend Your Software
               </h1>
               <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
-                Upload your code. We analyze it against the 40-Primitive substrate to discover
-                capabilities — no AI, pure deterministic analysis.
+                Upload your code. We analyze it against the 40-Primitive substrate,
+                deduplicate discoveries, and deliver one wrapped ascension file.
               </p>
             </div>
           )}
 
-          {/* Stepper */}
+          {/* Stepper — 3 steps */}
           <nav className="mb-8">
             <div className="flex items-center justify-center gap-0">
               {STEPS.map((s, i) => {
@@ -179,7 +160,7 @@ export default function AscensionV2() {
                     </div>
 
                     {i < STEPS.length - 1 && (
-                      <div className="w-12 sm:w-20 mx-1 mt-[-12px]">
+                      <div className="w-16 sm:w-24 mx-1 mt-[-12px]">
                         <div className={cn(
                           'h-0.5 rounded-full transition-colors',
                           i < step ? 'bg-primary' : 'bg-border'
@@ -197,8 +178,8 @@ export default function AscensionV2() {
             {phases[step]}
           </div>
 
-          {/* Reset button — visible after step 0 */}
-          {step > 0 && step < 3 && (
+          {/* Reset button — visible during analysis only */}
+          {step === 1 && (
             <div className="mt-6 text-center">
               <Button variant="ghost" size="sm" onClick={handleReset}>
                 <RotateCcw className="w-3 h-3 mr-1" />
