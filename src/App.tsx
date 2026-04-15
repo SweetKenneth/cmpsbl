@@ -248,6 +248,10 @@ const App = () => {
                       Skip to content
                     </a>
                     <ScrollToTop />
+                    {/* Technical difficulties banner */}
+                    <div className="fixed top-0 inset-x-0 z-[100] bg-yellow-500 text-black text-center text-sm font-semibold py-2 px-4">
+                      ⚠️ We are currently experiencing technical difficulties. Some features may be temporarily unavailable.
+                    </div>
                    <Routes>
                     <Route path="/*" element={
                      <AuthProvider>
