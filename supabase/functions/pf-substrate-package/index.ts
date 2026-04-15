@@ -57,7 +57,7 @@ const SECRETS_MANIFEST = [
   { key: 'HYPERBOLIC_API_KEY', provider: 'Hyperbolic', required: false },
   { key: 'PERPLEXITY_API_KEY', provider: 'Perplexity', required: false },
   { key: 'OPENAI_API_KEY', provider: 'OpenAI', required: false },
-  { key: 'RESEND_API_KEY', provider: 'Resend Email', required: false },
+  // Resend removed — using Lovable email infrastructure
 ];
 
 serve(async (req) => {
