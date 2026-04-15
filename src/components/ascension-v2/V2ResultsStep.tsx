@@ -10,6 +10,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { DownloadCeremonyOverlay } from '@/components/downloads/DownloadCeremonyOverlay';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
