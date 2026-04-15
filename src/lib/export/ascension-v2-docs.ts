@@ -1,0 +1,631 @@
+/**
+ * Ascension V2 — Branded HTML Document Generators
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Generates: LICENSE.html, README.html, USER-GUIDE.html, ADVERTISEMENT.html
+ * All mobile-responsive, branded with patent numbers and inventor info.
+ *
+ * U.S. Patent App. No. 64/029,678
+ * U.S. Patent App. No. 63/758,981
+ *
+ * © 2025–2026 CMPSBL® · PromptFluid™. All rights reserved.
+ */
+
+function esc(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+const year = () => new Date().getFullYear();
+const dateStr = () => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const BRAND_STYLES = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 15px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0f;
+    color: #e4e4e7;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+  }
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem;
+  }
+  @media (max-width: 640px) { .page { padding: 1.5rem 1.25rem; } html { font-size: 14px; } }
+  .doc-header {
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 2rem;
+  }
+  .doc-header .issuer {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 1rem;
+  }
+  .doc-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    background: linear-gradient(135deg, #fff, #a1a1aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .doc-subtitle {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.4rem;
+  }
+  .seal-area { display: flex; justify-content: center; margin: 1.5rem 0 2rem; }
+  .seal-badge {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(168,85,247,0.5);
+    background: radial-gradient(circle, rgba(168,85,247,0.1), transparent);
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+  }
+  .seal-badge .mark { font-size: 0.6rem; font-weight: 700; color: rgba(168,85,247,0.8); letter-spacing: 0.12em; }
+  .seal-badge .year { font-size: 0.5rem; color: rgba(168,85,247,0.5); letter-spacing: 0.1em; }
+  h2 {
+    font-size: 1.05rem; font-weight: 700;
+    margin: 2rem 0 0.8rem; padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: #fff;
+  }
+  h3 { font-size: 0.9rem; font-weight: 600; margin: 1.2rem 0 0.5rem; color: #e4e4e7; }
+  p { margin-bottom: 0.8rem; color: rgba(255,255,255,0.7); font-size: 0.88rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 0.8rem; }
+  li { margin-bottom: 0.3rem; color: rgba(255,255,255,0.7); font-size: 0.88rem; }
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.82em; background: rgba(255,255,255,0.06);
+    padding: 0.15em 0.4em; border-radius: 4px; color: #a78bfa;
+  }
+  pre {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+    margin: 0.8rem 0;
+  }
+  .highlight {
+    background: rgba(168,85,247,0.08);
+    border-left: 3px solid rgba(168,85,247,0.5);
+    padding: 0.9rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+  }
+  .highlight strong { color: #fff; }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0 1.5rem;
+  }
+  .meta-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+  }
+  .meta-label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); }
+  .meta-value { font-size: 0.85rem; font-weight: 500; color: #fff; margin-top: 0.15rem; }
+  .toc { list-style: none; padding: 0; }
+  .toc li { padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .toc a { color: #a78bfa; text-decoration: none; font-size: 0.85rem; }
+  .toc a:hover { text-decoration: underline; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 0.8rem 0;
+    font-size: 0.82rem;
+  }
+  th { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); }
+  .colophon {
+    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;
+  }
+  .colophon-left { font-size: 0.65rem; color: rgba(255,255,255,0.25); line-height: 1.8; }
+  .colophon-right { font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.2); }
+  .patent-notice { font-size: 0.7rem; color: rgba(255,255,255,0.3); font-style: italic; margin-top: 1rem; }
+`;
+
+function htmlShell(title: string, body: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${esc(title)} — CMPSBL®</title>
+  <style>${BRAND_STYLES}</style>
+</head>
+<body>
+${body}
+</body>
+</html>`;
+}
+
+function colophon(): string {
+  return `
+  <div class="colophon">
+    <div class="colophon-left">
+      CMPSBL® · PromptFluid™<br>
+      https://cmpsbl.com<br>
+      © ${year()} CMPSBL®. All rights reserved.<br>
+      U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 63/758,981
+    </div>
+    <div class="colophon-right">CMPSBL®</div>
+  </div>
+  <p class="patent-notice">
+    Invented by Kenneth E. Sweet Jr. · Patent Pending · PromptFluid™ TX
+  </p>`;
+}
+
+function sealBadge(): string {
+  return `
+  <div class="seal-area">
+    <div class="seal-badge">
+      <div class="mark">CMPSBL®</div>
+      <div class="year">${year()}</div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LICENSE.html
+// ═══════════════════════════════════════════════════════════════
+
+export function generateV2LicenseHTML(packName: string): string {
+  return htmlShell(`License — ${packName}`, `
+<div class="page">
+  <header class="doc-header">
+    <div class="issuer">CMPSBL® · PromptFluid™ · Ascension V2</div>
+    <div class="doc-title">Commercial Distribution License</div>
+    <div class="doc-subtitle">Governing the use, modification, and distribution of ascended software</div>
+  </header>
+  ${sealBadge()}
+
+  <p style="text-align:center; font-size:0.82rem; color:rgba(255,255,255,0.4); margin-bottom:2rem;">
+    Issued ${dateStr()} for <strong style="color:#fff;">${esc(packName)}</strong>
+  </p>
+
+  <h2>§1 — Origin Notice</h2>
+  <p>
+    This software was ascended and exported from the CMPSBL® Substrate, a governed cognitive
+    infrastructure by PromptFluid™. The Layer 2 wrapper is proprietary technology protected
+    under U.S. Patent App. No. 64/029,678 and U.S. Patent App. No. 63/758,981.
+  </p>
+  <p>
+    The original source file is included unmodified per the patent's dual-layer architecture.
+    The ascended file contains the Layer 2 behavioral wrapper with activated capabilities.
+  </p>
+
+  <h2>§2 — Grant of Rights</h2>
+  <p>Subject to the conditions below, the licensee is granted a non-exclusive, worldwide right to:</p>
+  <ul>
+    <li><strong>(a)</strong> Use, modify, and integrate the ascended software into derivative works.</li>
+    <li><strong>(b)</strong> Commercially distribute derivative works, provided all conditions are met.</li>
+  </ul>
+
+  <h2>§3 — Conditions</h2>
+  <p><strong>3.1 — Attribution.</strong> Every distribution must include:</p>
+  <div class="highlight">
+    <strong>"Built with the CMPSBL® Substrate — https://cmpsbl.com<br>
+    Ascended via Layer 2 Technology · Patent Pending"</strong>
+  </div>
+  <p><strong>3.2 — Layer 2 Integrity.</strong> The Layer 2 wrapper must not be stripped, stubbed, or reverse-engineered.</p>
+  <p><strong>3.3 — License Preservation.</strong> This license file must be included unmodified in every distribution.</p>
+  <p><strong>3.4 — No Misrepresentation.</strong> The substrate origin must be acknowledged.</p>
+
+  <h2>§4 — Intellectual Property</h2>
+  <p>
+    The Layer 2 technology, Convex Core™ processing, CJPI scoring algorithm, and all behavioral
+    engines (DEFENSE, CORTEX, NEXUS, BRAIN, ORACLE) are proprietary to CMPSBL® and protected
+    under multiple U.S. patent applications. The exported ascended file is a finished product —
+    it is not a blueprint of the underlying pipeline.
+  </p>
+
+  <h2>§5 — Disclaimer of Warranty</h2>
+  <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
+    The software is provided "as is", without warranty of any kind, express or implied,
+    including but not limited to the warranties of merchantability, fitness for a particular
+    purpose and noninfringement. In no event shall CMPSBL® be liable for any claim, damages
+    or other liability.
+  </p>
+
+  ${colophon()}
+</div>`);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// README.html
+// ═══════════════════════════════════════════════════════════════
+
+export interface V2ReadmeInput {
+  packName: string;
+  originalFileName: string;
+  ascendedFileName: string;
+  capabilities: { name: string; cjpiScore: number; tier: string; chain: string[] }[];
+  language: string;
+  avgCjpi: number;
+  topCjpi: number;
+  fingerprint: string;
+}
+
+export function generateV2ReadmeHTML(input: V2ReadmeInput): string {
+  const files = [
+    { name: 'LICENSE.html', purpose: 'Commercial distribution license with patent notices' },
+    { name: 'README.html', purpose: 'This file — package overview and quick start' },
+    { name: 'USER-GUIDE.html', purpose: 'Comprehensive guide with activation, pipeline details, and error codes' },
+    { name: input.originalFileName, purpose: 'Your original source file — completely untouched' },
+    { name: input.ascendedFileName, purpose: 'Layer 2 wrapped file with activated capabilities — rename to match original before drop-in' },
+    { name: 'ADVERTISEMENT.html', purpose: 'Information about custom Mana layers and the CMPSBL® ecosystem' },
+  ];
+
+  return htmlShell(`README — ${input.packName}`, `
+<div class="page">
+  <header class="doc-header">
+    <div class="issuer">CMPSBL® · Ascension V2 Export</div>
+    <div class="doc-title">${esc(input.packName)}</div>
+    <div class="doc-subtitle">Ascended Software Package · ${esc(input.language)}</div>
+  </header>
+  ${sealBadge()}
+
+  <div class="meta-grid">
+    <div class="meta-item"><div class="meta-label">Capabilities</div><div class="meta-value">${input.capabilities.length}</div></div>
+    <div class="meta-item"><div class="meta-label">Avg CJPI</div><div class="meta-value">${input.avgCjpi}</div></div>
+    <div class="meta-item"><div class="meta-label">Top CJPI</div><div class="meta-value">${input.topCjpi}</div></div>
+    <div class="meta-item"><div class="meta-label">Language</div><div class="meta-value">${esc(input.language)}</div></div>
+    <div class="meta-item"><div class="meta-label">Fingerprint</div><div class="meta-value" style="font-family:monospace;font-size:0.75rem;">${esc(input.fingerprint)}</div></div>
+    <div class="meta-item"><div class="meta-label">Exported</div><div class="meta-value">${dateStr()}</div></div>
+  </div>
+
+  <h2>What Is This?</h2>
+  <p>
+    This package contains your original source code alongside an <strong>ascended</strong> version
+    that has been wrapped with CMPSBL® Layer 2 technology. The ascended file contains ${input.capabilities.length}
+    activated capabilities discovered through the 40-Primitive collision matrix.
+  </p>
+  <div class="highlight">
+    <strong>Important:</strong> Rename <code>${esc(input.ascendedFileName)}</code> to <code>${esc(input.originalFileName)}</code>
+    before dropping it into your stack. The ascended file is a drop-in replacement.
+  </div>
+
+  <h2>Included Files</h2>
+  <table>
+    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+    <tbody>
+      ${files.map(f => `<tr><td><code>${esc(f.name)}</code></td><td>${esc(f.purpose)}</td></tr>`).join('\n      ')}
+    </tbody>
+  </table>
+
+  <h2>Quick Start</h2>
+  <ol>
+    <li>Unzip this package</li>
+    <li>Rename <code>${esc(input.ascendedFileName)}</code> → <code>${esc(input.originalFileName)}</code></li>
+    <li>Drop the renamed file into your existing project, replacing the original</li>
+    <li>All ${input.capabilities.length} capabilities are pre-activated — no configuration needed</li>
+  </ol>
+
+  <h2>Discovered Capabilities</h2>
+  <table>
+    <thead><tr><th>#</th><th>Capability</th><th>CJPI</th><th>Tier</th><th>Chain</th></tr></thead>
+    <tbody>
+      ${input.capabilities.map((c, i) => `<tr>
+        <td>${i + 1}</td>
+        <td>${esc(c.name)}</td>
+        <td><strong>${c.cjpiScore}</strong></td>
+        <td>${esc(c.tier)}</td>
+        <td style="font-size:0.75rem;">${c.chain.map(n => esc(n)).join(' → ')}</td>
+      </tr>`).join('\n      ')}
+    </tbody>
+  </table>
+
+  ${colophon()}
+</div>`);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// USER-GUIDE.html — Comprehensive unified doc
+// ═══════════════════════════════════════════════════════════════
+
+export interface V2UserGuideInput {
+  packName: string;
+  originalFileName: string;
+  ascendedFileName: string;
+  capabilities: { name: string; cjpiScore: number; tier: string; chain: string[]; description: string }[];
+  language: string;
+  avgCjpi: number;
+  fingerprint: string;
+  integrityHash: string;
+  enhanced: boolean;
+}
+
+export function generateV2UserGuideHTML(input: V2UserGuideInput): string {
+  return htmlShell(`User Guide — ${input.packName}`, `
+<div class="page">
+  <header class="doc-header">
+    <div class="issuer">CMPSBL® · Ascension V2 · Comprehensive User Guide</div>
+    <div class="doc-title">User Guide</div>
+    <div class="doc-subtitle">${esc(input.packName)} · ${esc(input.language)}</div>
+  </header>
+  ${sealBadge()}
+
+  <h2>Table of Contents</h2>
+  <ol class="toc">
+    <li><a href="#overview">1. Overview</a></li>
+    <li><a href="#installation">2. Installation &amp; Drop-In</a></li>
+    <li><a href="#capabilities">3. Activated Capabilities</a></li>
+    <li><a href="#pipeline">4. Pipeline Details</a></li>
+    <li><a href="#layer2">5. Layer 2 Architecture</a></li>
+    <li><a href="#activation">6. Activation &amp; Deactivation</a></li>
+    <li><a href="#verification">7. Verification &amp; Integrity</a></li>
+    <li><a href="#error-codes">8. Error Codes</a></li>
+    <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+    <li><a href="#advanced">10. Advanced Configuration</a></li>
+    <li><a href="#patent">11. Patent &amp; Legal</a></li>
+  </ol>
+
+  <!-- §1 Overview -->
+  <h2 id="overview">1. Overview</h2>
+  <p>
+    This package was generated by the CMPSBL® Ascension V2 pipeline — a deterministic,
+    patent-pending code evolution system. Your original source file was analyzed against
+    a 40-Primitive collision matrix, and ${input.capabilities.length} unique capabilities
+    were discovered, deduplicated, and permanently activated in the ascended file.
+  </p>
+  <div class="meta-grid">
+    <div class="meta-item"><div class="meta-label">Original</div><div class="meta-value"><code>${esc(input.originalFileName)}</code></div></div>
+    <div class="meta-item"><div class="meta-label">Ascended</div><div class="meta-value"><code>${esc(input.ascendedFileName)}</code></div></div>
+    <div class="meta-item"><div class="meta-label">Capabilities</div><div class="meta-value">${input.capabilities.length}</div></div>
+    <div class="meta-item"><div class="meta-label">Avg CJPI</div><div class="meta-value">${input.avgCjpi}</div></div>
+    <div class="meta-item"><div class="meta-label">Mana Enhanced</div><div class="meta-value">${input.enhanced ? 'Yes' : 'No'}</div></div>
+  </div>
+
+  <!-- §2 Installation -->
+  <h2 id="installation">2. Installation &amp; Drop-In</h2>
+  <p>The ascended file is a drop-in replacement for your original. Follow these steps:</p>
+  <ol>
+    <li>Extract the ZIP archive</li>
+    <li>Back up your existing <code>${esc(input.originalFileName)}</code></li>
+    <li>Rename <code>${esc(input.ascendedFileName)}</code> to <code>${esc(input.originalFileName)}</code></li>
+    <li>Place the renamed file in the same location as your original</li>
+    <li>All capabilities are pre-activated — no configuration changes needed</li>
+  </ol>
+  <div class="highlight">
+    <strong>Why rename?</strong> The ascended file is named differently to prevent accidental
+    overwrites during extraction. Once renamed, it functions identically to the original
+    with additional Layer 2 capabilities.
+  </div>
+
+  <!-- §3 Capabilities -->
+  <h2 id="capabilities">3. Activated Capabilities</h2>
+  <p>
+    The following ${input.capabilities.length} capabilities were discovered through the Ascension V2
+    pipeline and are permanently activated in your ascended file:
+  </p>
+  <table>
+    <thead><tr><th>#</th><th>Capability</th><th>CJPI</th><th>Tier</th><th>Description</th></tr></thead>
+    <tbody>
+      ${input.capabilities.map((c, i) => `<tr>
+        <td>${i + 1}</td>
+        <td><strong>${esc(c.name)}</strong></td>
+        <td>${c.cjpiScore}</td>
+        <td>${esc(c.tier)}</td>
+        <td style="font-size:0.78rem;">${esc(c.description || 'Emerged from substrate collision')}</td>
+      </tr>`).join('\n      ')}
+    </tbody>
+  </table>
+  <h3>Primitive Chains</h3>
+  ${input.capabilities.map((c, i) => `<p style="font-size:0.82rem;"><strong>${i + 1}. ${esc(c.name)}</strong>: ${c.chain.map(n => `<code>${esc(n)}</code>`).join(' → ')}</p>`).join('\n  ')}
+
+  <!-- §4 Pipeline Details -->
+  <h2 id="pipeline">4. Pipeline Details</h2>
+  <p>The Ascension V2 pipeline processes code through these stages:</p>
+  <table>
+    <thead><tr><th>Stage</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>INTAKE</strong></td><td>Source ingestion, language detection, file parsing</td></tr>
+      <tr><td>2</td><td><strong>FINGERPRINT</strong></td><td>Deterministic structural identity via FNV-1a hash</td></tr>
+      <tr><td>3</td><td><strong>CLASSIFY</strong></td><td>Pattern recognition against 40 substrate primitives</td></tr>
+      <tr><td>4</td><td><strong>COLLIDE</strong></td><td>Cross-primitive collision scoring for capability discovery</td></tr>
+      <tr><td>5</td><td><strong>SCORE</strong></td><td>CJPI evaluation (Complexity 30%, Jurisdiction 30%, Primitive 20%, Impact 20%)</td></tr>
+      <tr><td>6</td><td><strong>DEDUP</strong></td><td>Collapse duplicates to top 4–7 unique capabilities</td></tr>
+      <tr><td>7</td><td><strong>BIND</strong></td><td>Primitive attachment and capability activation</td></tr>
+      <tr><td>8</td><td><strong>SEAL</strong></td><td>Layer 2 wrapping and integrity hashing</td></tr>
+    </tbody>
+  </table>
+  <h3>CJPI Scoring Formula</h3>
+  <p>Every capability receives a <strong>Crown Jewel Potential Index</strong> (CJPI) score from 0–100:</p>
+  <pre>CJPI = (Complexity × 0.30) + (Jurisdiction × 0.30) + (Primitive × 0.20) + (Impact × 0.20)</pre>
+  <table>
+    <thead><tr><th>Tier</th><th>Score Range</th><th>Classification</th></tr></thead>
+    <tbody>
+      <tr><td>APEX</td><td>90–100</td><td>Hardware-synthesizable, maximum strategic value</td></tr>
+      <tr><td>MYTHIC</td><td>80–89</td><td>High-value production capability</td></tr>
+      <tr><td>S-TIER</td><td>70–79</td><td>Strong capability with broad applicability</td></tr>
+      <tr><td>A-TIER</td><td>60–69</td><td>Solid capability for targeted use cases</td></tr>
+      <tr><td>B-TIER</td><td>40–59</td><td>Viable capability with room for growth</td></tr>
+      <tr><td>RAW</td><td>0–39</td><td>Early-stage discovery</td></tr>
+    </tbody>
+  </table>
+
+  <!-- §5 Layer 2 Architecture -->
+  <h2 id="layer2">5. Layer 2 Architecture</h2>
+  <p>
+    The CMPSBL® Layer 2 is a patented behavioral wrapper that <strong>surrounds</strong> your code
+    without modifying it. Think of it like a protective shell that adds capabilities:
+  </p>
+  <ul>
+    <li><strong>Layer 1 (L1)</strong> — Your original source code, completely untouched</li>
+    <li><strong>Layer 2 (L2)</strong> — Behavioral wrapper providing governance, security, and activated capabilities</li>
+  </ul>
+  <p>
+    The ascended file contains both layers as a single distribution. The L2 wrapper intercepts
+    function calls, adds behavioral policies, and enables the activated capabilities — all
+    without modifying a single byte of your original source code.
+  </p>
+
+  <!-- §6 Activation -->
+  <h2 id="activation">6. Activation &amp; Deactivation</h2>
+  <p>
+    <strong>All capabilities are pre-activated.</strong> No configuration is needed for standard usage.
+    The ascended file works as a drop-in replacement immediately.
+  </p>
+  <h3>Deactivating Specific Capabilities</h3>
+  <p>If you need to deactivate a specific capability, locate the capability block in the ascended file and set its <code>active</code> flag to <code>false</code>:</p>
+  <pre>// In the ascended file, find the capability declaration:
+// capabilities.CAPABILITY_NAME.active = false;</pre>
+  <h3>Reverting to Original</h3>
+  <p>To fully revert, simply replace the ascended file with the original source file included in this package. No residual changes will remain.</p>
+
+  <!-- §7 Verification -->
+  <h2 id="verification">7. Verification &amp; Integrity</h2>
+  <p>Every export includes cryptographic integrity verification:</p>
+  <div class="meta-grid">
+    <div class="meta-item"><div class="meta-label">Fingerprint</div><div class="meta-value" style="font-family:monospace;font-size:0.72rem;">${esc(input.fingerprint)}</div></div>
+    <div class="meta-item"><div class="meta-label">Integrity Hash</div><div class="meta-value" style="font-family:monospace;font-size:0.72rem;">${esc(input.integrityHash.slice(0, 24))}</div></div>
+  </div>
+  <p>The Merkle-linked audit chain records every pipeline event from upload to export. If any stage was tampered with, the integrity hash will not match.</p>
+
+  <!-- §8 Error Codes -->
+  <h2 id="error-codes">8. Error Codes</h2>
+  <table>
+    <thead><tr><th>Code</th><th>Meaning</th><th>Resolution</th></tr></thead>
+    <tbody>
+      <tr><td><code>E_NO_SOURCE</code></td><td>No source code detected in upload</td><td>Ensure files contain parseable code</td></tr>
+      <tr><td><code>E_FINGERPRINT_MISMATCH</code></td><td>File changed between upload and export</td><td>Re-upload and re-run the pipeline</td></tr>
+      <tr><td><code>E_COLLISION_TIMEOUT</code></td><td>Primitive collision timed out</td><td>Retry with a smaller file or fewer functions</td></tr>
+      <tr><td><code>E_DEDUP_EMPTY</code></td><td>No unique capabilities survived deduplication</td><td>Try richer source code with more function boundaries</td></tr>
+      <tr><td><code>E_BIND_FAILED</code></td><td>Capability binding failed during wrapping</td><td>Check source for unsupported syntax patterns</td></tr>
+      <tr><td><code>E_SEAL_INTEGRITY</code></td><td>Integrity seal could not be applied</td><td>Re-run the pipeline from scratch</td></tr>
+      <tr><td><code>E_AUDIT_BROKEN</code></td><td>Audit chain verification failed</td><td>Pipeline was interrupted — restart from upload</td></tr>
+      <tr><td><code>E_MANA_ATTACH</code></td><td>Mana enhancement attachment failed</td><td>Skip enhancement or retry with smaller packages</td></tr>
+    </tbody>
+  </table>
+
+  <!-- §9 Troubleshooting -->
+  <h2 id="troubleshooting">9. Troubleshooting</h2>
+  <h3>Ascended file not working as drop-in?</h3>
+  <ul>
+    <li>Ensure you renamed <code>${esc(input.ascendedFileName)}</code> to <code>${esc(input.originalFileName)}</code></li>
+    <li>Check that the file is in the same directory as the original</li>
+    <li>Verify your build system recognizes the file extension</li>
+  </ul>
+  <h3>Import errors?</h3>
+  <ul>
+    <li>The ascended file is self-contained — no external CMPSBL® dependencies needed</li>
+    <li>If your bundler complains, ensure it supports the target language syntax</li>
+  </ul>
+  <h3>Performance concerns?</h3>
+  <ul>
+    <li>Layer 2 overhead is minimal — typically &lt;1ms per function call</li>
+    <li>Capabilities use lazy initialization and are only activated on first use</li>
+  </ul>
+
+  <!-- §10 Advanced -->
+  <h2 id="advanced">10. Advanced Configuration</h2>
+  <h3>Custom Capability Ordering</h3>
+  <p>Capabilities execute in CJPI-descending order by default. To change execution order, modify the <code>_capabilityOrder</code> array in the ascended file.</p>
+  <h3>Mana Enhancement</h3>
+  <p>${input.enhanced ? 'This export was enhanced with Mana — additional SDK-based capabilities were attached during the pipeline.' : 'This export was not Mana-enhanced. To add SDK-based capabilities, re-run the pipeline and select "Enhance" during Step 2.'}</p>
+
+  <!-- §11 Patent -->
+  <h2 id="patent">11. Patent &amp; Legal</h2>
+  <p>This software incorporates technology protected under:</p>
+  <ul>
+    <li><strong>U.S. Patent App. No. 64/029,678</strong> — "Dual-Layer Software Symbiosis System"</li>
+    <li><strong>U.S. Patent App. No. 63/758,981</strong> — "Cognitive Infrastructure Substrate"</li>
+  </ul>
+  <p>
+    <strong>Inventor:</strong> Kenneth E. Sweet Jr.<br>
+    <strong>Assignee:</strong> PromptFluid™ TX<br>
+    <strong>Website:</strong> https://cmpsbl.com
+  </p>
+  <p>Unauthorized reverse engineering, extraction, or redistribution of the Layer 2 technology is prohibited.</p>
+
+  ${colophon()}
+</div>`);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ADVERTISEMENT.html — Promo for custom Mana layers
+// ═══════════════════════════════════════════════════════════════
+
+export function generateV2AdvertisementHTML(packName: string, capCount: number): string {
+  return htmlShell(`Explore More — CMPSBL®`, `
+<div class="page">
+  <header class="doc-header">
+    <div class="issuer">CMPSBL® · PromptFluid™</div>
+    <div class="doc-title">Your Software Just Evolved</div>
+    <div class="doc-subtitle">What's next? Custom Mana Layers.</div>
+  </header>
+  ${sealBadge()}
+
+  <h2>What You Just Experienced</h2>
+  <p>
+    The Ascension pipeline analyzed your code against 40 substrate primitives and discovered
+    ${capCount} unique capabilities. These were activated in your ascended file using Layer 2 —
+    our patented behavioral wrapper technology.
+  </p>
+  <p>But this is just the beginning.</p>
+
+  <h2>Custom Mana Layers — Coming Soon</h2>
+  <p>
+    <strong>Mana</strong> is the CMPSBL® distribution channel for pre-built software capabilities.
+    While Ascension discovers what your code can do, Mana layers <em>add</em> what it can't.
+  </p>
+  <h3>Example Layers</h3>
+  <table>
+    <thead><tr><th>Layer</th><th>What It Does</th><th>CJPI</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Self-Healing Orchestrator</strong></td><td>Autonomous crash recovery and state restoration</td><td>98</td></tr>
+      <tr><td><strong>Cyber Defense Suite</strong></td><td>Runtime threat detection and adaptive firewall</td><td>96</td></tr>
+      <tr><td><strong>Fleet Intelligence</strong></td><td>Multi-instance coordination and load distribution</td><td>95</td></tr>
+      <tr><td><strong>Performance Surgery</strong></td><td>Automated bottleneck detection and optimization</td><td>94</td></tr>
+      <tr><td><strong>AI Safety Governor</strong></td><td>Behavioral guardrails for AI-powered applications</td><td>93</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How It Works</h2>
+  <ol>
+    <li><strong>Ascend</strong> your code (you just did this)</li>
+    <li><strong>Browse</strong> the Mana Store for capability layers</li>
+    <li><strong>Attach</strong> — layers wrap around your ascended code, adding new capabilities</li>
+    <li><strong>Export</strong> — a single file with your code + Ascension + Mana layers combined</li>
+  </ol>
+
+  <h2>The Vision</h2>
+  <p>
+    Every piece of software in the world has untapped potential. Ascension reveals it.
+    Mana enhances it. Together, they create <strong>governed cognitive infrastructure</strong> —
+    software that thinks, adapts, and protects itself.
+  </p>
+  <div class="highlight">
+    <strong>Visit <a href="https://cmpsbl.com" style="color:#a78bfa;">cmpsbl.com</a></strong>
+    to explore the full substrate, browse the Mana Store, and see what your software could become.
+  </div>
+
+  <h2>54+ Languages Supported</h2>
+  <p>
+    TypeScript, Python, Rust, Go, C, C++, Java, PHP, Ruby, Swift, Kotlin, Dart, Scala,
+    Elixir, Haskell, Zig, Verilog, VHDL, GLSL, SystemC, and many more. The Layer 2
+    technology is language-agnostic — if your code compiles, it can be ascended.
+  </p>
+
+  ${colophon()}
+</div>`);
+}
