@@ -107,6 +107,7 @@ const Solutions = lazy(() => import("@/pages/Solutions"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const CurrentProjects = lazy(() => import("@/pages/CurrentProjects"));
 const Roadmap = lazy(() => import("@/pages/Roadmap"));
+const SubstrateRoadmap = lazy(() => import("@/pages/SubstrateRoadmap"));
 const LlmsTxt = lazy(() => import("@/pages/LlmsTxt"));
 const HumansTxt = lazy(() => import("@/pages/HumansTxt"));
 const Foundations = lazy(() => import("@/pages/Foundations"));
@@ -229,6 +230,7 @@ export const publicRoutes = (
     <Route path="/solutions" element={<Solutions />} />
     <Route path="/projects" element={<CurrentProjects />} />
     <Route path="/roadmap" element={<Roadmap />} />
+    <Route path="/roadmap/substrate" element={<VerticalSecretGate verticalId="roadmap"><SubstrateRoadmap /></VerticalSecretGate>} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/llms-txt" element={<LlmsTxt />} />
     <Route path="/humans-txt" element={<HumansTxt />} />
