@@ -294,6 +294,7 @@ def mana_inspect():
 function generateEmbeddedRuntimePHP(): string {
   return `
 // ═══ CMPSBL® Embedded Layer 2 Runtime ════════════════════════════════════════
+// U.S. Patent App. Nos. 64/029,678 & 64/031,637
 // Capabilities are PRE-ACTIVATED. Deactivate via CMPSBL® Terminal.
 
 $_mana_registry = [];
@@ -312,9 +313,29 @@ function cmpsbl_mana_wrap($fn_name, $capabilities, $run_id) {
         if (!$entry || !$entry['active']) {
             return call_user_func_array($fn_name, $args);
         }
+
+        // Layer 2 pre-flight: capability enforcement
+        foreach ($entry['capabilities'] as $cap) {
+            if (strpos($cap, 'defense') !== false || strpos($cap, 'sanitizer') !== false) {
+                foreach ($args as $arg) {
+                    if (is_string($arg) && strlen($arg) > 1000000) {
+                        throw new \\RuntimeException("[CMPSBL® DEFENSE] Input exceeds safe boundary for $fn_name");
+                    }
+                }
+            }
+        }
+
+        // Layer 1: original function executes unchanged
         $result = call_user_func_array($fn_name, $args);
+
+        // Layer 2 post-flight: observation
+        cmpsbl_mana_observe($fn_name, $entry['capabilities'], true);
         return $result;
     };
+}
+
+function cmpsbl_mana_observe($name, $capabilities, $success) {
+    // Telemetry collection point — BEACON primitive
 }
 
 function cmpsbl_mana_detach($fn_name, $capability = null) {
@@ -329,6 +350,11 @@ function cmpsbl_mana_detach($fn_name, $capability = null) {
     }
     $_mana_registry[$fn_name]['active'] = false;
     return true;
+}
+
+function cmpsbl_mana_inspect() {
+    global $_mana_registry;
+    return $_mana_registry;
 }
 
 // ═══ END EMBEDDED RUNTIME ════════════════════════════════════════════════════
