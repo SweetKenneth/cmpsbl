@@ -161,15 +161,15 @@ function AnimatedStat({ value, label, sublabel, suffix = "", delay = 0 }: {
   return (
     <div 
       ref={ref}
-      className="relative text-center py-4 sm:py-5 group stat-card-glow animate-fade-in"
+      className="relative text-center py-5 sm:py-6 group animate-fade-in"
       style={{ animationDelay: `${1.2 + delay * 0.06}s`, animationFillMode: "both" }}
     >
-      <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
+      <div className="text-2xl sm:text-3xl md:text-4xl font-black tabular-nums tracking-tight text-foreground transition-all duration-500" style={{ backgroundImage: "linear-gradient(180deg, hsl(var(--foreground)), hsl(var(--foreground) / 0.7))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
         {count}{suffix}
       </div>
-      <div className="text-[10px] sm:text-xs text-foreground/80 font-bold mt-1 tracking-[0.12em] uppercase group-hover:text-foreground transition-colors duration-300">{label}</div>
+      <div className="text-[10px] sm:text-xs text-foreground/70 font-bold mt-1.5 tracking-[0.14em] uppercase">{label}</div>
       {sublabel && (
-        <div className="text-[8px] sm:text-[9px] text-muted-foreground/50 font-medium mt-0.5 tracking-[0.08em]">{sublabel}</div>
+        <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 font-medium mt-0.5 tracking-[0.08em]">{sublabel}</div>
       )}
     </div>
   );
@@ -217,13 +217,13 @@ export function HeroMetaSubstrate() {
           
             {/* Software Reimagined banner */}
             <FadeIn delay={0}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-8"
+              className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-border/30 bg-card/30 backdrop-blur-sm mb-5 sm:mb-8 shadow-lg shadow-primary/[0.03]"
             >
               <Wrench className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Reimagined</span>
-              <span className="flex items-center gap-1 pl-2 border-l border-border/30">
+              <span className="text-xs sm:text-sm font-semibold text-muted-foreground tracking-wide">Governed Cognitive Infrastructure</span>
+              <span className="flex items-center gap-1.5 pl-2.5 border-l border-border/25">
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
-                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
+                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.12em]">Live</span>
               </span>
             </FadeIn>
 
@@ -235,7 +235,7 @@ export function HeroMetaSubstrate() {
             {/* Headline stack */}
             <h1 className="tracking-[-0.03em] leading-[1.1]">
               <FadeIn delay={0}>
-                <span className="block text-sm sm:text-base md:text-lg font-bold text-foreground/80 mb-2 tracking-[0.05em] uppercase">
+                <span className="block text-xs sm:text-sm md:text-base font-bold text-muted-foreground/60 mb-3 tracking-[0.18em] uppercase">
                   Where machines learn how to
                 </span>
               </FadeIn>
@@ -256,15 +256,15 @@ export function HeroMetaSubstrate() {
             </h1>
 
             {/* Value prop */}
-            <FadeIn delay={0.1} className="max-w-lg mx-auto lg:mx-0 mt-3 sm:mt-6 mb-6 sm:mb-10">
-              <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed mb-3">
-                Our <span className="text-foreground font-extrabold">patent-pending technology</span> ascends your code — a secondary layer adds <span className="text-foreground font-bold">governance</span>, <span className="text-foreground font-bold">security</span>, and <span className="text-foreground font-bold">new capabilities</span>.
+            <FadeIn delay={0.1} className="max-w-lg mx-auto lg:mx-0 mt-4 sm:mt-6 mb-6 sm:mb-10">
+              <p className="text-sm sm:text-base text-muted-foreground/80 font-medium leading-relaxed mb-4">
+                Our <span className="text-foreground font-bold">patent-pending dual-layer technology</span> ascends your code — adding <span className="text-foreground font-semibold">governance</span>, <span className="text-foreground font-semibold">security</span>, and <span className="text-foreground font-semibold">resilience</span> without modifying a single line.
               </p>
-              <p className="text-base sm:text-lg md:text-xl font-black text-foreground tracking-tight leading-snug mb-3" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <p className="text-base sm:text-lg md:text-xl font-black tracking-tight leading-snug mb-3" style={{ backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))", backgroundClip: "text", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Your code remains unchanged.
               </p>
-              <p className="text-sm sm:text-base text-muted-foreground font-semibold leading-relaxed">
-                Works across <span className="text-foreground font-extrabold">90+ languages</span>. Runs in&nbsp;minutes.
+              <p className="text-xs sm:text-sm text-muted-foreground/60 font-semibold leading-relaxed tracking-wide">
+                90+ languages · Runs in minutes · Zero AI in the output
               </p>
             </FadeIn>
             
