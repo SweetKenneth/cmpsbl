@@ -36,10 +36,10 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "cmpsbl-com"
-const SENDER_DOMAIN = "cmpsbl.promptfluid.com"
-const ROOT_DOMAIN = "promptfluid.com"
-const FROM_DOMAIN = "promptfluid.com" // Domain shown in From address (may be root or sender subdomain)
+const SITE_NAME = "CMPSBL"
+const SENDER_DOMAIN = "notify.cmpsbl.com"
+const ROOT_DOMAIN = "cmpsbl.com"
+const FROM_DOMAIN = "cmpsbl.com" // Domain shown in From address (may be root or sender subdomain)
 
 // Sample data for preview mode ONLY (not used in actual email sending).
 // URLs are baked in at scaffold time from the project's real data.

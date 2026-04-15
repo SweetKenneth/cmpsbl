@@ -1,7 +1,11 @@
 /**
  * Purchase Alert — Sends owner notification when a verify function confirms payment
- * Also inserts analytics_events row for dashboard tracking
+ * Uses Lovable email infrastructure instead of Resend
+ *
+ * © 2025–2026 CMPSBL® · PromptFluid™. All rights reserved.
  */
+
+import { sendBrandedEmail } from './lovable-email-sender.ts';
 
 const OWNER_EMAIL = 'kennethsweet214@gmail.com';
 
@@ -10,11 +14,10 @@ interface PurchaseAlertOpts {
   customerEmail: string;
   amount?: string;       // e.g. "$129"
   licenseId?: string;    // e.g. "AGT-SENTINEL-v1.0.0-abc123"
-  resendKey: string;
 }
 
 export async function notifyOwnerPurchase(opts: PurchaseAlertOpts): Promise<boolean> {
-  const { product, customerEmail, amount, licenseId, resendKey } = opts;
+  const { product, customerEmail, amount, licenseId } = opts;
   const now = new Date();
   const time = now.toLocaleString('en-US', { timeZone: 'America/Chicago' });
 
@@ -45,25 +48,12 @@ export async function notifyOwnerPurchase(opts: PurchaseAlertOpts): Promise<bool
     </div>
   `;
 
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'CMPSBL <Dev@CMPSBL.com>',
-        to: [OWNER_EMAIL],
-        subject: `💰 New Purchase: ${product}`,
-        html,
-      }),
-    });
-    const ok = res.ok;
-    console.log(`[PURCHASE-ALERT] Owner notification ${ok ? 'sent' : 'failed'} for ${product} by ${customerEmail}`);
-    return ok;
-  } catch (e) {
-    console.error('[PURCHASE-ALERT] Email failed:', e);
-    return false;
-  }
+  return sendBrandedEmail({
+    to: OWNER_EMAIL,
+    subject: `💰 New Purchase: ${product}`,
+    html,
+    fromName: 'CMPSBL',
+    fromUser: 'dev',
+    idempotencyKey: `purchase-alert-${licenseId || Date.now()}`,
+  });
 }

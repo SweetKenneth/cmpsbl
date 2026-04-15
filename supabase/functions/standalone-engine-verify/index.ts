@@ -1,5 +1,5 @@
 /**
- * Standalone Engine Verify — Confirms payment, sends license email via Resend
+ * Standalone Engine Verify — Confirms payment, sends license email
  * For one-time $199 Composable Engine purchases
  */
 
@@ -39,11 +39,10 @@ serve(async (req) => {
     const docsUrl = `https://cmpsbl.com/docs/engines/${engine_slug}`;
     const editionId = `ENG-${engineName}-${Date.now().toString(36).toUpperCase()}`;
 
-    // Send license email via Resend
-    const resendKey = Deno.env.get("RESEND_API_KEY");
+    // Send license email via Lovable email infrastructure
     let emailSent = false;
 
-    if (resendKey && customerEmail) {
+    if (customerEmail) {
       const emailHtml = `
         <div style="font-family:'SF Mono',SFMono-Regular,Menlo,monospace;background:#0a0a0a;color:#e5e5e5;padding:40px 24px;max-width:600px;margin:0 auto;">
           <div style="text-align:center;margin-bottom:32px;">
@@ -99,36 +98,28 @@ serve(async (req) => {
       `;
 
       try {
-        const emailRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${resendKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "Dev@CMPSBL.com",
-            to: [customerEmail],
-            subject: `${engineName} Engine — License Activated | ${editionId}`,
-            html: emailHtml,
-          }),
+        const { sendBrandedEmail } = await import("../_shared/lovable-email-sender.ts");
+        emailSent = await sendBrandedEmail({
+          to: customerEmail,
+          subject: `${engineName} Engine — License Activated | ${editionId}`,
+          html: emailHtml,
+          fromName: 'CMPSBL',
+          fromUser: 'dev',
+          idempotencyKey: `engine-license-${editionId}`,
         });
-        emailSent = emailRes.ok;
-        console.log(`[STANDALONE-ENGINE-VERIFY] Email ${emailRes.ok ? 'sent' : 'failed'} to ${customerEmail} for ${engineName}`);
+        console.log(`[STANDALONE-ENGINE-VERIFY] Email ${emailSent ? 'queued' : 'failed'} for ${customerEmail} for ${engineName}`);
       } catch (e) {
         console.error("[STANDALONE-ENGINE-VERIFY] Email error:", e);
       }
     }
 
     // Notify owner of purchase
-    if (resendKey) {
-      await notifyOwnerPurchase({
-        product: `${engineName} Engine`,
-        customerEmail,
-        amount: '$199',
-        licenseId: editionId,
-        resendKey,
-      });
-    }
+    await notifyOwnerPurchase({
+      product: `${engineName} Engine`,
+      customerEmail,
+      amount: '$199',
+      licenseId: editionId,
+    });
 
     return new Response(
       JSON.stringify({

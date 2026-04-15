@@ -18,7 +18,7 @@ serve(async (req: Request) => {
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    // RESEND_API_KEY removed — using Lovable email infrastructure
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     const now = new Date();
@@ -873,37 +873,26 @@ Generated in ${generationTimeMs}ms · CMPSBL® Substrate · SPARTA Epoch
 
     if (insertError) console.error("Failed to store report:", insertError);
 
-    // ═══ SEND EMAIL VIA RESEND ═══
+    // ═══ SEND EMAIL VIA LOVABLE EMAIL INFRASTRUCTURE ═══
     let emailSent = false;
-    if (RESEND_API_KEY) {
-      try {
-        const emailRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "Substrate Decode <cascade@promptfluid.com>",
-            to: ["kennethsweet214@gmail.com"],
-            subject,
-            html: fullHtml,
-            text: fullPlaintext,
-          }),
-        });
-        const emailResult = await emailRes.json();
-        emailSent = emailRes.ok;
+    try {
+      const { sendBrandedEmail } = await import("../_shared/lovable-email-sender.ts");
+      emailSent = await sendBrandedEmail({
+        to: "kennethsweet214@gmail.com",
+        subject,
+        html: fullHtml,
+        fromName: 'Substrate Decode',
+        fromUser: 'cascade',
+        idempotencyKey: `owner-report-${report?.id || Date.now()}`,
+      });
 
-        if (report?.id) {
-          await supabase.from("owner_reports").update({ status: emailSent ? "sent" : "send_failed" }).eq("id", report.id);
-        }
-        console.log(`📧 Email ${emailSent ? "sent" : "failed"}:`, emailResult);
-      } catch (emailErr) {
-        console.error("Email send error:", emailErr);
-        if (report?.id) await supabase.from("owner_reports").update({ status: "send_failed" }).eq("id", report.id);
+      if (report?.id) {
+        await supabase.from("owner_reports").update({ status: emailSent ? "sent" : "send_failed" }).eq("id", report.id);
       }
-    } else {
-      console.log("⚠️ No RESEND_API_KEY — report stored but not emailed.");
+      console.log(`📧 Email ${emailSent ? "queued" : "failed"}`);
+    } catch (emailErr) {
+      console.error("Email send error:", emailErr);
+      if (report?.id) await supabase.from("owner_reports").update({ status: "send_failed" }).eq("id", report.id);
     }
 
     return new Response(
