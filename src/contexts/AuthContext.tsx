@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/os`,
+          emailRedirectTo: 'https://cmpsbl.com/os',
         },
       });
       
@@ -172,7 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const redirectUrl = `${window.location.origin}/os`;
+      const redirectUrl = 'https://cmpsbl.com/os';
       
       // Preserve redirect intent across magic link flow
       const params = new URLSearchParams(window.location.search);
