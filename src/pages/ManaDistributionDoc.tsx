@@ -839,7 +839,7 @@ RETURN TO CALLER`}</PipelineBlock>
                 <TaskItem>Governor-only Store management UI — add/edit/archive layers</TaskItem>
                 <TaskItem>CJPI minimum threshold gate (below threshold → Junkyard)</TaskItem>
                 <TaskItem>Suite builder — group related layers into purchasable bundles</TaskItem>
-                <TaskItem>Seed initial catalog: Top 3 launch layers + 7–17 from existing output</TaskItem>
+                <TaskItem>Seed initial catalog: Top 20 launch layers + compound suites from existing output</TaskItem>
                 <TaskItem>Pillar tagging system (Resilience, Foresight, Security, Intelligence, Governance…)</TaskItem>
               </div>
               <DeliverableTag>Deliverable</DeliverableTag>
