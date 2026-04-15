@@ -17,12 +17,15 @@ function TickerBar() {
 
   const items = [
     { name: 'Self-Healing Orchestrator', cjpi: 96, domain: 'IMMUNITY' },
-    { name: 'Oracle-Ripple Precognition Chain', cjpi: 96, domain: 'ORACLE×RIPPLE' },
-    { name: 'Adaptive Defense Breeding Suite', cjpi: 95, domain: 'IMMUNITY×EVOLUTION' },
-    { name: 'Continuous Learning Bridge', cjpi: 92, domain: 'BRAIN×MEMORY' },
-    { name: 'Autonomous Decision Loop', cjpi: 92, domain: 'CORTEX' },
-    { name: 'Memory Consolidation Layer', cjpi: 92, domain: 'MEMORY×DREAM' },
-    { name: 'Multi-Provider Failover', cjpi: 89, domain: 'FAILSAFE' },
+    { name: 'Oracle-Ripple Precognition', cjpi: 96, domain: 'ORACLE×RIPPLE' },
+    { name: 'Defense Breeding Suite', cjpi: 95, domain: 'IMMUNITY×EVOLUTION' },
+    { name: 'Fleet Intelligence', cjpi: 98, domain: 'NEXUS' },
+    { name: 'AI Safety Suite', cjpi: 95, domain: 'DREAM×DEFENSE' },
+    { name: 'Performance Surgery', cjpi: 96, domain: 'APEX×VISION' },
+    { name: 'Cyber Defense Suite', cjpi: 97, domain: 'WATCHTOWER×AEGIS' },
+    { name: 'Autonomous Triage', cjpi: 97, domain: 'MEDIC' },
+    { name: 'Self-Evolution Suite', cjpi: 95, domain: 'EVOLUTION' },
+    { name: 'Cognitive Memory', cjpi: 94, domain: 'BRAIN×MEMORY' },
   ];
 
   const doubled = [...items, ...items];
@@ -333,18 +336,129 @@ export default function ManaDistributionDoc() {
             />
           </SectionBlock>
 
-          {/* ═══ Top 3 Launch Layers ═══ */}
-          <SectionBlock icon={Zap} title="Top 3 Launch Layers">
-            <p className="text-sm text-muted-foreground mb-4">Selected from 241 S-Tier entries. Pressure-tested against: universal demand, clean Mana attachment, measurable ROI, deterministic (zero AI).</p>
+          {/* ═══ Top 20 Launch Layers ═══ */}
+          <SectionBlock icon={Zap} title="Top 20 Launch Layers">
+            <p className="text-sm text-muted-foreground mb-2">Curated from 233 core S-Tier entries + 960 vertical Crown Jewels across 12 substrates. Pressure-tested against: universal demand, clean Mana attachment, measurable ROI, deterministic (zero AI). Standalone jewels and compound suites combined for maximum impact.</p>
+            <StatRow stats={[
+              { value: '20', label: 'Launch Layers' },
+              { value: '1,193', label: 'Jewels Evaluated' },
+              { value: '8', label: 'Pillars' },
+              { value: '98', label: 'Peak CJPI' },
+            ]} />
+
+            {/* ── Resilience Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#3B82F6' }} />
+              Resilience Pillar
+            </h3>
             <LayerCard rank={1} name="Self-Healing Orchestrator" cjpi={96} pillar="Resilience" price="$149–$499/yr"
               description="Auto-detects failures, selects lowest-blast-radius repair strategy, executes recovery, and learns from outcomes. Attaches at function boundaries via Mana. No source modification."
               tagline="My software recovers itself." stier="S-Tier #008 · IMMUNITY" roi='"How much does one hour of downtime cost you?"' colorClass="blue" />
-            <LayerCard rank={2} name="Oracle-Ripple Precognition Chain" cjpi={96} pillar="Foresight" price="$199–$599/yr"
+            <LayerCard rank={2} name="Autonomous Triage Engine" cjpi={97} pillar="Resilience" price="$129–$399/yr"
+              description="Medical-grade triage protocol for distributed systems. Differential diagnosis with automated repair dispatch. Prioritizes by blast radius, dependency depth, and user impact."
+              tagline="My software diagnoses itself." stier="S-Tier #004 · MEDIC" roi='"MTTR dropped from 47 minutes to 90 seconds."' colorClass="blue" />
+            <LayerCard rank={3} name="Distributed Consensus Suite" cjpi={96} pillar="Resilience" price="$99–$349/yr"
+              description="Consensus Heartbeat Protocol + Quorum Negotiator. Gossip-style liveness detection with Byzantine-fault-tolerant negotiation and split-brain prevention. Your services agree even when the network doesn't."
+              tagline="My software survives network partitions." stier="S-Tier #005 + #083 · NERVE" roi='"Zero split-brain incidents across 14 regions."' colorClass="blue" />
+
+            {/* ── Foresight Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#7C5CFC' }} />
+              Foresight Pillar
+            </h3>
+            <LayerCard rank={4} name="Oracle-Ripple Precognition Chain" cjpi={96} pillar="Foresight" price="$199–$599/yr"
               description="Fuses predictive forecasting with causal propagation to predict downstream failures before they occur. Auto-executes preemptive actions (scale, reroute, throttle, isolate) before impact."
               tagline="My software prevents problems." stier="S-Tier #024 · ORACLE×RIPPLE" roi='"47 cascading failures averted this month."' colorClass="purple" />
-            <LayerCard rank={3} name="Adaptive Defense Breeding Suite" cjpi={95} pillar="Security" price="$249–$799/yr"
+            <LayerCard rank={5} name="Anomaly Correlation Engine" cjpi={96} pillar="Foresight" price="$149–$449/yr"
+              description="Multi-stream anomaly correlation: temporal, causal, spatial, and behavioral. Produces ranked incident hypotheses from signals that no single monitor would catch alone."
+              tagline="My software connects the dots." stier="S-Tier #007 · VISION" roi='"Reduced false positives by 89%. Real alerts only."' colorClass="purple" />
+
+            {/* ── Security Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#E94989' }} />
+              Security Pillar
+            </h3>
+            <LayerCard rank={6} name="Adaptive Defense Breeding Suite" cjpi={95} pillar="Security" price="$249–$799/yr"
               description="Breeds progressively stronger security defenses via evolutionary pressure against attack simulations. Survivors promoted; failures extinct. Antibody Generator creates targeted countermeasures for novel threats."
               tagline="My software's defenses evolve." stier="S-Tier #027 + #023 · IMMUNITY×EVOLUTION" roi="Day 1 good. Day 90 exceptional. Day 365 nearly impenetrable." colorClass="pink" />
+            <LayerCard rank={7} name="Zero-Trust Identity Suite" cjpi={91} pillar="Security" price="$99–$299/yr"
+              description="Zero-Trust Session Binder + Behavioral Anomaly Detector. Continuous session verification with behavioral trust scoring that flags compromised credentials through usage pattern deviation."
+              tagline="My software trusts nothing, verifies everything." stier="S-Tier #082 + #088 · IDENTITY×DEFENSE" roi='"Stopped 3 credential-stuffing attacks that passed MFA."' colorClass="pink" />
+            <LayerCard rank={8} name="Cyber Defense Suite" cjpi={97} pillar="Security" price="$299–$899/yr"
+              description="Adaptive IOC Correlation Engine + DDoS Absorption Matrix. Cross-correlates indicators of compromise across temporal, spatial, and contextual dimensions while dynamically absorbing volumetric attacks."
+              tagline="My infrastructure fights back." stier="S-SENT03 + S-AEG01 · WATCHTOWER×AEGIS" roi='"Absorbed 340Gbps DDoS while maintaining 99.99% uptime."' colorClass="pink" />
+
+            {/* ── Intelligence Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#06B6D4' }} />
+              Intelligence Pillar
+            </h3>
+            <LayerCard rank={9} name="Fleet Intelligence Orchestrator" cjpi={98} pillar="Intelligence" price="$199–$599/yr"
+              description="Real-time scoring matrix across all AI providers. Weighted round-robin with quality-gated fallback chains. Routes every request to the optimal model based on cost, latency, quality, and availability."
+              tagline="My software picks the best AI, every time." stier="S-Tier #002 · NEXUS" roi='"Same quality output, 62% less AI spend."' colorClass="blue" />
+            <LayerCard rank={10} name="AI Safety Suite" cjpi={95} pillar="Intelligence" price="$149–$449/yr"
+              description="Hallucination Guard + Prompt Injection Shield. Multi-source verification prevents AI confabulation while multi-layer input sanitization blocks injection, XSS, and prompt manipulation attacks."
+              tagline="My AI never hallucinates, never gets hijacked." stier="S-Tier #091 + #100 · DREAM×DEFENSE" roi='"Zero hallucination incidents in production since deployment."' colorClass="blue" />
+            <LayerCard rank={11} name="AI Cost Intelligence Suite" cjpi={96} pillar="Intelligence" price="$129–$399/yr"
+              description="Cost-Aware Routing Engine + Token Optimization Engine. Real-time budget tracking with progressive quality degradation under pressure, combined with dynamic token budget optimization across multi-model workflows."
+              tagline="My software spends less on AI, gets more." stier="S-Tier #006 + #081 · NEXUS" roi='"Cut monthly AI costs from $12K to $4.2K without quality loss."' colorClass="blue" />
+            <LayerCard rank={12} name="Cognitive Memory Suite" cjpi={94} pillar="Intelligence" price="$129–$399/yr"
+              description="Semantic Knowledge Graph + Knowledge Compaction Engine. Graph-based knowledge representation with relationship inference, combined with lossless deduplication and semantic merging for perpetual memory."
+              tagline="My software remembers everything, forgets nothing." stier="S-Tier #030 + #079 · BRAIN×MEMORY" roi='"Context retention across 10K+ sessions. Zero knowledge decay."' colorClass="blue" />
+
+            {/* ── Performance Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#F59E0B' }} />
+              Performance Pillar
+            </h3>
+            <LayerCard rank={13} name="Performance Surgery Suite" cjpi={98} pillar="Performance" price="$149–$499/yr"
+              description="Hot Path Flame Graph Analyzer + Performance Regression Detector. Identifies CPU bottlenecks with automatic Big-O classification while detecting regressions via baseline comparison — before users notice."
+              tagline="My software finds and fixes its own bottlenecks." stier="S-APX01 + S-Tier #076 · APEX×VISION" roi='"P99 latency dropped from 2.1s to 340ms in one scan."' colorClass="blue" />
+            <LayerCard rank={14} name="Data Pipeline Resilience Suite" cjpi={98} pillar="Performance" price="$149–$449/yr"
+              description="Stream Backpressure Manager + Event Sourcing Pattern Engine. Reactive backpressure with buffer overflow prevention and consumer lag monitoring, combined with snapshot strategies and projection rebuild optimization."
+              tagline="My pipelines never drop a message." stier="S-CND01 + S-CND02 · CONDUIT" roi='"Processing 2.4M events/sec with zero message loss."' colorClass="blue" />
+
+            {/* ── Orchestration Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#10B981' }} />
+              Orchestration Pillar
+            </h3>
+            <LayerCard rank={15} name="Pipeline Composition Engine" cjpi={95} pillar="Orchestration" price="$99–$299/yr"
+              description="Composable pipeline builder with typed stage connections and backpressure control. Build any data flow as a sequence of typed, reusable stages with automatic error propagation and retry."
+              tagline="My software orchestrates anything." stier="S-Tier #020 · CORTEX" roi='"Replaced 4,000 lines of custom orchestration with 12 pipeline stages."' colorClass="blue" />
+            <LayerCard rank={16} name="Universal Input Intelligence" cjpi={97} pillar="Orchestration" price="$129–$399/yr"
+              description="Context Threading Engine + Multi-Modal Interpreter. Maintains conversational context across multi-turn interactions with thread forking, plus unified interpretation of natural language, terminal, structured data, and code."
+              tagline="My software understands any input format." stier="S-Tier #031 + #003 · DECODE" roi='"One endpoint handles CLI, API, chat, and file uploads."' colorClass="blue" />
+
+            {/* ── Evolution Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#8B5CF6' }} />
+              Evolution Pillar
+            </h3>
+            <LayerCard rank={17} name="Self-Evolution Suite" cjpi={95} pillar="Evolution" price="$199–$599/yr"
+              description="Mutation Proposal Engine + Shadow Run Environment. Generates, evaluates, and applies system mutations with rollback safety — all tested in sandboxed shadow environments before promotion to production."
+              tagline="My software evolves itself safely." stier="S-Tier #021 + #050 · EVOLUTION" roi='"143 self-applied optimizations. Zero rollbacks needed."' colorClass="purple" />
+
+            {/* ── Governance Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#EC4899' }} />
+              Governance Pillar
+            </h3>
+            <LayerCard rank={18} name="Governance Shield Suite" cjpi={94} pillar="Governance" price="$129–$399/yr"
+              description="Veto Authority Engine + Self-Audit Loop. Authority-gated veto system for high-impact decisions with escalation protocols, combined with continuous self-audit and policy compliance checking."
+              tagline="My software governs itself." stier="S-Tier #033 + #075 · GOVERNANCE" roi='"Every decision auditable. Every override logged. Every policy enforced."' colorClass="pink" />
+            <LayerCard rank={19} name="Tamper-Evident Audit Chain" cjpi={95} pillar="Governance" price="$99–$349/yr"
+              description="Hash-chained audit log with merkle-tree batch verification. Cryptographic tamper detection makes every action provable. SOC2, HIPAA, and FedRAMP audit-trail requirements met out of the box."
+              tagline="My software proves every action." stier="S-Tier #009 · AUDIT" roi='"Passed SOC2 Type II audit in 3 weeks instead of 6 months."' colorClass="pink" />
+
+            {/* ── Compliance Pillar ── */}
+            <h3 className="text-base font-bold text-foreground mt-8 mb-3 flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#14B8A6' }} />
+              Compliance Pillar
+            </h3>
+            <LayerCard rank={20} name="Regulatory Compliance Suite" cjpi={93} pillar="Compliance" price="$199–$599/yr"
+              description="Compliance Attestation Generator + Jurisdiction-Aware Router. Automated compliance report generation with evidence chain verification, plus intelligent routing that respects data residency requirements across jurisdictions."
+              tagline="My software is always audit-ready." stier="S-Tier #084 + #188 · AUDIT×COMPASS" roi='"Regulatory filings automated. Zero compliance violations in 12 months."' colorClass="blue" />
           </SectionBlock>
 
           {/* ═══ Mana Distribution Channel ═══ */}
@@ -725,7 +839,7 @@ RETURN TO CALLER`}</PipelineBlock>
                 <TaskItem>Governor-only Store management UI — add/edit/archive layers</TaskItem>
                 <TaskItem>CJPI minimum threshold gate (below threshold → Junkyard)</TaskItem>
                 <TaskItem>Suite builder — group related layers into purchasable bundles</TaskItem>
-                <TaskItem>Seed initial catalog: Top 3 launch layers + 7–17 from existing output</TaskItem>
+                <TaskItem>Seed initial catalog: Top 20 launch layers + compound suites from existing output</TaskItem>
                 <TaskItem>Pillar tagging system (Resilience, Foresight, Security, Intelligence, Governance…)</TaskItem>
               </div>
               <DeliverableTag>Deliverable</DeliverableTag>
