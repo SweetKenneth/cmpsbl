@@ -46,7 +46,8 @@ interface SourceFileData {
 export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }: Props) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
-  const [integrityHash, setIntegrityHash] = useState('');
+  const [ceremonyOpen, setCeremonyOpen] = useState(false);
+  const [ceremonyName, setCeremonyName] = useState('');
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
