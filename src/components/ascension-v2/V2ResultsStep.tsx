@@ -22,10 +22,11 @@ import type { UnifiedCapabilityInput } from '@/lib/export/unified-capability-fil
 interface Props {
   capabilities: ReadonlyArray<DiscoveredCapability>;
   dedup: DedupResult;
+  enhanced?: boolean;
   onReset: () => void;
 }
 
-export function V2ResultsStep({ capabilities, dedup, onReset }: Props) {
+export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }: Props) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [integrityHash, setIntegrityHash] = useState('');

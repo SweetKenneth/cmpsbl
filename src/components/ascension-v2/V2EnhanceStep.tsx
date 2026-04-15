@@ -65,7 +65,17 @@ export function V2EnhanceStep({ onComplete }: Props) {
       // Run Mana function boundary detection on the uploaded package
       const combinedSource = analysis.ingestedFiles.map(f => f.content).join('\n');
       const boundaries = detectFunctionBoundaries(combinedSource);
-      const plan = buildAttachmentPlan(boundaries);
+      // Use all 40 substrate primitives as the active set for attachment planning
+      const activePrimitives = new Set([
+        'DEFENSE','GOVERNANCE','CONSCIENCE','COMPASS','AUDIT','BEACON',
+        'BRAIN','MEMORY','CORTEX','ORACLE','INTENT','LINGUA',
+        'IDENTITY','TRUST','VERITAS','RAMPART','SIEVE','GAUNTLET',
+        'BASTION','WATCHTOWER','ATLAS','RELAY','FAILSAFE','DREAM',
+        'NERVE','REFLEX','EVOLUTION','VISION','ARCHITECT','MONOLITH',
+        'OBSIDIAN','WRAITH','RAPTOR','PRIMITIVE','AUTOMATON','SENTINEL',
+        'PHANTOM','CIPHER','NEXUS','FORGE',
+      ]);
+      const plan = buildAttachmentPlan(boundaries, activePrimitives);
       const serializedPlan = serializeAttachmentPlan(plan);
 
       // Store the enhancement in artifact_registry with Mana metadata
