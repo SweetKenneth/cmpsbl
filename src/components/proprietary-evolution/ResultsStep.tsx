@@ -121,7 +121,7 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground flex items-center gap-1.5">
               <Shield className="w-3 h-3" />
-              Overall Quality
+              CJPI Quality
             </span>
             <span className={cn("font-bold", scoreColor(avgScore))}>
               {avgScore >= 85 ? 'Excellent' : avgScore >= 60 ? 'Good' : 'Fair'}
@@ -145,7 +145,7 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
             ) : (
               <Download className="w-4 h-4" />
             )}
-            {exporting ? 'Generating…' : 'Download All Capabilities'}
+            {exporting ? 'Generating…' : 'Download Ascended Code'}
           </Button>
         )}
 
@@ -156,7 +156,7 @@ export function ResultsStep({ results, sourceFiles, onReset }: Props) {
           onClick={onReset}
         >
           <RotateCcw className="w-4 h-4" />
-          Start Over with New Code
+          Start Over
         </Button>
       </div>
     </div>
