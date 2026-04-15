@@ -2,11 +2,11 @@
  * Unified Ascension + Mana Export Pipeline
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Produces a single export that combines:
- *   1. Mana-wrapped code (Layer 2 wrappers on user's functions)
- *   2. Original user code (unchanged)
- *   3. Unified runtime (cmpsbl.*)
- *   4. Activation guide (lifecycle docs)
- *   5. Existing docs (README, LICENSE, PROOF, PIPELINE-DETAILS)
+ *   1. Ascended code (runtime embedded inline, capabilities pre-activated)
+ *   2. Original user code (unchanged, byte-for-byte)
+ *   3. USER-GUIDE.html (single unified doc with TOC)
+ *   4. LICENSE.html (branded)
+ *   5. manifest.json (machine-readable)
  *
  * This is the convergence of both patents:
  *   - U.S. App. No. 64/029,678 (Ascension — discovery + transformation)
@@ -16,9 +16,9 @@
  *   Ascension discovers capabilities →
  *   findings-bridge detects function boundaries →
  *   attachment plan maps capabilities to functions →
- *   wrapper generator produces Layer 2 wrapped code →
- *   lifecycle bridge generates activation guide →
- *   ZIP bundles everything with docs
+ *   embedded runtime + wrappers inline into each file →
+ *   USER-GUIDE consolidates all documentation →
+ *   ZIP bundles ascended/ + original/ + docs
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -122,9 +122,9 @@ function generateEmbeddedRuntimeTS(): string {
 //   > mana detach <functionName> <capability>
 
 interface ManaLayer2Config {
-  readonly capabilities: string[];
+  capabilities: string[];
   readonly runId: string;
-  readonly active: boolean;
+  active: boolean;
 }
 
 const _manaRegistry = new Map<string, ManaLayer2Config>();
@@ -219,12 +219,35 @@ function generateEmbeddedRuntimePython(): string {
 #   > mana detach <function_name> <capability>
 
 import functools
+import asyncio
+import inspect
 
 _mana_registry = {}
 
 def mana_wrap(fn, name, capabilities, run_id):
     config = {"capabilities": list(capabilities), "run_id": run_id, "active": True}
     _mana_registry[name] = config
+
+    if inspect.iscoroutinefunction(fn):
+        @functools.wraps(fn)
+        async def wrapped_async(*args, **kwargs):
+            entry = _mana_registry.get(name)
+            if not entry or not entry["active"]:
+                return await fn(*args, **kwargs)
+
+            # Layer 2 pre-flight
+            for cap in entry["capabilities"]:
+                if "defense" in cap or "sanitizer" in cap:
+                    for arg in args:
+                        if isinstance(arg, str) and len(arg) > 1_000_000:
+                            raise ValueError(f"[CMPSBL® DEFENSE] Input exceeds safe boundary for {name}")
+
+            result = await fn(*args, **kwargs)
+            _mana_observe(name, entry["capabilities"], True)
+            return result
+
+        wrapped_async.__mana_name__ = f"mana_{name}"
+        return wrapped_async
 
     @functools.wraps(fn)
     def wrapped(*args, **kwargs):
@@ -239,10 +262,7 @@ def mana_wrap(fn, name, capabilities, run_id):
                     if isinstance(arg, str) and len(arg) > 1_000_000:
                         raise ValueError(f"[CMPSBL® DEFENSE] Input exceeds safe boundary for {name}")
 
-        # Layer 1: original function
         result = fn(*args, **kwargs)
-
-        # Layer 2 post-flight: observation
         _mana_observe(name, entry["capabilities"], True)
         return result
 
@@ -274,6 +294,7 @@ def mana_inspect():
 function generateEmbeddedRuntimePHP(): string {
   return `
 // ═══ CMPSBL® Embedded Layer 2 Runtime ════════════════════════════════════════
+// U.S. Patent App. Nos. 64/029,678 & 64/031,637
 // Capabilities are PRE-ACTIVATED. Deactivate via CMPSBL® Terminal.
 
 $_mana_registry = [];
@@ -292,9 +313,29 @@ function cmpsbl_mana_wrap($fn_name, $capabilities, $run_id) {
         if (!$entry || !$entry['active']) {
             return call_user_func_array($fn_name, $args);
         }
+
+        // Layer 2 pre-flight: capability enforcement
+        foreach ($entry['capabilities'] as $cap) {
+            if (strpos($cap, 'defense') !== false || strpos($cap, 'sanitizer') !== false) {
+                foreach ($args as $arg) {
+                    if (is_string($arg) && strlen($arg) > 1000000) {
+                        throw new \\RuntimeException("[CMPSBL® DEFENSE] Input exceeds safe boundary for $fn_name");
+                    }
+                }
+            }
+        }
+
+        // Layer 1: original function executes unchanged
         $result = call_user_func_array($fn_name, $args);
+
+        // Layer 2 post-flight: observation
+        cmpsbl_mana_observe($fn_name, $entry['capabilities'], true);
         return $result;
     };
+}
+
+function cmpsbl_mana_observe($name, $capabilities, $success) {
+    // Telemetry collection point — BEACON primitive
 }
 
 function cmpsbl_mana_detach($fn_name, $capability = null) {
@@ -309,6 +350,11 @@ function cmpsbl_mana_detach($fn_name, $capability = null) {
     }
     $_mana_registry[$fn_name]['active'] = false;
     return true;
+}
+
+function cmpsbl_mana_inspect() {
+    global $_mana_registry;
+    return $_mana_registry;
 }
 
 // ═══ END EMBEDDED RUNTIME ════════════════════════════════════════════════════
@@ -593,7 +639,7 @@ export async function generateUnifiedExport(input: UnifiedExportInput): Promise<
   const { results, sourceFiles } = input;
   const { runId, candidateName, sourceLanguage, capabilities } = results;
   
-  const ext = LANG_EXT[sourceLanguage] || '.ts';
+  const ext = LANG_EXT[sourceLanguage] || '.ts'; // Used for file naming context
   const zip = new JSZip();
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-ascended-${candidateName.toLowerCase()}-${timestamp}`;

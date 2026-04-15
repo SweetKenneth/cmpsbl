@@ -171,7 +171,7 @@ export function generateUserGuideHTML(input: UserGuideInput): string {
 
   <div class="tier-summary">
     ${Object.entries(tierCounts).map(([tier, count]) =>
-      `<span class="tier-badge tier-${tier.toLowerCase()}">${esc(tier)} × ${count}</span>`
+      `<span class="tier-badge tier-${tier.toLowerCase().replace(/[^a-z]/g, '')}">${esc(tier)} × ${count}</span>`
     ).join(' ')}
   </div>
 
@@ -193,7 +193,7 @@ export function generateUserGuideHTML(input: UserGuideInput): string {
         </td>
         <td class="mono">${esc(c.nodeA)} × ${esc(c.nodeB)}</td>
         <td class="center">${c.score}</td>
-        <td class="center"><span class="tier-badge tier-${c.tier.toLowerCase()}">${esc(c.tier)}</span></td>
+        <td class="center"><span class="tier-badge tier-${c.tier.toLowerCase().replace(/[^a-z]/g, '')}">${esc(c.tier)}</span></td>
       </tr>`).join('')}
     </tbody>
   </table>
