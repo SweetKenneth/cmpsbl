@@ -14,7 +14,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Upload, Search, Lock, Download, Check, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/components/auth/AuthProvider';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
