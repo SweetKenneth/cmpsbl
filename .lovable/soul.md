@@ -23,7 +23,7 @@ These rules are absolute. No exceptions. No "just this once." No optimization ju
 | Protected Component | Location |
 |---------------------|----------|
 | Ascension Engine pipeline | `src/lib/ascension/` — scan → classify → fingerprint → L2 generation → export ZIP |
-| 5 Behavioral Engines | DEFENSE, CORTEX, NEXUS, BRAIN, ORACLE — interfaces, scoring, gating, orchestration |
+| **5 Behavioral Engines (HEART OF THE ALGORITHM)** | DEFENSE, CORTEX, NEXUS, BRAIN, ORACLE — the 5 engines that power Ascension's core algorithm. Policy logic, scoring, gating, orchestration. **Absolutely untouchable.** |
 | Layer 2 wrapper generation | Convex Core™ output, dual-layer architecture, polyglot emitters |
 | Mana attachment engine | `src/lib/mana/` — session creation, 5-phase execution, Lex governance |
 | Lex governance gate | Fingerprint verification, verdict logic, rule priority ordering |
