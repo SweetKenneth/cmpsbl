@@ -249,7 +249,7 @@ const App = () => {
                     </a>
                     <ScrollToTop />
                     {/* Technical difficulties banner */}
-                    <div className="fixed top-0 inset-x-0 z-[100] bg-yellow-500/95 text-black text-center text-xs sm:text-sm font-semibold py-2 px-4 backdrop-blur-sm">
+                    <div className="fixed top-0 inset-x-0 z-[9998] bg-yellow-500/95 text-black text-center text-xs sm:text-sm font-semibold py-2 px-4 backdrop-blur-sm shadow-lg">
                       ⚠️ We are currently experiencing technical difficulties. Some features may be temporarily unavailable.
                     </div>
                     <div className="h-9 sm:h-10" /> {/* Spacer for fixed banner */}
