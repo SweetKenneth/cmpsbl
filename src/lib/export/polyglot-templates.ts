@@ -87,7 +87,7 @@ const CORE_MODULES = [
 function generateRust(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi, topCap } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName}
+//  CMPSBL® Silent Symbiosis — ${packName}
 //  Single-File Distribution | Rust | Zero Dependencies
 //
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
@@ -453,7 +453,7 @@ mod tests {
 function generateGo(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi, topCap } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName}
+//  CMPSBL® Silent Symbiosis — ${packName}
 //  Single-File Distribution | Go | Zero Dependencies
 //
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
@@ -734,8 +734,10 @@ func SelfTest() map[string]bool {
 \treturn results
 }
 
-// Ensure json import is used
-var _ = json.Marshal
+// MarshalJSON exposes Pack as JSON for tooling
+func (p *PipelineResult) ToJSON() ([]byte, error) {
+	return json.Marshal(p)
+}
 `;
 }
 
@@ -746,7 +748,7 @@ var _ = json.Marshal
 function generateJava(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi, topCap } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName}
+//  CMPSBL® Silent Symbiosis — ${packName}
 //  Single-File Distribution | Java | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  © 2025–2026 CMPSBL®. All rights reserved.
@@ -953,7 +955,7 @@ ${capabilities.map(c => `        Map.of("name", "${c.name}", "cjpi", ${c.cjpiSco
     }
 
     public static void main(String[] args) {
-        System.out.println("CMPSBL® Capability Pack — ${packName}");
+        System.out.println("CMPSBL® Silent Symbiosis — ${packName}");
         System.out.println("Capabilities: " + CAPABILITIES.size());
         for (Map<String, Object> cap : CAPABILITIES) {
             Map<String, Object> input = new HashMap<>();
@@ -973,7 +975,7 @@ ${capabilities.map(c => `        Map.of("name", "${c.name}", "cjpi", ${c.cjpiSco
 function generateCSharp(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi, topCap } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName}
+//  CMPSBL® Silent Symbiosis — ${packName}
 //  Single-File Distribution | C# | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  © 2025–2026 CMPSBL®. All rights reserved.
@@ -1151,7 +1153,7 @@ ${capabilities.map(c => `            new() { ["name"] = "${c.name}", ["cjpi"] = 
 function generateSwift(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi, topCap } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName}
+//  CMPSBL® Silent Symbiosis — ${packName}
 //  Single-File Distribution | Swift | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  © 2025–2026 CMPSBL®. All rights reserved.
@@ -1325,7 +1327,7 @@ func validate() -> Bool { cmpsblValidate() }
 
 function generateKotlin(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi } = ctx;
-  return `// CMPSBL® Capability Pack — ${packName} | Kotlin | Zero Dependencies
+  return `// CMPSBL® Silent Symbiosis — ${packName} | Kotlin | Zero Dependencies
 // ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 // © 2025–2026 CMPSBL®. All rights reserved.
 
@@ -1336,7 +1338,11 @@ fun computeCJPI(n: Double, u: Double, cx: Double, co: Double): Int =
     (n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20).coerceIn(0.0, 100.0).roundToInt()
 
 fun tierFromCJPI(score: Int): String = when {
-    score >= 92 -> "apex"; score >= 80 -> "mythic"; score >= 65 -> "relic"; score >= 45 -> "prime"; else -> "mint"
+    score >= 92 -> "apex"
+    score >= 80 -> "mythic"
+    score >= 65 -> "relic"
+    score >= 45 -> "prime"
+    else -> "mint"
 }
 
 private fun quickHash(s: String): String {
@@ -1395,7 +1401,7 @@ fun validate() = packCapabilities.all { it.fingerprint.isNotEmpty() && it.cjpi >
 function generateRuby(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi } = ctx;
   return `# ═══════════════════════════════════════════════════════════════════════════════
-#  CMPSBL® Capability Pack — ${packName} | Ruby | Zero Dependencies
+#  CMPSBL® Silent Symbiosis — ${packName} | Ruby | Zero Dependencies
 #  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 #  © 2025–2026 CMPSBL®. All rights reserved.
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -1477,7 +1483,7 @@ ${capabilities.map(c => `    { name: '${c.name}', cjpi: ${c.cjpiScore}, tier: '$
 end
 
 if __FILE__ == $0
-  puts "CMPSBL® Capability Pack — ${packName}"
+  puts "CMPSBL® Silent Symbiosis — ${packName}"
   Cmpsbl::CAPABILITIES.each do |cap|
     r = Cmpsbl.execute(cap[:name], { '_test' => true })
     puts "\#{r[:success] ? '✅' : '❌'} \#{cap[:name]}"
@@ -1493,7 +1499,7 @@ end
 function generateC(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi } = ctx;
   return `/* ═══════════════════════════════════════════════════════════════════════════════
- *  CMPSBL® Capability Pack — ${packName} | C | Zero Dependencies
+ *  CMPSBL® Silent Symbiosis — ${packName} | C | Zero Dependencies
  *  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
  *  © 2025–2026 CMPSBL®. All rights reserved.
  * ═══════════════════════════════════════════════════════════════════════════════ */
@@ -1605,7 +1611,7 @@ int cmpsbl_validate(void) {
 
 #ifdef CMPSBL_MAIN
 int main(void) {
-    printf("CMPSBL® Capability Pack — ${packName}\\n");
+    printf("CMPSBL® Silent Symbiosis — ${packName}\\n");
     printf("Capabilities: %d\\n", CAPABILITY_COUNT);
     for (int i = 0; i < CAPABILITY_COUNT; i++) {
         PipelineResult r = cmpsbl_execute(CAPABILITIES[i].name);
@@ -1620,7 +1626,7 @@ int main(void) {
 function generateCpp(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules, avgCjpi } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName} | C++ | Zero Dependencies
+//  CMPSBL® Silent Symbiosis — ${packName} | C++ | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  © 2025–2026 CMPSBL®. All rights reserved.
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1632,6 +1638,7 @@ function generateCpp(ctx: GeneratorContext): string {
 #include <chrono>
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 #include <functional>
 #include <sstream>
 
@@ -1653,7 +1660,7 @@ inline std::string tier_from_cjpi(int score) {
 inline std::string quick_hash(const std::string& input) {
     long long h = 5381;
     for (char c : input) h = ((h << 5) + h) + static_cast<unsigned char>(c);
-    char buf[9]; snprintf(buf, sizeof(buf), "%08llx", std::abs(h));
+    char buf[17]; snprintf(buf, sizeof(buf), "%08llx", static_cast<unsigned long long>(h < 0 ? -h : h));
     return buf;
 }
 
@@ -1733,7 +1740,7 @@ inline PipelineResult execute_chain(const std::vector<std::string>& chain, const
 function generateLua(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `-- ═══════════════════════════════════════════════════════════════════════════════
---  CMPSBL® Capability Pack — ${packName} | Lua | Zero Dependencies
+--  CMPSBL® Silent Symbiosis — ${packName} | Lua | Zero Dependencies
 --  ${capabilities.length} capabilities | ${allModules.length} modules
 --  © 2025–2026 CMPSBL®. All rights reserved.
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -1819,7 +1826,7 @@ return cmpsbl
 function generateDart(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName} | Dart | Zero Dependencies
+//  CMPSBL® Silent Symbiosis — ${packName} | Dart | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules
 //  © 2025–2026 CMPSBL®. All rights reserved.
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1841,7 +1848,7 @@ String tierFromCJPI(int score) {
 String _quickHash(String input) {
   int h = 5381;
   for (int i = 0; i < input.length; i++) { h = ((h << 5) + h) + input.codeUnitAt(i); h &= 0xFFFFFFFF; }
-  return h.abs.toRadixString(16).padLeft(8, '0');
+  return h.abs().toRadixString(16).padLeft(8, '0');
 }
 
 // §2 — MODULE EFFECTS
@@ -1903,7 +1910,7 @@ bool validate() => packCapabilities.every((c) => c.fingerprint.isNotEmpty && c.c
 function generateScala(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName} | Scala | Zero Dependencies
+//  CMPSBL® Silent Symbiosis — ${packName} | Scala | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules
 //  © 2025–2026 CMPSBL®. All rights reserved.
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1914,7 +1921,11 @@ object Cmpsbl {
     math.round(math.max(0, math.min(100, n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20))).toInt
 
   def tierFromCJPI(score: Int): String = score match {
-    case s if s >= 92 => "apex"; case s if s >= 80 => "mythic"; case s if s >= 65 => "relic"; case s if s >= 45 => "prime"; case _ => "mint"
+    case s if s >= 92 => "apex"
+    case s if s >= 80 => "mythic"
+    case s if s >= 65 => "relic"
+    case s if s >= 45 => "prime"
+    case _ => "mint"
   }
 
   private def quickHash(s: String): String = {
@@ -1970,7 +1981,7 @@ ${capabilities.map(c => `    CapabilityDef("${c.name}", ${c.cjpiScore}, "${c.tie
 function generateElixir(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `# ═══════════════════════════════════════════════════════════════════════════════
-#  CMPSBL® Capability Pack — ${packName} | Elixir | Zero Dependencies
+#  CMPSBL® Silent Symbiosis — ${packName} | Elixir | Zero Dependencies
 #  ${capabilities.length} capabilities | ${allModules.length} modules
 #  © 2025–2026 CMPSBL®. All rights reserved.
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -2001,7 +2012,10 @@ defmodule Cmpsbl do
   defp handle_module(data, "ORACLE", meta), do: Map.put(data, "_prediction", %{"confidence" => Map.get(meta, "cjpi", 50) / 100.0, "model" => "oracle-v1"})
   defp handle_module(data, "IMMUNITY", _meta), do: Map.put(data, "_immunity", %{"protected" => true, "fallback" => "standby"})
   defp handle_module(data, "CORTEX", _meta), do: Map.put(data, "_orchestration", %{"status" => "coordinated"})
-  defp handle_module(data, "EVOLUTION", meta), do: (f = Map.get(meta, "cjpi", 50) / 100.0; Map.put(data, "_evolution", %{"fitness" => f, "strategy" => if(f > 0.7, do: "exploit", else: "explore")}))
+  defp handle_module(data, "EVOLUTION", meta) do
+    f = Map.get(meta, "cjpi", 50) / 100.0
+    Map.put(data, "_evolution", %{"fitness" => f, "strategy" => if(f > 0.7, do: "exploit", else: "explore")})
+  end
   defp handle_module(data, "SHADOW", _meta), do: Map.put(data, "_shadow", %{"verified" => true, "hash" => quick_hash(inspect(data))})
   defp handle_module(data, mod, _meta), do: Map.put(data, "_module_\#{String.downcase(mod)}", %{"processed" => true})
 
@@ -2038,7 +2052,7 @@ end
 function generateR(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `# ═══════════════════════════════════════════════════════════════════════════════
-#  CMPSBL® Capability Pack — ${packName} | R | Zero Dependencies
+#  CMPSBL® Silent Symbiosis — ${packName} | R | Zero Dependencies
 #  ${capabilities.length} capabilities | ${allModules.length} modules
 #  © 2025–2026 CMPSBL®. All rights reserved.
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -2114,7 +2128,7 @@ cmpsbl_validate <- function() all(sapply(cmpsbl_capabilities, function(c) nchar(
 function generateHaskell(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `-- ═══════════════════════════════════════════════════════════════════════════════
---  CMPSBL® Capability Pack — ${packName} | Haskell | Zero Dependencies
+--  CMPSBL® Silent Symbiosis — ${packName} | Haskell | Zero Dependencies
 --  ${capabilities.length} capabilities | ${allModules.length} modules
 --  © 2025–2026 CMPSBL®. All rights reserved.
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -2160,7 +2174,9 @@ data CapabilityDef = CapabilityDef { capName :: String, capCJPI :: Int, capTier 
 
 capabilities :: [CapabilityDef]
 capabilities =
-${capabilities.map(c => `  [ CapabilityDef "${c.name}" ${c.cjpiScore} "${c.tier}" [${c.chain.map(m => `"${m}"`).join(', ')}] "${c.fingerprint.slice(0, 12).toUpperCase()}" ]`).join(' ++\n')}
+  [
+${capabilities.map(c => `    CapabilityDef "${c.name}" ${c.cjpiScore} "${c.tier}" [${c.chain.map(m => `"${m}"`).join(', ')}] "${c.fingerprint.slice(0, 12).toUpperCase()}"`).join(',\n')}
+  ]
 
 execute :: String -> JsonMap -> PipelineResult
 execute name input = case filter (\\c -> capName c == name) capabilities of
@@ -2181,7 +2197,7 @@ validate = all (\\c -> not (null $ capFingerprint c) && capCJPI c > 0) capabilit
 function generateZig(ctx: GeneratorContext): string {
   const { capabilities, packName, allModules } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName} | Zig | Zero Dependencies
+//  CMPSBL® Silent Symbiosis — ${packName} | Zig | Zero Dependencies
 //  ${capabilities.length} capabilities | ${allModules.length} modules
 //  © 2025–2026 CMPSBL®. All rights reserved.
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2246,7 +2262,7 @@ pub fn listCapabilities(allocator: std.mem.Allocator) ![][]const u8 {
 function generateVerilog(ctx: GeneratorContext): string {
   const { capabilities, packName } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName} | Verilog
+//  CMPSBL® Silent Symbiosis — ${packName} | Verilog
 //  ${capabilities.length} capabilities | Hardware Description
 //  © 2025–2026 CMPSBL®. All rights reserved.
 //
@@ -2334,7 +2350,7 @@ ${capabilities.map((c, i) => `// Cap ${i}: ${c.name} | CJPI ${c.cjpiScore} | ${c
 function generateVHDL(ctx: GeneratorContext): string {
   const { capabilities, packName } = ctx;
   return `-- ═══════════════════════════════════════════════════════════════════════════════
---  CMPSBL® Capability Pack — ${packName} | VHDL
+--  CMPSBL® Silent Symbiosis — ${packName} | VHDL
 --  ${capabilities.length} capabilities | Hardware Description
 --  © 2025–2026 CMPSBL®. All rights reserved.
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -2418,7 +2434,7 @@ ${capabilities.map((c, i) => `-- Cap ${i}: ${c.name} | CJPI ${c.cjpiScore} | ${c
 function generateSystemVerilog(ctx: GeneratorContext): string {
   const { capabilities, packName } = ctx;
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName} | SystemVerilog
+//  CMPSBL® Silent Symbiosis — ${packName} | SystemVerilog
 //  ${capabilities.length} capabilities | Hardware Description
 //  © 2025–2026 CMPSBL®. All rights reserved.
 // ═══════════════════════════════════════════════════════════════════════════════
