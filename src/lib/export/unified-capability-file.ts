@@ -2661,6 +2661,9 @@ export function generateUnifiedCapabilityFile(
   selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   let raw: string;
+  // Single boundary: normalize chains for every language emitter so raw
+  // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.
+  capabilities = sanitizeCapabilities(capabilities);
 
   if (lang === 'typescript' || lang === 'javascript') {
     raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
