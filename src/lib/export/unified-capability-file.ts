@@ -1765,13 +1765,14 @@ export function generateUnifiedCapabilityFile(
   packName: string,
   lang: string,
   userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   let raw: string;
 
   if (lang === 'typescript' || lang === 'javascript') {
-    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles);
+    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'python') {
-    raw = generateUnifiedPython(capabilities, packName, userSourceFiles);
+    raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'php') {
     raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
   } else if (hasPolyglotGenerator(lang)) {
