@@ -387,3 +387,217 @@ export function extractFileContracts(
     runtimeAssumptionCount: contract.runtimeAssumptions.length,
   };
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §7 — MERGE SIMULATION (Gap #7)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type { MergeSimulation };
+
+export interface V2MergeBatchReport {
+  simulations: MergeSimulation[];
+  beneficial: number;
+  neutral: number;
+  risky: number;
+  topImpact: string[];
+  avgNetImprovement: number;
+}
+
+/**
+ * Dry-run a batch of compatibility reports through merge simulation.
+ * V2 doesn't compute structural matches yet, so we pass an empty list —
+ * the simulator degrades gracefully and still scores tension/synergy.
+ */
+export function simulateMergeBatch(
+  reports: ReadonlyArray<CompatibilityReport>,
+  selection: Set<string>,
+): V2MergeBatchReport {
+  const structural: StructuralMatch[] = [];
+  const sims = reports
+    .map((r) => simulateMerge(r.primitive, r, structural, selection))
+    .sort((a, b) => b.netImprovement - a.netImprovement);
+  const total = sims.length || 1;
+  const sumNet = sims.reduce((s, x) => s + x.netImprovement, 0);
+  return {
+    simulations: sims,
+    beneficial: sims.filter((s) => s.verdict === 'beneficial').length,
+    neutral: sims.filter((s) => s.verdict === 'neutral').length,
+    risky: sims.filter((s) => s.verdict === 'risky').length,
+    topImpact: sims.slice(0, 3).map((s) => s.primitive),
+    avgNetImprovement: Math.round((sumNet / total) * 1000) / 1000,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §8 — DELTA MEASUREMENT (Gap #8 — V2-shaped)
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// V1 delta-measurement requires a PipelineContext snapshot that V2 doesn't run.
+// Instead, we measure the discovery-set delta: pre-dedup → post-dedup →
+// post-lock. This proves the pipeline mutated state without fabricating
+// runtime data we don't have.
+//
+
+export interface DiscoverySetDelta {
+  rawCount: number;
+  uniqueCount: number;
+  ascendedCount: number;
+  collapseRatio: number;       // unique / raw
+  retentionRatio: number;      // ascended / unique
+  topScoreDelta: number;       // post-dedup top - pre-dedup top
+  bandShift: {
+    high: number;
+    medium: number;
+    low: number;
+    hypothesis: number;
+  };
+  verdict: 'amplified' | 'preserved' | 'compressed';
+}
+
+interface BandedItem { cjpiScore: number; band?: string }
+
+export function measureDiscoveryDelta(
+  preDedup: ReadonlyArray<BandedItem>,
+  postDedup: ReadonlyArray<BandedItem>,
+  ascendedCount: number,
+): DiscoverySetDelta {
+  const raw = preDedup.length;
+  const unique = postDedup.length;
+  const collapse = raw === 0 ? 0 : Math.round((unique / raw) * 1000) / 1000;
+  const retention = unique === 0 ? 0 : Math.round((ascendedCount / unique) * 1000) / 1000;
+
+  const topPre = preDedup.reduce((m, c) => (c.cjpiScore > m ? c.cjpiScore : m), 0);
+  const topPost = postDedup.reduce((m, c) => (c.cjpiScore > m ? c.cjpiScore : m), 0);
+  const topScoreDelta = Math.round((topPost - topPre) * 100) / 100;
+
+  const tally = (items: ReadonlyArray<BandedItem>) =>
+    items.reduce(
+      (acc, c) => {
+        const k = (c.band ?? 'hypothesis') as 'high' | 'medium' | 'low' | 'hypothesis';
+        acc[k] = (acc[k] ?? 0) + 1;
+        return acc;
+      },
+      { high: 0, medium: 0, low: 0, hypothesis: 0 },
+    );
+  const pre = tally(preDedup);
+  const post = tally(postDedup);
+  const bandShift = {
+    high: post.high - pre.high,
+    medium: post.medium - pre.medium,
+    low: post.low - pre.low,
+    hypothesis: post.hypothesis - pre.hypothesis,
+  };
+
+  // Verdict: did dedup amplify quality (more high, fewer low) or just compress?
+  const verdict: DiscoverySetDelta['verdict'] =
+    bandShift.high > 0 || topScoreDelta > 0
+      ? 'amplified'
+      : collapse < 0.5
+        ? 'compressed'
+        : 'preserved';
+
+  return {
+    rawCount: raw,
+    uniqueCount: unique,
+    ascendedCount,
+    collapseRatio: collapse,
+    retentionRatio: retention,
+    topScoreDelta,
+    bandShift,
+    verdict,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §9 — PRIMITIVE LEARNING (Gap #9)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Record per-collision outcome so the substrate compounds across runs.
+ * Success = collision produced a banded discovery; failure = collision
+ * was attempted but yielded nothing.
+ */
+export function recordCollisionOutcome(primitiveName: string, success: boolean): void {
+  recordPrimitiveOutcome(primitiveName, success);
+}
+
+export function getCollisionLearning(primitiveName: string) {
+  return {
+    stats: getPrimitiveLearningStats(primitiveName),
+    reliable: isPrimitiveReliable(primitiveName),
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §10 — FEEDBACK LOOP (Gap #10)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type { LearnedSignal, FeedbackStats, FeedbackExtraction };
+
+/**
+ * Confirm a discovery match and feed its surrounding context back into the
+ * learned-signal vocabulary. Only call this for high/medium-band discoveries
+ * to avoid polluting the glossary with hypothesis noise.
+ */
+export function recordV2Confirmation(input: {
+  codeContent: string;
+  primitive: string;
+  archetypeId: string;
+  matchTerms: ReadonlyArray<string>;
+}): { added: number; total: number } {
+  const extraction = extractContext(
+    input.codeContent,
+    input.primitive,
+    input.archetypeId,
+    [...input.matchTerms],
+  );
+  const added = recordConfirmedMatch(extraction);
+  const stats = getFeedbackStats();
+  return { added: added.length, total: stats.totalSignals };
+}
+
+export function getV2FeedbackVocabulary(minWeight = 0.5): Map<string, string[]> {
+  return getHighConfidenceSignals(minWeight);
+}
+
+export function getV2FeedbackStats(): FeedbackStats {
+  return getFeedbackStats();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §11 — SEMANTIC DRIFT (Gap #11)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type { DriftDetection };
+
+export interface V2DriftReport {
+  ecosystem: string;
+  detections: DriftDetection[];
+  highConfidenceCount: number;
+  uniqueCanonicals: number;
+}
+
+/**
+ * Detect cross-ecosystem synonyms in the candidate corpus so the discovery
+ * loop knows which canonical archetypes are likely present even when the
+ * code uses a different vocabulary (e.g. Go "limiter" → rate_limiting).
+ */
+export function detectV2Drift(
+  files: ReadonlyArray<{ name: string; content: string }>,
+  ecosystemHint?: string,
+): V2DriftReport {
+  const usable = files.filter((f) => typeof f.content === 'string' && f.content.length > 0);
+  if (usable.length === 0) {
+    return { ecosystem: 'unknown', detections: [], highConfidenceCount: 0, uniqueCanonicals: 0 };
+  }
+  const corpus = usable.map((f) => f.content).join('\n\n');
+  const ecosystem = (ecosystemHint || detectEcosystem(corpus)).toLowerCase();
+  const detections = detectDrift(corpus, ecosystem);
+  const canonicals = new Set(detections.map((d) => d.canonical));
+  return {
+    ecosystem,
+    detections,
+    highConfidenceCount: detections.filter((d) => d.confidence >= 0.8).length,
+    uniqueCanonicals: canonicals.size,
+  };
+}
