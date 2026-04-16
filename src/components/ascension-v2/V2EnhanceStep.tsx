@@ -71,15 +71,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
 
       const combinedSource = analysis.ingestedFiles.map(f => f.content).join('\n');
       const boundaries = detectFunctionBoundaries(combinedSource);
-      const activePrimitives = new Set([
-        'DEFENSE','GOVERNANCE','CONSCIENCE','COMPASS','AUDIT','BEACON',
-        'BRAIN','MEMORY','CORTEX','ORACLE','INTENT','LINGUA',
-        'IDENTITY','TRUST','VERITAS','RAMPART','SIEVE','GAUNTLET',
-        'BASTION','WATCHTOWER','ATLAS','RELAY','FAILSAFE','DREAM',
-        'NERVE','REFLEX','EVOLUTION','VISION','ARCHITECT','MONOLITH',
-        'OBSIDIAN','WRAITH','RAPTOR','PRIMITIVE','AUTOMATON','SENTINEL',
-        'PHANTOM','CIPHER','NEXUS','FORGE',
-      ]);
+      const activePrimitives = new Set(CANONICAL_PRIMITIVES);
       const plan = buildAttachmentPlan(boundaries, activePrimitives);
       const serializedPlan = serializeAttachmentPlan(plan);
 
