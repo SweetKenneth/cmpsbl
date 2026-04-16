@@ -769,39 +769,48 @@ export const execute = cmpsbl_execute;
  * Execute a raw module chain directly (advanced usage).
  * @example const result = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
  */
-export function executeChain(chain: string[], input: Record<string, unknown>): PipelineResult {
+export function cmpsbl_execute_chain(chain: string[], input: Record<string, unknown>): PipelineResult {
   return executePipeline(input, chain, { name: 'custom-chain', cjpi: 0, tier: 'mint', chain });
 }
+
+/** @deprecated Use cmpsbl_execute_chain instead */
+export const executeChain = cmpsbl_execute_chain;
 
 /**
  * Validate structural integrity of the entire pack.
  */
-export function validate(): { valid: boolean; capabilities: number; modules: number; fingerprints: string[] } {
-  const fps = PACK_META.capabilities.map(c => c.fingerprint);
+export function cmpsbl_validate(): { valid: boolean; capabilities: number; modules: number; fingerprints: string[] } {
+  const fps = CMPSBL_PACK_META.capabilities.map(c => c.fingerprint);
   return {
-    valid: fps.every(fp => fp.length > 0) && PACK_META.modules.length > 0,
-    capabilities: PACK_META.capabilities.length,
-    modules: PACK_META.modules.length,
+    valid: fps.every(fp => fp.length > 0) && CMPSBL_PACK_META.modules.length > 0,
+    capabilities: CMPSBL_PACK_META.capabilities.length,
+    modules: CMPSBL_PACK_META.modules.length,
     fingerprints: fps,
   };
 }
 
+/** @deprecated Use cmpsbl_validate instead */
+export const validate = cmpsbl_validate;
+
 /**
  * List all capabilities in this pack.
  */
-export function listCapabilities(): string[] {
-  return PACK_META.capabilities.map(c => c.name);
+export function cmpsbl_list_capabilities(): string[] {
+  return CMPSBL_PACK_META.capabilities.map(c => c.name);
 }
+
+/** @deprecated Use cmpsbl_list_capabilities instead */
+export const listCapabilities = cmpsbl_list_capabilities;
 
 /**
  * Quick self-test — run all capabilities with test input.
  */
-export function selfTest(): { passed: number; failed: number; results: Record<string, boolean> } {
+export function cmpsbl_self_test(): { passed: number; failed: number; results: Record<string, boolean> } {
   const results: Record<string, boolean> = {};
   let passed = 0, failed = 0;
-  for (const cap of PACK_META.capabilities) {
+  for (const cap of CMPSBL_PACK_META.capabilities) {
     try {
-      const r = execute(cap.name, { _test: true });
+      const r = cmpsbl_execute(cap.name, { _test: true });
       const ok = r._pipeline.success && r._cmpsbl.execution.original_executed;
       results[cap.name] = ok;
       ok ? passed++ : failed++;
@@ -809,7 +818,9 @@ export function selfTest(): { passed: number; failed: number; results: Record<st
   }
   return { passed, failed, results };
 }
-`;
+
+/** @deprecated Use cmpsbl_self_test instead */
+export const selfTest = cmpsbl_self_test;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
