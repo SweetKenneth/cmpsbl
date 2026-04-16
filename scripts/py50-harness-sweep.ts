@@ -1,0 +1,177 @@
+/**
+ * PY-50 Harness Sweep
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Runs 50 real-world Python OSS files through Ascension V2 with rotating
+ * CMPSBL layer stacks and validates each export through the pre-export harness
+ * AND an independent Python AST parse.
+ */
+import { readdirSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { execSync } from 'node:child_process';
+import {
+  generateUnifiedCapabilityFile,
+  type UnifiedCapabilityInput,
+} from '@/lib/export/unified-capability-file';
+import { getAvailableLayers } from '@/lib/export/cmpsbl-layers';
+import { runPreExportHarness } from '@/lib/ascension-v2/pre-export-harness';
+
+const SRC_DIR = '/tmp/py50';
+const OUT_DIR = '/tmp/py50-out';
+mkdirSync(OUT_DIR, { recursive: true });
+
+const FILES = readdirSync(SRC_DIR).filter(f => f.endsWith('.py')).sort();
+
+const CAPS: UnifiedCapabilityInput[] = [
+  {
+    id: 'sweep-cap-1', name: 'PySweep_Worker', cjpiScore: 92, tier: 'mythic',
+    chain: ['DEFENSE', 'BRAIN', 'IMMUNITY'],
+    fingerprint: 'PYSWEEP00000000000000000000000A0',
+    moatSignature: 'PY50_SWEEP', capabilityType: 'worker',
+  },
+];
+
+const allLayers = getAvailableLayers();
+
+// Rotate layer stacks across the 50 files for diverse coverage
+function stackFor(i: number): number[] {
+  const patterns: number[][] = [
+    [0],          [1],          [2],          [3],
+    [0, 1],       [0, 2],       [0, 3],       [1, 2],
+    [1, 3],       [2, 3],       [0, 1, 2],    [0, 1, 3],
+    [0, 2, 3],    [1, 2, 3],    [0, 1, 2, 3],
+  ];
+  return patterns[i % patterns.length];
+}
+
+interface Row {
+  file: string;
+  bytes: number;
+  layers: string;
+  passed: boolean;
+  critical: number;
+  soft: number;
+  astOk: boolean;
+  failedChecks: string[];
+}
+
+const rows: Row[] = [];
+let idx = 0;
+
+for (const file of FILES) {
+  const src = readFileSync(join(SRC_DIR, file), 'utf-8');
+  const layerIndices = stackFor(idx++);
+  const selectedLayers = layerIndices.map(i => allLayers[i]).filter(Boolean);
+
+  let ascendedCode = '';
+  let buildErr = '';
+  try {
+    ascendedCode = generateUnifiedCapabilityFile(
+      CAPS,
+      `sweep_${file.replace('.py', '')}`,
+      'python',
+      [{ name: file, extension: 'py', language: 'python', content: src }],
+      selectedLayers,
+    );
+    writeFileSync(join(OUT_DIR, `ascended-${file}`), ascendedCode);
+  } catch (e: any) {
+    buildErr = String(e?.message || e).split('\n')[0].slice(0, 160);
+  }
+
+  if (buildErr) {
+    rows.push({
+      file, bytes: src.length,
+      layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'none',
+      passed: false, critical: 99, soft: 0, astOk: false,
+      failedChecks: [`BUILD: ${buildErr}`],
+    });
+    continue;
+  }
+
+  const report = runPreExportHarness({
+    ascendedCode,
+    language: 'python',
+    originalFiles: [{ name: file, content: src }],
+    selectedLayers,
+  });
+
+  // Independent AST verify
+  let astOk = false;
+  let astErr = '';
+  try {
+    execSync(
+      `python3 -c "import ast,sys; ast.parse(open(sys.argv[1]).read())" "${join(OUT_DIR, `ascended-${file}`)}"`,
+      { timeout: 15000, stdio: 'pipe' },
+    );
+    astOk = true;
+  } catch (e: any) {
+    astErr = String(e?.stderr || e?.message || e).split('\n').filter(Boolean).slice(-1)[0]?.slice(0, 120) || 'parse error';
+  }
+
+  const failedChecks = report.checks
+    .filter(c => !c.passed)
+    .map(c => `${c.severity[0].toUpperCase()}:${c.id}`);
+  if (!astOk) failedChecks.push(`AST:${astErr}`);
+
+  rows.push({
+    file,
+    bytes: src.length,
+    layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+'),
+    passed: report.passed && astOk,
+    critical: report.criticalFailures,
+    soft: report.softWarnings,
+    astOk,
+    failedChecks,
+  });
+}
+
+// ── Report ──
+console.log('━'.repeat(120));
+console.log('PY-50 ASCENSION V2 + HARNESS SWEEP — 50 REAL-WORLD PYTHON FILES');
+console.log('━'.repeat(120));
+console.log(
+  'FILE'.padEnd(28) + 'SIZE'.padEnd(8) + 'LAYERS'.padEnd(28) +
+  'VERDICT'.padEnd(10) + 'CRIT'.padEnd(6) + 'SOFT'.padEnd(6) + 'AST'.padEnd(6) + 'NOTES'
+);
+console.log('─'.repeat(120));
+for (const r of rows) {
+  const size = r.bytes > 1024 ? `${(r.bytes / 1024).toFixed(0)}K` : `${r.bytes}B`;
+  console.log(
+    r.file.padEnd(28) + size.padEnd(8) + (r.layers || '—').padEnd(28) +
+    (r.passed ? '✓ PASS' : '✗ FAIL').padEnd(10) +
+    String(r.critical).padEnd(6) + String(r.soft).padEnd(6) +
+    (r.astOk ? '✓' : '✗').padEnd(6) +
+    r.failedChecks.slice(0, 3).join(' ')
+  );
+}
+console.log('─'.repeat(120));
+
+const total = rows.length;
+const passed = rows.filter(r => r.passed).length;
+const astFail = rows.filter(r => !r.astOk).length;
+const totalCrit = rows.reduce((s, r) => s + (r.critical < 99 ? r.critical : 0), 0);
+const totalSoft = rows.reduce((s, r) => s + r.soft, 0);
+const buildFail = rows.filter(r => r.critical === 99).length;
+
+console.log(`\nVerdict:           ${passed}/${total} files passed harness AND independent AST`);
+console.log(`Build failures:    ${buildFail}`);
+console.log(`Critical failures: ${totalCrit}`);
+console.log(`Soft warnings:     ${totalSoft}`);
+console.log(`AST failures:      ${astFail}`);
+console.log(`Output:            ${OUT_DIR}`);
+
+// Top failure modes
+const modes = new Map<string, number>();
+for (const r of rows) {
+  for (const f of r.failedChecks) {
+    const key = f.split(':').slice(0, 2).join(':');
+    modes.set(key, (modes.get(key) || 0) + 1);
+  }
+}
+if (modes.size) {
+  console.log('\nTop failure modes:');
+  [...modes.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).forEach(([k, v]) =>
+    console.log(`  ${String(v).padStart(3)}× ${k}`)
+  );
+}
+
+process.exit(passed === total ? 0 : 1);
