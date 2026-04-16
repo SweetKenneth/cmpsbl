@@ -38,6 +38,60 @@ interface UserSourceFile {
   content: string;
 }
 
+// ─── Canonical chain whitelist ───────────────────────────────────────────────
+// The 40-primitive matrix + the always-injected CANDIDATE slot. Any uploaded
+// raw filename (e.g. "SHELVE", "MY_LIB") must collapse to CANDIDATE so the
+// generated runtime always resolves to a real handler — never an unknown.
+const CANONICAL_CHAIN_MODULES: ReadonlySet<string> = new Set([
+  // Organs
+  'CORE', 'SYSTEM', 'BRAIN', 'MEMORY', 'NERVE', 'NEXUS',
+  'IDENTITY', 'SOVEREIGN', 'ATLAS', 'MEDIC', 'RELAY', 'CONSCIENCE',
+  // Layers
+  'DEFENSE', 'IMMUNITY', 'GOVERNANCE', 'TREATY', 'EVOLUTION', 'REFLEX',
+  'COMPASS', 'INTEGRATION', 'INTENT', 'ACCESS', 'VISION', 'SHADOW',
+  // Engines
+  'DREAM', 'HARVEST', 'FORGE', 'LINGUA', 'ECHO', 'PHANTOM', 'SANDBOX', 'RIPPLE',
+  // Agents
+  'ENCODE', 'DECODE', 'AUDIT', 'ECONOMY', 'INCLUSIVE', 'CORTEX', 'ORACLE', 'ENGINEER',
+  // Always-on candidate slot
+  'CANDIDATE',
+]);
+
+/**
+ * Normalize a single chain — collapses raw uploads (e.g. "SHELVE") to
+ * CANDIDATE so every emitted runtime can resolve a handler in any language.
+ */
+function normalizeChainModules(chain: ReadonlyArray<string>): string[] {
+  const out: string[] = [];
+  for (const raw of chain) {
+    const upper = String(raw ?? '').trim().toUpperCase();
+    if (!upper) continue;
+    if (upper.startsWith('CANDIDATE_') || upper.startsWith('Ψ₄₁_')) {
+      if (out[out.length - 1] !== 'CANDIDATE') out.push('CANDIDATE');
+      continue;
+    }
+    if (CANONICAL_CHAIN_MODULES.has(upper)) {
+      if (out[out.length - 1] !== upper) out.push(upper);
+      continue;
+    }
+    if (out[out.length - 1] !== 'CANDIDATE') out.push('CANDIDATE');
+  }
+  if (out.length === 0) return ['CANDIDATE'];
+  if (out[0] !== 'CANDIDATE') out.unshift('CANDIDATE');
+  return out;
+}
+
+/**
+ * Apply chain normalization to every capability before generation. This is
+ * the single boundary that protects all language emitters (TS, PY, PHP, Go,
+ * Rust, Java, C#, Swift, Kotlin, Ruby, C, C++, Lua, Dart, Scala, Elixir, R,
+ * Haskell, Zig, Verilog, VHDL, SystemVerilog, Chisel, Amaranth) from raw
+ * uploaded names leaking into runtime chain lookups.
+ */
+function sanitizeCapabilities(capabilities: UnifiedCapabilityInput[]): UnifiedCapabilityInput[] {
+  return capabilities.map((cap) => ({ ...cap, chain: normalizeChainModules(cap.chain) }));
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // TypeScript Generator
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2607,6 +2661,9 @@ export function generateUnifiedCapabilityFile(
   selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   let raw: string;
+  // Single boundary: normalize chains for every language emitter so raw
+  // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.
+  capabilities = sanitizeCapabilities(capabilities);
 
   if (lang === 'typescript' || lang === 'javascript') {
     raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
