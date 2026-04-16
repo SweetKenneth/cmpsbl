@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { completeRun, getSnapshot, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import {
   generateV2LicenseHTML,
