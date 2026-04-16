@@ -21,6 +21,7 @@ import { blackboxFile } from './blackbox';
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock, CMPSBL_CORE_LAYERS } from './cmpsbl-layers';
 import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmpsbl-layer-polyglot';
+import { assertLanguageShipping } from './language-parity-tiers';
 
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
@@ -2816,6 +2817,13 @@ export function generateUnifiedCapabilityFile(
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
 ): string {
+  // Hard parity gate — refuse to emit artifacts in any language that does
+  // not have full layer parity + a verified deterministic chain executor.
+  // This is the boundary that prevents "looks like a layer but isn't" stubs
+  // from ever reaching a customer's stack. Languages graduate from
+  // COMING_SOON → SHIPPING only when their parity tests are green.
+  assertLanguageShipping(lang);
+
   let raw: string;
   // Single boundary: normalize chains for every language emitter so raw
   // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.

@@ -30,6 +30,12 @@ import {
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import {
+  getLanguageParityStatus,
+  getLanguageParityEntry,
+  isLanguageShipping,
+} from '@/lib/export/language-parity-tiers';
+import { Clock } from 'lucide-react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import type { UnifiedCapabilityInput } from '@/lib/export/unified-capability-file';
@@ -283,7 +289,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
       setCeremonyOpen(false);
-      toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
+      // Distinguish Coming Soon language gating from real failures so the
+      // user sees a clean roadmap message instead of a stack trace.
+      const isComingSoon = err instanceof Error && err.name === 'LanguageNotShippingError';
+      toast({
+        title: isComingSoon ? 'Language coming soon' : 'Export failed',
+        description: err instanceof Error ? err.message : String(err),
+        variant: isComingSoon ? 'default' : 'destructive',
+      });
     } finally {
       setExporting(false);
     }
@@ -435,17 +448,53 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       </div>
 
+      {/* Coming Soon banner — surfaces parity gating BEFORE the user clicks export */}
+      {(() => {
+        const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
+        const status = getLanguageParityStatus(lang);
+        const entry = getLanguageParityEntry(lang);
+        if (status === 'SHIPPING') return null;
+        const label = entry?.label ?? sourceLanguage;
+        const note = entry?.roadmapNote;
+        return (
+          <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
+            <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+            <div className="flex-1 min-w-0 space-y-1">
+              <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                {label} export — Coming Soon
+              </p>
+              <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
+                {note ?? `${label} is on the parity roadmap. Real exports unlock when every layer has a native implementation and the deterministic chain executor passes parity tests.`}
+              </p>
+              <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
+                Shipping today: TypeScript, JavaScript, Python.
+              </p>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Actions — responsive download button */}
       <div className="space-y-2">
         {capabilities.length > 0 && (
-          <Button onClick={handleExport} disabled={exporting} className="w-full h-11 sm:h-12 rounded-xl text-xs sm:text-base">
+          <Button
+            onClick={handleExport}
+            disabled={exporting || !isLanguageShipping(sourceLanguage.toLowerCase().replace(/\s+/g, ''))}
+            className="w-full h-11 sm:h-12 rounded-xl text-xs sm:text-base"
+          >
             {exporting ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : !isLanguageShipping(sourceLanguage.toLowerCase().replace(/\s+/g, '')) ? (
+              <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
             ) : (
               <Download className="w-4 h-4 mr-2 flex-shrink-0" />
             )}
             <span className="truncate">
-              {exporting ? 'Generating Package…' : `Download cmpsbl-ascended-${displayBaseName}.zip`}
+              {exporting
+                ? 'Generating Package…'
+                : !isLanguageShipping(sourceLanguage.toLowerCase().replace(/\s+/g, ''))
+                ? `${getLanguageParityEntry(sourceLanguage.toLowerCase().replace(/\s+/g, ''))?.label ?? 'This language'} — Coming Soon`
+                : `Download cmpsbl-ascended-${displayBaseName}.zip`}
             </span>
           </Button>
         )}

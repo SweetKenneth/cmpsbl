@@ -32,9 +32,15 @@ import {
   systemcPipelineTransform,
 } from './hardware-synthesizer';
 import {
-  generateTypeScriptTest, generatePythonTest, generateGoTest, generateVerilogTestbench,
-  generateRustTest, generateSystemCTest, generateExportScaffolding,
+  generateTypeScriptTest, generatePythonTest, generateGoTest,
+  generateRustTest, generateVerilogTestbench, generateSystemCTest,
+  generateExportScaffolding,
 } from './test-harness-generator';
+import {
+  getLanguageParityStatus,
+  getLanguageParityEntry,
+  getVisibleLanguageIds,
+} from './language-parity-tiers';
 
 export type ExportLanguage =
   // Software
@@ -163,9 +169,22 @@ export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
 
 /**
  * Get languages available for a given artifact score.
- * Hardware targets require score >= 94. Score-tiered unlock system.
+ *
+ * Layered gating:
+ *   1. Score-tier unlocks (rarity-based — Mint/Prime/Relic/Silicon)
+ *   2. Parity-tier filter (HIDDEN langs are never returned; COMING_SOON
+ *      langs are returned but marked locked with a Coming Soon reason)
+ *
+ * The parity gate is the safety net: even if a score unlocks a language,
+ * the export pipeline will refuse to emit it until parity is verified.
  */
-export function getLanguagesForScore(score: number): { value: ExportLanguage; label: string; locked: boolean }[] {
+export function getLanguagesForScore(score: number): {
+  value: ExportLanguage;
+  label: string;
+  locked: boolean;
+  comingSoon?: boolean;
+  reason?: string;
+}[] {
   // Inline tier thresholds to avoid circular imports
   // Aligned with public rarity tiers: Mint(68), Prime(80), Relic(90), Mythic/Silicon(94)
   const TIER_GATES: [number, ExportLanguage[]][] = [
@@ -179,11 +198,32 @@ export function getLanguagesForScore(score: number): { value: ExportLanguage; la
   for (const [minScore, langs] of TIER_GATES) {
     if (score >= minScore) langs.forEach(l => unlocked.add(l));
   }
-  return Object.entries(LANG_LABELS).map(([v, l]) => ({
-    value: v as ExportLanguage,
-    label: l,
-    locked: !unlocked.has(v as ExportLanguage),
-  }));
+
+  // Layer 2: parity registry filter — hide HIDDEN langs entirely, mark
+  // COMING_SOON langs as locked with a Coming Soon explanation.
+  const visible = getVisibleLanguageIds();
+
+  return Object.entries(LANG_LABELS)
+    .filter(([v]) => visible.has(v.toLowerCase()))
+    .map(([v, l]) => {
+      const lang = v as ExportLanguage;
+      const scoreUnlocked = unlocked.has(lang);
+      const status = getLanguageParityStatus(v);
+      const isComingSoon = status === 'COMING_SOON';
+      const entry = getLanguageParityEntry(v);
+      return {
+        value: lang,
+        label: l,
+        // Locked if either the score gate or the parity gate is closed.
+        locked: !scoreUnlocked || isComingSoon,
+        comingSoon: isComingSoon,
+        reason: isComingSoon
+          ? entry?.roadmapNote ?? `${l} is on the parity roadmap. Coming Soon.`
+          : !scoreUnlocked
+          ? `Requires higher artifact score.`
+          : undefined,
+      };
+    });
 }
 
 export function getAllAdapters(): { value: ExportAdapter; label: string }[] {
