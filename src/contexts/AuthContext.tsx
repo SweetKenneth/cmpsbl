@@ -59,6 +59,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Navigate ONLY on a genuine new sign-in (not token refresh / tab-switch / reload).
         // INITIAL_SESSION and TOKEN_REFRESHED fire on reload & visibility-change — never redirect for those.
         if (_event === 'SIGNED_IN' && session) {
+          // Flag fresh sign-in so RegisterPasskeyPrompt can detect it reliably
+          sessionStorage.setItem('cmpsbl_fresh_signin', Date.now().toString());
+
           // Log successful login to security gate (fire-and-forget)
           supabase.functions.invoke('pf-security-gate', {
             body: {
