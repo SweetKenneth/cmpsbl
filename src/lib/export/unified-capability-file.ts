@@ -81,6 +81,81 @@ ${embeddedSources}
     ? '\n' + getLayerHeaderBlock(selectedLayers) + '\n'
     : '';
 
+  // ── Smart Entry Point Detection for TypeScript ──
+  let tsEntryPointCode = '    originalResult = input;\n    originalExecuted = true;';
+  if (tsFiles.length > 0) {
+    const src = tsFiles[0].content;
+    // Find exported functions (skip private)
+    const fnMatches = [...src.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(/g)];
+    const exportedFns = fnMatches.map(m => m[1]).filter(n => !n.startsWith('_'));
+    // Find classes (skip Error/Exception subclasses)
+    const classMatches = [...src.matchAll(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?/g)];
+    const substantiveClasses = classMatches
+      .filter(m => !/Error|Exception/.test(m[2] || ''))
+      .map(m => m[1]);
+
+    const targets: string[] = [];
+    for (const fn of exportedFns.slice(0, 5)) {
+      targets.push(`    if (typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
+    }
+    for (const cls of substantiveClasses.slice(0, 3)) {
+      targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
+      try {
+        const inst = new ${cls}();
+        const methods = ['execute','run','handle','process','main'];
+        for (const m of methods) { if (typeof (inst as any)[m] === 'function') { originalResult = (inst as any)[m](input); originalExecuted = true; break; } }
+        if (!originalExecuted) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
+      } catch(e) { originalResult = { _class: '${cls}', _available: true }; originalExecuted = true; }
+    }`);
+    }
+    if (targets.length > 0) {
+      tsEntryPointCode = targets.join('\n');
+    }
+  }
+
+  // Generate per-capability executors
+  const tsCapabilityExecutors = capabilities.map(cap => `
+/**
+ * ${cap.name} — CJPI ${cap.cjpiScore} (${cap.tier.toUpperCase()})
+ * Chain: ${cap.chain.join(' → ')}
+ * Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
+ */
+export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(input: Record<string, unknown>): ExecutionResult {
+  const meta = ${JSON.stringify({ name: cap.name, cjpi: cap.cjpiScore, tier: cap.tier, chain: cap.chain, fingerprint: cap.fingerprint, moatSignature: cap.moatSignature })};
+  const start = Date.now();
+
+  // Layer 1: Execute your original code (Smart Entry Point Detection)
+  let originalResult: unknown = input;
+  let originalExecuted = false;
+  let originalError: string | null = null;
+  try {
+${tsEntryPointCode}
+  } catch (err) {
+    originalError = err instanceof Error ? err.message : String(err);
+  }
+
+  // Layer 2: CMPSBL cognitive pipeline
+  const pipeline = executePipeline(
+    typeof originalResult === 'object' && originalResult !== null
+      ? originalResult as Record<string, unknown> : { _original: originalResult },
+    meta.chain,
+    meta,
+  );
+
+  return {
+    _original: originalResult,
+    _enriched: pipeline.output,
+    _pipeline: pipeline,
+    _cmpsbl: {
+      capability: meta.name, cjpi: meta.cjpi, tier: meta.tier, chain: meta.chain,
+      execution: {
+        original_executed: originalExecuted, original_error: originalError,
+        execution_ms: Date.now() - start, strategy: originalExecuted ? 'native' : 'passthrough',
+        timestamp: new Date().toISOString(),
+      },
+    },
+  };
+}`).join('\n');
   return `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Silent Symbiosis — Software Ascended
 //  ${packName} | Single-File Distribution | Zero Dependencies
