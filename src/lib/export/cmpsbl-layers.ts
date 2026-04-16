@@ -71,6 +71,105 @@ const LAYER_CATALOG: CmpsblLayerDefinition[] = [
   ...COMPLIANCE_LAYERS,
 ];
 
+// ── Deterministic Phase Ordering ────────────────────────────────────────────
+// Locks the runtime composition order so every export produces the same
+// wrapper chain regardless of catalog import order or user selection order.
+//
+//   Phase 0 — Hardening Layer            (always first; safety + boundaries)
+//   Phase 1 — Governance + Security      (define what is allowed)
+//   Phase 2 — Foresight + Detection      (predict before execution)
+//   Phase 3 — Resilience + Recovery      (failure handling + stability)
+//   Phase 4 — Intelligence + Memory      (decision augmentation)
+//   Phase 5 — Performance + Orchestration (control execution flow)
+//   Phase 6 — Execution                  (Layer 1 — your code runs here)
+//   Phase 7 — Evolution                  (post-execution observation)
+//   Phase 8 — Post Audit + Compliance    (finalize, prove, comply)
+//
+// Single-pass model: each layer executes once per cycle in its assigned phase.
+// No layer may jump phases; no circular influence; no dynamic reordering.
+const PHASE_HARDENING        = 0;
+const PHASE_GOV_SECURITY     = 1;
+const PHASE_FORESIGHT        = 2;
+const PHASE_RESILIENCE       = 3;
+const PHASE_INTELLIGENCE     = 4;
+const PHASE_PERFORMANCE      = 5;
+// Phase 6 = Execution (Layer 1) — no wrappers live here
+const PHASE_EVOLUTION        = 7;
+const PHASE_POST_COMPLIANCE  = 8;
+
+const LAYER_PHASE_MAP: Readonly<Record<string, number>> = Object.freeze({
+  // Phase 1 — Governance + Security
+  'governance-shield':            PHASE_GOV_SECURITY,
+  'audit-chain':                  PHASE_GOV_SECURITY,
+  'zero-trust':                   PHASE_GOV_SECURITY,
+  'adaptive-defense':             PHASE_GOV_SECURITY,
+  'cyber-defense':                PHASE_GOV_SECURITY,
+  // Phase 2 — Foresight + Detection
+  'oracle-ripple-precognition':   PHASE_FORESIGHT,
+  'anomaly-correlation-engine':   PHASE_FORESIGHT,
+  // Phase 3 — Resilience + Recovery
+  'self-healing':                 PHASE_RESILIENCE,
+  'autonomous-triage':            PHASE_RESILIENCE,
+  'distributed-consensus':        PHASE_RESILIENCE,
+  // Phase 4 — Intelligence + Memory
+  'fleet-intelligence':           PHASE_INTELLIGENCE,
+  'ai-safety':                    PHASE_INTELLIGENCE,
+  'ai-cost':                      PHASE_INTELLIGENCE,
+  'cognitive-memory':             PHASE_INTELLIGENCE,
+  // Phase 5 — Performance + Orchestration
+  'performance-surgery':          PHASE_PERFORMANCE,
+  'pipeline-resilience':          PHASE_PERFORMANCE,
+  'pipeline-composition':         PHASE_PERFORMANCE,
+  'universal-input':              PHASE_PERFORMANCE,
+  // Phase 7 — Evolution (post-execution)
+  'self-evolution':               PHASE_EVOLUTION,
+  // Phase 8 — Post Audit + Compliance
+  'regulatory-compliance':        PHASE_POST_COMPLIANCE,
+});
+
+const PHASE_LABELS: Readonly<Record<number, string>> = Object.freeze({
+  0: 'Phase 0 — Hardening Layer',
+  1: 'Phase 1 — Governance + Security',
+  2: 'Phase 2 — Foresight + Detection',
+  3: 'Phase 3 — Resilience + Recovery',
+  4: 'Phase 4 — Intelligence + Memory',
+  5: 'Phase 5 — Performance + Orchestration',
+  7: 'Phase 7 — Evolution (post-execution)',
+  8: 'Phase 8 — Post Audit + Compliance',
+});
+
+/**
+ * Resolve the deterministic phase for a layer. Always-on core (Hardening) is
+ * Phase 0. Selectable layers are looked up in LAYER_PHASE_MAP. Unmapped layers
+ * default to PHASE_POST_COMPLIANCE so new additions never silently break the
+ * chain — they land in the safe terminal phase until explicitly placed.
+ */
+function resolvePhase(layer: CmpsblLayerDefinition, isCore: boolean): number {
+  if (isCore) return PHASE_HARDENING;
+  return LAYER_PHASE_MAP[layer.id] ?? PHASE_POST_COMPLIANCE;
+}
+
+/**
+ * Sort layers into deterministic phase order. Within a phase, original
+ * catalog order (which mirrors crownJewelRank) is preserved for stability.
+ * This guarantees: same input → same execution chain, every time.
+ */
+function orderByPhase(
+  selected: CmpsblLayerDefinition[],
+): Array<{ layer: CmpsblLayerDefinition; phase: number; isCore: boolean }> {
+  const tagged = [
+    ...CMPSBL_CORE_LAYERS.map((layer, idx) => ({
+      layer, phase: resolvePhase(layer, true), isCore: true, originalIdx: idx,
+    })),
+    ...selected.map((layer, idx) => ({
+      layer, phase: resolvePhase(layer, false), isCore: false, originalIdx: idx,
+    })),
+  ];
+  // Stable sort by phase, then by original index within phase.
+  tagged.sort((a, b) => a.phase - b.phase || a.originalIdx - b.originalIdx);
+  return tagged.map(({ layer, phase, isCore }) => ({ layer, phase, isCore }));
+}
+
 /** Get all user-selectable layers (excludes always-on core like Circuit Breaker) */
 export function getAvailableLayers(): CmpsblLayerDefinition[] {
   return [...LAYER_CATALOG];
