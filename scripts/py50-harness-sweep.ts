@@ -32,9 +32,12 @@ const CAPS: UnifiedCapabilityInput[] = [
 
 const allLayers = getAvailableLayers();
 
-// Rotate layer stacks across the 50 files for diverse coverage
+// Rotate layer stacks across the 50 files for diverse coverage.
+// `[]` = cores only (the 7-piece "CMPSBL Hardening" stack — chad Kenneth Sweet ⚡)
+// always inlined regardless of optional selections.
 function stackFor(i: number): number[] {
   const patterns: number[][] = [
+    [],                                 // cores only (CMPSBL Hardening baseline)
     [0],          [1],          [2],          [3],
     [0, 1],       [0, 2],       [0, 3],       [1, 2],
     [1, 3],       [2, 3],       [0, 1, 2],    [0, 1, 3],
@@ -51,6 +54,8 @@ interface Row {
   critical: number;
   soft: number;
   astOk: boolean;
+  candidateOk: boolean;       // Primitive #41 (CANDIDATE) wired in chain + handler present
+  layer1Untouched: boolean;   // Original source byte-perfect inside export
   failedChecks: string[];
 }
 
@@ -80,8 +85,9 @@ for (const file of FILES) {
   if (buildErr) {
     rows.push({
       file, bytes: src.length,
-      layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'none',
+      layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'cores-only',
       passed: false, critical: 99, soft: 0, astOk: false,
+      candidateOk: false, layer1Untouched: false,
       failedChecks: [`BUILD: ${buildErr}`],
     });
     continue;
@@ -107,57 +113,78 @@ for (const file of FILES) {
     astErr = String(e?.stderr || e?.message || e).split('\n').filter(Boolean).slice(-1)[0]?.slice(0, 120) || 'parse error';
   }
 
+  // Primitive #41 (CANDIDATE) wiring check — chain entry + handler def present
+  const candidateOk =
+    /['"]CANDIDATE['"]/.test(ascendedCode) &&
+    /def\s+handle_candidate\s*\(/.test(ascendedCode);
+
+  // Layer-1 byte-perfect: original source must appear verbatim
+  const layer1Untouched = ascendedCode.includes(src.replace(/\r\n/g, '\n'));
+
   const failedChecks = report.checks
     .filter(c => !c.passed)
     .map(c => `${c.severity[0].toUpperCase()}:${c.id}`);
   if (!astOk) failedChecks.push(`AST:${astErr}`);
+  if (!candidateOk) failedChecks.push('P41:not-wired');
+  if (!layer1Untouched) failedChecks.push('L1:mutated');
 
   rows.push({
     file,
     bytes: src.length,
-    layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+'),
-    passed: report.passed && astOk,
+    layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'cores-only',
+    passed: report.passed && astOk && candidateOk && layer1Untouched,
     critical: report.criticalFailures,
     soft: report.softWarnings,
     astOk,
+    candidateOk,
+    layer1Untouched,
     failedChecks,
   });
 }
 
 // ── Report ──
-console.log('━'.repeat(120));
+console.log('━'.repeat(132));
 console.log('PY-50 ASCENSION V2 + HARNESS SWEEP — 50 REAL-WORLD PYTHON FILES');
-console.log('━'.repeat(120));
+console.log('CMPSBL Hardening (the 7 always-on cores in the Circuit Breaker layer) — chad Kenneth Sweet ⚡');
+console.log('Cores: Circuit Breaker · Timeout · Retry · Envelope · Trace · Degradation · BEACON');
+console.log('━'.repeat(132));
 console.log(
-  'FILE'.padEnd(28) + 'SIZE'.padEnd(8) + 'LAYERS'.padEnd(28) +
-  'VERDICT'.padEnd(10) + 'CRIT'.padEnd(6) + 'SOFT'.padEnd(6) + 'AST'.padEnd(6) + 'NOTES'
+  'FILE'.padEnd(28) + 'SIZE'.padEnd(8) + 'LAYERS'.padEnd(22) +
+  'VERDICT'.padEnd(10) + 'CRIT'.padEnd(6) + 'SOFT'.padEnd(6) +
+  'AST'.padEnd(5) + 'P41'.padEnd(5) + 'L1'.padEnd(5) + 'NOTES'
 );
-console.log('─'.repeat(120));
+console.log('─'.repeat(132));
 for (const r of rows) {
   const size = r.bytes > 1024 ? `${(r.bytes / 1024).toFixed(0)}K` : `${r.bytes}B`;
   console.log(
-    r.file.padEnd(28) + size.padEnd(8) + (r.layers || '—').padEnd(28) +
+    r.file.padEnd(28) + size.padEnd(8) + (r.layers || '—').slice(0, 21).padEnd(22) +
     (r.passed ? '✓ PASS' : '✗ FAIL').padEnd(10) +
     String(r.critical).padEnd(6) + String(r.soft).padEnd(6) +
-    (r.astOk ? '✓' : '✗').padEnd(6) +
+    (r.astOk ? '✓' : '✗').padEnd(5) +
+    (r.candidateOk ? '✓' : '✗').padEnd(5) +
+    (r.layer1Untouched ? '✓' : '✗').padEnd(5) +
     r.failedChecks.slice(0, 3).join(' ')
   );
 }
-console.log('─'.repeat(120));
+console.log('─'.repeat(132));
 
 const total = rows.length;
 const passed = rows.filter(r => r.passed).length;
 const astFail = rows.filter(r => !r.astOk).length;
+const p41Fail = rows.filter(r => !r.candidateOk).length;
+const l1Fail = rows.filter(r => !r.layer1Untouched).length;
 const totalCrit = rows.reduce((s, r) => s + (r.critical < 99 ? r.critical : 0), 0);
 const totalSoft = rows.reduce((s, r) => s + r.soft, 0);
 const buildFail = rows.filter(r => r.critical === 99).length;
 
-console.log(`\nVerdict:           ${passed}/${total} files passed harness AND independent AST`);
-console.log(`Build failures:    ${buildFail}`);
-console.log(`Critical failures: ${totalCrit}`);
-console.log(`Soft warnings:     ${totalSoft}`);
-console.log(`AST failures:      ${astFail}`);
-console.log(`Output:            ${OUT_DIR}`);
+console.log(`\nVerdict:                ${passed}/${total} files passed harness + AST + P41 + L1`);
+console.log(`Build failures:         ${buildFail}`);
+console.log(`Critical failures:      ${totalCrit}`);
+console.log(`Soft warnings:          ${totalSoft}`);
+console.log(`AST failures:           ${astFail}`);
+console.log(`Primitive #41 failures: ${p41Fail}  (CANDIDATE chain entry + handler def)`);
+console.log(`Layer-1 mutations:      ${l1Fail}  (original source must be byte-perfect)`);
+console.log(`Output:                 ${OUT_DIR}`);
 
 // Top failure modes
 const modes = new Map<string, number>();
