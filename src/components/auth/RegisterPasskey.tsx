@@ -38,19 +38,18 @@ export function RegisterPasskeyPrompt() {
     // Don't re-prompt if user already dismissed in this session
     if (sessionStorage.getItem(DISMISSED_KEY) === 'true') return;
 
-    // Determine if this looks like a fresh sign-in (magic link landing)
+    // Determine if this looks like a fresh sign-in
     const hasPendingFlag = secureGet<string>('cmpsbl_pending_passkey_email') === user.email;
     const urlHash = window.location.hash || '';
     const isMagicLinkLanding = urlHash.includes('access_token') || urlHash.includes('type=magiclink') || urlHash.includes('type=signup');
-    const justSignedIn = hasPendingFlag || isMagicLinkLanding;
+    
+    // Most reliable: AuthContext sets this flag on every SIGNED_IN event
+    const freshSigninTs = sessionStorage.getItem('cmpsbl_fresh_signin');
+    const isFreshSignin = freshSigninTs ? (Date.now() - Number(freshSigninTs)) < 120_000 : false;
+    
+    const justSignedIn = hasPendingFlag || isMagicLinkLanding || isFreshSignin;
 
-    // If no signal of fresh sign-in, check if user signed in within last 60 seconds
-    const sessionCreatedAt = session.expires_at 
-      ? (session.expires_at * 1000) - (3600 * 1000) // expires_at minus 1 hour = created ~
-      : 0;
-    const isRecentSession = Date.now() - sessionCreatedAt < 120_000; // 2 min window
-
-    if (!justSignedIn && !isRecentSession) return;
+    if (!justSignedIn) return;
 
     // Check device support then check if user already has passkeys
     const timer = setTimeout(async () => {
