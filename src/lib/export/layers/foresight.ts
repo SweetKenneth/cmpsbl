@@ -630,18 +630,18 @@ def cmpsbl_anomaly_signal_quality() -> dict:
 `;
 
 const ANOMALY_CORRELATION_WIRE_TS = `
-const _cmpsbl_raw_execute_ac = cmpsbl_execute;
-let _cmpsbl_ac_call_counter = 0;
+const _cmpsbl_raw_execute_anc = cmpsbl_execute;
+let _cmpsbl_anc_call_counter = 0;
 
 cmpsbl_execute = function cmpsbl_execute_anomaly_correlated(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const start = Date.now();
-  _cmpsbl_ac_call_counter++;
+  _cmpsbl_anc_call_counter++;
   try {
-    const result = _cmpsbl_raw_execute_ac(capabilityName, input);
+    const result = _cmpsbl_raw_execute_anc(capabilityName, input);
     const duration = Date.now() - start;
     cmpsbl_anomaly_observe(capabilityName, 'latency_ms', duration, 'temporal');
-    cmpsbl_anomaly_observe(capabilityName, 'call_rate', _cmpsbl_ac_call_counter, 'behavioral');
-    if (_cmpsbl_ac_call_counter % 25 === 0) cmpsbl_anomaly_correlate();
+    cmpsbl_anomaly_observe(capabilityName, 'call_rate', _cmpsbl_anc_call_counter, 'behavioral');
+    if (_cmpsbl_anc_call_counter % 25 === 0) cmpsbl_anomaly_correlate();
     return result;
   } catch (err) {
     cmpsbl_anomaly_observe(capabilityName, 'error_burst', 1, 'causal');
@@ -651,20 +651,20 @@ cmpsbl_execute = function cmpsbl_execute_anomaly_correlated(capabilityName: stri
 };`;
 
 const ANOMALY_CORRELATION_WIRE_PY = `
-_cmpsbl_raw_execute_ac = cmpsbl_execute
-_cmpsbl_ac_call_counter = 0
+_cmpsbl_raw_execute_anc = cmpsbl_execute
+_cmpsbl_anc_call_counter = 0
 
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     """Execute with anomaly correlation (auto-wired)."""
-    global _cmpsbl_ac_call_counter
+    global _cmpsbl_anc_call_counter
     start = time.time()
-    _cmpsbl_ac_call_counter += 1
+    _cmpsbl_anc_call_counter += 1
     try:
-        result = _cmpsbl_raw_execute_ac(capability_name, input_data)
+        result = _cmpsbl_raw_execute_anc(capability_name, input_data)
         duration_ms = int((time.time() - start) * 1000)
         cmpsbl_anomaly_observe(capability_name, "latency_ms", duration_ms, "temporal")
-        cmpsbl_anomaly_observe(capability_name, "call_rate", _cmpsbl_ac_call_counter, "behavioral")
-        if _cmpsbl_ac_call_counter % 25 == 0:
+        cmpsbl_anomaly_observe(capability_name, "call_rate", _cmpsbl_anc_call_counter, "behavioral")
+        if _cmpsbl_anc_call_counter % 25 == 0:
             cmpsbl_anomaly_correlate()
         return result
     except Exception as e:
