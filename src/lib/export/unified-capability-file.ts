@@ -830,6 +830,8 @@ export function cmpsbl_self_test(): { passed: number; failed: number; results: R
 
 /** @deprecated Use cmpsbl_self_test instead */
 export const selfTest = cmpsbl_self_test;
+${(selectedLayers || []).map(l => l.tsCode).join('\n')}
+${getAutoWireTs(selectedLayers || [])}
 `;
 }
 
