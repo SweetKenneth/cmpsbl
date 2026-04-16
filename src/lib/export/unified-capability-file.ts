@@ -1782,6 +1782,18 @@ export function generateUnifiedCapabilityFile(
     raw = generateUnifiedGeneric(capabilities, packName, lang);
   }
 
+  // Inject layer code for non-TS/PY languages (TS/PY handle layers inline above)
+  if (selectedLayers?.length && lang !== 'typescript' && lang !== 'javascript' && lang !== 'python') {
+    const layerCode = getAllLayerCode(selectedLayers, lang);
+    const autoWire = getAutoWireForLang(selectedLayers, lang);
+    const lc = getLayerCommentChar(lang);
+    const layerHeader = getLayerHeaderBlock(selectedLayers, lc);
+    if (layerCode) {
+      raw += '\n\n' + layerHeader + '\n' + layerCode;
+      if (autoWire) raw += '\n' + autoWire;
+    }
+  }
+
   // Apply black-box obfuscation to protect IP
   return blackboxFile(raw, lang);
 }
