@@ -264,7 +264,8 @@ export function V2ProcessingStep({ onComplete }: Props) {
   useEffect(() => {
     runPipeline();
     return () => { abortRef.current = true; };
-  }, [runPipeline]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (analysisError) {
     return (
