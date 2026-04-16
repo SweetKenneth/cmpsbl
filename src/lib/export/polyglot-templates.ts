@@ -1638,6 +1638,7 @@ function generateCpp(ctx: GeneratorContext): string {
 #include <chrono>
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
 #include <functional>
 #include <sstream>
 
@@ -1659,7 +1660,7 @@ inline std::string tier_from_cjpi(int score) {
 inline std::string quick_hash(const std::string& input) {
     long long h = 5381;
     for (char c : input) h = ((h << 5) + h) + static_cast<unsigned char>(c);
-    char buf[9]; snprintf(buf, sizeof(buf), "%08llx", std::abs(h));
+    char buf[17]; snprintf(buf, sizeof(buf), "%08llx", static_cast<unsigned long long>(h < 0 ? -h : h));
     return buf;
 }
 
@@ -1847,7 +1848,7 @@ String tierFromCJPI(int score) {
 String _quickHash(String input) {
   int h = 5381;
   for (int i = 0; i < input.length; i++) { h = ((h << 5) + h) + input.codeUnitAt(i); h &= 0xFFFFFFFF; }
-  return h.abs.toRadixString(16).padLeft(8, '0');
+  return h.abs().toRadixString(16).padLeft(8, '0');
 }
 
 // §2 — MODULE EFFECTS
