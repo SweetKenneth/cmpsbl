@@ -20,6 +20,18 @@ import {
   deduplicateCapabilities,
   type DiscoveredCapability,
   type DedupResult,
+  // Phase A — V1 Bridge (gaps 1-6)
+  bandDiscovery,
+  runV2QualityGate,
+  fingerprintSourceFiles,
+  logV2Upload,
+  logV2Extraction,
+  logV2QualityGate,
+  logV2ChainParticipation,
+  logV2Discovery,
+  scoreCollision,
+  extractFileContracts,
+  type CandidateContractBundle,
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';

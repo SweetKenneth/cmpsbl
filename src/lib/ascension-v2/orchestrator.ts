@@ -25,6 +25,12 @@ export interface DiscoveredCapability {
   readonly description: string;
   readonly chain: ReadonlyArray<string>;
   readonly chainDepth: number;
+  // Phase A — V1 Bridge enrichment (optional, never blocks the pipeline)
+  readonly band?: 'high' | 'medium' | 'low' | 'hypothesis';
+  readonly bandChannelCount?: number;
+  readonly compatibilityComposite?: number;
+  readonly closedGaps?: ReadonlyArray<string>;
+  readonly unlockedSynergies?: ReadonlyArray<string>;
 }
 
 export interface RunSnapshot {
