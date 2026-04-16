@@ -75,18 +75,24 @@ ${embeddedSources}
     layer1TsBlock = '// No source files provided — Layer 1 is empty. Wire your code manually.';
   }
 
+  // Build layer header
+  const layerHeader = selectedLayers?.length 
+    ? '\n' + getLayerHeaderBlock(selectedLayers) + '\n'
+    : '';
+
   return `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Capability Pack — ${packName}
 //  Single-File Distribution | Zero Dependencies
 //
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
-//
+//${selectedLayers?.length ? `\n//  Layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
 //  DROP IN → IMPORT → USE
 //
 //  © 2025–2026 CMPSBL®. All rights reserved.
 //  SEALED RUNTIME — Do not modify. Redistribution prohibited.
 // ═══════════════════════════════════════════════════════════════════════════════
+${layerHeader}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  §1 — CONVEX CORE™ DPL                                                  ║
