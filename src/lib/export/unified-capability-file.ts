@@ -1965,11 +1965,6 @@ HANDLER_REGISTRY = {
     "DEFAULT": handle_default,
 }
 
-for module_name in CMPSBL_PACK_META["modules"]:
-    normalized_module = str(module_name).strip().upper()
-    if normalized_module and normalized_module not in HANDLER_REGISTRY:
-        HANDLER_REGISTRY[normalized_module] = handle_candidate
-
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  §3 — RUNTIME BRIDGE                                                         ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
