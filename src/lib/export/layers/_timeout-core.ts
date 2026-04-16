@@ -11,7 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const TIMEOUT_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Timeout Guard (Crown Jewel #12)                             ║
+// ║  ASCENSION LAYER — Timeout Guard (Layer #12 · Always-On)                     ║
 // ║  Per-capability deadline. Stalled calls fail fast & feed the circuit breaker. ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -53,7 +53,7 @@ function cmpsbl_run_with_deadline<T>(capabilityName: string, fn: () => T | Promi
 
 const TIMEOUT_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Timeout Guard (Crown Jewel #12)                             ║
+# ║  ASCENSION LAYER — Timeout Guard (Layer #12 · Always-On)                     ║
 # ║  Per-capability deadline. Stalled calls fail fast & feed the circuit breaker. ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 

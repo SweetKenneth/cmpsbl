@@ -12,7 +12,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const ENVELOPE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Structured Error Envelope (Crown Jewel #14)                 ║
+// ║  ASCENSION LAYER — Structured Error Envelope (Layer #14 · Always-On)         ║
 // ║  Uniform { ok, value | code, message, retryable, traceId } across calls.      ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 

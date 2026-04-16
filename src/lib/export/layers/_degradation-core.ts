@@ -12,7 +12,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const DEGRADATION_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Graceful Degradation Hook (Crown Jewel #16)                 ║
+// ║  ASCENSION LAYER — Graceful Degradation Hook (Layer #16 · Always-On)         ║
 // ║  When everything else fails, surface a typed degraded envelope, never throw.  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -51,7 +51,7 @@ export function cmpsbl_to_degraded(capability: string, reason: string, traceId: 
 
 const DEGRADATION_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Graceful Degradation Hook (Crown Jewel #16)                 ║
+# ║  ASCENSION LAYER — Graceful Degradation Hook (Layer #16 · Always-On)         ║
 # ║  When everything else fails, surface a typed degraded envelope, never raise.  ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 

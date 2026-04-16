@@ -104,13 +104,13 @@ export function getAutoWireTs(layers: CmpsblLayerDefinition[]): string {
   if (allLayers.length === 0) return '';
   const parts: string[] = [
     '',
-    '// ── Layer Auto-Wire ─────────────────────────────────────────────────────────',
-    '// Selected layers are automatically applied to all capability executions.',
-    '// Your code (Layer 1) is never modified — layers operate in Layer 2 only.',
+    '// ── Ascension Layer Auto-Wire ───────────────────────────────────────────────',
+    '// Active layers attach automatically to every capability invocation.',
+    '// LAYER 1 (your code) is never modified — layers operate above it only.',
     '',
   ];
   for (const layer of allLayers) {
-    parts.push(`// ── ${layer.name} (CJ #${layer.crownJewelRank}) ──`);
+    parts.push(`// ── ${layer.name} (Layer #${layer.crownJewelRank}) ──`);
     parts.push(layer.autoWire.tsWire);
     parts.push('');
   }
@@ -123,13 +123,13 @@ export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
   if (allLayers.length === 0) return '';
   const parts: string[] = [
     '',
-    '# ── Layer Auto-Wire ─────────────────────────────────────────────────────────',
-    '# Selected layers are automatically applied to all capability executions.',
-    '# Your code (Layer 1) is never modified — layers operate in Layer 2 only.',
+    '# ── Ascension Layer Auto-Wire ───────────────────────────────────────────────',
+    '# Active layers attach automatically to every capability invocation.',
+    '# LAYER 1 (your code) is never modified — layers operate above it only.',
     '',
   ];
   for (const layer of allLayers) {
-    parts.push(`# ── ${layer.name} (CJ #${layer.crownJewelRank}) ──`);
+    parts.push(`# ── ${layer.name} (Layer #${layer.crownJewelRank}) ──`);
     parts.push(layer.autoWire.pyWire);
     parts.push('');
   }
@@ -147,11 +147,12 @@ export function getLayerHeaderBlock(
   if (allLayers.length === 0) return '';
   const lines = [
     `${commentChar} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
-    `${commentChar} ║  CMPSBL® LAYERS (auto-wired)                                                 ║`,
+    `${commentChar} ║  CMPSBL® ASCENSION LAYER — Active Layers (auto-wired)                        ║`,
     ...allLayers.map(l =>
-      `${commentChar} ║  ◆ ${l.name.padEnd(20)} — CJ #${String(l.crownJewelRank).padStart(3)} | CJPI ${l.cjpi} | ${l.module.padEnd(10)} ║`,
+      `${commentChar} ║  ◆ ${l.name.padEnd(20)} — Layer #${String(l.crownJewelRank).padStart(3)} | ${l.module.padEnd(10)}                ║`,
     ),
-    `${commentChar} ║  Layers enhance Layer 2 without modifying Layer 1 (your code).               ║`,
+    `${commentChar} ║  Layers protect, enrich, and govern your code — LAYER 1 stays untouched.     ║`,
+    `${commentChar} ║  Configure or learn more: https://cmpsbl.com · npx @cmpsbl/cli               ║`,
     `${commentChar} ╚═══════════════════════════════════════════════════════════════════════════════╝`,
   ];
   return lines.join('\n');

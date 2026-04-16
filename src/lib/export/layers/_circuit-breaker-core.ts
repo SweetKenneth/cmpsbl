@@ -12,8 +12,8 @@ import type { CmpsblLayerDefinition } from './types';
 
 const CIRCUIT_BREAKER_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Circuit Breaker (Crown Jewel #11)                           ║
-// ║  Auto-wired cascade failure prevention for all capability executions.         ║
+// ║  ASCENSION LAYER — Circuit Breaker (Layer #11 · Always-On)                   ║
+// ║  Auto-wired cascade failure prevention for every capability invocation.       ║
 // ║  Three-state FSM: closed → open → half-open with exponential backoff.        ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -148,8 +148,8 @@ export function cmpsbl_reset_breakers(): void {
 
 const CIRCUIT_BREAKER_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Circuit Breaker (Crown Jewel #11)                           ║
-# ║  Auto-wired cascade failure prevention for all capability executions.         ║
+# ║  ASCENSION LAYER — Circuit Breaker (Layer #11 · Always-On)                   ║
+# ║  Auto-wired cascade failure prevention for every capability invocation.       ║
 # ║  Three-state FSM: closed → open → half-open with exponential backoff.        ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
