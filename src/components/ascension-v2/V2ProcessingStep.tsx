@@ -359,6 +359,18 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
     appendAudit('discovery_complete', `${totalDiscovered} raw discoveries`);
 
+    // ── Gap #1+#4: band distribution summary ──
+    const bandDist = allCaps.reduce<Record<string, number>>((acc, c) => {
+      const k = c.band ?? 'unknown';
+      acc[k] = (acc[k] ?? 0) + 1;
+      return acc;
+    }, {});
+    appendAudit(
+      'banding_summary',
+      `high=${bandDist.high ?? 0} medium=${bandDist.medium ?? 0} low=${bandDist.low ?? 0} hypothesis=${bandDist.hypothesis ?? 0}`,
+    );
+    logV2Discovery(candidateNode, allCaps.length, user.id, runId);
+
     if (allCaps.length === 0) {
       const message = lastFunctionError || 'No capabilities emerged from the collision cycle.';
       setAnalysisError(message);
