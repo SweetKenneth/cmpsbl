@@ -273,20 +273,26 @@ export function validateLayer2Linkage(
   }
 
   // §5.1 — Check that the original class/module is present (inline or imported)
-  // Try the raw filename stem, PascalCase variant, and case-insensitive match
-  // because filenames often use snake_case (task_worker.py) while the code
-  // inside uses PascalCase (TaskWorker).
+  // Try multiple variants because filenames vary widely:
+  //   task_worker.py      → TaskWorker
+  //   Builders.common.kt  → Builders, BuildersCommon, builders.common
+  //   AbstractApplicationContext.java → AbstractApplicationContext
   const primaryName = originalFileNames[0].replace(/\.[^.]+$/, '');
+  // Collapse all separators (`.`, `-`, `_`) to PascalCase
   const pascalName = primaryName
-    .split(/[-_]/)
+    .split(/[.\-_]/)
+    .filter(Boolean)
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join('');
-  const hasClassRef =
-    layer2Code.includes(primaryName) ||
-    layer2Code.includes(pascalName) ||
-    layer2Code.toLowerCase().includes(primaryName.toLowerCase());
+  // Also accept the leading segment alone (e.g. "Builders" from "Builders.common")
+  const leadingSegment = primaryName.split(/[.\-_]/).filter(Boolean)[0] || primaryName;
+  const variants = [primaryName, pascalName, leadingSegment];
+  const lowerCode = layer2Code.toLowerCase();
+  const hasClassRef = variants.some(v =>
+    layer2Code.includes(v) || lowerCode.includes(v.toLowerCase())
+  );
   if (!hasClassRef) {
-    errors.push(`Layer 2 does not reference "${primaryName}" (or "${pascalName}") — the original source is not embedded or imported.`);
+    errors.push(`Layer 2 does not reference any of [${variants.join(', ')}] — the original source is not embedded or imported.`);
   }
 
   // §5.2 — Check for the LAYER 1 embed marker OR a live import
