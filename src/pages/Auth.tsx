@@ -20,6 +20,7 @@ import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { isWebAuthnSupported, isPlatformAuthenticatorAvailable, authenticateWithPasskey } from '@/lib/substrate/identity-module';
 import { supabase } from '@/integrations/supabase/client';
+import { lovable } from '@/integrations/lovable/index';
 import { toast } from 'sonner';
 import { secureSet } from '@/lib/system/secureStorage';
 
@@ -140,6 +141,32 @@ export default function Auth() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+
+      if (result.error) {
+        toast.error('Google sign-in failed');
+        return;
+      }
+
+      if (result.redirected) {
+        return; // Browser will redirect to Google
+      }
+
+      // Session set — navigate
+      const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
+      const urlParams = new URLSearchParams(window.location.search);
+      navigate(storedRedirect || urlParams.get('redirect') || '/os');
+    } catch {
+      toast.error('Google sign-in failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   const SETUP_STEPS = [
