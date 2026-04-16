@@ -421,16 +421,37 @@ export function V2ProcessingStep({ onComplete }: Props) {
     }
 
     // ───────────────────────────────────────────────────────
-    // Phase 2: Dedup (70–85%)
+    // Phase 2: Merge Simulation + Dedup (70–85%)
     // ───────────────────────────────────────────────────────
-    setProgress(75);
+    setProgress(72);
     setStatusIdx(5);
 
-    const dedup = deduplicateCapabilities(allCaps);
+    // ── Gap #7: dry-run merge simulation across all collisions ──
+    const selection = new Set<string>([candidateNode.toUpperCase()]);
+    const mergeReport = simulateMergeBatch(compatReports, selection);
+    const verdictByPrimitive = new Map(
+      mergeReport.simulations.map((s) => [s.primitive, s] as const),
+    );
+    appendAudit(
+      'merge_simulation',
+      `beneficial=${mergeReport.beneficial} neutral=${mergeReport.neutral} risky=${mergeReport.risky} avgΔ=${mergeReport.avgNetImprovement}`,
+    );
+
+    // Attach merge verdicts to caps before dedup so the strongest survivor wins.
+    const enrichedCaps: DiscoveredCapability[] = allCaps.map((c) => {
+      const targetUpper = (c.chain[c.chain.length - 1] ?? c.name).toUpperCase();
+      const sim = verdictByPrimitive.get(targetUpper);
+      return sim
+        ? { ...c, mergeVerdict: sim.verdict, mergeNetImprovement: sim.netImprovement }
+        : c;
+    });
+
+    setProgress(78);
+    const dedup = deduplicateCapabilities(enrichedCaps);
     setDedupResult(dedup);
     appendAudit('dedup_complete', `${dedup.rawCount} → ${dedup.capabilities.length} unique (${dedup.groupCount} groups)`);
 
-    setProgress(80);
+    setProgress(82);
 
     // ───────────────────────────────────────────────────────
     // Phase 3: Auto-Lock (85–95%)
@@ -455,6 +476,10 @@ export function V2ProcessingStep({ onComplete }: Props) {
             chain: [...cap.chain],
             chain_depth: cap.chainDepth,
             pipeline_version: 'v2',
+            band: cap.band ?? null,
+            merge_verdict: cap.mergeVerdict ?? null,
+            merge_net_improvement: cap.mergeNetImprovement ?? null,
+            compatibility_composite: cap.compatibilityComposite ?? null,
             dedup_raw_count: dedup.rawCount,
             dedup_group_count: dedup.groupCount,
             persisted_at: new Date().toISOString(),
@@ -476,6 +501,13 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
     commitAscension(dedup.capabilities.length);
     appendAudit('auto_lock_complete', `${dedup.capabilities.length} sealed`);
+
+    // ── Gap #8: discovery-set delta — proves the pipeline mutated state ──
+    const delta = measureDiscoveryDelta(enrichedCaps, dedup.capabilities, dedup.capabilities.length);
+    appendAudit(
+      'discovery_delta',
+      `verdict=${delta.verdict} collapse=${delta.collapseRatio} retention=${delta.retentionRatio} topΔ=${delta.topScoreDelta}`,
+    );
 
     setProgress(95);
     setStatusIdx(7);
