@@ -52,7 +52,7 @@ export function cmpsbl_attestation(jurisdiction: CmpsblJurisdiction, periodMs = 
   // Compute a deterministic root for evidence chain
   let h = 5381;
   for (const e of events) {
-    const s = `${e.ts}|${e.capability}|${e.routedTo}`;
+    const s = \`\${e.ts}|\${e.capability}|\${e.routedTo}\`;
     for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
   }
   return {

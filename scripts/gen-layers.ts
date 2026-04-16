@@ -1904,8 +1904,13 @@ const complianceLayers: LayerSpec[] = [
 // EMITTER
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Escape content destined for an emitted template literal.
+// Order matters: backslash first, then backtick, then ${ interpolation opener.
+function escTpl(s: string): string {
+  return s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+}
+
 function emitLayer(spec: LayerSpec): string {
-  // Use String.raw + custom delimiter to embed backticks safely
   const tsName = `${spec.varBase}_TS`;
   const pyName = `${spec.varBase}_PY`;
   const wireTsName = `${spec.varBase}_WIRE_TS`;
@@ -1913,18 +1918,23 @@ function emitLayer(spec: LayerSpec): string {
   const layerName = `${spec.varBase}_LAYER`;
   const headerLine = spec.description.length > 76 ? spec.description.slice(0, 73) + '...' : spec.description;
 
+  const tsFull = escTpl(tsHdr(spec.name, spec.rank, headerLine) + spec.tsBody);
+  const pyFull = escTpl(pyHdr(spec.name, spec.rank, headerLine) + spec.pyBody);
+  const tsWireEsc = escTpl(spec.tsWire);
+  const pyWireEsc = escTpl(spec.pyWire);
+
   return `
 // ════════════════════════════════════════════════════════════════════════════
 // LAYER ${spec.rank} — ${spec.name} (CJPI ${spec.cjpi}, ${spec.module})
 // ════════════════════════════════════════════════════════════════════════════
 
-const ${tsName} = \`${tsHdr(spec.name, spec.rank, headerLine)}${spec.tsBody}\`;
+const ${tsName} = \`${tsFull}\`;
 
-const ${pyName} = \`${pyHdr(spec.name, spec.rank, headerLine)}${spec.pyBody}\`;
+const ${pyName} = \`${pyFull}\`;
 
-const ${wireTsName} = \`${spec.tsWire}\`;
+const ${wireTsName} = \`${tsWireEsc}\`;
 
-const ${wirePyName} = \`${spec.pyWire}\`;
+const ${wirePyName} = \`${pyWireEsc}\`;
 
 const ${layerName}: CmpsblLayerDefinition = {
   id: ${JSON.stringify(spec.id)},

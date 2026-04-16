@@ -32,7 +32,7 @@ export function cmpsbl_add_stage<I, O>(pipelineName: string, stage: CmpsblStage<
 
 export async function cmpsbl_run_pipeline(pipelineName: string, initial: unknown): Promise<unknown> {
   const p = _cmpsbl_pipelines.get(pipelineName);
-  if (!p) throw new Error(`[CMPSBL:Pipeline] '${pipelineName}' not defined`);
+  if (!p) throw new Error(\`[CMPSBL:Pipeline] '\${pipelineName}' not defined\`);
   p.runs++;
   let value: unknown = initial;
   for (const stage of p.stages) {
@@ -170,8 +170,8 @@ export function cmpsbl_detect_modality(raw: unknown): CmpsblInputModality {
   if (s.startsWith('{') || s.startsWith('[')) {
     try { JSON.parse(s); return 'json'; } catch { /* fallthrough */ }
   }
-  if (s.startsWith('--') || /^[a-z][\w-]*\s+(-{1,2}\w)/.test(s)) return 'cli';
-  if (/(function|class|def|import|const|let|var)\s+/.test(s)) return 'code';
+  if (s.startsWith('--') || /^[a-z][\\w-]*\\s+(-{1,2}\\w)/.test(s)) return 'cli';
+  if (/(function|class|def|import|const|let|var)\\s+/.test(s)) return 'code';
   return 'text';
 }
 
@@ -181,7 +181,7 @@ export function cmpsbl_normalize_input(raw: unknown): { modality: CmpsblInputMod
     try { return { modality, data: JSON.parse(raw) as Record<string, unknown> }; } catch { /* fall through */ }
   }
   if (modality === 'cli' && typeof raw === 'string') {
-    const tokens = raw.split(/\s+/);
+    const tokens = raw.split(/\\s+/);
     const data: Record<string, unknown> = { _cmd: tokens[0], _args: [] as string[] };
     for (let i = 1; i < tokens.length; i++) {
       const t = tokens[i];
@@ -232,8 +232,8 @@ def cmpsbl_detect_modality(raw: Any) -> str:
     if s.startswith('{') or s.startswith('['):
         try: json.loads(s); return 'json'
         except json.JSONDecodeError: pass
-    if s.startswith('--') or re.match(r'^[a-z][\w-]*\s+(-{1,2}\w)', s): return 'cli'
-    if re.search(r'(function|class|def|import|const|let|var)\s+', s): return 'code'
+    if s.startswith('--') or re.match(r'^[a-z][\\w-]*\\s+(-{1,2}\\w)', s): return 'cli'
+    if re.search(r'(function|class|def|import|const|let|var)\\s+', s): return 'code'
     return 'text'
 
 def cmpsbl_normalize_input(raw: Any) -> dict:

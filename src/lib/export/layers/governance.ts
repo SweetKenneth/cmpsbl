@@ -89,7 +89,7 @@ const _cmpsbl_raw_execute_gs = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_governed(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const verdict = cmpsbl_check_policies(capabilityName, input);
   if (!verdict.allowed) {
-    throw new Error(`[CMPSBL:Governance:${capabilityName}] Vetoed by policy '${verdict.blockedBy}'`);
+    throw new Error(\`[CMPSBL:Governance:\${capabilityName}] Vetoed by policy '\${verdict.blockedBy}'\`);
   }
   return _cmpsbl_raw_execute_gs(capabilityName, input);
 };`;
@@ -148,7 +148,7 @@ export function cmpsbl_append_audit(actor: string, action: string, payload: unkn
   const ts = Date.now();
   const payloadHash = _cmpsbl_audit_hash(JSON.stringify(payload));
   const prevHash = seq === 0 ? '0'.repeat(16) : _cmpsbl_audit_chain[seq - 1].entryHash;
-  const entryHash = _cmpsbl_audit_hash(`${seq}|${ts}|${actor}|${action}|${payloadHash}|${prevHash}`);
+  const entryHash = _cmpsbl_audit_hash(\`\${seq}|\${ts}|\${actor}|\${action}|\${payloadHash}|\${prevHash}\`);
   const entry: CmpsblAuditEntry = { seq, ts, actor, action, payloadHash, prevHash, entryHash };
   _cmpsbl_audit_chain.push(entry);
   return entry;
@@ -159,7 +159,7 @@ export function cmpsbl_verify_chain(): { valid: boolean; brokenAt?: number; leng
     const e = _cmpsbl_audit_chain[i];
     const expectedPrev = i === 0 ? '0'.repeat(16) : _cmpsbl_audit_chain[i - 1].entryHash;
     if (e.prevHash !== expectedPrev) return { valid: false, brokenAt: i, length: _cmpsbl_audit_chain.length };
-    const expected = _cmpsbl_audit_hash(`${e.seq}|${e.ts}|${e.actor}|${e.action}|${e.payloadHash}|${e.prevHash}`);
+    const expected = _cmpsbl_audit_hash(\`\${e.seq}|\${e.ts}|\${e.actor}|\${e.action}|\${e.payloadHash}|\${e.prevHash}\`);
     if (expected !== e.entryHash) return { valid: false, brokenAt: i, length: _cmpsbl_audit_chain.length };
   }
   return { valid: true, length: _cmpsbl_audit_chain.length };

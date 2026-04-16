@@ -44,7 +44,7 @@ function cmpsbl_breed_defenses(): CmpsblDefenseGenome[] {
     const childWeights = a.weights.map((w, idx) => Math.random() < 0.5 ? w : b.weights[idx]);
     // Mutation
     for (let j = 0; j < childWeights.length; j++) if (Math.random() < 0.1) childWeights[j] += (Math.random() - 0.5) * 0.2;
-    const childId = `${a.id}x${b.id}_g${_cmpsbl_defense_generation}`;
+    const childId = \`\${a.id}x\${b.id}_g\${_cmpsbl_defense_generation}\`;
     const child: CmpsblDefenseGenome = { id: childId, weights: childWeights, fitness: (a.fitness + b.fitness) / 2, generation: _cmpsbl_defense_generation, survivedAttacks: 0 };
     _cmpsbl_defense_pool.set(childId, child);
     offspring.push(child);
@@ -273,7 +273,7 @@ cmpsbl_execute = function cmpsbl_execute_zerotrust(capabilityName: string, input
   const fingerprint = (input as { _cmpsbl_fingerprint?: string })._cmpsbl_fingerprint ?? 'default-fingerprint';
   const verdict = cmpsbl_verify_session(sessionId, fingerprint, 0);
   if (!verdict.allowed) {
-    throw new Error(`[CMPSBL:ZeroTrust:${capabilityName}] Session denied — trustScore=${verdict.trustScore} reason=${verdict.reason ?? 'low_trust'}`);
+    throw new Error(\`[CMPSBL:ZeroTrust:\${capabilityName}] Session denied — trustScore=\${verdict.trustScore} reason=\${verdict.reason ?? 'low_trust'}\`);
   }
   return _cmpsbl_raw_execute_zt(capabilityName, input);
 };`;
@@ -328,7 +328,7 @@ let _cmpsbl_ddos_absorbed = 0;
 let _cmpsbl_last_bucket_at = Math.floor(Date.now() / 1000);
 
 export function cmpsbl_record_ioc(kind: string, value: string, severity = 0.5): CmpsblIOC {
-  const key = `${kind}:${value}`;
+  const key = \`\${kind}:\${value}\`;
   const existing = _cmpsbl_iocs.get(key);
   if (existing) { existing.hits++; existing.severity = Math.max(existing.severity, severity); return existing; }
   const ioc: CmpsblIOC = { kind, value, firstSeenAt: Date.now(), hits: 1, severity };
@@ -417,7 +417,7 @@ const _cmpsbl_raw_execute_cd = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_cyberdefense(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const ddos = cmpsbl_ddos_check();
   if (ddos.absorbing && Math.random() < 0.5) {
-    throw new Error(`[CMPSBL:CyberDefense:${capabilityName}] DDoS absorption active — rps=${ddos.rps} (request shed)`);
+    throw new Error(\`[CMPSBL:CyberDefense:\${capabilityName}] DDoS absorption active — rps=\${ddos.rps} (request shed)\`);
   }
   try {
     return _cmpsbl_raw_execute_cd(capabilityName, input);
