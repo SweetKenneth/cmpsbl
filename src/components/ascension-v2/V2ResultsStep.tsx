@@ -266,70 +266,72 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
 
   if (loading) {
     return (
-      <div className="flex justify-center py-16">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="flex justify-center py-12 sm:py-16">
+        <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   const chain = getChainState();
+  const primaryFileName = sourceFiles[0]?.name || 'source';
+  const displayBaseName = primaryFileName.replace(/\.[^.]+$/, '');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <DownloadCeremonyOverlay
         open={ceremonyOpen}
         itemName={ceremonyName}
         kindLabel="Ascended Code Package"
         note="Your Layer 2 wrapped package with full docs is being assembled."
       />
-      <div className="text-center space-y-2">
-        <Trophy className="w-10 h-10 mx-auto text-primary" />
-        <h2 className="text-xl font-bold text-foreground">Your Ascended Code</h2>
-        <p className="text-muted-foreground text-sm">
+      <div className="text-center space-y-1.5 sm:space-y-2">
+        <Trophy className="w-8 h-8 sm:w-10 sm:h-10 mx-auto text-primary" />
+        <h2 className="text-lg sm:text-xl font-bold text-foreground">Your Ascended Code</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm">
           {capabilities.length > 0
             ? `${dedup.rawCount} discoveries → ${capabilities.length} unique capabilities wrapped into a single file`
             : 'No strong matches found — try richer source code'}
         </p>
       </div>
 
-      {/* Summary stats */}
+      {/* Summary stats — responsive grid */}
       {capabilities.length > 0 && (
-        <div className="grid grid-cols-3 gap-3">
-          <div className="bg-muted/30 rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{capabilities.length}</p>
-            <p className="text-[10px] text-muted-foreground">Unique</p>
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+          <div className="bg-muted/30 rounded-xl p-2.5 sm:p-3 text-center">
+            <p className="text-lg sm:text-2xl font-bold text-foreground">{capabilities.length}</p>
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground">Unique</p>
           </div>
-          <div className="bg-muted/30 rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{avgScore}</p>
-            <p className="text-[10px] text-muted-foreground">Avg CJPI</p>
+          <div className="bg-muted/30 rounded-xl p-2.5 sm:p-3 text-center">
+            <p className="text-lg sm:text-2xl font-bold text-foreground">{avgScore}</p>
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground">Avg CJPI</p>
           </div>
-          <div className="bg-muted/30 rounded-xl p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{topScore}</p>
-            <p className="text-[10px] text-muted-foreground">Top Score</p>
+          <div className="bg-muted/30 rounded-xl p-2.5 sm:p-3 text-center">
+            <p className="text-lg sm:text-2xl font-bold text-foreground">{topScore}</p>
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground">Top Score</p>
           </div>
         </div>
       )}
 
-      {/* Package contents preview */}
+      {/* Package contents preview — mobile-friendly file list */}
       {capabilities.length > 0 && (
-        <div className="bg-muted/20 border border-border rounded-xl p-4 space-y-3">
+        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
           <div className="flex items-center gap-2">
-            <Package className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium text-foreground">Export Package Contents</span>
+            <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium text-foreground">Export Package Contents</span>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1 sm:space-y-1.5">
             {[
-              { icon: FileText, name: 'LICENSE.html', desc: 'Commercial license with patent notices' },
-              { icon: FileText, name: 'README.html', desc: 'Package overview & quick start' },
-              { icon: FileText, name: 'USER-GUIDE.html', desc: 'Full guide: pipeline, activation, errors' },
-              { icon: FileCode2, name: sourceFiles[0]?.name || 'source.*', desc: 'Original file — untouched' },
-              { icon: FileCode2, name: `cmpsbl.${(sourceFiles[0]?.name || 'source.ts').replace(/\.[^.]+$/, '')}.*`, desc: `Ascended — ${capabilities.length} capabilities activated` },
-              { icon: FileText, name: 'ADVERTISEMENT.html', desc: 'Custom Mana layers preview' },
+              { icon: FileText, name: 'LICENSE.html', desc: 'Commercial license' },
+              { icon: FileText, name: 'README.html', desc: 'Overview & quick start' },
+              { icon: FileText, name: 'USER-GUIDE.html', desc: 'Full activation guide' },
+              { icon: FileCode2, name: sourceFiles[0]?.name || 'source.*', desc: 'Original — untouched' },
+              { icon: FileCode2, name: `cmpsbl.${displayBaseName}.*`, desc: `${capabilities.length} capabilities` },
+              { icon: FileText, name: 'ADVERTISEMENT.html', desc: 'Mana layers preview' },
             ].map((item) => (
-              <div key={item.name} className="flex items-center gap-2 py-1">
-                <item.icon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
-                <span className="text-xs font-mono text-foreground truncate">{item.name}</span>
-                <span className="text-[10px] text-muted-foreground truncate ml-auto">{item.desc}</span>
+              <div key={item.name} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1 min-w-0">
+                <item.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground flex-shrink-0" />
+                <span className="text-[10px] sm:text-xs font-mono text-foreground truncate min-w-0 flex-1">{item.name}</span>
+                <span className="text-[9px] sm:text-[10px] text-muted-foreground flex-shrink-0 hidden xs:inline">{item.desc}</span>
               </div>
             ))}
           </div>
@@ -338,17 +340,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
 
       {/* Capabilities list */}
       {capabilities.length > 0 && (
-        <div className="bg-muted/20 border border-border rounded-xl p-4 space-y-3">
+        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
           <div className="flex items-center gap-2">
-            <FileCode2 className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium text-foreground">Activated Capabilities</span>
+            <FileCode2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium text-foreground">Activated Capabilities</span>
           </div>
-          <div className="space-y-1.5 max-h-[200px] overflow-y-auto">
+          <div className="space-y-1 sm:space-y-1.5 max-h-[180px] sm:max-h-[200px] overflow-y-auto">
             {capabilities.map((cap, i) => (
-              <div key={i} className="flex items-center gap-2 py-1">
+              <div key={i} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                <span className="text-xs text-foreground truncate flex-1">{cap.name}</span>
-                <span className={cn('text-xs font-mono font-bold', scoreColor(cap.cjpiScore))}>
+                <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">{cap.name}</span>
+                <span className={cn('text-[10px] sm:text-xs font-mono font-bold flex-shrink-0', scoreColor(cap.cjpiScore))}>
                   {cap.cjpiScore}
                 </span>
               </div>
@@ -358,34 +360,36 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
       )}
 
       {/* Audit chain integrity badge */}
-      <div className="bg-muted/20 rounded-xl p-3 flex items-center gap-2">
+      <div className="bg-muted/20 rounded-xl p-2.5 sm:p-3 flex items-center gap-2">
         <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium text-foreground">
+          <p className="text-[10px] sm:text-xs font-medium text-foreground">
             Audit Chain: {chain.length} entries · {chain.verified ? 'Verified ✓' : 'Broken ✗'}
           </p>
           {integrityHash && (
-            <p className="text-[10px] text-muted-foreground font-mono truncate">
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground font-mono truncate">
               SHA-256: {integrityHash.slice(0, 24)}…
             </p>
           )}
         </div>
       </div>
 
-      {/* Actions */}
+      {/* Actions — responsive download button */}
       <div className="space-y-2">
         {capabilities.length > 0 && (
-          <Button onClick={handleExport} disabled={exporting} className="w-full h-12 rounded-xl text-base">
+          <Button onClick={handleExport} disabled={exporting} className="w-full h-11 sm:h-12 rounded-xl text-xs sm:text-base">
             {exporting ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
-              <Download className="w-4 h-4 mr-2" />
+              <Download className="w-4 h-4 mr-2 flex-shrink-0" />
             )}
-            {exporting ? 'Generating Package…' : `Download cmpsbl-ascended-${(sourceFiles[0]?.name || 'source').replace(/\.[^.]+$/, '')}.zip`}
+            <span className="truncate">
+              {exporting ? 'Generating Package…' : `Download cmpsbl-ascended-${displayBaseName}.zip`}
+            </span>
           </Button>
         )}
 
-        <Button variant="ghost" onClick={onReset} className="w-full">
+        <Button variant="ghost" onClick={onReset} className="w-full text-xs sm:text-sm">
           <RotateCcw className="w-3 h-3 mr-1" />
           Start Over with New Code
         </Button>

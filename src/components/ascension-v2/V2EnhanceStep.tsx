@@ -126,9 +126,9 @@ export function V2EnhanceStep({ onComplete }: Props) {
 
   if (done) {
     return (
-      <div className="flex flex-col items-center gap-3 py-16 animate-in fade-in">
-        <CheckCircle2 className="w-12 h-12 text-primary" />
-        <p className="text-foreground font-medium">Enhancement Attached</p>
+      <div className="flex flex-col items-center gap-3 py-12 sm:py-16 animate-in fade-in">
+        <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+        <p className="text-foreground font-medium text-sm sm:text-base">Enhancement Attached</p>
         <p className="text-muted-foreground text-xs">
           {attachmentCount} function boundaries wrapped via Mana
         </p>
@@ -137,10 +137,10 @@ export function V2EnhanceStep({ onComplete }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="text-center">
-        <h2 className="text-lg font-semibold text-foreground">Enhance with Mana</h2>
-        <p className="text-muted-foreground text-sm mt-1">
+        <h2 className="text-base sm:text-lg font-semibold text-foreground">Enhance with Mana</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mt-1">
           Optionally attach SDK-built software to merge with your code before Ascension.
         </p>
       </div>
@@ -148,7 +148,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
       {/* SDK Upload Zone */}
       <div
         className={cn(
-          'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all',
+          'border-2 border-dashed rounded-xl p-5 sm:p-8 text-center cursor-pointer transition-all',
           dragOver ? 'border-primary bg-primary/5' :
           files.length > 0 ? 'border-primary/30 bg-primary/[0.03]' :
           'border-border/30 hover:border-border/50'
@@ -161,20 +161,20 @@ export function V2EnhanceStep({ onComplete }: Props) {
         <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
         {files.length > 0 ? (
           <div className="space-y-1">
-            <Package className="w-8 h-8 mx-auto text-primary" />
-            <p className="text-foreground font-medium text-sm">
+            <Package className="w-7 h-7 sm:w-8 sm:h-8 mx-auto text-primary" />
+            <p className="text-foreground font-medium text-xs sm:text-sm">
               {files.length} file{files.length > 1 ? 's' : ''} selected
             </p>
-            <p className="text-muted-foreground text-xs">
+            <p className="text-muted-foreground text-[10px] sm:text-xs break-all">
               {files.map(f => f.name).slice(0, 3).join(', ')}
               {files.length > 3 && ` +${files.length - 3} more`}
             </p>
           </div>
         ) : (
           <div className="space-y-1">
-            <Layers className="w-8 h-8 mx-auto text-muted-foreground" />
-            <p className="text-foreground text-sm">Drop your SDK-built package here</p>
-            <p className="text-muted-foreground text-xs">
+            <Layers className="w-7 h-7 sm:w-8 sm:h-8 mx-auto text-muted-foreground" />
+            <p className="text-foreground text-xs sm:text-sm">Drop your SDK-built package here</p>
+            <p className="text-muted-foreground text-[10px] sm:text-xs">
               Software built with @cmpsbl/sdk for function-boundary attachment
             </p>
           </div>
@@ -182,14 +182,14 @@ export function V2EnhanceStep({ onComplete }: Props) {
       </div>
 
       {/* Store Add-Ons Teaser (Future) */}
-      <div className="bg-muted/20 border border-border/30 rounded-xl p-4 opacity-60">
+      <div className="bg-muted/20 border border-border/30 rounded-xl p-3 sm:p-4 opacity-60">
         <div className="flex items-center gap-2 mb-1">
-          <FileCode2 className="w-4 h-4 text-muted-foreground" />
-          <span className="text-xs font-medium text-muted-foreground">
+          <FileCode2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+          <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
             Substrate Store Add-Ons — Coming Soon
           </span>
         </div>
-        <p className="text-[10px] text-muted-foreground leading-relaxed">
+        <p className="text-[9px] sm:text-[10px] text-muted-foreground leading-relaxed">
           Browse and purchase substrate-built capabilities (Crown Jewels, Memory Stream
           discoveries, COMPILER output) to enhance your code before Ascension.
         </p>
@@ -200,7 +200,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
         <Button
           onClick={handleAttach}
           disabled={files.length === 0 || processing || !user}
-          className="w-full h-11 rounded-xl"
+          className="w-full h-10 sm:h-11 rounded-xl text-sm"
         >
           {processing ? (
             <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Wrapping with Mana…</>
@@ -212,7 +212,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
         <Button
           variant="ghost"
           onClick={handleSkip}
-          className="w-full text-muted-foreground"
+          className="w-full text-muted-foreground text-xs sm:text-sm"
         >
           <SkipForward className="w-3 h-3 mr-1" />
           Skip — Ascend Without Enhancements

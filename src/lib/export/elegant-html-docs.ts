@@ -26,7 +26,20 @@ const DOCUMENT_STYLES = `
       box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 20px 60px rgba(0,0,0,0.06);
     }
     @media print { body { background: white; } .page { box-shadow: none; padding: 0; max-width: 100%; } }
-    @media (max-width: 680px) { .page { padding: 2rem 1.5rem; } }
+    @media (max-width: 680px) {
+      .page { padding: 1.5rem 1rem; }
+      .doc-title { font-size: 1.4rem; word-break: break-word; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      code { word-break: break-all; }
+      .file-list .fname { min-width: auto; font-size: 0.7rem; }
+      .file-list li { flex-wrap: wrap; gap: 0.3rem; }
+      .colophon { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 380px) {
+      .page { padding: 1.25rem 0.75rem; }
+      .meta-grid { grid-template-columns: 1fr; }
+    }
     .doc-header {
       text-align: center;
       padding-bottom: 2.5rem;
