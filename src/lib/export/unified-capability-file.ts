@@ -683,7 +683,7 @@ ${layer1TsBlock}
 
 // ─── Pack Metadata ───────────────────────────────────────────────────────────
 
-export const PACK_META = {
+export const CMPSBL_PACK_META = {
   name: '${packName}',
   capabilities: ${JSON.stringify(capabilities.map(c => ({
     name: c.name, cjpi: c.cjpiScore, tier: c.tier,
@@ -695,6 +695,9 @@ export const PACK_META = {
   version: '1.0.0',
   exported: '${new Date().toISOString().slice(0, 10)}',
 } as const;
+
+/** @deprecated Use CMPSBL_PACK_META instead */
+export const PACK_META = CMPSBL_PACK_META;
 
 // ─── Per-Capability Execution ────────────────────────────────────────────────
 
@@ -745,7 +748,7 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
 
 // ─── Unified Execute (any capability by name) ───────────────────────────────
 
-const CAPABILITY_MAP: Record<string, (input: Record<string, unknown>) => ExecutionResult> = {
+const CMPSBL_CAPABILITY_MAP: Record<string, (input: Record<string, unknown>) => ExecutionResult> = {
 ${capabilities.map(c => `  '${c.name}': execute_${c.name.toLowerCase().replace(/[^a-z0-9]/g, '_')},`).join('\n')}
 };
 
@@ -753,49 +756,61 @@ ${capabilities.map(c => `  '${c.name}': execute_${c.name.toLowerCase().replace(/
  * Execute any capability by name.
  * @example const result = execute('my-capability', { query: 'hello' });
  */
-export function execute(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
-  const fn = CAPABILITY_MAP[capabilityName];
-  if (!fn) throw new Error(\`Capability "\${capabilityName}" not found in this pack. Available: \${Object.keys(CAPABILITY_MAP).join(', ')}\`);
+export function cmpsbl_execute(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  const fn = CMPSBL_CAPABILITY_MAP[capabilityName];
+  if (!fn) throw new Error(\`Capability "\${capabilityName}" not found in this pack. Available: \${Object.keys(CMPSBL_CAPABILITY_MAP).join(', ')}\`);
   return fn(input);
 }
+
+/** @deprecated Use cmpsbl_execute instead */
+export const execute = cmpsbl_execute;
 
 /**
  * Execute a raw module chain directly (advanced usage).
  * @example const result = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
  */
-export function executeChain(chain: string[], input: Record<string, unknown>): PipelineResult {
+export function cmpsbl_execute_chain(chain: string[], input: Record<string, unknown>): PipelineResult {
   return executePipeline(input, chain, { name: 'custom-chain', cjpi: 0, tier: 'mint', chain });
 }
+
+/** @deprecated Use cmpsbl_execute_chain instead */
+export const executeChain = cmpsbl_execute_chain;
 
 /**
  * Validate structural integrity of the entire pack.
  */
-export function validate(): { valid: boolean; capabilities: number; modules: number; fingerprints: string[] } {
-  const fps = PACK_META.capabilities.map(c => c.fingerprint);
+export function cmpsbl_validate(): { valid: boolean; capabilities: number; modules: number; fingerprints: string[] } {
+  const fps = CMPSBL_PACK_META.capabilities.map(c => c.fingerprint);
   return {
-    valid: fps.every(fp => fp.length > 0) && PACK_META.modules.length > 0,
-    capabilities: PACK_META.capabilities.length,
-    modules: PACK_META.modules.length,
+    valid: fps.every(fp => fp.length > 0) && CMPSBL_PACK_META.modules.length > 0,
+    capabilities: CMPSBL_PACK_META.capabilities.length,
+    modules: CMPSBL_PACK_META.modules.length,
     fingerprints: fps,
   };
 }
 
+/** @deprecated Use cmpsbl_validate instead */
+export const validate = cmpsbl_validate;
+
 /**
  * List all capabilities in this pack.
  */
-export function listCapabilities(): string[] {
-  return PACK_META.capabilities.map(c => c.name);
+export function cmpsbl_list_capabilities(): string[] {
+  return CMPSBL_PACK_META.capabilities.map(c => c.name);
 }
+
+/** @deprecated Use cmpsbl_list_capabilities instead */
+export const listCapabilities = cmpsbl_list_capabilities;
 
 /**
  * Quick self-test — run all capabilities with test input.
  */
-export function selfTest(): { passed: number; failed: number; results: Record<string, boolean> } {
+export function cmpsbl_self_test(): { passed: number; failed: number; results: Record<string, boolean> } {
   const results: Record<string, boolean> = {};
   let passed = 0, failed = 0;
-  for (const cap of PACK_META.capabilities) {
+  for (const cap of CMPSBL_PACK_META.capabilities) {
     try {
-      const r = execute(cap.name, { _test: true });
+      const r = cmpsbl_execute(cap.name, { _test: true });
       const ok = r._pipeline.success && r._cmpsbl.execution.original_executed;
       results[cap.name] = ok;
       ok ? passed++ : failed++;
@@ -803,6 +818,9 @@ export function selfTest(): { passed: number; failed: number; results: Record<st
   }
   return { passed, failed, results };
 }
+
+/** @deprecated Use cmpsbl_self_test instead */
+export const selfTest = cmpsbl_self_test;
 `;
 }
 
@@ -1104,7 +1122,7 @@ def execute_pipeline(input_data: dict, chain: list, meta: dict) -> dict:
 
 ${layer1Block}
 
-PACK_META = ${JSON.stringify({
+CMPSBL_PACK_META = ${JSON.stringify({
     name: packName,
     capabilities: capabilities.map(c => ({
       name: c.name, cjpi: c.cjpiScore, tier: c.tier, chain: c.chain,
@@ -1113,18 +1131,21 @@ PACK_META = ${JSON.stringify({
     modules: allModules,
   }, null, 4)}
 
+# Backwards compatibility alias
+PACK_META = CMPSBL_PACK_META
 
-class CMPSBLCapability:
+
+class CmpsblCapability:
     """Single capability executor with dual-layer architecture."""
 
     def __init__(self, capability_name: str = None):
         if capability_name:
-            cap = next((c for c in PACK_META["capabilities"] if c["name"] == capability_name), None)
+            cap = next((c for c in CMPSBL_PACK_META["capabilities"] if c["name"] == capability_name), None)
             if not cap:
-                raise ValueError(f"Capability '{capability_name}' not found. Available: {[c['name'] for c in PACK_META['capabilities']]}")
+                raise ValueError(f"Capability '{capability_name}' not found. Available: {[c['name'] for c in CMPSBL_PACK_META['capabilities']]}")
             self.meta = cap
         else:
-            self.meta = PACK_META["capabilities"][0] if PACK_META["capabilities"] else {}
+            self.meta = CMPSBL_PACK_META["capabilities"][0] if CMPSBL_PACK_META["capabilities"] else {}
 
     def execute_original(self, input_data: dict = None) -> Any:
 ${executeOriginalBody}
@@ -1170,27 +1191,39 @@ ${executeOriginalBody}
         fp = self.meta.get("fingerprint", "")
         return bool(chain) and 0 < cjpi <= 100 and len(fp) > 0
 
+# Backwards compatibility alias
+CMPSBLCapability = CmpsblCapability
 
-def execute(capability_name: str, input_data: dict) -> dict:
+
+def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     """Execute any capability by name."""
-    return CMPSBLCapability(capability_name).execute(input_data)
+    return CmpsblCapability(capability_name).execute(input_data)
+
+# Backwards compatibility alias
+execute = cmpsbl_execute
 
 
-def execute_chain(chain: list, input_data: dict) -> dict:
+def cmpsbl_execute_chain(chain: list, input_data: dict) -> dict:
     """Execute a raw module chain directly."""
     return execute_pipeline(input_data, chain, {"name": "custom-chain", "cjpi": 0, "tier": "mint", "chain": chain})
 
+# Backwards compatibility alias
+execute_chain = cmpsbl_execute_chain
 
-def list_capabilities() -> list:
-    return [c["name"] for c in PACK_META["capabilities"]]
+
+def cmpsbl_list_capabilities() -> list:
+    return [c["name"] for c in CMPSBL_PACK_META["capabilities"]]
+
+# Backwards compatibility alias
+list_capabilities = cmpsbl_list_capabilities
 
 
-def self_test() -> dict:
+def cmpsbl_self_test() -> dict:
     results = {}
     passed = failed = 0
-    for cap in PACK_META["capabilities"]:
+    for cap in CMPSBL_PACK_META["capabilities"]:
         try:
-            r = execute(cap["name"], {"_test": True})
+            r = cmpsbl_execute(cap["name"], {"_test": True})
             ok = r["_pipeline"]["success"]
             results[cap["name"]] = ok
             if ok: passed += 1
@@ -1200,13 +1233,16 @@ def self_test() -> dict:
             failed += 1
     return {"passed": passed, "failed": failed, "results": results}
 
+# Backwards compatibility alias
+self_test = cmpsbl_self_test
+
 
 if __name__ == "__main__":
-    print(f"CMPSBL® Capability Pack — {PACK_META['name']}")
-    print(f"Capabilities: {len(PACK_META['capabilities'])}")
-    print(f"Modules: {PACK_META['modules']}")
+    print(f"CMPSBL® Capability Pack — {CMPSBL_PACK_META['name']}")
+    print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
+    print(f"Modules: {CMPSBL_PACK_META['modules']}")
     print()
-    result = self_test()
+    result = cmpsbl_self_test()
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
     for name, ok in result["results"].items():
         print(f"  {'✅' if ok else '❌'} {name}")

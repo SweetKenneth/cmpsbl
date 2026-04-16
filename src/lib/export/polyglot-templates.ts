@@ -362,7 +362,7 @@ ${capabilities.map(c => `        CapabilityDef {
     modules: &[${allModules.map(m => `"${m}"`).join(', ')}],
 };
 
-pub fn execute(capability_name: &str, input: JsonMap) -> PipelineResult {
+pub fn cmpsbl_execute(capability_name: &str, input: JsonMap) -> PipelineResult {
     let cap = PACK.capabilities.iter()
         .find(|c| c.name == capability_name)
         .unwrap_or_else(|| panic!("Capability '{}' not found", capability_name));
@@ -378,7 +378,12 @@ pub fn execute(capability_name: &str, input: JsonMap) -> PipelineResult {
     execute_pipeline(input, &meta.chain, &meta)
 }
 
-pub fn execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
+/// @deprecated Use cmpsbl_execute instead
+pub fn execute(capability_name: &str, input: JsonMap) -> PipelineResult {
+    cmpsbl_execute(capability_name, input)
+}
+
+pub fn cmpsbl_execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
     let chain_vec: Vec<String> = chain.iter().map(|s| s.to_string()).collect();
     let meta = CapabilityMeta {
         name: "custom-chain".into(), cjpi: 0, tier: "mint".into(),
@@ -387,12 +392,35 @@ pub fn execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
     execute_pipeline(input, &chain_vec, &meta)
 }
 
-pub fn list_capabilities() -> Vec<&'static str> {
+/// @deprecated Use cmpsbl_execute_chain instead
+pub fn execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
+    cmpsbl_execute_chain(chain, input)
+}
+
+pub fn cmpsbl_list_capabilities() -> Vec<&'static str> {
     PACK.capabilities.iter().map(|c| c.name).collect()
 }
 
-pub fn validate() -> bool {
+/// @deprecated Use cmpsbl_list_capabilities instead
+pub fn list_capabilities() -> Vec<&'static str> {
+    cmpsbl_list_capabilities()
+}
+
+pub fn cmpsbl_validate() -> bool {
     PACK.capabilities.iter().all(|c| !c.fingerprint.is_empty() && c.cjpi > 0)
+}
+
+/// @deprecated Use cmpsbl_validate instead
+pub fn validate() -> bool {
+    cmpsbl_validate()
+}
+
+pub fn cmpsbl_self_test() -> Vec<(&'static str, bool)> {
+    PACK.capabilities.iter().map(|cap| {
+        let input = HashMap::from([("_test".into(), serde_json::json!(true))]);
+        let result = cmpsbl_execute(cap.name, input);
+        (cap.name, result.success)
+    }).collect()
 }
 
 #[cfg(test)]
@@ -696,6 +724,16 @@ func Validate() bool {
 \treturn true
 }
 
+func SelfTest() map[string]bool {
+\tresults := make(map[string]bool)
+\tfor _, cap := range Pack.Capabilities {
+\t\tinput := map[string]interface{}{"_test": true}
+\t\tresult, err := Execute(cap.Name, input)
+\t\tresults[cap.Name] = err == nil && result.Success
+\t}
+\treturn results
+}
+
 // Ensure json import is used
 var _ = json.Marshal
 `;
@@ -900,6 +938,20 @@ ${capabilities.map(c => `        Map.of("name", "${c.name}", "cjpi", ${c.cjpiSco
         return true;
     }
 
+    public static Map<String, Boolean> selfTest() {
+        Map<String, Boolean> results = new LinkedHashMap<>();
+        for (Map<String, Object> cap : CAPABILITIES) {
+            String name = (String) cap.get("name");
+            try {
+                Map<String, Object> input = new HashMap<>();
+                input.put("_test", true);
+                PipelineResult r = execute(name, input);
+                results.put(name, r.success);
+            } catch (Exception e) { results.put(name, false); }
+        }
+        return results;
+    }
+
     public static void main(String[] args) {
         System.out.println("CMPSBL® Capability Pack — ${packName}");
         System.out.println("Capabilities: " + CAPABILITIES.size());
@@ -1075,6 +1127,18 @@ ${capabilities.map(c => `            new() { ["name"] = "${c.name}", ["cjpi"] = 
 
         public static bool Validate() => Capabilities.All(c =>
             !string.IsNullOrEmpty((string)c["fingerprint"]) && Convert.ToInt32(c["cjpi"]) > 0);
+
+        public static Dictionary<string, bool> SelfTest() {
+            var results = new Dictionary<string, bool>();
+            foreach (var cap in Capabilities) {
+                var name = (string)cap["name"];
+                try {
+                    var r = Execute(name, new Dictionary<string, object> { ["_test"] = true });
+                    results[name] = r.Success;
+                } catch { results[name] = false; }
+            }
+            return results;
+        }
     }
 }
 `;
@@ -1237,9 +1301,21 @@ func executeChain(_ chain: [String], input: JsonMap) -> PipelineResult {
     return executePipeline(input, chain: chain, meta: meta)
 }
 
-func listCapabilities() -> [String] { packCapabilities.map { $0.name } }
+func cmpsblListCapabilities() -> [String] { packCapabilities.map { $0.name } }
 
-func validate() -> Bool { packCapabilities.allSatisfy { !$0.fingerprint.isEmpty && $0.cjpi > 0 } }
+func cmpsblValidate() -> Bool { packCapabilities.allSatisfy { !$0.fingerprint.isEmpty && $0.cjpi > 0 } }
+
+func cmpsblSelfTest() -> [(String, Bool)] {
+    packCapabilities.map { cap in
+        let meta: JsonMap = ["name": cap.name, "cjpi": cap.cjpi, "tier": cap.tier, "chain": cap.chain, "fingerprint": cap.fingerprint]
+        let result = executePipeline(["_test": true] as JsonMap, chain: cap.chain, meta: meta)
+        return (cap.name, result.success)
+    }
+}
+
+// Backwards compatibility
+func listCapabilities() -> [String] { cmpsblListCapabilities() }
+func validate() -> Bool { cmpsblValidate() }
 `;
 }
 
