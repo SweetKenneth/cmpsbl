@@ -444,7 +444,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 const CYBER_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "cyber-defense",
   name: "Cyber Defense Suite",
-  crownJewelRank: 8,
+  crownJewelRank: 3,
   cjpi: 97,
   module: "WATCHTOWER×AEGIS",
   description: "Cross-correlates indicators of compromise across temporal, spatial, and contextual dimensions while dynamically absorbing volumetric attacks.",
