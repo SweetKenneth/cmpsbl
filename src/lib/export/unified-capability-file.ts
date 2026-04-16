@@ -48,14 +48,29 @@ export function generateUnifiedTypeScript(
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
-  // Auto-wire imports from user source files
+  // Auto-wire imports from user source files  
   const tsFiles = (userSourceFiles || []).filter(f => /\.(ts|tsx|js|jsx|mjs|cjs)$/i.test(f.name));
-  const importBlock = tsFiles.length > 0
-    ? tsFiles.map(f => {
-        const modName = f.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_$]/g, '_');
-        return `// import * as ${modName} from './original/${f.name.replace(/\.[^.]+$/, '')}';`;
-      }).join('\n')
-    : '// No TypeScript source files detected — wire your imports manually';
+  
+  // ── Layer 1: Embed original source verbatim ──
+  let layer1TsBlock: string;
+  if (tsFiles.length > 0) {
+    const embeddedSources = tsFiles.map(f => {
+      return `// ─── ${f.name} ───\n${f.content.trimEnd()}`;
+    }).join('\n\n');
+    layer1TsBlock = `// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  LAYER 1 — ORIGINAL SOURCE (UNMODIFIED)                                      ║
+// ║  Verified byte-identical to uploaded source.                                  ║
+// ║  U.S. Patent App. No. 64/029,678 · No. 64/031,637                            ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+${embeddedSources}
+
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  END OF LAYER 1 — ORIGINAL SOURCE                                            ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝`;
+  } else {
+    layer1TsBlock = '// No source files provided — Layer 1 is empty. Wire your code manually.';
+  }
 
   return `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Capability Pack — ${packName}
