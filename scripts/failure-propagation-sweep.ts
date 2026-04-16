@@ -131,7 +131,11 @@ try {
   const driverPath = join(OUT_DIR, 'driver.php');
   writeFileSync(driverPath, driver);
   try {
-    const out = execSync(`php "${driverPath}"`, { timeout: 15000, stdio: 'pipe' }).toString().trim();
+    const phpBin = (() => {
+      try { execSync('php --version', { stdio: 'ignore' }); return 'php'; }
+      catch { return 'nix run nixpkgs#php --'; }
+    })();
+    const out = execSync(`${phpBin} "${driverPath}"`, { timeout: 120000, stdio: 'pipe' }).toString().trim();
     results.push({ lang: 'php', passed: true, detail: out });
   } catch (e: unknown) {
     const err = e as { stdout?: Buffer; stderr?: Buffer; message?: string };
