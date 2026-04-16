@@ -33,6 +33,13 @@ import {
   scoreCollision,
   extractFileContracts,
   type CandidateContractBundle,
+  // Phase B — V1 Bridge (gaps 7-11)
+  simulateMergeBatch,
+  measureDiscoveryDelta,
+  recordCollisionOutcome,
+  recordV2Confirmation,
+  detectV2Drift,
+  type CompatibilityReport,
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
@@ -158,11 +165,19 @@ export function V2ProcessingStep({ onComplete }: Props) {
         }
       }
 
-      // ── Gap #6: contract + environment profile ──
-      candidateContractBundle = extractFileContracts(
-        extractable,
-        (candidate.metadata?.language as string) || 'typescript',
-      );
+      // ── Gap #11: semantic drift / ecosystem detection ──
+      let driftEcosystem = (candidate.metadata?.language as string) || 'unknown';
+      if (extractable.length > 0) {
+        const drift = detectV2Drift(extractable, driftEcosystem);
+        driftEcosystem = drift.ecosystem;
+        appendAudit(
+          'semantic_drift',
+          `eco=${drift.ecosystem} canonicals=${drift.uniqueCanonicals} highConf=${drift.highConfidenceCount}`,
+        );
+      }
+
+      // ── Gap #6: contract + environment profile (uses drift-detected ecosystem) ──
+      candidateContractBundle = extractFileContracts(extractable, driftEcosystem);
       if (candidateContractBundle) {
         appendAudit(
           'contract_extracted',
@@ -252,6 +267,13 @@ export function V2ProcessingStep({ onComplete }: Props) {
     let bestScore = 0;
     let lastFunctionError: string | null = null;
     const allCaps: DiscoveredCapability[] = [];
+    // Phase B: collect compat reports for batch merge sim (#7) and source code for feedback loop (#10)
+    const compatReports: CompatibilityReport[] = [];
+    const candidateCorpus = candidateContractBundle
+      ? ((candidate.metadata?.source_files as Array<{ content?: string }> | undefined) ?? [])
+          .map((f) => f?.content ?? '')
+          .join('\n\n')
+      : '';
 
     // ───────────────────────────────────────────────────────
     // Phase 1: Discovery (0–70%)
@@ -326,16 +348,35 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
               registerDiscovery(cap);
               allCaps.push(cap);
+              compatReports.push(compat);
               // ── Gap #4: ingest audit (chain participation) ──
               logV2ChainParticipation(cap.name, cap.chain, cap.cjpiScore, user.id, runId);
+              // ── Gap #9: record collision outcome (success) ──
+              recordCollisionOutcome(targetNode, true);
+              // ── Gap #10: feed high/medium-band confirmations back into glossary ──
+              if (candidateCorpus && (banding.band === 'high' || banding.band === 'medium')) {
+                try {
+                  recordV2Confirmation({
+                    codeContent: candidateCorpus,
+                    primitive: targetNode,
+                    archetypeId: targetNode.toLowerCase(),
+                    matchTerms: [targetNode, ...(cap.chain ?? [])].filter(Boolean),
+                  });
+                } catch {
+                  // Feedback loop must never block discovery
+                }
+              }
               setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
               return cjpi;
             }
+            // No capabilities surfaced — record as failed collision (#9)
+            recordCollisionOutcome(targetNode, false);
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             if (!lastFunctionError) {
               lastFunctionError = message;
             }
+            recordCollisionOutcome(targetNode, false);
             appendAudit('collision_error', `${targetNode}: ${message}`);
           }
 
@@ -380,16 +421,37 @@ export function V2ProcessingStep({ onComplete }: Props) {
     }
 
     // ───────────────────────────────────────────────────────
-    // Phase 2: Dedup (70–85%)
+    // Phase 2: Merge Simulation + Dedup (70–85%)
     // ───────────────────────────────────────────────────────
-    setProgress(75);
+    setProgress(72);
     setStatusIdx(5);
 
-    const dedup = deduplicateCapabilities(allCaps);
+    // ── Gap #7: dry-run merge simulation across all collisions ──
+    const selection = new Set<string>([candidateNode.toUpperCase()]);
+    const mergeReport = simulateMergeBatch(compatReports, selection);
+    const verdictByPrimitive = new Map(
+      mergeReport.simulations.map((s) => [s.primitive, s] as const),
+    );
+    appendAudit(
+      'merge_simulation',
+      `beneficial=${mergeReport.beneficial} neutral=${mergeReport.neutral} risky=${mergeReport.risky} avgΔ=${mergeReport.avgNetImprovement}`,
+    );
+
+    // Attach merge verdicts to caps before dedup so the strongest survivor wins.
+    const enrichedCaps: DiscoveredCapability[] = allCaps.map((c) => {
+      const targetUpper = (c.chain[c.chain.length - 1] ?? c.name).toUpperCase();
+      const sim = verdictByPrimitive.get(targetUpper);
+      return sim
+        ? { ...c, mergeVerdict: sim.verdict, mergeNetImprovement: sim.netImprovement }
+        : c;
+    });
+
+    setProgress(78);
+    const dedup = deduplicateCapabilities(enrichedCaps);
     setDedupResult(dedup);
     appendAudit('dedup_complete', `${dedup.rawCount} → ${dedup.capabilities.length} unique (${dedup.groupCount} groups)`);
 
-    setProgress(80);
+    setProgress(82);
 
     // ───────────────────────────────────────────────────────
     // Phase 3: Auto-Lock (85–95%)
@@ -414,6 +476,10 @@ export function V2ProcessingStep({ onComplete }: Props) {
             chain: [...cap.chain],
             chain_depth: cap.chainDepth,
             pipeline_version: 'v2',
+            band: cap.band ?? null,
+            merge_verdict: cap.mergeVerdict ?? null,
+            merge_net_improvement: cap.mergeNetImprovement ?? null,
+            compatibility_composite: cap.compatibilityComposite ?? null,
             dedup_raw_count: dedup.rawCount,
             dedup_group_count: dedup.groupCount,
             persisted_at: new Date().toISOString(),
@@ -435,6 +501,13 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
     commitAscension(dedup.capabilities.length);
     appendAudit('auto_lock_complete', `${dedup.capabilities.length} sealed`);
+
+    // ── Gap #8: discovery-set delta — proves the pipeline mutated state ──
+    const delta = measureDiscoveryDelta(enrichedCaps, dedup.capabilities, dedup.capabilities.length);
+    appendAudit(
+      'discovery_delta',
+      `verdict=${delta.verdict} collapse=${delta.collapseRatio} retention=${delta.retentionRatio} topΔ=${delta.topScoreDelta}`,
+    );
 
     setProgress(95);
     setStatusIdx(7);

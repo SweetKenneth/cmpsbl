@@ -31,6 +31,9 @@ export interface DiscoveredCapability {
   readonly compatibilityComposite?: number;
   readonly closedGaps?: ReadonlyArray<string>;
   readonly unlockedSynergies?: ReadonlyArray<string>;
+  // Phase B — merge simulation verdict (gap #7)
+  readonly mergeVerdict?: 'beneficial' | 'neutral' | 'risky';
+  readonly mergeNetImprovement?: number;
 }
 
 export interface RunSnapshot {
