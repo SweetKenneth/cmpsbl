@@ -82,13 +82,13 @@ ${embeddedSources}
     : '';
 
   // ── Smart Entry Point Detection for TypeScript ──
-  let tsEntryPointCode = '    originalResult = input;\n    originalExecuted = true;';
+  // First-match-wins: the very first viable target is invoked, the rest are skipped.
+  // Functions take priority over classes; both skip Error/Exception subclasses.
+  let tsEntryPointCode = '    originalResult = input;\n    originalExecuted = false;';
   if (tsFiles.length > 0) {
     const src = tsFiles[0].content;
-    // Find exported functions (skip private)
     const fnMatches = [...src.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(/g)];
     const exportedFns = fnMatches.map(m => m[1]).filter(n => !n.startsWith('_'));
-    // Find classes (skip Error/Exception subclasses)
     const classMatches = [...src.matchAll(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?/g)];
     const substantiveClasses = classMatches
       .filter(m => !/Error|Exception/.test(m[2] || ''))
@@ -96,7 +96,7 @@ ${embeddedSources}
 
     const targets: string[] = [];
     for (const fn of exportedFns.slice(0, 5)) {
-      targets.push(`    if (typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
+      targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
     }
     for (const cls of substantiveClasses.slice(0, 3)) {
       targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
@@ -378,12 +378,14 @@ export async function computeFingerprint(payload: string): Promise<string> {
 }
 
 function quickHash(input: string): string {
+  // DJB2 hash — unsigned 32-bit. Using >>> 0 avoids the INT_MIN edge case
+  // where Math.abs() returns a negative number for the smallest signed int.
   let h = 5381;
   for (let i = 0; i < input.length; i++) {
     h = ((h << 5) + h) + input.charCodeAt(i);
     h |= 0;
   }
-  return Math.abs(h).toString(16).padStart(8, '0');
+  return (h >>> 0).toString(16).padStart(8, '0');
 }
 
 // ─── Topological Sort (Dependency Resolution) ────────────────────────────────
@@ -406,15 +408,22 @@ const MODULE_DEPS: Record<string, string[]> = {
 };
 
 function topoSort(modules: string[]): string[] {
+  // Cycle-safe DFS topological sort. The `visiting` set detects cycles in
+  // the dependency graph and breaks them gracefully — preventing infinite
+  // recursion if a malformed pack ever introduces a circular dependency.
   const set = new Set(modules.map(m => m.toUpperCase()));
   const visited = new Set<string>();
+  const visiting = new Set<string>();
   const sorted: string[] = [];
 
   function visit(mod: string) {
     if (visited.has(mod)) return;
-    visited.add(mod);
+    if (visiting.has(mod)) return; // cycle — break gracefully
+    visiting.add(mod);
     const deps = (MODULE_DEPS[mod] || []).filter(d => set.has(d));
     for (const dep of deps) visit(dep);
+    visiting.delete(mod);
+    visited.add(mod);
     sorted.push(mod);
   }
 
