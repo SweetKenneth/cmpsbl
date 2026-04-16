@@ -1,18 +1,18 @@
 /**
  * Governor-Curated Crown Jewels — Hand-Selected Best of Each Primitive
- * 
- * EXPANDED: Full 40-primitive coverage + 3 per expansion + 2 per original
- * 
+ *
+ * Canonical 40-primitive coverage (12 Organs · 12 Layers · 8 Engines · 8 Agents)
+ *
  * 40 Primitives → 78 Crown Jewels
  *   - 16 original primitives × 2 jewels = 32
  *   - 11 expansion primitives × 3 jewels = 33
  *   - 13 infrastructure primitives × 1 jewel = 13
- * 
+ *
  * Classification:
  *   ACTIVATE  — Production-ready, tier-gated, sealed black-box
  *   GUARD     — Internal IP, never surfaced, architecture-class
  *   DEFER     — Needs maturation before activation
- * 
+ *
  * © 2025–2026 CMPSBL®. Governor Eyes Only.
  */
 
