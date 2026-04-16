@@ -104,6 +104,7 @@ export default function AscensionV2() {
     setRunId(id);
     setStep(0);
     setEnhanced(false);
+    setSelectedLayerIds([]);
     setCapabilities([]);
     setDedupResult(null);
     toast({ title: 'Reset complete', description: 'Ready for a new analysis.' });
@@ -118,6 +119,7 @@ export default function AscensionV2() {
       capabilities={capabilities}
       dedup={dedupResult || { capabilities: [], rawCount: 0, groupCount: 0 }}
       enhanced={enhanced}
+      selectedLayerIds={selectedLayerIds}
       onReset={handleReset}
     />,
   ];
