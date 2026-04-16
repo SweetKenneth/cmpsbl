@@ -584,13 +584,13 @@ def cmpsbl_active_diagnoses() -> List[dict]:
 `;
 
 const TRIAGE_WIRE_TS = `
-const _cmpsbl_raw_execute_tr = cmpsbl_execute;
+const _cmpsbl_raw_execute_tri = cmpsbl_execute;
 const _cmpsbl_error_counts = new Map<string, { count: number; lastAt: number }>();
 
 cmpsbl_execute = function cmpsbl_execute_triage_monitored(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const start = Date.now();
   try {
-    const result = _cmpsbl_raw_execute_tr(capabilityName, input);
+    const result = _cmpsbl_raw_execute_tri(capabilityName, input);
     // Report latency as a symptom for monitoring
     const duration = Date.now() - start;
     if (duration > 1000) {
@@ -615,14 +615,14 @@ cmpsbl_execute = function cmpsbl_execute_triage_monitored(capabilityName: string
 };`;
 
 const TRIAGE_WIRE_PY = `
-_cmpsbl_raw_execute_tr = cmpsbl_execute
+_cmpsbl_raw_execute_tri = cmpsbl_execute
 _cmpsbl_error_counts: Dict[str, dict] = {}
 
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     """Execute with triage monitoring (auto-wired)."""
     start = time.time()
     try:
-        result = _cmpsbl_raw_execute_tr(capability_name, input_data)
+        result = _cmpsbl_raw_execute_tri(capability_name, input_data)
         duration_ms = int((time.time() - start) * 1000)
         if duration_ms > 1000:
             cmpsbl_report_symptom(capability_name, "latency_p95", duration_ms)
