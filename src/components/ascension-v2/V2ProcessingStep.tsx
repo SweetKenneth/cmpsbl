@@ -18,8 +18,21 @@ import {
   getNodeOrdering,
   retry,
   deduplicateCapabilities,
+  getSnapshot,
   type DiscoveredCapability,
   type DedupResult,
+  // Phase A — V1 Bridge (gaps 1-6)
+  bandDiscovery,
+  runV2QualityGate,
+  fingerprintSourceFiles,
+  logV2Upload,
+  logV2Extraction,
+  logV2QualityGate,
+  logV2ChainParticipation,
+  logV2Discovery,
+  scoreCollision,
+  extractFileContracts,
+  type CandidateContractBundle,
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
@@ -78,6 +91,9 @@ export function V2ProcessingStep({ onComplete }: Props) {
       return;
     }
 
+    // Phase A: capture runId once for ingest-audit correlation (#4)
+    const runId = getSnapshot().runId || `v2_${Date.now().toString(36)}`;
+
     // Get candidate from v2 category
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: candidate } = await (supabase as any)
@@ -103,7 +119,17 @@ export function V2ProcessingStep({ onComplete }: Props) {
     // (canonical V1 method: extract → register handler → registry)
     // Without this step, the candidate is an "unknown primitive"
     // and every collision chain fails to resolve a real handler.
+    //
+    // V1-Bridge enrichment (Phase A — gaps 1-6):
+    //   • per-file FNV-1a fingerprints  (#3 scan-integrity)
+    //   • interface contract + env profile  (#6 contract-extractor)
+    //   • quality gate over extracted primitives  (#2 quality-gate)
+    //   • ingest audit for upload + extraction + quality-gate  (#4)
     // ───────────────────────────────────────────────────────
+    let candidateContractBundle: CandidateContractBundle | null = null;
+    let acceptedPrimitiveNames = new Set<string>();
+    const phase0Start = performance.now();
+
     try {
       const sourceFiles = (candidate.metadata?.source_files ?? []) as Array<{
         name?: string;
@@ -118,6 +144,31 @@ export function V2ProcessingStep({ onComplete }: Props) {
           content: f.content as string,
           language: (candidate.metadata?.language as string) || f.extension || 'typescript',
         }));
+
+      // ── Gap #3: per-file integrity fingerprints ──
+      if (extractable.length > 0) {
+        const integrity = fingerprintSourceFiles(extractable);
+        appendAudit(
+          'integrity_fingerprints',
+          `${integrity.fingerprints.length} files · ${integrity.uniqueHashes} unique · ${integrity.totalBytes}B`,
+        );
+        // ── Gap #4: ingest audit (upload event per file) ──
+        for (const fp of integrity.fingerprints) {
+          logV2Upload(fp.filename, fp.byteLength, extractable[0].language, user.id, runId);
+        }
+      }
+
+      // ── Gap #6: contract + environment profile ──
+      candidateContractBundle = extractFileContracts(
+        extractable,
+        (candidate.metadata?.language as string) || 'typescript',
+      );
+      if (candidateContractBundle) {
+        appendAudit(
+          'contract_extracted',
+          `exports=${candidateContractBundle.exportCount} shapes=${candidateContractBundle.dataShapeCount} deps=${candidateContractBundle.dependencyCount}`,
+        );
+      }
 
       // Always register the candidate name itself so collisions can resolve it,
       // even when source_files weren't persisted on this upload.
@@ -136,8 +187,40 @@ export function V2ProcessingStep({ onComplete }: Props) {
       });
 
       if (extractable.length > 0) {
+        // ── Gap #2: quality gate before registering handlers ──
+        const qg = runV2QualityGate({ files: extractable });
+        acceptedPrimitiveNames = new Set(qg.acceptedNames.map((n) => n.toLowerCase()));
+        const phase0Ms = Math.round(performance.now() - phase0Start);
+
+        // Audit: extraction + quality-gate (#4 ingest-audit)
+        logV2Extraction(
+          candidateNode,
+          qg.totalExtracted,
+          qg.acceptedNames.length,
+          qg.rejectedNames.length,
+          phase0Ms,
+          user.id,
+          runId,
+        );
+        logV2QualityGate(
+          candidateNode,
+          qg.avgQuality,
+          qg.acceptedNames.length,
+          qg.rejectedNames.length,
+          user.id,
+          runId,
+        );
+        appendAudit(
+          'quality_gate',
+          `accepted=${qg.acceptedNames.length} rejected=${qg.rejectedNames.length} avg=${qg.avgQuality}`,
+        );
+
         const { primitives } = extractPrimitives(extractable);
+        let registered = 0;
         for (const prim of primitives) {
+          const canonical = (prim.canonicalName || prim.name).toLowerCase();
+          // Only register handlers that survived the quality gate
+          if (acceptedPrimitiveNames.size > 0 && !acceptedPrimitiveNames.has(canonical)) continue;
           registerPrimitive({
             id: `candidate.${candidateNode.toLowerCase()}.${prim.id}`,
             name: prim.canonicalName || prim.name,
@@ -145,8 +228,12 @@ export function V2ProcessingStep({ onComplete }: Props) {
             source: 'external',
             handler: buildPrimitiveHandler(prim),
           });
+          registered++;
         }
-        appendAudit('candidate_registered', `${candidateNode} + ${primitives.length} extracted handlers`);
+        appendAudit(
+          'candidate_registered',
+          `${candidateNode} + ${registered}/${primitives.length} handlers (post-quality-gate)`,
+        );
       } else {
         appendAudit('candidate_registered', `${candidateNode} (shim only — no source_files)`);
       }
@@ -206,19 +293,43 @@ export function V2ProcessingStep({ onComplete }: Props) {
                 data.capabilities[0]
               );
 
+              const cjpi = bestCap.cjpi_score as number;
+              const chain = (bestCap.chain || [candidateNode, targetNode]) as string[];
+              const chainDepth = bestCap.chain_depth || chain.length || 2;
+              const description = bestCap.description || '';
+
+              // ── Gap #1: confidence banding ──
+              const banding = bandDiscovery({ cjpiScore: cjpi, chainDepth, description });
+
+              // ── Gap #5: 4-axis compatibility scoring (uses contract from Phase 0) ──
+              const compat = scoreCollision(
+                targetNode,
+                cjpi,
+                candidateContractBundle?.contract ?? null,
+                candidateContractBundle?.profile ?? null,
+                new Set([candidateNode.toUpperCase(), targetNode.toUpperCase()]),
+              );
+
               const cap: DiscoveredCapability = {
                 name: bestCap.name,
-                cjpiScore: bestCap.cjpi_score,
+                cjpiScore: cjpi,
                 tier: bestCap.tier,
-                description: bestCap.description || '',
-                chain: bestCap.chain || [candidateNode, targetNode],
-                chainDepth: bestCap.chain_depth || 2,
+                description,
+                chain,
+                chainDepth,
+                band: banding.band,
+                bandChannelCount: banding.channelCount,
+                compatibilityComposite: compat.axes.composite,
+                closedGaps: compat.closedGaps,
+                unlockedSynergies: compat.unlockedSynergies,
               };
 
               registerDiscovery(cap);
               allCaps.push(cap);
+              // ── Gap #4: ingest audit (chain participation) ──
+              logV2ChainParticipation(cap.name, cap.chain, cap.cjpiScore, user.id, runId);
               setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
-              return bestCap.cjpi_score as number;
+              return cjpi;
             }
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
@@ -247,6 +358,18 @@ export function V2ProcessingStep({ onComplete }: Props) {
     }
 
     appendAudit('discovery_complete', `${totalDiscovered} raw discoveries`);
+
+    // ── Gap #1+#4: band distribution summary ──
+    const bandDist = allCaps.reduce<Record<string, number>>((acc, c) => {
+      const k = c.band ?? 'unknown';
+      acc[k] = (acc[k] ?? 0) + 1;
+      return acc;
+    }, {});
+    appendAudit(
+      'banding_summary',
+      `high=${bandDist.high ?? 0} medium=${bandDist.medium ?? 0} low=${bandDist.low ?? 0} hypothesis=${bandDist.hypothesis ?? 0}`,
+    );
+    logV2Discovery(candidateNode, allCaps.length, user.id, runId);
 
     if (allCaps.length === 0) {
       const message = lastFunctionError || 'No capabilities emerged from the collision cycle.';
