@@ -91,6 +91,9 @@ export function V2ProcessingStep({ onComplete }: Props) {
       return;
     }
 
+    // Phase A: capture runId once for ingest-audit correlation (#4)
+    const runId = getSnapshot().runId || `v2_${Date.now().toString(36)}`;
+
     // Get candidate from v2 category
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: candidate } = await (supabase as any)
