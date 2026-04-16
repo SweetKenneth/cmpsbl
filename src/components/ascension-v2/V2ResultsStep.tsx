@@ -37,6 +37,7 @@ interface Props {
   capabilities: ReadonlyArray<DiscoveredCapability>;
   dedup: DedupResult;
   enhanced?: boolean;
+  selectedLayerIds?: string[];
   onReset: () => void;
 }
 
@@ -47,7 +48,7 @@ interface SourceFileData {
   content: string;
 }
 
-export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }: Props) {
+export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], onReset }: Props) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [ceremonyOpen, setCeremonyOpen] = useState(false);
@@ -56,11 +57,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
-  const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
   const { toast } = useToast();
   const { user } = useAuth();
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
+  const selectedLayers = useMemo(() => new Set(selectedLayerIds), [selectedLayerIds]);
 
   useEffect(() => {
     completeRun();
@@ -369,67 +370,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
         </div>
       )}
 
-      {/* CMPSBL Layer Selection — optional capability add-ons */}
-      {capabilities.length > 0 && availableLayers.length > 0 && (
-        <div className="bg-muted/20 border border-primary/20 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
-          <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-            <span className="text-xs sm:text-sm font-medium text-foreground">Add CMPSBL Layers</span>
-            <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-auto">Optional</span>
-          </div>
-          <p className="text-[10px] sm:text-xs text-muted-foreground">
-            Production-grade infrastructure injected into Layer 2. Your code stays untouched.
-          </p>
-          <div className="space-y-1.5">
-            {availableLayers.map((layer) => {
-              const isSelected = selectedLayers.has(layer.id);
-              return (
-                <button
-                  key={layer.id}
-                  onClick={() => {
-                    setSelectedLayers(prev => {
-                      const next = new Set(prev);
-                      if (next.has(layer.id)) next.delete(layer.id);
-                      else next.add(layer.id);
-                      return next;
-                    });
-                  }}
-                  className={cn(
-                    'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
-                    isSelected
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border hover:border-primary/40 hover:bg-muted/40'
-                  )}
-                >
-                  <div className={cn(
-                    'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
-                    isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                  )}>
-                    {isSelected ? <Check className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] sm:text-xs font-medium text-foreground">{layer.name}</span>
-                      <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono">
-                        CJ #{layer.crownJewelRank} · CJPI {layer.cjpi}
-                      </span>
-                    </div>
-                    <p className="text-[9px] sm:text-[10px] text-muted-foreground truncate">
-                      {layer.description}
-                    </p>
-                  </div>
-                  {layer.priceCents === 0 && (
-                    <span className="text-[8px] sm:text-[9px] font-medium text-primary flex-shrink-0">FREE</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-          {selectedLayers.size > 0 && (
-            <p className="text-[9px] sm:text-[10px] text-primary font-medium">
-              ✓ {selectedLayers.size} layer{selectedLayers.size > 1 ? 's' : ''} will auto-wire into Layer 2
-            </p>
-          )}
+      {/* Layer selection indicator (selected on Enhance step) */}
+      {selectedLayers.size > 0 && (
+        <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 flex items-center gap-2">
+          <Zap className="w-4 h-4 text-primary flex-shrink-0" />
+          <span className="text-[10px] sm:text-xs text-foreground">
+            ✓ {selectedLayers.size} CMPSBL Layer{selectedLayers.size > 1 ? 's' : ''} will auto-wire into export
+          </span>
         </div>
       )}
 

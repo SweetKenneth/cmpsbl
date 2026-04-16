@@ -1,8 +1,9 @@
 /**
- * V2 Enhance Step — Optional Mana attachment before Ascension
+ * V2 Enhance Step — Optional Mana attachment + CMPSBL Layer selection
  *
  * Mode A (Now): Upload SDK-built software to merge with host code
- * Mode B (Future): Browse/purchase Store add-ons (placeholder in docs)
+ * Mode B (Now): Select CMPSBL Layers (Crown Jewels) to auto-wire into Layer 2
+ * Mode C (Future): Browse/purchase Store add-ons (placeholder in docs)
  *
  * Skippable — user can proceed directly to Analyze.
  *
@@ -10,8 +11,8 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { useState, useCallback, useRef } from 'react';
-import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package } from 'lucide-react';
+import { useState, useCallback, useRef, useMemo } from 'react';
+import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,9 +20,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { analyzeUploadedFiles } from '@/components/proprietary-evolution/ingest-utils';
 import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan } from '@/lib/mana';
+import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 
 interface Props {
-  onComplete: (enhanced: boolean) => void;
+  onComplete: (enhanced: boolean, selectedLayerIds?: string[]) => void;
 }
 
 export function V2EnhanceStep({ onComplete }: Props) {
@@ -30,9 +32,12 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const [processing, setProcessing] = useState(false);
   const [done, setDone] = useState(false);
   const [attachmentCount, setAttachmentCount] = useState(0);
+  const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+
+  const availableLayers = useMemo(() => getAvailableLayers(), []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -46,8 +51,10 @@ export function V2EnhanceStep({ onComplete }: Props) {
   }, []);
 
   const handleSkip = useCallback(() => {
-    onComplete(false);
-  }, [onComplete]);
+    // Even when skipping Mana, pass selected layers
+    const layerIds = selectedLayers.size > 0 ? [...selectedLayers] : undefined;
+    onComplete(false, layerIds);
+  }, [onComplete, selectedLayers]);
 
   const handleAttach = async () => {
     if (files.length === 0 || !user) return;
@@ -62,10 +69,8 @@ export function V2EnhanceStep({ onComplete }: Props) {
         return;
       }
 
-      // Run Mana function boundary detection on the uploaded package
       const combinedSource = analysis.ingestedFiles.map(f => f.content).join('\n');
       const boundaries = detectFunctionBoundaries(combinedSource);
-      // Use all 40 substrate primitives as the active set for attachment planning
       const activePrimitives = new Set([
         'DEFENSE','GOVERNANCE','CONSCIENCE','COMPASS','AUDIT','BEACON',
         'BRAIN','MEMORY','CORTEX','ORACLE','INTENT','LINGUA',
@@ -78,7 +83,6 @@ export function V2EnhanceStep({ onComplete }: Props) {
       const plan = buildAttachmentPlan(boundaries, activePrimitives);
       const serializedPlan = serializeAttachmentPlan(plan);
 
-      // Store the enhancement in artifact_registry with Mana metadata
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).from('artifact_registry').insert({
         user_id: user.id,
@@ -116,7 +120,8 @@ export function V2EnhanceStep({ onComplete }: Props) {
         title: 'Enhancement attached',
         description: `${boundaries.length} function boundaries detected and wrapped.`,
       });
-      setTimeout(() => onComplete(true), 600);
+      const layerIds = selectedLayers.size > 0 ? [...selectedLayers] : undefined;
+      setTimeout(() => onComplete(true, layerIds), 600);
     } catch (err) {
       toast({ title: 'Attachment failed', description: String(err), variant: 'destructive' });
     } finally {
@@ -131,6 +136,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
         <p className="text-foreground font-medium text-sm sm:text-base">Enhancement Attached</p>
         <p className="text-muted-foreground text-xs">
           {attachmentCount} function boundaries wrapped via Mana
+          {selectedLayers.size > 0 && ` · ${selectedLayers.size} layer${selectedLayers.size > 1 ? 's' : ''} selected`}
         </p>
       </div>
     );
@@ -181,6 +187,70 @@ export function V2EnhanceStep({ onComplete }: Props) {
         )}
       </div>
 
+      {/* ── CMPSBL Layer Selection ─────────────────────────────────────── */}
+      {availableLayers.length > 0 && (
+        <div className="bg-muted/20 border border-primary/20 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+          <div className="flex items-center gap-2">
+            <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium text-foreground">Add CMPSBL Layers</span>
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-auto">Optional</span>
+          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">
+            Production-grade infrastructure injected into Layer 2. Your code stays untouched.
+          </p>
+          <div className="space-y-1.5">
+            {availableLayers.map((layer) => {
+              const isSelected = selectedLayers.has(layer.id);
+              return (
+                <button
+                  key={layer.id}
+                  onClick={() => {
+                    setSelectedLayers(prev => {
+                      const next = new Set(prev);
+                      if (next.has(layer.id)) next.delete(layer.id);
+                      else next.add(layer.id);
+                      return next;
+                    });
+                  }}
+                  className={cn(
+                    'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
+                    isSelected
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:border-primary/40 hover:bg-muted/40'
+                  )}
+                >
+                  <div className={cn(
+                    'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
+                    isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                  )}>
+                    {isSelected ? <Check className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] sm:text-xs font-medium text-foreground">{layer.name}</span>
+                      <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono">
+                        CJ #{layer.crownJewelRank} · CJPI {layer.cjpi}
+                      </span>
+                    </div>
+                    <p className="text-[9px] sm:text-[10px] text-muted-foreground truncate">
+                      {layer.description}
+                    </p>
+                  </div>
+                  {layer.priceCents === 0 && (
+                    <span className="text-[8px] sm:text-[9px] font-medium text-primary flex-shrink-0">FREE</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          {selectedLayers.size > 0 && (
+            <p className="text-[9px] sm:text-[10px] text-primary font-medium">
+              ✓ {selectedLayers.size} layer{selectedLayers.size > 1 ? 's' : ''} will auto-wire into Layer 2
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Store Add-Ons Teaser (Future) */}
       <div className="bg-muted/20 border border-border/30 rounded-xl p-3 sm:p-4 opacity-60">
         <div className="flex items-center gap-2 mb-1">
@@ -215,7 +285,9 @@ export function V2EnhanceStep({ onComplete }: Props) {
           className="w-full text-muted-foreground text-xs sm:text-sm"
         >
           <SkipForward className="w-3 h-3 mr-1" />
-          Skip — Ascend Without Enhancements
+          {selectedLayers.size > 0
+            ? `Continue with ${selectedLayers.size} Layer${selectedLayers.size > 1 ? 's' : ''}`
+            : 'Skip — Ascend Without Enhancements'}
         </Button>
       </div>
     </div>
