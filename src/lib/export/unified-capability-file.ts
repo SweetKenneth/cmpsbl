@@ -711,24 +711,61 @@ export const PACK_META = CMPSBL_PACK_META;
 
 // ─── Per-Capability Execution ────────────────────────────────────────────────
 
-${capabilities.map(cap => `
+${(() => {
+  // ── Smart Entry Point Detection for TypeScript ──
+  // Parse user source to find actual callable entry points
+  const tsUserFiles = (userSourceFiles || []).filter(f => /\.(ts|tsx|js|jsx|mjs|cjs)$/i.test(f.name));
+  let tsEntryPointCode = '    originalResult = input;\n    originalExecuted = true;';
+
+  if (tsUserFiles.length > 0) {
+    const src = tsUserFiles[0].content;
+
+    // Find exported classes (skip Error/Exception subclasses)
+    const classMatches = [...src.matchAll(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?/g)];
+    const substantiveClasses = classMatches
+      .filter(m => !/Error|Exception/.test(m[2] || ''))
+      .map(m => m[1]);
+
+    // Find exported functions
+    const fnMatches = [...src.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(/g)];
+    const exportedFns = fnMatches
+      .map(m => m[1])
+      .filter(n => !n.startsWith('_'));
+
+    // Find default export
+    const hasDefaultExport = /export\s+default\s/.test(src);
+
+    const targets: string[] = [];
+    for (const fn of exportedFns.slice(0, 5)) {
+      targets.push(\`    if (typeof \${fn} === 'function') { originalResult = \${fn}(input); originalExecuted = true; }\`);
+    }
+    for (const cls of substantiveClasses.slice(0, 3)) {
+      targets.push(\`    if (!originalExecuted && typeof \${cls} === 'function') { try { const inst = new \${cls}(); const methods = ['execute','run','handle','process','main']; for (const m of methods) { if (typeof (inst as any)[m] === 'function') { originalResult = (inst as any)[m](input); originalExecuted = true; break; } } if (!originalExecuted) { originalResult = { _instance: '\${cls}', _created: true }; originalExecuted = true; } } catch(e) { originalResult = { _class: '\${cls}', _available: true }; originalExecuted = true; } }\`);
+    }
+
+    if (targets.length > 0) {
+      tsEntryPointCode = targets.join('\\n');
+    } else {
+      tsEntryPointCode = '    // No callable entry points auto-detected — passthrough\\n    originalResult = input;\\n    originalExecuted = true;';
+    }
+  }
+
+  return capabilities.map(cap => \`
 /**
- * ${cap.name} — CJPI ${cap.cjpiScore} (${cap.tier.toUpperCase()})
- * Chain: ${cap.chain.join(' → ')}
- * Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
+ * \${cap.name} — CJPI \${cap.cjpiScore} (\${cap.tier.toUpperCase()})
+ * Chain: \${cap.chain.join(' → ')}
+ * Fingerprint: \${cap.fingerprint.slice(0, 12).toUpperCase()}
  */
-export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(input: Record<string, unknown>): ExecutionResult {
-  const meta = ${JSON.stringify({ name: cap.name, cjpi: cap.cjpiScore, tier: cap.tier, chain: cap.chain, fingerprint: cap.fingerprint, moatSignature: cap.moatSignature })};
+export function execute_\${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(input: Record<string, unknown>): ExecutionResult {
+  const meta = \${JSON.stringify({ name: cap.name, cjpi: cap.cjpiScore, tier: cap.tier, chain: cap.chain, fingerprint: cap.fingerprint, moatSignature: cap.moatSignature })};
   const start = Date.now();
 
-  // Layer 1: Execute your original code
+  // Layer 1: Execute your original code (Smart Entry Point Detection)
   let originalResult: unknown = input;
   let originalExecuted = false;
   let originalError: string | null = null;
   try {
-    // Wire your original code here — import from ../original/ and call it
-    originalResult = input;
-    originalExecuted = true;
+\${tsEntryPointCode}
   } catch (err) {
     originalError = err instanceof Error ? err.message : String(err);
   }
@@ -754,7 +791,8 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
       },
     },
   };
-}`).join('\n')}
+}\`).join('\\n');
+})()}
 
 // ─── Unified Execute (any capability by name) ───────────────────────────────
 
@@ -766,11 +804,11 @@ ${capabilities.map(c => `  '${c.name}': execute_${c.name.toLowerCase().replace(/
  * Execute any capability by name.
  * @example const result = execute('my-capability', { query: 'hello' });
  */
-export function cmpsbl_execute(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+export let cmpsbl_execute = function(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const fn = CMPSBL_CAPABILITY_MAP[capabilityName];
   if (!fn) throw new Error(\`Capability "\${capabilityName}" not found in this pack. Available: \${Object.keys(CMPSBL_CAPABILITY_MAP).join(', ')}\`);
   return fn(input);
-}
+};
 
 /** @deprecated Use cmpsbl_execute instead */
 export const execute = cmpsbl_execute;
@@ -975,11 +1013,11 @@ ${embeddedSources}
                 if target is None:
                     continue
                 if kind == "function" and callable(target):
-                    results[name] = target(**input_data) if input_data else target()
+                    results[name] = target(input_data) if input_data else target()
                 elif kind == "class" and isinstance(target, type):
                     # Try instantiation, then probe for callable methods
                     try:
-                        instance = target(**input_data) if input_data else target()
+                        instance = target(input_data) if input_data else target()
                         results[name] = {"_instance": str(type(instance).__name__), "_created": True}
                     except TypeError:
                         results[name] = {"_class": name, "_available": True}
@@ -1339,7 +1377,7 @@ def cmpsbl_self_test() -> dict:
             results[cap["name"]] = ok
             if ok: passed += 1
             else: failed += 1
-        except:
+        except Exception:
             results[cap["name"]] = False
             failed += 1
     return {"passed": passed, "failed": failed, "results": results}
@@ -1458,8 +1496,8 @@ export function generateUnifiedPhp(
   return `<?php
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- *  CMPSBL® Capability Pack — ${packName}
- *  Single-File Distribution | Zero Dependencies
+ *  CMPSBL® Silent Symbiosis — Software Ascended
+ *  ${packName} | Single-File Distribution | Zero Dependencies
  *
  *  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
  *  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
@@ -1833,7 +1871,7 @@ export function generateUnifiedGeneric(
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
 
   return `${line} ═══════════════════════════════════════════════════════════════════════════════
-${line}  CMPSBL® Capability Pack — ${packName}
+${line}  CMPSBL® Silent Symbiosis — Software Ascended | ${packName}
 ${line}  Target: ${lang.toUpperCase()} | Single-File Reference Distribution
 ${line}
 ${line}  ${capabilities.length} capabilities | ${allModules.length} modules
