@@ -1898,9 +1898,9 @@ HANDLER_REGISTRY = {
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 def execute_pipeline(input_data: dict, chain: list, meta: dict) -> dict:
-    context = {"_input": input_data, "_data": dict(input_data), "_signals": [], "_errors": []}
-    trace = []
     t0 = time.time()
+    context = {"_input": input_data, "_data": dict(input_data), "_signals": [], "_errors": [], "_t0": t0}
+    trace = []
 
     for idx, module in enumerate(chain):
         mod = module.strip().upper()
