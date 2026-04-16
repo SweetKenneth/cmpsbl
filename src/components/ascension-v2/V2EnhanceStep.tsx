@@ -21,6 +21,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { analyzeUploadedFiles } from '@/components/proprietary-evolution/ingest-utils';
 import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan } from '@/lib/mana';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 
 interface Props {
   onComplete: (enhanced: boolean, selectedLayerIds?: string[]) => void;
