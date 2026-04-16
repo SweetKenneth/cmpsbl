@@ -255,10 +255,13 @@ ${line}  Import from cmpsbl.* directly — no separate runtime installation need
 
 function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: SourceFile[]): string {
   const phpFiles = (sourceFiles || []).filter(f => /\.php$/i.test(f.name));
-  const requireLines = phpFiles.length > 0
-    ? phpFiles.map(f => `require_once __DIR__ . '/../original/${f.name}';`).join('\n')
-    : "// No PHP files detected in original/ — wire your require_once manually\n// require_once __DIR__ . '/../original/YourFile.php';";
-
+  // Layer 1 is embedded inline — self-contained, no external require
+  const inlineSourceBlock = phpFiles.length > 0
+    ? phpFiles.map(f => {
+        const cleanContent = f.content.replace(/^<\?php\s*/i, '').trimEnd();
+        return `// ═══ LAYER 1 — ORIGINAL SOURCE (${f.name}) ═══\n// Embedded inline per U.S. App. No. 64/029,678 dual-layer architecture.\n\n${cleanContent}`;
+      }).join('\n\n')
+    : '// No PHP source files detected';
   // Build the executeOriginal body
   const executeBody = phpFiles.length > 0
     ? (() => {
