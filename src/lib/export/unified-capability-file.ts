@@ -1105,30 +1105,32 @@ ${embeddedSources}
       const entryPointsList = entryPoints.join(', ');
       executeOriginalBody = `        """Layer 1 — Smart entry point detection for ${primaryFile.name}.
         First-match-wins: scans __all__, skips Exception subclasses, invokes the
-        first viable target and returns its result directly."""
+        first viable target and returns its result directly.
+
+        Critical: once a target is invoked, any exception it raises propagates
+        unchanged so wrappers (Circuit Breaker, Retry, Self-Healing) can react.
+        Only resolution / signature errors fall through to the next candidate."""
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
-            try:
-                target = globals().get(name)
-                if target is None:
-                    continue
-                if kind == "function" and callable(target):
-                    return target(input_data) if input_data else target()
-                if kind == "class" and isinstance(target, type):
-                    try:
-                        instance = target(input_data) if input_data else target()
-                    except TypeError:
-                        # Class requires different signature — surface availability
-                        return {"_class": name, "_available": True}
-                    # Probe for a callable execution method
-                    for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
-                        method = getattr(instance, method_name, None)
-                        if callable(method):
-                            return method(input_data) if input_data else method()
-                    return {"_instance": name, "_created": True}
-            except Exception as e:
-                # Try the next entry point on failure
+            target = globals().get(name)
+            if target is None:
                 continue
+            if kind == "function" and callable(target):
+                # Invocation errors propagate unchanged — wrappers must see them.
+                return target(input_data) if input_data else target()
+            if kind == "class" and isinstance(target, type):
+                try:
+                    instance = target(input_data) if input_data else target()
+                except TypeError:
+                    # Signature mismatch only — surface availability and try next.
+                    continue
+                # Probe for a callable execution method
+                for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
+                    method = getattr(instance, method_name, None)
+                    if callable(method):
+                        # Invocation errors propagate unchanged.
+                        return method(input_data) if input_data else method()
+                return {"_instance": name, "_created": True}
         return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
       // Has code but couldn't determine entry points — provide a passthrough
