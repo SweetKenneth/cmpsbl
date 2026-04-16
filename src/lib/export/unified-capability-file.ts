@@ -1186,8 +1186,17 @@ export function generateUnifiedPhp(
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
   const phpFiles = (userSourceFiles || []).filter(f => /\.php$/i.test(f.name));
+  // Single-file exports place the original as a sibling; multi-file uses original/ subdir.
+  // The ZIP builder decides the layout — we match it here:
+  //   1 file  → sibling require (same directory)
+  //   N files → original/ subdirectory require
+  const isSingleFile = phpFiles.length === 1;
   const requireBlock = phpFiles.length > 0
-    ? phpFiles.map(f => `// require_once __DIR__ . '/original/${f.name}';`).join('\n')
+    ? phpFiles.map(f =>
+        isSingleFile
+          ? `require_once __DIR__ . '/${f.name}';`
+          : `require_once __DIR__ . '/original/${f.name}';`
+      ).join('\n')
     : '// No PHP source files detected — wire your require_once manually';
 
   return `<?php
@@ -1462,10 +1471,9 @@ class CMPSBLCapability
         }
     }
 
-    public function executeOriginal(array $input = []): mixed
+    public function executeOriginal(array \\$input = []): mixed
     {
-        // Layer 1 — Wire your original code here
-        return $input;
+${phpExecuteOriginalBody(phpFiles)}
     }
 
     public function execute(array $input = []): array
