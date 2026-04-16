@@ -23,6 +23,14 @@ import {
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
+// Canonical V1 method for promoting the user's software into Primitive #41 —
+// must be registered in the handler registry BEFORE the collision loop
+// or every chain involving the candidate resolves to "unknown".
+import {
+  extractPrimitives,
+  buildPrimitiveHandler,
+  registerPrimitive,
+} from '@/lib/ascension';
 
 // Canonical 40-Primitive Matrix (12 Organs · 12 Layers · 8 Engines · 8 Agents)
 const SUBSTRATE_NODES = CANONICAL_PRIMITIVES;
