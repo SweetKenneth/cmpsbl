@@ -1112,8 +1112,7 @@ class CMPSBLCapability:
             self.meta = PACK_META["capabilities"][0] if PACK_META["capabilities"] else {}
 
     def execute_original(self, input_data: dict = None) -> Any:
-        """Layer 1 — Your original code. Wire your imports above."""
-        return input_data or {}
+${executeOriginalBody}
 
     def execute(self, input_data: dict = None) -> dict:
         """Dual-layer: original code FIRST, then CMPSBL cognitive pipeline."""
