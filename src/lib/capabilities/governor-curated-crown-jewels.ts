@@ -700,23 +700,9 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
     'Integration infrastructure at architect tier — sealed delivery',
     false),
 
-  // ── ANALYTICS ─────────────────────────────────────────────────────────────
-  jewel('gov-analytics-cognitive-dashboard', 'ANALYTICS',
-    'Cognitive Analytics Dashboard Engine',
-    'Auto-generates insight dashboards from raw telemetry — identifies the most important metrics, detects anomalies, and surfaces actionable recommendations without manual configuration',
-    'Dashboards that build themselves. The system knows what metrics matter.',
-    [85, 90, 78, 80], 'creator', 'activate',
-    'Self-configuring analytics at creator tier — sealed delivery',
-    false),
-
-  // ── OBSERVABILITY ─────────────────────────────────────────────────────────
-  jewel('gov-observability-distributed-trace', 'OBSERVABILITY',
-    'Distributed Trace Intelligence',
-    'End-to-end request tracing across all 40 primitives with automatic bottleneck detection, latency attribution, and optimization recommendations',
-    'See everything, miss nothing. Full distributed tracing with actionable insights.',
-    [82, 92, 80, 78], 'architect', 'activate',
-    'Enterprise observability at architect tier — sealed delivery',
-    false),
+  // Note: ANALYTICS and OBSERVABILITY entries removed — not canonical primitives.
+  //   Their capabilities are subsumed by VISION (Layer) and AUDIT (Agent) per the
+  //   internal 40-primitive specification (12 Organs · 12 Layers · 8 Engines · 8 Agents).
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
