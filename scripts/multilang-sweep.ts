@@ -38,7 +38,7 @@ const LANGS: LangConfig[] = [
   { id: 'lua',        ext: 'lua',  parser: 'luac -p "{file}"',                                               fileGlob: /\.lua$/i },
   { id: 'php',        ext: 'php',  parser: 'php -l "{file}"',                                                fileGlob: /\.php$/i },
   { id: 'go',         ext: 'go',   parser: 'gofmt -e "{file}" > /dev/null',                                  fileGlob: /\.go$/i },
-  { id: 'rust',       ext: 'rs',   parser: 'rustc --edition=2021 --emit=metadata --crate-type=lib -o /tmp/_rs.meta "{file}" 2>&1', fileGlob: /\.rs$/i },
+  { id: 'rust',       ext: 'rs',   parser: 'rustc --edition=2021 --crate-name=ascended --emit=metadata --crate-type=lib -o /tmp/_rs.meta "{file}" 2>&1', fileGlob: /\.rs$/i },
   { id: 'java',       ext: 'java', parser: null, /* javac requires class==filename which the generator doesn\'t guarantee */ fileGlob: /\.java$/i },
   { id: 'csharp',     ext: 'cs',   parser: null, /* dotnet build needs a project; syntax-only check not trivial */ fileGlob: /\.cs$/i },
   { id: 'c',          ext: 'c',    parser: 'gcc -fsyntax-only -w "{file}"',                                  fileGlob: /\.c$/i },
