@@ -96,6 +96,18 @@ for (const lang of LANGS) {
 
   for (const file of files) {
     const src = readFileSync(join(srcDir, file), 'utf-8');
+
+    // Data-quality guard: skip files that look like an HTTP error page rather
+    // than real source (the corpus is fetched at setup time and a few URLs 404).
+    const head = src.slice(0, 256).toLowerCase();
+    if (
+      src.length < 80 ||
+      /^\s*(<!doctype|<html|404[: ]|not found)/i.test(src.trimStart()) ||
+      head.includes('404: not found') || head.includes('<title>404')
+    ) {
+      continue;
+    }
+
     const layerIndices = stackFor(idx++);
     const selectedLayers = layerIndices.map(i => allLayers[i]).filter(Boolean);
 
@@ -121,7 +133,9 @@ for (const lang of LANGS) {
     let layer1Untouched = false;
 
     if (buildOk) {
-      const outPath = join(outDir, `ascended-${file}.${lang.ext}`);
+      // Use a clean filename without double extensions (rustc dislikes dots in crate names).
+      const stem = file.replace(/\.[^.]+$/, '');
+      const outPath = join(outDir, `ascended-${stem}.${lang.ext}`);
       writeFileSync(outPath, ascended);
 
       // Native parser check (when available)
