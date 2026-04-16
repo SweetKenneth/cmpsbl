@@ -792,27 +792,26 @@ const HeritagePaper = () => {
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="ic-parallel" num="10" title="The Integrated Circuit Parallel" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The CMPSBL® patent filing dates are not arbitrary. They are deliberate tributes to the birth of the integrated circuit — the invention that proved hardware could be composed from integrated components.
+              The CMPSBL® patent filing dates are not arbitrary. They are deliberate tributes to the two inventions that define modern computing: the birth of networked communication and the integrated circuit.
             </p>
 
             <div className="bg-primary/5 rounded-xl p-4 sm:p-5 border border-primary/20 mb-5">
               <h3 className="text-sm font-semibold text-foreground mb-3">Patent Filing Timeline</h3>
               <div className="space-y-4 text-sm text-muted-foreground">
                 <div>
-                  <div className="font-semibold text-foreground">May 7, 2025 — Provisional Patent Filed</div>
+                  <div className="font-semibold text-foreground">2025 — Provisional Patent Filed</div>
                   <div className="text-xs font-mono text-primary/70 mb-1">U.S. App. No. 64/029,678 (Conf. 8985)</div>
                   <p>"Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification"</p>
-                  <p className="text-xs mt-1">Filed exactly <strong className="text-foreground">73 years to the day</strong> after Geoffrey Dummer first conceived the integrated circuit (May 7, 1952). <em>The idea filed on the idea's anniversary.</em></p>
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground">April 2026 — Second Patent Filed</div>
+                  <div className="font-semibold text-foreground">April 7, 2026 — Second Patent Filed</div>
                   <div className="text-xs font-mono text-primary/70 mb-1">U.S. App. No. 64/031,637</div>
                   <p>"Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Codebases"</p>
-                  <p className="text-xs mt-1">The second patent covers the runtime complement to the first — a system that silently wraps existing software at function boundaries, governed by policy, without modifying a single line of the host's source code.</p>
+                  <p className="text-xs mt-1">Filed exactly <strong className="text-foreground">57 years to the day</strong> after Steve Crocker published RFC 1 — the first document of ARPANET, the birth of the Internet (April 7, 1969). <em>The connectivity patent filed on connectivity's anniversary.</em></p>
                 </div>
                 <div>
                   <div className="font-semibold text-foreground">September 12, 2026 — Full Patent Filing Target</div>
-                  <p className="text-xs mt-1">Target date for the full (non-provisional) patent filing — exactly <strong className="text-foreground">68 years to the day</strong> after Jack Kilby's first successful IC demonstration (September 12, 1958). <em>The patent filed on the proof's anniversary.</em></p>
+                  <p className="text-xs mt-1">Target date for the full (non-provisional) patent filing — exactly <strong className="text-foreground">68 years to the day</strong> after Jack Kilby's first successful IC demonstration (September 12, 1958). <em>The integration patent filed on integration's anniversary.</em></p>
                 </div>
               </div>
             </div>
