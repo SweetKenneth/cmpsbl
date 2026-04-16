@@ -134,9 +134,11 @@ function jsArrayToNative(call: string, keyTransform: (k: string) => string, sepa
 /** Identity — JS/TS guard syntax is already correct */
 const identityGuard = (g: string) => g;
 
-/** Python: kwargs + snake_case + no semicolons */
+/** Python: kwargs + snake_case + no semicolons + strip JS const decl */
 function pythonGuard(g: string): string {
-  let out = jsArgsToKwargs(g, toSnakeCase, '=');
+  // Strip JS-style `const x = ...` and `let x = ...` declarations — Python uses bare assignment.
+  let out = g.replace(/^[ \t]*(?:const|let|var)\s+/gm, '');
+  out = jsArgsToKwargs(out, toSnakeCase, '=');
   out = jsArrayToNative(out, toSnakeCase, '=', (inner) => `dict(${inner})`);
   out = boolToPython(out);
   out = nullToPython(out);
@@ -3194,10 +3196,18 @@ export function generateRefurbishedCode(
     ],
   }, null, 2);
 
-  const metaBlock = [
-    adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
-    adapter.constDecl('__CMPSBL_META__', metaJson),
-  ].join('\n');
+  // For Go, JSON object literals at top level are illegal — emit as a raw
+  // string constant so it parses cleanly while preserving the metadata.
+  const langLowerMeta = detected.toLowerCase();
+  const metaBlock = (langLowerMeta === 'go')
+    ? [
+        adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
+        'const __CMPSBL_META__ = `' + metaJson.replace(/`/g, '` + "`" + `') + '`',
+      ].join('\n')
+    : [
+        adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
+        adapter.constDecl('__CMPSBL_META__', metaJson),
+      ].join('\n');
 
   // Generate inline self-verification block (language-aware)
   const verifyBlock = generateSelfVerifyBlock(adapter, fingerprint, detected);
@@ -3266,9 +3276,21 @@ export function generateRefurbishedCode(
     layer2Parts.push(adapter.comment(warnSummary));
   }
 
-  // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
+  // ── Language-Specific File Prelude ──────────────────────────────────
+  // PHP requires `<?php` at byte 0; Go requires `package` before any decl.
+  // These preludes are emitted BEFORE the header block to keep the file
+  // syntactically valid as a standalone artifact.
+  const langLower = detected.toLowerCase();
+  let filePrelude = '';
+  if (langLower === 'php') {
+    filePrelude = '<?php\n';
+  } else if (langLower === 'go') {
+    filePrelude = 'package main\n\n';
+  }
+
+  // ── Final Assembly: [Prelude] + Layer 2 + Layer 1 (verbatim) ───────
   return [
-    layer2Code,
+    filePrelude + layer2Code,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
