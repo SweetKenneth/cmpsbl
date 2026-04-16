@@ -4,9 +4,9 @@ import { validateLayer2, validateLayer2Linkage } from '@/lib/export/layer2-valid
 import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
 
 const PRIMS: PrimitiveRecommendation[] = [
-  { primitiveId: 'defense', name: 'DEFENSE', category: 'Layer', collisionScore: 88, reason: 'test', icon: '🛡️' },
-  { primitiveId: 'brain', name: 'BRAIN', category: 'Organ', collisionScore: 85, reason: 'test', icon: '🧠' },
-  { primitiveId: 'immunity', name: 'IMMUNITY', category: 'Layer', collisionScore: 82, reason: 'test', icon: '🔰' },
+  { primitiveId: 'defense', name: 'DEFENSE', category: 'Layer', impactScore: 88, rationale: 'test', chainPosition: 1, collisionScore: 88 },
+  { primitiveId: 'brain', name: 'BRAIN', category: 'Organ', impactScore: 85, rationale: 'test', chainPosition: 2, collisionScore: 85 },
+  { primitiveId: 'immunity', name: 'IMMUNITY', category: 'Layer', impactScore: 82, rationale: 'test', chainPosition: 3, collisionScore: 82 },
 ];
 const FP = 'TEST_FP_ABC123';
 
