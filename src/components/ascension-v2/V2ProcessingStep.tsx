@@ -54,6 +54,47 @@ import {
 
 // Canonical 40-Primitive Matrix (12 Organs · 12 Layers · 8 Engines · 8 Agents)
 const SUBSTRATE_NODES = CANONICAL_PRIMITIVES;
+const KNOWN_CHAIN_MODULES = new Set<string>([
+  ...SUBSTRATE_NODES.map((primitive) => primitive.toUpperCase()),
+  'CANDIDATE',
+]);
+
+function normalizeDiscoveredChain(
+  chain: ReadonlyArray<string>,
+  candidateModuleName: string,
+  fallbackTarget: string,
+): string[] {
+  const candidateUpper = candidateModuleName.trim().toUpperCase();
+  const fallbackUpper = fallbackTarget.trim().toUpperCase();
+
+  const normalized = chain
+    .map((moduleName) => {
+      const upper = moduleName.trim().toUpperCase();
+      if (!upper) return null;
+      if (upper === candidateUpper || upper.startsWith('CANDIDATE_') || upper.startsWith('Ψ₄₁_')) {
+        return 'CANDIDATE';
+      }
+      if (KNOWN_CHAIN_MODULES.has(upper)) {
+        return upper;
+      }
+      return 'CANDIDATE';
+    })
+    .filter((moduleName, index, arr): moduleName is string => Boolean(moduleName) && (index === 0 || moduleName !== arr[index - 1]));
+
+  if (normalized.length === 0) {
+    return ['CANDIDATE', fallbackUpper];
+  }
+
+  if (normalized[0] !== 'CANDIDATE') {
+    normalized.unshift('CANDIDATE');
+  }
+
+  if (!normalized.includes(fallbackUpper)) {
+    normalized.push(fallbackUpper);
+  }
+
+  return normalized;
+}
 
 const STATUS_MESSAGES = [
   'Initializing substrate collision…',
@@ -316,7 +357,8 @@ export function V2ProcessingStep({ onComplete }: Props) {
               );
 
               const cjpi = bestCap.cjpi_score as number;
-              const chain = (bestCap.chain || [candidateNode, targetNode]) as string[];
+              const rawChain = (bestCap.chain || [candidateNode, targetNode]) as string[];
+              const chain = normalizeDiscoveredChain(rawChain, candidateNode, targetNode);
               const chainDepth = bestCap.chain_depth || chain.length || 2;
               const description = bestCap.description || '';
 
