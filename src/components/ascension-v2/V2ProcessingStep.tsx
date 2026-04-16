@@ -98,6 +98,64 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
     const candidateNode = candidate.name.replace('CANDIDATE_', '');
 
+    // ───────────────────────────────────────────────────────
+    // Phase 0: Promote user software → Primitive #41
+    // (canonical V1 method: extract → register handler → registry)
+    // Without this step, the candidate is an "unknown primitive"
+    // and every collision chain fails to resolve a real handler.
+    // ───────────────────────────────────────────────────────
+    try {
+      const sourceFiles = (candidate.metadata?.source_files ?? []) as Array<{
+        name?: string;
+        content?: string;
+        extension?: string;
+      }>;
+
+      const extractable = sourceFiles
+        .filter((f) => typeof f?.content === 'string' && (f.content as string).length > 0)
+        .map((f) => ({
+          name: f.name || `${candidateNode}.src`,
+          content: f.content as string,
+          language: (candidate.metadata?.language as string) || f.extension || 'typescript',
+        }));
+
+      // Always register the candidate name itself so collisions can resolve it,
+      // even when source_files weren't persisted on this upload.
+      registerPrimitive({
+        id: `candidate.${candidateNode.toLowerCase()}`,
+        name: candidateNode,
+        category: 'user-software',
+        source: 'external',
+        handler: (input) => ({
+          primitive: candidateNode,
+          executed: true,
+          input,
+          via: 'candidate-shim',
+          timestamp: Date.now(),
+        }),
+      });
+
+      if (extractable.length > 0) {
+        const { primitives } = extractPrimitives(extractable);
+        for (const prim of primitives) {
+          registerPrimitive({
+            id: `candidate.${candidateNode.toLowerCase()}.${prim.id}`,
+            name: prim.canonicalName || prim.name,
+            category: prim.category,
+            source: 'external',
+            handler: buildPrimitiveHandler(prim),
+          });
+        }
+        appendAudit('candidate_registered', `${candidateNode} + ${primitives.length} extracted handlers`);
+      } else {
+        appendAudit('candidate_registered', `${candidateNode} (shim only — no source_files)`);
+      }
+    } catch (err) {
+      // Registration must never block the run — fall back to shim only.
+      const msg = err instanceof Error ? err.message : String(err);
+      appendAudit('candidate_register_warning', msg);
+    }
+
     // Use deterministic ordering from orchestrator (seeded by fingerprint)
     const orderedNodes = getNodeOrdering(SUBSTRATE_NODES);
     appendAudit('discovery_start', `${orderedNodes.length} primitives`);
