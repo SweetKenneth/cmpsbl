@@ -93,10 +93,10 @@ const FLEET_INTEL_WIRE_TS = `
 const _cmpsbl_raw_execute_fi = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_fleet(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const provider = cmpsbl_pick_provider();
-  // Provider selection is informational — exec proceeds either way
-  if (provider) (input as Record<string, unknown>)._cmpsbl_provider = provider.id;
+  // Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+  const _ctx = provider ? { ...input, _cmpsbl_provider: provider.id } : input;
   try {
-    const result = _cmpsbl_raw_execute_fi(capabilityName, input);
+    const result = _cmpsbl_raw_execute_fi(capabilityName, _ctx);
     if (provider) cmpsbl_record_provider_call(provider.id, true);
     return result;
   } catch (err) {
@@ -110,9 +110,10 @@ _cmpsbl_raw_execute_fi = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     """Execute with fleet provider selection (auto-wired)."""
     provider = cmpsbl_pick_provider()
-    if provider: input_data['_cmpsbl_provider'] = provider.id
+    # Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+    _ctx = {**input_data, '_cmpsbl_provider': provider.id} if provider else input_data
     try:
-        result = _cmpsbl_raw_execute_fi(capability_name, input_data)
+        result = _cmpsbl_raw_execute_fi(capability_name, _ctx)
         if provider: cmpsbl_record_provider_call(provider.id, True)
         return result
     except Exception as e:
