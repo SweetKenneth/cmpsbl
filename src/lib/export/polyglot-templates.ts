@@ -2455,6 +2455,7 @@ export function generatePolyglotFile(
   lang: string,
   capabilities: UnifiedCapabilityInput[],
   packName: string,
+  userSourceFiles?: UserSourceFile[],
 ): string {
   const generator = LANGUAGE_GENERATORS[lang];
   if (!generator) return '';
@@ -2463,7 +2464,28 @@ export function generatePolyglotFile(
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
-  return generator({ capabilities, packName, allModules, avgCjpi, topCap });
+  const raw = generator({ capabilities, packName, allModules, avgCjpi, topCap, userSourceFiles });
+
+  // Inject Layer 1 block if source files were provided and not already embedded
+  if (userSourceFiles && userSourceFiles.length > 0 && !raw.includes('LAYER 1')) {
+    const LANG_COMMENT: Record<string, string> = {
+      rust: '//', go: '//', java: '//', csharp: '//', ruby: '#', swift: '//', kotlin: '//',
+      c: '//', cpp: '//', lua: '--', dart: '//', scala: '//', elixir: '#',
+      r: '#', haskell: '--', zig: '//', verilog: '//', systemverilog: '//', vhdl: '--',
+    };
+    const lc = LANG_COMMENT[lang] || '//';
+    const layer1 = generateLayer1Block(userSourceFiles, lc);
+    // Insert Layer 1 before the first section header
+    const firstSection = raw.indexOf('§1');
+    if (firstSection > 0) {
+      const insertPoint = raw.lastIndexOf('\n', firstSection);
+      return raw.slice(0, insertPoint) + '\n\n' + layer1 + '\n' + raw.slice(insertPoint);
+    }
+    // Fallback: append at end
+    return raw + '\n\n' + layer1;
+  }
+
+  return raw;
 }
 
 export const SUPPORTED_LANGUAGES = Object.keys(LANGUAGE_GENERATORS);
