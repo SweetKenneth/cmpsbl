@@ -182,16 +182,16 @@ function checkDispatchTableIntegrity(code: string): Layer2ValidationError[] {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    // Match dispatch table DECLARATIONS only (must have assignment + array literal)
-    if (/_CMPSBL_DT|_CMPSBL_CM|_DT|_CM/.test(line) && /=\s*\[/.test(line)) {
-      // Check that the array has matching brackets on this line or is properly continued
+    // Match dispatch table DECLARATIONS only — strict prefix to avoid
+    // false positives on Python type annotations like `_CMPSBL_ECHO_STORE: List[dict] = []`.
+    // A real dispatch table is named _CMPSBL_DT_<id> or _CMPSBL_CM_<id> and assigns a numeric array.
+    const isDispatchDecl = /\b_CMPSBL_(DT|CM)_[A-Za-z0-9_]+\s*=\s*\[/.test(line);
+    if (isDispatchDecl) {
       const openCount = (line.match(/\[/g) ?? []).length;
       const closeCount = (line.match(/\]/g) ?? []).length;
       if (openCount !== closeCount) {
-        // Could be multi-line — just warn
         errors.push({ line: i + 1, column: 0, message: 'Dispatch table array may span multiple lines — verify manually', severity: 'warning' });
       }
-      // Verify contents are numeric
       const arrayMatch = line.match(/\[([^\]]+)\]/);
       if (arrayMatch) {
         const elements = arrayMatch[1].split(',').map(s => s.trim()).filter(Boolean);
