@@ -322,7 +322,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 const SELF_HEALING_LAYER: CmpsblLayerDefinition = {
   id: 'self-healing',
   name: 'Self-Healing Orchestrator',
-  crownJewelRank: 8,
+  crownJewelRank: 1,
   cjpi: 96,
   module: 'IMMUNITY',
   description: 'Auto-detects failures, selects lowest-blast-radius repair strategy, executes recovery with rollback, and learns from outcomes. No source modification.',

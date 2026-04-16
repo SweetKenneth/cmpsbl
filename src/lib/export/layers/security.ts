@@ -293,7 +293,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 const ZERO_TRUST_LAYER: CmpsblLayerDefinition = {
   id: "zero-trust",
   name: "Zero-Trust Identity Suite",
-  crownJewelRank: 7,
+  crownJewelRank: 2,
   cjpi: 91,
   module: "IDENTITY×DEFENSE",
   description: "Continuous session verification with behavioral trust scoring that flags compromised credentials through usage pattern deviation.",
@@ -444,7 +444,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 const CYBER_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "cyber-defense",
   name: "Cyber Defense Suite",
-  crownJewelRank: 8,
+  crownJewelRank: 3,
   cjpi: 97,
   module: "WATCHTOWER×AEGIS",
   description: "Cross-correlates indicators of compromise across temporal, spatial, and contextual dimensions while dynamically absorbing volumetric attacks.",
