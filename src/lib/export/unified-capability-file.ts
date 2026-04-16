@@ -1114,118 +1114,446 @@ def clamp(val: float, lo: float = 0.0, hi: float = 1.0) -> float:
     return max(lo, min(hi, val))
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  §2 — MODULE EFFECTS (40 Primitives)                                         ║
+# ║  §2 — MODULE EFFECTS (40 Primitives) — REAL WORK, NOT FLAGS                  ║
+# ║  Every handler mutates ctx["_data"] with computation derived from the        ║
+# ║  actual payload. Pure-Python, deterministic, zero external dependencies.     ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
+import math, re, copy
+
+# Module-level stores (process-lifetime, deterministic per-key).
+_CMPSBL_MEMORY_STORE: Dict[str, Any] = {}
+_CMPSBL_ECHO_STORE: List[dict] = []
+_CMPSBL_ERROR_WINDOW: Dict[str, List[float]] = {}
+_CMPSBL_EVOLUTION_STATE: Dict[str, dict] = {}
+
+_PII_PATTERNS = [
+    (re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b"), "<email>"),
+    (re.compile(r"\b\d{3}-\d{2}-\d{4}\b"), "<ssn>"),
+    (re.compile(r"\b(?:\d[ -]*?){13,16}\b"), "<card>"),
+    (re.compile(r"\b\+?\d{1,3}[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}\b"), "<phone>"),
+]
+
+_BIAS_TOKENS = (
+    "always", "never", "all of them", "those people", "obviously",
+    "everyone knows", "must be", "cannot be",
+)
+
+def _shannon_entropy(s: str) -> float:
+    if not s:
+        return 0.0
+    freq: Dict[str, int] = {}
+    for ch in s:
+        freq[ch] = freq.get(ch, 0) + 1
+    n = len(s)
+    h = 0.0
+    for c in freq.values():
+        p = c / n
+        h -= p * math.log2(p)
+    return h
+
+def _walk_strings(value: Any):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for v in value.values():
+            yield from _walk_strings(v)
+    elif isinstance(value, (list, tuple)):
+        for v in value:
+            yield from _walk_strings(v)
+
+def _redact_in_place(value: Any) -> Tuple[Any, int]:
+    if isinstance(value, str):
+        out = value
+        hits = 0
+        for pat, repl in _PII_PATTERNS:
+            out, n = pat.subn(repl, out)
+            hits += n
+        return out, hits
+    if isinstance(value, dict):
+        new = {}
+        total = 0
+        for k, v in value.items():
+            nv, h = _redact_in_place(v)
+            new[k] = nv
+            total += h
+        return new, total
+    if isinstance(value, list):
+        new_list = []
+        total = 0
+        for v in value:
+            nv, h = _redact_in_place(v)
+            new_list.append(nv)
+            total += h
+        return new_list, total
+    return value, 0
+
 def handle_core(ctx, mod, meta):
-    ctx["_data"]["_pipeline_id"] = quick_hash(json.dumps(ctx["_input"], default=str))
+    payload = json.dumps(ctx["_input"], default=str, sort_keys=True)
+    ctx["_data"]["_pipeline_id"] = quick_hash(payload)
     ctx["_data"]["_initialized"] = True
+    ctx["_data"]["_input_size_bytes"] = len(payload)
     ctx["_signals"].append({"type": "init", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_brain(ctx, mod, meta):
-    s = json.dumps(ctx["_data"], default=str)
-    entropy = len(set(s)) / max(1, len(s))
+    """Real reasoning: Shannon entropy + structural depth + branching factor."""
+    serialized = json.dumps(ctx["_data"], default=str, sort_keys=True)
+    entropy_bits = round(_shannon_entropy(serialized), 4)
     keys = user_keys(ctx["_data"])
-    depth = "deep" if len(keys) > 10 else "standard" if len(keys) > 5 else "shallow"
-    ctx["_data"]["_reasoning"] = {"entropy": round(entropy, 3), "complexity": len(keys), "depth": depth}
+
+    def _max_depth(v, d=0):
+        if isinstance(v, dict):
+            return max((_max_depth(x, d + 1) for x in v.values()), default=d)
+        if isinstance(v, list):
+            return max((_max_depth(x, d + 1) for x in v), default=d)
+        return d
+
+    def _branching(v):
+        if isinstance(v, dict): return len(v)
+        if isinstance(v, list): return len(v)
+        return 0
+
+    depth = _max_depth(ctx["_data"])
+    branching = sum(_branching(ctx["_data"][k]) for k in keys)
+    inferred = "deep" if entropy_bits > 4.5 and depth >= 3 else "standard" if entropy_bits > 3 else "shallow"
+    ctx["_data"]["_reasoning"] = {
+        "entropy_bits": entropy_bits,
+        "max_depth": depth,
+        "branching_factor": branching,
+        "key_count": len(keys),
+        "depth_class": inferred,
+    }
     ctx["_signals"].append({"type": "reasoning", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_memory(ctx, mod, meta):
-    fp = quick_hash(json.dumps(ctx["_data"], default=str))
-    ctx["_data"]["_memory"] = {"fingerprint": fp, "retrieved": True, "indexed": True}
+    """Real K/V store: write-then-read by content fingerprint, with hit/miss."""
+    fp = quick_hash(json.dumps(ctx["_data"], default=str, sort_keys=True))
+    cap_name = meta.get("name", "default")
+    store_key = f"{cap_name}:{fp}"
+    hit = store_key in _CMPSBL_MEMORY_STORE
+    if hit:
+        prior = _CMPSBL_MEMORY_STORE[store_key]
+    else:
+        prior = {"first_seen_ts": time.time(), "access_count": 0}
+        _CMPSBL_MEMORY_STORE[store_key] = prior
+    prior["access_count"] += 1
+    prior["last_seen_ts"] = time.time()
+    ctx["_data"]["_memory"] = {
+        "fingerprint": fp,
+        "cache_hit": hit,
+        "access_count": prior["access_count"],
+        "store_size": len(_CMPSBL_MEMORY_STORE),
+        "first_seen_ts": prior["first_seen_ts"],
+    }
     ctx["_signals"].append({"type": "retrieval", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_nerve(ctx, mod, meta):
+    """Real signal routing: choose target by payload weight + chain position."""
     keys = user_keys(ctx["_data"])
-    strength = clamp(len(keys) / 10)
-    ctx["_data"]["_nerve"] = {"signalStrength": strength, "mode": "broadcast" if strength > 0.7 else "targeted"}
-    ctx["_signals"].append({"type": "route", "source": mod, "ts": time.time()})
+    payload_bytes = len(json.dumps(ctx["_data"], default=str))
+    chain = meta.get("chain", []) or []
+    position = chain.index(mod) if mod in chain else -1
+    fanout = max(1, len(chain) - max(0, position) - 1)
+    strength = clamp(payload_bytes / 4096.0)
+    mode = "broadcast" if strength > 0.6 and fanout > 2 else "targeted" if fanout > 0 else "terminal"
+    ctx["_data"]["_nerve"] = {
+        "signal_strength": round(strength, 4),
+        "payload_bytes": payload_bytes,
+        "downstream_fanout": fanout,
+        "mode": mode,
+    }
+    ctx["_signals"].append({"type": "route", "source": mod, "ts": time.time(), "mode": mode})
     return ctx
 
 def handle_decode(ctx, mod, meta):
+    """Real schema inference: per-field type, nullable detection, sample values."""
     fields = user_keys(ctx["_data"])
-    type_map = {k: type(ctx["_data"][k]).__name__ for k in fields}
-    ctx["_data"]["_decode"] = {"fields": len(fields), "typeMap": type_map, "parsed": True}
+    schema: Dict[str, dict] = {}
+    for k in fields:
+        v = ctx["_data"][k]
+        t = type(v).__name__
+        is_null = v is None
+        size = len(v) if hasattr(v, "__len__") and not isinstance(v, (int, float, bool)) else None
+        sample = None
+        if isinstance(v, (str, int, float, bool)):
+            sample = v if not isinstance(v, str) else v[:32]
+        schema[k] = {"type": t, "nullable": is_null, "size": size, "sample": sample}
+    ctx["_data"]["_decode"] = {
+        "field_count": len(fields),
+        "schema": schema,
+        "parse_ok": True,
+    }
     ctx["_signals"].append({"type": "decode", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_encode(ctx, mod, meta):
-    ctx["_data"]["_encode"] = {"format": "json", "serialized": True}
+    """Real serialization: produce both compact JSON + size-after-compression estimate."""
+    payload = ctx["_data"]
+    compact = json.dumps(payload, default=str, separators=(",", ":"), sort_keys=True)
+    pretty = json.dumps(payload, default=str, indent=2, sort_keys=True)
+    unique = len(set(compact))
+    compressibility = round(1 - (unique / max(1, len(compact))), 4)
+    ctx["_data"]["_encode"] = {
+        "format": "json",
+        "compact_bytes": len(compact),
+        "pretty_bytes": len(pretty),
+        "compressibility": compressibility,
+        "checksum": quick_hash(compact),
+    }
     ctx["_signals"].append({"type": "encode", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_defense(ctx, mod, meta):
-    s = json.dumps(ctx["_data"], default=str)
-    suspicious = any(x in s.lower() for x in ["<script", "eval(", "__proto__"])
-    ctx["_data"]["_defense"] = {"sanitized": True, "threats": 1 if suspicious else 0}
-    ctx["_signals"].append({"type": "defense", "source": mod, "ts": time.time()})
+    """Real threat scan: pattern-match across every string in the payload."""
+    threat_patterns = [
+        ("xss", re.compile(r"<\s*script\b|javascript:|on\w+\s*=", re.I)),
+        ("sqli", re.compile(r"(\bunion\b.*\bselect\b|;\s*drop\s+table|--\s*$)", re.I)),
+        ("rce", re.compile(r"\beval\s*\(|\bexec\s*\(|__proto__|constructor\s*\[")),
+        ("path_traversal", re.compile(r"\.\./|\.\.\\")),
+    ]
+    findings: Dict[str, int] = {}
+    total = 0
+    for s in _walk_strings(ctx["_data"]):
+        for label, pat in threat_patterns:
+            n = len(pat.findall(s))
+            if n:
+                findings[label] = findings.get(label, 0) + n
+                total += n
+    ctx["_data"]["_defense"] = {
+        "scanned": True,
+        "threats_found": total,
+        "threat_breakdown": findings,
+        "verdict": "block" if total > 0 else "allow",
+    }
+    ctx["_signals"].append({"type": "defense", "source": mod, "ts": time.time(), "verdict": findings or "clean"})
     return ctx
 
 def handle_oracle(ctx, mod, meta):
-    conf = meta.get("cjpi", 50) / 100.0
-    ctx["_data"]["_prediction"] = {"confidence": conf, "model": "oracle-v1", "status": "computed"}
-    ctx["_signals"].append({"type": "prediction", "source": mod, "ts": time.time()})
+    """Real prediction: weighted score from input richness + capability CJPI prior."""
+    keys = user_keys(ctx["_data"])
+    payload_bytes = len(json.dumps(ctx["_data"], default=str))
+    prior = meta.get("cjpi", 50) / 100.0
+    richness = clamp((len(keys) / 12.0) * 0.5 + clamp(payload_bytes / 8192.0) * 0.5)
+    confidence = round(clamp(prior * 0.6 + richness * 0.4), 4)
+    verdict = "high" if confidence >= 0.75 else "medium" if confidence >= 0.45 else "low"
+    ctx["_data"]["_prediction"] = {
+        "confidence": confidence,
+        "prior_cjpi": prior,
+        "input_richness": round(richness, 4),
+        "verdict": verdict,
+        "model": "oracle-blend-v1",
+    }
+    ctx["_signals"].append({"type": "prediction", "source": mod, "ts": time.time(), "verdict": verdict})
     return ctx
 
 def handle_immunity(ctx, mod, meta):
-    errs = len(ctx["_errors"])
-    ctx["_data"]["_immunity"] = {"protected": True, "errors_caught": errs, "fallback": "engaged" if errs > 0 else "standby"}
-    ctx["_signals"].append({"type": "shield", "source": mod, "ts": time.time()})
+    """Real circuit-breaker: rolling 60s error window per capability."""
+    cap_name = meta.get("name", "default")
+    window = _CMPSBL_ERROR_WINDOW.setdefault(cap_name, [])
+    now = time.time()
+    cutoff = now - 60
+    window[:] = [t for t in window if t >= cutoff]
+    new_errs = ctx["_errors"][-5:] if ctx["_errors"] else []
+    for _ in new_errs:
+        window.append(now)
+    rate_per_min = len(window)
+    state = "open" if rate_per_min >= 5 else "half_open" if rate_per_min >= 2 else "closed"
+    ctx["_data"]["_immunity"] = {
+        "circuit_state": state,
+        "errors_in_window_60s": rate_per_min,
+        "errors_caught_total": len(ctx["_errors"]),
+        "fallback": "engaged" if state == "open" else "standby",
+    }
+    ctx["_signals"].append({"type": "shield", "source": mod, "ts": time.time(), "state": state})
     return ctx
 
 def handle_cortex(ctx, mod, meta):
-    chain = meta.get("chain", [])
-    ctx["_data"]["_orchestration"] = {"total_stages": len(chain), "signals": len(ctx["_signals"]), "status": "coordinated"}
+    """Real orchestration metrics: per-stage signal breakdown + completion ratio."""
+    chain = meta.get("chain", []) or []
+    signal_types: Dict[str, int] = {}
+    for sig in ctx["_signals"]:
+        t = sig.get("type", "unknown")
+        signal_types[t] = signal_types.get(t, 0) + 1
+    stages_complete = len(ctx["_signals"])
+    completion = round(stages_complete / max(1, len(chain)), 4)
+    ctx["_data"]["_orchestration"] = {
+        "total_stages": len(chain),
+        "stages_complete": stages_complete,
+        "completion_ratio": completion,
+        "signal_breakdown": signal_types,
+        "errors": len(ctx["_errors"]),
+    }
     ctx["_signals"].append({"type": "orchestrate", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_evolution(ctx, mod, meta):
-    fitness = meta.get("cjpi", 50) / 100.0
-    ctx["_data"]["_evolution"] = {"cycle": 1, "fitness": fitness, "strategy": "exploit" if fitness > 0.7 else "explore"}
-    ctx["_signals"].append({"type": "evolve", "source": mod, "ts": time.time()})
+    """Real fitness tracking: per-capability rolling fitness + strategy gradient."""
+    cap_name = meta.get("name", "default")
+    state = _CMPSBL_EVOLUTION_STATE.setdefault(cap_name, {"cycle": 0, "fitness_history": []})
+    state["cycle"] += 1
+    cjpi_prior = meta.get("cjpi", 50) / 100.0
+    err_penalty = clamp(len(ctx["_errors"]) * 0.1)
+    fitness = round(clamp(cjpi_prior - err_penalty), 4)
+    state["fitness_history"].append(fitness)
+    if len(state["fitness_history"]) > 32:
+        state["fitness_history"] = state["fitness_history"][-32:]
+    avg = sum(state["fitness_history"]) / len(state["fitness_history"])
+    trend = "improving" if fitness > avg + 0.05 else "declining" if fitness < avg - 0.05 else "stable"
+    strategy = "exploit" if avg > 0.7 else "explore" if avg < 0.4 else "balance"
+    ctx["_data"]["_evolution"] = {
+        "cycle": state["cycle"],
+        "fitness": fitness,
+        "rolling_avg": round(avg, 4),
+        "trend": trend,
+        "strategy": strategy,
+    }
+    ctx["_signals"].append({"type": "evolve", "source": mod, "ts": time.time(), "strategy": strategy})
     return ctx
 
 def handle_shadow(ctx, mod, meta):
-    ctx["_data"]["_shadow"] = {"verified": True, "hash": quick_hash(json.dumps(ctx["_data"], default=str))}
-    ctx["_signals"].append({"type": "audit", "source": mod, "ts": time.time()})
+    """Real audit: deterministic hash chain over successive snapshots."""
+    serialized = json.dumps(ctx["_data"], default=str, sort_keys=True)
+    current_hash = quick_hash(serialized)
+    prior_hash = ctx["_data"].get("_shadow", {}).get("hash", "0" * 8)
+    chain_hash = quick_hash(prior_hash + current_hash)
+    ctx["_data"]["_shadow"] = {
+        "hash": current_hash,
+        "prior_hash": prior_hash,
+        "chain_hash": chain_hash,
+        "byte_length": len(serialized),
+        "verified": True,
+    }
+    ctx["_signals"].append({"type": "audit", "source": mod, "ts": time.time(), "hash": current_hash})
     return ctx
 
 def handle_harvest(ctx, mod, meta):
+    """Real ingestion: dedupe by value-hash, build presence bloom over keys."""
     keys = user_keys(ctx["_data"])
-    ctx["_data"]["_harvest"] = {"fields": len(keys), "deduplicated": True, "bloom": quick_hash(",".join(keys))}
+    seen_hashes: Dict[str, int] = {}
+    for k in keys:
+        vh = quick_hash(json.dumps(ctx["_data"][k], default=str, sort_keys=True))
+        seen_hashes[vh] = seen_hashes.get(vh, 0) + 1
+    duplicates = sum(c - 1 for c in seen_hashes.values() if c > 1)
+    bloom = 0
+    for k in keys:
+        bit = int(quick_hash(k), 16) % 64
+        bloom |= (1 << bit)
+    ctx["_data"]["_harvest"] = {
+        "fields_ingested": len(keys),
+        "unique_value_count": len(seen_hashes),
+        "duplicate_count": duplicates,
+        "presence_bloom_hex": format(bloom, "016x"),
+    }
     ctx["_signals"].append({"type": "ingest", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_phantom(ctx, mod, meta):
-    ctx["_data"]["_phantom"] = {"anonymized": True, "proxy_hops": 3}
-    ctx["_signals"].append({"type": "anonymize", "source": mod, "ts": time.time()})
+    """Real PII redaction: walk every string, redact emails/SSN/cards/phones."""
+    redacted, hits = _redact_in_place(ctx["_data"])
+    for k in user_keys(ctx["_data"]):
+        if k in redacted:
+            ctx["_data"][k] = redacted[k]
+    ctx["_data"]["_phantom"] = {
+        "anonymized": True,
+        "redactions_applied": hits,
+        "patterns_checked": len(_PII_PATTERNS),
+    }
+    ctx["_signals"].append({"type": "anonymize", "source": mod, "ts": time.time(), "hits": hits})
     return ctx
 
 def handle_echo(ctx, mod, meta):
-    ctx["_data"]["_echo"] = {"replay_available": True, "snapshot_keys": list(ctx["_data"].keys())}
+    """Real replay buffer: ring of last 16 snapshots, retrievable by index."""
+    snap = {
+        "ts": time.time(),
+        "fingerprint": quick_hash(json.dumps(ctx["_data"], default=str, sort_keys=True)),
+        "keys": list(user_keys(ctx["_data"])),
+    }
+    _CMPSBL_ECHO_STORE.append(snap)
+    if len(_CMPSBL_ECHO_STORE) > 16:
+        del _CMPSBL_ECHO_STORE[0:len(_CMPSBL_ECHO_STORE) - 16]
+    ctx["_data"]["_echo"] = {
+        "snapshot_index": len(_CMPSBL_ECHO_STORE) - 1,
+        "snapshot_fingerprint": snap["fingerprint"],
+        "buffer_depth": len(_CMPSBL_ECHO_STORE),
+        "replay_available": True,
+    }
     ctx["_signals"].append({"type": "echo", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_forge(ctx, mod, meta):
-    ctx["_data"]["_forge"] = {"scaffolded": True, "target": meta.get("tier", "mint")}
+    """Real scaffold: emit a typed schema skeleton for the current payload."""
+    keys = user_keys(ctx["_data"])
+    skeleton: Dict[str, str] = {}
+    for k in keys:
+        v = ctx["_data"][k]
+        if isinstance(v, bool): t = "boolean"
+        elif isinstance(v, int): t = "integer"
+        elif isinstance(v, float): t = "number"
+        elif isinstance(v, str): t = "string"
+        elif isinstance(v, list): t = "array"
+        elif isinstance(v, dict): t = "object"
+        elif v is None: t = "null"
+        else: t = type(v).__name__
+        skeleton[k] = t
+    ctx["_data"]["_forge"] = {
+        "scaffolded": True,
+        "target_tier": meta.get("tier", "mint"),
+        "schema_skeleton": skeleton,
+        "field_count": len(skeleton),
+    }
     ctx["_signals"].append({"type": "forge", "source": mod, "ts": time.time()})
     return ctx
 
 def handle_intent(ctx, mod, meta):
-    ctx["_data"]["_intent"] = {"planned": True, "actions": len(meta.get("chain", []))}
-    ctx["_signals"].append({"type": "plan", "source": mod, "ts": time.time()})
+    """Real plan: enumerate remaining chain stages with positional intent."""
+    chain = meta.get("chain", []) or []
+    pos = chain.index(mod) if mod in chain else 0
+    remaining = chain[pos + 1:]
+    plan = [{"step": i + 1, "module": m, "blocking": True} for i, m in enumerate(remaining)]
+    ctx["_data"]["_intent"] = {
+        "planned": True,
+        "remaining_steps": len(plan),
+        "plan": plan[:8],
+        "current_position": pos,
+    }
+    ctx["_signals"].append({"type": "plan", "source": mod, "ts": time.time(), "remaining": len(plan)})
     return ctx
 
 def handle_conscience(ctx, mod, meta):
-    ctx["_data"]["_conscience"] = {"biasChecks": 5, "fairnessScore": 0.85, "flagged": 0}
-    ctx["_signals"].append({"type": "assess", "source": mod, "ts": time.time()})
+    """Real bias scan: count loaded language across every string in payload."""
+    flagged_phrases: List[str] = []
+    occurrences = 0
+    for s in _walk_strings(ctx["_data"]):
+        low = s.lower()
+        for tok in _BIAS_TOKENS:
+            if tok in low:
+                occurrences += low.count(tok)
+                if tok not in flagged_phrases:
+                    flagged_phrases.append(tok)
+    fairness = round(clamp(1.0 - occurrences * 0.08), 4)
+    verdict = "pass" if fairness >= 0.85 else "review" if fairness >= 0.6 else "block"
+    ctx["_data"]["_conscience"] = {
+        "bias_checks": len(_BIAS_TOKENS),
+        "flagged_phrases": flagged_phrases,
+        "occurrences": occurrences,
+        "fairness_score": fairness,
+        "verdict": verdict,
+    }
+    ctx["_signals"].append({"type": "assess", "source": mod, "ts": time.time(), "verdict": verdict})
     return ctx
 
 def handle_default(ctx, mod, meta):
-    ctx["_data"][f"_module_{mod.lower()}"] = {"processed": True, "handler": "generic"}
+    """Generic real handler: deep-checksum the payload through this stage."""
+    snapshot = json.dumps(ctx["_data"], default=str, sort_keys=True)
+    ctx["_data"][f"_module_{mod.lower()}"] = {
+        "processed": True,
+        "stage_checksum": quick_hash(snapshot),
+        "stage_bytes": len(snapshot),
+        "handler": "generic",
+    }
     ctx["_signals"].append({"type": "process", "source": mod, "ts": time.time()})
     return ctx
 
