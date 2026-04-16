@@ -843,6 +843,7 @@ export function generateUnifiedPython(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
