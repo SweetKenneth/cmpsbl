@@ -60,9 +60,14 @@ export function V2ProcessingStep({ onComplete }: Props) {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const abortRef = useRef(false);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
   const { toast } = useToast();
+  const toastRef = useRef(toast);
+  toastRef.current = toast;
 
   const runPipeline = useCallback(async () => {
+    abortRef.current = false;
     setAnalysisError(null);
 
     const { data: { user } } = await supabase.auth.getUser();
