@@ -523,5 +523,5 @@ export function generateExtendedPolyglot(lang: string, ctx: ExtendedGeneratorCon
 }
 
 export function listExtendedLanguages(): string[] {
-  return TIER_A_ADAPTERS.map(a => a.id).filter(id => id in SCAFFOLDS);
+  return Object.keys(TIER_A_ADAPTERS).filter(id => id in SCAFFOLDS);
 }
