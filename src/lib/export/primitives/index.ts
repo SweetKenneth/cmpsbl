@@ -36,3 +36,10 @@ export {
   reportTranspilation,
   type TranspileReport,
 } from './transpiler';
+
+export {
+  generateExtendedPolyglot,
+  hasExtendedGenerator,
+  listExtendedLanguages,
+  type ExtendedGeneratorContext,
+} from './extended-generators';
