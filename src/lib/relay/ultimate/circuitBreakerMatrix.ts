@@ -10,8 +10,13 @@ export interface DestinationBreaker {
   destination: string;
   state: BreakerState;
   consecutiveFailures: number;
+  consecutiveSuccesses: number;
   failureThreshold: number;
-  recoveryTimeoutMs: number;
+  successThreshold: number;       // Probes needed in half-open to fully close
+  recoveryTimeoutMs: number;      // Current backoff window (grows on repeat trips)
+  baseRecoveryTimeoutMs: number;  // Initial value used to reset after recovery
+  maxRecoveryTimeoutMs: number;   // Backoff ceiling
+  consecutiveTrips: number;       // Drives exponential growth
   lastFailureAt?: number;
   lastSuccessAt?: number;
   trippedAt?: number;
@@ -39,7 +44,11 @@ export interface CircuitBreakerStats {
 }
 
 const DEFAULT_FAILURE_THRESHOLD = 5;
+const DEFAULT_SUCCESS_THRESHOLD = 3;
 const DEFAULT_RECOVERY_MS = 30_000;
+const MAX_RECOVERY_MS = 300_000;
+const BACKOFF_MULTIPLIER = 2;
+const JITTER_RATIO = 0.2;
 const MAX_BREAKERS = 200;
 const MAX_CASCADES = 100;
 
@@ -51,9 +60,14 @@ export function getOrCreateBreaker(destination: string): DestinationBreaker {
   if (breaker) return breaker;
 
   breaker = {
-    destination, state: 'closed', consecutiveFailures: 0,
+    destination, state: 'closed',
+    consecutiveFailures: 0, consecutiveSuccesses: 0,
     failureThreshold: DEFAULT_FAILURE_THRESHOLD,
+    successThreshold: DEFAULT_SUCCESS_THRESHOLD,
     recoveryTimeoutMs: DEFAULT_RECOVERY_MS,
+    baseRecoveryTimeoutMs: DEFAULT_RECOVERY_MS,
+    maxRecoveryTimeoutMs: MAX_RECOVERY_MS,
+    consecutiveTrips: 0,
     totalTrips: 0, totalSuccesses: 0, totalFailures: 0,
   };
 
@@ -70,18 +84,32 @@ export function getOrCreateBreaker(destination: string): DestinationBreaker {
 export function recordSuccess(destination: string): void {
   const b = getOrCreateBreaker(destination);
   b.consecutiveFailures = 0;
+  b.consecutiveSuccesses++;
   b.lastSuccessAt = Date.now();
   b.totalSuccesses++;
-  if (b.state === 'half_open') b.state = 'closed';
+  if (b.state === 'half_open' && b.consecutiveSuccesses >= b.successThreshold) {
+    // Recovery complete — auto-heal back to closed and reset backoff
+    b.state = 'closed';
+    b.consecutiveTrips = 0;
+    b.recoveryTimeoutMs = b.baseRecoveryTimeoutMs;
+  }
 }
 
 export function recordFailure(destination: string): BreakerState {
   const b = getOrCreateBreaker(destination);
   b.consecutiveFailures++;
+  b.consecutiveSuccesses = 0;
   b.lastFailureAt = Date.now();
   b.totalFailures++;
 
-  if (b.consecutiveFailures >= b.failureThreshold && b.state === 'closed') {
+  if (b.state === 'half_open') {
+    // Probe failed — reopen with grown backoff
+    growRecoveryBackoff(b);
+    b.state = 'open';
+    b.trippedAt = Date.now();
+    b.totalTrips++;
+  } else if (b.consecutiveFailures >= b.failureThreshold && b.state === 'closed') {
+    growRecoveryBackoff(b);
     b.state = 'open';
     b.trippedAt = Date.now();
     b.totalTrips++;
@@ -96,12 +124,24 @@ export function canPass(destination: string): boolean {
 
   if (b.state === 'closed') return true;
   if (b.state === 'open' && b.trippedAt && Date.now() - b.trippedAt > b.recoveryTimeoutMs) {
+    // Auto-transition to half-open probe — no manual reset needed
     b.state = 'half_open';
     b.halfOpenAt = Date.now();
-    return true; // Allow probe
+    b.consecutiveSuccesses = 0;
+    return true;
   }
   if (b.state === 'half_open') return true;
   return false;
+}
+
+function growRecoveryBackoff(b: DestinationBreaker): void {
+  b.consecutiveTrips++;
+  const base = Math.min(
+    b.maxRecoveryTimeoutMs,
+    b.baseRecoveryTimeoutMs * Math.pow(BACKOFF_MULTIPLIER, Math.max(0, b.consecutiveTrips - 1))
+  );
+  const jitter = base * JITTER_RATIO * (Math.random() * 2 - 1);
+  b.recoveryTimeoutMs = Math.max(b.baseRecoveryTimeoutMs, Math.round(base + jitter));
 }
 
 function detectCascade(triggerDest: string): void {
