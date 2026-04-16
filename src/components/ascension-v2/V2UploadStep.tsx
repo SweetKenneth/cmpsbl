@@ -151,27 +151,27 @@ export function V2UploadStep({ onComplete }: Props) {
 
   if (done) {
     return (
-      <div className="flex flex-col items-center gap-3 py-16 animate-in fade-in">
-        <CheckCircle2 className="w-12 h-12 text-primary" />
-        <p className="text-foreground font-medium">Code uploaded</p>
+      <div className="flex flex-col items-center gap-3 py-12 sm:py-16 animate-in fade-in">
+        <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+        <p className="text-foreground font-medium text-sm sm:text-base">Code uploaded</p>
         <p className="text-muted-foreground text-xs">Moving to analysis…</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="text-center">
-        <h2 className="text-lg font-semibold text-foreground">Upload Your Code</h2>
-        <p className="text-muted-foreground text-sm mt-1">Drop source files or paste code. 90+ languages supported.</p>
+        <h2 className="text-base sm:text-lg font-semibold text-foreground">Upload Your Code</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mt-1">Drop source files or paste code. 90+ languages supported.</p>
       </div>
 
       {/* Mode toggle */}
-      <div className="flex items-center justify-center gap-2">
+      <div className="flex items-center justify-center gap-1.5 sm:gap-2">
         <button
           onClick={() => setMode('upload')}
           className={cn(
-            'px-4 py-2 rounded-lg text-xs font-medium transition-all',
+            'px-3 sm:px-4 py-2 rounded-lg text-xs font-medium transition-all',
             mode === 'upload'
               ? 'bg-primary/10 text-primary border border-primary/20'
               : 'text-muted-foreground hover:text-foreground'
@@ -183,7 +183,7 @@ export function V2UploadStep({ onComplete }: Props) {
         <button
           onClick={() => setMode('paste')}
           className={cn(
-            'px-4 py-2 rounded-lg text-xs font-medium transition-all',
+            'px-3 sm:px-4 py-2 rounded-lg text-xs font-medium transition-all',
             mode === 'paste'
               ? 'bg-primary/10 text-primary border border-primary/20'
               : 'text-muted-foreground hover:text-foreground'
@@ -198,7 +198,7 @@ export function V2UploadStep({ onComplete }: Props) {
         <>
           <div
             className={cn(
-              'border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all',
+              'border-2 border-dashed rounded-xl p-6 sm:p-10 text-center cursor-pointer transition-all',
               dragOver ? 'border-primary bg-primary/5' :
               files.length > 0 ? 'border-primary/30 bg-primary/[0.03]' :
               'border-border/30 hover:border-border/50'
@@ -211,20 +211,20 @@ export function V2UploadStep({ onComplete }: Props) {
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
             {files.length > 0 ? (
               <div className="space-y-1">
-                <FileCode2 className="w-8 h-8 mx-auto text-primary" />
-                <p className="text-foreground font-medium text-sm">
+                <FileCode2 className="w-7 h-7 sm:w-8 sm:h-8 mx-auto text-primary" />
+                <p className="text-foreground font-medium text-xs sm:text-sm">
                   {files.length} file{files.length > 1 ? 's' : ''} selected
                 </p>
-                <p className="text-muted-foreground text-xs">
+                <p className="text-muted-foreground text-[10px] sm:text-xs break-all">
                   {files.map(f => f.name).slice(0, 3).join(', ')}
                   {files.length > 3 && ` +${files.length - 3} more`}
                 </p>
               </div>
             ) : (
               <div className="space-y-1">
-                <Upload className="w-8 h-8 mx-auto text-muted-foreground" />
-                <p className="text-foreground text-sm">Drag & drop files here, or click to browse</p>
-                <p className="text-muted-foreground text-xs">.ts, .py, .rs, .go, .sol, .vhdl, and 80+ more</p>
+                <Upload className="w-7 h-7 sm:w-8 sm:h-8 mx-auto text-muted-foreground" />
+                <p className="text-foreground text-xs sm:text-sm">Drag & drop files here, or click to browse</p>
+                <p className="text-muted-foreground text-[10px] sm:text-xs">.ts, .py, .rs, .go, .sol, .vhdl, and 80+ more</p>
               </div>
             )}
           </div>
@@ -234,14 +234,14 @@ export function V2UploadStep({ onComplete }: Props) {
           placeholder="Paste your source code here…"
           value={pastedCode}
           onChange={(e) => setPastedCode(e.target.value)}
-          className="min-h-[200px] font-mono text-xs resize-none rounded-xl"
+          className="min-h-[160px] sm:min-h-[200px] font-mono text-xs resize-none rounded-xl"
         />
       )}
 
       <Button
         onClick={handleSubmit}
         disabled={!hasInput || processing || !user}
-        className="w-full h-11 rounded-xl"
+        className="w-full h-10 sm:h-11 rounded-xl text-sm"
       >
         {processing ? (
           <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Analyzing…</>

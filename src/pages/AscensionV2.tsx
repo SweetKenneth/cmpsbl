@@ -129,22 +129,22 @@ export default function AscensionV2() {
       <PublicNav />
 
       <main className="flex-1">
-        <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
+        <div className="max-w-3xl mx-auto px-3 sm:px-4 py-8 sm:py-16">
           {/* Hero — only on upload step */}
           {step === 0 && (
-            <div className="text-center mb-10">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3">
+            <div className="text-center mb-8 sm:mb-10">
+              <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground mb-2 sm:mb-3">
                 Ascend Your Software
               </h1>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-lg mx-auto">
+              <p className="text-muted-foreground text-xs sm:text-base max-w-lg mx-auto">
                 Upload your code, optionally enhance with Mana-wrapped software,
                 and we'll discover capabilities against the 40-Primitive substrate.
               </p>
             </div>
           )}
 
-          {/* Stepper — 4 steps */}
-          <nav className="mb-8">
+          {/* Stepper — 4 steps, responsive */}
+          <nav className="mb-6 sm:mb-8">
             <div className="flex items-center justify-center gap-0">
               {STEPS.map((s, i) => {
                 const isActive = i === step;
@@ -153,17 +153,17 @@ export default function AscensionV2() {
 
                 return (
                   <div key={s.label} className="flex items-center">
-                    <div className="flex flex-col items-center gap-1">
+                    <div className="flex flex-col items-center gap-0.5 sm:gap-1">
                       <div className={cn(
-                        'w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300',
+                        'w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-300',
                         isComplete ? 'bg-primary text-primary-foreground' :
                         isActive ? 'bg-primary/10 text-primary border-2 border-primary' :
                         'bg-muted text-muted-foreground'
                       )}>
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </div>
                       <span className={cn(
-                        'text-[10px] font-medium',
+                        'text-[9px] sm:text-[10px] font-medium',
                         isActive || isComplete ? 'text-foreground' : 'text-muted-foreground'
                       )}>
                         {s.label}
@@ -171,7 +171,7 @@ export default function AscensionV2() {
                     </div>
 
                     {i < STEPS.length - 1 && (
-                      <div className="w-12 sm:w-20 mx-1 mt-[-12px]">
+                      <div className="w-8 sm:w-20 mx-0.5 sm:mx-1 mt-[-12px]">
                         <div className={cn(
                           'h-0.5 rounded-full transition-colors',
                           i < step ? 'bg-primary' : 'bg-border'
@@ -185,7 +185,7 @@ export default function AscensionV2() {
           </nav>
 
           {/* Step content */}
-          <div className="min-h-[400px]">
+          <div className="min-h-[300px] sm:min-h-[400px]">
             {phases[step]}
           </div>
 

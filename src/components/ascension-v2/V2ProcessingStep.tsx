@@ -269,19 +269,19 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
   if (analysisError) {
     return (
-      <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 text-center space-y-3">
-        <AlertCircle className="w-8 h-8 mx-auto text-destructive" />
-        <p className="text-foreground font-medium">Collision cycle failed</p>
-        <p className="text-sm text-muted-foreground">{analysisError}</p>
+      <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 sm:p-6 text-center space-y-3">
+        <AlertCircle className="w-7 h-7 sm:w-8 sm:h-8 mx-auto text-destructive" />
+        <p className="text-foreground font-medium text-sm sm:text-base">Collision cycle failed</p>
+        <p className="text-xs sm:text-sm text-muted-foreground break-words">{analysisError}</p>
       </div>
     );
   }
 
   if (done && dedupResult) {
     return (
-      <div className="flex flex-col items-center gap-3 py-16 animate-in fade-in">
-        <CheckCircle2 className="w-12 h-12 text-primary" />
-        <p className="text-foreground font-medium">Analysis Complete</p>
+      <div className="flex flex-col items-center gap-3 py-12 sm:py-16 animate-in fade-in">
+        <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
+        <p className="text-foreground font-medium text-sm sm:text-base">Analysis Complete</p>
         <p className="text-muted-foreground text-xs">
           {dedupResult.rawCount} discoveries → {dedupResult.capabilities.length} unique capabilities locked
         </p>
@@ -290,10 +290,10 @@ export function V2ProcessingStep({ onComplete }: Props) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-8">
       <div className="text-center">
-        <h2 className="text-lg font-semibold text-foreground">Analyzing Your Code</h2>
-        <p className="text-muted-foreground text-sm mt-1">
+        <h2 className="text-base sm:text-lg font-semibold text-foreground">Analyzing Your Code</h2>
+        <p className="text-muted-foreground text-xs sm:text-sm mt-1">
           Colliding against the 40-Primitive substrate
         </p>
       </div>
@@ -306,65 +306,65 @@ export function V2ProcessingStep({ onComplete }: Props) {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground flex items-center gap-1">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            {STATUS_MESSAGES[statusIdx]}
+        <div className="flex justify-between text-xs gap-2">
+          <span className="text-muted-foreground flex items-center gap-1 min-w-0 truncate">
+            <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" />
+            <span className="truncate">{STATUS_MESSAGES[statusIdx]}</span>
           </span>
-          <span className="text-foreground font-mono">{progress}%</span>
+          <span className="text-foreground font-mono flex-shrink-0">{progress}%</span>
         </div>
       </div>
 
       {/* Live stats */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-muted/30 rounded-xl p-4 text-center">
-          <Zap className="w-5 h-5 mx-auto mb-1 text-primary" />
-          <p className="text-2xl font-bold text-foreground">{discovered}</p>
-          <p className="text-xs text-muted-foreground">Raw Discoveries</p>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <div className="bg-muted/30 rounded-xl p-3 sm:p-4 text-center">
+          <Zap className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-primary" />
+          <p className="text-xl sm:text-2xl font-bold text-foreground">{discovered}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">Raw Discoveries</p>
         </div>
-        <div className="bg-muted/30 rounded-xl p-4 text-center">
+        <div className="bg-muted/30 rounded-xl p-3 sm:p-4 text-center">
           {dedupResult ? (
             <>
-              <Filter className="w-5 h-5 mx-auto mb-1 text-primary" />
-              <p className="text-2xl font-bold text-foreground">{dedupResult.capabilities.length}</p>
-              <p className="text-xs text-muted-foreground">Unique Locked</p>
+              <Filter className="w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 text-primary" />
+              <p className="text-xl sm:text-2xl font-bold text-foreground">{dedupResult.capabilities.length}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Unique Locked</p>
             </>
           ) : (
             <>
               <div className={cn(
-                'w-5 h-5 mx-auto mb-1 rounded-full',
+                'w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 rounded-full',
                 topScore >= 85 ? 'bg-amber-500' : topScore >= 60 ? 'bg-primary' : 'bg-muted-foreground'
               )} />
-              <p className="text-2xl font-bold text-foreground">{topScore > 0 ? topScore : '—'}</p>
-              <p className="text-xs text-muted-foreground">Top Score</p>
+              <p className="text-xl sm:text-2xl font-bold text-foreground">{topScore > 0 ? topScore : '—'}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">Top Score</p>
             </>
           )}
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="bg-muted/20 border border-border rounded-xl p-4 space-y-3">
-          <p className="text-xs font-medium text-foreground">Live Collision Batch</p>
-          <div className="flex flex-wrap gap-2">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+          <p className="text-[10px] sm:text-xs font-medium text-foreground">Live Collision Batch</p>
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {currentBatch.length > 0 ? currentBatch.map((primitive) => (
-              <span key={primitive} className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-mono text-primary">
+              <span key={primitive} className="rounded-full bg-primary/10 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono text-primary">
                 {primitive}
               </span>
             )) : (
-              <span className="text-xs text-muted-foreground">Preparing primitives…</span>
+              <span className="text-[10px] sm:text-xs text-muted-foreground">Preparing primitives…</span>
             )}
           </div>
         </div>
 
-        <div className="bg-muted/20 border border-border rounded-xl p-4 space-y-3">
-          <p className="text-xs font-medium text-foreground">Recent Discoveries</p>
-          <div className="space-y-1.5">
+        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+          <p className="text-[10px] sm:text-xs font-medium text-foreground">Recent Discoveries</p>
+          <div className="space-y-1 sm:space-y-1.5">
             {recentHits.length > 0 ? recentHits.map((hit) => (
-              <div key={hit} className="text-xs text-foreground truncate">
+              <div key={hit} className="text-[10px] sm:text-xs text-foreground truncate">
                 {hit}
               </div>
             )) : (
-              <span className="text-xs text-muted-foreground">Waiting for the first capability to surface…</span>
+              <span className="text-[10px] sm:text-xs text-muted-foreground">Waiting for the first capability to surface…</span>
             )}
           </div>
         </div>
