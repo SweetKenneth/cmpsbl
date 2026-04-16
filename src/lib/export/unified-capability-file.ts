@@ -2060,6 +2060,22 @@ for _module_name in CMPSBL_PACK_META["modules"]:
 
 
 
+class CmpsblExecutionError(Exception):
+    """
+    Raised by CmpsblCapability.execute when Layer 1 (your code) raises or
+    Layer 2 (the cognitive pipeline) reports failure. Wrappers (Circuit
+    Breaker, Retry, Self-Healing, BEACON) need a real exception to react —
+    silent success-dicts mask failures from the resilience stack. The full
+    envelope is preserved on \`.envelope\` so observers can still read
+    structured execution data.
+    """
+    def __init__(self, capability: str, reason: str, detail: str, envelope: dict):
+        super().__init__(f"[CMPSBL] {capability}: {reason} — {detail}")
+        self.capability = capability
+        self.reason = reason
+        self.envelope = envelope
+
+
 class CmpsblCapability:
     """Single capability executor with dual-layer architecture."""
 
@@ -2092,7 +2108,7 @@ ${executeOriginalBody}
         pipeline_input = original_result if isinstance(original_result, dict) else {"_original": original_result}
         pipeline = execute_pipeline(pipeline_input, self.meta.get("chain", []), self.meta)
 
-        return {
+        envelope = {
             "_original": original_result,
             "_enriched": pipeline["output"],
             "_pipeline": pipeline,
@@ -2109,6 +2125,16 @@ ${executeOriginalBody}
                 },
             },
         }
+
+        # Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+        # The envelope is preserved on the exception so observers can still read it.
+        if original_error is not None or pipeline.get("success") is False:
+            reason = "handler_failure" if original_error is not None else "pipeline_failure"
+            first_err = next((t for t in pipeline.get("trace", []) if t.get("status") == "error"), None)
+            detail = original_error if original_error is not None else (first_err.get("error") if first_err else "pipeline reported success=False")
+            raise CmpsblExecutionError(self.meta.get("name", "unknown"), reason, str(detail), envelope)
+
+        return envelope
 
     def validate(self) -> bool:
         chain = self.meta.get("chain", [])
