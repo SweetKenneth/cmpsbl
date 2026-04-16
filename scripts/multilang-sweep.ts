@@ -203,7 +203,7 @@ for (const lang of LANGS) {
 // ── Per-language summary ──
 console.log('━'.repeat(140));
 console.log('MULTI-LANG ASCENSION V2 SWEEP — TIER-A LANGUAGES');
-console.log('CMPSBL Hardening (7 always-on cores) — chad Kenneth Sweet ⚡');
+console.log('CMPSBL Hardening Layer (7 always-on cores)');
 console.log('━'.repeat(140));
 
 const byLang = new Map<string, Row[]>();
