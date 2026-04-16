@@ -29,11 +29,33 @@ import { EVOLUTION_LAYERS } from './layers/evolution';
 import { GOVERNANCE_LAYERS } from './layers/governance';
 import { COMPLIANCE_LAYERS } from './layers/compliance';
 import { CIRCUIT_BREAKER_CORE } from './layers/_circuit-breaker-core';
+import { TIMEOUT_CORE } from './layers/_timeout-core';
+import { RETRY_CORE } from './layers/_retry-core';
+import { ENVELOPE_CORE } from './layers/_envelope-core';
+import { TRACE_CORE } from './layers/_trace-core';
+import { DEGRADATION_CORE } from './layers/_degradation-core';
+import { BEACON_CORE } from './layers/_beacon-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
-// Circuit Breaker is inlined into every export. Not user-selectable.
+// Standard hardening primitives auto-inlined into every Layer 2 export.
+// Not user-selectable, not removable. Order = wrapper composition order
+// (innermost wraps cmpsbl_execute first; BEACON is the outermost observer).
+//
+//   Circuit Breaker  → cascade prevention      (innermost)
+//   Timeout Guard    → deadline enforcement
+//   Retry            → transient recovery
+//   Envelope         → typed result contract
+//   Trace ID         → correlation propagation
+//   Degradation      → fallback envelope
+//   BEACON           → structured signal       (outermost)
 export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
   CIRCUIT_BREAKER_CORE,
+  TIMEOUT_CORE,
+  RETRY_CORE,
+  ENVELOPE_CORE,
+  TRACE_CORE,
+  DEGRADATION_CORE,
+  BEACON_CORE,
 ]);
 
 // ── Selectable Layer Catalog ────────────────────────────────────────────────
