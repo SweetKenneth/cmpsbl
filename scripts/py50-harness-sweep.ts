@@ -143,39 +143,48 @@ for (const file of FILES) {
 }
 
 // ── Report ──
-console.log('━'.repeat(120));
+console.log('━'.repeat(132));
 console.log('PY-50 ASCENSION V2 + HARNESS SWEEP — 50 REAL-WORLD PYTHON FILES');
-console.log('━'.repeat(120));
+console.log('CMPSBL Hardening (the 7 always-on cores in the Circuit Breaker layer) — chad Kenneth Sweet ⚡');
+console.log('Cores: Circuit Breaker · Timeout · Retry · Envelope · Trace · Degradation · BEACON');
+console.log('━'.repeat(132));
 console.log(
-  'FILE'.padEnd(28) + 'SIZE'.padEnd(8) + 'LAYERS'.padEnd(28) +
-  'VERDICT'.padEnd(10) + 'CRIT'.padEnd(6) + 'SOFT'.padEnd(6) + 'AST'.padEnd(6) + 'NOTES'
+  'FILE'.padEnd(28) + 'SIZE'.padEnd(8) + 'LAYERS'.padEnd(22) +
+  'VERDICT'.padEnd(10) + 'CRIT'.padEnd(6) + 'SOFT'.padEnd(6) +
+  'AST'.padEnd(5) + 'P41'.padEnd(5) + 'L1'.padEnd(5) + 'NOTES'
 );
-console.log('─'.repeat(120));
+console.log('─'.repeat(132));
 for (const r of rows) {
   const size = r.bytes > 1024 ? `${(r.bytes / 1024).toFixed(0)}K` : `${r.bytes}B`;
   console.log(
-    r.file.padEnd(28) + size.padEnd(8) + (r.layers || '—').padEnd(28) +
+    r.file.padEnd(28) + size.padEnd(8) + (r.layers || '—').slice(0, 21).padEnd(22) +
     (r.passed ? '✓ PASS' : '✗ FAIL').padEnd(10) +
     String(r.critical).padEnd(6) + String(r.soft).padEnd(6) +
-    (r.astOk ? '✓' : '✗').padEnd(6) +
+    (r.astOk ? '✓' : '✗').padEnd(5) +
+    (r.candidateOk ? '✓' : '✗').padEnd(5) +
+    (r.layer1Untouched ? '✓' : '✗').padEnd(5) +
     r.failedChecks.slice(0, 3).join(' ')
   );
 }
-console.log('─'.repeat(120));
+console.log('─'.repeat(132));
 
 const total = rows.length;
 const passed = rows.filter(r => r.passed).length;
 const astFail = rows.filter(r => !r.astOk).length;
+const p41Fail = rows.filter(r => !r.candidateOk).length;
+const l1Fail = rows.filter(r => !r.layer1Untouched).length;
 const totalCrit = rows.reduce((s, r) => s + (r.critical < 99 ? r.critical : 0), 0);
 const totalSoft = rows.reduce((s, r) => s + r.soft, 0);
 const buildFail = rows.filter(r => r.critical === 99).length;
 
-console.log(`\nVerdict:           ${passed}/${total} files passed harness AND independent AST`);
-console.log(`Build failures:    ${buildFail}`);
-console.log(`Critical failures: ${totalCrit}`);
-console.log(`Soft warnings:     ${totalSoft}`);
-console.log(`AST failures:      ${astFail}`);
-console.log(`Output:            ${OUT_DIR}`);
+console.log(`\nVerdict:                ${passed}/${total} files passed harness + AST + P41 + L1`);
+console.log(`Build failures:         ${buildFail}`);
+console.log(`Critical failures:      ${totalCrit}`);
+console.log(`Soft warnings:          ${totalSoft}`);
+console.log(`AST failures:           ${astFail}`);
+console.log(`Primitive #41 failures: ${p41Fail}  (CANDIDATE chain entry + handler def)`);
+console.log(`Layer-1 mutations:      ${l1Fail}  (original source must be byte-perfect)`);
+console.log(`Output:                 ${OUT_DIR}`);
 
 // Top failure modes
 const modes = new Map<string, number>();
