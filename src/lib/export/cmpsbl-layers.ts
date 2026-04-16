@@ -21,6 +21,13 @@ import type { CmpsblLayerDefinition } from './layers/types';
 
 import { RESILIENCE_LAYERS } from './layers/resilience';
 import { FORESIGHT_LAYERS } from './layers/foresight';
+import { SECURITY_LAYERS } from './layers/security';
+import { INTELLIGENCE_LAYERS } from './layers/intelligence';
+import { PERFORMANCE_LAYERS } from './layers/performance';
+import { ORCHESTRATION_LAYERS } from './layers/orchestration';
+import { EVOLUTION_LAYERS } from './layers/evolution';
+import { GOVERNANCE_LAYERS } from './layers/governance';
+import { COMPLIANCE_LAYERS } from './layers/compliance';
 import { CIRCUIT_BREAKER_CORE } from './layers/_circuit-breaker-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
