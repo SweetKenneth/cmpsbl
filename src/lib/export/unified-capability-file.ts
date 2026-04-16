@@ -1172,6 +1172,34 @@ ${capEntries.join(',\n')},
 ]);`;
 }
 
+/** Build the PHP body for executeOriginal() — auto-wires class instantiation */
+function phpExecuteOriginalBody(phpFiles: { name: string }[]): string {
+  if (phpFiles.length === 0) {
+    return `        // No original PHP files — passthrough
+        return \\$input;`;
+  }
+  const firstName = phpFiles[0].name.replace(/\.php$/i, '');
+  return `        // Auto-wired to: ${phpFiles.map(f => f.name).join(', ')}
+        if (class_exists('${firstName}')) {
+            \\$instance = new \\\\${firstName}();
+            \\$methods = ['execute', 'run', 'handle', 'process', 'main', '__invoke'];
+            foreach (\\$methods as \\$method) {
+                if (method_exists(\\$instance, \\$method)) {
+                    return \\$instance->\\$method(\\$input);
+                }
+            }
+        }
+        // No class entry point found — try top-level functions
+        \\$functions = ['execute', 'run', 'handle', 'process', 'main'];
+        foreach (\\$functions as \\$fn) {
+            if (function_exists(\\$fn)) {
+                return \\$fn(\\$input);
+            }
+        }
+        // Honest passthrough — no callable entry point found
+        return \\$input;`;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // PHP Generator
 // ═══════════════════════════════════════════════════════════════════════════════
