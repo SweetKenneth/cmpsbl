@@ -320,12 +320,8 @@ function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: Sou
  *    $native = $cap->executeNative(['key' => 'value']);
  */
 
-// Runtime is BUILT INTO the single-file distribution (cmpsbl.php).
-// Use: require_once __DIR__ . '/../cmpsbl.php';
-require_once __DIR__ . '/../cmpsbl.php';
-
-// ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
-${requireLines}
+// ═══ Layer 1 — Original Source (embedded inline) ═══
+${inlineSourceBlock}
 
 class CMPSBLCapability
 {
