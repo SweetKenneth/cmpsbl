@@ -18,6 +18,7 @@ import {
   getNodeOrdering,
   retry,
   deduplicateCapabilities,
+  getSnapshot,
   type DiscoveredCapability,
   type DedupResult,
   // Phase A — V1 Bridge (gaps 1-6)
