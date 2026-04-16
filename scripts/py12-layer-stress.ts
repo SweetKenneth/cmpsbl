@@ -6,6 +6,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { execSync } from 'node:child_process';
 import { generateRefurbishedCode } from '@/lib/factory/generate-refurbished-code';
 import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
 import {
