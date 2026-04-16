@@ -426,12 +426,30 @@ export function V2ProcessingStep({ onComplete }: Props) {
     setProgress(72);
     setStatusIdx(5);
 
-    // ── Gap #7: dry-run merge simulation across all collisions ──
+    // ── Gap #7: dry-run merge simulation with iterative selection growth ──
+    // V1 logic depends on `selectedPrimitives` to score synergy. We grow the
+    // selection greedily by descending CJPI so each subsequent simulation
+    // sees the primitives that would already be in the merged build.
     const selection = new Set<string>([candidateNode.toUpperCase()]);
-    const mergeReport = simulateMergeBatch(compatReports, selection);
-    const verdictByPrimitive = new Map(
-      mergeReport.simulations.map((s) => [s.primitive, s] as const),
+    const orderedReports = [...compatReports].sort(
+      (a, b) => b.axes.composite - a.axes.composite,
     );
+    const verdictByPrimitive = new Map<string, { verdict: 'beneficial' | 'neutral' | 'risky'; netImprovement: number }>();
+    let beneficial = 0, neutral = 0, risky = 0, sumNet = 0;
+    for (const report of orderedReports) {
+      const sim = simulateMergeBatch([report], selection);
+      const s = sim.simulations[0];
+      if (!s) continue;
+      verdictByPrimitive.set(s.primitive, { verdict: s.verdict, netImprovement: s.netImprovement });
+      if (s.verdict === 'beneficial') { beneficial++; selection.add(s.primitive); }
+      else if (s.verdict === 'neutral') neutral++;
+      else risky++;
+      sumNet += s.netImprovement;
+    }
+    const avgNet = orderedReports.length === 0
+      ? 0
+      : Math.round((sumNet / orderedReports.length) * 1000) / 1000;
+    const mergeReport = { beneficial, neutral, risky, avgNetImprovement: avgNet };
     appendAudit(
       'merge_simulation',
       `beneficial=${mergeReport.beneficial} neutral=${mergeReport.neutral} risky=${mergeReport.risky} avgΔ=${mergeReport.avgNetImprovement}`,
@@ -461,31 +479,34 @@ export function V2ProcessingStep({ onComplete }: Props) {
     beginLocking();
 
     try {
-      // Persist deduped capabilities as ascended
-      for (const cap of dedup.capabilities) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await (supabase as any).from('artifact_registry').insert({
-          user_id: user.id,
-          name: cap.name,
-          slug: `v2-ascended-${cap.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`,
-          tier: cap.tier,
-          category: 'proprietary-ascended-v2',
-          description: cap.description || '',
-          metadata: {
-            cjpi_score: cap.cjpiScore,
-            chain: [...cap.chain],
-            chain_depth: cap.chainDepth,
-            pipeline_version: 'v2',
-            band: cap.band ?? null,
-            merge_verdict: cap.mergeVerdict ?? null,
-            merge_net_improvement: cap.mergeNetImprovement ?? null,
-            compatibility_composite: cap.compatibilityComposite ?? null,
-            dedup_raw_count: dedup.rawCount,
-            dedup_group_count: dedup.groupCount,
-            persisted_at: new Date().toISOString(),
-          },
-        });
-      }
+      if (abortRef.current) return;
+      // Persist deduped capabilities in a single batched insert (1 round-trip).
+      const slugSeed = Date.now().toString(36);
+      const rows = dedup.capabilities.map((cap, idx) => ({
+        user_id: user.id,
+        name: cap.name,
+        slug: `v2-ascended-${cap.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${slugSeed}-${idx}`,
+        tier: cap.tier,
+        category: 'proprietary-ascended-v2',
+        description: cap.description || '',
+        metadata: {
+          cjpi_score: cap.cjpiScore,
+          chain: [...cap.chain],
+          chain_depth: cap.chainDepth,
+          pipeline_version: 'v2',
+          band: cap.band ?? null,
+          merge_verdict: cap.mergeVerdict ?? null,
+          merge_net_improvement: cap.mergeNetImprovement ?? null,
+          compatibility_composite: cap.compatibilityComposite ?? null,
+          closed_gaps: cap.closedGaps ?? [],
+          unlocked_synergies: cap.unlockedSynergies ?? [],
+          dedup_raw_count: dedup.rawCount,
+          dedup_group_count: dedup.groupCount,
+          persisted_at: new Date().toISOString(),
+        },
+      }));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any).from('artifact_registry').insert(rows);
 
       await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
