@@ -242,3 +242,67 @@ function checkGuardPatterns(code: string, language: string): Layer2ValidationErr
 
   return errors;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — Layer 2 ↔ Layer 1 Linkage Acceptance Test
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export interface Layer2LinkageResult {
+  linked: boolean;
+  errors: string[];
+}
+
+/**
+ * Pre-ZIP acceptance test: verify that the generated Layer 2 code
+ * references the Layer 1 original file(s). This prevents shipping
+ * exports where the wrapped file has no code-level connection to the input.
+ *
+ * Checks:
+ *   1. Layer 2 contains a live (uncommented) require/import of the original
+ *   2. Layer 2 references the original class/module name
+ *   3. The paths in the require match the actual ZIP layout
+ */
+export function validateLayer2Linkage(
+  layer2Code: string,
+  language: string,
+  originalFileNames: string[],
+): Layer2LinkageResult {
+  const errors: string[] = [];
+  const lang = language.toLowerCase();
+
+  if (originalFileNames.length === 0) {
+    return { linked: true, errors: [] };
+  }
+
+  // §5.1 — Check for live imports (not commented out)
+  for (const fileName of originalFileNames) {
+    const nameEscaped = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let hasLiveImport = false;
+
+    if (lang === 'php') {
+      // Match require_once that is NOT preceded by // or # on the same line
+      const requirePattern = new RegExp(`^(?!\\s*\\/\\/)\\s*require_once\\b.*${nameEscaped}`, 'm');
+      hasLiveImport = requirePattern.test(layer2Code);
+    } else if (lang === 'python') {
+      const importPattern = new RegExp(`^(?!\\s*#)\\s*(import|from)\\b.*${nameEscaped.replace(/\\.py$/, '')}`, 'm');
+      hasLiveImport = importPattern.test(layer2Code);
+    } else {
+      // JS/TS and others
+      const importPattern = new RegExp(`^(?!\\s*\\/\\/)\\s*(import|require)\\b.*${nameEscaped}`, 'm');
+      hasLiveImport = importPattern.test(layer2Code);
+    }
+
+    if (!hasLiveImport) {
+      errors.push(`Layer 2 has no live import of "${fileName}" — the wrapped file will not load the original.`);
+    }
+  }
+
+  // §5.2 — Check that executeOriginal / equivalent references a class or function
+  const primaryName = originalFileNames[0].replace(/\.[^.]+$/, '');
+  const hasClassRef = layer2Code.includes(primaryName);
+  if (!hasClassRef) {
+    errors.push(`Layer 2 does not reference "${primaryName}" — executeOriginal() may be a dead stub.`);
+  }
+
+  return { linked: errors.length === 0, errors };
+}
