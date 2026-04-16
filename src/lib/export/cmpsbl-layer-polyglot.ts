@@ -56,7 +56,7 @@ function registerNative(layerId: string, lang: string, gen: NativeGen): void {
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
 registerNative('circuit-breaker', 'rust', () => [
-  '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '// CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '// Three-state FSM: closed -> open -> half-open with exponential backoff.',
   '// Note: HashMap and SystemTime/UNIX_EPOCH imports are provided by the file header.',
   '',
@@ -140,7 +140,7 @@ registerNative('circuit-breaker', 'rust', () => [
 ].join('\n'));
 
 registerNative('circuit-breaker', 'go', () => [
-  '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '// CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '// Three-state FSM: closed -> open -> half-open with exponential backoff.',
   '',
   'type CmpsblCircuitState int',
@@ -238,7 +238,7 @@ registerNative('circuit-breaker', 'go', () => [
 ].join('\n'));
 
 registerNative('circuit-breaker', 'java', () => [
-  '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '// CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '',
   'enum CmpsblCircuitState { CLOSED, OPEN, HALF_OPEN }',
   '',
@@ -301,7 +301,7 @@ registerNative('circuit-breaker', 'java', () => [
 ].join('\n'));
 
 registerNative('circuit-breaker', 'csharp', () => [
-  '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '// CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '',
   'public enum CmpsblCircuitState { Closed, Open, HalfOpen }',
   '',
@@ -362,7 +362,7 @@ registerNative('circuit-breaker', 'csharp', () => [
 ].join('\n'));
 
 registerNative('circuit-breaker', 'ruby', () => [
-  '# CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '# CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '',
   'class CmpsblCircuitBreaker',
   '  attr_reader :name, :state',
@@ -425,7 +425,7 @@ registerNative('circuit-breaker', 'ruby', () => [
 ].join('\n'));
 
 registerNative('circuit-breaker', 'swift', () => [
-  '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '// CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '',
   'enum CmpsblCircuitState { case closed, open, halfOpen }',
   '',
@@ -481,7 +481,7 @@ registerNative('circuit-breaker', 'swift', () => [
 ].join('\n'));
 
 registerNative('circuit-breaker', 'kotlin', () => [
-  '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
+  '// CMPSBL® Ascension Layer™ — Circuit Breaker (Layer #11)',
   '',
   'enum class CmpsblCircuitState { CLOSED, OPEN, HALF_OPEN }',
   '',
@@ -596,7 +596,7 @@ function generateStructuralFallback(layer: CmpsblLayerDefinition, lang: string, 
   const api = extractAPIFromTS(layer.tsCode);
   const lines: string[] = [];
 
-  lines.push(`${lc} CMPSBL Layer — ${layer.name} (Crown Jewel #${layer.crownJewelRank})`);
+  lines.push(`${lc} CMPSBL® Ascension Layer™ — ${layer.name} (Layer #${layer.crownJewelRank})`);
   lines.push(`${lc} Module: ${layer.module} | CJPI: ${layer.cjpi}`);
   lines.push(`${lc} ${layer.description}`);
   lines.push(`${lc} Language: ${lang}`);
@@ -628,7 +628,7 @@ function generateStructuralFallback(layer: CmpsblLayerDefinition, lang: string, 
  */
 function generateHDLBridge(layer: CmpsblLayerDefinition, lang: string, lc: string): string {
   return [
-    `${lc} CMPSBL Layer — ${layer.name} (Crown Jewel #${layer.crownJewelRank})`,
+    `${lc} CMPSBL® Ascension Layer™ — ${layer.name} (Layer #${layer.crownJewelRank})`,
     `${lc} HDL NOTE: ${layer.name} is a software-domain pattern.`,
     `${lc} For hardware targets, this layer provides an equivalent`,
     `${lc} FSM/watchdog in the host testbench or cocotb wrapper.`,
