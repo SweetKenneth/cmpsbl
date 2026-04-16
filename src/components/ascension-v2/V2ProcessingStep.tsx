@@ -22,17 +22,10 @@ import {
   type DedupResult,
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
+import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 
-// 40 substrate primitives
-const SUBSTRATE_NODES = [
-  'DEFENSE','GOVERNANCE','CONSCIENCE','COMPASS','AUDIT','BEACON',
-  'BRAIN','MEMORY','CORTEX','ORACLE','INTENT','LINGUA',
-  'IDENTITY','TRUST','VERITAS','RAMPART','SIEVE','GAUNTLET',
-  'BASTION','WATCHTOWER','ATLAS','RELAY','FAILSAFE','DREAM',
-  'NERVE','REFLEX','EVOLUTION','VISION','ARCHITECT','MONOLITH',
-  'OBSIDIAN','WRAITH','RAPTOR','PRIMITIVE','AUTOMATON','SENTINEL',
-  'PHANTOM','CIPHER','NEXUS','FORGE',
-];
+// Canonical 40-Primitive Matrix (12 Organs · 12 Layers · 8 Engines · 8 Agents)
+const SUBSTRATE_NODES = CANONICAL_PRIMITIVES;
 
 const STATUS_MESSAGES = [
   'Initializing substrate collision…',

@@ -21,6 +21,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { analyzeUploadedFiles } from '@/components/proprietary-evolution/ingest-utils';
 import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan } from '@/lib/mana';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 
 interface Props {
   onComplete: (enhanced: boolean, selectedLayerIds?: string[]) => void;
@@ -71,15 +72,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
 
       const combinedSource = analysis.ingestedFiles.map(f => f.content).join('\n');
       const boundaries = detectFunctionBoundaries(combinedSource);
-      const activePrimitives = new Set([
-        'DEFENSE','GOVERNANCE','CONSCIENCE','COMPASS','AUDIT','BEACON',
-        'BRAIN','MEMORY','CORTEX','ORACLE','INTENT','LINGUA',
-        'IDENTITY','TRUST','VERITAS','RAMPART','SIEVE','GAUNTLET',
-        'BASTION','WATCHTOWER','ATLAS','RELAY','FAILSAFE','DREAM',
-        'NERVE','REFLEX','EVOLUTION','VISION','ARCHITECT','MONOLITH',
-        'OBSIDIAN','WRAITH','RAPTOR','PRIMITIVE','AUTOMATON','SENTINEL',
-        'PHANTOM','CIPHER','NEXUS','FORGE',
-      ]);
+      const activePrimitives = new Set<string>(CANONICAL_PRIMITIVES);
       const plan = buildAttachmentPlan(boundaries, activePrimitives);
       const serializedPlan = serializeAttachmentPlan(plan);
 
