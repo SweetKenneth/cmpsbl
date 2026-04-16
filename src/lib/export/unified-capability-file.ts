@@ -197,7 +197,7 @@ ${tsEntryPointCode}
     meta,
   );
 
-  return {
+  const envelope: ExecutionResult = {
     _original: originalResult,
     _enriched: pipeline.output,
     _pipeline: pipeline,
@@ -210,6 +210,17 @@ ${tsEntryPointCode}
       },
     },
   };
+
+  // Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+  // The envelope is preserved on the error so observers can still read it.
+  if (originalError !== null || pipeline.success === false) {
+    const _reason = originalError !== null ? 'handler_failure' : 'pipeline_failure';
+    const _firstErr = (pipeline as { _errors?: Array<{ error?: string }> })._errors;
+    const _detail = originalError ?? ((_firstErr && _firstErr[0] && _firstErr[0].error) || 'pipeline reported success=false');
+    throw new CmpsblExecutionError(meta.name, _reason, String(_detail), envelope);
+  }
+
+  return envelope;
 }`).join('\n');
   return `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Silent Symbiosis — Software Ascended
