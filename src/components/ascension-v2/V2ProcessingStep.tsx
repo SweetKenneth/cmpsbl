@@ -154,7 +154,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
         );
         // ── Gap #4: ingest audit (upload event per file) ──
         for (const fp of integrity.fingerprints) {
-          logV2Upload(fp.filename, fp.byteLength, extractable[0].language, user.id, getSnapshotRunId());
+          logV2Upload(fp.filename, fp.byteLength, extractable[0].language, user.id, runId);
         }
       }
 
@@ -200,7 +200,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
           qg.rejectedNames.length,
           phase0Ms,
           user.id,
-          getSnapshotRunId(),
+          runId,
         );
         logV2QualityGate(
           candidateNode,
@@ -208,7 +208,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
           qg.acceptedNames.length,
           qg.rejectedNames.length,
           user.id,
-          getSnapshotRunId(),
+          runId,
         );
         appendAudit(
           'quality_gate',
