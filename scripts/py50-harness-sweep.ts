@@ -85,8 +85,9 @@ for (const file of FILES) {
   if (buildErr) {
     rows.push({
       file, bytes: src.length,
-      layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'none',
+      layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'cores-only',
       passed: false, critical: 99, soft: 0, astOk: false,
+      candidateOk: false, layer1Untouched: false,
       failedChecks: [`BUILD: ${buildErr}`],
     });
     continue;
@@ -112,19 +113,31 @@ for (const file of FILES) {
     astErr = String(e?.stderr || e?.message || e).split('\n').filter(Boolean).slice(-1)[0]?.slice(0, 120) || 'parse error';
   }
 
+  // Primitive #41 (CANDIDATE) wiring check — chain entry + handler def present
+  const candidateOk =
+    /['"]CANDIDATE['"]/.test(ascendedCode) &&
+    /def\s+handle_candidate\s*\(/.test(ascendedCode);
+
+  // Layer-1 byte-perfect: original source must appear verbatim
+  const layer1Untouched = ascendedCode.includes(src.replace(/\r\n/g, '\n'));
+
   const failedChecks = report.checks
     .filter(c => !c.passed)
     .map(c => `${c.severity[0].toUpperCase()}:${c.id}`);
   if (!astOk) failedChecks.push(`AST:${astErr}`);
+  if (!candidateOk) failedChecks.push('P41:not-wired');
+  if (!layer1Untouched) failedChecks.push('L1:mutated');
 
   rows.push({
     file,
     bytes: src.length,
-    layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+'),
-    passed: report.passed && astOk,
+    layers: selectedLayers.map(l => l.name.split(' ')[0]).join('+') || 'cores-only',
+    passed: report.passed && astOk && candidateOk && layer1Untouched,
     critical: report.criticalFailures,
     soft: report.softWarnings,
     astOk,
+    candidateOk,
+    layer1Untouched,
     failedChecks,
   });
 }
