@@ -154,13 +154,28 @@ ${embeddedSources}
       targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
     }
     for (const cls of substantiveClasses.slice(0, 3)) {
+      // Class branch: only `new ${cls}()` errors (signature mismatch) are
+      // caught — once we successfully construct and locate a method, its
+      // invocation errors propagate so wrappers (Circuit Breaker, Retry,
+      // Self-Healing) can react.
       targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
-      try {
-        const inst = new ${cls}();
+      let inst: unknown;
+      try { inst = new ${cls}(); }
+      catch(_ctorErr) { /* ctor signature mismatch — skip to next target */ inst = null; }
+      if (inst) {
         const methods = ['execute','run','handle','process','main'];
-        for (const m of methods) { if (typeof (inst as any)[m] === 'function') { originalResult = (inst as any)[m](input); originalExecuted = true; break; } }
-        if (!originalExecuted) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
-      } catch(e) { originalResult = { _class: '${cls}', _available: true }; originalExecuted = true; }
+        let invoked = false;
+        for (const m of methods) {
+          if (typeof (inst as Record<string, unknown>)[m] === 'function') {
+            // Invocation errors propagate unchanged.
+            originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
+            originalExecuted = true;
+            invoked = true;
+            break;
+          }
+        }
+        if (!invoked) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
+      }
     }`);
     }
     if (targets.length > 0) {
