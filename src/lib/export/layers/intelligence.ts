@@ -93,10 +93,10 @@ const FLEET_INTEL_WIRE_TS = `
 const _cmpsbl_raw_execute_fi = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_fleet(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const provider = cmpsbl_pick_provider();
-  // Provider selection is informational — exec proceeds either way
-  if (provider) (input as Record<string, unknown>)._cmpsbl_provider = provider.id;
+  // Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+  const _ctx = provider ? { ...input, _cmpsbl_provider: provider.id } : input;
   try {
-    const result = _cmpsbl_raw_execute_fi(capabilityName, input);
+    const result = _cmpsbl_raw_execute_fi(capabilityName, _ctx);
     if (provider) cmpsbl_record_provider_call(provider.id, true);
     return result;
   } catch (err) {
@@ -110,9 +110,10 @@ _cmpsbl_raw_execute_fi = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     """Execute with fleet provider selection (auto-wired)."""
     provider = cmpsbl_pick_provider()
-    if provider: input_data['_cmpsbl_provider'] = provider.id
+    # Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+    _ctx = {**input_data, '_cmpsbl_provider': provider.id} if provider else input_data
     try:
-        result = _cmpsbl_raw_execute_fi(capability_name, input_data)
+        result = _cmpsbl_raw_execute_fi(capability_name, _ctx)
         if provider: cmpsbl_record_provider_call(provider.id, True)
         return result
     except Exception as e:
@@ -365,8 +366,9 @@ cmpsbl_execute = function cmpsbl_execute_costaware(capabilityName: string, input
   if (!verdict.allowed) {
     throw new Error(\`[CMPSBL:AICost:\${capabilityName}] Daily budget exhausted — remaining=\${verdict.remainingCents}c, requested=\${plan.estCents}c\`);
   }
-  if (verdict.degradeMode) (input as Record<string, unknown>)._cmpsbl_quality_hint = 'fast';
-  const result = _cmpsbl_raw_execute_ac(capabilityName, input);
+  // Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+  const _ctx = verdict.degradeMode ? { ...input, _cmpsbl_quality_hint: 'fast' } : input;
+  const result = _cmpsbl_raw_execute_ac(capabilityName, _ctx);
   cmpsbl_record_spend(plan.estCents);
   return result;
 };`;
@@ -381,8 +383,9 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     verdict = cmpsbl_can_spend(plan['est_cents'])
     if not verdict['allowed']:
         raise RuntimeError(f"[CMPSBL:AICost:{capability_name}] Daily budget exhausted — remaining={verdict['remaining_cents']}c, requested={plan['est_cents']}c")
-    if verdict['degrade_mode']: input_data['_cmpsbl_quality_hint'] = 'fast'
-    result = _cmpsbl_raw_execute_ac(capability_name, input_data)
+    # Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+    _ctx = {**input_data, '_cmpsbl_quality_hint': 'fast'} if verdict['degrade_mode'] else input_data
+    result = _cmpsbl_raw_execute_ac(capability_name, _ctx)
     cmpsbl_record_spend(plan['est_cents'])
     return result`;
 
