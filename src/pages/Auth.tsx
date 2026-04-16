@@ -168,8 +168,33 @@ export default function Auth() {
     }
   };
 
+  const handleAppleSignIn = async () => {
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("apple", {
+        redirect_uri: window.location.origin,
+      });
 
-  const SETUP_STEPS = [
+      if (result.error) {
+        toast.error('Apple sign-in failed');
+        return;
+      }
+
+      if (result.redirected) {
+        return;
+      }
+
+      const storedRedirect = sessionStorage.getItem('cmpsbl_auth_redirect');
+      const urlParams = new URLSearchParams(window.location.search);
+      navigate(storedRedirect || urlParams.get('redirect') || '/os');
+    } catch {
+      toast.error('Apple sign-in failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
     { num: '1', text: 'Enter your email and click "Send Link"' },
     { num: '2', text: 'Open the link in your email to sign in' },
     { num: '3', text: 'You\'ll be prompted to set up Face ID — tap "Set Up Face ID"' },
