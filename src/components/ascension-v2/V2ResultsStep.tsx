@@ -265,12 +265,18 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       });
       folder.file('manifest.json', manifest);
 
+      // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
+      folder.file('HARNESS-REPORT.txt', harness.summary);
+
       const blob = await zip.generateAsync({ type: 'blob' });
       saveAs(blob, `${zipName}.zip`);
 
+      const verdictNote = harness.softWarnings > 0
+        ? ` · ${harness.softWarnings} soft warning${harness.softWarnings === 1 ? '' : 's'}`
+        : '';
       toast({
         title: 'Export complete',
-        description: `${zipName}.zip — ${capabilities.length} capabilities, full docs included.`,
+        description: `${zipName}.zip — ${capabilities.length} capabilities${verdictNote}, harness report bundled.`,
       });
 
       // Keep ceremony visible briefly after download starts
