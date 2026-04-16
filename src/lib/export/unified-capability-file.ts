@@ -679,7 +679,7 @@ function executePipeline(
 // ║  Public Interface · Execute · Validate · Metadata                             ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-${importBlock}
+${layer1TsBlock}
 
 // ─── Pack Metadata ───────────────────────────────────────────────────────────
 
