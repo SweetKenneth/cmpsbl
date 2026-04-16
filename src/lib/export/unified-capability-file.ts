@@ -2554,6 +2554,27 @@ function cmpsbl_execute_pipeline(array $input, array $chain, array $meta): array
 
 ${generatePhpPackMeta(capabilities, allModules, packName)}
 
+/**
+ * Thrown by CMPSBLCapability::execute when Layer 1 (your code) raises or
+ * Layer 2 (the cognitive pipeline) reports failure. Wrappers (Circuit Breaker,
+ * Retry, Self-Healing, BEACON) need a real exception to react — silent
+ * success-arrays mask failures from the resilience stack. The full envelope
+ * is preserved on \`->envelope\` so observers can still read structured data.
+ */
+class CmpsblExecutionError extends \\RuntimeException
+{
+    public string $capability;
+    public string $reason;
+    public array $envelope;
+    public function __construct(string $capability, string $reason, string $detail, array $envelope)
+    {
+        parent::__construct("[CMPSBL] {$capability}: {$reason} — {$detail}");
+        $this->capability = $capability;
+        $this->reason = $reason;
+        $this->envelope = $envelope;
+    }
+}
+
 class CMPSBLCapability
 {
     private array $meta;
@@ -2593,7 +2614,7 @@ ${phpExecuteOriginalBody(phpFiles)}
         $pipelineInput = is_array($originalResult) ? $originalResult : ['_original' => $originalResult];
         $pipeline = cmpsbl_execute_pipeline($pipelineInput, $this->meta['chain'] ?? [], $this->meta);
 
-        return [
+        $envelope = [
             '_original' => $originalResult,
             '_enriched' => $pipeline['output'],
             '_pipeline' => $pipeline,
@@ -2610,6 +2631,20 @@ ${phpExecuteOriginalBody(phpFiles)}
                 ],
             ],
         ];
+
+        // Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+        $pipelineSuccess = $pipeline['success'] ?? true;
+        if ($originalError !== null || $pipelineSuccess === false) {
+            $reason = $originalError !== null ? 'handler_failure' : 'pipeline_failure';
+            $firstErr = null;
+            foreach (($pipeline['trace'] ?? []) as $t) {
+                if (($t['status'] ?? null) === 'error') { $firstErr = $t; break; }
+            }
+            $detail = $originalError ?? ($firstErr['error'] ?? 'pipeline reported success=false');
+            throw new CmpsblExecutionError($this->meta['name'] ?? 'unknown', $reason, (string)$detail, $envelope);
+        }
+
+        return $envelope;
     }
 
     public function validate(): bool
