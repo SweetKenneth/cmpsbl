@@ -154,13 +154,28 @@ ${embeddedSources}
       targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
     }
     for (const cls of substantiveClasses.slice(0, 3)) {
+      // Class branch: only `new ${cls}()` errors (signature mismatch) are
+      // caught — once we successfully construct and locate a method, its
+      // invocation errors propagate so wrappers (Circuit Breaker, Retry,
+      // Self-Healing) can react.
       targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
-      try {
-        const inst = new ${cls}();
+      let inst: unknown;
+      try { inst = new ${cls}(); }
+      catch(_ctorErr) { /* ctor signature mismatch — skip to next target */ inst = null; }
+      if (inst) {
         const methods = ['execute','run','handle','process','main'];
-        for (const m of methods) { if (typeof (inst as any)[m] === 'function') { originalResult = (inst as any)[m](input); originalExecuted = true; break; } }
-        if (!originalExecuted) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
-      } catch(e) { originalResult = { _class: '${cls}', _available: true }; originalExecuted = true; }
+        let invoked = false;
+        for (const m of methods) {
+          if (typeof (inst as Record<string, unknown>)[m] === 'function') {
+            // Invocation errors propagate unchanged.
+            originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
+            originalExecuted = true;
+            invoked = true;
+            break;
+          }
+        }
+        if (!invoked) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
+      }
     }`);
     }
     if (targets.length > 0) {
@@ -197,7 +212,7 @@ ${tsEntryPointCode}
     meta,
   );
 
-  return {
+  const envelope: ExecutionResult = {
     _original: originalResult,
     _enriched: pipeline.output,
     _pipeline: pipeline,
@@ -210,6 +225,17 @@ ${tsEntryPointCode}
       },
     },
   };
+
+  // Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+  // The envelope is preserved on the error so observers can still read it.
+  if (originalError !== null || pipeline.success === false) {
+    const _reason = originalError !== null ? 'handler_failure' : 'pipeline_failure';
+    const _firstErr = pipeline.trace.find(t => t.status === 'error');
+    const _detail = originalError ?? (_firstErr?.error ?? 'pipeline reported success=false');
+    throw new CmpsblExecutionError(meta.name, _reason, String(_detail), envelope);
+  }
+
+  return envelope;
 }`).join('\n');
   return `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Silent Symbiosis — Software Ascended
@@ -327,6 +353,26 @@ export interface ExecutionResult {
       timestamp: string;
     };
   };
+}
+
+/**
+ * Thrown by execute_* functions when Layer 1 (your code) raises or Layer 2
+ * (the cognitive pipeline) reports failure. Wrappers (Circuit Breaker, Retry,
+ * Self-Healing, BEACON) need a real throw to react — silent success-dicts
+ * mask failures from the resilience stack. The full envelope is preserved
+ * on \`.envelope\` so observers can still read structured execution data.
+ */
+export class CmpsblExecutionError extends Error {
+  readonly capability: string;
+  readonly reason: 'handler_failure' | 'pipeline_failure';
+  readonly envelope: ExecutionResult;
+  constructor(capability: string, reason: 'handler_failure' | 'pipeline_failure', detail: string, envelope: ExecutionResult) {
+    super(\`[CMPSBL] \${capability}: \${reason} — \${detail}\`);
+    this.name = 'CmpsblExecutionError';
+    this.capability = capability;
+    this.reason = reason;
+    this.envelope = envelope;
+  }
 }
 
 // ─── CJPI Scorer ─────────────────────────────────────────────────────────────
@@ -1074,30 +1120,32 @@ ${embeddedSources}
       const entryPointsList = entryPoints.join(', ');
       executeOriginalBody = `        """Layer 1 — Smart entry point detection for ${primaryFile.name}.
         First-match-wins: scans __all__, skips Exception subclasses, invokes the
-        first viable target and returns its result directly."""
+        first viable target and returns its result directly.
+
+        Critical: once a target is invoked, any exception it raises propagates
+        unchanged so wrappers (Circuit Breaker, Retry, Self-Healing) can react.
+        Only resolution / signature errors fall through to the next candidate."""
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
-            try:
-                target = globals().get(name)
-                if target is None:
-                    continue
-                if kind == "function" and callable(target):
-                    return target(input_data) if input_data else target()
-                if kind == "class" and isinstance(target, type):
-                    try:
-                        instance = target(input_data) if input_data else target()
-                    except TypeError:
-                        # Class requires different signature — surface availability
-                        return {"_class": name, "_available": True}
-                    # Probe for a callable execution method
-                    for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
-                        method = getattr(instance, method_name, None)
-                        if callable(method):
-                            return method(input_data) if input_data else method()
-                    return {"_instance": name, "_created": True}
-            except Exception as e:
-                # Try the next entry point on failure
+            target = globals().get(name)
+            if target is None:
                 continue
+            if kind == "function" and callable(target):
+                # Invocation errors propagate unchanged — wrappers must see them.
+                return target(input_data) if input_data else target()
+            if kind == "class" and isinstance(target, type):
+                try:
+                    instance = target(input_data) if input_data else target()
+                except TypeError:
+                    # Signature mismatch only — surface availability and try next.
+                    continue
+                # Probe for a callable execution method
+                for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
+                    method = getattr(instance, method_name, None)
+                    if callable(method):
+                        # Invocation errors propagate unchanged.
+                        return method(input_data) if input_data else method()
+                return {"_instance": name, "_created": True}
         return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
       // Has code but couldn't determine entry points — provide a passthrough
@@ -2029,6 +2077,22 @@ for _module_name in CMPSBL_PACK_META["modules"]:
 
 
 
+class CmpsblExecutionError(Exception):
+    """
+    Raised by CmpsblCapability.execute when Layer 1 (your code) raises or
+    Layer 2 (the cognitive pipeline) reports failure. Wrappers (Circuit
+    Breaker, Retry, Self-Healing, BEACON) need a real exception to react —
+    silent success-dicts mask failures from the resilience stack. The full
+    envelope is preserved on \`.envelope\` so observers can still read
+    structured execution data.
+    """
+    def __init__(self, capability: str, reason: str, detail: str, envelope: dict):
+        super().__init__(f"[CMPSBL] {capability}: {reason} — {detail}")
+        self.capability = capability
+        self.reason = reason
+        self.envelope = envelope
+
+
 class CmpsblCapability:
     """Single capability executor with dual-layer architecture."""
 
@@ -2061,7 +2125,7 @@ ${executeOriginalBody}
         pipeline_input = original_result if isinstance(original_result, dict) else {"_original": original_result}
         pipeline = execute_pipeline(pipeline_input, self.meta.get("chain", []), self.meta)
 
-        return {
+        envelope = {
             "_original": original_result,
             "_enriched": pipeline["output"],
             "_pipeline": pipeline,
@@ -2078,6 +2142,16 @@ ${executeOriginalBody}
                 },
             },
         }
+
+        # Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+        # The envelope is preserved on the exception so observers can still read it.
+        if original_error is not None or pipeline.get("success") is False:
+            reason = "handler_failure" if original_error is not None else "pipeline_failure"
+            first_err = next((t for t in pipeline.get("trace", []) if t.get("status") == "error"), None)
+            detail = original_error if original_error is not None else (first_err.get("error") if first_err else "pipeline reported success=False")
+            raise CmpsblExecutionError(self.meta.get("name", "unknown"), reason, str(detail), envelope)
+
+        return envelope
 
     def validate(self) -> bool:
         chain = self.meta.get("chain", [])
@@ -2497,6 +2571,27 @@ function cmpsbl_execute_pipeline(array $input, array $chain, array $meta): array
 
 ${generatePhpPackMeta(capabilities, allModules, packName)}
 
+/**
+ * Thrown by CMPSBLCapability::execute when Layer 1 (your code) raises or
+ * Layer 2 (the cognitive pipeline) reports failure. Wrappers (Circuit Breaker,
+ * Retry, Self-Healing, BEACON) need a real exception to react — silent
+ * success-arrays mask failures from the resilience stack. The full envelope
+ * is preserved on \`->envelope\` so observers can still read structured data.
+ */
+class CmpsblExecutionError extends \\RuntimeException
+{
+    public string $capability;
+    public string $reason;
+    public array $envelope;
+    public function __construct(string $capability, string $reason, string $detail, array $envelope)
+    {
+        parent::__construct("[CMPSBL] {$capability}: {$reason} — {$detail}");
+        $this->capability = $capability;
+        $this->reason = $reason;
+        $this->envelope = $envelope;
+    }
+}
+
 class CMPSBLCapability
 {
     private array $meta;
@@ -2536,7 +2631,7 @@ ${phpExecuteOriginalBody(phpFiles)}
         $pipelineInput = is_array($originalResult) ? $originalResult : ['_original' => $originalResult];
         $pipeline = cmpsbl_execute_pipeline($pipelineInput, $this->meta['chain'] ?? [], $this->meta);
 
-        return [
+        $envelope = [
             '_original' => $originalResult,
             '_enriched' => $pipeline['output'],
             '_pipeline' => $pipeline,
@@ -2553,6 +2648,20 @@ ${phpExecuteOriginalBody(phpFiles)}
                 ],
             ],
         ];
+
+        // Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+        $pipelineSuccess = $pipeline['success'] ?? true;
+        if ($originalError !== null || $pipelineSuccess === false) {
+            $reason = $originalError !== null ? 'handler_failure' : 'pipeline_failure';
+            $firstErr = null;
+            foreach (($pipeline['trace'] ?? []) as $t) {
+                if (($t['status'] ?? null) === 'error') { $firstErr = $t; break; }
+            }
+            $detail = $originalError ?? ($firstErr['error'] ?? 'pipeline reported success=false');
+            throw new CmpsblExecutionError($this->meta['name'] ?? 'unknown', $reason, (string)$detail, $envelope);
+        }
+
+        return $envelope;
     }
 
     public function validate(): bool
