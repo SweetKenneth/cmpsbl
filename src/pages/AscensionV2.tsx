@@ -51,6 +51,7 @@ export default function AscensionV2() {
   const [step, setStep] = useState(0);
   const [runId, setRunId] = useState('');
   const [enhanced, setEnhanced] = useState(false);
+  const [selectedLayerIds, setSelectedLayerIds] = useState<string[]>([]);
   const [capabilities, setCapabilities] = useState<DiscoveredCapability[]>([]);
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
@@ -70,8 +71,9 @@ export default function AscensionV2() {
     setStep(1);
   }, []);
 
-  const handleEnhanceComplete = useCallback((wasEnhanced: boolean) => {
+  const handleEnhanceComplete = useCallback((wasEnhanced: boolean, layerIds?: string[]) => {
     setEnhanced(wasEnhanced);
+    setSelectedLayerIds(layerIds ?? []);
     setStep(2);
   }, []);
 
