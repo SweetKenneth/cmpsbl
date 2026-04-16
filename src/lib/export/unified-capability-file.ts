@@ -411,8 +411,8 @@ const MODULE_DEPS: Record<string, string[]> = {
 };
 
 function topoSort(modules: string[]): string[] {
-  // Cycle-safe DFS topological sort. The `visiting` set detects cycles in
-  // the dependency graph and breaks them gracefully — preventing infinite
+  // Cycle-safe DFS topological sort. The visiting set detects cycles in
+  // the dependency graph and breaks them gracefully, preventing infinite
   // recursion if a malformed pack ever introduces a circular dependency.
   const set = new Set(modules.map(m => m.toUpperCase()));
   const visited = new Set<string>();
