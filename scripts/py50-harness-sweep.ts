@@ -145,7 +145,7 @@ for (const file of FILES) {
 // ── Report ──
 console.log('━'.repeat(132));
 console.log('PY-50 ASCENSION V2 + HARNESS SWEEP — 50 REAL-WORLD PYTHON FILES');
-console.log('CMPSBL Hardening (the 7 always-on cores in the Circuit Breaker layer) — chad Kenneth Sweet ⚡');
+console.log('CMPSBL Hardening Layer (the 7 always-on cores in the Circuit Breaker layer)');
 console.log('Cores: Circuit Breaker · Timeout · Retry · Envelope · Trace · Degradation · BEACON');
 console.log('━'.repeat(132));
 console.log(
