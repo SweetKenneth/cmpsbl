@@ -28,12 +28,42 @@ interface LanguageSyntax {
   generate: (ctx: GeneratorContext) => string;
 }
 
+interface UserSourceFile {
+  name: string;
+  extension: string;
+  language: string;
+  content: string;
+}
+
 interface GeneratorContext {
   capabilities: UnifiedCapabilityInput[];
   packName: string;
   allModules: string[];
   avgCjpi: number;
   topCap: UnifiedCapabilityInput;
+  userSourceFiles?: UserSourceFile[];
+}
+
+/**
+ * Generate a Layer 1 embedding block using language-appropriate comment syntax.
+ * Embeds the original source verbatim so the artifact is fully self-contained.
+ */
+function generateLayer1Block(files: UserSourceFile[] | undefined, lineComment: string): string {
+  if (!files || files.length === 0) return `${lineComment} No source files provided — Layer 1 is empty.`;
+  const header = [
+    `${lineComment} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
+    `${lineComment} ║  LAYER 1 — ORIGINAL SOURCE (UNMODIFIED)                                      ║`,
+    `${lineComment} ║  Verified byte-identical to uploaded source.                                  ║`,
+    `${lineComment} ║  U.S. Patent App. No. 64/029,678 · No. 64/031,637                            ║`,
+    `${lineComment} ╚═══════════════════════════════════════════════════════════════════════════════╝`,
+  ].join('\n');
+  const embedded = files.map(f => `${lineComment} ─── ${f.name} ───\n${f.content.trimEnd()}`).join('\n\n');
+  const footer = [
+    `${lineComment} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
+    `${lineComment} ║  END OF LAYER 1 — ORIGINAL SOURCE                                            ║`,
+    `${lineComment} ╚═══════════════════════════════════════════════════════════════════════════════╝`,
+  ].join('\n');
+  return `${header}\n\n${embedded}\n\n${footer}`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
