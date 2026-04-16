@@ -54,6 +54,8 @@ interface Row {
   critical: number;
   soft: number;
   astOk: boolean;
+  candidateOk: boolean;       // Primitive #41 (CANDIDATE) wired in chain + handler present
+  layer1Untouched: boolean;   // Original source byte-perfect inside export
   failedChecks: string[];
 }
 
