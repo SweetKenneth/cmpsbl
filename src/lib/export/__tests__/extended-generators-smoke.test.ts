@@ -50,9 +50,11 @@ describe('Extended polyglot generators (Path B — additive)', () => {
       });
 
       it('contains no stub markers', () => {
-        expect(code.toLowerCase()).not.toContain('todo');
-        expect(code.toLowerCase()).not.toContain('not implemented');
+        // Word-boundary checks so identifiers like `toDouble`/`toString` don't false-positive.
+        expect(code).not.toMatch(/\bTODO\b/i);
+        expect(code).not.toMatch(/\bnot implemented\b/i);
         expect(code).not.toMatch(/throw\s+new\s+Error\(['"]stub/i);
+        expect(code).not.toMatch(/\bunimplemented!?\(\)/);
       });
     });
   }
