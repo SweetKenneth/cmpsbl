@@ -1,13 +1,17 @@
 /**
- * Unified Single-File Capability Generator
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Generates ONE file (~2000 LOC) containing:
- *   §1 — Convex Core™ (CJPI scorer, FSM, Saga, manifest, fingerprint)
- *   §2 — Module Effects (all 40 primitive handlers)
- *   §3 — Runtime Bridge (pipeline executor, context, trace)
- *   §4 — Capability API (execute, validate, metadata)
+ * CMPSBL® Ascension Layer™ — Single-File Distribution Generator
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Emits ONE self-contained file that wraps the developer's source in
+ * the Ascension Layer (U.S. Patent App. No. 64/029,678 — Software
+ * Symbiosis · No. 64/031,637 — Deterministic Code Processing):
  *
- * Drop in. Import. Use. One file. Zero dependencies.
+ *   §1 — Ascension Core           (black-boxed scorer, saga, FSM, fingerprint)
+ *   §2 — Layer Handlers           (40 primitive layers — protect, enrich, govern)
+ *   §3 — Ascension Runtime Bridge (deterministic chain executor + trace)
+ *   §4 — Public API Surface       (drop-in: execute · validate · metadata)
+ *
+ * Drop into your stack and run. Zero external dependencies.
+ * Visit https://cmpsbl.com or use `@cmpsbl/cli` for advanced configuration.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -117,18 +121,18 @@ export function generateUnifiedTypeScript(
       return `// ─── ${f.name} ───\n${f.content.trimEnd()}`;
     }).join('\n\n');
     layer1TsBlock = `// ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  LAYER 1 — ORIGINAL SOURCE (UNMODIFIED)                                      ║
-// ║  Verified byte-identical to uploaded source.                                  ║
-// ║  U.S. Patent App. No. 64/029,678 · No. 64/031,637                            ║
+// ║  LAYER 1 — YOUR ORIGINAL SOURCE (UNMODIFIED)                                 ║
+// ║  Verified byte-identical to your uploaded source. Runs first, untouched.      ║
+// ║  Protected by U.S. Patent App. No. 64/029,678 · No. 64/031,637               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 ${embeddedSources}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  END OF LAYER 1 — ORIGINAL SOURCE                                            ║
+// ║  END LAYER 1 · ASCENSION LAYER BEGINS BELOW (BLACK-BOXED · PROPRIETARY)      ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝`;
   } else {
-    layer1TsBlock = '// No source files provided — Layer 1 is empty. Wire your code manually.';
+    layer1TsBlock = '// No source files provided — LAYER 1 is empty. Wire your code manually.';
   }
 
   // Build layer header
@@ -186,15 +190,15 @@ ${embeddedSources}
   // Generate per-capability executors
   const tsCapabilityExecutors = capabilities.map(cap => `
 /**
- * ${cap.name} — CJPI ${cap.cjpiScore} (${cap.tier.toUpperCase()})
- * Chain: ${cap.chain.join(' → ')}
+ * ${cap.name} — Score ${cap.cjpiScore} (${cap.tier.toUpperCase()})
+ * Layer Chain: ${cap.chain.join(' → ')}
  * Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
  */
 export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(input: Record<string, unknown>): ExecutionResult {
   const meta = ${JSON.stringify({ name: cap.name, cjpi: cap.cjpiScore, tier: cap.tier, chain: cap.chain, fingerprint: cap.fingerprint, moatSignature: cap.moatSignature })};
   const start = Date.now();
 
-  // Layer 1: Execute your original code (Smart Entry Point Detection)
+  // LAYER 1 — Run your original code (Smart Entry Point Detection)
   let originalResult: unknown = input;
   let originalExecuted = false;
   let originalError: string | null = null;
@@ -204,7 +208,7 @@ ${tsEntryPointCode}
     originalError = err instanceof Error ? err.message : String(err);
   }
 
-  // Layer 2: CMPSBL cognitive pipeline
+  // ASCENSION LAYER — Deterministic protect / enrich / govern pipeline
   const pipeline = executePipeline(
     typeof originalResult === 'object' && originalResult !== null
       ? originalResult as Record<string, unknown> : { _original: originalResult },
@@ -238,22 +242,31 @@ ${tsEntryPointCode}
   return envelope;
 }`).join('\n');
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Silent Symbiosis — Software Ascended
-//  ${packName} | Single-File Distribution | Zero Dependencies
+//  CMPSBL® Ascension Layer™ — ${packName}
+//  Black-Box Distribution · Single File · Zero Dependencies
 //
-//  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
-//  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
-//${selectedLayers?.length ? `\n//  Layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
-//  DROP IN → IMPORT → USE
+//  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers · Avg score: ${avgCjpi}
+//  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
+//${selectedLayers?.length ? `\n//  Optional layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
 //
+//  HOW TO USE: drop this file into your stack, import it, and call it like
+//  any other module. Your original code is preserved verbatim in LAYER 1
+//  below; everything beneath is the proprietary Ascension Layer that
+//  protects, enriches, and governs your code at runtime.
+//
+//  Configure layers, view telemetry, or learn more:
+//    · https://cmpsbl.com
+//    · npx @cmpsbl/cli  (for advanced settings)
+//
+//  U.S. Patent App. No. 64/029,678 · No. 64/031,637
 //  © 2025–2026 CMPSBL®. All rights reserved.
-//  SEALED RUNTIME — Do not modify. Redistribution prohibited.
+//  BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
 // ═══════════════════════════════════════════════════════════════════════════════
 ${layerHeader}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §1 — CONVEX CORE™ DPL                                                  ║
-// ║  CJPI Scorer · Saga Orchestrator · FSM Engine · Manifest · Fingerprint       ║
+// ║  §1 — ASCENSION CORE  (Black-Boxed · Patent-Protected Runtime)               ║
+// ║  Deterministic Scorer · Saga Orchestrator · FSM Engine · Fingerprint Anchor  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -333,13 +346,13 @@ export interface PipelineResult {
 }
 
 export interface ExecutionResult {
-  /** Your original code's output (authoritative) */
+  /** Your LAYER 1 output (authoritative — your code's return value) */
   _original: unknown;
-  /** Pipeline-enriched data from CMPSBL cognitive layer */
+  /** Enriched data added by the Ascension Layer pipeline */
   _enriched: Record<string, unknown>;
-  /** Full pipeline result with trace and metadata */
+  /** Full pipeline result with deterministic trace and metadata */
   _pipeline: PipelineResult;
-  /** Execution metadata */
+  /** Ascension Layer execution metadata */
   _cmpsbl: {
     capability: string;
     cjpi: number;
@@ -356,11 +369,12 @@ export interface ExecutionResult {
 }
 
 /**
- * Thrown by execute_* functions when Layer 1 (your code) raises or Layer 2
- * (the cognitive pipeline) reports failure. Wrappers (Circuit Breaker, Retry,
- * Self-Healing, BEACON) need a real throw to react — silent success-dicts
- * mask failures from the resilience stack. The full envelope is preserved
- * on \`.envelope\` so observers can still read structured execution data.
+ * Thrown by execute_* functions when LAYER 1 (your code) raises or the
+ * Ascension Layer pipeline reports failure. The protective layers
+ * (Circuit Breaker, Retry, Self-Healing, BEACON) need a real throw to
+ * react — silent success-dicts would mask failures from the resilience
+ * stack. The full envelope is preserved on \`.envelope\` so observers
+ * can still read structured execution data after a failure.
  */
 export class CmpsblExecutionError extends Error {
   readonly capability: string;
@@ -536,8 +550,8 @@ function topoSort(modules: string[]): string[] {
 }
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §2 — MODULE EFFECTS                                                         ║
-// ║  40 Primitive Handlers — Each transforms pipeline context                     ║
+// ║  §2 — LAYER HANDLERS  (40 Primitive Layers · Black-Boxed)                    ║
+// ║  Each layer protects, enriches, or governs your code's execution context.    ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type ModuleHandler = (ctx: PipelineContext, mod: string, meta: Record<string, unknown>) => PipelineContext;
@@ -811,8 +825,8 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
 };
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §3 — RUNTIME BRIDGE                                                         ║
-// ║  Pipeline Executor · Context Management · Trace & Observability               ║
+// ║  §3 — ASCENSION RUNTIME BRIDGE  (Black-Boxed · Patent-Protected)             ║
+// ║  Deterministic chain executor · Context isolation · Full trace + telemetry    ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 /**
@@ -873,8 +887,8 @@ function executePipeline(
 }
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §4 — CAPABILITY API                                                         ║
-// ║  Public Interface · Execute · Validate · Metadata                             ║
+// ║  §4 — PUBLIC API SURFACE  (Drop-In · Stable · Documented)                    ║
+// ║  Import these functions into your stack: execute · validate · metadata.       ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 ${layer1TsBlock}
@@ -987,12 +1001,16 @@ ${tsLayers.map(l => l.tsCode).join('\n')}
 ${getAutoWireTs(selectedLayers || [])}
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CMPSBL® Silent Symbiosis — Software Ascended
-// Governed Cognitive Infrastructure · Deterministic Processing Layer
+// CMPSBL® Ascension Layer™ — Governed Cognitive Infrastructure
+// Black-Box Distribution · Drop-In · Zero Dependencies
 //
-// Inventor: Kenneth E. Sweet Jr. · PromptFluid™ TX
+// Inventor: Kenneth E. Sweet Jr.
 // U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
 // U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+//
+// Learn more or configure layers:
+//   · https://cmpsbl.com
+//   · npx @cmpsbl/cli   (advanced settings · telemetry · layer management)
 //
 // © 2009–2026 CMPSBL® · All rights reserved
 // Unauthorized reproduction, modification, or redistribution prohibited.
@@ -1032,15 +1050,15 @@ ${sanitizedContent}`;
     }).join('\n\n');
 
     layer1Block = `# ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  LAYER 1 — ORIGINAL SOURCE (UNMODIFIED)                                      ║
-# ║  Verified byte-identical to uploaded source.                                  ║
-# ║  U.S. Patent App. No. 64/029,678 · No. 64/031,637                            ║
+# ║  LAYER 1 — YOUR ORIGINAL SOURCE (UNMODIFIED)                                 ║
+# ║  Verified byte-identical to your uploaded source. Runs first, untouched.      ║
+# ║  Protected by U.S. Patent App. No. 64/029,678 · No. 64/031,637               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 ${embeddedSources}
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  END OF LAYER 1 — ORIGINAL SOURCE                                            ║
+# ║  END LAYER 1 · ASCENSION LAYER BEGINS BELOW (BLACK-BOXED · PROPRIETARY)      ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝`;
 
     // ── Smart Entry Point Detection ──────────────────────────────────────────
@@ -1156,8 +1174,8 @@ ${embeddedSources}
         return input_data or {}`;
     }
   } else {
-    layer1Block = '# No source files provided — Layer 1 is empty. Wire your code manually.';
-    executeOriginalBody = `        """Layer 1 — No original source provided."""
+    layer1Block = '# No source files provided — LAYER 1 is empty. Wire your code manually.';
+    executeOriginalBody = `        """LAYER 1 — No original source provided."""
         return input_data or {}`;
   }
 
@@ -1170,15 +1188,24 @@ ${embeddedSources}
 
   return `"""
 ═══════════════════════════════════════════════════════════════════════════════
- CMPSBL® Silent Symbiosis — Software Ascended
- ${packName} | Single-File Distribution | Zero Dependencies
+ CMPSBL® Ascension Layer™ — ${packName}
+ Black-Box Distribution · Single File · Zero Dependencies
 
- ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
- Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
+ ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers · Avg score: ${avgCjpi}
+ Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
 ${pyLayerLine}
- DROP IN → IMPORT → USE
+ HOW TO USE: drop this file into your stack, import it, and call it like
+ any other module. Your original code is preserved verbatim in LAYER 1
+ below; everything beneath is the proprietary Ascension Layer that
+ protects, enriches, and governs your code at runtime.
 
+ Configure layers, view telemetry, or learn more:
+   · https://cmpsbl.com
+   · npx @cmpsbl/cli  (for advanced settings)
+
+ U.S. Patent App. No. 64/029,678 · No. 64/031,637
  © 2025–2026 CMPSBL®. All rights reserved.
+ BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
 ═══════════════════════════════════════════════════════════════════════════════
 """
 
@@ -1189,7 +1216,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Callable, Tuple
 ${pyLayerHeader}
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  §1 — CONVEX CORE™ DPL                                                  ║
+# ║  §1 — ASCENSION CORE  (Black-Boxed · Patent-Protected Runtime)               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 def compute_cjpi(novelty: float, utility: float, complexity: float, composability: float) -> dict:
@@ -1225,9 +1252,9 @@ def clamp(val: float, lo: float = 0.0, hi: float = 1.0) -> float:
     return max(lo, min(hi, val))
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  §2 — MODULE EFFECTS (40 Primitives) — REAL WORK, NOT FLAGS                  ║
-# ║  Every handler mutates ctx["_data"] with computation derived from the        ║
-# ║  actual payload. Pure-Python, deterministic, zero external dependencies.     ║
+# ║  §2 — LAYER HANDLERS  (40 Primitive Layers · Black-Boxed)                    ║
+# ║  Each layer protects, enriches, or governs your code's execution context.    ║
+# ║  Pure-Python, deterministic, zero external dependencies.                     ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import math, re, copy
@@ -2014,7 +2041,7 @@ HANDLER_REGISTRY = {
 }
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  §3 — RUNTIME BRIDGE                                                         ║
+# ║  §3 — ASCENSION RUNTIME BRIDGE  (Black-Boxed · Patent-Protected)             ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 def execute_pipeline(input_data: dict, chain: list, meta: dict) -> dict:
@@ -2050,7 +2077,7 @@ def execute_pipeline(input_data: dict, chain: list, meta: dict) -> dict:
     }
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  §4 — CAPABILITY API                                                         ║
+# ║  §4 — PUBLIC API SURFACE  (Drop-In · Stable · Documented)                    ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 ${layer1Block}
@@ -2206,9 +2233,9 @@ self_test = cmpsbl_self_test
 
 
 if __name__ == "__main__":
-    print(f"CMPSBL® Silent Symbiosis — {CMPSBL_PACK_META['name']}")
+    print(f"CMPSBL® Ascension Layer — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
-    print(f"Modules: {CMPSBL_PACK_META['modules']}")
+    print(f"Active layers: {CMPSBL_PACK_META['modules']}")
     print()
     result = cmpsbl_self_test()
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
@@ -2218,12 +2245,16 @@ ${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CMPSBL® Silent Symbiosis — Software Ascended
-# Governed Cognitive Infrastructure · Deterministic Processing Layer
+# CMPSBL® Ascension Layer™ — Governed Cognitive Infrastructure
+# Black-Box Distribution · Drop-In · Zero Dependencies
 #
-# Inventor: Kenneth E. Sweet Jr. · PromptFluid™ TX
+# Inventor: Kenneth E. Sweet Jr.
 # U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
 # U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+#
+# Learn more or configure layers:
+#   · https://cmpsbl.com
+#   · npx @cmpsbl/cli   (advanced settings · telemetry · layer management)
 #
 # © 2009–2026 CMPSBL® · All rights reserved
 # Unauthorized reproduction, modification, or redistribution prohibited.
@@ -2302,35 +2333,44 @@ export function generateUnifiedPhp(
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
   const phpFiles = (userSourceFiles || []).filter(f => /\.php$/i.test(f.name));
-  // Layer 1 is EMBEDDED inline — the wrapped file is fully self-contained.
+  // LAYER 1 is EMBEDDED inline — the wrapped file is fully self-contained.
   // The original in the ZIP is a reference copy for verification only.
   const inlineBlock = phpFiles.length > 0
     ? phpFiles.map(f => {
         // Strip the opening <?php tag from embedded source to avoid duplicate declarations
         const cleanContent = f.content.replace(/^<\?php\s*/i, '').trimEnd();
-        return `// ═══ LAYER 1 — ORIGINAL SOURCE (${f.name}) ═══\n// Embedded inline per U.S. App. No. 64/029,678 dual-layer architecture.\n// This is your original code — it runs first, unchanged.\n\n${cleanContent}`;
+        return `// ═══ LAYER 1 — YOUR ORIGINAL SOURCE (${f.name}) ═══\n// Embedded inline per U.S. App. No. 64/029,678 dual-layer architecture.\n// Your code runs first, unchanged. The Ascension Layer wraps it below.\n\n${cleanContent}`;
       }).join('\n\n')
-    : '// No source files detected — Layer 1 is empty';
+    : '// No source files detected — LAYER 1 is empty';
 
   return `<?php
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- *  CMPSBL® Silent Symbiosis — Software Ascended
- *  ${packName} | Single-File Distribution | Zero Dependencies
+ *  CMPSBL® Ascension Layer™ — ${packName}
+ *  Black-Box Distribution · Single File · Zero Dependencies
  *
- *  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
- *  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
+ *  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers · Avg score: ${avgCjpi}
+ *  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
  *
- *  DROP IN → REQUIRE → USE
+ *  HOW TO USE: drop this file into your stack, require it, and call it like
+ *  any other PHP module. Your original code is preserved verbatim in LAYER 1
+ *  below; everything beneath is the proprietary Ascension Layer that
+ *  protects, enriches, and governs your code at runtime.
  *
+ *  Configure layers, view telemetry, or learn more:
+ *    · https://cmpsbl.com
+ *    · npx @cmpsbl/cli  (for advanced settings)
+ *
+ *  U.S. Patent App. No. 64/029,678 · No. 64/031,637
  *  © 2025–2026 CMPSBL®. All rights reserved.
+ *  BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
 ${inlineBlock}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §1 — CONVEX CORE™ DPL                                                  ║
+// ║  §1 — ASCENSION CORE  (Black-Boxed · Patent-Protected Runtime)               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 function cmpsbl_compute_cjpi(float $novelty, float $utility, float $complexity, float $composability): array
@@ -2367,7 +2407,7 @@ function cmpsbl_user_keys(array $data): array
 }
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §2 — MODULE EFFECTS (40 Primitives)                                         ║
+// ║  §2 — LAYER HANDLERS  (40 Primitive Layers · Black-Boxed)                    ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 class CMPSBLModuleHandlers
@@ -2525,7 +2565,7 @@ class CMPSBLModuleHandlers
 }
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  §3 — RUNTIME BRIDGE                                                         ║
+// ║  §3 — ASCENSION RUNTIME BRIDGE  (Black-Boxed · Patent-Protected)             ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 function cmpsbl_execute_pipeline(array $input, array $chain, array $meta): array
@@ -2728,35 +2768,38 @@ export function generateUnifiedGeneric(
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
 
   return `${line} ═══════════════════════════════════════════════════════════════════════════════
-${line}  CMPSBL® Silent Symbiosis — Software Ascended | ${packName}
-${line}  Target: ${lang.toUpperCase()} | Single-File Reference Distribution
+${line}  CMPSBL® Ascension Layer™ — ${packName}
+${line}  Target: ${lang.toUpperCase()} · Single-File Reference Distribution
 ${line}
-${line}  ${capabilities.length} capabilities | ${allModules.length} modules
+${line}  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers
 ${line}
-${line}  PORT THIS FILE to ${lang.toUpperCase()} using the TypeScript/Python/PHP versions
-${line}  as reference implementations. The architecture is identical:
+${line}  This file is a structured reference for porting the Ascension Layer to
+${line}  ${lang.toUpperCase()}. The TypeScript / Python / PHP single-file distributions
+${line}  are complete, working implementations — port them 1:1.
 ${line}
-${line}  §1 — Convex Core™ (CJPI scorer, tier classifier)
-${line}  §2 — Module Effects (handler per primitive, transforms context)
-${line}  §3 — Runtime Bridge (pipeline executor, sequential chain)
-${line}  §4 — Capability API (execute, validate, metadata)
+${line}  §1 — Ascension Core           (deterministic scorer, tier classifier)
+${line}  §2 — Layer Handlers           (one per primitive · transforms context)
+${line}  §3 — Ascension Runtime Bridge (deterministic chain executor + trace)
+${line}  §4 — Public API Surface       (execute · validate · metadata)
 ${line}
-${line}  EXECUTION MODEL:
-${line}    1. Load capability metadata (name, cjpi, tier, chain, fingerprint)
+${line}  EXECUTION MODEL (identical across all languages):
+${line}    1. Load capability metadata (name, score, tier, layer chain, fingerprint)
 ${line}    2. Create context = { _input: input, _data: input, _signals: [], _errors: [] }
-${line}    3. For each module in chain:
-${line}         context = handler(context, module, metadata)
+${line}    3. For each layer in chain:
+${line}         context = layer_handler(context, layer_name, metadata)
 ${line}    4. Return { success, output: context._data, trace, metadata }
 ${line}
-${line}  MODULE HANDLERS TO IMPLEMENT:
-${allModules.map(m => `${line}    ${m.padEnd(12)} → See TypeScript/Python reference for behavior`).join('\n')}
+${line}  ACTIVE LAYERS TO IMPLEMENT:
+${allModules.map(m => `${line}    ${m.padEnd(12)} → See TypeScript/Python reference for layer behavior`).join('\n')}
 ${line}
-${line}  CAPABILITIES:
-${capabilities.map(c => `${line}    ${c.name} — CJPI ${c.cjpiScore} (${c.tier.toUpperCase()}) — Chain: ${c.chain.join(' → ')}`).join('\n')}
+${line}  ASCENDED CAPABILITIES:
+${capabilities.map(c => `${line}    ${c.name} — score ${c.cjpiScore} (${c.tier.toUpperCase()}) — Layer chain: ${c.chain.join(' → ')}`).join('\n')}
 ${line}
-${line}  See the TypeScript (.ts), Python (.py), or PHP (.php) single-file distributions
-${line}  for complete, working implementations to port 1:1.
+${line}  Configure layers, view telemetry, or learn more:
+${line}    · https://cmpsbl.com
+${line}    · npx @cmpsbl/cli  (for advanced settings)
 ${line}
+${line}  U.S. Patent App. No. 64/029,678 · No. 64/031,637
 ${line}  © 2025–2026 CMPSBL®. All rights reserved.
 ${line} ═══════════════════════════════════════════════════════════════════════════════
 `;
