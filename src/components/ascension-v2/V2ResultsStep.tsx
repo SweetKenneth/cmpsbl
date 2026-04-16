@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { completeRun, getSnapshot, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import {
   generateV2LicenseHTML,
@@ -145,6 +146,24 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
         lang === 'typescript' ? 'typescript' : lang,
         sourceFiles.length > 0 ? sourceFiles : undefined,
       );
+
+      // ── Pre-ZIP acceptance test: Layer 2 ↔ Layer 1 linkage ──
+      const linkage = validateLayer2Linkage(
+        ascendedCode,
+        lang,
+        sourceFiles.map(f => f.name),
+      );
+      if (!linkage.linked) {
+        console.error('[Ascension V2] Layer 2 linkage failed:', linkage.errors);
+        toast({
+          title: 'Export blocked — Layer 2 not linked to original',
+          description: linkage.errors[0],
+          variant: 'destructive',
+        });
+        setCeremonyOpen(false);
+        setExporting(false);
+        return;
+      }
 
       // ── Generate all HTML docs ──
       const licenseHTML = generateV2LicenseHTML(zipName);

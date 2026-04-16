@@ -1172,6 +1172,34 @@ ${capEntries.join(',\n')},
 ]);`;
 }
 
+/** Build the PHP body for executeOriginal() — auto-wires class instantiation */
+function phpExecuteOriginalBody(phpFiles: { name: string }[]): string {
+  if (phpFiles.length === 0) {
+    return `        // No original PHP files — passthrough
+        return \\$input;`;
+  }
+  const firstName = phpFiles[0].name.replace(/\.php$/i, '');
+  return `        // Auto-wired to: ${phpFiles.map(f => f.name).join(', ')}
+        if (class_exists('${firstName}')) {
+            \\$instance = new \\\\${firstName}();
+            \\$methods = ['execute', 'run', 'handle', 'process', 'main', '__invoke'];
+            foreach (\\$methods as \\$method) {
+                if (method_exists(\\$instance, \\$method)) {
+                    return \\$instance->\\$method(\\$input);
+                }
+            }
+        }
+        // No class entry point found — try top-level functions
+        \\$functions = ['execute', 'run', 'handle', 'process', 'main'];
+        foreach (\\$functions as \\$fn) {
+            if (function_exists(\\$fn)) {
+                return \\$fn(\\$input);
+            }
+        }
+        // Honest passthrough — no callable entry point found
+        return \\$input;`;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // PHP Generator
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1186,8 +1214,17 @@ export function generateUnifiedPhp(
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
   const phpFiles = (userSourceFiles || []).filter(f => /\.php$/i.test(f.name));
+  // Single-file exports place the original as a sibling; multi-file uses original/ subdir.
+  // The ZIP builder decides the layout — we match it here:
+  //   1 file  → sibling require (same directory)
+  //   N files → original/ subdirectory require
+  const isSingleFile = phpFiles.length === 1;
   const requireBlock = phpFiles.length > 0
-    ? phpFiles.map(f => `// require_once __DIR__ . '/original/${f.name}';`).join('\n')
+    ? phpFiles.map(f =>
+        isSingleFile
+          ? `require_once __DIR__ . '/${f.name}';`
+          : `require_once __DIR__ . '/original/${f.name}';`
+      ).join('\n')
     : '// No PHP source files detected — wire your require_once manually';
 
   return `<?php
@@ -1462,10 +1499,9 @@ class CMPSBLCapability
         }
     }
 
-    public function executeOriginal(array $input = []): mixed
+    public function executeOriginal(array \\$input = []): mixed
     {
-        // Layer 1 — Wire your original code here
-        return $input;
+${phpExecuteOriginalBody(phpFiles)}
     }
 
     public function execute(array $input = []): array
