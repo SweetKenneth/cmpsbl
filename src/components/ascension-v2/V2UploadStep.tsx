@@ -63,6 +63,29 @@ export function V2UploadStep({ onComplete }: Props) {
         content: f.content,
       }));
       const fp = commitUpload(sourceFiles, analysis.language);
+      const slugSeed = Date.now().toString(36);
+      const candidateName = `CANDIDATE_${analysis.name}`;
+      const description = `${analysis.language} — ${analysis.fileCount} files, ${analysis.sizeKb}KB`;
+      const baseMetadata = {
+        phase: 'ingest',
+        language: analysis.language,
+        source_export_language: analysis.language.toLowerCase().replace(/\s+/g, ''),
+        file_count: analysis.fileCount,
+        resolver_count: analysis.resolverCount,
+        size_kb: analysis.sizeKb,
+        fingerprint_hash: fp.hash,
+        fingerprint_function_count: fp.functionCount,
+        ingested_at: new Date().toISOString(),
+        source_files: analysis.ingestedFiles.map(f => ({
+          name: f.name,
+          extension: f.extension,
+          language: f.language,
+          size_bytes: f.sizeBytes,
+          char_count: f.charCount,
+          truncated: f.truncated,
+          content: f.content,
+        })),
+      };
 
       // Clear previous v2 cycle
       try {
@@ -71,41 +94,49 @@ export function V2UploadStep({ onComplete }: Props) {
           .from('artifact_registry')
           .delete()
           .eq('user_id', user.id)
-          .in('category', ['proprietary-evolution-v2', 'proprietary-discovery-v2', 'proprietary-ascended-v2']);
+          .in('category', ['proprietary-evolution-v2', 'proprietary-discovery-v2', 'proprietary-ascended-v2', 'proprietary-mana-attachment-v2']);
+
+        // WHY: the collision engine still resolves candidate nodes from the
+        // legacy category, so V2 needs a fresh mirror record there.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any)
+          .from('artifact_registry')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('category', 'proprietary-evolution')
+          .eq('tier', 'candidate');
       } catch { /* non-fatal */ }
 
-      // Register candidate with v2 category
-      const langKey = analysis.language.toLowerCase().replace(/\s+/g, '');
+      // Register both the V2 source-of-truth candidate and a legacy mirror
+      // so the existing collision engine can actually resolve the upload.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any).from('artifact_registry').insert({
-        user_id: user.id,
-        name: `CANDIDATE_${analysis.name}`,
-        slug: `v2-candidate-${analysis.name.toLowerCase()}-${Date.now().toString(36)}`,
-        tier: 'candidate',
-        category: 'proprietary-evolution-v2',
-        description: `${analysis.language} — ${analysis.fileCount} files, ${analysis.sizeKb}KB`,
-        metadata: {
-          phase: 'ingest',
-          language: analysis.language,
-          source_export_language: langKey,
-          file_count: analysis.fileCount,
-          resolver_count: analysis.resolverCount,
-          size_kb: analysis.sizeKb,
-          fingerprint_hash: fp.hash,
-          fingerprint_function_count: fp.functionCount,
-          ingested_at: new Date().toISOString(),
-          pipeline_version: 'v2',
-          source_files: analysis.ingestedFiles.map(f => ({
-            name: f.name,
-            extension: f.extension,
-            language: f.language,
-            size_bytes: f.sizeBytes,
-            char_count: f.charCount,
-            truncated: f.truncated,
-            content: f.content,
-          })),
+      const { error } = await (supabase as any).from('artifact_registry').insert([
+        {
+          user_id: user.id,
+          name: candidateName,
+          slug: `v2-candidate-${analysis.name.toLowerCase()}-${slugSeed}`,
+          tier: 'candidate',
+          category: 'proprietary-evolution-v2',
+          description,
+          metadata: {
+            ...baseMetadata,
+            pipeline_version: 'v2',
+          },
         },
-      });
+        {
+          user_id: user.id,
+          name: candidateName,
+          slug: `candidate-v2-mirror-${analysis.name.toLowerCase()}-${slugSeed}`,
+          tier: 'candidate',
+          category: 'proprietary-evolution',
+          description,
+          metadata: {
+            ...baseMetadata,
+            pipeline_version: 'v2-mirror',
+            mirror_source: 'ascension-v2',
+          },
+        },
+      ]);
 
       if (error) throw new Error(error.message);
 
