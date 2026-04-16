@@ -4,11 +4,13 @@
  * ascended file (L2 wrapped), and ADVERTISEMENT.html
  * ZIP named: cmpsbl-ascended-{originalFileName}.zip
  *
+ * Now includes optional CMPSBL Layer selection (Crown Jewel add-ons).
+ *
  * © CMPSBL® — All rights reserved.
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText } from 'lucide-react';
+import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText, Zap, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { DownloadCeremonyOverlay } from '@/components/downloads/DownloadCeremonyOverlay';
 import { useToast } from '@/hooks/use-toast';
@@ -26,6 +28,7 @@ import {
   generateV2UserGuideHTML,
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
+import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import type { UnifiedCapabilityInput } from '@/lib/export/unified-capability-file';
@@ -53,8 +56,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
+  const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
   const { toast } = useToast();
   const { user } = useAuth();
+
+  const availableLayers = useMemo(() => getAvailableLayers(), []);
 
   useEffect(() => {
     completeRun();
