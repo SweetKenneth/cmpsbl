@@ -310,6 +310,9 @@ export class SagaOrchestrator<T> {
   }
 
   async run(initial: T): Promise<{ success: boolean; context: T; error?: string }> {
+    // Reset per-run state so the orchestrator can be reused across executions
+    // without leaking compensation history from prior failed runs.
+    this.executed = [];
     let ctx = initial;
     try {
       for (const step of this.steps) {
@@ -320,7 +323,7 @@ export class SagaOrchestrator<T> {
     } catch (err) {
       for (const step of [...this.executed].reverse()) {
         if (step.compensate) {
-          try { ctx = await step.compensate(ctx); } catch { /* swallow */ }
+          try { ctx = await step.compensate(ctx); } catch { /* swallow compensation errors */ }
         }
       }
       return { success: false, context: ctx, error: String(err) };
@@ -1538,12 +1541,15 @@ function cmpsbl_tier_from_cjpi(int $score): string
 
 function cmpsbl_quick_hash(string $input): string
 {
+    // DJB2 unsigned 32-bit. The mask + sprintf %x gives consistent unsigned hex
+    // across 32-bit and 64-bit PHP builds without abs() flipping signs.
     $h = 5381;
-    for ($i = 0; $i < strlen($input); $i++) {
+    $len = strlen($input);
+    for ($i = 0; $i < $len; $i++) {
         $h = (($h << 5) + $h) + ord($input[$i]);
         $h &= 0xFFFFFFFF;
     }
-    return str_pad(dechex(abs($h)), 8, '0', STR_PAD_LEFT);
+    return str_pad(sprintf('%x', $h & 0xFFFFFFFF), 8, '0', STR_PAD_LEFT);
 }
 
 function cmpsbl_user_keys(array $data): array
