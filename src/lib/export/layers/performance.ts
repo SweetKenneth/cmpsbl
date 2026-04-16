@@ -282,7 +282,7 @@ const _cmpsbl_raw_execute_pr = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_streamed(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const pub = cmpsbl_publish('cmpsbl.exec', capabilityName, input);
   if (!pub.ok) {
-    throw new Error(`[CMPSBL:Pipeline:${capabilityName}] Backpressure — request shed (stream full)`);
+    throw new Error(\`[CMPSBL:Pipeline:\${capabilityName}] Backpressure — request shed (stream full)\`);
   }
   const result = _cmpsbl_raw_execute_pr(capabilityName, input);
   cmpsbl_publish('cmpsbl.result', capabilityName, result as unknown);

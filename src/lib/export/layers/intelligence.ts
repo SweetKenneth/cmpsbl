@@ -149,10 +149,10 @@ const AI_SAFETY_TS = `
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 const CMPSBL_INJECTION_PATTERNS = [
-  /ignore\s+(previous|prior|all)\s+instructions/i,
-  /system\s*[:>]\s*you\s+are/i,
-  /\<\|.*?\|\>/,                       // special tokens
-  /jailbreak|DAN\s+mode|developer\s+mode/i,
+  /ignore\\s+(previous|prior|all)\\s+instructions/i,
+  /system\\s*[:>]\\s*you\\s+are/i,
+  /\\<\\|.*?\\|\\>/,                       // special tokens
+  /jailbreak|DAN\\s+mode|developer\\s+mode/i,
 ];
 
 export function cmpsbl_sanitize_prompt(text: string): { safe: boolean; cleaned: string; flags: string[] } {
@@ -162,16 +162,16 @@ export function cmpsbl_sanitize_prompt(text: string): { safe: boolean; cleaned: 
     if (pat.test(cleaned)) { flags.push(pat.source.slice(0, 30)); cleaned = cleaned.replace(pat, '[REDACTED]'); }
   }
   // XSS strip
-  cleaned = cleaned.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '[REDACTED]');
+  cleaned = cleaned.replace(/<script[^>]*>[\\s\\S]*?<\\/script>/gi, '[REDACTED]');
   return { safe: flags.length === 0, cleaned, flags };
 }
 
 export function cmpsbl_check_hallucination(claim: string, sources: string[]): { grounded: boolean; supportCount: number } {
   if (!claim) return { grounded: false, supportCount: 0 };
-  const claimTokens = new Set(claim.toLowerCase().split(/\W+/).filter(t => t.length > 3));
+  const claimTokens = new Set(claim.toLowerCase().split(/\\W+/).filter(t => t.length > 3));
   let supportCount = 0;
   for (const src of sources) {
-    const srcTokens = new Set(src.toLowerCase().split(/\W+/).filter(t => t.length > 3));
+    const srcTokens = new Set(src.toLowerCase().split(/\\W+/).filter(t => t.length > 3));
     let overlap = 0;
     for (const t of claimTokens) if (srcTokens.has(t)) overlap++;
     if (overlap / Math.max(1, claimTokens.size) >= 0.4) supportCount++;
@@ -190,10 +190,10 @@ import re
 from typing import List
 
 CMPSBL_INJECTION_PATTERNS = [
-    re.compile(r'ignore\s+(previous|prior|all)\s+instructions', re.IGNORECASE),
-    re.compile(r'system\s*[:>]\s*you\s+are', re.IGNORECASE),
-    re.compile(r'\<\|.*?\|\>'),
-    re.compile(r'jailbreak|DAN\s+mode|developer\s+mode', re.IGNORECASE),
+    re.compile(r'ignore\\s+(previous|prior|all)\\s+instructions', re.IGNORECASE),
+    re.compile(r'system\\s*[:>]\\s*you\\s+are', re.IGNORECASE),
+    re.compile(r'\\<\\|.*?\\|\\>'),
+    re.compile(r'jailbreak|DAN\\s+mode|developer\\s+mode', re.IGNORECASE),
 ]
 
 def cmpsbl_sanitize_prompt(text: str) -> dict:
@@ -208,10 +208,10 @@ def cmpsbl_sanitize_prompt(text: str) -> dict:
 
 def cmpsbl_check_hallucination(claim: str, sources: List[str]) -> dict:
     if not claim: return { "grounded": False, "support_count": 0 }
-    claim_tokens = set(t for t in re.split(r'\W+', claim.lower()) if len(t) > 3)
+    claim_tokens = set(t for t in re.split(r'\\W+', claim.lower()) if len(t) > 3)
     support = 0
     for src in sources:
-        src_tokens = set(t for t in re.split(r'\W+', src.lower()) if len(t) > 3)
+        src_tokens = set(t for t in re.split(r'\\W+', src.lower()) if len(t) > 3)
         overlap = len(claim_tokens & src_tokens)
         if overlap / max(1, len(claim_tokens)) >= 0.4: support += 1
     return { "grounded": support >= 2, "support_count": support }
@@ -227,7 +227,7 @@ cmpsbl_execute = function cmpsbl_execute_safe(capabilityName: string, input: Rec
       const s = cmpsbl_sanitize_prompt(v);
       if (!s.safe) {
         // Fail closed on prompt injection
-        throw new Error(`[CMPSBL:AISafety:${capabilityName}] Prompt injection detected in field '${k}': ${s.flags.join(',')}`);
+        throw new Error(\`[CMPSBL:AISafety:\${capabilityName}] Prompt injection detected in field '\${k}': \${s.flags.join(',')}\`);
       }
       cleanInput[k] = s.cleaned;
     } else {
@@ -363,7 +363,7 @@ cmpsbl_execute = function cmpsbl_execute_costaware(capabilityName: string, input
   const plan = cmpsbl_estimate_cost(provider, tokensIn, tokensIn * 2);
   const verdict = cmpsbl_can_spend(plan.estCents);
   if (!verdict.allowed) {
-    throw new Error(`[CMPSBL:AICost:${capabilityName}] Daily budget exhausted — remaining=${verdict.remainingCents}c, requested=${plan.estCents}c`);
+    throw new Error(\`[CMPSBL:AICost:\${capabilityName}] Daily budget exhausted — remaining=\${verdict.remainingCents}c, requested=\${plan.estCents}c\`);
   }
   if (verdict.degradeMode) (input as Record<string, unknown>)._cmpsbl_quality_hint = 'fast';
   const result = _cmpsbl_raw_execute_ac(capabilityName, input);
