@@ -1921,7 +1921,11 @@ object Cmpsbl {
     math.round(math.max(0, math.min(100, n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20))).toInt
 
   def tierFromCJPI(score: Int): String = score match {
-    case s if s >= 92 => "apex"; case s if s >= 80 => "mythic"; case s if s >= 65 => "relic"; case s if s >= 45 => "prime"; case _ => "mint"
+    case s if s >= 92 => "apex"
+    case s if s >= 80 => "mythic"
+    case s if s >= 65 => "relic"
+    case s if s >= 45 => "prime"
+    case _ => "mint"
   }
 
   private def quickHash(s: String): String = {
@@ -2008,7 +2012,10 @@ defmodule Cmpsbl do
   defp handle_module(data, "ORACLE", meta), do: Map.put(data, "_prediction", %{"confidence" => Map.get(meta, "cjpi", 50) / 100.0, "model" => "oracle-v1"})
   defp handle_module(data, "IMMUNITY", _meta), do: Map.put(data, "_immunity", %{"protected" => true, "fallback" => "standby"})
   defp handle_module(data, "CORTEX", _meta), do: Map.put(data, "_orchestration", %{"status" => "coordinated"})
-  defp handle_module(data, "EVOLUTION", meta), do: (f = Map.get(meta, "cjpi", 50) / 100.0; Map.put(data, "_evolution", %{"fitness" => f, "strategy" => if(f > 0.7, do: "exploit", else: "explore")}))
+  defp handle_module(data, "EVOLUTION", meta) do
+    f = Map.get(meta, "cjpi", 50) / 100.0
+    Map.put(data, "_evolution", %{"fitness" => f, "strategy" => if(f > 0.7, do: "exploit", else: "explore")})
+  end
   defp handle_module(data, "SHADOW", _meta), do: Map.put(data, "_shadow", %{"verified" => true, "hash" => quick_hash(inspect(data))})
   defp handle_module(data, mod, _meta), do: Map.put(data, "_module_\#{String.downcase(mod)}", %{"processed" => true})
 
@@ -2167,7 +2174,9 @@ data CapabilityDef = CapabilityDef { capName :: String, capCJPI :: Int, capTier 
 
 capabilities :: [CapabilityDef]
 capabilities =
-${capabilities.map(c => `  [ CapabilityDef "${c.name}" ${c.cjpiScore} "${c.tier}" [${c.chain.map(m => `"${m}"`).join(', ')}] "${c.fingerprint.slice(0, 12).toUpperCase()}" ]`).join(' ++\n')}
+  [
+${capabilities.map(c => `    CapabilityDef "${c.name}" ${c.cjpiScore} "${c.tier}" [${c.chain.map(m => `"${m}"`).join(', ')}] "${c.fingerprint.slice(0, 12).toUpperCase()}"`).join(',\n')}
+  ]
 
 execute :: String -> JsonMap -> PipelineResult
 execute name input = case filter (\\c -> capName c == name) capabilities of
