@@ -267,6 +267,13 @@ export function V2ProcessingStep({ onComplete }: Props) {
     let bestScore = 0;
     let lastFunctionError: string | null = null;
     const allCaps: DiscoveredCapability[] = [];
+    // Phase B: collect compat reports for batch merge sim (#7) and source code for feedback loop (#10)
+    const compatReports: CompatibilityReport[] = [];
+    const candidateCorpus = candidateContractBundle
+      ? ((candidate.metadata?.source_files as Array<{ content?: string }> | undefined) ?? [])
+          .map((f) => f?.content ?? '')
+          .join('\n\n')
+      : '';
 
     // ───────────────────────────────────────────────────────
     // Phase 1: Discovery (0–70%)
@@ -341,16 +348,35 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
               registerDiscovery(cap);
               allCaps.push(cap);
+              compatReports.push(compat);
               // ── Gap #4: ingest audit (chain participation) ──
               logV2ChainParticipation(cap.name, cap.chain, cap.cjpiScore, user.id, runId);
+              // ── Gap #9: record collision outcome (success) ──
+              recordCollisionOutcome(targetNode, true);
+              // ── Gap #10: feed high/medium-band confirmations back into glossary ──
+              if (candidateCorpus && (banding.band === 'high' || banding.band === 'medium')) {
+                try {
+                  recordV2Confirmation({
+                    codeContent: candidateCorpus,
+                    primitive: targetNode,
+                    archetypeId: targetNode.toLowerCase(),
+                    matchTerms: [targetNode, ...(cap.chain ?? [])].filter(Boolean),
+                  });
+                } catch {
+                  // Feedback loop must never block discovery
+                }
+              }
               setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
               return cjpi;
             }
+            // No capabilities surfaced — record as failed collision (#9)
+            recordCollisionOutcome(targetNode, false);
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             if (!lastFunctionError) {
               lastFunctionError = message;
             }
+            recordCollisionOutcome(targetNode, false);
             appendAudit('collision_error', `${targetNode}: ${message}`);
           }
 
