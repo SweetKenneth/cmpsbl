@@ -215,8 +215,8 @@ ${tsEntryPointCode}
   // The envelope is preserved on the error so observers can still read it.
   if (originalError !== null || pipeline.success === false) {
     const _reason = originalError !== null ? 'handler_failure' : 'pipeline_failure';
-    const _firstErr = (pipeline as { _errors?: Array<{ error?: string }> })._errors;
-    const _detail = originalError ?? ((_firstErr && _firstErr[0] && _firstErr[0].error) || 'pipeline reported success=false');
+    const _firstErr = pipeline.trace.find(t => t.status === 'error');
+    const _detail = originalError ?? (_firstErr?.error ?? 'pipeline reported success=false');
     throw new CmpsblExecutionError(meta.name, _reason, String(_detail), envelope);
   }
 
