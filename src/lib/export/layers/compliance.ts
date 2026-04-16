@@ -119,8 +119,9 @@ const _cmpsbl_raw_execute_co = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_compliant(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const jurisdiction = ((input as { _cmpsbl_jurisdiction?: string })._cmpsbl_jurisdiction ?? 'global') as CmpsblJurisdiction;
   const evt = cmpsbl_record_compliance(capabilityName, jurisdiction);
-  (input as Record<string, unknown>)._cmpsbl_routed_to = evt.routedTo;
-  return _cmpsbl_raw_execute_co(capabilityName, input);
+  // Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+  const _ctx = { ...input, _cmpsbl_routed_to: evt.routedTo };
+  return _cmpsbl_raw_execute_co(capabilityName, _ctx);
 };`;
 
 const COMPLIANCE_WIRE_PY = `
@@ -129,8 +130,9 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     """Execute under jurisdiction-aware compliance routing (auto-wired)."""
     jurisdiction = input_data.get('_cmpsbl_jurisdiction', 'global')
     evt = cmpsbl_record_compliance(capability_name, jurisdiction)
-    input_data['_cmpsbl_routed_to'] = evt['routed_to']
-    return _cmpsbl_raw_execute_co(capability_name, input_data)`;
+    # Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
+    _ctx = {**input_data, '_cmpsbl_routed_to': evt['routed_to']}
+    return _cmpsbl_raw_execute_co(capability_name, _ctx)`;
 
 const COMPLIANCE_LAYER: CmpsblLayerDefinition = {
   id: "regulatory-compliance",
