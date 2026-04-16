@@ -72,7 +72,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
 
       const combinedSource = analysis.ingestedFiles.map(f => f.content).join('\n');
       const boundaries = detectFunctionBoundaries(combinedSource);
-      const activePrimitives = new Set(CANONICAL_PRIMITIVES);
+      const activePrimitives = new Set<string>(CANONICAL_PRIMITIVES);
       const plan = buildAttachmentPlan(boundaries, activePrimitives);
       const serializedPlan = serializeAttachmentPlan(plan);
 
