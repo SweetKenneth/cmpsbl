@@ -293,19 +293,43 @@ export function V2ProcessingStep({ onComplete }: Props) {
                 data.capabilities[0]
               );
 
+              const cjpi = bestCap.cjpi_score as number;
+              const chain = (bestCap.chain || [candidateNode, targetNode]) as string[];
+              const chainDepth = bestCap.chain_depth || chain.length || 2;
+              const description = bestCap.description || '';
+
+              // ── Gap #1: confidence banding ──
+              const banding = bandDiscovery({ cjpiScore: cjpi, chainDepth, description });
+
+              // ── Gap #5: 4-axis compatibility scoring (uses contract from Phase 0) ──
+              const compat = scoreCollision(
+                targetNode,
+                cjpi,
+                candidateContractBundle?.contract ?? null,
+                candidateContractBundle?.profile ?? null,
+                new Set([candidateNode.toUpperCase(), targetNode.toUpperCase()]),
+              );
+
               const cap: DiscoveredCapability = {
                 name: bestCap.name,
-                cjpiScore: bestCap.cjpi_score,
+                cjpiScore: cjpi,
                 tier: bestCap.tier,
-                description: bestCap.description || '',
-                chain: bestCap.chain || [candidateNode, targetNode],
-                chainDepth: bestCap.chain_depth || 2,
+                description,
+                chain,
+                chainDepth,
+                band: banding.band,
+                bandChannelCount: banding.channelCount,
+                compatibilityComposite: compat.axes.composite,
+                closedGaps: compat.closedGaps,
+                unlockedSynergies: compat.unlockedSynergies,
               };
 
               registerDiscovery(cap);
               allCaps.push(cap);
+              // ── Gap #4: ingest audit (chain participation) ──
+              logV2ChainParticipation(cap.name, cap.chain, cap.cjpiScore, user.id, runId);
               setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
-              return bestCap.cjpi_score as number;
+              return cjpi;
             }
           } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
