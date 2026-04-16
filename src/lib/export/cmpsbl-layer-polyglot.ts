@@ -58,9 +58,7 @@ function registerNative(layerId: string, lang: string, gen: NativeGen): void {
 registerNative('circuit-breaker', 'rust', () => [
   '// CMPSBL Layer — Circuit Breaker (Crown Jewel #11)',
   '// Three-state FSM: closed -> open -> half-open with exponential backoff.',
-  '',
-  'use std::collections::HashMap;',
-  'use std::time::{SystemTime, UNIX_EPOCH};',
+  '// Note: HashMap and SystemTime/UNIX_EPOCH imports are provided by the file header.',
   '',
   '#[derive(Debug, Clone, PartialEq)]',
   'pub enum CmpsblCircuitState { Closed, Open, HalfOpen }',
