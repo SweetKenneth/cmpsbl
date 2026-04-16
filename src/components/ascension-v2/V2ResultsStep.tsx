@@ -37,6 +37,7 @@ interface Props {
   capabilities: ReadonlyArray<DiscoveredCapability>;
   dedup: DedupResult;
   enhanced?: boolean;
+  selectedLayerIds?: string[];
   onReset: () => void;
 }
 
@@ -47,7 +48,7 @@ interface SourceFileData {
   content: string;
 }
 
-export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }: Props) {
+export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], onReset }: Props) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [ceremonyOpen, setCeremonyOpen] = useState(false);
@@ -56,11 +57,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
-  const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
   const { toast } = useToast();
   const { user } = useAuth();
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
+  const selectedLayers = useMemo(() => new Set(selectedLayerIds), [selectedLayerIds]);
 
   useEffect(() => {
     completeRun();
