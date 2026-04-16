@@ -82,8 +82,8 @@ ${embeddedSources}
     : '';
 
   return `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Capability Pack — ${packName}
-//  Single-File Distribution | Zero Dependencies
+//  CMPSBL® Silent Symbiosis — Software Ascended
+//  ${packName} | Single-File Distribution | Zero Dependencies
 //
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
@@ -833,6 +833,18 @@ export function cmpsbl_self_test(): { passed: number; failed: number; results: R
 export const selfTest = cmpsbl_self_test;
 ${(selectedLayers || []).map(l => l.tsCode).join('\n')}
 ${getAutoWireTs(selectedLayers || [])}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CMPSBL® Silent Symbiosis — Software Ascended
+// Governed Cognitive Infrastructure · Deterministic Processing Layer
+//
+// Inventor: Kenneth E. Sweet Jr. · PromptFluid™ TX
+// U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
+// U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+//
+// © 2009–2026 CMPSBL® · All rights reserved
+// Unauthorized reproduction, modification, or redistribution prohibited.
+// ═══════════════════════════════════════════════════════════════════════════════
 `;
 }
 
@@ -878,29 +890,108 @@ ${embeddedSources}
 # ║  END OF LAYER 1 — ORIGINAL SOURCE                                            ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝`;
 
-    // Auto-detect the primary class or function entry point from the original source
+    // ── Smart Entry Point Detection ──────────────────────────────────────────
+    // Proprietary algorithm to find the actual Layer 1 attachment point:
+    //   1. Parse __all__ to find the intended public API
+    //   2. Find all classes and module-level functions
+    //   3. Skip Exception subclasses (they're never entry points)
+    //   4. Prefer: __all__ exports > main classes with __init__ > module-level fns
+    //   5. Generate a multi-target execute_original that tries the right entry point
     const primaryFile = pyFiles[0];
-    const classMatch = primaryFile.content.match(/^class\s+(\w+)/m);
-    const fnMatch = primaryFile.content.match(/^def\s+(\w+)\s*\(/m);
+    const src = primaryFile.content;
 
-    if (classMatch) {
-      const className = classMatch[1];
-      executeOriginalBody = `        """Layer 1 — Delegates to the embedded original code (${primaryFile.name})."""
-        try:
-            instance = ${className}()
-            for method in ['execute', 'run', 'handle', 'process', 'main', 'open', 'shorten', 'resolve', '__call__']:
-                if hasattr(instance, method) and callable(getattr(instance, method)):
-                    return getattr(instance, method)(input_data) if input_data else getattr(instance, method)()
-            return {"_original_class": "${className}", "_instance": str(instance)}
-        except Exception as e:
-            return {"_original_error": str(e), "_passthrough": input_data or {}}`;
-    } else if (fnMatch) {
-      const fnName = fnMatch[1];
-      executeOriginalBody = `        """Layer 1 — Delegates to the embedded original function (${primaryFile.name})."""
-        try:
-            return ${fnName}(input_data) if input_data else ${fnName}()
-        except Exception as e:
-            return {"_original_error": str(e), "_passthrough": input_data or {}}`;
+    // Extract __all__ if present
+    const allMatch = src.match(/__all__\s*=\s*\[([^\]]+)\]/);
+    const allExports = allMatch
+      ? allMatch[1].match(/["'](\w+)["']/g)?.map(s => s.replace(/["']/g, '')) ?? []
+      : [];
+
+    // Find all top-level classes
+    const classMatches = [...src.matchAll(/^class\s+(\w+)(?:\(([^)]*)\))?:/gm)];
+
+    // Find all top-level functions
+    const fnMatches = [...src.matchAll(/^def\s+(\w+)\s*\(/gm)];
+
+    // Classify classes: skip Exception subclasses
+    const exceptionClasses = new Set<string>();
+    const substantiveClasses: Array<{ name: string; hasInit: boolean }> = [];
+    for (const cm of classMatches) {
+      const name = cm[1];
+      const bases = cm[2] || '';
+      if (/\bException\b|\bError\b|\bBaseException\b/.test(bases) || name.endsWith('Error') || name.endsWith('Exception')) {
+        exceptionClasses.add(name);
+      } else {
+        // Check if this class has __init__ with non-trivial params
+        const classBody = src.slice(cm.index!);
+        const hasInit = /def\s+__init__\s*\(\s*self\s*,/.test(classBody.split(/^class\s/m)[0] || classBody);
+        substantiveClasses.push({ name, hasInit });
+      }
+    }
+
+    // Module-level functions (skip private/dunder)
+    const publicFns = fnMatches
+      .map(m => m[1])
+      .filter(n => !n.startsWith('_'));
+
+    // Determine the best entry points, prioritized
+    // Priority 1: Functions in __all__ (the author's intended API)
+    const allFns = publicFns.filter(f => allExports.includes(f));
+    // Priority 2: Classes in __all__ that aren't Exceptions
+    const allClasses = substantiveClasses.filter(c => allExports.includes(c.name));
+    // Priority 3: Substantive classes with __init__
+    const initClasses = substantiveClasses.filter(c => c.hasInit);
+    // Priority 4: Any public function
+    const fallbackFns = publicFns.filter(f => !allFns.includes(f));
+
+    // Build the execute_original body
+    const entryPoints: string[] = [];
+
+    // Collect callable targets in priority order
+    for (const fn of allFns) {
+      entryPoints.push(`("function", "${fn}")`);
+    }
+    for (const cls of allClasses) {
+      entryPoints.push(`("class", "${cls.name}")`);
+    }
+    if (entryPoints.length === 0) {
+      // Nothing in __all__, try substantive classes and public functions
+      for (const cls of initClasses) {
+        entryPoints.push(`("class", "${cls.name}")`);
+      }
+      for (const fn of fallbackFns.slice(0, 5)) {
+        entryPoints.push(`("function", "${fn}")`);
+      }
+    }
+
+    if (entryPoints.length > 0) {
+      const entryPointsList = entryPoints.join(', ');
+      executeOriginalBody = `        """Layer 1 — Smart entry point detection for ${primaryFile.name}.
+        Scans __all__, skips Exception subclasses, targets the actual API surface."""
+        _entry_points = [${entryPointsList}]
+        results = {}
+        for kind, name in _entry_points:
+            try:
+                target = globals().get(name)
+                if target is None:
+                    continue
+                if kind == "function" and callable(target):
+                    results[name] = target(**input_data) if input_data else target()
+                elif kind == "class" and isinstance(target, type):
+                    # Try instantiation, then probe for callable methods
+                    try:
+                        instance = target(**input_data) if input_data else target()
+                        results[name] = {"_instance": str(type(instance).__name__), "_created": True}
+                    except TypeError:
+                        results[name] = {"_class": name, "_available": True}
+            except Exception as e:
+                results[name] = {"_error": str(e)}
+        if results:
+            return results
+        return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
+    } else if (classMatches.length > 0 || fnMatches.length > 0) {
+      // Has code but couldn't determine entry points — provide a passthrough
+      executeOriginalBody = `        """Layer 1 — Original source embedded; entry points available via module globals."""
+        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in globals() if not k.startswith("_") and k[0].isupper()]}`;
     } else {
       executeOriginalBody = `        """Layer 1 — Original source embedded above; no callable entry point auto-detected."""
         return input_data or {}`;
@@ -920,8 +1011,8 @@ ${embeddedSources}
 
   return `"""
 ═══════════════════════════════════════════════════════════════════════════════
- CMPSBL® Capability Pack — ${packName}
- Single-File Distribution | Zero Dependencies
+ CMPSBL® Silent Symbiosis — Software Ascended
+ ${packName} | Single-File Distribution | Zero Dependencies
 
  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
@@ -1258,7 +1349,7 @@ self_test = cmpsbl_self_test
 
 
 if __name__ == "__main__":
-    print(f"CMPSBL® Capability Pack — {CMPSBL_PACK_META['name']}")
+    print(f"CMPSBL® Silent Symbiosis — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
     print(f"Modules: {CMPSBL_PACK_META['modules']}")
     print()
@@ -1268,6 +1359,18 @@ if __name__ == "__main__":
         print(f"  {'✅' if ok else '❌'} {name}")
 ${(selectedLayers || []).map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CMPSBL® Silent Symbiosis — Software Ascended
+# Governed Cognitive Infrastructure · Deterministic Processing Layer
+#
+# Inventor: Kenneth E. Sweet Jr. · PromptFluid™ TX
+# U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
+# U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+#
+# © 2009–2026 CMPSBL® · All rights reserved
+# Unauthorized reproduction, modification, or redistribution prohibited.
+# ═══════════════════════════════════════════════════════════════════════════════
 `;
 }
 
