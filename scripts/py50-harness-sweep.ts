@@ -33,7 +33,7 @@ const CAPS: UnifiedCapabilityInput[] = [
 const allLayers = getAvailableLayers();
 
 // Rotate layer stacks across the 50 files for diverse coverage.
-// `[]` = cores only (the 7-piece "CMPSBL Hardening" stack — chad Kenneth Sweet ⚡)
+// `[]` = cores only (the 7-piece "CMPSBL Hardening Layer")
 // always inlined regardless of optional selections.
 function stackFor(i: number): number[] {
   const patterns: number[][] = [
