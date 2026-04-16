@@ -33,6 +33,13 @@ import {
   scoreCollision,
   extractFileContracts,
   type CandidateContractBundle,
+  // Phase B — V1 Bridge (gaps 7-11)
+  simulateMergeBatch,
+  measureDiscoveryDelta,
+  recordCollisionOutcome,
+  recordV2Confirmation,
+  detectV2Drift,
+  type CompatibilityReport,
 } from '@/lib/ascension-v2';
 import { appendAudit } from '@/lib/ascension-v2/audit-chain';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
