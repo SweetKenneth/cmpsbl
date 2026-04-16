@@ -50,23 +50,79 @@ export interface HarnessInput {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// ① Syntax / AST validity — uses our existing structural validator
+// ① Syntax / AST validity — Layer 2 structural + language-aware Layer 1
+//   pre-checks that catch Python 2 idioms and other parse-killers
 // ─────────────────────────────────────────────────────────────────────
+
+/**
+ * Detect Python 2 syntax that Python 3 rejects (and would crash any
+ * runtime import). Pure-regex, line-by-line, ignores strings/comments.
+ */
+function findPython2Idioms(code: string): Array<{ line: number; message: string }> {
+  const issues: Array<{ line: number; message: string }> = [];
+  const lines = code.split('\n');
+  let inTripleSingle = false;
+  let inTripleDouble = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    // Track triple-quoted blocks (very coarse — good enough for OSS code)
+    const tsMatches = (raw.match(/'''/g) || []).length;
+    const tdMatches = (raw.match(/"""/g) || []).length;
+    if (tsMatches % 2 === 1) inTripleSingle = !inTripleSingle;
+    if (tdMatches % 2 === 1) inTripleDouble = !inTripleDouble;
+    if (inTripleSingle || inTripleDouble) continue;
+
+    // Strip inline comments and string literals (rough)
+    const stripped = raw
+      .replace(/#.*$/, '')
+      .replace(/'(?:[^'\\]|\\.)*'/g, "''")
+      .replace(/"(?:[^"\\]|\\.)*"/g, '""');
+
+    // `except Exception, e:` — Python 2 only
+    if (/^\s*except\s+[A-Za-z_][\w.]*\s*,\s*[A-Za-z_]\w*\s*:/.test(stripped)) {
+      issues.push({ line: i + 1, message: `Python 2 'except X, e:' syntax (use 'except X as e:')` });
+    }
+    // `raise X, "msg"` — Python 2 only
+    if (/^\s*raise\s+[A-Za-z_][\w.]*\s*,\s*['"]/.test(stripped)) {
+      issues.push({ line: i + 1, message: `Python 2 'raise X, msg' syntax (use 'raise X(msg)')` });
+    }
+    // `print x` (statement form, no parens) — Python 2 only
+    if (/^\s*print\s+[^\s(=][^=]*$/.test(stripped) && !stripped.includes('(')) {
+      issues.push({ line: i + 1, message: `Python 2 'print' statement (use print() function)` });
+    }
+  }
+  return issues.slice(0, 5);
+}
 
 function checkSyntax(input: HarnessInput): HarnessCheck {
   const t0 = performance.now();
   const result = validateLayer2(input.ascendedCode, input.language);
-  // We treat errors as critical, warnings as info (ignored here).
   const errs = result.errors.filter(e => e.severity === 'error');
-  const passed = errs.length === 0;
+
+  // Language-aware deep pre-check on the ENTIRE ascended file (which
+  // contains Layer 1 verbatim). Catches input source garbage before export.
+  const lang = input.language.toLowerCase();
+  let langIssues: Array<{ line: number; message: string }> = [];
+  if (lang === 'python') {
+    langIssues = findPython2Idioms(input.ascendedCode);
+  }
+
+  const passed = errs.length === 0 && langIssues.length === 0;
+  let message: string;
+  if (passed) {
+    message = `Layer 2 parsed clean (${result.errors.length} advisory note${result.errors.length === 1 ? '' : 's'})`;
+  } else if (langIssues.length > 0) {
+    message = `${langIssues.length} ${lang} parse-killer(s): ${langIssues.slice(0, 2).map(e => `L${e.line}: ${e.message}`).join(' | ')}`;
+  } else {
+    message = `${errs.length} structural error(s): ${errs.slice(0, 2).map(e => `L${e.line}: ${e.message}`).join(' | ')}`;
+  }
   return {
     id: 'syntax',
     label: 'Syntax / AST validity',
     severity: 'critical',
     passed,
-    message: passed
-      ? `Layer 2 parsed clean (${result.errors.length} advisory note${result.errors.length === 1 ? '' : 's'})`
-      : `${errs.length} structural error(s): ${errs.slice(0, 2).map(e => `L${e.line}: ${e.message}`).join(' | ')}`,
+    message,
     durationMs: Math.round(performance.now() - t0),
   };
 }
