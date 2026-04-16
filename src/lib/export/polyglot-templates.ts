@@ -724,6 +724,16 @@ func Validate() bool {
 \treturn true
 }
 
+func SelfTest() map[string]bool {
+\tresults := make(map[string]bool)
+\tfor _, cap := range Pack.Capabilities {
+\t\tinput := map[string]interface{}{"_test": true}
+\t\tresult, err := Execute(cap.Name, input)
+\t\tresults[cap.Name] = err == nil && result.Success
+\t}
+\treturn results
+}
+
 // Ensure json import is used
 var _ = json.Marshal
 `;
