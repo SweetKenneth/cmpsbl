@@ -194,41 +194,59 @@ export function getLayerCode(layerId: string, lang: string): string | null {
 }
 
 /**
- * Get the auto-wire integration code that modifies cmpsbl_execute to use
- * selected layers. The user's selected layers are always wired AFTER the
- * always-on core layers (Circuit Breaker first, then user selections).
+ * Render the auto-wire integration code for TypeScript.
+ *
+ * Layers are emitted in deterministic phase order (Hardening → Governance →
+ * Foresight → Resilience → Intelligence → Performance → [Execution] →
+ * Evolution → Post Audit + Compliance). Single-pass model: each layer is
+ * wired exactly once, in its assigned phase. The composition order is
+ * stable across runs — same selection produces the same chain.
  */
 export function getAutoWireTs(layers: CmpsblLayerDefinition[]): string {
-  const allLayers = [...CMPSBL_CORE_LAYERS, ...layers];
-  if (allLayers.length === 0) return '';
+  const ordered = orderByPhase(layers);
+  if (ordered.length === 0) return '';
   const parts: string[] = [
     '',
-    '// ── Ascension Layer Auto-Wire ───────────────────────────────────────────────',
-    '// Active layers attach automatically to every capability invocation.',
-    '// LAYER 1 (your code) is never modified — layers operate above it only.',
+    '// ╔══════════════════════════════════════════════════════════════════════════╗',
+    '// ║  CMPSBL® Ascension Layer — Deterministic Phase-Ordered Auto-Wire        ║',
+    '// ║  Layers compose in locked phase order. Same input → same execution.     ║',
+    '// ║  LAYER 1 (your code) executes at Phase 6 — never modified, only framed. ║',
+    '// ╚══════════════════════════════════════════════════════════════════════════╝',
     '',
   ];
-  for (const layer of allLayers) {
-    parts.push(`// ── ${layer.name} (Layer #${layer.crownJewelRank}) ──`);
+  let lastPhase = -1;
+  for (const { layer, phase } of ordered) {
+    if (phase !== lastPhase) {
+      parts.push(`// ── ${PHASE_LABELS[phase] ?? `Phase ${phase}`} ──`);
+      lastPhase = phase;
+    }
+    parts.push(`// • ${layer.name} (Layer #${layer.crownJewelRank})`);
     parts.push(layer.autoWire.tsWire);
     parts.push('');
   }
   return parts.join('\n');
 }
 
-/** Get the auto-wire integration code for Python */
+/** Render the auto-wire integration code for Python (deterministic phase order). */
 export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
-  const allLayers = [...CMPSBL_CORE_LAYERS, ...layers];
-  if (allLayers.length === 0) return '';
+  const ordered = orderByPhase(layers);
+  if (ordered.length === 0) return '';
   const parts: string[] = [
     '',
-    '# ── Ascension Layer Auto-Wire ───────────────────────────────────────────────',
-    '# Active layers attach automatically to every capability invocation.',
-    '# LAYER 1 (your code) is never modified — layers operate above it only.',
+    '# ╔══════════════════════════════════════════════════════════════════════════╗',
+    '# ║  CMPSBL® Ascension Layer — Deterministic Phase-Ordered Auto-Wire        ║',
+    '# ║  Layers compose in locked phase order. Same input → same execution.     ║',
+    '# ║  LAYER 1 (your code) executes at Phase 6 — never modified, only framed. ║',
+    '# ╚══════════════════════════════════════════════════════════════════════════╝',
     '',
   ];
-  for (const layer of allLayers) {
-    parts.push(`# ── ${layer.name} (Layer #${layer.crownJewelRank}) ──`);
+  let lastPhase = -1;
+  for (const { layer, phase } of ordered) {
+    if (phase !== lastPhase) {
+      parts.push(`# ── ${PHASE_LABELS[phase] ?? `Phase ${phase}`} ──`);
+      lastPhase = phase;
+    }
+    parts.push(`# • ${layer.name} (Layer #${layer.crownJewelRank})`);
     parts.push(layer.autoWire.pyWire);
     parts.push('');
   }
@@ -237,22 +255,34 @@ export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
   return parts.join('\n');
 }
 
-/** Get the layer summary block for the file header */
+/**
+ * Render the layer summary block for the file header — grouped by phase so
+ * readers can see exactly where in the execution lifecycle each layer runs.
+ */
 export function getLayerHeaderBlock(
   layers: CmpsblLayerDefinition[],
   commentChar: string = '//',
 ): string {
-  const allLayers = [...CMPSBL_CORE_LAYERS, ...layers];
-  if (allLayers.length === 0) return '';
-  const lines = [
+  const ordered = orderByPhase(layers);
+  if (ordered.length === 0) return '';
+  const lines: string[] = [
     `${commentChar} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
-    `${commentChar} ║  CMPSBL® ASCENSION LAYER — Active Layers (auto-wired)                        ║`,
-    ...allLayers.map(l =>
-      `${commentChar} ║  ◆ ${l.name.padEnd(20)} — Layer #${String(l.crownJewelRank).padStart(3)} | ${l.module.padEnd(10)}                ║`,
-    ),
-    `${commentChar} ║  Layers protect, enrich, and govern your code — LAYER 1 stays untouched.     ║`,
-    `${commentChar} ║  Configure or learn more: https://cmpsbl.com · npx @cmpsbl/cli               ║`,
-    `${commentChar} ╚═══════════════════════════════════════════════════════════════════════════════╝`,
+    `${commentChar} ║  CMPSBL® ASCENSION LAYER — Deterministic Phase Ordering                      ║`,
   ];
+  let lastPhase = -1;
+  for (const { layer, phase } of ordered) {
+    if (phase !== lastPhase) {
+      const label = PHASE_LABELS[phase] ?? `Phase ${phase}`;
+      lines.push(`${commentChar} ║  ▸ ${label.padEnd(74)} ║`);
+      lastPhase = phase;
+    }
+    const left = `◆ ${layer.name}`.padEnd(48);
+    const right = `Layer #${String(layer.crownJewelRank).padStart(2)} | ${layer.module}`.padEnd(28);
+    lines.push(`${commentChar} ║      ${left} ${right} ║`);
+  }
+  lines.push(`${commentChar} ║  ▸ Phase 6 — Execution (LAYER 1: your code runs here, untouched)             ║`);
+  lines.push(`${commentChar} ║  Configure or learn more: https://cmpsbl.com · npx @cmpsbl/cli               ║`);
+  lines.push(`${commentChar} ╚═══════════════════════════════════════════════════════════════════════════════╝`);
   return lines.join('\n');
 }
+
