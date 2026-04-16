@@ -1128,10 +1128,10 @@ _CMPSBL_ERROR_WINDOW: Dict[str, List[float]] = {}
 _CMPSBL_EVOLUTION_STATE: Dict[str, dict] = {}
 
 _PII_PATTERNS = [
-    (re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b"), "<email>"),
-    (re.compile(r"\b\d{3}-\d{2}-\d{4}\b"), "<ssn>"),
-    (re.compile(r"\b(?:\d[ -]*?){13,16}\b"), "<card>"),
-    (re.compile(r"\b\+?\d{1,3}[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}\b"), "<phone>"),
+    (re.compile(r"\\b[\\w.+-]+@[\\w-]+\\.[\\w.-]+\\b"), "<email>"),
+    (re.compile(r"\\b\\d{3}-\\d{2}-\\d{4}\\b"), "<ssn>"),
+    (re.compile(r"\\b(?:\\d[ -]*?){13,16}\\b"), "<card>"),
+    (re.compile(r"\\b\\+?\\d{1,3}[ -]?\\(?\\d{3}\\)?[ -]?\\d{3}[ -]?\\d{4}\\b"), "<phone>"),
 ]
 
 _BIAS_TOKENS = (
