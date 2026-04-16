@@ -38,7 +38,7 @@ const LANGS: LangConfig[] = [
   { id: 'lua',        ext: 'lua',  parser: 'luac -p "{file}"',                                               fileGlob: /\.lua$/i },
   { id: 'php',        ext: 'php',  parser: 'php -l "{file}"',                                                fileGlob: /\.php$/i },
   { id: 'go',         ext: 'go',   parser: 'gofmt -e "{file}" > /dev/null',                                  fileGlob: /\.go$/i },
-  { id: 'rust',       ext: 'rs',   parser: 'rustc --edition=2021 --emit=metadata --crate-type=lib -o /tmp/_rs.meta "{file}" 2>&1', fileGlob: /\.rs$/i },
+  { id: 'rust',       ext: 'rs',   parser: 'rustc --edition=2021 --crate-name=ascended --emit=metadata --crate-type=lib -o /tmp/_rs.meta "{file}" 2>&1', fileGlob: /\.rs$/i },
   { id: 'java',       ext: 'java', parser: null, /* javac requires class==filename which the generator doesn\'t guarantee */ fileGlob: /\.java$/i },
   { id: 'csharp',     ext: 'cs',   parser: null, /* dotnet build needs a project; syntax-only check not trivial */ fileGlob: /\.cs$/i },
   { id: 'c',          ext: 'c',    parser: 'gcc -fsyntax-only -w "{file}"',                                  fileGlob: /\.c$/i },
@@ -96,6 +96,18 @@ for (const lang of LANGS) {
 
   for (const file of files) {
     const src = readFileSync(join(srcDir, file), 'utf-8');
+
+    // Data-quality guard: skip files that look like an HTTP error page rather
+    // than real source (the corpus is fetched at setup time and a few URLs 404).
+    const head = src.slice(0, 256).toLowerCase();
+    if (
+      src.length < 80 ||
+      /^\s*(<!doctype|<html|404[: ]|not found)/i.test(src.trimStart()) ||
+      head.includes('404: not found') || head.includes('<title>404')
+    ) {
+      continue;
+    }
+
     const layerIndices = stackFor(idx++);
     const selectedLayers = layerIndices.map(i => allLayers[i]).filter(Boolean);
 
@@ -121,7 +133,9 @@ for (const lang of LANGS) {
     let layer1Untouched = false;
 
     if (buildOk) {
-      const outPath = join(outDir, `ascended-${file}.${lang.ext}`);
+      // Use a clean filename without double extensions (rustc dislikes dots in crate names).
+      const stem = file.replace(/\.[^.]+$/, '');
+      const outPath = join(outDir, `ascended-${stem}.${lang.ext}`);
       writeFileSync(outPath, ascended);
 
       // Native parser check (when available)
@@ -154,13 +168,15 @@ for (const lang of LANGS) {
 
       // Layer-1 preservation: TS/JS/Python embed verbatim. Polyglot artifacts
       // embed as comment-prefixed reference (foreign source can't be live syntax
-      // in host language). Both forms count as preserved.
+      // in host language). PHP is special: the embedded file is live PHP, so
+      // the leading `<?php` open tag is stripped (you can only have one per file).
       const norm = ascended.replace(/\r\n/g, '\n');
       const srcN = src.replace(/\r\n/g, '\n').trimEnd();
-      if (norm.includes(srcN)) {
+      const srcStripped = lang.id === 'php' ? srcN.replace(/^<\?php\s*/i, '').trimStart() : srcN;
+      if (norm.includes(srcStripped)) {
         layer1Untouched = true;
       } else {
-        const srcLines = srcN.split('\n').filter(l => l.trim().length > 0);
+        const srcLines = srcStripped.split('\n').filter(l => l.trim().length > 0);
         if (srcLines.length === 0) layer1Untouched = true;
         else for (const cc of ['//', '#', '--']) {
           const sample = srcLines.slice(0, 5);

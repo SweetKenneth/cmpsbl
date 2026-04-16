@@ -2513,7 +2513,7 @@ class CMPSBLCapability
         }
     }
 
-    public function executeOriginal(array \\$input = []): mixed
+    public function executeOriginal(array $input = []): mixed
     {
 ${phpExecuteOriginalBody(phpFiles)}
     }
