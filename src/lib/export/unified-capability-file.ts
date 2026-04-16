@@ -1965,11 +1965,6 @@ HANDLER_REGISTRY = {
     "DEFAULT": handle_default,
 }
 
-for module_name in CMPSBL_PACK_META["modules"]:
-    normalized_module = str(module_name).strip().upper()
-    if normalized_module and normalized_module not in HANDLER_REGISTRY:
-        HANDLER_REGISTRY[normalized_module] = handle_candidate
-
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  §3 — RUNTIME BRIDGE                                                         ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
@@ -2023,6 +2018,15 @@ CMPSBL_PACK_META = ${JSON.stringify({
 
 # Backwards compatibility alias
 PACK_META = CMPSBL_PACK_META
+
+# Auto-register any pack-declared module that lacks a dedicated handler.
+# Routes unknown primitives (e.g. SHELVE, Ψ₄₁_*) to handle_candidate so
+# execute_pipeline never falls through to DEFAULT for known pack modules.
+for _module_name in CMPSBL_PACK_META["modules"]:
+    _normalized = str(_module_name).strip().upper()
+    if _normalized and _normalized not in HANDLER_REGISTRY:
+        HANDLER_REGISTRY[_normalized] = handle_candidate
+
 
 
 class CmpsblCapability:
