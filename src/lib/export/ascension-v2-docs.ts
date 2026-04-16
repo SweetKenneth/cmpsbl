@@ -34,7 +34,27 @@ const BRAND_STYLES = `
     margin: 0 auto;
     padding: 3rem 2.5rem;
   }
-  @media (max-width: 640px) { .page { padding: 1.5rem 1.25rem; } html { font-size: 14px; } }
+  @media (max-width: 640px) {
+    .page { padding: 1.5rem 1rem; }
+    html { font-size: 13px; }
+    .doc-title { font-size: 1.3rem; word-break: break-word; }
+    .doc-subtitle { font-size: 0.8rem; }
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    th, td { white-space: nowrap; padding: 0.4rem 0.5rem; font-size: 0.72rem; }
+    pre { padding: 0.75rem; font-size: 0.7rem; }
+    code { word-break: break-all; }
+    .highlight { padding: 0.7rem 1rem; font-size: 0.78rem; }
+    .colophon { flex-direction: column; align-items: flex-start; }
+    h2 { font-size: 0.95rem; }
+    .seal-badge { width: 60px; height: 60px; }
+    .seal-badge .mark { font-size: 0.5rem; }
+  }
+  @media (max-width: 380px) {
+    .page { padding: 1.25rem 0.75rem; }
+    .meta-grid { grid-template-columns: 1fr; }
+    th, td { font-size: 0.65rem; padding: 0.3rem 0.4rem; }
+  }
   .doc-header {
     text-align: center;
     padding-bottom: 2rem;
