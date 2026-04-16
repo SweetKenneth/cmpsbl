@@ -322,7 +322,7 @@ function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: Sou
 require_once __DIR__ . '/../cmpsbl.php';
 
 // ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
-\${requireLines}
+${requireLines}
 
 class CMPSBLCapability
 {
