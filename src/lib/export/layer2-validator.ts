@@ -273,10 +273,20 @@ export function validateLayer2Linkage(
   }
 
   // §5.1 — Check that the original class/module is present (inline or imported)
+  // Try the raw filename stem, PascalCase variant, and case-insensitive match
+  // because filenames often use snake_case (task_worker.py) while the code
+  // inside uses PascalCase (TaskWorker).
   const primaryName = originalFileNames[0].replace(/\.[^.]+$/, '');
-  const hasClassRef = layer2Code.includes(primaryName);
+  const pascalName = primaryName
+    .split(/[-_]/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join('');
+  const hasClassRef =
+    layer2Code.includes(primaryName) ||
+    layer2Code.includes(pascalName) ||
+    layer2Code.toLowerCase().includes(primaryName.toLowerCase());
   if (!hasClassRef) {
-    errors.push(`Layer 2 does not reference "${primaryName}" — the original source is not embedded or imported.`);
+    errors.push(`Layer 2 does not reference "${primaryName}" (or "${pascalName}") — the original source is not embedded or imported.`);
   }
 
   // §5.2 — Check for the LAYER 1 embed marker OR a live import
