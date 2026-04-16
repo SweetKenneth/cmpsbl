@@ -911,6 +911,13 @@ ${embeddedSources}
         return input_data or {}`;
   }
 
+  const pyLayerLine = selectedLayers?.length
+    ? `\n Layers: ${selectedLayers.map(l => l.name).join(', ')}`
+    : '';
+  const pyLayerHeader = selectedLayers?.length
+    ? '\n' + getLayerHeaderBlock(selectedLayers, '#') + '\n'
+    : '';
+
   return `"""
 ═══════════════════════════════════════════════════════════════════════════════
  CMPSBL® Capability Pack — ${packName}
@@ -918,7 +925,7 @@ ${embeddedSources}
 
  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
-
+${pyLayerLine}
  DROP IN → IMPORT → USE
 
  © 2025–2026 CMPSBL®. All rights reserved.
@@ -930,7 +937,7 @@ import json
 import hashlib
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Callable, Tuple
-
+${pyLayerHeader}
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  §1 — CONVEX CORE™ DPL                                                  ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
