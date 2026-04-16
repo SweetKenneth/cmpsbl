@@ -1258,6 +1258,8 @@ if __name__ == "__main__":
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
     for name, ok in result["results"].items():
         print(f"  {'✅' if ok else '❌'} {name}")
+${(selectedLayers || []).map(l => l.pyCode).join('\n')}
+${getAutoWirePy(selectedLayers || [])}
 `;
 }
 
