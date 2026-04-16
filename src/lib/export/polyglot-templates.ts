@@ -734,8 +734,10 @@ func SelfTest() map[string]bool {
 \treturn results
 }
 
-// Ensure json import is used
-var _ = json.Marshal
+// MarshalJSON exposes Pack as JSON for tooling
+func (p *PipelineResult) ToJSON() ([]byte, error) {
+	return json.Marshal(p)
+}
 `;
 }
 
