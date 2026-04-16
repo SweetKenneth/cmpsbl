@@ -3268,9 +3268,21 @@ export function generateRefurbishedCode(
     layer2Parts.push(adapter.comment(warnSummary));
   }
 
-  // ── Final Assembly: Layer 2 + Layer 1 (verbatim) ───────────────────
+  // ── Language-Specific File Prelude ──────────────────────────────────
+  // PHP requires `<?php` at byte 0; Go requires `package` before any decl.
+  // These preludes are emitted BEFORE the header block to keep the file
+  // syntactically valid as a standalone artifact.
+  const langLower = detected.toLowerCase();
+  let filePrelude = '';
+  if (langLower === 'php') {
+    filePrelude = '<?php\n';
+  } else if (langLower === 'go') {
+    filePrelude = 'package main\n\n';
+  }
+
+  // ── Final Assembly: [Prelude] + Layer 2 + Layer 1 (verbatim) ───────
   return [
-    layer2Code,
+    filePrelude + layer2Code,
     '',
     adapter.comment('═══════════════════════════════════════════════════════════'),
     adapter.comment('ORIGINAL SOURCE (UNMODIFIED — LAYER 1)'),
