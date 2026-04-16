@@ -938,6 +938,20 @@ ${capabilities.map(c => `        Map.of("name", "${c.name}", "cjpi", ${c.cjpiSco
         return true;
     }
 
+    public static Map<String, Boolean> selfTest() {
+        Map<String, Boolean> results = new LinkedHashMap<>();
+        for (Map<String, Object> cap : CAPABILITIES) {
+            String name = (String) cap.get("name");
+            try {
+                Map<String, Object> input = new HashMap<>();
+                input.put("_test", true);
+                PipelineResult r = execute(name, input);
+                results.put(name, r.success);
+            } catch (Exception e) { results.put(name, false); }
+        }
+        return results;
+    }
+
     public static void main(String[] args) {
         System.out.println("CMPSBL® Capability Pack — ${packName}");
         System.out.println("Capabilities: " + CAPABILITIES.size());
@@ -1113,6 +1127,18 @@ ${capabilities.map(c => `            new() { ["name"] = "${c.name}", ["cjpi"] = 
 
         public static bool Validate() => Capabilities.All(c =>
             !string.IsNullOrEmpty((string)c["fingerprint"]) && Convert.ToInt32(c["cjpi"]) > 0);
+
+        public static Dictionary<string, bool> SelfTest() {
+            var results = new Dictionary<string, bool>();
+            foreach (var cap in Capabilities) {
+                var name = (string)cap["name"];
+                try {
+                    var r = Execute(name, new Dictionary<string, object> { ["_test"] = true });
+                    results[name] = r.Success;
+                } catch { results[name] = false; }
+            }
+            return results;
+        }
     }
 }
 `;
@@ -1275,9 +1301,21 @@ func executeChain(_ chain: [String], input: JsonMap) -> PipelineResult {
     return executePipeline(input, chain: chain, meta: meta)
 }
 
-func listCapabilities() -> [String] { packCapabilities.map { $0.name } }
+func cmpsblListCapabilities() -> [String] { packCapabilities.map { $0.name } }
 
-func validate() -> Bool { packCapabilities.allSatisfy { !$0.fingerprint.isEmpty && $0.cjpi > 0 } }
+func cmpsblValidate() -> Bool { packCapabilities.allSatisfy { !$0.fingerprint.isEmpty && $0.cjpi > 0 } }
+
+func cmpsblSelfTest() -> [(String, Bool)] {
+    packCapabilities.map { cap in
+        let meta: JsonMap = ["name": cap.name, "cjpi": cap.cjpi, "tier": cap.tier, "chain": cap.chain, "fingerprint": cap.fingerprint]
+        let result = executePipeline(["_test": true] as JsonMap, chain: cap.chain, meta: meta)
+        return (cap.name, result.success)
+    }
+}
+
+// Backwards compatibility
+func listCapabilities() -> [String] { cmpsblListCapabilities() }
+func validate() -> Bool { cmpsblValidate() }
 `;
 }
 
