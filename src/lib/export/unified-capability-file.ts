@@ -51,6 +51,7 @@ export function generateUnifiedTypeScript(
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
+  const tsLayers = [...CMPSBL_CORE_LAYERS, ...(selectedLayers ?? [])];
 
   // Auto-wire imports from user source files  
   const tsFiles = (userSourceFiles || []).filter(f => /\.(ts|tsx|js|jsx|mjs|cjs)$/i.test(f.name));
@@ -806,6 +807,13 @@ const CMPSBL_CAPABILITY_MAP: Record<string, (input: Record<string, unknown>) => 
 ${capabilities.map(c => `  '${c.name}': execute_${c.name.toLowerCase().replace(/[^a-z0-9]/g, '_')},`).join('\n')}
 };
 
+for (const moduleName of CMPSBL_PACK_META.modules) {
+  const normalizedModule = String(moduleName).trim().toUpperCase();
+  if (normalizedModule && !MODULE_HANDLERS[normalizedModule]) {
+    MODULE_HANDLERS[normalizedModule] = MODULE_HANDLERS.CANDIDATE;
+  }
+}
+
 /**
  * Execute any capability by name.
  * @example const result = execute('my-capability', { query: 'hello' });
@@ -875,7 +883,7 @@ export function cmpsbl_self_test(): { passed: number; failed: number; results: R
 
 /** @deprecated Use cmpsbl_self_test instead */
 export const selfTest = cmpsbl_self_test;
-${(selectedLayers || []).map(l => l.tsCode).join('\n')}
+${tsLayers.map(l => l.tsCode).join('\n')}
 ${getAutoWireTs(selectedLayers || [])}
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -905,6 +913,7 @@ export function generateUnifiedPython(
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
+  const pyLayers = [...CMPSBL_CORE_LAYERS, ...(selectedLayers ?? [])];
 
   const pyFiles = (userSourceFiles || []).filter(f => /\.py$/i.test(f.name));
 
@@ -1858,6 +1867,13 @@ def handle_engineer(ctx, mod, meta):
     ctx["_signals"].append({"type": "diagnose", "source": mod, "ts": time.time()})
     return ctx
 
+def handle_candidate(ctx, mod, meta):
+    """Preserve the uploaded Layer 1 software as Primitive #41 in the chain."""
+    ctx["_data"]["_candidate_preserved"] = True
+    ctx["_data"]["_source_identity"] = meta.get("name", "Node41")
+    ctx["_signals"].append({"type": "candidate", "source": "NODE41", "ts": time.time()})
+    return ctx
+
 def handle_default(ctx, mod, meta):
     """Generic real handler: deep-checksum the payload through this stage."""
     snapshot = json.dumps(ctx["_data"], default=str, sort_keys=True)
@@ -1889,9 +1905,16 @@ HANDLER_REGISTRY = {
     "ENCODE": handle_encode, "DECODE": handle_decode, "ORACLE": handle_oracle,
     "CORTEX": handle_cortex, "ECONOMY": handle_economy, "INCLUSIVE": handle_inclusive,
     "ENGINEER": handle_engineer,
+    # Candidate (uploaded Layer 1 software)
+    "CANDIDATE": handle_candidate,
     # Fallback
     "DEFAULT": handle_default,
 }
+
+for module_name in CMPSBL_PACK_META["modules"]:
+    normalized_module = str(module_name).strip().upper()
+    if normalized_module and normalized_module not in HANDLER_REGISTRY:
+        HANDLER_REGISTRY[normalized_module] = handle_candidate
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  §3 — RUNTIME BRIDGE                                                         ║
@@ -2059,7 +2082,7 @@ if __name__ == "__main__":
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
     for name, ok in result["results"].items():
         print(f"  {'✅' if ok else '❌'} {name}")
-${(selectedLayers || []).map(l => l.pyCode).join('\n')}
+${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
 # ═══════════════════════════════════════════════════════════════════════════════
