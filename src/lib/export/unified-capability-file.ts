@@ -683,7 +683,7 @@ ${layer1TsBlock}
 
 // ─── Pack Metadata ───────────────────────────────────────────────────────────
 
-export const PACK_META = {
+export const CMPSBL_PACK_META = {
   name: '${packName}',
   capabilities: ${JSON.stringify(capabilities.map(c => ({
     name: c.name, cjpi: c.cjpiScore, tier: c.tier,
@@ -695,6 +695,9 @@ export const PACK_META = {
   version: '1.0.0',
   exported: '${new Date().toISOString().slice(0, 10)}',
 } as const;
+
+/** @deprecated Use CMPSBL_PACK_META instead */
+export const PACK_META = CMPSBL_PACK_META;
 
 // ─── Per-Capability Execution ────────────────────────────────────────────────
 
@@ -745,7 +748,7 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
 
 // ─── Unified Execute (any capability by name) ───────────────────────────────
 
-const CAPABILITY_MAP: Record<string, (input: Record<string, unknown>) => ExecutionResult> = {
+const CMPSBL_CAPABILITY_MAP: Record<string, (input: Record<string, unknown>) => ExecutionResult> = {
 ${capabilities.map(c => `  '${c.name}': execute_${c.name.toLowerCase().replace(/[^a-z0-9]/g, '_')},`).join('\n')}
 };
 
@@ -753,11 +756,14 @@ ${capabilities.map(c => `  '${c.name}': execute_${c.name.toLowerCase().replace(/
  * Execute any capability by name.
  * @example const result = execute('my-capability', { query: 'hello' });
  */
-export function execute(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
-  const fn = CAPABILITY_MAP[capabilityName];
-  if (!fn) throw new Error(\`Capability "\${capabilityName}" not found in this pack. Available: \${Object.keys(CAPABILITY_MAP).join(', ')}\`);
+export function cmpsbl_execute(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  const fn = CMPSBL_CAPABILITY_MAP[capabilityName];
+  if (!fn) throw new Error(\`Capability "\${capabilityName}" not found in this pack. Available: \${Object.keys(CMPSBL_CAPABILITY_MAP).join(', ')}\`);
   return fn(input);
 }
+
+/** @deprecated Use cmpsbl_execute instead */
+export const execute = cmpsbl_execute;
 
 /**
  * Execute a raw module chain directly (advanced usage).
