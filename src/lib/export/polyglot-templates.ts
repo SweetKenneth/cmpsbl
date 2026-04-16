@@ -1338,7 +1338,11 @@ fun computeCJPI(n: Double, u: Double, cx: Double, co: Double): Int =
     (n * 0.30 + u * 0.30 + cx * 0.20 + co * 0.20).coerceIn(0.0, 100.0).roundToInt()
 
 fun tierFromCJPI(score: Int): String = when {
-    score >= 92 -> "apex"; score >= 80 -> "mythic"; score >= 65 -> "relic"; score >= 45 -> "prime"; else -> "mint"
+    score >= 92 -> "apex"
+    score >= 80 -> "mythic"
+    score >= 65 -> "relic"
+    score >= 45 -> "prime"
+    else -> "mint"
 }
 
 private fun quickHash(s: String): String {
