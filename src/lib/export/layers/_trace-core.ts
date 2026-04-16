@@ -11,7 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const TRACE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Trace ID Propagation (Crown Jewel #15)                      ║
+// ║  ASCENSION LAYER — Trace ID Propagation (Layer #15 · Always-On)              ║
 // ║  Per-execution correlation ID. Threaded through envelope + BEACON signal.     ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -40,7 +40,7 @@ export function cmpsbl_with_trace<T>(traceId: string, fn: () => T): T {
 
 const TRACE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Trace ID Propagation (Crown Jewel #15)                      ║
+# ║  ASCENSION LAYER — Trace ID Propagation (Layer #15 · Always-On)              ║
 # ║  Per-execution correlation ID. Threaded through envelope + BEACON signal.     ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 

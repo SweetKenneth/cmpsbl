@@ -12,7 +12,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const BEACON_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — BEACON Health Signal (Crown Jewel #17)                      ║
+// ║  ASCENSION LAYER — BEACON Health Signal (Layer #17 · Always-On)              ║
 // ║  Per-execution structured signal. Pluggable sinks. Bounded ring by default.   ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -67,7 +67,7 @@ export function cmpsbl_beacon_health(): { totalCalls: number; okRate: number; av
 
 const BEACON_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — BEACON Health Signal (Crown Jewel #17)                      ║
+# ║  ASCENSION LAYER — BEACON Health Signal (Layer #17 · Always-On)              ║
 # ║  Per-execution structured signal. Pluggable sinks. Bounded ring by default.   ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
