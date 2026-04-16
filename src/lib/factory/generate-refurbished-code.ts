@@ -134,9 +134,11 @@ function jsArrayToNative(call: string, keyTransform: (k: string) => string, sepa
 /** Identity — JS/TS guard syntax is already correct */
 const identityGuard = (g: string) => g;
 
-/** Python: kwargs + snake_case + no semicolons */
+/** Python: kwargs + snake_case + no semicolons + strip JS const decl */
 function pythonGuard(g: string): string {
-  let out = jsArgsToKwargs(g, toSnakeCase, '=');
+  // Strip JS-style `const x = ...` and `let x = ...` declarations — Python uses bare assignment.
+  let out = g.replace(/^[ \t]*(?:const|let|var)\s+/gm, '');
+  out = jsArgsToKwargs(out, toSnakeCase, '=');
   out = jsArrayToNative(out, toSnakeCase, '=', (inner) => `dict(${inner})`);
   out = boolToPython(out);
   out = nullToPython(out);

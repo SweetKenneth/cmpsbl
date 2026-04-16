@@ -99,6 +99,31 @@ export function generateCompiledPreamble(
     ].join('\n');
   }
 
+  // Comment-only preambles for languages where dispatch tables would
+  // otherwise inject foreign syntax (Ruby, PHP, Lua, etc.). The actual
+  // dispatch logic lives in the runtime libraries; the source artifact
+  // just needs to advertise its presence as a comment for verifiability.
+  const COMMENT_ONLY_LANGS = new Set([
+    'ruby', 'php', 'lua', 'elixir', 'erlang', 'clojure', 'r', 'perl',
+    'haskell', 'ocaml', 'fsharp', 'scheme', 'fortran', 'shell', 'bash',
+    'powershell', 'objective_c', 'objc', 'verilog', 'systemverilog',
+    'vhdl', 'chisel', 'amaranth', 'spinalhdl', 'firrtl',
+  ]);
+  if (COMMENT_ONLY_LANGS.has(lang)) {
+    return [
+      `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,
+      `${c} ║ Auto-generated. Tampering invalidates      ║`,
+      `${c} ║ artifact integrity and voids certification  ║`,
+      `${c} ╚═══════════════════════════════════════════╝`,
+      `${c}`,
+      `${c} Dispatch matrix: [${dispatchTable.length} entries]`,
+      `${c} Collision matrix: [${collisionMatrix.length} entries]`,
+      `${c} IV: 0x${seeds.iv.toString(16)} | Epoch: ${seeds.epoch}`,
+      `${c} Resolution: handled by @cmpsbl/runtime native bindings`,
+      '',
+    ].join('\n');
+  }
+
   // Default: TypeScript/JavaScript
   return [
     `${c} ╔══ CMPSBL® Convex Core™ Dispatch Matrix ══╗`,

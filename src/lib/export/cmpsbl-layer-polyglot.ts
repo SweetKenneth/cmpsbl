@@ -562,9 +562,26 @@ function extractAPIFromTS(tsCode: string): ExtractedAPI {
   for (const m of tsCode.matchAll(/(?:export\s+)?interface\s+(\w+)/g)) {
     result.interfaces.push(m[1]);
   }
-  // Extract functions (named)
-  for (const m of tsCode.matchAll(/(?:export\s+)?function\s+(\w+)\s*(\([^)]*\))/g)) {
-    result.functions.push({ name: m[1], signature: m[2] });
+  // Extract functions (named) — paren-balanced scan to support multi-line
+  // signatures and nested callback params (e.g., `(action: string) => Promise<T>`)
+  const fnRegex = /(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(/g;
+  let fnMatch: RegExpExecArray | null;
+  while ((fnMatch = fnRegex.exec(tsCode)) !== null) {
+    const start = fnMatch.index + fnMatch[0].length - 1; // position of opening `(`
+    let depth = 0;
+    let end = -1;
+    for (let i = start; i < tsCode.length; i++) {
+      const ch = tsCode[i];
+      if (ch === '(') depth++;
+      else if (ch === ')') {
+        depth--;
+        if (depth === 0) { end = i; break; }
+      }
+    }
+    if (end === -1) continue;
+    // Collapse newlines/extra whitespace to single spaces for the comment line
+    const sig = tsCode.slice(start, end + 1).replace(/\s+/g, ' ');
+    result.functions.push({ name: fnMatch[1], signature: sig });
   }
   // Extract export declarations
   for (const m of tsCode.matchAll(/export\s+(?:function|const|class|type|interface)\s+(\w+)/g)) {
