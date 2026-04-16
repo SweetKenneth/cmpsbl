@@ -340,6 +340,26 @@ export interface ExecutionResult {
   };
 }
 
+/**
+ * Thrown by execute_* functions when Layer 1 (your code) raises or Layer 2
+ * (the cognitive pipeline) reports failure. Wrappers (Circuit Breaker, Retry,
+ * Self-Healing, BEACON) need a real throw to react — silent success-dicts
+ * mask failures from the resilience stack. The full envelope is preserved
+ * on \`.envelope\` so observers can still read structured execution data.
+ */
+export class CmpsblExecutionError extends Error {
+  readonly capability: string;
+  readonly reason: 'handler_failure' | 'pipeline_failure';
+  readonly envelope: ExecutionResult;
+  constructor(capability: string, reason: 'handler_failure' | 'pipeline_failure', detail: string, envelope: ExecutionResult) {
+    super(\`[CMPSBL] \${capability}: \${reason} — \${detail}\`);
+    this.name = 'CmpsblExecutionError';
+    this.capability = capability;
+    this.reason = reason;
+    this.envelope = envelope;
+  }
+}
+
 // ─── CJPI Scorer ─────────────────────────────────────────────────────────────
 
 export function computeCJPI(input: CJPIInput): CJPIResult {
