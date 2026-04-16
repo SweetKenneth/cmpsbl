@@ -82,12 +82,12 @@ interface Combo { name: string; layers: CmpsblLayerDefinition[]; }
 const COMBOS: Combo[] = [
   { name: 'BASELINE (core only)', layers: [] },
   { name: 'ALL_STACKED', layers: ALL },
-  { name: 'BUNDLE_resilience', layers: pick('self-healing', 'cognitive-triage', 'consensus-recovery') },
-  { name: 'BUNDLE_foresight', layers: pick('oracle-ripple', 'anomaly-correlation') },
+  { name: 'BUNDLE_resilience', layers: pick('self-healing', 'autonomous-triage', 'distributed-consensus') },
+  { name: 'BUNDLE_foresight', layers: pick('oracle-ripple-precognition', 'anomaly-correlation-engine') },
   { name: 'BUNDLE_security', layers: pick('adaptive-defense', 'zero-trust', 'cyber-defense') },
-  { name: 'BUNDLE_intelligence', layers: pick('fleet-intelligence', 'ai-safety', 'ai-cost-control', 'cognitive-memory') },
+  { name: 'BUNDLE_intelligence', layers: pick('fleet-intelligence', 'ai-safety', 'ai-cost', 'cognitive-memory') },
   { name: 'BUNDLE_perf_orch', layers: pick('performance-surgery', 'pipeline-resilience', 'pipeline-composition', 'universal-input') },
-  { name: 'BUNDLE_governance', layers: pick('self-evolution', 'governance-shield', 'audit-chain', 'compliance-routing') },
+  { name: 'BUNDLE_governance', layers: pick('self-evolution', 'governance-shield', 'audit-chain', 'regulatory-compliance') },
 ];
 // Solos: every selectable layer alone
 for (const l of ALL) COMBOS.push({ name: `SOLO_${l.id}`, layers: [l] });
