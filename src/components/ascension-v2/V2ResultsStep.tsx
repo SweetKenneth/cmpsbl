@@ -375,6 +375,20 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               <div key={i} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                 <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">{cap.name}</span>
+                {cap.band && (
+                  <span
+                    className={cn(
+                      'text-[8px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 rounded flex-shrink-0',
+                      cap.band === 'high' && 'bg-primary/15 text-primary',
+                      cap.band === 'medium' && 'bg-amber-500/15 text-amber-600 dark:text-amber-400',
+                      cap.band === 'low' && 'bg-muted text-muted-foreground',
+                      cap.band === 'hypothesis' && 'bg-muted/50 text-muted-foreground italic',
+                    )}
+                    title={`Confidence: ${cap.band}${cap.bandChannelCount !== undefined ? ` · ${cap.bandChannelCount}/3 channels` : ''}`}
+                  >
+                    {cap.band}
+                  </span>
+                )}
                 <span className={cn('text-[10px] sm:text-xs font-mono font-bold flex-shrink-0', scoreColor(cap.cjpiScore))}>
                   {cap.cjpiScore}
                 </span>
