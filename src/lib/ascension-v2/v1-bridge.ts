@@ -488,9 +488,12 @@ export function measureDiscoveryDelta(
     hypothesis: post.hypothesis - pre.hypothesis,
   };
 
-  // Verdict: did dedup amplify quality (more high, fewer low) or just compress?
+  // Verdict: dedup is "amplified" when high-band proportion ROSE, "compressed"
+  // when more than half the raw discoveries were collapsed, otherwise "preserved".
+  const preHighShare = raw === 0 ? 0 : pre.high / raw;
+  const postHighShare = unique === 0 ? 0 : post.high / unique;
   const verdict: DiscoverySetDelta['verdict'] =
-    bandShift.high > 0 || topScoreDelta > 0
+    postHighShare > preHighShare || topScoreDelta > 0
       ? 'amplified'
       : collapse < 0.5
         ? 'compressed'

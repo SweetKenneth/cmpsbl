@@ -375,6 +375,19 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               <div key={i} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                 <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">{cap.name}</span>
+                {cap.mergeVerdict && (
+                  <span
+                    className={cn(
+                      'text-[8px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 rounded flex-shrink-0',
+                      cap.mergeVerdict === 'beneficial' && 'bg-primary/15 text-primary',
+                      cap.mergeVerdict === 'neutral' && 'bg-muted text-muted-foreground',
+                      cap.mergeVerdict === 'risky' && 'bg-destructive/15 text-destructive',
+                    )}
+                    title={`Merge verdict: ${cap.mergeVerdict}${cap.mergeNetImprovement !== undefined ? ` · Δ ${cap.mergeNetImprovement}` : ''}`}
+                  >
+                    {cap.mergeVerdict === 'beneficial' ? '↑' : cap.mergeVerdict === 'risky' ? '↓' : '='}
+                  </span>
+                )}
                 {cap.band && (
                   <span
                     className={cn(
