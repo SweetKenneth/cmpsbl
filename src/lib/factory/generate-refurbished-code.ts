@@ -3196,10 +3196,18 @@ export function generateRefurbishedCode(
     ],
   }, null, 2);
 
-  const metaBlock = [
-    adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
-    adapter.constDecl('__CMPSBL_META__', metaJson),
-  ].join('\n');
+  // For Go, JSON object literals at top level are illegal — emit as a raw
+  // string constant so it parses cleanly while preserving the metadata.
+  const langLowerMeta = detected.toLowerCase();
+  const metaBlock = (langLowerMeta === 'go')
+    ? [
+        adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
+        'const __CMPSBL_META__ = `' + metaJson.replace(/`/g, '` + "`" + `') + '`',
+      ].join('\n')
+    : [
+        adapter.comment('═══ CMPSBL Artifact Metadata ═══'),
+        adapter.constDecl('__CMPSBL_META__', metaJson),
+      ].join('\n');
 
   // Generate inline self-verification block (language-aware)
   const verifyBlock = generateSelfVerifyBlock(adapter, fingerprint, detected);
