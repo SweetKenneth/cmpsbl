@@ -194,7 +194,7 @@ export default function Auth() {
     }
   };
 
-
+  const SETUP_STEPS = [
     { num: '1', text: 'Enter your email and click "Send Link"' },
     { num: '2', text: 'Open the link in your email to sign in' },
     { num: '3', text: 'You\'ll be prompted to set up Face ID — tap "Set Up Face ID"' },
