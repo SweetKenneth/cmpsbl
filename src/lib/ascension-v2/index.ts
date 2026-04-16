@@ -55,25 +55,30 @@ export type {
 } from './pre-export-harness';
 
 // V1 Bridge — exposes the canonical V1 quality, integrity, audit,
-// scoring, and contract engines to the V2 pipeline (Phase A: gaps 1-6).
+// scoring, contract, merge, learning, feedback, and drift engines
+// to the V2 pipeline (Phase A: gaps 1-6, Phase B: gaps 7-11).
 export {
-  // Confidence banding
+  // Phase A — gaps 1-6
   bandDiscovery,
-  // Quality gate
   runV2QualityGate,
-  // Scan integrity
   fingerprintSourceFiles,
   aggregateProfile,
-  // Ingest audit
   logV2Upload,
   logV2Extraction,
   logV2QualityGate,
   logV2ChainParticipation,
   logV2Discovery,
-  // Compatibility scoring
   scoreCollision,
-  // Contract extraction
   extractFileContracts,
+  // Phase B — gaps 7-11
+  simulateMergeBatch,
+  measureDiscoveryDelta,
+  recordCollisionOutcome,
+  getCollisionLearning,
+  recordV2Confirmation,
+  getV2FeedbackVocabulary,
+  getV2FeedbackStats,
+  detectV2Drift,
 } from './v1-bridge';
 export type {
   ConfidenceBand,
@@ -87,4 +92,12 @@ export type {
   CandidateContractBundle,
   InterfaceContract,
   EnvironmentProfile,
+  MergeSimulation,
+  V2MergeBatchReport,
+  DiscoverySetDelta,
+  LearnedSignal,
+  FeedbackStats,
+  FeedbackExtraction,
+  DriftDetection,
+  V2DriftReport,
 } from './v1-bridge';
