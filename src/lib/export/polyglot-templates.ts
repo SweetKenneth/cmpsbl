@@ -201,7 +201,7 @@ fn now_ms() -> u128 {
 // ║  §2 — MODULE EFFECTS                                                         ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-type JsonMap = HashMap<String, serde_json::Value>;
+type JsonMap = HashMap<String, JsonValue>;
 
 #[derive(Debug, Clone)]
 pub struct PipelineContext {
@@ -233,7 +233,6 @@ pub struct PipelineResult {
 }
 
 fn handle_module(ctx: &mut PipelineContext, module: &str, meta: &CapabilityMeta) {
-    use serde_json::json;
     let ts = now_ms();
     match module {
         "CORE" => {
@@ -244,36 +243,36 @@ fn handle_module(ctx: &mut PipelineContext, module: &str, meta: &CapabilityMeta)
         "BRAIN" => {
             let keys = user_keys(&ctx.data);
             let depth = if keys.len() > 10 { "deep" } else if keys.len() > 5 { "standard" } else { "shallow" };
-            ctx.data.insert("_reasoning".into(), json!({"complexity": keys.len(), "depth": depth, "analysis": "context_analyzed"}));
+            ctx.data.insert("_reasoning".into(), json!({"complexity" => keys.len(), "depth" => depth, "analysis" => "context_analyzed"}));
             ctx.signals.push(HashMap::from([("type".into(), json!("reasoning")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "MEMORY" => {
             let fp = quick_hash(&format!("{:?}", ctx.data));
-            ctx.data.insert("_memory".into(), json!({"fingerprint": fp, "retrieved": true, "indexed": true}));
+            ctx.data.insert("_memory".into(), json!({"fingerprint" => fp, "retrieved" => true, "indexed" => true}));
             ctx.signals.push(HashMap::from([("type".into(), json!("retrieval")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "NERVE" => {
-            ctx.data.insert("_nerve".into(), json!({"signalStrength": (user_keys(&ctx.data).len() as f64 / 10.0).min(1.0), "gatesPassed": 4}));
+            ctx.data.insert("_nerve".into(), json!({"signalStrength" => (user_keys(&ctx.data).len() as f64 / 10.0).min(1.0), "gatesPassed" => 4}));
             ctx.signals.push(HashMap::from([("type".into(), json!("route")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "DECODE" => {
             let fields = user_keys(&ctx.data);
-            ctx.data.insert("_decode".into(), json!({"fields": fields.len(), "parsed": true}));
+            ctx.data.insert("_decode".into(), json!({"fields" => fields.len(), "parsed" => true}));
             ctx.signals.push(HashMap::from([("type".into(), json!("decode")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "ENCODE" => {
-            ctx.data.insert("_encode".into(), json!({"format": "json", "serialized": true}));
+            ctx.data.insert("_encode".into(), json!({"format" => "json", "serialized" => true}));
             ctx.signals.push(HashMap::from([("type".into(), json!("encode")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "DEFENSE" => {
             let s = format!("{:?}", ctx.data);
             let threats = if s.contains("<script") || s.contains("eval(") || s.contains("__proto__") { 1 } else { 0 };
-            ctx.data.insert("_defense".into(), json!({"sanitized": true, "threats": threats}));
+            ctx.data.insert("_defense".into(), json!({"sanitized" => true, "threats" => threats}));
             ctx.signals.push(HashMap::from([("type".into(), json!("defense")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "ORACLE" => {
             let conf = meta.cjpi as f64 / 100.0;
-            ctx.data.insert("_prediction".into(), json!({"confidence": conf, "model": "oracle-v1", "status": "computed"}));
+            ctx.data.insert("_prediction".into(), json!({"confidence" => conf, "model" => "oracle-v1", "status" => "computed"}));
             ctx.signals.push(HashMap::from([("type".into(), json!("prediction")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "IMMUNITY" => {
@@ -282,7 +281,7 @@ fn handle_module(ctx: &mut PipelineContext, module: &str, meta: &CapabilityMeta)
             ctx.signals.push(HashMap::from([("type".into(), json!("shield")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "CORTEX" => {
-            ctx.data.insert("_orchestration".into(), json!({"total_stages": meta.chain.len(), "signals": ctx.signals.len(), "status": "coordinated"}));
+            ctx.data.insert("_orchestration".into(), json!({"total_stages" => meta.chain.len(), "signals" => ctx.signals.len(), "status" => "coordinated"}));
             ctx.signals.push(HashMap::from([("type".into(), json!("orchestrate")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "EVOLUTION" => {
@@ -292,46 +291,46 @@ fn handle_module(ctx: &mut PipelineContext, module: &str, meta: &CapabilityMeta)
         }
         "SHADOW" => {
             let hash = quick_hash(&format!("{:?}", ctx.data));
-            ctx.data.insert("_shadow".into(), json!({"verified": true, "hash": hash}));
+            ctx.data.insert("_shadow".into(), json!({"verified" => true, "hash" => hash}));
             ctx.signals.push(HashMap::from([("type".into(), json!("audit")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "HARVEST" => {
             let keys = user_keys(&ctx.data);
-            ctx.data.insert("_harvest".into(), json!({"fields": keys.len(), "deduplicated": true}));
+            ctx.data.insert("_harvest".into(), json!({"fields" => keys.len(), "deduplicated" => true}));
             ctx.signals.push(HashMap::from([("type".into(), json!("ingest")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "PHANTOM" => {
-            ctx.data.insert("_phantom".into(), json!({"anonymized": true, "proxy_hops": 3}));
+            ctx.data.insert("_phantom".into(), json!({"anonymized" => true, "proxy_hops" => 3}));
             ctx.signals.push(HashMap::from([("type".into(), json!("anonymize")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "ECHO" => {
             let keys: Vec<String> = ctx.data.keys().cloned().collect();
-            ctx.data.insert("_echo".into(), json!({"replay_available": true, "snapshot_keys": keys}));
+            ctx.data.insert("_echo".into(), json!({"replay_available" => true, "snapshot_keys" => keys}));
             ctx.signals.push(HashMap::from([("type".into(), json!("echo")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "FORGE" => {
-            ctx.data.insert("_forge".into(), json!({"scaffolded": true, "target": &meta.tier}));
+            ctx.data.insert("_forge".into(), json!({"scaffolded" => true, "target" => &meta.tier}));
             ctx.signals.push(HashMap::from([("type".into(), json!("forge")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "INTENT" => {
-            ctx.data.insert("_intent".into(), json!({"planned": true, "actions": meta.chain.len()}));
+            ctx.data.insert("_intent".into(), json!({"planned" => true, "actions" => meta.chain.len()}));
             ctx.signals.push(HashMap::from([("type".into(), json!("plan")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "CONSCIENCE" => {
-            ctx.data.insert("_conscience".into(), json!({"biasChecks": 5, "fairnessScore": 0.85, "flagged": 0}));
+            ctx.data.insert("_conscience".into(), json!({"biasChecks" => 5, "fairnessScore" => 0.85, "flagged" => 0}));
             ctx.signals.push(HashMap::from([("type".into(), json!("assess")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "GOVERNANCE" => {
-            ctx.data.insert("_governance".into(), json!({"policiesEnforced": true, "compliance": "passed"}));
+            ctx.data.insert("_governance".into(), json!({"policiesEnforced" => true, "compliance" => "passed"}));
             ctx.signals.push(HashMap::from([("type".into(), json!("govern")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "IDENTITY" => {
-            ctx.data.insert("_identity".into(), json!({"resolved": true, "session": "bound"}));
+            ctx.data.insert("_identity".into(), json!({"resolved" => true, "session" => "bound"}));
             ctx.signals.push(HashMap::from([("type".into(), json!("resolve")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         _ => {
             let key = format!("_module_{}", module.to_lowercase());
-            ctx.data.insert(key, json!({"processed": true, "handler": "generic"}));
+            ctx.data.insert(key, json!({"processed" => true, "handler" => "generic"}));
             ctx.signals.push(HashMap::from([("type".into(), json!("process")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
     }
@@ -473,7 +472,7 @@ pub fn validate() -> bool {
 
 pub fn cmpsbl_self_test() -> Vec<(&'static str, bool)> {
     PACK.capabilities.iter().map(|cap| {
-        let input = HashMap::from([("_test".into(), serde_json::json!(true))]);
+        let input = HashMap::from([("_test".into(), json!(true))]);
         let result = cmpsbl_execute(cap.name, input);
         (cap.name, result.success)
     }).collect()
@@ -486,7 +485,7 @@ mod tests {
     #[test]
     fn test_execute_all_capabilities() {
         for cap in PACK.capabilities {
-            let input = HashMap::from([("_test".into(), serde_json::json!(true))]);
+            let input = HashMap::from([("_test".into(), json!(true))]);
             let result = execute(cap.name, input);
             assert!(result.success, "Failed: {}", cap.name);
         }
