@@ -283,7 +283,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
       setCeremonyOpen(false);
-      toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
+      // Distinguish Coming Soon language gating from real failures so the
+      // user sees a clean roadmap message instead of a stack trace.
+      const isComingSoon = err instanceof Error && err.name === 'LanguageNotShippingError';
+      toast({
+        title: isComingSoon ? 'Language coming soon' : 'Export failed',
+        description: err instanceof Error ? err.message : String(err),
+        variant: isComingSoon ? 'default' : 'destructive',
+      });
     } finally {
       setExporting(false);
     }
