@@ -833,6 +833,18 @@ export function cmpsbl_self_test(): { passed: number; failed: number; results: R
 export const selfTest = cmpsbl_self_test;
 ${(selectedLayers || []).map(l => l.tsCode).join('\n')}
 ${getAutoWireTs(selectedLayers || [])}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CMPSBL® Silent Symbiosis — Software Ascended
+// Governed Cognitive Infrastructure · Deterministic Processing Layer
+//
+// Inventor: Kenneth E. Sweet Jr. · PromptFluid™ TX
+// U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
+// U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+//
+// © 2009–2026 CMPSBL® · All rights reserved
+// Unauthorized reproduction, modification, or redistribution prohibited.
+// ═══════════════════════════════════════════════════════════════════════════════
 `;
 }
 
