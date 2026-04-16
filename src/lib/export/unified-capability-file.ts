@@ -1312,7 +1312,7 @@ def handle_defense(ctx, mod, meta):
         ("xss", re.compile(r"<\s*script\b|javascript:|on\w+\s*=", re.I)),
         ("sqli", re.compile(r"(\bunion\b.*\bselect\b|;\s*drop\s+table|--\s*$)", re.I)),
         ("rce", re.compile(r"\beval\s*\(|\bexec\s*\(|__proto__|constructor\s*\[")),
-        ("path_traversal", re.compile(r"\\.\\.[\\/]")),
+        ("path_traversal", re.compile(r"\.\.[/\\\\]")),
     ]
     findings: Dict[str, int] = {}
     total = 0
