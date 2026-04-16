@@ -215,13 +215,35 @@ export function getAutoWireTs(layers: CmpsblLayerDefinition[]): string {
     '',
   ];
   let lastPhase = -1;
+  let spineMarked = false;
   for (const { layer, phase } of ordered) {
     if (phase !== lastPhase) {
+      // Insert the EXECUTION SPINE banner once, right before any post-execution
+      // phase (Evolution / Post Compliance). Layer 1 (your code) fires inside
+      // cmpsbl_execute — every layer above wraps it, every layer below observes it.
+      if (!spineMarked && phase >= 7) {
+        parts.push('// ╔══════════════════════════════════════════════════════════════════════════╗');
+        parts.push('// ║  ▼ CMPSBL® EXECUTION SPINE — cmpsbl_execute (Phase 6: LAYER 1)  ▼      ║');
+        parts.push('// ║  Your original code runs here, untouched. All wrappers above resolve   ║');
+        parts.push('// ║  before this call; all observers below resolve after it returns.        ║');
+        parts.push('// ╚══════════════════════════════════════════════════════════════════════════╝');
+        parts.push('');
+        spineMarked = true;
+      }
       parts.push(`// ── ${PHASE_LABELS[phase] ?? `Phase ${phase}`} ──`);
       lastPhase = phase;
     }
     parts.push(`// • ${layer.name} (Layer #${layer.crownJewelRank})`);
     parts.push(layer.autoWire.tsWire);
+    parts.push('');
+  }
+  // If no post-execution phases were selected, still mark the spine at the end.
+  if (!spineMarked) {
+    parts.push('// ╔══════════════════════════════════════════════════════════════════════════╗');
+    parts.push('// ║  ▼ CMPSBL® EXECUTION SPINE — cmpsbl_execute (Phase 6: LAYER 1)  ▼      ║');
+    parts.push('// ║  Your original code runs here, untouched. All wrappers above resolve   ║');
+    parts.push('// ║  before this call. No post-execution observers selected.                ║');
+    parts.push('// ╚══════════════════════════════════════════════════════════════════════════╝');
     parts.push('');
   }
   return parts.join('\n');
@@ -241,8 +263,18 @@ export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
     '',
   ];
   let lastPhase = -1;
+  let spineMarked = false;
   for (const { layer, phase } of ordered) {
     if (phase !== lastPhase) {
+      if (!spineMarked && phase >= 7) {
+        parts.push('# ╔══════════════════════════════════════════════════════════════════════════╗');
+        parts.push('# ║  ▼ CMPSBL® EXECUTION SPINE — cmpsbl_execute (Phase 6: LAYER 1)  ▼      ║');
+        parts.push('# ║  Your original code runs here, untouched. All wrappers above resolve   ║');
+        parts.push('# ║  before this call; all observers below resolve after it returns.        ║');
+        parts.push('# ╚══════════════════════════════════════════════════════════════════════════╝');
+        parts.push('');
+        spineMarked = true;
+      }
       parts.push(`# ── ${PHASE_LABELS[phase] ?? `Phase ${phase}`} ──`);
       lastPhase = phase;
     }
@@ -250,9 +282,17 @@ export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
     parts.push(layer.autoWire.pyWire);
     parts.push('');
   }
-  parts.push('# Re-alias for backwards compat');
-  parts.push('execute = cmpsbl_execute');
-  return parts.join('\n');
+  if (!spineMarked) {
+    parts.push('# ╔══════════════════════════════════════════════════════════════════════════╗');
+    parts.push('# ║  ▼ CMPSBL® EXECUTION SPINE — cmpsbl_execute (Phase 6: LAYER 1)  ▼      ║');
+    parts.push('# ║  Your original code runs here, untouched. All wrappers above resolve   ║');
+    parts.push('# ║  before this call. No post-execution observers selected.                ║');
+    parts.push('# ╚══════════════════════════════════════════════════════════════════════════╝');
+    parts.push('');
+  }
+  parts.push('# Re-alias for backwards compat')
+  parts.push('execute = cmpsbl_execute')
+  return parts.join('\n')
 }
 
 /**
