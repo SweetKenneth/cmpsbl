@@ -52,6 +52,31 @@ import type { ExtractedPrimitive, QualityReport } from '@/lib/ascension/types';
 import type { StructuralMatch } from '@/lib/ascension/structural-signatures';
 import { extractPrimitives } from '@/lib/ascension/primitive-extractor';
 
+// Phase B (gaps 7-11)
+import {
+  simulateMerge,
+  type MergeSimulation,
+} from '@/lib/ascension/merge-simulation';
+import {
+  recordPrimitiveOutcome,
+  getPrimitiveLearningStats,
+  isPrimitiveReliable,
+} from '@/lib/ascension/primitive-learning';
+import {
+  extractContext,
+  recordConfirmedMatch,
+  getHighConfidenceSignals,
+  getFeedbackStats,
+  type FeedbackExtraction,
+  type LearnedSignal,
+  type FeedbackStats,
+} from '@/lib/ascension/feedback-loop';
+import {
+  detectEcosystem,
+  detectDrift,
+  type DriftDetection,
+} from '@/lib/ascension/semantic-drift';
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — CONFIDENCE BANDING (Gap #1)
 // ═══════════════════════════════════════════════════════════════════════════════
