@@ -119,6 +119,43 @@ use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH, Instant};
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  §0 — SELF-CONTAINED JSON VALUE (zero external dependencies)                 ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+#[derive(Debug, Clone)]
+pub enum JsonValue {
+    Null,
+    Bool(bool),
+    Number(f64),
+    String(String),
+    Array(Vec<JsonValue>),
+    Object(HashMap<String, JsonValue>),
+}
+
+impl From<bool> for JsonValue { fn from(v: bool) -> Self { JsonValue::Bool(v) } }
+impl From<i32> for JsonValue { fn from(v: i32) -> Self { JsonValue::Number(v as f64) } }
+impl From<u32> for JsonValue { fn from(v: u32) -> Self { JsonValue::Number(v as f64) } }
+impl From<usize> for JsonValue { fn from(v: usize) -> Self { JsonValue::Number(v as f64) } }
+impl From<f64> for JsonValue { fn from(v: f64) -> Self { JsonValue::Number(v) } }
+impl From<u128> for JsonValue { fn from(v: u128) -> Self { JsonValue::Number(v as f64) } }
+impl From<&str> for JsonValue { fn from(v: &str) -> Self { JsonValue::String(v.to_string()) } }
+impl From<String> for JsonValue { fn from(v: String) -> Self { JsonValue::String(v) } }
+impl From<Vec<String>> for JsonValue { fn from(v: Vec<String>) -> Self { JsonValue::Array(v.into_iter().map(JsonValue::String).collect()) } }
+impl From<HashMap<String, JsonValue>> for JsonValue { fn from(v: HashMap<String, JsonValue>) -> Self { JsonValue::Object(v) } }
+
+/// Minimal json! macro replacement — accepts string/number/bool/array literals.
+macro_rules! json {
+    (null) => { JsonValue::Null };
+    ([ $($v:expr),* $(,)? ]) => { JsonValue::Array(vec![$( JsonValue::from($v) ),*]) };
+    ({ $($k:expr => $v:expr),* $(,)? }) => {{
+        let mut __m: HashMap<String, JsonValue> = HashMap::new();
+        $( __m.insert($k.to_string(), JsonValue::from($v)); )*
+        JsonValue::Object(__m)
+    }};
+    ($v:expr) => { JsonValue::from($v) };
+}
+
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  §1 — CONVEX CORE™ DPL                                                  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -145,14 +182,14 @@ pub fn tier_from_cjpi(score: u32) -> String {
 }
 
 fn quick_hash(input: &str) -> String {
-    let mut h: i64 = 5381;
+    let mut h: u32 = 5381;
     for b in input.bytes() {
-        h = ((h << 5).wrapping_add(h)).wrapping_add(b as i64);
+        h = h.wrapping_shl(5).wrapping_add(h).wrapping_add(b as u32);
     }
-    format!("{:08x}", h.unsigned_abs())
+    format!("{:08x}", h)
 }
 
-fn user_keys(data: &HashMap<String, serde_json::Value>) -> Vec<String> {
+fn user_keys(data: &HashMap<String, JsonValue>) -> Vec<String> {
     data.keys().filter(|k| !k.starts_with('_')).cloned().collect()
 }
 
