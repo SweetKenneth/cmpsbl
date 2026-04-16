@@ -1214,18 +1214,15 @@ export function generateUnifiedPhp(
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
   const phpFiles = (userSourceFiles || []).filter(f => /\.php$/i.test(f.name));
-  // Single-file exports place the original as a sibling; multi-file uses original/ subdir.
-  // The ZIP builder decides the layout — we match it here:
-  //   1 file  → sibling require (same directory)
-  //   N files → original/ subdirectory require
-  const isSingleFile = phpFiles.length === 1;
-  const requireBlock = phpFiles.length > 0
-    ? phpFiles.map(f =>
-        isSingleFile
-          ? `require_once __DIR__ . '/${f.name}';`
-          : `require_once __DIR__ . '/original/${f.name}';`
-      ).join('\n')
-    : '// No PHP source files detected — wire your require_once manually';
+  // Layer 1 is EMBEDDED inline — the wrapped file is fully self-contained.
+  // The original in the ZIP is a reference copy for verification only.
+  const inlineBlock = phpFiles.length > 0
+    ? phpFiles.map(f => {
+        // Strip the opening <?php tag from embedded source to avoid duplicate declarations
+        const cleanContent = f.content.replace(/^<\?php\s*/i, '').trimEnd();
+        return `// ═══ LAYER 1 — ORIGINAL SOURCE (${f.name}) ═══\n// Embedded inline per U.S. App. No. 64/029,678 dual-layer architecture.\n// This is your original code — it runs first, unchanged.\n\n${cleanContent}`;
+      }).join('\n\n')
+    : '// No source files detected — Layer 1 is empty';
 
   return `<?php
 /**
@@ -1242,7 +1239,7 @@ export function generateUnifiedPhp(
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-${requireBlock}
+${inlineBlock}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  §1 — CONVEX CORE™ DPL                                                  ║

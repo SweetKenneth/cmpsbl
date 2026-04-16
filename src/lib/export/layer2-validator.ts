@@ -254,13 +254,12 @@ export interface Layer2LinkageResult {
 
 /**
  * Pre-ZIP acceptance test: verify that the generated Layer 2 code
- * references the Layer 1 original file(s). This prevents shipping
+ * contains the Layer 1 original source inline. This prevents shipping
  * exports where the wrapped file has no code-level connection to the input.
  *
  * Checks:
- *   1. Layer 2 contains a live (uncommented) require/import of the original
+ *   1. Layer 2 contains the original source embedded inline (or a live import)
  *   2. Layer 2 references the original class/module name
- *   3. The paths in the require match the actual ZIP layout
  */
 export function validateLayer2Linkage(
   layer2Code: string,
@@ -268,40 +267,23 @@ export function validateLayer2Linkage(
   originalFileNames: string[],
 ): Layer2LinkageResult {
   const errors: string[] = [];
-  const lang = language.toLowerCase();
 
   if (originalFileNames.length === 0) {
     return { linked: true, errors: [] };
   }
 
-  // §5.1 — Check for live imports (not commented out)
-  for (const fileName of originalFileNames) {
-    const nameEscaped = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    let hasLiveImport = false;
-
-    if (lang === 'php') {
-      // Match require_once that is NOT preceded by // or # on the same line
-      const requirePattern = new RegExp(`^(?!\\s*\\/\\/)\\s*require_once\\b.*${nameEscaped}`, 'm');
-      hasLiveImport = requirePattern.test(layer2Code);
-    } else if (lang === 'python') {
-      const importPattern = new RegExp(`^(?!\\s*#)\\s*(import|from)\\b.*${nameEscaped.replace(/\\.py$/, '')}`, 'm');
-      hasLiveImport = importPattern.test(layer2Code);
-    } else {
-      // JS/TS and others
-      const importPattern = new RegExp(`^(?!\\s*\\/\\/)\\s*(import|require)\\b.*${nameEscaped}`, 'm');
-      hasLiveImport = importPattern.test(layer2Code);
-    }
-
-    if (!hasLiveImport) {
-      errors.push(`Layer 2 has no live import of "${fileName}" — the wrapped file will not load the original.`);
-    }
-  }
-
-  // §5.2 — Check that executeOriginal / equivalent references a class or function
+  // §5.1 — Check that the original class/module is present (inline or imported)
   const primaryName = originalFileNames[0].replace(/\.[^.]+$/, '');
   const hasClassRef = layer2Code.includes(primaryName);
   if (!hasClassRef) {
-    errors.push(`Layer 2 does not reference "${primaryName}" — executeOriginal() may be a dead stub.`);
+    errors.push(`Layer 2 does not reference "${primaryName}" — the original source is not embedded or imported.`);
+  }
+
+  // §5.2 — Check for the LAYER 1 embed marker OR a live import
+  const hasInlineEmbed = layer2Code.includes('LAYER 1') && layer2Code.includes('ORIGINAL SOURCE');
+  const hasLiveImport = new RegExp(`^(?!\\s*\\/\\/)\\s*(require_once|require|import|from)\\b`, 'm').test(layer2Code);
+  if (!hasInlineEmbed && !hasLiveImport) {
+    errors.push(`Layer 2 has no embedded original source and no live import — the wrapped file is disconnected from Layer 1.`);
   }
 
   return { linked: errors.length === 0, errors };
