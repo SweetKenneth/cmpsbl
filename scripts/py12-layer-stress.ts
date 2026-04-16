@@ -137,11 +137,10 @@ for (const file of FILES) {
   // (c) Syntax-check the unified Python output
   if (r.unifiedOk) {
     try {
-      const { execSync } = require('node:child_process');
       execSync(`python3 -c "import ast; ast.parse(open('${join(OUT_DIR, `unified-${file}`)}').read())"`, { timeout: 10000 });
       r.pyExecOk = true;
     } catch (e: any) {
-      r.pyExecErr = String(e?.message || e).split('\n')[0].slice(0, 250);
+      r.pyExecErr = String(e?.stderr || e?.message || e).split('\n').filter((l: string) => l.includes('Error')).join(' ').slice(0, 250) || 'AST parse failed';
     }
   }
 
