@@ -358,7 +358,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 const ORACLE_RIPPLE_LAYER: CmpsblLayerDefinition = {
   id: 'oracle-ripple-precognition',
   name: 'Oracle-Ripple Precognition Chain',
-  crownJewelRank: 24,
+  crownJewelRank: 8,
   cjpi: 96,
   module: 'ORACLE',
   description: 'Predictive failure forecasting fused with causal propagation. Detects downstream cascades before they occur and auto-executes preemptive scale, reroute, throttle, or isolate actions.',
