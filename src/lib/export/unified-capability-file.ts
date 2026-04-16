@@ -1007,27 +1007,31 @@ ${embeddedSources}
     if (entryPoints.length > 0) {
       const entryPointsList = entryPoints.join(', ');
       executeOriginalBody = `        """Layer 1 — Smart entry point detection for ${primaryFile.name}.
-        Scans __all__, skips Exception subclasses, targets the actual API surface."""
+        First-match-wins: scans __all__, skips Exception subclasses, invokes the
+        first viable target and returns its result directly."""
         _entry_points = [${entryPointsList}]
-        results = {}
         for kind, name in _entry_points:
             try:
                 target = globals().get(name)
                 if target is None:
                     continue
                 if kind == "function" and callable(target):
-                    results[name] = target(input_data) if input_data else target()
-                elif kind == "class" and isinstance(target, type):
-                    # Try instantiation, then probe for callable methods
+                    return target(input_data) if input_data else target()
+                if kind == "class" and isinstance(target, type):
                     try:
                         instance = target(input_data) if input_data else target()
-                        results[name] = {"_instance": str(type(instance).__name__), "_created": True}
                     except TypeError:
-                        results[name] = {"_class": name, "_available": True}
+                        # Class requires different signature — surface availability
+                        return {"_class": name, "_available": True}
+                    # Probe for a callable execution method
+                    for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
+                        method = getattr(instance, method_name, None)
+                        if callable(method):
+                            return method(input_data) if input_data else method()
+                    return {"_instance": name, "_created": True}
             except Exception as e:
-                results[name] = {"_error": str(e)}
-        if results:
-            return results
+                # Try the next entry point on failure
+                continue
         return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
       // Has code but couldn't determine entry points — provide a passthrough
