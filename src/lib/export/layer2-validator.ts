@@ -286,13 +286,21 @@ export function validateLayer2Linkage(
     .join('');
   // Also accept the leading segment alone (e.g. "Builders" from "Builders.common")
   const leadingSegment = primaryName.split(/[.\-_]/).filter(Boolean)[0] || primaryName;
-  const variants = [primaryName, pascalName, leadingSegment];
+  // snake_case variant for Python/Rust/Go file naming conventions
+  const snakeName = primaryName.replace(/[.\-]/g, '_').toLowerCase();
+  // camelCase from snake or Pascal
+  const camelName = pascalName.charAt(0).toLowerCase() + pascalName.slice(1);
+  const variants = new Set([primaryName, pascalName, leadingSegment, snakeName, camelName]);
+  // Also add each individual segment for multi-word files (e.g. "Json" from "JsonSerializer")
+  for (const seg of primaryName.split(/[.\-_]/)) {
+    if (seg.length >= 3) variants.add(seg);
+  }
   const lowerCode = layer2Code.toLowerCase();
-  const hasClassRef = variants.some(v =>
+  const hasClassRef = [...variants].some(v =>
     layer2Code.includes(v) || lowerCode.includes(v.toLowerCase())
   );
   if (!hasClassRef) {
-    errors.push(`Layer 2 does not reference any of [${variants.join(', ')}] — the original source is not embedded or imported.`);
+    errors.push(`Layer 2 does not reference any of [${[...variants].join(', ')}] — the original source is not embedded or imported.`);
   }
 
   // §5.2 — Check for the LAYER 1 embed marker OR a live import
