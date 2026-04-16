@@ -129,9 +129,95 @@ export type ExpansionPrimitive = typeof EXPANSION_PRIMITIVES[number];
 /** In-memory discovery store */
 const discoveryStore: DiscoveredCapability[] = [];
 
+// ─── Real signal extraction (no stubs, no random) ──────────────────────────
+
+/** Tokens that indicate genuinely novel surface area when present in name/desc. */
+const NOVELTY_SIGNAL = new Set([
+  'autonomous', 'recursive', 'emergent', 'discover', 'synthes', 'predict',
+  'self', 'hetero', 'meta', 'cross', 'unify', 'sovereign', 'evolutio',
+  'cognitiv', 'inferenc', 'reason',
+]);
+
+/** Tokens that indicate broad utility (used by many flows). */
+const UTILITY_SIGNAL = new Set([
+  'auth', 'route', 'cache', 'queue', 'log', 'metric', 'health', 'monitor',
+  'alert', 'retry', 'rate', 'limit', 'validat', 'sanitiz', 'transform',
+  'serial', 'persist', 'sync', 'replicat',
+]);
+
+/** Tokens indicating architectural depth. */
+const COMPLEXITY_SIGNAL = new Set([
+  'distribut', 'consensus', 'coordin', 'orchestr', 'lifecycle', 'pipeline',
+  'governanc', 'policy', 'state-mach', 'transact', 'concurren', 'parallel',
+  'lock', 'mutex', 'hierarch', 'graph', 'topolog',
+]);
+
+/** Architecture-class primitives (boost composability, mark as IP). */
+const ARCH_PRIMITIVES = new Set([
+  'EVOLUTION', 'GOVERNANCE', 'CORTEX', 'SYSTEM', 'CORE', 'SEBA', 'BRAIN',
+  'DREAM', 'NEXUS', 'CONSCIENCE', 'COMPASS',
+]);
+
+function tokenize(text: string): string[] {
+  return text.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length >= 4);
+}
+
+function signalScore(tokens: string[], signals: Set<string>): number {
+  let hits = 0;
+  for (const tok of tokens) {
+    for (const sig of signals) {
+      if (tok.startsWith(sig)) {
+        hits++;
+        break;
+      }
+    }
+  }
+  // Saturating curve: 0 hits → 0, 1 → ~30, 3 → ~75, 6+ → ~95
+  return Math.min(98, Math.round(100 * (1 - Math.exp(-hits * 0.55))));
+}
+
+/**
+ * Derive real CJPI dimensions from a capability's actual signature.
+ * Deterministic — same inputs always produce identical scores.
+ */
+export function analyzeCapability(
+  name: string,
+  description: string,
+  modules: string[],
+  primitive: string,
+): { novelty: number; utility: number; complexity: number; composability: number } {
+  const tokens = tokenize(`${name} ${description}`);
+
+  // Novelty: signal tokens + architecture-class primitive bonus
+  const noveltyBase = signalScore(tokens, NOVELTY_SIGNAL);
+  const noveltyBoost = ARCH_PRIMITIVES.has(primitive.toUpperCase()) ? 8 : 0;
+  const novelty = Math.max(20, Math.min(100, noveltyBase + noveltyBoost));
+
+  // Utility: utility tokens + presence of common-infrastructure modules
+  const utilityBase = signalScore(tokens, UTILITY_SIGNAL);
+  const utilityBoost = Math.min(15, modules.length * 3);
+  const utility = Math.max(25, Math.min(100, utilityBase + utilityBoost));
+
+  // Complexity: complexity tokens + module count + description depth
+  const complexityBase = signalScore(tokens, COMPLEXITY_SIGNAL);
+  const depthBoost = Math.min(20, Math.floor(description.length / 80));
+  const moduleBoost = Math.min(15, modules.length * 4);
+  const complexity = Math.max(15, Math.min(100, complexityBase + depthBoost + moduleBoost));
+
+  // Composability: distinct unique modules — more diverse → composes wider
+  const uniqueModules = new Set(modules.map((m) => m.toUpperCase()));
+  const archModuleHits = [...uniqueModules].filter((m) => ARCH_PRIMITIVES.has(m)).length;
+  const composability = Math.max(
+    20,
+    Math.min(100, 35 + uniqueModules.size * 10 + archModuleHits * 6),
+  );
+
+  return { novelty, utility, complexity, composability };
+}
+
 /**
  * Score and classify a newly surfaced capability from an expansion primitive.
- * Returns the discovery entry with auto-classification.
+ * If `scores` is omitted, real signal-derived scores are computed via analyzeCapability.
  */
 export function scoreExpansionCapability(
   id: string,
@@ -139,16 +225,17 @@ export function scoreExpansionCapability(
   primitive: string,
   description: string,
   modules: string[],
-  scores: { novelty: number; utility: number; complexity: number; composability: number }
+  scores?: { novelty: number; utility: number; complexity: number; composability: number },
 ): DiscoveredCapability {
+  const resolved = scores ?? analyzeCapability(name, description, modules, primitive);
   const cjpiScore = calculateCJPI(
-    scores.novelty,
-    scores.utility,
-    scores.complexity,
-    scores.composability
+    resolved.novelty,
+    resolved.utility,
+    resolved.complexity,
+    resolved.composability,
   );
 
-  const isArch = shouldBeArchitecture(modules, scores.complexity, scores.composability);
+  const isArch = shouldBeArchitecture(modules, resolved.complexity, resolved.composability);
   const autoTier = isArch ? 'enterprise' : classifyTier(cjpiScore.total);
 
   const discovery: DiscoveredCapability = {
@@ -163,7 +250,7 @@ export function scoreExpansionCapability(
     isCrownJewel: cjpiScore.total >= 75,
     isSTier: cjpiScore.total >= 95,
     discoveredAt: new Date().toISOString(),
-    status: 'pending', // Awaits governor auto-approval
+    status: 'pending',
   };
 
   discoveryStore.push(discovery);
@@ -171,7 +258,8 @@ export function scoreExpansionCapability(
 }
 
 /**
- * Batch score all capabilities from a given expansion primitive.
+ * Batch score all capabilities. Each entry's `scores` is optional —
+ * omit to let analyzeCapability derive real CJPI dimensions from signal.
  */
 export function batchScoreExpansionCapabilities(
   capabilities: Array<{
@@ -180,13 +268,11 @@ export function batchScoreExpansionCapabilities(
     primitive: string;
     description: string;
     modules: string[];
-    scores: { novelty: number; utility: number; complexity: number; composability: number };
+    scores?: { novelty: number; utility: number; complexity: number; composability: number };
   }>
 ): DiscoveredCapability[] {
-  return capabilities.map(cap =>
-    scoreExpansionCapability(
-      cap.id, cap.name, cap.primitive, cap.description, cap.modules, cap.scores
-    )
+  return capabilities.map((cap) =>
+    scoreExpansionCapability(cap.id, cap.name, cap.primitive, cap.description, cap.modules, cap.scores),
   );
 }
 
