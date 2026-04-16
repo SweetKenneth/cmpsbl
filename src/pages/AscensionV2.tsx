@@ -25,6 +25,7 @@ import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
 import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
+import { V2PrimitiveReference } from '@/components/ascension-v2/V2PrimitiveReference';
 
 import {
   initRun,
@@ -144,6 +145,12 @@ export default function AscensionV2() {
                 Upload your code, optionally enhance with Mana-wrapped software,
                 and we'll discover capabilities against the 40-Primitive substrate.
               </p>
+              <a
+                href="#primitive-reference"
+                className="inline-block mt-3 text-[11px] sm:text-xs font-medium text-primary hover:underline underline-offset-4"
+              >
+                What does each layer do? ↓
+              </a>
             </div>
           )}
 
@@ -202,6 +209,9 @@ export default function AscensionV2() {
               </Button>
             </div>
           )}
+
+          {/* Bottom-of-page glossary — what each primitive does */}
+          <V2PrimitiveReference />
         </div>
       </main>
 
