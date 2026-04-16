@@ -7,7 +7,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Loader2, Zap, CheckCircle2, Filter } from 'lucide-react';
+import { Loader2, Zap, CheckCircle2, Filter, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -55,13 +55,19 @@ export function V2ProcessingStep({ onComplete }: Props) {
   const [discovered, setDiscovered] = useState(0);
   const [topScore, setTopScore] = useState(0);
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
+  const [currentBatch, setCurrentBatch] = useState<string[]>([]);
+  const [recentHits, setRecentHits] = useState<string[]>([]);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const abortRef = useRef(false);
   const { toast } = useToast();
 
   const runPipeline = useCallback(async () => {
+    setAnalysisError(null);
+
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
+      setAnalysisError('Sign in is required before the collision cycle can run.');
       toast({ title: 'Not signed in', variant: 'destructive' });
       return;
     }
@@ -79,6 +85,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
       .maybeSingle();
 
     if (!candidate) {
+      setAnalysisError('Upload registration is missing, so the collision engine has no candidate to analyze.');
       toast({ title: 'No code uploaded', description: 'Go back and upload first.', variant: 'destructive' });
       return;
     }
@@ -92,6 +99,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
     const BATCH = 4;
     let totalDiscovered = 0;
     let bestScore = 0;
+    let lastFunctionError: string | null = null;
     const allCaps: DiscoveredCapability[] = [];
 
     // ───────────────────────────────────────────────────────
@@ -101,46 +109,61 @@ export function V2ProcessingStep({ onComplete }: Props) {
       if (abortRef.current) return;
 
       const batch = orderedNodes.slice(i, i + BATCH);
+      setCurrentBatch(batch);
       const pct = Math.round(((i + batch.length) / orderedNodes.length) * 70);
       setProgress(pct);
       setStatusIdx(Math.min(Math.floor(pct / 14), 4));
 
       const results = await Promise.allSettled(
         batch.map(async (targetNode) => {
-          const callFn = () => supabase.functions.invoke('pf-proprietary-evolution', {
-            body: {
-              module: 'discovery',
-              action: 'collide',
-              input: {
-                candidate_node: candidateNode,
-                target_node: targetNode,
-                permutation_depth: 7,
-              },
-            },
-          });
+          try {
+            const data = await retry(async () => {
+              const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
+                body: {
+                  module: 'discovery',
+                  action: 'collide',
+                  input: {
+                    candidate_node: candidateNode,
+                    target_node: targetNode,
+                    permutation_depth: 7,
+                  },
+                },
+              });
 
-          const { data, error } = await retry(callFn);
-          if (!error && data?.capabilities?.length > 0) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const bestCap = data.capabilities.reduce(
+              if (error) throw error;
+              return data;
+            });
+
+            if (data?.capabilities?.length > 0) {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (best: any, cap: any) => (!best || cap.cjpi_score > best.cjpi_score ? cap : best),
-              data.capabilities[0]
-            );
+              const bestCap = data.capabilities.reduce(
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (best: any, cap: any) => (!best || cap.cjpi_score > best.cjpi_score ? cap : best),
+                data.capabilities[0]
+              );
 
-            const cap: DiscoveredCapability = {
-              name: bestCap.name,
-              cjpiScore: bestCap.cjpi_score,
-              tier: bestCap.tier,
-              description: bestCap.description || '',
-              chain: bestCap.chain || [candidateNode, targetNode],
-              chainDepth: bestCap.chain_depth || 2,
-            };
+              const cap: DiscoveredCapability = {
+                name: bestCap.name,
+                cjpiScore: bestCap.cjpi_score,
+                tier: bestCap.tier,
+                description: bestCap.description || '',
+                chain: bestCap.chain || [candidateNode, targetNode],
+                chainDepth: bestCap.chain_depth || 2,
+              };
 
-            registerDiscovery(cap);
-            allCaps.push(cap);
-            return bestCap.cjpi_score as number;
+              registerDiscovery(cap);
+              allCaps.push(cap);
+              setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
+              return bestCap.cjpi_score as number;
+            }
+          } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            if (!lastFunctionError) {
+              lastFunctionError = message;
+            }
+            appendAudit('collision_error', `${targetNode}: ${message}`);
           }
+
           return null;
         })
       );
@@ -160,6 +183,14 @@ export function V2ProcessingStep({ onComplete }: Props) {
     }
 
     appendAudit('discovery_complete', `${totalDiscovered} raw discoveries`);
+
+    if (allCaps.length === 0) {
+      const message = lastFunctionError || 'No capabilities emerged from the collision cycle.';
+      setAnalysisError(message);
+      appendAudit('discovery_empty', message);
+      toast({ title: 'Analysis produced no capabilities', description: message, variant: 'destructive' });
+      return;
+    }
 
     // ───────────────────────────────────────────────────────
     // Phase 2: Dedup (70–85%)
@@ -230,6 +261,16 @@ export function V2ProcessingStep({ onComplete }: Props) {
     return () => { abortRef.current = true; };
   }, [runPipeline]);
 
+  if (analysisError) {
+    return (
+      <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 text-center space-y-3">
+        <AlertCircle className="w-8 h-8 mx-auto text-destructive" />
+        <p className="text-foreground font-medium">Collision cycle failed</p>
+        <p className="text-sm text-muted-foreground">{analysisError}</p>
+      </div>
+    );
+  }
+
   if (done && dedupResult) {
     return (
       <div className="flex flex-col items-center gap-3 py-16 animate-in fade-in">
@@ -292,6 +333,34 @@ export function V2ProcessingStep({ onComplete }: Props) {
               <p className="text-xs text-muted-foreground">Top Score</p>
             </>
           )}
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="bg-muted/20 border border-border rounded-xl p-4 space-y-3">
+          <p className="text-xs font-medium text-foreground">Live Collision Batch</p>
+          <div className="flex flex-wrap gap-2">
+            {currentBatch.length > 0 ? currentBatch.map((primitive) => (
+              <span key={primitive} className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-mono text-primary">
+                {primitive}
+              </span>
+            )) : (
+              <span className="text-xs text-muted-foreground">Preparing primitives…</span>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-muted/20 border border-border rounded-xl p-4 space-y-3">
+          <p className="text-xs font-medium text-foreground">Recent Discoveries</p>
+          <div className="space-y-1.5">
+            {recentHits.length > 0 ? recentHits.map((hit) => (
+              <div key={hit} className="text-xs text-foreground truncate">
+                {hit}
+              </div>
+            )) : (
+              <span className="text-xs text-muted-foreground">Waiting for the first capability to surface…</span>
+            )}
+          </div>
         </div>
       </div>
     </div>
