@@ -25,6 +25,7 @@ import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
 import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
+import { V2PrimitiveReference } from '@/components/ascension-v2/V2PrimitiveReference';
 
 import {
   initRun,
