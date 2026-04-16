@@ -191,6 +191,13 @@ const PRESERVED_PATTERNS = [
  * Preserves public API, obfuscates internals, adds sealed notice.
  */
 export function blackboxFile(source: string, lang: string): string {
+  // ── TEMPORARILY BYPASSED ──────────────────────────────────────────────────
+  // Black-box obfuscation is disabled so the raw Layer 2 output is readable
+  // for debugging ingest + packaging. Re-enable once the pipeline is solid.
+  // To re-enable: remove this early return and uncomment the block below.
+  return source;
+
+  /* ── ORIGINAL OBFUSCATION (re-enable after pipeline is fixed) ──
   let result = source;
 
   // 1. Add Convex Core™ artifact header
@@ -234,6 +241,7 @@ export function blackboxFile(source: string, lang: string): string {
   result += `${commentPrefix} Decompilation, extraction, or reverse engineering of scoring parameters is prohibited.\n`;
 
   return result;
+  */
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
