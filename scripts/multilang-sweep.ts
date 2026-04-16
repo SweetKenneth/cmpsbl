@@ -168,13 +168,15 @@ for (const lang of LANGS) {
 
       // Layer-1 preservation: TS/JS/Python embed verbatim. Polyglot artifacts
       // embed as comment-prefixed reference (foreign source can't be live syntax
-      // in host language). Both forms count as preserved.
+      // in host language). PHP is special: the embedded file is live PHP, so
+      // the leading `<?php` open tag is stripped (you can only have one per file).
       const norm = ascended.replace(/\r\n/g, '\n');
       const srcN = src.replace(/\r\n/g, '\n').trimEnd();
-      if (norm.includes(srcN)) {
+      const srcStripped = lang.id === 'php' ? srcN.replace(/^<\?php\s*/i, '').trimStart() : srcN;
+      if (norm.includes(srcStripped)) {
         layer1Untouched = true;
       } else {
-        const srcLines = srcN.split('\n').filter(l => l.trim().length > 0);
+        const srcLines = srcStripped.split('\n').filter(l => l.trim().length > 0);
         if (srcLines.length === 0) layer1Untouched = true;
         else for (const cc of ['//', '#', '--']) {
           const sample = srcLines.slice(0, 5);
