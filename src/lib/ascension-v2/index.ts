@@ -44,3 +44,12 @@ export type { RunPhase, RunSnapshot, DiscoveredCapability, OrchestratorCallbacks
 // Deduplication — collapses raw discoveries to top 4–7 unique capabilities
 export { deduplicateCapabilities } from './dedup';
 export type { DedupResult } from './dedup';
+
+// Pre-export harness — final gate before ZIP assembly
+export { runPreExportHarness, formatHarnessVerdict } from './pre-export-harness';
+export type {
+  HarnessReport,
+  HarnessCheck,
+  HarnessSeverity,
+  HarnessInput,
+} from './pre-export-harness';

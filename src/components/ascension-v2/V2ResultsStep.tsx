@@ -21,6 +21,7 @@ import { completeRun, getSnapshot, type DiscoveredCapability, type DedupResult }
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
+import { runPreExportHarness, formatHarnessVerdict } from '@/lib/ascension-v2/pre-export-harness';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import {
   generateV2LicenseHTML,
@@ -158,22 +159,29 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         activeLayers.length > 0 ? activeLayers : undefined,
       );
 
-      // ── Pre-ZIP acceptance test: Layer 2 ↔ Layer 1 linkage ──
-      const linkage = validateLayer2Linkage(
+      // ── Pre-ZIP acceptance gate: dynamically generated test harness ──
+      // Runs syntax/AST + Layer-2 linkage + Layer-1 fingerprint integrity +
+      // CMPSBL Layer auto-wire + execution smoke. Critical failures abort.
+      const harness = runPreExportHarness({
         ascendedCode,
-        lang,
-        sourceFiles.map(f => f.name),
-      );
-      if (!linkage.linked) {
-        console.error('[Ascension V2] Layer 2 linkage failed:', linkage.errors);
+        language: lang,
+        originalFiles: sourceFiles,
+        selectedLayers: activeLayers,
+      });
+      if (!harness.passed) {
+        console.error('[Ascension V2] Pre-export harness blocked:', harness.summary);
+        const firstCritical = harness.checks.find(c => c.severity === 'critical' && !c.passed);
         toast({
-          title: 'Export blocked — Layer 2 not linked to original',
-          description: linkage.errors[0],
+          title: 'Export blocked — pre-export harness failed',
+          description: firstCritical?.message || formatHarnessVerdict(harness),
           variant: 'destructive',
         });
         setCeremonyOpen(false);
         setExporting(false);
         return;
+      }
+      if (harness.softWarnings > 0) {
+        console.warn('[Ascension V2] Harness soft warnings:', harness.summary);
       }
 
       // ── Generate all HTML docs ──
@@ -257,12 +265,18 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       });
       folder.file('manifest.json', manifest);
 
+      // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
+      folder.file('HARNESS-REPORT.txt', harness.summary);
+
       const blob = await zip.generateAsync({ type: 'blob' });
       saveAs(blob, `${zipName}.zip`);
 
+      const verdictNote = harness.softWarnings > 0
+        ? ` · ${harness.softWarnings} soft warning${harness.softWarnings === 1 ? '' : 's'}`
+        : '';
       toast({
         title: 'Export complete',
-        description: `${zipName}.zip — ${capabilities.length} capabilities, full docs included.`,
+        description: `${zipName}.zip — ${capabilities.length} capabilities${verdictNote}, harness report bundled.`,
       });
 
       // Keep ceremony visible briefly after download starts

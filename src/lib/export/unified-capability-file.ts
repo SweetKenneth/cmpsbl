@@ -1128,10 +1128,10 @@ _CMPSBL_ERROR_WINDOW: Dict[str, List[float]] = {}
 _CMPSBL_EVOLUTION_STATE: Dict[str, dict] = {}
 
 _PII_PATTERNS = [
-    (re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b"), "<email>"),
-    (re.compile(r"\b\d{3}-\d{2}-\d{4}\b"), "<ssn>"),
-    (re.compile(r"\b(?:\d[ -]*?){13,16}\b"), "<card>"),
-    (re.compile(r"\b\+?\d{1,3}[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}\b"), "<phone>"),
+    (re.compile(r"\\b[\\w.+-]+@[\\w-]+\\.[\\w.-]+\\b"), "<email>"),
+    (re.compile(r"\\b\\d{3}-\\d{2}-\\d{4}\\b"), "<ssn>"),
+    (re.compile(r"\\b(?:\\d[ -]*?){13,16}\\b"), "<card>"),
+    (re.compile(r"\\b\\+?\\d{1,3}[ -]?\\(?\\d{3}\\)?[ -]?\\d{3}[ -]?\\d{4}\\b"), "<phone>"),
 ]
 
 _BIAS_TOKENS = (
@@ -1309,10 +1309,10 @@ def handle_encode(ctx, mod, meta):
 def handle_defense(ctx, mod, meta):
     """Real threat scan: pattern-match across every string in the payload."""
     threat_patterns = [
-        ("xss", re.compile(r"<\s*script\b|javascript:|on\w+\s*=", re.I)),
-        ("sqli", re.compile(r"(\bunion\b.*\bselect\b|;\s*drop\s+table|--\s*$)", re.I)),
-        ("rce", re.compile(r"\beval\s*\(|\bexec\s*\(|__proto__|constructor\s*\[")),
-        ("path_traversal", re.compile(r"\.\.[/\\\\]")),
+        ("xss", re.compile(r"<\\s*script\\b|javascript:|on\\w+\\s*=", re.I)),
+        ("sqli", re.compile(r"(\\bunion\\b.*\\bselect\\b|;\\s*drop\\s+table|--\\s*$)", re.I)),
+        ("rce", re.compile(r"\\beval\\s*\\(|\\bexec\\s*\\(|__proto__|constructor\\s*\\[")),
+        ("path_traversal", re.compile(r"\\.\\.[/\\\\]")),
     ]
     findings: Dict[str, int] = {}
     total = 0
