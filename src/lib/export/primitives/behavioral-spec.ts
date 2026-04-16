@@ -1,5 +1,5 @@
 /**
- * BehavioralSpec — Single Source of Truth for All 39 Primitive Handlers
+ * BehavioralSpec — Single Source of Truth for All 40 Primitive Handlers
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Every primitive declares its behavior ONCE here. Polyglot transpilers
  * read these specs and emit real, language-native handler code.
@@ -73,7 +73,7 @@ export interface PrimitiveSpec {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// PRIMITIVE SPECS — Single source of truth for all 39 handlers
+// PRIMITIVE SPECS — Single source of truth for all 40 handlers
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const PRIMITIVE_SPECS: PrimitiveSpec[] = [
@@ -365,7 +365,7 @@ export const PRIMITIVE_SPECS: PrimitiveSpec[] = [
     ],
   },
 
-  // ─── Agents (7) ───────────────────────────────────────────────────────────
+  // ─── Agents (8) ───────────────────────────────────────────────────────────
   {
     module: 'ENCODE', group: 'agent', outputKey: '_encode',
     signalType: 'encode',
@@ -380,6 +380,16 @@ export const PRIMITIVE_SPECS: PrimitiveSpec[] = [
     fields: [
       { name: 'fields', kind: 'keys_count' },
       { name: 'parsed', kind: 'literal', value: true },
+    ],
+  },
+  {
+    module: 'AUDIT', group: 'agent', outputKey: '_audit',
+    signalType: 'audit',
+    fields: [
+      { name: 'logged', kind: 'literal', value: true },
+      { name: 'chain_hash', kind: 'hash_of_data' },
+      { name: 'merkle_position', kind: 'chain_position' },
+      { name: 'tamper_evident', kind: 'literal', value: true },
     ],
   },
   {
