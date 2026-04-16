@@ -32,9 +32,13 @@ import {
   systemcPipelineTransform,
 } from './hardware-synthesizer';
 import {
-  generateTypeScriptTest, generatePythonTest, generateGoTest, generateVerilogTestbench,
-  generateRustTest, generateSystemCTest, generateExportScaffolding,
+  generateTestHarness,
 } from './test-harness-generator';
+import {
+  getLanguageParityStatus,
+  getLanguageParityEntry,
+  getVisibleLanguageIds,
+} from './language-parity-tiers';
 
 export type ExportLanguage =
   // Software
