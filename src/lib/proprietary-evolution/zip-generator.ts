@@ -304,10 +304,10 @@ function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: Sou
  * ═══════════════════════════════════════════════════════
  *
  *  DUAL-LAYER ARCHITECTURE:
- *    Layer 1 — Native Execution: Your original code runs first (unchanged)
+ *    Layer 1 — Native Execution: Your original code is embedded inline (unchanged)
  *    Layer 2 — Cognitive Overlay: CMPSBL observes, enriches, augments
  *
- *  Your original code is in the ../original/ folder.
+ *  This is a single-file distribution — Layer 1 is included below.
  *
  *  Usage:
  *    require_once __DIR__ . '/${cap.name.toLowerCase()}.php';
