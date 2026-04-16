@@ -5,7 +5,7 @@
  * CMPSBL layer stacks and validates each export through the pre-export harness
  * AND an independent Python AST parse.
  */
-import { readdirSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import {
@@ -17,7 +17,10 @@ import { runPreExportHarness } from '@/lib/ascension-v2/pre-export-harness';
 
 const SRC_DIR = '/tmp/py50';
 const OUT_DIR = '/tmp/py50-out';
+// Wipe prior outputs so this run never reads stale exports from a previous sweep.
+rmSync(OUT_DIR, { recursive: true, force: true });
 mkdirSync(OUT_DIR, { recursive: true });
+console.log(`[sweep] cleaned ${OUT_DIR} — every export below is freshly generated this run`);
 
 const FILES = readdirSync(SRC_DIR).filter(f => f.endsWith('.py')).sort();
 

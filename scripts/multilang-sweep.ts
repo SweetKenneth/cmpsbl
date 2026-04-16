@@ -8,7 +8,7 @@
  * Source files live in /tmp/multilang/<lang>/ — 5 files per language.
  * Outputs go to /tmp/multilang-out/<lang>/ascended-<file>.<ext>.
  */
-import { readdirSync, readFileSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, mkdirSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
 import {
@@ -83,7 +83,10 @@ interface Row {
 
 const rows: Row[] = [];
 
+// Wipe prior outputs so this run never reads stale exports from a previous sweep.
+rmSync(OUT_ROOT, { recursive: true, force: true });
 mkdirSync(OUT_ROOT, { recursive: true });
+console.log(`[sweep] cleaned ${OUT_ROOT} — every export below is freshly generated this run`);
 
 for (const lang of LANGS) {
   const srcDir = join(SRC_ROOT, lang.id);
