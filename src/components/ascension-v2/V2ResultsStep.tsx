@@ -21,6 +21,7 @@ import { completeRun, getSnapshot, type DiscoveredCapability, type DedupResult }
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
+import { runPreExportHarness, formatHarnessVerdict } from '@/lib/ascension-v2/pre-export-harness';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import {
   generateV2LicenseHTML,
