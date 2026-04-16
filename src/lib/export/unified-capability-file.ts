@@ -1337,7 +1337,7 @@ self_test = cmpsbl_self_test
 
 
 if __name__ == "__main__":
-    print(f"CMPSBL® Capability Pack — {CMPSBL_PACK_META['name']}")
+    print(f"CMPSBL® Silent Symbiosis — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
     print(f"Modules: {CMPSBL_PACK_META['modules']}")
     print()
@@ -1347,6 +1347,18 @@ if __name__ == "__main__":
         print(f"  {'✅' if ok else '❌'} {name}")
 ${(selectedLayers || []).map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CMPSBL® Silent Symbiosis — Software Ascended
+# Governed Cognitive Infrastructure · Deterministic Processing Layer
+#
+# Inventor: Kenneth E. Sweet Jr. · PromptFluid™ TX
+# U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
+# U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+#
+# © 2009–2026 CMPSBL® · All rights reserved
+# Unauthorized reproduction, modification, or redistribution prohibited.
+# ═══════════════════════════════════════════════════════════════════════════════
 `;
 }
 
