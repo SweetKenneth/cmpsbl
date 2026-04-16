@@ -14,6 +14,8 @@
 
 import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
 import { blackboxFile } from './blackbox';
+import type { CmpsblLayerDefinition } from './cmpsbl-layers';
+import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock } from './cmpsbl-layers';
 
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
@@ -43,6 +45,7 @@ export function generateUnifiedTypeScript(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
@@ -72,18 +75,24 @@ ${embeddedSources}
     layer1TsBlock = '// No source files provided — Layer 1 is empty. Wire your code manually.';
   }
 
+  // Build layer header
+  const layerHeader = selectedLayers?.length 
+    ? '\n' + getLayerHeaderBlock(selectedLayers) + '\n'
+    : '';
+
   return `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Capability Pack — ${packName}
 //  Single-File Distribution | Zero Dependencies
 //
 //  ${capabilities.length} capabilities | ${allModules.length} modules | Avg CJPI: ${avgCjpi}
 //  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, CJPI ${topCap.cjpiScore})
-//
+//${selectedLayers?.length ? `\n//  Layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
 //  DROP IN → IMPORT → USE
 //
 //  © 2025–2026 CMPSBL®. All rights reserved.
 //  SEALED RUNTIME — Do not modify. Redistribution prohibited.
 // ═══════════════════════════════════════════════════════════════════════════════
+${layerHeader}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  §1 — CONVEX CORE™ DPL                                                  ║
@@ -821,6 +830,8 @@ export function cmpsbl_self_test(): { passed: number; failed: number; results: R
 
 /** @deprecated Use cmpsbl_self_test instead */
 export const selfTest = cmpsbl_self_test;
+${(selectedLayers || []).map(l => l.tsCode).join('\n')}
+${getAutoWireTs(selectedLayers || [])}
 `;
 }
 
@@ -832,6 +843,7 @@ export function generateUnifiedPython(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
@@ -1246,6 +1258,8 @@ if __name__ == "__main__":
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
     for name, ok in result["results"].items():
         print(f"  {'✅' if ok else '❌'} {name}")
+${(selectedLayers || []).map(l => l.pyCode).join('\n')}
+${getAutoWirePy(selectedLayers || [])}
 `;
 }
 
@@ -1751,13 +1765,14 @@ export function generateUnifiedCapabilityFile(
   packName: string,
   lang: string,
   userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
 ): string {
   let raw: string;
 
   if (lang === 'typescript' || lang === 'javascript') {
-    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles);
+    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'python') {
-    raw = generateUnifiedPython(capabilities, packName, userSourceFiles);
+    raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'php') {
     raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
   } else if (hasPolyglotGenerator(lang)) {
