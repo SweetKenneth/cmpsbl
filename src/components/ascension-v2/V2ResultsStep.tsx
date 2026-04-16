@@ -145,12 +145,16 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
         description: cap.description,
       }));
 
-      // ── Generate the ascended file (L2 wrapped) ──
+      // ── Resolve selected layers ──
+      const activeLayers = availableLayers.filter(l => selectedLayers.has(l.id));
+
+      // ── Generate the ascended file (L2 wrapped + optional layers) ──
       const ascendedCode = generateUnifiedCapabilityFile(
         capInputs,
         zipName,
         lang === 'typescript' ? 'typescript' : lang,
         sourceFiles.length > 0 ? sourceFiles : undefined,
+        activeLayers.length > 0 ? activeLayers : undefined,
       );
 
       // ── Pre-ZIP acceptance test: Layer 2 ↔ Layer 1 linkage ──
