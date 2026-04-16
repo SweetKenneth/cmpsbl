@@ -40,6 +40,13 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
 const LAYER_CATALOG: CmpsblLayerDefinition[] = [
   ...RESILIENCE_LAYERS,
   ...FORESIGHT_LAYERS,
+  ...SECURITY_LAYERS,
+  ...INTELLIGENCE_LAYERS,
+  ...PERFORMANCE_LAYERS,
+  ...ORCHESTRATION_LAYERS,
+  ...EVOLUTION_LAYERS,
+  ...GOVERNANCE_LAYERS,
+  ...COMPLIANCE_LAYERS,
 ];
 
 /** Get all user-selectable layers (excludes always-on core like Circuit Breaker) */

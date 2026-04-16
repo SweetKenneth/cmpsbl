@@ -15,7 +15,7 @@
 import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
 import { blackboxFile } from './blackbox';
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
-import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock } from './cmpsbl-layers';
+import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock, CMPSBL_CORE_LAYERS } from './cmpsbl-layers';
 import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmpsbl-layer-polyglot';
 
 // Re-use the UnifiedCapabilityInput interface shape
@@ -2271,15 +2271,19 @@ export function generateUnifiedCapabilityFile(
     raw = generateUnifiedGeneric(capabilities, packName, lang);
   }
 
-  // Inject layer code for non-TS/PY languages (TS/PY handle layers inline above)
-  if (selectedLayers?.length && lang !== 'typescript' && lang !== 'javascript' && lang !== 'python') {
-    const layerCode = getAllLayerCode(selectedLayers, lang);
-    const autoWire = getAutoWireForLang(selectedLayers, lang);
-    const lc = getLayerCommentChar(lang);
-    const layerHeader = getLayerHeaderBlock(selectedLayers, lc);
-    if (layerCode) {
-      raw += '\n\n' + layerHeader + '\n' + layerCode;
-      if (autoWire) raw += '\n' + autoWire;
+  // Inject layer code for non-TS/PY languages (TS/PY handle layers inline above).
+  // Always include CMPSBL_CORE_LAYERS (Circuit Breaker) — it is always-on, not selectable.
+  if (lang !== 'typescript' && lang !== 'javascript' && lang !== 'python') {
+    const allLayers = [...CMPSBL_CORE_LAYERS, ...(selectedLayers ?? [])];
+    if (allLayers.length > 0) {
+      const layerCode = getAllLayerCode(allLayers, lang);
+      const autoWire = getAutoWireForLang(allLayers, lang);
+      const lc = getLayerCommentChar(lang);
+      const layerHeader = getLayerHeaderBlock(allLayers.slice(CMPSBL_CORE_LAYERS.length), lc);
+      if (layerCode) {
+        raw += '\n\n' + layerHeader + '\n' + layerCode;
+        if (autoWire) raw += '\n' + autoWire;
+      }
     }
   }
 
