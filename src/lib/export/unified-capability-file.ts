@@ -1087,7 +1087,7 @@ def execute_pipeline(input_data: dict, chain: list, meta: dict) -> dict:
 # ║  §4 — CAPABILITY API                                                         ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-${importBlock}
+${layer1Block}
 
 PACK_META = ${JSON.stringify({
     name: packName,
