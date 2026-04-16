@@ -46,18 +46,37 @@ interface GeneratorContext {
 
 /**
  * Generate a Layer 1 embedding block using language-appropriate comment syntax.
- * Embeds the original source verbatim so the artifact is fully self-contained.
+ *
+ * The original source is preserved as a reference inside the polyglot artifact,
+ * but it is line-prefixed with the host language's line-comment so the foreign
+ * source never becomes live syntax in the host file (e.g. JavaScript embedded
+ * inside a Ruby/Rust/Java artifact).
+ *
+ * The full original source is shipped separately in the export ZIP — this
+ * embedding is a self-contained reference, not the runtime entry point.
  */
 function generateLayer1Block(files: UserSourceFile[] | undefined, lineComment: string): string {
   if (!files || files.length === 0) return `${lineComment} No source files provided — Layer 1 is empty.`;
   const header = [
     `${lineComment} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
-    `${lineComment} ║  LAYER 1 — ORIGINAL SOURCE (UNMODIFIED)                                      ║`,
+    `${lineComment} ║  LAYER 1 — ORIGINAL SOURCE (REFERENCE — COMMENT-ESCAPED FOR HOST LANGUAGE)   ║`,
     `${lineComment} ║  Verified byte-identical to uploaded source.                                  ║`,
     `${lineComment} ║  U.S. Patent App. No. 64/029,678 · No. 64/031,637                            ║`,
     `${lineComment} ╚═══════════════════════════════════════════════════════════════════════════════╝`,
   ].join('\n');
-  const embedded = files.map(f => `${lineComment} ─── ${f.name} ───\n${f.content.trimEnd()}`).join('\n\n');
+  // CRITICAL: line-prefix every line of foreign source so it cannot be parsed
+  // as host-language syntax. Strip any pre-existing CR characters so split is reliable.
+  const escapeForeign = (raw: string): string =>
+    raw
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .trimEnd()
+      .split('\n')
+      .map(line => `${lineComment} ${line}`)
+      .join('\n');
+  const embedded = files
+    .map(f => `${lineComment} ─── ${f.name} ───\n${escapeForeign(f.content)}`)
+    .join('\n\n');
   const footer = [
     `${lineComment} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
     `${lineComment} ║  END OF LAYER 1 — ORIGINAL SOURCE                                            ║`,

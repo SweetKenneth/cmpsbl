@@ -529,7 +529,7 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
   // ─── LAYERS (12) ───
   DEFENSE: (ctx, mod) => {
     const str = JSON.stringify(ctx._data);
-    const suspicious = /(<script|eval\(|__proto__|constructor\[)/i.test(str);
+    const suspicious = /(<script|eval\\(|__proto__|constructor\\[)/i.test(str);
     ctx._data._defense = { sanitized: true, threats: suspicious ? 1 : 0, injectionBlocked: suspicious, validated: true };
     ctx._signals.push({ type: 'defense', source: mod, ts: Date.now() });
     return ctx;
