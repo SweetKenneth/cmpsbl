@@ -73,7 +73,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       setAnalysisError('Sign in is required before the collision cycle can run.');
-      toast({ title: 'Not signed in', variant: 'destructive' });
+      toastRef.current({ title: 'Not signed in', variant: 'destructive' });
       return;
     }
 
@@ -91,7 +91,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
 
     if (!candidate) {
       setAnalysisError('Upload registration is missing, so the collision engine has no candidate to analyze.');
-      toast({ title: 'No code uploaded', description: 'Go back and upload first.', variant: 'destructive' });
+      toastRef.current({ title: 'No code uploaded', description: 'Go back and upload first.', variant: 'destructive' });
       return;
     }
 
@@ -193,7 +193,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
       const message = lastFunctionError || 'No capabilities emerged from the collision cycle.';
       setAnalysisError(message);
       appendAudit('discovery_empty', message);
-      toast({ title: 'Analysis produced no capabilities', description: message, variant: 'destructive' });
+      toastRef.current({ title: 'Analysis produced no capabilities', description: message, variant: 'destructive' });
       return;
     }
 
@@ -258,8 +258,8 @@ export function V2ProcessingStep({ onComplete }: Props) {
     setStatusIdx(7);
 
     setDone(true);
-    setTimeout(() => onComplete([...dedup.capabilities], dedup), 800);
-  }, [toast, onComplete]);
+    setTimeout(() => onCompleteRef.current([...dedup.capabilities], dedup), 800);
+  }, []);
 
   useEffect(() => {
     runPipeline();
