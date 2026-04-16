@@ -362,7 +362,7 @@ ${capabilities.map(c => `        CapabilityDef {
     modules: &[${allModules.map(m => `"${m}"`).join(', ')}],
 };
 
-pub fn execute(capability_name: &str, input: JsonMap) -> PipelineResult {
+pub fn cmpsbl_execute(capability_name: &str, input: JsonMap) -> PipelineResult {
     let cap = PACK.capabilities.iter()
         .find(|c| c.name == capability_name)
         .unwrap_or_else(|| panic!("Capability '{}' not found", capability_name));
@@ -378,7 +378,12 @@ pub fn execute(capability_name: &str, input: JsonMap) -> PipelineResult {
     execute_pipeline(input, &meta.chain, &meta)
 }
 
-pub fn execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
+/// @deprecated Use cmpsbl_execute instead
+pub fn execute(capability_name: &str, input: JsonMap) -> PipelineResult {
+    cmpsbl_execute(capability_name, input)
+}
+
+pub fn cmpsbl_execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
     let chain_vec: Vec<String> = chain.iter().map(|s| s.to_string()).collect();
     let meta = CapabilityMeta {
         name: "custom-chain".into(), cjpi: 0, tier: "mint".into(),
@@ -387,12 +392,35 @@ pub fn execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
     execute_pipeline(input, &chain_vec, &meta)
 }
 
-pub fn list_capabilities() -> Vec<&'static str> {
+/// @deprecated Use cmpsbl_execute_chain instead
+pub fn execute_chain(chain: &[&str], input: JsonMap) -> PipelineResult {
+    cmpsbl_execute_chain(chain, input)
+}
+
+pub fn cmpsbl_list_capabilities() -> Vec<&'static str> {
     PACK.capabilities.iter().map(|c| c.name).collect()
 }
 
-pub fn validate() -> bool {
+/// @deprecated Use cmpsbl_list_capabilities instead
+pub fn list_capabilities() -> Vec<&'static str> {
+    cmpsbl_list_capabilities()
+}
+
+pub fn cmpsbl_validate() -> bool {
     PACK.capabilities.iter().all(|c| !c.fingerprint.is_empty() && c.cjpi > 0)
+}
+
+/// @deprecated Use cmpsbl_validate instead
+pub fn validate() -> bool {
+    cmpsbl_validate()
+}
+
+pub fn cmpsbl_self_test() -> Vec<(&'static str, bool)> {
+    PACK.capabilities.iter().map(|cap| {
+        let input = HashMap::from([("_test".into(), serde_json::json!(true))]);
+        let result = cmpsbl_execute(cap.name, input);
+        (cap.name, result.success)
+    }).collect()
 }
 
 #[cfg(test)]
