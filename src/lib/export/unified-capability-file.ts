@@ -14,6 +14,8 @@
 
 import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
 import { blackboxFile } from './blackbox';
+import type { CmpsblLayerDefinition } from './cmpsbl-layers';
+import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock } from './cmpsbl-layers';
 
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
