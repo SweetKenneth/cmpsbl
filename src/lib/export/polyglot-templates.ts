@@ -277,7 +277,7 @@ fn handle_module(ctx: &mut PipelineContext, module: &str, meta: &CapabilityMeta)
         }
         "IMMUNITY" => {
             let errs = ctx.errors.len();
-            ctx.data.insert("_immunity".into(), json!({"protected": true, "errors_caught": errs, "fallback": if errs > 0 { "engaged" } else { "standby" }}));
+            ctx.data.insert("_immunity".into(), json!({"protected" => true, "errors_caught" => errs, "fallback" => if errs > 0 { "engaged" } else { "standby" }}));
             ctx.signals.push(HashMap::from([("type".into(), json!("shield")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "CORTEX" => {
@@ -286,7 +286,7 @@ fn handle_module(ctx: &mut PipelineContext, module: &str, meta: &CapabilityMeta)
         }
         "EVOLUTION" => {
             let fitness = meta.cjpi as f64 / 100.0;
-            ctx.data.insert("_evolution".into(), json!({"cycle": 1, "fitness": fitness, "strategy": if fitness > 0.7 { "exploit" } else { "explore" }}));
+            ctx.data.insert("_evolution".into(), json!({"cycle" => 1, "fitness" => fitness, "strategy" => if fitness > 0.7 { "exploit" } else { "explore" }}));
             ctx.signals.push(HashMap::from([("type".into(), json!("evolve")), ("source".into(), json!(module)), ("ts".into(), json!(ts))]));
         }
         "SHADOW" => {
