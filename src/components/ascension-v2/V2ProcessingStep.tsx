@@ -165,11 +165,19 @@ export function V2ProcessingStep({ onComplete }: Props) {
         }
       }
 
-      // ── Gap #6: contract + environment profile ──
-      candidateContractBundle = extractFileContracts(
-        extractable,
-        (candidate.metadata?.language as string) || 'typescript',
-      );
+      // ── Gap #11: semantic drift / ecosystem detection ──
+      let driftEcosystem = (candidate.metadata?.language as string) || 'unknown';
+      if (extractable.length > 0) {
+        const drift = detectV2Drift(extractable, driftEcosystem);
+        driftEcosystem = drift.ecosystem;
+        appendAudit(
+          'semantic_drift',
+          `eco=${drift.ecosystem} canonicals=${drift.uniqueCanonicals} highConf=${drift.highConfidenceCount}`,
+        );
+      }
+
+      // ── Gap #6: contract + environment profile (uses drift-detected ecosystem) ──
+      candidateContractBundle = extractFileContracts(extractable, driftEcosystem);
       if (candidateContractBundle) {
         appendAudit(
           'contract_extracted',
