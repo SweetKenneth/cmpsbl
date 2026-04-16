@@ -32,7 +32,9 @@ import {
   systemcPipelineTransform,
 } from './hardware-synthesizer';
 import {
-  generateTestHarness,
+  generateTypeScriptTest, generatePythonTest, generateGoTest,
+  generateRustTest, generateVerilogTestbench, generateSystemCTest,
+  generateExportScaffolding,
 } from './test-harness-generator';
 import {
   getLanguageParityStatus,
