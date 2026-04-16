@@ -147,6 +147,24 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, onReset }
         sourceFiles.length > 0 ? sourceFiles : undefined,
       );
 
+      // ── Pre-ZIP acceptance test: Layer 2 ↔ Layer 1 linkage ──
+      const linkage = validateLayer2Linkage(
+        ascendedCode,
+        lang,
+        sourceFiles.map(f => f.name),
+      );
+      if (!linkage.linked) {
+        console.error('[Ascension V2] Layer 2 linkage failed:', linkage.errors);
+        toast({
+          title: 'Export blocked — Layer 2 not linked to original',
+          description: linkage.errors[0],
+          variant: 'destructive',
+        });
+        setCeremonyOpen(false);
+        setExporting(false);
+        return;
+      }
+
       // ── Generate all HTML docs ──
       const licenseHTML = generateV2LicenseHTML(zipName);
 
