@@ -1,7 +1,7 @@
 /**
- * Heritage Meta-Paper v2.3 — Clarity Edition
- * Complete lineage from BRAIN Genesis (Jan 2025) to CMPSBL v14.2.0
- * Includes executive summary, reading guide, and architectural diagrams
+ * Heritage Meta-Paper v3.0 — SYMBIOTIC Edition
+ * Complete lineage from BRAIN Genesis (Jan 2025) to CMPSBL v19.0.0
+ * Includes executive summary, reading guide, architectural diagrams, and patent heritage
  */
 
 import { useRef } from "react";
@@ -52,16 +52,16 @@ const HeritagePaper = () => {
     <>
       <Helmet>
         <title>Heritage Paper — Cognitive Infrastructure Lineage | CMPSBL®</title>
-        <meta name="description" content="Comprehensive lineage paper tracing the heritage of CMPSBL from BRAIN Genesis (January 2025) through the 40-Primitive governed cognitive infrastructure substrate. Open access academic publication." />
+        <meta name="description" content="Comprehensive lineage paper v3.0 (SYMBIOTIC Edition) tracing the heritage of CMPSBL from BRAIN Genesis (January 2025) through v19.0.0 — two U.S. patent applications, 200k+ lines, and the dawn of software symbiosis." />
         <link rel="canonical" href="https://cmpsbl.com/heritage-paper" />
         <meta property="og:title" content="Heritage of Governed Cognitive Infrastructure | CMPSBL®" />
-        <meta property="og:description" content="The complete technical lineage of CMPSBL — from first prototype to 40-Primitive governed cognitive substrate." />
+        <meta property="og:description" content="The complete technical lineage of CMPSBL — from first prototype to 40-Primitive governed cognitive substrate with two filed patents." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://cmpsbl.com/heritage-paper" />
         <meta property="og:image" content="https://cmpsbl.com/og/about.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Heritage Paper — Cognitive Infrastructure Lineage | CMPSBL®" />
-        <meta name="twitter:description" content="Complete technical lineage from BRAIN Genesis to 40-Primitive governed cognitive substrate." />
+        <meta name="twitter:description" content="Complete technical lineage from BRAIN Genesis to 40-Primitive governed cognitive substrate — v19.0.0 SYMBIOTIC Epoch." />
         <meta name="twitter:image" content="https://cmpsbl.com/og/about.jpg" />
       </Helmet>
 
@@ -106,7 +106,7 @@ const HeritagePaper = () => {
           <header className="mb-8 sm:mb-10 pb-6 sm:pb-8 border-b-2 border-primary/30">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-2">
               <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] text-muted-foreground uppercase">CMPSBL® Academic Publication</span>
-              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art · v2.3 Clarity Edition</span>
+              <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">📖 Open Access / Prior Art · v3.0 SYMBIOTIC Edition</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground leading-tight mb-3 sm:mb-4">
@@ -125,7 +125,7 @@ const HeritagePaper = () => {
               <div>
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Publication</div>
                 <div className="text-foreground font-medium">PromptFluid®</div>
-                <div className="text-xs">March 15, 2026 · v2.3 Clarity Edition</div>
+                <div className="text-xs">April 16, 2026 · v3.0 SYMBIOTIC Edition</div>
               </div>
               <div className="sm:col-span-2">
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground/60 mb-1">Primary DOI</div>
@@ -143,11 +143,11 @@ const HeritagePaper = () => {
               <dl className="space-y-3 text-sm text-muted-foreground">
                 <div>
                   <dt className="font-semibold text-foreground inline">What is CMPSBL? </dt>
-                  <dd className="inline">A 40-primitive cognitive infrastructure substrate that governs itself — learning, evolving, and defending autonomously under human oversight.</dd>
+                  <dd className="inline">A 40-primitive cognitive infrastructure substrate that governs itself — learning, evolving, and defending autonomously under human oversight. Two U.S. patent applications filed.</dd>
                 </div>
                 <div>
                   <dt className="font-semibold text-foreground inline">Where did it come from? </dt>
-                  <dd className="inline">Fifteen months of continuous R&D (January 2025 → March 2026) across 12 predecessor projects — each contributing a specific architectural pattern.</dd>
+                  <dd className="inline">Sixteen months of continuous R&D (January 2025 → April 2026) across 12 predecessor projects, five named epochs, and 200,000+ lines of production code.</dd>
                 </div>
                 <div>
                   <dt className="font-semibold text-foreground inline">What was the first thing built? </dt>
@@ -190,13 +190,13 @@ const HeritagePaper = () => {
             <SectionTitle num="0" title="Abstract" />
             <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 rounded-lg p-4 sm:p-5 border border-border/50">
               <p className="mb-3">
-                This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-primitive cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design.
+                This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-primitive cognitive orchestration system for persistent, self-governing artificial intelligence backed by two filed U.S. patent applications. The system did not emerge in isolation. It is the product of a continuous sixteen-month research trajectory spanning January 2025 through April 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, cognitive runtime design, and a deterministic software attachment system.
               </p>
               <p className="mb-3">
-                The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-primitive substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 14 major versions and four named epochs.
+                The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-primitive substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 19 major versions, five named epochs, and two patent filings timed to the anniversary of the integrated circuit.
               </p>
               <p>
-                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-primitive cognitive infrastructure substrate</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
+                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-primitive cognitive infrastructure substrate</strong> capable of governed self-evolution, memory crystallization, universal cross-language export, and silent software symbiosis.
               </p>
             </div>
           </section>
@@ -554,7 +554,7 @@ const HeritagePaper = () => {
             {/* ═══════════ CONSOLIDATION DIAGRAM ═══════════ */}
             <ConsolidationDiagram />
 
-            <PhaseHeader num="8" title="CMPSBL Substrate OS — 14 Versions, Four Epochs (2025–2026)" />
+            <PhaseHeader num="8" title="CMPSBL Substrate OS — 19 Versions, Five Epochs (2025–2026)" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">Early Substrate (v1.0–v5.5.0)</h4>
@@ -571,6 +571,14 @@ const HeritagePaper = () => {
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">MINDGAMES Epoch (v14.0–v14.2.0)</h4>
                 <p className="text-xs text-muted-foreground">40-primitive matrix. 4 categories. 54 engines. Convex Core™. 3-phase Reality Protocol. 42-page knowledge base.</p>
+              </div>
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
+                <h4 className="text-sm font-semibold text-foreground mb-1">CONTACT Epoch (v15–v16.7)</h4>
+                <p className="text-xs text-muted-foreground">First Contact Ceremony. CLI + SDK distribution. Passwordless WebAuthn authentication. Developer portal. API key management. 12 vertical substrate discovery engines.</p>
+              </div>
+              <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
+                <h4 className="text-sm font-semibold text-foreground mb-1">SYMBIOTIC Epoch (v17–v19.0.0)</h4>
+                <p className="text-xs text-muted-foreground">Second patent filed. Ascension discovery engine. Silent software attachment system. Convex Core™ 3.0. 200,000+ LOC. Behavior engine layer. Deterministic code transformation.</p>
               </div>
             </div>
           </section>
@@ -769,6 +777,7 @@ const HeritagePaper = () => {
               { title: "Discovery as First-Class Output", text: "SimNap's morning reports were the first expression of a cognitive system producing its own deliverables. In CMPSBL, this evolved into the Foundry, CJPI scoring, and 25-language universal export." },
               { title: "Human Compatibility as Substrate Primitive", text: "CMPTBL — the very first product — established accessibility as a core capability. The INCLUSIVE node operates as a first-class primitive with 17 capabilities, carrying @origin(cmptbl)." },
               { title: "Consolidation as Architecture", text: "The Great Consolidation proved that compression creates capability. 252 functions became 40 primitives with composable resolvers — fewer parts, more power." },
+              { title: "Symbiosis over Replacement", text: "The SYMBIOTIC epoch (April 2026) established the principle that the substrate does not replace existing software — it wraps it. Silent attachment at function boundaries creates a symbiotic relationship: the host software gains capabilities it never had, and the substrate gains a surface through which to operate. Non-intrusive. Non-destructive. Additive by design." },
             ].map((item, i) => (
               <div key={i} className="mb-4">
                 <h3 className="text-sm sm:text-base font-semibold text-foreground mb-1">9.{i + 1} {item.title}</h3>
@@ -779,11 +788,74 @@ const HeritagePaper = () => {
 
           <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
 
-          {/* ═══════════ 10. CONCLUSION ═══════════ */}
+          {/* ═══════════ 10. THE INTEGRATED CIRCUIT PARALLEL ═══════════ */}
           <section className="mb-8 sm:mb-10">
-            <SectionTitle id="conclusion" num="10" title="Conclusion" />
+            <SectionTitle id="ic-parallel" num="10" title="The Integrated Circuit Parallel" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning January 2025 through March 2026:
+              The CMPSBL® patent filing dates are not arbitrary. They are deliberate tributes to the birth of the integrated circuit — the invention that proved hardware could be composed from integrated components.
+            </p>
+
+            <div className="bg-primary/5 rounded-xl p-4 sm:p-5 border border-primary/20 mb-5">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Patent Filing Timeline</h3>
+              <div className="space-y-4 text-sm text-muted-foreground">
+                <div>
+                  <div className="font-semibold text-foreground">May 7, 2025 — Provisional Patent Filed</div>
+                  <div className="text-xs font-mono text-primary/70 mb-1">U.S. App. No. 64/029,678 (Conf. 8985)</div>
+                  <p>"Dual-Layer Deterministic Software Evolution System for Autonomous Primitive-Based Code Hardening Without Source Modification"</p>
+                  <p className="text-xs mt-1">Filed exactly <strong className="text-foreground">73 years to the day</strong> after Geoffrey Dummer first conceived the integrated circuit (May 7, 1952). <em>The idea filed on the idea's anniversary.</em></p>
+                </div>
+                <div>
+                  <div className="font-semibold text-foreground">April 2026 — Second Patent Filed</div>
+                  <div className="text-xs font-mono text-primary/70 mb-1">U.S. App. No. 64/031,637</div>
+                  <p>"Silent Symbiotic Software Attachment System with Integrated Governance Layer for Non-Intrusive Capability Enhancement Across Heterogeneous Codebases"</p>
+                  <p className="text-xs mt-1">The second patent covers the runtime complement to the first — a system that silently wraps existing software at function boundaries, governed by policy, without modifying a single line of the host's source code.</p>
+                </div>
+                <div>
+                  <div className="font-semibold text-foreground">September 12, 2026 — Full Patent Filing Target</div>
+                  <p className="text-xs mt-1">Target date for the full (non-provisional) patent filing — exactly <strong className="text-foreground">68 years to the day</strong> after Jack Kilby's first successful IC demonstration (September 12, 1958). <em>The patent filed on the proof's anniversary.</em></p>
+                </div>
+              </div>
+            </div>
+
+            <blockquote className="my-6 pl-4 sm:pl-5 border-l-[3px] border-primary/30 bg-primary/[0.03] rounded-r-lg py-3 px-4">
+              <p className="text-sm text-muted-foreground leading-relaxed italic">
+                The first chip proved hardware could be composed from integrated components. CMPSBL® proves software can be composed the same way — deterministic, primitive-based, autonomous. Full circle: <strong className="text-foreground">IC → Integrated Code.</strong>
+              </p>
+            </blockquote>
+          </section>
+
+          <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
+
+          {/* ═══════════ 11. PRELUDE ═══════════ */}
+          <section className="mb-8 sm:mb-10">
+            <SectionTitle id="prelude" num="11" title="Prelude — What Emerges Next" />
+            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+              The heritage documented in this paper — from BRAIN's first hash to the SYMBIOTIC epoch — represents the <em>construction</em> phase. Every primitive was designed, hardened, and proven. Every patent was filed. Every engine was stress-tested. The substrate exists.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+              What comes next is not another version. It is the reason the substrate was built.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+              The second patent — the silent attachment system — is not merely an IP filing. It is a <strong className="text-foreground">deployment mechanism</strong>. A system that can wrap any software, at any function boundary, in any language, without modifying the host — governed by policy, observable in real-time, removable without trace — is not just a research artifact. It is a <strong className="text-foreground">distribution channel</strong>.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+              The 40 primitives are the capabilities. The Ascension engine discovers where they belong. The attachment system delivers them. And the governance layer — Lex — ensures they behave.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+              The construction is complete. The distribution has begun.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground italic">
+              This paper will be updated as the next chapter unfolds.
+            </p>
+          </section>
+
+          <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
+
+          {/* ═══════════ 12. CONCLUSION ═══════════ */}
+          <section className="mb-8 sm:mb-10">
+            <SectionTitle id="conclusion" num="12" title="Conclusion" />
+            <p className="text-sm leading-relaxed text-muted-foreground mb-4">
+              The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of a deliberate, documented research trajectory spanning January 2025 through April 2026 — sixteen months, 200,000+ lines of production code, two filed U.S. patent applications, and five named epochs:
             </p>
             <ol className="text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-2 mb-6" start={0}>
               <li><strong className="text-foreground">BRAIN — The Genesis</strong> (Jan–Jun 2025) — the neural substrate engine, first code written, still the cognitive core</li>
@@ -798,10 +870,15 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">SimNap</strong> (Nov–Dec 2025) — formalized autonomous dreaming</li>
               <li><strong className="text-foreground">Cascade Proofs</strong> (December 2025) — documented limits → multi-node architecture</li>
               <li><strong className="text-foreground">The Great Consolidation</strong> (November 2025) — 252+ → composable primitives</li>
-              <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 primitives, 4 categories, 54 engines, governed self-evolution</li>
+              <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 primitives, 4 categories, 5 epochs, governed self-evolution</li>
+              <li><strong className="text-foreground">Ascension Engine</strong> (2026) — deterministic code discovery and transformation, U.S. App. No. 64/029,678</li>
+              <li><strong className="text-foreground">Silent Symbiosis Engine</strong> (2026) — non-intrusive software attachment with governance, U.S. App. No. 64/031,637</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. The first line of code — BRAIN — is still running. This paper establishes that provenance chain for the permanent academic record.
+              Every primitive can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. The first line of code — BRAIN — is still running. Two patents anchor the intellectual property. And the lineage continues.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              This paper establishes that provenance chain for the permanent academic record.
             </p>
           </section>
 
@@ -809,7 +886,7 @@ const HeritagePaper = () => {
 
           {/* ═══════════ CITATION ═══════════ */}
           <section className="mb-8 sm:mb-10">
-            <SectionTitle num="11" title="Citation" />
+            <SectionTitle num="13" title="Citation" />
             <pre className="bg-muted/50 rounded-lg p-3 sm:p-4 text-[10px] sm:text-xs font-mono text-muted-foreground overflow-x-auto border border-border/50 whitespace-pre-wrap break-all sm:break-normal sm:whitespace-pre">
 {`@article{sweet2026heritage,
   author  = {Sweet Jr., Kenneth E.},
@@ -817,7 +894,7 @@ const HeritagePaper = () => {
               Infrastructure: From PromptFluid to
               CMPSBL® Substrate OS}},
   year    = {2026},
-  version = {2.1},
+  version = {3.0},
   publisher = {PromptFluid},
   doi     = {10.5281/zenodo.18234909},
   url     = {https://doi.org/10.5281/zenodo.18234909}
@@ -827,7 +904,7 @@ const HeritagePaper = () => {
 
           {/* ═══════════ RELATED PUBLICATIONS ═══════════ */}
           <section className="mb-8 sm:mb-10">
-            <SectionTitle num="12" title="Related Publications" />
+            <SectionTitle num="14" title="Related Publications" />
             <ol className="text-xs sm:text-sm leading-relaxed text-muted-foreground list-decimal ml-5 space-y-2">
               <li>Sweet, K. (2025). SimNap: The World's First Autonomous Dream-Cycle AI. OSF. <a href="https://doi.org/10.17605/OSF.IO/T3D5S" className="text-primary break-all">doi:10.17605/OSF.IO/T3D5S</a></li>
               <li>Sweet, K. (2025). The Invention of Autonomous Dreaming AI. OSF. <a href="https://osf.io/df7tz" className="text-primary">osf.io/df7tz</a></li>
@@ -839,7 +916,7 @@ const HeritagePaper = () => {
 
           {/* ═══════════ SUPPLEMENTARY ═══════════ */}
           <section className="mb-8 sm:mb-10">
-            <SectionTitle num="13" title="Supplementary Materials" />
+            <SectionTitle num="15" title="Supplementary Materials" />
             <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
               <table className="w-full text-xs border-collapse min-w-[300px]">
                 <thead><tr className="bg-muted/50">
@@ -853,6 +930,7 @@ const HeritagePaper = () => {
                   <tr><td className="p-2 border border-border">GitHub — SimNap</td><td className="p-2 border border-border"><a href="https://github.com/SweetKenneth/SimNap-Dreaming-AI-Whitepaper" className="text-primary break-all">github.com/SweetKenneth/...</a></td></tr>
                   <tr><td className="p-2 border border-border">YouTube — Demo</td><td className="p-2 border border-border"><a href="https://youtu.be/17jrlDhMz4k" className="text-primary">youtu.be/17jrlDhMz4k</a></td></tr>
                   <tr><td className="p-2 border border-border">ORCID</td><td className="p-2 border border-border"><a href="https://orcid.org/0009-0001-4237-1243" className="text-primary break-all">0009-0001-4237-1243</a></td></tr>
+                  <tr><td className="p-2 border border-border">U.S. Patent App.</td><td className="p-2 border border-border font-mono text-primary">No. 64/029,678 · No. 64/031,637</td></tr>
                 </tbody>
               </table>
             </div>
@@ -861,8 +939,8 @@ const HeritagePaper = () => {
           {/* ═══════════ FOOTER ═══════════ */}
           <footer className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t-2 border-primary/20 text-center">
             <div className="text-xs text-muted-foreground font-mono">© 2025–2026 PromptFluid®. All rights reserved.</div>
-            <div className="mt-1 text-xs text-muted-foreground font-mono">CMPSBL® Substrate OS · 40 Primitives · 4 Categories · v14.2.0 MINDGAMES</div>
-            <div className="mt-1 text-[10px] text-muted-foreground/70 font-mono">Patent Pending · U.S. App. No. 64/029,678</div>
+            <div className="mt-1 text-xs text-muted-foreground font-mono">CMPSBL® Substrate OS · 40 Primitives · 4 Categories · v19.0.0 SYMBIOTIC</div>
+            <div className="mt-1 text-[10px] text-muted-foreground/70 font-mono">Patent Pending · U.S. App. No. 64/029,678 · U.S. App. No. 64/031,637</div>
             <div className="mt-2 text-[10px] text-muted-foreground/60 font-mono leading-relaxed">
               This document constitutes a defensive publication establishing prior art. It does not constitute a grant of license.
             </div>
