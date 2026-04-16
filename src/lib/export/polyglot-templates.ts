@@ -139,6 +139,7 @@ impl From<usize> for JsonValue { fn from(v: usize) -> Self { JsonValue::Number(v
 impl From<f64> for JsonValue { fn from(v: f64) -> Self { JsonValue::Number(v) } }
 impl From<u128> for JsonValue { fn from(v: u128) -> Self { JsonValue::Number(v as f64) } }
 impl From<&str> for JsonValue { fn from(v: &str) -> Self { JsonValue::String(v.to_string()) } }
+impl From<&String> for JsonValue { fn from(v: &String) -> Self { JsonValue::String(v.clone()) } }
 impl From<String> for JsonValue { fn from(v: String) -> Self { JsonValue::String(v) } }
 impl From<Vec<String>> for JsonValue { fn from(v: Vec<String>) -> Self { JsonValue::Array(v.into_iter().map(JsonValue::String).collect()) } }
 impl From<HashMap<String, JsonValue>> for JsonValue { fn from(v: HashMap<String, JsonValue>) -> Self { JsonValue::Object(v) } }
