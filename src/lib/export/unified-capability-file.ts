@@ -1725,7 +1725,7 @@ export function generateUnifiedCapabilityFile(
   } else if (lang === 'php') {
     raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
   } else if (hasPolyglotGenerator(lang)) {
-    raw = generatePolyglotFile(lang, capabilities, packName);
+    raw = generatePolyglotFile(lang, capabilities, packName, userSourceFiles);
   } else {
     raw = generateUnifiedGeneric(capabilities, packName, lang);
   }
