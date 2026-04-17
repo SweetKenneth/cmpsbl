@@ -140,7 +140,7 @@ export function AscensionLayersHero() {
                       ease: "easeInOut",
                     },
                   }}
-                  className="absolute left-1/2 top-1/2 w-[78%] h-[22%] -translate-x-1/2 -translate-y-1/2 rounded-2xl border backdrop-blur-sm"
+                  className="absolute left-1/2 top-1/2 w-[88%] sm:w-[82%] h-[24%] -translate-x-1/2 -translate-y-1/2 rounded-2xl border backdrop-blur-sm"
                   style={{
                     transform: `translate(-50%, -50%) translate(${xOffset}px, ${yOffset}px) rotateX(55deg)`,
                     transformStyle: "preserve-3d",
