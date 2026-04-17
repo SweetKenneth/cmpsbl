@@ -103,7 +103,16 @@ export function V2EnhanceStep({ onComplete }: Props) {
   );
   const userTierRank = TIER_RANK[effectiveTier];
 
-  const availableLayers = useMemo(() => getAvailableLayers(), []);
+  // Tier-gated catalog: exclude the 25 store INVENTORY_LAYERS — those are
+  // purchase-only and surface in the "Your Purchased Layers" section below.
+  const inventoryLayerIds = useMemo(
+    () => new Set(INVENTORY_LAYERS.map((l) => l.id)),
+    [],
+  );
+  const availableLayers = useMemo(
+    () => getAvailableLayers().filter((l) => !inventoryLayerIds.has(l.id)),
+    [inventoryLayerIds],
+  );
 
   // Inventory layers (25 store SKUs) the user has purchased — ranked by CJPI desc.
   const purchasedInventoryLayers = useMemo<CmpsblLayerDefinition[]>(
