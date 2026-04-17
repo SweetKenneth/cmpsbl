@@ -28,6 +28,7 @@ import { ORCHESTRATION_LAYERS } from './layers/orchestration';
 import { EVOLUTION_LAYERS } from './layers/evolution';
 import { GOVERNANCE_LAYERS } from './layers/governance';
 import { COMPLIANCE_LAYERS } from './layers/compliance';
+import { INVENTORY_LAYERS } from './layers/inventory';
 import { CIRCUIT_BREAKER_CORE } from './layers/_circuit-breaker-core';
 import { TIMEOUT_CORE } from './layers/_timeout-core';
 import { RETRY_CORE } from './layers/_retry-core';
@@ -73,6 +74,7 @@ const LAYER_CATALOG: CmpsblLayerDefinition[] = [
   ...EVOLUTION_LAYERS,
   ...GOVERNANCE_LAYERS,
   ...COMPLIANCE_LAYERS,
+  ...INVENTORY_LAYERS,
 ];
 
 // ── Deterministic Phase Ordering ────────────────────────────────────────────
@@ -129,6 +131,25 @@ const LAYER_PHASE_MAP: Readonly<Record<string, number>> = Object.freeze({
   'self-evolution':               PHASE_EVOLUTION,
   // Phase 8 — Post Audit + Compliance
   'regulatory-compliance':        PHASE_POST_COMPLIANCE,
+
+  // ── Inventory Layers (Ranks 21–33) ─────────────────────────────────────────
+  // Phase 1 — Governance + Security
+  'llm-defense-suite':            PHASE_GOV_SECURITY,
+  'cyber-perimeter-suite':        PHASE_GOV_SECURITY,
+  'topological-security-suite':   PHASE_GOV_SECURITY,
+  'polyglot-lex-suite':           PHASE_GOV_SECURITY,
+  'holographic-integration-suite': PHASE_GOV_SECURITY,
+  // Phase 4 — Intelligence + Memory
+  'quantum-simulation-suite':     PHASE_INTELLIGENCE,
+  'memory-compression-suite':     PHASE_INTELLIGENCE,
+  'federated-learning-suite':     PHASE_INTELLIGENCE,
+  // Phase 5 — Performance + Orchestration
+  'robotics-control-suite':       PHASE_PERFORMANCE,
+  'agency-orchestration-suite':   PHASE_PERFORMANCE,
+  'edge-compute-suite':           PHASE_PERFORMANCE,
+  // Phase 7 — Evolution (post-execution observers)
+  'layered-observability-suite':  PHASE_EVOLUTION,
+  'stream-processing-suite':      PHASE_EVOLUTION,
 });
 
 const PHASE_LABELS: Readonly<Record<number, string>> = Object.freeze({
