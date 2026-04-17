@@ -25,7 +25,7 @@ import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
 import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
-import { V2PrimitiveReference } from '@/components/ascension-v2/V2PrimitiveReference';
+import { V2LaunchLayers } from '@/components/ascension-v2/V2LaunchLayers';
 
 import {
   initRun,
@@ -146,10 +146,10 @@ export default function AscensionV2() {
                 and we'll discover capabilities against the 40-Primitive substrate.
               </p>
               <a
-                href="#primitive-reference"
+                href="#launch-layers"
                 className="inline-block mt-3 text-[11px] sm:text-xs font-medium text-primary hover:underline underline-offset-4"
               >
-                What does each layer do? ↓
+                See the Top 20 Launch Layers ↓
               </a>
             </div>
           )}
@@ -210,8 +210,8 @@ export default function AscensionV2() {
             </div>
           )}
 
-          {/* Bottom-of-page glossary — what each primitive does */}
-          <V2PrimitiveReference />
+          {/* Top 20 Launch Layers — curated lineup */}
+          <V2LaunchLayers />
         </div>
       </main>
 
