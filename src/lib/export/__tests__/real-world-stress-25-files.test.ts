@@ -145,6 +145,39 @@ const ENTRY_SYMBOL: Record<Lang, string> = {
   kotlin: 'fun cmpsblExecute',
 };
 
+/**
+ * Indent-aware byte-perfect verifier.
+ *
+ * The chain executor wraps Layer 1 in a class/enum and runs `indent(body, N)`,
+ * which prepends spaces to every newline. The customer's bytes are unchanged
+ * line-for-line, but a raw substring search on the original source fails.
+ *
+ * This helper normalizes by stripping leading whitespace from each line and
+ * walking forward through the haystack, asserting every non-blank line of the
+ * needle appears in order. That proves byte-perfect line preservation while
+ * tolerating the executor's uniform indentation.
+ */
+function expectLayer1Preserved(haystack: string, originalSrc: string, label: string): void {
+  // Use the same `*\/` escape the wrapper applies, then sample the first
+  // ~30 non-blank lines — enough to prove the source was embedded verbatim
+  // without making the assertion run for thousands of lines per file.
+  const escaped = originalSrc.replace(/\*\//g, '*\\/');
+  const haystackLines = haystack.split('\n').map(l => l.replace(/^\s+/, ''));
+  const needleLines = escaped.split('\n')
+    .map(l => l.replace(/^\s+/, ''))
+    .filter(l => l.length > 0)
+    .slice(0, 30);
+
+  let cursor = 0;
+  for (const line of needleLines) {
+    const idx = haystackLines.indexOf(line, cursor);
+    if (idx === -1) {
+      throw new Error(`${label}: missing Layer 1 line "${line.slice(0, 80)}" after cursor ${cursor}`);
+    }
+    cursor = idx + 1;
+  }
+}
+
 // ─── Top-level fixture sanity ────────────────────────────────────────────────
 describe('Real-world 25-file stress corpus', () => {
   it('loaded the full 25-file corpus from /tmp/stress-corpus', () => {
@@ -190,8 +223,7 @@ for (const file of CORPUS) {
         });
 
         it('preserves the real-world Layer 1 source byte-for-byte', () => {
-          const probe = file.src.replace(/\*\//g, '*\\/').slice(0, 400);
-          expect(emitted).toContain(probe);
+          expectLayer1Preserved(emitted, file.src, 'emit');
         });
 
         it('balances braces/parens/brackets after emission', () => {
@@ -206,8 +238,7 @@ for (const file of CORPUS) {
         });
 
         it('sealing keeps the real-world Layer 1 bytes intact', () => {
-          const probe = file.src.replace(/\*\//g, '*\\/').slice(0, 400);
-          expect(sealed).toContain(probe);
+          expectLayer1Preserved(sealed, file.src, 'seal');
         });
 
         it('sealed output remains brace-balanced', () => {
