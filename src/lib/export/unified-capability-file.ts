@@ -98,6 +98,42 @@ function sanitizeCapabilities(capabilities: UnifiedCapabilityInput[]): UnifiedCa
   return capabilities.map((cap) => ({ ...cap, chain: normalizeChainModules(cap.chain) }));
 }
 
+/**
+ * Defensive extension inference for embedded user sources.
+ *
+ * Real upload flows always carry the original filename (with extension), but
+ * synthetic / programmatic callers occasionally pass a bare name like "app".
+ * Without an extension, every per-language source-embedding regex
+ * (`/\.ts$/`, `/\.py$/`, `/\.js$/`, …) silently drops the file and the
+ * emitter degrades to a passthrough. We coerce here so the declared
+ * `language` / `extension` field is authoritative when the filename is bare.
+ */
+const LANG_TO_EXT: Record<string, string> = {
+  typescript: 'ts',
+  javascript: 'js',
+  python: 'py',
+  rust: 'rs',
+  go: 'go',
+  php: 'php',
+  java: 'java',
+  csharp: 'cs',
+  ruby: 'rb',
+  swift: 'swift',
+  kotlin: 'kt',
+};
+
+function coerceUserSourceFiles(
+  files: UserSourceFile[] | undefined,
+): UserSourceFile[] | undefined {
+  if (!files || files.length === 0) return files;
+  return files.map((f) => {
+    if (/\.[a-z0-9]+$/i.test(f.name)) return f;
+    const ext = (f.extension || LANG_TO_EXT[(f.language || '').toLowerCase()] || '').replace(/^\./, '');
+    if (!ext) return f;
+    return { ...f, name: `${f.name}.${ext}` };
+  });
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // TypeScript Generator
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1009,6 +1045,69 @@ ${getAutoWireTs(selectedLayers || [])}
 // Unauthorized reproduction, modification, or redistribution prohibited.
 // ═══════════════════════════════════════════════════════════════════════════════
 `;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// JavaScript Generator (diverges from TypeScript)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Strip TypeScript-only syntax from a TS-shaped emitter so the result is
+ * valid JS for both CommonJS and ESM consumers. Conservative — only removes
+ * patterns the TS generator above is known to emit.
+ */
+function stripTypeScriptSyntax(src: string): string {
+  let out = src;
+  // Drop `interface Foo { ... }` and `type Foo = ...;` blocks
+  out = out.replace(/^export\s+interface\s+\w+\s*(?:<[^>]+>)?\s*\{[\s\S]*?^\}\s*$/gm, '');
+  out = out.replace(/^export\s+type\s+\w[\w<>,\s|&'"\[\]]*=\s*[^;]+;\s*$/gm, '');
+  out = out.replace(/^interface\s+\w+\s*(?:<[^>]+>)?\s*\{[\s\S]*?^\}\s*$/gm, '');
+  out = out.replace(/^type\s+\w[\w<>,\s|&'"\[\]]*=\s*[^;]+;\s*$/gm, '');
+  // Strip parameter type annotations: `(x: Foo, y: Bar)` → `(x, y)`
+  out = out.replace(/(\b[A-Za-z_$][\w$]*)\s*:\s*(?:Record<[^>]+>|Array<[^>]+>|Promise<[^>]+>|[A-Za-z_$][\w$<>,\s|&'"\[\]?]*)(?=\s*[,)=])/g, '$1');
+  // Strip return-type annotations: `): Foo {` → `) {`
+  out = out.replace(/\)\s*:\s*[A-Za-z_$][\w$<>,\s|&'"\[\]?.]*\s*\{/g, ') {');
+  // Strip `as Foo` casts
+  out = out.replace(/\s+as\s+(?:Record<[^>]+>|[A-Za-z_$][\w$<>,\s|&'"\[\]?.]*)/g, '');
+  // Strip generics on calls: `foo<T>(x)` → `foo(x)`
+  out = out.replace(/(\b[A-Za-z_$][\w$]*)<[A-Za-z_$,\s<>\[\]]+>(\s*\()/g, '$1$2');
+  // Drop `readonly` and `public/private/protected` modifiers
+  out = out.replace(/\b(readonly|public|private|protected)\s+/g, '');
+  // Drop class field type decls: `name: string;` at class level
+  out = out.replace(/^(\s+)(\w+)\s*:\s*[A-Za-z_$][\w$<>,\s|&'"\[\]?.]*\s*;\s*$/gm, '$1// $2');
+  return out;
+}
+
+export function generateUnifiedJavaScript(
+  capabilities: UnifiedCapabilityInput[],
+  packName: string,
+  userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
+): string {
+  const ts = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+  const js = stripTypeScriptSyntax(ts);
+
+  // Collect public function names for the CommonJS footer (best-effort)
+  const fnNames = [...js.matchAll(/^export\s+function\s+([A-Za-z_$][\w$]*)\s*\(/gm)]
+    .map((m) => m[1]);
+  const classNames = [...js.matchAll(/^export\s+class\s+([A-Za-z_$][\w$]*)/gm)]
+    .map((m) => m[1]);
+  const exported = Array.from(new Set([...fnNames, ...classNames]));
+
+  const cjsFooter = exported.length > 0
+    ? `\n\n// ── CommonJS interop (proprietary) ─────────────────────────────────────────
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { ${exported.join(', ')} };
+}\n`
+    : '';
+
+  const banner = `// ═══════════════════════════════════════════════════════════════════════════════
+//  CMPSBL® Ascension Layer™ — JavaScript Edition (CommonJS + ESM compatible)
+//  Type annotations stripped from the TS surface; behavior is identical.
+// ═══════════════════════════════════════════════════════════════════════════════
+`;
+
+  return banner + js + cjsFooter;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2797,9 +2896,16 @@ export function generateUnifiedCapabilityFile(
   // Single boundary: normalize chains for every language emitter so raw
   // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.
   capabilities = sanitizeCapabilities(capabilities);
+  // Defensive: coerce bare filenames so source embedding never silently drops.
+  userSourceFiles = coerceUserSourceFiles(userSourceFiles);
 
-  if (lang === 'typescript' || lang === 'javascript') {
+  if (lang === 'typescript') {
     raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+  } else if (lang === 'javascript') {
+    // JS diverges from TS: strips type annotations from the public surface and
+    // appends a CommonJS-compatible export footer so the file works equally
+    // well via `require()` or ESM `import`.
+    raw = generateUnifiedJavaScript(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'python') {
     raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'php') {
@@ -2831,7 +2937,7 @@ export function generateUnifiedCapabilityFile(
 
 export function getUnifiedFilename(lang: string): string {
   const EXT: Record<string, string> = {
-    typescript: '.ts', python: '.py', php: '.php', rust: '.rs', go: '.go',
+    typescript: '.ts', javascript: '.js', python: '.py', php: '.php', rust: '.rs', go: '.go',
     java: '.java', csharp: '.cs', ruby: '.rb', swift: '.swift', kotlin: '.kt',
     c: '.c', cpp: '.cpp', lua: '.lua', dart: '.dart', scala: '.scala',
     elixir: '.ex', haskell: '.hs', zig: '.zig',
