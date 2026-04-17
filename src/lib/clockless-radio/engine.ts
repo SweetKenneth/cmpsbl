@@ -20,8 +20,8 @@ export interface RadioEngineCallbacks {
 
 const CROSSFADE_DURATION = 8; // seconds
 const PRELOAD_AHEAD = 20; // seconds before end to preload
-const DJ_DUCK_VOLUME = 0.3;
-const DJ_DUCK_RAMP = 1.5; // seconds
+const DJ_DUCK_VOLUME = 0.12; // duck music to 12% so DJ voice is clearly above
+const DJ_DUCK_RAMP = 0.6; // seconds — fast duck so voice isn't drowned at start
 
 // Audio effect probabilities and settings
 const EFFECT_CHANCE = 0.15; // 15% chance of an effect on any track
@@ -32,6 +32,8 @@ const EFFECT_DURATION = 8; // seconds the effect lasts before returning to norma
 export class ClocklessRadioEngine {
   private ctx: AudioContext | null = null;
   private masterGain: GainNode | null = null;
+  private musicGain: GainNode | null = null; // Music-only sub-bus (gets ducked)
+  private voiceGain: GainNode | null = null; // TTS/DJ voice sub-bus (never ducked)
   private currentSource: AudioBufferSourceNode | null = null;
   private currentGain: GainNode | null = null;
   private nextSource: AudioBufferSourceNode | null = null;
@@ -89,10 +91,18 @@ export class ClocklessRadioEngine {
       this.masterGain = this.ctx.createGain();
       this.masterGain.gain.value = this.volume;
       this.masterGain.connect(this.ctx.destination);
-      // Initialize SFX engine on same AudioContext
-      this._sfx = new RadioSFX(this.ctx, this.masterGain);
-      // Share AudioContext with TTS so FreeTTS MP3s route to Bluetooth
-      setTTSAudioContext(this.ctx, this.masterGain);
+      // Music sub-bus — this is what gets ducked during DJ segments
+      this.musicGain = this.ctx.createGain();
+      this.musicGain.gain.value = 1;
+      this.musicGain.connect(this.masterGain);
+      // Voice sub-bus — TTS/DJ routes here so it stays at full volume during ducking
+      this.voiceGain = this.ctx.createGain();
+      this.voiceGain.gain.value = 1;
+      this.voiceGain.connect(this.masterGain);
+      // SFX shares the music bus (intro stings, transitions, ear candy)
+      this._sfx = new RadioSFX(this.ctx, this.musicGain);
+      // TTS routes through the voice bus so it isn't ducked with the music
+      setTTSAudioContext(this.ctx, this.voiceGain);
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
@@ -114,7 +124,7 @@ export class ClocklessRadioEngine {
     
     source.buffer = buffer;
     source.connect(gain);
-    gain.connect(this.masterGain!);
+    gain.connect(this.musicGain!);
     
     if (fadeIn) {
       gain.gain.setValueAtTime(0.001, ctx.currentTime);
@@ -355,18 +365,18 @@ export class ClocklessRadioEngine {
   setVolume(v: number): void {
     this.volume = Math.max(0, Math.min(1, v));
     if (this.masterGain) {
-      this.masterGain.gain.value = this._isDJDucked ? this.volume * DJ_DUCK_VOLUME : this.volume;
+      this.masterGain.gain.value = this.volume;
     }
   }
 
-  /** Duck music volume for DJ interjection */
+  /** Duck music volume for DJ interjection — only affects music bus, not voice */
   duckForDJ(): void {
-    if (!this.masterGain || !this.ctx) return;
+    if (!this.musicGain || !this.ctx) return;
     this._isDJDucked = true;
     const now = this.ctx.currentTime;
-    this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
-    this.masterGain.gain.exponentialRampToValueAtTime(
-      Math.max(0.001, this.volume * DJ_DUCK_VOLUME),
+    this.musicGain.gain.setValueAtTime(this.musicGain.gain.value, now);
+    this.musicGain.gain.exponentialRampToValueAtTime(
+      Math.max(0.001, DJ_DUCK_VOLUME),
       now + DJ_DUCK_RAMP
     );
     this.callbacks.onDJStart();
@@ -375,14 +385,11 @@ export class ClocklessRadioEngine {
 
   /** Restore music volume after DJ */
   unduckFromDJ(): void {
-    if (!this.masterGain || !this.ctx) return;
+    if (!this.musicGain || !this.ctx) return;
     this._isDJDucked = false;
     const now = this.ctx.currentTime;
-    this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
-    this.masterGain.gain.exponentialRampToValueAtTime(
-      Math.max(0.001, this.volume),
-      now + DJ_DUCK_RAMP
-    );
+    this.musicGain.gain.setValueAtTime(this.musicGain.gain.value, now);
+    this.musicGain.gain.exponentialRampToValueAtTime(1, now + DJ_DUCK_RAMP);
     this.callbacks.onDJEnd();
     this.setState('playing');
   }
@@ -421,6 +428,8 @@ export class ClocklessRadioEngine {
     }
     this.ctx = null;
     this.masterGain = null;
+    this.musicGain = null;
+    this.voiceGain = null;
     if (this.hiddenAudio) {
       this.hiddenAudio.pause();
       this.hiddenAudio = null;
