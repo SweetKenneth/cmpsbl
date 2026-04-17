@@ -5,6 +5,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { generateUnifiedCapabilityFile } from '@/lib/export/unified-capability-file';
+import { isLanguageShipping } from '@/lib/export/language-parity-tiers';
 
 const CAPS = [
   { id: '1', name: 'Auto_Defense', cjpiScore: 90, tier: 'apex', chain: ['DEFENSE', 'BRAIN'], fingerprint: 'fp_def_test123456', moatSignature: 'moat_1', capabilityType: 'ascended' },
