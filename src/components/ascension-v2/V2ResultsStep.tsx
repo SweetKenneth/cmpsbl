@@ -32,7 +32,9 @@ import {
 } from '@/lib/export/ascension-v2-docs';
 import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile, buildNoticeFile } from '@/lib/licensing/upstream-license-bundle';
 import { V2UpstreamLicenseSelect, type SpdxChoice } from './V2UpstreamLicenseSelect';
-import type { DetectedLicense } from '@/lib/factory/license-attribution';
+import { detectLicenseFromSiblingFile } from '@/lib/factory/sibling-license-scan';
+import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/license-attribution';
+import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import {
   getLanguageParityStatus,
@@ -75,12 +77,27 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const availableLayers = useMemo(() => getAvailableLayers(), []);
   const selectedLayers = useMemo(() => new Set(selectedLayerIds), [selectedLayerIds]);
 
-  // Live detection of the upstream license on the primary source file. Re-runs
-  // only when the source content changes — null when nothing detectable.
+  // Live detection of the upstream license. Two strategies, in order:
+  //   1. Sibling LICENSE file in the upload set (covers the common case where
+  //      a repo's LICENSE lives at the root, not in every source-file header —
+  //      e.g. Simon Willison's `llm`, most Python/Rust/Go projects).
+  //   2. Inline SPDX/Apache/MIT/BSD/MPL/ISC header in the primary source.
+  // Both strategies use the same conservative SPDX patterns, so a hit is
+  // legally meaningful regardless of which one fired.
   const detectedUpstream: DetectedLicense | null = useMemo(() => {
     if (sourceFiles.length === 0) return null;
+    const sibling = detectLicenseFromSiblingFile(sourceFiles);
+    if (sibling) return sibling;
     return detectUpstreamLicenseForExport(sourceFiles[0].content);
   }, [sourceFiles]);
+
+  // True only when the user has neither inline-detected nor manually selected
+  // an upstream SPDX. We surface a loud warning in this state so NOASSERTION
+  // exports never happen by accident.
+  const upstreamMissing =
+    sourceFiles.length > 0 &&
+    spdxChoice === 'auto' &&
+    detectedUpstream === null;
 
   useEffect(() => {
     completeRun();
@@ -212,12 +229,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
       // Compute the upstream license that will actually ship — single source
       // of truth for the README, NOTICE.txt, LICENSE-UPSTREAM.txt, and manifest
-      // entries below. Honors the SPDX dropdown override.
+      // entries below. Honors the SPDX dropdown override; otherwise falls
+      // through sibling-LICENSE → inline-header detection (same precedence
+      // as the live preview above the dropdown).
       const overrideSpdx = spdxChoice === 'auto' ? null : (spdxChoice === 'none' ? null : spdxChoice);
-      const shippingUpstream =
-        sourceFiles.length > 0 && spdxChoice !== 'none'
-          ? detectUpstreamLicenseForExport(sourceFiles[0].content, overrideSpdx)
-          : null;
+      const shippingUpstream: DetectedLicense | null =
+        sourceFiles.length === 0 || spdxChoice === 'none'
+          ? null
+          : overrideSpdx
+            ? buildLicenseFromSpdx(overrideSpdx)
+            : detectLicenseFromSiblingFile(sourceFiles)
+              ?? detectUpstreamLicenseForExport(sourceFiles[0].content);
 
       const readmeHTML = generateV2ReadmeHTML({
         packName: zipName,
@@ -526,6 +548,29 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
       {/* Actions — source language always exports. No gating. */}
       <div className="space-y-3">
+        {/* Loud warning when no upstream license can be detected and the user
+            hasn't manually chosen one. Without this, a NOASSERTION export ships
+            silently — which is exactly what just happened on the cli-7.py upload. */}
+        {upstreamMissing && (
+          <div
+            className="rounded-xl border border-neon-amber/50 bg-neon-amber/10 p-3 sm:p-4 flex items-start gap-2.5"
+            role="alert"
+          >
+            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-neon-amber flex-shrink-0 mt-0.5" />
+            <div className="min-w-0 flex-1 space-y-1">
+              <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                No upstream license detected
+              </p>
+              <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
+                We checked your source header and any sibling <span className="font-mono">LICENSE</span> file —
+                neither declared an SPDX. If this code is open-source (e.g. Apache-2.0, MIT, BSD),
+                pick the correct license below so attribution travels with your export. Otherwise the
+                manifest will ship as <span className="font-mono">NOASSERTION</span>.
+              </p>
+            </div>
+          </div>
+        )}
+
         <V2UpstreamLicenseSelect
           value={spdxChoice}
           onChange={setSpdxChoice}

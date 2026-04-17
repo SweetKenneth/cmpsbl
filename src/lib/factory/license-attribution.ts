@@ -160,7 +160,12 @@ export function detectLayer1License(source: string): DetectedLicense | null {
     /spdx-license-identifier:\s*apache-2\.0/i.test(header) ||
     lower.includes('apache license, version 2.0') ||
     lower.includes('apache license version 2.0') ||
-    /licensed under the apache license/i.test(header)
+    /licensed under the apache license/i.test(header) ||
+    // Canonical LICENSE-file form: "Apache License\n   Version 2.0" (no comma).
+    // Every official Apache LICENSE body opens this way; without this branch
+    // the detector misses all sibling LICENSE files. Anchored to "version 2"
+    // so we don't false-match prose mentioning the project name.
+    /apache license\s*[\r\n]+\s*version\s*2(\.0)?/i.test(header)
   ) {
     spdx = 'Apache-2.0';
   } else if (
