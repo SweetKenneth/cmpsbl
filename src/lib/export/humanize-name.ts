@@ -107,10 +107,9 @@ function extractBaseName(raw: string): string {
   // Strip chain separators
   cleaned = cleaned.replace(/_x_/gi, ' ').replace(/ × /g, ' ');
 
-  // If it's all caps with underscores like MY_ANALYSIS_TOOL → split on underscore
+  // If it's all caps with underscores like MY_ANALYSIS_TOOL → split + TitleCase each word
   if (/^[A-Z0-9_]+$/.test(cleaned)) {
     const words = cleaned.split('_').filter(Boolean);
-    // Filter out known module names to get the "original" name parts
     const nonModuleWords = words.filter(w => !MODULE_LABELS[w]);
     const targetWords = nonModuleWords.length > 0 ? nonModuleWords : words.slice(0, 1);
     return targetWords
@@ -118,8 +117,18 @@ function extractBaseName(raw: string): string {
       .join('');
   }
 
-  // CamelCase-ish: just titlecase it
-  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+  // Mixed-case with underscores like "Cognitive_Chain_Reasoning_Engine"
+  // → preserve each word's casing, just swap underscores for spaces
+  if (cleaned.includes('_')) {
+    return cleaned
+      .split('_')
+      .filter(Boolean)
+      .map(w => /^[A-Z0-9]+$/.test(w) ? w.charAt(0) + w.slice(1).toLowerCase() : w)
+      .join(' ');
+  }
+
+  // CamelCase-ish: just titlecase first char
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
 
 /**
