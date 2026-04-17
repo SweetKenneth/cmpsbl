@@ -103,6 +103,8 @@ Disallow: /marketplace/success
 Disallow: /substrate/licensing/success
 Disallow: /clear-cache
 Disallow: /pf-clear-cache
+Disallow: /beta
+Disallow: /beta/*
 Disallow: /*.json$
 Disallow: /*?*preview=
 Disallow: /*?*draft=

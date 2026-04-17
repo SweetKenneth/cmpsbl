@@ -38,6 +38,7 @@ const CodeLab = lazy(() => import("@/pages/CodeLab"));
 const AgencyPortal = lazy(() => import("@/pages/AgencyPortal"));
 const ProprietaryEvolution = lazy(() => import("@/pages/ProprietaryEvolution"));
 const AscensionV2 = lazy(() => import("@/pages/AscensionV2"));
+const Beta = lazy(() => import("@/pages/Beta"));
 const AgentForge = lazy(() => import("@/pages/AgentForge"));
 const AgentPowerUp = lazy(() => import("@/pages/AgentPowerUp"));
 
@@ -286,6 +287,7 @@ export const publicRoutes = (
     <Route path="/x" element={<ProprietaryEvolution />} />
     <Route path="/ascension-v2" element={<AscensionV2 />} />
     <Route path="/ascension" element={<Navigate to="/ascension-v2" replace />} />
+    <Route path="/beta" element={<Beta />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
     <Route path="/junkyard" element={<JunkyardPage />} />
