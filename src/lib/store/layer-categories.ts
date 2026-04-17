@@ -7,9 +7,47 @@ import defenseImg from "@/assets/layers/defense-security.jpg";
 import synthesisImg from "@/assets/layers/synthesis-evolution.jpg";
 import integrationImg from "@/assets/layers/integration-contracts.jpg";
 import suitesImg from "@/assets/layers/suites.jpg";
+
+// Per-item hero imagery (slug-keyed)
+import llmDefenseImg from "@/assets/layers/items/llm-defense-suite.jpg";
+import cyberPerimeterImg from "@/assets/layers/items/cyber-perimeter-suite.jpg";
+import quantumSimImg from "@/assets/layers/items/quantum-simulation-suite.jpg";
+import roboticsImg from "@/assets/layers/items/robotics-control-suite.jpg";
+import agencyOrchImg from "@/assets/layers/items/agency-orchestration-suite.jpg";
+import topoSecImg from "@/assets/layers/items/topological-security-synthesizer.jpg";
+import layeredObsImg from "@/assets/layers/items/layered-observability-enforcer.jpg";
+import synthContractsImg from "@/assets/layers/items/synthetic-contracts-navigator.jpg";
+import holoIntegrationImg from "@/assets/layers/items/holographic-integration-guardian.jpg";
+import selfHealImg from "@/assets/layers/items/self-healing-learning-scanner.jpg";
+import sentinelEvoImg from "@/assets/layers/items/sentinel-evolution-sequencer.jpg";
+import kineticSynthImg from "@/assets/layers/items/kinetic-synthesis-controller.jpg";
+import resilientFabricImg from "@/assets/layers/items/resilient-evolution-fabric.jpg";
+
 import {
   Shield, Zap, Network, Sparkles, type LucideIcon,
 } from "lucide-react";
+
+/** Slug → unique hero image. Falls back to pillar image if missing. */
+export const LAYER_ITEM_IMAGES: Record<string, string> = {
+  "llm-defense-suite": llmDefenseImg,
+  "cyber-perimeter-suite": cyberPerimeterImg,
+  "quantum-simulation-suite": quantumSimImg,
+  "robotics-control-suite": roboticsImg,
+  "agency-orchestration-suite": agencyOrchImg,
+  "topological-security-synthesizer": topoSecImg,
+  "layered-observability-enforcer": layeredObsImg,
+  "synthetic-contracts-navigator": synthContractsImg,
+  "holographic-integration-guardian": holoIntegrationImg,
+  "self-healing-learning-scanner": selfHealImg,
+  "sentinel-evolution-sequencer": sentinelEvoImg,
+  "kinetic-synthesis-controller": kineticSynthImg,
+  "resilient-evolution-fabric": resilientFabricImg,
+};
+
+/** Resolve item image with pillar fallback. */
+export function getItemImage(slug: string, pillar: string | null): string {
+  return LAYER_ITEM_IMAGES[slug] ?? getPillarMeta(pillar).image;
+}
 
 export type LayerPillar =
   | "suites"
