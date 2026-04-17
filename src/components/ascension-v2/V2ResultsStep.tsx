@@ -291,12 +291,12 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
       folder.file('HARNESS-REPORT.txt', harness.summary);
 
-      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel
-      //    when the customer's source carries an attribution-required license.
-      //    Required for legal compliance — without this, distributing an
-      //    Apache-licensed source inside our ZIP would be a license violation.
-      if (sourceFiles.length > 0) {
-        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content);
+      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel.
+      //    User can override auto-detection via the SPDX dropdown when the
+      //    source has no inline header. 'none' suppresses the file entirely.
+      if (sourceFiles.length > 0 && spdxChoice !== 'none') {
+        const overrideSpdx = spdxChoice === 'auto' ? null : spdxChoice;
+        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content, overrideSpdx);
         if (upstream) {
           folder.file('LICENSE-UPSTREAM.txt', buildUpstreamLicenseFile(upstream, originalFileName));
         }
