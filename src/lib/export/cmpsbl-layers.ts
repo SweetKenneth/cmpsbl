@@ -132,24 +132,39 @@ const LAYER_PHASE_MAP: Readonly<Record<string, number>> = Object.freeze({
   // Phase 8 — Post Audit + Compliance
   'regulatory-compliance':        PHASE_POST_COMPLIANCE,
 
-  // ── Inventory Layers (Ranks 21–33) ─────────────────────────────────────────
+  // ── Inventory Layers (25 store SKUs) ───────────────────────────────────────
   // Phase 1 — Governance + Security
   'llm-defense-suite':            PHASE_GOV_SECURITY,
   'cyber-perimeter-suite':        PHASE_GOV_SECURITY,
   'topological-security-suite':   PHASE_GOV_SECURITY,
-  'polyglot-lex-suite':           PHASE_GOV_SECURITY,
   'holographic-integration-suite': PHASE_GOV_SECURITY,
+  'privacy-obfuscation':          PHASE_GOV_SECURITY,
+  'zero-trust-identity':          PHASE_GOV_SECURITY,
+  'probabilistic-conscience':     PHASE_GOV_SECURITY,
+  'neural-broker':                PHASE_GOV_SECURITY,
+  // Phase 2 — Foresight + Detection
+  'geospatial-intelligence':      PHASE_FORESIGHT,
+  'sentinel-evolution':           PHASE_FORESIGHT,
+  // Phase 3 — Resilience + Recovery
+  'self-healing-scanner':         PHASE_RESILIENCE,
+  'reflex-orchestration':         PHASE_RESILIENCE,
   // Phase 4 — Intelligence + Memory
   'quantum-simulation-suite':     PHASE_INTELLIGENCE,
-  'memory-compression-suite':     PHASE_INTELLIGENCE,
-  'federated-learning-suite':     PHASE_INTELLIGENCE,
+  'symbolic-crafter':             PHASE_INTELLIGENCE,
+  'emergent-gateway':             PHASE_INTELLIGENCE,
+  'localization-mesh':            PHASE_INTELLIGENCE,
   // Phase 5 — Performance + Orchestration
   'robotics-control-suite':       PHASE_PERFORMANCE,
   'agency-orchestration-suite':   PHASE_PERFORMANCE,
-  'edge-compute-suite':           PHASE_PERFORMANCE,
+  'kinetic-synthesis':            PHASE_PERFORMANCE,
+  'adaptive-forge':               PHASE_PERFORMANCE,
+  'synthetic-contracts':          PHASE_PERFORMANCE,
   // Phase 7 — Evolution (post-execution observers)
   'layered-observability-suite':  PHASE_EVOLUTION,
-  'stream-processing-suite':      PHASE_EVOLUTION,
+  'resilient-evolution':          PHASE_EVOLUTION,
+  // Phase 8 — Post Audit + Compliance
+  'spectral-auditor':             PHASE_POST_COMPLIANCE,
+  'compliance-audit':             PHASE_POST_COMPLIANCE,
 });
 
 const PHASE_LABELS: Readonly<Record<number, string>> = Object.freeze({
