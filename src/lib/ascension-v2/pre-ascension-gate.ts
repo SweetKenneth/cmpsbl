@@ -231,7 +231,7 @@ function jsStructuralCheck(source: string): GateError | null {
   //    non-`{`/`;`/`}` run after the closing `)` until we hit `{`.
   //  • Generic type params on the function name (`function f<T>(…)`) are
   //    tolerated via an optional `<…>` slot before the parameter list.
-  const re = /\b(?:function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)(?:\s*:\s*[^{};]+?)?|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)\s*([^\s{])/g;
+  const re = /\b(?:function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)(?:\s*:[^{};]*)?|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)\s*([^\s{])/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(source)) !== null) {
     // Bail out if the captured "next token" is actually a syntactically
