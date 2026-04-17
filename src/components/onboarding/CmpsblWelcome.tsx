@@ -268,7 +268,7 @@ export function CmpsblWelcome() {
                         color: `hsl(var(--neon-cyan))`,
                       }}
                     >
-                      <Wrench className="w-3.5 h-3.5" />
+                      <Sparkles className="w-3.5 h-3.5" />
                       {current.inlineCta.text}
                       <ArrowRight className="w-3 h-3" />
                     </button>
