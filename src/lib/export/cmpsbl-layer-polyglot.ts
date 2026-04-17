@@ -20,6 +20,7 @@ import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
 import { JAVA_LAYER_BODIES } from './layers-java/java-layers';
 import { CSHARP_LAYER_BODIES } from './layers-csharp/csharp-layers';
 import { SWIFT_LAYER_BODIES } from './layers-swift/swift-layers';
+import { KOTLIN_LAYER_BODIES } from './layers-kotlin/kotlin-layers';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -53,6 +54,12 @@ function _registerCsharpLayerBodies(): void {
 function _registerSwiftLayerBodies(): void {
   for (const [layerId, body] of Object.entries(SWIFT_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:swift`, () => body.trim());
+  }
+}
+
+function _registerKotlinLayerBodies(): void {
+  for (const [layerId, body] of Object.entries(KOTLIN_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:kotlin`, () => body.trim());
   }
 }
 
@@ -99,6 +106,7 @@ _registerRsLayerBodies();
 _registerJavaLayerBodies();
 _registerCsharpLayerBodies();
 _registerSwiftLayerBodies();
+_registerKotlinLayerBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
