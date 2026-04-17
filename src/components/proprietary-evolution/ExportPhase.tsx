@@ -374,6 +374,12 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
 
   return (
     <div className="space-y-6">
+      {/* Persistent error surface — survives toast auto-dismiss */}
+      <InlineErrorPanel
+        error={inlineError}
+        onDismiss={() => setInlineError(null)}
+      />
+
       {/* Sign-in Warning */}
       {isAuthenticated === false && (
         <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/20">
