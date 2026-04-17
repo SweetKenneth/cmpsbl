@@ -287,12 +287,12 @@ export function HeroMetaSubstrate() {
 
             {/* Trust line */}
             <FadeIn delay={0.2} className="mt-4 mb-1">
-              <div className="flex items-center gap-3 text-[10px] sm:text-xs text-muted-foreground/50 font-medium tracking-wide">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground/50 font-medium tracking-wide">
                 <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-cyan)/0.5)]" />Diagnostic in seconds</span>
                 <span className="text-border/30">·</span>
                 <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-purple)/0.5)]" />Restoration in minutes</span>
-                <span className="text-border/30 hidden sm:inline">·</span>
-                <span className="hidden sm:flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-magenta)/0.5)]" />Code never stored</span>
+                <span className="text-border/30">·</span>
+                <span className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-[hsl(var(--neon-magenta)/0.5)]" />Code never stored</span>
               </div>
             </FadeIn>
 
