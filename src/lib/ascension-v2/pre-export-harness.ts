@@ -1,17 +1,17 @@
 /**
  * Ascension V2 — Pre-Export Test Harness
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Final gate before ZIP assembly. Runs four deterministic checks against
- * the freshly generated ascended code:
+ * Final gate before ZIP assembly. Runs deterministic checks against the
+ * freshly generated ascended code:
  *
  *   ① Syntax/AST validity              (CRITICAL)
  *   ② Layer-2 ↔ Layer-1 linkage        (CRITICAL)
  *   ③ Layer-1 fingerprint integrity    (CRITICAL)
- *   ④ CMPSBL Layer auto-wire presence  (SOFT — warns)
- *   ⑤ Layer execution smoke test       (SOFT — warns; runtime-only langs)
+ *   ④ CMPSBL Layer auto-wire presence  (CRITICAL — wrapper symbol)
+ *   ⑤ Layer execution smoke test       (CRITICAL — handlers ≥ 1)
  *
- * Any CRITICAL failure aborts export. SOFT failures attach as warnings to
- * the ZIP. Pure algorithmic — no external calls, no AI, fully deterministic.
+ * Any CRITICAL failure aborts export. Pure algorithmic — no external calls,
+ * no AI, fully deterministic.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -236,12 +236,12 @@ function checkLayerAutoWire(input: HarnessInput): HarnessCheck {
 
   const missing: string[] = [];
   for (const layer of input.selectedLayers) {
-    // Each layer exposes a wrapper name (e.g., cmpsbl_circuit_breaker_call).
-    // The wire code must reference it AND the layer header must appear.
+    // Wrapper symbol is part of the public API surface and is preserved across
+    // obfuscation passes. Banner/display strings get sealed and intentionally
+    // do NOT appear verbatim in emitted output, so we don't gate on them.
     const wrapperPresent = input.ascendedCode.includes(layer.autoWire.wrapperName);
-    const headerPresent = input.ascendedCode.includes(layer.name);
-    if (!wrapperPresent || !headerPresent) {
-      missing.push(`${layer.name} (wrapper:${wrapperPresent ? '✓' : '✗'} header:${headerPresent ? '✓' : '✗'})`);
+    if (!wrapperPresent) {
+      missing.push(`${layer.name} (wrapper:✗ ${layer.autoWire.wrapperName})`);
     }
   }
 
@@ -249,7 +249,7 @@ function checkLayerAutoWire(input: HarnessInput): HarnessCheck {
   return {
     id: 'layer_wire',
     label: 'CMPSBL Layer auto-wire',
-    severity: 'soft',
+    severity: 'critical',
     passed,
     message: passed
       ? `${input.selectedLayers.length} layer(s) auto-wired: ${input.selectedLayers.map(l => l.name).join(', ')}`
@@ -265,36 +265,56 @@ function checkLayerAutoWire(input: HarnessInput): HarnessCheck {
 function checkExecutionSmoke(input: HarnessInput): HarnessCheck {
   const t0 = performance.now();
   const lang = input.language.toLowerCase();
-  // Runtime smoke tests are language-specific and require an interpreter.
-  // In the browser-safe path we run a structural smoke: confirm the main
-  // dispatch entry point is defined and that at least one handler body
-  // exists for every module referenced in the dispatch table.
+  // Runtime smoke is language-specific. Browser-safe surrogate: confirm the
+  // dispatch entry point is defined AND that at least one handler body exists.
+  // Patterns must tolerate the obfuscation pass that renames `handle_<organ>`
+  // to opaque short tokens (e.g. `_h01`..`_h42`) and similarly mangles the
+  // TS/JS handler family. handlers:0 is a HARD FAIL — silent no-op exports
+  // are worse than loud crashes.
   const code = input.ascendedCode;
 
-  const dispatchPattern = /(cmpsbl_execute|cmpsblExecute)\s*[\(=:]/;
+  const dispatchPattern = /(cmpsbl_execute|cmpsblExecute|CmpsblExecute)\s*[\(=:<]/;
   const hasEntryPoint = dispatchPattern.test(code);
 
-  // Look for handler definitions per language
-  let handlerPattern: RegExp;
+  // Per-language: accept BOTH the pre-obfuscation (`handle_<name>`) and the
+  // post-obfuscation (`_h<digits>`) forms so the harness reflects reality.
+  let patterns: RegExp[];
   if (lang === 'python') {
-    handlerPattern = /def\s+handle_\w+\s*\(/g;
+    patterns = [
+      /def\s+handle_\w+\s*\(/g,
+      /def\s+_h\d+\s*\(/g,
+    ];
   } else if (lang === 'typescript' || lang === 'javascript') {
-    handlerPattern = /(?:function\s+handle\w+|const\s+handle\w+\s*=)/g;
+    patterns = [
+      /(?:function\s+handle\w+|const\s+handle\w+\s*=)/g,
+      /(?:function\s+_h\d+|const\s+_h\d+\s*=)/g,
+    ];
+  } else if (lang === 'go') {
+    patterns = [
+      /func\s+(?:Handle|handle)[_A-Z]\w*\s*\(/g,
+      /func\s+CmpsblLayer\d+\s*\(/g,
+    ];
+  } else if (lang === 'rust') {
+    patterns = [
+      /pub\s+fn\s+(?:handle_|_h\d+|cmpsbl_layer\d+)/g,
+    ];
   } else {
-    // Generic — count any handler-like function
-    handlerPattern = /handle[_A-Z]\w*\s*[\(({:]/g;
+    patterns = [/handle[_A-Z]\w*\s*[\(({:]/g, /_h\d+\s*\(/g];
   }
-  const handlerHits = (code.match(handlerPattern) || []).length;
+  const handlerHits = patterns.reduce(
+    (sum, p) => sum + (code.match(p) || []).length,
+    0,
+  );
 
-  const passed = hasEntryPoint && handlerHits >= 3;
+  const passed = hasEntryPoint && handlerHits >= 1;
   return {
     id: 'exec_smoke',
     label: 'Layer execution smoke',
-    severity: 'soft',
+    severity: 'critical',
     passed,
     message: passed
-      ? `Entry point + ${handlerHits} handlers detected`
-      : `Smoke failed — entry:${hasEntryPoint ? '✓' : '✗'} handlers:${handlerHits}`,
+      ? `Entry point + ${handlerHits} handler(s) detected`
+      : `Smoke failed — entry:${hasEntryPoint ? '✓' : '✗'} handlers:${handlerHits} (zero executable handlers = silent no-op)`,
     durationMs: Math.round(performance.now() - t0),
   };
 }
