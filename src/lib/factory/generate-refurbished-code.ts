@@ -3242,6 +3242,8 @@ export function generateRefurbishedCode(
   const layer2Parts = [
     header,
     '',
+    ...caalBannerLines,
+    '',
     adapter.comment('═══ Runtime Imports ═══'),
     ...imports,
     '',
