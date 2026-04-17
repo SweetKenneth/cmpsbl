@@ -141,14 +141,14 @@ export function LayerCard({ item }: LayerCardProps) {
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="text-[10px] font-mono tracking-wider text-muted-foreground/50 mt-1.5 uppercase line-clamp-2">
+                <p className="text-[10px] font-mono tracking-wider text-foreground/75 dark:text-foreground/60 mt-1.5 uppercase line-clamp-2">
                   {item.subtitle}
                 </p>
               )}
 
               {/* Description — what this Layer does for your software */}
               {item.description && (
-                <p className="text-[12px] sm:text-[13px] text-muted-foreground/80 leading-relaxed mt-3">
+                <p className="text-[12px] sm:text-[13px] text-foreground/85 dark:text-foreground/75 leading-relaxed mt-3">
                   {item.description}
                 </p>
               )}
