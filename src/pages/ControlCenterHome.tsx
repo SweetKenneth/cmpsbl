@@ -606,9 +606,20 @@ export default function ControlCenterHome() {
 
             {/* ─── ASCENSION ─── */}
             <TabsContent value="ascension" className="mt-4 space-y-4">
-              <h2 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                <Rocket className="h-4 w-4 text-neon-amber" /> Ascension Pipeline
-              </h2>
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
+                  <Rocket className="h-4 w-4 text-neon-amber" /> Ascension Pipeline
+                </h2>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 text-[11px] font-mono border-neon-amber/40 text-neon-amber hover:bg-neon-amber/10"
+                  onClick={() => window.open('/beta?1952=cmpsbl', '_blank', 'noopener')}
+                  title="Private experimentation surface (Governor only)"
+                >
+                  <Rocket className="h-3 w-3 mr-1" /> Open Beta Lab
+                </Button>
+              </div>
               <div className="grid sm:grid-cols-3 gap-3">
                 <MetricCard label="Total Ascended" value={ascensions.length} icon={Rocket} variant="warning" />
                 <MetricCard
