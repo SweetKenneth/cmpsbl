@@ -12,7 +12,7 @@
  */
 
 import { useState, useCallback, useRef, useMemo } from 'react';
-import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock } from 'lucide-react';
+import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,10 +21,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { analyzeUploadedFiles } from '@/components/proprietary-evolution/ingest-utils';
 import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan } from '@/lib/mana';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 import { TIER_LAYERS, TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 import { useEngineSubscription, type SubscriptionTier } from '@/hooks/useEngineSubscription';
 import { useUserRole } from '@/hooks/useUserRole';
+import { useLayerEntitlements } from '@/hooks/useLayerEntitlements';
 import { Link } from 'react-router-dom';
 
 /**
