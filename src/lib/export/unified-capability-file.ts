@@ -2833,9 +2833,16 @@ export function generateUnifiedCapabilityFile(
   // Single boundary: normalize chains for every language emitter so raw
   // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.
   capabilities = sanitizeCapabilities(capabilities);
+  // Defensive: coerce bare filenames so source embedding never silently drops.
+  userSourceFiles = coerceUserSourceFiles(userSourceFiles);
 
-  if (lang === 'typescript' || lang === 'javascript') {
+  if (lang === 'typescript') {
     raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+  } else if (lang === 'javascript') {
+    // JS diverges from TS: strips type annotations from the public surface and
+    // appends a CommonJS-compatible export footer so the file works equally
+    // well via `require()` or ESM `import`.
+    raw = generateUnifiedJavaScript(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'python') {
     raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers);
   } else if (lang === 'php') {
