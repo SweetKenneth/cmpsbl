@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
 import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
@@ -145,12 +146,11 @@ export default function AscensionV2() {
     />,
   ];
 
+  const seo = usePageSEO('/ascension-v2');
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <SEO
-        title="Ascension V2 — Code Evolution Pipeline | CMPSBL®"
-        description="Upload your code. Optionally enhance with Mana. Discover capabilities. Export a single wrapped ascension file."
-      />
+      <SEO {...seo.helmetProps} type="product" />
       <PublicNav />
 
       <main className="flex-1">
