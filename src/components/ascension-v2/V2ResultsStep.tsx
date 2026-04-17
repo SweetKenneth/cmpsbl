@@ -192,7 +192,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       }
 
       // ── Generate all HTML docs ──
-      const licenseHTML = generateV2LicenseHTML(zipName);
+      const licenseHTML = generateV2LicenseHTML({ packName: zipName, fingerprint });
 
       const readmeHTML = generateV2ReadmeHTML({
         packName: zipName,
