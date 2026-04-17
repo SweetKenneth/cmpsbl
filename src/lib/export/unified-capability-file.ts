@@ -367,7 +367,7 @@ export interface ExecutionResult {
 
 /**
  * Sealed error type emitted by the Ascension Layer when execution fails.
- * The full envelope is preserved on `.envelope` for structured introspection.
+ * The full envelope is preserved on the envelope property for structured introspection.
  */
 export class CmpsblExecutionError extends Error {
   readonly capability: string;
@@ -2086,7 +2086,7 @@ for _module_name in CMPSBL_PACK_META["modules"]:
 
 class CmpsblExecutionError(Exception):
     """Sealed error type emitted by the Ascension Layer when execution fails.
-    The full envelope is preserved on `.envelope` for structured introspection."""
+    The full envelope is preserved on the envelope attribute for structured introspection."""
     def __init__(self, capability: str, reason: str, detail: str, envelope: dict):
         super().__init__(f"[CMPSBL] {capability}: {reason} — {detail}")
         self.capability = capability
