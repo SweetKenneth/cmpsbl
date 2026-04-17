@@ -452,52 +452,49 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       </div>
 
-      {/* Coming Soon banner — surfaces parity gating BEFORE the user clicks export */}
+      {/* Source-language notice — when native layer parity isn't done yet, the
+          ZIP still ships: original source untouched + sealed TypeScript runtime
+          sidecar that runs the layers. The user's language always comes home. */}
       {(() => {
         const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
         const status = getLanguageParityStatus(lang);
         const entry = getLanguageParityEntry(lang);
         if (status === 'SHIPPING') return null;
         const label = entry?.label ?? sourceLanguage;
-        const note = entry?.roadmapNote;
         return (
           <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
             <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
             <div className="flex-1 min-w-0 space-y-1">
               <p className="text-[11px] sm:text-xs font-semibold text-foreground">
-                {label} export — Coming Soon
+                {label} export — pass-through mode
               </p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-                {note ?? `${label} is on the parity roadmap. Real exports unlock when every layer has a native implementation and the deterministic chain executor passes parity tests.`}
+                Your {label} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Native {label} layer parity is on the roadmap.
               </p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
-                Shipping today: {getShippingLanguages().map(l => l.label).join(', ')}.
+                Full native parity today: {getShippingLanguages().map(l => l.label).join(', ')}.
               </p>
             </div>
           </div>
         );
       })()}
 
-      {/* Actions — responsive download button */}
+      {/* Actions — source language always exports. No gating. */}
       <div className="space-y-2">
         {capabilities.length > 0 && (
           <Button
             onClick={handleExport}
-            disabled={exporting || !isLanguageShipping(sourceLanguage.toLowerCase().replace(/\s+/g, ''))}
+            disabled={exporting}
             className="w-full h-11 sm:h-12 rounded-xl text-xs sm:text-base"
           >
             {exporting ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : !isLanguageShipping(sourceLanguage.toLowerCase().replace(/\s+/g, '')) ? (
-              <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
             ) : (
               <Download className="w-4 h-4 mr-2 flex-shrink-0" />
             )}
             <span className="truncate">
               {exporting
                 ? 'Generating Package…'
-                : !isLanguageShipping(sourceLanguage.toLowerCase().replace(/\s+/g, ''))
-                ? `${getLanguageParityEntry(sourceLanguage.toLowerCase().replace(/\s+/g, ''))?.label ?? 'This language'} — Coming Soon`
                 : `Download cmpsbl-ascended-${displayBaseName}.zip`}
             </span>
           </Button>
