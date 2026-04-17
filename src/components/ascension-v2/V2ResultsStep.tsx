@@ -31,6 +31,8 @@ import {
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
 import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile } from '@/lib/licensing/upstream-license-bundle';
+import { V2UpstreamLicenseSelect, type SpdxChoice } from './V2UpstreamLicenseSelect';
+import type { DetectedLicense } from '@/lib/factory/license-attribution';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import {
   getLanguageParityStatus,
