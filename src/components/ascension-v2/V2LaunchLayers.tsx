@@ -180,7 +180,12 @@ const PILLARS: Pillar[] = [
   'Performance', 'Orchestration', 'Evolution', 'Governance', 'Compliance',
 ];
 
+type ViewMode = 'tier' | 'pillar';
+
+const LAYER_BY_RANK = new Map(LAYERS.map(l => [l.rank, l]));
+
 export function V2LaunchLayers() {
+  const [viewMode, setViewMode] = useState<ViewMode>('tier');
   const [activePillar, setActivePillar] = useState<Pillar | 'All'>('All');
   const [expanded, setExpanded] = useState<number | null>(null);
 
@@ -225,26 +230,206 @@ export function V2LaunchLayers() {
         ))}
       </div>
 
-      {/* Pillar filter */}
-      <div className="flex flex-wrap justify-center gap-1.5 mb-6 sm:mb-8">
-        {(['All', ...PILLARS] as const).map(p => {
-          const isActive = activePillar === p;
-          return (
+      {/* View-mode toggle */}
+      <div className="flex justify-center mb-4">
+        <div className="inline-flex rounded-full border border-border/50 bg-muted/30 p-1">
+          {(['tier', 'pillar'] as ViewMode[]).map(m => (
             <button
-              key={p}
-              onClick={() => setActivePillar(p)}
+              key={m}
+              onClick={() => setViewMode(m)}
               className={cn(
-                'px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium transition-all',
-                isActive
+                'px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold transition-all capitalize',
+                viewMode === m
                   ? 'bg-primary text-primary-foreground shadow-sm'
-                  : 'bg-muted/40 text-muted-foreground hover:bg-muted/70 hover:text-foreground',
+                  : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              {p}
+              By {m}
             </button>
-          );
-        })}
+          ))}
+        </div>
       </div>
+
+      {/* Pillar filter — only when in pillar mode */}
+      {viewMode === 'pillar' && (
+        <div className="flex flex-wrap justify-center gap-1.5 mb-6 sm:mb-8">
+          {(['All', ...PILLARS] as const).map(p => {
+            const isActive = activePillar === p;
+            return (
+              <button
+                key={p}
+                onClick={() => setActivePillar(p)}
+                className={cn(
+                  'px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium transition-all',
+                  isActive
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'bg-muted/40 text-muted-foreground hover:bg-muted/70 hover:text-foreground',
+                )}
+              >
+                {p}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Tier-grouped view */}
+      {viewMode === 'tier' && (
+        <div className="space-y-6 sm:space-y-8 max-w-3xl mx-auto">
+          {TIER_ORDER.map((tierKey) => {
+            const tier = TIER_META[tierKey];
+            const isCustom = tierKey === 'enterprise';
+            const tierLayers = isCustom ? [] : TIER_LAYERS[tierKey];
+
+            return (
+              <div
+                key={tierKey}
+                className={cn(
+                  'rounded-2xl border p-4 sm:p-5 backdrop-blur-sm',
+                  tier.accent,
+                )}
+              >
+                {/* Tier header */}
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-border/30">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{tier.glyph}</span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                          {tier.name}
+                        </h3>
+                        <span className="text-base font-black text-primary tabular-nums">
+                          {tier.priceLabel}
+                        </span>
+                        {tierKey === 'architect' && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] font-bold">
+                            ALL 20
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] sm:text-xs text-muted-foreground">
+                        {tier.tagline}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant={tierKey === 'architect' ? 'default' : 'outline'}
+                    className="rounded-full text-[11px] font-semibold"
+                  >
+                    <Link to="/plans">
+                      {tierKey === 'builder' ? 'Start free' : isCustom ? 'Contact sales' : `Upgrade to ${tier.name}`}
+                      <ArrowRight className="w-3 h-3 ml-1" />
+                    </Link>
+                  </Button>
+                </div>
+
+                {/* Builder always-on note */}
+                {tierKey === 'builder' && (
+                  <div className="mb-3 flex items-start gap-2 rounded-md border border-border/40 bg-background/40 px-2.5 py-1.5">
+                    <Crown className="w-3 h-3 text-primary mt-0.5 shrink-0" />
+                    <div className="text-[11px] leading-snug">
+                      <span className="font-semibold text-foreground">{ALWAYS_ON.name}</span>
+                      <span className="text-muted-foreground"> · {ALWAYS_ON.description}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Layers in this tier */}
+                {!isCustom ? (
+                  <div className="space-y-2">
+                    {tierLayers.map((entry) => {
+                      const layer = LAYER_BY_RANK.get(entry.rank);
+                      if (!layer) return null;
+                      const meta = PILLAR_META[layer.pillar];
+                      const Icon = meta.Icon;
+                      const isOpen = expanded === layer.rank;
+                      return (
+                        <div
+                          key={layer.rank}
+                          className={cn(
+                            'rounded-lg border border-border/40 bg-card/40 transition-all',
+                            isOpen && 'border-primary/40 bg-card/70',
+                          )}
+                        >
+                          <button
+                            onClick={() => setExpanded(isOpen ? null : layer.rank)}
+                            className="w-full flex items-start gap-3 p-3 text-left"
+                          >
+                            <div className="flex-shrink-0 w-7 text-center">
+                              <div className="text-sm font-bold text-foreground tabular-nums">
+                                {layer.rank}
+                              </div>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2 mb-1">
+                                <h4 className="text-sm font-semibold text-foreground leading-tight">
+                                  {layer.name}
+                                </h4>
+                                <ChevronDown className={cn(
+                                  'flex-shrink-0 w-4 h-4 text-muted-foreground transition-transform',
+                                  isOpen && 'rotate-180',
+                                )} />
+                              </div>
+                              <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                                <span className={cn('inline-flex items-center gap-1 text-[10px] font-medium', meta.tone)}>
+                                  <Icon className="w-3 h-3" />
+                                  {layer.pillar}
+                                </span>
+                                <span className="text-[10px] text-muted-foreground">·</span>
+                                <span className="text-[10px] font-mono text-muted-foreground">
+                                  {entry.tag}
+                                </span>
+                              </div>
+                              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                                {layer.description}
+                              </p>
+                            </div>
+                          </button>
+                          {isOpen && (
+                            <div className="px-3 pb-3 pl-[calc(0.75rem+1.75rem+0.75rem)] space-y-2 animate-fade-in">
+                              <blockquote className="border-l-2 border-primary/40 pl-2.5 italic text-xs text-foreground/90">
+                                "{layer.promise}"
+                              </blockquote>
+                              <div className="rounded-md border border-border/40 bg-background/40 px-2.5 py-1.5">
+                                <div className="text-[9px] uppercase tracking-wider text-muted-foreground mb-0.5">ROI</div>
+                                <div className="text-[11px] text-foreground/90">{layer.roi}</div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <ul className="grid sm:grid-cols-2 gap-2">
+                    {[
+                      'Custom layer composition',
+                      'Dedicated vertical primitives',
+                      'Private Memory Stream',
+                      'Full infrastructure control',
+                    ].map(s => (
+                      <li key={s} className="flex items-start gap-2 text-[12px] text-foreground">
+                        <Crown className="w-3 h-3 text-primary mt-0.5 shrink-0" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* Outcome */}
+                <blockquote className="mt-4 border-l-2 border-primary/40 pl-2.5 italic text-[11px] sm:text-xs text-foreground/80">
+                  "{tier.outcome}"
+                </blockquote>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Pillar-grouped view (legacy) */}
+      {viewMode === 'pillar' && (
 
       {/* Layer cards */}
       <div className="space-y-2 sm:space-y-3 max-w-3xl mx-auto">
