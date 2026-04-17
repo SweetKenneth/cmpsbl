@@ -58,11 +58,17 @@ export function V2CinematicHero() {
             </span>
           </h1>
         </div>
-        <p className="text-center text-sm sm:text-base text-muted-foreground/85 max-w-xl mx-auto mb-7 sm:mb-12 px-2 leading-relaxed">
-          Watch your code attach Mana layers, collide against the{' '}
-          <span className="text-foreground font-semibold">40-Primitive substrate</span>, and
-          emerge as a single ascended artifact.
-        </p>
+        <div className="text-center max-w-xl mx-auto mb-7 sm:mb-12 px-2 space-y-3">
+          <p className="text-base sm:text-lg text-foreground font-semibold leading-snug">
+            Same code. New behavior.
+          </p>
+          <p className="text-sm sm:text-base text-muted-foreground/85 leading-relaxed">
+            Attach runtime layers that upgrade your software — without modifying a single line.
+          </p>
+          <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono uppercase tracking-wider pt-1">
+            Powered by a deterministic, phase-locked runtime pipeline.
+          </p>
+        </div>
 
         {/* ═══ THE CINEMATIC DIAGRAM ═══ */}
         <div className="relative mx-auto w-full max-w-3xl aspect-[16/10] sm:aspect-[16/8]">
