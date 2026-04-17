@@ -22,6 +22,24 @@ import { analyzeUploadedFiles } from '@/components/proprietary-evolution/ingest-
 import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan } from '@/lib/mana';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
+import { TIER_LAYERS, TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
+
+/** Build a name → tier lookup from the canonical TIER_LAYERS map. */
+const LAYER_NAME_TO_TIER: Record<string, LayerTier> = (() => {
+  const map: Record<string, LayerTier> = {};
+  (Object.keys(TIER_LAYERS) as Array<keyof typeof TIER_LAYERS>).forEach((tier) => {
+    TIER_LAYERS[tier].forEach((entry) => {
+      map[entry.name] = tier as LayerTier;
+    });
+  });
+  return map;
+})();
+
+function tierForLayer(layer: CmpsblLayerDefinition): LayerTier {
+  // Free always-on / baseline layers stay on Builder
+  if (layer.priceCents === 0 && !LAYER_NAME_TO_TIER[layer.name]) return 'builder';
+  return LAYER_NAME_TO_TIER[layer.name] ?? 'builder';
+}
 
 interface Props {
   onComplete: (enhanced: boolean, selectedLayerIds?: string[]) => void;
