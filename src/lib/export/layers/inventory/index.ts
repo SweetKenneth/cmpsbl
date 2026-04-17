@@ -1,27 +1,22 @@
 /**
  * CMPSBL® Inventory Layers — Aggregator
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * 13 specialty Crown Jewel Layers (Ranks 21–33) across the substrate's
- * advanced suites. Each is a standalone CmpsblLayerDefinition with full
- * TS + PY source blocks; the polyglot engine auto-renders all 9 shipping
- * languages with no per-layer branching.
+ * Canonical 25-layer roster mirroring the /store grid. Every entry is a
+ * standalone CmpsblLayerDefinition with full TS + PY source blocks; the
+ * polyglot engine auto-renders all 9 shipping languages with no per-layer
+ * branching.
  *
- *   Rank 21 · LLM Defense Suite              (RAMPART · VERITAS · TETHER · FULCRUM)
- *   Rank 22 · Cyber Perimeter Suite          (WATCHTOWER · AEGIS · BASTION · CIPHER)
- *   Rank 23 · Quantum Simulation Suite       (HADRON · QUBIT · ENTANGLE · LATTICE)
- *   Rank 24 · Robotics Control Suite         (FABRICATOR · SERVO · TENSOR · LIDAR)
- *   Rank 25 · Agency Orchestration Suite     (CONDUCTOR · ROSTER · LEDGER · BEACON)
- *   Rank 26 · Topological Security Suite     (KNOT · MANIFOLD · GEODESIC · BOUNDARY)
- *   Rank 27 · Layered Observability Suite    (PULSE · SPECTRUM · HORIZON · ORACLE)
- *   Rank 28 · Holographic Integration Suite  (PRISM · MIRROR · WEAVE · RESONATE)
- *   Rank 29 · Memory Compression Suite       (COMPACTOR · DEDUPE · CHUNKER · INDEX)
- *   Rank 30 · Federated Learning Suite       (GRADIENT · AGGREGATE · CLIP · DRIFT)
- *   Rank 31 · Edge Compute Suite             (SHARD · CACHE · BACKHAUL · GEOFENCE)
- *   Rank 32 · Stream Processing Suite        (TAP · WINDOW · JOIN · SINK)
- *   Rank 33 · Polyglot Lex Suite             (TOKEN · GRAMMAR · TRANSPILE · DIALECT)
+ *   Defense / Privacy / Identity / Geo / Quantum / Robotics / Agency
+ *   Defense & Security        — Topological · Spectral · Compliance · Conscience · Observability
+ *   Synthesis & Evolution     — Self-Healing · Symbolic · Sentinel · Adaptive · Kinetic · Reflex · Resilient
+ *   Integration & Contracts   — Holographic · Emergent · Synthetic · Localization · Neural Broker
+ *
+ * Files registered in this index = files included in INVENTORY_LAYERS.
+ * Anything outside this list is intentionally absent from the bundle.
  */
 import type { CmpsblLayerDefinition } from '../types';
 
+// ── Currently registered (8) ────────────────────────────────────────────────
 import { LLM_DEFENSE_SUITE_LAYER } from './llm-defense-suite.layer';
 import { CYBER_PERIMETER_SUITE_LAYER } from './cyber-perimeter-suite.layer';
 import { QUANTUM_SIMULATION_SUITE_LAYER } from './quantum-simulation-suite.layer';
@@ -30,13 +25,22 @@ import { AGENCY_ORCHESTRATION_SUITE_LAYER } from './agency-orchestration-suite.l
 import { TOPOLOGICAL_SECURITY_SUITE_LAYER } from './topological-security-suite.layer';
 import { LAYERED_OBSERVABILITY_SUITE_LAYER } from './layered-observability-suite.layer';
 import { HOLOGRAPHIC_INTEGRATION_SUITE_LAYER } from './holographic-integration-suite.layer';
-import { MEMORY_COMPRESSION_SUITE_LAYER } from './memory-compression-suite.layer';
-import { FEDERATED_LEARNING_SUITE_LAYER } from './federated-learning-suite.layer';
-import { EDGE_COMPUTE_SUITE_LAYER } from './edge-compute-suite.layer';
-import { STREAM_PROCESSING_SUITE_LAYER } from './stream-processing-suite.layer';
-import { POLYGLOT_LEX_SUITE_LAYER } from './polyglot-lex-suite.layer';
+
+// ── Batch A · Privacy / Identity / Geo / Audit / Conscience (6) ─────────────
+import { PRIVACY_OBFUSCATION_LAYER } from './privacy-obfuscation.layer';
+import { ZERO_TRUST_IDENTITY_LAYER } from './zero-trust-identity.layer';
+import { GEOSPATIAL_INTELLIGENCE_LAYER } from './geospatial-intelligence.layer';
+import { SPECTRAL_AUDITOR_LAYER } from './spectral-auditor.layer';
+import { COMPLIANCE_AUDIT_LAYER } from './compliance-audit.layer';
+import { PROBABILISTIC_CONSCIENCE_LAYER } from './probabilistic-conscience.layer';
+
+// ── Batches B + C pending (11 layers) — registered in turns 2-3 ─────────────
+// Self-Healing Scanner · Symbolic Crafter · Sentinel Evolution · Adaptive Forge
+// Kinetic Synthesis · Reflex Orchestration · Resilient Evolution
+// Emergent Gateway · Synthetic Contracts · Localization Mesh · Neural Broker
 
 export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
+  // Existing 8
   LLM_DEFENSE_SUITE_LAYER,
   CYBER_PERIMETER_SUITE_LAYER,
   QUANTUM_SIMULATION_SUITE_LAYER,
@@ -45,9 +49,11 @@ export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze(
   TOPOLOGICAL_SECURITY_SUITE_LAYER,
   LAYERED_OBSERVABILITY_SUITE_LAYER,
   HOLOGRAPHIC_INTEGRATION_SUITE_LAYER,
-  MEMORY_COMPRESSION_SUITE_LAYER,
-  FEDERATED_LEARNING_SUITE_LAYER,
-  EDGE_COMPUTE_SUITE_LAYER,
-  STREAM_PROCESSING_SUITE_LAYER,
-  POLYGLOT_LEX_SUITE_LAYER,
+  // Batch A (6)
+  PRIVACY_OBFUSCATION_LAYER,
+  ZERO_TRUST_IDENTITY_LAYER,
+  GEOSPATIAL_INTELLIGENCE_LAYER,
+  SPECTRAL_AUDITOR_LAYER,
+  COMPLIANCE_AUDIT_LAYER,
+  PROBABILISTIC_CONSCIENCE_LAYER,
 ]);
