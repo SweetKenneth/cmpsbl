@@ -76,7 +76,7 @@ export function LayerCard({ item }: LayerCardProps) {
   };
 
   return (
-    <div className="snap-start shrink-0 w-[calc(100vw-4rem)] max-w-[320px] sm:max-w-[340px]">
+    <div className="snap-start shrink-0 w-[calc(100vw-4rem)] max-w-[320px] sm:max-w-[340px] h-[620px]">
       <AnimatePresence mode="wait">
         {!flipped ? (
           /* ═══ FRONT ═══ */
@@ -88,7 +88,7 @@ export function LayerCard({ item }: LayerCardProps) {
             exit="exit"
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             className={cn(
-              "rounded-2xl overflow-hidden border bg-card/95 backdrop-blur-md flex flex-col",
+              "rounded-2xl overflow-hidden border bg-card/95 backdrop-blur-md flex flex-col h-full",
               "shadow-xl hover:shadow-2xl transition-shadow duration-500",
               tier.border
             )}
@@ -136,7 +136,7 @@ export function LayerCard({ item }: LayerCardProps) {
             </div>
 
             {/* Body */}
-            <div className="relative z-10 px-5 sm:px-6 pb-5 sm:pb-6 -mt-8">
+            <div className="relative z-10 px-5 sm:px-6 pb-5 sm:pb-6 -mt-8 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight leading-tight">
                 {item.title}
               </h3>
@@ -174,7 +174,7 @@ export function LayerCard({ item }: LayerCardProps) {
               </div>
 
               {/* Price + Inspect */}
-              <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center justify-between mt-auto pt-3">
                 <div className="flex items-baseline gap-1.5">
                   <span className={cn("text-base sm:text-lg font-black tracking-tight", tier.color)}>
                     {formatPrice(item.price_cents)}
@@ -210,7 +210,7 @@ export function LayerCard({ item }: LayerCardProps) {
             exit="exit"
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             className={cn(
-              "rounded-2xl overflow-hidden border bg-card/98 backdrop-blur-md flex flex-col",
+              "rounded-2xl overflow-hidden border bg-card/98 backdrop-blur-md flex flex-col h-full",
               tier.border
             )}
             style={{
@@ -219,7 +219,7 @@ export function LayerCard({ item }: LayerCardProps) {
           >
             <div className={cn("h-1 w-full bg-gradient-to-r shrink-0", pillarMeta.gradient)} />
 
-            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4 max-h-[440px]">
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4 min-h-0">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
