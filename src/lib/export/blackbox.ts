@@ -346,6 +346,65 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\b_cmpsbl_raw_execute_ac\b/g, '_xreac'],
   [/\bCmpsblComplianceEvent\b/g, '_XCE1'],
   [/\bCmpsblJurisdiction\b/g, '_XJu1'],
+
+  // ── Python Unified Emitter — 40 organ/layer/engine/agent handlers (#21) ──
+  // These names leak the 40-Primitive architecture in plain text. They are
+  // internal dispatch handlers — never part of public API. We rename each one
+  // to an opaque token; the HANDLER_REGISTRY string keys ("CORE", "BRAIN", ...)
+  // are kept (they're data, not symbols), but the function references they
+  // resolve to become opaque. Renames apply consistently to def + reference.
+  // Organs (12)
+  [/\bhandle_core\b/g, '_h01'],
+  [/\bhandle_system\b/g, '_h02'],
+  [/\bhandle_brain\b/g, '_h03'],
+  [/\bhandle_memory\b/g, '_h04'],
+  [/\bhandle_nerve\b/g, '_h05'],
+  [/\bhandle_nexus\b/g, '_h06'],
+  [/\bhandle_identity\b/g, '_h07'],
+  [/\bhandle_sovereign\b/g, '_h08'],
+  [/\bhandle_atlas\b/g, '_h09'],
+  [/\bhandle_medic\b/g, '_h10'],
+  [/\bhandle_relay\b/g, '_h11'],
+  [/\bhandle_conscience\b/g, '_h12'],
+  // Layers (12)
+  [/\bhandle_defense\b/g, '_h13'],
+  [/\bhandle_immunity\b/g, '_h14'],
+  [/\bhandle_governance\b/g, '_h15'],
+  [/\bhandle_treaty\b/g, '_h16'],
+  [/\bhandle_evolution\b/g, '_h17'],
+  [/\bhandle_reflex\b/g, '_h18'],
+  [/\bhandle_compass\b/g, '_h19'],
+  [/\bhandle_integration\b/g, '_h20'],
+  [/\bhandle_intent\b/g, '_h21'],
+  [/\bhandle_access\b/g, '_h22'],
+  [/\bhandle_vision\b/g, '_h23'],
+  [/\bhandle_shadow\b/g, '_h24'],
+  // Engines (8)
+  [/\bhandle_dream\b/g, '_h25'],
+  [/\bhandle_harvest\b/g, '_h26'],
+  [/\bhandle_forge\b/g, '_h27'],
+  [/\bhandle_lingua\b/g, '_h28'],
+  [/\bhandle_echo\b/g, '_h29'],
+  [/\bhandle_phantom\b/g, '_h30'],
+  [/\bhandle_sandbox\b/g, '_h31'],
+  [/\bhandle_ripple\b/g, '_h32'],
+  // Agents (8)
+  [/\bhandle_encode\b/g, '_h33'],
+  [/\bhandle_decode\b/g, '_h34'],
+  [/\bhandle_audit\b/g, '_h35'],
+  [/\bhandle_economy\b/g, '_h36'],
+  [/\bhandle_inclusive\b/g, '_h37'],
+  [/\bhandle_cortex\b/g, '_h38'],
+  [/\bhandle_oracle\b/g, '_h39'],
+  [/\bhandle_engineer\b/g, '_h40'],
+  // Always-on candidate slot + default
+  [/\bhandle_candidate\b/g, '_h41'],
+  [/\bhandle_default\b/g, '_h42'],
+  // Internal helpers used only by Python handlers
+  [/\bquick_hash\b/g, '_qh1'],
+  [/\buser_keys\b/g, '_uk1'],
+  // Registry name itself — opaque dispatch table
+  [/\bHANDLER_REGISTRY\b/g, '_HR1'],
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
