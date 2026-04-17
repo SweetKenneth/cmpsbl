@@ -614,7 +614,7 @@ export function generateV2UserGuideHTML(input: V2UserGuideInput): string {
   <p>This software incorporates technology protected under:</p>
   <ul>
     <li><strong>U.S. Patent App. No. 64/029,678</strong> — "Dual-Layer Software Symbiosis System"</li>
-    <li><strong>U.S. Patent App. No. 63/758,981</strong> — "Cognitive Infrastructure Substrate"</li>
+    <li><strong>U.S. Patent App. No. 64/031,637</strong> — "Cognitive Infrastructure Substrate"</li>
   </ul>
   <p>
     <strong>Inventor:</strong> Kenneth E. Sweet Jr.<br>
