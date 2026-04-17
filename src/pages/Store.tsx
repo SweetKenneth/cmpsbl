@@ -168,7 +168,7 @@ export default function Store() {
               >
                 <div className="text-center mb-8">
                   <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-1">
-                    Original Agents & Engines
+                    Meta Agents & Engines
                   </h2>
                   <p className="text-xs text-muted-foreground/70">
                     The founding 10 — five Runtime Agents and five Composable Engines
