@@ -31,6 +31,8 @@ import {
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
 import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile } from '@/lib/licensing/upstream-license-bundle';
+import { V2UpstreamLicenseSelect, type SpdxChoice } from './V2UpstreamLicenseSelect';
+import type { DetectedLicense } from '@/lib/factory/license-attribution';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import {
   getLanguageParityStatus,
@@ -66,11 +68,19 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
+  const [spdxChoice, setSpdxChoice] = useState<SpdxChoice>('auto');
   const { toast } = useToast();
   const { user } = useAuth();
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
   const selectedLayers = useMemo(() => new Set(selectedLayerIds), [selectedLayerIds]);
+
+  // Live detection of the upstream license on the primary source file. Re-runs
+  // only when the source content changes — null when nothing detectable.
+  const detectedUpstream: DetectedLicense | null = useMemo(() => {
+    if (sourceFiles.length === 0) return null;
+    return detectUpstreamLicenseForExport(sourceFiles[0].content);
+  }, [sourceFiles]);
 
   useEffect(() => {
     completeRun();
@@ -281,12 +291,12 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
       folder.file('HARNESS-REPORT.txt', harness.summary);
 
-      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel
-      //    when the customer's source carries an attribution-required license.
-      //    Required for legal compliance — without this, distributing an
-      //    Apache-licensed source inside our ZIP would be a license violation.
-      if (sourceFiles.length > 0) {
-        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content);
+      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel.
+      //    User can override auto-detection via the SPDX dropdown when the
+      //    source has no inline header. 'none' suppresses the file entirely.
+      if (sourceFiles.length > 0 && spdxChoice !== 'none') {
+        const overrideSpdx = spdxChoice === 'auto' ? null : spdxChoice;
+        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content, overrideSpdx);
         if (upstream) {
           folder.file('LICENSE-UPSTREAM.txt', buildUpstreamLicenseFile(upstream, originalFileName));
         }
@@ -496,7 +506,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       })()}
 
       {/* Actions — source language always exports. No gating. */}
-      <div className="space-y-2">
+      <div className="space-y-3">
+        <V2UpstreamLicenseSelect
+          value={spdxChoice}
+          onChange={setSpdxChoice}
+          detected={detectedUpstream}
+          hasSource={sourceFiles.length > 0}
+        />
+
         {capabilities.length > 0 && (
           <Button
             onClick={handleExport}
