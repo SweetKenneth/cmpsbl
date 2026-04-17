@@ -177,66 +177,6 @@ export default function Store() {
                 <StoreCollectorDeck items={items} />
               </motion.div>
 
-              {/* Convex Core™ Sealed Artifact Features */}
-              <motion.section
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-20 sm:mt-28"
-              >
-                <div className="relative rounded-3xl border border-primary/15 overflow-hidden">
-                  {/* Background glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-primary/5" />
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-
-                  <div className="relative p-6 sm:p-10">
-                    <div className="flex flex-col sm:flex-row items-start gap-4 mb-8">
-                      <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                        <Lock className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h2 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
-                          Every Product Ships Sealed
-                        </h2>
-                         <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
-                           Tamper-proof runtime · Zero maintenance · Always learning · Source-protected
-                         </p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                      {SEALED_FEATURES.map((feat, i) => (
-                        <motion.div
-                          key={feat.label}
-                          initial={{ opacity: 0, y: 12 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.06, duration: 0.4 }}
-                          className={cn(
-                            "group rounded-2xl border border-border/30 bg-card/40 backdrop-blur-sm p-4 sm:p-5",
-                            "hover:border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5",
-                            "transition-all duration-400"
-                          )}
-                        >
-                          <div className="flex items-center gap-3 mb-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
-                              <feat.icon className="w-4 h-4 text-primary/80" />
-                            </div>
-                            <h4 className="text-xs sm:text-sm font-black text-foreground tracking-tight">
-                              {feat.label}
-                            </h4>
-                          </div>
-                          <p className="text-xs text-muted-foreground/70 leading-relaxed pl-11">
-                            {feat.desc}
-                          </p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.section>
-
               {/* Bottom CTA */}
               <motion.section
                 initial={{ opacity: 0 }}
