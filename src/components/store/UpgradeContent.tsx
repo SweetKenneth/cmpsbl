@@ -131,7 +131,7 @@ const TIERS: {
     icon: Crown,
     stripeTier: 'architect' as EngineSubscriptionTier,
     capacity: { substrates: 'All + ULTIMATE', vault: 'Unlimited', pulls: '12 per day', radio: '60 min/day', exportEnabled: true, marketplace: true },
-    crownJewelLine: 'All Crown Jewel capabilities unlocked',
+    crownJewelLine: 'All 20 Ascension Layers unlocked',
     features: [
       'Every industry substrate unlocked',
       'CMPSBL ULTIMATE™ — 143+ primitives',
