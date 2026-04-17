@@ -45,7 +45,7 @@ export function NpmAnnouncementBanner() {
   // content reads as fast-but-legible across viewport sizes. We avoid dynamic
   // duration calc because it drifted too slow on mobile where the content
   // string is the same width but the viewport is narrower.
-  const durationSec = 60;
+  const durationSec = 7.5;
 
   if (!ready) return null;
 
