@@ -412,7 +412,7 @@ describe.each(FIXTURES)('V2 Pipeline — $label', (fx) => {
 
   // ─── Pre-Export Harness ──────────────────────────────────────────────────
   it('Pre-Export Harness PASSES on a well-formed synthetic Layer-2 export', () => {
-    const ascended = syntheticLayer2(fx.id, fx.canonical);
+    const ascended = syntheticLayer2(fx.id, fx.canonical, fileName);
     const input: HarnessInput = {
       ascendedCode: ascended,
       language: fx.id,
@@ -426,7 +426,7 @@ describe.each(FIXTURES)('V2 Pipeline — $label', (fx) => {
 
   it('Pre-Export Harness FAILS when Layer 1 is missing (fingerprint drift)', () => {
     // Wrap a *different* L1 → fingerprint check must reject.
-    const ascended = syntheticLayer2(fx.id, '/* unrelated content */');
+    const ascended = syntheticLayer2(fx.id, '/* unrelated content */', fileName);
     const input: HarnessInput = {
       ascendedCode: ascended,
       language: fx.id,
@@ -441,7 +441,7 @@ describe.each(FIXTURES)('V2 Pipeline — $label', (fx) => {
 
   it('Pre-Export Harness execution-smoke flags a missing entry point', () => {
     // Strip the entry point — handlers remain, so only smoke check fails.
-    const stripped = syntheticLayer2(fx.id, fx.canonical).replace(
+    const stripped = syntheticLayer2(fx.id, fx.canonical, fileName).replace(
       /cmpsbl_execute/g,
       'unrelated_symbol',
     );
