@@ -115,8 +115,8 @@ export function AscensionLayersHero() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="absolute left-0 flex items-center gap-2 -translate-y-1/2"
-                style={{ top: "14%" }}
+                className="absolute left-0 flex items-center gap-2"
+                style={{ top: "14%", transform: "translateY(calc(-50% - 10px))" }}
               >
                 <div className="w-5 h-px bg-primary/70 shrink-0" />
                 <div className="flex flex-col">
@@ -134,8 +134,8 @@ export function AscensionLayersHero() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
-                className="absolute left-0 flex items-center gap-2 -translate-y-1/2"
-                style={{ top: "50%" }}
+                className="absolute left-0 flex items-center gap-2"
+                style={{ top: "50%", transform: "translateY(calc(-50% - 10px))" }}
               >
                 <div className="w-5 h-px bg-muted-foreground/50 shrink-0" />
                 <div className="flex flex-col">
@@ -153,8 +153,8 @@ export function AscensionLayersHero() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.0 }}
-                className="absolute left-0 flex items-center gap-2 -translate-y-1/2"
-                style={{ top: "86%" }}
+                className="absolute left-0 flex items-center gap-2"
+                style={{ top: "86%", transform: "translateY(calc(-50% - 10px))" }}
               >
                 <div className="w-5 h-px bg-muted-foreground/50 shrink-0" />
                 <div className="flex flex-col">
