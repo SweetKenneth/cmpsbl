@@ -638,6 +638,11 @@ end # module
 `;
 }
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
+function indent(text: string, pad: string): string {
+  return text.split('\n').map(l => (l.length ? pad + l : l)).join('\n');
+}
+
 // ─── Wave 2 Scaffolds — Clojure, OCaml, Zig, Nim, Crystal ──────────────────
 
 function scaffoldClojure(ctx: ExtendedGeneratorContext, body: string): string {
