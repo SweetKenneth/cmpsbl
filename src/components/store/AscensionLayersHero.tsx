@@ -103,24 +103,24 @@ export function AscensionLayersHero() {
         </div>
 
         {/* CINEMATIC LAYER STACK VISUAL */}
-        <div className="relative h-[360px] sm:h-[420px] lg:h-[480px] flex items-center justify-center order-last">
+        <div className="relative h-[320px] sm:h-[400px] lg:h-[460px] flex items-center justify-center order-last w-full">
           <div
-            className="relative w-full max-w-[440px] aspect-square"
+            className="relative w-full max-w-[420px] h-full mx-auto"
             style={{ perspective: "1400px" }}
           >
             {/* Glow under the stack */}
             <div
               aria-hidden
-              className="absolute inset-x-8 bottom-4 h-16 rounded-full blur-3xl opacity-60"
+              className="absolute left-1/2 -translate-x-1/2 bottom-10 w-[70%] h-16 rounded-full blur-3xl opacity-60"
               style={{ background: "hsl(var(--primary) / 0.35)" }}
             />
 
             {LAYER_PLATES.map((plate, i) => {
               const Icon = plate.icon;
               const isBase = i === 0;
-              // Stack from bottom (your code) to top (ascension)
-              const yOffset = -i * 38;
-              const xOffset = i * 6;
+              // Stack from bottom (your code) to top (ascension) — centered
+              const yOffset = -i * 36;
+              const xOffset = 0;
               return (
                 <motion.div
                   key={plate.label}
