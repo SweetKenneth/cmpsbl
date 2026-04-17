@@ -5,13 +5,14 @@
  */
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Lock, ShoppingCart, Cpu, RotateCcw, Loader2, Sparkles,
+  ShoppingCart, Cpu, RotateCcw, Loader2, Sparkles,
 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 import {
   LAYER_TIER_META,
   getPillarMeta,
@@ -26,7 +27,7 @@ interface LayerCardProps {
 
 export function LayerCard({ item }: LayerCardProps) {
   const [flipped, setFlipped] = useState(false);
-  const navigate = useNavigate();
+  const [buying, setBuying] = useState(false);
   const tier = LAYER_TIER_META[item.tier] ?? LAYER_TIER_META.Mint;
   const pillarMeta = getPillarMeta(item.pillar);
   const heroImage = getItemImage(item.slug, item.pillar);
@@ -43,9 +44,35 @@ export function LayerCard({ item }: LayerCardProps) {
     exit: { opacity: 0, scale: 0.95 },
   };
 
-  const handleAcquire = (e: React.MouseEvent) => {
+  const handleAcquire = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/marketplace/${item.slug}`);
+    if (buying) return;
+    setBuying(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please sign in to acquire", { description: "Redirecting to login..." });
+        window.location.href = `/auth?redirect=/store`;
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("marketplace-checkout", {
+        body: {
+          product_type: "capability",
+          unit_amount_usd: Math.round(item.price_cents / 100),
+          item_name: `CMPSBL: ${item.title}`,
+          capability_id: item.id,
+          product_id: item.slug,
+        },
+      });
+      if (error) throw error;
+      if (data?.url) window.open(data.url, "_blank");
+    } catch (err) {
+      toast.error("Checkout failed", {
+        description: err instanceof Error ? err.message : "Please try again",
+      });
+    } finally {
+      setBuying(false);
+    }
   };
 
   return (
@@ -246,16 +273,27 @@ export function LayerCard({ item }: LayerCardProps) {
             <div className="p-4 sm:p-5 border-t border-border/20 space-y-2 shrink-0">
               <Button
                 size="sm"
+                disabled={buying}
                 className={cn(
                   "w-full gap-2 text-xs sm:text-sm font-black min-h-[48px] rounded-xl",
                   "bg-gradient-to-r text-white shadow-lg transition-all duration-300",
                   "hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]",
+                  "disabled:opacity-70 disabled:hover:scale-100",
                   pillarMeta.gradient
                 )}
                 onClick={handleAcquire}
               >
-                <ShoppingCart className="w-4 h-4" />
-                Acquire · {formatPrice(item.price_cents)}
+                {buying ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Opening checkout…
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4" />
+                    Acquire · {formatPrice(item.price_cents)}
+                  </>
+                )}
               </Button>
               <Button
                 variant="ghost"
