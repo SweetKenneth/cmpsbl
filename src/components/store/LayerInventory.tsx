@@ -82,24 +82,7 @@ export function LayerInventory() {
       className="mb-16 sm:mb-24 scroll-mt-24"
     >
       {/* Section header */}
-      <div className="text-center mb-10">
-        <Badge
-          variant="outline"
-          className="mb-4 border-primary/30 px-4 py-1.5 inline-flex backdrop-blur-sm"
-        >
-          <ShieldCheck className="w-3.5 h-3.5 mr-2 text-primary" />
-          <span className="text-xs font-semibold tracking-wide">
-            Specialty Layers
-          </span>
-        </Badge>
-        <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
-          Enhance Your Ascension
-        </h2>
-        <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          Captured from vertical engines and S-Tier vault discoveries before
-          Ascension absorbs them into Layer 2. Limited-curation Layers.
-        </p>
-      </div>
+      {/* Section header removed — cinematic hero already introduces the Layers */}
 
       {/* Category rows */}
       <div className="space-y-12">
