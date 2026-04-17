@@ -326,14 +326,14 @@ function getSealedNotice(lang: string): string {
   const c = getCommentPrefix(lang);
   return [
     `${c} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
-    `${c} ║  CMPSBL® ASCENSION LAYER™ — BLACK-BOX DISTRIBUTION                           ║`,
+    `${c} ║  CMPSBL® ASCENSION LAYER™ — SEALED RUNTIME · PROPRIETARY DISTRIBUTION         ║`,
     `${c} ║                                                                               ║`,
     `${c} ║  This file contains the Ascension Layer runtime — a deterministic,            ║`,
     `${c} ║  patent-protected execution layer that wraps your code (LAYER 1).             ║`,
     `${c} ║  All components are baked into this single file — drop-in, zero deps.         ║`,
     `${c} ║                                                                               ║`,
     `${c} ║  Sections marked Black-Boxed contain proprietary scoring, governance,         ║`,
-    `${c} ║  and orchestration logic. Do not modify, extract, or redistribute.            ║`,
+    `${c} ║  and orchestration logic. DO NOT MODIFY, extract, or redistribute.            ║`,
     `${c} ║  Decompilation or reverse engineering of layer internals is prohibited.       ║`,
     `${c} ║                                                                               ║`,
     `${c} ║  Configure layers, view telemetry, or learn more:                             ║`,
