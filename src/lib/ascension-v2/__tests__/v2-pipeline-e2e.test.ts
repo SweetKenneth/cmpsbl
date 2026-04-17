@@ -316,6 +316,35 @@ function syntheticLayer2(
       layer1,
     ].join('\n');
   }
+  if (lang === 'java' || lang === 'csharp') {
+    const className = lang === 'java' ? 'CmpsblWrapper' : 'CmpsblWrapper';
+    return [
+      '// CMPSBL® Layer 2 — Synthetic Wrapper',
+      `// ${banner}`,
+      `public class ${className} {`,
+      '    public static void cmpsbl_execute() {}',
+      '    public static void handle_circuit_breaker() {}',
+      '    public static void handle_self_healing() {}',
+      '    public static void handle_consensus() {}',
+      '}',
+      '',
+      `// ${banner}`,
+      layer1,
+    ].join('\n');
+  }
+  if (lang === 'kotlin' || lang === 'swift') {
+    return [
+      '// CMPSBL® Layer 2 — Synthetic Wrapper',
+      `// ${banner}`,
+      'fun cmpsbl_execute() {}',
+      'fun handle_circuit_breaker() {}',
+      'fun handle_self_healing()    {}',
+      'fun handle_consensus()       {}',
+      '',
+      `// ${banner}`,
+      layer1,
+    ].join('\n');
+  }
   // TS / JS share the same shape.
   return [
     '// CMPSBL® Layer 2 — Synthetic Wrapper',
