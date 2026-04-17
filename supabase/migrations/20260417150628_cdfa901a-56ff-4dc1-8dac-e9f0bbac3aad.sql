@@ -1,0 +1,13 @@
+UPDATE public.marketplace_inventory SET title = 'LLM Defense Layer' WHERE slug = 'llm-defense-suite';
+UPDATE public.marketplace_inventory SET title = 'Cyber Perimeter Layer' WHERE slug = 'cyber-perimeter-suite';
+UPDATE public.marketplace_inventory SET title = 'Self-Healing Scanner Layer' WHERE slug = 'self-healing-learning-scanner';
+UPDATE public.marketplace_inventory SET title = 'Holographic Guardian Layer' WHERE slug = 'holographic-integration-guardian';
+UPDATE public.marketplace_inventory SET title = 'Synthetic Contracts Layer' WHERE slug = 'synthetic-contracts-navigator';
+UPDATE public.marketplace_inventory SET title = 'Topological Security Layer' WHERE slug = 'topological-security-synthesizer';
+UPDATE public.marketplace_inventory SET title = 'Sentinel Evolution Layer' WHERE slug = 'sentinel-evolution-sequencer';
+UPDATE public.marketplace_inventory SET title = 'Quantum Simulation Layer' WHERE slug = 'quantum-simulation-suite';
+UPDATE public.marketplace_inventory SET title = 'Robotics Control Layer' WHERE slug = 'robotics-control-suite';
+UPDATE public.marketplace_inventory SET title = 'Observability Layer' WHERE slug = 'layered-observability-enforcer';
+UPDATE public.marketplace_inventory SET title = 'Agency Orchestration Layer' WHERE slug = 'agency-orchestration-suite';
+UPDATE public.marketplace_inventory SET title = 'Kinetic Synthesis Layer' WHERE slug = 'kinetic-synthesis-controller';
+UPDATE public.marketplace_inventory SET title = 'Resilient Evolution Layer' WHERE slug = 'resilient-evolution-fabric';
