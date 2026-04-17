@@ -60,7 +60,7 @@ const TIERS: {
     accent: 'from-neon-green to-neon-green',
     icon: Unlock,
     capacity: { substrates: 'Prime Only', vault: '5 memories', pulls: '3 per day', radio: '15 min/day', exportEnabled: true, marketplace: false },
-    crownJewelLine: 'Crown Jewels included — free via npm for all',
+    crownJewelLine: '2 Ascension Layers (Audit + Governance)',
     features: [
       'CMPSBL PRIME™ — full 40-primitive substrate',
       'Memory Stream with daily discoveries',
