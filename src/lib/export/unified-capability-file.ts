@@ -98,6 +98,42 @@ function sanitizeCapabilities(capabilities: UnifiedCapabilityInput[]): UnifiedCa
   return capabilities.map((cap) => ({ ...cap, chain: normalizeChainModules(cap.chain) }));
 }
 
+/**
+ * Defensive extension inference for embedded user sources.
+ *
+ * Real upload flows always carry the original filename (with extension), but
+ * synthetic / programmatic callers occasionally pass a bare name like "app".
+ * Without an extension, every per-language source-embedding regex
+ * (`/\.ts$/`, `/\.py$/`, `/\.js$/`, …) silently drops the file and the
+ * emitter degrades to a passthrough. We coerce here so the declared
+ * `language` / `extension` field is authoritative when the filename is bare.
+ */
+const LANG_TO_EXT: Record<string, string> = {
+  typescript: 'ts',
+  javascript: 'js',
+  python: 'py',
+  rust: 'rs',
+  go: 'go',
+  php: 'php',
+  java: 'java',
+  csharp: 'cs',
+  ruby: 'rb',
+  swift: 'swift',
+  kotlin: 'kt',
+};
+
+function coerceUserSourceFiles(
+  files: UserSourceFile[] | undefined,
+): UserSourceFile[] | undefined {
+  if (!files || files.length === 0) return files;
+  return files.map((f) => {
+    if (/\.[a-z0-9]+$/i.test(f.name)) return f;
+    const ext = (f.extension || LANG_TO_EXT[(f.language || '').toLowerCase()] || '').replace(/^\./, '');
+    if (!ext) return f;
+    return { ...f, name: `${f.name}.${ext}` };
+  });
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // TypeScript Generator
 // ═══════════════════════════════════════════════════════════════════════════════
