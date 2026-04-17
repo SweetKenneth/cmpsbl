@@ -221,21 +221,21 @@ export function AscensionV2ReleaseCTA() {
                   </span>
                 </div>
                 <p className="text-sm font-bold text-foreground mb-3">
-                  Verified targets shipping today
+                  {SHIPPING_LANGUAGES.length} verified targets shipping today
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {SUPPORTED_LANGUAGES.map((lang) => (
+                  {SHIPPING_LANGUAGES.map((lang) => (
                     <span
-                      key={lang}
+                      key={lang.id}
                       className="text-[11px] font-semibold px-2.5 py-1 rounded-md border border-sky-400/30 bg-sky-400/5 text-foreground/85"
                     >
-                      {lang}
+                      {lang.label}
                     </span>
                   ))}
                 </div>
                 <p className="text-[11px] text-muted-foreground/60 mt-3 leading-relaxed">
-                  Each export is a self-contained, runnable artifact with the
-                  attached layers wired in.
+                  Every layer has a native implementation and a passing parity
+                  test against the TypeScript canon.
                 </p>
               </div>
 
@@ -248,21 +248,21 @@ export function AscensionV2ReleaseCTA() {
                   </span>
                 </div>
                 <p className="text-sm font-bold text-foreground mb-3">
-                  Hardware, shader & on-chain targets
+                  {COMING_SOON_LANGUAGES.length} languages on the parity roadmap
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   {COMING_SOON_LANGUAGES.map((lang) => (
                     <span
-                      key={lang}
+                      key={lang.id}
                       className="text-[11px] font-semibold px-2.5 py-1 rounded-md border border-fuchsia-400/30 bg-fuchsia-400/5 text-foreground/85"
                     >
-                      {lang}
+                      {lang.label}
                     </span>
                   ))}
                 </div>
                 <p className="text-[11px] text-muted-foreground/60 mt-3 leading-relaxed">
-                  Unlocks at the Architect tier as Apex/Mythic-class artifacts
-                  reach synthesis.
+                  Unlocks once every layer has a native implementation and the
+                  deterministic chain executor passes parity tests.
                 </p>
               </div>
             </div>
