@@ -68,11 +68,19 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
+  const [spdxChoice, setSpdxChoice] = useState<SpdxChoice>('auto');
   const { toast } = useToast();
   const { user } = useAuth();
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
   const selectedLayers = useMemo(() => new Set(selectedLayerIds), [selectedLayerIds]);
+
+  // Live detection of the upstream license on the primary source file. Re-runs
+  // only when the source content changes — null when nothing detectable.
+  const detectedUpstream: DetectedLicense | null = useMemo(() => {
+    if (sourceFiles.length === 0) return null;
+    return detectUpstreamLicenseForExport(sourceFiles[0].content);
+  }, [sourceFiles]);
 
   useEffect(() => {
     completeRun();
