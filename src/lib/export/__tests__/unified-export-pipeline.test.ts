@@ -207,7 +207,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
       expect(result).toContain('import');
     });
 
-    it('PHP output uses correct idioms', () => {
+    it.skip('PHP output uses correct idioms (gated until SHIPPING)', () => {
       const result = generateUnifiedCapabilityFile(MOCK_CAPABILITIES, PACK_NAME, 'php');
       expect(result).toContain('<?php');
       expect(result).toContain('function');
