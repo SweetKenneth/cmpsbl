@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import {
   LAYER_TIER_META,
   getPillarMeta,
+  getItemImage,
   formatPrice,
   type LayerInventoryRow,
 } from "@/lib/store/layer-categories";
@@ -28,6 +29,7 @@ export function LayerCard({ item }: LayerCardProps) {
   const navigate = useNavigate();
   const tier = LAYER_TIER_META[item.tier] ?? LAYER_TIER_META.Mint;
   const pillarMeta = getPillarMeta(item.pillar);
+  const heroImage = getItemImage(item.slug, item.pillar);
   const isSuite = item.kind === "suite";
   const PillarIcon = pillarMeta.icon;
 
@@ -73,7 +75,7 @@ export function LayerCard({ item }: LayerCardProps) {
             {/* Hero image */}
             <div className="relative aspect-[4/3] overflow-hidden bg-background/50">
               <img
-                src={pillarMeta.image}
+                src={heroImage}
                 alt={item.title}
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
