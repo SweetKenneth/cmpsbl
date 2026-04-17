@@ -58,8 +58,8 @@ describe('CAAL-1.0 license document', () => {
   });
 
   it('Layer 2 scope is explicit (Layer 1 not covered)', () => {
-    expect(text).toMatch(/Layer 1[\s\S]*does NOT apply/);
-    expect(text).toMatch(/Layer 2[\s\S]*governs/);
+    expect(text).toMatch(/does NOT apply to Layer 1/);
+    expect(text).toMatch(/This License governs Layer 2/);
   });
 });
 
