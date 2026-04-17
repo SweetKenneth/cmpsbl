@@ -114,7 +114,7 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/func \(cb \*CmpsblCircuitBreaker\) transition\b/g, 'func (cb *CmpsblCircuitBreaker) _tr1'],
   // Breaker panel registry (internal singleton)
   [/\bcmpsblBreakerPanel\b/g, '_bpx'],
-  // Timeout / Retry private knobs
+  // Timeout / Retry private knobs (legacy aliases)
   [/\bdeadline_ms\b/g, '_dl1'],
   [/\bdeadlineMs\b/g, '_dl1'],
   [/\bjitter_ms\b/g, '_jt1'],
@@ -123,6 +123,91 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\bmaxAttempts\b/g, '_ma1'],
   [/\bbase_delay_ms\b/g, '_bd1'],
   [/\bbaseDelayMs\b/g, '_bd1'],
+
+  // ── Always-On Core: Timeout Guard (#12) ──────────────────────────────────
+  // Public API kept: cmpsbl_set_timeout, cmpsbl_get_timeout, cmpsbl_run_with_deadline
+  [/\b_cmpsbl_timeout_config\b/g, '_xtc'],
+  [/\b_cmpsbl_timeout_default_ms\b/g, '_xtd'],
+  [/\b_cmpsbl_timeout_per_capability\b/g, '_xtp'],
+  [/\bCmpsblTimeoutConfig\b/g, '_XTCfg'],
+  [/\b_CmpsblTimeoutBox\b/g, '_XTBx'],
+
+  // ── Always-On Core: Retry with Backoff (#13) ─────────────────────────────
+  // Public API kept: cmpsbl_with_retry, cmpsbl_is_retryable
+  [/\b_cmpsbl_retry_config\b/g, '_xrc'],
+  [/\b_cmpsbl_retry_max_attempts\b/g, '_xrm'],
+  [/\b_cmpsbl_retry_base_delay_ms\b/g, '_xrb'],
+  [/\b_cmpsbl_retry_multiplier\b/g, '_xrx'],
+  [/\b_cmpsbl_retry_jitter\b/g, '_xrj'],
+  [/\b_CMPSBL_RETRYABLE_PATTERNS\b/g, '_XRP'],
+  [/\b_CMPSBL_NON_RETRYABLE_PATTERNS\b/g, '_XNP'],
+  [/\b_cmpsbl_backoff_ms\b/g, '_xbm'],
+  [/\b_cmpsbl_sleep_sync\b/g, '_xss'],
+  [/\bCmpsblRetryConfig\b/g, '_XRCfg'],
+
+  // ── Always-On Core: Structured Error Envelope (#14) ──────────────────────
+  // Public API kept: cmpsbl_classify_error, cmpsbl_wrap_envelope
+  [/\b_CMPSBL_ENV_PATTERNS\b/g, '_XEP'],
+
+  // ── Always-On Core: Trace ID Propagation (#15) ───────────────────────────
+  // Public API kept: cmpsbl_new_trace_id, cmpsbl_current_trace_id, cmpsbl_with_trace
+  [/\b_cmpsbl_trace_counter\b/g, '_xtcn'],
+  [/\b_cmpsbl_current_trace_id\b/g, '_xcti'],
+  [/\b_cmpsbl_current_trace\b/g, '_xct'],
+
+  // ── Always-On Core: Graceful Degradation (#16) ───────────────────────────
+  // Public API kept: cmpsbl_register_fallback, cmpsbl_get_fallback, cmpsbl_to_degraded
+  [/\b_cmpsbl_fallback_registry\b/g, '_xfr'],
+
+  // ── Always-On Core: BEACON Health Signal (#17) ───────────────────────────
+  // Public API kept: cmpsbl_beacon_subscribe, cmpsbl_beacon_emit, cmpsbl_beacon_recent, cmpsbl_beacon_health
+  [/\b_CMPSBL_BEACON_RING_MAX\b/g, '_XBM'],
+  [/\b_cmpsbl_beacon_ring\b/g, '_xbr'],
+  [/\b_cmpsbl_beacon_sinks\b/g, '_xbs'],
+  [/\bCmpsblBeaconSink\b/g, '_XBSk'],
+
+  // ── Selectable: Self-Healing Orchestrator (#1) ───────────────────────────
+  // Public API kept: cmpsbl_self_heal, cmpsbl_repair_*
+  [/\b_cmpsbl_repair_strategies\b/g, '_xrs1'],
+  [/\b_cmpsbl_repair_history\b/g, '_xrh1'],
+  [/\b_cmpsbl_strategy_scores\b/g, '_xss1'],
+  [/\b_cmpsbl_failure_signatures\b/g, '_xfs1'],
+  [/\b_cmpsbl_match_signature\b/g, '_xms1'],
+  [/\b_cmpsbl_register_defaults\b/g, '_xrd1'],
+  [/\b_cmpsbl_healer\b/g, '_xhl1'],
+  [/\b_cmpsbl_raw_execute_sh\b/g, '_xresh'],
+
+  // ── Selectable: Autonomous Triage (#2) ───────────────────────────────────
+  [/\b_cmpsbl_triage\b/g, '_xtg1'],
+  [/\b_cmpsbl_triage_history\b/g, '_xth1'],
+  [/\b_cmpsbl_symptom_buffer\b/g, '_xsb1'],
+  [/\b_cmpsbl_incident_history\b/g, '_xih1'],
+  [/\b_cmpsbl_blast_score\b/g, '_xbs2'],
+  [/\b_cmpsbl_raw_execute_tri\b/g, '_xretri'],
+
+  // ── Selectable: Distributed Consensus (#3) ───────────────────────────────
+  [/\b_cmpsbl_consensus\b/g, '_xcs1'],
+  [/\b_cmpsbl_peers\b/g, '_xpr1'],
+  [/\b_cmpsbl_local_clock\b/g, '_xlc1'],
+  [/\b_cmpsbl_state_listeners\b/g, '_xsl1'],
+  [/\b_cmpsbl_raw_execute_cs\b/g, '_xrecs'],
+
+  // ── Selectable: Oracle-Ripple Precognition (#4) ──────────────────────────
+  [/\b_cmpsbl_oracle_series\b/g, '_xos1'],
+  [/\b_cmpsbl_oracle_thresholds\b/g, '_xot1'],
+  [/\b_cmpsbl_oracle_actions_taken\b/g, '_xoa1'],
+  [/\b_cmpsbl_ripple_graph\b/g, '_xrg1'],
+  [/\b_cmpsbl_or_call_chain\b/g, '_xocc'],
+  [/\b_cmpsbl_raw_execute_or\b/g, '_xreor'],
+
+  // ── Selectable: Anomaly Correlation Engine (#5) ──────────────────────────
+  [/\b_cmpsbl_anomaly_baselines\b/g, '_xab1'],
+  [/\b_cmpsbl_anomaly_events\b/g, '_xae1'],
+  [/\b_cmpsbl_error_counts\b/g, '_xec1'],
+  [/\b_cmpsbl_adjusted_rate\b/g, '_xar1'],
+  [/\b_cmpsbl_anc_call_counter\b/g, '_xacc'],
+  [/\b_cmpsbl_update_baseline\b/g, '_xub1'],
+  [/\b_cmpsbl_raw_execute_anc\b/g, '_xreanc'],
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
