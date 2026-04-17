@@ -12,7 +12,7 @@
  */
 
 import { useState, useCallback, useRef, useMemo } from 'react';
-import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check } from 'lucide-react';
+import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,22 +23,57 @@ import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan 
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 import { TIER_LAYERS, TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
+import { useEngineSubscription, type SubscriptionTier } from '@/hooks/useEngineSubscription';
+import { useUserRole } from '@/hooks/useUserRole';
+import { Link } from 'react-router-dom';
 
-/** Build a name → tier lookup from the canonical TIER_LAYERS map. */
-const LAYER_NAME_TO_TIER: Record<string, LayerTier> = (() => {
-  const map: Record<string, LayerTier> = {};
+/**
+ * Build a rank → tier lookup from the canonical TIER_LAYERS map.
+ * Rank-based (not name-based) so it stays correct even when display names
+ * drift between the catalog source files and the canonical tier mapping.
+ */
+const LAYER_RANK_TO_TIER: Record<number, LayerTier> = (() => {
+  const map: Record<number, LayerTier> = {};
   (Object.keys(TIER_LAYERS) as Array<keyof typeof TIER_LAYERS>).forEach((tier) => {
     TIER_LAYERS[tier].forEach((entry) => {
-      map[entry.name] = tier as LayerTier;
+      map[entry.rank] = tier as LayerTier;
     });
   });
   return map;
 })();
 
 function tierForLayer(layer: CmpsblLayerDefinition): LayerTier {
-  // Free always-on / baseline layers stay on Builder
-  if (layer.priceCents === 0 && !LAYER_NAME_TO_TIER[layer.name]) return 'builder';
-  return LAYER_NAME_TO_TIER[layer.name] ?? 'builder';
+  return LAYER_RANK_TO_TIER[layer.crownJewelRank] ?? 'architect';
+}
+
+/** Numeric rank for tier comparison (higher number = more access). */
+const TIER_RANK: Record<LayerTier, number> = {
+  builder: 1,
+  studio: 2,
+  creator: 3,
+  architect: 4,
+  enterprise: 5,
+};
+
+/** Map subscription tier → effective LayerTier for access checks. */
+function subscriptionToLayerTier(sub: SubscriptionTier): LayerTier {
+  switch (sub) {
+    case 'free':
+    case 'starter':
+    case 'builder':
+      return 'builder';
+    case 'studio':
+      return 'studio';
+    case 'creator':
+    case 'pro':
+      return 'creator';
+    case 'architect':
+      return 'architect';
+    case 'enterprise':
+      return 'enterprise';
+    default:
+      return 'builder';
+  }
 }
 
 interface Props {
