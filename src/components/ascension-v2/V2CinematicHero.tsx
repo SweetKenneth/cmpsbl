@@ -33,34 +33,34 @@ export function V2CinematicHero() {
         />
       </div>
 
-      <div className="relative px-4 sm:px-8 py-8 sm:py-14">
+      <div className="relative px-4 sm:px-8 py-10 sm:py-16">
         {/* ═══ Eyebrow ═══ */}
-        <div className="flex justify-center mb-4 sm:mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/[0.08] backdrop-blur-sm">
+        <div className="flex justify-center mb-5 sm:mb-7">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/30 bg-primary/[0.08] backdrop-blur-sm shadow-[0_0_24px_-8px_hsl(var(--primary)/0.5)]">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
             </span>
-            <span className="text-[10px] sm:text-[11px] font-mono text-primary uppercase tracking-[0.22em]">
-              Ascension Pipeline · Live
+            <span className="text-[10px] sm:text-[11px] font-mono text-primary uppercase tracking-[0.24em]">
+              Ascension V2 · Live Pipeline
             </span>
           </div>
         </div>
 
         {/* ═══ Headline ═══ */}
-        <div className="text-center max-w-3xl mx-auto mb-2 sm:mb-3">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight">
+        <div className="text-center max-w-3xl mx-auto mb-3 sm:mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-[-0.02em] leading-[1.05]">
             <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
               Attach. Collide.
             </span>{' '}
-            <span className="bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-amber-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_hsl(280_85%_60%/0.45)]">
               Ascend.
             </span>
           </h1>
         </div>
-        <p className="text-center text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-6 sm:mb-10 px-2">
+        <p className="text-center text-sm sm:text-base text-muted-foreground/85 max-w-xl mx-auto mb-7 sm:mb-12 px-2 leading-relaxed">
           Watch your code attach Mana layers, collide against the{' '}
-          <span className="text-foreground font-medium">40-Primitive substrate</span>, and
+          <span className="text-foreground font-semibold">40-Primitive substrate</span>, and
           emerge as a single ascended artifact.
         </p>
 
@@ -69,9 +69,26 @@ export function V2CinematicHero() {
           <CinematicDiagram />
         </div>
 
+        {/* ═══ Stage tag row ═══ */}
+        <div className="mt-5 sm:mt-7 grid grid-cols-3 gap-2 sm:gap-3 max-w-3xl mx-auto">
+          {[
+            { num: '01', label: 'Ingest', tone: 'from-cyan-400/20 to-cyan-400/5 border-cyan-400/30 text-cyan-200' },
+            { num: '02', label: 'Attach + Collide', tone: 'from-fuchsia-400/20 to-fuchsia-400/5 border-fuchsia-400/30 text-fuchsia-200' },
+            { num: '03', label: 'Ascend + Export', tone: 'from-amber-300/20 to-amber-300/5 border-amber-300/30 text-amber-100' },
+          ].map((s) => (
+            <div
+              key={s.num}
+              className={`rounded-lg border bg-gradient-to-br ${s.tone} backdrop-blur-sm px-3 py-2.5 text-center`}
+            >
+              <div className="font-mono text-[10px] tracking-[0.2em] opacity-70">{s.num}</div>
+              <div className="text-[11px] sm:text-xs font-bold mt-0.5">{s.label}</div>
+            </div>
+          ))}
+        </div>
+
         {/* ═══ Caption + arrow down to machine ═══ */}
-        <div className="mt-6 sm:mt-10 flex flex-col items-center gap-2">
-          <p className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground inline-flex items-center gap-1.5">
+        <div className="mt-7 sm:mt-10 flex flex-col items-center gap-2">
+          <p className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.22em] text-muted-foreground inline-flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-primary" />
             Begin the ascension below
           </p>
