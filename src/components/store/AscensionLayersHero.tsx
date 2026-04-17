@@ -108,17 +108,17 @@ export function AscensionLayersHero() {
             className="relative w-full max-w-[480px] h-full mx-auto"
             style={{ perspective: "1400px" }}
           >
-            {/* LEFT-SIDE VERTICAL AXIS — labels aligned to top, middle, and bottom plates */}
+            {/* LEFT-SIDE VERTICAL AXIS — % positioning so labels track plates at any height */}
             <div className="absolute left-2 sm:left-4 inset-0 z-20 pointer-events-none">
-              {/* Top marker — aligned with top plate (i=4, yOffset = -208px from center) */}
+              {/* Top marker — aligned with top plate */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="absolute left-0 flex items-center gap-2"
-                style={{ top: "50%", transform: "translateY(calc(-50% - 208px))" }}
+                className="absolute left-0 flex items-center gap-2 -translate-y-1/2"
+                style={{ top: "14%" }}
               >
-                <div className="w-5 h-px bg-primary/70" />
+                <div className="w-5 h-px bg-primary/70 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-primary font-bold leading-tight">
                     More Power
@@ -129,15 +129,15 @@ export function AscensionLayersHero() {
                 </div>
               </motion.div>
 
-              {/* Mid marker — aligned with middle plate (i=2, yOffset = -104px from center) */}
+              {/* Mid marker — centered between top and bottom labels */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
-                className="absolute left-0 flex items-center gap-2"
-                style={{ top: "50%", transform: "translateY(calc(-50% - 104px))" }}
+                className="absolute left-0 flex items-center gap-2 -translate-y-1/2"
+                style={{ top: "50%" }}
               >
-                <div className="w-5 h-px bg-muted-foreground/50" />
+                <div className="w-5 h-px bg-muted-foreground/50 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-foreground/80 font-bold leading-tight">
                     Stack & Combine
@@ -148,15 +148,15 @@ export function AscensionLayersHero() {
                 </div>
               </motion.div>
 
-              {/* Bottom marker — aligned with base plate (i=0, yOffset = 0 from center) */}
+              {/* Bottom marker — aligned with base plate */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 1.0 }}
-                className="absolute left-0 flex items-center gap-2"
-                style={{ top: "50%", transform: "translateY(-50%)" }}
+                className="absolute left-0 flex items-center gap-2 -translate-y-1/2"
+                style={{ top: "86%" }}
               >
-                <div className="w-5 h-px bg-muted-foreground/50" />
+                <div className="w-5 h-px bg-muted-foreground/50 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-foreground/80 font-bold leading-tight">
                     Your Code
