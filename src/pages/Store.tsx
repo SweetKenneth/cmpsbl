@@ -10,7 +10,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
-  ShoppingBag, Cpu, Users, Lock, Sparkles, Zap, Rocket, Brain,
+  ShoppingBag, Cpu, Users, Lock, Sparkles, Zap, Brain,
   Shield, Layers, Radio, Eye,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
