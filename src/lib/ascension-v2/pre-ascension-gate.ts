@@ -226,12 +226,36 @@ function pythonStructuralCheck(source: string): GateError | null {
   const insideString = computePyStringMask(source);
   const blockOpeners = /^\s*(def |class |if |elif |else:|try:|except|finally:|for |while |with |async def |async for |async with )/;
 
+  // Track bracket depth across lines — comprehensions span lines inside [], (), {}.
+  // If a line begins while bracket depth > 0, any "for "/"if " on it is a
+  // comprehension clause, not a block header.
+  let bracketDepth = 0;
+
   for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    const lineStartsInsideBrackets = bracketDepth > 0;
+
+    // Update bracket depth using this line (ignoring chars inside strings on this line).
+    // Cheap pass: strip strings/comments roughly, then count brackets.
+    if (!insideString[i]) {
+      const stripped = ln
+        .replace(/#.*$/, '')
+        .replace(/'(?:\\.|[^'\\])*'/g, '')
+        .replace(/"(?:\\.|[^"\\])*"/g, '');
+      for (const ch of stripped) {
+        if (ch === '(' || ch === '[' || ch === '{') bracketDepth++;
+        else if (ch === ')' || ch === ']' || ch === '}') bracketDepth = Math.max(0, bracketDepth - 1);
+      }
+    }
+
     // Skip every line that begins inside a triple-quoted docstring or
     // multi-line string — its tokens are prose, not Python syntax.
     if (insideString[i]) continue;
 
-    const ln = lines[i];
+    // Skip lines that are continuation of a multi-line bracket expression
+    // (e.g. comprehension clauses like `for x in xs` inside a list literal).
+    if (lineStartsInsideBrackets) continue;
+
     const trimmed = ln.trim();
 
     // Block opener must end with ':' (excluding else:/try:/finally: which already do)
