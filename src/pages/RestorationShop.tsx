@@ -11,6 +11,8 @@ import { PublicNav } from "@/components/PublicNav";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SUPPORTED_UPSTREAM_LICENSES } from "@/lib/factory/license-attribution";
 import {
   Upload,
   ArrowRight,
@@ -101,6 +103,8 @@ export default function RestorationShop() {
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
   const [processingPrimitives, setProcessingPrimitives] = useState<ProcessingPrimitive[]>([]);
+  /** Manual upstream-license SPDX override — empty string = auto-detect from header. */
+  const [upstreamLicenseSpdx, setUpstreamLicenseSpdx] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const identityRole = useDecodeStore(s => s.identityRole);
 
