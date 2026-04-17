@@ -304,13 +304,13 @@ export function generateV2LicenseHTML(input: V2LicenseInput | string): string {
   </header>
   ${sealBadge()}
 
-  <p style="text-align:center; font-size:0.82rem; color:rgba(255,255,255,0.4); margin-bottom:1.5rem;">
-    Issued ${dateStr()} for <strong style="color:#fff;">${esc(packName)}</strong>
+  <p style="text-align:center; font-size:0.85rem; color:${TOKENS.mutedFg}; margin-bottom:1.5rem;">
+    Issued ${dateStr()} for <strong style="color:${TOKENS.foreground};">${esc(packName)}</strong>
   </p>
 
-  <div class="meta-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:2rem;font-size:0.78rem;">
-    <div><span style="color:rgba(255,255,255,0.4);">Artifact Serial</span><br/><code style="color:#fff;">${sn}</code></div>
-    <div><span style="color:rgba(255,255,255,0.4);">Artifact Fingerprint</span><br/><code style="color:#fff;">${fp}</code></div>
+  <div class="meta-grid">
+    <div class="meta-item"><div class="meta-label">Artifact Serial</div><div class="meta-value"><code>${sn}</code></div></div>
+    <div class="meta-item"><div class="meta-label">Artifact Fingerprint</div><div class="meta-value"><code>${fp}</code></div></div>
   </div>
 
   <div class="highlight">
