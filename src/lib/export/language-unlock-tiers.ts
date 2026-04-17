@@ -19,15 +19,20 @@ export const LANGUAGE_UNLOCK_TIERS: LanguageUnlockTier[] = [
     id: 'raw',
     label: 'Raw',
     minScore: 0,
-    languages: ['typescript'],
-    description: 'Raw tier baseline — TypeScript export is always available (0+)',
+    // Foundation tier — every artifact ships in these languages regardless of score.
+    // Mint gate dropped per governor directive: PHP and the foundation set must
+    // ship at 0+ so customers always get the broadest portable surface.
+    languages: ['typescript', 'php', 'ruby', 'lua', 'dart', 'swift', 'kotlin', 'perl', 'groovy', 'bash', 'powershell'],
+    description: 'Foundation languages — always available (0+)',
   },
   {
     id: 'mint',
     label: 'Mint',
     minScore: 68,
-    languages: ['php', 'ruby', 'lua', 'dart', 'swift', 'kotlin', 'perl', 'groovy', 'bash', 'powershell'],
-    description: 'Foundation languages — unlocked at Mint tier (68+)',
+    // Retained as a no-op tier for backward compatibility with UI badges.
+    // All previously-Mint languages were promoted to Raw.
+    languages: [],
+    description: 'Reserved tier — foundation languages now ship at Raw (0+)',
   },
   {
     id: 'prime',
