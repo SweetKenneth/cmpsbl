@@ -72,8 +72,9 @@ function registerNative(layerId: string, lang: string, gen: NativeGen): void {
   NATIVE_REGISTRY.set(`${layerId}:${lang}`, gen);
 }
 
-// Eagerly register Go bodies now that NATIVE_REGISTRY exists.
+// Eagerly register native bodies now that NATIVE_REGISTRY exists.
 _registerGoLayerBodies();
+_registerRsLayerBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
