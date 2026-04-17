@@ -462,6 +462,27 @@ export function generateV2ReadmeHTML(input: V2ReadmeInput): string {
     before dropping it into your stack. The ascended file is a drop-in replacement.
   </div>
 
+  <h2>License Summary (Dual-Layer)</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>What It Is</th><th>License</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Layer 1</strong></td>
+        <td>Your original source — embedded byte-identical</td>
+        <td><code>${esc(upstream ? upstream.spdx : 'Proprietary / no upstream license declared')}</code></td>
+      </tr>
+      <tr>
+        <td><strong>Layer 2</strong></td>
+        <td>CMPSBL® wrapper, primitives, and runtime</td>
+        <td><code>CAAL-1.0</code> · see <code>LICENSE.html</code></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.8125rem; color:${TOKENS.mutedFg}; margin-top:0.5rem;">
+    CAAL-1.0 §1 explicitly limits its scope to Layer 2. Your original source retains its
+    upstream terms in full${upstream ? ` (${esc(upstream.label)})` : ''}.
+  </p>
+
   <h2>Included Files</h2>
   <table>
     <thead><tr><th>File</th><th>Purpose</th></tr></thead>
