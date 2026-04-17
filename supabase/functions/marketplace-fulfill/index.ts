@@ -66,8 +66,46 @@ serve(async (req) => {
       throw new Error("Payment not completed");
     }
 
-    const { product_type, product_id, template_name, purchaser_email } = session.metadata || {};
-    
+    const { product_type, product_id, template_name, purchaser_email, capability_id, user_id } = session.metadata || {};
+
+    // ── Layer entitlement fulfillment ──
+    // For 'layer' purchases we grant a row in user_layer_entitlements (idempotent via unique constraint).
+    // Layers don't use the license-key flow; we short-circuit and return early.
+    if (product_type === 'layer') {
+      const layerId = capability_id || product_id;
+      if (!user_id || !layerId) {
+        throw new Error("Layer fulfillment missing user_id or layer_id in session metadata");
+      }
+      const { error: entErr } = await supabase
+        .from('user_layer_entitlements')
+        .upsert(
+          {
+            user_id,
+            layer_id: layerId,
+            source: 'stripe',
+            metadata: {
+              stripe_session_id: session_id,
+              stripe_customer_id: session.customer,
+              amount_paid: session.amount_total,
+            },
+          },
+          { onConflict: 'user_id,layer_id', ignoreDuplicates: true },
+        );
+      if (entErr) {
+        console.error("Layer entitlement insert error:", entErr);
+        throw new Error("Failed to grant layer entitlement");
+      }
+      return new Response(
+        JSON.stringify({
+          success: true,
+          product_type: 'layer',
+          layer_id: layerId,
+          message: `Layer "${layerId}" added to your Ascension flow. Open Ascension V2 → Enhance to attach it.`,
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 },
+      );
+    }
+
     // Check if license already exists for this session
     const { data: existingLicense } = await supabase
       .from('marketplace_licenses')
