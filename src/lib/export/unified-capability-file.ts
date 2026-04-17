@@ -2586,7 +2586,7 @@ ${generatePhpPackMeta(capabilities, allModules, packName)}
 
 /**
  * Sealed error type emitted by the Ascension Layer when execution fails.
- * The full envelope is preserved on `->envelope` for structured introspection.
+ * The full envelope is preserved on the envelope property for structured introspection.
  */
 class CmpsblExecutionError extends \\RuntimeException
 {
