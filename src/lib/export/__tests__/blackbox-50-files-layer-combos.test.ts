@@ -213,10 +213,14 @@ describe('50-file ascension layer black-box stress', () => {
     }
   }
 
-  it('summary — at least 30/50 runs emitted (others may be non-shipping langs)', () => {
-    // Surface diagnostic to console for visibility
+  it('summary — every shipping language × every combo emitted cleanly', () => {
+    // Surface diagnostic to console for visibility.
+    // Of the 10 langs we exercise, only those marked SHIPPING in the parity
+    // registry actually emit. Non-shipping langs throw deliberately and are
+    // counted as `skipped_non_shipping`. Bar: every shipping run sealed clean.
     // eslint-disable-next-line no-console
     console.log(`[stress 50] total=${totalRuns} emitted=${passedRuns} skipped_non_shipping=${skippedNonShipping}`);
-    expect(passedRuns).toBeGreaterThanOrEqual(30);
+    expect(passedRuns + skippedNonShipping).toBe(50);
+    expect(passedRuns).toBeGreaterThanOrEqual(20);
   });
 });
