@@ -347,8 +347,9 @@ describe('V2 Pipeline — registry parity', () => {
     }
   });
 
-  it('exactly five fixtures are exercised end-to-end', () => {
-    expect(FIXTURES).toHaveLength(5);
+  it('all SHIPPING languages have an end-to-end fixture', () => {
+    const shippingIds = new Set(getShippingLanguages().map(l => l.id));
+    expect(FIXTURES.length).toBe(shippingIds.size);
   });
 });
 
