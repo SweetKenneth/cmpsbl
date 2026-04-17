@@ -77,12 +77,27 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const availableLayers = useMemo(() => getAvailableLayers(), []);
   const selectedLayers = useMemo(() => new Set(selectedLayerIds), [selectedLayerIds]);
 
-  // Live detection of the upstream license on the primary source file. Re-runs
-  // only when the source content changes — null when nothing detectable.
+  // Live detection of the upstream license. Two strategies, in order:
+  //   1. Sibling LICENSE file in the upload set (covers the common case where
+  //      a repo's LICENSE lives at the root, not in every source-file header —
+  //      e.g. Simon Willison's `llm`, most Python/Rust/Go projects).
+  //   2. Inline SPDX/Apache/MIT/BSD/MPL/ISC header in the primary source.
+  // Both strategies use the same conservative SPDX patterns, so a hit is
+  // legally meaningful regardless of which one fired.
   const detectedUpstream: DetectedLicense | null = useMemo(() => {
     if (sourceFiles.length === 0) return null;
+    const sibling = detectLicenseFromSiblingFile(sourceFiles);
+    if (sibling) return sibling;
     return detectUpstreamLicenseForExport(sourceFiles[0].content);
   }, [sourceFiles]);
+
+  // True only when the user has neither inline-detected nor manually selected
+  // an upstream SPDX. We surface a loud warning in this state so NOASSERTION
+  // exports never happen by accident.
+  const upstreamMissing =
+    sourceFiles.length > 0 &&
+    spdxChoice === 'auto' &&
+    detectedUpstream === null;
 
   useEffect(() => {
     completeRun();
