@@ -430,109 +430,115 @@ export function V2LaunchLayers() {
 
       {/* Pillar-grouped view (legacy) */}
       {viewMode === 'pillar' && (
+        <div className="space-y-2 sm:space-y-3 max-w-3xl mx-auto">
+          {visible.map(layer => {
+            const meta = PILLAR_META[layer.pillar];
+            const Icon = meta.Icon;
+            const isOpen = expanded === layer.rank;
 
-      {/* Layer cards */}
-      <div className="space-y-2 sm:space-y-3 max-w-3xl mx-auto">
-        {visible.map(layer => {
-          const meta = PILLAR_META[layer.pillar];
-          const Icon = meta.Icon;
-          const isOpen = expanded === layer.rank;
-
-          return (
-            <div
-              key={layer.rank}
-              className={cn(
-                'rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm transition-all',
-                isOpen && 'border-primary/40 bg-card/70',
-              )}
-            >
-              <button
-                onClick={() => setExpanded(isOpen ? null : layer.rank)}
-                className="w-full flex items-start gap-3 p-3 sm:p-4 text-left"
+            return (
+              <div
+                key={layer.rank}
+                className={cn(
+                  'rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm transition-all',
+                  isOpen && 'border-primary/40 bg-card/70',
+                )}
               >
-                {/* Rank */}
-                <div className="flex-shrink-0 w-8 sm:w-10 text-center">
-                  <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">
-                    #
-                  </div>
-                  <div className="text-base sm:text-lg font-bold text-foreground tabular-nums">
-                    {layer.rank}
-                  </div>
-                </div>
-
-                {/* Body */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 className="text-sm sm:text-base font-semibold text-foreground leading-tight">
-                      {layer.name}
-                    </h3>
-                    <ChevronDown className={cn(
-                      'flex-shrink-0 w-4 h-4 text-muted-foreground transition-transform',
-                      isOpen && 'rotate-180',
-                    )} />
+                <button
+                  onClick={() => setExpanded(isOpen ? null : layer.rank)}
+                  className="w-full flex items-start gap-3 p-3 sm:p-4 text-left"
+                >
+                  {/* Rank */}
+                  <div className="flex-shrink-0 w-8 sm:w-10 text-center">
+                    <div className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">
+                      #
+                    </div>
+                    <div className="text-base sm:text-lg font-bold text-foreground tabular-nums">
+                      {layer.rank}
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2">
-                    <span className={cn('inline-flex items-center gap-1 text-[10px] sm:text-xs font-medium', meta.tone)}>
-                      <Icon className="w-3 h-3" />
-                      {layer.pillar}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-muted-foreground">·</span>
-                    <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">
-                      CJPI {layer.cjpi}
-                    </span>
-                    <span className="text-[10px] sm:text-xs text-muted-foreground">·</span>
-                    <span className="text-[10px] sm:text-xs font-semibold text-primary tabular-nums">
-                      ${layer.priceLow}/yr
-                    </span>
+                  {/* Body */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <h3 className="text-sm sm:text-base font-semibold text-foreground leading-tight">
+                        {layer.name}
+                      </h3>
+                      <ChevronDown className={cn(
+                        'flex-shrink-0 w-4 h-4 text-muted-foreground transition-transform',
+                        isOpen && 'rotate-180',
+                      )} />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2">
+                      <span className={cn('inline-flex items-center gap-1 text-[10px] sm:text-xs font-medium', meta.tone)}>
+                        <Icon className="w-3 h-3" />
+                        {layer.pillar}
+                      </span>
+                      <span className="text-[10px] sm:text-xs text-muted-foreground">·</span>
+                      <span className="text-[10px] sm:text-xs font-mono text-muted-foreground">
+                        CJPI {layer.cjpi}
+                      </span>
+                      <span className="text-[10px] sm:text-xs text-muted-foreground">·</span>
+                      <span className="text-[10px] sm:text-xs font-semibold text-primary tabular-nums">
+                        Unlocks: {TIER_META[tierForRank(layer.rank)].name}
+                      </span>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                      {layer.description}
+                    </p>
                   </div>
+                </button>
 
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                    {layer.description}
-                  </p>
-                </div>
-              </button>
+                {/* Expanded detail */}
+                {isOpen && (
+                  <div className="px-3 sm:px-4 pb-3 sm:pb-4 pl-[calc(0.75rem+2rem+0.75rem)] sm:pl-[calc(1rem+2.5rem+0.75rem)] space-y-3 animate-fade-in">
+                    <p className="text-xs sm:text-sm text-foreground leading-relaxed">
+                      {layer.description}
+                    </p>
 
-              {/* Expanded detail */}
-              {isOpen && (
-                <div className="px-3 sm:px-4 pb-3 sm:pb-4 pl-[calc(0.75rem+2rem+0.75rem)] sm:pl-[calc(1rem+2.5rem+0.75rem)] space-y-3 animate-fade-in">
-                  <p className="text-xs sm:text-sm text-foreground leading-relaxed">
-                    {layer.description}
-                  </p>
+                    <blockquote className="border-l-2 border-primary/40 pl-3 italic text-xs sm:text-sm text-foreground/90">
+                      "{layer.promise}"
+                    </blockquote>
 
-                  <blockquote className="border-l-2 border-primary/40 pl-3 italic text-xs sm:text-sm text-foreground/90">
-                    "{layer.promise}"
-                  </blockquote>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] sm:text-xs">
+                      <div className="rounded-md bg-muted/30 px-2.5 py-2">
+                        <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
+                          Source
+                        </div>
+                        <div className="font-mono text-foreground/90">{layer.source}</div>
+                      </div>
+                      <div className="rounded-md bg-muted/30 px-2.5 py-2">
+                        <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
+                          Unlocks at
+                        </div>
+                        <div className="font-mono text-foreground/90">
+                          {TIER_META[tierForRank(layer.rank)].name} · {TIER_META[tierForRank(layer.rank)].priceLabel}
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] sm:text-xs">
-                    <div className="rounded-md bg-muted/30 px-2.5 py-2">
+                    <div className="rounded-md border border-border/40 bg-background/40 px-2.5 py-2">
                       <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
-                        Source
+                        ROI
                       </div>
-                      <div className="font-mono text-foreground/90">{layer.source}</div>
+                      <div className="text-xs sm:text-sm text-foreground/90">{layer.roi}</div>
                     </div>
-                    <div className="rounded-md bg-muted/30 px-2.5 py-2">
-                      <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
-                        Pricing
-                      </div>
-                      <div className="font-mono text-foreground/90 tabular-nums">
-                        ${layer.priceLow}<span className="text-muted-foreground">–${layer.priceHigh}/yr</span>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="rounded-md border border-border/40 bg-background/40 px-2.5 py-2">
-                    <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
-                      ROI
-                    </div>
-                    <div className="text-xs sm:text-sm text-foreground/90">{layer.roi}</div>
+                    <Button asChild size="sm" variant="outline" className="rounded-full text-[11px] font-semibold">
+                      <Link to="/plans">
+                        Upgrade to {TIER_META[tierForRank(layer.rank)].name}
+                        <ArrowRight className="w-3 h-3 ml-1" />
+                      </Link>
+                    </Button>
                   </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Footer note */}
       <p className="text-center text-[10px] sm:text-xs text-muted-foreground/70 mt-8 max-w-xl mx-auto">
