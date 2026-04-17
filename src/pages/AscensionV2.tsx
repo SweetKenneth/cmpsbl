@@ -60,6 +60,8 @@ export default function AscensionV2() {
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const stepperRef = useRef<HTMLElement | null>(null);
+  const isFirstStepRender = useRef(true);
 
   // Init a fresh run on mount
   useEffect(() => {
@@ -70,6 +72,21 @@ export default function AscensionV2() {
     });
     setRunId(id);
   }, []);
+
+  // Snap to the Ascension UI section on every step change so users always
+  // see the animated flow as they advance.
+  useEffect(() => {
+    if (isFirstStepRender.current) {
+      isFirstStepRender.current = false;
+      return;
+    }
+    const el = stepperRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      const y = el.getBoundingClientRect().top + window.scrollY - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  }, [step]);
 
   const handleUploadComplete = useCallback(() => {
     setStep(1);
