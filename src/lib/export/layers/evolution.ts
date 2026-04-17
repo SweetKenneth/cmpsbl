@@ -157,7 +157,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const SELF_EVOLVE_LAYER: CmpsblLayerDefinition = {
   id: "self-evolution",
-  name: "Self-Evolution Suite",
+  name: "Self-Evolution Layer",
   crownJewelRank: 17,
   cjpi: 95,
   module: "EVOLUTION",

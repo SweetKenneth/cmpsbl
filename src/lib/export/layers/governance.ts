@@ -103,7 +103,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const GOV_SHIELD_LAYER: CmpsblLayerDefinition = {
   id: "governance-shield",
-  name: "Governance Shield Suite",
+  name: "Governance Shield Layer",
   crownJewelRank: 18,
   cjpi: 94,
   module: "GOVERNANCE",
@@ -241,7 +241,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const AUDIT_CHAIN_LAYER: CmpsblLayerDefinition = {
   id: "audit-chain",
-  name: "Tamper-Evident Audit Chain",
+  name: "Tamper-Evident Audit Layer",
   crownJewelRank: 19,
   cjpi: 95,
   module: "AUDIT",

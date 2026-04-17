@@ -153,7 +153,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const PERF_SURGERY_LAYER: CmpsblLayerDefinition = {
   id: "performance-surgery",
-  name: "Performance Surgery Suite",
+  name: "Performance Surgery Layer",
   crownJewelRank: 13,
   cjpi: 98,
   module: "APEX×VISION",
@@ -298,7 +298,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const PIPELINE_RES_LAYER: CmpsblLayerDefinition = {
   id: "pipeline-resilience",
-  name: "Data Pipeline Resilience Suite",
+  name: "Data Pipeline Resilience Layer",
   crownJewelRank: 14,
   cjpi: 98,
   module: "CONDUIT",

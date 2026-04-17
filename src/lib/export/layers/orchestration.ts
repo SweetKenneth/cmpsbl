@@ -129,7 +129,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const PIPE_COMPOSE_LAYER: CmpsblLayerDefinition = {
   id: "pipeline-composition",
-  name: "Pipeline Composition Engine",
+  name: "Pipeline Composition Layer",
   crownJewelRank: 15,
   cjpi: 95,
   module: "CORTEX",
@@ -290,7 +290,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const UNIVERSAL_INPUT_LAYER: CmpsblLayerDefinition = {
   id: "universal-input",
-  name: "Universal Input Intelligence",
+  name: "Universal Input Intelligence Layer",
   crownJewelRank: 16,
   cjpi: 97,
   module: "DECODE",

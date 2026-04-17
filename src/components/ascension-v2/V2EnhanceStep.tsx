@@ -12,7 +12,7 @@
  */
 
 import { useState, useCallback, useRef, useMemo } from 'react';
-import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check } from 'lucide-react';
+import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,22 +23,57 @@ import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan 
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 import { TIER_LAYERS, TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
+import { useEngineSubscription, type SubscriptionTier } from '@/hooks/useEngineSubscription';
+import { useUserRole } from '@/hooks/useUserRole';
+import { Link } from 'react-router-dom';
 
-/** Build a name → tier lookup from the canonical TIER_LAYERS map. */
-const LAYER_NAME_TO_TIER: Record<string, LayerTier> = (() => {
-  const map: Record<string, LayerTier> = {};
+/**
+ * Build a rank → tier lookup from the canonical TIER_LAYERS map.
+ * Rank-based (not name-based) so it stays correct even when display names
+ * drift between the catalog source files and the canonical tier mapping.
+ */
+const LAYER_RANK_TO_TIER: Record<number, LayerTier> = (() => {
+  const map: Record<number, LayerTier> = {};
   (Object.keys(TIER_LAYERS) as Array<keyof typeof TIER_LAYERS>).forEach((tier) => {
     TIER_LAYERS[tier].forEach((entry) => {
-      map[entry.name] = tier as LayerTier;
+      map[entry.rank] = tier as LayerTier;
     });
   });
   return map;
 })();
 
 function tierForLayer(layer: CmpsblLayerDefinition): LayerTier {
-  // Free always-on / baseline layers stay on Builder
-  if (layer.priceCents === 0 && !LAYER_NAME_TO_TIER[layer.name]) return 'builder';
-  return LAYER_NAME_TO_TIER[layer.name] ?? 'builder';
+  return LAYER_RANK_TO_TIER[layer.crownJewelRank] ?? 'architect';
+}
+
+/** Numeric rank for tier comparison (higher number = more access). */
+const TIER_RANK: Record<LayerTier, number> = {
+  builder: 1,
+  studio: 2,
+  creator: 3,
+  architect: 4,
+  enterprise: 5,
+};
+
+/** Map subscription tier → effective LayerTier for access checks. */
+function subscriptionToLayerTier(sub: SubscriptionTier): LayerTier {
+  switch (sub) {
+    case 'free':
+    case 'starter':
+    case 'builder':
+      return 'builder';
+    case 'studio':
+      return 'studio';
+    case 'creator':
+    case 'pro':
+      return 'creator';
+    case 'architect':
+      return 'architect';
+    case 'enterprise':
+      return 'enterprise';
+    default:
+      return 'builder';
+  }
 }
 
 interface Props {
@@ -55,6 +90,15 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { tier: subscriptionTier } = useEngineSubscription();
+  const { isGovernor } = useUserRole();
+
+  // Effective tier = subscription tier (Governor sees everything regardless).
+  const effectiveTier = useMemo<LayerTier>(
+    () => (isGovernor ? 'enterprise' : subscriptionToLayerTier(subscriptionTier)),
+    [isGovernor, subscriptionTier],
+  );
+  const userTierRank = TIER_RANK[effectiveTier];
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
 
@@ -204,18 +248,33 @@ export function V2EnhanceStep({ onComplete }: Props) {
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
             <span className="text-xs sm:text-sm font-medium text-foreground">Add CMPSBL Layers</span>
+            <span
+              className={cn(
+                'text-[8px] sm:text-[9px] font-semibold px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
+                TIER_META[effectiveTier].accent,
+              )}
+              title={`Your tier: ${TIER_META[effectiveTier].name}`}
+            >
+              {TIER_META[effectiveTier].name}
+            </span>
             <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-auto">Optional</span>
           </div>
           <p className="text-[10px] sm:text-xs text-muted-foreground">
             Production-grade infrastructure injected into Layer 2. Your code stays untouched.
+            Layers above your tier are locked — <Link to="/plans" className="text-primary hover:underline">upgrade</Link> to unlock.
           </p>
           <div className="space-y-1.5">
             {availableLayers.map((layer) => {
               const isSelected = selectedLayers.has(layer.id);
+              const layerTier = tierForLayer(layer);
+              const meta = TIER_META[layerTier];
+              const isLocked = TIER_RANK[layerTier] > userTierRank;
               return (
                 <button
                   key={layer.id}
+                  disabled={isLocked}
                   onClick={() => {
+                    if (isLocked) return;
                     setSelectedLayers(prev => {
                       const next = new Set(prev);
                       if (next.has(layer.id)) next.delete(layer.id);
@@ -223,22 +282,40 @@ export function V2EnhanceStep({ onComplete }: Props) {
                       return next;
                     });
                   }}
+                  title={isLocked
+                    ? `Locked — requires ${meta.name} (${meta.priceLabel}). Click your tier to upgrade.`
+                    : `${meta.name} tier — included in your plan`}
                   className={cn(
                     'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
-                    isSelected
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border hover:border-primary/40 hover:bg-muted/40'
+                    isLocked
+                      ? 'border-border/40 bg-muted/10 opacity-50 cursor-not-allowed'
+                      : isSelected
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/40 hover:bg-muted/40',
                   )}
                 >
                   <div className={cn(
                     'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
-                    isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                    isLocked
+                      ? 'bg-muted/40 text-muted-foreground'
+                      : isSelected
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground',
                   )}>
-                    {isSelected ? <Check className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
+                    {isLocked
+                      ? <Lock className="w-3 h-3" />
+                      : isSelected
+                        ? <Check className="w-3 h-3" />
+                        : <Zap className="w-3 h-3" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] sm:text-xs font-medium text-foreground">{layer.name}</span>
+                      <span className={cn(
+                        'text-[10px] sm:text-xs font-medium',
+                        isLocked ? 'text-muted-foreground' : 'text-foreground',
+                      )}>
+                        {layer.name}
+                      </span>
                       <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono">
                         CJ #{layer.crownJewelRank} · CJPI {layer.cjpi}
                       </span>
@@ -247,21 +324,14 @@ export function V2EnhanceStep({ onComplete }: Props) {
                       {layer.description}
                     </p>
                   </div>
-                  {(() => {
-                    const tier = tierForLayer(layer);
-                    const meta = TIER_META[tier];
-                    return (
-                      <span
-                        className={cn(
-                          'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
-                          meta.accent
-                        )}
-                        title={`${meta.name} tier — ${meta.priceLabel}`}
-                      >
-                        {meta.name}
-                      </span>
-                    );
-                  })()}
+                  <span
+                    className={cn(
+                      'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
+                      meta.accent,
+                    )}
+                  >
+                    {meta.name}
+                  </span>
                 </button>
               );
             })}
