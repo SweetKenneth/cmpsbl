@@ -42,9 +42,12 @@ import { ADAPTIVE_FORGE_LAYER } from './adaptive-forge.layer';
 import { KINETIC_SYNTHESIS_LAYER } from './kinetic-synthesis.layer';
 import { REFLEX_ORCHESTRATION_LAYER } from './reflex-orchestration.layer';
 
-// ── Batch C pending (5 layers) — registered in turn 3 ───────────────────────
-// Resilient Evolution · Emergent Gateway · Synthetic Contracts
-// Localization Mesh · Neural Broker
+// ── Batch C · Integration & Contracts (5) ───────────────────────────────────
+import { RESILIENT_EVOLUTION_LAYER } from './resilient-evolution.layer';
+import { EMERGENT_GATEWAY_LAYER } from './emergent-gateway.layer';
+import { SYNTHETIC_CONTRACTS_LAYER } from './synthetic-contracts.layer';
+import { LOCALIZATION_MESH_LAYER } from './localization-mesh.layer';
+import { NEURAL_BROKER_LAYER } from './neural-broker.layer';
 
 export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
   // Existing 8
@@ -70,4 +73,10 @@ export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze(
   ADAPTIVE_FORGE_LAYER,
   KINETIC_SYNTHESIS_LAYER,
   REFLEX_ORCHESTRATION_LAYER,
+  // Batch C (5)
+  RESILIENT_EVOLUTION_LAYER,
+  EMERGENT_GATEWAY_LAYER,
+  SYNTHETIC_CONTRACTS_LAYER,
+  LOCALIZATION_MESH_LAYER,
+  NEURAL_BROKER_LAYER,
 ]);
