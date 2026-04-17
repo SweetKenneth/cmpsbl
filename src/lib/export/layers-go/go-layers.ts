@@ -1450,20 +1450,6 @@ export const GO_LAYER_BODIES: Readonly<Record<string, string>> = Object.freeze({
   'governance-shield':            GOV_SHIELD_GO,
   'audit-chain':                  AUDIT_CHAIN_GO,
   'regulatory-compliance':        COMPLIANCE_GO,
-  // Inventory Suites — Ranks 21-33
-  'llm-defense-suite':              LLM_DEFENSE_SUITE_GO,
-  'cyber-perimeter-suite':          CYBER_PERIMETER_SUITE_GO,
-  'quantum-simulation-suite':       QUANTUM_SIMULATION_SUITE_GO,
-  'robotics-control-suite':         ROBOTICS_CONTROL_SUITE_GO,
-  'agency-orchestration-suite':     AGENCY_ORCHESTRATION_SUITE_GO,
-  'topological-security-suite':     TOPOLOGICAL_SECURITY_SUITE_GO,
-  'layered-observability-suite':    LAYERED_OBSERVABILITY_SUITE_GO,
-  'holographic-integration-suite':  HOLOGRAPHIC_INTEGRATION_SUITE_GO,
-  'memory-compression-suite':       MEMORY_COMPRESSION_SUITE_GO,
-  'federated-learning-suite':       FEDERATED_LEARNING_SUITE_GO,
-  'edge-compute-suite':             EDGE_COMPUTE_SUITE_GO,
-  'stream-processing-suite':        STREAM_PROCESSING_SUITE_GO,
-  'polyglot-lex-suite':             POLYGLOT_LEX_SUITE_GO,
 });
 
 /** All Go imports any layer body might reference. */
