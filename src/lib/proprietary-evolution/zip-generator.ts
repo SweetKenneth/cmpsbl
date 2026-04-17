@@ -16,7 +16,7 @@ import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
-import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
+import { humanizeCapabilityName, humanizeFilename, formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
@@ -799,7 +799,8 @@ const pipeline = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
 |------------|------|------|-------|------------|
 ${capabilities.map(c => {
   const val = estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length);
-  return `| ${c.name} | ${c.cjpiScore} | ${c.tier.toUpperCase()} | ${c.chain.join(' × ')} | ${formatMarketValue(val)} |`;
+  const displayName = formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'));
+  return `| ${displayName} | ${c.cjpiScore} | ${c.tier.toUpperCase()} | ${c.chain.join(' × ')} | ${formatMarketValue(val)} |`;
 }).join('\n')}
 
 ## 🔬 Top Discovery
