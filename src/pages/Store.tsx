@@ -23,6 +23,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { JunkyardCTA } from "@/components/shared/JunkyardCTA";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
 import { LayerInventory } from "@/components/store/LayerInventory";
+import { AscensionLayersHero } from "@/components/store/AscensionLayersHero";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { PacksContent } from "@/components/store/PacksContent";
 import {
@@ -122,37 +123,8 @@ export default function Store() {
           <div className="mb-6">
             <PublicBreadcrumb />
           </div>
-          {/* ═══ HERO ═══ */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-10 sm:mb-14"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-            >
-              <Badge variant="outline" className="mb-6 border-primary/30 px-4 py-1.5 inline-flex backdrop-blur-sm">
-                <ShoppingBag className="w-3.5 h-3.5 mr-2 text-primary" />
-                <span className="text-xs font-semibold tracking-wide">Engines · Agents · Primitives</span>
-              </Badge>
-            </motion.div>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
-              Own Your
-              <br />
-              <span className="bg-gradient-to-r from-primary to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent">
-                Infrastructure
-              </span>
-            </h1>
-
-            <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed font-medium">
-              Sealed software you own forever. Runtime Agents learn and execute.
-              Composable Engines power the substrate. Pick your tier.
-            </p>
-          </motion.div>
+          {/* ═══ CINEMATIC HERO — Enhance Your Ascension ═══ */}
+          <AscensionLayersHero />
 
           {/* ═══ TABS ═══ */}
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">

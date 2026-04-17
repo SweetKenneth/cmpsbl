@@ -75,10 +75,11 @@ export function LayerInventory() {
 
   return (
     <motion.section
+      id="layer-inventory"
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="mb-16 sm:mb-24"
+      className="mb-16 sm:mb-24 scroll-mt-24"
     >
       {/* Section header */}
       <div className="text-center mb-10">
