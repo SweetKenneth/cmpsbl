@@ -32,6 +32,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { InlineErrorPanel, toInlineError, type InlineError } from './InlineErrorPanel';
 
 interface AscendedCapability {
   id: string;
@@ -111,6 +112,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   const [sourceLanguage, setSourceLanguage] = useState<ExportLanguage | null>(null);
   const [sourceLanguageLabel, setSourceLanguageLabel] = useState<string>('');
   const [userSourceFiles, setUserSourceFiles] = useState<UserSourceFile[]>([]);
+  const [inlineError, setInlineError] = useState<InlineError | null>(null);
   const { toast } = useToast();
   const {
     canExport,
@@ -307,7 +309,13 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
       await refreshUsage();
       toast({ title: 'Ascended Memory exported', description: `${targets.length} capability${targets.length > 1 ? 'ies' : ''} exported & retired.` });
     } catch (err) {
-      toast({ title: 'Export failed', description: String(err), variant: 'destructive' });
+      const ie = toInlineError(
+        'Export · Generate ZIP',
+        err,
+        'Export aborted before the ZIP was written. Common causes: ascended source missing, harness rejection, or quota exhausted. See details below.',
+      );
+      setInlineError(ie);
+      toast({ title: 'Export failed', description: ie.message, variant: 'destructive' });
     } finally {
       setExporting(null);
     }
@@ -328,7 +336,13 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
       setAllCapabilities(prev => prev.filter(c => c.id !== capId));
       toast({ title: 'Capability discarded', description: 'Removed from your vault.' });
     } catch (err) {
-      toast({ title: 'Discard failed', description: String(err), variant: 'destructive' });
+      const ie = toInlineError(
+        'Export · Discard Capability',
+        err,
+        'The capability was not removed from your vault. Check authentication and try again.',
+      );
+      setInlineError(ie);
+      toast({ title: 'Discard failed', description: ie.message, variant: 'destructive' });
     } finally {
       setDiscarding(null);
     }
