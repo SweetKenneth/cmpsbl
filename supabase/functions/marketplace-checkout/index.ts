@@ -220,6 +220,8 @@ serve(async (req) => {
         product_id: product_id || '',
         template_name: template_name || '',
         capability_id: capability_id || '',
+        // Authoritative buyer for webhook fulfillment (entitlement insert).
+        user_id: authData.user.id,
         is_stier: product_type === 'stier' ? 'true' : 'false',
         is_recursive: product_type === 'recursive' ? 'true' : 'false',
         tier: isRecursive ? 'apex' : product_type === 'stier' ? 'crown' : product_type,
