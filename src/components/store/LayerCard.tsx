@@ -88,46 +88,50 @@ export function LayerCard({ item }: LayerCardProps) {
             exit="exit"
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             className={cn(
-              "rounded-2xl overflow-hidden border bg-card/95 backdrop-blur-md flex flex-col h-full",
-              "shadow-xl hover:shadow-2xl transition-shadow duration-500",
+              "group/card rounded-2xl overflow-hidden border bg-card/95 backdrop-blur-md flex flex-col h-full",
+              "shadow-xl hover:shadow-2xl transition-all duration-500",
+              "ring-1 ring-foreground/5 hover:ring-foreground/10",
               tier.border
             )}
             style={{
-              boxShadow: `0 0 20px ${pillarMeta.glowColor}, 0 20px 40px -12px rgba(0,0,0,0.4)`,
+              boxShadow: `0 0 24px ${pillarMeta.glowColor}, 0 24px 48px -16px rgba(0,0,0,0.45)`,
             }}
           >
-            {/* Top gradient bar */}
-            <div className={cn("h-1 w-full bg-gradient-to-r shrink-0", pillarMeta.gradient)} />
+            {/* Top gradient bar with hairline */}
+            <div className="relative shrink-0">
+              <div className={cn("h-[3px] w-full bg-gradient-to-r", pillarMeta.gradient)} />
+              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+            </div>
 
             {/* Hero image */}
             <div className="relative aspect-[4/3] overflow-hidden bg-background/50">
               <img
                 src={heroImage}
                 alt={item.title}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover/card:scale-[1.04]"
                 loading="lazy"
                 width={768}
                 height={576}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
-              <div className={cn("absolute inset-0 bg-gradient-to-t opacity-25 mix-blend-overlay", pillarMeta.gradient)} />
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+              <div className={cn("absolute inset-0 bg-gradient-to-t opacity-20 mix-blend-overlay", pillarMeta.gradient)} />
 
-              {/* Kind chip — top right */}
-              <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/70 backdrop-blur-md border border-border/30">
+              {/* Kind chip — top right (frosted, enterprise) */}
+              <div className="absolute top-3 right-3 flex items-center gap-1.5 pl-2 pr-2.5 py-1 rounded-full bg-white/85 backdrop-blur-md border border-white/60 shadow-sm">
                 {isSuite ? (
-                  <Sparkles className="w-3 h-3 text-black" />
+                  <Sparkles className="w-3 h-3 text-foreground" strokeWidth={2.5} />
                 ) : (
-                  <Cpu className="w-3 h-3 text-black" />
+                  <Cpu className="w-3 h-3 text-foreground" strokeWidth={2.5} />
                 )}
-                <span className="text-[8px] font-black tracking-[0.15em] text-black">
+                <span className="text-[8px] font-black tracking-[0.18em] text-foreground">
                   LAYER
                 </span>
               </div>
 
-              {/* Tier badge — top left */}
+              {/* Tier badge — top left (metallic feel) */}
               <div
                 className={cn(
-                  "absolute top-3 left-3 px-3 py-1 rounded-full text-[9px] font-black tracking-wider border backdrop-blur-sm",
+                  "absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-black tracking-[0.15em] border backdrop-blur-md shadow-sm",
                   tier.bg, tier.color, tier.border
                 )}
               >
@@ -136,28 +140,28 @@ export function LayerCard({ item }: LayerCardProps) {
             </div>
 
             {/* Body */}
-            <div className="relative z-10 px-5 sm:px-6 pb-5 sm:pb-6 -mt-8 flex-1 flex flex-col">
-              <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight leading-tight">
+            <div className="relative z-10 px-5 sm:px-6 pb-5 sm:pb-6 -mt-10 flex-1 flex flex-col">
+              <h3 className="text-xl sm:text-[1.375rem] font-black text-foreground tracking-[-0.01em] leading-[1.1]">
                 {item.title}
               </h3>
               {item.subtitle && (
-                <p className="text-[10px] font-mono tracking-wider text-foreground/75 dark:text-foreground/60 mt-1.5 uppercase line-clamp-2">
+                <p className="text-[10px] font-mono tracking-[0.15em] text-foreground/70 dark:text-foreground/55 mt-1.5 uppercase line-clamp-2">
                   {item.subtitle}
                 </p>
               )}
 
               {/* Description — what this Layer does for your software */}
               {item.description && (
-                <p className="text-[12px] sm:text-[13px] text-foreground/85 dark:text-foreground/75 leading-relaxed mt-3">
+                <p className="text-[12px] sm:text-[13px] text-foreground/80 dark:text-foreground/70 leading-relaxed mt-3 line-clamp-3">
                   {item.description}
                 </p>
               )}
 
               {/* Capability count + chips */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/20">
+              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
                 <div className="flex items-center gap-1.5">
-                  <PillarIcon className="w-3.5 h-3.5 text-primary/50" />
-                  <span className="text-[10px] font-mono tabular-nums text-muted-foreground/60 tracking-wider">
+                  <PillarIcon className="w-3.5 h-3.5 text-primary/60" />
+                  <span className="text-[10px] font-mono font-bold tabular-nums text-muted-foreground/70 tracking-[0.1em]">
                     {capabilities.length} {isSuite ? "CAPS" : "PRIMS"}
                   </span>
                 </div>
@@ -166,13 +170,13 @@ export function LayerCard({ item }: LayerCardProps) {
                     {capabilities.slice(0, 3).map((cap) => (
                       <span
                         key={cap}
-                        className="text-[7px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-foreground/5 text-muted-foreground/50 border border-border/15"
+                        className="text-[7px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-foreground/[0.04] text-muted-foreground/70 border border-border/30"
                       >
                         {cap}
                       </span>
                     ))}
                     {capabilities.length > 3 && (
-                      <span className="text-[7px] font-mono text-muted-foreground/30">
+                      <span className="text-[7px] font-mono font-bold text-muted-foreground/50 self-center">
                         +{capabilities.length - 3}
                       </span>
                     )}
@@ -181,14 +185,14 @@ export function LayerCard({ item }: LayerCardProps) {
               </div>
 
               {/* Price + Inspect */}
-              <div className="flex items-center justify-between mt-auto pt-3">
+              <div className="flex items-center justify-between mt-auto pt-4">
                 <div className="flex items-baseline gap-1.5">
-                  <span className={cn("text-base sm:text-lg font-black tracking-tight", tier.color)}>
+                  <span className={cn("text-xl sm:text-[1.375rem] font-black tracking-[-0.02em]", tier.color)}>
                     {formatPrice(item.price_cents)}
                   </span>
-                  <span className="text-[10px] font-bold text-muted-foreground/50 tracking-wider">/yr</span>
+                  <span className="text-[10px] font-bold text-muted-foreground/60 tracking-wider">/yr</span>
                   {item.original_value_cents && item.original_value_cents > item.price_cents && (
-                    <span className="text-[10px] text-muted-foreground/40 line-through ml-1">
+                    <span className="text-[10px] text-muted-foreground/40 line-through ml-1 tabular-nums">
                       {formatPrice(item.original_value_cents)}
                     </span>
                   )}
@@ -196,12 +200,13 @@ export function LayerCard({ item }: LayerCardProps) {
                 <button
                   onClick={(e) => { e.stopPropagation(); setFlipped(true); }}
                   className={cn(
-                    "text-[10px] font-bold text-primary/60 hover:text-primary",
-                    "transition-all px-3 py-2 rounded-xl hover:bg-primary/10",
+                    "text-[10px] font-black text-foreground/70 hover:text-foreground",
+                    "transition-all px-3 py-2 rounded-lg",
+                    "border border-border/40 hover:border-foreground/30 bg-background/40 hover:bg-background/80",
                     "flex items-center gap-1.5 min-h-[40px]"
                   )}
                 >
-                  <span className="tracking-wider">INSPECT</span>
+                  <span className="tracking-[0.15em]">INSPECT</span>
                   <RotateCcw className="w-3 h-3" />
                 </button>
               </div>
