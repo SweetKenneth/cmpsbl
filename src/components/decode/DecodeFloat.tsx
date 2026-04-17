@@ -33,10 +33,10 @@ const SESSION_STORAGE_KEY = 'decode_float_messages';
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode-chat`;
 
 const MODE_GREETINGS: Record<DecodeMode, string> = {
-  assistant: "Hey! 👋 I'm **DECODE** — your guide to the CMPSBL® substrate.\n\nAsk me about **Memory Stream** discoveries, **Ascension** refurbishments, the **Catalog**, or how to get started. I'm here to help! ✨",
-  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nTell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
-  builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with **Catalog** browsing, **Ascension** submissions, diagnostics, and Memory Stream monitoring. What are we working on?",
-  governor: "**DECODE** online — **governor mode** active 👑\n\nFull substrate telemetry and governance controls are live. All **40 primitives** across **4 categories** reporting.\n\nUse slash commands like `/health`, `/caps`, `/govern` for live data — or just talk to me. What do you need, Governor?",
+  assistant: "Hey! 👋 I'm **DECODE** — your guide to the **CMPSBL®** substrate.\n\nAsk me about the **Memory Stream** (autonomous 8-hour discovery), **Ascension** (code restoration via the 40 Primitives), **Mana** (silent Layer 2 attachment), **Shield** (LLM prompt defense), the **Marketplace** / **Showroom** / **Junkyard**, **Crown Jewels**, or any of the 13 `@cmpsbl/*` NPM packages. ✨",
+  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nI can help with accounts, billing, tier upgrades (**Builder $0** → **Studio $29** → **Creator $49** → **Architect $79**), Pipeline Pack activation, vault limits, **Ascension** runs, **Mana** CLI install, and **NEXUS** routing.\n\nIf I can't sort it, I'll escalate you to a human at **support@cmpsbl.com**.",
+  builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with **Memory Stream** crystallizations, **Pipeline Pack** swaps, **Ascension** submissions, **Mana** Layer 2 deployment, **Shield** governance, fingerprint verification, and Crown Jewel selection. What are we building?",
+  governor: "**DECODE** online — **governor mode** active 👑\n\nFull substrate telemetry live. All **40 primitives** across **4 categories** reporting — 12 Organs · 12 Layers · 8 Engines · 8 Agents.\n\nUse `/health`, `/caps`, `/govern`, `/comms`, `/nexus`, `/budget`, `/audit` for live data — or just talk to me. What do you need, Governor?",
 };
 
 function persistMessagesToSession(msgs: Message[]) {
@@ -187,10 +187,12 @@ function useSmartPosition(orbRef: React.RefObject<HTMLButtonElement | null>, cha
 // ─── Quick Actions by Mode ──────────────────────────────────────
 function getQuickActions(mode: DecodeMode) {
   if (mode === 'support') return [
-    { icon: "❓", title: "Getting Started", prompt: "How do I get started with CMPSBL? Walk me through the basics." },
-    { icon: "🔧", title: "Troubleshoot", prompt: "I'm having an issue and need help troubleshooting." },
-    { icon: "💰", title: "Plans & Pricing", prompt: "Explain the CMPSBL subscription tiers and what each includes." },
-    { icon: "👤", title: "Talk to a Human", prompt: "I'd like to escalate this to a human support agent." },
+    { icon: "❓", title: "Getting Started", prompt: "How do I get started with CMPSBL? Walk me through the Memory Stream, Pipeline Packs, and the Builder free tier." },
+    { icon: "🔧", title: "Troubleshoot", prompt: "I'm having an issue with my account, an Ascension run, or a Pipeline Pack — help me troubleshoot." },
+    { icon: "💰", title: "Plans & Pricing", prompt: "Explain the Builder, Studio, Creator, and Architect tiers — pulls per day, vault size, slots, and what each unlocks." },
+    { icon: "📦", title: "NPM Packages", prompt: "Show me the @cmpsbl NPM packages — sdk, mana, shield, cli, react — what each one does and how to install." },
+    { icon: "🛡️", title: "Mana & Shield", prompt: "Explain Mana (silent Layer 2 attachment) and Shield (LLM prompt defense). When do I use each?" },
+    { icon: "👤", title: "Talk to a Human", prompt: "I'd like to escalate this to a human support agent at support@cmpsbl.com." },
   ];
   if (mode === 'governor') return [
     { icon: "📡", title: "Primitive Health", prompt: "/health" },
@@ -203,10 +205,12 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "❓", title: "Gov Help", prompt: "/gov-help" },
   ];
   return [
-    { icon: "🔍", title: "Ascension Lookup", prompt: "I have a fingerprint ID from an Ascension run. Can you verify it?" },
-    { icon: "💡", title: "Remember a Fact", prompt: "I want to teach you something about me. Remember this fact:" },
-    { icon: "🧠", title: "What Do You Know?", prompt: "What do you know about me? Show me everything you've learned." },
-    { icon: "🚀", title: "Getting Started", prompt: "How do I start using the substrate? Walk me through the key features." },
+    { icon: "🔍", title: "Ascension Lookup", prompt: "I have a fingerprint ID from an Ascension run. Can you verify it against the Ascension Center, CLI, and Vertical records?" },
+    { icon: "🌊", title: "Memory Stream", prompt: "Show me what the Memory Stream is doing right now — recent crystallizations, CJPI scores, and Crown Jewel candidates." },
+    { icon: "🛒", title: "Marketplace & Showroom", prompt: "What's in the Marketplace and Showroom right now? Composable Cognitives, Pipeline Packs, and Sealed Engines." },
+    { icon: "📦", title: "@cmpsbl Packages", prompt: "List the @cmpsbl NPM packages and what each one does — sdk, mana, shield, runtime, cli, react." },
+    { icon: "🚀", title: "Getting Started", prompt: "How do I start using the substrate? Walk me through the Builder free tier, Pipeline Packs, and my first Memory Stream pull." },
+    { icon: "🧠", title: "What Do You Know?", prompt: "What do you know about me? Show me everything you've learned across our sessions." },
   ];
 }
 
