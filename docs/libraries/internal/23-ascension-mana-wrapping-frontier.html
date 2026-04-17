@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Ascension / Mana — The Wrapping & Governance Frontier</title>
+<style>
+  :root {
+    --bg: hsl(0 0% 100%);
+    --fg: hsl(220 15% 15%);
+    --muted-fg: hsl(220 10% 35%);
+    --card: hsl(0 0% 100%);
+    --border: hsl(220 10% 85%);
+    --muted: hsl(220 10% 96%);
+    --primary: hsl(210 60% 45%);
+    --primary-variant: hsl(200 50% 40%);
+    --accent: hsl(45 90% 50%);
+    --accent-fg: hsl(220 15% 10%);
+    --system-green: hsl(145 65% 42%);
+    --system-amber: hsl(38 92% 50%);
+    --destructive: hsl(0 70% 50%);
+    --radius: 0.5rem;
+    --shadow-elegant: 0 4px 20px -4px hsl(220 15% 15% / 0.12);
+    --gradient-primary: linear-gradient(135deg, hsl(210 60% 45%), hsl(200 50% 40%));
+    --gradient-mesh:
+      radial-gradient(at 0% 0%, hsl(210 60% 45% / 0.06) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsl(200 50% 40% / 0.06) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsl(145 65% 42% / 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(38 92% 50% / 0.05) 0px, transparent 50%);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image: var(--gradient-mesh);
+    background-attachment: fixed;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+  header.hero {
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-elegant);
+  }
+  header.hero .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.18);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+  header.hero h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  header.hero p {
+    margin: 0;
+    opacity: 0.92;
+    font-size: 1rem;
+  }
+  nav.toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-elegant);
+  }
+  nav.toc h2 {
+    margin: 0 0 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-fg);
+  }
+  nav.toc ol {
+    margin: 0;
+    padding-left: 1.25rem;
+    columns: 2;
+    column-gap: 1.5rem;
+    font-size: 0.92rem;
+  }
+  nav.toc li { break-inside: avoid; margin: 0.2rem 0; }
+  nav.toc a { color: var(--primary); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  @media (max-width: 560px) { nav.toc ol { columns: 1; } }
+
+  section.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-elegant);
+  }
+  section.card h2 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.15rem, 3.5vw, 1.4rem);
+    line-height: 1.3;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+  section.card h2 .num {
+    display: inline-block;
+    color: var(--primary);
+    font-weight: 700;
+    margin-right: 0.4rem;
+  }
+  section.card h3 {
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+    color: var(--primary-variant);
+  }
+  p, li { color: var(--fg); }
+  p { margin: 0.5rem 0 0.85rem; }
+  ul, ol { padding-left: 1.25rem; margin: 0.5rem 0 0.85rem; }
+  li { margin: 0.3rem 0; }
+  strong { color: var(--accent-fg); }
+  code {
+    background: var(--muted);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.88em;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    overflow-wrap: break-word;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0.75rem 0 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 480px;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.7rem 0.85rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--muted);
+    font-weight: 600;
+    color: var(--fg);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: hsl(45 90% 50% / 0.08);
+    padding: 0.85rem 1rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  .callout.warn {
+    border-left-color: var(--destructive);
+    background: hsl(0 70% 50% / 0.06);
+  }
+  .callout.ok {
+    border-left-color: var(--system-green);
+    background: hsl(145 65% 42% / 0.07);
+  }
+  .pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--muted);
+    color: var(--muted-fg);
+    margin-right: 0.3rem;
+    letter-spacing: 0.03em;
+  }
+  .pill.live { background: hsl(145 65% 42% / 0.15); color: hsl(145 65% 25%); }
+  .pill.next { background: hsl(210 60% 45% / 0.12); color: hsl(210 60% 35%); }
+  .pill.future { background: hsl(45 90% 50% / 0.18); color: hsl(35 80% 30%); }
+  footer {
+    text-align: center;
+    color: var(--muted-fg);
+    font-size: 0.82rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  a { color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="badge">🔒 Governor Eyes Only · Internal Library #23</div>
+    <h1>Ascension / Mana — The Wrapping & Governance Frontier</h1>
+    <p>Where the substrate's wrapping power stands today, what it can reach, and the honest path to its ceiling.</p>
+  </header>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">Where it stands today</a></li>
+      <li><a href="#s2">The wrapping spectrum</a></li>
+      <li><a href="#s3">Discovering wrap points from outside</a></li>
+      <li><a href="#s4">Control by software type</a></li>
+      <li><a href="#s5">Access points required</a></li>
+      <li><a href="#s6">Capability ladder (today)</a></li>
+      <li><a href="#s7">Capabilities we could add</a></li>
+      <li><a href="#s8">Markets it can reach</a></li>
+      <li><a href="#s9">Hard limits & ways through</a></li>
+      <li><a href="#s10">Is it dangerous?</a></li>
+      <li><a href="#s11">The path to peak</a></li>
+      <li><a href="#s12">Out of scope (intentionally)</a></li>
+    </ol>
+  </nav>
+
+  <section class="card" id="s1">
+    <h2><span class="num">1.</span> Where Ascension + Mana stand today</h2>
+    <p><strong>Ascension</strong> (U.S. App. No. 64/029,678) discovers the <em>shape</em> of code — function boundaries, contracts, side effects, capability surface — and produces a deterministic manifest + fingerprint.</p>
+    <p><strong>Mana</strong> (U.S. App. No. 64/031,637) is the Layer 2 runtime. It wraps host functions at their boundaries (no source modification required) and routes every call through <strong>Lex</strong> — the conscience layer that allows, denies, or transforms based on rules.</p>
+    <p><strong>Convergence:</strong> Ascension's manifest feeds Mana's loader. The result is <em>governed execution</em> of code Mana didn't write.</p>
+    <h3>Live in production today</h3>
+    <ul>
+      <li><span class="pill live">live</span> Function-boundary attachment (pre / around / post)</li>
+      <li><span class="pill live">live</span> Capability contracts + Lex priority-ordered rule evaluation</li>
+      <li><span class="pill live">live</span> Safe detach with in-flight call tracking</li>
+      <li><span class="pill live">live</span> Deterministic proof + telemetry per invocation</li>
+      <li><span class="pill live">live</span> Multi-package composition via manifest consumer</li>
+      <li><span class="pill live">live</span> Session-scoped engines (no cross-module state poisoning)</li>
+    </ul>
+  </section>
+
+  <section class="card" id="s2">
+    <h2><span class="num">2.</span> The wrapping spectrum — what "wrap" actually means</h2>
+    <p>Wrapping is a ladder. Each rung gives more control and costs more access.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Rung</th><th>What we observe / control</th><th>Access required</th></tr></thead>
+        <tbody>
+          <tr><td>0. Black-box network</td><td>I/O at the HTTP boundary</td><td>Just a URL</td></tr>
+          <tr><td>1. Surface fingerprint</td><td>Stack, framework, auth flow</td><td>Public web</td></tr>
+          <tr><td>2. SDK / API wrap</td><td>Every call through vendor SDK</td><td>Package installed in our perimeter</td></tr>
+          <tr><td><strong>3. Function-boundary (Mana today)</strong></td><td>Every call, args, return, timing</td><td>Source or installed package</td></tr>
+          <tr><td>4. Module-graph wrap</td><td>Imports, side effects, dynamic loads</td><td>Build-time or loader hook</td></tr>
+          <tr><td>5. Process wrap</td><td>Syscalls, file I/O, network, env</td><td>OS-level agent / sidecar</td></tr>
+          <tr><td>6. Kernel / hypervisor</td><td>Memory, scheduling, hardware</td><td>Kernel module / VM host</td></tr>
+          <tr><td>7. Hardware</td><td>Bus traffic, DMA, firmware</td><td>Physical / firmware control</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout ok"><strong>Today:</strong> Mana lives at rung 3 with reach into rung 4. Rungs 5–7 share the same architecture; only the injection point changes.</div>
+  </section>
+
+  <section class="card" id="s3">
+    <h2><span class="num">3.</span> Discovering wrap points from the outside</h2>
+    <p>Realistic surface-discovery tactics, ordered from passive to noisy:</p>
+    <h3>Fully passive — no permission needed</h3>
+    <ul>
+      <li>HTTP headers (<code>Server</code>, <code>X-Powered-By</code>, CSP, cookies)</li>
+      <li>HTML fingerprints (script paths, CSS conventions, favicon hash)</li>
+      <li>JS bundle inspection (webpack chunks, source maps, library globals)</li>
+      <li>Network waterfall (CDN patterns, third-party SDKs, telemetry endpoints)</li>
+      <li>DNS, TLS cert SANs, ASN ownership</li>
+      <li><code>robots.txt</code>, <code>sitemap.xml</code>, <code>.well-known/</code></li>
+    </ul>
+    <h3>Active but standard (rate-limited, polite)</h3>
+    <ul>
+      <li>OpenAPI / GraphQL introspection probes</li>
+      <li>Auth flow walking (OAuth discovery, SAML metadata)</li>
+      <li>Error-message fingerprinting (forced 404/500 leaks frameworks)</li>
+      <li>WebSocket handshake inspection</li>
+      <li>Service worker + PWA manifest enumeration</li>
+    </ul>
+    <h3>Active and noisy — only with consent</h3>
+    <ul>
+      <li>Endpoint fuzzing</li>
+      <li>Auth boundary probing</li>
+      <li>Header injection / parameter pollution</li>
+    </ul>
+    <div class="callout warn"><strong>Honest limit:</strong> without code or runtime access, we describe the target — we don't govern it. Discovery without injection is reconnaissance, not control.</div>
+  </section>
+
+  <section class="card" id="s4">
+    <h2><span class="num">4.</span> What we can actually control by software type</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Software type</th><th>Mana can</th><th>Mana can't (without escalation)</th></tr></thead>
+        <tbody>
+          <tr><td>Node / Deno / browser JS</td><td>Full function wrap, module graph, async tracing</td><td>Native addons, V8 internals</td></tr>
+          <tr><td>Python</td><td>Decorator / import-hook wrap</td><td>C extensions, GIL internals</td></tr>
+          <tr><td>Java / JVM</td><td>Bytecode instrumentation (Java agent)</td><td>Native JNI without JVMTI</td></tr>
+          <tr><td>.NET</td><td>Profiler API + IL rewriting</td><td>Unmanaged code</td></tr>
+          <tr><td>Go</td><td>Build-time wrap or eBPF</td><td>Compiled binary internals without rebuild</td></tr>
+          <tr><td>Rust / C / C++</td><td>Link-time shim, LD_PRELOAD, eBPF</td><td>Inlined / optimized-away calls</td></tr>
+          <tr><td>Mobile (iOS/Android)</td><td>Method swizzling, Xposed-style hooks</td><td>App Store sandbox without root/jailbreak</td></tr>
+          <tr><td>Desktop</td><td>DLL injection, accessibility APIs, Frida</td><td>Hardened anti-tamper (DRM, games)</td></tr>
+          <tr><td>SaaS APIs</td><td>Wrap the SDK or proxy the network</td><td>Their server-side logic</td></tr>
+          <tr><td>Embedded / firmware</td><td>JTAG, firmware patch, RTOS shim</td><td>OTP-fused ROM</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The pattern: every runtime has a boundary where calls are dispatched. Mana attaches there. The harder the boundary to reach, the more invasive the agent.</p>
+  </section>
+
+  <section class="card" id="s5">
+    <h2><span class="num">5.</span> Access points required, ranked by cost</h2>
+    <p>To go from "we describe it" to "we govern it" you need <em>one</em> of these per target:</p>
+    <ol>
+      <li><strong>Package install</strong> — easiest. <code>npm install @cmpsbl/mana</code> or equivalent.</li>
+      <li><strong>Build-step injection</strong> — webpack / vite / esbuild plugin, Babel / SWC transform.</li>
+      <li><strong>Runtime loader hook</strong> — Node <code>--require</code>, Python <code>sitecustomize</code>, Java <code>-javaagent</code>.</li>
+      <li><strong>Sidecar process</strong> — proxy in front of network or IPC.</li>
+      <li><strong>OS agent</strong> — eBPF (Linux), ETW (Windows), EndpointSecurity (macOS).</li>
+      <li><strong>Kernel / hypervisor</strong> — full system observability, full liability.</li>
+      <li><strong>Hardware tap</strong> — bus analyzer, firmware shim, custom silicon.</li>
+    </ol>
+    <div class="callout">Each rung up is roughly <strong>10× the engineering cost and 10× the trust the deployer must extend.</strong></div>
+  </section>
+
+  <section class="card" id="s6">
+    <h2><span class="num">6.</span> Capability ladder — most to least powerful (today)</h2>
+    <p>Ranked by leverage per rule installed.</p>
+    <ol>
+      <li><strong>Outcome arbitration</strong> — Lex can substitute return values, redact, transform, replay. Highest-leverage primitive in the system.</li>
+      <li><strong>Capability quarantine</strong> — suspend an entire capability class (e.g. <code>network.egress.*</code>) with one rule.</li>
+      <li><strong>Cross-call correlation</strong> — enforce invariants across a chain (<code>auth → fetch → write</code>).</li>
+      <li><strong>Deterministic replay</strong> — every call has a proof; sessions replay identically for audit or training.</li>
+      <li><strong>Adaptive policy</strong> — Lex rules driven by telemetry; auto-tighten on anomaly score.</li>
+      <li><strong>Shadow execution</strong> — run host call + candidate alternative, compare, promote winner (TSAC pattern).</li>
+      <li><strong>Capability composition</strong> — stack contracts; functions inherit the union.</li>
+      <li><strong>Time-boxed grants</strong> — TTL rules; auto-revoke without human cleanup.</li>
+      <li><strong>Per-tenant policy</strong> — same wrapped function, different rules per caller identity.</li>
+      <li><strong>Telemetry-only mode</strong> — no enforcement, just observation. The entry drug for skeptical adopters.</li>
+      <li><strong>Lex extended predicates</strong> — custom JS predicates per rule (already shipped).</li>
+      <li><strong>Safe detach with quiescence</strong> — remove governance without dropping in-flight work.</li>
+      <li><strong>Manifest-driven auto-deploy</strong> — Ascension produces rules; Mana applies them.</li>
+      <li><strong>Proof export</strong> — cryptographic receipt the host <em>was</em> governed. Sellable as a compliance artifact alone.</li>
+      <li><strong>Trace-time explainability</strong> — every deny cites its rule. No black-box refusals.</li>
+    </ol>
+  </section>
+
+  <section class="card" id="s7">
+    <h2><span class="num">7.</span> Capabilities we could add, ranked by ceiling-raise</h2>
+    <ol>
+      <li><span class="pill future">future</span> <strong>Kernel / eBPF probe pack</strong> — Mana below userspace. Unlocks defense, observability, sovereign cloud.</li>
+      <li><span class="pill future">future</span> <strong>Hypervisor shim</strong> — VM-level wrap. Unlocks data-center compliance, military-grade isolation.</li>
+      <li><span class="pill next">next</span> <strong>JVM + .NET + Python agent matrix</strong> — triples addressable codebase.</li>
+      <li><span class="pill future">future</span> <strong>Differential proof attestation</strong> — TPM / secure-enclave-signed proofs. Required for FedRAMP-High, IL5+.</li>
+      <li><span class="pill future">future</span> <strong>Federated Lex</strong> — multi-org rule sharing without revealing rule bodies (zero-knowledge predicates).</li>
+      <li><span class="pill next">next</span> <strong>AI-driven rule synthesis</strong> — Ascension findings → proposed Lex rules, human-in-the-loop.</li>
+      <li><span class="pill future">future</span> <strong>Counterfactual replay</strong> — "what if this rule had been active last quarter?" on archived proofs.</li>
+      <li><span class="pill future">future</span> <strong>Hardware root-of-trust binding</strong> — Mana refuses to start unless host attestation matches.</li>
+      <li><span class="pill future">future</span> <strong>Cross-process capability ledger</strong> — single source of truth for fleet-wide governance.</li>
+      <li><span class="pill next">next</span> <strong>Pluggable wrap backends</strong> — same Lex rules, different injection chosen per deployment.</li>
+    </ol>
+  </section>
+
+  <section class="card" id="s8">
+    <h2><span class="num">8.</span> Markets this can credibly reach</h2>
+    <ul>
+      <li><strong>Today, with current code:</strong> SaaS vendors wanting governed SDKs, regulated fintech wrapping internal services, AI agent platforms wanting deterministic tool-call governance.</li>
+      <li><strong>With JVM + .NET agents:</strong> enterprise IT — every Fortune 500 has a wrap-our-vendors problem.</li>
+      <li><strong>With kernel/eBPF + attestation:</strong> defense primes, intelligence labs, sovereign cloud, critical infrastructure. <em>This is the "could you sell to the military" path.</em> Realistic — requires FedRAMP, FIPS, supply-chain attestation, cleared partner.</li>
+      <li><strong>With hardware root-of-trust:</strong> weapon systems, satellite, anything where "did the right code run?" is a life-safety question.</li>
+    </ul>
+    <div class="callout ok">The substrate's structure — deterministic, proof-emitting, governance-first — maps almost exactly to NIST 800-53, CMMC L3+, IL5. The gap is paperwork and lab time, not architecture.</div>
+  </section>
+
+  <section class="card" id="s9">
+    <h2><span class="num">9.</span> Hard limits and how to push through them</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Limit</th><th>Why it's hard</th><th>Way through</th></tr></thead>
+        <tbody>
+          <tr><td>Closed-source binaries with anti-tamper</td><td>Hooking is detected and refused</td><td>Vendor coordination, or kernel-level wrap invisible to userspace checks</td></tr>
+          <tr><td>Sandboxed mobile apps</td><td>OS forbids injection</td><td>Vendor-side SDK install, or operate at network proxy</td></tr>
+          <tr><td>GPU / accelerator workloads</td><td>Calls bypass CPU-side hooks</td><td>CUDA / ROCm interceptors, driver shim</td></tr>
+          <tr><td>Realtime / safety-critical</td><td>Wrap latency unacceptable</td><td>Compile-time wrap with proven worst-case latency, formal verification</td></tr>
+          <tr><td>Air-gapped systems</td><td>No phone-home telemetry</td><td>Offline proof bundles via sneakernet (already modeled)</td></tr>
+          <tr><td>Encrypted vendor APIs</td><td>Can't see payload at proxy</td><td>Wrap at SDK call site before encryption</td></tr>
+          <tr><td>Legal / consent</td><td>Wrapping software you don't own = liability</td><td>Opt-in install, signed deployment manifest, audit trail</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" id="s10">
+    <h2><span class="num">10.</span> Is it dangerous?</h2>
+    <p>Yes, if mis-aimed. Honest assessment:</p>
+    <ul>
+      <li>The same primitive that lets us <em>enforce</em> a deny rule lets someone <em>substitute</em> a return value. In the wrong hands that's a supply-chain attack tool.</li>
+      <li>Proof emission is a defense — every action is attributable. But the rules themselves are powerful: <strong>whoever writes Lex rules controls behavior.</strong></li>
+      <li>Mitigations already in the architecture: signed manifests, Governor-only rule registry, proof chain, registry bridge with explicit enforcement.</li>
+      <li>The danger isn't theoretical — it's the same danger eBPF, JVMTI, and Frida pose. We're in good company; we need the same operational discipline.</li>
+    </ul>
+    <div class="callout warn"><strong>Rule of thumb:</strong> don't ship kernel/hypervisor capabilities until the rule-authoring chain is hardware-attested and multi-party-signed. The architecture supports it today; we just haven't lit it up.</div>
+  </section>
+
+  <section class="card" id="s11">
+    <h2><span class="num">11.</span> The path to peak</h2>
+    <p>If you decided to push this to its ceiling, the order is:</p>
+    <ol>
+      <li><strong>Lock the rule supply chain</strong> — signed Lex bundles, multi-party approval for high-impact capabilities.</li>
+      <li><strong>Ship JVM + Python + .NET agents</strong> — most ROI per engineer-month.</li>
+      <li><strong>Add eBPF + ETW probes</strong> — same Lex, kernel reach.</li>
+      <li><strong>Wire TPM / secure-enclave attestation</strong> — required for high-trust markets.</li>
+      <li><strong>Build the federated rule exchange</strong> — regulators publish rules; regulated parties subscribe.</li>
+      <li><strong>Pursue FedRAMP Moderate, then FIPS 140-3</strong> — paperwork, ~12–18 months, opens the doors.</li>
+      <li><strong>Co-develop with one defense lab</strong> — bespoke wrap targets validate the rest.</li>
+    </ol>
+    <div class="callout ok"><strong>Realistic ceiling:</strong> a sovereign-grade, attested governance substrate for any code, anywhere, with cryptographic proof of behavior. A category-defining product.</div>
+  </section>
+
+  <section class="card" id="s12">
+    <h2><span class="num">12.</span> Out of scope (intentionally)</h2>
+    <ul>
+      <li>Wrapping software without consent of the deployer.</li>
+      <li>Hidden / undetectable governance — every Mana attachment is observable; we keep it that way.</li>
+      <li>AI inside Lex rule evaluation — Lex stays deterministic. AI can <em>propose</em> rules; it does not <em>decide</em> outcomes at runtime.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Bottom line</h2>
+    <p>Today we govern function boundaries with deterministic proof. The architecture is straight-line extendable to syscall, kernel, and hardware reach. The ceiling is genuinely defense- and lab-grade if we want to climb. The danger is real and already mitigated structurally; the remaining work is operational discipline and certification paperwork.</p>
+  </section>
+
+  <footer>© 2025–2026 CMPSBL® · PromptFluid™ · Internal Library #23 · Governor Eyes Only</footer>
+</div>
+</body>
+</html>
