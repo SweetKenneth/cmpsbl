@@ -174,7 +174,9 @@ export function V2UploadStep({ onComplete }: Props) {
     <div className="space-y-4 sm:space-y-6">
       <div className="text-center">
         <h2 className="text-base sm:text-lg font-semibold text-foreground">Upload Your Code</h2>
-        <p className="text-muted-foreground text-xs sm:text-sm mt-1">Drop source files or paste code. 90+ languages supported.</p>
+        <p className="text-muted-foreground text-xs sm:text-sm mt-1">
+          Drop source files or paste code. <span className="text-foreground font-medium">9 languages shipping today</span> · others coming soon.
+        </p>
       </div>
 
       {/* Mode toggle */}
