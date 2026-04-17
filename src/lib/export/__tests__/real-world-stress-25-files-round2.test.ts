@@ -1,25 +1,20 @@
 /**
- * Real-World 25-File Ascension Stress Test (Wave 1 languages)
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Loads 25 actual OSS source files spanning Java, C#, Swift, Kotlin
- * (Guava, Spring, Gson, .NET runtime, Newtonsoft, Alamofire, NIO,
- * SwiftyJSON, Kingfisher, ktor, kotlinx, Compose, etc.) from the
- * sandbox corpus at /tmp/stress-corpus and runs them through:
+ * Real-World 25-File Ascension Stress Test — ROUND 2 (Wave 1 languages)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * A second, fully disjoint 25-file corpus across Java, C#, Swift, Kotlin.
+ * Sourced from production OSS that the round-1 corpus did NOT touch:
  *
- *   1. emit{Java|Csharp|Swift|Kotlin}CmpsblFile with 5 stacked layer
- *      profiles per file (minimal → maximal) — exercising every phase.
- *   2. blackboxFile sealing for the same language.
+ *   Java:   Apache Commons-Lang, JUnit 5, Mockito, Netty, RxJava,
+ *           Project Lombok, Caffeine
+ *   C#:     ASP.NET Core, EF Core, Roslyn, Polly, Serilog, MediatR
+ *   Swift:  Vapor, swift-nio-http2, swift-collections, swift-algorithms,
+ *           swift-log, RxSwift
+ *   Kotlin: kotlinx.serialization, kotlinx-datetime, MockK, Arrow,
+ *           kotlinx.coroutines (×2)
  *
- * Asserts for every file × profile:
- *   - Layer 1 source survives byte-perfect (no obfuscation leak).
- *   - The selected layer banners appear in phase order.
- *   - Brace/paren/bracket totals balance after sealing.
- *   - Sidecar scrub + clone helpers always present.
- *   - Integrity hash seal appended.
- *
- * Layer 1 is encoded as the file's full source pasted into the
- * userLayer1 slot of the chain-executor template — proving real-world
- * code passes through without mutating the customer's bytes.
+ * Same five stacked layer profiles as round 1 (minimal → maximal) and the
+ * same indent-aware byte-perfect verifier — proves the chain executor and
+ * blackbox engine generalize beyond the round-1 corpus.
  */
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
@@ -47,7 +42,7 @@ const PROFILES: Array<{ name: string; ids: string[] }> = [
   ] },
 ];
 
-const CORPUS_ROOT = '/tmp/stress-corpus';
+const CORPUS_ROOT = '/tmp/stress-corpus-2';
 const LANGS = ['java', 'csharp', 'swift', 'kotlin'] as const;
 type Lang = typeof LANGS[number];
 
@@ -67,7 +62,6 @@ function loadCorpus(): CorpusFile[] {
       } catch { /* skip */ }
     }
   }
-  // Keep first 25 files deterministically (ordered by lang then name)
   return out.slice(0, 25);
 }
 
@@ -77,14 +71,13 @@ const CORPUS = loadCorpus();
 function balance(src: string, lang: Lang): { ok: boolean; reason?: string } {
   let braces = 0, parens = 0, brackets = 0;
   let inStr = false, inChar = false, inLine = false, inBlock = false;
-  let strDelim = '"';
   for (let i = 0; i < src.length; i++) {
     const ch = src[i], nx = src[i + 1];
     if (inLine) { if (ch === '\n') inLine = false; continue; }
     if (inBlock) { if (ch === '*' && nx === '/') { inBlock = false; i++; } continue; }
     if (inStr) {
       if (ch === '\\') { i++; continue; }
-      if (ch === strDelim) inStr = false;
+      if (ch === '"') inStr = false;
       continue;
     }
     if (inChar) {
@@ -94,7 +87,7 @@ function balance(src: string, lang: Lang): { ok: boolean; reason?: string } {
     }
     if (ch === '/' && nx === '/') { inLine = true; i++; continue; }
     if (ch === '/' && nx === '*') { inBlock = true; i++; continue; }
-    if (ch === '"') { inStr = true; strDelim = '"'; continue; }
+    if (ch === '"') { inStr = true; continue; }
     if ((lang === 'java' || lang === 'csharp' || lang === 'kotlin') && ch === "'") { inChar = true; continue; }
     if (ch === '{') braces++;
     else if (ch === '}') braces--;
@@ -122,10 +115,10 @@ function wrapAsLayer1Comment(src: string, lang: Lang): string {
 
 function emitFor(lang: Lang, ids: string[], userBody: string): string {
   switch (lang) {
-    case 'java':   return emitJavaCmpsblFile('com.cmpsbl.stress', ids, userBody);
-    case 'csharp': return emitCsharpCmpsblFile('Cmpsbl.Stress', ids, userBody);
-    case 'swift':  return emitSwiftCmpsblFile('CmpsblStress', ids, userBody);
-    case 'kotlin': return emitKotlinCmpsblFile('com.cmpsbl.stress', ids, userBody);
+    case 'java':   return emitJavaCmpsblFile('com.cmpsbl.stress2', ids, userBody);
+    case 'csharp': return emitCsharpCmpsblFile('Cmpsbl.Stress2', ids, userBody);
+    case 'swift':  return emitSwiftCmpsblFile('CmpsblStress2', ids, userBody);
+    case 'kotlin': return emitKotlinCmpsblFile('com.cmpsbl.stress2', ids, userBody);
   }
 }
 
@@ -146,21 +139,12 @@ const ENTRY_SYMBOL: Record<Lang, string> = {
 };
 
 /**
- * Indent-aware byte-perfect verifier.
- *
- * The chain executor wraps Layer 1 in a class/enum and runs `indent(body, N)`,
- * which prepends spaces to every newline. The customer's bytes are unchanged
- * line-for-line, but a raw substring search on the original source fails.
- *
- * This helper normalizes by stripping leading whitespace from each line and
- * walking forward through the haystack, asserting every non-blank line of the
- * needle appears in order. That proves byte-perfect line preservation while
- * tolerating the executor's uniform indentation.
+ * Indent-aware byte-perfect verifier — same contract as round-1 helper.
+ * Strips leading whitespace per line and walks forward through the haystack,
+ * proving every non-blank source line appears in order. This tolerates the
+ * uniform indentation the chain executor applies to the embedded Layer 1.
  */
 function expectLayer1Preserved(haystack: string, originalSrc: string, label: string): void {
-  // Use the same `*\/` escape the wrapper applies, then sample the first
-  // ~30 non-blank lines — enough to prove the source was embedded verbatim
-  // without making the assertion run for thousands of lines per file.
   const escaped = originalSrc.replace(/\*\//g, '*\\/');
   const haystackLines = haystack.split('\n').map(l => l.replace(/^\s+/, ''));
   const needleLines = escaped.split('\n')
@@ -179,9 +163,9 @@ function expectLayer1Preserved(haystack: string, originalSrc: string, label: str
 }
 
 // ─── Top-level fixture sanity ────────────────────────────────────────────────
-describe('Real-world 25-file stress corpus', () => {
-  it('loaded the full 25-file corpus from /tmp/stress-corpus', () => {
-    expect(CORPUS.length, 'corpus must contain 25 real-world files').toBe(25);
+describe('Real-world 25-file stress corpus — ROUND 2', () => {
+  it('loaded the full 25-file round-2 corpus from /tmp/stress-corpus-2', () => {
+    expect(CORPUS.length, 'round-2 corpus must contain 25 real-world files').toBe(25);
     const seen = new Set(CORPUS.map(f => f.lang));
     expect(seen.has('java')).toBe(true);
     expect(seen.has('csharp')).toBe(true);
@@ -192,7 +176,7 @@ describe('Real-world 25-file stress corpus', () => {
 
 // ─── Per-file × per-profile assertions ───────────────────────────────────────
 for (const file of CORPUS) {
-  describe(`${file.lang} :: ${file.name}`, () => {
+  describe(`R2 ${file.lang} :: ${file.name}`, () => {
     const layer1Body = wrapAsLayer1Comment(file.src, file.lang);
 
     for (const profile of PROFILES) {
