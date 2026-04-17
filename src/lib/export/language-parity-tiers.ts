@@ -48,101 +48,83 @@ export interface LanguageParityEntry {
 }
 
 /**
- * The Honest 12.
+ * The Coverage Map.
  *
  * Tier 1 — SHIPPING (3 languages, real today):
  *   TypeScript, JavaScript, Python
  *
- * Tier 2 — COMING_SOON (9 languages, on the roadmap to full parity):
- *   Rust, Go, Java, C#, Kotlin, Swift, Ruby, PHP, Elixir
+ * Tier 2 — COMING_SOON (the rest of the major-language landscape).
+ *   Grouped by family so adding a new language is a one-line entry.
+ *   The parity gate guarantees nothing emits until a native implementation
+ *   + deterministic chain executor + green parity tests are in place.
  *
  * Anything not in this list is HIDDEN by default — including HDLs, GPU
- * shading languages, and the long tail of stub-only targets that don't
- * carry runtime guarantees.
+ * shading languages, and the long tail of stub-only targets.
  */
+
+/** Default roadmap note for COMING_SOON entries — keeps the registry terse. */
+const ROADMAP_NOTE_DEFAULT =
+  'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.';
+
+/** Helper — terse COMING_SOON declaration so adding a language is one line. */
+const cs = (id: string, label: string, note: string = ROADMAP_NOTE_DEFAULT): LanguageParityEntry =>
+  ({ id, label, status: 'COMING_SOON', roadmapNote: note });
+
 export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Object.freeze([
   // ─── Tier 1 — SHIPPING ─────────────────────────────────────────────────────
-  {
-    id: 'typescript',
-    label: 'TypeScript',
-    status: 'SHIPPING',
-  },
-  {
-    id: 'javascript',
-    label: 'JavaScript',
-    status: 'SHIPPING',
-  },
-  {
-    id: 'python',
-    label: 'Python',
-    status: 'SHIPPING',
-  },
+  { id: 'typescript', label: 'TypeScript', status: 'SHIPPING' },
+  { id: 'javascript', label: 'JavaScript', status: 'SHIPPING' },
+  { id: 'python',     label: 'Python',     status: 'SHIPPING' },
 
-  // ─── Tier 2 — COMING_SOON (Honest 12 roadmap) ─────────────────────────────
-  {
-    id: 'rust',
-    label: 'Rust',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'go',
-    label: 'Go',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'java',
-    label: 'Java',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'csharp',
-    label: 'C#',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'kotlin',
-    label: 'Kotlin',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'swift',
-    label: 'Swift',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'ruby',
-    label: 'Ruby',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'php',
-    label: 'PHP',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
-  {
-    id: 'elixir',
-    label: 'Elixir',
-    status: 'COMING_SOON',
-    roadmapNote:
-      'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.',
-  },
+  // ─── Tier 2 — COMING_SOON ─────────────────────────────────────────────────
+  // Systems & native
+  cs('rust',        'Rust'),
+  cs('go',          'Go'),
+  cs('c',           'C'),
+  cs('cpp',         'C++'),
+  cs('zig',         'Zig'),
+  cs('nim',         'Nim'),
+  cs('crystal',     'Crystal'),
+
+  // JVM family
+  cs('java',        'Java'),
+  cs('kotlin',      'Kotlin'),
+  cs('scala',       'Scala'),
+  cs('groovy',      'Groovy'),
+  cs('clojure',     'Clojure'),
+
+  // .NET family
+  cs('csharp',      'C#'),
+  cs('fsharp',      'F#'),
+  cs('vbnet',       'VB.NET'),
+
+  // Apple platforms
+  cs('swift',       'Swift'),
+  cs('objectivec',  'Objective-C'),
+
+  // Scripting & dynamic
+  cs('ruby',        'Ruby'),
+  cs('php',         'PHP'),
+  cs('perl',        'Perl'),
+  cs('lua',         'Lua'),
+  cs('r',           'R'),
+  cs('julia',       'Julia'),
+  cs('dart',        'Dart'),
+
+  // BEAM family
+  cs('elixir',      'Elixir'),
+  cs('erlang',      'Erlang'),
+
+  // Functional
+  cs('haskell',     'Haskell'),
+  cs('ocaml',       'OCaml'),
+  cs('elm',         'Elm'),
+
+  // Shell
+  cs('bash',        'Bash'),
+  cs('powershell',  'PowerShell'),
 ]);
+
 
 const REGISTRY_INDEX: ReadonlyMap<string, LanguageParityEntry> = new Map(
   LANGUAGE_PARITY_REGISTRY.map((e) => [e.id.toLowerCase(), e]),
