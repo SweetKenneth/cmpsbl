@@ -99,29 +99,83 @@ export function AscensionLayersHero() {
             <span className="text-[11px] font-mono tracking-wider text-muted-foreground/70 uppercase">
               Annual subscription · Cancel anytime
             </span>
-
           </motion.div>
         </div>
 
         {/* CINEMATIC LAYER STACK VISUAL */}
-        <div className="relative h-[320px] sm:h-[400px] lg:h-[460px] flex items-center justify-center order-last w-full">
+        <div className="relative h-[340px] sm:h-[420px] lg:h-[460px] flex items-center justify-center order-last w-full">
           <div
-            className="relative w-full max-w-[420px] h-full mx-auto"
+            className="relative w-full max-w-[480px] h-full mx-auto"
             style={{ perspective: "1400px" }}
           >
+            {/* LEFT-SIDE VERTICAL AXIS — fills the empty space with meaning */}
+            <div className="absolute left-2 sm:left-4 inset-y-8 flex flex-col justify-between items-start z-20 pointer-events-none">
+              {/* Top marker — More Power */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="flex items-center gap-2"
+              >
+                <div className="w-5 h-px bg-primary/70" />
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-primary font-bold leading-tight">
+                    More Power
+                  </span>
+                  <span className="text-[8px] font-mono tracking-wider uppercase text-muted-foreground/60 leading-tight mt-0.5">
+                    Top of stack
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Mid marker — Stack to combine */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                className="flex items-center gap-2"
+              >
+                <div className="w-5 h-px bg-muted-foreground/50" />
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-foreground/80 font-bold leading-tight">
+                    Stack & Combine
+                  </span>
+                  <span className="text-[8px] font-mono tracking-wider uppercase text-muted-foreground/60 leading-tight mt-0.5">
+                    Mix any disciplines
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Bottom marker — Your base */}
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 1.0 }}
+                className="flex items-center gap-2"
+              >
+                <div className="w-5 h-px bg-muted-foreground/50" />
+                <div className="flex flex-col">
+                  <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-foreground/80 font-bold leading-tight">
+                    Your Code
+                  </span>
+                  <span className="text-[8px] font-mono tracking-wider uppercase text-muted-foreground/60 leading-tight mt-0.5">
+                    The base layer
+                  </span>
+                </div>
+              </motion.div>
+            </div>
+
             {/* Glow under the stack */}
             <div
               aria-hidden
-              className="absolute left-1/2 -translate-x-1/2 bottom-10 w-[70%] h-16 rounded-full blur-3xl opacity-60"
+              className="absolute left-[58%] -translate-x-1/2 bottom-10 w-[50%] h-16 rounded-full blur-3xl opacity-60"
               style={{ background: "hsl(var(--primary) / 0.35)" }}
             />
 
             {LAYER_PLATES.map((plate, i) => {
               const Icon = plate.icon;
               const isBase = i === 0;
-              // Stack from bottom (your code) to top (ascension) — centered
               const yOffset = -i * 36;
-              const xOffset = 0;
               return (
                 <motion.div
                   key={plate.label}
@@ -141,9 +195,9 @@ export function AscensionLayersHero() {
                       ease: "easeInOut",
                     },
                   }}
-                  className="absolute left-1/2 top-1/2 w-[88%] sm:w-[82%] h-[24%] -translate-x-1/2 -translate-y-1/2 rounded-2xl border backdrop-blur-sm"
+                  className="absolute left-[60%] top-1/2 w-[68%] sm:w-[64%] h-[22%] -translate-x-1/2 -translate-y-1/2 rounded-2xl border backdrop-blur-sm"
                   style={{
-                    transform: `translate(-50%, -50%) translate(${xOffset}px, ${yOffset}px) rotateX(55deg)`,
+                    transform: `translate(-50%, -50%) translate(0px, ${yOffset}px) rotateX(55deg)`,
                     transformStyle: "preserve-3d",
                     background: isBase
                       ? `linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--background)) 100%)`
@@ -159,13 +213,13 @@ export function AscensionLayersHero() {
                 >
                   {/* Plate label — counter-rotated to face viewer */}
                   <div
-                    className="absolute inset-0 flex items-center justify-between px-5"
+                    className="absolute inset-0 flex items-center justify-center px-4"
                     style={{ transform: "rotateX(-55deg) translateZ(2px)" }}
                   >
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2">
                       {Icon && (
                         <Icon
-                          className="w-4 h-4 sm:w-5 sm:h-5"
+                          className="w-4 h-4"
                           style={{
                             color: `hsl(${plate.hue} 90% 75%)`,
                             filter: `drop-shadow(0 0 8px hsl(${plate.hue} 90% 60% / 0.6))`,
@@ -173,7 +227,7 @@ export function AscensionLayersHero() {
                         />
                       )}
                       <span
-                        className="text-[10px] sm:text-[11px] font-black tracking-[0.18em] uppercase text-white drop-shadow-lg"
+                        className="text-[9px] sm:text-[10px] font-black tracking-[0.15em] uppercase text-white drop-shadow-lg"
                         style={{
                           textShadow: isBase
                             ? "0 1px 4px hsl(0 0% 0% / 0.8)"
@@ -183,14 +237,6 @@ export function AscensionLayersHero() {
                         {plate.label}
                       </span>
                     </div>
-                    {!isBase && (
-                      <span
-                        className="text-[9px] font-mono tracking-wider opacity-70"
-                        style={{ color: `hsl(${plate.hue} 80% 80%)` }}
-                      >
-                        L{plate.depth}
-                      </span>
-                    )}
                   </div>
                 </motion.div>
               );
@@ -204,7 +250,7 @@ export function AscensionLayersHero() {
               className="absolute bottom-0 left-0 right-0 text-center"
             >
               <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-muted-foreground/70">
-                ↑ Each Layer compounds ↑
+                Layers compound
               </span>
             </motion.div>
           </div>
