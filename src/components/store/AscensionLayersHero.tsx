@@ -161,7 +161,7 @@ export function AscensionLayersHero() {
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase font-bold leading-tight" style={{ color: "hsl(45 95% 55%)" }}>
                     Your Code
                   </span>
-                  <span className="text-[8px] font-mono tracking-wider uppercase leading-tight mt-0.5" style={{ color: "hsl(45 80% 60% / 0.7)" }}>
+                  <span className="text-[8px] font-mono tracking-wider uppercase text-muted-foreground/60 leading-tight mt-0.5">
                     The base layer
                   </span>
                 </div>
