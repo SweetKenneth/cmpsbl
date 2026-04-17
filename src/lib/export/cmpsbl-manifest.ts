@@ -7,6 +7,8 @@
  * Terminology: Uses "primitives" (never "modules") per CMPSBL® governance.
  */
 
+import { buildIdentityBlock, type CmpsblIdentityBlock } from './brand-tag';
+
 export interface CmpsblManifestLicenseLayer {
   spdx: string;
   label?: string;
@@ -51,6 +53,8 @@ export interface CmpsblManifest {
   source?: string;
   serial?: string;
   license?: CmpsblManifestLicense;
+  /** Unified CMPSBL® identity block — issuer, patents, URL, traceability. */
+  _cmpsbl: CmpsblIdentityBlock;
 }
 
 function tierFromScore(score: number): string {
@@ -68,12 +72,13 @@ function tierFromScore(score: number): string {
  */
 export function generateCmpsblManifest(input: CmpsblManifestInput): CmpsblManifest {
   const cjpi = input.cjpi ?? 0;
+  const exported = new Date().toISOString().slice(0, 10);
   return {
     name: input.name,
     tier: tierFromScore(cjpi),
     cjpi,
     primitives: input.primitives ?? input.modules ?? ['SYSTEM'],
-    exported: new Date().toISOString().slice(0, 10),
+    exported,
     runtime: 'cmpsbl-convex-core-processing-layer',
     targets: input.targets ?? ['typescript'],
     version: input.version ?? '1.0.0',
@@ -82,6 +87,11 @@ export function generateCmpsblManifest(input: CmpsblManifestInput): CmpsblManife
     ...(input.source ? { source: input.source } : {}),
     ...(input.serial ? { serial: input.serial } : {}),
     ...(input.license ? { license: input.license } : {}),
+    _cmpsbl: buildIdentityBlock({
+      generatedAt: exported,
+      fingerprint: input.fingerprint,
+      serial: input.serial,
+    }),
   };
 }
 

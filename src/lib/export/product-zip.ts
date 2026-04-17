@@ -163,7 +163,7 @@ CMPSBL® is a registered trademark of PromptFluid.
 }
 
 function generateLicenseTxt(): string {
-  return `CMPSBL® PROPRIETARY SOFTWARE LICENSE
+  const body = `CMPSBL® PROPRIETARY SOFTWARE LICENSE
 =====================================
 
 Version 1.0 — Effective ${new Date().toISOString().slice(0, 10)}
@@ -185,6 +185,7 @@ This software is provided "AS IS" without warranty of any kind.
 
 © 2025–2026 PromptFluid®. All rights reserved.
 `;
+  return tagPlainText(body);
 }
 
 export async function generateProductZip(product: ProductZipInput): Promise<Blob> {
