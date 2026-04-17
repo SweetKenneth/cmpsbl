@@ -95,9 +95,10 @@ describe('Claude Findings Stress — 5 langs × 25 iterations', () => {
         for (let i = 0; i < ITERATIONS; i++) {
           const capCount = 1 + rand(6);
           const caps = makeCaps(capCount);
+          const ext = EXTENSIONS[lang];
           const userSrc = {
-            name: `app_${i}`,
-            extension: EXTENSIONS[lang],
+            name: `app_${i}.${ext}`,
+            extension: ext,
             language: lang,
             content: SAMPLE_USER_SOURCES[lang],
           };
