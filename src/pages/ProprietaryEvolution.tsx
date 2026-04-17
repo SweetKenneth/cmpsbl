@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
+import { ModuleErrorBoundary } from '@/components/system/ModuleErrorBoundary';
 import { AscensionHero } from '@/components/proprietary-evolution/AscensionHero';
 import { IngestPhase } from '@/components/proprietary-evolution/IngestPhase';
 import { DiscoveryPhase } from '@/components/proprietary-evolution/DiscoveryPhase';
@@ -100,16 +101,19 @@ export default function ProprietaryEvolution() {
     next();
   };
 
+  // Each phase is wrapped in its own ModuleErrorBoundary so a render-time crash
+  // in one phase (e.g. ingest) cannot blank-screen the entire Ascension page.
+  // The boundary surfaces the error inline with a Retry button.
   const phases = [
-    <IngestPhase key={`ingest-${cycleKey}`} />,
-    <DiscoveryPhase key={`discovery-${cycleKey}`} />,
-    <CrystallizationPhase key={`crystallize-${cycleKey}`} />,
-    <VerticalPackSelector
-      key={`forge-${cycleKey}`}
-      onComplete={handleVerticalComplete}
-      onSkip={handleVerticalSkip}
-    />,
-    <ExportPhase key={`export-${cycleKey}`} verticalResult={verticalResult} />,
+    <ModuleErrorBoundary key={`ingest-${cycleKey}`} moduleName="Ingest"><IngestPhase /></ModuleErrorBoundary>,
+    <ModuleErrorBoundary key={`discovery-${cycleKey}`} moduleName="Discovery"><DiscoveryPhase /></ModuleErrorBoundary>,
+    <ModuleErrorBoundary key={`crystallize-${cycleKey}`} moduleName="Ascend"><CrystallizationPhase /></ModuleErrorBoundary>,
+    <ModuleErrorBoundary key={`forge-${cycleKey}`} moduleName="Forge">
+      <VerticalPackSelector onComplete={handleVerticalComplete} onSkip={handleVerticalSkip} />
+    </ModuleErrorBoundary>,
+    <ModuleErrorBoundary key={`export-${cycleKey}`} moduleName="Export">
+      <ExportPhase verticalResult={verticalResult} />
+    </ModuleErrorBoundary>,
   ];
 
   return (
