@@ -391,13 +391,13 @@ export function UpgradeContent() {
 
                   <div className="h-px bg-border/50 mb-4 sm:mb-5" />
 
-                  {/* Crown Jewel link */}
+                  {/* Ascension Layers link — true Crown Jewels of the substrate */}
                   <a
-                    href="#crown-jewel-breakdown"
+                    href="#ascension-layers"
                     className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm mb-3 group/cj cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('crown-jewel-breakdown')?.scrollIntoView({ behavior: 'smooth' });
+                      document.getElementById('ascension-layers')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   >
                     <Diamond className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-amber shrink-0 mt-0.5" />
