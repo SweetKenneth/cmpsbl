@@ -66,14 +66,32 @@ const CATEGORY_EDITIONS: Record<string, string> = {
 };
 
 /**
- * Check if a name is already human-readable (has spaces, mixed case, etc.)
+ * Check if a name is already human-readable (has spaces, mixed case, no underscores).
+ * Underscored names like `Cognitive_Chain_Reasoning_Engine` are NOT considered humanized
+ * — they should be deunderscored before display.
  */
 function isAlreadyHumanized(name: string): boolean {
+  if (name.includes('_')) return false;
   // Contains spaces and has mixed case — likely already a nice name
   if (/\s/.test(name) && /[a-z]/.test(name) && /[A-Z]/.test(name)) return true;
   // Title Case multi-word
   if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)+/.test(name)) return true;
   return false;
+}
+
+/**
+ * Strip underscores from a Title_Case_Underscored name preserving casing.
+ * "Cognitive_Chain_Reasoning_Engine" → "Cognitive Chain Reasoning Engine"
+ * Used by all surface renderers (Ascension flow + exports).
+ */
+export function deunderscoreCapabilityName(name: string): string {
+  if (!name) return '';
+  return name
+    .replace(/^Ψ₄₁_(?:X_)?/i, '')
+    .replace(/_x_/gi, ' ')
+    .replace(/_/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
