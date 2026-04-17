@@ -175,7 +175,7 @@ export function AscensionLayersHero() {
             {LAYER_PLATES.map((plate, i) => {
               const Icon = plate.icon;
               const isBase = i === 0;
-              const yOffset = -i * 36;
+              const yOffset = -i * 52;
               return (
                 <motion.div
                   key={plate.label}
@@ -195,23 +195,23 @@ export function AscensionLayersHero() {
                       ease: "easeInOut",
                     },
                   }}
-                  className="absolute left-[60%] top-1/2 w-[68%] sm:w-[64%] h-[22%] -translate-x-1/2 -translate-y-1/2 rounded-2xl border backdrop-blur-sm"
+                  className="absolute left-[60%] top-1/2 w-[72%] sm:w-[68%] h-[32%] -translate-x-1/2 -translate-y-1/2 rounded-2xl border backdrop-blur-sm"
                   style={{
                     transform: `translate(-50%, -50%) translate(0px, ${yOffset}px) rotateX(55deg)`,
                     transformStyle: "preserve-3d",
                     background: isBase
                       ? `linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--background)) 100%)`
-                      : `linear-gradient(135deg, hsl(${plate.hue} 70% 55% / 0.18) 0%, hsl(${plate.hue} 80% 45% / 0.32) 100%)`,
+                      : `linear-gradient(135deg, hsl(${plate.hue} 70% 75% / 0.45) 0%, hsl(${plate.hue} 80% 65% / 0.65) 100%)`,
                     borderColor: isBase
                       ? `hsl(var(--border))`
-                      : `hsl(${plate.hue} 80% 60% / 0.5)`,
+                      : `hsl(${plate.hue} 80% 50% / 0.7)`,
                     boxShadow: isBase
                       ? `0 20px 40px -10px hsl(0 0% 0% / 0.5)`
-                      : `0 20px 40px -10px hsl(${plate.hue} 80% 40% / 0.4), inset 0 1px 0 hsl(${plate.hue} 90% 80% / 0.3)`,
+                      : `0 20px 40px -10px hsl(${plate.hue} 80% 40% / 0.4), inset 0 1px 0 hsl(${plate.hue} 90% 90% / 0.5)`,
                     zIndex: i + 1,
                   }}
                 >
-                  {/* Plate label — counter-rotated to face viewer */}
+                  {/* Plate label — counter-rotated to face viewer, dark text for legibility */}
                   <div
                     className="absolute inset-0 flex items-center justify-center px-4"
                     style={{ transform: "rotateX(-55deg) translateZ(2px)" }}
@@ -219,19 +219,18 @@ export function AscensionLayersHero() {
                     <div className="flex items-center gap-2">
                       {Icon && (
                         <Icon
-                          className="w-4 h-4"
+                          className="w-4 h-4 sm:w-[18px] sm:h-[18px]"
                           style={{
-                            color: `hsl(${plate.hue} 90% 75%)`,
-                            filter: `drop-shadow(0 0 8px hsl(${plate.hue} 90% 60% / 0.6))`,
+                            color: `hsl(${plate.hue} 80% 25%)`,
                           }}
                         />
                       )}
                       <span
-                        className="text-[9px] sm:text-[10px] font-black tracking-[0.15em] uppercase text-white drop-shadow-lg"
+                        className="text-[10px] sm:text-[12px] font-black tracking-[0.15em] uppercase"
                         style={{
-                          textShadow: isBase
-                            ? "0 1px 4px hsl(0 0% 0% / 0.8)"
-                            : `0 0 12px hsl(${plate.hue} 90% 50% / 0.6), 0 1px 3px hsl(0 0% 0% / 0.9)`,
+                          color: isBase
+                            ? `hsl(var(--foreground))`
+                            : `hsl(${plate.hue} 85% 18%)`,
                         }}
                       >
                         {plate.label}
