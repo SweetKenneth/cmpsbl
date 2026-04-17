@@ -32,7 +32,9 @@ import {
 } from '@/lib/export/ascension-v2-docs';
 import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile, buildNoticeFile } from '@/lib/licensing/upstream-license-bundle';
 import { V2UpstreamLicenseSelect, type SpdxChoice } from './V2UpstreamLicenseSelect';
-import type { DetectedLicense } from '@/lib/factory/license-attribution';
+import { detectLicenseFromSiblingFile } from '@/lib/factory/sibling-license-scan';
+import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/license-attribution';
+import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import {
   getLanguageParityStatus,
