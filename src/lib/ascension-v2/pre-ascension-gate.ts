@@ -52,11 +52,31 @@ interface SourceFile {
 
 type GateLang = 'typescript' | 'javascript' | 'python' | 'other';
 
+/**
+ * Pick the parser to run. Two-stage rule:
+ *  1. If file content begins with a strong language sigil (e.g. `<?php`,
+ *     `#!/usr/bin/env node`, `package main` for Go) honor THAT — the
+ *     extension lies (e.g. PHP code uploaded as `.py`).
+ *  2. Otherwise honor the file extension.
+ *  3. Otherwise fall back to the declared run language.
+ *
+ * The declared language never *upgrades* a file to a Tier-1 parser
+ * unless the extension agrees, so we never accidentally Python-parse PHP.
+ */
 function classifyFile(file: SourceFile, declared: string): GateLang {
+  const head = file.content.slice(0, 256).trimStart();
+  // Content sigils win — extension is a lie when these are present.
+  if (head.startsWith('<?php') || head.startsWith('<?=')) return 'other';
+  if (/^package\s+\w+\s*$/m.test(head.split('\n').slice(0, 3).join('\n'))) {
+    // Looks like Go / Java package decl; not Tier-1 here.
+    return 'other';
+  }
+
   const lower = file.name.toLowerCase();
   if (lower.endsWith('.ts') || lower.endsWith('.tsx')) return 'typescript';
   if (lower.endsWith('.js') || lower.endsWith('.jsx') || lower.endsWith('.mjs') || lower.endsWith('.cjs')) return 'javascript';
   if (lower.endsWith('.py') || lower.endsWith('.pyi')) return 'python';
+
   // Fallback to the declared run language
   const norm = declared.toLowerCase();
   if (norm.includes('typescript')) return 'typescript';
@@ -156,11 +176,61 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
 // (Catches incomplete try/except, bare def with no body, mixed indent)
 // ═══════════════════════════════════════════════════════════════
 
+/**
+ * Compute, per source line, whether that line's *start* is inside a
+ * triple-quoted Python string. Module/class/function docstrings often
+ * contain English prose with the words "with ", "for ", "if ", etc.;
+ * structural checks must ignore those lines or they'll false-positive
+ * on perfectly valid CPython stdlib code (e.g. `shelve.py`'s docstring).
+ */
+function computePyStringMask(source: string): boolean[] {
+  const lines = source.split('\n');
+  const mask = new Array<boolean>(lines.length).fill(false);
+  let inTriple: '"""' | "'''" | null = null;
+
+  for (let li = 0; li < lines.length; li++) {
+    const line = lines[li];
+    // The line *starts* inside a triple if we're already in one.
+    mask[li] = inTriple !== null;
+
+    let i = 0;
+    while (i < line.length) {
+      const trip = line.slice(i, i + 3);
+      if (inTriple) {
+        if (trip === inTriple) { inTriple = null; i += 3; continue; }
+        i++;
+        continue;
+      }
+      // Skip line comments (#) — outside strings only.
+      if (line[i] === '#') break;
+      // Skip single/double-quoted strings (single line).
+      if (trip === '"""' || trip === "'''") { inTriple = trip as '"""' | "'''"; i += 3; continue; }
+      if (line[i] === '"' || line[i] === "'") {
+        const q = line[i];
+        i++;
+        while (i < line.length) {
+          if (line[i] === '\\') { i += 2; continue; }
+          if (line[i] === q) { i++; break; }
+          i++;
+        }
+        continue;
+      }
+      i++;
+    }
+  }
+  return mask;
+}
+
 function pythonStructuralCheck(source: string): GateError | null {
   const lines = source.split('\n');
+  const insideString = computePyStringMask(source);
   const blockOpeners = /^\s*(def |class |if |elif |else:|try:|except|finally:|for |while |with |async def |async for |async with )/;
 
   for (let i = 0; i < lines.length; i++) {
+    // Skip every line that begins inside a triple-quoted docstring or
+    // multi-line string — its tokens are prose, not Python syntax.
+    if (insideString[i]) continue;
+
     const ln = lines[i];
     const trimmed = ln.trim();
 
@@ -186,6 +256,7 @@ function pythonStructuralCheck(source: string): GateError | null {
       const indent = ln.length - ln.trimStart().length;
       let foundHandler = false;
       for (let j = i + 1; j < lines.length; j++) {
+        if (insideString[j]) continue;
         const l2 = lines[j];
         if (l2.trim() === '') continue;
         const ind2 = l2.length - l2.trimStart().length;
