@@ -755,7 +755,7 @@ export function generateV2AdvertisementHTML(packName: string, capCount: number):
     software that thinks, adapts, and protects itself.
   </p>
   <div class="highlight">
-    <strong>Visit <a href="https://cmpsbl.com" style="color:#a78bfa;">cmpsbl.com</a></strong>
+    <strong>Visit <a href="https://cmpsbl.com">cmpsbl.com</a></strong>
     to explore the full substrate, browse the Mana Store, and see what your software could become.
   </div>
 
