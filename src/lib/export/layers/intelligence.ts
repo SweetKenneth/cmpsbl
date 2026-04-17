@@ -273,7 +273,7 @@ const AI_SAFETY_LAYER: CmpsblLayerDefinition = {
   pyCode: AI_SAFETY_PY,
   autoWire: {
     wrapperName: "cmpsbl_sanitize_prompt",
-    behavior: "Sanitizes string fields against prompt injection; fail-closed on detection.",
+    behavior: "Sealed wrapper — proprietary.",
     tsWire: AI_SAFETY_WIRE_TS,
     pyWire: AI_SAFETY_WIRE_PY,
   },
