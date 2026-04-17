@@ -88,19 +88,29 @@ export function LayerInventory() {
       <div className="space-y-12">
         {groups.map(({ meta, items }) => (
           <div key={meta.pillar}>
-            <div className="flex items-baseline justify-between mb-4 px-1">
-              <div>
-                <h3 className="text-base sm:text-lg font-black tracking-tight text-foreground">
+            <div className="flex items-end justify-between mb-5 px-1 gap-4 pb-3 border-b border-border/40">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="w-1 h-4 rounded-full bg-gradient-to-b from-primary to-primary/40" />
+                  <span className="text-[9px] font-mono tracking-[0.25em] uppercase text-primary/70 font-bold">
+                    Discipline
+                  </span>
+                </div>
+                <h3 className="text-lg sm:text-xl font-black tracking-[-0.01em] text-foreground leading-tight">
                   {meta.label}
                 </h3>
-                <p className="text-xs text-muted-foreground/70 mt-0.5">
+                <p className="text-xs text-muted-foreground/80 mt-1 leading-snug">
                   {meta.tagline}
                 </p>
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground/50 tabular-nums tracking-wider">
-                {String(items.length).padStart(2, "0")} item
-                {items.length === 1 ? "" : "s"}
-              </span>
+              <div className="flex items-center gap-2 shrink-0 pb-1">
+                <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-muted-foreground/60">
+                  Items
+                </span>
+                <span className="text-sm font-black tabular-nums tracking-tight text-foreground bg-foreground/[0.04] border border-border/40 rounded-md px-2 py-0.5">
+                  {String(items.length).padStart(2, "0")}
+                </span>
+              </div>
             </div>
 
             <div
