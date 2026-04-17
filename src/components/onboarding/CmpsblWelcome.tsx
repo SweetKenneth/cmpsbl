@@ -7,12 +7,12 @@
 import { useState, useEffect } from 'react';
 import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, ChevronRight, Wrench, Layers, ShieldCheck, Zap } from 'lucide-react';
+import { X, ArrowRight, ChevronRight, Sparkles, Layers, ShieldCheck, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
-const STORAGE_KEY = 'cmpsbl-welcomed';
+const STORAGE_KEY = 'cmpsbl-welcomed-v2';
 
 interface OnboardingStep {
   icon: React.ElementType;
@@ -28,41 +28,41 @@ interface OnboardingStep {
 
 const STEPS: OnboardingStep[] = [
   {
-    icon: Layers,
-    tag: 'The Substrate',
-    title: 'Where Machines Learn to Dream',
-    body: 'CMPSBL is a governed cognitive infrastructure — 40 primitives working in concert to scan, diagnose, and ascend code.\n\nNo AI in the output. Pure algorithmic architecture. Patent-pending dual-layer technology that enhances your software while your original code remains untouched.',
-    footer: '12 Organs · 12 Layers · 8 Engines · 8 Agents',
+    icon: Sparkles,
+    tag: 'New · Ascension v2',
+    title: 'Ascension v2 Is Live',
+    body: 'A faster, smarter ascension pipeline — built on the full 40-primitive matrix and tuned for real production code.\n\nScan, diagnose, and harden any codebase in minutes with cleaner Layer surfacing, sharper diagnostics, and a redesigned export.',
+    footer: 'Now in production · /ascension-v2',
     accent: 'neon-cyan',
-    pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 50%)',
+    pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--neon-cyan) / 0.14) 0%, transparent 55%)',
   },
   {
-    icon: Wrench,
-    tag: 'Ascension',
-    title: 'Your Code, Elevated',
-    body: 'Upload your working code. The 40-primitive matrix scans for vulnerabilities, hidden capabilities, and structural limits — then hardens it with up to 20 primitives.\n\nYou get back production-ready, certified software. Your original code remains unchanged.',
-    footer: 'No lock-in · Sealed runtime · Runs across 90+ languages',
+    icon: Layers,
+    tag: 'The Substrate',
+    title: 'Governed Cognitive Infrastructure',
+    body: 'CMPSBL is a substrate, not an agent platform — 40 primitives (12 Organs · 12 Layers · 8 Engines · 8 Agents) working in concert.\n\nNo external AI in the output. Pure algorithmic architecture. Patent-pending dual-layer technology that enhances your software while your original code stays untouched.',
+    footer: '12 Organs · 12 Layers · 8 Engines · 8 Agents',
     accent: 'neon-purple',
-    pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
+    pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.12) 0%, transparent 55%)',
   },
   {
     icon: ShieldCheck,
     tag: 'Ownership',
     title: 'Sealed Runtime. No Subscription.',
     body: 'Every ascended export is yours forever — sealed runtime, no recurring fees, no vendor lock-in.\n\nThe diagnostic report is free whether you purchase or not. We prove the value before you commit.',
-    footer: 'Zero-friction trial · Keep it forever · No code stored or reused',
+    footer: 'Zero-friction trial · Keep it forever · Your code is never stored or reused',
     accent: 'neon-magenta',
-    pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
+    pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.12) 0%, transparent 55%)',
   },
   {
-    icon: Zap,
+    icon: Rocket,
     tag: 'Begin',
-    title: 'Start Your Ascension',
-    body: 'Builder tier is free — explore diagnostics and see what the substrate can find in your code.\n\nCreator and Architect tiers unlock full ascension exports, expanded capabilities, and priority processing.',
+    title: 'Try Ascension v2 Now',
+    body: 'Builder tier is free — run a full diagnostic and see exactly what the substrate finds in your code.\n\nCreator and Architect tiers unlock full ascension exports, expanded Layer surfacing, and priority processing.',
     footer: 'No credit card required. The scanners are already running.',
-    accent: 'neon-purple',
-    pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Ascend Your Code', href: '/ascension' },
+    accent: 'neon-cyan',
+    pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 55%)',
+    inlineCta: { text: 'Launch Ascension v2', href: '/ascension-v2' },
     secondaryInlineCta: { text: 'Create Free Account', href: '/auth' },
   },
 ];
