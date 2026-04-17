@@ -1138,41 +1138,30 @@ ${embeddedSources}
 
     if (entryPoints.length > 0) {
       const entryPointsList = entryPoints.join(', ');
-      executeOriginalBody = `        """Layer 1 — Smart entry point detection for ${primaryFile.name}.
-        First-match-wins: scans __all__, skips Exception subclasses, invokes the
-        first viable target and returns its result directly.
-
-        Critical: once a target is invoked, any exception it raises propagates
-        unchanged so wrappers (Circuit Breaker, Retry, Self-Healing) can react.
-        Only resolution / signature errors fall through to the next candidate."""
+      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
             target = globals().get(name)
             if target is None:
                 continue
             if kind == "function" and callable(target):
-                # Invocation errors propagate unchanged — wrappers must see them.
                 return target(input_data) if input_data else target()
             if kind == "class" and isinstance(target, type):
                 try:
                     instance = target(input_data) if input_data else target()
                 except TypeError:
-                    # Signature mismatch only — surface availability and try next.
                     continue
-                # Probe for a callable execution method
                 for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
                     method = getattr(instance, method_name, None)
                     if callable(method):
-                        # Invocation errors propagate unchanged.
                         return method(input_data) if input_data else method()
                 return {"_instance": name, "_created": True}
         return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
-      // Has code but couldn't determine entry points — provide a passthrough
-      executeOriginalBody = `        """Layer 1 — Original source embedded; entry points available via module globals."""
+      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
         return {"_passthrough": input_data or {}, "_available_symbols": [k for k in globals() if not k.startswith("_") and k[0].isupper()]}`;
     } else {
-      executeOriginalBody = `        """Layer 1 — Original source embedded above; no callable entry point auto-detected."""
+      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
         return input_data or {}`;
     }
   } else {
@@ -1337,7 +1326,7 @@ def handle_core(ctx, mod, meta):
     return ctx
 
 def handle_brain(ctx, mod, meta):
-    """Real reasoning: Shannon entropy + structural depth + branching factor."""
+    """Sealed handler."""
     serialized = json.dumps(ctx["_data"], default=str, sort_keys=True)
     entropy_bits = round(_shannon_entropy(serialized), 4)
     keys = user_keys(ctx["_data"])
@@ -2096,9 +2085,7 @@ CMPSBL_PACK_META = ${JSON.stringify({
 # Backwards compatibility alias
 PACK_META = CMPSBL_PACK_META
 
-# Auto-register any pack-declared module that lacks a dedicated handler.
-# Routes unknown primitives (e.g. SHELVE, Ψ₄₁_*) to handle_candidate so
-# execute_pipeline never falls through to DEFAULT for known pack modules.
+# Sealed registry hydration.
 for _module_name in CMPSBL_PACK_META["modules"]:
     _normalized = str(_module_name).strip().upper()
     if _normalized and _normalized not in HANDLER_REGISTRY:

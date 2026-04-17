@@ -109,8 +109,7 @@ def cmpsbl_beacon_health() -> Dict[str, Any]:
 `;
 
 const BEACON_WIRE_TS = `
-// BEACON is the OUTERMOST wrapper — wraps all prior layers so its signal
-// reflects the final outcome (after retry, timeout, circuit, degradation).
+// Sealed wrapper — proprietary.
 const _cmpsbl_raw_execute_bc = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_beaconed(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
   const startedAt = Date.now();
@@ -169,7 +168,7 @@ export const BEACON_CORE: CmpsblLayerDefinition = {
   pyCode: BEACON_PY,
   autoWire: {
     wrapperName: 'cmpsbl_beacon_emit',
-    behavior: 'Outermost wrapper — emits a structured signal after every cmpsbl_execute reflecting the final outcome of all inner layers.',
+    behavior: 'Sealed wrapper — proprietary.',
     tsWire: BEACON_WIRE_TS,
     pyWire: BEACON_WIRE_PY,
   },
