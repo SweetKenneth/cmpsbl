@@ -106,9 +106,12 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\bopenedAt\b/g, '_oa1'],
   [/\btotal_calls\b/g, '_tc1'],
   [/\btotalCalls\b/g, '_tc1'],
-  // Private helper methods (NOT the public surface)
+  // Private helper methods (NOT the public surface). Scoped to receiver-call
+  // shapes so we never collide with unrelated user code that mentions "transition".
   [/\bnow_ms\b/g, '_nm'],
-  [/(?<!Cmpsbl)\btransition\b/g, '_tr1'],
+  [/\b(self|this|cb)\.transition\b/g, '$1._tr1'],
+  [/\bfn transition\b/g, 'fn _tr1'],
+  [/func \(cb \*CmpsblCircuitBreaker\) transition\b/g, 'func (cb *CmpsblCircuitBreaker) _tr1'],
   // Breaker panel registry (internal singleton)
   [/\bcmpsblBreakerPanel\b/g, '_bpx'],
   // Timeout / Retry private knobs
