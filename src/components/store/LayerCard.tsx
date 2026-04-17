@@ -273,16 +273,27 @@ export function LayerCard({ item }: LayerCardProps) {
             <div className="p-4 sm:p-5 border-t border-border/20 space-y-2 shrink-0">
               <Button
                 size="sm"
+                disabled={buying}
                 className={cn(
                   "w-full gap-2 text-xs sm:text-sm font-black min-h-[48px] rounded-xl",
                   "bg-gradient-to-r text-white shadow-lg transition-all duration-300",
                   "hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]",
+                  "disabled:opacity-70 disabled:hover:scale-100",
                   pillarMeta.gradient
                 )}
                 onClick={handleAcquire}
               >
-                <ShoppingCart className="w-4 h-4" />
-                Acquire · {formatPrice(item.price_cents)}
+                {buying ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Opening checkout…
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4" />
+                    Acquire · {formatPrice(item.price_cents)}
+                  </>
+                )}
               </Button>
               <Button
                 variant="ghost"
