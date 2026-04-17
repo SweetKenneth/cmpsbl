@@ -41,15 +41,11 @@ export function NpmAnnouncementBanner() {
   const shuffled = useMemo<LaunchLayer[]>(() => shuffle(LAYERS), []);
   const items = useMemo(() => [...shuffled, ...shuffled], [shuffled]);
 
-  // Speed tuned for "readable but brisk" — fast enough to show depth of the
-  // 20-layer catalog without feeling stalled. Pixel-rate based pacing:
-  // ~120 px/sec scroll feels like a fast news ticker that's still legible.
-  // Approximate average glyph width at our text size (~7px) → chars/sec ≈ 17.
-  const totalChars = useMemo(
-    () => shuffled.reduce((sum, l) => sum + l.name.length + l.description.length + 14, 0),
-    [shuffled],
-  );
-  const durationSec = Math.max(35, Math.min(75, Math.round(totalChars / 60)));
+  // Fixed pacing: brisk news-ticker speed. 60s per full loop of the duplicated
+  // content reads as fast-but-legible across viewport sizes. We avoid dynamic
+  // duration calc because it drifted too slow on mobile where the content
+  // string is the same width but the viewport is narrower.
+  const durationSec = 60;
 
   if (!ready) return null;
 
