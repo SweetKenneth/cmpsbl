@@ -28,10 +28,11 @@ describe('CAAL-1.0 license document', () => {
     expect(text).toContain(CAAL_SPDX_ID);
   });
 
-  it('grants redistribute, sell, sublicense', () => {
-    expect(text).toMatch(/redistribute/i);
+  it('grants reproduce, distribute, sell, sublicense', () => {
+    expect(text).toMatch(/Reproduce/);
+    expect(text).toMatch(/Distribute/);
     expect(text).toMatch(/sell/i);
-    expect(text).toMatch(/sublicense/i);
+    expect(text).toMatch(/[Ss]ublicense/);
   });
 
   it('forbids modify, reverse engineer, decompile', () => {
