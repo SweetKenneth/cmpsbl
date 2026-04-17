@@ -213,3 +213,31 @@ export function humanizeFilename(rawName: string): string {
     .replace(/[^a-zA-Z0-9_-]/g, '')
     .toLowerCase();
 }
+
+/**
+ * Format a surfaced capability name for the Ascension flow + exports.
+ *
+ * Replaces the legacy `Now = Cognitive_Chain_Reasoning_Engine + ORACLE, DEFENSE, BRAIN`
+ * style with a clean human label:
+ *
+ *   formatEnhancedCapabilityName("Cognitive_Chain_Reasoning_Engine", ["ORACLE","DEFENSE","BRAIN"])
+ *     → "Enhanced Cognitive Chain Reasoning Engine"
+ *
+ *   formatEnhancedCapabilityName("Cognitive_Chain_Reasoning_Engine")
+ *     → "Cognitive Chain Reasoning Engine"
+ *
+ * @param rawName          The underscored archetype name from the discovery engine
+ * @param addedPrimitives  Optional list of primitives added to the candidate
+ *                         (anything other than the candidate itself). When non-empty,
+ *                         the result is prefixed with "Enhanced ".
+ */
+export function formatEnhancedCapabilityName(
+  rawName: string,
+  addedPrimitives?: ReadonlyArray<string>,
+): string {
+  const clean = deunderscoreCapabilityName(rawName);
+  if (!clean) return 'Unnamed Capability';
+  const hasAddedPrimitives = !!addedPrimitives && addedPrimitives.length > 0;
+  return hasAddedPrimitives ? `Enhanced ${clean}` : clean;
+}
+
