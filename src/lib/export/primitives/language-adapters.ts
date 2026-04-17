@@ -660,6 +660,7 @@ CPP_ADAPTER.caseBlock = (mod, body) =>
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { WAVE1_ADAPTERS } from './language-adapters-wave1';
+import { WAVE2_ADAPTERS } from './language-adapters-wave2';
 
 export const TIER_A_ADAPTERS: Record<string, LanguageAdapter> = {
   rust: RUST_ADAPTER,
@@ -675,6 +676,7 @@ export const TIER_A_ADAPTERS: Record<string, LanguageAdapter> = {
   c: C_ADAPTER,
   cpp: CPP_ADAPTER,
   ...WAVE1_ADAPTERS,
+  ...WAVE2_ADAPTERS,
 };
 
 export function getAdapter(lang: string): LanguageAdapter | undefined {
@@ -689,3 +691,12 @@ export {
   FSHARP_ADAPTER,
   JULIA_ADAPTER,
 } from './language-adapters-wave1';
+
+// Re-export Wave 2 adapters for direct consumers
+export {
+  CLOJURE_ADAPTER,
+  OCAML_ADAPTER,
+  ZIG_ADAPTER,
+  NIM_ADAPTER,
+  CRYSTAL_ADAPTER,
+} from './language-adapters-wave2';
