@@ -51,6 +51,7 @@ import {
   buildPrimitiveHandler,
   registerPrimitive,
 } from '@/lib/ascension';
+import { formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
 
 // Canonical 40-Primitive Matrix (12 Organs · 12 Layers · 8 Engines · 8 Agents)
 const SUBSTRATE_NODES = CANONICAL_PRIMITIVES;
