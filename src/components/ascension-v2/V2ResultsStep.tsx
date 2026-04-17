@@ -30,6 +30,7 @@ import {
   generateV2UserGuideHTML,
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
+import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile } from '@/lib/licensing/upstream-license-bundle';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import {
   getLanguageParityStatus,
@@ -279,6 +280,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
       // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
       folder.file('HARNESS-REPORT.txt', harness.summary);
+
+      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel
+      //    when the customer's source carries an attribution-required license.
+      //    Required for legal compliance — without this, distributing an
+      //    Apache-licensed source inside our ZIP would be a license violation.
+      if (sourceFiles.length > 0) {
+        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content);
+        if (upstream) {
+          folder.file('LICENSE-UPSTREAM.txt', buildUpstreamLicenseFile(upstream, originalFileName));
+        }
+      }
 
       const blob = await zip.generateAsync({ type: 'blob' });
       saveAs(blob, `${zipName}.zip`);

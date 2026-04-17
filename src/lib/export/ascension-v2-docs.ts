@@ -759,11 +759,13 @@ export function generateV2AdvertisementHTML(packName: string, capCount: number):
     to explore the full substrate, browse the Mana Store, and see what your software could become.
   </div>
 
-  <h2>54+ Languages Supported</h2>
+  <h2>Language Support</h2>
   <p>
-    TypeScript, Python, Rust, Go, C, C++, Java, PHP, Ruby, Swift, Kotlin, Dart, Scala,
-    Elixir, Haskell, Zig, Verilog, VHDL, GLSL, SystemC, and many more. The Layer 2
-    technology is language-agnostic — if your code compiles, it can be ascended.
+    Production-shipping today: <strong>TypeScript, JavaScript, Python, Rust, Go</strong>.
+    The Layer 2 architecture is language-agnostic in design, with additional
+    targets (C, C++, Java, PHP, Swift, Kotlin, and others) in active validation.
+    See the parity matrix at <a href="https://cmpsbl.com">cmpsbl.com</a> for the
+    current shipping list before relying on a non-default target.
   </p>
 
   ${colophon()}
