@@ -446,7 +446,9 @@ export function IngestPhase() {
         <div className="flex items-center gap-2">
           {breakerStatus.state === 'closed' && <ShieldCheck className="w-3 h-3 text-neon-green" />}
           <span className={cn("text-xs font-mono font-bold", canUpload ? "text-primary" : "text-destructive")}>
-            {uploadsRemaining}/{evolutionUploadsPerDay} remaining
+            {Number.isFinite(evolutionUploadsPerDay)
+              ? `${uploadsRemaining}/${evolutionUploadsPerDay} remaining`
+              : '∞ unlimited'}
           </span>
         </div>
       </div>
