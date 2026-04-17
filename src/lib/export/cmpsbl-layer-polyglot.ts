@@ -16,11 +16,17 @@
 
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { GO_LAYER_BODIES } from './layers-go/go-layers';
+import { GO_INVENTORY_BODIES } from './layers-go/go-inventory';
 import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
+import { RS_INVENTORY_BODIES } from './layers-rs/rs-inventory';
 import { JAVA_LAYER_BODIES } from './layers-java/java-layers';
+import { JAVA_INVENTORY_BODIES } from './layers-java/java-inventory';
 import { CSHARP_LAYER_BODIES } from './layers-csharp/csharp-layers';
+import { CSHARP_INVENTORY_BODIES } from './layers-csharp/csharp-inventory';
 import { SWIFT_LAYER_BODIES } from './layers-swift/swift-layers';
+import { SWIFT_INVENTORY_BODIES } from './layers-swift/swift-inventory';
 import { KOTLIN_LAYER_BODIES } from './layers-kotlin/kotlin-layers';
+import { KOTLIN_INVENTORY_BODIES } from './layers-kotlin/kotlin-inventory';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -31,10 +37,16 @@ function _registerGoLayerBodies(): void {
   for (const [layerId, body] of Object.entries(GO_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:go`, () => body.trim());
   }
+  for (const [layerId, body] of Object.entries(GO_INVENTORY_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:go`, () => body.trim());
+  }
 }
 
 function _registerRsLayerBodies(): void {
   for (const [layerId, body] of Object.entries(RS_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:rust`, () => body.trim());
+  }
+  for (const [layerId, body] of Object.entries(RS_INVENTORY_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:rust`, () => body.trim());
   }
 }
@@ -43,10 +55,16 @@ function _registerJavaLayerBodies(): void {
   for (const [layerId, body] of Object.entries(JAVA_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:java`, () => body.trim());
   }
+  for (const [layerId, body] of Object.entries(JAVA_INVENTORY_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:java`, () => body.trim());
+  }
 }
 
 function _registerCsharpLayerBodies(): void {
   for (const [layerId, body] of Object.entries(CSHARP_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:csharp`, () => body.trim());
+  }
+  for (const [layerId, body] of Object.entries(CSHARP_INVENTORY_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:csharp`, () => body.trim());
   }
 }
@@ -55,10 +73,16 @@ function _registerSwiftLayerBodies(): void {
   for (const [layerId, body] of Object.entries(SWIFT_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:swift`, () => body.trim());
   }
+  for (const [layerId, body] of Object.entries(SWIFT_INVENTORY_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:swift`, () => body.trim());
+  }
 }
 
 function _registerKotlinLayerBodies(): void {
   for (const [layerId, body] of Object.entries(KOTLIN_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:kotlin`, () => body.trim());
+  }
+  for (const [layerId, body] of Object.entries(KOTLIN_INVENTORY_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:kotlin`, () => body.trim());
   }
 }
