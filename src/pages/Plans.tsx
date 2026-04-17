@@ -12,6 +12,7 @@ import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { TrialBanner } from '@/components/adoption/TrialBanner';
 import { CompoundingValueDashboard } from '@/components/adoption/CompoundingValueDashboard';
 import { TierLayersOverview } from '@/components/plans/TierLayersOverview';
+import { CrownJewelTierBreakdown } from '@/components/pricing/CrownJewelTierBreakdown';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
