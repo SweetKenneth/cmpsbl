@@ -26,6 +26,7 @@ import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 import { V2LaunchLayers } from '@/components/ascension-v2/V2LaunchLayers';
+import { V2CinematicHero } from '@/components/ascension-v2/V2CinematicHero';
 
 import {
   initRun,
@@ -134,25 +135,9 @@ export default function AscensionV2() {
       <PublicNav />
 
       <main className="flex-1">
-        <div className="max-w-3xl mx-auto px-3 sm:px-4 py-8 sm:py-16">
-          {/* Hero — only on upload step */}
-          {step === 0 && (
-            <div className="text-center mb-8 sm:mb-10">
-              <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground mb-2 sm:mb-3">
-                Ascend Your Software
-              </h1>
-              <p className="text-muted-foreground text-xs sm:text-base max-w-lg mx-auto">
-                Upload your code, optionally enhance with Mana-wrapped software,
-                and we'll discover capabilities against the 40-Primitive substrate.
-              </p>
-              <a
-                href="#launch-layers"
-                className="inline-block mt-3 text-[11px] sm:text-xs font-medium text-primary hover:underline underline-offset-4"
-              >
-                See the Top 20 Launch Layers ↓
-              </a>
-            </div>
-          )}
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
+          {/* Cinematic Hero — only on upload step, above the machine */}
+          {step === 0 && <V2CinematicHero />}
 
           {/* Stepper — 4 steps, responsive */}
           <nav className="mb-6 sm:mb-8">
