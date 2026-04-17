@@ -3,6 +3,14 @@
  * Drives the horizontally-scrolling category sections on /store.
  */
 
+import defenseImg from "@/assets/layers/defense-security.jpg";
+import synthesisImg from "@/assets/layers/synthesis-evolution.jpg";
+import integrationImg from "@/assets/layers/integration-contracts.jpg";
+import suitesImg from "@/assets/layers/suites.jpg";
+import {
+  Shield, Zap, Network, Sparkles, type LucideIcon,
+} from "lucide-react";
+
 export type LayerPillar =
   | "suites"
   | "defense-security"
@@ -34,40 +42,62 @@ export interface LayerCategoryMeta {
   pillar: LayerPillar;
   label: string;
   tagline: string;
-  accent: string; // tailwind color token suffix (e.g. "primary", "neon-cyan")
+  image: string;
+  icon: LucideIcon;
+  /** Tailwind gradient classes (used for top bar + glow tinting) */
+  gradient: string;
+  /** Inline rgba glow color (matches gradient) */
+  glowColor: string;
 }
 
 /**
  * Display order = top to bottom on the store page.
- * Order is intentional: Suites first (highest value), then defensive,
- * then evolutionary, then connective, then specialty (Q+R).
  */
 export const LAYER_CATEGORIES: LayerCategoryMeta[] = [
   {
     pillar: "suites",
     label: "Specialty Suites",
     tagline: "Vertical-engine bundles · captured before Layer 2 absorption",
-    accent: "primary",
+    image: suitesImg,
+    icon: Sparkles,
+    gradient: "from-amber-500 via-orange-500 to-rose-500",
+    glowColor: "rgba(251, 146, 60, 0.18)",
   },
   {
     pillar: "defense-security",
     label: "Defense & Security",
     tagline: "Topology-aware shielding and observability enforcement",
-    accent: "neon-magenta",
+    image: defenseImg,
+    icon: Shield,
+    gradient: "from-fuchsia-500 via-pink-500 to-purple-500",
+    glowColor: "rgba(217, 70, 239, 0.18)",
   },
   {
     pillar: "synthesis-evolution",
     label: "Synthesis & Evolution",
     tagline: "Self-healing, sequenced patching, kinetic synthesis",
-    accent: "neon-green",
+    image: synthesisImg,
+    icon: Zap,
+    gradient: "from-emerald-500 via-green-500 to-lime-500",
+    glowColor: "rgba(34, 197, 94, 0.18)",
   },
   {
     pillar: "integration-contracts",
     label: "Integration & Contracts",
     tagline: "Cross-surface contracts and dependency governance",
-    accent: "neon-cyan",
+    image: integrationImg,
+    icon: Network,
+    gradient: "from-cyan-500 via-sky-500 to-blue-500",
+    glowColor: "rgba(6, 182, 212, 0.18)",
   },
 ];
+
+/** Lookup helper — pillar → meta (with sane default). */
+export function getPillarMeta(pillar: string | null): LayerCategoryMeta {
+  return (
+    LAYER_CATEGORIES.find((c) => c.pillar === pillar) ?? LAYER_CATEGORIES[0]
+  );
+}
 
 /**
  * Tier → semantic color token used on the LayerCard badge.
@@ -75,37 +105,37 @@ export const LAYER_CATEGORIES: LayerCategoryMeta[] = [
  */
 export const LAYER_TIER_META: Record<
   string,
-  { color: string; bg: string; border: string; ring: string }
+  { label: string; color: string; bg: string; border: string }
 > = {
   Apex: {
+    label: "APEX",
     color: "text-[hsl(var(--neon-magenta))]",
     bg: "bg-[hsl(var(--neon-magenta))]/10",
     border: "border-[hsl(var(--neon-magenta))]/30",
-    ring: "ring-[hsl(var(--neon-magenta))]/40",
   },
   Mythic: {
+    label: "MYTHIC",
     color: "text-[hsl(var(--neon-purple))]",
     bg: "bg-[hsl(var(--neon-purple))]/10",
     border: "border-[hsl(var(--neon-purple))]/30",
-    ring: "ring-[hsl(var(--neon-purple))]/40",
   },
   Relic: {
+    label: "RELIC",
     color: "text-[hsl(var(--neon-cyan))]",
     bg: "bg-[hsl(var(--neon-cyan))]/10",
     border: "border-[hsl(var(--neon-cyan))]/30",
-    ring: "ring-[hsl(var(--neon-cyan))]/40",
   },
   Prime: {
+    label: "PRIME",
     color: "text-primary",
     bg: "bg-primary/10",
     border: "border-primary/30",
-    ring: "ring-primary/40",
   },
   Mint: {
+    label: "MINT",
     color: "text-[hsl(var(--neon-green))]",
     bg: "bg-[hsl(var(--neon-green))]/10",
     border: "border-[hsl(var(--neon-green))]/30",
-    ring: "ring-[hsl(var(--neon-green))]/40",
   },
 };
 

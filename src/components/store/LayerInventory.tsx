@@ -126,8 +126,8 @@ export function LayerInventory() {
                 "scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
               )}
             >
-              {items.map((item, idx) => (
-                <LayerCard key={item.id} item={item} index={idx} />
+              {items.map((item) => (
+                <LayerCard key={item.id} item={item} />
               ))}
             </div>
           </div>
