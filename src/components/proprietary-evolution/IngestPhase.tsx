@@ -427,6 +427,13 @@ export function IngestPhase() {
 
   return (
     <div className="space-y-7">
+      {/* Persistent error surface — survives toast auto-dismiss */}
+      <InlineErrorPanel
+        error={inlineError}
+        onDismiss={() => setInlineError(null)}
+        onRetry={parsedNode && !registered ? handleRegisterNode : undefined}
+      />
+
       {/* Circuit Breaker Status Banner */}
       {breakerStatus.state !== 'closed' && (
         <div className={cn(
