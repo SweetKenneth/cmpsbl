@@ -51,6 +51,7 @@ import {
   buildPrimitiveHandler,
   registerPrimitive,
 } from '@/lib/ascension';
+import { formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
 
 // Canonical 40-Primitive Matrix (12 Organs · 12 Layers · 8 Engines · 8 Agents)
 const SUBSTRATE_NODES = CANONICAL_PRIMITIVES;
@@ -408,7 +409,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
                   // Feedback loop must never block discovery
                 }
               }
-              setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
+              const displayHit = formatEnhancedCapabilityName(
+                cap.name,
+                cap.chain.filter((p) => p !== 'CANDIDATE'),
+              );
+              setRecentHits((prev) => [displayHit, ...prev.filter((name) => name !== displayHit)].slice(0, 4));
               return cjpi;
             }
             // No capabilities surfaced — record as failed collision (#9)

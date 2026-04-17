@@ -66,14 +66,32 @@ const CATEGORY_EDITIONS: Record<string, string> = {
 };
 
 /**
- * Check if a name is already human-readable (has spaces, mixed case, etc.)
+ * Check if a name is already human-readable (has spaces, mixed case, no underscores).
+ * Underscored names like `Cognitive_Chain_Reasoning_Engine` are NOT considered humanized
+ * — they should be deunderscored before display.
  */
 function isAlreadyHumanized(name: string): boolean {
+  if (name.includes('_')) return false;
   // Contains spaces and has mixed case — likely already a nice name
   if (/\s/.test(name) && /[a-z]/.test(name) && /[A-Z]/.test(name)) return true;
   // Title Case multi-word
   if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)+/.test(name)) return true;
   return false;
+}
+
+/**
+ * Strip underscores from a Title_Case_Underscored name preserving casing.
+ * "Cognitive_Chain_Reasoning_Engine" → "Cognitive Chain Reasoning Engine"
+ * Used by all surface renderers (Ascension flow + exports).
+ */
+export function deunderscoreCapabilityName(name: string): string {
+  if (!name) return '';
+  return name
+    .replace(/^Ψ₄₁_(?:X_)?/i, '')
+    .replace(/_x_/gi, ' ')
+    .replace(/_/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
@@ -89,10 +107,9 @@ function extractBaseName(raw: string): string {
   // Strip chain separators
   cleaned = cleaned.replace(/_x_/gi, ' ').replace(/ × /g, ' ');
 
-  // If it's all caps with underscores like MY_ANALYSIS_TOOL → split on underscore
+  // If it's all caps with underscores like MY_ANALYSIS_TOOL → split + TitleCase each word
   if (/^[A-Z0-9_]+$/.test(cleaned)) {
     const words = cleaned.split('_').filter(Boolean);
-    // Filter out known module names to get the "original" name parts
     const nonModuleWords = words.filter(w => !MODULE_LABELS[w]);
     const targetWords = nonModuleWords.length > 0 ? nonModuleWords : words.slice(0, 1);
     return targetWords
@@ -100,8 +117,18 @@ function extractBaseName(raw: string): string {
       .join('');
   }
 
-  // CamelCase-ish: just titlecase it
-  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+  // Mixed-case with underscores like "Cognitive_Chain_Reasoning_Engine"
+  // → preserve each word's casing, just swap underscores for spaces
+  if (cleaned.includes('_')) {
+    return cleaned
+      .split('_')
+      .filter(Boolean)
+      .map(w => /^[A-Z0-9]+$/.test(w) ? w.charAt(0) + w.slice(1).toLowerCase() : w)
+      .join(' ');
+  }
+
+  // CamelCase-ish: just titlecase first char
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
 }
 
 /**
@@ -186,3 +213,31 @@ export function humanizeFilename(rawName: string): string {
     .replace(/[^a-zA-Z0-9_-]/g, '')
     .toLowerCase();
 }
+
+/**
+ * Format a surfaced capability name for the Ascension flow + exports.
+ *
+ * Replaces the legacy `Now = Cognitive_Chain_Reasoning_Engine + ORACLE, DEFENSE, BRAIN`
+ * style with a clean human label:
+ *
+ *   formatEnhancedCapabilityName("Cognitive_Chain_Reasoning_Engine", ["ORACLE","DEFENSE","BRAIN"])
+ *     → "Enhanced Cognitive Chain Reasoning Engine"
+ *
+ *   formatEnhancedCapabilityName("Cognitive_Chain_Reasoning_Engine")
+ *     → "Cognitive Chain Reasoning Engine"
+ *
+ * @param rawName          The underscored archetype name from the discovery engine
+ * @param addedPrimitives  Optional list of primitives added to the candidate
+ *                         (anything other than the candidate itself). When non-empty,
+ *                         the result is prefixed with "Enhanced ".
+ */
+export function formatEnhancedCapabilityName(
+  rawName: string,
+  addedPrimitives?: ReadonlyArray<string>,
+): string {
+  const clean = deunderscoreCapabilityName(rawName);
+  if (!clean) return 'Unnamed Capability';
+  const hasAddedPrimitives = !!addedPrimitives && addedPrimitives.length > 0;
+  return hasAddedPrimitives ? `Enhanced ${clean}` : clean;
+}
+

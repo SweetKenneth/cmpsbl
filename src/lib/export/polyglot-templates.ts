@@ -12,6 +12,10 @@
  */
 
 import type { UnifiedCapabilityInput } from './unified-capability-file';
+import { formatEnhancedCapabilityName } from './humanize-name';
+
+const displayCap = (c: UnifiedCapabilityInput): string =>
+  formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'));
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — Language Syntax Definitions
@@ -2280,7 +2284,7 @@ pub fn tierFromCJPI(score: u32) []const u8 {
 // implemented with a specific data schema for your use case.
 //
 // CAPABILITIES:
-${capabilities.map(c => `//   ${c.name} — CJPI ${c.cjpiScore} (${c.tier.toUpperCase()}) — Chain: ${c.chain.join(' → ')}`).join('\n')}
+${capabilities.map(c => `//   ${displayCap(c)} — CJPI ${c.cjpiScore} (${c.tier.toUpperCase()}) — Chain: ${c.chain.join(' → ')}`).join('\n')}
 //
 // Port the TypeScript/Rust reference implementation for full dynamic execution.
 // For Zig, consider using comptime pipeline generation for maximum performance.
@@ -2399,7 +2403,7 @@ module cmpsbl_pipeline #(
 endmodule
 
 // Capability Metadata (synthesizable constants)
-${capabilities.map((c, i) => `// Cap ${i}: ${c.name} | CJPI ${c.cjpiScore} | ${c.tier.toUpperCase()} | Chain: ${c.chain.join('→')}`).join('\n')}
+${capabilities.map((c, i) => `// Cap ${i}: ${displayCap(c)} | CJPI ${c.cjpiScore} | ${c.tier.toUpperCase()} | Chain: ${c.chain.join('→')}`).join('\n')}
 `;
 }
 
@@ -2483,7 +2487,7 @@ begin
 end architecture;
 
 -- Capability Metadata
-${capabilities.map((c, i) => `-- Cap ${i}: ${c.name} | CJPI ${c.cjpiScore} | ${c.tier.toUpperCase()} | Chain: ${c.chain.join(' -> ')}`).join('\n')}
+${capabilities.map((c, i) => `-- Cap ${i}: ${displayCap(c)} | CJPI ${c.cjpiScore} | ${c.tier.toUpperCase()} | Chain: ${c.chain.join(' -> ')}`).join('\n')}
 `;
 }
 
@@ -2547,7 +2551,7 @@ module cmpsbl_pipeline #(
 
 endmodule
 
-${capabilities.map((c, i) => `// Cap ${i}: ${c.name} | CJPI ${c.cjpiScore} | ${c.tier.toUpperCase()} | ${c.chain.join('→')}`).join('\n')}
+${capabilities.map((c, i) => `// Cap ${i}: ${displayCap(c)} | CJPI ${c.cjpiScore} | ${c.tier.toUpperCase()} | ${c.chain.join('→')}`).join('\n')}
 `;
 }
 

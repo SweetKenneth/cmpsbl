@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { completeRun, getSnapshot, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
 import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
 import { runPreExportHarness, formatHarnessVerdict } from '@/lib/ascension-v2/pre-export-harness';
 import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
@@ -387,7 +388,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             {capabilities.map((cap, i) => (
               <div key={i} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">{cap.name}</span>
+                <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">
+                  {formatEnhancedCapabilityName(cap.name, cap.chain.filter((p) => p !== 'CANDIDATE'))}
+                </span>
                 {cap.mergeVerdict && (
                   <span
                     className={cn(
