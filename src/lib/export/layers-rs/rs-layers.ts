@@ -57,7 +57,7 @@ fn _cmpsbl_now_ms() -> u64 {
 
 export const SELF_HEALING_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Self-Healing Orchestrator (Crown Jewel #1)                  ║
+// ║  ASCENSION LAYER — Sealed Resilience Module (proprietary).                    ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_self_healing {
     use std::sync::Mutex;

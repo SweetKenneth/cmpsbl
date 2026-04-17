@@ -11,9 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const SELF_HEALING_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Self-Healing Orchestrator (Crown Jewel #8)                  ║
-// ║  Auto-detects failures, selects lowest-blast-radius repair strategy,         ║
-// ║  executes recovery, and learns from outcomes. No source modification.        ║
+// ║  ASCENSION LAYER — Sealed Resilience Module (proprietary).                    ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblBlastRadius = 'node' | 'sector' | 'system';
@@ -152,9 +150,7 @@ _cmpsbl_register_defaults();
 
 const SELF_HEALING_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Self-Healing Orchestrator (Crown Jewel #8)                  ║
-# ║  Auto-detects failures, selects lowest-blast-radius repair strategy,         ║
-# ║  executes recovery, and learns from outcomes. No source modification.        ║
+# ║  ASCENSION LAYER — Sealed Resilience Module (proprietary).                    ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -343,9 +339,7 @@ const SELF_HEALING_LAYER: CmpsblLayerDefinition = {
 
 const TRIAGE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Autonomous Triage Engine (Crown Jewel #4)                   ║
-// ║  Medical-grade triage protocol for distributed systems. Differential         ║
-// ║  diagnosis with automated repair dispatch. Prioritizes by blast radius.      ║
+// ║  ASCENSION LAYER — Sealed Triage Module (proprietary).                        ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblSeverity = 'critical' | 'degraded' | 'warning' | 'info';
@@ -453,9 +447,7 @@ export function cmpsbl_active_diagnoses(): CmpsblDiagnosis[] {
 
 const TRIAGE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Autonomous Triage Engine (Crown Jewel #4)                   ║
-# ║  Medical-grade triage protocol for distributed systems. Differential         ║
-# ║  diagnosis with automated repair dispatch. Prioritizes by blast radius.      ║
+# ║  ASCENSION LAYER — Sealed Triage Module (proprietary).                        ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time

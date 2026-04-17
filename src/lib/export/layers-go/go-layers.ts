@@ -19,7 +19,7 @@
 
 export const SELF_HEALING_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Self-Healing Orchestrator (Crown Jewel #1)                  ║
+// ║  ASCENSION LAYER — Sealed Resilience Module (proprietary).                    ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblBlastRadius string
