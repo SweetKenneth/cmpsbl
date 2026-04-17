@@ -1048,6 +1048,69 @@ ${getAutoWireTs(selectedLayers || [])}
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// JavaScript Generator (diverges from TypeScript)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Strip TypeScript-only syntax from a TS-shaped emitter so the result is
+ * valid JS for both CommonJS and ESM consumers. Conservative — only removes
+ * patterns the TS generator above is known to emit.
+ */
+function stripTypeScriptSyntax(src: string): string {
+  let out = src;
+  // Drop `interface Foo { ... }` and `type Foo = ...;` blocks
+  out = out.replace(/^export\s+interface\s+\w+\s*(?:<[^>]+>)?\s*\{[\s\S]*?^\}\s*$/gm, '');
+  out = out.replace(/^export\s+type\s+\w[\w<>,\s|&'"\[\]]*=\s*[^;]+;\s*$/gm, '');
+  out = out.replace(/^interface\s+\w+\s*(?:<[^>]+>)?\s*\{[\s\S]*?^\}\s*$/gm, '');
+  out = out.replace(/^type\s+\w[\w<>,\s|&'"\[\]]*=\s*[^;]+;\s*$/gm, '');
+  // Strip parameter type annotations: `(x: Foo, y: Bar)` → `(x, y)`
+  out = out.replace(/(\b[A-Za-z_$][\w$]*)\s*:\s*(?:Record<[^>]+>|Array<[^>]+>|Promise<[^>]+>|[A-Za-z_$][\w$<>,\s|&'"\[\]?]*)(?=\s*[,)=])/g, '$1');
+  // Strip return-type annotations: `): Foo {` → `) {`
+  out = out.replace(/\)\s*:\s*[A-Za-z_$][\w$<>,\s|&'"\[\]?.]*\s*\{/g, ') {');
+  // Strip `as Foo` casts
+  out = out.replace(/\s+as\s+(?:Record<[^>]+>|[A-Za-z_$][\w$<>,\s|&'"\[\]?.]*)/g, '');
+  // Strip generics on calls: `foo<T>(x)` → `foo(x)`
+  out = out.replace(/(\b[A-Za-z_$][\w$]*)<[A-Za-z_$,\s<>\[\]]+>(\s*\()/g, '$1$2');
+  // Drop `readonly` and `public/private/protected` modifiers
+  out = out.replace(/\b(readonly|public|private|protected)\s+/g, '');
+  // Drop class field type decls: `name: string;` at class level
+  out = out.replace(/^(\s+)(\w+)\s*:\s*[A-Za-z_$][\w$<>,\s|&'"\[\]?.]*\s*;\s*$/gm, '$1// $2');
+  return out;
+}
+
+export function generateUnifiedJavaScript(
+  capabilities: UnifiedCapabilityInput[],
+  packName: string,
+  userSourceFiles?: UserSourceFile[],
+  selectedLayers?: CmpsblLayerDefinition[],
+): string {
+  const ts = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+  const js = stripTypeScriptSyntax(ts);
+
+  // Collect public function names for the CommonJS footer (best-effort)
+  const fnNames = [...js.matchAll(/^export\s+function\s+([A-Za-z_$][\w$]*)\s*\(/gm)]
+    .map((m) => m[1]);
+  const classNames = [...js.matchAll(/^export\s+class\s+([A-Za-z_$][\w$]*)/gm)]
+    .map((m) => m[1]);
+  const exported = Array.from(new Set([...fnNames, ...classNames]));
+
+  const cjsFooter = exported.length > 0
+    ? `\n\n// ── CommonJS interop (proprietary) ─────────────────────────────────────────
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { ${exported.join(', ')} };
+}\n`
+    : '';
+
+  const banner = `// ═══════════════════════════════════════════════════════════════════════════════
+//  CMPSBL® Ascension Layer™ — JavaScript Edition (CommonJS + ESM compatible)
+//  Type annotations stripped from the TS surface; behavior is identical.
+// ═══════════════════════════════════════════════════════════════════════════════
+`;
+
+  return banner + js + cjsFooter;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Python Generator
 // ═══════════════════════════════════════════════════════════════════════════════
 
