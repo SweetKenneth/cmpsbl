@@ -154,63 +154,8 @@ export default function Store() {
 
             {/* ═══ STORE TAB ═══ */}
             <TabsContent value="store" className="mt-0">
-              {/* Pricing ladder */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.25, duration: 0.5 }}
-                className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8"
-              >
-                {TIERS.map((t, i) => {
-                  const meta = TIER_META[t];
-                  return (
-                    <motion.div
-                      key={t}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                      className={cn(
-                        "px-3.5 py-1.5 rounded-full border text-xs font-black tracking-wider",
-                        "transition-all duration-300 hover:scale-110 cursor-default",
-                        "backdrop-blur-sm shadow-sm",
-                        meta.bg, meta.color, meta.border
-                      )}
-                    >
-                      {meta.label} · {meta.price}
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
+              {/* Pricing ladder + filter tabs removed per request */}
 
-              {/* Filter tabs */}
-              <div className="flex items-center justify-center gap-2 mb-10">
-                {FILTER_CONFIG.map(({ key, label, shortLabel, icon: Icon, count }) => (
-                  <Button
-                    key={key}
-                    variant={filter === key ? "default" : "outline"}
-                    size="sm"
-                    className={cn(
-                      "gap-1.5 text-xs font-bold min-h-[44px] px-3 sm:px-5 rounded-xl transition-all duration-300",
-                      filter === key
-                        ? "shadow-lg shadow-primary/25 scale-[1.02]"
-                        : "hover:border-primary/30 hover:bg-primary/5"
-                    )}
-                    onClick={() => setFilter(key)}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">{label}</span>
-                    <span className="sm:hidden">{shortLabel}</span>
-                    <span className={cn(
-                      "ml-1 text-xs font-mono tabular-nums px-1.5 py-0.5 rounded-full",
-                      filter === key
-                        ? "bg-primary-foreground/20 text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                    )}>
-                      {count}
-                    </span>
-                  </Button>
-                ))}
-              </div>
 
               {/* ═══ NEW: Layer Inventory (first-class) ═══ */}
               <LayerInventory />
