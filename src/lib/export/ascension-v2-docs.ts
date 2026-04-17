@@ -717,6 +717,34 @@ export function generateV2UserGuideHTML(input: V2UserGuideInput): string {
 
   <!-- §10 Advanced -->
   <h2 id="advanced">10. Advanced Configuration</h2>
+
+  <h3>Debug Mode — See the Layers Working</h3>
+  <p>
+    By default, Layer 2 runs silently — your code behaves identically to before, just with
+    governance, resilience, and observability quietly active underneath. To <em>see</em> the
+    machinery for yourself, enable Debug Mode. It prints the active layer roster on the first
+    call and surfaces one honest line per real BEACON signal. No synthetic events, no fake
+    triggers — only what actually fires.
+  </p>
+  <p><strong>Two ways to enable:</strong></p>
+  <pre># Option 1 — environment variable (recommended for CLI / scripts)
+CMPSBL_DEBUG=1 ${input.language === 'python' ? 'python' : input.language === 'go' ? 'go run' : input.language === 'rust' ? 'cargo run' : 'node'} ${esc(input.originalFileName)}
+
+# Option 2 — per-call flag (recommended for selective debugging)
+${input.language === 'python'
+  ? 'cmpsbl_execute("my_capability", { "_cmpsbl_debug": True, ...input })'
+  : 'cmpsbl_execute("my_capability", { _cmpsbl_debug: true, ...input });'}</pre>
+  <p><strong>Sample output:</strong></p>
+  <pre>[CMPSBL] Layers active: CIRCUIT-BREAKER, TIMEOUT, RETRY, ENVELOPE, TRACE, DEGRADATION, BEACON
+[CMPSBL] First call: my_capability
+[CMPSBL] my_capability ok (12ms)
+[CMPSBL] my_capability FAIL (304ms) via CMPSBL_TIMEOUT</pre>
+  <p>
+    Debug output is gated behind a single boolean check — when disabled (the default), there
+    is zero stdout, zero performance impact, and the export is byte-identical to running
+    without it.
+  </p>
+
   <h3>Custom Capability Ordering</h3>
   <p>Capabilities execute in CJPI-descending order by default. To change execution order, modify the <code>_capabilityOrder</code> array in the ascended file.</p>
   <h3>Mana Enhancement</h3>
