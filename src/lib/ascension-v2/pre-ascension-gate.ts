@@ -218,11 +218,12 @@ function pythonStructuralCheck(source: string): GateError | null {
 // ═══════════════════════════════════════════════════════════════
 
 function jsStructuralCheck(source: string): GateError | null {
-  // Detect a function/class declaration that's never followed by '{'
+  // Detect a function/class declaration that's never followed by '{'.
+  // Anything other than '{' (after the signature) is a syntax error in
+  // a *declaration* — including ';' (no body), ')', or random tokens.
   const re = /\b(function\s+\w+\s*\([^)]*\)|class\s+\w+(?:\s+extends\s+\w+)?)\s*([^\s{])/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(source)) !== null) {
-    if (m[2] === ';' || m[2] === ')') continue;
     const { line, column } = offsetToLineCol(source, m.index);
     return {
       code: 'E_SOURCE_INVALID',
