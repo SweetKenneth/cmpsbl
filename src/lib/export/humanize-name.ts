@@ -86,12 +86,15 @@ function isAlreadyHumanized(name: string): boolean {
  */
 export function deunderscoreCapabilityName(name: string): string {
   if (!name) return '';
-  return name
+  const cleaned = name
     .replace(/^Ψ₄₁_(?:X_)?/i, '')
     .replace(/_x_/gi, ' ')
     .replace(/_/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+  // Every surfaced capability is a Layer — normalize trailing
+  // "Engine" / "Module" / "System" / "Framework" / "Component" suffixes to "Layer".
+  return cleaned.replace(/\s+(Engine|Module|System|Framework|Component)s?$/i, ' Layer');
 }
 
 /**
