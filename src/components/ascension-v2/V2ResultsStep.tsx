@@ -229,12 +229,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
       // Compute the upstream license that will actually ship — single source
       // of truth for the README, NOTICE.txt, LICENSE-UPSTREAM.txt, and manifest
-      // entries below. Honors the SPDX dropdown override.
+      // entries below. Honors the SPDX dropdown override; otherwise falls
+      // through sibling-LICENSE → inline-header detection (same precedence
+      // as the live preview above the dropdown).
       const overrideSpdx = spdxChoice === 'auto' ? null : (spdxChoice === 'none' ? null : spdxChoice);
-      const shippingUpstream =
-        sourceFiles.length > 0 && spdxChoice !== 'none'
-          ? detectUpstreamLicenseForExport(sourceFiles[0].content, overrideSpdx)
-          : null;
+      const shippingUpstream: DetectedLicense | null =
+        sourceFiles.length === 0 || spdxChoice === 'none'
+          ? null
+          : overrideSpdx
+            ? buildLicenseFromSpdx(overrideSpdx)
+            : detectLicenseFromSiblingFile(sourceFiles)
+              ?? detectUpstreamLicenseForExport(sourceFiles[0].content);
 
       const readmeHTML = generateV2ReadmeHTML({
         packName: zipName,
