@@ -208,6 +208,144 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\b_cmpsbl_anc_call_counter\b/g, '_xacc'],
   [/\b_cmpsbl_update_baseline\b/g, '_xub1'],
   [/\b_cmpsbl_raw_execute_anc\b/g, '_xreanc'],
+
+  // ── Selectable: Governance Shield Suite (#18) ────────────────────────────
+  // Public API kept: cmpsbl_register_policy, cmpsbl_check_policies, cmpsbl_self_audit,
+  // cmpsbl_execute_governed
+  [/\b_cmpsbl_policies\b/g, '_xpl1'],
+  [/\b_cmpsbl_vetoes\b/g, '_xvt1'],
+  [/\b_cmpsbl_raw_execute_gs\b/g, '_xregs'],
+  [/\bCmpsblPolicy\b/g, '_XPl1'],
+  [/\bCmpsblVeto\b/g, '_XVt1'],
+
+  // ── Selectable: Tamper-Evident Audit Chain (#19) ─────────────────────────
+  // Public API kept: cmpsbl_append_audit, cmpsbl_verify_chain, cmpsbl_audit_root,
+  // cmpsbl_execute_audited
+  [/\b_cmpsbl_audit_chain\b/g, '_xac1'],
+  [/\b_cmpsbl_audit_hash\b/g, '_xah1'],
+  [/\b_cmpsbl_raw_execute_ach\b/g, '_xreach'],
+  [/\bCmpsblAuditEntry\b/g, '_XAE1'],
+
+  // ── Selectable: Adaptive Defense Breeding (#6) ───────────────────────────
+  // Public API kept: cmpsbl_seed_defense, cmpsbl_breed_defenses, cmpsbl_defense_stats,
+  // cmpsbl_execute_defended
+  [/\b_cmpsbl_defense_pool\b/g, '_xdp1'],
+  [/\b_cmpsbl_defense_generation\b/g, '_xdg1'],
+  [/\b_cmpsbl_random_cd\b/g, '_xrcd'],
+  [/\b_cmpsbl_raw_execute_def\b/g, '_xredef'],
+  [/\bCmpsblDefenseGenome\b/g, '_XDG1'],
+
+  // ── Selectable: Zero-Trust Identity Suite (#7) ───────────────────────────
+  // Public API kept: cmpsbl_bind_session, cmpsbl_verify_session, cmpsbl_score_attack,
+  // cmpsbl_execute_zerotrust
+  [/\b_cmpsbl_sessions\b/g, '_xsn1'],
+  [/\b_cmpsbl_session\b/g, '_xse1'],
+  [/\b_cmpsbl_default_session\b/g, '_xds1'],
+  [/\b_cmpsbl_hash_bind\b/g, '_xhb1'],
+  [/\b_cmpsbl_raw_execute_zt\b/g, '_xrezt'],
+  [/\bCmpsblSession\b/g, '_XSe1'],
+
+  // ── Selectable: Cyber Defense Suite (#8) ─────────────────────────────────
+  // Public API kept: cmpsbl_record_ioc, cmpsbl_correlate_iocs, cmpsbl_ddos_check,
+  // cmpsbl_execute_cyberdefense
+  [/\b_cmpsbl_iocs\b/g, '_xio1'],
+  [/\b_cmpsbl_traffic_buckets\b/g, '_xtb1'],
+  [/\b_cmpsbl_last_bucket_at\b/g, '_xlba'],
+  [/\b_cmpsbl_ddos_absorbed\b/g, '_xda1'],
+  [/\b_cmpsbl_raw_execute_cd\b/g, '_xrecd'],
+  [/\bCmpsblIOC\b/g, '_XIO1'],
+
+  // ── Selectable: Fleet Intelligence Orchestrator (#9) ─────────────────────
+  // Public API kept: cmpsbl_register_provider, cmpsbl_pick_provider, cmpsbl_score_provider,
+  // cmpsbl_record_provider_call, cmpsbl_execute_fleet
+  [/\b_cmpsbl_providers\b/g, '_xpv1'],
+  [/\b_cmpsbl_provider\b/g, '_xpv2'],
+  [/\b_cmpsbl_routed_to\b/g, '_xrt1'],
+  [/\b_cmpsbl_raw_execute_fi\b/g, '_xrefi'],
+  [/\bCmpsblProvider\b/g, '_XPv1'],
+
+  // ── Selectable: AI Safety Suite (#10) ────────────────────────────────────
+  // Public API kept: cmpsbl_check_hallucination, cmpsbl_sanitize_prompt, cmpsbl_execute_safe
+  [/\b_cmpsbl_raw_execute_as\b/g, '_xreas'],
+
+  // ── Selectable: AI Cost Intelligence Suite (#11) ─────────────────────────
+  // Public API kept: cmpsbl_set_budget, cmpsbl_can_spend, cmpsbl_record_spend,
+  // cmpsbl_register_cost, cmpsbl_estimate_cost, cmpsbl_execute_costaware
+  [/\b_cmpsbl_budget\b/g, '_xbg1'],
+  [/\b_cmpsbl_provider_cpm\b/g, '_xpcp'],
+  [/\b_cmpsbl_quality_hint\b/g, '_xqh1'],
+  [/\b_cmpsbl_tokens_in\b/g, '_xti1'],
+  [/\b_cmpsbl_raw_execute_co\b/g, '_xreco'],
+  [/\bCmpsblBudget\b/g, '_XBg1'],
+  [/\bCmpsblTokenPlan\b/g, '_XTP1'],
+
+  // ── Selectable: Cognitive Memory Suite (#12) ─────────────────────────────
+  // Public API kept: cmpsbl_remember, cmpsbl_recall, cmpsbl_relate, cmpsbl_traverse,
+  // cmpsbl_compact, cmpsbl_execute_memory
+  [/\b_cmpsbl_nodes\b/g, '_xnd1'],
+  [/\b_cmpsbl_edges\b/g, '_xed1'],
+  [/\b_cmpsbl_label_index\b/g, '_xli1'],
+  [/\b_cmpsbl_raw_execute_cm\b/g, '_xrecm'],
+  [/\bCmpsblNode\b/g, '_XNd1'],
+  [/\bCmpsblEdge\b/g, '_XEd1'],
+
+  // ── Selectable: Performance Surgery Suite (#13) ──────────────────────────
+  // Public API kept: cmpsbl_record_sample, cmpsbl_top_hotpaths, cmpsbl_set_baseline,
+  // cmpsbl_check_regression, cmpsbl_execute_profiled
+  [/\b_cmpsbl_hot_paths\b/g, '_xhp1'],
+  [/\b_cmpsbl_baselines\b/g, '_xbl1'],
+  [/\b_cmpsbl_classify_complexity\b/g, '_xcc1'],
+  [/\b_cmpsbl_time_ps\b/g, '_xtp2'],
+  [/\b_cmpsbl_raw_execute_ps\b/g, '_xreps'],
+  [/\bCmpsblHotPath\b/g, '_XHP1'],
+
+  // ── Selectable: Data Pipeline Resilience Suite (#14) ─────────────────────
+  // Public API kept: cmpsbl_create_stream, cmpsbl_publish, cmpsbl_consume, cmpsbl_replay,
+  // cmpsbl_stream_stats, cmpsbl_execute_streamed
+  [/\b_cmpsbl_streams\b/g, '_xst1'],
+  [/\b_cmpsbl_event_log\b/g, '_xel1'],
+  [/\b_cmpsbl_raw_execute_pr\b/g, '_xrepr'],
+  [/\bCmpsblBuffer\b/g, '_XBu1'],
+  [/\bCmpsblEvent\b/g, '_XEv1'],
+
+  // ── Selectable: Pipeline Composition Engine (#15) ────────────────────────
+  // Public API kept: cmpsbl_pipeline, cmpsbl_add_stage, cmpsbl_run_pipeline,
+  // cmpsbl_pipeline_stats, cmpsbl_execute_composable
+  // (raw_execute_pc was already mapped via _pipelineContext above; add explicit)
+  [/\b_cmpsbl_pipelines\b/g, '_xpp1'],
+  [/\bCmpsblPipeline\b/g, '_XPp1'],
+  [/\bCmpsblStage\b/g, '_XSg1'],
+
+  // ── Selectable: Universal Input Intelligence (#16) ───────────────────────
+  // Public API kept: cmpsbl_thread, cmpsbl_fork_thread, cmpsbl_append_turn,
+  // cmpsbl_detect_modality, cmpsbl_normalize_input, cmpsbl_execute_universal
+  [/\b_cmpsbl_threads\b/g, '_xth2'],
+  [/\b_cmpsbl_modality\b/g, '_xmd1'],
+  [/\b_cmpsbl_raw_execute_ui\b/g, '_xreui'],
+  [/\bCmpsblThread\b/g, '_XTh1'],
+  [/\bCmpsblInputModality\b/g, '_XIM1'],
+
+  // ── Selectable: Self-Evolution Suite (#17) ───────────────────────────────
+  // Public API kept: cmpsbl_propose_mutation, cmpsbl_shadow_run, cmpsbl_promote,
+  // cmpsbl_rollback, cmpsbl_mutation_stats, cmpsbl_execute_evolved
+  [/\b_cmpsbl_mutations\b/g, '_xmu1'],
+  [/\b_cmpsbl_shadow_state\b/g, '_xss2'],
+  [/\b_cmpsbl_evolve_outcomes\b/g, '_xeo1'],
+  [/\b_cmpsbl_raw_execute_se\b/g, '_xrese'],
+  [/\bCmpsblMutation\b/g, '_XMu1'],
+
+  // ── Selectable: Regulatory Compliance Suite (#20) ────────────────────────
+  // Public API kept: cmpsbl_record_compliance, cmpsbl_attestation, cmpsbl_route_for,
+  // cmpsbl_execute_compliant
+  [/\b_cmpsbl_compliance_events\b/g, '_xce1'],
+  [/\b_cmpsbl_jurisdiction_controls\b/g, '_xjc1'],
+  [/\b_cmpsbl_jurisdiction\b/g, '_xju1'],
+  [/\b_cmpsbl_residency_routes\b/g, '_xrr1'],
+  [/\b_cmpsbl_fingerprint\b/g, '_xfp1'],
+  [/\b_cmpsbl_json_ps\b/g, '_xjp1'],
+  [/\b_cmpsbl_raw_execute_ac\b/g, '_xreac'],
+  [/\bCmpsblComplianceEvent\b/g, '_XCE1'],
+  [/\bCmpsblJurisdiction\b/g, '_XJu1'],
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
