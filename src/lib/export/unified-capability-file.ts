@@ -160,20 +160,16 @@ ${embeddedSources}
       targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
     }
     for (const cls of substantiveClasses.slice(0, 3)) {
-      // Class branch: only `new ${cls}()` errors (signature mismatch) are
-      // caught — once we successfully construct and locate a method, its
-      // invocation errors propagate so wrappers (Circuit Breaker, Retry,
-      // Self-Healing) can react.
+      // Sealed dispatch — proprietary.
       targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
       let inst: unknown;
       try { inst = new ${cls}(); }
-      catch(_ctorErr) { /* ctor signature mismatch — skip to next target */ inst = null; }
+      catch(_ctorErr) { inst = null; }
       if (inst) {
         const methods = ['execute','run','handle','process','main'];
         let invoked = false;
         for (const m of methods) {
           if (typeof (inst as Record<string, unknown>)[m] === 'function') {
-            // Invocation errors propagate unchanged.
             originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
             originalExecuted = true;
             invoked = true;
@@ -232,8 +228,7 @@ ${tsEntryPointCode}
     },
   };
 
-  // Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
-  // The envelope is preserved on the error so observers can still read it.
+  // Sealed propagation — proprietary.
   if (originalError !== null || pipeline.success === false) {
     const _reason = originalError !== null ? 'handler_failure' : 'pipeline_failure';
     const _firstErr = pipeline.trace.find(t => t.status === 'error');
@@ -371,12 +366,8 @@ export interface ExecutionResult {
 }
 
 /**
- * Thrown by execute_* functions when LAYER 1 (your code) raises or the
- * Ascension Layer pipeline reports failure. The protective layers
- * (Circuit Breaker, Retry, Self-Healing, BEACON) need a real throw to
- * react — silent success-dicts would mask failures from the resilience
- * stack. The full envelope is preserved on \`.envelope\` so observers
- * can still read structured execution data after a failure.
+ * Sealed error type emitted by the Ascension Layer when execution fails.
+ * The full envelope is preserved on `.envelope` for structured introspection.
  */
 export class CmpsblExecutionError extends Error {
   readonly capability: string;
@@ -1519,7 +1510,7 @@ def handle_cortex(ctx, mod, meta):
     return ctx
 
 def handle_evolution(ctx, mod, meta):
-    """Real fitness tracking: per-capability rolling fitness + strategy gradient."""
+    """Sealed handler."""
     cap_name = meta.get("name", "default")
     state = _CMPSBL_EVOLUTION_STATE.setdefault(cap_name, {"cycle": 0, "fitness_history": []})
     state["cycle"] += 1
@@ -1543,7 +1534,7 @@ def handle_evolution(ctx, mod, meta):
     return ctx
 
 def handle_shadow(ctx, mod, meta):
-    """Real audit: deterministic hash chain over successive snapshots."""
+    """Sealed handler."""
     serialized = json.dumps(ctx["_data"], default=str, sort_keys=True)
     current_hash = quick_hash(serialized)
     prior_hash = ctx["_data"].get("_shadow", {}).get("hash", "0" * 8)
@@ -2094,14 +2085,8 @@ for _module_name in CMPSBL_PACK_META["modules"]:
 
 
 class CmpsblExecutionError(Exception):
-    """
-    Raised by CmpsblCapability.execute when Layer 1 (your code) raises or
-    Layer 2 (the cognitive pipeline) reports failure. Wrappers (Circuit
-    Breaker, Retry, Self-Healing, BEACON) need a real exception to react —
-    silent success-dicts mask failures from the resilience stack. The full
-    envelope is preserved on \`.envelope\` so observers can still read
-    structured execution data.
-    """
+    """Sealed error type emitted by the Ascension Layer when execution fails.
+    The full envelope is preserved on `.envelope` for structured introspection."""
     def __init__(self, capability: str, reason: str, detail: str, envelope: dict):
         super().__init__(f"[CMPSBL] {capability}: {reason} — {detail}")
         self.capability = capability
@@ -2110,7 +2095,7 @@ class CmpsblExecutionError(Exception):
 
 
 class CmpsblCapability:
-    """Single capability executor with dual-layer architecture."""
+    """Sealed capability executor."""
 
     def __init__(self, capability_name: str = None):
         if capability_name:
@@ -2125,7 +2110,7 @@ class CmpsblCapability:
 ${executeOriginalBody}
 
     def execute(self, input_data: dict = None) -> dict:
-        """Dual-layer: original code FIRST, then CMPSBL cognitive pipeline."""
+        """Sealed executor entry point."""
         start = time.time()
         original_executed = False
         original_error = None
@@ -2159,8 +2144,7 @@ ${executeOriginalBody}
             },
         }
 
-        # Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
-        # The envelope is preserved on the exception so observers can still read it.
+        # Sealed propagation — proprietary.
         if original_error is not None or pipeline.get("success") is False:
             reason = "handler_failure" if original_error is not None else "pipeline_failure"
             first_err = next((t for t in pipeline.get("trace", []) if t.get("status") == "error"), None)
@@ -2601,11 +2585,8 @@ function cmpsbl_execute_pipeline(array $input, array $chain, array $meta): array
 ${generatePhpPackMeta(capabilities, allModules, packName)}
 
 /**
- * Thrown by CMPSBLCapability::execute when Layer 1 (your code) raises or
- * Layer 2 (the cognitive pipeline) reports failure. Wrappers (Circuit Breaker,
- * Retry, Self-Healing, BEACON) need a real exception to react — silent
- * success-arrays mask failures from the resilience stack. The full envelope
- * is preserved on \`->envelope\` so observers can still read structured data.
+ * Sealed error type emitted by the Ascension Layer when execution fails.
+ * The full envelope is preserved on `->envelope` for structured introspection.
  */
 class CmpsblExecutionError extends \\RuntimeException
 {
@@ -2678,7 +2659,7 @@ ${phpExecuteOriginalBody(phpFiles)}
             ],
         ];
 
-        // Surface real failures to wrappers (Circuit Breaker, Retry, Self-Healing).
+        // Sealed propagation — proprietary.
         $pipelineSuccess = $pipeline['success'] ?? true;
         if ($originalError !== null || $pipelineSuccess === false) {
             $reason = $originalError !== null ? 'handler_failure' : 'pipeline_failure';
@@ -2829,8 +2810,7 @@ export function generateUnifiedCapabilityFile(
     raw = generateUnifiedGeneric(capabilities, packName, lang);
   }
 
-  // Inject layer code for non-TS/PY languages (TS/PY handle layers inline above).
-  // Always include CMPSBL_CORE_LAYERS (Circuit Breaker) — it is always-on, not selectable.
+  // Sealed layer composition — proprietary.
   if (lang !== 'typescript' && lang !== 'javascript' && lang !== 'python') {
     const allLayers = [...CMPSBL_CORE_LAYERS, ...(selectedLayers ?? [])];
     if (allLayers.length > 0) {
