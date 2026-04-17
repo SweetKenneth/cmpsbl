@@ -621,11 +621,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
         </p>
       </div>
 
-      {/* Progress bar */}
+      {/* Progress bar — flowing gradient mirrors the homepage H1 palette */}
       <div className="space-y-2">
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-2 bg-muted rounded-full overflow-hidden relative">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
+            className="h-full bg-ascension-gradient rounded-full transition-[width] duration-500 ease-out shadow-[0_0_12px_hsl(var(--neon-cyan)/0.45)]"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -634,7 +634,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
             <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" />
             <span className="truncate">{STATUS_MESSAGES[statusIdx]}</span>
           </span>
-          <span className="text-foreground font-mono flex-shrink-0">{progress}%</span>
+          <span className="text-foreground font-mono font-semibold flex-shrink-0 tabular-nums">{progress}%</span>
         </div>
       </div>
 
