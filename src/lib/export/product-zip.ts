@@ -6,6 +6,7 @@
 
 import JSZip from 'jszip';
 import { generateCmpsblManifest, serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
+import { tagMarkdown, tagPlainText } from '@/lib/export/brand-tag';
 import { generateReadmeHTML, generateLicenseHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
 import {
@@ -48,7 +49,7 @@ function cjpiFromTier(tier: string): number {
 function generateReadmeMD(product: ProductZipInput): string {
   const kindLabel = product.kind === 'engine' ? 'Composable Engine' : 'Standalone Agent';
   const safeName = product.name.replace(/[^a-zA-Z0-9]/g, '_');
-  return `# ${product.name} — CMPSBL® Convex Core™
+  const body = `# ${product.name} — CMPSBL® Convex Core™
 
 ## ${product.subtitle}
 
@@ -160,6 +161,7 @@ redistribution, and reverse engineering are prohibited.
 © 2025–2026 PromptFluid®. All rights reserved.
 CMPSBL® is a registered trademark of PromptFluid.
 `;
+  return tagMarkdown(body);
 }
 
 function generateLicenseTxt(): string {
