@@ -240,6 +240,7 @@ function htmlShell(title: string, body: string): string {
   <style>${BRAND_STYLES}</style>
 </head>
 <body>
+<div class="ambient" aria-hidden="true"></div>
 ${body}
 </body>
 </html>`;
@@ -250,7 +251,7 @@ function colophon(): string {
   <div class="colophon">
     <div class="colophon-left">
       CMPSBL® · PromptFluid™<br>
-      https://cmpsbl.com<br>
+      <a href="https://cmpsbl.com">https://cmpsbl.com</a><br>
       © ${year()} CMPSBL®. All rights reserved.<br>
       U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 64/031,637
     </div>
@@ -261,15 +262,21 @@ function colophon(): string {
   </p>`;
 }
 
-function sealBadge(): string {
+/**
+ * Animated CMPSBL® wordmark — visually identical to the homepage
+ * <CmpsblWordmark/> hero logo. Pure CSS, no external assets.
+ */
+function cmpsblWordmark(): string {
   return `
   <div class="seal-area">
-    <div class="seal-badge">
-      <div class="mark">CMPSBL®</div>
-      <div class="year">${year()}</div>
-    </div>
+    <span class="cmpsbl-wordmark" aria-label="CMPSBL®" role="img">
+      <span class="cm-l cm-c">C</span><span class="cm-l cm-m">M</span><span class="cm-l cm-p">P</span><span class="cm-l cm-s">S</span><span class="cm-l cm-b">B</span><span class="cm-l cm-l2">L</span><span class="cm-r">®</span>
+    </span>
   </div>`;
 }
+
+// Backwards-compat alias for any older callers.
+const sealBadge = cmpsblWordmark;
 
 // ═══════════════════════════════════════════════════════════════
 // LICENSE.html
