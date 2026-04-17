@@ -12,7 +12,7 @@
  */
 
 import { useState, useCallback, useRef, useMemo } from 'react';
-import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock } from 'lucide-react';
+import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,10 +21,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { analyzeUploadedFiles } from '@/components/proprietary-evolution/ingest-utils';
 import { detectFunctionBoundaries, buildAttachmentPlan, serializeAttachmentPlan } from '@/lib/mana';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import { CANONICAL_PRIMITIVES } from '@/lib/ascension-v2/canonical-primitives';
 import { TIER_LAYERS, TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 import { useEngineSubscription, type SubscriptionTier } from '@/hooks/useEngineSubscription';
 import { useUserRole } from '@/hooks/useUserRole';
+import { useLayerEntitlements } from '@/hooks/useLayerEntitlements';
 import { Link } from 'react-router-dom';
 
 /**
@@ -92,6 +94,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const { user } = useAuth();
   const { tier: subscriptionTier } = useEngineSubscription();
   const { isGovernor } = useUserRole();
+  const { ownedLayerIds, loading: entitlementsLoading } = useLayerEntitlements();
 
   // Effective tier = subscription tier (Governor sees everything regardless).
   const effectiveTier = useMemo<LayerTier>(
@@ -101,6 +104,16 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const userTierRank = TIER_RANK[effectiveTier];
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
+
+  // Inventory layers (25 store SKUs) the user has purchased — ranked by CJPI desc.
+  const purchasedInventoryLayers = useMemo<CmpsblLayerDefinition[]>(
+    () =>
+      INVENTORY_LAYERS
+        .filter((l) => ownedLayerIds.has(l.id))
+        .slice()
+        .sort((a, b) => b.cjpi - a.cjpi),
+    [ownedLayerIds],
+  );
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -344,19 +357,92 @@ export function V2EnhanceStep({ onComplete }: Props) {
         </div>
       )}
 
-      {/* Store Add-Ons Teaser (Future) */}
-      <div className="bg-muted/20 border border-border/30 rounded-xl p-3 sm:p-4 opacity-60">
-        <div className="flex items-center gap-2 mb-1">
-          <FileCode2 className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-          <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
-            Substrate Store Add-Ons — Coming Soon
-          </span>
+      {/* ── Your Purchased Layers (Inventory / Store) ───────────────────── */}
+      {entitlementsLoading ? (
+        <div className="bg-muted/10 border border-border/30 rounded-xl p-3 sm:p-4 flex items-center gap-2">
+          <Loader2 className="w-3.5 h-3.5 animate-spin text-muted-foreground" />
+          <span className="text-[10px] sm:text-xs text-muted-foreground">Loading purchased layers…</span>
         </div>
-        <p className="text-[9px] sm:text-[10px] text-muted-foreground leading-relaxed">
-          Browse and purchase substrate-built capabilities (Crown Jewels, Memory Stream
-          discoveries, COMPILER output) to enhance your code before Ascension.
-        </p>
-      </div>
+      ) : purchasedInventoryLayers.length > 0 ? (
+        <div className="bg-muted/20 border border-primary/20 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+          <div className="flex items-center gap-2">
+            <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium text-foreground">Your Purchased Layers</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold px-1.5 py-0.5 rounded border border-primary/30 bg-primary/5 uppercase tracking-wide text-primary">
+              {purchasedInventoryLayers.length} owned
+            </span>
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-auto">Optional</span>
+          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">
+            Store-purchased layers ready to auto-wire into Layer 2. No tier gate — these are yours.
+          </p>
+          <div className="space-y-1.5">
+            {purchasedInventoryLayers.map((layer) => {
+              const isSelected = selectedLayers.has(layer.id);
+              return (
+                <button
+                  key={layer.id}
+                  onClick={() => {
+                    setSelectedLayers((prev) => {
+                      const next = new Set(prev);
+                      if (next.has(layer.id)) next.delete(layer.id);
+                      else next.add(layer.id);
+                      return next;
+                    });
+                  }}
+                  className={cn(
+                    'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
+                    isSelected
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:border-primary/40 hover:bg-muted/40',
+                  )}
+                >
+                  <div
+                    className={cn(
+                      'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
+                      isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground',
+                    )}
+                  >
+                    {isSelected ? <Check className="w-3 h-3" /> : <ShoppingBag className="w-3 h-3" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] sm:text-xs font-medium text-foreground truncate">
+                        {layer.name}
+                      </span>
+                      <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono whitespace-nowrap">
+                        CJPI {layer.cjpi}
+                      </span>
+                    </div>
+                    <p className="text-[9px] sm:text-[10px] text-muted-foreground truncate">
+                      {layer.description}
+                    </p>
+                  </div>
+                  <span className="text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border border-primary/30 bg-primary/5 uppercase tracking-wide text-primary">
+                    Owned
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-muted/20 border border-border/30 rounded-xl p-3 sm:p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <ShoppingBag className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+            <span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
+              No purchased layers yet
+            </span>
+          </div>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground leading-relaxed">
+            Browse the{' '}
+            <Link to="/store" className="text-primary hover:underline">
+              Substrate Store
+            </Link>{' '}
+            for 25 standalone layers (Privacy, Quantum, Robotics, Compliance and more) you can wire into any Ascension export.
+          </p>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="space-y-2">
