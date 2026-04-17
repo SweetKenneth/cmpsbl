@@ -40,7 +40,7 @@ export interface LaunchLayer {
   roi: string;
 }
 
-type Pillar =
+export type Pillar =
   | 'Resilience'
   | 'Foresight'
   | 'Security'
