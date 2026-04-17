@@ -88,15 +88,15 @@ export function LayerInventory() {
         >
           <ShieldCheck className="w-3.5 h-3.5 mr-2 text-primary" />
           <span className="text-xs font-semibold tracking-wide">
-            Layer Inventory
+            Specialty Layers
           </span>
         </Badge>
         <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
-          Specialty Merchandise
+          Enhance Your Ascension
         </h2>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
           Captured from vertical engines and S-Tier vault discoveries before
-          Ascension absorbs them into Layer 2. Limited-curation inventory.
+          Ascension absorbs them into Layer 2. Limited-curation Layers.
         </p>
       </div>
 
