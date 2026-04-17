@@ -41,15 +41,15 @@ export function NpmAnnouncementBanner() {
   const shuffled = useMemo<LaunchLayer[]>(() => shuffle(LAYERS), []);
   const items = useMemo(() => [...shuffled, ...shuffled], [shuffled]);
 
-  // Duration tuned for 2× the previous reading pace.
-  // Prior banner: ~30s for ~10 short quotes (~30 chars each ≈ 300 chars).
-  // New content: 20 layers × ~180 chars ≈ 3,600 chars → would be ~360s at the
-  // old per-char rate. Halved (2× faster) and capped for legibility:
+  // Speed tuned for "readable but brisk" — fast enough to show depth of the
+  // 20-layer catalog without feeling stalled. Pixel-rate based pacing:
+  // ~120 px/sec scroll feels like a fast news ticker that's still legible.
+  // Approximate average glyph width at our text size (~7px) → chars/sec ≈ 17.
   const totalChars = useMemo(
     () => shuffled.reduce((sum, l) => sum + l.name.length + l.description.length + 14, 0),
     [shuffled],
   );
-  const durationSec = Math.max(60, Math.min(180, Math.round((totalChars / 300) * 30 * 0.5)));
+  const durationSec = Math.max(35, Math.min(75, Math.round(totalChars / 60)));
 
   if (!ready) return null;
 
