@@ -90,6 +90,15 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { tier: subscriptionTier } = useEngineSubscription();
+  const { isGovernor } = useUserRole();
+
+  // Effective tier = subscription tier (Governor sees everything regardless).
+  const effectiveTier = useMemo<LayerTier>(
+    () => (isGovernor ? 'enterprise' : subscriptionToLayerTier(subscriptionTier)),
+    [isGovernor, subscriptionTier],
+  );
+  const userTierRank = TIER_RANK[effectiveTier];
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
 
