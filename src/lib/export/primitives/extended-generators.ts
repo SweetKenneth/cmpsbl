@@ -814,6 +814,114 @@ end
 `;
 }
 
+// ─── Wave 3 Scaffolds — Erlang, R, Objective-C, D, Groovy ──────────────────
+
+function scaffoldErlang(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '%%', 'Erlang')}
+-module(cmpsbl_ascension).
+-export([handle_module/3, quick_hash/1, user_keys/1]).
+
+quick_hash(S) -> "h" ++ integer_to_list(erlang:phash2(S), 16).
+
+user_keys(Data) when is_map(Data) ->
+    [K || K <- maps:keys(Data), not lists:prefix("_", K)].
+
+handle_module(Modname, Ctx, Meta) ->
+${indent(body, '    ')}
+    Ctx.
+`;
+}
+
+function scaffoldR(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '#', 'R')}
+quick_hash <- function(s) paste0("h", format(as.hexmode(nchar(s))))
+
+user_keys <- function(data) {
+  if (is.null(data) || length(data) == 0) return(character(0))
+  ks <- names(data)
+  ks[!startsWith(ks, "_")]
+}
+
+handle_module <- function(modname, ctx, meta) {
+${indent(body, '  ')}
+  ctx
+}
+`;
+}
+
+function scaffoldObjC(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '//', 'Objective-C')}
+#import <Foundation/Foundation.h>
+
+NSString *quickHash(NSString *s) {
+    return [NSString stringWithFormat:@"h%lx", (unsigned long)[s hash]];
+}
+
+NSArray<NSString *> *userKeys(NSDictionary *data) {
+    NSMutableArray *out = [NSMutableArray array];
+    for (NSString *k in [data allKeys]) {
+        if (![k hasPrefix:@"_"]) [out addObject:k];
+    }
+    return out;
+}
+
+void handleModule(NSString *modname, NSMutableDictionary *ctx, NSDictionary *meta) {
+${indent(body, '    ')}
+}
+`;
+}
+
+function scaffoldD(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '//', 'D')}
+import std.json;
+import std.datetime.systime;
+import std.algorithm;
+import std.string;
+import std.conv;
+
+struct Signal { string stype; string source; long ts; }
+
+struct Ctx {
+    JSONValue data;
+    JSONValue input;
+    string[] errors;
+    JSONValue[] signals;
+    long t0;
+}
+
+struct Meta { int cjpi; string[] chain; string tier; }
+
+string quickHash(string s) { return "h" ~ to!string(s.length, 16); }
+
+string[] userKeys(JSONValue data) {
+    string[] out;
+    foreach (k, _; data.object) if (!k.startsWith("_")) out ~= k;
+    return out;
+}
+
+void handleModule(string modname, ref Ctx ctx, ref Meta meta) {
+${indent(body, '    ')}
+}
+`;
+}
+
+function scaffoldGroovy(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '//', 'Groovy')}
+class CmpsblAscension {
+    static String quickHash(String s) { return "h" + Integer.toHexString(s.hashCode()) }
+
+    static List<String> userKeys(Map data) {
+        return data.keySet().findAll { !((String)it).startsWith("_") }.collect { (String)it }
+    }
+
+    static def handleModule(String modname, Map ctx, Map meta) {
+${indent(body, '        ')}
+        return ctx
+    }
+}
+`;
+}
+
 const SCAFFOLDS: Record<string, (ctx: ExtendedGeneratorContext, body: string) => string> = {
   rust: scaffoldRust,
   go: scaffoldGo,
@@ -839,6 +947,12 @@ const SCAFFOLDS: Record<string, (ctx: ExtendedGeneratorContext, body: string) =>
   zig: scaffoldZig,
   nim: scaffoldNim,
   crystal: scaffoldCrystal,
+  // Wave 3
+  erlang: scaffoldErlang,
+  r: scaffoldR,
+  'objective-c': scaffoldObjC,
+  d: scaffoldD,
+  groovy: scaffoldGroovy,
 };
 
 // ─── Public API ─────────────────────────────────────────────────────────────
