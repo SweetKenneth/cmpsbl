@@ -599,10 +599,10 @@ export default function ManaDistributionDoc() {
             <DataTable
               headers={['Module', 'Path', 'Status', 'Depends On']}
               rows={[
-                ['Audit Chain', 'src/core/audit/auditChain.ts', 'MUST BUILD', 'clocklessEpoch.ts'],
-                ['Fingerprint Gate', 'src/core/boot/fingerprintGate.ts', 'MUST BUILD', 'FNV-1a (inline)'],
-                ['Safe Detach', 'src/lib/mana/detach-safe.ts', 'MUST BUILD', 'MANA_LAYER_TAG from types'],
-                ['Extended Lex', 'src/lib/mana/lex.ts (enhance)', 'MUST BUILD', 'Existing lex.ts'],
+                ['Audit Chain', 'src/lib/ascension-v2/audit-chain.ts', 'SHIPPED', 'FNV-1a + SHA-256 inline'],
+                ['Fingerprint Gate', 'src/lib/ascension-v2/fingerprint-gate.ts', 'SHIPPED', 'FNV-1a (inline)'],
+                ['Safe Detach', 'src/lib/mana/detach-safe.ts', 'SHIPPED', 'MANA_LAYER_TAG from types'],
+                ['Extended Lex', 'src/lib/mana/lex-extended.ts', 'SHIPPED', 'Layered over base lex.ts'],
                 ['VISION→LEX Bridge', 'src/lib/mana/vision-lex-bridge.ts', 'V2', 'Lex extended'],
                 ['Phone-Home', 'src/lib/mana/phone-home.ts', 'V2', 'RELAY module'],
               ]}
