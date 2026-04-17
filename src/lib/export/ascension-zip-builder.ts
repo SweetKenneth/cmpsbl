@@ -28,6 +28,7 @@ import { serializeCmpsblManifest } from './cmpsbl-manifest';
 import { generateIntegrationGuide } from './integration-guide-generator';
 import { generateHtmlReport } from '@/lib/factory/html-report-generator';
 import { generateExportArtifacts, generateDiscoveryContext } from './export-artifacts-generator';
+import { generateCaalLicense, CAAL_VERSION } from '@/lib/licensing/caal-license';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -360,8 +361,18 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   }));
   fileCount++;
 
-  zip.file('LICENSE.html', wrapPremiumDocPage('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
-  fileCount++;
+  // ── Official CAAL-1.0 license — both inline header (in Layer 2) and these
+  //    two top-level files (HTML for humans, plain text for tooling/SPDX).
+  const caalText = generateCaalLicense({ fingerprint, serial: report.id });
+  zip.file('LICENSE', caalText);
+  zip.file(
+    'LICENSE.html',
+    wrapPremiumDocPage(
+      `CMPSBL® Ascended Artifact License v${CAAL_VERSION} (CAAL-${CAAL_VERSION})`,
+      caalText,
+    ),
+  );
+  fileCount += 2;
 
   zip.file('PROOF.txt', generateProofCertificate({
     serial: report.id,
