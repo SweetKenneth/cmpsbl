@@ -28,6 +28,7 @@ import { ORCHESTRATION_LAYERS } from './layers/orchestration';
 import { EVOLUTION_LAYERS } from './layers/evolution';
 import { GOVERNANCE_LAYERS } from './layers/governance';
 import { COMPLIANCE_LAYERS } from './layers/compliance';
+import { INVENTORY_LAYERS } from './layers/inventory';
 import { CIRCUIT_BREAKER_CORE } from './layers/_circuit-breaker-core';
 import { TIMEOUT_CORE } from './layers/_timeout-core';
 import { RETRY_CORE } from './layers/_retry-core';
@@ -73,6 +74,7 @@ const LAYER_CATALOG: CmpsblLayerDefinition[] = [
   ...EVOLUTION_LAYERS,
   ...GOVERNANCE_LAYERS,
   ...COMPLIANCE_LAYERS,
+  ...INVENTORY_LAYERS,
 ];
 
 // ── Deterministic Phase Ordering ────────────────────────────────────────────
