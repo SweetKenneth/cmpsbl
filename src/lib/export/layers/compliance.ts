@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const COMPLIANCE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Regulatory Compliance Suite                              ║
-// ║  Compliance Attestation Generator + Jurisdiction-Aware Router. Automated r... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblJurisdiction = 'us' | 'eu' | 'uk' | 'apac' | 'ca' | 'au' | 'br' | 'global';
@@ -65,8 +64,7 @@ export function cmpsbl_attestation(jurisdiction: CmpsblJurisdiction, periodMs = 
 
 const COMPLIANCE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Regulatory Compliance Suite                              ║
-# ║  Compliance Attestation Generator + Jurisdiction-Aware Router. Automated r... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time

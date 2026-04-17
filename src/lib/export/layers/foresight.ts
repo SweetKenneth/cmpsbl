@@ -11,9 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const ORACLE_RIPPLE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Oracle-Ripple Precognition Chain (Crown Jewel #024)         ║
-// ║  Predictive failure forecasting fused with causal propagation. Detects       ║
-// ║  downstream cascades BEFORE they occur and auto-executes preemptive action.  ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblOracleAction = 'scale_up' | 'reroute' | 'throttle' | 'isolate' | 'preheat_cache' | 'shed_load' | 'none';
@@ -165,9 +163,7 @@ export function cmpsbl_oracle_actions_summary(): { total: number; byAction: Reco
 
 const ORACLE_RIPPLE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Oracle-Ripple Precognition Chain (Crown Jewel #024)         ║
-# ║  Predictive failure forecasting fused with causal propagation. Detects       ║
-# ║  downstream cascades BEFORE they occur and auto-executes preemptive action.  ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -379,9 +375,7 @@ const ORACLE_RIPPLE_LAYER: CmpsblLayerDefinition = {
 
 const ANOMALY_CORRELATION_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Anomaly Correlation Engine (Crown Jewel #007)               ║
-// ║  Multi-stream anomaly correlation: temporal, causal, spatial, behavioral.    ║
-// ║  Produces ranked incident hypotheses no single monitor would catch alone.    ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblAnomalyDimension = 'temporal' | 'causal' | 'spatial' | 'behavioral';
@@ -510,9 +504,7 @@ export function cmpsbl_anomaly_signal_quality(): { totalAnomalies: number; corre
 
 const ANOMALY_CORRELATION_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Anomaly Correlation Engine (Crown Jewel #007)               ║
-# ║  Multi-stream anomaly correlation: temporal, causal, spatial, behavioral.    ║
-# ║  Produces ranked incident hypotheses no single monitor would catch alone.    ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import math

@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const GOV_SHIELD_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Governance Shield Suite                                  ║
-// ║  Veto Authority Engine + Self-Audit Loop. Authority-gated veto system with... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblPolicy = { id: string; rule: (input: Record<string, unknown>) => boolean; severity: 'block'|'warn'; description: string };
@@ -51,8 +50,7 @@ export function cmpsbl_self_audit(): { totalPolicies: number; recentVetoes: Cmps
 
 const GOV_SHIELD_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Governance Shield Suite                                  ║
-# ║  Veto Authority Engine + Self-Audit Loop. Authority-gated veto system with... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -128,8 +126,7 @@ const GOV_SHIELD_LAYER: CmpsblLayerDefinition = {
 
 const AUDIT_CHAIN_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Tamper-Evident Audit Chain                               ║
-// ║  Hash-chained audit log with FNV-1a entry hashing. Cryptographic tamper de... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblAuditEntry = { seq: number; ts: number; actor: string; action: string; payloadHash: string; prevHash: string; entryHash: string };
@@ -173,8 +170,7 @@ export function cmpsbl_audit_root(): string {
 
 const AUDIT_CHAIN_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Tamper-Evident Audit Chain                               ║
-# ║  Hash-chained audit log with FNV-1a entry hashing. Cryptographic tamper de... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import json

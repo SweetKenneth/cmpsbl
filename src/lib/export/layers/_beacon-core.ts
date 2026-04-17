@@ -12,8 +12,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const BEACON_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — BEACON Health Signal (Layer #17 · Always-On)              ║
-// ║  Per-execution structured signal. Pluggable sinks. Bounded ring by default.   ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 export interface CmpsblBeaconSignal {
@@ -67,8 +66,7 @@ export function cmpsbl_beacon_health(): { totalCalls: number; okRate: number; av
 
 const BEACON_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — BEACON Health Signal (Layer #17 · Always-On)              ║
-# ║  Per-execution structured signal. Pluggable sinks. Bounded ring by default.   ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time

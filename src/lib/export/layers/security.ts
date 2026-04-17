@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const ADAPTIVE_DEFENSE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Adaptive Defense Breeding Suite                          ║
-// ║  Breeds progressively stronger security defenses via evolutionary pressure... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblDefenseGenome = { id: string; weights: number[]; fitness: number; generation: number; survivedAttacks: number };
@@ -60,8 +59,7 @@ export function cmpsbl_defense_stats(): { population: number; generation: number
 
 const ADAPTIVE_DEFENSE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Adaptive Defense Breeding Suite                          ║
-# ║  Breeds progressively stronger security defenses via evolutionary pressure... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import math
@@ -159,8 +157,7 @@ const ADAPTIVE_DEFENSE_LAYER: CmpsblLayerDefinition = {
 
 const ZERO_TRUST_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Zero-Trust Identity Suite                                ║
-// ║  Continuous session verification with behavioral trust scoring that flags ... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblSession = { id: string; principal: string; bindHash: string; createdAt: number; lastVerifiedAt: number; trustScore: number; behaviorHist: number[] };
@@ -211,8 +208,7 @@ export function cmpsbl_verify_session(sessionId: string, fingerprint: string, be
 
 const ZERO_TRUST_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Zero-Trust Identity Suite                                ║
-# ║  Continuous session verification with behavioral trust scoring that flags ... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -315,8 +311,7 @@ const ZERO_TRUST_LAYER: CmpsblLayerDefinition = {
 
 const CYBER_DEFENSE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Cyber Defense Suite                                      ║
-// ║  Cross-correlates indicators of compromise across temporal, spatial, and c... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblIOC = { kind: string; value: string; firstSeenAt: number; hits: number; severity: number };
@@ -362,8 +357,7 @@ export function cmpsbl_ddos_check(): { absorbing: boolean; rps: number; absorbed
 
 const CYBER_DEFENSE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Cyber Defense Suite                                      ║
-# ║  Cross-correlates indicators of compromise across temporal, spatial, and c... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time

@@ -12,9 +12,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const CIRCUIT_BREAKER_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Circuit Breaker (Layer #11 · Always-On)                   ║
-// ║  Auto-wired cascade failure prevention for every capability invocation.       ║
-// ║  Three-state FSM: closed → open → half-open with exponential backoff.        ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblCircuitState = 'closed' | 'open' | 'half_open';
@@ -148,9 +146,7 @@ export function cmpsbl_reset_breakers(): void {
 
 const CIRCUIT_BREAKER_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Circuit Breaker (Layer #11 · Always-On)                   ║
-# ║  Auto-wired cascade failure prevention for every capability invocation.       ║
-# ║  Three-state FSM: closed → open → half-open with exponential backoff.        ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import random

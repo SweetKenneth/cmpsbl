@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const SELF_EVOLVE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Self-Evolution Suite                                     ║
-// ║  Mutation Proposal Engine + Shadow Run Environment. Generates, evaluates, ... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblMutation = { id: string; target: string; change: Record<string, unknown>; status: 'proposed'|'shadow'|'promoted'|'rolled_back'; createdAt: number; metrics: { successRate: number; samples: number } };
@@ -67,8 +66,7 @@ export function cmpsbl_mutation_stats(): { proposed: number; shadow: number; pro
 
 const SELF_EVOLVE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Self-Evolution Suite                                     ║
-# ║  Mutation Proposal Engine + Shadow Run Environment. Generates, evaluates, ... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time

@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const PERF_SURGERY_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Performance Surgery Suite                                ║
-// ║  Hot Path Flame Graph Analyzer + Performance Regression Detector. Identifi... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblHotPath = { fn: string; samples: number; totalNs: number; p99Ns: number; classifiedAs: 'O(1)'|'O(log n)'|'O(n)'|'O(n log n)'|'O(n^2)'|'O(?)'; samplesByN: number[][] };
@@ -75,8 +74,7 @@ export function cmpsbl_top_hotpaths(limit = 5): CmpsblHotPath[] {
 
 const PERF_SURGERY_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Performance Surgery Suite                                ║
-# ║  Hot Path Flame Graph Analyzer + Performance Regression Detector. Identifi... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import math
@@ -178,8 +176,7 @@ const PERF_SURGERY_LAYER: CmpsblLayerDefinition = {
 
 const PIPELINE_RES_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Data Pipeline Resilience Suite                           ║
-// ║  Stream Backpressure Manager + Event Sourcing Pattern Engine. Reactive bac... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblBuffer<T> = { items: T[]; capacity: number; dropped: number; consumerLagMs: number };
@@ -231,8 +228,7 @@ export function cmpsbl_stream_stats(): Record<string, { size: number; dropped: n
 
 const PIPELINE_RES_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Data Pipeline Resilience Suite                           ║
-# ║  Stream Backpressure Manager + Event Sourcing Pattern Engine. Reactive bac... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
