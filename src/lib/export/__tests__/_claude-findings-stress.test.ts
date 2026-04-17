@@ -153,9 +153,8 @@ describe('Claude Findings Stress — 5 langs × 25 iterations', () => {
 
       it('preserves user source verbatim (Layer 1 byte-fidelity)', () => {
         outputs.forEach((out, i) => {
-          const userBody = SAMPLE_USER_SOURCES[lang].trim();
-          // user code should appear somewhere in the output (possibly indented/wrapped)
-          const firstLine = userBody.split('\n')[0].trim();
+          const userBody = SAMPLE_USER_SOURCES[lang];
+          const firstLine = userBody.split('\n')[0];
           expect(out.includes(firstLine), `iter ${i} ${lang} lost user source line: ${firstLine}`).toBe(true);
         });
       });
