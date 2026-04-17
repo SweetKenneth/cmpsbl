@@ -17,6 +17,7 @@
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { GO_LAYER_BODIES } from './layers-go/go-layers';
 import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
+import { JAVA_LAYER_BODIES } from './layers-java/java-layers';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -32,6 +33,12 @@ function _registerGoLayerBodies(): void {
 function _registerRsLayerBodies(): void {
   for (const [layerId, body] of Object.entries(RS_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:rust`, () => body.trim());
+  }
+}
+
+function _registerJavaLayerBodies(): void {
+  for (const [layerId, body] of Object.entries(JAVA_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:java`, () => body.trim());
   }
 }
 
@@ -75,6 +82,7 @@ function registerNative(layerId: string, lang: string, gen: NativeGen): void {
 // Eagerly register native bodies now that NATIVE_REGISTRY exists.
 _registerGoLayerBodies();
 _registerRsLayerBodies();
+_registerJavaLayerBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
