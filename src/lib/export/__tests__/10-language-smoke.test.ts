@@ -219,9 +219,12 @@ describe('10-Language Ascension Export Smoke Test', () => {
 const phpDescribe = isLanguageShipping('php') ? describe : describe.skip;
 
 phpDescribe('PHP Inline Embedding (Patent Compliance)', () => {
-  const phpOutput = generateUnifiedCapabilityFile(
-    CAPABILITIES, PACK_NAME, 'php', PHP_SOURCE_FILES,
-  );
+  let phpOutput: string;
+  beforeAll(() => {
+    phpOutput = generateUnifiedCapabilityFile(
+      CAPABILITIES, PACK_NAME, 'php', PHP_SOURCE_FILES,
+    );
+  });
 
   it('embeds original class inline (Layer 1 marker present)', () => {
     expect(phpOutput).toContain('LAYER 1');
