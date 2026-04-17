@@ -425,7 +425,7 @@ export default function Showroom() {
               </div>
 
               <Button asChild variant="outline" size="sm" className="rounded-xl font-semibold gap-2">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   <Wrench className="w-3.5 h-3.5" />
                   Or bring your own code
                   <ArrowRight className="w-3 h-3" />
@@ -631,7 +631,7 @@ export default function Showroom() {
                 </div>
                 <div className="flex gap-3 mt-2">
                   <Button asChild size="sm" className="gap-1 rounded-xl font-bold">
-                    <Link to="/ascension">
+                    <Link to="/ascension-v2">
                       <Wrench className="w-3.5 h-3.5" />
                       Run Diagnostic
                       <ArrowRight className="w-3 h-3" />

@@ -133,7 +133,7 @@ export default function MediaHome() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="border-0 text-white font-bold" style={{ background: ACCENT }} onClick={() => navigate('/ascension')}>
+                <Button size="lg" className="border-0 text-white font-bold" style={{ background: ACCENT }} onClick={() => navigate('/ascension-v2')}>
                   Run Ascension Scan <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="font-bold" style={{ borderColor: BORDER, color: TEXT_PRIMARY }} onClick={() => navigate('/showroom')}>
@@ -258,7 +258,7 @@ export default function MediaHome() {
               Upload your media generation codebase and let CMPSBL MEDIA™ discover which of the 16 media
               primitives your software needs most. Zero external AI. Pure deterministic analysis.
             </p>
-            <Button size="lg" className="border-0 text-white font-bold" style={{ background: ACCENT }} onClick={() => navigate('/ascension')}>
+            <Button size="lg" className="border-0 text-white font-bold" style={{ background: ACCENT }} onClick={() => navigate('/ascension-v2')}>
               Start Code Ascension <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

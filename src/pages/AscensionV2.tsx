@@ -10,7 +10,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Upload, Layers, Search, Download, Check, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -60,6 +60,8 @@ export default function AscensionV2() {
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const stepperRef = useRef<HTMLElement | null>(null);
+  const isFirstStepRender = useRef(true);
 
   // Init a fresh run on mount
   useEffect(() => {
@@ -70,6 +72,21 @@ export default function AscensionV2() {
     });
     setRunId(id);
   }, []);
+
+  // Snap to the Ascension UI section on every step change so users always
+  // see the animated flow as they advance.
+  useEffect(() => {
+    if (isFirstStepRender.current) {
+      isFirstStepRender.current = false;
+      return;
+    }
+    const el = stepperRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      const y = el.getBoundingClientRect().top + window.scrollY - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  }, [step]);
 
   const handleUploadComplete = useCallback(() => {
     setStep(1);
@@ -145,7 +162,7 @@ export default function AscensionV2() {
           {step === 0 && <V2WhatsAscension />}
 
           {/* Stepper — 4 steps, responsive */}
-          <nav className="mb-6 sm:mb-8">
+          <nav ref={stepperRef} className="mb-6 sm:mb-8 scroll-mt-4">
             <div className="flex items-center justify-center gap-0">
               {STEPS.map((s, i) => {
                 const isActive = i === step;

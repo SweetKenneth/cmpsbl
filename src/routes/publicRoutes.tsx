@@ -40,7 +40,7 @@ const ProprietaryEvolution = lazy(() => import("@/pages/ProprietaryEvolution"));
 const AscensionV2 = lazy(() => import("@/pages/AscensionV2"));
 const AgentForge = lazy(() => import("@/pages/AgentForge"));
 const AgentPowerUp = lazy(() => import("@/pages/AgentPowerUp"));
-const RestorationShop = lazy(() => import("@/pages/RestorationShop"));
+
 const RestoreKit = lazy(() => import("@/pages/RestoreKit"));
 const DevTools = lazy(() => import("@/pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("@/pages/DeveloperAcademy"));
@@ -285,11 +285,11 @@ export const publicRoutes = (
     <Route path="/careers" element={<Navigate to="/about" replace />} />
     <Route path="/x" element={<ProprietaryEvolution />} />
     <Route path="/ascension-v2" element={<AscensionV2 />} />
-    <Route path="/ascension" element={<RestorationShop />} />
+    <Route path="/ascension" element={<Navigate to="/ascension-v2" replace />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
     <Route path="/junkyard" element={<JunkyardPage />} />
-    <Route path="/restoration-shop" element={<Navigate to="/ascension" replace />} />
+    <Route path="/restoration-shop" element={<Navigate to="/ascension-v2" replace />} />
     <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
     <Route path="/restore-kit" element={
       <PinGate pin="4645" storageKey="restore_kit_unlock">

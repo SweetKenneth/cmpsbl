@@ -739,7 +739,7 @@ export default function CaseStudies() {
                 </p>
               </div>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   <Button size="sm" className="gap-2">
                     <Sparkles className="w-3.5 h-3.5" />
                     Try Ascension
@@ -981,7 +981,7 @@ export default function CaseStudies() {
                     { label: 'SentencePiece — Google Research', url: 'https://github.com/google/sentencepiece' },
                     { label: 'Hugging Face — Company', url: 'https://huggingface.co' },
                     { label: 'CMPSBL LLM™ Vertical', url: '/verticals' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -1179,7 +1179,7 @@ export default function CaseStudies() {
                     { label: 'PythonRobotics Repository', url: 'https://github.com/AtsushiSakai/PythonRobotics' },
                     { label: 'Original a_star.py Source', url: 'https://github.com/AtsushiSakai/PythonRobotics/blob/master/PathPlanning/AStar/a_star.py' },
                     { label: 'A* Search Algorithm — Wikipedia', url: 'https://en.wikipedia.org/wiki/A*_search_algorithm' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -1766,7 +1766,7 @@ export default function CaseStudies() {
                     { label: 'OpenSSL Repository', url: 'https://github.com/openssl/openssl' },
                     { label: 'tls13_enc.c Source', url: 'https://github.com/openssl/openssl/blob/master/ssl/tls13_enc.c' },
                     { label: 'RFC 8446 — TLS 1.3 Specification', url: 'https://www.rfc-editor.org/rfc/rfc8446' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -1959,7 +1959,7 @@ export default function CaseStudies() {
                   { label: 'ArduPilot Autotest Framework Documentation', url: 'https://ardupilot.org/dev/docs/the-ardupilot-autotest-framework.html' },
                   { label: 'Boeing Cargo Drone (ArduPilot-Powered)', url: 'https://discuss.ardupilot.org/t/boeings-massive-cargo-drone-using-pixhawk2-and-ardupilot/25002' },
                   { label: 'OWASP — Code Injection', url: 'https://owasp.org/www-community/attacks/Code_Injection' },
-                  { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                 ].map((ref) => (
                   <li key={ref.url}>
                     <a
@@ -2129,7 +2129,7 @@ export default function CaseStudies() {
                     { label: 'gaussian1d-models.py Source', url: 'https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py' },
                     { label: 'QuantLib Official Site', url: 'https://www.quantlib.org/' },
                     { label: 'Open Source Risk Engine (ORE)', url: 'https://www.opensourcerisk.org/' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -2295,7 +2295,7 @@ export default function CaseStudies() {
                     { label: 'cp_model.py Source', url: 'https://github.com/google/or-tools/blob/stable/ortools/sat/python/cp_model.py' },
                     { label: 'CP-SAT Solver Documentation', url: 'https://developers.google.com/optimization/cp/cp_solver' },
                     { label: 'OR-Tools Official Site', url: 'https://developers.google.com/optimization' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -2478,7 +2478,7 @@ export default function CaseStudies() {
                     { label: 'CVE-2022-45907 (CVSS 9.8)', url: 'https://nvd.nist.gov/vuln/detail/CVE-2022-45907' },
                     { label: 'Incomplete Mitigation (GitHub #151233)', url: 'https://github.com/pytorch/pytorch/issues/151233' },
                     { label: 'Silent CUDA Hang (GitHub #178491)', url: 'https://github.com/pytorch/pytorch/issues/178491' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -2715,7 +2715,7 @@ export default function CaseStudies() {
                     { label: 'Streaming IndexError (GitHub #1192)', url: 'https://github.com/anthropics/anthropic-sdk-python/issues/1192' },
                     { label: 'Silent Stream Abort (Claude Code #38905)', url: 'https://github.com/anthropics/claude-code/issues/38905' },
                     { label: 'Hanging Clients (TS SDK #867)', url: 'https://github.com/anthropics/anthropic-sdk-typescript/issues/867' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a
@@ -2905,7 +2905,7 @@ export default function CaseStudies() {
                   {[
                     { label: 'pipeline-fingerprint.ts (hardened)', url: 'https://github.com' },
                     { label: 'WebCrypto SubtleCrypto.digest() (MDN)', url: 'https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest' },
-                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension-v2' },
                   ].map((ref) => (
                     <li key={ref.url}>
                       <a

@@ -227,7 +227,7 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
           <FileCode className="h-3 w-3" /> cmpsbl.com
         </Link>
         <Link
-          to="/ascension"
+          to="/ascension-v2"
           className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
         >
           Run Your Own Ascension <ExternalLink className="h-3 w-3" />

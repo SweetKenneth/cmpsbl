@@ -111,7 +111,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
               {tagline}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button size="lg" onClick={() => navigate('/ascension')}>
+              <Button size="lg" onClick={() => navigate('/ascension-v2')}>
                 <Shield className="mr-2 h-5 w-5" />
                 Start Ascension
               </Button>

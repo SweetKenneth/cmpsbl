@@ -167,7 +167,7 @@ export default function Mana() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="rounded-xl h-14 px-10 text-lg font-semibold backdrop-blur-sm bg-white/10 border-white/30 text-white hover:bg-white/20">
-                  <Link to="/ascension">Experience Ascension</Link>
+                  <Link to="/ascension-v2">Experience Ascension</Link>
                 </Button>
               </motion.div>
             </motion.div>

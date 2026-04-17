@@ -66,7 +66,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: "Products",
     items: [
       { name: "Shield", href: "/shield", icon: Shield, description: "Free code security scanner", badge: "FREE" },
-      { name: "Ascension", href: "/ascension", icon: Sparkles, description: "Code diagnostic & transformation engine" },
+      { name: "Ascension", href: "/ascension-v2", icon: Sparkles, description: "Code diagnostic & transformation engine" },
       { name: "Mana", href: "/mana", icon: Layers, description: "Silent Layer 2 attachment engine", badge: "PATENT" },
       { name: "Memory Stream", href: "/foundry", icon: Brain, description: "Live cognitive processing feed", badge: "LIVE" },
       { name: "Assembly", href: "/assembly", icon: Wrench, description: "Custom substrate engineering service", badge: "SERVICE" },
@@ -109,7 +109,7 @@ const ALL_NAV_ITEMS = NAV_SECTIONS.flatMap((s) => s.items);
 
 /** Top quick-links for mobile grid */
 const MOBILE_QUICK_LINKS = ALL_NAV_ITEMS.filter((i) =>
-  ["/shield", "/ascension", "/store", "/mana"].includes(i.href)
+  ["/shield", "/ascension-v2", "/store", "/mana"].includes(i.href)
 );
 
 export function CmpsblNav() {
@@ -359,7 +359,7 @@ export function CmpsblNav() {
                       <Link to="/auth">Sign in</Link>
                     </Button>
                     <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold shadow-md shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                      <Link to="/ascension">
+                      <Link to="/ascension-v2">
                         Run Diagnostic
                         <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                       </Link>
@@ -563,7 +563,7 @@ export function CmpsblNav() {
                 ) : (
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
-                      <Link to="/ascension">
+                      <Link to="/ascension-v2">
                         Run Diagnostic
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>

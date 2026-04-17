@@ -444,7 +444,7 @@ export default function UseCases() {
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Governed cognitive infrastructure with{" "}
               <Link to="/mana" className="text-primary hover:underline font-medium">dual-layer technology</Link>,{" "}
-              <Link to="/ascension" className="text-primary hover:underline font-medium">code ascension</Link>, and{" "}
+              <Link to="/ascension-v2" className="text-primary hover:underline font-medium">code ascension</Link>, and{" "}
               <Link to="/verticals" className="text-primary hover:underline font-medium">industry-specific verticals</Link> —{" "}
               CMPSBL powers applications from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}
               to healthcare to <Link to="/enterprise" className="text-primary hover:underline font-medium">enterprise ops</Link>.

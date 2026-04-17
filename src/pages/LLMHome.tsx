@@ -141,7 +141,7 @@ export default function LLMHome() {
 
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(170 30% 3%)' }}
-                  onClick={() => navigate('/ascension')}>
+                  onClick={() => navigate('/ascension-v2')}>
                   Enter Ascension Lab <Zap className="ml-2 h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="font-bold" style={{
@@ -285,7 +285,7 @@ export default function LLMHome() {
               software to a higher cognitive tier.
             </p>
             <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(170 30% 3%)' }}
-              onClick={() => navigate('/ascension')}>
+              onClick={() => navigate('/ascension-v2')}>
               Enter Ascension Lab <Zap className="ml-2 h-4 w-4" />
             </Button>
           </div>

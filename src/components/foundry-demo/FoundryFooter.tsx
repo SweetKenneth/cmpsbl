@@ -9,7 +9,7 @@ const NAV_COLUMNS = [
     title: 'Factory',
     links: [
       { label: 'Memory Stream', to: '/foundry' },
-      { label: 'Ascension', to: '/ascension' },
+      { label: 'Ascension', to: '/ascension-v2' },
       { label: 'Showroom', to: '/showcase' },
       { label: 'Junkyard', to: '/junkyard' },
     ],

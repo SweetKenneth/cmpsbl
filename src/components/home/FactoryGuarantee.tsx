@@ -81,7 +81,7 @@ export function FactoryGuarantee() {
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="w-full sm:w-auto px-8 h-12 text-sm bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   <Wrench className="w-4 h-4 mr-2" />
                   Run Diagnostic
                   <ArrowRight className="w-3.5 h-3.5 ml-2" />

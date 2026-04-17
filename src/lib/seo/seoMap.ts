@@ -651,7 +651,7 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'autonomous software foundry',
   },
-  '/ascension': {
+  '/ascension-v2': {
     title: 'Ascension — Zero-LLM Code Transformation | CMPSBL',
     description: 'Upload code in 90+ languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording.',
     ogTitle: 'Ascension — Zero-LLM Code Transformation',
