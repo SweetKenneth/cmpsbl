@@ -665,12 +665,12 @@ export function V2ProcessingStep({ onComplete }: Props) {
         </div>
       </div>
 
-      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 w-full min-w-0">
+        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3 min-w-0 overflow-hidden">
           <p className="text-[10px] sm:text-xs font-medium text-foreground">Live Collision Batch</p>
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 min-w-0">
             {currentBatch.length > 0 ? currentBatch.map((primitive) => (
-              <span key={primitive} className="rounded-full bg-primary/10 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono text-primary">
+              <span key={primitive} className="rounded-full bg-primary/10 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono text-primary break-all">
                 {primitive}
               </span>
             )) : (
@@ -679,11 +679,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
           </div>
         </div>
 
-        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
+        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3 min-w-0 overflow-hidden">
           <p className="text-[10px] sm:text-xs font-medium text-foreground">Recent Discoveries</p>
-          <div className="space-y-1 sm:space-y-1.5">
+          <div className="space-y-1 sm:space-y-1.5 min-w-0">
             {recentHits.length > 0 ? recentHits.map((hit) => (
-              <div key={hit} className="text-[10px] sm:text-xs text-foreground truncate">
+              <div key={hit} className="text-[10px] sm:text-xs text-foreground truncate min-w-0 max-w-full">
                 {hit}
               </div>
             )) : (
