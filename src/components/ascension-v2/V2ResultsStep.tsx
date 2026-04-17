@@ -34,7 +34,6 @@ import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmp
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
-  isLanguageShipping,
   getShippingLanguages,
 } from '@/lib/export/language-parity-tiers';
 import { Clock } from 'lucide-react';
