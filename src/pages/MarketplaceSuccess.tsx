@@ -13,16 +13,16 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { 
-  CheckCircle2, Key, Copy, Check, Download, 
-  AlertCircle, Loader2, Sparkles, Shield, Lock
+import {
+  CheckCircle2, Key, Copy, Check, Download,
+  AlertCircle, Loader2, Sparkles, Shield, Lock, Layers, ArrowRight,
 } from "lucide-react";
 
 export default function MarketplaceSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const productType = searchParams.get('type');
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [licenseData, setLicenseData] = useState<{
@@ -31,9 +31,14 @@ export default function MarketplaceSuccess() {
     template_name?: string;
     message?: string;
     already_fulfilled?: boolean;
+    layer_id?: string;
+    layer_title?: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
+
+  const isLayerPurchase = (licenseData?.product_type ?? productType) === 'layer';
+
 
   useEffect(() => {
     if (!sessionId) {
