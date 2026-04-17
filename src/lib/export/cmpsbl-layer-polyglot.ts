@@ -19,6 +19,7 @@ import { GO_LAYER_BODIES } from './layers-go/go-layers';
 import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
 import { JAVA_LAYER_BODIES } from './layers-java/java-layers';
 import { CSHARP_LAYER_BODIES } from './layers-csharp/csharp-layers';
+import { SWIFT_LAYER_BODIES } from './layers-swift/swift-layers';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -46,6 +47,12 @@ function _registerJavaLayerBodies(): void {
 function _registerCsharpLayerBodies(): void {
   for (const [layerId, body] of Object.entries(CSHARP_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:csharp`, () => body.trim());
+  }
+}
+
+function _registerSwiftLayerBodies(): void {
+  for (const [layerId, body] of Object.entries(SWIFT_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:swift`, () => body.trim());
   }
 }
 
@@ -91,6 +98,7 @@ _registerGoLayerBodies();
 _registerRsLayerBodies();
 _registerJavaLayerBodies();
 _registerCsharpLayerBodies();
+_registerSwiftLayerBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
