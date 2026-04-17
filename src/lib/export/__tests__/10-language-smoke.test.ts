@@ -347,9 +347,12 @@ describe('Patent Fulfillment (U.S. App. No. 64/029,678)', () => {
 // ═══════════════════════════════════════════════════════════════
 
 phpDescribe('Runtime Capabilities Activation (PHP)', () => {
-  const phpOutput = generateUnifiedCapabilityFile(
-    CAPABILITIES, PACK_NAME, 'php', PHP_SOURCE_FILES,
-  );
+  let phpOutput: string;
+  beforeAll(() => {
+    phpOutput = generateUnifiedCapabilityFile(
+      CAPABILITIES, PACK_NAME, 'php', PHP_SOURCE_FILES,
+    );
+  });
 
   it('PHP: all 7 chain primitives from capability 1 are in handler registry', () => {
     for (const mod of CAPABILITIES[0].chain) {
