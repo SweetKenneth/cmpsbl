@@ -64,7 +64,7 @@ export function AscensionLayersHero() {
           >
             Stack a Layer.
             <br />
-            <span className="text-primary">Upgrade your software.</span>
+            <span className="text-primary">Gain New Capabilities Instantly.</span>
           </motion.h1>
 
           <motion.p
