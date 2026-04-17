@@ -406,13 +406,17 @@ export interface V2ReadmeInput {
 }
 
 export function generateV2ReadmeHTML(input: V2ReadmeInput): string {
+  const primitiveCount = new Set(input.capabilities.flatMap(c => c.chain)).size;
   const files = [
-    { name: 'LICENSE.html', purpose: 'Commercial distribution license with patent notices' },
+    { name: 'LICENSE.html', purpose: 'CAAL-1.0 — governs Layer 2 only. Layer 1 keeps its upstream license.' },
+    { name: 'LICENSE-UPSTREAM.txt', purpose: 'Upstream license text for Layer 1 (only present when detected)' },
     { name: 'README.html', purpose: 'This file — package overview and quick start' },
-    { name: 'USER-GUIDE.html', purpose: 'Comprehensive guide with activation, pipeline details, and error codes' },
-    { name: input.originalFileName, purpose: 'Your original source file — completely untouched' },
-    { name: input.ascendedFileName, purpose: 'Layer 2 wrapped file with activated capabilities — rename to match original before drop-in' },
-    { name: 'ADVERTISEMENT.html', purpose: 'Information about custom Mana layers and the CMPSBL® ecosystem' },
+    { name: 'USER-GUIDE.html', purpose: 'Comprehensive guide with activation, pipeline details, error codes' },
+    { name: input.originalFileName, purpose: 'Your original source file — Layer 1, completely untouched' },
+    { name: input.ascendedFileName, purpose: 'Layer 2 wrapped file — drop-in replacement for the original' },
+    { name: 'ADVERTISEMENT.html', purpose: 'Information about Mana layers and the CMPSBL® ecosystem' },
+    { name: 'HARNESS-REPORT.txt', purpose: 'Pre-export verification proof' },
+    { name: 'manifest.json', purpose: 'Machine-readable manifest — primitives, fingerprint, version' },
   ];
 
   return htmlShell(`README — ${input.packName}`, `
@@ -759,11 +763,13 @@ export function generateV2AdvertisementHTML(packName: string, capCount: number):
     to explore the full substrate, browse the Mana Store, and see what your software could become.
   </div>
 
-  <h2>54+ Languages Supported</h2>
+  <h2>Language Support</h2>
   <p>
-    TypeScript, Python, Rust, Go, C, C++, Java, PHP, Ruby, Swift, Kotlin, Dart, Scala,
-    Elixir, Haskell, Zig, Verilog, VHDL, GLSL, SystemC, and many more. The Layer 2
-    technology is language-agnostic — if your code compiles, it can be ascended.
+    Production-shipping today: <strong>TypeScript, JavaScript, Python, Rust, Go</strong>.
+    The Layer 2 architecture is language-agnostic in design, with additional
+    targets (C, C++, Java, PHP, Swift, Kotlin, and others) in active validation.
+    See the parity matrix at <a href="https://cmpsbl.com">cmpsbl.com</a> for the
+    current shipping list before relying on a non-default target.
   </p>
 
   ${colophon()}

@@ -30,6 +30,7 @@ import {
   generateV2UserGuideHTML,
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
+import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile } from '@/lib/licensing/upstream-license-bundle';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import {
   getLanguageParityStatus,
@@ -128,17 +129,22 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     try {
       const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
 
-      // Determine original file name
+      // Determine original file name. Sanitize so non-alphanumerics in the
+      // base (e.g. `cmpsbl.cli-5.py`) don't produce malformed ascended names
+      // like `cmpsbl.cmpsbl.cli-5.py`. The ascended file uses an underscore
+      // join so it stays a valid identifier in every supported language.
       const primaryFile = sourceFiles.length > 0 ? sourceFiles[0] : null;
-      const originalFileName = primaryFile?.name || `source.${lang === 'typescript' ? 'ts' : lang === 'python' ? 'py' : 'ts'}`;
-      const baseName = originalFileName.replace(/\.[^.]+$/, '');
-      const ext = originalFileName.match(/\.[^.]+$/)?.[0] || '.ts';
-
-      // Ascended file name — user renames to original before drop-in
-      const ascendedFileName = `cmpsbl.${baseName}${ext}`;
+      const rawOriginalName = primaryFile?.name || `source.${lang === 'typescript' ? 'ts' : lang === 'python' ? 'py' : 'ts'}`;
+      const ext = rawOriginalName.match(/\.[^.]+$/)?.[0] || (lang === 'python' ? '.py' : '.ts');
+      const rawBase = rawOriginalName.slice(0, rawOriginalName.length - ext.length);
+      const safeBase = rawBase.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'source';
+      // What we actually write the user's untouched source as inside the ZIP.
+      const originalFileName = `${safeBase}${ext}`;
+      // What we write the L2 wrapped file as. Always parseable, always unique.
+      const ascendedFileName = `cmpsbl_${safeBase}${ext}`;
 
       // ZIP name per spec
-      const zipName = `cmpsbl-ascended-${baseName}`;
+      const zipName = `cmpsbl-ascended-${safeBase.toLowerCase()}`;
       const fingerprint = integrityHash.slice(0, 12).toUpperCase() || 'PENDING';
 
       // ── Build capability inputs ──
@@ -274,6 +280,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
       // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
       folder.file('HARNESS-REPORT.txt', harness.summary);
+
+      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel
+      //    when the customer's source carries an attribution-required license.
+      //    Required for legal compliance — without this, distributing an
+      //    Apache-licensed source inside our ZIP would be a license violation.
+      if (sourceFiles.length > 0) {
+        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content);
+        if (upstream) {
+          folder.file('LICENSE-UPSTREAM.txt', buildUpstreamLicenseFile(upstream, originalFileName));
+        }
+      }
 
       const blob = await zip.generateAsync({ type: 'blob' });
       saveAs(blob, `${zipName}.zip`);
