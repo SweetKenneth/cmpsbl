@@ -34,10 +34,17 @@ import { SPECTRAL_AUDITOR_LAYER } from './spectral-auditor.layer';
 import { COMPLIANCE_AUDIT_LAYER } from './compliance-audit.layer';
 import { PROBABILISTIC_CONSCIENCE_LAYER } from './probabilistic-conscience.layer';
 
-// ── Batches B + C pending (11 layers) — registered in turns 2-3 ─────────────
-// Self-Healing Scanner · Symbolic Crafter · Sentinel Evolution · Adaptive Forge
-// Kinetic Synthesis · Reflex Orchestration · Resilient Evolution
-// Emergent Gateway · Synthetic Contracts · Localization Mesh · Neural Broker
+// ── Batch B · Synthesis & Evolution (6) ─────────────────────────────────────
+import { SELF_HEALING_SCANNER_LAYER } from './self-healing-scanner.layer';
+import { SYMBOLIC_CRAFTER_LAYER } from './symbolic-crafter.layer';
+import { SENTINEL_EVOLUTION_LAYER } from './sentinel-evolution.layer';
+import { ADAPTIVE_FORGE_LAYER } from './adaptive-forge.layer';
+import { KINETIC_SYNTHESIS_LAYER } from './kinetic-synthesis.layer';
+import { REFLEX_ORCHESTRATION_LAYER } from './reflex-orchestration.layer';
+
+// ── Batch C pending (5 layers) — registered in turn 3 ───────────────────────
+// Resilient Evolution · Emergent Gateway · Synthetic Contracts
+// Localization Mesh · Neural Broker
 
 export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
   // Existing 8
@@ -56,4 +63,11 @@ export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze(
   SPECTRAL_AUDITOR_LAYER,
   COMPLIANCE_AUDIT_LAYER,
   PROBABILISTIC_CONSCIENCE_LAYER,
+  // Batch B (6)
+  SELF_HEALING_SCANNER_LAYER,
+  SYMBOLIC_CRAFTER_LAYER,
+  SENTINEL_EVOLUTION_LAYER,
+  ADAPTIVE_FORGE_LAYER,
+  KINETIC_SYNTHESIS_LAYER,
+  REFLEX_ORCHESTRATION_LAYER,
 ]);
