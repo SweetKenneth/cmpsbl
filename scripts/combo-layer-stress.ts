@@ -88,15 +88,22 @@ const SYNTAX_MARKERS: Record<string, RegExp> = {
   swift:      /\b(func|struct|class|enum)\s+\w+/,
 };
 
-function pascal(id: string): string {
-  return id.split('-').map((s) => s[0].toUpperCase() + s.slice(1)).join('');
-}
+// A layer is "present" in the artifact if its display name appears (the
+// polyglot engine emits `// ── <Layer Name> ──` block headers) OR its
+// canonical module token appears (e.g. IMMUNITY). Names are the per-layer
+// signal because many layers share a module (e.g. multiple → IMMUNITY).
 function layerHits(out: string, layers: CmpsblLayerDefinition[]): { hits: number; missing: string[] } {
   const missing: string[] = [];
   let hits = 0;
+  const seen = new Set<string>();
   for (const l of layers) {
-    if (out.includes(l.id) || out.includes(pascal(l.id))) hits++;
-    else missing.push(l.id);
+    const key = l.name;
+    if (seen.has(key)) { hits++; continue; } // duplicates count as hits
+    if (out.includes(l.name) || out.includes(l.module)) {
+      hits++; seen.add(key);
+    } else {
+      missing.push(l.id);
+    }
   }
   return { hits, missing };
 }
