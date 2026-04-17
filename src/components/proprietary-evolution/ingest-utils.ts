@@ -121,9 +121,12 @@ const EXTENSIONLESS_MAP: Record<string, string> = {
 
 const SUPPORTED_TEXT_EXTENSIONS = new Set(Object.keys(LANG_MAP));
 const TEXT_SAMPLE_BYTES = 64 * 1024;
-const MAX_TEXT_ANALYSIS_BYTES = 5 * 1024 * 1024; // 5MB — supports larger multi-file projects
-const MAX_STORED_CHARS_PER_FILE = 32_000;
-const MAX_STORED_TOTAL_CHARS = 160_000;
+const MAX_TEXT_ANALYSIS_BYTES = 10 * 1024 * 1024; // 10MB — supports large monorepo files
+// Layer 1 byte-perfect mandate (mem://constraints/architecture/layer2-inline-embedding-mandate):
+// the original source MUST embed verbatim. Per-file cap raised to 2MB chars and total
+// cap to 10MB chars so real-world CLIs (e.g. 4k-line Python tools) embed in full.
+const MAX_STORED_CHARS_PER_FILE = 2_000_000;
+const MAX_STORED_TOTAL_CHARS = 10_000_000;
 
 type SupportedTextEncoding = 'utf-8' | 'utf-16le' | 'utf-16be' | 'windows-1252';
 
