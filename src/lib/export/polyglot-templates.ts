@@ -12,6 +12,10 @@
  */
 
 import type { UnifiedCapabilityInput } from './unified-capability-file';
+import { formatEnhancedCapabilityName } from './humanize-name';
+
+const displayCap = (c: UnifiedCapabilityInput): string =>
+  formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'));
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — Language Syntax Definitions

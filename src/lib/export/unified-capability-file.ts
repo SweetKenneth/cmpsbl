@@ -22,6 +22,7 @@ import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock, CMPSBL_CORE_LAYERS } from './cmpsbl-layers';
 import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmpsbl-layer-polyglot';
 import { assertLanguageShipping } from './language-parity-tiers';
+import { formatEnhancedCapabilityName } from './humanize-name';
 
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
@@ -2794,7 +2795,7 @@ ${line}  ACTIVE LAYERS TO IMPLEMENT:
 ${allModules.map(m => `${line}    ${m.padEnd(12)} → See TypeScript/Python reference for layer behavior`).join('\n')}
 ${line}
 ${line}  ASCENDED CAPABILITIES:
-${capabilities.map(c => `${line}    ${c.name} — score ${c.cjpiScore} (${c.tier.toUpperCase()}) — Layer chain: ${c.chain.join(' → ')}`).join('\n')}
+${capabilities.map(c => `${line}    ${formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'))} — score ${c.cjpiScore} (${c.tier.toUpperCase()}) — Layer chain: ${c.chain.join(' → ')}`).join('\n')}
 ${line}
 ${line}  Configure layers, view telemetry, or learn more:
 ${line}    · https://cmpsbl.com
