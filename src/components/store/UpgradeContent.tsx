@@ -23,7 +23,7 @@ import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { PackDetailModal } from '@/components/slots/PackDetailModal';
 import { motion } from 'framer-motion';
-import { CrownJewelTierBreakdown } from '@/components/pricing/CrownJewelTierBreakdown';
+// CrownJewelTierBreakdown is now rendered by /plans, not here.
 
 /* ─── Tier definitions (public-facing) ─── */
 const TIERS: {
@@ -60,7 +60,7 @@ const TIERS: {
     accent: 'from-neon-green to-neon-green',
     icon: Unlock,
     capacity: { substrates: 'Prime Only', vault: '5 memories', pulls: '3 per day', radio: '15 min/day', exportEnabled: true, marketplace: false },
-    crownJewelLine: 'Crown Jewels included — free via npm for all',
+    crownJewelLine: '2 Ascension Layers (Audit + Governance)',
     features: [
       'CMPSBL PRIME™ — full 40-primitive substrate',
       'Memory Stream with daily discoveries',
@@ -83,7 +83,7 @@ const TIERS: {
     icon: Sparkles,
     stripeTier: 'studio' as EngineSubscriptionTier,
     capacity: { substrates: '3 Verticals', vault: '25 memories', pulls: '6 per day', radio: '30 min/day', exportEnabled: true, marketplace: true },
-    crownJewelLine: '28 Crown Jewel capabilities (8 Free + 20 Studio)',
+    crownJewelLine: '7 Ascension Layers (2 Builder + 5 Studio)',
     features: [
       'Choose any 3 industry substrates',
       'Full Marketplace access — buy & daily free downloads',
@@ -107,7 +107,7 @@ const TIERS: {
     popular: true,
     stripeTier: 'creator' as EngineSubscriptionTier,
     capacity: { substrates: '6 Verticals', vault: '75 memories', pulls: '9 per day', radio: '45 min/day', exportEnabled: true, marketplace: true },
-    crownJewelLine: '68 Crown Jewel capabilities (Free + Studio + 40 Creator)',
+    crownJewelLine: '13 Ascension Layers (Builder + Studio + 6 Creator)',
     features: [
       'Choose any 6 industry substrates',
       'Full Marketplace with priority downloads',
@@ -131,7 +131,7 @@ const TIERS: {
     icon: Crown,
     stripeTier: 'architect' as EngineSubscriptionTier,
     capacity: { substrates: 'All + ULTIMATE', vault: 'Unlimited', pulls: '12 per day', radio: '60 min/day', exportEnabled: true, marketplace: true },
-    crownJewelLine: 'All Crown Jewel capabilities unlocked',
+    crownJewelLine: 'All 20 Ascension Layers unlocked',
     features: [
       'Every industry substrate unlocked',
       'CMPSBL ULTIMATE™ — 143+ primitives',
@@ -391,13 +391,13 @@ export function UpgradeContent() {
 
                   <div className="h-px bg-border/50 mb-4 sm:mb-5" />
 
-                  {/* Crown Jewel link */}
+                  {/* Ascension Layers link — true Crown Jewels of the substrate */}
                   <a
-                    href="#crown-jewel-breakdown"
+                    href="#ascension-layers"
                     className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm mb-3 group/cj cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById('crown-jewel-breakdown')?.scrollIntoView({ behavior: 'smooth' });
+                      document.getElementById('ascension-layers')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   >
                     <Diamond className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-amber shrink-0 mt-0.5" />
@@ -438,8 +438,10 @@ export function UpgradeContent() {
         </div>
       </div>
 
-      {/* ═══ CROWN JEWEL BREAKDOWN ═══ */}
-      <CrownJewelTierBreakdown />
+      {/* CrownJewelTierBreakdown is now rendered by the parent page below
+          TierLayersOverview, so the 20 Ascension Layers (the substrate's true
+          Crown Jewels) appear directly below the plans, with the broader
+          78-item capability breakdown shown beneath them. */}
 
       {/* Slot Pressure Modal */}
       <SlotPressureModal
