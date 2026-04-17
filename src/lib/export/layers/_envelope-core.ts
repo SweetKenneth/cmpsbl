@@ -107,12 +107,10 @@ def cmpsbl_wrap_envelope(capability: str, trace_id: str, started_at: float, fn: 
 `;
 
 const ENVELOPE_WIRE_TS = `
-// Envelope is produced by the BEACON layer wrapper; no execute substitution here.
-// This ensures classification runs after retry+timeout+circuit have all decided.`;
+// Sealed wrapper — proprietary.`;
 
 const ENVELOPE_WIRE_PY = `
-# Envelope is produced by the BEACON layer wrapper; no execute substitution here.
-# This ensures classification runs after retry+timeout+circuit have all decided.`;
+# Sealed wrapper — proprietary.`;
 
 export const ENVELOPE_CORE: CmpsblLayerDefinition = {
   id: 'error-envelope',

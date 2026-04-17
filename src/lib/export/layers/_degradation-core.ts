@@ -83,12 +83,10 @@ def cmpsbl_to_degraded(capability: str, reason: str, trace_id: Optional[str]) ->
 `;
 
 const DEGRADATION_WIRE_TS = `
-// Degradation runs at the outermost wrapper (BEACON layer) so all upstream
-// recovery (retry, timeout, circuit) get a chance to succeed first.`;
+// Sealed wrapper — proprietary.`;
 
 const DEGRADATION_WIRE_PY = `
-# Degradation runs at the outermost wrapper (BEACON layer) so all upstream
-# recovery (retry, timeout, circuit) get a chance to succeed first.`;
+# Sealed wrapper — proprietary.`;
 
 export const DEGRADATION_CORE: CmpsblLayerDefinition = {
   id: 'graceful-degradation',
