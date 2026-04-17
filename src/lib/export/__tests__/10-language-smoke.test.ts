@@ -308,13 +308,6 @@ describe('TypeScript Unified Export (with user source files)', () => {
 // ═══════════════════════════════════════════════════════════════
 
 describe('Patent Fulfillment (U.S. App. No. 64/029,678)', () => {
-  const phpOutput = generateUnifiedCapabilityFile(
-    CAPABILITIES, PACK_NAME, 'php', PHP_SOURCE_FILES,
-  );
-  const pyOutput = generateUnifiedCapabilityFile(
-    CAPABILITIES, PACK_NAME, 'python', PYTHON_SOURCE_FILES,
-  );
-describe('Patent Fulfillment (U.S. App. No. 64/029,678)', () => {
   const pyOutput = generateUnifiedCapabilityFile(
     CAPABILITIES, PACK_NAME, 'python', PYTHON_SOURCE_FILES,
   );
