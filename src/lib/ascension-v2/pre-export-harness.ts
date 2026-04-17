@@ -295,8 +295,12 @@ function checkExecutionSmoke(input: HarnessInput): HarnessCheck {
       /func\s+CmpsblLayer\d+\s*\(/g,
     ];
   } else if (lang === 'rust') {
+    // Rust unified file emits a `cmpsbl_*` dispatch family plus the
+    // `execute_pipeline` core executor and per-layer `cmpsbl_layer<N>`
+    // wrappers when CMPSBL Layers are selected. Accept any of them so
+    // the harness reflects what the Rust generator actually produces.
     patterns = [
-      /pub\s+fn\s+(?:handle_|_h\d+|cmpsbl_layer\d+)/g,
+      /pub\s+fn\s+(?:handle_\w+|_h\d+|cmpsbl_layer\d+|cmpsbl_execute(?:_chain)?|cmpsbl_list_capabilities|cmpsbl_validate|cmpsbl_self_test|execute_pipeline)\s*[\(<]/g,
     ];
   } else {
     patterns = [/handle[_A-Z]\w*\s*[\(({:]/g, /_h\d+\s*\(/g];
