@@ -76,7 +76,7 @@ export function LayerCard({ item }: LayerCardProps) {
   };
 
   return (
-    <div className="snap-start shrink-0 w-[calc(100vw-4rem)] max-w-[320px] sm:max-w-[340px] h-[620px]">
+    <div className="snap-start shrink-0 w-[calc(100vw-4rem)] max-w-[320px] sm:max-w-[340px] h-[520px]">
       <AnimatePresence mode="wait">
         {!flipped ? (
           /* ═══ FRONT ═══ */
@@ -143,6 +143,13 @@ export function LayerCard({ item }: LayerCardProps) {
               {item.subtitle && (
                 <p className="text-[10px] font-mono tracking-wider text-muted-foreground/50 mt-1.5 uppercase line-clamp-2">
                   {item.subtitle}
+                </p>
+              )}
+
+              {/* Description — what this Layer does for your software */}
+              {item.description && (
+                <p className="text-[11px] sm:text-xs text-muted-foreground/75 leading-relaxed mt-2.5 line-clamp-3">
+                  {item.description}
                 </p>
               )}
 
