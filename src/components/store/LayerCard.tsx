@@ -115,11 +115,11 @@ export function LayerCard({ item }: LayerCardProps) {
               {/* Kind chip — top right */}
               <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/70 backdrop-blur-md border border-border/30">
                 {isSuite ? (
-                  <Sparkles className="w-3 h-3 text-muted-foreground/60" />
+                  <Sparkles className="w-3 h-3 text-black" />
                 ) : (
-                  <Cpu className="w-3 h-3 text-muted-foreground/60" />
+                  <Cpu className="w-3 h-3 text-black" />
                 )}
-                <span className="text-[8px] font-black tracking-[0.15em] text-muted-foreground/60">
+                <span className="text-[8px] font-black tracking-[0.15em] text-black">
                   LAYER
                 </span>
               </div>
