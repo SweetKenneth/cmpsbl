@@ -25,6 +25,10 @@ import {
   buildAttachmentPlan,
   serializeAttachmentPlan,
 } from '../mana/findings-bridge';
+import {
+  detectLayer1License,
+  renderLicenseAttribution,
+} from './license-attribution';
 
 // ── Language Syntax Adapters ──
 
@@ -3288,7 +3292,14 @@ export function generateRefurbishedCode(
     filePrelude = 'package main\n\n';
   }
 
-  // ── Final Assembly: [Prelude] + Layer 2 + Layer 1 (verbatim) ───────
+  // ── Upstream license detection (Apache-2.0, MIT, BSD, MPL, ISC) ────
+  // Carries the original license notice forward so derivative-work
+  // attribution requirements are met. Layer 1 itself is never modified —
+  // we only add a comment block above the verbatim region.
+  const upstreamLicense = detectLayer1License(verbatimSource);
+  const upstreamLicenseLines = renderLicenseAttribution(upstreamLicense, adapter.comment);
+
+  // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) ───────
   return [
     filePrelude + layer2Code,
     '',
@@ -3297,6 +3308,7 @@ export function generateRefurbishedCode(
     adapter.comment('Verified byte-identical to uploaded source.'),
     adapter.comment('U.S. Patent App. No. 64/029,678 · No. 64/031,637'),
     adapter.comment('═══════════════════════════════════════════════════════════'),
+    ...(upstreamLicenseLines.length ? ['', ...upstreamLicenseLines] : []),
     '',
     verbatimSource,
     '',
