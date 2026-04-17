@@ -83,7 +83,7 @@ const TIERS: {
     icon: Sparkles,
     stripeTier: 'studio' as EngineSubscriptionTier,
     capacity: { substrates: '3 Verticals', vault: '25 memories', pulls: '6 per day', radio: '30 min/day', exportEnabled: true, marketplace: true },
-    crownJewelLine: '28 Crown Jewel capabilities (8 Free + 20 Studio)',
+    crownJewelLine: '7 Ascension Layers (2 Builder + 5 Studio)',
     features: [
       'Choose any 3 industry substrates',
       'Full Marketplace access — buy & daily free downloads',
