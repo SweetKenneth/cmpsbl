@@ -31,6 +31,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 import { useAuth } from '@/contexts/AuthContext';
 import { analyzeUploadedFiles, analyzePastedCode, type CandidateAnalysis, LANG_MAP } from './ingest-utils';
+import { InlineErrorPanel, toInlineError, type InlineError } from './InlineErrorPanel';
 
 /* ═══ TYPES ═══ */
 type ParsedNode = CandidateAnalysis;
