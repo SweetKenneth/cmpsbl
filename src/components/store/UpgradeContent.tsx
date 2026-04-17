@@ -23,7 +23,7 @@ import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { PackDetailModal } from '@/components/slots/PackDetailModal';
 import { motion } from 'framer-motion';
-import { CrownJewelTierBreakdown } from '@/components/pricing/CrownJewelTierBreakdown';
+// CrownJewelTierBreakdown is now rendered by /plans, not here.
 
 /* ─── Tier definitions (public-facing) ─── */
 const TIERS: {
