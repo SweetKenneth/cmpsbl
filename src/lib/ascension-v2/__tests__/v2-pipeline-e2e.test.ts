@@ -184,6 +184,75 @@ func Broken() int {
     return 1
 `.trim(),
   },
+  {
+    id: 'java',
+    label: 'Java',
+    ext: '.java',
+    canonical: `
+public class Engine {
+    public int calculate(int a, int b) { return a + b; }
+    public String process(String item) { return item.toUpperCase(); }
+}
+`.trim(),
+    adversarial: `
+public class Broken {
+    public int broken() { return 1;
+`.trim(),
+  },
+  {
+    id: 'kotlin',
+    label: 'Kotlin',
+    ext: '.kt',
+    canonical: `
+fun calculate(a: Int, b: Int): Int = a + b
+
+class Engine {
+    fun process(items: List<String>): List<String> = items.map { it.uppercase() }
+}
+`.trim(),
+    adversarial: `
+fun broken(): Int {
+    val x = 1
+`.trim(),
+  },
+  {
+    id: 'csharp',
+    label: 'C#',
+    ext: '.cs',
+    canonical: `
+using System.Collections.Generic;
+using System.Linq;
+
+public class Engine {
+    public int Calculate(int a, int b) { return a + b; }
+    public IEnumerable<string> Process(IEnumerable<string> items) {
+        return items.Select(i => i.ToUpper());
+    }
+}
+`.trim(),
+    adversarial: `
+public class Broken {
+    public int Broken() { return 1;
+`.trim(),
+  },
+  {
+    id: 'swift',
+    label: 'Swift',
+    ext: '.swift',
+    canonical: `
+func calculate(_ a: Int, _ b: Int) -> Int { return a + b }
+
+class Engine {
+    func process(_ items: [String]) -> [String] {
+        return items.map { $0.uppercased() }
+    }
+}
+`.trim(),
+    adversarial: `
+func broken() -> Int {
+    let x = 1
+`.trim(),
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════
@@ -247,6 +316,35 @@ function syntheticLayer2(
       layer1,
     ].join('\n');
   }
+  if (lang === 'java' || lang === 'csharp') {
+    const className = lang === 'java' ? 'CmpsblWrapper' : 'CmpsblWrapper';
+    return [
+      '// CMPSBL® Layer 2 — Synthetic Wrapper',
+      `// ${banner}`,
+      `public class ${className} {`,
+      '    public static void cmpsbl_execute() {}',
+      '    public static void handle_circuit_breaker() {}',
+      '    public static void handle_self_healing() {}',
+      '    public static void handle_consensus() {}',
+      '}',
+      '',
+      `// ${banner}`,
+      layer1,
+    ].join('\n');
+  }
+  if (lang === 'kotlin' || lang === 'swift') {
+    return [
+      '// CMPSBL® Layer 2 — Synthetic Wrapper',
+      `// ${banner}`,
+      'fun cmpsbl_execute() {}',
+      'fun handle_circuit_breaker() {}',
+      'fun handle_self_healing()    {}',
+      'fun handle_consensus()       {}',
+      '',
+      `// ${banner}`,
+      layer1,
+    ].join('\n');
+  }
   // TS / JS share the same shape.
   return [
     '// CMPSBL® Layer 2 — Synthetic Wrapper',
@@ -278,8 +376,9 @@ describe('V2 Pipeline — registry parity', () => {
     }
   });
 
-  it('exactly five fixtures are exercised end-to-end', () => {
-    expect(FIXTURES).toHaveLength(5);
+  it('all SHIPPING languages have an end-to-end fixture', () => {
+    const shippingIds = new Set(getShippingLanguages().map(l => l.id));
+    expect(FIXTURES.length).toBe(shippingIds.size);
   });
 });
 

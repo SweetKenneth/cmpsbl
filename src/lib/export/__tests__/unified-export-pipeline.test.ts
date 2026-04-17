@@ -57,10 +57,11 @@ describe('Unified Export Pipeline — Smoke Test', () => {
   // ─── File Generation ───
 
   describe('File Generation', () => {
+    // Only SHIPPING languages are exercised here. PHP is COMING_SOON
+    // and intentionally blocked by the parity gate.
     const LANGUAGES_TO_TEST = [
       { lang: 'typescript', ext: '.ts', hasPolyglot: false },
       { lang: 'python', ext: '.py', hasPolyglot: false },
-      { lang: 'php', ext: '.php', hasPolyglot: false },
       { lang: 'rust', ext: '.rs', hasPolyglot: true },
       { lang: 'go', ext: '.go', hasPolyglot: true },
     ];
@@ -141,7 +142,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
       "import { computeCJPI } from './_runtime/standalone-runtime'",
     ];
 
-    for (const lang of ['typescript', 'python', 'php']) {
+    for (const lang of ['typescript', 'python']) {
       it(`${lang} output contains no dead import references`, () => {
         const result = generateUnifiedCapabilityFile(MOCK_CAPABILITIES, PACK_NAME, lang);
         for (const pattern of DEAD_PATTERNS) {
@@ -206,7 +207,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
       expect(result).toContain('import');
     });
 
-    it('PHP output uses correct idioms', () => {
+    it.skip('PHP output uses correct idioms (gated until SHIPPING)', () => {
       const result = generateUnifiedCapabilityFile(MOCK_CAPABILITIES, PACK_NAME, 'php');
       expect(result).toContain('<?php');
       expect(result).toContain('function');
