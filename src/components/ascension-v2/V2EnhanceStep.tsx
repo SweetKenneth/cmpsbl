@@ -248,18 +248,33 @@ export function V2EnhanceStep({ onComplete }: Props) {
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
             <span className="text-xs sm:text-sm font-medium text-foreground">Add CMPSBL Layers</span>
+            <span
+              className={cn(
+                'text-[8px] sm:text-[9px] font-semibold px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
+                TIER_META[effectiveTier].accent,
+              )}
+              title={`Your tier: ${TIER_META[effectiveTier].name}`}
+            >
+              {TIER_META[effectiveTier].name}
+            </span>
             <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-auto">Optional</span>
           </div>
           <p className="text-[10px] sm:text-xs text-muted-foreground">
             Production-grade infrastructure injected into Layer 2. Your code stays untouched.
+            Layers above your tier are locked — <Link to="/plans" className="text-primary hover:underline">upgrade</Link> to unlock.
           </p>
           <div className="space-y-1.5">
             {availableLayers.map((layer) => {
               const isSelected = selectedLayers.has(layer.id);
+              const layerTier = tierForLayer(layer);
+              const meta = TIER_META[layerTier];
+              const isLocked = TIER_RANK[layerTier] > userTierRank;
               return (
                 <button
                   key={layer.id}
+                  disabled={isLocked}
                   onClick={() => {
+                    if (isLocked) return;
                     setSelectedLayers(prev => {
                       const next = new Set(prev);
                       if (next.has(layer.id)) next.delete(layer.id);
@@ -267,22 +282,40 @@ export function V2EnhanceStep({ onComplete }: Props) {
                       return next;
                     });
                   }}
+                  title={isLocked
+                    ? `Locked — requires ${meta.name} (${meta.priceLabel}). Click your tier to upgrade.`
+                    : `${meta.name} tier — included in your plan`}
                   className={cn(
                     'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
-                    isSelected
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border hover:border-primary/40 hover:bg-muted/40'
+                    isLocked
+                      ? 'border-border/40 bg-muted/10 opacity-50 cursor-not-allowed'
+                      : isSelected
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/40 hover:bg-muted/40',
                   )}
                 >
                   <div className={cn(
                     'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
-                    isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                    isLocked
+                      ? 'bg-muted/40 text-muted-foreground'
+                      : isSelected
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground',
                   )}>
-                    {isSelected ? <Check className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
+                    {isLocked
+                      ? <Lock className="w-3 h-3" />
+                      : isSelected
+                        ? <Check className="w-3 h-3" />
+                        : <Zap className="w-3 h-3" />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] sm:text-xs font-medium text-foreground">{layer.name}</span>
+                      <span className={cn(
+                        'text-[10px] sm:text-xs font-medium',
+                        isLocked ? 'text-muted-foreground' : 'text-foreground',
+                      )}>
+                        {layer.name}
+                      </span>
                       <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono">
                         CJ #{layer.crownJewelRank} · CJPI {layer.cjpi}
                       </span>
@@ -291,21 +324,14 @@ export function V2EnhanceStep({ onComplete }: Props) {
                       {layer.description}
                     </p>
                   </div>
-                  {(() => {
-                    const tier = tierForLayer(layer);
-                    const meta = TIER_META[tier];
-                    return (
-                      <span
-                        className={cn(
-                          'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
-                          meta.accent
-                        )}
-                        title={`${meta.name} tier — ${meta.priceLabel}`}
-                      >
-                        {meta.name}
-                      </span>
-                    );
-                  })()}
+                  <span
+                    className={cn(
+                      'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
+                      meta.accent,
+                    )}
+                  >
+                    {meta.name}
+                  </span>
                 </button>
               );
             })}
