@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { commitUpload } from '@/lib/ascension-v2';
+import { commitUpload, PreAscensionGateError } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
 
 interface Props {
