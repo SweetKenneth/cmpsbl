@@ -15,6 +15,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
 import { TrustVisual } from "@/components/home/TrustVisual";
+import { AscensionV2ReleaseCTA } from "@/components/home/AscensionV2ReleaseCTA";
 
 import trustInfrastructure from "@/assets/trust-infrastructure.jpg";
 import trustEngineering from "@/assets/trust-engineering.jpg";
@@ -88,6 +89,9 @@ export default function FactoryHome() {
 
       {/* ═══ HERO (untouched) ═══ */}
       <HeroMetaSubstrate />
+
+      {/* ═══ ASCENSION V2 RELEASE CTA ═══ */}
+      <AscensionV2ReleaseCTA />
 
       {/* ═══ LIVE METRICS ═══ */}
       <LiveStatsBar />
