@@ -506,7 +506,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       })()}
 
       {/* Actions — source language always exports. No gating. */}
-      <div className="space-y-2">
+      <div className="space-y-3">
+        <V2UpstreamLicenseSelect
+          value={spdxChoice}
+          onChange={setSpdxChoice}
+          detected={detectedUpstream}
+          hasSource={sourceFiles.length > 0}
+        />
+
         {capabilities.length > 0 && (
           <Button
             onClick={handleExport}
