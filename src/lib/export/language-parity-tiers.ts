@@ -99,7 +99,7 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   cs('vbnet',       'VB.NET'),
 
   // Apple platforms
-  cs('swift',       'Swift'),
+  { id: 'swift',    label: 'Swift',  status: 'SHIPPING' },
   cs('objectivec',  'Objective-C'),
 
   // Scripting & dynamic
