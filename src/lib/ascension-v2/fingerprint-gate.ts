@@ -42,15 +42,23 @@ function fnv1a(input: string): string {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Structural normalizer — strips whitespace/comments for stable hashing
+// Structural normalizer — strips whitespace/comments for stable hashing.
+// Also collapses spaces around punctuation so that cosmetic reformatting
+// (e.g., `function f (a){return a;}` vs `function   f(a)   { return a; }`)
+// produces an identical fingerprint. Determinism beats parsing fidelity here:
+// the fingerprint is a structural identity check, not an AST.
 // ═══════════════════════════════════════════════════════════════
+
+const PUNCT_CLASS = `[\\(\\)\\[\\]{};,:.<>+\\-*/%=!?&|^~]`;
+const SPACE_AROUND_PUNCT = new RegExp(`\\s*(${PUNCT_CLASS})\\s*`, 'g');
 
 function normalizeSource(source: string): string {
   return source
     .replace(/\/\/[^\n]*/g, '')        // single-line comments
     .replace(/\/\*[\s\S]*?\*\//g, '')  // block comments
     .replace(/#[^\n]*/g, '')           // python/ruby comments
-    .replace(/\s+/g, ' ')             // collapse whitespace
+    .replace(/\s+/g, ' ')              // collapse whitespace
+    .replace(SPACE_AROUND_PUNCT, '$1') // strip spaces around punctuation
     .trim();
 }
 

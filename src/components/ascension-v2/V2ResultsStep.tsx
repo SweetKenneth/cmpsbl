@@ -35,6 +35,7 @@ import {
   getLanguageParityStatus,
   getLanguageParityEntry,
   isLanguageShipping,
+  getShippingLanguages,
 } from '@/lib/export/language-parity-tiers';
 import { Clock } from 'lucide-react';
 import JSZip from 'jszip';
@@ -470,7 +471,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
                 {note ?? `${label} is on the parity roadmap. Real exports unlock when every layer has a native implementation and the deterministic chain executor passes parity tests.`}
               </p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
-                Shipping today: TypeScript, JavaScript, Python.
+                Shipping today: {getShippingLanguages().map(l => l.label).join(', ')}.
               </p>
             </div>
           </div>

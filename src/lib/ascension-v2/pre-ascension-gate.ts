@@ -221,16 +221,40 @@ function jsStructuralCheck(source: string): GateError | null {
   // Detect a function/class declaration that's never followed by '{'.
   // Anything other than '{' (after the signature) is a syntax error in
   // a *declaration* — including ';' (no body), ')', or random tokens.
-  const re = /\b(function\s+\w+\s*\([^)]*\)|class\s+\w+(?:\s+extends\s+\w+)?)\s*([^\s{])/g;
+  //
+  // Notes:
+  //  • Word boundaries (\b) anchor the identifier so we don't partial-match
+  //    inside longer names (e.g., `class Calc` previously matched `class Cal`
+  //    leaving `c` as the "next char" — false positive on valid code).
+  //  • TypeScript return-type annotations (`): number {`, `): Promise<T[]> {`,
+  //    `): A | B & C {`) are tolerated by greedily consuming any
+  //    non-`{`/`;`/`}` run after the closing `)` until we hit `{`.
+  //  • Generic type params on the function name (`function f<T>(…)`) are
+  //    tolerated via an optional `<…>` slot before the parameter list.
+  // Two-pass: locate the declaration head, then verify the *next non-space
+  // char after the full signature* is '{'. This avoids regex backtracking
+  // games over TS return-type annotations.
+  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(source)) !== null) {
+    let i = m.index + m[0].length;
+    // Skip a TS return-type annotation `: <type>` if present
+    if (source[i] === ':') {
+      i++;
+      while (i < source.length && source[i] !== '{' && source[i] !== ';' && source[i] !== '}') i++;
+    }
+    // Skip whitespace
+    while (i < source.length && /\s/.test(source[i])) i++;
+    if (i >= source.length) return null;
+    if (source[i] === '{') continue; // valid declaration head
+    const next = source[i];
     const { line, column } = offsetToLineCol(source, m.index);
     return {
       code: 'E_SOURCE_INVALID',
       file: '',
       line,
       column,
-      message: `Declaration missing body — found '${m[2]}' where '{' was expected`,
+      message: `Declaration missing body — found '${next}' where '{' was expected`,
       suggestion: 'Add the function or class body wrapped in { … }.',
       snippet: snippetAt(source, line),
     };
