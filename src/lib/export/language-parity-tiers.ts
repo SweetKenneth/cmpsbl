@@ -87,7 +87,7 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   cs('crystal',     'Crystal'),
 
   // JVM family
-  cs('java',        'Java'),
+  { id: 'java',     label: 'Java',   status: 'SHIPPING' },
   cs('kotlin',      'Kotlin'),
   cs('scala',       'Scala'),
   cs('groovy',      'Groovy'),
