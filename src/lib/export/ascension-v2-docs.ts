@@ -5,7 +5,7 @@
  * All mobile-responsive, branded with patent numbers and inventor info.
  *
  * U.S. Patent App. No. 64/029,678
- * U.S. Patent App. No. 63/758,981
+ * U.S. Patent App. No. 64/031,637
  *
  * © 2025–2026 CMPSBL® · PromptFluid™. All rights reserved.
  */
