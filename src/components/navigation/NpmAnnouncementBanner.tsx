@@ -1,40 +1,55 @@
 /**
- * QuoteMarquee — Rolling quotes from internet pioneers
- * Non-dismissible. Infinite scroll marquee with CSS animation.
- * Deferred render: delays mount so hero content becomes the LCP element
+ * Top Marquee — Cycles the Top 20 Launch Layers in random order.
+ *
+ * Each tick shows: layer name · CJPI score · short description (no truncation).
+ * Order is shuffled once per mount (Fisher–Yates) so each session sees a
+ * different ordering, while the marquee itself loops seamlessly via duplication.
+ *
+ * Deferred render: delays mount so hero content remains the LCP element
  * instead of this small decorative banner text.
+ *
+ * Speed: 2× faster than the prior quote marquee. The duration is computed
+ * from the rendered character count so longer/shorter copy maintains a
+ * consistent reading pace.
  */
 
-import { useRef, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { LAYERS, type LaunchLayer } from "@/components/ascension-v2/V2LaunchLayers";
 
-const QUOTES = [
-  { text: "Information wants to be free.", author: "Stewart Brand" },
-  { text: "The Web connects people.", author: "Tim Berners-Lee" },
-  { text: "Move fast and break things.", author: "Mark Zuckerberg" },
-  { text: "Predict the future — invent it.", author: "Alan Kay" },
-  { text: "Software is eating the world.", author: "Marc Andreessen" },
-  { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
-  { text: "Connected like neurons.", author: "Stephen Hawking" },
-  { text: "Technology is indistinguishable from magic.", author: "Arthur C. Clarke" },
-  { text: "The network is the computer.", author: "John Gage" },
-  { text: "Code is law.", author: "Lawrence Lessig" },
-] as const;
-
-// Duplicate for seamless loop
-const ITEMS = [...QUOTES, ...QUOTES];
+function shuffle<T>(arr: ReadonlyArray<T>): T[] {
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
 
 export function NpmAnnouncementBanner() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
 
   // Defer render until after hero has painted — prevents this banner
-  // from being identified as the LCP element by Lighthouse
+  // from being identified as the LCP element by Lighthouse.
   useEffect(() => {
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => setReady(true));
     });
     return () => cancelAnimationFrame(id);
   }, []);
+
+  // Shuffle once per mount so each visit shows a fresh ordering.
+  const shuffled = useMemo<LaunchLayer[]>(() => shuffle(LAYERS), []);
+  const items = useMemo(() => [...shuffled, ...shuffled], [shuffled]);
+
+  // Duration tuned for 2× the previous reading pace.
+  // Prior banner: ~30s for ~10 short quotes (~30 chars each ≈ 300 chars).
+  // New content: 20 layers × ~180 chars ≈ 3,600 chars → would be ~360s at the
+  // old per-char rate. Halved (2× faster) and capped for legibility:
+  const totalChars = useMemo(
+    () => shuffled.reduce((sum, l) => sum + l.name.length + l.description.length + 14, 0),
+    [shuffled],
+  );
+  const durationSec = Math.max(60, Math.min(180, Math.round((totalChars / 300) * 30 * 0.5)));
 
   if (!ready) return null;
 
@@ -46,14 +61,20 @@ export function NpmAnnouncementBanner() {
           "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
       }}
     >
-      <div ref={containerRef} className="flex whitespace-nowrap animate-marquee py-1.5">
-        {ITEMS.map((q, i) => (
+      <div
+        className="flex whitespace-nowrap py-1.5 will-change-transform"
+        style={{ animation: `marquee ${durationSec}s linear infinite` }}
+      >
+        {items.map((layer, i) => (
           <span
-            key={`${q.author}-${i}`}
-            className="inline-flex items-center gap-1.5 mx-8 sm:mx-12 text-xs sm:text-sm text-white/90 font-semibold shrink-0"
+            key={`${layer.rank}-${i}`}
+            className="inline-flex items-baseline gap-2 mx-8 sm:mx-12 text-xs sm:text-sm text-white shrink-0"
           >
-            <span className="italic text-white/80">"{q.text}"</span>
-            <span className="text-white font-bold ml-1">— {q.author}</span>
+            <span className="font-bold tracking-tight">{layer.name}</span>
+            <span className="font-mono font-semibold text-white/95 tabular-nums px-1.5 py-0.5 rounded bg-white/15 text-[10px] sm:text-xs">
+              CJPI {layer.cjpi}
+            </span>
+            <span className="text-white/85 font-medium">— {layer.description}</span>
           </span>
         ))}
       </div>

@@ -25,7 +25,7 @@ import {
   type LayerTier,
 } from '@/lib/ascension-v2/tier-layers';
 
-interface LaunchLayer {
+export interface LaunchLayer {
   rank: number;
   name: string;
   pillar: Pillar;
@@ -40,7 +40,7 @@ interface LaunchLayer {
   roi: string;
 }
 
-type Pillar =
+export type Pillar =
   | 'Resilience'
   | 'Foresight'
   | 'Security'
@@ -63,7 +63,7 @@ const PILLAR_META: Record<Pillar, { Icon: typeof Brain; tone: string }> = {
   Compliance:    { Icon: ScrollText, tone: 'text-teal-400'     },
 };
 
-const LAYERS: LaunchLayer[] = [
+export const LAYERS: LaunchLayer[] = [
   // Resilience
   { rank: 1, pillar: 'Resilience', name: 'Self-Healing Orchestrator', cjpi: 96, priceLow: 149, priceHigh: 499,
     description: 'Auto-detects failures, selects lowest-blast-radius repair strategy, executes recovery, and learns from outcomes. Attaches at function boundaries via Mana. No source modification.',
