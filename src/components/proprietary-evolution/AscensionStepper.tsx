@@ -90,12 +90,12 @@ export function AscensionStepper({ activeStep, onStepClick, totalSteps = 5 }: Pr
 
             {/* Connector line */}
             {i < visibleSteps.length - 1 && (
-              <div className="flex-1 h-[2px] mx-1.5 sm:mx-3 mt-[-20px]">
+              <div className="flex-1 h-[2px] mx-1.5 sm:mx-3 mt-[-20px] overflow-hidden rounded-full">
                 <div
                   className={cn(
                     "h-full rounded-full transition-all duration-700 ease-out",
                     i < activeStep
-                      ? "bg-gradient-to-r from-primary/60 to-primary/40"
+                      ? "bg-ascension-gradient"
                       : "bg-border/20"
                   )}
                 />
