@@ -461,6 +461,14 @@ function stripInternalComments(source: string, lang: string): string {
     if (commentContent.includes('TODO') || commentContent.includes('HACK') || commentContent.includes('FIXME')) return false;
     if (commentContent.startsWith('This ') || commentContent.startsWith('We ') || commentContent.startsWith('The ')) return false;
     if (commentContent.startsWith('Note:') || commentContent.startsWith('Explanation:')) return false;
+    // Strip CMPSBL® Hardening Layer design comments — they leak the FSM/algorithm
+    // shape (e.g. "Three-state FSM: closed -> open -> half-open with exponential backoff").
+    // The Layer banner ("Ascension Layer™ — <Name>") is preserved by PRESERVED_PATTERNS above.
+    const lower = commentContent.toLowerCase();
+    if (lower.includes('three-state fsm') || lower.includes('exponential backoff')) return false;
+    if (lower.includes('half-open') && lower.includes('closed')) return false;
+    if (lower.includes('breaker panel') || lower.includes('breaker registry')) return false;
+    if (lower.startsWith('three-state') || lower.startsWith('two-state')) return false;
     // Keep everything else
     return true;
   }).join('\n');
