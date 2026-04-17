@@ -94,6 +94,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const { user } = useAuth();
   const { tier: subscriptionTier } = useEngineSubscription();
   const { isGovernor } = useUserRole();
+  const { ownedLayerIds, loading: entitlementsLoading } = useLayerEntitlements();
 
   // Effective tier = subscription tier (Governor sees everything regardless).
   const effectiveTier = useMemo<LayerTier>(
@@ -103,6 +104,16 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const userTierRank = TIER_RANK[effectiveTier];
 
   const availableLayers = useMemo(() => getAvailableLayers(), []);
+
+  // Inventory layers (25 store SKUs) the user has purchased — ranked by CJPI desc.
+  const purchasedInventoryLayers = useMemo<CmpsblLayerDefinition[]>(
+    () =>
+      INVENTORY_LAYERS
+        .filter((l) => ownedLayerIds.has(l.id))
+        .slice()
+        .sort((a, b) => b.cjpi - a.cjpi),
+    [ownedLayerIds],
+  );
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
