@@ -76,7 +76,7 @@ export function LayerCard({ item }: LayerCardProps) {
   };
 
   return (
-    <div className="snap-start shrink-0 w-[calc(100vw-4rem)] max-w-[320px] sm:max-w-[340px] h-[520px]">
+    <div className="snap-start shrink-0 w-[calc(100vw-4rem)] max-w-[320px] sm:max-w-[340px] min-h-[600px] flex">
       <AnimatePresence mode="wait">
         {!flipped ? (
           /* ═══ FRONT ═══ */
