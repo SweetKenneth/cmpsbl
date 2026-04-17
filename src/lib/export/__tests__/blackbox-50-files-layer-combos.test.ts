@@ -251,6 +251,18 @@ describe('50-file ascension layer black-box stress', () => {
           }
         });
 
+        it('preserves selected layer public APIs (TS only — moat usable)', () => {
+          if (!emitted) return;
+          if (lang !== 'typescript' && lang !== 'javascript') return;
+          for (const id of combo.ids) {
+            const expected = LAYER_PUBLIC_API_TS[id];
+            if (!expected) continue;
+            for (const sym of expected) {
+              expect(sealed, `public API "${sym}" for layer "${id}" missing in TS seal`).toContain(sym);
+            }
+          }
+        });
+
         it(`carries selected layer count (when emitted): ${combo.ids.length}`, () => {
           if (!emitted) return;
           // Layer header block lists each selected layer's name. Verify count.
