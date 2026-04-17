@@ -363,6 +363,7 @@ export default function RestorationShop() {
         selectedPrims,
         detectedLang,
         ascendedCode,
+        upstreamLicenseSpdx: upstreamLicenseSpdx || null,
       });
 
       const { saveAs } = await import('file-saver');
@@ -372,7 +373,7 @@ export default function RestorationShop() {
       const msg = err instanceof Error ? err.message : String(err);
       toast.error('Export failed.', { description: msg.slice(0, 200), duration: 10000 });
     }
-  }, [report, code, ascendedCode, identityRole, selectedPrims, fileName, detectedLang]);
+  }, [report, code, ascendedCode, identityRole, selectedPrims, fileName, detectedLang, upstreamLicenseSpdx]);
 
   const resetFlow = useCallback(() => {
     setPhase('upload');
