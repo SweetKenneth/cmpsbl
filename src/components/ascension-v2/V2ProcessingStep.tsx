@@ -408,7 +408,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
                   // Feedback loop must never block discovery
                 }
               }
-              setRecentHits((prev) => [cap.name, ...prev.filter((name) => name !== cap.name)].slice(0, 4));
+              const displayHit = formatEnhancedCapabilityName(
+                cap.name,
+                cap.chain.filter((p) => p !== 'CANDIDATE'),
+              );
+              setRecentHits((prev) => [displayHit, ...prev.filter((name) => name !== displayHit)].slice(0, 4));
               return cjpi;
             }
             // No capabilities surfaced — record as failed collision (#9)
