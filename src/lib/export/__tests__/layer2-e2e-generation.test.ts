@@ -44,6 +44,18 @@ const INPUTS: Record<string, { code: string; lang: string; file: string; classOr
     code: `class TaskWorker {\n    private var queue: [String] = []\n    func enqueue(_ item: String) { queue.append(item) }\n    func run() -> String? { queue.isEmpty ? nil : queue.removeFirst() }\n}\n`,
     lang: 'Swift', file: 'TaskWorker.swift', classOrFn: 'TaskWorker',
   },
+  Kotlin: {
+    code: `class TaskWorker {\n    private val queue: MutableList<String> = mutableListOf()\n    fun enqueue(item: String) { queue.add(item) }\n    fun run(): String? = if (queue.isEmpty()) null else queue.removeAt(0)\n}\n`,
+    lang: 'Kotlin', file: 'TaskWorker.kt', classOrFn: 'TaskWorker',
+  },
+  CSharp: {
+    code: `using System.Collections.Generic;\n\npublic class TaskWorker {\n    private readonly Queue<string> queue = new Queue<string>();\n    public void Enqueue(string item) { queue.Enqueue(item); }\n    public string Run() { return queue.Count == 0 ? null : queue.Dequeue(); }\n}\n`,
+    lang: 'C#', file: 'TaskWorker.cs', classOrFn: 'TaskWorker',
+  },
+  JavaScript: {
+    code: `class TaskWorker {\n  constructor() { this.queue = []; }\n  enqueue(item) { this.queue.push(item); }\n  run() { return this.queue.shift(); }\n}\n\nmodule.exports = TaskWorker;\n`,
+    lang: 'JavaScript', file: 'TaskWorker.js', classOrFn: 'TaskWorker',
+  },
 };
 
 describe('Layer 2 end-to-end generation', () => {
