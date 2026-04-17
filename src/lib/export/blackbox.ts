@@ -288,12 +288,10 @@ export function blackboxFile(source: string, lang: string): string {
   let obfPre  = obfuscateSegment(pre, lang);
   let obfPost = obfuscateSegment(post, lang);
 
-  // 3. Inject sealed notice into the file header (pre-segment only)
+  // 3. Prepend sealed notice — always at the very top so the SEALED RUNTIME /
+  //    PROPRIETARY DISTRIBUTION marker is unambiguous and discoverable.
   const sealedNotice = getSealedNotice(lang);
-  const headerEndIdx = findHeaderEnd(obfPre, lang);
-  if (headerEndIdx > 0) {
-    obfPre = obfPre.slice(0, headerEndIdx) + '\n' + sealedNotice + '\n' + obfPre.slice(headerEndIdx);
-  }
+  obfPre = sealedNotice + '\n\n' + obfPre;
 
   // 4. Insert obfuscated constant declarations (after imports, before first function)
   //    Always inject into the pre-segment so Layer 2 references resolve.
