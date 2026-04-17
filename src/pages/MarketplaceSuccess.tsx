@@ -13,16 +13,16 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { 
-  CheckCircle2, Key, Copy, Check, Download, 
-  AlertCircle, Loader2, Sparkles, Shield, Lock
+import {
+  CheckCircle2, Key, Copy, Check, Download,
+  AlertCircle, Loader2, Sparkles, Shield, Lock, Layers, ArrowRight,
 } from "lucide-react";
 
 export default function MarketplaceSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const productType = searchParams.get('type');
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [licenseData, setLicenseData] = useState<{
@@ -31,9 +31,14 @@ export default function MarketplaceSuccess() {
     template_name?: string;
     message?: string;
     already_fulfilled?: boolean;
+    layer_id?: string;
+    layer_title?: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
+
+  const isLayerPurchase = (licenseData?.product_type ?? productType) === 'layer';
+
 
   useEffect(() => {
     if (!sessionId) {
@@ -131,11 +136,81 @@ export default function MarketplaceSuccess() {
                   <Link to="/store">Return to Explore</Link>
                 </Button>
               </Card>
+            ) : isLayerPurchase ? (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                <Card className="overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary/20 to-neon-purple/20 p-8 text-center border-b">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", delay: 0.2 }}
+                    >
+                      <Layers className="w-16 h-16 mx-auto mb-4 text-primary" />
+                    </motion.div>
+                    <h1 className="text-2xl font-bold mb-2">Layer Unlocked</h1>
+                    <p className="text-muted-foreground">
+                      {licenseData?.layer_title ?? 'Your CMPSBL Layer'} is now attached to your account.
+                    </p>
+                  </div>
+
+                  <CardContent className="p-6 space-y-6">
+                    <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-semibold text-foreground">
+                          {licenseData?.layer_title ?? licenseData?.layer_id}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        This layer will appear in <strong>Ascension V2 → Enhance</strong> under
+                        "Your Purchased Layers" — no tier gate, ready to auto-wire into Layer 2 of any export.
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-sm">How to use it</h4>
+                      <ol className="space-y-2 text-sm">
+                        <li className="flex items-start gap-3">
+                          <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                          <span>Open Ascension V2 and upload your source code.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                          <span>At the <strong>Enhance</strong> step, scroll to "Your Purchased Layers" and tick this layer.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold shrink-0">3</span>
+                          <span>Run Ascension — the layer auto-wires into Layer 2 across every export language.</span>
+                        </li>
+                      </ol>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button className="flex-1 gap-2 bg-gradient-to-r from-primary to-neon-purple hover:from-primary/90 hover:to-neon-purple/90" asChild>
+                        <Link to="/ascension-v2">
+                          <ArrowRight className="w-4 h-4" />
+                          Open Ascension V2
+                        </Link>
+                      </Button>
+                      <Button variant="outline" className="flex-1 gap-2" asChild>
+                        <Link to="/store">Continue Browsing</Link>
+                      </Button>
+                    </div>
+
+                    {licenseData?.already_fulfilled && (
+                      <p className="text-xs text-muted-foreground text-center">
+                        This layer was already in your account — re-opening this page is safe.
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
+
                 <Card className="overflow-hidden">
                   {/* Success Header */}
                   <div className="bg-gradient-to-r from-system-green/20 to-primary/20 p-8 text-center border-b">
