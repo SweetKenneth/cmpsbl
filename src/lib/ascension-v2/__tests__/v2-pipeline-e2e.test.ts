@@ -322,6 +322,35 @@ describe.each(FIXTURES)('V2 Pipeline — $label', (fx) => {
     expect(result.errors[0].code).toBe('E_SOURCE_EMPTY');
   });
 
+  it.runIf(fx.id === 'python')('Pre-Ascension Gate accepts valid multiline Python condition headers', () => {
+    const result = runPreAscensionGate(
+      [
+        {
+          name: fileName,
+          content: `
+def validate(values):
+    allowed_tools = ["alpha"]
+    tools = []
+    if allowed_tools is not None and set(allowed_tools) != {
+        tool.name for tool in tools
+    }:
+        return values
+    return values
+`.trim(),
+        },
+      ],
+      fx.id,
+    );
+
+    if (!result.ok) {
+      throw new Error(
+        `Gate rejected valid multiline Python header: ${result.errors.map(formatGateError).join(' | ')}`,
+      );
+    }
+
+    expect(result.ok).toBe(true);
+  });
+
   // ─── Fingerprint Gate ────────────────────────────────────────────────────
   it('fingerprint is whitespace-invariant', () => {
     const fpA = computeFingerprint(fx.canonical, fx.id);

@@ -234,14 +234,16 @@ function pythonStructuralCheck(source: string): GateError | null {
   for (let i = 0; i < lines.length; i++) {
     const ln = lines[i];
     const lineStartsInsideBrackets = bracketDepth > 0;
+    const stripped = insideString[i]
+      ? ''
+      : ln
+          .replace(/#.*$/, '')
+          .replace(/'(?:\\.|[^'\\])*'/g, '')
+          .replace(/"(?:\\.|[^"\\])*"/g, '');
 
     // Update bracket depth using this line (ignoring chars inside strings on this line).
     // Cheap pass: strip strings/comments roughly, then count brackets.
     if (!insideString[i]) {
-      const stripped = ln
-        .replace(/#.*$/, '')
-        .replace(/'(?:\\.|[^'\\])*'/g, '')
-        .replace(/"(?:\\.|[^"\\])*"/g, '');
       for (const ch of stripped) {
         if (ch === '(' || ch === '[' || ch === '{') bracketDepth++;
         else if (ch === ')' || ch === ']' || ch === '}') bracketDepth = Math.max(0, bracketDepth - 1);
@@ -260,9 +262,11 @@ function pythonStructuralCheck(source: string): GateError | null {
 
     // Block opener must end with ':' (excluding else:/try:/finally: which already do)
     if (blockOpeners.test(ln) && !trimmed.endsWith(':') && !trimmed.endsWith('\\')) {
-      // Multi-line headers are OK if they end with a continuation; otherwise fail
-      const opensParen = (trimmed.match(/\(/g) || []).length > (trimmed.match(/\)/g) || []).length;
-      if (!opensParen) {
+      // Multi-line headers are OK when any implicit continuation delimiter stays open.
+      const openGroupCount = (stripped.match(/[\(\[\{]/g) || []).length;
+      const closeGroupCount = (stripped.match(/[\)\]\}]/g) || []).length;
+      const keepsImplicitContinuationOpen = openGroupCount > closeGroupCount;
+      if (!keepsImplicitContinuationOpen) {
         return {
           code: 'E_SOURCE_INVALID',
           file: '',
