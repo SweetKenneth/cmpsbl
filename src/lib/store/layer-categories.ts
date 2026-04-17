@@ -23,6 +23,20 @@ import sentinelEvoImg from "@/assets/layers/items/sentinel-evolution-sequencer.j
 import kineticSynthImg from "@/assets/layers/items/kinetic-synthesis-controller.jpg";
 import resilientFabricImg from "@/assets/layers/items/resilient-evolution-fabric.jpg";
 
+// New layers — Memory Stream discoveries (CJPI 100)
+import privacyObfuscationImg from "@/assets/layers/items/privacy-obfuscation-suite.jpg";
+import geospatialIntelImg from "@/assets/layers/items/geospatial-intelligence-suite.jpg";
+import zeroTrustIdentityImg from "@/assets/layers/items/zero-trust-identity-suite.jpg";
+import spectralAuditorImg from "@/assets/layers/items/spectral-auditor-layer.jpg";
+import probabilisticConscienceImg from "@/assets/layers/items/probabilistic-conscience-layer.jpg";
+import complianceAuditImg from "@/assets/layers/items/compliance-audit-layer.jpg";
+import symbolicCrafterImg from "@/assets/layers/items/symbolic-crafter-layer.jpg";
+import adaptiveForgeImg from "@/assets/layers/items/adaptive-forge-layer.jpg";
+import reflexOrchestrationImg from "@/assets/layers/items/reflex-orchestration-layer.jpg";
+import emergentGatewayImg from "@/assets/layers/items/emergent-gateway-layer.jpg";
+import localizationMeshImg from "@/assets/layers/items/localization-mesh-layer.jpg";
+import neuralBrokerImg from "@/assets/layers/items/neural-broker-layer.jpg";
+
 import {
   Shield, Zap, Network, Sparkles, type LucideIcon,
 } from "lucide-react";
@@ -42,6 +56,19 @@ export const LAYER_ITEM_IMAGES: Record<string, string> = {
   "sentinel-evolution-sequencer": sentinelEvoImg,
   "kinetic-synthesis-controller": kineticSynthImg,
   "resilient-evolution-fabric": resilientFabricImg,
+  // New Memory Stream layers
+  "privacy-obfuscation-suite": privacyObfuscationImg,
+  "geospatial-intelligence-suite": geospatialIntelImg,
+  "zero-trust-identity-suite": zeroTrustIdentityImg,
+  "spectral-auditor-layer": spectralAuditorImg,
+  "probabilistic-conscience-layer": probabilisticConscienceImg,
+  "compliance-audit-layer": complianceAuditImg,
+  "symbolic-crafter-layer": symbolicCrafterImg,
+  "adaptive-forge-layer": adaptiveForgeImg,
+  "reflex-orchestration-layer": reflexOrchestrationImg,
+  "emergent-gateway-layer": emergentGatewayImg,
+  "localization-mesh-layer": localizationMeshImg,
+  "neural-broker-layer": neuralBrokerImg,
 };
 
 /** Resolve item image with pillar fallback. */
