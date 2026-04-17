@@ -35,11 +35,13 @@ import { ENVELOPE_CORE } from './layers/_envelope-core';
 import { TRACE_CORE } from './layers/_trace-core';
 import { DEGRADATION_CORE } from './layers/_degradation-core';
 import { BEACON_CORE } from './layers/_beacon-core';
+import { DEBUG_MODE_CORE } from './layers/_debug-mode-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
 // Not user-selectable, not removable. Order = wrapper composition order
-// (innermost wraps cmpsbl_execute first; BEACON is the outermost observer).
+// (innermost wraps cmpsbl_execute first; Debug Surface is outermost so the
+// activation banner fires before any other wrapper can emit).
 //
 //   Circuit Breaker  → cascade prevention      (innermost)
 //   Timeout Guard    → deadline enforcement
@@ -47,7 +49,8 @@ import { BEACON_CORE } from './layers/_beacon-core';
 //   Envelope         → typed result contract
 //   Trace ID         → correlation propagation
 //   Degradation      → fallback envelope
-//   BEACON           → structured signal       (outermost)
+//   BEACON           → structured signal
+//   Debug Surface    → opt-in observability    (outermost; off by default)
 export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
@@ -56,6 +59,7 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
   TRACE_CORE,
   DEGRADATION_CORE,
   BEACON_CORE,
+  DEBUG_MODE_CORE,
 ]);
 
 // ── Selectable Layer Catalog ────────────────────────────────────────────────
