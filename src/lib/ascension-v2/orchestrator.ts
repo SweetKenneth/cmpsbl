@@ -176,6 +176,15 @@ export function commitUpload(
   startedAt = Date.now();
   setPhase('uploading');
 
+  // 🔒 Pre-Ascension Gate — hard fail on invalid source BEFORE fingerprinting.
+  // This prevents bad code from ever entering the discovery / export pipeline.
+  const gate = runPreAscensionGate(files, language);
+  appendAudit('pre_ascension_gate', `${gate.ok ? 'pass' : 'fail'}:${gate.checked}:${gate.errors.length}`);
+  if (!gate.ok) {
+    failRun(gate.errors.map(formatGateError).join(' | '));
+    throw new PreAscensionGateError(gate.errors);
+  }
+
   fingerprint = computeMultiFileFingerprint(files, language);
   appendAudit('fingerprint_computed', fingerprint.hash);
 
