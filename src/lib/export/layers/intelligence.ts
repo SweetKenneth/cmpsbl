@@ -96,8 +96,13 @@ cmpsbl_execute = function cmpsbl_execute_fleet(capabilityName: string, input: Re
   // Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
   const _ctx = provider ? { ...input, _cmpsbl_provider: provider.id } : input;
   try {
-    const result = _cmpsbl_raw_execute_fi(capabilityName, _ctx);
+    let result = _cmpsbl_raw_execute_fi(capabilityName, _ctx);
     if (provider) cmpsbl_record_provider_call(provider.id, true);
+    // Strip sidecar from output if Layer-1 echoed input back (identity passthrough case).
+    if (result && typeof result === 'object' && !Array.isArray(result) && '_cmpsbl_provider' in (result as Record<string, unknown>)) {
+      const { _cmpsbl_provider: _drop, ...clean } = result as Record<string, unknown>;
+      result = clean as ExecutionResult;
+    }
     return result;
   } catch (err) {
     if (provider) cmpsbl_record_provider_call(provider.id, false);
@@ -115,6 +120,9 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     try:
         result = _cmpsbl_raw_execute_fi(capability_name, _ctx)
         if provider: cmpsbl_record_provider_call(provider.id, True)
+        # Strip sidecar from output if Layer-1 echoed input back (identity passthrough case).
+        if isinstance(result, dict) and '_cmpsbl_provider' in result:
+            result = {k: v for k, v in result.items() if k != '_cmpsbl_provider'}
         return result
     except Exception as e:
         if provider: cmpsbl_record_provider_call(provider.id, False)

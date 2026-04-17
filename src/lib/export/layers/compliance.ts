@@ -121,7 +121,13 @@ cmpsbl_execute = function cmpsbl_execute_compliant(capabilityName: string, input
   const evt = cmpsbl_record_compliance(capabilityName, jurisdiction);
   // Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
   const _ctx = { ...input, _cmpsbl_routed_to: evt.routedTo };
-  return _cmpsbl_raw_execute_co(capabilityName, _ctx);
+  const _result = _cmpsbl_raw_execute_co(capabilityName, _ctx);
+  // Strip sidecar from output if Layer-1 echoed input back (identity passthrough case).
+  if (_result && typeof _result === 'object' && !Array.isArray(_result) && '_cmpsbl_routed_to' in (_result as Record<string, unknown>)) {
+    const { _cmpsbl_routed_to: _drop, ...clean } = _result as Record<string, unknown>;
+    return clean as ExecutionResult;
+  }
+  return _result;
 };`;
 
 const COMPLIANCE_WIRE_PY = `
@@ -132,7 +138,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
     evt = cmpsbl_record_compliance(capability_name, jurisdiction)
     # Sidecar copy: never mutate caller's input — identity Layer-1 fns would leak this key.
     _ctx = {**input_data, '_cmpsbl_routed_to': evt['routed_to']}
-    return _cmpsbl_raw_execute_co(capability_name, _ctx)`;
+    _result = _cmpsbl_raw_execute_co(capability_name, _ctx)
+    # Strip sidecar from output if Layer-1 echoed input back (identity passthrough case).
+    if isinstance(_result, dict) and '_cmpsbl_routed_to' in _result:
+        _result = {k: v for k, v in _result.items() if k != '_cmpsbl_routed_to'}
+    return _result`;
 
 const COMPLIANCE_LAYER: CmpsblLayerDefinition = {
   id: "regulatory-compliance",
