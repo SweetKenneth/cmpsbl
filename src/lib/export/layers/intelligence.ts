@@ -128,7 +128,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const FLEET_INTEL_LAYER: CmpsblLayerDefinition = {
   id: "fleet-intelligence",
-  name: "Fleet Intelligence Orchestrator",
+  name: "Fleet Intelligence Layer",
   crownJewelRank: 9,
   cjpi: 98,
   module: "NEXUS",
@@ -259,7 +259,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const AI_SAFETY_LAYER: CmpsblLayerDefinition = {
   id: "ai-safety",
-  name: "AI Safety Suite",
+  name: "AI Safety Layer",
   crownJewelRank: 10,
   cjpi: 95,
   module: "DREAM×DEFENSE",
@@ -393,7 +393,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const AI_COST_LAYER: CmpsblLayerDefinition = {
   id: "ai-cost",
-  name: "AI Cost Intelligence Suite",
+  name: "AI Cost Intelligence Layer",
   crownJewelRank: 11,
   cjpi: 96,
   module: "NEXUS",
@@ -572,7 +572,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const COG_MEMORY_LAYER: CmpsblLayerDefinition = {
   id: "cognitive-memory",
-  name: "Cognitive Memory Suite",
+  name: "Cognitive Memory Layer",
   crownJewelRank: 12,
   cjpi: 94,
   module: "BRAIN×MEMORY",

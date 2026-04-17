@@ -134,7 +134,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const ADAPTIVE_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "adaptive-defense",
-  name: "Adaptive Defense Breeding Suite",
+  name: "Adaptive Defense Breeding Layer",
   crownJewelRank: 6,
   cjpi: 95,
   module: "IMMUNITY×EVOLUTION",
@@ -288,7 +288,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const ZERO_TRUST_LAYER: CmpsblLayerDefinition = {
   id: "zero-trust",
-  name: "Zero-Trust Identity Suite",
+  name: "Zero-Trust Identity Layer",
   crownJewelRank: 2,
   cjpi: 91,
   module: "IDENTITY×DEFENSE",
@@ -437,7 +437,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const CYBER_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "cyber-defense",
-  name: "Cyber Defense Suite",
+  name: "Cyber Defense Layer",
   crownJewelRank: 3,
   cjpi: 97,
   module: "WATCHTOWER×AEGIS",

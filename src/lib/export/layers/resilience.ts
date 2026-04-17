@@ -317,7 +317,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const SELF_HEALING_LAYER: CmpsblLayerDefinition = {
   id: 'self-healing',
-  name: 'Self-Healing Orchestrator',
+  name: 'Self-Healing Layer',
   crownJewelRank: 1,
   cjpi: 96,
   module: 'IMMUNITY',
@@ -633,7 +633,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const TRIAGE_LAYER: CmpsblLayerDefinition = {
   id: 'autonomous-triage',
-  name: 'Autonomous Triage Engine',
+  name: 'Autonomous Triage Layer',
   crownJewelRank: 4,
   cjpi: 97,
   module: 'MEDIC',
@@ -955,7 +955,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const CONSENSUS_LAYER: CmpsblLayerDefinition = {
   id: 'distributed-consensus',
-  name: 'Distributed Consensus Suite',
+  name: 'Distributed Consensus Layer',
   crownJewelRank: 5,
   cjpi: 96,
   module: 'NERVE',

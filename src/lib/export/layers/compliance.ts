@@ -144,7 +144,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const COMPLIANCE_LAYER: CmpsblLayerDefinition = {
   id: "regulatory-compliance",
-  name: "Regulatory Compliance Suite",
+  name: "Regulatory Compliance Layer",
   crownJewelRank: 20,
   cjpi: 93,
   module: "AUDIT×COMPASS",

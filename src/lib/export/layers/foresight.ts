@@ -353,7 +353,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const ORACLE_RIPPLE_LAYER: CmpsblLayerDefinition = {
   id: 'oracle-ripple-precognition',
-  name: 'Oracle-Ripple Precognition Chain',
+  name: 'Oracle-Ripple Precognition Layer',
   crownJewelRank: 8,
   cjpi: 96,
   module: 'ORACLE',
@@ -666,7 +666,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const ANOMALY_CORRELATION_LAYER: CmpsblLayerDefinition = {
   id: 'anomaly-correlation-engine',
-  name: 'Anomaly Correlation Engine',
+  name: 'Anomaly Correlation Layer',
   crownJewelRank: 7,
   cjpi: 96,
   module: 'VISION',
