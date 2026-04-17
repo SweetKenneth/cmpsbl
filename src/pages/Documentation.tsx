@@ -1647,7 +1647,7 @@ export default function Documentation() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-              <Link to="/ascension">
+              <Link to="/ascension-v2">
                 Ascend Your Code <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>

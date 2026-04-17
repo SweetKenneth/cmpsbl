@@ -30,7 +30,7 @@ const PILLARS = [
       { label: "Stages", value: "8" },
       { label: "Primitives", value: "Up to 20" },
     ],
-    href: "/ascension",
+    href: "/ascension-v2",
     cta: "Run Diagnostic",
     glowVar: "--neon-magenta",
   },

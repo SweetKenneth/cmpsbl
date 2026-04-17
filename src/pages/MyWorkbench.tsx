@@ -107,7 +107,7 @@ function WorkbenchCard({ item, onRemove, onViewCode }: { item: ArchiveItem; onRe
             </Button>
             {(item.condition === 'broken' || item.condition === 'salvageable') && (
               <Button asChild size="sm" variant="outline" className="gap-1 text-xs border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10 flex-1">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   <Wrench className="w-3 h-3" />
                   Restore
                 </Link>
@@ -264,7 +264,7 @@ export default function MyWorkbench() {
             </Button>
             {codeItem && (codeItem.condition === 'broken' || codeItem.condition === 'salvageable') && (
               <Button asChild size="sm" className="gap-1">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   <Zap className="w-3 h-3" />
                   Send to Restoration
                 </Link>

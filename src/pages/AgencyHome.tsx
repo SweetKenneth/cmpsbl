@@ -140,7 +140,7 @@ export default function AgencyHome() {
 
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(30 20% 4%)' }}
-                  onClick={() => navigate('/ascension')}>
+                  onClick={() => navigate('/ascension-v2')}>
                   Enter Ascension Lab <Zap className="ml-2 h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="font-bold" style={{
@@ -284,7 +284,7 @@ export default function AgencyHome() {
               cognitive tier — teaching your agents new skills, communication patterns, and resilience.
             </p>
             <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(30 20% 4%)' }}
-              onClick={() => navigate('/ascension')}>
+              onClick={() => navigate('/ascension-v2')}>
               Enter Ascension Lab <Zap className="ml-2 h-4 w-4" />
             </Button>
           </div>

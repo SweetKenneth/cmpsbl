@@ -178,7 +178,7 @@ export default function CyberSecurityHome() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Button
                   size="lg"
-                  onClick={() => navigate('/ascension')}
+                  onClick={() => navigate('/ascension-v2')}
                   className="h-12 px-8 text-sm font-semibold tracking-wide border-0"
                   style={{
                     background: "linear-gradient(135deg, hsl(0 85% 50%), hsl(0 70% 40%))",
@@ -381,7 +381,7 @@ export default function CyberSecurityHome() {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => navigate('/ascension')}
+                  onClick={() => navigate('/ascension-v2')}
                   className="text-xs"
                   style={{
                     borderColor: "hsl(0 85% 50% / 0.3)",

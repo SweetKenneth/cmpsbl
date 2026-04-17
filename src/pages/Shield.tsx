@@ -721,7 +721,7 @@ export default function ShieldPage() {
               {[
                 { label: 'Mana Engine', href: '/mana', icon: Layers },
                 { label: 'Software Symbiosis', href: '/software-symbiosis', icon: Globe },
-                { label: 'Ascension', href: '/ascension', icon: Zap },
+                { label: 'Ascension', href: '/ascension-v2', icon: Zap },
                 { label: 'Documentation', href: '/documentation', icon: FileCheck },
               ].map((link) => (
                 <Link

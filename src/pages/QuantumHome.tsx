@@ -120,7 +120,7 @@ export default function QuantumHome() {
                 <Button size="lg" variant="outline" className="font-bold" style={{
                   borderColor: 'hsl(260 20% 20%)', color: 'hsl(260 10% 70%)',
                   background: 'hsl(260 25% 8%)',
-                }} onClick={() => navigate('/ascension')}>
+                }} onClick={() => navigate('/ascension-v2')}>
                   Ascension Lab
                 </Button>
               </div>
@@ -229,7 +229,7 @@ export default function QuantumHome() {
               discovers capabilities and restores software to a higher cognitive tier.
             </p>
             <Button size="lg" className="border-0 font-bold" style={{ background: 'hsl(270 90% 60%)', color: 'white' }}
-              onClick={() => navigate('/ascension')}>
+              onClick={() => navigate('/ascension-v2')}>
               Enter Ascension Lab <Zap className="ml-2 h-4 w-4" />
             </Button>
           </div>

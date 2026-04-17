@@ -25,7 +25,7 @@ const CARDS = [
   },
   {
     title: "Ascension",
-    href: "/ascension",
+    href: "/ascension-v2",
     icon: Zap,
     glow: "--neon-purple",
     badge: "Transformation",

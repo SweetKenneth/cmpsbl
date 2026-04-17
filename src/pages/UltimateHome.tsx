@@ -188,7 +188,7 @@ export default function UltimateHome() {
 
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(270 20% 4%)' }}
-                  onClick={() => navigate('/ascension')}>
+                  onClick={() => navigate('/ascension-v2')}>
                   Enter Ultimate Ascension <Crown className="ml-2 h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="font-bold" style={{
@@ -400,7 +400,7 @@ export default function UltimateHome() {
               maximum compounding effect — no locked spine, no category restrictions, no ceiling.
             </p>
             <Button size="lg" className="border-0 font-bold" style={{ background: ACCENT, color: 'hsl(270 20% 4%)' }}
-              onClick={() => navigate('/ascension')}>
+              onClick={() => navigate('/ascension-v2')}>
               Enter Ultimate Ascension <Crown className="ml-2 h-4 w-4" />
             </Button>
           </div>

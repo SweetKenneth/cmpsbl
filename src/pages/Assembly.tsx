@@ -163,7 +163,7 @@ export default function Assembly() {
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Button asChild size="lg" className="gap-2 px-8 h-12 text-sm font-bold rounded-xl">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   <Wrench className="w-4 h-4" />
                   Start Restoration Review
                   <ArrowRight className="w-3.5 h-3.5" />

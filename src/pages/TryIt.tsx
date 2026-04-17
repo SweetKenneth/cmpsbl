@@ -56,7 +56,7 @@ const TRY_PATHS = [
     title: "Ascend Your Code",
     desc: "Upload any codebase. The substrate scans, diagnoses, and collides it against 40 primitives — producing a hardened, governed Layer 2.",
     cta: "Start Ascension",
-    href: "/ascension",
+    href: "/ascension-v2",
     accent: "--primary",
     featured: true,
   },
@@ -126,7 +126,7 @@ export default function TryIt() {
             className="flex flex-col sm:flex-row justify-center gap-3"
           >
             <Button asChild size="lg" className="gap-2 px-8 h-12 text-sm font-bold rounded-xl">
-              <Link to="/ascension">
+              <Link to="/ascension-v2">
                 <Wrench className="w-4 h-4" />
                 Ascend Your Code
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -268,7 +268,7 @@ export default function TryIt() {
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="gap-2 min-h-[48px] text-sm">
-              <Link to="/ascension">
+              <Link to="/ascension-v2">
                 <Wrench className="w-4 h-4" />
                 Ascend Your Code
                 <ArrowRight className="w-4 h-4" />

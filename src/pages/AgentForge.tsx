@@ -121,7 +121,7 @@ export default function AgentForge() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               size="lg"
-              onClick={() => navigate('/ascension')}
+              onClick={() => navigate('/ascension-v2')}
               className="gap-2 h-12 px-8 rounded-xl shadow-[0_0_20px_hsl(var(--primary)/0.2)] text-sm"
             >
               <Zap className="w-4 h-4" />
@@ -259,7 +259,7 @@ export default function AgentForge() {
           <div className="mt-12">
             <Button
               size="lg"
-              onClick={() => navigate('/ascension')}
+              onClick={() => navigate('/ascension-v2')}
               className="gap-2 h-14 px-10 rounded-xl shadow-[0_0_24px_hsl(var(--primary)/0.2)] text-base"
             >
               <Zap className="w-5 h-5" />

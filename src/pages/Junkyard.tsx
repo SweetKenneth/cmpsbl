@@ -175,7 +175,7 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
                   <span className="text-sm font-bold text-neon-amber ml-1.5">{item.restorationCost}</span>
                 </div>
                 <Button asChild size="sm" variant="outline" className="gap-1 text-xs border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10">
-                  <Link to="/ascension">
+                  <Link to="/ascension-v2">
                     <Wrench className="w-3 h-3" />
                     Restore
                   </Link>
@@ -260,7 +260,7 @@ function LiveDiscoveryCard({ item }: { item: LiveDiscovery }) {
         <div className="flex items-center justify-between">
           <span className="text-[10px] text-muted-foreground capitalize">{item.category}</span>
           <Button variant="ghost" size="sm" className="h-7 text-xs gap-1 text-neon-cyan hover:text-neon-cyan hover:bg-neon-cyan/10" asChild>
-            <Link to="/ascension">
+            <Link to="/ascension-v2">
               <Wrench className="w-3 h-3" />
               Restore
             </Link>
@@ -327,7 +327,7 @@ export default function Junkyard() {
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed font-medium">
               Raw discoveries, damaged runtimes, and legacy systems — everything here is free to take or{" "}
-              <Link to="/ascension" className="text-primary hover:underline font-semibold">send to the Restoration Lab</Link>{" "}
+              <Link to="/ascension-v2" className="text-primary hover:underline font-semibold">send to the Restoration Lab</Link>{" "}
               and we'll bring it back to spec.
             </p>
 
@@ -526,7 +526,7 @@ export default function Junkyard() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/ascension">
+                  <Link to="/ascension-v2">
                     <Wrench className="w-4 h-4" />
                     Visit the Restoration Lab
                   </Link>

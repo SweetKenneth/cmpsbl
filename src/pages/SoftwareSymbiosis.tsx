@@ -453,7 +453,7 @@ export default function SoftwareSymbiosis() {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="gap-2 px-6 h-12 text-sm font-medium rounded-xl">
-                <Link to="/ascension">
+                <Link to="/ascension-v2">
                   Try Ascension Free
                   <ArrowRight className="w-4 h-4" />
                 </Link>
