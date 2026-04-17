@@ -145,7 +145,7 @@ export default function AscensionV2() {
           {step === 0 && <V2WhatsAscension />}
 
           {/* Stepper — 4 steps, responsive */}
-          <nav className="mb-6 sm:mb-8">
+          <nav ref={stepperRef} className="mb-6 sm:mb-8 scroll-mt-4">
             <div className="flex items-center justify-center gap-0">
               {STEPS.map((s, i) => {
                 const isActive = i === step;
