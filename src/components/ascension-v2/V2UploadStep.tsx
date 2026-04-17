@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { commitUpload } from '@/lib/ascension-v2';
+import { commitUpload, PreAscensionGateError } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
 
 interface Props {
@@ -143,7 +143,18 @@ export function V2UploadStep({ onComplete }: Props) {
       setDone(true);
       setTimeout(() => onComplete(), 600);
     } catch (err) {
-      toast({ title: 'Upload failed', description: String(err), variant: 'destructive' });
+      if (err instanceof PreAscensionGateError) {
+        // 🔒 Pre-Ascension Gate rejection — show first error with file:line:col
+        const first = err.errors[0];
+        const more = err.errors.length > 1 ? ` (+${err.errors.length - 1} more)` : '';
+        toast({
+          title: `${first.code} — invalid source`,
+          description: `${first.file}:${first.line}:${first.column} — ${first.message}. ${first.suggestion}${more}`,
+          variant: 'destructive',
+        });
+      } else {
+        toast({ title: 'Upload failed', description: String(err), variant: 'destructive' });
+      }
     } finally {
       setProcessing(false);
     }

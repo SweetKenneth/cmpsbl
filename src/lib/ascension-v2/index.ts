@@ -26,6 +26,17 @@ export {
 } from './fingerprint-gate';
 export type { SourceFingerprint, FingerprintVerification } from './fingerprint-gate';
 
+// Pre-Ascension Gate — hard-fails invalid source BEFORE the pipeline runs
+export {
+  runPreAscensionGate,
+  formatGateError,
+} from './pre-ascension-gate';
+export type {
+  GateError,
+  GateErrorCode,
+  GateResult,
+} from './pre-ascension-gate';
+
 // Orchestrator — immutable state machine
 export {
   initRun,
@@ -38,6 +49,7 @@ export {
   getNodeOrdering,
   getSnapshot,
   retry,
+  PreAscensionGateError,
 } from './orchestrator';
 export type { RunPhase, RunSnapshot, DiscoveredCapability, OrchestratorCallbacks } from './orchestrator';
 
