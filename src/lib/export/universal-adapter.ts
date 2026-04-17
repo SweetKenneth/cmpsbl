@@ -178,12 +178,16 @@ export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
  * The parity gate is the safety net: even if a score unlocks a language,
  * the export pipeline will refuse to emit it until parity is verified.
  */
-export function getLanguagesForScore(score: number): {
+export function getLanguagesForScore(
+  score: number,
+  sourceLanguage?: string,
+): {
   value: ExportLanguage;
   label: string;
   locked: boolean;
   comingSoon?: boolean;
   reason?: string;
+  isSource?: boolean;
 }[] {
   // Inline tier thresholds to avoid circular imports
   // Aligned with public rarity tiers: Mint(68), Prime(80), Relic(90), Mythic/Silicon(94)
@@ -199,25 +203,37 @@ export function getLanguagesForScore(score: number): {
     if (score >= minScore) langs.forEach(l => unlocked.add(l));
   }
 
+  // SOURCE-LANGUAGE GUARANTEE: The language a user uploaded ALWAYS exports back
+  // in the same language, regardless of score. They can't be locked out of
+  // re-integrating their own artifact into their own stack. No gating, ever.
+  const sourceLangNormalized = sourceLanguage?.toLowerCase().replace(/\s+/g, '') as ExportLanguage | undefined;
+  if (sourceLangNormalized) unlocked.add(sourceLangNormalized);
+
   // Layer 2: parity registry filter — hide HIDDEN langs entirely, mark
   // COMING_SOON langs as locked with a Coming Soon explanation.
+  // EXCEPTION: the source language is never filtered out — always available.
   const visible = getVisibleLanguageIds();
 
   return Object.entries(LANG_LABELS)
-    .filter(([v]) => visible.has(v.toLowerCase()))
+    .filter(([v]) => visible.has(v.toLowerCase()) || v.toLowerCase() === sourceLangNormalized)
     .map(([v, l]) => {
       const lang = v as ExportLanguage;
+      const isSource = lang === sourceLangNormalized;
       const scoreUnlocked = unlocked.has(lang);
       const status = getLanguageParityStatus(v);
       const isComingSoon = status === 'COMING_SOON';
       const entry = getLanguageParityEntry(v);
+      // Source language bypasses every gate — it's the user's own code coming home.
+      const locked = isSource ? false : (!scoreUnlocked || isComingSoon);
       return {
         value: lang,
         label: l,
-        // Locked if either the score gate or the parity gate is closed.
-        locked: !scoreUnlocked || isComingSoon,
-        comingSoon: isComingSoon,
-        reason: isComingSoon
+        locked,
+        comingSoon: isSource ? false : isComingSoon,
+        isSource,
+        reason: isSource
+          ? undefined
+          : isComingSoon
           ? entry?.roadmapNote ?? `${l} is on the parity roadmap. Coming Soon.`
           : !scoreUnlocked
           ? `Requires higher artifact score.`
