@@ -27,6 +27,8 @@ import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 import { V2LaunchLayers } from '@/components/ascension-v2/V2LaunchLayers';
 import { V2CinematicHero } from '@/components/ascension-v2/V2CinematicHero';
+import { V2WhatsAscension } from '@/components/ascension-v2/V2WhatsAscension';
+import { V2Faq } from '@/components/ascension-v2/V2Faq';
 
 import {
   initRun,
@@ -139,6 +141,9 @@ export default function AscensionV2() {
           {/* Cinematic Hero — only on upload step, above the machine */}
           {step === 0 && <V2CinematicHero />}
 
+          {/* "What's Ascension" explainer — only on upload step, below hero */}
+          {step === 0 && <V2WhatsAscension />}
+
           {/* Stepper — 4 steps, responsive */}
           <nav className="mb-6 sm:mb-8">
             <div className="flex items-center justify-center gap-0">
@@ -197,6 +202,9 @@ export default function AscensionV2() {
 
           {/* Top 20 Launch Layers — curated lineup */}
           <V2LaunchLayers />
+
+          {/* FAQ — only on upload step, page bottom */}
+          {step === 0 && <V2Faq />}
         </div>
       </main>
 
