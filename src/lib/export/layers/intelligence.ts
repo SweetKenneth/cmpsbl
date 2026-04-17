@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const FLEET_INTEL_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Fleet Intelligence Orchestrator                          ║
-// ║  Real-time scoring matrix across all AI providers. Weighted round-robin wi... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblProvider = { id: string; cost: number; latencyMs: number; quality: number; available: boolean; calls: number; failures: number };
@@ -50,8 +49,7 @@ export function cmpsbl_record_provider_call(id: string, success: boolean): void 
 
 const FLEET_INTEL_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Fleet Intelligence Orchestrator                          ║
-# ║  Real-time scoring matrix across all AI providers. Weighted round-robin wi... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import math
@@ -153,8 +151,7 @@ const FLEET_INTEL_LAYER: CmpsblLayerDefinition = {
 
 const AI_SAFETY_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — AI Safety Suite                                          ║
-// ║  Hallucination Guard + Prompt Injection Shield. Multi-source verification ... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 const CMPSBL_INJECTION_PATTERNS = [
@@ -191,8 +188,7 @@ export function cmpsbl_check_hallucination(claim: string, sources: string[]): { 
 
 const AI_SAFETY_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — AI Safety Suite                                          ║
-# ║  Hallucination Guard + Prompt Injection Shield. Multi-source verification ... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import re
@@ -286,8 +282,7 @@ const AI_SAFETY_LAYER: CmpsblLayerDefinition = {
 
 const AI_COST_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — AI Cost Intelligence Suite                               ║
-// ║  Cost-Aware Routing Engine + Token Optimization. Real-time budget tracking... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblBudget = { dailyCents: number; spentCents: number; resetAt: number };
@@ -329,8 +324,7 @@ export function cmpsbl_record_spend(actualCents: number): void {
 
 const AI_COST_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — AI Cost Intelligence Suite                               ║
-# ║  Cost-Aware Routing Engine + Token Optimization. Real-time budget tracking... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -422,8 +416,7 @@ const AI_COST_LAYER: CmpsblLayerDefinition = {
 
 const COG_MEMORY_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Cognitive Memory Suite                                   ║
-// ║  Semantic Knowledge Graph + Knowledge Compaction. Graph-based knowledge re... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblNode = { id: string; label: string; data: Record<string, unknown>; createdAt: number };
@@ -494,8 +487,7 @@ export function cmpsbl_compact(): { before: number; after: number; removed: numb
 
 const COG_MEMORY_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Cognitive Memory Suite                                   ║
-# ║  Semantic Knowledge Graph + Knowledge Compaction. Graph-based knowledge re... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import json

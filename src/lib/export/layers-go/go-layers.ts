@@ -171,7 +171,7 @@ func cmpsbl_repair_success_rate() float64 {
 
 export const TRIAGE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Autonomous Triage Engine (Crown Jewel #2)                   ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblSeverity string
@@ -265,7 +265,7 @@ func cmpsbl_diagnose(capabilityName string) []CmpsblDiagnosis {
 
 export const CONSENSUS_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Distributed Consensus Suite (Crown Jewel #3)                ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblHeartbeatNode struct {
@@ -311,7 +311,7 @@ func cmpsbl_has_quorum(votes int) bool { return votes >= cmpsbl_quorum_size() }
 
 export const ORACLE_RIPPLE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Oracle-Ripple Precognition Chain (Crown Jewel #4)           ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblObservation struct {
@@ -364,7 +364,7 @@ func cmpsbl_oracle_forecast(capability, metric string, horizonMs int64) *CmpsblF
 
 export const ANOMALY_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Anomaly Correlation Engine (Crown Jewel #5)                 ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblAnomalySignal struct {
@@ -418,7 +418,7 @@ func cmpsbl_correlate_anomalies(windowMs int64) []CmpsblIncidentHypothesis {
 
 export const ADAPTIVE_DEFENSE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Adaptive Defense Breeding Suite (Crown Jewel #6)            ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblDefense struct {
@@ -470,7 +470,7 @@ func cmpsbl_evolve_defenses() int {
 
 export const ZERO_TRUST_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Zero-Trust Identity Suite (Crown Jewel #7)                  ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblSession struct {
@@ -516,7 +516,7 @@ func cmpsbl_revoke_session(sessID string) {
 
 export const CYBER_DEFENSE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Cyber Defense Suite (Crown Jewel #8)                        ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblIOC struct {
@@ -558,7 +558,7 @@ func cmpsbl_ddos_reset() {
 
 export const FLEET_INTEL_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Fleet Intelligence Orchestrator (Crown Jewel #9)            ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblProvider struct {
@@ -615,7 +615,7 @@ func cmpsbl_record_provider_call(id string, success bool) {
 
 export const AI_SAFETY_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — AI Safety Suite (Crown Jewel #10)                           ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 var cmpsblInjectionPatterns = []string{
@@ -651,7 +651,7 @@ func cmpsbl_check_hallucination(claim string, sources []string) float64 {
 
 export const AI_COST_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — AI Cost Intelligence Suite (Crown Jewel #11)                ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 var (
@@ -692,7 +692,7 @@ func cmpsbl_optimize_tokens(text string, maxTokens int) string {
 
 export const COG_MEMORY_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Cognitive Memory Suite (Crown Jewel #12)                    ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblMemoryNode struct {
@@ -737,7 +737,7 @@ func cmpsbl_recall(query string) []string {
 
 export const PERF_SURGERY_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Performance Surgery Suite (Crown Jewel #13)                 ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblPerfSample struct {
@@ -777,7 +777,7 @@ func cmpsbl_detect_regression(function string, baselineMs float64) bool {
 
 export const PIPELINE_RES_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Data Pipeline Resilience Suite (Crown Jewel #14)            ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblPipelineQueue struct {
@@ -822,7 +822,7 @@ func cmpsbl_queue_lag(queueName string) int {
 
 export const PIPE_COMPOSE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Pipeline Composition Engine (Crown Jewel #15)               ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblPipelineStage func(input interface{}) (interface{}, error)
@@ -851,7 +851,7 @@ func (p *CmpsblPipeline) Run(input interface{}) (interface{}, error) {
 
 export const UNIVERSAL_INPUT_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Universal Input Intelligence (Crown Jewel #16)              ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblInputFormat string
@@ -900,7 +900,7 @@ func cmpsbl_thread_history(threadID string) []CmpsblNormalizedInput {
 
 export const SELF_EVOLVE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Self-Evolution Suite (Crown Jewel #17)                      ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblMutation struct {
@@ -950,7 +950,7 @@ func cmpsbl_promote_mutation(mutationID string) bool {
 
 export const GOV_SHIELD_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Governance Shield Suite (Crown Jewel #18)                   ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblPolicy struct {
@@ -1000,7 +1000,7 @@ func cmpsbl_veto_history() []CmpsblVeto {
 
 export const AUDIT_CHAIN_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Tamper-Evident Audit Chain (Crown Jewel #19)                ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblAuditEntry struct {
@@ -1050,7 +1050,7 @@ func cmpsbl_verify_chain() (bool, int) {
 
 export const COMPLIANCE_GO = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Regulatory Compliance Suite (Crown Jewel #20)               ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblJurisdiction struct {

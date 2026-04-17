@@ -143,7 +143,7 @@ pub mod cmpsbl_self_healing {
 
 export const TRIAGE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Autonomous Triage (Crown Jewel #2)                          ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_triage {
     use std::sync::{Mutex, OnceLock};
@@ -194,7 +194,7 @@ pub mod cmpsbl_triage {
 
 export const CONSENSUS_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Distributed Consensus (Crown Jewel #3)                      ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_consensus {
     use std::sync::{Mutex, OnceLock};
@@ -227,7 +227,7 @@ pub mod cmpsbl_consensus {
 
 export const ORACLE_RIPPLE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Oracle Ripple Precognition (Crown Jewel #4)                 ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_oracle_ripple {
     use std::sync::{Mutex, OnceLock};
@@ -261,7 +261,7 @@ pub mod cmpsbl_oracle_ripple {
 
 export const ANOMALY_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Anomaly Correlation Engine (Crown Jewel #5)                 ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_anomaly {
     use std::sync::{Mutex, OnceLock};
@@ -294,7 +294,7 @@ pub mod cmpsbl_anomaly {
 
 export const ADAPTIVE_DEFENSE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Adaptive Defense (Crown Jewel #6)                           ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_adaptive_defense {
     use std::sync::{Mutex, OnceLock};
@@ -320,7 +320,7 @@ pub mod cmpsbl_adaptive_defense {
 
 export const ZERO_TRUST_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Zero Trust (Crown Jewel #7)                                 ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_zero_trust {
     use std::sync::{Mutex, OnceLock};
@@ -345,7 +345,7 @@ pub mod cmpsbl_zero_trust {
 
 export const CYBER_DEFENSE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Cyber Defense (Crown Jewel #8)                              ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_cyber_defense {
     use std::sync::{Mutex, OnceLock};
@@ -374,7 +374,7 @@ pub mod cmpsbl_cyber_defense {
 
 export const AI_SAFETY_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — AI Safety (Crown Jewel #9)                                  ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_ai_safety {
     pub fn sanitize_prompt(s: &str) -> String {
@@ -408,7 +408,7 @@ pub mod cmpsbl_ai_safety {
 
 export const FLEET_INTEL_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Fleet Intelligence (Crown Jewel #10)                        ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_fleet_intel {
     use std::sync::{Mutex, OnceLock};
@@ -452,7 +452,7 @@ pub mod cmpsbl_fleet_intel {
 
 export const AI_COST_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — AI Cost Governor (Crown Jewel #11)                          ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_ai_cost {
     use std::sync::{Mutex, OnceLock};
@@ -476,7 +476,7 @@ pub mod cmpsbl_ai_cost {
 
 export const COG_MEMORY_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Cognitive Memory (Crown Jewel #12)                          ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_cog_memory {
     use std::sync::{Mutex, OnceLock};
@@ -503,7 +503,7 @@ pub mod cmpsbl_cog_memory {
 
 export const PIPE_COMPOSE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Pipeline Composition (Crown Jewel #13)                      ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_pipeline_compose {
     pub type Stage = fn(&super::CmpsblMap) -> super::CmpsblMap;
@@ -518,7 +518,7 @@ pub mod cmpsbl_pipeline_compose {
 
 export const UNIVERSAL_INPUT_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Universal Input (Crown Jewel #14)                           ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_universal_input {
     pub fn normalize(raw: &str) -> String {
@@ -539,7 +539,7 @@ pub mod cmpsbl_universal_input {
 
 export const PERF_SURGERY_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Performance Surgery (Crown Jewel #15)                       ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_perf_surgery {
     use std::sync::{Mutex, OnceLock};
@@ -568,7 +568,7 @@ pub mod cmpsbl_perf_surgery {
 
 export const PIPELINE_RES_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Pipeline Resilience (Crown Jewel #16)                       ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_pipeline_res {
     use std::sync::{Mutex, OnceLock};
@@ -596,7 +596,7 @@ pub mod cmpsbl_pipeline_res {
 
 export const SELF_EVOLVE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Self Evolution (Crown Jewel #17)                            ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_self_evolve {
     use std::sync::{Mutex, OnceLock};
@@ -628,7 +628,7 @@ pub mod cmpsbl_self_evolve {
 
 export const GOV_SHIELD_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Governance Shield (Crown Jewel #18)                         ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_governance {
     use std::sync::{Mutex, OnceLock};
@@ -652,7 +652,7 @@ pub mod cmpsbl_governance {
 
 export const AUDIT_CHAIN_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Audit Chain (Crown Jewel #19)                               ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_audit_chain {
     use std::sync::{Mutex, OnceLock};
@@ -706,7 +706,7 @@ pub mod cmpsbl_audit_chain {
 
 export const COMPLIANCE_RS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Regulatory Compliance Suite (Crown Jewel #20)               ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_compliance {
     use std::sync::{Mutex, OnceLock};

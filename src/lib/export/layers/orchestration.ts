@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const PIPE_COMPOSE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Pipeline Composition Engine                              ║
-// ║  Composable pipeline builder with typed stage connections and backpressure... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblStage<I, O> = { name: string; fn: (input: I) => O | Promise<O>; retries: number };
@@ -56,8 +55,7 @@ export function cmpsbl_pipeline_stats(): Record<string, { runs: number; failures
 
 const PIPE_COMPOSE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Pipeline Composition Engine                              ║
-# ║  Composable pipeline builder with typed stage connections and backpressure... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import asyncio
@@ -154,8 +152,7 @@ const PIPE_COMPOSE_LAYER: CmpsblLayerDefinition = {
 
 const UNIVERSAL_INPUT_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Universal Input Intelligence                             ║
-// ║  Context Threading + Multi-Modal Interpreter. Maintains conversational con... ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblInputModality = 'text' | 'json' | 'cli' | 'code' | 'binary' | 'unknown';
@@ -215,8 +212,7 @@ export function cmpsbl_fork_thread(parentId: string, forkId: string): CmpsblThre
 
 const UNIVERSAL_INPUT_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Universal Input Intelligence                             ║
-# ║  Context Threading + Multi-Modal Interpreter. Maintains conversational con... ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import json

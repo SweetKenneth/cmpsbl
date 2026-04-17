@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const TIMEOUT_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Timeout Guard (Layer #12 · Always-On)                     ║
-// ║  Per-capability deadline. Stalled calls fail fast & feed the circuit breaker. ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 interface CmpsblTimeoutConfig {
@@ -53,8 +52,7 @@ function cmpsbl_run_with_deadline<T>(capabilityName: string, fn: () => T | Promi
 
 const TIMEOUT_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Timeout Guard (Layer #12 · Always-On)                     ║
-# ║  Per-capability deadline. Stalled calls fail fast & feed the circuit breaker. ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import threading

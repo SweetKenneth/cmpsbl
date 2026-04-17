@@ -339,7 +339,7 @@ const SELF_HEALING_LAYER: CmpsblLayerDefinition = {
 
 const TRIAGE_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Sealed Triage Module (proprietary).                        ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblSeverity = 'critical' | 'degraded' | 'warning' | 'info';
@@ -447,7 +447,7 @@ export function cmpsbl_active_diagnoses(): CmpsblDiagnosis[] {
 
 const TRIAGE_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Sealed Triage Module (proprietary).                        ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -655,9 +655,7 @@ const TRIAGE_LAYER: CmpsblLayerDefinition = {
 
 const CONSENSUS_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  CMPSBL® LAYER — Distributed Consensus Suite (Crown Jewel #5 + #83)          ║
-// ║  Consensus Heartbeat Protocol + Quorum Negotiator. Gossip-style liveness     ║
-// ║  detection with Byzantine-fault-tolerant negotiation and split-brain guard.  ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblPeerState = 'alive' | 'suspect' | 'quarantined' | 'dead';
@@ -786,9 +784,7 @@ export function cmpsbl_peer_statuses(): CmpsblPeerRecord[] {
 
 const CONSENSUS_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Distributed Consensus Suite (Crown Jewel #5 + #83)          ║
-# ║  Consensus Heartbeat Protocol + Quorum Negotiator. Gossip-style liveness     ║
-# ║  detection with Byzantine-fault-tolerant negotiation and split-brain guard.  ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time

@@ -11,8 +11,7 @@ import type { CmpsblLayerDefinition } from './types';
 
 const RETRY_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Retry with Backoff + Jitter (Layer #13 · Always-On)       ║
-// ║  Idempotent retries on transient failures. Pairs with the circuit breaker.    ║
+// ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 interface CmpsblRetryConfig {
@@ -72,8 +71,7 @@ export function cmpsbl_with_retry<T>(capabilityName: string, fn: () => T): T {
 
 const RETRY_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  CMPSBL® LAYER — Retry with Backoff + Jitter (Crown Jewel #13)               ║
-# ║  Idempotent retries on transient failures. Pairs with circuit breaker.        ║
+# ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import random
