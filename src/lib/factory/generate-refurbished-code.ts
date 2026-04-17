@@ -29,6 +29,7 @@ import {
   detectLayer1License,
   renderLicenseAttribution,
 } from './license-attribution';
+import { renderCaalInlineHeader } from '../licensing/caal-license';
 
 // ── Language Syntax Adapters ──
 
@@ -3171,6 +3172,10 @@ export function generateRefurbishedCode(
   ];
 
   const header = adapter.blockComment(headerLines);
+
+  // ── CAAL-1.0 inline license banner — sits right under the header so it's
+  //    impossible to redistribute the artifact without seeing the terms.
+  const caalBannerLines = renderCaalInlineHeader(adapter.comment, fingerprint);
 
   // Generate the compiled preamble — opaque dispatch tables and collision matrix
   const langKey = detected.toLowerCase();
