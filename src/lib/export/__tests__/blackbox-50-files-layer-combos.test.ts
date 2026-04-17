@@ -25,6 +25,7 @@ import { getAvailableLayers } from '@/lib/export/cmpsbl-layers';
 
 const PUBLIC_API_TS = [
   'cmpsbl_execute',           // spine — must NEVER be renamed
+  // Always-on cores
   'cmpsbl_set_timeout',
   'cmpsbl_get_timeout',
   'cmpsbl_run_with_deadline',
@@ -44,8 +45,29 @@ const PUBLIC_API_TS = [
   'cmpsbl_beacon_health',
 ];
 
-// Private identifiers that MUST NOT survive sealing (proves the moat sealed).
+// Public APIs of the 15 newly-sealed selectable layers — only asserted when
+// the layer is present in the combo. Map: layer-id → expected public symbols.
+const LAYER_PUBLIC_API_TS: Record<string, string[]> = {
+  'governance-shield':            ['cmpsbl_register_policy', 'cmpsbl_check_policies', 'cmpsbl_self_audit', 'cmpsbl_execute_governed'],
+  'audit-chain':                  ['cmpsbl_append_audit', 'cmpsbl_verify_chain', 'cmpsbl_audit_root', 'cmpsbl_execute_audited'],
+  'adaptive-defense':             ['cmpsbl_seed_defense', 'cmpsbl_breed_defenses', 'cmpsbl_defense_stats', 'cmpsbl_execute_defended'],
+  'zero-trust':                   ['cmpsbl_bind_session', 'cmpsbl_verify_session', 'cmpsbl_score_attack', 'cmpsbl_execute_zerotrust'],
+  'cyber-defense':                ['cmpsbl_record_ioc', 'cmpsbl_correlate_iocs', 'cmpsbl_ddos_check', 'cmpsbl_execute_cyberdefense'],
+  'fleet-intelligence':           ['cmpsbl_register_provider', 'cmpsbl_pick_provider', 'cmpsbl_score_provider', 'cmpsbl_execute_fleet'],
+  'ai-safety':                    ['cmpsbl_check_hallucination', 'cmpsbl_sanitize_prompt', 'cmpsbl_execute_safe'],
+  'ai-cost':                      ['cmpsbl_set_budget', 'cmpsbl_can_spend', 'cmpsbl_record_spend', 'cmpsbl_execute_costaware'],
+  'cognitive-memory':             ['cmpsbl_remember', 'cmpsbl_recall', 'cmpsbl_relate', 'cmpsbl_traverse', 'cmpsbl_execute_memory'],
+  'performance-surgery':          ['cmpsbl_record_sample', 'cmpsbl_top_hotpaths', 'cmpsbl_set_baseline', 'cmpsbl_check_regression', 'cmpsbl_execute_profiled'],
+  'pipeline-resilience':          ['cmpsbl_create_stream', 'cmpsbl_publish', 'cmpsbl_consume', 'cmpsbl_replay', 'cmpsbl_execute_streamed'],
+  'pipeline-composition':         ['cmpsbl_pipeline', 'cmpsbl_add_stage', 'cmpsbl_run_pipeline', 'cmpsbl_execute_composable'],
+  'universal-input':              ['cmpsbl_thread', 'cmpsbl_fork_thread', 'cmpsbl_append_turn', 'cmpsbl_detect_modality', 'cmpsbl_execute_universal'],
+  'self-evolution':               ['cmpsbl_propose_mutation', 'cmpsbl_shadow_run', 'cmpsbl_promote', 'cmpsbl_rollback', 'cmpsbl_execute_evolved'],
+  'regulatory-compliance':        ['cmpsbl_record_compliance', 'cmpsbl_attestation', 'cmpsbl_route_for', 'cmpsbl_execute_compliant'],
+};
+
+// Private identifiers that MUST NOT survive sealing across all 20 layers.
 const SEALED_PRIVATES_TS = [
+  // Always-on cores
   '_cmpsbl_timeout_config',
   '_cmpsbl_retry_config',
   '_CMPSBL_RETRYABLE_PATTERNS',
@@ -57,6 +79,26 @@ const SEALED_PRIVATES_TS = [
   '_CMPSBL_BEACON_RING_MAX',
   '_cmpsbl_beacon_ring',
   '_cmpsbl_beacon_sinks',
+  // Selectable layer privates (only present when layer selected — guard at use)
+  '_cmpsbl_repair_strategies',
+  '_cmpsbl_triage',
+  '_cmpsbl_consensus',
+  '_cmpsbl_oracle_series',
+  '_cmpsbl_anomaly_baselines',
+  '_cmpsbl_policies',
+  '_cmpsbl_audit_chain',
+  '_cmpsbl_defense_pool',
+  '_cmpsbl_sessions',
+  '_cmpsbl_iocs',
+  '_cmpsbl_providers',
+  '_cmpsbl_budget',
+  '_cmpsbl_nodes',
+  '_cmpsbl_hot_paths',
+  '_cmpsbl_streams',
+  '_cmpsbl_pipelines',
+  '_cmpsbl_threads',
+  '_cmpsbl_mutations',
+  '_cmpsbl_compliance_events',
 ];
 
 const PUBLIC_API_PY = [
@@ -83,13 +125,19 @@ const ALL_LAYERS = getAvailableLayers();
 const LAYER_BY_ID = new Map(ALL_LAYERS.map(l => [l.id, l]));
 const SELECTABLE_IDS = ALL_LAYERS.map(l => l.id);
 
-// 5 layer combinations, varied to exercise the wire surface
+// 5 layer combinations covering all 20 layers across the matrix.
+//   1) core-only          — verifies the 7 always-on cores ship sealed
+//   2) builder-tier       — Audit Chain + Governance Shield (free tier)
+//   3) studio-tier        — Self-Healing + Triage + AI Safety + Pipeline Compose + Universal Input
+//   4) creator-tier       — Oracle + Anomaly + Consensus + Fleet + AI Cost + Cognitive Memory
+//   5) architect-all-20   — every selectable (incl. Defense Breeding, Zero-Trust, Cyber Defense,
+//                            Perf Surgery, Pipeline Resilience, Self-Evolution, Compliance)
 const COMBOS: Array<{ label: string; ids: string[] }> = [
   { label: 'core-only', ids: [] },
-  { label: 'plus-self-healing', ids: ['self-healing'] },
-  { label: 'plus-triage-consensus', ids: ['autonomous-triage', 'distributed-consensus'] },
-  { label: 'plus-oracle-anomaly', ids: ['oracle-ripple-precognition', 'anomaly-correlation-engine'] },
-  { label: 'all-selectable', ids: [...SELECTABLE_IDS] },
+  { label: 'builder-tier', ids: ['audit-chain', 'governance-shield'] },
+  { label: 'studio-tier', ids: ['self-healing', 'autonomous-triage', 'ai-safety', 'pipeline-composition', 'universal-input'] },
+  { label: 'creator-tier', ids: ['oracle-ripple-precognition', 'anomaly-correlation-engine', 'distributed-consensus', 'fleet-intelligence', 'ai-cost', 'cognitive-memory'] },
+  { label: 'architect-all-20', ids: [...SELECTABLE_IDS] },
 ];
 
 function makeCapabilities(packName: string): UnifiedCapabilityInput[] {
@@ -200,6 +248,18 @@ describe('50-file ascension layer black-box stress', () => {
           if (lang !== 'typescript' && lang !== 'javascript') return;
           for (const priv of SEALED_PRIVATES_TS) {
             expect(sealed, `private identifier "${priv}" leaked through seal`).not.toContain(priv);
+          }
+        });
+
+        it('preserves selected layer public APIs (TS only — moat usable)', () => {
+          if (!emitted) return;
+          if (lang !== 'typescript' && lang !== 'javascript') return;
+          for (const id of combo.ids) {
+            const expected = LAYER_PUBLIC_API_TS[id];
+            if (!expected) continue;
+            for (const sym of expected) {
+              expect(sealed, `public API "${sym}" for layer "${id}" missing in TS seal`).toContain(sym);
+            }
           }
         });
 
