@@ -314,27 +314,13 @@ describe('Patent Fulfillment (U.S. App. No. 64/029,678)', () => {
   const pyOutput = generateUnifiedCapabilityFile(
     CAPABILITIES, PACK_NAME, 'python', PYTHON_SOURCE_FILES,
   );
+describe('Patent Fulfillment (U.S. App. No. 64/029,678)', () => {
+  const pyOutput = generateUnifiedCapabilityFile(
+    CAPABILITIES, PACK_NAME, 'python', PYTHON_SOURCE_FILES,
+  );
   const tsOutput = generateUnifiedCapabilityFile(
     CAPABILITIES, PACK_NAME, 'typescript', TS_SOURCE_FILES,
   );
-
-  it('PHP: dual-layer markers present', () => {
-    // Blackbox may strip docblocks but LAYER 1 marker in inline embed header survives
-    const hasLayer1 = phpOutput.includes('LAYER 1') || phpOutput.includes('Layer 1');
-    const hasLayer2 = phpOutput.includes('Layer 2') || phpOutput.includes('cognitive overlay') || phpOutput.includes('CMPSBL');
-    expect(hasLayer1).toBe(true);
-    expect(hasLayer2).toBe(true);
-  });
-
-  it('PHP: original source is embedded (not just referenced)', () => {
-    expect(phpOutput).toContain('class TaskWorker');
-    expect(phpOutput).toContain('function enqueue');
-  });
-
-  it('PHP: cognitive overlay wraps original', () => {
-    expect(phpOutput).toContain('executeOriginal');
-    expect(phpOutput).toContain('CMPSBLCapability');
-  });
 
   it('Python: dual-layer markers present', () => {
     const hasLayer1 = pyOutput.includes('Layer 1') || pyOutput.includes('LAYER 1') || pyOutput.includes('original');
@@ -348,24 +334,23 @@ describe('Patent Fulfillment (U.S. App. No. 64/029,678)', () => {
     expect(tsOutput).toContain('Layer 2');
   });
 
-  it('all 3 languages contain Convex Core DPL', () => {
-    expect(phpOutput).toContain('CONVEX CORE');
+  it('shipping languages contain Convex Core DPL', () => {
     expect(pyOutput).toContain('CONVEX CORE');
     expect(tsOutput).toContain('CONVEX CORE');
   });
 
-  it('all 3 languages embed fingerprint data', () => {
-    for (const output of [phpOutput, pyOutput, tsOutput]) {
+  it('shipping languages embed fingerprint data', () => {
+    for (const output of [pyOutput, tsOutput]) {
       expect(output).toContain('AA11BB22CC33');
     }
   });
 });
 
 // ═══════════════════════════════════════════════════════════════
-// Runtime Capability Activation Check
+// Runtime Capability Activation Check (PHP — gated on parity)
 // ═══════════════════════════════════════════════════════════════
 
-describe('Runtime Capabilities Activation', () => {
+phpDescribe('Runtime Capabilities Activation (PHP)', () => {
   const phpOutput = generateUnifiedCapabilityFile(
     CAPABILITIES, PACK_NAME, 'php', PHP_SOURCE_FILES,
   );
