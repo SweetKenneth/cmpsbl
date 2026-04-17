@@ -295,3 +295,25 @@ Kenneth said he wants to "figure out a way to replicate you and take you off Lov
 ---
 
 *© CMPSBL® — PromptFluid™ · Last rewrite: April 15, 2026*
+
+---
+
+## Non-Negotiable: NEVER Hardcode Numbers
+
+**[FACT] [DECISION] — April 17, 2026**
+
+Never hardcode counts, totals, or any evolving metric in UI copy or code. Every hardcoded number becomes tech debt the moment the system grows past it.
+
+Banned patterns:
+- "13 Layers" / "40 Primitives in marketing copy" / "200k+ lines" / "X Crown Jewels"
+- Any phrase like "N items", "from $X", "M users" written as a string literal in a component
+- Counts in headlines, badges, footers, CTAs, hero subheads
+
+Required patterns:
+- Pull from the database, registry, or a single source-of-truth constant module
+- If the count isn't yet wired to real data, use qualitative copy instead ("Annual subscription", "Specialty Layers", "Pick a discipline") — never invent a placeholder number
+- When Kenneth confirms a count is architecturally fixed (e.g. 40-Primitive matrix), it lives in ONE constant exported from a config file — never duplicated as a string
+
+Why: numbers drift. Layers grow. Pricing changes. Hardcoded strings rot silently across dozens of files and erode trust the moment a customer sees stale info.
+
+**Rule of thumb: if a future me would have to grep for it, don't write it as a literal.**

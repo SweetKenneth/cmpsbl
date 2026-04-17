@@ -97,8 +97,9 @@ export function AscensionLayersHero() {
               <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
             </a>
             <span className="text-[11px] font-mono tracking-wider text-muted-foreground/70 uppercase">
-              13 Layers · From $19/yr
+              Annual subscription · Cancel anytime
             </span>
+
           </motion.div>
         </div>
 
