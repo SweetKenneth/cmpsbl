@@ -220,6 +220,7 @@ export function IngestPhase() {
   const [breakerStatus, setBreakerStatus] = useState<CircuitBreaker>(BREAKER_DEFAULTS);
   const [autoHealAttempt, setAutoHealAttempt] = useState(0);
   const [capSurface, setCapSurface] = useState<LocalCapabilitySurface | null>(null);
+  const [inlineError, setInlineError] = useState<InlineError | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
   const {
@@ -287,7 +288,13 @@ export function IngestPhase() {
       }
     } catch (err) {
       console.error('[INGEST] Analysis error:', err);
-      toast({ title: 'Analysis failed', description: String(err), variant: 'destructive' });
+      const ie = toInlineError(
+        'Ingest · Analyze',
+        err,
+        'The selected files could not be analyzed. Check that they are readable text source files (not binaries) under 10MB each.',
+      );
+      setInlineError(ie);
+      toast({ title: 'Analysis failed', description: ie.message, variant: 'destructive' });
     } finally {
       setParsing(false);
     }
@@ -398,7 +405,15 @@ export function IngestPhase() {
       const newBreaker = recordFailure(breakerStatus);
       setBreakerStatus(newBreaker);
       deadLetterLog('register_candidate_node', { name: parsedNode.name, attempt: autoHealAttempt, breakerState: newBreaker.state }, err);
-      toast({ title: 'Registration failed', description: errMsg.includes('DB:') ? errMsg : `Unexpected error: ${errMsg}`, variant: 'destructive' });
+      const ie = toInlineError(
+        'Ingest · Register Node',
+        err,
+        errMsg.includes('DB:')
+          ? 'Database write rejected. Verify your session is still active and that your tier permits this upload.'
+          : 'Registration failed before reaching the database. See details below.',
+      );
+      setInlineError(ie);
+      toast({ title: 'Registration failed', description: ie.message, variant: 'destructive' });
     } finally {
       setRegistering(false);
     }
