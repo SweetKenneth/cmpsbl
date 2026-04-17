@@ -170,7 +170,7 @@ describe('Claude Findings Stress — 5 langs × 25 iterations', () => {
         'CROSS_LANG_PACK',
         lang,
         [{
-          name: 'shared',
+          name: `shared.${EXTENSIONS[lang]}`,
           extension: EXTENSIONS[lang],
           language: lang,
           content: SAMPLE_USER_SOURCES[lang],
