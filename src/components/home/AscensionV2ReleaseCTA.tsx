@@ -19,6 +19,10 @@ import {
   Hourglass,
 } from "lucide-react";
 import { TIER_LAYERS, ALWAYS_ON } from "@/lib/ascension-v2/tier-layers";
+import {
+  getShippingLanguages,
+  getComingSoonLanguages,
+} from "@/lib/export/language-parity-tiers";
 
 const V2_BENEFITS = [
   {
@@ -47,31 +51,11 @@ const V2_BENEFITS = [
   },
 ] as const;
 
-const SUPPORTED_LANGUAGES = [
-  "TypeScript",
-  "JavaScript",
-  "Python",
-  "Go",
-  "Rust",
-  "Java",
-  "C#",
-  "C++",
-  "Ruby",
-  "PHP",
-  "Swift",
-  "Kotlin",
-] as const;
-
-const COMING_SOON_LANGUAGES = [
-  "Verilog",
-  "VHDL",
-  "SystemVerilog",
-  "GLSL",
-  "WGSL",
-  "Solidity",
-  "Move",
-  "Cairo",
-] as const;
+// Pulled live from the parity registry — single source of truth.
+// SHIPPING = real today, runtime-verified, every layer has a native
+// implementation. COMING_SOON = on the roadmap, picker shows them disabled.
+const SHIPPING_LANGUAGES = getShippingLanguages();
+const COMING_SOON_LANGUAGES = getComingSoonLanguages();
 
 const BUILDER_FREE_LAYERS = TIER_LAYERS.builder;
 
