@@ -185,7 +185,7 @@ function colophon(): string {
       CMPSBL® · PromptFluid™<br>
       https://cmpsbl.com<br>
       © ${year()} CMPSBL®. All rights reserved.<br>
-      U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 63/758,981
+      U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 64/031,637
     </div>
     <div class="colophon-right">CMPSBL®</div>
   </div>
