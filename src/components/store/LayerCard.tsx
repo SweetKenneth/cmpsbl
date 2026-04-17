@@ -148,7 +148,7 @@ export function LayerCard({ item }: LayerCardProps) {
 
               {/* Description — what this Layer does for your software */}
               {item.description && (
-                <p className="text-[11px] sm:text-xs text-muted-foreground/75 leading-relaxed mt-2.5 line-clamp-3">
+                <p className="text-[12px] sm:text-[13px] text-muted-foreground/80 leading-relaxed mt-3">
                   {item.description}
                 </p>
               )}
