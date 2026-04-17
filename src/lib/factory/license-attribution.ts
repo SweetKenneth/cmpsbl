@@ -152,95 +152,55 @@ export function detectLayer1License(source: string): DetectedLicense | null {
   const lower = header.toLowerCase();
   const attribution = extractCopyright(header);
 
-  // Order matters — check most-specific markers first.
+  // Order matters — check most-specific markers first so MIT's catch-all
+  // "permission is hereby granted" doesn't swallow ISC, etc.
+  let spdx: SupportedSpdx | null = null;
+
   if (
     /spdx-license-identifier:\s*apache-2\.0/i.test(header) ||
     lower.includes('apache license, version 2.0') ||
     lower.includes('apache license version 2.0') ||
     /licensed under the apache license/i.test(header)
   ) {
-    return {
-      spdx: 'Apache-2.0',
-      label: 'Apache License 2.0',
-      attribution,
-      notice:
-        'Licensed under the Apache License, Version 2.0 (the "License"); ' +
-        'you may not use this file except in compliance with the License. ' +
-        'You may obtain a copy of the License at ' +
-        'http://www.apache.org/licenses/LICENSE-2.0 — Unless required by ' +
-        'applicable law or agreed to in writing, software distributed under ' +
-        'the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES ' +
-        'OR CONDITIONS OF ANY KIND, either express or implied.',
-    };
-  }
-
-  if (/spdx-license-identifier:\s*mpl-2\.0/i.test(header) || lower.includes('mozilla public license, v. 2.0') || lower.includes('mozilla public license version 2.0')) {
-    return {
-      spdx: 'MPL-2.0',
-      label: 'Mozilla Public License 2.0',
-      attribution,
-      notice:
-        'This Source Code Form is subject to the terms of the Mozilla Public ' +
-        'License, v. 2.0. If a copy of the MPL was not distributed with this ' +
-        'file, You can obtain one at https://mozilla.org/MPL/2.0/.',
-    };
-  }
-
-  if (/spdx-license-identifier:\s*bsd-3-clause/i.test(header) || lower.includes('bsd 3-clause')) {
-    return {
-      spdx: 'BSD-3-Clause',
-      label: 'BSD 3-Clause License',
-      attribution,
-      notice:
-        'Redistribution and use in source and binary forms, with or without ' +
-        'modification, are permitted provided that the conditions of the ' +
-        'BSD 3-Clause License are met. THE SOFTWARE IS PROVIDED "AS IS".',
-    };
-  }
-
-  if (/spdx-license-identifier:\s*bsd-2-clause/i.test(header) || lower.includes('bsd 2-clause')) {
-    return {
-      spdx: 'BSD-2-Clause',
-      label: 'BSD 2-Clause License',
-      attribution,
-      notice:
-        'Redistribution and use in source and binary forms, with or without ' +
-        'modification, are permitted provided the BSD 2-Clause conditions ' +
-        'are met. THE SOFTWARE IS PROVIDED "AS IS".',
-    };
-  }
-
-  if (/spdx-license-identifier:\s*isc/i.test(header) || /\bisc license\b/i.test(header)) {
-    return {
-      spdx: 'ISC',
-      label: 'ISC License',
-      attribution,
-      notice:
-        'Permission to use, copy, modify, and/or distribute this software ' +
-        'for any purpose with or without fee is hereby granted, provided ' +
-        'that the above copyright notice appears in all copies. ' +
-        'THE SOFTWARE IS PROVIDED "AS IS".',
-    };
-  }
-
-  if (
+    spdx = 'Apache-2.0';
+  } else if (
+    /spdx-license-identifier:\s*mpl-2\.0/i.test(header) ||
+    lower.includes('mozilla public license, v. 2.0') ||
+    lower.includes('mozilla public license version 2.0')
+  ) {
+    spdx = 'MPL-2.0';
+  } else if (/spdx-license-identifier:\s*bsd-3-clause/i.test(header) || lower.includes('bsd 3-clause')) {
+    spdx = 'BSD-3-Clause';
+  } else if (/spdx-license-identifier:\s*bsd-2-clause/i.test(header) || lower.includes('bsd 2-clause')) {
+    spdx = 'BSD-2-Clause';
+  } else if (/spdx-license-identifier:\s*isc/i.test(header) || /\bisc license\b/i.test(header)) {
+    spdx = 'ISC';
+  } else if (
     /spdx-license-identifier:\s*mit\b/i.test(header) ||
     /\bmit license\b/i.test(header) ||
     /permission is hereby granted, free of charge/i.test(header)
   ) {
-    return {
-      spdx: 'MIT',
-      label: 'MIT License',
-      attribution,
-      notice:
-        'Permission is hereby granted, free of charge, to any person obtaining ' +
-        'a copy of this software and associated documentation files (the ' +
-        '"Software"), to deal in the Software without restriction. ' +
-        'THE SOFTWARE IS PROVIDED "AS IS".',
-    };
+    spdx = 'MIT';
   }
 
-  return null;
+  return buildLicenseFromSpdx(spdx, attribution);
+}
+
+/**
+ * Resolve the effective Layer 1 license to attach. Manual SPDX override always
+ * wins (the user knows their upstream). Falls back to header detection. This
+ * is the function the export pipeline should call — never the detector alone.
+ */
+export function resolveLayer1License(
+  source: string,
+  overrideSpdx?: string | null,
+): DetectedLicense | null {
+  if (overrideSpdx) {
+    const attribution = extractCopyright(headerSlice(source));
+    const built = buildLicenseFromSpdx(overrideSpdx, attribution);
+    if (built) return built;
+  }
+  return detectLayer1License(source);
 }
 
 /**
