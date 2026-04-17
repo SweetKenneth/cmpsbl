@@ -81,7 +81,45 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\b_cmpsblIV\b/g, '_xI'],
   [/\borchestr(?:ation|ator)/gi, 'sealed matrix'],
   [/\bcollision\s*(?:matrix|scoring|mechanics)/gi, 'dispatch table'],
-];
+
+  // ── CMPSBL® Hardening Layer internals (the 7 always-on cores + selectable layers).
+  // Public class names (CmpsblCircuitBreaker, CmpsblTimeoutBox, ...) and public
+  // methods (execute, should_attempt, record_success, record_failure, reset,
+  // is_closed, ShouldAttempt, RecordSuccess, RecordFailure, IsClosed, Reset)
+  // are NOT renamed — customer code calls them directly and brand visibility
+  // is part of the moat. We obfuscate ONLY private fields, internal helpers,
+  // and the FSM math that constitutes the actual trade secret.
+  // Circuit Breaker private state
+  [/\bfailure_threshold\b/g, '_ft1'],
+  [/\bsuccess_threshold\b/g, '_st1'],
+  [/\bfailureThreshold\b/g, '_ft1'],
+  [/\bsuccessThreshold\b/g, '_st1'],
+  [/\bconsecutive_successes\b/g, '_cx1'],
+  [/\bconsecutiveSuccesses\b/g, '_cx1'],
+  [/\bcurrent_timeout_ms\b/g, '_ct1'],
+  [/\bcurrentTimeoutMs\b/g, '_ct1'],
+  [/\bmax_timeout_ms\b/g, '_mt1'],
+  [/\bmaxTimeoutMs\b/g, '_mt1'],
+  [/\bbackoff_multiplier\b/g, '_bm1'],
+  [/\bbackoffMultiplier\b/g, '_bm1'],
+  [/\bopened_at\b/g, '_oa1'],
+  [/\bopenedAt\b/g, '_oa1'],
+  [/\btotal_calls\b/g, '_tc1'],
+  [/\btotalCalls\b/g, '_tc1'],
+  // Private helper methods (NOT the public surface)
+  [/\bnow_ms\b/g, '_nm'],
+  [/(?<!Cmpsbl)\btransition\b/g, '_tr1'],
+  // Breaker panel registry (internal singleton)
+  [/\bcmpsblBreakerPanel\b/g, '_bpx'],
+  // Timeout / Retry private knobs
+  [/\bdeadline_ms\b/g, '_dl1'],
+  [/\bdeadlineMs\b/g, '_dl1'],
+  [/\bjitter_ms\b/g, '_jt1'],
+  [/\bjitterMs\b/g, '_jt1'],
+  [/\bmax_attempts\b/g, '_ma1'],
+  [/\bmaxAttempts\b/g, '_ma1'],
+  [/\bbase_delay_ms\b/g, '_bd1'],
+  [/\bbaseDelayMs\b/g, '_bd1'],
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2 — Proprietary Constant Obfuscation
