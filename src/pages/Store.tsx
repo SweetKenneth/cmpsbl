@@ -22,8 +22,8 @@ import { StoreOnboarding } from "@/components/onboarding/StoreOnboarding";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { JunkyardCTA } from "@/components/shared/JunkyardCTA";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
+import { LayerInventory } from "@/components/store/LayerInventory";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
-import { UpgradeContent } from "@/components/store/UpgradeContent";
 import { PacksContent } from "@/components/store/PacksContent";
 import {
   STORE_AGENTS, STORE_ENGINES, ALL_STORE_ITEMS, TIER_META,
@@ -31,7 +31,7 @@ import {
 } from "@/lib/store/catalog";
 
 type FilterMode = "all" | "agents" | "engines";
-type StoreTab = "store" | "plans" | "memories";
+type StoreTab = "store" | "memories";
 
 const TIERS: StoreTier[] = ["free", "starter", "pro", "elite", "apex"];
 
