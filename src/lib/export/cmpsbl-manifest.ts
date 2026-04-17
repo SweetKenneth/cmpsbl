@@ -7,6 +7,20 @@
  * Terminology: Uses "primitives" (never "modules") per CMPSBL® governance.
  */
 
+export interface CmpsblManifestLicenseLayer {
+  spdx: string;
+  label?: string;
+  /** Path to the license file inside the ZIP, or null when nothing ships. */
+  file: string | null;
+}
+
+export interface CmpsblManifestLicense {
+  /** Layer 2 (the wrapper) — always CAAL-1.0 for ascended artifacts. */
+  layer2: CmpsblManifestLicenseLayer;
+  /** Layer 1 (your original source) — SPDX or NOASSERTION when undeclared. */
+  layer1: CmpsblManifestLicenseLayer;
+}
+
 export interface CmpsblManifestInput {
   name: string;
   cjpi?: number;
@@ -19,6 +33,8 @@ export interface CmpsblManifestInput {
   fingerprint?: string;
   source?: string;
   serial?: string;
+  /** Dual-layer SPDX summary — surfaced for SBOM/scanner tooling. */
+  license?: CmpsblManifestLicense;
 }
 
 export interface CmpsblManifest {
@@ -34,6 +50,7 @@ export interface CmpsblManifest {
   fingerprint?: string;
   source?: string;
   serial?: string;
+  license?: CmpsblManifestLicense;
 }
 
 function tierFromScore(score: number): string {
@@ -64,6 +81,7 @@ export function generateCmpsblManifest(input: CmpsblManifestInput): CmpsblManife
     ...(input.fingerprint ? { fingerprint: input.fingerprint } : {}),
     ...(input.source ? { source: input.source } : {}),
     ...(input.serial ? { serial: input.serial } : {}),
+    ...(input.license ? { license: input.license } : {}),
   };
 }
 

@@ -256,6 +256,40 @@ export function buildUpstreamLicenseFile(license: DetectedLicense, originalFileN
 }
 
 /**
+ * Build a NOTICE.txt — Apache-2.0 §4(d) requires a readable copy of the
+ * attribution notices to ship with derivative works. Even non-Apache licenses
+ * benefit from a clean, single-file attribution summary at the archive root.
+ */
+export function buildNoticeFile(license: DetectedLicense, originalFileName: string): string {
+  const lines = [
+    '═══════════════════════════════════════════════════════════════════════════════',
+    `  NOTICE — Attribution for ${originalFileName} (Layer 1 of this artifact)`,
+    '═══════════════════════════════════════════════════════════════════════════════',
+    '',
+    `Upstream license : ${license.label}`,
+    `SPDX identifier  : ${license.spdx}`,
+    license.attribution ? `Attribution      : ${license.attribution}` : null,
+    '',
+    'This artifact is a CMPSBL® Ascension dual-layer package:',
+    '',
+    `  • Layer 1 — your original source (governed by ${license.label}).`,
+    '             See LICENSE-UPSTREAM.txt for the full license text.',
+    '',
+    '  • Layer 2 — the CMPSBL® wrapper, primitives, and runtime',
+    '             (governed by CAAL-1.0 — see LICENSE.html).',
+    '',
+    'CAAL-1.0 §1 explicitly excludes Layer 1. Distribution of this artifact',
+    `must therefore comply with both ${license.label} (for Layer 1) and CAAL-1.0`,
+    '(for Layer 2). This NOTICE file satisfies the attribution-travel',
+    `requirement of ${license.label}${license.spdx === 'Apache-2.0' ? ' §4(d)' : ''}.`,
+    '',
+    '═══════════════════════════════════════════════════════════════════════════════',
+    '',
+  ].filter((l): l is string => l !== null);
+  return lines.join('\n');
+}
+
+/**
  * Detect upstream license on the customer's primary source file (or accept a
  * manual SPDX override). Returns null when there's no detectable upstream
  * license — in which case the V2 export emits no LICENSE-UPSTREAM file.
