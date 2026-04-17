@@ -184,6 +184,75 @@ func Broken() int {
     return 1
 `.trim(),
   },
+  {
+    id: 'java',
+    label: 'Java',
+    ext: '.java',
+    canonical: `
+public class Engine {
+    public int calculate(int a, int b) { return a + b; }
+    public String process(String item) { return item.toUpperCase(); }
+}
+`.trim(),
+    adversarial: `
+public class Broken {
+    public int broken() { return 1;
+`.trim(),
+  },
+  {
+    id: 'kotlin',
+    label: 'Kotlin',
+    ext: '.kt',
+    canonical: `
+fun calculate(a: Int, b: Int): Int = a + b
+
+class Engine {
+    fun process(items: List<String>): List<String> = items.map { it.uppercase() }
+}
+`.trim(),
+    adversarial: `
+fun broken(): Int {
+    val x = 1
+`.trim(),
+  },
+  {
+    id: 'csharp',
+    label: 'C#',
+    ext: '.cs',
+    canonical: `
+using System.Collections.Generic;
+using System.Linq;
+
+public class Engine {
+    public int Calculate(int a, int b) { return a + b; }
+    public IEnumerable<string> Process(IEnumerable<string> items) {
+        return items.Select(i => i.ToUpper());
+    }
+}
+`.trim(),
+    adversarial: `
+public class Broken {
+    public int Broken() { return 1;
+`.trim(),
+  },
+  {
+    id: 'swift',
+    label: 'Swift',
+    ext: '.swift',
+    canonical: `
+func calculate(_ a: Int, _ b: Int) -> Int { return a + b }
+
+class Engine {
+    func process(_ items: [String]) -> [String] {
+        return items.map { $0.uppercased() }
+    }
+}
+`.trim(),
+    adversarial: `
+func broken() -> Int {
+    let x = 1
+`.trim(),
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════
