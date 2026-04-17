@@ -247,9 +247,21 @@ export function V2EnhanceStep({ onComplete }: Props) {
                       {layer.description}
                     </p>
                   </div>
-                  {layer.priceCents === 0 && (
-                    <span className="text-[8px] sm:text-[9px] font-medium text-primary flex-shrink-0">FREE</span>
-                  )}
+                  {(() => {
+                    const tier = tierForLayer(layer);
+                    const meta = TIER_META[tier];
+                    return (
+                      <span
+                        className={cn(
+                          'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
+                          meta.accent
+                        )}
+                        title={`${meta.name} tier — ${meta.priceLabel}`}
+                      >
+                        {meta.name}
+                      </span>
+                    );
+                  })()}
                 </button>
               );
             })}
