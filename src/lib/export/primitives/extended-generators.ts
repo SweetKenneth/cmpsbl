@@ -489,6 +489,155 @@ ${indent(body, '    ')}
 `;
 }
 
+// ─── Wave 1 Scaffolds — PHP, Elixir, Haskell, F#, Julia ────────────────────
+
+function scaffoldPhp(ctx: ExtendedGeneratorContext, body: string): string {
+  return `<?php
+${header(ctx, '//', 'PHP')}
+
+function quick_hash(string $s): string {
+    return 'h' . dechex(crc32($s));
+}
+
+function user_keys(array $data): array {
+    return array_filter(array_keys($data), fn($k) => !str_starts_with((string)$k, '_'));
+}
+
+function handle_module(string $module, array &$ctx, array $meta): void {
+${indent(body, '    ')}
+}
+`;
+}
+
+function scaffoldElixir(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '#', 'Elixir')}
+defmodule Cmpsbl.Ascension do
+  @moduledoc "CMPSBL® Ascension v2 — Elixir handler dispatch"
+
+  def quick_hash(bin) when is_binary(bin) do
+    "h" <> Integer.to_string(:erlang.crc32(bin), 16)
+  end
+
+  def user_keys(data) when is_map(data) do
+    data |> Map.keys() |> Enum.reject(&String.starts_with?(to_string(&1), "_"))
+  end
+
+  def handle_module(module, ctx, meta) do
+${indent(body, '    ')}
+    ctx
+  end
+end
+`;
+}
+
+function scaffoldHaskell(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '--', 'Haskell')}
+{-# LANGUAGE OverloadedStrings #-}
+module Cmpsbl.Ascension where
+
+import qualified Data.Map.Strict as Map
+import Data.Char (toLower)
+import Data.List (isInfixOf, findIndex)
+import Data.Time.Clock.POSIX (getPOSIXTime)
+
+data JValue = JNull | JBool Bool | JInt Int | JNum Double | JString String
+            | JArr [JValue] | JObj (Map.Map String JValue) deriving (Show)
+
+data Signal = Signal { sigType :: String, sigSource :: String, sigTs :: Integer } deriving (Show)
+
+data Ctx = Ctx
+  { ctxData    :: Map.Map String JValue
+  , ctxInput   :: Map.Map String JValue
+  , ctxErrors  :: [String]
+  , ctxSignals :: [Signal]
+  , ctxStartMs :: Integer
+  } deriving (Show)
+
+data Meta = Meta { metaCjpi :: Int, metaChain :: [String], metaTier :: String } deriving (Show)
+
+quickHash :: String -> String
+quickHash s = "h" ++ show (length s)
+
+userKeys :: Map.Map String JValue -> [String]
+userKeys = filter (\\k -> not (null k) && head k /= '_') . Map.keys
+
+chainPosition :: [String] -> String -> Int
+chainPosition cs m = case findIndex (== m) cs of
+  Just i  -> i + 1
+  Nothing -> 0
+
+elapsedMs :: Ctx -> Int
+elapsedMs _ = 0  -- caller sets via IO; pure module returns 0
+
+nowMs :: Integer
+nowMs = 0  -- placeholder; production caller injects via IO
+
+handleModule :: String -> Ctx -> Meta -> Ctx
+handleModule modName ctx meta =
+${indent(body, '  ')}
+`;
+}
+
+function scaffoldFSharp(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '//', 'F#')}
+module Cmpsbl.Ascension
+
+open System
+open System.Collections.Generic
+
+type Signal = { Type: string; Source: string; Ts: int64 }
+type Ctx = {
+    Data: Map<string, obj>
+    Input: Map<string, obj>
+    Errors: string list
+    Signals: Signal list
+    T0: int64
+}
+type Meta = { Cjpi: int; Chain: string list; Tier: string }
+
+let quickHash (s: string) : string = "h" + (s.Length).ToString("x")
+
+let userKeys (data: Map<string, obj>) : string list =
+    data |> Map.toList |> List.map fst |> List.filter (fun k -> not (k.StartsWith("_")))
+
+let handleModule (modName: string) (ctx: Ctx) (meta: Meta) : Ctx =
+${indent(body, '    ')}
+`;
+}
+
+function scaffoldJulia(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '#', 'Julia')}
+module CmpsblAscension
+
+mutable struct Ctx
+    data::Dict{String,Any}
+    input::Dict{String,Any}
+    errors::Vector{String}
+    signals::Vector{Dict{String,Any}}
+    t0::Float64
+end
+
+struct Meta
+    cjpi::Int
+    chain::Vector{String}
+    tier::String
+end
+
+quick_hash(s::AbstractString) = "h" * string(hash(s), base=16)
+
+function user_keys(data::Dict)
+    return [k for k in keys(data) if !startswith(string(k), "_")]
+end
+
+function handle_module(modname::String, ctx::Ctx, meta::Meta)
+${indent(body, '    ')}
+    return ctx
+end
+
+end # module
+`;
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 function indent(text: string, pad: string): string {
   return text.split('\n').map(l => (l.length ? pad + l : l)).join('\n');
@@ -507,6 +656,12 @@ const SCAFFOLDS: Record<string, (ctx: ExtendedGeneratorContext, body: string) =>
   scala: scaffoldScala,
   c: scaffoldC,
   cpp: scaffoldCpp,
+  // Wave 1
+  php: scaffoldPhp,
+  elixir: scaffoldElixir,
+  haskell: scaffoldHaskell,
+  fsharp: scaffoldFSharp,
+  julia: scaffoldJulia,
 };
 
 // ─── Public API ─────────────────────────────────────────────────────────────

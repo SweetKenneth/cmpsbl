@@ -659,6 +659,8 @@ CPP_ADAPTER.caseBlock = (mod, body) =>
 // REGISTRY
 // ═══════════════════════════════════════════════════════════════════════════════
 
+import { WAVE1_ADAPTERS } from './language-adapters-wave1';
+
 export const TIER_A_ADAPTERS: Record<string, LanguageAdapter> = {
   rust: RUST_ADAPTER,
   go: GO_ADAPTER,
@@ -672,8 +674,18 @@ export const TIER_A_ADAPTERS: Record<string, LanguageAdapter> = {
   scala: SCALA_ADAPTER,
   c: C_ADAPTER,
   cpp: CPP_ADAPTER,
+  ...WAVE1_ADAPTERS,
 };
 
 export function getAdapter(lang: string): LanguageAdapter | undefined {
   return TIER_A_ADAPTERS[lang.toLowerCase()];
 }
+
+// Re-export Wave 1 adapters for direct consumers
+export {
+  PHP_ADAPTER,
+  ELIXIR_ADAPTER,
+  HASKELL_ADAPTER,
+  FSHARP_ADAPTER,
+  JULIA_ADAPTER,
+} from './language-adapters-wave1';
