@@ -83,9 +83,6 @@ export function NpmAnnouncementBanner() {
               <span className="font-bold tracking-tight whitespace-nowrap">
                 {current.name}
               </span>
-              <span className="font-mono font-semibold text-white/95 tabular-nums px-1.5 py-0.5 rounded bg-white/15 text-[10px] sm:text-xs whitespace-nowrap">
-                CJPI {current.cjpi}
-              </span>
               <span className="text-white/90 font-medium italic truncate">
                 — “{current.promise}”
               </span>
