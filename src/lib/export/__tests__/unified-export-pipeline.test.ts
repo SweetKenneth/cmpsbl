@@ -57,10 +57,11 @@ describe('Unified Export Pipeline — Smoke Test', () => {
   // ─── File Generation ───
 
   describe('File Generation', () => {
+    // Only SHIPPING languages are exercised here. PHP is COMING_SOON
+    // and intentionally blocked by the parity gate.
     const LANGUAGES_TO_TEST = [
       { lang: 'typescript', ext: '.ts', hasPolyglot: false },
       { lang: 'python', ext: '.py', hasPolyglot: false },
-      { lang: 'php', ext: '.php', hasPolyglot: false },
       { lang: 'rust', ext: '.rs', hasPolyglot: true },
       { lang: 'go', ext: '.go', hasPolyglot: true },
     ];
