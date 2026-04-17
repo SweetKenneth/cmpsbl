@@ -144,6 +144,7 @@ export default {
         "spin-slow": "spin-slow 8s linear infinite",
         shake: "shake 0.5s ease-in-out",
         marquee: "marquee 30s linear infinite",
+        "ascension-flow": "ascension-flow 6s ease-in-out infinite",
       },
     },
   },
