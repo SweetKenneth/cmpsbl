@@ -403,21 +403,35 @@ export interface V2ReadmeInput {
   avgCjpi: number;
   topCjpi: number;
   fingerprint: string;
+  /**
+   * Upstream license actually shipping in the ZIP. When null, the README
+   * suppresses the LICENSE-UPSTREAM/NOTICE rows entirely so the file
+   * inventory matches the archive 1:1 (Claude finding #4 — count reconciliation).
+   */
+  upstreamLicense?: { spdx: string; label: string } | null;
 }
 
 export function generateV2ReadmeHTML(input: V2ReadmeInput): string {
   const primitiveCount = new Set(input.capabilities.flatMap(c => c.chain)).size;
-  const files = [
-    { name: 'LICENSE.html', purpose: 'CAAL-1.0 — governs Layer 2 only. Layer 1 keeps its upstream license.' },
-    { name: 'LICENSE-UPSTREAM.txt', purpose: 'Upstream license text for Layer 1 (only present when detected)' },
-    { name: 'README.html', purpose: 'This file — package overview and quick start' },
+  const upstream = input.upstreamLicense ?? null;
+  const files: { name: string; purpose: string }[] = [
+    { name: 'LICENSE.html', purpose: 'CMPSBL® CAAL-1.0 — governs Layer 2 (the wrapper) only.' },
+  ];
+  if (upstream) {
+    files.push(
+      { name: 'LICENSE-UPSTREAM.txt', purpose: `Upstream ${upstream.label} text — governs Layer 1 (your source).` },
+      { name: 'NOTICE.txt', purpose: `Attribution notice required by ${upstream.label} (§4(d) for Apache).` },
+    );
+  }
+  files.push(
+    { name: 'README.html', purpose: 'This file — package overview, license summary, and quick start' },
     { name: 'USER-GUIDE.html', purpose: 'Comprehensive guide with activation, pipeline details, error codes' },
-    { name: input.originalFileName, purpose: 'Your original source file — Layer 1, completely untouched' },
+    { name: input.originalFileName, purpose: 'Your original source file — Layer 1, byte-identical to upload' },
     { name: input.ascendedFileName, purpose: 'Layer 2 wrapped file — drop-in replacement for the original' },
     { name: 'ADVERTISEMENT.html', purpose: 'Information about Mana layers and the CMPSBL® ecosystem' },
     { name: 'HARNESS-REPORT.txt', purpose: 'Pre-export verification proof' },
-    { name: 'manifest.json', purpose: 'Machine-readable manifest — primitives, fingerprint, version' },
-  ];
+    { name: 'manifest.json', purpose: 'Machine-readable manifest — capabilities, fingerprint, dual-layer SPDX' },
+  );
 
   return htmlShell(`README — ${input.packName}`, `
 <div class="page">
