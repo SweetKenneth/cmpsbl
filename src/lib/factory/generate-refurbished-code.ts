@@ -25,6 +25,10 @@ import {
   buildAttachmentPlan,
   serializeAttachmentPlan,
 } from '../mana/findings-bridge';
+import {
+  detectLayer1License,
+  renderLicenseAttribution,
+} from './license-attribution';
 
 // ── Language Syntax Adapters ──
 
