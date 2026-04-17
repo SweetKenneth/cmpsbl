@@ -553,15 +553,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             silently — which is exactly what just happened on the cli-7.py upload. */}
         {upstreamMissing && (
           <div
-            className="rounded-xl border border-amber-500/50 bg-amber-500/10 p-3 sm:p-4 flex items-start gap-2.5"
+            className="rounded-xl border border-neon-amber/50 bg-neon-amber/10 p-3 sm:p-4 flex items-start gap-2.5"
             role="alert"
           >
-            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-neon-amber flex-shrink-0 mt-0.5" />
             <div className="min-w-0 flex-1 space-y-1">
-              <p className="text-[11px] sm:text-xs font-semibold text-amber-900 dark:text-amber-200">
+              <p className="text-[11px] sm:text-xs font-semibold text-foreground">
                 No upstream license detected
               </p>
-              <p className="text-[10px] sm:text-[11px] text-amber-900/80 dark:text-amber-100/80 leading-snug">
+              <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
                 We checked your source header and any sibling <span className="font-mono">LICENSE</span> file —
                 neither declared an SPDX. If this code is open-source (e.g. Apache-2.0, MIT, BSD),
                 pick the correct license below so attribution travels with your export. Otherwise the
