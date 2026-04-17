@@ -94,7 +94,7 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   cs('clojure',     'Clojure'),
 
   // .NET family
-  cs('csharp',      'C#'),
+  { id: 'csharp',   label: 'C#',     status: 'SHIPPING' },
   cs('fsharp',      'F#'),
   cs('vbnet',       'VB.NET'),
 
