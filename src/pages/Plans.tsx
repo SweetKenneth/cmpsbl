@@ -88,7 +88,11 @@ export default function Plans() {
 
         <UpgradeContent />
 
+        {/* True Crown Jewels — the 20 Ascension Layers, organized per tier */}
         <TierLayersOverview />
+
+        {/* Detailed per-tier capability list (broader than the 20 Layers) */}
+        <CrownJewelTierBreakdown />
 
         <div className="container mx-auto px-4 mt-12">
           <h2 className="text-lg font-bold text-foreground mb-4">Your Compounding Value</h2>
