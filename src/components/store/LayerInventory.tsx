@@ -75,10 +75,11 @@ export function LayerInventory() {
 
   return (
     <motion.section
+      id="layer-inventory"
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="mb-16 sm:mb-24"
+      className="mb-16 sm:mb-24 scroll-mt-24"
     >
       {/* Section header */}
       <div className="text-center mb-10">
@@ -88,15 +89,15 @@ export function LayerInventory() {
         >
           <ShieldCheck className="w-3.5 h-3.5 mr-2 text-primary" />
           <span className="text-xs font-semibold tracking-wide">
-            Layer Inventory
+            Specialty Layers
           </span>
         </Badge>
         <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
-          Specialty Merchandise
+          Enhance Your Ascension
         </h2>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
           Captured from vertical engines and S-Tier vault discoveries before
-          Ascension absorbs them into Layer 2. Limited-curation inventory.
+          Ascension absorbs them into Layer 2. Limited-curation Layers.
         </p>
       </div>
 

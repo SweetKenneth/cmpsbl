@@ -120,7 +120,7 @@ export function LayerCard({ item }: LayerCardProps) {
                   <Cpu className="w-3 h-3 text-muted-foreground/60" />
                 )}
                 <span className="text-[8px] font-black tracking-[0.15em] text-muted-foreground/60">
-                  {isSuite ? "SUITE" : "LAYER"}
+                  LAYER
                 </span>
               </div>
 
@@ -151,7 +151,7 @@ export function LayerCard({ item }: LayerCardProps) {
                 <div className="flex items-center gap-1.5">
                   <PillarIcon className="w-3.5 h-3.5 text-primary/50" />
                   <span className="text-[10px] font-mono tabular-nums text-muted-foreground/60 tracking-wider">
-                    {capabilities.length} {isSuite ? "ENGINES" : "PRIMS"}
+                    {capabilities.length} {isSuite ? "CAPS" : "PRIMS"}
                   </span>
                 </div>
                 {capabilities.length > 0 && (
@@ -226,7 +226,7 @@ export function LayerCard({ item }: LayerCardProps) {
                       {item.title}
                     </h3>
                     <span className={cn("px-2 py-0.5 rounded-md text-[8px] font-black tracking-wider border shrink-0", tier.bg, tier.color, tier.border)}>
-                      {isSuite ? "SUITE" : "LAYER"}
+                      LAYER
                     </span>
                   </div>
                   {item.subtitle && (
@@ -249,7 +249,7 @@ export function LayerCard({ item }: LayerCardProps) {
               {capabilities.length > 0 && (
                 <div>
                   <h4 className="text-[9px] font-black tracking-[0.2em] text-primary/50 mb-3 uppercase">
-                    {isSuite ? "Bundled Engines" : "Primitive Chain"}
+                    {isSuite ? "Bundled Capabilities" : "Primitive Chain"}
                   </h4>
                   <div className="space-y-1.5">
                     {capabilities.map((cap) => (
