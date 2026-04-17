@@ -79,7 +79,7 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   // ─── Tier 2 — COMING_SOON ─────────────────────────────────────────────────
   // Systems & native
   cs('rust',        'Rust'),
-  cs('go',          'Go'),
+  { id: 'go', label: 'Go', status: 'SHIPPING' },
   cs('c',           'C'),
   cs('cpp',         'C++'),
   cs('zig',         'Zig'),

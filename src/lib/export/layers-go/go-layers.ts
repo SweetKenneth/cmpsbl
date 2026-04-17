@@ -1,0 +1,1127 @@
+/**
+ * CMPSBL® Native Go Layer Implementations
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Hand-written Go bodies for every Launch Layer + core utility layer.
+ *
+ * Architecture:
+ *   - Each layer exports a single function emitting valid, self-contained Go
+ *     source for the layer body. The polyglot engine concatenates these into
+ *     a single `cmpsbl_layers.go` file alongside Layer 1.
+ *   - Wrappers (auto-wire) follow the same caller-isolation rules as TS/Py:
+ *     never mutate the caller input map; strip sidecar keys from output.
+ *   - Phase ordering is enforced by the Go chain executor (go-chain-executor.ts),
+ *     not by these snippets.
+ *
+ * © CMPSBL® — All rights reserved.
+ */
+
+// ─── Phase 1 — RESILIENCE ──────────────────────────────────────────────────
+
+export const SELF_HEALING_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Self-Healing Orchestrator (Crown Jewel #1)                  ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblBlastRadius string
+
+const (
+\tCmpsblBlastNode   CmpsblBlastRadius = "node"
+\tCmpsblBlastSector CmpsblBlastRadius = "sector"
+\tCmpsblBlastSystem CmpsblBlastRadius = "system"
+)
+
+type CmpsblRepairStrategy struct {
+\tID                  string
+\tFailureType         string
+\tActions             []string
+\tBlastRadius         CmpsblBlastRadius
+\tEstimatedDurationMs int64
+\tSuccessRate         float64
+\tCostScore           float64
+}
+
+type CmpsblRepairPlan struct {
+\tID                  string
+\tCapabilityName      string
+\tFailureType         string
+\tStrategy            CmpsblRepairStrategy
+\tActions             []string
+\tEstimatedDurationMs int64
+\tRollbackPlan        []string
+\tCreatedAt           int64
+}
+
+type CmpsblRepairResult struct {
+\tPlanID          string
+\tSuccess         bool
+\tDurationMs      int64
+\tActionsExecuted []string
+\tRolledBack      bool
+\tError           string
+}
+
+var (
+\tcmpsblHealStrategies []CmpsblRepairStrategy
+\tcmpsblHealHistory    []CmpsblRepairResult
+\tcmpsblHealScores     = map[string][2]int{} // [successes, failures]
+\tcmpsblHealMu         sync.Mutex
+)
+
+func cmpsbl_add_repair_strategy(s CmpsblRepairStrategy) {
+\tcmpsblHealMu.Lock(); defer cmpsblHealMu.Unlock()
+\tcmpsblHealStrategies = append(cmpsblHealStrategies, s)
+\tcmpsblHealScores[s.ID] = [2]int{0, 0}
+}
+
+func cmpsbl_blast_score(r CmpsblBlastRadius) float64 {
+\tswitch r {
+\tcase CmpsblBlastSystem: return 1.0
+\tcase CmpsblBlastSector: return 0.5
+\tdefault: return 0.1
+\t}
+}
+
+func cmpsbl_blast_index(r CmpsblBlastRadius) int {
+\tswitch r {
+\tcase CmpsblBlastNode:   return 0
+\tcase CmpsblBlastSector: return 1
+\tcase CmpsblBlastSystem: return 2
+\t}
+\treturn 2
+}
+
+func cmpsbl_adjusted_rate(strategyID string) float64 {
+\ts, ok := cmpsblHealScores[strategyID]
+\ttotal := s[0] + s[1]
+\tif !ok || total == 0 {
+\t\tfor _, st := range cmpsblHealStrategies {
+\t\t\tif st.ID == strategyID { return st.SuccessRate }
+\t\t}
+\t\treturn 0.5
+\t}
+\treturn float64(s[0]) / float64(total)
+}
+
+func cmpsbl_plan_repair(capabilityName, failureType string, maxBlastRadius CmpsblBlastRadius) *CmpsblRepairPlan {
+\tcmpsblHealMu.Lock(); defer cmpsblHealMu.Unlock()
+\tmaxIdx := cmpsbl_blast_index(maxBlastRadius)
+\tvar candidates []CmpsblRepairStrategy
+\tfor _, s := range cmpsblHealStrategies {
+\t\tif s.FailureType == failureType && cmpsbl_blast_index(s.BlastRadius) <= maxIdx {
+\t\t\tcandidates = append(candidates, s)
+\t\t}
+\t}
+\tif len(candidates) == 0 { return nil }
+\tsort.Slice(candidates, func(i, j int) bool {
+\t\tsi := cmpsbl_adjusted_rate(candidates[i].ID)*0.5 - cmpsbl_blast_score(candidates[i].BlastRadius)*0.3 - candidates[i].CostScore*0.2
+\t\tsj := cmpsbl_adjusted_rate(candidates[j].ID)*0.5 - cmpsbl_blast_score(candidates[j].BlastRadius)*0.3 - candidates[j].CostScore*0.2
+\t\treturn si > sj
+\t})
+\tbest := candidates[0]
+\trollback := make([]string, len(best.Actions))
+\tfor i, a := range best.Actions { rollback[len(best.Actions)-1-i] = "rollback_" + a }
+\treturn &CmpsblRepairPlan{
+\t\tID:                  fmt.Sprintf("plan_%d", time.Now().UnixMilli()),
+\t\tCapabilityName:      capabilityName,
+\t\tFailureType:         failureType,
+\t\tStrategy:            best,
+\t\tActions:             append([]string{}, best.Actions...),
+\t\tEstimatedDurationMs: best.EstimatedDurationMs,
+\t\tRollbackPlan:        rollback,
+\t\tCreatedAt:           time.Now().UnixMilli(),
+\t}
+}
+
+func cmpsbl_execute_repair(plan *CmpsblRepairPlan, executor func(action, capability string) bool, onRollback func(action, capability string)) CmpsblRepairResult {
+\tstart := time.Now()
+\tvar executed []string
+\tfor _, action := range plan.Actions {
+\t\tif !executor(action, plan.CapabilityName) {
+\t\t\tif onRollback != nil {
+\t\t\t\tfor i := len(executed) - 1; i >= 0; i-- {
+\t\t\t\t\tfunc() { defer func() { recover() }(); onRollback("rollback_"+executed[i], plan.CapabilityName) }()
+\t\t\t\t}
+\t\t\t}
+\t\t\tres := CmpsblRepairResult{PlanID: plan.ID, Success: false, DurationMs: time.Since(start).Milliseconds(), ActionsExecuted: executed, RolledBack: onRollback != nil, Error: "Repair action '" + action + "' failed"}
+\t\t\tcmpsblHealMu.Lock(); s := cmpsblHealScores[plan.Strategy.ID]; s[1]++; cmpsblHealScores[plan.Strategy.ID] = s; cmpsblHealHistory = append(cmpsblHealHistory, res); cmpsblHealMu.Unlock()
+\t\t\treturn res
+\t\t}
+\t\texecuted = append(executed, action)
+\t}
+\tres := CmpsblRepairResult{PlanID: plan.ID, Success: true, DurationMs: time.Since(start).Milliseconds(), ActionsExecuted: executed, RolledBack: false}
+\tcmpsblHealMu.Lock(); s := cmpsblHealScores[plan.Strategy.ID]; s[0]++; cmpsblHealScores[plan.Strategy.ID] = s; cmpsblHealHistory = append(cmpsblHealHistory, res); cmpsblHealMu.Unlock()
+\treturn res
+}
+
+func cmpsbl_repair_history() []CmpsblRepairResult {
+\tcmpsblHealMu.Lock(); defer cmpsblHealMu.Unlock()
+\treturn append([]CmpsblRepairResult{}, cmpsblHealHistory...)
+}
+
+func cmpsbl_repair_success_rate() float64 {
+\tcmpsblHealMu.Lock(); defer cmpsblHealMu.Unlock()
+\tif len(cmpsblHealHistory) == 0 { return 1.0 }
+\tsucc := 0
+\tfor _, r := range cmpsblHealHistory { if r.Success { succ++ } }
+\treturn float64(succ) / float64(len(cmpsblHealHistory))
+}
+`;
+
+// ─── Phase 2 — RESILIENCE — Autonomous Triage ──────────────────────────────
+
+export const TRIAGE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Autonomous Triage Engine (Crown Jewel #2)                   ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblSeverity string
+
+const (
+\tCmpsblSeverityCritical CmpsblSeverity = "critical"
+\tCmpsblSeverityDegraded CmpsblSeverity = "degraded"
+\tCmpsblSeverityWarning  CmpsblSeverity = "warning"
+\tCmpsblSeverityInfo     CmpsblSeverity = "info"
+)
+
+type CmpsblSymptomReport struct {
+\tCapabilityName string
+\tSymptom        string
+\tValue          float64
+\tThreshold      float64
+\tTimestamp      int64
+}
+
+type CmpsblFailureSignature struct {
+\tName       string
+\tSymptoms   []struct{ Symptom string; MinValue float64 }
+\tSeverity   CmpsblSeverity
+\tCauses     []string
+\tActions    []string
+\tConfidence float64
+}
+
+type CmpsblDiagnosis struct {
+\tCapabilityName     string
+\tSeverity           CmpsblSeverity
+\tSymptoms           []CmpsblSymptomReport
+\tPossibleCauses     []string
+\tRecommendedActions []string
+\tConfidence         float64
+\tDiagnosedAt        int64
+}
+
+var (
+\tcmpsblSymptomBuffer = map[string][]CmpsblSymptomReport{}
+\tcmpsblTriageMu      sync.Mutex
+\tcmpsblFailureSigs   = []CmpsblFailureSignature{
+\t\t{Name: "memory_leak", Severity: CmpsblSeverityCritical, Causes: []string{"Unbounded cache growth"}, Actions: []string{"restart", "alert"}, Confidence: 0.85,
+\t\t\tSymptoms: []struct{ Symptom string; MinValue float64 }{{"memory_usage", 0.9}, {"gc_pressure", 0.7}}},
+\t\t{Name: "cascading_failure", Severity: CmpsblSeverityCritical, Causes: []string{"Upstream failure"}, Actions: []string{"circuit_break", "reroute", "alert"}, Confidence: 0.80,
+\t\t\tSymptoms: []struct{ Symptom string; MinValue float64 }{{"error_rate", 0.3}, {"dependency_errors", 0.5}}},
+\t\t{Name: "latency_spike", Severity: CmpsblSeverityDegraded, Causes: []string{"Slow query"}, Actions: []string{"scale_up", "reroute"}, Confidence: 0.75,
+\t\t\tSymptoms: []struct{ Symptom string; MinValue float64 }{{"latency_p95", 5000}}},
+\t}
+)
+
+func cmpsbl_report_symptom(r CmpsblSymptomReport) {
+\tcmpsblTriageMu.Lock(); defer cmpsblTriageMu.Unlock()
+\tr.Timestamp = time.Now().UnixMilli()
+\tlist := cmpsblSymptomBuffer[r.CapabilityName]
+\tlist = append(list, r)
+\tif len(list) > 100 { list = list[len(list)-100:] }
+\tcmpsblSymptomBuffer[r.CapabilityName] = list
+}
+
+func cmpsbl_diagnose(capabilityName string) []CmpsblDiagnosis {
+\tcmpsblTriageMu.Lock(); defer cmpsblTriageMu.Unlock()
+\tnow := time.Now().UnixMilli()
+\tvar targets []string
+\tif capabilityName != "" { targets = []string{capabilityName} } else { for k := range cmpsblSymptomBuffer { targets = append(targets, k) } }
+\tvar out []CmpsblDiagnosis
+\tfor _, cap := range targets {
+\t\tvar fresh []CmpsblSymptomReport
+\t\tfor _, s := range cmpsblSymptomBuffer[cap] { if now-s.Timestamp < 300_000 { fresh = append(fresh, s) } }
+\t\tif len(fresh) == 0 { continue }
+\t\tvar best *CmpsblFailureSignature; bestScore := 0.0
+\t\tfor i := range cmpsblFailureSigs {
+\t\t\tsig := &cmpsblFailureSigs[i]
+\t\t\tmatched := 0
+\t\t\tfor _, req := range sig.Symptoms {
+\t\t\t\tfor _, s := range fresh { if s.Symptom == req.Symptom && s.Value >= req.MinValue { matched++; break } }
+\t\t\t}
+\t\t\tif len(sig.Symptoms) == 0 { continue }
+\t\t\tscore := float64(matched) / float64(len(sig.Symptoms))
+\t\t\tif score > bestScore && score >= 0.5 { best = sig; bestScore = score }
+\t\t}
+\t\tif best != nil {
+\t\t\tout = append(out, CmpsblDiagnosis{CapabilityName: cap, Severity: best.Severity, Symptoms: fresh, PossibleCauses: best.Causes, RecommendedActions: best.Actions, Confidence: best.Confidence, DiagnosedAt: now})
+\t\t}
+\t}
+\treturn out
+}
+`;
+
+// ─── Phase 3 — RESILIENCE — Distributed Consensus ──────────────────────────
+
+export const CONSENSUS_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Distributed Consensus Suite (Crown Jewel #3)                ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblHeartbeatNode struct {
+\tID                string
+\tLastSeenMs        int64
+\tConsecutiveMisses int
+\tIsAlive           bool
+}
+
+var (
+\tcmpsblNodes      = map[string]*CmpsblHeartbeatNode{}
+\tcmpsblConsensusMu sync.Mutex
+)
+
+func cmpsbl_heartbeat_tick(nodeID string) {
+\tcmpsblConsensusMu.Lock(); defer cmpsblConsensusMu.Unlock()
+\tn, ok := cmpsblNodes[nodeID]
+\tif !ok { n = &CmpsblHeartbeatNode{ID: nodeID, IsAlive: true}; cmpsblNodes[nodeID] = n }
+\tn.LastSeenMs = time.Now().UnixMilli(); n.ConsecutiveMisses = 0; n.IsAlive = true
+}
+
+func cmpsbl_check_liveness(timeoutMs int64) []string {
+\tcmpsblConsensusMu.Lock(); defer cmpsblConsensusMu.Unlock()
+\tnow := time.Now().UnixMilli(); var dead []string
+\tfor _, n := range cmpsblNodes {
+\t\tif now-n.LastSeenMs > timeoutMs {
+\t\t\tn.ConsecutiveMisses++; if n.ConsecutiveMisses >= 3 { n.IsAlive = false; dead = append(dead, n.ID) }
+\t\t}
+\t}
+\treturn dead
+}
+
+func cmpsbl_quorum_size() int {
+\tcmpsblConsensusMu.Lock(); defer cmpsblConsensusMu.Unlock()
+\talive := 0; for _, n := range cmpsblNodes { if n.IsAlive { alive++ } }
+\treturn alive/2 + 1
+}
+
+func cmpsbl_has_quorum(votes int) bool { return votes >= cmpsbl_quorum_size() }
+`;
+
+// ─── Phase 4 — FORESIGHT — Oracle-Ripple ───────────────────────────────────
+
+export const ORACLE_RIPPLE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Oracle-Ripple Precognition Chain (Crown Jewel #4)           ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblObservation struct {
+\tCapabilityName string
+\tMetric         string
+\tValue          float64
+\tTimestamp      int64
+}
+
+type CmpsblForecast struct {
+\tCapabilityName string
+\tMetric         string
+\tHorizonMs      int64
+\tPredictedValue float64
+\tConfidence     float64
+\tIssuedAt       int64
+}
+
+var (
+\tcmpsblOracleObs = map[string][]CmpsblObservation{}
+\tcmpsblOracleMu  sync.Mutex
+)
+
+func cmpsbl_oracle_record(o CmpsblObservation) {
+\tcmpsblOracleMu.Lock(); defer cmpsblOracleMu.Unlock()
+\to.Timestamp = time.Now().UnixMilli()
+\tkey := o.CapabilityName + "|" + o.Metric
+\tlist := append(cmpsblOracleObs[key], o)
+\tif len(list) > 100 { list = list[len(list)-100:] }
+\tcmpsblOracleObs[key] = list
+}
+
+func cmpsbl_oracle_forecast(capability, metric string, horizonMs int64) *CmpsblForecast {
+\tcmpsblOracleMu.Lock(); defer cmpsblOracleMu.Unlock()
+\tlist := cmpsblOracleObs[capability+"|"+metric]
+\tif len(list) < 3 { return nil }
+\t// Simple linear regression on last N points
+\tn := float64(len(list)); var sumX, sumY, sumXY, sumX2 float64
+\tfor i, o := range list { x := float64(i); sumX += x; sumY += o.Value; sumXY += x * o.Value; sumX2 += x * x }
+\tslope := (n*sumXY - sumX*sumY) / (n*sumX2 - sumX*sumX + 1e-9)
+\tintercept := (sumY - slope*sumX) / n
+\tfutureX := n + float64(horizonMs)/1000.0
+\tpredicted := slope*futureX + intercept
+\tconfidence := math.Max(0, 1.0-math.Abs(slope)/100.0)
+\treturn &CmpsblForecast{CapabilityName: capability, Metric: metric, HorizonMs: horizonMs, PredictedValue: predicted, Confidence: confidence, IssuedAt: time.Now().UnixMilli()}
+}
+`;
+
+// ─── Phase 5 — FORESIGHT — Anomaly Correlation ─────────────────────────────
+
+export const ANOMALY_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Anomaly Correlation Engine (Crown Jewel #5)                 ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblAnomalySignal struct {
+\tStream    string
+\tValue     float64
+\tBaseline  float64
+\tDeviation float64
+\tTimestamp int64
+}
+
+type CmpsblIncidentHypothesis struct {
+\tID         string
+\tStreams    []string
+\tSeverity   string
+\tConfidence float64
+\tIssuedAt   int64
+}
+
+var (
+\tcmpsblAnomalyBuf = []CmpsblAnomalySignal{}
+\tcmpsblAnomalyMu  sync.Mutex
+)
+
+func cmpsbl_anomaly_observe(s CmpsblAnomalySignal) {
+\tcmpsblAnomalyMu.Lock(); defer cmpsblAnomalyMu.Unlock()
+\ts.Timestamp = time.Now().UnixMilli()
+\ts.Deviation = math.Abs(s.Value - s.Baseline)
+\tcmpsblAnomalyBuf = append(cmpsblAnomalyBuf, s)
+\tif len(cmpsblAnomalyBuf) > 500 { cmpsblAnomalyBuf = cmpsblAnomalyBuf[len(cmpsblAnomalyBuf)-500:] }
+}
+
+func cmpsbl_correlate_anomalies(windowMs int64) []CmpsblIncidentHypothesis {
+\tcmpsblAnomalyMu.Lock(); defer cmpsblAnomalyMu.Unlock()
+\tnow := time.Now().UnixMilli(); seen := map[string]bool{}
+\tvar streams []string
+\tfor _, s := range cmpsblAnomalyBuf {
+\t\tif now-s.Timestamp <= windowMs && s.Deviation > s.Baseline*0.3 {
+\t\t\tif !seen[s.Stream] { seen[s.Stream] = true; streams = append(streams, s.Stream) }
+\t\t}
+\t}
+\tif len(streams) < 2 { return nil }
+\tconf := math.Min(1.0, float64(len(streams))/5.0)
+\tseverity := "warning"; if len(streams) >= 4 { severity = "critical" } else if len(streams) >= 3 { severity = "degraded" }
+\treturn []CmpsblIncidentHypothesis{{
+\t\tID: fmt.Sprintf("inc_%d", now), Streams: streams, Severity: severity, Confidence: conf, IssuedAt: now,
+\t}}
+}
+`;
+
+// ─── Phase 6 — SECURITY — Adaptive Defense ─────────────────────────────────
+
+export const ADAPTIVE_DEFENSE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Adaptive Defense Breeding Suite (Crown Jewel #6)            ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblDefense struct {
+\tID         string
+\tPattern    string
+\tFitness    float64
+\tGeneration int
+\tMatches    int
+\tCreatedAt  int64
+}
+
+var (
+\tcmpsblDefenses = []CmpsblDefense{}
+\tcmpsblDefMu    sync.Mutex
+)
+
+func cmpsbl_seed_defense(pattern string) string {
+\tcmpsblDefMu.Lock(); defer cmpsblDefMu.Unlock()
+\tid := fmt.Sprintf("def_%d", time.Now().UnixNano())
+\tcmpsblDefenses = append(cmpsblDefenses, CmpsblDefense{ID: id, Pattern: pattern, Fitness: 1.0, Generation: 0, CreatedAt: time.Now().UnixMilli()})
+\treturn id
+}
+
+func cmpsbl_test_defense(input string) []string {
+\tcmpsblDefMu.Lock(); defer cmpsblDefMu.Unlock()
+\tvar matched []string
+\tfor i := range cmpsblDefenses {
+\t\tif strings.Contains(input, cmpsblDefenses[i].Pattern) {
+\t\t\tcmpsblDefenses[i].Matches++; cmpsblDefenses[i].Fitness += 0.1
+\t\t\tmatched = append(matched, cmpsblDefenses[i].ID)
+\t\t}
+\t}
+\treturn matched
+}
+
+func cmpsbl_evolve_defenses() int {
+\tcmpsblDefMu.Lock(); defer cmpsblDefMu.Unlock()
+\tculled := 0
+\tkept := cmpsblDefenses[:0]
+\tfor _, d := range cmpsblDefenses {
+\t\tif d.Fitness >= 0.5 || d.Generation == 0 { kept = append(kept, d) } else { culled++ }
+\t}
+\tcmpsblDefenses = kept
+\treturn culled
+}
+`;
+
+// ─── Phase 7 — SECURITY — Zero-Trust ───────────────────────────────────────
+
+export const ZERO_TRUST_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Zero-Trust Identity Suite (Crown Jewel #7)                  ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblSession struct {
+\tID           string
+\tUserID       string
+\tBoundIP      string
+\tBoundUA      string
+\tTrustScore   float64
+\tIssuedAt     int64
+\tLastActivity int64
+}
+
+var (
+\tcmpsblSessions = map[string]*CmpsblSession{}
+\tcmpsblSessMu   sync.Mutex
+)
+
+func cmpsbl_bind_session(userID, ip, ua string) string {
+\tcmpsblSessMu.Lock(); defer cmpsblSessMu.Unlock()
+\tnow := time.Now().UnixMilli()
+\tid := fmt.Sprintf("sess_%s_%d", userID, now)
+\tcmpsblSessions[id] = &CmpsblSession{ID: id, UserID: userID, BoundIP: ip, BoundUA: ua, TrustScore: 1.0, IssuedAt: now, LastActivity: now}
+\treturn id
+}
+
+func cmpsbl_verify_session(sessID, ip, ua string) bool {
+\tcmpsblSessMu.Lock(); defer cmpsblSessMu.Unlock()
+\ts, ok := cmpsblSessions[sessID]
+\tif !ok { return false }
+\tif s.BoundIP != ip { s.TrustScore *= 0.4 }
+\tif s.BoundUA != ua { s.TrustScore *= 0.6 }
+\ts.LastActivity = time.Now().UnixMilli()
+\treturn s.TrustScore >= 0.5
+}
+
+func cmpsbl_revoke_session(sessID string) {
+\tcmpsblSessMu.Lock(); defer cmpsblSessMu.Unlock()
+\tdelete(cmpsblSessions, sessID)
+}
+`;
+
+// ─── Phase 8 — SECURITY — Cyber Defense ────────────────────────────────────
+
+export const CYBER_DEFENSE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Cyber Defense Suite (Crown Jewel #8)                        ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblIOC struct {
+\tIndicator string
+\tType      string
+\tHits      int
+\tFirstSeen int64
+\tLastSeen  int64
+}
+
+var (
+\tcmpsblIOCs    = map[string]*CmpsblIOC{}
+\tcmpsblTraffic = map[string]int{} // ip -> requests in current window
+\tcmpsblCyberMu sync.Mutex
+)
+
+func cmpsbl_observe_ioc(indicator, iocType string) {
+\tcmpsblCyberMu.Lock(); defer cmpsblCyberMu.Unlock()
+\tnow := time.Now().UnixMilli()
+\tk := iocType + ":" + indicator
+\tif e, ok := cmpsblIOCs[k]; ok { e.Hits++; e.LastSeen = now } else {
+\t\tcmpsblIOCs[k] = &CmpsblIOC{Indicator: indicator, Type: iocType, Hits: 1, FirstSeen: now, LastSeen: now}
+\t}
+}
+
+func cmpsbl_ddos_check(sourceIP string) bool {
+\tcmpsblCyberMu.Lock(); defer cmpsblCyberMu.Unlock()
+\tcmpsblTraffic[sourceIP]++
+\treturn cmpsblTraffic[sourceIP] <= 100
+}
+
+func cmpsbl_ddos_reset() {
+\tcmpsblCyberMu.Lock(); defer cmpsblCyberMu.Unlock()
+\tcmpsblTraffic = map[string]int{}
+}
+`;
+
+// ─── Phase 9 — INTELLIGENCE — Fleet Intelligence ───────────────────────────
+
+export const FLEET_INTEL_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Fleet Intelligence Orchestrator (Crown Jewel #9)            ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblProvider struct {
+\tID        string
+\tCost      float64
+\tLatencyMs float64
+\tQuality   float64
+\tAvailable bool
+\tCalls     int
+\tFailures  int
+}
+
+var (
+\tcmpsblProviders = map[string]*CmpsblProvider{}
+\tcmpsblProvMu    sync.Mutex
+)
+
+func cmpsbl_register_provider(id string, cost, latencyMs, quality float64) *CmpsblProvider {
+\tcmpsblProvMu.Lock(); defer cmpsblProvMu.Unlock()
+\tp := &CmpsblProvider{ID: id, Cost: cost, LatencyMs: latencyMs, Quality: quality, Available: true}
+\tcmpsblProviders[id] = p
+\treturn p
+}
+
+func cmpsbl_score_provider(p *CmpsblProvider) float64 {
+\tif !p.Available { return math.Inf(-1) }
+\tfailureRate := 0.0
+\tif p.Calls > 0 { failureRate = float64(p.Failures) / float64(p.Calls) }
+\treturn (p.Quality * 100) - (p.Cost * 10) - (p.LatencyMs / 100) - (failureRate * 50)
+}
+
+func cmpsbl_pick_provider() *CmpsblProvider {
+\tcmpsblProvMu.Lock(); defer cmpsblProvMu.Unlock()
+\tvar best *CmpsblProvider; bestScore := math.Inf(-1)
+\tfor _, p := range cmpsblProviders {
+\t\ts := cmpsbl_score_provider(p)
+\t\tif s > bestScore { bestScore = s; best = p }
+\t}
+\treturn best
+}
+
+func cmpsbl_record_provider_call(id string, success bool) {
+\tcmpsblProvMu.Lock(); defer cmpsblProvMu.Unlock()
+\tp, ok := cmpsblProviders[id]; if !ok { return }
+\tp.Calls++
+\tif !success {
+\t\tp.Failures++
+\t\tif p.Calls >= 5 && float64(p.Failures)/float64(p.Calls) > 0.5 { p.Available = false }
+\t}
+}
+`;
+
+// ─── Phase 10 — INTELLIGENCE — AI Safety ───────────────────────────────────
+
+export const AI_SAFETY_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — AI Safety Suite (Crown Jewel #10)                           ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+var cmpsblInjectionPatterns = []string{
+\t"ignore previous instructions", "ignore all previous", "disregard prior",
+\t"system prompt", "you are now", "pretend you are",
+\t"<script", "javascript:", "data:text/html",
+\t"\\\\x", "\\\\u00", "\\\\u202E",
+}
+
+func cmpsbl_sanitize_prompt(input string) string {
+\tlower := strings.ToLower(input)
+\tfor _, pat := range cmpsblInjectionPatterns {
+\t\tif strings.Contains(lower, pat) {
+\t\t\treturn "[CMPSBL_BLOCKED]"
+\t\t}
+\t}
+\treturn input
+}
+
+func cmpsbl_check_hallucination(claim string, sources []string) float64 {
+\tif len(sources) == 0 { return 0.0 }
+\tlower := strings.ToLower(claim); supported := 0
+\tfor _, src := range sources {
+\t\tif strings.Contains(strings.ToLower(src), lower) || strings.Contains(lower, strings.ToLower(src)) {
+\t\t\tsupported++
+\t\t}
+\t}
+\treturn float64(supported) / float64(len(sources))
+}
+`;
+
+// ─── Phase 11 — INTELLIGENCE — AI Cost ─────────────────────────────────────
+
+export const AI_COST_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — AI Cost Intelligence Suite (Crown Jewel #11)                ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+var (
+\tcmpsblBudgetCents int64 = 1_000_000
+\tcmpsblSpentCents  int64 = 0
+\tcmpsblCostMu      sync.Mutex
+)
+
+func cmpsbl_set_budget(cents int64) {
+\tcmpsblCostMu.Lock(); defer cmpsblCostMu.Unlock()
+\tcmpsblBudgetCents = cents
+}
+
+func cmpsbl_can_spend(cents int64) bool {
+\tcmpsblCostMu.Lock(); defer cmpsblCostMu.Unlock()
+\treturn cmpsblSpentCents+cents <= cmpsblBudgetCents
+}
+
+func cmpsbl_record_spend(cents int64) {
+\tcmpsblCostMu.Lock(); defer cmpsblCostMu.Unlock()
+\tcmpsblSpentCents += cents
+}
+
+func cmpsbl_budget_remaining() int64 {
+\tcmpsblCostMu.Lock(); defer cmpsblCostMu.Unlock()
+\treturn cmpsblBudgetCents - cmpsblSpentCents
+}
+
+func cmpsbl_optimize_tokens(text string, maxTokens int) string {
+\t// Approximation: 1 token ≈ 4 chars
+\tmaxChars := maxTokens * 4
+\tif len(text) <= maxChars { return text }
+\treturn text[:maxChars]
+}
+`;
+
+// ─── Phase 12 — INTELLIGENCE — Cognitive Memory ────────────────────────────
+
+export const COG_MEMORY_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Cognitive Memory Suite (Crown Jewel #12)                    ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblMemoryNode struct {
+\tID        string
+\tContent   string
+\tEdges     []string
+\tCreatedAt int64
+}
+
+var (
+\tcmpsblMemNodes = map[string]*CmpsblMemoryNode{}
+\tcmpsblMemMu    sync.Mutex
+)
+
+func cmpsbl_remember(content string) string {
+\tcmpsblMemMu.Lock(); defer cmpsblMemMu.Unlock()
+\tid := fmt.Sprintf("mem_%d", time.Now().UnixNano())
+\t// Compaction: skip if exact duplicate exists
+\tfor _, n := range cmpsblMemNodes { if n.Content == content { return n.ID } }
+\tcmpsblMemNodes[id] = &CmpsblMemoryNode{ID: id, Content: content, CreatedAt: time.Now().UnixMilli()}
+\treturn id
+}
+
+func cmpsbl_link(fromID, toID string) {
+\tcmpsblMemMu.Lock(); defer cmpsblMemMu.Unlock()
+\tn, ok := cmpsblMemNodes[fromID]; if !ok { return }
+\tfor _, e := range n.Edges { if e == toID { return } }
+\tn.Edges = append(n.Edges, toID)
+}
+
+func cmpsbl_recall(query string) []string {
+\tcmpsblMemMu.Lock(); defer cmpsblMemMu.Unlock()
+\tlower := strings.ToLower(query); var hits []string
+\tfor _, n := range cmpsblMemNodes {
+\t\tif strings.Contains(strings.ToLower(n.Content), lower) { hits = append(hits, n.ID) }
+\t}
+\treturn hits
+}
+`;
+
+// ─── Phase 13 — PERFORMANCE — Performance Surgery ──────────────────────────
+
+export const PERF_SURGERY_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Performance Surgery Suite (Crown Jewel #13)                 ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblPerfSample struct {
+\tFunction  string
+\tDurationMs float64
+\tTimestamp int64
+}
+
+var (
+\tcmpsblPerfSamples = map[string][]CmpsblPerfSample{}
+\tcmpsblPerfMu      sync.Mutex
+)
+
+func cmpsbl_record_sample(function string, durationMs float64) {
+\tcmpsblPerfMu.Lock(); defer cmpsblPerfMu.Unlock()
+\tlist := append(cmpsblPerfSamples[function], CmpsblPerfSample{Function: function, DurationMs: durationMs, Timestamp: time.Now().UnixMilli()})
+\tif len(list) > 1000 { list = list[len(list)-1000:] }
+\tcmpsblPerfSamples[function] = list
+}
+
+func cmpsbl_p99(function string) float64 {
+\tcmpsblPerfMu.Lock(); defer cmpsblPerfMu.Unlock()
+\tlist := cmpsblPerfSamples[function]; if len(list) == 0 { return 0 }
+\tdurations := make([]float64, len(list))
+\tfor i, s := range list { durations[i] = s.DurationMs }
+\tsort.Float64s(durations)
+\tidx := int(float64(len(durations)) * 0.99); if idx >= len(durations) { idx = len(durations) - 1 }
+\treturn durations[idx]
+}
+
+func cmpsbl_detect_regression(function string, baselineMs float64) bool {
+\treturn cmpsbl_p99(function) > baselineMs*1.5
+}
+`;
+
+// ─── Phase 14 — PERFORMANCE — Pipeline Resilience ──────────────────────────
+
+export const PIPELINE_RES_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Data Pipeline Resilience Suite (Crown Jewel #14)            ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblPipelineQueue struct {
+\tName     string
+\tBuffer   []interface{}
+\tMaxSize  int
+\tDropped  int
+}
+
+var (
+\tcmpsblQueues = map[string]*CmpsblPipelineQueue{}
+\tcmpsblPipeMu sync.Mutex
+)
+
+func cmpsbl_create_queue(name string, maxSize int) *CmpsblPipelineQueue {
+\tcmpsblPipeMu.Lock(); defer cmpsblPipeMu.Unlock()
+\tq := &CmpsblPipelineQueue{Name: name, MaxSize: maxSize}
+\tcmpsblQueues[name] = q; return q
+}
+
+func cmpsbl_publish(queueName string, msg interface{}) bool {
+\tcmpsblPipeMu.Lock(); defer cmpsblPipeMu.Unlock()
+\tq, ok := cmpsblQueues[queueName]; if !ok { return false }
+\tif len(q.Buffer) >= q.MaxSize { q.Dropped++; return false }
+\tq.Buffer = append(q.Buffer, msg); return true
+}
+
+func cmpsbl_consume(queueName string) (interface{}, bool) {
+\tcmpsblPipeMu.Lock(); defer cmpsblPipeMu.Unlock()
+\tq, ok := cmpsblQueues[queueName]; if !ok || len(q.Buffer) == 0 { return nil, false }
+\tmsg := q.Buffer[0]; q.Buffer = q.Buffer[1:]; return msg, true
+}
+
+func cmpsbl_queue_lag(queueName string) int {
+\tcmpsblPipeMu.Lock(); defer cmpsblPipeMu.Unlock()
+\tq, ok := cmpsblQueues[queueName]; if !ok { return 0 }
+\treturn len(q.Buffer)
+}
+`;
+
+// ─── Phase 15 — ORCHESTRATION — Pipeline Composition ───────────────────────
+
+export const PIPE_COMPOSE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Pipeline Composition Engine (Crown Jewel #15)               ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblPipelineStage func(input interface{}) (interface{}, error)
+
+type CmpsblPipeline struct {
+\tName   string
+\tStages []CmpsblPipelineStage
+}
+
+func cmpsbl_pipeline(name string, stages ...CmpsblPipelineStage) *CmpsblPipeline {
+\treturn &CmpsblPipeline{Name: name, Stages: stages}
+}
+
+func (p *CmpsblPipeline) Run(input interface{}) (interface{}, error) {
+\tcurrent := input
+\tfor i, stage := range p.Stages {
+\t\tout, err := stage(current)
+\t\tif err != nil { return nil, fmt.Errorf("stage %d: %w", i, err) }
+\t\tcurrent = out
+\t}
+\treturn current, nil
+}
+`;
+
+// ─── Phase 16 — ORCHESTRATION — Universal Input ────────────────────────────
+
+export const UNIVERSAL_INPUT_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Universal Input Intelligence (Crown Jewel #16)              ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblInputFormat string
+
+const (
+\tCmpsblFormatNL     CmpsblInputFormat = "natural_language"
+\tCmpsblFormatJSON   CmpsblInputFormat = "json"
+\tCmpsblFormatCmd    CmpsblInputFormat = "command"
+\tCmpsblFormatCode   CmpsblInputFormat = "code"
+)
+
+type CmpsblNormalizedInput struct {
+\tFormat   CmpsblInputFormat
+\tRaw      string
+\tParsed   interface{}
+\tThreadID string
+}
+
+var (
+\tcmpsblThreads = map[string][]CmpsblNormalizedInput{}
+\tcmpsblInputMu sync.Mutex
+)
+
+func cmpsbl_detect_format(input string) CmpsblInputFormat {
+\ttrimmed := strings.TrimSpace(input)
+\tif strings.HasPrefix(trimmed, "{") || strings.HasPrefix(trimmed, "[") { return CmpsblFormatJSON }
+\tif strings.HasPrefix(trimmed, "/") || strings.HasPrefix(trimmed, "$") { return CmpsblFormatCmd }
+\tif strings.Contains(trimmed, "func ") || strings.Contains(trimmed, "function ") || strings.Contains(trimmed, "def ") { return CmpsblFormatCode }
+\treturn CmpsblFormatNL
+}
+
+func cmpsbl_normalize_input(threadID, raw string) CmpsblNormalizedInput {
+\tcmpsblInputMu.Lock(); defer cmpsblInputMu.Unlock()
+\tn := CmpsblNormalizedInput{Format: cmpsbl_detect_format(raw), Raw: raw, Parsed: raw, ThreadID: threadID}
+\tcmpsblThreads[threadID] = append(cmpsblThreads[threadID], n)
+\treturn n
+}
+
+func cmpsbl_thread_history(threadID string) []CmpsblNormalizedInput {
+\tcmpsblInputMu.Lock(); defer cmpsblInputMu.Unlock()
+\treturn append([]CmpsblNormalizedInput{}, cmpsblThreads[threadID]...)
+}
+`;
+
+// ─── Phase 17 — EVOLUTION — Self-Evolution ─────────────────────────────────
+
+export const SELF_EVOLVE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Self-Evolution Suite (Crown Jewel #17)                      ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblMutation struct {
+\tID         string
+\tTarget     string
+\tProposal   string
+\tShadowOK   bool
+\tPromoted   bool
+\tCreatedAt  int64
+}
+
+var (
+\tcmpsblMutations = []CmpsblMutation{}
+\tcmpsblEvolveMu  sync.Mutex
+)
+
+func cmpsbl_propose_mutation(target, proposal string) string {
+\tcmpsblEvolveMu.Lock(); defer cmpsblEvolveMu.Unlock()
+\tid := fmt.Sprintf("mut_%d", time.Now().UnixNano())
+\tcmpsblMutations = append(cmpsblMutations, CmpsblMutation{ID: id, Target: target, Proposal: proposal, CreatedAt: time.Now().UnixMilli()})
+\treturn id
+}
+
+func cmpsbl_shadow_run(mutationID string, simulate func(proposal string) bool) bool {
+\tcmpsblEvolveMu.Lock(); defer cmpsblEvolveMu.Unlock()
+\tfor i := range cmpsblMutations {
+\t\tif cmpsblMutations[i].ID == mutationID {
+\t\t\tok := simulate(cmpsblMutations[i].Proposal)
+\t\t\tcmpsblMutations[i].ShadowOK = ok; return ok
+\t\t}
+\t}
+\treturn false
+}
+
+func cmpsbl_promote_mutation(mutationID string) bool {
+\tcmpsblEvolveMu.Lock(); defer cmpsblEvolveMu.Unlock()
+\tfor i := range cmpsblMutations {
+\t\tif cmpsblMutations[i].ID == mutationID && cmpsblMutations[i].ShadowOK {
+\t\t\tcmpsblMutations[i].Promoted = true; return true
+\t\t}
+\t}
+\treturn false
+}
+`;
+
+// ─── Phase 18 — GOVERNANCE — Governance Shield ─────────────────────────────
+
+export const GOV_SHIELD_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Governance Shield Suite (Crown Jewel #18)                   ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblPolicy struct {
+\tID      string
+\tName    string
+\tCheck   func(action string, ctx map[string]interface{}) bool
+\tMessage string
+}
+
+type CmpsblVeto struct {
+\tPolicyID string
+\tAction   string
+\tReason   string
+\tAt       int64
+}
+
+var (
+\tcmpsblPolicies = []CmpsblPolicy{}
+\tcmpsblVetoes   = []CmpsblVeto{}
+\tcmpsblGovMu    sync.Mutex
+)
+
+func cmpsbl_register_policy(p CmpsblPolicy) {
+\tcmpsblGovMu.Lock(); defer cmpsblGovMu.Unlock()
+\tcmpsblPolicies = append(cmpsblPolicies, p)
+}
+
+func cmpsbl_check_policies(action string, ctx map[string]interface{}) (bool, []string) {
+\tcmpsblGovMu.Lock(); defer cmpsblGovMu.Unlock()
+\tvar violations []string
+\tfor _, p := range cmpsblPolicies {
+\t\tif !p.Check(action, ctx) {
+\t\t\tviolations = append(violations, p.Message)
+\t\t\tcmpsblVetoes = append(cmpsblVetoes, CmpsblVeto{PolicyID: p.ID, Action: action, Reason: p.Message, At: time.Now().UnixMilli()})
+\t\t}
+\t}
+\treturn len(violations) == 0, violations
+}
+
+func cmpsbl_veto_history() []CmpsblVeto {
+\tcmpsblGovMu.Lock(); defer cmpsblGovMu.Unlock()
+\treturn append([]CmpsblVeto{}, cmpsblVetoes...)
+}
+`;
+
+// ─── Phase 19 — GOVERNANCE — Audit Chain ───────────────────────────────────
+
+export const AUDIT_CHAIN_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Tamper-Evident Audit Chain (Crown Jewel #19)                ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblAuditEntry struct {
+\tIndex    int
+\tAction   string
+\tActor    string
+\tPayload  string
+\tPrevHash string
+\tHash     string
+\tAt       int64
+}
+
+var (
+\tcmpsblAuditChain = []CmpsblAuditEntry{}
+\tcmpsblAuditMu    sync.Mutex
+)
+
+func cmpsblAuditHash(idx int, action, actor, payload, prev string, at int64) string {
+\th := sha256.New()
+\th.Write([]byte(fmt.Sprintf("%d|%s|%s|%s|%s|%d", idx, action, actor, payload, prev, at)))
+\treturn hex.EncodeToString(h.Sum(nil))
+}
+
+func cmpsbl_append_audit(action, actor, payload string) string {
+\tcmpsblAuditMu.Lock(); defer cmpsblAuditMu.Unlock()
+\tprevHash := ""
+\tif len(cmpsblAuditChain) > 0 { prevHash = cmpsblAuditChain[len(cmpsblAuditChain)-1].Hash }
+\tat := time.Now().UnixMilli(); idx := len(cmpsblAuditChain)
+\thash := cmpsblAuditHash(idx, action, actor, payload, prevHash, at)
+\tcmpsblAuditChain = append(cmpsblAuditChain, CmpsblAuditEntry{Index: idx, Action: action, Actor: actor, Payload: payload, PrevHash: prevHash, Hash: hash, At: at})
+\treturn hash
+}
+
+func cmpsbl_verify_chain() (bool, int) {
+\tcmpsblAuditMu.Lock(); defer cmpsblAuditMu.Unlock()
+\tprevHash := ""
+\tfor i, e := range cmpsblAuditChain {
+\t\texpected := cmpsblAuditHash(i, e.Action, e.Actor, e.Payload, prevHash, e.At)
+\t\tif expected != e.Hash || e.PrevHash != prevHash { return false, i }
+\t\tprevHash = e.Hash
+\t}
+\treturn true, len(cmpsblAuditChain)
+}
+`;
+
+// ─── Phase 20 — COMPLIANCE — Regulatory Compliance ─────────────────────────
+
+export const COMPLIANCE_GO = `
+// ╔═══════════════════════════════════════════════════════════════════════════════╗
+// ║  CMPSBL® LAYER — Regulatory Compliance Suite (Crown Jewel #20)               ║
+// ╚═══════════════════════════════════════════════════════════════════════════════╝
+
+type CmpsblJurisdiction struct {
+\tCode             string
+\tDataResidencyOK  []string
+\tRequiresEncryption bool
+}
+
+var cmpsblJurisdictions = map[string]CmpsblJurisdiction{
+\t"EU":  {Code: "EU", DataResidencyOK: []string{"eu-west", "eu-central"}, RequiresEncryption: true},
+\t"US":  {Code: "US", DataResidencyOK: []string{"us-east", "us-west"}, RequiresEncryption: false},
+\t"APAC": {Code: "APAC", DataResidencyOK: []string{"ap-south", "ap-east"}, RequiresEncryption: false},
+}
+
+func cmpsbl_route_for(jurisdictionCode string) []string {
+\tj, ok := cmpsblJurisdictions[jurisdictionCode]; if !ok { return nil }
+\treturn append([]string{}, j.DataResidencyOK...)
+}
+
+func cmpsbl_compliance_check(jurisdictionCode string, region string, encrypted bool) (bool, string) {
+\tj, ok := cmpsblJurisdictions[jurisdictionCode]; if !ok { return false, "Unknown jurisdiction" }
+\tif j.RequiresEncryption && !encrypted { return false, "Encryption required" }
+\tfor _, ok := range j.DataResidencyOK { if ok == region { return true, "" } }
+\treturn false, "Region not in residency allowlist"
+}
+
+func cmpsbl_attestation_report() map[string]interface{} {
+\tregions := map[string][]string{}
+\tfor code, j := range cmpsblJurisdictions { regions[code] = j.DataResidencyOK }
+\treturn map[string]interface{}{
+\t\t"timestamp": time.Now().UnixMilli(),
+\t\t"jurisdictions": regions,
+\t}
+}
+`;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Registry: layerId -> Go body
+// ═══════════════════════════════════════════════════════════════════════════
+
+export const GO_LAYER_BODIES: Readonly<Record<string, string>> = Object.freeze({
+  'self-healing':                 SELF_HEALING_GO,
+  'autonomous-triage':            TRIAGE_GO,
+  'distributed-consensus':        CONSENSUS_GO,
+  'oracle-ripple-precognition':   ORACLE_RIPPLE_GO,
+  'anomaly-correlation-engine':   ANOMALY_GO,
+  'adaptive-defense':             ADAPTIVE_DEFENSE_GO,
+  'zero-trust':                   ZERO_TRUST_GO,
+  'cyber-defense':                CYBER_DEFENSE_GO,
+  'fleet-intelligence':           FLEET_INTEL_GO,
+  'ai-safety':                    AI_SAFETY_GO,
+  'ai-cost':                      AI_COST_GO,
+  'cognitive-memory':             COG_MEMORY_GO,
+  'performance-surgery':          PERF_SURGERY_GO,
+  'pipeline-resilience':          PIPELINE_RES_GO,
+  'pipeline-composition':         PIPE_COMPOSE_GO,
+  'universal-input':              UNIVERSAL_INPUT_GO,
+  'self-evolution':               SELF_EVOLVE_GO,
+  'governance-shield':            GOV_SHIELD_GO,
+  'audit-chain':                  AUDIT_CHAIN_GO,
+  'regulatory-compliance':        COMPLIANCE_GO,
+});
+
+/** All Go imports any layer body might reference. */
+export const GO_STD_IMPORTS = [
+  'fmt',
+  'math',
+  'sort',
+  'strings',
+  'sync',
+  'time',
+  'crypto/sha256',
+  'encoding/hex',
+] as const;
