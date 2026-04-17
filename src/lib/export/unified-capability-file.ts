@@ -2937,7 +2937,7 @@ export function generateUnifiedCapabilityFile(
 
 export function getUnifiedFilename(lang: string): string {
   const EXT: Record<string, string> = {
-    typescript: '.ts', python: '.py', php: '.php', rust: '.rs', go: '.go',
+    typescript: '.ts', javascript: '.js', python: '.py', php: '.php', rust: '.rs', go: '.go',
     java: '.java', csharp: '.cs', ruby: '.rb', swift: '.swift', kotlin: '.kt',
     c: '.c', cpp: '.cpp', lua: '.lua', dart: '.dart', scala: '.scala',
     elixir: '.ex', haskell: '.hs', zig: '.zig',
