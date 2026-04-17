@@ -656,7 +656,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
             <>
               <div className={cn(
                 'w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 rounded-full',
-                topScore >= 85 ? 'bg-amber-500' : topScore >= 60 ? 'bg-primary' : 'bg-muted-foreground'
+                topScore >= 85
+                  ? 'bg-ascension-gradient shadow-[0_0_10px_hsl(var(--neon-magenta)/0.5)]'
+                  : topScore >= 60
+                    ? 'bg-primary'
+                    : 'bg-muted-foreground'
               )} />
               <p className="text-xl sm:text-2xl font-bold text-foreground">{topScore > 0 ? topScore : '—'}</p>
               <p className="text-[10px] sm:text-xs text-muted-foreground">Top Score</p>
