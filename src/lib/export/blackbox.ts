@@ -186,52 +186,127 @@ const PRESERVED_PATTERNS = [
 // §3 — Main Black-Box Function
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Apply black-box obfuscation to a generated capability file.
- * Preserves public API, obfuscates internals, adds sealed notice.
- */
-export function blackboxFile(source: string, lang: string): string {
-  // ── TEMPORARILY BYPASSED ──────────────────────────────────────────────────
-  // Black-box obfuscation is disabled so the raw Layer 2 output is readable
-  // for debugging ingest + packaging. Re-enable once the pipeline is solid.
-  // To re-enable: remove this early return and uncomment the block below.
-  return source;
+// ═══════════════════════════════════════════════════════════════════════════════
+// Layer 1 protection — obfuscation MUST NOT touch the original source region.
+// We split the file into [pre-L1, L1 verbatim, post-L1], obfuscate only the
+// non-L1 segments, then rejoin. This preserves the byte-perfect Layer 1 mandate
+// (U.S. App. No. 64/029,678) while still sealing Layer 2 internals.
+// ═══════════════════════════════════════════════════════════════════════════════
 
-  /* ── ORIGINAL OBFUSCATION (re-enable after pipeline is fixed) ──
-  let result = source;
+/** Locate the Layer 1 region by its banner markers. Returns null if absent. */
+function findLayer1Region(source: string): { start: number; end: number } | null {
+  // Begin markers (any of these)
+  const beginRegexes = [
+    /LAYER 1 — YOUR ORIGINAL SOURCE/,
+    /LAYER 1 — ORIGINAL SOURCE/,
+    /LAYER 1 — Original customer code/,
+    /Layer 1 — Original Source/,
+  ];
+  // End markers
+  const endRegexes = [
+    /END LAYER 1/,
+    /END OF LAYER 1/,
+  ];
 
-  // 1. Add Convex Core™ artifact header
-  const sealedNotice = getSealedNotice(lang);
-  const headerEndIdx = findHeaderEnd(result, lang);
-  if (headerEndIdx > 0) {
-    result = result.slice(0, headerEndIdx) + '\n' + sealedNotice + '\n' + result.slice(headerEndIdx);
+  let beginIdx = -1;
+  for (const r of beginRegexes) {
+    const m = source.match(r);
+    if (m && m.index !== undefined) { beginIdx = m.index; break; }
   }
+  if (beginIdx < 0) return null;
 
-  // 2. Insert obfuscated constant declarations (after imports, before first function)
-  const constantsBlock = getObfuscatedConstants(lang);
-  const insertPoint = findConstantInsertPoint(result, lang);
-  if (insertPoint > 0) {
-    result = result.slice(0, insertPoint) + '\n' + constantsBlock + '\n' + result.slice(insertPoint);
+  // Walk back to start of the line containing the begin marker so we
+  // don't strip the banner's leading comment characters.
+  while (beginIdx > 0 && source[beginIdx - 1] !== '\n') beginIdx--;
+
+  let endIdx = -1;
+  for (const r of endRegexes) {
+    const m = source.slice(beginIdx).match(r);
+    if (m && m.index !== undefined) { endIdx = beginIdx + m.index; break; }
   }
+  if (endIdx < 0) return null;
 
-  // 3. Obfuscate proprietary constants (CJPI weights, tier thresholds)
+  // Extend endIdx past the rest of that line (so the closing banner row stays intact).
+  const nextNewline = source.indexOf('\n', endIdx);
+  const end = nextNewline === -1 ? source.length : nextNewline;
+  // Also include the closing banner box bottom row if present (line starting with similar comment + ╚)
+  const after = source.slice(end + 1);
+  const closingBoxMatch = after.match(/^[ \t]*(?:\/\/|#|--)[ \t]*╚[^\n]*\n?/);
+  const finalEnd = closingBoxMatch ? end + 1 + closingBoxMatch[0].length : end + 1;
+
+  return { start: beginIdx, end: finalEnd };
+}
+
+/** Apply the full Layer-2 obfuscation pass to a single text segment. */
+function obfuscateSegment(segment: string, lang: string): string {
+  let result = segment;
+
+  // Obfuscate proprietary constants (CJPI weights, tier thresholds)
   if (['typescript', 'javascript', 'python', 'php', 'rust', 'go'].includes(lang)) {
     for (const [pattern, replacement] of CONSTANT_OBFUSCATION) {
       result = result.replace(pattern, replacement);
     }
   }
 
-  // 4. Obfuscate internal variable names
+  // Obfuscate internal identifiers
   if (['typescript', 'javascript', 'python', 'php', 'rust', 'go', 'java', 'csharp', 'swift', 'kotlin'].includes(lang)) {
     for (const [pattern, replacement] of OBFUSCATION_MAP) {
       result = result.replace(pattern, replacement);
     }
   }
 
-  // 5. Strip verbose internal comments (keep section headers, JSDoc, and sealed notices)
+  // Strip verbose internal comments
   result = stripInternalComments(result, lang);
 
-  // 6. Add integrity seal at the bottom
+  return result;
+}
+
+/**
+ * Apply black-box obfuscation to a generated capability file.
+ * Preserves public API + Layer 1 source verbatim, obfuscates Layer 2 internals,
+ * adds sealed notice and integrity hash.
+ */
+export function blackboxFile(source: string, lang: string): string {
+  // 1. Split off Layer 1 (must remain byte-identical)
+  const region = findLayer1Region(source);
+
+  let pre: string;
+  let l1: string;
+  let post: string;
+  if (region) {
+    pre  = source.slice(0, region.start);
+    l1   = source.slice(region.start, region.end);
+    post = source.slice(region.end);
+  } else {
+    // No Layer 1 banners — treat entire file as obfuscatable (e.g., sealed runtime files)
+    pre  = source;
+    l1   = '';
+    post = '';
+  }
+
+  // 2. Obfuscate ONLY the non-L1 segments
+  let obfPre  = obfuscateSegment(pre, lang);
+  let obfPost = obfuscateSegment(post, lang);
+
+  // 3. Inject sealed notice into the file header (pre-segment only)
+  const sealedNotice = getSealedNotice(lang);
+  const headerEndIdx = findHeaderEnd(obfPre, lang);
+  if (headerEndIdx > 0) {
+    obfPre = obfPre.slice(0, headerEndIdx) + '\n' + sealedNotice + '\n' + obfPre.slice(headerEndIdx);
+  }
+
+  // 4. Insert obfuscated constant declarations (after imports, before first function)
+  //    Always inject into the pre-segment so Layer 2 references resolve.
+  const constantsBlock = getObfuscatedConstants(lang);
+  const insertPoint = findConstantInsertPoint(obfPre, lang);
+  if (insertPoint > 0) {
+    obfPre = obfPre.slice(0, insertPoint) + '\n' + constantsBlock + '\n' + obfPre.slice(insertPoint);
+  }
+
+  // 5. Reassemble — Layer 1 is restored byte-for-byte
+  let result = obfPre + l1 + obfPost;
+
+  // 6. Append integrity seal at the very bottom
   const integrityHash = computeSimpleHash(result);
   const commentPrefix = getCommentPrefix(lang);
   result += `\n${commentPrefix} ═══ CONVEX CORE™ INTEGRITY ═══\n`;
@@ -241,7 +316,6 @@ export function blackboxFile(source: string, lang: string): string {
   result += `${commentPrefix} Decompilation, extraction, or reverse engineering of scoring parameters is prohibited.\n`;
 
   return result;
-  */
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
