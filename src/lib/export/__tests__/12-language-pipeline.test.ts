@@ -475,7 +475,10 @@ class EventEmitter<T> {
 
 describe('12-Language Export Pipeline', () => {
   for (const [langName, src] of Object.entries(SOURCES)) {
-    describe(langName, () => {
+    // Parity gate: only run full pipeline assertions for SHIPPING languages.
+    // COMING_SOON languages are intentionally blocked from emitting artifacts.
+    const block = isLanguageShipping(src.lang) ? describe : describe.skip;
+    block(langName, () => {
       let output: string;
 
       it('generates without throwing', () => {
