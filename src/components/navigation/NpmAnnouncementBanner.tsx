@@ -58,13 +58,8 @@ export function NpmAnnouncementBanner() {
       }}
     >
       <div
-        className="flex whitespace-nowrap py-1.5 will-change-transform"
-        style={{
-          animationName: 'marquee',
-          animationDuration: `${durationSec}s`,
-          animationTimingFunction: 'linear',
-          animationIterationCount: 'infinite',
-        }}
+        className="flex whitespace-nowrap py-1.5 will-change-transform animate-marquee"
+        style={{ animationDuration: `${durationSec}s` }}
       >
         {items.map((layer, i) => (
           <span
