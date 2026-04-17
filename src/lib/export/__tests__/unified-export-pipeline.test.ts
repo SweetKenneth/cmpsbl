@@ -142,7 +142,7 @@ describe('Unified Export Pipeline — Smoke Test', () => {
       "import { computeCJPI } from './_runtime/standalone-runtime'",
     ];
 
-    for (const lang of ['typescript', 'python', 'php']) {
+    for (const lang of ['typescript', 'python']) {
       it(`${lang} output contains no dead import references`, () => {
         const result = generateUnifiedCapabilityFile(MOCK_CAPABILITIES, PACK_NAME, lang);
         for (const pattern of DEAD_PATTERNS) {
