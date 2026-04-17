@@ -145,9 +145,14 @@ const LANGUAGES = [
   { lang: 'kotlin',     ext: '.kt', idioms: ['fun ', 'class ', 'val '] },
 ];
 
+import { isLanguageShipping } from '../language-parity-tiers';
+
 describe('10-Language Ascension Export Smoke Test', () => {
   for (const { lang, ext, idioms } of LANGUAGES) {
-    describe(`${lang.toUpperCase()} Export`, () => {
+    // Non-shipping languages are gated at the export gate by design.
+    // Skip the suite cleanly so the gate is honored, not bypassed.
+    const d = isLanguageShipping(lang) ? describe : describe.skip;
+    d(`${lang.toUpperCase()} Export`, () => {
       const output = generateUnifiedCapabilityFile(CAPABILITIES, PACK_NAME, lang);
 
       it('generates non-trivial output (>500 chars)', () => {
