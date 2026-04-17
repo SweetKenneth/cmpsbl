@@ -41,6 +41,12 @@ export interface AscensionZipInput {
   readonly selectedPrims: readonly PrimitiveRecommendation[];
   readonly detectedLang: string;
   readonly ascendedCode: string;
+  /**
+   * Optional manual upstream-license SPDX id (e.g. 'Apache-2.0'). Used when
+   * the customer's source has no inline header but lives in a repo whose
+   * LICENSE file declares an attribution-required license.
+   */
+  readonly upstreamLicenseSpdx?: string | null;
 }
 
 export interface AscensionZipResult {
@@ -294,7 +300,7 @@ function buildCjpiCertificateHtml(report: RestorationReport, fingerprint: string
 // ═══════════════════════════════════════════════════════════════
 
 export async function buildAscensionZip(input: AscensionZipInput): Promise<AscensionZipResult> {
-  const { code, fileName, report, selectedPrims, detectedLang, ascendedCode } = input;
+  const { code, fileName, report, selectedPrims, detectedLang, ascendedCode, upstreamLicenseSpdx } = input;
   const JSZipMod = await import('jszip');
   const JSZip = JSZipMod.default;
   const zip = new JSZip();
@@ -308,7 +314,7 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   let freshAscended: string;
   try {
     freshAscended = selectedPrims.length > 0
-      ? generateAscendedCode(code, [...selectedPrims], fingerprint, undefined, fileName ?? undefined)
+      ? generateAscendedCode(code, [...selectedPrims], fingerprint, undefined, fileName ?? undefined, upstreamLicenseSpdx ?? null)
       : ascendedCode;
   } catch (err) {
     throw new Error(`Layer 2 validation failed: ${err instanceof Error ? err.message : String(err)}`);
