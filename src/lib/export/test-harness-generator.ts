@@ -6,6 +6,7 @@
 
 import type { SynthesisContext } from './logic-synthesizer';
 import { generateLicenseHTML, generateReadmeHTML } from './elegant-html-docs';
+import { tagPlainText } from './brand-tag';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
 import { humanizeCapabilityName } from './humanize-name';
 import { getTierFromScore } from '@/lib/pipeline-valuation';
@@ -451,7 +452,7 @@ export function generateExportScaffolding(ctx: SynthesisContext): { filename: st
   return [
     {
       filename: 'LICENSE',
-      content: `CMPSBL® Commercial Distribution License
+      content: tagPlainText(`CMPSBL® Commercial Distribution License
 
 Copyright (c) ${new Date().getFullYear()} CMPSBL®. All rights reserved.
 
@@ -497,7 +498,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 CMPSBL® BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY.
 
 For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
-`,
+`),
     },
     {
       filename: 'LICENSE.html',

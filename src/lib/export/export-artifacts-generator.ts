@@ -11,6 +11,7 @@
 
 import type { ExportKind } from './integration-guide-generator';
 import { generateInstallWizardHtml } from './install-wizard-html';
+import { tagMarkdown } from './brand-tag';
 
 export interface ExportArtifactsInput {
   kind: ExportKind;
@@ -37,13 +38,13 @@ export function generateExportArtifacts(input: ExportArtifactsInput): Record<str
     'quickstart.ts': generateQuickstart(input),
     'package.json': generatePackageJson(input),
     '.env.example': generateEnvExample(),
-    'CHANGELOG.md': generateChangelog(input),
-    'ERROR-CODES.md': generateErrorCodes(),
-    'REMOVAL.md': generateRemovalGuide(input),
-    'BUNDLE-INFO.md': generateBundleInfo(input),
-    'ARCHITECTURE.md': generateArchitectureDiagram(input),
-    'LICENSE-FAQ.md': generateLicenseFaq(),
-    'MONITORING.md': generateMonitoringGuide(input),
+    'CHANGELOG.md': tagMarkdown(generateChangelog(input)),
+    'ERROR-CODES.md': tagMarkdown(generateErrorCodes()),
+    'REMOVAL.md': tagMarkdown(generateRemovalGuide(input)),
+    'BUNDLE-INFO.md': tagMarkdown(generateBundleInfo(input)),
+    'ARCHITECTURE.md': tagMarkdown(generateArchitectureDiagram(input)),
+    'LICENSE-FAQ.md': tagMarkdown(generateLicenseFaq()),
+    'MONITORING.md': tagMarkdown(generateMonitoringGuide(input)),
     '_runtime/runtime.d.ts': generateDeclarationFile(input),
     'docs/html/install-wizard.html': generateInstallWizardHtml({
       kind: input.kind,
