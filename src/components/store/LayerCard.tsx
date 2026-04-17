@@ -238,7 +238,7 @@ export function LayerCard({ item }: LayerCardProps) {
                     </span>
                   </div>
                   {item.subtitle && (
-                    <p className="text-[10px] font-mono text-muted-foreground/50 mt-0.5 tracking-wider">
+                    <p className="text-[10px] font-mono text-foreground/75 dark:text-foreground/60 mt-0.5 tracking-wider">
                       {item.subtitle}
                     </p>
                   )}
@@ -249,7 +249,7 @@ export function LayerCard({ item }: LayerCardProps) {
               </div>
 
               {item.description && (
-                <p className="text-xs sm:text-[13px] text-muted-foreground/70 leading-relaxed">
+                <p className="text-xs sm:text-[13px] text-foreground/85 dark:text-foreground/75 leading-relaxed">
                   {item.description}
                 </p>
               )}
