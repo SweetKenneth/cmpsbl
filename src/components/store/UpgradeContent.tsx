@@ -438,8 +438,10 @@ export function UpgradeContent() {
         </div>
       </div>
 
-      {/* ═══ CROWN JEWEL BREAKDOWN ═══ */}
-      <CrownJewelTierBreakdown />
+      {/* CrownJewelTierBreakdown is now rendered by the parent page below
+          TierLayersOverview, so the 20 Ascension Layers (the substrate's true
+          Crown Jewels) appear directly below the plans, with the broader
+          78-item capability breakdown shown beneath them. */}
 
       {/* Slot Pressure Modal */}
       <SlotPressureModal
