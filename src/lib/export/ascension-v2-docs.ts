@@ -380,7 +380,7 @@ export function generateV2LicenseHTML(input: V2LicenseInput | string): string {
   </p>
 
   <h2>§8 — Limitation of Liability</h2>
-  <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
+  <p style="font-size:0.78rem; color:${TOKENS.mutedFg}; text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
     In no event shall CMPSBL®, PromptFluid™, or the inventor be liable for any claim,
     damages, or other liability — whether in contract, tort, or otherwise — arising from,
     out of, or in connection with the Artifact or the use or other dealings in the Artifact.
