@@ -1,19 +1,17 @@
 /**
- * Top Marquee — Cycles the Top 20 Launch Layers in random order.
+ * Top Banner — Magical fade cycle through the Top 20 Launch Layers.
  *
- * Each tick shows: layer name · CJPI score · short description (no truncation).
- * Order is shuffled once per mount (Fisher–Yates) so each session sees a
- * different ordering, while the marquee itself loops seamlessly via duplication.
+ * Replaces the previous marquee (which stopped scrolling on some mobile
+ * browsers). Each layer materializes, holds, then dissolves before the
+ * next one fades in. Order is reshuffled every full cycle so the rotation
+ * feels alive instead of looping.
  *
- * Deferred render: delays mount so hero content remains the LCP element
- * instead of this small decorative banner text.
- *
- * Speed: 2× faster than the prior quote marquee. The duration is computed
- * from the rendered character count so longer/shorter copy maintains a
- * consistent reading pace.
+ * Each tick shows: layer name · CJPI score · short description.
+ * Deferred mount keeps the hero as the LCP element.
  */
 
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { LAYERS, type LaunchLayer } from "@/components/ascension-v2/V2LaunchLayers";
 
 function shuffle<T>(arr: ReadonlyArray<T>): T[] {
@@ -25,11 +23,16 @@ function shuffle<T>(arr: ReadonlyArray<T>): T[] {
   return out;
 }
 
+// Per-layer dwell (visible) time in ms. Long enough to read the full line,
+// short enough to keep the rotation feeling lively.
+const DWELL_MS = 4200;
+
 export function NpmAnnouncementBanner() {
   const [ready, setReady] = useState(false);
+  const [order, setOrder] = useState<LaunchLayer[]>(() => shuffle(LAYERS));
+  const [index, setIndex] = useState(0);
 
-  // Defer render until after hero has painted — prevents this banner
-  // from being identified as the LCP element by Lighthouse.
+  // Defer mount so this decorative banner never wins LCP.
   useEffect(() => {
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => setReady(true));
@@ -37,17 +40,26 @@ export function NpmAnnouncementBanner() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // Shuffle once per mount so each visit shows a fresh ordering.
-  const shuffled = useMemo<LaunchLayer[]>(() => shuffle(LAYERS), []);
-  const items = useMemo(() => [...shuffled, ...shuffled], [shuffled]);
+  // Advance through the shuffled deck; reshuffle when we wrap so the
+  // sequence never repeats in the same order.
+  useEffect(() => {
+    if (!ready) return;
+    const t = window.setInterval(() => {
+      setIndex((i) => {
+        const next = i + 1;
+        if (next >= order.length) {
+          setOrder(shuffle(LAYERS));
+          return 0;
+        }
+        return next;
+      });
+    }, DWELL_MS);
+    return () => window.clearInterval(t);
+  }, [ready, order]);
 
-  // Fixed pacing: brisk news-ticker speed. 60s per full loop of the duplicated
-  // content reads as fast-but-legible across viewport sizes. We avoid dynamic
-  // duration calc because it drifted too slow on mobile where the content
-  // string is the same width but the viewport is narrower.
-  const durationSec = 7.5;
+  const current = useMemo(() => order[index], [order, index]);
 
-  if (!ready) return null;
+  if (!ready || !current) return null;
 
   return (
     <div
@@ -57,22 +69,29 @@ export function NpmAnnouncementBanner() {
           "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
       }}
     >
-      <div
-        className="flex whitespace-nowrap py-1.5 will-change-transform animate-marquee"
-        style={{ animationDuration: `${durationSec}s` }}
-      >
-        {items.map((layer, i) => (
-          <span
-            key={`${layer.rank}-${i}`}
-            className="inline-flex items-baseline gap-2 mx-8 sm:mx-12 text-xs sm:text-sm text-white shrink-0"
+      <div className="relative h-7 sm:h-8 flex items-center justify-center px-4">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${current.rank}-${index}`}
+            initial={{ opacity: 0, filter: "blur(6px)", scale: 0.96 }}
+            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+            exit={{ opacity: 0, filter: "blur(6px)", scale: 1.02 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 flex items-center justify-center"
           >
-            <span className="font-bold tracking-tight">{layer.name}</span>
-            <span className="font-mono font-semibold text-white/95 tabular-nums px-1.5 py-0.5 rounded bg-white/15 text-[10px] sm:text-xs">
-              CJPI {layer.cjpi}
+            <span className="inline-flex items-baseline gap-2 text-xs sm:text-sm text-white max-w-full px-3">
+              <span className="font-bold tracking-tight whitespace-nowrap">
+                {current.name}
+              </span>
+              <span className="font-mono font-semibold text-white/95 tabular-nums px-1.5 py-0.5 rounded bg-white/15 text-[10px] sm:text-xs whitespace-nowrap">
+                CJPI {current.cjpi}
+              </span>
+              <span className="text-white/85 font-medium truncate hidden sm:inline">
+                — {current.description}
+              </span>
             </span>
-            <span className="text-white/85 font-medium">— {layer.description}</span>
-          </span>
-        ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
