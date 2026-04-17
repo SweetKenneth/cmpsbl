@@ -16,15 +16,22 @@
 
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { GO_LAYER_BODIES } from './layers-go/go-layers';
+import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Bulk-register hand-written Go bodies for all 20 Launch Layers.
-// Each entry slots into NATIVE_REGISTRY below via `registerNative(id, 'go', …)`.
+// Bulk-register hand-written native bodies for SHIPPING languages.
+// Each entry slots into NATIVE_REGISTRY below via `registerNative(id, lang, …)`.
 // Done at module load; idempotent (Map.set just overwrites).
 // ═══════════════════════════════════════════════════════════════════════════════
 function _registerGoLayerBodies(): void {
   for (const [layerId, body] of Object.entries(GO_LAYER_BODIES)) {
     NATIVE_REGISTRY.set(`${layerId}:go`, () => body.trim());
+  }
+}
+
+function _registerRsLayerBodies(): void {
+  for (const [layerId, body] of Object.entries(RS_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:rust`, () => body.trim());
   }
 }
 
@@ -65,8 +72,9 @@ function registerNative(layerId: string, lang: string, gen: NativeGen): void {
   NATIVE_REGISTRY.set(`${layerId}:${lang}`, gen);
 }
 
-// Eagerly register Go bodies now that NATIVE_REGISTRY exists.
+// Eagerly register native bodies now that NATIVE_REGISTRY exists.
 _registerGoLayerBodies();
+_registerRsLayerBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
