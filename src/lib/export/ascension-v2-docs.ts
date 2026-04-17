@@ -373,7 +373,7 @@ export function generateV2LicenseHTML(input: V2LicenseInput | string): string {
     all copies under their control.</p>
 
   <h2>§7 — Disclaimer of Warranty</h2>
-  <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
+  <p style="font-size:0.78rem; color:${TOKENS.mutedFg}; text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
     The Artifact is provided "AS IS", without warranty of any kind, express or implied,
     including but not limited to the warranties of merchantability, fitness for a particular
     purpose, and noninfringement.
