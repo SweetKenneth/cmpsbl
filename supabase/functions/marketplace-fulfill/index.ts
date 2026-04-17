@@ -61,21 +61,41 @@ serve(async (req) => {
 
     // Retrieve the checkout session
     const session = await stripe.checkout.sessions.retrieve(session_id);
-    
-    if (session.payment_status !== 'paid') {
-      throw new Error("Payment not completed");
-    }
 
     const { product_type, product_id, template_name, purchaser_email, capability_id, user_id } = session.metadata || {};
 
     // ── Layer entitlement fulfillment ──
-    // For 'layer' purchases we grant a row in user_layer_entitlements (idempotent via unique constraint).
-    // Layers don't use the license-key flow; we short-circuit and return early.
+    // Layers are 'subscription' mode (annual). The session is fulfilled when:
+    //   * payment_status === 'paid'                 (one-time, legacy)
+    //   * payment_status === 'no_payment_required'  (100% off coupon)
+    //   * status === 'complete' AND a subscription was created (first invoice paid)
     if (product_type === 'layer') {
       const layerId = capability_id || product_id;
       if (!user_id || !layerId) {
         throw new Error("Layer fulfillment missing user_id or layer_id in session metadata");
       }
+      const isPaid =
+        session.payment_status === 'paid' ||
+        session.payment_status === 'no_payment_required' ||
+        (session.status === 'complete' && !!session.subscription);
+      if (!isPaid) {
+        throw new Error(`Layer payment not completed (status=${session.status}, payment_status=${session.payment_status})`);
+      }
+
+      // Resolve the human-readable layer title from marketplace_inventory so the
+      // success page can show "Privacy & Obfuscation Layer" instead of a slug.
+      let layerTitle: string | null = null;
+      try {
+        const { data: inv } = await supabase
+          .from('marketplace_inventory')
+          .select('title')
+          .or(`slug.eq.${layerId},id.eq.${layerId}`)
+          .maybeSingle();
+        layerTitle = (inv as { title?: string } | null)?.title ?? null;
+      } catch (lookupErr) {
+        console.error("Layer title lookup failed (non-fatal):", lookupErr);
+      }
+
       const { error: entErr } = await supabase
         .from('user_layer_entitlements')
         .upsert(
@@ -86,7 +106,9 @@ serve(async (req) => {
             metadata: {
               stripe_session_id: session_id,
               stripe_customer_id: session.customer,
+              stripe_subscription_id: session.subscription ?? null,
               amount_paid: session.amount_total,
+              layer_title: layerTitle,
             },
           },
           { onConflict: 'user_id,layer_id', ignoreDuplicates: true },
@@ -100,11 +122,17 @@ serve(async (req) => {
           success: true,
           product_type: 'layer',
           layer_id: layerId,
-          message: `Layer "${layerId}" added to your Ascension flow. Open Ascension V2 → Enhance to attach it.`,
+          layer_title: layerTitle,
+          message: `${layerTitle ?? 'Your layer'} is unlocked. Open Ascension V2 → Enhance to attach it to your code.`,
         }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 },
       );
     }
+
+    if (session.payment_status !== 'paid') {
+      throw new Error("Payment not completed");
+    }
+
 
     // Check if license already exists for this session
     const { data: existingLicense } = await supabase
