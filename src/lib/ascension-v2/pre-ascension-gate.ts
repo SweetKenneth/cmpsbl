@@ -231,14 +231,23 @@ function jsStructuralCheck(source: string): GateError | null {
   //    non-`{`/`;`/`}` run after the closing `)` until we hit `{`.
   //  • Generic type params on the function name (`function f<T>(…)`) are
   //    tolerated via an optional `<…>` slot before the parameter list.
-  const re = /\b(?:function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)(?:\s*:[^{};]*)?|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)\s*([^\s{])/g;
+  // Two-pass: locate the declaration head, then verify the *next non-space
+  // char after the full signature* is '{'. This avoids regex backtracking
+  // games over TS return-type annotations.
+  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(source)) !== null) {
-    // Bail out if the captured "next token" is actually a syntactically
-    // valid TS return-type continuation (rare with the greedy slot above,
-    // but kept as a defensive ignore-list to avoid future regressions).
-    const next = m[1];
-    if (next === '/') continue; // type predicate / regex literal — punt
+    let i = m.index + m[0].length;
+    // Skip a TS return-type annotation `: <type>` if present
+    if (source[i] === ':') {
+      i++;
+      while (i < source.length && source[i] !== '{' && source[i] !== ';' && source[i] !== '}') i++;
+    }
+    // Skip whitespace
+    while (i < source.length && /\s/.test(source[i])) i++;
+    if (i >= source.length) return null;
+    if (source[i] === '{') continue; // valid declaration head
+    const next = source[i];
     const { line, column } = offsetToLineCol(source, m.index);
     return {
       code: 'E_SOURCE_INVALID',
