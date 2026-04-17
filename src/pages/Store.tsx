@@ -46,7 +46,6 @@ const SEALED_FEATURES = [
 
 const TAB_CONFIG = [
   { value: "store" as const, label: "Store", icon: ShoppingBag },
-  { value: "plans" as const, label: "Plans", icon: Rocket },
   { value: "memories" as const, label: "Memories", icon: Brain },
 ];
 
@@ -60,12 +59,12 @@ export default function Store() {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get("tab") as StoreTab | null;
   const [activeTab, setActiveTab] = useState<StoreTab>(
-    tabParam && ["store", "plans", "memories"].includes(tabParam) ? tabParam : "store"
+    tabParam && ["store", "memories"].includes(tabParam) ? tabParam : "store"
   );
   const [filter, setFilter] = useState<FilterMode>("all");
 
   useEffect(() => {
-    if (tabParam && ["store", "plans", "memories"].includes(tabParam) && tabParam !== activeTab) {
+    if (tabParam && ["store", "memories"].includes(tabParam) && tabParam !== activeTab) {
       setActiveTab(tabParam);
     }
   }, [tabParam]);
@@ -241,12 +240,23 @@ export default function Store() {
                 ))}
               </div>
 
-              {/* Collector Deck */}
+              {/* ═══ NEW: Layer Inventory (first-class) ═══ */}
+              <LayerInventory />
+
+              {/* ═══ Original Agents & Engines (kept, moved below) ═══ */}
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
+                <div className="text-center mb-8">
+                  <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-1">
+                    Original Agents & Engines
+                  </h2>
+                  <p className="text-xs text-muted-foreground/70">
+                    The founding 10 — five Runtime Agents and five Composable Engines
+                  </p>
+                </div>
                 <StoreCollectorDeck items={items} />
               </motion.div>
 
@@ -347,18 +357,15 @@ export default function Store() {
                     variant="outline"
                     size="sm"
                     className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
-                    onClick={() => handleTabChange("plans")}
+                    asChild
                   >
-                    <Zap className="w-4 h-4" />
-                    Compare Plans
+                    <Link to="/plans">
+                      <Zap className="w-4 h-4" />
+                      Compare Plans
+                    </Link>
                   </Button>
                 </div>
               </motion.section>
-            </TabsContent>
-
-            {/* ═══ PLANS TAB ═══ */}
-            <TabsContent value="plans" className="mt-0">
-              <UpgradeContent />
             </TabsContent>
 
             {/* ═══ MEMORIES TAB ═══ */}
