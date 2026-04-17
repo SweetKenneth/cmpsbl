@@ -30,7 +30,7 @@ import {
   generateV2UserGuideHTML,
   generateV2AdvertisementHTML,
 } from '@/lib/export/ascension-v2-docs';
-import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile } from '@/lib/licensing/upstream-license-bundle';
+import { detectUpstreamLicenseForExport, buildUpstreamLicenseFile, buildNoticeFile } from '@/lib/licensing/upstream-license-bundle';
 import { V2UpstreamLicenseSelect, type SpdxChoice } from './V2UpstreamLicenseSelect';
 import type { DetectedLicense } from '@/lib/factory/license-attribution';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
@@ -210,6 +210,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // ── Generate all HTML docs ──
       const licenseHTML = generateV2LicenseHTML({ packName: zipName, fingerprint });
 
+      // Compute the upstream license that will actually ship — single source
+      // of truth for the README, NOTICE.txt, LICENSE-UPSTREAM.txt, and manifest
+      // entries below. Honors the SPDX dropdown override.
+      const overrideSpdx = spdxChoice === 'auto' ? null : (spdxChoice === 'none' ? null : spdxChoice);
+      const shippingUpstream =
+        sourceFiles.length > 0 && spdxChoice !== 'none'
+          ? detectUpstreamLicenseForExport(sourceFiles[0].content, overrideSpdx)
+          : null;
+
       const readmeHTML = generateV2ReadmeHTML({
         packName: zipName,
         originalFileName,
@@ -224,6 +233,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         avgCjpi: avgScore,
         topCjpi: topScore,
         fingerprint,
+        upstreamLicense: shippingUpstream
+          ? { spdx: shippingUpstream.spdx, label: shippingUpstream.label }
+          : null,
       });
 
       const userGuideHTML = generateV2UserGuideHTML({
@@ -275,31 +287,38 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // 6. ADVERTISEMENT.html
       folder.file('ADVERTISEMENT.html', advertisementHTML);
 
-      // 7. manifest.json
+      // 7. manifest.json — now carries dual-layer SPDX so downstream tooling
+      //    (SBOMs, license scanners) can see both layers at a glance.
       const manifest = serializeCmpsblManifest({
         name: zipName,
         cjpi: avgScore,
+        // IP protection: expose only the deduped *primitive count* surface,
+        // not the raw chain composition per capability. Chain order is part
+        // of the orchestration moat and stays sealed in the wrapper.
         primitives: [...new Set(capabilities.flatMap(c => [...c.chain]))],
         targets: [lang],
         version: '2.0.0',
         category: 'proprietary-evolution-v2',
         fingerprint,
         source: 'ascension-v2-pipeline',
+        license: {
+          layer2: { spdx: 'CAAL-1.0', file: 'LICENSE.html' },
+          layer1: shippingUpstream
+            ? { spdx: shippingUpstream.spdx, label: shippingUpstream.label, file: 'LICENSE-UPSTREAM.txt' }
+            : { spdx: 'NOASSERTION', label: 'No upstream license declared', file: null },
+        },
       });
       folder.file('manifest.json', manifest);
 
       // 8. HARNESS-REPORT.txt — pre-export verification proof bundled with ZIP
       folder.file('HARNESS-REPORT.txt', harness.summary);
 
-      // 9. LICENSE-UPSTREAM.txt — Apache/MIT/BSD/MPL/ISC attribution travel.
-      //    User can override auto-detection via the SPDX dropdown when the
-      //    source has no inline header. 'none' suppresses the file entirely.
-      if (sourceFiles.length > 0 && spdxChoice !== 'none') {
-        const overrideSpdx = spdxChoice === 'auto' ? null : spdxChoice;
-        const upstream = detectUpstreamLicenseForExport(sourceFiles[0].content, overrideSpdx);
-        if (upstream) {
-          folder.file('LICENSE-UPSTREAM.txt', buildUpstreamLicenseFile(upstream, originalFileName));
-        }
+      // 9. LICENSE-UPSTREAM.txt + NOTICE.txt — Apache/MIT/BSD/MPL/ISC
+      //    attribution travels with the artifact. NOTICE satisfies Apache §4(d)
+      //    and gives a clean human-readable summary at the archive root.
+      if (shippingUpstream) {
+        folder.file('LICENSE-UPSTREAM.txt', buildUpstreamLicenseFile(shippingUpstream, originalFileName));
+        folder.file('NOTICE.txt', buildNoticeFile(shippingUpstream, originalFileName));
       }
 
       const blob = await zip.generateAsync({ type: 'blob' });
