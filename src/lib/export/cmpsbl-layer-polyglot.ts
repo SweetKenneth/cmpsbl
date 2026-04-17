@@ -15,6 +15,18 @@
  */
 
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
+import { GO_LAYER_BODIES } from './layers-go/go-layers';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Bulk-register hand-written Go bodies for all 20 Launch Layers.
+// Each entry slots into NATIVE_REGISTRY below via `registerNative(id, 'go', …)`.
+// Done at module load; idempotent (Map.set just overwrites).
+// ═══════════════════════════════════════════════════════════════════════════════
+function _registerGoLayerBodies(): void {
+  for (const [layerId, body] of Object.entries(GO_LAYER_BODIES)) {
+    NATIVE_REGISTRY.set(`${layerId}:go`, () => body.trim());
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Comment character map — matches polyglot-templates.ts
@@ -52,6 +64,9 @@ const NATIVE_REGISTRY = new Map<string, NativeGen>();
 function registerNative(layerId: string, lang: string, gen: NativeGen): void {
   NATIVE_REGISTRY.set(`${layerId}:${lang}`, gen);
 }
+
+// Eagerly register Go bodies now that NATIVE_REGISTRY exists.
+_registerGoLayerBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
