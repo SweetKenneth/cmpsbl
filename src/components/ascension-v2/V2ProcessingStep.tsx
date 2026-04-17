@@ -621,11 +621,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
         </p>
       </div>
 
-      {/* Progress bar */}
+      {/* Progress bar — flowing gradient mirrors the homepage H1 palette */}
       <div className="space-y-2">
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-2 bg-muted rounded-full overflow-hidden relative">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
+            className="h-full bg-ascension-gradient rounded-full transition-[width] duration-500 ease-out shadow-[0_0_12px_hsl(var(--neon-cyan)/0.45)]"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -634,7 +634,7 @@ export function V2ProcessingStep({ onComplete }: Props) {
             <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" />
             <span className="truncate">{STATUS_MESSAGES[statusIdx]}</span>
           </span>
-          <span className="text-foreground font-mono flex-shrink-0">{progress}%</span>
+          <span className="text-foreground font-mono font-semibold flex-shrink-0 tabular-nums">{progress}%</span>
         </div>
       </div>
 
@@ -656,7 +656,11 @@ export function V2ProcessingStep({ onComplete }: Props) {
             <>
               <div className={cn(
                 'w-4 h-4 sm:w-5 sm:h-5 mx-auto mb-1 rounded-full',
-                topScore >= 85 ? 'bg-amber-500' : topScore >= 60 ? 'bg-primary' : 'bg-muted-foreground'
+                topScore >= 85
+                  ? 'bg-ascension-gradient shadow-[0_0_10px_hsl(var(--neon-magenta)/0.5)]'
+                  : topScore >= 60
+                    ? 'bg-primary'
+                    : 'bg-muted-foreground'
               )} />
               <p className="text-xl sm:text-2xl font-bold text-foreground">{topScore > 0 ? topScore : '—'}</p>
               <p className="text-[10px] sm:text-xs text-muted-foreground">Top Score</p>

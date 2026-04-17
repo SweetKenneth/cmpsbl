@@ -550,6 +550,39 @@ All colors MUST be HSL.
   .gradient-mesh {
     background: var(--gradient-mesh);
   }
+
+  /* Ascension Hero Gradient — flowing palette that mirrors the homepage H1.
+     Used across the Ascension UI (progress bar, stepper accents, score chips)
+     for visual cohesion. */
+  .bg-ascension-gradient {
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--neon-purple)),
+      hsl(var(--neon-cyan)),
+      hsl(var(--primary)),
+      hsl(var(--neon-magenta)),
+      hsl(var(--neon-cyan)),
+      hsl(var(--neon-purple))
+    );
+    background-size: 300% 100%;
+    animation: ascension-flow 6s ease-in-out infinite;
+  }
+
+  .text-ascension-gradient {
+    background-image: linear-gradient(
+      135deg,
+      hsl(var(--neon-purple)),
+      hsl(var(--neon-cyan)),
+      hsl(var(--primary)),
+      hsl(var(--neon-magenta))
+    );
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: ascension-flow 6s ease-in-out infinite;
+  }
   
   /* Smooth Scroll */
   html {
