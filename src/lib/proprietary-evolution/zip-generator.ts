@@ -805,7 +805,7 @@ ${capabilities.map(c => {
 
 ## 🔬 Top Discovery
 
-**${topTier.name}** — CJPI ${topTier.cjpiScore} (${topTier.tier.toUpperCase()})
+**${formatEnhancedCapabilityName(topTier.name, topTier.chain.filter(p => p !== 'CANDIDATE'))}** — CJPI ${topTier.cjpiScore} (${topTier.tier.toUpperCase()})
 - Chain: \`${topTier.chain.join(' → ')}\`
 - Fingerprint: \`${topTier.fingerprint.slice(0, 12).toUpperCase()}\`
 
