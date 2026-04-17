@@ -107,7 +107,7 @@ const TIERS: {
     popular: true,
     stripeTier: 'creator' as EngineSubscriptionTier,
     capacity: { substrates: '6 Verticals', vault: '75 memories', pulls: '9 per day', radio: '45 min/day', exportEnabled: true, marketplace: true },
-    crownJewelLine: '68 Crown Jewel capabilities (Free + Studio + 40 Creator)',
+    crownJewelLine: '13 Ascension Layers (Builder + Studio + 6 Creator)',
     features: [
       'Choose any 6 industry substrates',
       'Full Marketplace with priority downloads',
