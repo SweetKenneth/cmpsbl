@@ -61,8 +61,10 @@ serve(async (req) => {
       throw new Error('Missing required field: product_type');
     }
 
-    // Determine checkout mode - agency and studio are subscriptions, everything else is one-time
-    const isSubscription = product_type === 'agency' || product_type === 'studio';
+    // Determine checkout mode - agency, studio, and layer are subscriptions; everything else is one-time
+    // 'layer' = annual specialty Layer subscription ($19-$99/yr)
+    const isLayerAnnual = product_type === 'layer';
+    const isSubscription = product_type === 'agency' || product_type === 'studio' || isLayerAnnual;
     const isCapability = ['capability', 'stier', 'recursive', 'premium', 'ultra', 'expansion', 'core'].includes(product_type);
     const isRecursive = product_type === 'recursive';
     const checkoutMode = isSubscription ? 'subscription' : 'payment';
@@ -79,9 +81,17 @@ serve(async (req) => {
 
     // Normalize any USD amount to the nearest public tier (always <= $299)
     // Marketplace capability items ($10–$50) pass through at exact price
+    // Layer annual subscriptions normalize to $19/$39/$59/$79/$99 tiers
     const isMarketplaceCapability = product_type === 'capability';
     const normalizePriceUsd = (priceUsd: number): number => {
       if (isMarketplaceCapability && priceUsd >= 10 && priceUsd <= 50) return priceUsd;
+      if (isLayerAnnual) {
+        if (priceUsd <= 19) return 19;
+        if (priceUsd <= 39) return 39;
+        if (priceUsd <= 59) return 59;
+        if (priceUsd <= 79) return 79;
+        return 99;
+      }
       if (priceUsd <= 19) return 19;
       if (priceUsd <= 49) return 49;
       if (priceUsd <= 99) return 99;
@@ -99,8 +109,13 @@ serve(async (req) => {
       if (requestedUsd === null && !price_id) {
         throw new Error('Missing required fields: price_id (or unit_amount_usd for payment mode)');
       }
+    } else if (isLayerAnnual) {
+      // Layer annual subscriptions accept unit_amount_usd (will be normalized + wrapped as recurring price_data)
+      if (requestedUsd === null && !price_id) {
+        throw new Error('Missing required field: unit_amount_usd (or price_id) for layer subscription');
+      }
     } else {
-      // Subscription mode always uses real Stripe price IDs
+      // Subscription mode always uses real Stripe price IDs (agency/studio)
       if (!price_id) {
         throw new Error('Missing required field: price_id (subscription mode)');
       }
@@ -126,8 +141,21 @@ serve(async (req) => {
     // Build line item
     let lineItem: any;
 
-    if (isSubscription) {
-      // Subscriptions must reference a Stripe price
+    if (isLayerAnnual && normalizedUsd !== null) {
+      // Layer annual subscription — build recurring price_data inline (yearly interval)
+      lineItem = {
+        price_data: {
+          currency: 'usd',
+          unit_amount: normalizedUsd * 100,
+          recurring: { interval: 'year' },
+          product_data: {
+            name: item_name || capability_id || product_id || 'CMPSBL Layer',
+          },
+        },
+        quantity: 1,
+      };
+    } else if (isSubscription) {
+      // Agency/studio subscriptions reference a real Stripe price
       lineItem = { price: price_id, quantity: 1 };
     } else if (normalizedUsd !== null) {
       // Preferred: charge the normalized tier amount (ensures consistent pricing)

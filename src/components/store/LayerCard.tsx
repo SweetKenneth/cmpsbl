@@ -57,9 +57,9 @@ export function LayerCard({ item }: LayerCardProps) {
       }
       const { data, error } = await supabase.functions.invoke("marketplace-checkout", {
         body: {
-          product_type: "capability",
+          product_type: "layer", // annual subscription, $19–$99/yr
           unit_amount_usd: Math.round(item.price_cents / 100),
-          item_name: `CMPSBL: ${item.title}`,
+          item_name: `CMPSBL Layer: ${item.title}`,
           capability_id: item.id,
           product_id: item.slug,
         },
@@ -175,12 +175,13 @@ export function LayerCard({ item }: LayerCardProps) {
 
               {/* Price + Inspect */}
               <div className="flex items-center justify-between mt-3">
-                <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-1.5">
                   <span className={cn("text-base sm:text-lg font-black tracking-tight", tier.color)}>
                     {formatPrice(item.price_cents)}
                   </span>
+                  <span className="text-[10px] font-bold text-muted-foreground/50 tracking-wider">/yr</span>
                   {item.original_value_cents && item.original_value_cents > item.price_cents && (
-                    <span className="text-[10px] text-muted-foreground/40 line-through">
+                    <span className="text-[10px] text-muted-foreground/40 line-through ml-1">
                       {formatPrice(item.original_value_cents)}
                     </span>
                   )}
@@ -291,7 +292,7 @@ export function LayerCard({ item }: LayerCardProps) {
                 ) : (
                   <>
                     <ShoppingCart className="w-4 h-4" />
-                    Acquire · {formatPrice(item.price_cents)}
+                    Subscribe · {formatPrice(item.price_cents)}/yr
                   </>
                 )}
               </Button>

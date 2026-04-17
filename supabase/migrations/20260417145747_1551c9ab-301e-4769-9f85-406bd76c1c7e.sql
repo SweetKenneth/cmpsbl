@@ -1,0 +1,5 @@
+UPDATE public.marketplace_inventory SET price_cents = 9900, original_value_cents = 19900 WHERE slug IN ('llm-defense-suite','cyber-perimeter-suite','self-healing-learning-scanner','holographic-integration-guardian');
+UPDATE public.marketplace_inventory SET price_cents = 7900, original_value_cents = 15900 WHERE slug IN ('synthetic-contracts-navigator','topological-security-synthesizer','sentinel-evolution-sequencer');
+UPDATE public.marketplace_inventory SET price_cents = 5900, original_value_cents = 11900 WHERE slug IN ('layered-observability-enforcer','quantum-simulation-suite','robotics-control-suite');
+UPDATE public.marketplace_inventory SET price_cents = 3900, original_value_cents = 7900 WHERE slug IN ('agency-orchestration-suite','kinetic-synthesis-controller');
+UPDATE public.marketplace_inventory SET price_cents = 1900, original_value_cents = 3900 WHERE slug = 'resilient-evolution-fabric';
