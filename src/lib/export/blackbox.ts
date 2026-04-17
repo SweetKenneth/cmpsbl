@@ -120,6 +120,7 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\bmaxAttempts\b/g, '_ma1'],
   [/\bbase_delay_ms\b/g, '_bd1'],
   [/\bbaseDelayMs\b/g, '_bd1'],
+];
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2 — Proprietary Constant Obfuscation
