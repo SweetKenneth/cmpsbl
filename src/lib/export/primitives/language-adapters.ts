@@ -659,6 +659,10 @@ CPP_ADAPTER.caseBlock = (mod, body) =>
 // REGISTRY
 // ═══════════════════════════════════════════════════════════════════════════════
 
+import { WAVE1_ADAPTERS } from './language-adapters-wave1';
+import { WAVE2_ADAPTERS } from './language-adapters-wave2';
+import { WAVE3_ADAPTERS } from './language-adapters-wave3';
+
 export const TIER_A_ADAPTERS: Record<string, LanguageAdapter> = {
   rust: RUST_ADAPTER,
   go: GO_ADAPTER,
@@ -672,8 +676,38 @@ export const TIER_A_ADAPTERS: Record<string, LanguageAdapter> = {
   scala: SCALA_ADAPTER,
   c: C_ADAPTER,
   cpp: CPP_ADAPTER,
+  ...WAVE1_ADAPTERS,
+  ...WAVE2_ADAPTERS,
+  ...WAVE3_ADAPTERS,
 };
 
 export function getAdapter(lang: string): LanguageAdapter | undefined {
   return TIER_A_ADAPTERS[lang.toLowerCase()];
 }
+
+// Re-export Wave 1 adapters for direct consumers
+export {
+  PHP_ADAPTER,
+  ELIXIR_ADAPTER,
+  HASKELL_ADAPTER,
+  FSHARP_ADAPTER,
+  JULIA_ADAPTER,
+} from './language-adapters-wave1';
+
+// Re-export Wave 2 adapters for direct consumers
+export {
+  CLOJURE_ADAPTER,
+  OCAML_ADAPTER,
+  ZIG_ADAPTER,
+  NIM_ADAPTER,
+  CRYSTAL_ADAPTER,
+} from './language-adapters-wave2';
+
+// Re-export Wave 3 adapters for direct consumers
+export {
+  ERLANG_ADAPTER,
+  R_ADAPTER,
+  OBJC_ADAPTER,
+  D_ADAPTER,
+  GROOVY_ADAPTER,
+} from './language-adapters-wave3';
