@@ -153,7 +153,11 @@ describe('10-Language Ascension Export Smoke Test', () => {
     // Skip the suite cleanly so the gate is honored, not bypassed.
     const d = isLanguageShipping(lang) ? describe : describe.skip;
     d(`${lang.toUpperCase()} Export`, () => {
-      const output = generateUnifiedCapabilityFile(CAPABILITIES, PACK_NAME, lang);
+      // Lazy generation — never invoked when suite is skipped.
+      let output = '';
+      beforeAll(() => {
+        output = generateUnifiedCapabilityFile(CAPABILITIES, PACK_NAME, lang);
+      });
 
       it('generates non-trivial output (>500 chars)', () => {
         expect(output.length).toBeGreaterThan(500);
