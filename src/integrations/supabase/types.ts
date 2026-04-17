@@ -10372,9 +10372,12 @@ export type Database = {
           id: string
           is_active: boolean | null
           is_featured: boolean | null
+          kind: string
           last_verified_at: string | null
+          origin_vertical: string | null
           original_value_cents: number | null
           pain_points: string[] | null
+          pillar: string | null
           price_cents: number
           primitive_chain: string[] | null
           rating: number | null
@@ -10385,6 +10388,7 @@ export type Database = {
           stripe_price_id: string | null
           stripe_product_id: string | null
           subtitle: string | null
+          suite_capabilities: Json | null
           tags: string[] | null
           tier: string
           title: string
@@ -10401,9 +10405,12 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           is_featured?: boolean | null
+          kind?: string
           last_verified_at?: string | null
+          origin_vertical?: string | null
           original_value_cents?: number | null
           pain_points?: string[] | null
+          pillar?: string | null
           price_cents?: number
           primitive_chain?: string[] | null
           rating?: number | null
@@ -10414,6 +10421,7 @@ export type Database = {
           stripe_price_id?: string | null
           stripe_product_id?: string | null
           subtitle?: string | null
+          suite_capabilities?: Json | null
           tags?: string[] | null
           tier?: string
           title: string
@@ -10430,9 +10438,12 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           is_featured?: boolean | null
+          kind?: string
           last_verified_at?: string | null
+          origin_vertical?: string | null
           original_value_cents?: number | null
           pain_points?: string[] | null
+          pillar?: string | null
           price_cents?: number
           primitive_chain?: string[] | null
           rating?: number | null
@@ -10443,6 +10454,7 @@ export type Database = {
           stripe_price_id?: string | null
           stripe_product_id?: string | null
           subtitle?: string | null
+          suite_capabilities?: Json | null
           tags?: string[] | null
           tier?: string
           title?: string
