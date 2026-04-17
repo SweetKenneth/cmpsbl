@@ -114,3 +114,32 @@ export {
   clearAllRegistryRules,
 } from './registry-bridge';
 export type { RegistryEnforcementResult } from './registry-bridge';
+
+// V1 Hardening — Safe Detach (additive, non-breaking)
+export {
+  detachSafe,
+  markEnter,
+  markExit,
+  resetSafeDetach,
+} from './detach-safe';
+export type {
+  SafeDetachReport,
+  SafeDetachOptions,
+  DetachEntryReport,
+  DetachOutcome,
+} from './detach-safe';
+
+// V1 Hardening — Extended Lex (additive, layered over base evaluate)
+export {
+  registerExtendedRule,
+  revokeExtendedRule,
+  getExtendedRules,
+  resetLexExtended,
+  evaluateExtended,
+} from './lex-extended';
+export type {
+  LexExtendedRule,
+  LexExtendedContextInput,
+  LexPredicate,
+  ExtendedEvalResult,
+} from './lex-extended';
