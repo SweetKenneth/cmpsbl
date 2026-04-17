@@ -27,6 +27,101 @@ export interface DetectedLicense {
   readonly notice: string;
 }
 
+/** SPDX identifiers we accept as a manual upstream-license declaration. */
+export type SupportedSpdx =
+  | 'Apache-2.0'
+  | 'MIT'
+  | 'BSD-3-Clause'
+  | 'BSD-2-Clause'
+  | 'MPL-2.0'
+  | 'ISC';
+
+/** Catalog used by both the detector and the manual override. Single source of truth. */
+const LICENSE_CATALOG: Record<SupportedSpdx, Omit<DetectedLicense, 'attribution'>> = {
+  'Apache-2.0': {
+    spdx: 'Apache-2.0',
+    label: 'Apache License 2.0',
+    notice:
+      'Licensed under the Apache License, Version 2.0 (the "License"); ' +
+      'you may not use this file except in compliance with the License. ' +
+      'You may obtain a copy of the License at ' +
+      'http://www.apache.org/licenses/LICENSE-2.0 — Unless required by ' +
+      'applicable law or agreed to in writing, software distributed under ' +
+      'the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES ' +
+      'OR CONDITIONS OF ANY KIND, either express or implied.',
+  },
+  'MIT': {
+    spdx: 'MIT',
+    label: 'MIT License',
+    notice:
+      'Permission is hereby granted, free of charge, to any person obtaining ' +
+      'a copy of this software and associated documentation files (the ' +
+      '"Software"), to deal in the Software without restriction. ' +
+      'THE SOFTWARE IS PROVIDED "AS IS".',
+  },
+  'BSD-3-Clause': {
+    spdx: 'BSD-3-Clause',
+    label: 'BSD 3-Clause License',
+    notice:
+      'Redistribution and use in source and binary forms, with or without ' +
+      'modification, are permitted provided that the conditions of the ' +
+      'BSD 3-Clause License are met. THE SOFTWARE IS PROVIDED "AS IS".',
+  },
+  'BSD-2-Clause': {
+    spdx: 'BSD-2-Clause',
+    label: 'BSD 2-Clause License',
+    notice:
+      'Redistribution and use in source and binary forms, with or without ' +
+      'modification, are permitted provided the BSD 2-Clause conditions ' +
+      'are met. THE SOFTWARE IS PROVIDED "AS IS".',
+  },
+  'MPL-2.0': {
+    spdx: 'MPL-2.0',
+    label: 'Mozilla Public License 2.0',
+    notice:
+      'This Source Code Form is subject to the terms of the Mozilla Public ' +
+      'License, v. 2.0. If a copy of the MPL was not distributed with this ' +
+      'file, You can obtain one at https://mozilla.org/MPL/2.0/.',
+  },
+  'ISC': {
+    spdx: 'ISC',
+    label: 'ISC License',
+    notice:
+      'Permission to use, copy, modify, and/or distribute this software ' +
+      'for any purpose with or without fee is hereby granted, provided ' +
+      'that the above copyright notice appears in all copies. ' +
+      'THE SOFTWARE IS PROVIDED "AS IS".',
+  },
+};
+
+/**
+ * Build a DetectedLicense from a manual SPDX declaration. Returns null when
+ * spdx is empty/unknown so callers can spread the result safely.
+ *
+ * Use this when the customer's source has no inline header but they know
+ * the upstream license (e.g. files extracted from an Apache-2.0 repo where
+ * the LICENSE file lives at the repo root, not in each source file).
+ */
+export function buildLicenseFromSpdx(
+  spdx: string | null | undefined,
+  attribution?: string,
+): DetectedLicense | null {
+  if (!spdx) return null;
+  const entry = LICENSE_CATALOG[spdx as SupportedSpdx];
+  if (!entry) return null;
+  return attribution ? { ...entry, attribution } : { ...entry };
+}
+
+/** Stable, ordered list for UI dropdowns. */
+export const SUPPORTED_UPSTREAM_LICENSES: ReadonlyArray<{ spdx: SupportedSpdx; label: string }> = [
+  { spdx: 'Apache-2.0', label: 'Apache License 2.0' },
+  { spdx: 'MIT', label: 'MIT License' },
+  { spdx: 'BSD-3-Clause', label: 'BSD 3-Clause License' },
+  { spdx: 'BSD-2-Clause', label: 'BSD 2-Clause License' },
+  { spdx: 'MPL-2.0', label: 'Mozilla Public License 2.0' },
+  { spdx: 'ISC', label: 'ISC License' },
+];
+
 /**
  * Scan only the first ~200 lines of source — license headers always live
  * at the top. We never read the whole file and never mutate it.
