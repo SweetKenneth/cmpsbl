@@ -25,7 +25,7 @@ import {
   type LayerTier,
 } from '@/lib/ascension-v2/tier-layers';
 
-interface LaunchLayer {
+export interface LaunchLayer {
   rank: number;
   name: string;
   pillar: Pillar;
