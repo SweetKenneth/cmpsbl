@@ -638,9 +638,175 @@ end # module
 `;
 }
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-function indent(text: string, pad: string): string {
-  return text.split('\n').map(l => (l.length ? pad + l : l)).join('\n');
+// ─── Wave 2 Scaffolds — Clojure, OCaml, Zig, Nim, Crystal ──────────────────
+
+function scaffoldClojure(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, ';;', 'Clojure')}
+(ns cmpsbl.ascension)
+
+(defn quick-hash [^String s]
+  (str "h" (Integer/toHexString (hash s))))
+
+(defn user-keys [data]
+  (->> (keys data) (filter #(not (.startsWith (str %) "_"))) vec))
+
+(defn handle-module [modname ctx meta]
+  (let [^:volatile-mutable ctx (atom ctx)]
+${indent(body, '    ')}
+    @ctx))
+`;
+}
+
+function scaffoldOCaml(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '(*', 'OCaml')} *)
+type jvalue =
+  | JNull | JBool of bool | JInt of int | JNum of float
+  | JString of string | JArr of jvalue list | JObj of (string * jvalue) list
+  | JBox of string
+
+type signal = { stype: string; ssource: string; sts: int }
+
+type ctx_t = {
+  mutable data: (string * jvalue) list;
+  mutable input: (string * jvalue) list;
+  mutable errors: string list;
+  mutable signals: signal list;
+  t0: float;
+}
+
+type meta_t = { cjpi: int; chain: string list; tier: string }
+
+let quick_hash s = "h" ^ string_of_int (String.length s)
+
+let user_keys (data : (string * jvalue) list) : string list =
+  List.filter (fun k -> String.length k > 0 && k.[0] <> '_') (List.map fst data)
+
+let string_of_data (data : (string * jvalue) list) : string =
+  String.concat "," (List.map fst data)
+
+let handle_module (modname : string) (ctx : ctx_t) (meta : meta_t) : ctx_t =
+${indent(body, '  ')}
+  ctx
+`;
+}
+
+function scaffoldZig(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '//', 'Zig')}
+const std = @import("std");
+
+pub const Pair = struct { key: []const u8, value: []const u8 };
+
+pub const Signal = struct { stype: []const u8, source: []const u8, ts: i64 };
+
+pub const Ctx = struct {
+    data: std.StringHashMap([]const u8),
+    input: std.StringHashMap([]const u8),
+    errors: std.ArrayList([]const u8),
+    signals: std.ArrayList(Signal),
+    t0: i64,
+    allocator: std.mem.Allocator,
+
+    pub fn userKeysCount(self: *const Ctx) usize {
+        var n: usize = 0;
+        var it = self.data.keyIterator();
+        while (it.next()) |k| { if (k.len > 0 and k.*[0] != '_') n += 1; }
+        return n;
+    }
+    pub fn userKeysList(self: *const Ctx) usize { return self.userKeysCount(); }
+    pub fn serializeData(self: *const Ctx) []const u8 { _ = self; return ""; }
+    pub fn serializeInput(self: *const Ctx) []const u8 { _ = self; return ""; }
+    pub fn chainPosition(self: *const Ctx, modname: []const u8) usize { _ = self; _ = modname; return 0; }
+    pub fn setData(self: *Ctx, key: []const u8, value: anytype) !void {
+        _ = value;
+        try self.data.put(key, "");
+    }
+    pub fn setGenericModule(self: *Ctx, modname: []const u8) !void {
+        _ = modname;
+        try self.setData("_module_generic", "");
+    }
+    pub fn emitSignal(self: *Ctx, kind: []const u8, source: []const u8) !void {
+        try self.signals.append(.{ .stype = kind, .source = source, .ts = std.time.milliTimestamp() });
+    }
+};
+
+pub const Meta = struct { cjpi: i32, chain: [][]const u8, tier: []const u8 };
+
+pub fn quickHash(s: []const u8) []const u8 { _ = s; return "h0"; }
+
+pub fn handleModule(modname: []const u8, ctx: *Ctx, meta: *const Meta) !void {
+${indent(body, '    ')}
+}
+`;
+}
+
+function scaffoldNim(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '#', 'Nim')}
+import std/[json, tables, times, strutils, sequtils]
+
+type
+  Signal* = object
+    stype*: string
+    source*: string
+    ts*: int
+
+  Ctx* = ref object
+    data*: JsonNode
+    input*: JsonNode
+    errors*: seq[string]
+    signals*: seq[JsonNode]
+    t0*: int
+
+  Meta* = object
+    cjpi*: int
+    chain*: seq[string]
+    tier*: string
+
+proc quickHash*(s: string): string = "h" & toHex(s.len, 4)
+
+proc userKeys*(data: JsonNode): seq[string] =
+  if data.kind != JObject: return @[]
+  result = @[]
+  for k, _ in data.fields: (if not k.startsWith("_"): result.add(k))
+
+proc handleModule*(modname: string, ctx: Ctx, meta: Meta) =
+${indent(body, '  ')}
+`;
+}
+
+function scaffoldCrystal(ctx: ExtendedGeneratorContext, body: string): string {
+  return `${header(ctx, '#', 'Crystal')}
+require "json"
+
+class Ctx
+  property data : Hash(String, JSON::Any)
+  property input : Hash(String, JSON::Any)
+  property errors : Array(String)
+  property signals : Array(Hash(String, JSON::Any))
+  property t0 : Int64
+
+  def initialize
+    @data = {} of String => JSON::Any
+    @input = {} of String => JSON::Any
+    @errors = [] of String
+    @signals = [] of Hash(String, JSON::Any)
+    @t0 = Time.utc.to_unix_ms
+  end
+end
+
+record Meta, cjpi : Int32, chain : Array(String), tier : String
+
+def quick_hash(s : String) : String
+  "h" + s.hash.to_s(16)
+end
+
+def user_keys(data : Hash(String, JSON::Any)) : Array(String)
+  data.keys.reject { |k| k.starts_with?("_") }
+end
+
+def handle_module(modname : String, ctx : Ctx, meta : Meta)
+${indent(body, '  ')}
+end
+`;
 }
 
 const SCAFFOLDS: Record<string, (ctx: ExtendedGeneratorContext, body: string) => string> = {
@@ -662,6 +828,12 @@ const SCAFFOLDS: Record<string, (ctx: ExtendedGeneratorContext, body: string) =>
   haskell: scaffoldHaskell,
   fsharp: scaffoldFSharp,
   julia: scaffoldJulia,
+  // Wave 2
+  clojure: scaffoldClojure,
+  ocaml: scaffoldOCaml,
+  zig: scaffoldZig,
+  nim: scaffoldNim,
+  crystal: scaffoldCrystal,
 };
 
 // ─── Public API ─────────────────────────────────────────────────────────────
