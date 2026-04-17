@@ -24,17 +24,20 @@ function priceSuffix(tier: LayerTier) {
 
 export function TierLayersOverview() {
   return (
-    <section className="container mx-auto px-4 mt-16">
+    <section
+      id="ascension-layers"
+      className="container mx-auto px-4 mt-16 scroll-mt-24"
+    >
       <div className="text-center mb-8">
         <p className="text-[10px] sm:text-xs font-mono uppercase tracking-[0.2em] text-primary mb-2">
-          Layers per tier
+          The substrate's true Crown Jewels
         </p>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-          What unlocks at each level
+          The 20 Ascension Layers
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl mx-auto">
-          Every plan is a clean step up in capability maturity — governance, survival,
-          intelligence, then full dominance. Layers attach via Mana with zero source modification.
+          Each plan unlocks a step-change in capability — governance, survival, intelligence,
+          then full dominance. Every Layer attaches via Mana with zero source modification.
         </p>
       </div>
 
