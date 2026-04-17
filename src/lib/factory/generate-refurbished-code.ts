@@ -27,6 +27,7 @@ import {
 } from '../mana/findings-bridge';
 import {
   detectLayer1License,
+  resolveLayer1License,
   renderLicenseAttribution,
 } from './license-attribution';
 import { renderCaalInlineHeader } from '../licensing/caal-license';
@@ -3071,6 +3072,13 @@ export function generateRefurbishedCode(
   fingerprint: string,
   sourceLanguage?: string,
   fileName?: string,
+  /**
+   * Optional manual upstream-license declaration (SPDX id, e.g. 'Apache-2.0').
+   * Wins over header detection. Use when the source file has no inline header
+   * but the project ships its license at the repo root (typical for Apache-2.0
+   * projects like `llm`, `requests`, `django`).
+   */
+  upstreamLicenseSpdx?: string | null,
 ): string {
   // Detect language from explicit param, fileName, or code content
   const detected = sourceLanguage ?? detectLanguage(originalCode, fileName ?? undefined).language;
@@ -3303,7 +3311,7 @@ export function generateRefurbishedCode(
   // Carries the original license notice forward so derivative-work
   // attribution requirements are met. Layer 1 itself is never modified —
   // we only add a comment block above the verbatim region.
-  const upstreamLicense = detectLayer1License(verbatimSource);
+  const upstreamLicense = resolveLayer1License(verbatimSource, upstreamLicenseSpdx);
   const upstreamLicenseLines = renderLicenseAttribution(upstreamLicense, adapter.comment);
 
   // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) ───────

@@ -11,6 +11,8 @@ import { PublicNav } from "@/components/PublicNav";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SUPPORTED_UPSTREAM_LICENSES } from "@/lib/factory/license-attribution";
 import {
   Upload,
   ArrowRight,
@@ -101,6 +103,8 @@ export default function RestorationShop() {
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
   const [processingPrimitives, setProcessingPrimitives] = useState<ProcessingPrimitive[]>([]);
+  /** Manual upstream-license SPDX override — empty string = auto-detect from header. */
+  const [upstreamLicenseSpdx, setUpstreamLicenseSpdx] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const identityRole = useDecodeStore(s => s.identityRole);
 
@@ -359,6 +363,7 @@ export default function RestorationShop() {
         selectedPrims,
         detectedLang,
         ascendedCode,
+        upstreamLicenseSpdx: upstreamLicenseSpdx || null,
       });
 
       const { saveAs } = await import('file-saver');
@@ -368,7 +373,7 @@ export default function RestorationShop() {
       const msg = err instanceof Error ? err.message : String(err);
       toast.error('Export failed.', { description: msg.slice(0, 200), duration: 10000 });
     }
-  }, [report, code, ascendedCode, identityRole, selectedPrims, fileName, detectedLang]);
+  }, [report, code, ascendedCode, identityRole, selectedPrims, fileName, detectedLang, upstreamLicenseSpdx]);
 
   const resetFlow = useCallback(() => {
     setPhase('upload');
@@ -1052,6 +1057,37 @@ export default function RestorationShop() {
                     Verify Provenance
                   </Link>
                 </Button>
+              </div>
+
+              {/* ═══ Upstream License Override ═══ */}
+              <div className="rounded-xl border border-border/30 bg-card/20 p-4">
+                <div className="flex items-start gap-3">
+                  <Shield className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-bold text-foreground mb-1">Upstream License (Layer 1)</h4>
+                    <p className="text-[11px] text-muted-foreground mb-3 leading-relaxed">
+                      If your source comes from an open-source project (Apache, MIT, etc.), declare the upstream license here.
+                      We'll attach the required attribution notice above the verbatim Layer 1 region. Leave on auto-detect if your
+                      source already has an inline header.
+                    </p>
+                    <Select
+                      value={upstreamLicenseSpdx || 'auto'}
+                      onValueChange={(v) => setUpstreamLicenseSpdx(v === 'auto' ? '' : v)}
+                    >
+                      <SelectTrigger className="w-full text-xs h-9 rounded-lg">
+                        <SelectValue placeholder="Auto-detect from source header" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="auto">Auto-detect from source header</SelectItem>
+                        {SUPPORTED_UPSTREAM_LICENSES.map(l => (
+                          <SelectItem key={l.spdx} value={l.spdx}>
+                            {l.label} ({l.spdx})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
 
               {/* ═══ Actions ═══ */}
