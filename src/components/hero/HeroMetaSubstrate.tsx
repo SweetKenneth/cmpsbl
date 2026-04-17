@@ -264,7 +264,7 @@ export function HeroMetaSubstrate() {
                 Your code remains unchanged.
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground/60 font-semibold leading-relaxed tracking-wide">
-                90+ languages · Runs in minutes · Zero AI in the output
+                20 Exclusive Layers · Runs in minutes · Zero AI in the output
               </p>
             </FadeIn>
             
@@ -276,7 +276,7 @@ export function HeroMetaSubstrate() {
                   size="lg" 
                   className="gap-2 h-12 px-8 w-full text-sm font-bold rounded-[10px] bg-background hover:bg-card/90 text-foreground transition-all duration-300 shadow-lg shadow-primary/[0.06]"
                 >
-                  <Link to="/ascension">
+                  <Link to="/ascension-v2">
                     <Wrench className="w-4 h-4 shrink-0 text-primary" />
                     Ascend Your Code
                     <ArrowRight className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
