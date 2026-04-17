@@ -11,6 +11,21 @@
 
 import { appendAudit, getChainState, resetChain } from './audit-chain';
 import { computeMultiFileFingerprint, type SourceFingerprint } from './fingerprint-gate';
+import { runPreAscensionGate, formatGateError, type GateError } from './pre-ascension-gate';
+
+/**
+ * Thrown by `commitUpload` when the Pre-Ascension Gate rejects input.
+ * Carries the structured error list so callers can render line-located
+ * diagnostics instead of a generic failure toast.
+ */
+export class PreAscensionGateError extends Error {
+  readonly code = 'E_PRE_ASCENSION_GATE';
+  readonly errors: ReadonlyArray<GateError>;
+  constructor(errors: ReadonlyArray<GateError>) {
+    super(`Pre-Ascension Gate rejected ${errors.length} file issue(s): ${errors.map(formatGateError).join(' | ')}`);
+    this.errors = errors;
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Types
