@@ -11,6 +11,7 @@ import { UpgradeContent } from '@/components/store/UpgradeContent';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { TrialBanner } from '@/components/adoption/TrialBanner';
 import { CompoundingValueDashboard } from '@/components/adoption/CompoundingValueDashboard';
+import { TierLayersOverview } from '@/components/plans/TierLayersOverview';
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 
@@ -85,6 +86,8 @@ export default function Plans() {
         </motion.div>
 
         <UpgradeContent />
+
+        <TierLayersOverview />
 
         <div className="container mx-auto px-4 mt-12">
           <h2 className="text-lg font-bold text-foreground mb-4">Your Compounding Value</h2>
