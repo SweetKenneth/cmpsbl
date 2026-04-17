@@ -28,7 +28,7 @@
  *
  * © CMPSBL® — All rights reserved.
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import {
   generateUnifiedCapabilityFile,
   getUnifiedFilename,
