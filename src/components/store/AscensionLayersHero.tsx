@@ -73,9 +73,11 @@ export function AscensionLayersHero() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-base sm:text-lg text-muted-foreground/85 leading-relaxed mb-8"
           >
-            Layers are specialty items you wrap around the code you already ship — defense,
-            observability, robotics control, agent orchestration. Pick a discipline, subscribe by
-            the year, and your software inherits an entire engineering capability overnight.
+            Layers are bundled capability modules that wrap around your existing code — each layer
+            can deliver multiple functions like security, observability, robotics control, and
+            agent orchestration at once. Choose a discipline, subscribe annually, and your software
+            gains a full engineering capability stack instantly — without rewriting what you've
+            already built.
           </motion.p>
 
           <motion.div
