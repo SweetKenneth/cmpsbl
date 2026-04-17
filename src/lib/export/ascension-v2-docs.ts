@@ -17,27 +17,63 @@ function esc(str: string): string {
 const year = () => new Date().getFullYear();
 const dateStr = () => new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Light-theme tokens mirrored from src/index.css :root — kept inline so the
+// exported HTML renders identically to cmpsbl.com without needing the site's
+// stylesheet or any runtime CSS-variable resolution.
+// ─────────────────────────────────────────────────────────────────────────────
+const TOKENS = {
+  background: 'hsl(0, 0%, 100%)',
+  foreground: 'hsl(220, 15%, 15%)',
+  card: 'hsl(0, 0%, 100%)',
+  muted: 'hsl(220, 14%, 96%)',
+  mutedFg: 'hsl(220, 10%, 35%)',
+  border: 'hsl(220, 10%, 85%)',
+  primary: 'hsl(210, 60%, 45%)',
+  neonCyan: 'hsl(185, 100%, 40%)',
+  neonPurple: 'hsl(280, 100%, 55%)',
+  neonMagenta: 'hsl(310, 100%, 50%)',
+};
+
 const BRAND_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   html { font-size: 15px; scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #0a0a0f;
-    color: #e4e4e7;
+    background: ${TOKENS.background};
+    color: ${TOKENS.foreground};
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     overflow-wrap: break-word;
   }
   .page {
-    max-width: 780px;
+    max-width: 820px;
     margin: 0 auto;
     padding: 3rem 2.5rem;
+    position: relative;
   }
+  /* Ambient hero orbs — subtle gradient mesh, mirrors FactoryHome */
+  .ambient {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .ambient::before, .ambient::after {
+    content: ''; position: absolute; border-radius: 50%; filter: blur(40px);
+  }
+  .ambient::before {
+    width: 600px; height: 600px; top: -200px; left: -200px;
+    background: radial-gradient(circle, hsla(210, 60%, 45%, 0.08), transparent 60%);
+  }
+  .ambient::after {
+    width: 500px; height: 500px; bottom: -150px; right: -150px;
+    background: radial-gradient(circle, hsla(280, 100%, 55%, 0.06), transparent 60%);
+  }
+  .page > * { position: relative; z-index: 1; }
   @media (max-width: 640px) {
     .page { padding: 1.5rem 1rem; }
     html { font-size: 13px; }
-    .doc-title { font-size: 1.3rem; word-break: break-word; }
+    .doc-title { font-size: 1.25rem; word-break: break-word; }
     .doc-subtitle { font-size: 0.8rem; }
     .meta-grid { grid-template-columns: repeat(2, 1fr); }
     table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -47,18 +83,56 @@ const BRAND_STYLES = `
     .highlight { padding: 0.7rem 1rem; font-size: 0.78rem; }
     .colophon { flex-direction: column; align-items: flex-start; }
     h2 { font-size: 0.95rem; }
-    .seal-badge { width: 60px; height: 60px; }
-    .seal-badge .mark { font-size: 0.5rem; }
+    .cmpsbl-wordmark { font-size: 3.25rem; }
   }
   @media (max-width: 380px) {
     .page { padding: 1.25rem 0.75rem; }
     .meta-grid { grid-template-columns: 1fr; }
     th, td { font-size: 0.65rem; padding: 0.3rem 0.4rem; }
+    .cmpsbl-wordmark { font-size: 2.5rem; }
+  }
+  /* ── Animated CMPSBL® wordmark — mirrors src/components/hero/CmpsblWordmark.tsx ── */
+  @keyframes cmpsblLetterFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  @keyframes cmpsblPulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 12px hsla(210, 60%, 45%, 0.18)); }
+    50%      { filter: drop-shadow(0 0 24px hsla(280, 100%, 55%, 0.28)); }
+  }
+  .cmpsbl-wordmark {
+    display: inline-flex; align-items: baseline; user-select: none;
+    font-size: 4.5rem; font-weight: 900; line-height: 1;
+    animation: cmpsblPulseGlow 3s ease-in-out infinite;
+  }
+  .cmpsbl-wordmark .cm-l {
+    display: inline-block; line-height: 1;
+    background-size: 200% 200%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    animation: cmpsblLetterFlow 5s ease-in-out infinite;
+  }
+  .cmpsbl-wordmark .cm-l + .cm-l { margin-left: -0.015em; }
+  .cmpsbl-wordmark .cm-c { background-image: linear-gradient(135deg, ${TOKENS.neonCyan}, ${TOKENS.primary}, ${TOKENS.neonCyan});  transform: translateY(2px);  animation-delay: 0s; }
+  .cmpsbl-wordmark .cm-m { background-image: linear-gradient(135deg, ${TOKENS.primary}, ${TOKENS.neonPurple}, ${TOKENS.primary});  transform: translateY(-3px); animation-delay: 0.8s; }
+  .cmpsbl-wordmark .cm-p { background-image: linear-gradient(135deg, ${TOKENS.neonPurple}, ${TOKENS.neonMagenta}, ${TOKENS.neonPurple}); transform: translateY(2px);  animation-delay: 1.6s; }
+  .cmpsbl-wordmark .cm-s { background-image: linear-gradient(135deg, ${TOKENS.neonMagenta}, ${TOKENS.neonCyan}, ${TOKENS.neonMagenta}); transform: translateY(-2px); animation-delay: 2.4s; }
+  .cmpsbl-wordmark .cm-b { background-image: linear-gradient(135deg, ${TOKENS.neonCyan}, ${TOKENS.neonPurple}, ${TOKENS.neonCyan});  transform: translateY(3px);  animation-delay: 3.2s; }
+  .cmpsbl-wordmark .cm-l2{ background-image: linear-gradient(135deg, ${TOKENS.primary}, ${TOKENS.neonMagenta}, ${TOKENS.primary});  transform: translateY(-2px); animation-delay: 4.0s; }
+  .cmpsbl-wordmark .cm-r {
+    display: inline-block; font-size: 0.35em; font-weight: 700;
+    vertical-align: super; margin-left: 0.05em; line-height: 1;
+    background-image: linear-gradient(135deg, ${TOKENS.neonCyan}, ${TOKENS.primary}, ${TOKENS.neonPurple});
+    background-size: 200% 200%;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    animation: cmpsblLetterFlow 5s ease-in-out infinite;
+    animation-delay: 4.8s;
   }
   .doc-header {
     text-align: center;
     padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid ${TOKENS.border};
     margin-bottom: 2rem;
   }
   .doc-header .issuer {
@@ -66,70 +140,62 @@ const BRAND_STYLES = `
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.3em;
-    color: rgba(255,255,255,0.35);
-    margin-bottom: 1rem;
+    color: ${TOKENS.mutedFg};
+    margin: 1.5rem 0 0.75rem;
   }
   .doc-title {
     font-size: 1.6rem;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.3;
-    background: linear-gradient(135deg, #fff, #a1a1aa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: ${TOKENS.foreground};
   }
   .doc-subtitle {
     font-size: 0.9rem;
-    color: rgba(255,255,255,0.45);
+    color: ${TOKENS.mutedFg};
     margin-top: 0.4rem;
   }
-  .seal-area { display: flex; justify-content: center; margin: 1.5rem 0 2rem; }
-  .seal-badge {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(168,85,247,0.5);
-    background: radial-gradient(circle, rgba(168,85,247,0.1), transparent);
-    display: flex; align-items: center; justify-content: center; flex-direction: column;
-  }
-  .seal-badge .mark { font-size: 0.6rem; font-weight: 700; color: rgba(168,85,247,0.8); letter-spacing: 0.12em; }
-  .seal-badge .year { font-size: 0.5rem; color: rgba(168,85,247,0.5); letter-spacing: 0.1em; }
+  .seal-area { display: flex; justify-content: center; margin: 1.25rem 0 1.5rem; }
   h2 {
-    font-size: 1.05rem; font-weight: 700;
-    margin: 2rem 0 0.8rem; padding-bottom: 0.4rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    color: #fff;
+    font-size: 1.1rem; font-weight: 700;
+    margin: 2rem 0 0.8rem; padding-bottom: 0.45rem;
+    border-bottom: 1px solid ${TOKENS.border};
+    color: ${TOKENS.foreground};
   }
-  h3 { font-size: 0.9rem; font-weight: 600; margin: 1.2rem 0 0.5rem; color: #e4e4e7; }
-  p { margin-bottom: 0.8rem; color: rgba(255,255,255,0.7); font-size: 0.88rem; }
+  h3 { font-size: 0.95rem; font-weight: 600; margin: 1.2rem 0 0.5rem; color: ${TOKENS.foreground}; }
+  p  { margin-bottom: 0.8rem; color: ${TOKENS.foreground}; font-size: 0.9rem; }
   ul, ol { padding-left: 1.5rem; margin-bottom: 0.8rem; }
-  li { margin-bottom: 0.3rem; color: rgba(255,255,255,0.7); font-size: 0.88rem; }
+  li { margin-bottom: 0.35rem; color: ${TOKENS.foreground}; font-size: 0.9rem; }
+  a  { color: ${TOKENS.primary}; text-decoration: none; }
+  a:hover { text-decoration: underline; }
   code {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-size: 0.82em; background: rgba(255,255,255,0.06);
-    padding: 0.15em 0.4em; border-radius: 4px; color: #a78bfa;
+    font-size: 0.82em; background: ${TOKENS.muted};
+    padding: 0.15em 0.4em; border-radius: 4px; color: ${TOKENS.primary};
+    border: 1px solid ${TOKENS.border};
   }
   pre {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: ${TOKENS.muted};
+    border: 1px solid ${TOKENS.border};
     border-radius: 8px;
     padding: 1rem 1.25rem;
     overflow-x: auto;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
     line-height: 1.6;
-    color: rgba(255,255,255,0.75);
+    color: ${TOKENS.foreground};
     margin: 0.8rem 0;
   }
   .highlight {
-    background: rgba(168,85,247,0.08);
-    border-left: 3px solid rgba(168,85,247,0.5);
+    background: hsla(210, 60%, 45%, 0.06);
+    border-left: 3px solid ${TOKENS.primary};
     padding: 0.9rem 1.25rem;
     border-radius: 0 6px 6px 0;
     margin: 1rem 0;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
+    color: ${TOKENS.foreground};
   }
-  .highlight strong { color: #fff; }
+  .highlight strong { color: ${TOKENS.foreground}; }
   .meta-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -137,31 +203,32 @@ const BRAND_STYLES = `
     margin: 1rem 0 1.5rem;
   }
   .meta-item {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: ${TOKENS.card};
+    border: 1px solid ${TOKENS.border};
     border-radius: 8px;
     padding: 0.7rem 0.9rem;
   }
-  .meta-label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); }
-  .meta-value { font-size: 0.85rem; font-weight: 500; color: #fff; margin-top: 0.15rem; }
+  .meta-label { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: ${TOKENS.mutedFg}; }
+  .meta-value { font-size: 0.85rem; font-weight: 500; color: ${TOKENS.foreground}; margin-top: 0.15rem; }
   .toc { list-style: none; padding: 0; }
-  .toc li { padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .toc a { color: #a78bfa; text-decoration: none; font-size: 0.85rem; }
+  .toc li { padding: 0.4rem 0; border-bottom: 1px solid ${TOKENS.border}; }
+  .toc a { color: ${TOKENS.primary}; text-decoration: none; font-size: 0.88rem; }
   .toc a:hover { text-decoration: underline; }
   table {
     width: 100%; border-collapse: collapse; margin: 0.8rem 0;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
   }
-  th { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  td { padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); }
+  th { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 2px solid ${TOKENS.border}; color: ${TOKENS.mutedFg}; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 0.55rem 0.7rem; border-bottom: 1px solid ${TOKENS.border}; color: ${TOKENS.foreground}; }
   .colophon {
-    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid ${TOKENS.border};
     display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;
   }
-  .colophon-left { font-size: 0.65rem; color: rgba(255,255,255,0.25); line-height: 1.8; }
-  .colophon-right { font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.2); }
-  .patent-notice { font-size: 0.7rem; color: rgba(255,255,255,0.3); font-style: italic; margin-top: 1rem; }
+  .colophon-left  { font-size: 0.7rem; color: ${TOKENS.mutedFg}; line-height: 1.8; }
+  .colophon-right { font-size: 0.95rem; font-weight: 700; color: ${TOKENS.mutedFg}; letter-spacing: 0.05em; }
+  .patent-notice  { font-size: 0.72rem; color: ${TOKENS.mutedFg}; font-style: italic; margin-top: 1rem; }
 `;
+
 
 function htmlShell(title: string, body: string): string {
   return `<!DOCTYPE html>
@@ -173,6 +240,7 @@ function htmlShell(title: string, body: string): string {
   <style>${BRAND_STYLES}</style>
 </head>
 <body>
+<div class="ambient" aria-hidden="true"></div>
 ${body}
 </body>
 </html>`;
@@ -183,7 +251,7 @@ function colophon(): string {
   <div class="colophon">
     <div class="colophon-left">
       CMPSBL® · PromptFluid™<br>
-      https://cmpsbl.com<br>
+      <a href="https://cmpsbl.com">https://cmpsbl.com</a><br>
       © ${year()} CMPSBL®. All rights reserved.<br>
       U.S. Patent App. No. 64/029,678 · U.S. Patent App. No. 64/031,637
     </div>
@@ -194,15 +262,21 @@ function colophon(): string {
   </p>`;
 }
 
-function sealBadge(): string {
+/**
+ * Animated CMPSBL® wordmark — visually identical to the homepage
+ * <CmpsblWordmark/> hero logo. Pure CSS, no external assets.
+ */
+function cmpsblWordmark(): string {
   return `
   <div class="seal-area">
-    <div class="seal-badge">
-      <div class="mark">CMPSBL®</div>
-      <div class="year">${year()}</div>
-    </div>
+    <span class="cmpsbl-wordmark" aria-label="CMPSBL®" role="img">
+      <span class="cm-l cm-c">C</span><span class="cm-l cm-m">M</span><span class="cm-l cm-p">P</span><span class="cm-l cm-s">S</span><span class="cm-l cm-b">B</span><span class="cm-l cm-l2">L</span><span class="cm-r">®</span>
+    </span>
   </div>`;
 }
+
+// Backwards-compat alias for any older callers.
+const sealBadge = cmpsblWordmark;
 
 // ═══════════════════════════════════════════════════════════════
 // LICENSE.html
@@ -230,13 +304,13 @@ export function generateV2LicenseHTML(input: V2LicenseInput | string): string {
   </header>
   ${sealBadge()}
 
-  <p style="text-align:center; font-size:0.82rem; color:rgba(255,255,255,0.4); margin-bottom:1.5rem;">
-    Issued ${dateStr()} for <strong style="color:#fff;">${esc(packName)}</strong>
+  <p style="text-align:center; font-size:0.85rem; color:${TOKENS.mutedFg}; margin-bottom:1.5rem;">
+    Issued ${dateStr()} for <strong style="color:${TOKENS.foreground};">${esc(packName)}</strong>
   </p>
 
-  <div class="meta-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:2rem;font-size:0.78rem;">
-    <div><span style="color:rgba(255,255,255,0.4);">Artifact Serial</span><br/><code style="color:#fff;">${sn}</code></div>
-    <div><span style="color:rgba(255,255,255,0.4);">Artifact Fingerprint</span><br/><code style="color:#fff;">${fp}</code></div>
+  <div class="meta-grid">
+    <div class="meta-item"><div class="meta-label">Artifact Serial</div><div class="meta-value"><code>${sn}</code></div></div>
+    <div class="meta-item"><div class="meta-label">Artifact Fingerprint</div><div class="meta-value"><code>${fp}</code></div></div>
   </div>
 
   <div class="highlight">
@@ -299,14 +373,14 @@ export function generateV2LicenseHTML(input: V2LicenseInput | string): string {
     all copies under their control.</p>
 
   <h2>§7 — Disclaimer of Warranty</h2>
-  <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
+  <p style="font-size:0.78rem; color:${TOKENS.mutedFg}; text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
     The Artifact is provided "AS IS", without warranty of any kind, express or implied,
     including but not limited to the warranties of merchantability, fitness for a particular
     purpose, and noninfringement.
   </p>
 
   <h2>§8 — Limitation of Liability</h2>
-  <p style="font-size:0.78rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
+  <p style="font-size:0.78rem; color:${TOKENS.mutedFg}; text-transform:uppercase; letter-spacing:0.02em; line-height:1.9;">
     In no event shall CMPSBL®, PromptFluid™, or the inventor be liable for any claim,
     damages, or other liability — whether in contract, tort, or otherwise — arising from,
     out of, or in connection with the Artifact or the use or other dealings in the Artifact.
@@ -681,7 +755,7 @@ export function generateV2AdvertisementHTML(packName: string, capCount: number):
     software that thinks, adapts, and protects itself.
   </p>
   <div class="highlight">
-    <strong>Visit <a href="https://cmpsbl.com" style="color:#a78bfa;">cmpsbl.com</a></strong>
+    <strong>Visit <a href="https://cmpsbl.com">cmpsbl.com</a></strong>
     to explore the full substrate, browse the Mana Store, and see what your software could become.
   </div>
 
