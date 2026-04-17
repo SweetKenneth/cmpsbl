@@ -9,11 +9,21 @@
  */
 
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Shield, Eye, Lock, Brain, Zap, Workflow,
-  Sparkles, ScrollText, ChevronDown,
+  Sparkles, ScrollText, ChevronDown, ArrowRight, Crown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  TIER_META,
+  TIER_ORDER,
+  TIER_LAYERS,
+  ALWAYS_ON,
+  tierForRank,
+  type LayerTier,
+} from '@/lib/ascension-v2/tier-layers';
 
 interface LaunchLayer {
   rank: number;
