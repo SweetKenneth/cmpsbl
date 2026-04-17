@@ -18342,6 +18342,53 @@ export type Database = {
         }
         Relationships: []
       }
+      user_layer_entitlements: {
+        Row: {
+          created_at: string
+          granted_at: string
+          id: string
+          layer_id: string
+          marketplace_inventory_id: string | null
+          metadata: Json
+          revoked_at: string | null
+          source: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          granted_at?: string
+          id?: string
+          layer_id: string
+          marketplace_inventory_id?: string | null
+          metadata?: Json
+          revoked_at?: string | null
+          source?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          granted_at?: string
+          id?: string
+          layer_id?: string
+          marketplace_inventory_id?: string | null
+          metadata?: Json
+          revoked_at?: string | null
+          source?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_layer_entitlements_marketplace_inventory_id_fkey"
+            columns: ["marketplace_inventory_id"]
+            isOneToOne: false
+            referencedRelation: "marketplace_inventory"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_limits: {
         Row: {
           created_at: string | null
@@ -19251,6 +19298,14 @@ export type Database = {
       generate_clarity_api_key: {
         Args: { p_key_name: string; p_rate_limit?: number; p_user_id: string }
         Returns: Json
+      }
+      get_active_layer_entitlements: {
+        Args: { _user_id: string }
+        Returns: {
+          granted_at: string
+          layer_id: string
+          source: string
+        }[]
       }
       get_adaptive_memory_limits: {
         Args: { p_agent_id: string; p_user_id: string }
