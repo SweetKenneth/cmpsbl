@@ -193,12 +193,21 @@ func Broken() int {
 // embed), so we hand-construct a minimal but valid wrapper for each language.
 // ═════════════════════════════════════════════════════════════════════════════
 
-function syntheticLayer2(language: string, layer1: string): string {
+function syntheticLayer2(
+  language: string,
+  layer1: string,
+  originalFileName: string,
+): string {
   const lang = language.toLowerCase();
+  // Linkage validator requires both the embed marker (`LAYER 1` +
+  // `ORIGINAL SOURCE`) and a reference to the basename of the L1 file.
+  const baseName = originalFileName.replace(/\.[^.]+$/, ''); // strip ext
+  const banner = `═════ LAYER 1 — ORIGINAL SOURCE: ${baseName} ═════`;
   // Three handler stubs satisfy the harness smoke threshold (≥3 handlers).
   if (lang === 'python') {
     return [
       '# CMPSBL® Layer 2 — Synthetic Wrapper',
+      `# ${banner}`,
       'def cmpsbl_execute(module, action, payload):',
       '    return {"ok": True}',
       '',
@@ -206,19 +215,20 @@ function syntheticLayer2(language: string, layer1: string): string {
       'def handle_self_healing(payload):  return payload',
       'def handle_consensus(payload):     return payload',
       '',
-      '# ═════ Layer 1 (verbatim) ═════',
+      `# ${banner}`,
       layer1,
     ].join('\n');
   }
   if (lang === 'rust') {
     return [
       '// CMPSBL® Layer 2 — Synthetic Wrapper',
+      `// ${banner}`,
       'pub fn cmpsbl_execute() {}',
       'pub fn handle_circuit_breaker() {}',
       'pub fn handle_self_healing()    {}',
       'pub fn handle_consensus()       {}',
       '',
-      '// ═════ Layer 1 (verbatim) ═════',
+      `// ${banner}`,
       layer1,
     ].join('\n');
   }
@@ -227,24 +237,26 @@ function syntheticLayer2(language: string, layer1: string): string {
       '// CMPSBL® Layer 2 — Synthetic Wrapper',
       'package cmpsbl',
       '',
+      `// ${banner}`,
       'func cmpsbl_execute() {}',
       'func handle_circuit_breaker() {}',
       'func handle_self_healing()    {}',
       'func handle_consensus()       {}',
       '',
-      '// ═════ Layer 1 (verbatim) ═════',
+      `// ${banner}`,
       layer1,
     ].join('\n');
   }
   // TS / JS share the same shape.
   return [
     '// CMPSBL® Layer 2 — Synthetic Wrapper',
+    `// ${banner}`,
     'function cmpsbl_execute(mod, action, payload) { return { ok: true }; }',
     'function handle_circuit_breaker(p) { return p; }',
     'function handle_self_healing(p)    { return p; }',
     'function handle_consensus(p)       { return p; }',
     '',
-    '// ═════ Layer 1 (verbatim) ═════',
+    `// ${banner}`,
     layer1,
   ].join('\n');
 }
