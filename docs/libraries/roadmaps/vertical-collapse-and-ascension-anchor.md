@@ -23,8 +23,9 @@ Prior audits were wrong because they searched canonical names only. These aliase
 | Memory Chain | Pipeline, `pipeline_*`, `chain_*` |
 | Crystallized Memory | Crystallized Pipeline, Primitive Chain, Node Chain, Module Chain, `crystal*`, `crystallized_*` |
 | Foundry | Quarry, Memory Stream, `foundry_*`, `quarry_*`, `memory_stream*`, `discoveries` |
-| Agency | 20-agent collective sourced from the Mint, `agency_*`, `mint_*` |
-| Agent Forge | Per-agent generator (distinct from FORGE), `agent_forge*` |
+| Agency | 20-agent collective minted as a unit. Each Agency = configurable skill levels per agent, working mesh memory, its own deployed per-user page, real Firecrawl-driven research + actions. Pre-dates "OpenClaw" entirely. `agency_*`, `mint_*` |
+| Mint | The act of spawning a full 20-agent Agency (verb + concept). Source tables: `agency_templates` + `agency_purchases` + `agencies` (no separate `mint_*` table — Mint is the operation, not a row store) |
+| Agent Forge | Per-agent generator (distinct from FORGE) — forges individual agents one at a time, `agent_forge*`, `forge_agents` |
 | FORGE | Template Generator (NOT the same as Agent Forge), `forge_*`, `template_*` |
 
 **Unknown-name rule:** If I encounter any table/file/function name I don't recognize, **I ask Kenneth directly** before classifying it as fake, dead, or missing. No silent assumptions.
