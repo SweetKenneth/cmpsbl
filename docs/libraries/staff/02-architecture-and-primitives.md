@@ -159,4 +159,22 @@ Always suffix bare names with their category in user-facing content: "DREAM Engi
 
 ---
 
+## 7. Runtime Sub-Primitives
+
+The 40-Primitive matrix is an architectural invariant. New runtime capabilities are introduced as **sub-primitives** that live inside an existing primitive — never as new top-level entries. The matrix stays **12·12·8·8 = 40**.
+
+### Currently Active Sub-Primitives
+
+| Sub-Primitive | Parent | Role |
+|---------------|--------|------|
+| **Governed Execution Pipeline** | CORTEX Engine | Deterministic before/after layer authority. Wraps every Layer 2 export. Maps generic phases to DEFENSE → GOVERNANCE → MEMORY → FORESIGHT → NEXUS → execution → EVOLUTION → AUDIT → COMPLIANCE. Layers carry authority: `blocked`, `overridden`, `enriched`. Post-layers always run. |
+| **SENTINEL Witness** | AUDIT Agent | Audit-chain witness paired 1:1 with Governed Pipeline. Scores each run (`healthy` / `degraded` / `anomalous` / `failed`), emits competency deltas via EMA (α=0.1) into `agent_competency`. Provides the learning loop for every wrapped function. |
+
+### Rules
+- Sub-primitives are implementation details — they never appear in primitive counts, store catalogs, or tier definitions.
+- They inherit the Iron Law and category of their parent.
+- Documenting them here is mandatory; renaming or relocating them requires Governor approval.
+
+---
+
 © 2025–2026 CMPSBL®. Internal Use Only.
