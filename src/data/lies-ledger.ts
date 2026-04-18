@@ -340,6 +340,101 @@ export const LIES_LEDGER: Finding[] = [
       'The blog publishes. The epistemic infrastructure that supposedly governs the blog (split-brain reader/skeptic scoring, broken-assumption tracking, contradiction logs, memory reports) has zero rows. The columns exist on auto_blog_posts but the supporting tables are empty. The "honest AI that tracks its own wrongness" framing is the most ironic theater in the audit.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-017',
+    title: 'CLI Ascension: 2 lifetime sessions — not the developer-facing pipeline the docs describe',
+    severity: 'FICTION',
+    source: {
+      document: 'ascension-engine-whitepaper.md + 19-INTEGRATION-MODULE.md + cli docs',
+      quote:
+        '"Ascension is the developer entry point — used at scale across substrate adopters." HuggingFace case study claims a 217.7-second Ascension run as exemplar.',
+    },
+    evidence: {
+      reality:
+        'cli_ascension_sessions: 2 rows total. Last session 2026-04-14. cli_sessions: 0 rows. The CLI Ascension flow has been invoked exactly twice in the lifetime of the database.',
+      method:
+        'SELECT COUNT(*), MAX(created_at) FROM cli_ascension_sessions; SELECT COUNT(*) FROM cli_sessions;',
+    },
+    verdict:
+      'Ascension exists as code. As a used developer pipeline, it has 2 historical invocations. The HuggingFace 126M-download / 217.7s case study is not represented anywhere in cli_ascension_sessions. Public claims of broad Ascension adoption are not supported.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-018',
+    title: 'Lex registry and audit chain anchors are completely empty',
+    severity: 'FICTION',
+    source: {
+      document: 'mem://security/lex/registry-backend-hardening-spec + audit-chain whitepaper',
+      quote:
+        '"Lex Registry hardened with hash-based audits, 60/min limiters, max 5KB payloads" + "audit chain anchors with cryptographic head hashes."',
+    },
+    evidence: {
+      reality:
+        'lex_registry: 0 rows. lex_registry_events: 0 rows. audit_chain_anchors: 0 rows. audit_logs has 78 rows of basic application audit, but the cryptographically-anchored Lex chain is empty.',
+      method:
+        'SELECT COUNT(*) FROM lex_registry; SELECT COUNT(*) FROM lex_registry_events; SELECT COUNT(*) FROM audit_chain_anchors;',
+    },
+    verdict:
+      'The "fingerprint gate + continuous governance" architecture written into the core memory rules has zero entries in production. Lex is a contract with no enforcement record. Audit chain has no anchors. Central to the patent narrative — and absent from the database.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-019',
+    title: 'Artifact registry: 199 entries, all owned by a single user',
+    severity: 'PARTIAL',
+    source: {
+      document: 'investor showcase + Foundry/Junkyard documentation',
+      quote:
+        '"Artifact registry tracks substrate-generated software exports across users, tiers, and verticals."',
+    },
+    evidence: {
+      reality:
+        'artifact_registry: 199 rows. COUNT(DISTINCT user_id): 1. Every artifact is owned by one user.',
+      method:
+        'SELECT COUNT(*), COUNT(DISTINCT user_id) FROM artifact_registry;',
+    },
+    verdict:
+      '199 artifacts is real engineering work — keep it. But framing the registry as multi-user substrate output is fiction. It is the founder\'s personal output catalog. Restate as "199 founder-generated artifacts" — defensible and impressive on its own.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-020',
+    title: 'Public API access usage table is empty — zero recorded external calls',
+    severity: 'FICTION',
+    source: {
+      document: 'developer/access docs + API key management memory',
+      quote:
+        '"API key lifecycle, rate limits per minute/day, scoped access, usage metering."',
+    },
+    evidence: {
+      reality:
+        'access_usage: 0 rows total. access_api_keys WHERE is_active=true: 4. Four keys provisioned, zero recorded usage.',
+      method:
+        'SELECT COUNT(*) FROM access_usage; SELECT COUNT(*) FROM access_api_keys WHERE is_active=true;',
+    },
+    verdict:
+      'Developer API has 4 keys and zero recorded usage. The 193k internal AI calls (ai_usage_log) are NOT external developer API usage — different table, different meaning. The public "metered substrate API" claim is not happening.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-021',
+    title: 'Real, modest site traffic — 1,446 sessions / 17 lifetime users (defensible truth)',
+    severity: 'FACT',
+    source: {
+      document: 'analytics_events + investor showcase framing',
+      quote:
+        'Public framing implies meaningful engagement and growth metrics.',
+    },
+    evidence: {
+      reality:
+        'analytics_events: 21,790 lifetime. Last 7 days: 3,188 events / 1,446 unique sessions. Distinct logged-in users ever: 17. client_error_log: 260.',
+      method:
+        'SELECT COUNT(*), COUNT(DISTINCT session_id) FROM analytics_events WHERE created_at > now()-interval \'7 days\'; SELECT COUNT(DISTINCT user_id) FROM analytics_events WHERE user_id IS NOT NULL;',
+    },
+    verdict:
+      'Site is alive. 1,446 weekly sessions is real engagement for a solo-founder substrate. 17 lifetime authenticated users is the honest number. Use these in the white paper instead of inflated counts — defensible and interesting on their own.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
