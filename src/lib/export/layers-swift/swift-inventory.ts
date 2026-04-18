@@ -37,6 +37,63 @@ public enum ${ns} {
     public static func chainLen() -> Int { lock.lock(); defer { lock.unlock() }; return history.count }
 }`;
 
+const NOCTURNE_SWIFT = `${HEADER('Nocturne Consolidation')}
+public enum Nocturne {
+    private static var mem: [String: Double] = [:]
+    private static let lock = NSLock()
+    private static let decay: Double = 0.92
+    private static let floor: Double = 0.05
+    public static var lastStrongest: String? = nil
+    public static func record(_ cap: String) {
+        lock.lock(); defer { lock.unlock() }
+        mem[cap] = min(1.0, (mem[cap] ?? 0.0) + 0.1)
+    }
+    public static func consolidate() -> (kept: Int, pruned: Int) {
+        lock.lock(); defer { lock.unlock() }
+        var pruned = 0; var strongest: String? = nil; var topW: Double = -1
+        for k in Array(mem.keys) {
+            let nw = (mem[k] ?? 0.0) * decay
+            if nw < floor { mem.removeValue(forKey: k); pruned += 1; continue }
+            mem[k] = nw
+            if nw > topW { topW = nw; strongest = k }
+        }
+        lastStrongest = strongest
+        return (mem.count, pruned)
+    }
+    public static func weight(_ cap: String) -> Double {
+        lock.lock(); defer { lock.unlock() }
+        return mem[cap] ?? 0.0
+    }
+}`;
+
+const REPLAY_VAULT_SWIFT = `${HEADER('Deterministic Replay Vault')}
+public enum ReplayVault {
+    public struct Capsule {
+        public let id: String, ts: Int64, cap: String, input: String, output: String, seed: String
+    }
+    private static var vault: [Capsule] = []
+    private static let lock = NSLock()
+    private static func fnv1a(_ s: String) -> String {
+        var h: UInt32 = 2166136261
+        for b in s.utf8 { h ^= UInt32(b); h = h &* 16777619 }
+        return String(format: "%08x", h)
+    }
+    public static func seal(_ cap: String, _ input: String, _ output: String) -> String {
+        lock.lock(); defer { lock.unlock() }
+        let ts = Int64(Date().timeIntervalSince1970 * 1000)
+        let seed = fnv1a("\\(cap):\\(ts):\\(input)")
+        let id = "rep_" + seed
+        vault.append(Capsule(id: id, ts: ts, cap: cap, input: input, output: output, seed: seed))
+        if vault.count > 4096 { vault.removeFirst() }
+        return id
+    }
+    public static func get(_ id: String) -> Capsule? {
+        lock.lock(); defer { lock.unlock() }
+        return vault.first(where: { $0.id == id })
+    }
+    public static func count() -> Int { lock.lock(); defer { lock.unlock() }; return vault.count }
+}`;
+
 export const SWIFT_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.freeze({
   'adaptive-forge':                recipe('AdaptiveForge', 'Adaptive Forge'),
   'adversarial-wargame':           recipe('AdvWargame', 'Adversarial Wargame'),
@@ -44,7 +101,7 @@ export const SWIFT_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.f
   'compliance-audit':              recipe('ComplianceAudit', 'Compliance Audit'),
   'cyber-perimeter-suite':         recipe('CyberPerim', 'Cyber Perimeter Suite'),
   'data-sovereignty-partitioner':  recipe('DataSov', 'Data Sovereignty Partitioner'),
-  'deterministic-replay-vault':    recipe('ReplayVault', 'Deterministic Replay Vault'),
+  'deterministic-replay-vault':    REPLAY_VAULT_SWIFT,
   'emergent-gateway':              recipe('EmergentGw', 'Emergent Gateway'),
   'holographic-integration-suite': recipe('HoloInt', 'Holographic Integration Suite'),
   'honeypot-intelligence':         recipe('Honeypot', 'Honeypot Intelligence'),
@@ -53,7 +110,7 @@ export const SWIFT_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.f
   'localization-mesh':             recipe('LocMesh', 'Localization Mesh'),
   'multi-model-consensus':         recipe('MultiModel', 'Multi-Model Consensus'),
   'neural-broker':                 recipe('NeuralBroker', 'Neural Broker'),
-  'nocturne-consolidation':        recipe('Nocturne', 'Nocturne Consolidation'),
+  'nocturne-consolidation':        NOCTURNE_SWIFT,
   'privacy-obfuscation':           recipe('PrivacyObf', 'Privacy Obfuscation'),
   'probabilistic-conscience':      recipe('ProbConsc', 'Probabilistic Conscience'),
   'reflex-orchestration':          recipe('ReflexOrch', 'Reflex Orchestration'),
