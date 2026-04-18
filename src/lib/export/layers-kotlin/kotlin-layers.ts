@@ -231,6 +231,23 @@ object AiSafety {
         return out
     }
 
+    /** Deep-sanitize: walks nested Map/List. Framework keys (_cmpsbl_/__cmpsbl_) pass through. */
+    @Suppress("UNCHECKED_CAST")
+    fun sanitizeDeep(v: Any?): Any? = when (v) {
+        is String -> sanitizePrompt(v)
+        is List<*> -> v.map { sanitizeDeep(it) }
+        is Map<*, *> -> {
+            val out = linkedMapOf<String, Any?>()
+            for ((rawK, value) in v) {
+                val k = rawK?.toString() ?: ""
+                if (k.startsWith("_cmpsbl_") || k.startsWith("__cmpsbl_")) out[k] = value
+                else out[k] = sanitizeDeep(value)
+            }
+            out
+        }
+        else -> v
+    }
+
     fun isSafe(s: String): Boolean {
         val lower = s.lowercase()
         return injectionMarkers.none { lower.contains(it) }
@@ -288,7 +305,20 @@ object CognitiveMemory {
     private val store = mutableMapOf<String, Any>()
     private val lock = Any()
 
-    fun remember(key: String, value: Any) = synchronized(lock) { store[key] = value }
+    /** Strip framework-internal sidecar keys before persisting Map values. */
+    @Suppress("UNCHECKED_CAST")
+    private fun stripSidecars(v: Any): Any = when (v) {
+        is Map<*, *> -> v.entries
+            .filter {
+                val k = it.key?.toString() ?: ""
+                !k.startsWith("_cmpsbl_") && !k.startsWith("__cmpsbl_")
+            }
+            .associate { (it.key?.toString() ?: "") to (it.value?.let { v2 -> stripSidecars(v2) } ?: "") }
+        is List<*> -> v.map { it?.let { v2 -> stripSidecars(v2) } }
+        else -> v
+    }
+
+    fun remember(key: String, value: Any) = synchronized(lock) { store[key] = stripSidecars(value) }
     fun recall(key: String): Any? = synchronized(lock) { store[key] }
     fun forget(key: String) = synchronized(lock) { store.remove(key) }
 }

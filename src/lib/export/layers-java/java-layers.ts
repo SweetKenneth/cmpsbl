@@ -626,6 +626,32 @@ public static final class AiSafety {
         return input;
     }
 
+    /** Deep-sanitize: walks nested Map/List structures. Preserves framework keys (_cmpsbl_/__cmpsbl_). */
+    @SuppressWarnings("unchecked")
+    public static Object sanitizeDeep(Object v) {
+        if (v instanceof String) return sanitizePrompt((String) v);
+        if (v instanceof List) {
+            List<Object> in = (List<Object>) v;
+            List<Object> out = new ArrayList<>(in.size());
+            for (Object e : in) out.add(sanitizeDeep(e));
+            return out;
+        }
+        if (v instanceof Map) {
+            Map<String, Object> in = (Map<String, Object>) v;
+            Map<String, Object> out = new LinkedHashMap<>();
+            for (Map.Entry<String, Object> e : in.entrySet()) {
+                String k = e.getKey();
+                if (k.startsWith("_cmpsbl_") || k.startsWith("__cmpsbl_")) {
+                    out.put(k, e.getValue());
+                } else {
+                    out.put(k, sanitizeDeep(e.getValue()));
+                }
+            }
+            return out;
+        }
+        return v;
+    }
+
     public static double checkHallucination(String claim, List<String> sources) {
         if (sources == null || sources.isEmpty()) return 0.0;
         String lower = claim.toLowerCase();
