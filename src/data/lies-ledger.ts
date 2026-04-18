@@ -1190,6 +1190,60 @@ export const LIES_LEDGER: Finding[] = [
       'A documented four-mode governance state machine that has never left its default state is a static flag, not a state machine. The OBSERVE/LOCKDOWN/EVOLVE branches are scaffolded but unexercised — including the "automatic on critical alert" LOCKDOWN trigger that should have fired at least once given 13 rejected evolution proposals.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-064',
+    title: '"8+ Zenodo DOIs / 6 OSF projects / 19+ specification files" inflated ~5×',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/patents/kenneth-e-sweet-jr-story.html (lines 593, 616-618) + src/pages/InvestorsPublic.tsx ("14 documented world firsts with Zenodo DOI deposits")',
+      quote:
+        '"8+ Zenodo DOIs · 6 OSF Projects · 1 Patent Filed" · "19+ specification files covering every primitive" · "14 documented world firsts with Zenodo DOI deposits"',
+    },
+    evidence: {
+      reality:
+        'Public ORCID API (pub.orcid.org/v3.0/0009-0001-4237-1243/works) returns exactly 6 works total — not 8+ Zenodo + 6 OSF + 19+ specs (~33 implied). Zenodo API search by ORCID identifier returns 0 hits. The 6 actual works: 1 software (Cascade Dream Engine), 1 preprint (Cascade Whitepaper), 1 software (Substrate v5.5.0 docs), 2 reports (AIGVRN v0.3, Governance Lexicon), 1 generic "Technical documentation". No "v13.5 IRONCLAD" appears in the ORCID record.',
+      method: 'curl https://pub.orcid.org/v3.0/0009-0001-4237-1243/works | python -c "json...group/length" → 6. Cross-ref with HeritagePaper.tsx and kenneth-e-sweet-jr-story.html.',
+    },
+    verdict:
+      'The public ORCID record contains 6 works. Marketing materials cite 8+/14/19+ across overlapping registries. The numbers are inflated by ~5× when "primitive specifications" are counted as separate publications even though they live inside one or two technical-documentation deposits. The "6 OSF Projects" claim is unverifiable — Zenodo cross-search returns zero ORCID-linked OSF records.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-065',
+    title: 'Cited DOI for "v13.5 IRONCLAD Academic Protection Set" resolves to a different title',
+    severity: 'FICTION',
+    source: {
+      document: 'src/pages/HeritagePaper.tsx (line 252, line 912) + src/components/hero/HeroMetaSubstrate.tsx (line 308)',
+      quote:
+        '"Sweet, K. (2026). CMPSBL v13.5 IRONCLAD Academic Protection Set. Zenodo. doi:10.5281/zenodo.18234909" · "Academic Prior Art — Zenodo v13.5"',
+    },
+    evidence: {
+      reality:
+        'curl -L https://doi.org/10.5281/zenodo.18234909 → resolves (HTTP 302 → zenodo.org/records/18895141) to a record titled "CMPSBL Substrate OS: A Cognitive Orchestration System for Autonomous AI Evolution" — NOT "v13.5 IRONCLAD Academic Protection Set". The cited title does not exist at the cited DOI.',
+      method: 'curl -sL https://doi.org/10.5281/zenodo.18234909 → grep <title>. Compare to HeritagePaper.tsx line 252 + 912 and HeroMetaSubstrate.tsx line 308.',
+    },
+    verdict:
+      'A defensive-publication citation must match the artifact it cites. This one does not — the DOI is real and resolvable, but the title attached to it in the citation list is fabricated. Anyone clicking through gets a generic Substrate OS overview, not an "Academic Protection Set" establishing prior art for "all core architectural mechanisms".',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-066',
+    title: 'No academic-citation monitor exists — the "12-stage pipeline detection" tripwire is unfired',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/convergence/02-magician-model.md (line 103) + 09-defensibility-playbook.md (line 101)',
+      quote:
+        '"An academic paper correctly identifies the 12-stage pipeline (hasn\'t happened)" · "Watch for: Academic papers that correctly identify the 12-stage pipeline"',
+    },
+    evidence: {
+      reality:
+        'Zero database tables track inbound academic citations: information_schema.tables ILIKE %academ%/%research%/%paper%/%citation%/%publication% → all 0. No monitoring code in src/ scrapes Google Scholar, Semantic Scholar, or arXiv for citations of CMPSBL/PromptFluid/AIGVRN. The "watch for" tripwire has no detector implementation.',
+      method: "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND name patterns above → 0 rows. grep -r 'scholar\\|arxiv\\|citation' src/ → no monitor.",
+    },
+    verdict:
+      'The convergence playbook claims active monitoring for academic adversaries reverse-engineering the pipeline. No such monitor exists. "Hasn\'t happened" is true by default because nobody is looking. Academic-credibility theater paired with academic-counter-intelligence theater.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
