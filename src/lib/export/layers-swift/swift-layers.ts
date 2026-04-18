@@ -261,6 +261,21 @@ public enum AiSafety {
         return out
     }
 
+    /// Deep-sanitize: walks nested [String: Any]/[Any]. Framework keys (_cmpsbl_/__cmpsbl_) pass through.
+    public static func sanitizeDeep(_ v: Any) -> Any {
+        if let s = v as? String { return sanitizePrompt(s) }
+        if let arr = v as? [Any] { return arr.map { sanitizeDeep($0) } }
+        if let dict = v as? [String: Any] {
+            var out: [String: Any] = [:]
+            for (k, value) in dict {
+                if k.hasPrefix("_cmpsbl_") || k.hasPrefix("__cmpsbl_") { out[k] = value }
+                else { out[k] = sanitizeDeep(value) }
+            }
+            return out
+        }
+        return v
+    }
+
     public static func isSafe(_ s: String) -> Bool {
         let lower = s.lowercased()
         return !injectionMarkers.contains { lower.contains($0) }

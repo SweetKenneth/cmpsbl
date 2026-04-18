@@ -377,6 +377,28 @@ export const AI_SAFETY_RS = `
 // ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 pub mod cmpsbl_ai_safety {
+    use serde_json::{Value, Map};
+
+    /// Deep-sanitize: walks nested JSON; preserves _cmpsbl_/__cmpsbl_ framework keys verbatim.
+    pub fn sanitize_deep(v: &Value) -> Value {
+        match v {
+            Value::String(s) => Value::String(sanitize_prompt(s)),
+            Value::Array(arr) => Value::Array(arr.iter().map(sanitize_deep).collect()),
+            Value::Object(obj) => {
+                let mut out = Map::new();
+                for (k, val) in obj.iter() {
+                    if k.starts_with("_cmpsbl_") || k.starts_with("__cmpsbl_") {
+                        out.insert(k.clone(), val.clone());
+                    } else {
+                        out.insert(k.clone(), sanitize_deep(val));
+                    }
+                }
+                Value::Object(out)
+            }
+            _ => v.clone(),
+        }
+    }
+
     pub fn sanitize_prompt(s: &str) -> String {
         s.replace("ignore previous instructions", "[REDACTED]")
             .replace("system:", "[REDACTED]:")

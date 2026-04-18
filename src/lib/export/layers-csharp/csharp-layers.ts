@@ -665,6 +665,26 @@ public static class AiSafety {
         return input;
     }
 
+    /// <summary>Deep-sanitize: walks nested IDictionary/IList. Framework keys (_cmpsbl_/__cmpsbl_) pass through.</summary>
+    public static object SanitizeDeep(object v) {
+        if (v is string s) return SanitizePrompt(s);
+        if (v is System.Collections.IDictionary dict) {
+            var outDict = new Dictionary<string, object>();
+            foreach (System.Collections.DictionaryEntry e in dict) {
+                string k = e.Key?.ToString() ?? "";
+                if (k.StartsWith("_cmpsbl_") || k.StartsWith("__cmpsbl_")) outDict[k] = e.Value;
+                else outDict[k] = SanitizeDeep(e.Value);
+            }
+            return outDict;
+        }
+        if (v is System.Collections.IList list) {
+            var outList = new List<object>(list.Count);
+            foreach (var item in list) outList.Add(SanitizeDeep(item));
+            return outList;
+        }
+        return v;
+    }
+
     public static double CheckHallucination(string claim, List<string> sources) {
         if (sources == null || sources.Count == 0) return 0.0;
         string lower = claim.ToLowerInvariant();

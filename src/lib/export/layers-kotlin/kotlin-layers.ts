@@ -231,6 +231,23 @@ object AiSafety {
         return out
     }
 
+    /** Deep-sanitize: walks nested Map/List. Framework keys (_cmpsbl_/__cmpsbl_) pass through. */
+    @Suppress("UNCHECKED_CAST")
+    fun sanitizeDeep(v: Any?): Any? = when (v) {
+        is String -> sanitizePrompt(v)
+        is List<*> -> v.map { sanitizeDeep(it) }
+        is Map<*, *> -> {
+            val out = linkedMapOf<String, Any?>()
+            for ((rawK, value) in v) {
+                val k = rawK?.toString() ?: ""
+                if (k.startsWith("_cmpsbl_") || k.startsWith("__cmpsbl_")) out[k] = value
+                else out[k] = sanitizeDeep(value)
+            }
+            out
+        }
+        else -> v
+    }
+
     fun isSafe(s: String): Boolean {
         val lower = s.lowercase()
         return injectionMarkers.none { lower.contains(it) }

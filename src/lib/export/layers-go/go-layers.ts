@@ -635,6 +635,32 @@ func cmpsbl_sanitize_prompt(input string) string {
 \treturn input
 }
 
+// cmpsbl_sanitize_deep walks nested map/slice structures applying sanitize_prompt
+// to every string leaf. Framework-internal keys (_cmpsbl_, __cmpsbl_) pass through
+// unmodified so sidecar metadata is preserved across the safety boundary.
+func cmpsbl_sanitize_deep(v interface{}) interface{} {
+\tswitch t := v.(type) {
+\tcase string:
+\t\treturn cmpsbl_sanitize_prompt(t)
+\tcase []interface{}:
+\t\tout := make([]interface{}, len(t))
+\t\tfor i, e := range t { out[i] = cmpsbl_sanitize_deep(e) }
+\t\treturn out
+\tcase map[string]interface{}:
+\t\tout := make(map[string]interface{}, len(t))
+\t\tfor k, val := range t {
+\t\t\tif strings.HasPrefix(k, "_cmpsbl_") || strings.HasPrefix(k, "__cmpsbl_") {
+\t\t\t\tout[k] = val
+\t\t\t} else {
+\t\t\t\tout[k] = cmpsbl_sanitize_deep(val)
+\t\t\t}
+\t\t}
+\t\treturn out
+\tdefault:
+\t\treturn v
+\t}
+}
+
 func cmpsbl_check_hallucination(claim string, sources []string) float64 {
 \tif len(sources) == 0 { return 0.0 }
 \tlower := strings.ToLower(claim); supported := 0
