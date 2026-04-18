@@ -1585,6 +1585,42 @@ export const LIES_LEDGER: Finding[] = [
       'The DOIs and ORCID exist — that part is real and the FACT-tier portion stands. What is theater is treating the body of work as "established academic prior art." Median 6 downloads, no peer review, no citations on Google Scholar — these are timestamped self-publications, not academic traction. Useful for prior-art priority date, misleading as evidence of scholarly engagement.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-086',
+    title: 'Zenodo record 18895141 (Substrate OS v13.5) is real — 1,163 downloads verified',
+    severity: 'FACT',
+    source: {
+      document: 'https://zenodo.org/records/18895141 — "CMPSBL Substrate OS: A Cognitive Orchestration System for Autonomous AI Evolution" (v13.5, published 2026-03-06)',
+      quote:
+        'Author: Kenneth E. Sweet Jr. (ORCID 0009-0001-4237-1243). Affiliation: PromptFluid. Released as v13.5 Academic Protection Set: 18 documents (md + html), 159 kB total, describing clockless orchestration, Memory Stream, pipeline crystallization, Universal Export, bounded-autonomy governance, IRONCLAD resilience, Intent Mesh, and domain extension.',
+    },
+    evidence: {
+      reality:
+        'Zenodo API confirms: title, ORCID, publication date, and file manifest match the page exactly. Lifetime stats: 1,163 downloads / 1,157 unique downloads / 956 views / 832 unique views. Codebase verification of the eight architectural concepts cited: src/components/admin/IntentMeshCommsFeed.tsx + mesh_intents table (Intent Mesh — real), src/lib/branding/memory-stream.ts + memory-stream tables (Memory Stream — real), src/lib/ascension/* 60+ files including pipeline-crystallization, universal-export, contract-extractor (Ascension/Universal Export — real), src/config/substrate.ts + IRONCLAD references (resilience layer — real), governance_mode + governance_transition_approvals tables (bounded autonomy — real), clockless references in src/components/heritage/ArchitectureDiagrams.tsx + SEO (clockless concept — real). Every architectural primitive named in the abstract has corresponding code or DB infrastructure in the repo.',
+      method: 'GET https://zenodo.org/api/records/18895141 + grep -rli on each named concept across src/ and docs/.',
+    },
+    verdict:
+      'This is the one Zenodo record where the headline claim holds: real DOI, real ORCID, real publication, real 1,163 downloads, and the 8 architectural concepts described are all backed by working code or schema in this repo. Kept in the ledger as a FACT entry to make clear which claims survive scrutiny — not everything is theater. The "1,000+ downloads" framing is accurate when applied to *this specific record* (it is misleading only when used to imply the entire prior-art chain has that traction — see F-083, F-084, F-085).',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-087',
+    title: 'v13.5 release index self-cites a superseded DOI (18234909) instead of its own DOI (18895141)',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/academic-v13/print/18-zenodo-metadata.html + 00-release-index.md (inside Zenodo record 18895141)',
+      quote:
+        '"DOI: 10.5281/zenodo.18234909" — printed in the release index, the metadata document, the BibTeX block, and the APA/Chicago citations bundled inside record 18895141.',
+    },
+    evidence: {
+      reality:
+        'The actual Zenodo DOI for the v13.5 record the user is reading is 10.5281/zenodo.18895141. Resolving 10.5281/zenodo.18234909 returns a 302 redirect to 18895141 — meaning 18234909 is an older version in the same version chain, not the canonical record. Anyone copying the BibTeX from page 18 of the release set will cite the deprecated alias rather than the live record.',
+      method: 'curl -I https://doi.org/10.5281/zenodo.18234909 → 302 → /records/18895141; compare to GET zenodo.org/api/records/18895141 → doi: 10.5281/zenodo.18895141.',
+    },
+    verdict:
+      'Not a fabrication — both DOIs resolve and both belong to Kenneth — but the release set ships its own outdated DOI in every citation block. Citations harvested from the published artifact will point one version behind. Easy fix: regenerate the metadata file with the canonical 18895141 DOI before the next release.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
