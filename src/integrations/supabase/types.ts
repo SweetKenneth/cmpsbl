@@ -4382,6 +4382,57 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_regret_log: {
+        Row: {
+          created_at: string
+          decision_ref: string | null
+          decision_summary: string
+          decision_type: string
+          dream_id: string | null
+          dreamed: boolean
+          dreamed_at: string | null
+          id: string
+          lessons: string[] | null
+          metadata: Json | null
+          outcome_summary: string
+          severity: number
+          source_module: string
+          tags: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          decision_ref?: string | null
+          decision_summary: string
+          decision_type: string
+          dream_id?: string | null
+          dreamed?: boolean
+          dreamed_at?: string | null
+          id?: string
+          lessons?: string[] | null
+          metadata?: Json | null
+          outcome_summary: string
+          severity?: number
+          source_module: string
+          tags?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          decision_ref?: string | null
+          decision_summary?: string
+          decision_type?: string
+          dream_id?: string | null
+          dreamed?: boolean
+          dreamed_at?: string | null
+          id?: string
+          lessons?: string[] | null
+          metadata?: Json | null
+          outcome_summary?: string
+          severity?: number
+          source_module?: string
+          tags?: string[] | null
+        }
+        Relationships: []
+      }
       brain_reinforcement_log: {
         Row: {
           action: string | null
@@ -6303,6 +6354,39 @@ export type Database = {
           session_id?: string | null
           status_code?: number | null
           user_agent?: string | null
+        }
+        Relationships: []
+      }
+      defense_memory_sync_runs: {
+        Row: {
+          created_at: string
+          elapsed_ms: number | null
+          events_scanned: number
+          groups: number
+          id: string
+          metadata: Json | null
+          promoted: number
+          reinforced: number
+        }
+        Insert: {
+          created_at?: string
+          elapsed_ms?: number | null
+          events_scanned?: number
+          groups?: number
+          id?: string
+          metadata?: Json | null
+          promoted?: number
+          reinforced?: number
+        }
+        Update: {
+          created_at?: string
+          elapsed_ms?: number | null
+          events_scanned?: number
+          groups?: number
+          id?: string
+          metadata?: Json | null
+          promoted?: number
+          reinforced?: number
         }
         Relationships: []
       }
@@ -9062,6 +9146,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      governor_intent_stream: {
+        Row: {
+          created_at: string
+          embedded: boolean
+          embedding_id: string | null
+          id: string
+          intent_text: string
+          linked_refs: string[] | null
+          metadata: Json | null
+          priority: number
+          processed: boolean
+          processed_at: string | null
+          scope: string
+          source: string | null
+          tags: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          embedded?: boolean
+          embedding_id?: string | null
+          id?: string
+          intent_text: string
+          linked_refs?: string[] | null
+          metadata?: Json | null
+          priority?: number
+          processed?: boolean
+          processed_at?: string | null
+          scope?: string
+          source?: string | null
+          tags?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          embedded?: boolean
+          embedding_id?: string | null
+          id?: string
+          intent_text?: string
+          linked_refs?: string[] | null
+          metadata?: Json | null
+          priority?: number
+          processed?: boolean
+          processed_at?: string | null
+          scope?: string
+          source?: string | null
+          tags?: string[] | null
+        }
+        Relationships: []
       }
       immune_escalations: {
         Row: {
