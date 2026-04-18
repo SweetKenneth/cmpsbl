@@ -34,8 +34,9 @@ Ran against the live database `2026-04-18`. Every number below is `SELECT COUNT(
 | `discovered_pipelines` | 40 | — | ✅ real |
 | `foundry_discovery_metrics` | 202 | — | ✅ real |
 | `vertical_memory_stream` | 40 | **0** | ⚠️ **STALE** — 15 days dead |
-| `cli_ascension_sessions` | 2 | 0 | ⚠️ Ascension worked **twice ever** (2026-04-14) |
-| `vertical_ascension_sessions` | 1 | 0 | ⚠️ One real run |
+| `cli_ascension_sessions` | 2 | 0 | ⚠️ **Telemetry under-reports.** Kenneth has personally run V1+V2 100+ times — the engine is verified-real; the session log is just not being written by every entry path (web export pipeline doesn't insert here). Treat the **engine as load-bearing real**, not the row count. |
+| `vertical_ascension_sessions` | 1 | 0 | ⚠️ Same — one logged run, many real ones. |
+| `backup_exports` | 44 | — | ✅ **REAL** — 44 actual export artifacts persisted, corroborates the 100+ runs claim |
 | `artifact_registry` (apex/mythic/prime tiers) | 204 | **178 in 30d** | ✅ **REAL** — Crown Jewel pipeline produces |
 
 ### 1.3 The Crown Jewel reality
@@ -61,7 +62,7 @@ Ran against the live database `2026-04-18`. Every number below is `SELECT COUNT(
 - `discoveries` + `discovery_runs` (7,266 + 3,343 rows, daily activity) → **the prime Discovery Engine works**
 - `vertical_clm_cycles` (1,764 rows, 780 in 7 days) → **CLM is running** — feed all 5 verticals' cycles into one prime stream
 - `artifact_registry` (205 real Crown Jewels across 7 tiers) → **the prime vault**
-- `cli_ascension_sessions` schema — **the moat**, even though only 2 sessions ran. Surface this in the home and make it the signup driver.
+- `cli_ascension_sessions` + `vertical_ascension_sessions` + `backup_exports` — **the moat.** Kenneth has used V1/V2 100+ times; telemetry under-reports because not all entry paths write a session row. **Action item baked into Step 4 below: instrument all Ascension entry paths to write a session row, so the home page's "live proof" widget reflects reality, not a broken counter.** Surface this in the home and make it the signup driver.
 - `foundry_discovery_metrics` (202 rows) — keep
 - `discovered_pipelines` (40 rows) — keep
 - `substrate_*` tables (50+ tables, real config/runtime) — untouched
@@ -138,8 +139,9 @@ Each step is independently shippable. Stop after any step if needed.
 | 1 | Subdomain redirect shim — add hostname-check to `App.tsx`/`main.tsx` that 301-equivalents all 11 vertical hosts to `cmpsbl.com`. Ship before any deletions. | `src/App.tsx`, new `src/lib/routing/subdomainRedirect.ts` | no | low — pure additive |
 | 2 | Delete dead vertical pages (the 8 `*Home.tsx` files in §2.3) + `VerticalAccessGate`, `VerticalReturnBanner`, `VerticalThemeWrapper`, `crossVerticalSSO.ts`, `domain` helpers. Update `DomainAwareHome.tsx` → just renders `<FactoryHome />`. | ~15 files deleted, 2 simplified | no | low — verticals already redirected |
 | 3 | Strip 7 fictional vertical themes from `vertical-factory-engine.ts` and `domains.ts`. Keep only `cyber/robotics/llm/quantum/agency` until DB migration. | 2 files | no | low |
-| 4 | Update home copy (`FactoryHome.tsx`) — remove vertical messaging, strengthen Ascension hero. Add real-counts widget reading `cli_ascension_sessions`. | 1 file | no | low |
-| 5 | DB migration: create `prime_primitives`, `prime_memory_stream`, `prime_clm_cycles` (or alter existing). Backfill from `vertical_*` tables. Add `lens` provenance column. | 1 migration | yes | medium — requires backup checkpoint |
+| 4a | **Ascension telemetry repair (NEW — do before home widget).** Audit every Ascension entry path (web `/ascension`, web `/ascension-v2`, `/beta` clone, CLI, repo connector) and ensure each writes a row to `cli_ascension_sessions` (or unified `ascension_sessions` post-merge) at run start + completion. Backfill from `backup_exports` where possible (44 known real artifacts → 44 missing session rows recoverable via timestamp + fingerprint). | ~6 entry-point files, 1 backfill migration | yes (insert-only) | low — additive logging |
+| 4b | Update home copy (`FactoryHome.tsx`) — remove vertical messaging, strengthen Ascension hero. Add real-counts widget reading the now-accurate `ascension_sessions` + `backup_exports`. | 1 file | no | low |
+| 5 | DB migration: create `prime_primitives`, `prime_memory_stream`, `prime_clm_cycles` (or alter existing). Backfill from `vertical_*` tables. Add `lens` provenance column. **Pre-flight: full `pg_dump` checkpoint + `backup_exports` snapshot to local artifact.** | 1 migration | yes | medium — requires backup checkpoint |
 | 6 | Code switch — every read of `vertical_primitives` etc. switches to `prime_*`. Delete the old tables in a follow-up migration after a week of dual-read confidence. | ~30 files | yes | medium |
 | 7 | Update SEO: `sitemap.xml`, `robots.txt`, `LLMs.txt`, public changelog entry: "Substrate consolidated. Vertical subdomains retired. Ascension is the anchor." | 4 files | no | low |
 | 8 | Re-run the Lies Ledger audit script and republish the report. Delta should show fiction count drop by ~15-20 entries (the vertical-related ones). | runs the existing audit | no | none |
@@ -151,8 +153,8 @@ Each step is independently shippable. Stop after any step if needed.
 - **The discovery engine is real.** 7,266 rows, daily activity. That's the strongest signal in the DB — preserve and surface it.
 - **CLM is real.** 780 cycles in 7 days. The "vertical CLM" is just one prime CLM with a vertical tag — flatten the tag, keep the engine.
 - **Crown Jewels are real but not vertical-attributed in the DB.** 205 artifacts. Vertical grouping was UI overlay — flatten it without data loss.
-- **Ascension is real but barely used.** 2 CLI sessions ever, last on April 14. **This is the moat per your direction** — the next session's home work makes that visible.
-- **Memory Stream is dead.** 15 days stale on every vertical. Either revive it as one prime stream or retire it. Recommend retire-then-rebuild as a single prime stream.
+- **Ascension is real and load-bearing.** Kenneth has personally run V1+V2 100+ times. The 2-row session log is a telemetry gap, not an engine reality — `backup_exports` shows 44 persisted artifacts that corroborate the user-attested usage. **Step 4a fixes this before Step 4b touches the home widget**, so we never ship a "0 ascensions today" badge backed by broken instrumentation. The engine is the moat; the counter is being repaired.
+- **Memory Stream is dead at the row level.** 15 days stale on every vertical. Either revive it as one prime stream or retire it. Recommend retire-then-rebuild as a single prime stream.
 - **The 7 phantom verticals never existed in the DB.** The Lies Ledger called this; we now have the row counts to prove it.
 
 ## 7. What this is NOT touching (per `mem://constraints/architecture/layer2-runtime-non-negotiables`)
