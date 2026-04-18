@@ -117,7 +117,7 @@ async function backfillSource(
       artifact_type: cfg.artifact_type,
       artifact_content: content.slice(0, 4000),
       embedding: vec as any,
-      model_version: "lovable-text-embedding-004-pooled-384",
+      model_version: "openai-text-embedding-3-small-1536",
     });
     if (insErr) {
       console.error(`[${sourceKey}] insert error for ${id}`, insErr.message);
