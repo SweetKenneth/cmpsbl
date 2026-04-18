@@ -6,6 +6,23 @@
 
 ---
 
+## §-1 — Build History Context (READ BEFORE JUDGING ANYTHING)
+
+This timeline is **mandatory context** for the audit. Without it, the AI keeps mistaking dormant-by-design systems for "fake."
+
+| Era | What happened | What it means for the audit |
+|-----|---------------|------------------------------|
+| **~Sept–Oct 2024** | Cascade (autonomous orchestrated agents) is built — predates ChatGPT-style "agent" hype and predates OpenClaw entirely. Cascade later splits into DREAM (synthesis) + DECODE (parser). | Any "agents are new" framing is wrong. Kenneth had orchestrated agents before the market had the word. |
+| **Firecrawl free promo on Lovable (~2 weeks)** | During the free window: built **Agent Forge** (single agents) → realized "why one when you can mint twenty?" → built the **Agency** system (20-agent collectives, mesh memory, per-user pages, real Firecrawl research + actions). Promo ends → both systems go dormant by economic choice, not failure. | `agency_*` tables alive (685+ rows, 20 members in CMPSBL OPS). `forge_agents` empty = **paused, not broken**. Do not classify as theater. |
+| **PromptFluid Ecosystem hits ~300 edge functions** | Lovable platform itself caps out — edge function logs unreadable, project gets stuck. Kenneth contacts Lovable; they confirm nobody had pushed the platform that hard before and spend **months** raising the ceiling. | Explains why so much code is "real but unwired" — it was wired, then quarantined when the platform itself broke under it. |
+| **Waiting period (~Oct 2024 – Feb 2025)** | Lovable gives free credits while they fix infra. Kenneth builds **XCTBL** — a connected 9-website "Space" universe (XCTBL.com, fully live, verified HTTP 200 just now: "XCTBL³ Space — A New Star Can Enter"). XCTBL = playful surface form of the same substrate ideas. | XCTBL is not a side project — it is a **parallel proof** that the substrate patterns ship at scale. Live today on a separate Lovable account (Kenneth runs 3). |
+| **Platform fix lands** | Kenneth is forced to **Remix** the original PromptFluid ecosystem — that Remix becomes today's CMPSBL substrate. | This is why `pf_*` tables coexist with `cmpsbl_*` — same lineage, post-Remix rebuild. The "drift" between names is **historical record**, not sloppiness. |
+| **Heritage Paper (`/heritage-paper`)** | Live meta-paper documenting this lineage. Kenneth's note: ~10% drift in the live copy. Period **Oct 2024 – Feb 2025** is intentionally absent (the wall + XCTBL detour + Remix). | Use as a primary source, but do not treat any specific claim there as ground truth without re-checking. |
+
+**Operational rule from this history:** "Empty table" ≠ "fake feature." For Agency / Agent Forge / anything Firecrawl-dependent, the correct classification is **Dormant — paid-API gated**, not theater.
+
+---
+
 ## §0 — Terminology Alias Map (READ FIRST, applies to every claim below)
 
 Prior audits were wrong because they searched canonical names only. These aliases are functionally identical:
