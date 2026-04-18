@@ -1028,6 +1028,60 @@ export const LIES_LEDGER: Finding[] = [
       'A floor valuation should survive when each input is independently verified. Every one of the seven IP line items either contradicts the database or has no database trace at all. With $0 in 90-day usage revenue and 5 active subscriptions, the floor is not defensible at the stated range.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-055',
+    title: '"Mid-Range $42–60M" line items have no marketplace transactions',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/09-defensible-valuation.md (§7, lines 257-264) · internal/11-defensible-valuation.md (lines 257-262)',
+      quote:
+        '"SaaS subscription model (4 tiers) · $7–14M" · "Agent marketplace (20 agents) · $4–7M" · "Engine marketplace (54 engines) · $6–11M" · "CDM + Memory Stream corpus · $4–7M" · "Mid-Range Total · $42–60M"',
+    },
+    evidence: {
+      reality:
+        'Database snapshot: access_subscriptions total=5, all 5 active, 0 trialing. cognitive_orders=0 (agent marketplace has zero transactions). agency_purchases total=1, completed revenue=$0.00. access_usage cost over last 90 days=$0.00. The "CDM + Memory Stream corpus" valuation cross-references F-008 (silent) and F-052 ($2.9M/discovery has no DB scoring). Four of four mid-range line items lack the underlying volume.',
+      method: 'SELECT count and sum on access_subscriptions, cognitive_orders, agency_purchases, access_usage; cross-ref F-008, F-049, F-051, F-052.',
+    },
+    verdict:
+      'A mid-range valuation built on "marketplace" line items requires a marketplace with throughput. Five active subscriptions and zero agent orders do not support the $42–60M risk-adjusted band.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-056',
+    title: '"Ceiling $132–268M" includes $35–105M Ascension line — 3 lifetime runs',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/09-defensible-valuation.md (§7, lines 268-277)',
+      quote:
+        '"Ascension (software evolution) · $35–105M" · "Universal Export (90+ languages) · $11–21M" · "Category creation premium · $21–56M" · "Compounding data moat (CLM + CDM) · $14–35M" · "Ceiling Total · $132–268M"',
+    },
+    evidence: {
+      reality:
+        'Aggregate cross-ref: Ascension has 3 lifetime sessions across cli_ascension_sessions + vertical_ascension_sessions (F-044). Universal Export has 0 emitter directories (F-043, F-051). CLM is auto-throttled with 55% failure rate (F-034). CDM/Memory Stream is silent (F-008). "Category creation" is contested by published prior art on "cognitive substrate" (F-047). Every component of the ceiling stack has a finding against it.',
+      method: 'Aggregate of F-008, F-034, F-043, F-044, F-047, F-051; ceiling-row cross-walk.',
+    },
+    verdict:
+      'A ceiling valuation should be the most-aggressive case where every engine is delivering. Here every engine is silent, throttled, or empty. The $132–268M risk-adjusted ceiling is unsupported by every load-bearing input simultaneously.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-057',
+    title: '"Series A readiness $200K/month" target vs. current $0 90-day revenue',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/roadmaps/cmpsbl-master-roadmap-2026-2028.md (line 260) · investors/20-why-invest-now.md (lines 33, 39)',
+      quote:
+        '"Goal: $200,000/month. Series A readiness. Team of 5–8" · "Massive TAM — $35B+ addressable market with no direct competitor" · "Seed funding to accelerate go-to-market"',
+    },
+    evidence: {
+      reality:
+        'Current state: 5 active subscriptions, 0 cognitive (agent) orders, 1 agency purchase with $0.00 completed revenue, 7 distinct authenticated users in last 30 days, $0.00 in access_usage cost over the last 90 days. Distance to the $200K/month goal: ~$200,000 from current run-rate. The $35B TAM number has no citation in the doc despite being marked "see Document 11, Section 07".',
+      method: 'SELECT counts/sums on access_subscriptions, cognitive_orders, agency_purchases, auth_events, access_usage. Verified roadmap line 260 vs. why-invest-now lines 33-39.',
+    },
+    verdict:
+      'A Series A readiness target requires a credible path from current MRR to $200K/month. With 5 active subs and $0 in 90-day usage revenue, the gap is the entire goal. The TAM citation is also a forward-reference to a section that does not derive the $35B number.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
