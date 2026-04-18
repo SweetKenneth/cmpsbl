@@ -4,20 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Brain, Shield, User, Zap } from "lucide-react";
 
 export default function DecodeIdentity() {
-  const { data: persona } = useQuery({
-    queryKey: ['decode-persona'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('brain_persona')
-        .select('*')
-        .limit(1)
-        .maybeSingle();
-      
-      if (error) throw error;
-      return data;
-    },
-  });
-
   const { data: policy } = useQuery({
     queryKey: ['decode-policy'],
     queryFn: async () => {
@@ -32,11 +18,10 @@ export default function DecodeIdentity() {
     },
   });
   
-  if (!persona || !policy) {
+  if (!policy) {
     return null;
   }
 
-  const behaviorRules = policy.behavior_rules as any;
   const ethicalCompass = policy.ethical_compass as any;
 
   return (
@@ -47,7 +32,7 @@ export default function DecodeIdentity() {
         </div>
         <div>
           <h3 className="text-xl font-bold text-foreground">Decode</h3>
-          <p className="text-sm text-muted-foreground">{persona.role}</p>
+          <p className="text-sm text-muted-foreground">CMPSBL Cognitive</p>
         </div>
       </div>
 
