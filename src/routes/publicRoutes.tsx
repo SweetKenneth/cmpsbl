@@ -71,6 +71,7 @@ const Store = lazy(() => import("@/pages/Store"));
 const Upgrade = lazy(() => import("@/pages/Upgrade"));
 const Packs = lazy(() => import("@/pages/Packs"));
 const Plans = lazy(() => import("@/pages/Plans"));
+const TiersRedirect = () => <Navigate to="/plans" replace />;
 const CapabilityMap = lazy(() => import("@/pages/CapabilityMap"));
 const ScanResult = lazy(() => import("@/pages/ScanResult"));
 const Scanner = lazy(() => import("@/pages/Scanner"));
@@ -144,7 +145,7 @@ export const publicRoutes = (
     <Route path="/" element={<DomainAwareHome />} />
     <Route path="/lies" element={<Lies />} />
     <Route path="/verify/:fingerprint" element={<VerifyFingerprint />} />
-    <Route path="/marketplace" element={<MarketplaceHome />} />
+    <Route path="/marketplace" element={<Navigate to="/store" replace />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
     <Route path="/mana" element={<ManaPage />} />
     <Route path="/shield" element={<ShieldPage />} />
@@ -217,6 +218,10 @@ export const publicRoutes = (
     <Route path="/capabilities" element={<Navigate to="/store" replace />} />
     <Route path="/synergies" element={<Navigate to="/store" replace />} />
     <Route path="/store" element={<Store />} />
+    <Route path="/tiers" element={<TiersRedirect />} />
+    <Route path="/upgrade" element={<TiersRedirect />} />
+    <Route path="/packs" element={<Navigate to="/store" replace />} />
+    <Route path="/memory-packs" element={<Navigate to="/store" replace />} />
     <Route path="/showroom" element={<ShowroomPage />} />
     <Route path="/assembly" element={<AssemblyPage />} />
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />

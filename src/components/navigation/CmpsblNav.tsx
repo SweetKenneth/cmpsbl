@@ -44,7 +44,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const MARKETPLACE_URL = "https://marketplace.cmpsbl.com";
+// MARKETPLACE_URL removed (v19.1) — /marketplace now redirects to /store
 
 interface NavItem {
   name: string;
@@ -75,10 +75,8 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: "Explore",
     items: [
-      { name: "Store", href: "/store", icon: ShoppingBag, description: "Browse engines, agents & primitives" },
+      { name: "Store", href: "/store", icon: ShoppingBag, description: "Layers, Meta Engines & Meta Agents" },
       { name: "Showroom", href: "/showroom", icon: Eye, description: "Interactive capability showcase" },
-      { name: "Verticals", href: "/verticals", icon: Globe, description: "Industry-specific substrates" },
-      { name: "Marketplace", href: MARKETPLACE_URL, icon: Rocket, description: "Third-party substrate marketplace", badge: "NEW", external: true },
       { name: "Use Cases", href: "/use-cases", icon: Cpu, description: "Real-world implementation examples" },
     ],
   },
@@ -96,7 +94,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: "Company",
     items: [
       { name: "About", href: "/about", icon: Building2, description: "Our mission & story" },
-      { name: "Plans", href: "/plans", icon: CreditCard, description: "Builder → Creator → Architect" },
+      { name: "Plans", href: "/plans", icon: CreditCard, description: "Free or Pro" },
       { name: "Software Symbiosis", href: "/software-symbiosis", icon: Layers, description: "The vision behind Mana" },
       { name: "Investors", href: "/investors", icon: Award, description: "Investment thesis & traction" },
       { name: "Contact", href: "/contact", icon: Users, description: "Get in touch" },
