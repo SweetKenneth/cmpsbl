@@ -586,11 +586,24 @@ function obfuscateSegment(segment: string, lang: string): string {
 }
 
 /**
+ * TEMPORARY BYPASS — Kenneth requested the blackbox sealing engine be
+ * bypassed in the Ascension V2 export pipeline. Set back to `false` to
+ * re-enable identifier renaming + integrity-hash sealing.
+ *
+ * When true: blackboxFile() is a no-op pass-through. Layer 1 + Layer 2
+ * ship with original identifiers, no Convex Core™ INTEGRITY header.
+ */
+const BLACKBOX_BYPASS = true;
+
+/**
  * Apply black-box obfuscation to a generated capability file.
  * Preserves public API + Layer 1 source verbatim, obfuscates Layer 2 internals,
  * adds sealed notice and integrity hash.
  */
 export function blackboxFile(source: string, lang: string): string {
+  // Bypass switch — see BLACKBOX_BYPASS docblock above.
+  if (BLACKBOX_BYPASS) return source;
+
   // 1. Split off Layer 1 (must remain byte-identical)
   const region = findLayer1Region(source);
 
