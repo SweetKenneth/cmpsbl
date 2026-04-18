@@ -7,8 +7,8 @@
  * branching.
  *
  *   Defense & Security        — LLM Defense · Cyber Perimeter · Privacy · Topological · Honeypot
- *   Observability & Audit     — Layered Obs · Compliance Audit · Spectral · Conscience · Self-Healing Scanner
- *   Synthesis & Evolution     — Adaptive Forge · Symbolic · Sentinel · Reflex · Behavioral Biometrics
+ *   Observability & Audit     — Layered Obs · Compliance Audit · Spectral · Conscience · Self-Healing · Replay Vault
+ *   Synthesis & Evolution     — Adaptive Forge · Symbolic · Sentinel · Reflex · Behavioral Bio · Nocturne
  *   Integration & Contracts   — Holographic · Emergent · Synthetic · Localization · Neural Broker
  *   Specialty Suite           — Multi-Model Consensus · Data Sovereignty · Adversarial Wargame
  *
@@ -24,19 +24,21 @@ import { PRIVACY_OBFUSCATION_LAYER } from './privacy-obfuscation.layer';
 import { TOPOLOGICAL_SECURITY_SUITE_LAYER } from './topological-security-suite.layer';
 import { HONEYPOT_INTELLIGENCE_LAYER } from './honeypot-intelligence.layer';
 
-// ── Observability & Audit (5) ──────────────────────────────────────────────
+// ── Observability & Audit (6) ──────────────────────────────────────────────
 import { LAYERED_OBSERVABILITY_SUITE_LAYER } from './layered-observability-suite.layer';
 import { COMPLIANCE_AUDIT_LAYER } from './compliance-audit.layer';
 import { SPECTRAL_AUDITOR_LAYER } from './spectral-auditor.layer';
 import { PROBABILISTIC_CONSCIENCE_LAYER } from './probabilistic-conscience.layer';
 import { SELF_HEALING_SCANNER_LAYER } from './self-healing-scanner.layer';
+import { DETERMINISTIC_REPLAY_VAULT_LAYER } from './deterministic-replay-vault.layer';
 
-// ── Synthesis & Evolution (5) ──────────────────────────────────────────────
+// ── Synthesis & Evolution (6) ──────────────────────────────────────────────
 import { ADAPTIVE_FORGE_LAYER } from './adaptive-forge.layer';
 import { SYMBOLIC_CRAFTER_LAYER } from './symbolic-crafter.layer';
 import { SENTINEL_EVOLUTION_LAYER } from './sentinel-evolution.layer';
 import { REFLEX_ORCHESTRATION_LAYER } from './reflex-orchestration.layer';
 import { BEHAVIORAL_BIOMETRICS_LAYER } from './behavioral-biometrics.layer';
+import { NOCTURNE_CONSOLIDATION_LAYER } from './nocturne-consolidation.layer';
 
 // ── Integration & Contracts (5) ────────────────────────────────────────────
 import { HOLOGRAPHIC_INTEGRATION_SUITE_LAYER } from './holographic-integration-suite.layer';
@@ -45,7 +47,7 @@ import { SYNTHETIC_CONTRACTS_LAYER } from './synthetic-contracts.layer';
 import { LOCALIZATION_MESH_LAYER } from './localization-mesh.layer';
 import { NEURAL_BROKER_LAYER } from './neural-broker.layer';
 
-// ── Specialty Suite (5) ────────────────────────────────────────────────────
+// ── Specialty Suite (3) ────────────────────────────────────────────────────
 import { MULTI_MODEL_CONSENSUS_LAYER } from './multi-model-consensus.layer';
 import { DATA_SOVEREIGNTY_PARTITIONER_LAYER } from './data-sovereignty-partitioner.layer';
 import { ADVERSARIAL_WARGAME_LAYER } from './adversarial-wargame.layer';
@@ -63,12 +65,14 @@ export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze(
   SPECTRAL_AUDITOR_LAYER,
   PROBABILISTIC_CONSCIENCE_LAYER,
   SELF_HEALING_SCANNER_LAYER,
+  DETERMINISTIC_REPLAY_VAULT_LAYER,
   // Synthesis & Evolution
   ADAPTIVE_FORGE_LAYER,
   SYMBOLIC_CRAFTER_LAYER,
   SENTINEL_EVOLUTION_LAYER,
   REFLEX_ORCHESTRATION_LAYER,
   BEHAVIORAL_BIOMETRICS_LAYER,
+  NOCTURNE_CONSOLIDATION_LAYER,
   // Integration & Contracts
   HOLOGRAPHIC_INTEGRATION_SUITE_LAYER,
   EMERGENT_GATEWAY_LAYER,
