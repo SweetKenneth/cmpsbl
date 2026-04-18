@@ -167,8 +167,8 @@ The 40-Primitive matrix is an architectural invariant. New runtime capabilities 
 
 | Sub-Primitive | Parent | Role |
 |---------------|--------|------|
-| **Governed Execution Pipeline** | CORTEX Engine | Deterministic before/after layer authority. Wraps every Layer 2 export. Maps generic phases to DEFENSE → GOVERNANCE → MEMORY → FORESIGHT → NEXUS → execution → EVOLUTION → AUDIT → COMPLIANCE. Layers carry authority: `blocked`, `overridden`, `enriched`. Post-layers always run. |
-| **SENTINEL Witness** | AUDIT Agent | Audit-chain witness paired 1:1 with Governed Pipeline. Scores each run (`healthy` / `degraded` / `anomalous` / `failed`), emits competency deltas via EMA (α=0.1) into `agent_competency`. Provides the learning loop for every wrapped function. |
+| **ARBITRIUM** — Governed Execution Pipeline | CORTEX Engine | Deterministic before/after layer authority. Wraps every Layer 2 export. Maps generic phases to DEFENSE → GOVERNANCE → MEMORY → FORESIGHT → NEXUS → execution → EVOLUTION → AUDIT → COMPLIANCE. Layers carry authority: `blocked`, `overridden`, `enriched`. Post-layers always run. |
+| **WITNESS** — Audit-Chain Witness | AUDIT Agent | Paired 1:1 with ARBITRIUM. Scores each run (`healthy` / `degraded` / `anomalous` / `failed`), emits competency deltas via EMA (α=0.1) into `agent_competency`. Provides the learning loop for every wrapped function. Distinct from the SENTINEL vertical primitive cluster. |
 
 ### Rules
 - Sub-primitives are implementation details — they never appear in primitive counts, store catalogs, or tier definitions.

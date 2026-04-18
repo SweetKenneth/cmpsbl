@@ -216,13 +216,13 @@ const GOVERNED_PIPELINE_WIRE_PY = `
 # Sealed wrapper — proprietary. Pipeline activation handled by kernel bootstrap.`;
 
 export const GOVERNED_PIPELINE_CORE: CmpsblLayerDefinition = {
-  id: 'governed-pipeline',
-  name: 'Governed Execution Pipeline',
+  id: 'arbitrium-governed-pipeline',
+  name: 'ARBITRIUM — Governed Execution Pipeline',
   crownJewelRank: 11,
   cjpi: 96,
   module: 'CORTEX',
   description:
-    'Authority-bearing layered runtime. Pre-layers (DEFENSE, GOVERNANCE, MEMORY, FORESIGHT, NEXUS) gate execution; original code runs as one controlled step; post-layers (EVOLUTION, AUDIT, COMPLIANCE) always run for audit integrity. Layers can block, override, or enrich.',
+    'Sub-primitive of the CORTEX Engine. Authority-bearing layered runtime. Pre-layers (DEFENSE, GOVERNANCE, MEMORY, FORESIGHT, NEXUS) gate execution; original code runs as one controlled step; post-layers (EVOLUTION, AUDIT, COMPLIANCE) always run for audit integrity. Layers can block, override, or enrich.',
   priceCents: 0,
   tsCode: GOVERNED_PIPELINE_TS,
   pyCode: GOVERNED_PIPELINE_PY,
