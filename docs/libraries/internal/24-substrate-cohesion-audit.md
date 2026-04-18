@@ -68,7 +68,7 @@
 | `compiler_*` | 2 | COMPILER | 🟢 alive | Autonomous Product Compiler |
 | `daily_*` | 2 | SUBSTRATE CORE | 🟢 alive | Daily aggregates |
 | `decode_*` | 2 | DECODE | 🟢 alive | Unified agent + interface |
-| `forge_*` | 2 | FORGE | ❓ review | Possibly legacy — confirm vs Foundry |
+| `forge_*` | 2 | FORGE (Engine #27) | 🟢 alive | **Cognitive Forge — the Architect engine.** Creates/seals CMPSBL Cognitives. `forge_reserved_names` holds 25 reserved cognitive names. Live hook `useForgeAgents.ts`. Distinct from `/foundry` (builder UI). Keep. |
 | `integrity_*` | 2 | SUBSTRATE CORE | 🟡 mixed | Integrity scans (findings table dropped earlier) |
 | `maintenance_*` | 2 | SUBSTRATE CORE | 🟢 alive | Maintenance windows |
 | `memory_*` | 2 | BRAIN | 🟢 alive | Memory stream pipeline |
