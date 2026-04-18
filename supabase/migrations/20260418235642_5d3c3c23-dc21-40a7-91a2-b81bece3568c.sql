@@ -1,0 +1,2 @@
+ALTER TABLE public.brain_embeddings ADD COLUMN IF NOT EXISTS metadata jsonb NOT NULL DEFAULT '{}'::jsonb;
+CREATE INDEX IF NOT EXISTS idx_brain_embeddings_metadata ON public.brain_embeddings USING gin (metadata);

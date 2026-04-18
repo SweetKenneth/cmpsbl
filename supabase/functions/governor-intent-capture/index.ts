@@ -15,20 +15,54 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
-async function embed(text: string): Promise<number[] | null> {
+function normalizeVec(vec: number[]): number[] {
+  if (vec.length === 1536) return vec;
+  if (vec.length > 1536) return vec.slice(0, 1536);
+  return vec.concat(new Array(1536 - vec.length).fill(0));
+}
+
+async function embedViaOpenAI(text: string): Promise<number[] | null> {
+  if (!OPENAI_API_KEY) return null;
   try {
     const res = await fetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
       headers: { "Authorization": `Bearer ${OPENAI_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: "text-embedding-3-small", input: text.slice(0, 8000) }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`[governor-intent-capture] openai ${res.status}: ${(await res.text()).slice(0, 300)}`);
+      return null;
+    }
     const data = await res.json();
     const vec: number[] = data?.data?.[0]?.embedding;
-    return Array.isArray(vec) && vec.length === 1536 ? vec : null;
-  } catch { return null; }
+    return Array.isArray(vec) ? normalizeVec(vec) : null;
+  } catch (e) {
+    console.error("[governor-intent-capture] openai exception", e);
+    return null;
+  }
+}
+
+// Deterministic fallback so governor intent is never lost when providers are down.
+function deterministicEmbed(text: string): number[] {
+  const vec = new Array(1536).fill(0);
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    const idx = Math.abs((code * 2654435761) | 0) % 1536;
+    vec[idx] += Math.sin(code * 0.017 + i * 0.013);
+  }
+  let mag = 0;
+  for (const v of vec) mag += v * v;
+  mag = Math.sqrt(mag) || 1;
+  return vec.map((v) => v / mag);
+}
+
+async function embed(text: string): Promise<{ vec: number[]; provider: string }> {
+  const v = await embedViaOpenAI(text);
+  if (v) return { vec: v, provider: "openai" };
+  console.warn("[governor-intent-capture] using deterministic embedding fallback");
+  return { vec: deterministicEmbed(text), provider: "deterministic" };
 }
 
 serve(async (req) => {
@@ -63,29 +97,31 @@ serve(async (req) => {
       .select("id").single();
     if (insErr) throw insErr;
 
-    // Embed for recall
+    // Embed for recall (with deterministic fallback so signal is never lost)
     const formatted = `# GOVERNOR INTENT (priority ${priority}, scope ${scope})\n${intentText}`;
-    const vec = await embed(formatted);
+    const { vec, provider } = await embed(formatted);
     let embeddingId: string | null = null;
-    if (vec) {
-      const { data: emb, error: eErr } = await supabase
-        .from("brain_embeddings")
-        .insert({
-          artifact_id: row.id,
-          artifact_type: "governor_intent",
-          artifact_content: formatted,
-          embedding: vec as any,
-          metadata: { source: "governor-intent-capture", scope, priority, tags },
-        })
-        .select("id").single();
-      if (!eErr && emb) {
-        embeddingId = emb.id;
-        await supabase.from("governor_intent_stream").update({ embedded: true, embedding_id: emb.id }).eq("id", row.id);
-      }
+    let embedError: string | null = null;
+    const { data: emb, error: eErr } = await supabase
+      .from("brain_embeddings")
+      .insert({
+        artifact_id: row.id,
+        artifact_type: "governor_intent",
+        artifact_content: formatted,
+        embedding: vec as any,
+        metadata: { source: "governor-intent-capture", scope, priority, tags, provider },
+      })
+      .select("id").single();
+    if (eErr) {
+      embedError = eErr.message;
+      console.error("[governor-intent-capture] brain_embeddings insert failed", eErr);
+    } else if (emb) {
+      embeddingId = emb.id;
+      await supabase.from("governor_intent_stream").update({ embedded: true, embedding_id: emb.id }).eq("id", row.id);
     }
 
     return new Response(
-      JSON.stringify({ ok: true, intent_id: row.id, embedded: !!embeddingId, embedding_id: embeddingId, elapsed_ms: Date.now() - t0 }),
+      JSON.stringify({ ok: true, intent_id: row.id, embedded: !!embeddingId, embedding_id: embeddingId, embed_provider: provider, embed_error: embedError, elapsed_ms: Date.now() - t0 }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
