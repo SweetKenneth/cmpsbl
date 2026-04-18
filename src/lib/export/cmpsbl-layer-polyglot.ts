@@ -33,6 +33,12 @@ import { JAVA_KERNEL_BODIES } from './layers-java/java-kernel';
 import { CSHARP_KERNEL_BODIES } from './layers-csharp/csharp-kernel';
 import { SWIFT_KERNEL_BODIES } from './layers-swift/swift-kernel';
 import { KOTLIN_KERNEL_BODIES } from './layers-kotlin/kotlin-kernel';
+import { RS_KERNEL_EMITTER_BODIES } from './layers-rs/rs-kernel-emitters';
+import { GO_KERNEL_EMITTER_BODIES } from './layers-go/go-kernel-emitters';
+import { JAVA_KERNEL_EMITTER_BODIES } from './layers-java/java-kernel-emitters';
+import { CSHARP_KERNEL_EMITTER_BODIES } from './layers-csharp/csharp-kernel-emitters';
+import { SWIFT_KERNEL_EMITTER_BODIES } from './layers-swift/swift-kernel-emitters';
+import { KOTLIN_KERNEL_EMITTER_BODIES } from './layers-kotlin/kotlin-kernel-emitters';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -138,7 +144,7 @@ _registerCsharpLayerBodies();
 _registerSwiftLayerBodies();
 _registerKotlinLayerBodies();
 
-// ── Tier 1 Kernel Bodies (kernel-clock, capability-registry, kernel-bootstrap)
+// ── Tier 1 Kernel Bodies (clock, registry, bootstrap, receipts, telemetry)
 function _registerKernelBodies(): void {
   const tables: Array<[string, Readonly<Record<string, string>>]> = [
     ['rust', RS_KERNEL_BODIES],
@@ -147,6 +153,12 @@ function _registerKernelBodies(): void {
     ['csharp', CSHARP_KERNEL_BODIES],
     ['swift', SWIFT_KERNEL_BODIES],
     ['kotlin', KOTLIN_KERNEL_BODIES],
+    ['rust', RS_KERNEL_EMITTER_BODIES],
+    ['go', GO_KERNEL_EMITTER_BODIES],
+    ['java', JAVA_KERNEL_EMITTER_BODIES],
+    ['csharp', CSHARP_KERNEL_EMITTER_BODIES],
+    ['swift', SWIFT_KERNEL_EMITTER_BODIES],
+    ['kotlin', KOTLIN_KERNEL_EMITTER_BODIES],
   ];
   for (const [lang, table] of tables) {
     for (const [layerId, body] of Object.entries(table)) {
