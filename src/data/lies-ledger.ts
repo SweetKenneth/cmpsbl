@@ -207,6 +207,139 @@ export const LIES_LEDGER: Finding[] = [
       'The auto-blog is real output. The epistemic-honesty framing (assumptions, contradictions, split-brain) is mostly aspirational — the supporting tables exist but are sparsely populated — but the core claim "we generated and published 103 posts autonomously" is true. Keep this in the white paper as a working capability.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-010',
+    title: 'BRAIN embeddings table is empty — semantic memory is hollow',
+    severity: 'FICTION',
+    source: {
+      document: '13-BRAIN-MODULE.md + investor decks',
+      quote:
+        'BRAIN is described as a vector-embedded semantic memory layer with knowledge crystals, embedded artifacts, and similarity-based retrieval.',
+    },
+    evidence: {
+      reality:
+        'brain_embeddings: 0 rows. brain_knowledge_edges: 0 rows. brain_classifier_models WHERE is_active=true: 0. The live preview just made GET requests to /brain_embeddings (returned []) and /brain_knowledge_crystals (returned []) — visible in network logs at 02:33:33 UTC. The "semantic memory" component the docs describe has no vectors stored.',
+      method:
+        'SELECT COUNT(*) FROM brain_embeddings; SELECT COUNT(*) FROM brain_classifier_models WHERE is_active=true; + live network capture',
+    },
+    verdict:
+      'BRAIN is half-real. The events/memories/reasoning_traces tables are populated (F-007 stands). But the vector/semantic/knowledge-graph layer that the white papers showcase as the differentiator is empty. The UI is fetching nothing and silently rendering empty arrays.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-011',
+    title: 'BRAIN knowledge graph: 731 nodes / 4,636 edges (real) — but 0 typed knowledge edges',
+    severity: 'PARTIAL',
+    source: {
+      document: '13-BRAIN-MODULE.md',
+      quote:
+        '"Knowledge graph with typed edges, distillation runs, and crystallized knowledge."',
+    },
+    evidence: {
+      reality:
+        'brain_graph_nodes: 731. brain_graph_edges: 4,636. brain_knowledge_crystals: 734. brain_distillation_runs: 532. These are real and substantial. BUT brain_knowledge_edges (the typed-relationship table the docs describe) is 0. The graph exists structurally; the typed semantic layer over it does not.',
+      method:
+        'SELECT COUNT(*) FROM brain_graph_nodes / brain_graph_edges / brain_knowledge_crystals / brain_knowledge_edges;',
+    },
+    verdict:
+      'Real graph, real distillation, real crystals — but the "typed knowledge relationships" claim is unsupported. Honest restatement: "untyped graph of 731 nodes and 4,636 edges with 734 distilled crystals." That is a defensible artifact. Don\'t over-promise typed semantics.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-012',
+    title: 'EVOLUTION engine: 34 proposals, 0 ever applied',
+    severity: 'THEATER',
+    source: {
+      document: 'AGENTS.md + investor showcase: "EVOLUTION for patching" + cortex PAAEL loop docs',
+      quote:
+        '"propose / evaluate / apply / rollback - PAAEL loop" — substrate self-modifies via the EVOLUTION engine.',
+    },
+    evidence: {
+      reality:
+        'evolution_proposals: 34 rows. evolution_proposals WHERE status=\'applied\': 0. cortex_audit_log: 1 row. The proposals exist; nothing has ever been applied. The PAAEL loop has the propose/evaluate steps and stops there.',
+      method:
+        'SELECT COUNT(*), COUNT(*) FILTER (WHERE status=\'applied\') FROM evolution_proposals;',
+    },
+    verdict:
+      'EVOLUTION is theater for self-modification. It proposes; it never patches. "Self-modifying substrate" is not what the database shows. Honest restatement: "human-reviewed proposal queue with 34 entries." That is fine — it just isn\'t autonomy.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-013',
+    title: 'IMMUNITY engine: zero rules, zero invocations — pure shell',
+    severity: 'FICTION',
+    source: {
+      document: 'mem://architecture/immune/core-logic-and-training-v2-0-0 + investor materials',
+      quote:
+        '"Autonomous self-healing through a governed promotion pipeline (Shadow → Simulation → Production)."',
+    },
+    evidence: {
+      reality:
+        'immunity_rules: 0 rows. The live status call to module=immunity returned `total_records:0, recent_activity_1h:0, last_run:null` (network log 02:33:43). There is no immune system running.',
+      method:
+        'SELECT COUNT(*) FROM immunity_rules; + live POST /pf-substrate {module:"immunity"}',
+    },
+    verdict:
+      'IMMUNITY is a status endpoint and a table. It has zero rules, zero runs, zero invocations. The "autonomous self-healing" claim has no execution behind it. Remove or restate as "scaffolded, not running."',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-014',
+    title: 'DEFENSE engine: 2,558 events real — but zero blocks, zero challenges in 24h',
+    severity: 'PARTIAL',
+    source: {
+      document: 'DEFENSE Layer + 6-Layer Cognitive Security Matrix docs',
+      quote:
+        '"6-layer Cognitive Security Matrix (Perimeter, Identity, Protocol, Execution, Behavior, Recovery)."',
+    },
+    evidence: {
+      reality:
+        'defense_events: 2,558 rows total — real telemetry. BUT live status call: events_24h:0, blocked_24h:0, challenged_24h:0, allowed_24h:0, mode:"observe", block_rate:"0%". 6 active rules but top 3 rules each have 0 matches. DEFENSE is logging in observe-mode and never enforcing.',
+      method:
+        'SELECT COUNT(*) FROM defense_events; + live POST /pf-substrate {module:"defense"}',
+    },
+    verdict:
+      'DEFENSE collected 2,558 events historically but in production today it is in observe mode with 0% block rate. Calling it a "6-layer security matrix" implies enforcement. Honest restatement: "passive telemetry with 6 inactive rules in shadow mode."',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-015',
+    title: 'CORTEX audit log: 1 row, 0 PAAEL applies, 0 learn cycles',
+    severity: 'THEATER',
+    source: {
+      document: '22-CORTEX-MODULE.md',
+      quote:
+        '"CORTEX Orchestration Engine (v3.0.0) provides behavior-agnostic, policy-driven enforcement" with reinforcement loop and learn cycles.',
+    },
+    evidence: {
+      reality:
+        'cortex_audit_log: 1 row total. Live status call: proposals_applied:0, proposals_rejected:0, learn_cycles:0, pending_sequences:0, recent_events:10. CORTEX has dispatch wired and reports healthy, but the orchestration/learning behavior is dormant.',
+      method:
+        'SELECT COUNT(*) FROM cortex_audit_log; + live POST /pf-substrate {module:"cortex"}',
+    },
+    verdict:
+      'CORTEX is wired but idle. It can dispatch, but it has not orchestrated, not learned, not applied a single proposal. The "policy-driven enforcement" claim is potential, not behavior. The white paper should describe it as "control plane primed for orchestration" — accurate.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-016',
+    title: 'Autoblog epistemic-honesty layer (assumptions/contradictions/split-brain) is empty',
+    severity: 'THEATER',
+    source: {
+      document: 'auto-blog white papers + /blog page',
+      quote:
+        '"Autonomous epistemic blog generation with split-brain audits, contradiction tracking, assumption extraction, and memory-of-error reports."',
+    },
+    evidence: {
+      reality:
+        'autoblog_split_brain_audits: 0. autoblog_assumptions WHERE is_broken=true: 0. autoblog_memory_reports WHERE is_published=true: 0. brain_memory_contradictions: 0. brain_drift_log: 0. The 103 published posts are real (F-009). The epistemic-honesty machinery wrapped around them is unpopulated.',
+      method:
+        'SELECT COUNT(*) FROM autoblog_split_brain_audits / autoblog_assumptions / autoblog_memory_reports / brain_memory_contradictions / brain_drift_log;',
+    },
+    verdict:
+      'The blog publishes. The epistemic infrastructure that supposedly governs the blog (split-brain reader/skeptic scoring, broken-assumption tracking, contradiction logs, memory reports) has zero rows. The columns exist on auto_blog_posts but the supporting tables are empty. The "honest AI that tracks its own wrongness" framing is the most ironic theater in the audit.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
