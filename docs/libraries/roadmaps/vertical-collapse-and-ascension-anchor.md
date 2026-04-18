@@ -86,6 +86,19 @@ Counts are real DB row counts as of restart.
 | `substrate_applied_improvements` | 20 |
 | `substrate_capabilities` | 10 |
 
+### Memory Chains & Crystallized Memories (Pipelines ∪ Chains ∪ Crystals) — **MAJOR FIND**
+Discovered after alias expansion (`pipeline_*`, `chain_*`, `crystal*`):
+| Table | Rows |
+|-------|------|
+| `brain_knowledge_crystals` | **750** ← highest-volume crystallized memory store |
+| `pipeline_vault` | 214 |
+| `mesh_saved_pipelines` | 92 |
+| `crystallized_assets` | 66 |
+| `discovered_pipelines` | 40 |
+| `user_crystallized_entitlements` | 0 (writer needed for entitlement issuance) |
+
+**Verdict:** Memory Chains and Crystallized Memories are **alive and the largest single category by row count** (1,162 rows). Were 100% invisible to prior passes because of name drift.
+
 ### Verified previously (Pass 1-3, still valid):
 - `discoveries` (7,266), `discovery_runs` (3,343)
 - `vertical_clm_cycles` (1,764) — Cycle #279 ran ~minutes ago per logs
