@@ -215,7 +215,7 @@ export default function Genesis() {
                     <span className="text-xs font-mono text-muted-foreground truncate">
                       {useNexus
                         ? 'NEXUS → free-tier LLM · network active'
-                        : `DECODE → BRAIN · ${BRAIN_REASONER_META.modelVersion} · ${BRAIN_REASONER_META.dimensions}-dim · ${BRAIN_REASONER_META.crystalsLoaded} crystals`}
+                        : `DECODE → BRAIN · ${BRAIN_REASONER_META.modelVersion} · ${BRAIN_REASONER_META.embeddingDim}-dim · ${BRAIN_REASONER_META.crystalCount} crystals`}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -492,13 +492,27 @@ function TracePanel({ trace }: { trace?: BrainTrace }) {
     <div className="space-y-4 text-xs">
       <Section title="DECODE">
         <Row label="intent" value={trace.decode.intent} />
-        <Row label="category" value={trace.decode.category} />
         <Row label="confidence" value={trace.decode.confidence} />
-        <Row label="score" value={trace.decode.confidence_score.toFixed(3)} />
-        {trace.decode.suggested_command && (
-          <Row label="suggested" value={trace.decode.suggested_command} />
+        <Row label="tokens" value={String(trace.decode.tokens.length)} />
+        <Row label="content" value={String(trace.decode.contentTokens.length)} />
+        {trace.decode.entities.primitive && (
+          <Row label="primitive" value={trace.decode.entities.primitive} />
+        )}
+        {trace.decode.isRouted && trace.decode.routedPrimitive && (
+          <Row label="routed→" value={trace.decode.routedPrimitive} />
         )}
       </Section>
+      {trace.thoughtComposed && trace.conceptMatches.length > 0 && (
+        <Section title="BRAIN thinking (concept routing)">
+          {trace.conceptMatches.map(c => (
+            <Row
+              key={c.token + c.crystalKey}
+              label={c.token}
+              value={`${c.primitive ?? c.domain} · ${(c.similarity * 100).toFixed(0)}%`}
+            />
+          ))}
+        </Section>
+      )}
 
       <Section title="BRAIN embedding">
         <Row label="model" value={trace.embedding.modelVersion} />
