@@ -42,6 +42,21 @@ function cOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       return [`cmpsbl_map_inc(&${op.field}, ${k}, ${op.by ?? 1});`];
     }
     case 'snapshot': return [`/* snapshot: caller fills out-struct */`];
+    // Tier-3: C has no native JSON walker. Defer to runtime helpers in cmpsbl_runtime.h.
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`/* DEGRADED: deep sanitize delegated to runtime helper (link cmpsbl_runtime) */`,
+              `return cmpsbl_sanitize_deep(${p});`];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`/* DEGRADED: sidecar strip delegated to runtime helper */`,
+              `return cmpsbl_strip_sidecars(${p});`];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`cmpsbl_list_push(&${op.field}, ${p});`];
+    }
   }
 }
 

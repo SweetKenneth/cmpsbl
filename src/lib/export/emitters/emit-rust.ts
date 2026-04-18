@@ -54,6 +54,22 @@ function rsOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `("${f}".to_string(), format!("{:?}", s.${f}))`).join(', ');
       return [`return vec![${pairs}].into_iter().collect::<HashMap<String,String>>();`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `// DEGRADED: requires serde_json::Value param. Caller wires the recursive walker.`,
+        `// Recommended runtime helper: cmpsbl_runtime::sanitize_deep(${p})`,
+        `return cmpsbl_runtime::sanitize_deep(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`return cmpsbl_runtime::strip_sidecars(${p});`];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`s.${op.field}.push(${p}.to_string());`];
+    }
   }
 }
 

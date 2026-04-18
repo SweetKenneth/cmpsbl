@@ -32,6 +32,47 @@ function luaOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `${f} = state.${f}`).join(', ');
       return [`return { ${pairs} }`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `local function __walk(v)`,
+        `    if type(v) == 'table' then`,
+        `        local out = {}`,
+        `        for k, vv in pairs(v) do`,
+        `            local ks = tostring(k)`,
+        `            if ks:sub(1, 8) == '_cmpsbl_' or ks:sub(1, 9) == '__cmpsbl_' then out[k] = vv else out[k] = __walk(vv) end`,
+        `        end`,
+        `        return out`,
+        `    elseif type(v) == 'string' then`,
+        `        return (v:gsub('([Aa][Pp][Ii][_-]?[Kk][Ee][Yy]%S*)', '[REDACTED]'):gsub('([Ss][Ee][Cc][Rr][Ee][Tt]%S*)', '[REDACTED]'):gsub('([Tt][Oo][Kk][Ee][Nn]%S*)', '[REDACTED]'))`,
+        `    end`,
+        `    return v`,
+        `end`,
+        `return __walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `local function __strip(v)`,
+        `    if type(v) ~= 'table' then return v end`,
+        `    local out = {}`,
+        `    for k, vv in pairs(v) do`,
+        `        local ks = tostring(k)`,
+        `        if ks:sub(1, 8) ~= '_cmpsbl_' and ks:sub(1, 9) ~= '__cmpsbl_' then out[k] = __strip(vv) end`,
+        `    end`,
+        `    return out`,
+        `end`,
+        `return __strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `state.${op.field} = state.${op.field} or {}`,
+        `table.insert(state.${op.field}, ${p})`,
+      ];
+    }
   }
 }
 

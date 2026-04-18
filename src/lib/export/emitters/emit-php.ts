@@ -33,6 +33,44 @@ function phpOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `'${f}' => self::$${f}`).join(', ');
       return [`return [${pairs}];`];
     }
+    case 'sanitize_deep': {
+      const p = '$' + (m.params?.[0]?.name ?? 'value');
+      return [
+        `$__walk = function($v) use (&$__walk) {`,
+        `    if (is_array($v)) {`,
+        `        $out = [];`,
+        `        foreach ($v as $k => $vv) {`,
+        `            $ks = (string)$k;`,
+        `            $out[$k] = (str_starts_with($ks, '_cmpsbl_') || str_starts_with($ks, '__cmpsbl_')) ? $vv : $__walk($vv);`,
+        `        }`,
+        `        return $out;`,
+        `    }`,
+        `    if (is_string($v)) return preg_replace('/(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})/i', '[REDACTED]', $v);`,
+        `    return $v;`,
+        `};`,
+        `return $__walk(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = '$' + (m.params?.[0]?.name ?? 'value');
+      return [
+        `$__strip = function($v) use (&$__strip) {`,
+        `    if (!is_array($v)) return $v;`,
+        `    $out = [];`,
+        `    foreach ($v as $k => $vv) {`,
+        `        $ks = (string)$k;`,
+        `        if (str_starts_with($ks, '_cmpsbl_') || str_starts_with($ks, '__cmpsbl_')) continue;`,
+        `        $out[$k] = $__strip($vv);`,
+        `    }`,
+        `    return $out;`,
+        `};`,
+        `return $__strip(${p});`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = '$' + (m.params?.[0]?.name ?? 'value');
+      return [`self::$${op.field}[] = ${p};`];
+    }
   }
 }
 

@@ -44,6 +44,34 @@ function scOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `"${f}" -> ${f}`).join(', ');
       return [`Map[String, Any](${pairs})`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `val __pat = "(?i)(api[_-]?key|secret|password|token|bearer\\\\s+[\\\\w.-]+|sk-[\\\\w-]{16,})".r`,
+        `def __walk(v: Any): Any = v match {`,
+        `    case mp: scala.collection.Map[_, _] => mp.map { case (k, vv) => val ks = k.toString; (k, if (ks.startsWith("_cmpsbl_") || ks.startsWith("__cmpsbl_")) vv else __walk(vv)) }.toMap`,
+        `    case it: Iterable[_] => it.map(__walk).toList`,
+        `    case s: String => __pat.replaceAllIn(s, "[REDACTED]")`,
+        `    case other => other`,
+        `}`,
+        `__walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `def __strip(v: Any): Any = v match {`,
+        `    case mp: scala.collection.Map[_, _] => mp.collect { case (k, vv) if { val ks = k.toString; !(ks.startsWith("_cmpsbl_") || ks.startsWith("__cmpsbl_")) } => (k, __strip(vv)) }.toMap`,
+        `    case it: Iterable[_] => it.map(__strip).toList`,
+        `    case other => other`,
+        `}`,
+        `__strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field} += ${p}`];
+    }
   }
 }
 

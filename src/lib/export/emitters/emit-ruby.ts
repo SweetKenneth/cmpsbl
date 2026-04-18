@@ -33,6 +33,37 @@ function rbOp(op: MethodOp, m: SpecMethod): string[] {
     }
     case 'snapshot':
       return [`return { ${op.fields.map(f => `${f}: @${f}`).join(', ')} }`];
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `__walk = lambda do |v|`,
+        `  case v`,
+        `  when Hash then v.each_with_object({}) { |(k, vv), h| h[k] = (k.to_s.start_with?('_cmpsbl_') || k.to_s.start_with?('__cmpsbl_')) ? vv : __walk.call(vv) }`,
+        `  when Array then v.map { |x| __walk.call(x) }`,
+        `  when String then v.gsub(/(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})/i, '[REDACTED]')`,
+        `  else v`,
+        `  end`,
+        `end`,
+        `return __walk.call(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `__strip = lambda do |v|`,
+        `  case v`,
+        `  when Hash then v.reject { |k, _| k.to_s.start_with?('_cmpsbl_') || k.to_s.start_with?('__cmpsbl_') }.transform_values { |vv| __strip.call(vv) }`,
+        `  when Array then v.map { |x| __strip.call(x) }`,
+        `  else v`,
+        `  end`,
+        `end`,
+        `return __strip.call(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`(@${op.field} ||= []) << ${p}`];
+    }
   }
 }
 

@@ -39,6 +39,38 @@ function plOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `${f} => ${fld(f)}`).join(', ');
       return [`return { ${pairs} };`];
     }
+    case 'sanitize_deep': {
+      const p = '$' + (m.params?.[0]?.name ?? 'value');
+      return [
+        `my $__walk;`,
+        `$__walk = sub { my $v = shift;`,
+        `    if (ref($v) eq 'HASH') { my %o; for my $k (keys %$v) { if ($k =~ /^_{1,2}cmpsbl_/) { $o{$k} = $v->{$k} } else { $o{$k} = $__walk->($v->{$k}) } } return \\%o; }`,
+        `    if (ref($v) eq 'ARRAY') { return [ map { $__walk->($_) } @$v ]; }`,
+        `    if (!ref($v) && defined $v) { my $s = $v; $s =~ s/(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})/[REDACTED]/gi; return $s; }`,
+        `    return $v;`,
+        `};`,
+        `return $__walk->(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = '$' + (m.params?.[0]?.name ?? 'value');
+      return [
+        `my $__strip;`,
+        `$__strip = sub { my $v = shift;`,
+        `    if (ref($v) eq 'HASH') { my %o; for my $k (keys %$v) { next if $k =~ /^_{1,2}cmpsbl_/; $o{$k} = $__strip->($v->{$k}); } return \\%o; }`,
+        `    if (ref($v) eq 'ARRAY') { return [ map { $__strip->($_) } @$v ]; }`,
+        `    return $v;`,
+        `};`,
+        `return $__strip->(${p});`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = '$' + (m.params?.[0]?.name ?? 'value');
+      return [
+        `$state{'${op.field}'} = [] unless ref($state{'${op.field}'}) eq 'ARRAY';`,
+        `push @{ $state{'${op.field}'} }, ${p};`,
+      ];
+    }
   }
 }
 

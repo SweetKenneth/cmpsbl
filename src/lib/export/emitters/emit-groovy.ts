@@ -44,6 +44,36 @@ function gvOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `'${f}': ${f}`).join(', ');
       return [`return [${pairs}]`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `def __pat = ~/(?i)(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})/`,
+        `def __walk`,
+        `__walk = { v ->`,
+        `    if (v instanceof Map) { def o = [:]; v.each { k, vv -> def ks = k.toString(); o[k] = (ks.startsWith('_cmpsbl_') || ks.startsWith('__cmpsbl_')) ? vv : __walk(vv) }; return o }`,
+        `    if (v instanceof List) return v.collect { __walk(it) }`,
+        `    if (v instanceof String) return v.replaceAll(__pat, '[REDACTED]')`,
+        `    return v`,
+        `}`,
+        `return __walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `def __strip`,
+        `__strip = { v ->`,
+        `    if (v instanceof Map) { def o = [:]; v.each { k, vv -> def ks = k.toString(); if (!(ks.startsWith('_cmpsbl_') || ks.startsWith('__cmpsbl_'))) o[k] = __strip(vv) }; return o }`,
+        `    if (v instanceof List) return v.collect { __strip(it) }`,
+        `    return v`,
+        `}`,
+        `return __strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field} << ${p}`];
+    }
   }
 }
 

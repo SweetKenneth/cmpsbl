@@ -44,6 +44,37 @@ function dOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `"${f}": ${f}`).join(', ');
       return [`return [${pairs}];`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `// Walks std.json.JSONValue trees recursively.`,
+        `import std.json, std.regex;`,
+        `auto __pat = regex(\`(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})\`, "i");`,
+        `JSONValue __walk(JSONValue v) {`,
+        `    if (v.type == JSONType.object) { JSONValue[string] o; foreach (k, vv; v.object) { o[k] = (k.length >= 8 && (k[0..8] == "_cmpsbl_" || (k.length >= 9 && k[0..9] == "__cmpsbl_"))) ? vv : __walk(vv); } return JSONValue(o); }`,
+        `    if (v.type == JSONType.array) { JSONValue[] a; foreach (x; v.array) a ~= __walk(x); return JSONValue(a); }`,
+        `    if (v.type == JSONType.string) return JSONValue(replaceAll(v.str, __pat, "[REDACTED]"));`,
+        `    return v;`,
+        `}`,
+        `return __walk(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `import std.json;`,
+        `JSONValue __strip(JSONValue v) {`,
+        `    if (v.type == JSONType.object) { JSONValue[string] o; foreach (k, vv; v.object) { if (k.length >= 8 && (k[0..8] == "_cmpsbl_" || (k.length >= 9 && k[0..9] == "__cmpsbl_"))) continue; o[k] = __strip(vv); } return JSONValue(o); }`,
+        `    if (v.type == JSONType.array) { JSONValue[] a; foreach (x; v.array) a ~= __strip(x); return JSONValue(a); }`,
+        `    return v;`,
+        `}`,
+        `return __strip(${p});`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field} ~= ${p};`];
+    }
   }
 }
 

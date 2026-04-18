@@ -47,6 +47,36 @@ function csOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `{"${f}", ${f}}`).join(', ');
       return [`return new System.Collections.Generic.Dictionary<string,object>{${pairs}};`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `var __pat = new System.Text.RegularExpressions.Regex("(?i)(api[_-]?key|secret|password|token|bearer\\\\s+[\\\\w.-]+|sk-[\\\\w-]{16,})");`,
+        `System.Func<object, object> __walk = null;`,
+        `__walk = (object v) => {`,
+        `    if (v is System.Collections.IDictionary d) { var o = new System.Collections.Generic.Dictionary<object, object>(); foreach (System.Collections.DictionaryEntry e in d) { var ks = (e.Key ?? "").ToString(); o[e.Key] = (ks.StartsWith("_cmpsbl_") || ks.StartsWith("__cmpsbl_")) ? e.Value : __walk(e.Value); } return o; }`,
+        `    if (v is System.Collections.IList l) { var o = new System.Collections.Generic.List<object>(); foreach (var x in l) o.Add(__walk(x)); return o; }`,
+        `    if (v is string s) return __pat.Replace(s, "[REDACTED]");`,
+        `    return v;`,
+        `};`,
+        `return __walk(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `System.Func<object, object> __strip = null;`,
+        `__strip = (object v) => {`,
+        `    if (v is System.Collections.IDictionary d) { var o = new System.Collections.Generic.Dictionary<object, object>(); foreach (System.Collections.DictionaryEntry e in d) { var ks = (e.Key ?? "").ToString(); if (ks.StartsWith("_cmpsbl_") || ks.StartsWith("__cmpsbl_")) continue; o[e.Key] = __strip(e.Value); } return o; }`,
+        `    if (v is System.Collections.IList l) { var o = new System.Collections.Generic.List<object>(); foreach (var x in l) o.Add(__strip(x)); return o; }`,
+        `    return v;`,
+        `};`,
+        `return __strip(${p});`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.Add((${p}).ToString());`];
+    }
   }
 }
 function csRet(m: SpecMethod, spec: ComponentSpec): string {
@@ -116,6 +146,34 @@ function swOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
     case 'snapshot': {
       const pairs = op.fields.map(f => `"${f}": ${f}`).join(', ');
       return [`return [${pairs}]`];
+    }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `let __pat = try! NSRegularExpression(pattern: "(api[_-]?key|secret|password|token|bearer\\\\s+[\\\\w.-]+|sk-[\\\\w-]{16,})", options: [.caseInsensitive])`,
+        `func walk(_ v: Any) -> Any {`,
+        `    if let d = v as? [String: Any] { var o: [String: Any] = [:]; for (k, vv) in d { o[k] = (k.hasPrefix("_cmpsbl_") || k.hasPrefix("__cmpsbl_")) ? vv : walk(vv) }; return o }`,
+        `    if let l = v as? [Any] { return l.map { walk($0) } }`,
+        `    if let s = v as? String { let r = NSRange(s.startIndex..., in: s); return __pat.stringByReplacingMatches(in: s, options: [], range: r, withTemplate: "[REDACTED]") }`,
+        `    return v`,
+        `}`,
+        `return walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `func strip(_ v: Any) -> Any {`,
+        `    if let d = v as? [String: Any] { var o: [String: Any] = [:]; for (k, vv) in d { if k.hasPrefix("_cmpsbl_") || k.hasPrefix("__cmpsbl_") { continue }; o[k] = strip(vv) }; return o }`,
+        `    if let l = v as? [Any] { return l.map { strip($0) } }`,
+        `    return v`,
+        `}`,
+        `return strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.append("\\(${p})")`];
     }
   }
 }
