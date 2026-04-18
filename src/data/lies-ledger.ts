@@ -435,6 +435,110 @@ export const LIES_LEDGER: Finding[] = [
       'Site is alive. 1,446 weekly sessions is real engagement for a solo-founder substrate. 17 lifetime authenticated users is the honest number. Use these in the white paper instead of inflated counts — defensible and interesting on their own.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-022',
+    title: 'Discovery engine IS real and active — 10,266 discoveries, 3,339 runs',
+    severity: 'FACT',
+    source: {
+      document: 'docs/libraries/internal/16-trade-secrets.md + 17-crown-jewel-registry.md',
+      quote: '"CJPI Scoring — Crown Jewel Pipeline Index — novelty, utility, complexity, composability." 6 mining waves.',
+    },
+    evidence: {
+      reality:
+        'discoveries: 10,266 rows (855 architect / 2,252 enterprise / 7,159 cmpsbl-only). discovery_runs: 3,339. discovered_pipelines: 40. All discoveries created between 2026-04-13 and 2026-04-18 — i.e. last 5 days.',
+      method:
+        "SELECT tier, count(*) FROM discoveries GROUP BY tier; SELECT min(created_at), max(created_at) FROM discoveries;",
+    },
+    verdict:
+      'The discovery engine is genuinely producing scored output at scale — 10k discoveries in 5 days is real algorithmic work. BUT: the entire history is 5 days old. There is no multi-month "6 mining waves" history in the database. The waves narrative is retroactive framing on a 5-day-old engine.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-023',
+    title: 'Evolution proposals are evaluated but ZERO ever applied (governance theater)',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/staff/02-architecture-and-primitives.md §5 SEBA Pipeline',
+      quote: '"7-gate validation pipeline: Candidate → Shadow Run → Behavioral Diff → TSAC Truth Check → Confidence Gate → Governance Approval → Staged Promotion → Production."',
+    },
+    evidence: {
+      reality:
+        'evolution_proposals by status: approved=19, rejected=13, rolled_back=2, applied=0. evolution_receipts=0. evolution_snapshots=0. evolution_repair_log=0. tsac_verifications=0.',
+      method:
+        "SELECT status, count(*) FROM evolution_proposals GROUP BY status; SELECT count(*) FROM tsac_verifications;",
+    },
+    verdict:
+      'The pipeline runs the first 5 gates (proposals get scored, approved or rejected) but Gate 6 (Staged Promotion) and Gate 7 (Production) have never fired. 19 approved proposals sit in limbo. TSAC has zero verifications. The "self-improving substrate" claim is unsupported — nothing has ever been promoted to production.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-024',
+    title: 'Mesh communication IS real — 1,316 inter-primitive comms recorded',
+    severity: 'FACT',
+    source: {
+      document: 'docs/libraries/staff/02-architecture-and-primitives.md §2 Execution Model',
+      quote: '"All execution routes through broadcastIntent(). Primitives never call each other directly — only through resolvers via the intent mesh."',
+    },
+    evidence: {
+      reality:
+        'mesh_intents: 25 registered. mesh_comms: 1,316 events recorded. The intent-routing fabric exists and is logging traffic.',
+      method: 'SELECT count(*) FROM mesh_intents; SELECT count(*) FROM mesh_comms;',
+    },
+    verdict:
+      'The mesh communication layer is real and active. This is one of the architectural claims that holds up under audit. Defensible in the white paper.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-025',
+    title: 'Integration layer is hollow — 31 adapters claimed, 0 connections, 0 usage',
+    severity: 'FICTION',
+    source: {
+      document: 'INTEGRATION primitive status endpoint + integration adapter docs',
+      quote: '"31 adapters across enterprise, payroll, development, gaming, data categories. 6 discovered systems."',
+    },
+    evidence: {
+      reality:
+        'integration_connections: 0. integration_usage: 0. integration_discoveries: 6 (matches claim). The 31 adapters are code-defined — they have never been connected to a real external system or invoked.',
+      method: 'SELECT count(*) FROM integration_connections; SELECT count(*) FROM integration_usage;',
+    },
+    verdict:
+      'Adapter code exists but has never been used. "31 enterprise adapters" framing implies operational integration — reality is zero connections, zero calls. Fiction unless restated as "31 adapter scaffolds, none yet connected to production systems."',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-026',
+    title: 'Vertical CLM cycles ARE running — 1,684 cycles recorded',
+    severity: 'FACT',
+    source: {
+      document: 'vertical substrate ecosystem spec (12 verticals) + CLM serialization claims',
+      quote: '"12 operational 40-primitive environments running Continuous Learning Machine cycles."',
+    },
+    evidence: {
+      reality:
+        'vertical_clm_cycles: 1,684 rows. vertical_ascension_sessions: 1. dream_cycle_logs: 7. dream_stream: 3. dream_sessions: 0.',
+      method: 'SELECT count(*) FROM vertical_clm_cycles; SELECT count(*) FROM dream_sessions;',
+    },
+    verdict:
+      'CLM cycles are real and at volume. BUT — only 1 vertical Ascension session and 0 dream_sessions. The "12 vertical environments running autonomously" claim is partial: cycles run, but the dream-synthesis layer above them is essentially idle. Honest restate: "1,684 CLM cycles, dream synthesis not yet engaged."',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-027',
+    title: 'Memory tier receipts table is empty — no audit trail for the 4-tier memory system',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/staff/02-architecture-and-primitives.md §3 Memory Architecture',
+      quote: '"4-tier persistent memory: Working / Episodic / Semantic / Archival. CLM promotes insights up through tiers as confidence increases."',
+    },
+    evidence: {
+      reality:
+        'BRAIN tier counts (live RPC): hot=528, warm=7,921, cold=9,954, flat=2,000, pruned=5,000. Tiering is real. BUT memory_tier_receipts: 0 — there is NO audit/provenance trail for any tier promotion or demotion.',
+      method: 'SELECT count(*) FROM memory_tier_receipts; RPC brain_get_tier_counts.',
+    },
+    verdict:
+      'Tiered memory exists and has 25,403 records distributed across tiers. That part is real. The "audit-grade promotion chain" is not — zero receipts means tier transitions are happening untraceably. Honest restate: "tiering operational, provenance trail not yet captured."',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
