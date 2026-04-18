@@ -1549,6 +1549,42 @@ export const LIES_LEDGER: Finding[] = [
       'The "1,000+ downloads" number is technically true but uses a single record\'s count to imply broad academic engagement. The flagship Ascension whitepaper sits at 16 downloads. Honest framing would be "one record at 1.1k, five records under 20 each" — which materially weakens the "established prior art and academic traction" argument.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-084',
+    title: '11 DOIs cited across the docs — 1 fabricated, 1 superseded, 4 are version-chain duplicates',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/* + IP strategy + prior-art chain (every 10.5281/zenodo.* citation in the repo)',
+      quote:
+        'Eleven distinct DOI strings appear across docs/, src/, and public/ — presented as independent published artifacts establishing prior art for CMPSBL, Memory Stream, Ascension, Convex Core, and supporting whitepapers.',
+    },
+    evidence: {
+      reality:
+        'Resolved each cited DOI against the Zenodo API. Findings: (1) 10.5281/zenodo.cmpsbl-convex-core → 404, fabricated (already F-082). (2) 10.5281/zenodo.18234909 → 302-redirects to 18895141, meaning the cited record is a superseded version, not a standalone publication. (3) Four DOIs — 18234910, 18379258, 18834080, 18895141 — all report identical stats of 1,163 downloads and 1,157 unique downloads. They are version-chain siblings of the same Substrate-OS record; Zenodo returns the aggregate parent-stats for each child. They are not four independently-cited works generating ~4,600 downloads as the count would imply.',
+      method: 'curl zenodo.org/api/records/{id} for all 11 cited DOIs; compared stats.downloads / unique_downloads; followed 302 chain on 18234909.',
+    },
+    verdict:
+      'The "Zenodo prior-art chain" reads as 11 independent records but resolves to ~6 distinct works, of which one is fabricated and one is a deprecated alias. Anyone counting downloads across the cited DOI list would quadruple-count a single record. Honest count: ~6 records, ~1,222 total downloads, with one record carrying 95% of the traffic.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-085',
+    title: 'Most CMPSBL Zenodo records have single-digit downloads, contradicting the "established academic prior art" framing',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/internal/11-defensible-valuation.md + 18-vertical-ecosystem.md',
+      quote:
+        '"Prior Art: ORCID-registered academic publications and Zenodo releases establish legal defensibility." · "established prior art and academic traction"',
+    },
+    evidence: {
+      reality:
+        'Per-record lifetime downloads for the 9 distinct CMPSBL/PromptFluid records on Zenodo (excluding the duplicated version-chain siblings): Substrate OS v5.5.0 → 1,163; SimNap whitepaper → 27; Ascension v2 → 16; Shapeshifter case study → 13; Ascension v1 → 6; Governance Lexicon → 3; SimNap GitHub release → 3; Heritage paper → 1; CMPSBL OS Governance Framework → 0. Median = 6 downloads. ORCID 0009-0001-4237-1243 (cited author) is real and links to these records, but 8 of 9 records sit below 30 lifetime downloads.',
+      method: 'GET zenodo.org/api/records/{id} for each unique record; compute median.downloads.',
+    },
+    verdict:
+      'The DOIs and ORCID exist — that part is real and the FACT-tier portion stands. What is theater is treating the body of work as "established academic prior art." Median 6 downloads, no peer review, no citations on Google Scholar — these are timestamped self-publications, not academic traction. Useful for prior-art priority date, misleading as evidence of scholarly engagement.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
