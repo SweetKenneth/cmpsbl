@@ -1495,6 +1495,24 @@ export const LIES_LEDGER: Finding[] = [
       'The Crown Jewel Vault is a JSON file with marketing copy, not a governed runtime registry. Numbers like "$22.4M–$31.4M reproduction cost" or "$4B in software discovered" derive from that file × a multiplier formula, not from any verified asset, deployment, or revenue. The "discovered, validated, and deployed in 72 hours for under $2,400 — 9,000:1 efficiency ratio" claim has no execution trace in the database to support any of the three verbs.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-081',
+    title: '"Enterprise-grade" substrate has 1 enterprise subscription, 0 lifetime API calls, $0 revenue',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/* (Autonomous Product Compiler, ADA, hardening audits) + investor showcase',
+      quote:
+        '"enterprise-grade software suites", "scoped, enterprise-grade decision-making power", "Enterprise contracts", "5-pass Stop-the-Line Hardening Audit to achieve enterprise-grade readiness."',
+    },
+    evidence: {
+      reality:
+        'access_subscriptions: 5 total rows, 4 are tier=free / plan_slug=substrate_free, 1 is tier=enterprise — assigned to the founder\'s own developer record (plan_slug=substrate_operator, current_period_end=NULL, no Stripe subscription id). access_usage: 0 rows lifetime — no enterprise customer has ever made a single API call. cost_millicents sum lifetime = 0. agency_purchases.status=completed → 1 row, total_price_cents = 0. There are 9 access_developers and 4 active API keys, none of which have generated usage.',
+      method: 'SELECT tier,plan_slug,status FROM access_subscriptions; count(access_usage) lifetime → 0; sum(cost_millicents) → 0; sum(total_price_cents) where status=completed → 0.',
+    },
+    verdict:
+      'Every "enterprise" qualifier in the documentation — enterprise-grade, enterprise-ready, enterprise contracts, enterprise hardening — points to a customer base that does not exist. The single enterprise tier row in the database is the founder\'s own account with no billing attached. Zero lifetime API calls means no enterprise integration has ever executed, let alone been hardened in production. This is the most consequential finding in the ledger: the entire commercial narrative is built on a customer count of zero.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
