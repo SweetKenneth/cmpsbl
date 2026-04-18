@@ -149,15 +149,14 @@ export async function persistWitnessReading(reading: SentinelReading): Promise<{
     const next = prior * 0.9 + target * 0.1;
 
     const heuristics = (existing.heuristics as Record<string, unknown> | null) ?? {};
-    const recent = Array.isArray((heuristics as { recent?: unknown[] }).recent)
-      ? ((heuristics as { recent: unknown[] }).recent as unknown[])
-      : [];
+    const recentRaw = (heuristics as { recent?: unknown }).recent;
+    const recent = Array.isArray(recentRaw) ? recentRaw : [];
     const updatedHeuristics = {
       ...heuristics,
       lastVerdict: reading.verdict,
       lastAnomalyScore: reading.anomalyScore,
       recent: [...recent.slice(-19), { verdict: reading.verdict, score: reading.anomalyScore, at: reading.observedAt }],
-    };
+    } as unknown as Record<string, unknown>;
 
     const { error: writeErr } = await supabase
       .from('agent_competency')
