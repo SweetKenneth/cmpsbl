@@ -94,7 +94,7 @@ export const KOTLIN_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.
   'localization-mesh':             recipe('LocMesh', 'Localization Mesh'),
   'multi-model-consensus':         recipe('MultiModel', 'Multi-Model Consensus'),
   'neural-broker':                 recipe('NeuralBroker', 'Neural Broker'),
-  'nocturne-consolidation':        recipe('Nocturne', 'Nocturne Consolidation'),
+  'nocturne-consolidation':        NOCTURNE_KT,
   'privacy-obfuscation':           recipe('PrivacyObf', 'Privacy Obfuscation'),
   'probabilistic-conscience':      recipe('ProbConsc', 'Probabilistic Conscience'),
   'reflex-orchestration':          recipe('ReflexOrch', 'Reflex Orchestration'),
