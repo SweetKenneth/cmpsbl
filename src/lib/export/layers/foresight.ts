@@ -288,15 +288,24 @@ def cmpsbl_oracle_actions_summary() -> dict:
 
 const ORACLE_RIPPLE_WIRE_TS = `
 const _cmpsbl_raw_execute_or = cmpsbl_execute;
-const _cmpsbl_or_call_chain: string[] = [];
+// Trace-scoped call chains — keyed by trace id so concurrent requests do not cross-pollute.
+const _cmpsbl_or_chains: Map<string, string[]> = new Map();
+const _CMPSBL_OR_CHAIN_GLOBAL = '__global__';
 
 cmpsbl_execute = function cmpsbl_execute_oracle_ripple(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
-  if (_cmpsbl_or_call_chain.length > 0) {
-    const prev = _cmpsbl_or_call_chain[_cmpsbl_or_call_chain.length - 1];
+  const traceKey = (typeof cmpsbl_current_trace_id === 'function' && cmpsbl_current_trace_id()) || _CMPSBL_OR_CHAIN_GLOBAL;
+  let chain = _cmpsbl_or_chains.get(traceKey);
+  if (!chain) { chain = []; _cmpsbl_or_chains.set(traceKey, chain); }
+  if (chain.length > 0) {
+    const prev = chain[chain.length - 1];
     if (prev !== capabilityName) cmpsbl_ripple_observe_link(prev, capabilityName);
   }
-  _cmpsbl_or_call_chain.push(capabilityName);
-  if (_cmpsbl_or_call_chain.length > 50) _cmpsbl_or_call_chain.splice(0, _cmpsbl_or_call_chain.length - 50);
+  chain.push(capabilityName);
+  if (chain.length > 50) chain.splice(0, chain.length - 50);
+  if (_cmpsbl_or_chains.size > 1024) {
+    const firstKey = _cmpsbl_or_chains.keys().next().value;
+    if (firstKey !== undefined) _cmpsbl_or_chains.delete(firstKey);
+  }
 
   const start = Date.now();
   try {
@@ -321,17 +330,23 @@ cmpsbl_execute = function cmpsbl_execute_oracle_ripple(capabilityName: string, i
 
 const ORACLE_RIPPLE_WIRE_PY = `
 _cmpsbl_raw_execute_or = cmpsbl_execute
-_cmpsbl_or_call_chain: List[str] = []
+# Trace-scoped via contextvars so concurrent requests do not cross-pollute the chain.
+import contextvars as _cmpsbl_or_cv
+_cmpsbl_or_chain_var: _cmpsbl_or_cv.ContextVar = _cmpsbl_or_cv.ContextVar("_cmpsbl_or_chain", default=None)
 
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute with Oracle-Ripple precognition (auto-wired)."""
-    if _cmpsbl_or_call_chain:
-        prev = _cmpsbl_or_call_chain[-1]
+    """Execute with Oracle-Ripple precognition (auto-wired, trace-scoped)."""
+    chain = _cmpsbl_or_chain_var.get()
+    if chain is None:
+        chain = []
+        _cmpsbl_or_chain_var.set(chain)
+    if chain:
+        prev = chain[-1]
         if prev != capability_name:
             cmpsbl_ripple_observe_link(prev, capability_name)
-    _cmpsbl_or_call_chain.append(capability_name)
-    if len(_cmpsbl_or_call_chain) > 50:
-        del _cmpsbl_or_call_chain[: len(_cmpsbl_or_call_chain) - 50]
+    chain.append(capability_name)
+    if len(chain) > 50:
+        del chain[: len(chain) - 50]
 
     start = time.time()
     try:

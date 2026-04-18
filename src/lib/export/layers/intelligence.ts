@@ -224,37 +224,60 @@ def cmpsbl_check_hallucination(claim: str, sources: List[str]) -> dict:
 
 const AI_SAFETY_WIRE_TS = `
 const _cmpsbl_raw_execute_as = cmpsbl_execute;
-cmpsbl_execute = function cmpsbl_execute_safe(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
-  // Sanitize string fields in input
-  const cleanInput: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(input)) {
-    if (typeof v === 'string') {
-      const s = cmpsbl_sanitize_prompt(v);
-      if (!s.safe) {
-        // Fail closed on prompt injection
-        throw new Error(\`[CMPSBL:AISafety:\${capabilityName}] Prompt injection detected in field '\${k}': \${s.flags.join(',')}\`);
-      }
-      cleanInput[k] = s.cleaned;
-    } else {
-      cleanInput[k] = v;
+
+function _cmpsbl_sanitize_deep(value: unknown, path: string, capabilityName: string): unknown {
+  if (typeof value === 'string') {
+    const s = cmpsbl_sanitize_prompt(value);
+    if (!s.safe) {
+      throw new Error(\`[CMPSBL:AISafety:\${capabilityName}] Prompt injection detected at '\${path}': \${s.flags.join(',')}\`);
     }
+    return s.cleaned;
   }
+  if (Array.isArray(value)) {
+    return value.map((v, i) => _cmpsbl_sanitize_deep(v, \`\${path}[\${i}]\`, capabilityName));
+  }
+  if (value && typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      // Preserve internal sidecar keys verbatim — framework metadata, not user content.
+      if (k.startsWith('_cmpsbl_') || k.startsWith('__cmpsbl_')) { out[k] = v; continue; }
+      out[k] = _cmpsbl_sanitize_deep(v, path ? \`\${path}.\${k}\` : k, capabilityName);
+    }
+    return out;
+  }
+  return value;
+}
+
+cmpsbl_execute = function cmpsbl_execute_safe(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  const cleanInput = _cmpsbl_sanitize_deep(input, '', capabilityName) as Record<string, unknown>;
   return _cmpsbl_raw_execute_as(capabilityName, cleanInput);
 };`;
 
 const AI_SAFETY_WIRE_PY = `
 _cmpsbl_raw_execute_as = cmpsbl_execute
+
+def _cmpsbl_sanitize_deep(value, path: str, capability_name: str):
+    if isinstance(value, str):
+        s = cmpsbl_sanitize_prompt(value)
+        if not s['safe']:
+            raise RuntimeError(f"[CMPSBL:AISafety:{capability_name}] Prompt injection detected at '{path}': {','.join(s['flags'])}")
+        return s['cleaned']
+    if isinstance(value, list):
+        return [_cmpsbl_sanitize_deep(v, f"{path}[{i}]", capability_name) for i, v in enumerate(value)]
+    if isinstance(value, dict):
+        out = {}
+        for k, v in value.items():
+            if isinstance(k, str) and (k.startswith('_cmpsbl_') or k.startswith('__cmpsbl_')):
+                out[k] = v
+                continue
+            sub_path = f"{path}.{k}" if path else str(k)
+            out[k] = _cmpsbl_sanitize_deep(v, sub_path, capability_name)
+        return out
+    return value
+
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under AI safety guards (auto-wired)."""
-    clean = {}
-    for k, v in input_data.items():
-        if isinstance(v, str):
-            s = cmpsbl_sanitize_prompt(v)
-            if not s['safe']:
-                raise RuntimeError(f"[CMPSBL:AISafety:{capability_name}] Prompt injection detected in field '{k}': {','.join(s['flags'])}")
-            clean[k] = s['cleaned']
-        else:
-            clean[k] = v
+    """Execute under AI safety guards (auto-wired, recursive)."""
+    clean = _cmpsbl_sanitize_deep(input_data, '', capability_name)
     return _cmpsbl_raw_execute_as(capability_name, clean)`;
 
 const AI_SAFETY_LAYER: CmpsblLayerDefinition = {
@@ -552,21 +575,43 @@ def cmpsbl_compact() -> dict:
 
 const COG_MEMORY_WIRE_TS = `
 const _cmpsbl_raw_execute_cm = cmpsbl_execute;
+
+function _cmpsbl_cm_strip_sidecars(obj: unknown): Record<string, unknown> {
+  if (!obj || typeof obj !== 'object') return { value: obj as unknown };
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
+    if (k.startsWith('_cmpsbl_') || k.startsWith('__cmpsbl_')) continue;
+    out[k] = v;
+  }
+  return out;
+}
+
 cmpsbl_execute = function cmpsbl_execute_memory(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
-  const node = cmpsbl_remember(capabilityName + ':input', input);
+  const cleanIn = _cmpsbl_cm_strip_sidecars(input);
+  const node = cmpsbl_remember(capabilityName + ':input', cleanIn);
   const result = _cmpsbl_raw_execute_cm(capabilityName, input);
-  const outNode = cmpsbl_remember(capabilityName + ':output', result as unknown as Record<string, unknown>);
+  const cleanOut = _cmpsbl_cm_strip_sidecars(result as unknown);
+  const outNode = cmpsbl_remember(capabilityName + ':output', cleanOut);
   cmpsbl_relate(node.id, outNode.id, 'produced', 1);
   return result;
 };`;
 
 const COG_MEMORY_WIRE_PY = `
 _cmpsbl_raw_execute_cm = cmpsbl_execute
+
+def _cmpsbl_cm_strip_sidecars(obj) -> dict:
+    if not isinstance(obj, dict):
+        return {"value": obj}
+    return {k: v for k, v in obj.items()
+            if not (isinstance(k, str) and (k.startswith('_cmpsbl_') or k.startswith('__cmpsbl_')))}
+
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute with cognitive memory tracking (auto-wired)."""
-    node = cmpsbl_remember(capability_name + ':input', input_data)
+    """Execute with cognitive memory tracking (auto-wired, sidecar-stripped)."""
+    clean_in = _cmpsbl_cm_strip_sidecars(input_data)
+    node = cmpsbl_remember(capability_name + ':input', clean_in)
     result = _cmpsbl_raw_execute_cm(capability_name, input_data)
-    out_node = cmpsbl_remember(capability_name + ':output', result if isinstance(result, dict) else {"value": result})
+    clean_out = _cmpsbl_cm_strip_sidecars(result)
+    out_node = cmpsbl_remember(capability_name + ':output', clean_out)
     cmpsbl_relate(node.id, out_node.id, 'produced', 1)
     return result`;
 
