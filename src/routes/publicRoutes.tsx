@@ -189,8 +189,8 @@ export const publicRoutes = (
     <Route path="/gaming" element={<VerticalSecretGate verticalId="gaming"><GamingSubstrate /></VerticalSecretGate>} />
     <Route path="/verticals" element={<VerticalSecretGate verticalId="portal"><VerticalPortal /></VerticalSecretGate>} />
     <Route path="/robotics" element={<VerticalSecretGate verticalId="robotics"><RoboticsHome /></VerticalSecretGate>} />
-    <Route path="/developers" element={<DeveloperShowcase />} />
-    <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
+    <Route path="/developers" element={<Navigate to="/api-access" replace />} />
+    <Route path="/developers/guide" element={<Navigate to="/api-access" replace />} />
     <Route path="/use-cases" element={<UseCases />} />
     <Route path="/case-studies" element={<CaseStudies />} />
     {/* marketplace route defined above — legacy redirect removed */}
