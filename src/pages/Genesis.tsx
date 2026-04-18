@@ -32,10 +32,13 @@ interface ChatTurn {
 
 const SAMPLE_PROMPTS = [
   'What is BRAIN?',
-  'How do you work without an LLM?',
+  '/ask DECODE what do you parse',
+  '/ask DREAM how do you synthesize',
+  'How does Memory Stream recall work?',
   'Tell me about offline cognitive substrates',
   'What is GENESIS?',
-  'How does Memory Stream recall work?',
+  '/ask DEFENSE what do you shield',
+  '/ask GOVERNANCE what is Lex',
 ];
 
 export default function Genesis() {
@@ -45,7 +48,7 @@ export default function Genesis() {
       id: 'init',
       role: 'brain',
       text:
-        "I am BRAIN, addressed through DECODE. I have no LLM behind me. Ask me anything — I will respond from my knowledge crystals, or honestly tell you when I don't have one. Open devtools → Network: you will see zero outbound calls when I think. Flip the NEXUS toggle above to compare against a routed LLM.",
+        "I am BRAIN, addressed through DECODE. I have no LLM behind me. Ask me anything — I will respond from my knowledge crystals, or honestly tell you when I don't have one.\n\nOpen devtools → Network: zero outbound calls when I think.\n\nDirect routing:  /ask BRAIN how do you encode\n                /ask DECODE what do you parse\n                /ask DREAM how do you synthesize\n\nFlip the NEXUS toggle above to compare against a routed LLM.",
       source: 'brain',
     },
   ]);
