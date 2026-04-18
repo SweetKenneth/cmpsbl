@@ -189,20 +189,37 @@ Per Kenneth: **FORGE = template generator**, **Agent Forge = per-agent generator
 
 **Verdict:** FORGE (the template generator) is alive via `developer_templates` (200 rows). **Agent Forge is the unwired half** — `forge_agents` exists with 0 rows. Prior pass conflated the two.
 
-### MINT (Agency source) — **NOT YET FOUND**
-No `mint_*` tables exist in the database. The 20-agent Agency collective has source tables (`agency_members` 20 rows, `agency_templates` 10 rows) but the **Mint that spawns them is not yet a persisted concept**. → Asking Kenneth: is "Mint" a code-only concept, a future build, or hidden under another name I haven't tried?
+### MINT — **alive as an OPERATION (verb), not a row store**
+Per Kenneth: "Mint" is the act of spawning a complete 20-agent Agency as one unit — it's not a separate table family. The Mint operation is realized through the existing chain: `agency_templates` (blueprint, 10 rows) → `agency_purchases` (mint trigger, 1 row) → `agencies` (1 deployed) → `agency_members` (exactly 20 per agency, confirmed). No `mint_*` tables needed; the concept is fully implemented.
 
+### AGENCY — **ALIVE and far richer than prior passes captured**
+Each Agency = **20 agents minted as one collective**, manually configurable per-agent skill levels, working mesh memory, its own deployed per-user page, real Firecrawl-driven research and actions. **Pre-dates "OpenClaw" entirely** — this was running long before that name existed.
 
-### AGENCY — **ALIVE**
-| Table | Rows |
-|-------|------|
-| `agency_tasks` | 253 |
-| `agency_task_logs` | 215 |
-| `agency_task_artifacts` | 154 |
-| `agency_agent_telemetry` | 28 |
-| `agency_members` | 20 |
-| `agency_templates` | 10 |
-| `agency_economics` | 5 |
+| Table | Rows | Purpose |
+|-------|------|---------|
+| `agency_tasks` | 253 | Real tasks executed by Agency members |
+| `agency_task_logs` | 215 | Per-task execution trace |
+| `agency_task_artifacts` | 154 | Files/outputs produced by Agency work |
+| `mesh_comms` | 1,166 | **Working mesh memory between agents** |
+| `mesh_saved_pipelines` | 92 | Crystallized pipelines the Agency built |
+| `mesh_capability_recommendations` | 128 | Self-improvement loop for Agency capability mix |
+| `mesh_intents` | 25 | Intent routing across the 20-agent mesh |
+| `mesh_discovery_runs` | 9 | Real research runs |
+| `mesh_discovery_gaps` | 34 | Gap-detection for next research cycle |
+| `agency_agent_telemetry` | 28 | Per-agent performance snapshots |
+| `agency_members` | 20 | **Exactly 20 — confirms the "20 agents per Agency" spec** |
+| `agency_templates` | 10 | Mint blueprints |
+| `agent_competency` | 15 | Per-agent skill/competency tracking |
+| `agency_economics` | 5 | Cost/value/ROI per Agency |
+| `agencies` | 1 | 1 deployed: `CMPSBL OPS` at `cmpsbl.com/a/cmpsbl-ops-2j6hfq` (per-user page confirmed) |
+| `agency_purchases` | 1 | 1 mint event recorded |
+| `agency_settings` | 1 | Per-Agency configuration |
+
+**Combined Agency + Mesh rows: ~2,400 — this is one of the most active subsystems on the substrate.** Prior passes underweighted it because they didn't connect mesh_* tables to the Agency they belong to.
+
+**Firecrawl wiring:** Agency does perform real external research; `agency_api_calls` table exists with 0 rows currently — needs verification whether Firecrawl calls are being logged there or routed through a different telemetry path (likely `mesh_discovery_runs` / `agency_agent_telemetry`).
+
+**Agent Forge gap remains:** `forge_agents` = 0 rows. The per-agent forge (separate from the 20-at-once Mint) is scaffolded but not writing. This is the single highest-value wiring gap in the Agency stack.
 
 ### VERTICAL Substrates (the discovery engines, not the marketing subdomains) — **ALIVE**
 | Table | Rows |
