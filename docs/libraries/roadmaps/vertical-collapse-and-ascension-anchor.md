@@ -427,6 +427,7 @@ Mirrors §4 tiers exactly so each audit row has an execution slot.
 | 3 (edge fns) | 14/20 sampled = real-work, 0 pure-fake |
 | **Restart** | **Alias map applied. ~75% of "missing" things found under aliases.** |
 | **Pass 5 — History** | Kenneth provided build-history context: Firecrawl-promo origin of Agent Forge + Agency, the 300-edge-function Lovable wall, the XCTBL detour (verified live HTTP 200), the forced Remix that birthed today's CMPSBL. Reclassified Agent Forge + Agency from "wiring gap" to **Dormant — paid-API gated**. Added §-1 build-history section. Heritage Paper noted as primary source with ~10% drift, missing the Oct 2024 – Feb 2025 window. |
+| **Pass 6 — Cohesion** | Continued (not combined) the audit→roadmap link. §4 expanded from a flat 10-row list into 5 tiers (4a engine→table, 4b empty schemas, 4c dormant, 4d theater, 4e doc debt) so every audit finding in §1–§3 has a 1:1 fix row. §6 Execution Path re-tiered to mirror §4 phase-by-phase with explicit gates (P0–P5 + P-anchor freeze on Ascension). Net: zero new claims, zero rewrites — pure cohesion pass. |
 
 ---
 
