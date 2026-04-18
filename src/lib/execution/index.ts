@@ -71,6 +71,15 @@ export {
   DEFAULT_GOVERNED_LAYERS,
 } from './governedPipeline';
 
+// SENTINEL — Audit-Chain Witness Agent (paired with Governed Pipeline)
+export {
+  type SentinelVerdict,
+  type SentinelReading,
+  witnessAuditChain,
+  persistWitnessReading,
+  sentinelObserve,
+} from './sentinel';
+
 // Planner
 export {
   type PlannerConfig,
