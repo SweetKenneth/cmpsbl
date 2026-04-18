@@ -9,19 +9,25 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Brain, Cpu, Lock, Download, FileText, Zap, ShieldCheck, WifiOff, Send, Sparkles } from 'lucide-react';
+import { Brain, Cpu, Lock, Download, FileText, Zap, ShieldCheck, WifiOff, Send, Sparkles, Network } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { brainReason, BRAIN_REASONER_META, type BrainTrace } from '@/lib/genesis/brainReasoner';
+import { processAIRequest } from '@/lib/nexus';
 
 interface ChatTurn {
   id: string;
   role: 'user' | 'brain';
   text: string;
   trace?: BrainTrace;
+  source?: 'brain' | 'nexus';
+  nexusMeta?: { model: string; latency: number; cached: boolean };
+  error?: boolean;
 }
 
 const SAMPLE_PROMPTS = [
@@ -33,12 +39,14 @@ const SAMPLE_PROMPTS = [
 ];
 
 export default function Genesis() {
+  const [useNexus, setUseNexus] = useState(false);
   const [turns, setTurns] = useState<ChatTurn[]>([
     {
       id: 'init',
       role: 'brain',
       text:
-        "I am BRAIN, addressed through DECODE. I have no LLM behind me. Ask me anything — I will respond from my knowledge crystals, or honestly tell you when I don't have one. Open devtools → Network: you will see zero outbound calls when I think.",
+        "I am BRAIN, addressed through DECODE. I have no LLM behind me. Ask me anything — I will respond from my knowledge crystals, or honestly tell you when I don't have one. Open devtools → Network: you will see zero outbound calls when I think. Flip the NEXUS toggle above to compare against a routed LLM.",
+      source: 'brain',
     },
   ]);
   const [input, setInput] = useState('');
@@ -66,8 +74,38 @@ export default function Genesis() {
       };
       setTurns(prev => [...prev, userTurn]);
 
-      // Synchronous, deterministic — no await needed. We use a 0ms timeout
-      // only so the UI repaints the user message before the response.
+      if (useNexus) {
+        // NEXUS path — routes to a real free-tier provider. Network calls WILL appear.
+        processAIRequest({ prompt, type: 'reasoning', useCache: true })
+          .then(resp => {
+            setTurns(prev => [
+              ...prev,
+              {
+                id: 'n_' + Date.now(),
+                role: 'brain',
+                text: resp.content,
+                source: 'nexus',
+                nexusMeta: { model: resp.model, latency: resp.latency, cached: resp.cached },
+              },
+            ]);
+          })
+          .catch(err => {
+            setTurns(prev => [
+              ...prev,
+              {
+                id: 'n_' + Date.now(),
+                role: 'brain',
+                text: `NEXUS routing failed: ${err instanceof Error ? err.message : 'unknown error'}. This is what BRAIN protects you from when you run offline.`,
+                source: 'nexus',
+                error: true,
+              },
+            ]);
+          })
+          .finally(() => setThinking(false));
+        return;
+      }
+
+      // BRAIN path — synchronous, deterministic, no network. 0ms timeout for repaint.
       setTimeout(() => {
         const trace = brainReason(prompt, lastReceipt);
         const brainTurn: ChatTurn = {
@@ -75,13 +113,14 @@ export default function Genesis() {
           role: 'brain',
           text: trace.response,
           trace,
+          source: 'brain',
         };
         setTurns(prev => [...prev, brainTurn]);
         setLastReceipt(trace.receipt.fingerprint);
         setThinking(false);
       }, 16);
     },
-    [input, thinking, lastReceipt],
+    [input, thinking, lastReceipt, useNexus],
   );
 
   return (
@@ -167,17 +206,27 @@ export default function Genesis() {
             <div className="grid gap-4 lg:grid-cols-[1fr,360px]">
               {/* Chat column */}
               <Card className="flex flex-col h-[600px] overflow-hidden border-border">
-                <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                    <span className="text-xs font-mono text-muted-foreground">
-                      DECODE → BRAIN · {BRAIN_REASONER_META.modelVersion} ·{' '}
-                      {BRAIN_REASONER_META.dimensions}-dim · {BRAIN_REASONER_META.crystalsLoaded} crystals
+                <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5 gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className={'h-2 w-2 rounded-full animate-pulse ' + (useNexus ? 'bg-amber-500' : 'bg-primary')} />
+                    <span className="text-xs font-mono text-muted-foreground truncate">
+                      {useNexus
+                        ? 'NEXUS → free-tier LLM · network active'
+                        : `DECODE → BRAIN · ${BRAIN_REASONER_META.modelVersion} · ${BRAIN_REASONER_META.dimensions}-dim · ${BRAIN_REASONER_META.crystalsLoaded} crystals`}
                     </span>
                   </div>
-                  <Badge variant="outline" className="text-[10px] font-mono">
-                    LLM calls: 0
-                  </Badge>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Network className={'h-3.5 w-3.5 ' + (useNexus ? 'text-amber-500' : 'text-muted-foreground/40')} />
+                    <Label htmlFor="nexus-toggle" className="text-[11px] font-mono cursor-pointer">
+                      NEXUS
+                    </Label>
+                    <Switch
+                      id="nexus-toggle"
+                      checked={useNexus}
+                      onCheckedChange={setUseNexus}
+                      disabled={thinking}
+                    />
+                  </div>
                 </div>
 
                 <ScrollArea className="flex-1 px-4 py-4" ref={scrollRef as never}>
@@ -194,16 +243,32 @@ export default function Genesis() {
                             'max-w-[85%] rounded-lg px-3.5 py-2.5 text-sm ' +
                             (turn.role === 'user'
                               ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted text-foreground border border-border')
+                              : turn.source === 'nexus'
+                                ? 'bg-amber-500/10 text-foreground border border-amber-500/30'
+                                : 'bg-muted text-foreground border border-border')
                           }
                         >
                           {turn.role === 'brain' && (
                             <div className="flex items-center gap-1.5 mb-1.5 text-[10px] font-mono uppercase tracking-wider opacity-70">
-                              <Brain className="h-3 w-3" /> BRAIN
-                              {turn.trace?.matchedCrystal && (
-                                <span className="ml-auto">
-                                  match: {(turn.trace.matchedCrystal.similarity * 100).toFixed(1)}%
-                                </span>
+                              {turn.source === 'nexus' ? (
+                                <>
+                                  <Network className="h-3 w-3" /> NEXUS
+                                  {turn.nexusMeta && (
+                                    <span className="ml-auto">
+                                      {turn.nexusMeta.model} · {turn.nexusMeta.latency}ms
+                                      {turn.nexusMeta.cached ? ' · cached' : ''}
+                                    </span>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  <Brain className="h-3 w-3" /> BRAIN
+                                  {turn.trace?.matchedCrystal && (
+                                    <span className="ml-auto">
+                                      match: {(turn.trace.matchedCrystal.similarity * 100).toFixed(1)}%
+                                    </span>
+                                  )}
+                                </>
                               )}
                             </div>
                           )}
