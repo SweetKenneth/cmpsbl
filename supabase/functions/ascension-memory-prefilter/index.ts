@@ -57,20 +57,28 @@ serve(async (req) => {
     }
 
     // Search distilled crystals first (most authoritative)
-    const { data: crystalMatches } = await supabase.rpc("match_brain_embeddings", {
-      query_embedding: vec as any,
-      match_threshold: threshold,
-      match_count: 5,
-      artifact_types: ["crystal", "knowledge_crystal"],
-    }).catch(() => ({ data: [] }));
+    let crystalMatches: any[] = [];
+    try {
+      const r = await supabase.rpc("match_brain_embeddings", {
+        query_embedding: vec as any,
+        match_threshold: threshold,
+        match_count: 5,
+        artifact_types: ["crystal", "knowledge_crystal"],
+      });
+      crystalMatches = r.data || [];
+    } catch (_) { /* non-fatal */ }
 
     // Also search general embeddings (broader coverage)
-    const { data: anyMatches } = await supabase.rpc("match_brain_embeddings", {
-      query_embedding: vec as any,
-      match_threshold: threshold,
-      match_count: 8,
-      artifact_types: null,
-    }).catch(() => ({ data: [] }));
+    let anyMatches: any[] = [];
+    try {
+      const r = await supabase.rpc("match_brain_embeddings", {
+        query_embedding: vec as any,
+        match_threshold: threshold,
+        match_count: 8,
+        artifact_types: null,
+      });
+      anyMatches = r.data || [];
+    } catch (_) { /* non-fatal */ }
 
     const top = (anyMatches || []) as any[];
     const best = top.length > 0 ? Number(top[0].similarity) : 0;
