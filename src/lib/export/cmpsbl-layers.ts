@@ -37,6 +37,7 @@ import { TRACE_CORE } from './layers/_trace-core';
 import { DEGRADATION_CORE } from './layers/_degradation-core';
 import { BEACON_CORE } from './layers/_beacon-core';
 import { DEBUG_MODE_CORE } from './layers/_debug-mode-core';
+import { STATE_STORE_CORE } from './layers/_state-store-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -44,7 +45,8 @@ import { DEBUG_MODE_CORE } from './layers/_debug-mode-core';
 // (innermost wraps cmpsbl_execute first; Debug Surface is outermost so the
 // activation banner fires before any other wrapper can emit).
 //
-//   Circuit Breaker  → cascade prevention      (innermost)
+//   State Store      → persistent kernel substrate (innermost; foundation)
+//   Circuit Breaker  → cascade prevention
 //   Timeout Guard    → deadline enforcement
 //   Retry            → transient recovery
 //   Envelope         → typed result contract
@@ -52,7 +54,12 @@ import { DEBUG_MODE_CORE } from './layers/_debug-mode-core';
 //   Degradation      → fallback envelope
 //   BEACON           → structured signal
 //   Debug Surface    → opt-in observability    (outermost; off by default)
+//
+// Kernel components (State Store + future Quarantine, ContractValidator,
+// IsolatedExecutor) are gated by CMPSBL_KERNEL_ENABLED env (default ON).
+// When OFF, they degrade to no-op shims — exports stay byte-compatible.
 export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
+  STATE_STORE_CORE,
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
   RETRY_CORE,
