@@ -74,7 +74,7 @@ export function emitCSharp(spec: ComponentSpec): string {
     const ret = csRet(m, spec);
     lines.push(`    public static ${ret} ${pascal(m.name)}(${params}) {`);
     lines.push('        lock (LOCK) {');
-    for (const op of m.ops) for (const l of csOp(op, spec)) lines.push(`            ${l}`);
+    for (const op of m.ops) for (const l of csOp(op, spec, m)) lines.push(`            ${l}`);
     lines.push('        }');
     lines.push('    }');
     lines.push('');
@@ -102,7 +102,7 @@ function swInit(f: SpecField): string {
   if (f.type === 'bool') return String(f.init ?? false);
   return String(f.init ?? 0);
 }
-function swOp(op: MethodOp, spec: ComponentSpec): string[] {
+function swOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
   switch (op.kind) {
     case 'get': return [`return ${op.field}`];
     case 'set': return [`${op.field} = ${op.from}`];
@@ -112,7 +112,7 @@ function swOp(op: MethodOp, spec: ComponentSpec): string[] {
     case 'reset_all': return spec.fields.map(f => `${f.name} = ${swInit(f)}`);
     case 'clear_map': return [`${op.field}.removeAll()`];
     case 'map_inc':
-      return [`${op.field}[${op.key}, default: 0] += ${op.by ?? 1}`];
+      return [`${op.field}[${resolveKey(m, op.key)}, default: 0] += ${op.by ?? 1}`];
     case 'snapshot': {
       const pairs = op.fields.map(f => `"${f}": ${f}`).join(', ');
       return [`return [${pairs}]`];
@@ -145,7 +145,7 @@ export function emitSwift(spec: ComponentSpec): string {
     const ret = swRet(m, spec);
     lines.push(`    public static func ${m.name}(${params})${ret} {`);
     lines.push('        lock.lock(); defer { lock.unlock() }');
-    for (const op of m.ops) for (const l of swOp(op, spec)) lines.push(`        ${l}`);
+    for (const op of m.ops) for (const l of swOp(op, spec, m)) lines.push(`        ${l}`);
     lines.push('    }');
     lines.push('');
   }
