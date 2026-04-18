@@ -404,11 +404,17 @@ Priority order (highest impact first). Every row maps 1:1 to an audit finding in
 
 ## §6 — Execution Path (after audit, awaiting approval)
 
-1. **Stop calling anything fake until alias-grepped.** This rule is now §0.
-2. **Wiring sprint:** address §4 gaps in priority order, top to bottom.
-3. **Theater removal:** replace `simulate*()` with real implementations or delete.
-4. **Vertical collapse:** 301 the 7 phantom subdomains to cmpsbl.com.
-5. **Ascension untouched** — confirmed real (Pass 1, re-verified).
+Mirrors §4 tiers exactly so each audit row has an execution slot.
+
+| Phase | Source tier | Action | Gate |
+|-------|-------------|--------|------|
+| **P0 — Stop the bleed** | rule from §0 | Stop calling anything fake until alias-grepped. Codify §0 in agent rules. | Done at restart. |
+| **P1 — Wire the moat** | §4a (gaps #1–5) | Add writers / migrations for `ultimate/` engines, starting with `forge/ultimate → forge_agents`. Audit each table-less ultimate engine for whether persistence is actually needed (some are pure routers). | One writer per credit budget; no rewrites. |
+| **P2 — Close empty schemas** | §4b (gaps #6–13) | Wire DREAM, DECODE, EVOLUTION, Modernizer, IMMUNITY, Clarity, substrate sequencer, and entitlement issuance. | Each fix verified by row appearing in DB after one run. |
+| **P3 — Re-fund or swap dormant systems** | §4c (gaps #14–15) | Kenneth-decision: re-fund Firecrawl OR swap Agency/Agent Forge to a NEXUS-routed scraper. Confirm `agency_api_calls` telemetry path. | Awaiting Kenneth go/no-go. |
+| **P4 — Theater removal** | §4d (gaps #16–18) | Replace `simulate*()` with real implementations or delete. 301 the 7 phantom subdomains. | Per-function review before deletion. |
+| **P5 — Lineage doc cleanup** | §4e (gaps #19–21) | Backfill Heritage Paper drift, document `pf_*` ↔ `cmpsbl_*`, hold XCTBL Dev Playground as roadmap-only intent. | Doc-only; no code touched. |
+| **P-anchor** | Ascension | **Untouched** — confirmed real (Pass 1, re-verified). Do not modify pipeline during this audit. | Hard freeze. |
 
 ---
 
