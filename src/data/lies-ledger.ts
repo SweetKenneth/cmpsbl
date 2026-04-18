@@ -974,6 +974,60 @@ export const LIES_LEDGER: Finding[] = [
       'The valuation document monetizes the same "90+ languages" claim that the codebase contradicts. Removing this row alone collapses the ceiling estimate by $11–21M.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-052',
+    title: '"$2.9M per discovery, every 8 hours" has no scoring evidence in DB',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/20-why-invest-now.md (lines 10, 18)',
+      quote:
+        '"Memory Stream produces pipeline artifacts valued at up to $2.9M per discovery, already in service, running every 8 hours" · "Memory Stream ($2.9M per discovery, already in service, running every 8 hours)"',
+    },
+    evidence: {
+      reality:
+        'artifact_registry: 199 rows total, 0 rows with metadata->>cjpi populated (max_cjpi is NULL). No valuation column, no CJPI scoring column anywhere queryable. Cross-ref F-008: Memory Stream silent. The "$2.9M" figure has no record in any table — neither as a stored valuation, a CJPI threshold derivation, nor a discovery event.',
+      method: "SELECT max((metadata->>'cjpi')::numeric), count(*) WHERE metadata->>'cjpi' IS NOT NULL FROM artifact_registry; aggregate with F-008.",
+    },
+    verdict:
+      'A specific dollar figure repeated twice on the lead investor doc should resolve to a stored value or a documented formula. Neither exists in the database. The 8-hour cadence is also contradicted by F-008.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-053',
+    title: '"166 bugs auto-fixed for $0.06" has 0 applied evolution proposals',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/20-why-invest-now.md (line 19), 09-defensible-valuation.md (line 303)',
+      quote:
+        '"Validated · 166 bugs auto-fixed for $0.06, ENCODE 100% apply rate" · "Evolution cost per bug fixed: ~$0.00036"',
+    },
+    evidence: {
+      reality:
+        'evolution_proposals: 34 total rows, 0 with status=applied. The "100% apply rate" therefore divides by zero applied, and "166 bugs fixed" is unrepresented in the proposal ledger. The $0.00036/bug unit-economics row in the valuation doc is derived from $0.06 / 166 — both inputs fail to verify.',
+      method: 'SELECT count(*) FROM evolution_proposals WHERE status=applied (=0). Cross-ref F-030 (Evolution activity ceased 2026-03-06).',
+    },
+    verdict:
+      'The most-quoted "validation" stat in the why-invest-now doc and the unit-economics row in the valuation doc both rest on a number with no database trace. Apply rate is mathematically undefined when zero proposals have been applied.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-054',
+    title: 'Floor valuation $23–51M premised on engines/agents that have not transacted',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/06-ip-defensibility.md (§3, lines 63-76)',
+      quote:
+        '"Crown Jewel algorithm corpus · 356+ sealed algorithms across 12 verticals · $5–12M" · "Sealed agent architecture · 20 agents with DREAM · $2–4M" · "Mana/Lex attachment engine · Two filed patents · $5–11M" · "Combined Floor · $23–51M"',
+    },
+    evidence: {
+      reality:
+        'Aggregate disconfirming evidence from prior findings and current DB: cognitive_orders=0, agency_purchases (completed)=1, access_subscriptions (active)=5, access_usage cost over last 90 days=$0.00, lex_registry=0 (F-045), cognitive_registry=14 not 20 (F-049), 0 crown-tier rows in artifact_registry (F-050), 3 lifetime Ascension runs (F-044). The "356+ sealed algorithms across 12 verticals" has no enumeration in the public schema. The "$23–51M floor" is built on seven line items, none of which carries a transactional or registry footprint.',
+      method: 'Aggregate of F-008, F-030, F-032, F-034, F-044, F-045, F-049, F-050, F-051 plus current DB sums (cognitive_orders, agency_purchases, access_subscriptions, access_usage).',
+    },
+    verdict:
+      'A floor valuation should survive when each input is independently verified. Every one of the seven IP line items either contradicts the database or has no database trace at all. With $0 in 90-day usage revenue and 5 active subscriptions, the floor is not defensible at the stated range.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
