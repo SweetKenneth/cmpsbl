@@ -27,6 +27,12 @@ import { SWIFT_LAYER_BODIES } from './layers-swift/swift-layers';
 import { SWIFT_INVENTORY_BODIES } from './layers-swift/swift-inventory';
 import { KOTLIN_LAYER_BODIES } from './layers-kotlin/kotlin-layers';
 import { KOTLIN_INVENTORY_BODIES } from './layers-kotlin/kotlin-inventory';
+import { RS_KERNEL_BODIES } from './layers-rs/rs-kernel';
+import { GO_KERNEL_BODIES } from './layers-go/go-kernel';
+import { JAVA_KERNEL_BODIES } from './layers-java/java-kernel';
+import { CSHARP_KERNEL_BODIES } from './layers-csharp/csharp-kernel';
+import { SWIFT_KERNEL_BODIES } from './layers-swift/swift-kernel';
+import { KOTLIN_KERNEL_BODIES } from './layers-kotlin/kotlin-kernel';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -131,6 +137,24 @@ _registerJavaLayerBodies();
 _registerCsharpLayerBodies();
 _registerSwiftLayerBodies();
 _registerKotlinLayerBodies();
+
+// ── Tier 1 Kernel Bodies (kernel-clock, capability-registry, kernel-bootstrap)
+function _registerKernelBodies(): void {
+  const tables: Array<[string, Readonly<Record<string, string>>]> = [
+    ['rust', RS_KERNEL_BODIES],
+    ['go', GO_KERNEL_BODIES],
+    ['java', JAVA_KERNEL_BODIES],
+    ['csharp', CSHARP_KERNEL_BODIES],
+    ['swift', SWIFT_KERNEL_BODIES],
+    ['kotlin', KOTLIN_KERNEL_BODIES],
+  ];
+  for (const [lang, table] of tables) {
+    for (const [layerId, body] of Object.entries(table)) {
+      NATIVE_REGISTRY.set(`${layerId}:${lang}`, () => body.trim());
+    }
+  }
+}
+_registerKernelBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
@@ -2403,6 +2427,95 @@ registerNative('isolated-executor', 'kotlin', () => [
   '        }',
   '    }',
   '}',
+].join('\n'));
+
+// ── Ruby Tier 1 Kernel Bodies ───────────────────────────────────────────────
+
+registerNative('kernel-clock', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Kernel Clock',
+  '# Deterministic time + UUID. Modes: :system, :fixed, :monotonic. Thread-safe.',
+  'module CmpsblClock',
+  '  @mutex = Mutex.new',
+  '  @mode = :system',
+  '  @fixed_ms = 0',
+  '  @mono_ms = 0',
+  '  @seed = 0x9E3779B97F4A7C15',
+  '',
+  '  def self.set_mode(m); @mutex.synchronize { @mode = m }; end',
+  '  def self.set_fixed(ms); @mutex.synchronize { @mode = :fixed; @fixed_ms = ms }; end',
+  '',
+  '  def self.now_ms',
+  '    @mutex.synchronize do',
+  '      case @mode',
+  '      when :fixed then @fixed_ms',
+  '      when :monotonic then @mono_ms += 1; @mono_ms',
+  '      else (Time.now.to_f * 1000).to_i',
+  '      end',
+  '    end',
+  '  end',
+  '',
+  '  def self.uuid',
+  '    @mutex.synchronize do',
+  '      @seed = (@seed * 6364136223846793005 + 1442695040888963407) & 0xFFFFFFFFFFFFFFFF',
+  '      a = @seed',
+  '      b = (@seed * 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF',
+  '      format("%016x-%016x", a, b)',
+  '    end',
+  '  end',
+  'end',
+].join('\n'));
+
+registerNative('capability-registry', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Capability Registry',
+  '# Named capability registration + dispatch. Thread-safe via Mutex.',
+  'module CmpsblRegistry',
+  '  @mutex = Mutex.new',
+  '  @handlers = {}',
+  '',
+  '  def self.register(name, &handler); @mutex.synchronize { @handlers[name] = handler }; end',
+  '  def self.has?(name); @mutex.synchronize { @handlers.key?(name) }; end',
+  '',
+  '  def self.dispatch(name, payload)',
+  '    h = @mutex.synchronize { @handlers[name] }',
+  '    raise "cmpsbl_registry: unknown capability \\"#{name}\\"" unless h',
+  '    h.call(payload)',
+  '  end',
+  '',
+  '  def self.list; @mutex.synchronize { @handlers.keys.sort }; end',
+  '  def self.count; @mutex.synchronize { @handlers.size }; end',
+  'end',
+].join('\n'));
+
+registerNative('kernel-bootstrap', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Kernel Bootstrap',
+  '# Boots the kernel quintet in canonical order; tracks health + shutdown.',
+  'module CmpsblBoot',
+  '  STATUS = [:cold, :booting, :ready, :degraded, :shutdown].freeze',
+  '  @mutex = Mutex.new',
+  '  @status = :cold',
+  '  @started_ms = 0',
+  '  @components = []',
+  '',
+  '  def self.boot',
+  '    @mutex.synchronize do',
+  '      return true if @status == :ready',
+  '      @status = :booting',
+  '      @components = ["clock", "state-store", "contract-validator", "quarantine", "isolated-executor"]',
+  '      @started_ms = (Time.now.to_f * 1000).to_i',
+  '      @status = :ready',
+  '      true',
+  '    end',
+  '  end',
+  '',
+  '  def self.health; @mutex.synchronize { @status }; end',
+  '',
+  '  def self.shutdown',
+  '    @mutex.synchronize do',
+  '      @status = :shutdown',
+  '      @components = []',
+  '    end',
+  '  end',
+  'end',
 ].join('\n'));
 
 // ═══════════════════════════════════════════════════════════════════════════════
