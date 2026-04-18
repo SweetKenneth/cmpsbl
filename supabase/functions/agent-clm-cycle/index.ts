@@ -42,6 +42,19 @@ const AGENT_GOALS: Record<string, string[]> = {
   security: ["Expand CVE pattern library", "Improve zero-day detection", "Reduce false positive rate", "Learn new penetration vectors", "Strengthen evidence chain integrity"],
   finance: ["Improve forecast accuracy", "Expand financial model coverage", "Reduce budget variance"],
   designer: ["Expand component pattern library", "Improve accessibility audit accuracy", "Learn new design systems"],
+  // DECODE — gap-aware distillation goals (added 2026-04-18)
+  // Targets the 6 identified gaps in DECODE's knowledge: shifts CLM from
+  // "capture everything" → "capture what advances the substrate."
+  decode: [
+    "Capture procedural knowledge (how-to workflows, not just facts)",
+    "Capture decision rationale (why choices were made, not just what)",
+    "Capture failure patterns (what didn't work and why — negative space)",
+    "Build cross-domain bridges (gaming↔fintech↔robotics↔health connections)",
+    "Capture Governor intent (Kenneth's strategic reasoning, not just outputs)",
+    "Capture temporal context (timestamp truth — what was true when)",
+    "Promote DREAM-generated insights to canonical when validated",
+    "Suppress redundant memory accumulation (dedupe before distill)",
+  ],
 };
 
 Deno.serve(async (req) => {
