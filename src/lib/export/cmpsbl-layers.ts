@@ -39,6 +39,7 @@ import { BEACON_CORE } from './layers/_beacon-core';
 import { DEBUG_MODE_CORE } from './layers/_debug-mode-core';
 import { STATE_STORE_CORE } from './layers/_state-store-core';
 import { CONTRACT_VALIDATOR_CORE } from './layers/_contract-validator-core';
+import { QUARANTINE_CORE } from './layers/_quarantine-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -62,6 +63,7 @@ import { CONTRACT_VALIDATOR_CORE } from './layers/_contract-validator-core';
 export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
   STATE_STORE_CORE,
   CONTRACT_VALIDATOR_CORE,
+  QUARANTINE_CORE,
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
   RETRY_CORE,
