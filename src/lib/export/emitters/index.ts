@@ -20,11 +20,16 @@ import { emitCpp } from './emit-cpp';
 import { emitZig } from './emit-zig';
 import { emitNim } from './emit-nim';
 import { emitD } from './emit-d';
+import { emitScala } from './emit-scala';
+import { emitGroovy } from './emit-groovy';
+import { emitFSharp } from './emit-fsharp';
+import { emitClojure } from './emit-clojure';
 
 export type EmitterLang =
   | 'ruby' | 'go' | 'rust' | 'java' | 'kotlin' | 'csharp' | 'swift'
   | 'python' | 'php' | 'lua' | 'perl' | 'bash'
-  | 'c' | 'cpp' | 'zig' | 'nim' | 'd';
+  | 'c' | 'cpp' | 'zig' | 'nim' | 'd'
+  | 'scala' | 'groovy' | 'fsharp' | 'clojure';
 
 const EMITTERS: Record<EmitterLang, (spec: ComponentSpec) => string> = {
   ruby: emitRuby,
@@ -44,6 +49,10 @@ const EMITTERS: Record<EmitterLang, (spec: ComponentSpec) => string> = {
   zig: emitZig,
   nim: emitNim,
   d: emitD,
+  scala: emitScala,
+  groovy: emitGroovy,
+  fsharp: emitFSharp,
+  clojure: emitClojure,
 };
 
 export function emitComponent(spec: ComponentSpec, lang: EmitterLang): string {
