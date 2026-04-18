@@ -95,6 +95,44 @@ serve(async (req) => {
     const best = list.length > 0 ? Number(list[0].similarity) : 0;
     const shouldAnswerLocally = best >= LOCAL_ANSWER_THRESHOLD;
 
+    // DECODE→DREAM gap loop: log low-confidence recalls so DREAM can synthesize fills.
+    // Threshold: anything below the local-answer bar is a candidate gap.
+    if (best < LOCAL_ANSWER_THRESHOLD && query.length >= 6) {
+      try {
+        const qLower = query.toLowerCase();
+        const { data: existing } = await supabase
+          .from("decode_gap_log")
+          .select("id, attempts")
+          .eq("addressed", false)
+          .ilike("query", qLower)
+          .limit(1)
+          .maybeSingle();
+
+        if (existing) {
+          await supabase
+            .from("decode_gap_log")
+            .update({
+              attempts: (existing.attempts || 1) + 1,
+              best_similarity: best,
+              match_count: list.length,
+            })
+            .eq("id", existing.id);
+        } else {
+          await supabase.from("decode_gap_log").insert({
+            query,
+            best_similarity: best,
+            match_count: list.length,
+            threshold_used: threshold,
+            artifact_types: types,
+            metadata: { local_threshold: LOCAL_ANSWER_THRESHOLD },
+          });
+        }
+      } catch (gapErr) {
+        // Non-fatal — recall still returns normally.
+        console.warn("[decode-gap-log] insert failed", gapErr);
+      }
+    }
+
     return new Response(
       JSON.stringify({
         ok: true,
