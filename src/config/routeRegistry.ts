@@ -141,8 +141,6 @@ export const routeRegistry: RouteEntry[] = [
   // ── Orphan internal surfaces (live but unlinked, not for crawl) ──
   { path: "/junkyard", label: "Junkyard", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
   { path: "/x", label: "Proprietary Evolution", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
-  { path: "/forge", label: "Forge Dashboard", section: "protected", priority: 0, changefreq: "monthly", disallow: true },
-  { path: "/publication", label: "Publication", section: "company", priority: 0.55, changefreq: "monthly", description: "Academic publications" },
 
   // ── Legal ──
   { path: "/privacy", label: "Privacy Policy", section: "legal", priority: 0.45, changefreq: "monthly", description: "Privacy policy" },
