@@ -45,13 +45,13 @@ const SOURCES: Record<string, SourceConfig> = {
 };
 
 async function embed(text: string): Promise<number[] | null> {
-  // Truncate aggressively — embeddings degrade past ~8K chars and gateway has limits.
-  const input = text.slice(0, 6000);
+  // OpenAI text-embedding-3-small handles up to ~8K tokens; truncate generously.
+  const input = text.slice(0, 8000);
   try {
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+    const res = await fetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${LOVABLE_KEY}`,
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ model: EMBED_MODEL, input }),
@@ -62,18 +62,11 @@ async function embed(text: string): Promise<number[] | null> {
     }
     const data = await res.json();
     const vec: number[] = data?.data?.[0]?.embedding;
-    if (!Array.isArray(vec)) return null;
-
-    // Project 768 → 384 by averaging adjacent pairs (deterministic, preserves cosine geometry well).
-    if (vec.length === 384) return vec;
-    if (vec.length === 768) {
-      const out = new Array(384);
-      for (let i = 0; i < 384; i++) out[i] = (vec[2 * i] + vec[2 * i + 1]) / 2;
-      return out;
+    if (!Array.isArray(vec) || vec.length !== 1536) {
+      console.error(`[embed] unexpected vector length: ${vec?.length}`);
+      return null;
     }
-    // Truncate or pad as a last resort.
-    if (vec.length > 384) return vec.slice(0, 384);
-    return [...vec, ...new Array(384 - vec.length).fill(0)];
+    return vec;
   } catch (e) {
     console.error("[embed] exception", e);
     return null;
