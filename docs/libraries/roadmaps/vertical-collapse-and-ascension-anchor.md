@@ -384,6 +384,7 @@ Priority order (highest impact first):
 | 2 (DREAM) | Confirmed DREAM alive, but missed Cascade alias |
 | 3 (edge fns) | 14/20 sampled = real-work, 0 pure-fake |
 | **Restart** | **Alias map applied. ~75% of "missing" things found under aliases.** |
+| **Pass 5 — History** | Kenneth provided build-history context: Firecrawl-promo origin of Agent Forge + Agency, the 300-edge-function Lovable wall, the XCTBL detour (verified live HTTP 200), the forced Remix that birthed today's CMPSBL. Reclassified Agent Forge + Agency from "wiring gap" to **Dormant — paid-API gated**. Added §-1 build-history section. Heritage Paper noted as primary source with ~10% drift, missing the Oct 2024 – Feb 2025 window. |
 
 ---
 
