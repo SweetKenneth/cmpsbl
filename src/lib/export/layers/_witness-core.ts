@@ -1,28 +1,29 @@
 /**
- * CMPSBL® Always-On Core — SENTINEL Audit-Chain Witness
+ * CMPSBL® Always-On Core — WITNESS Audit-Chain Witness
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Pairs with the Governed Execution Pipeline. Inspects every audit
- * chain emitted by `cmpsbl_run_governed` and produces a structured
+ * Pairs with ARBITRIUM, the Governed Execution Pipeline. Inspects every
+ * audit chain emitted by `cmpsbl_run_governed` and produces a structured
  * verdict (healthy / degraded / anomalous / failed) plus a competency
  * delta the host runtime can route to its own learning store.
  *
  * Pure deterministic. Zero external AI. Inline-embedded in every
- * Layer 2 export for topology balance with the Governed Pipeline.
+ * Layer 2 export. Sub-primitive of the AUDIT Agent — not a new
+ * top-level primitive (matrix stays 12·12·8·8 = 40).
  *
  * U.S. Patent App. No. 64/029,678 · © CMPSBL® · PromptFluid™
  */
 import type { CmpsblLayerDefinition } from './types';
 
-const SENTINEL_TS = `
+const WITNESS_TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-export type CmpsblSentinelVerdict = 'healthy' | 'degraded' | 'anomalous' | 'failed';
+export type CmpsblWitnessVerdict = 'healthy' | 'degraded' | 'anomalous' | 'failed';
 
-export interface CmpsblSentinelReading {
+export interface CmpsblWitnessReading {
   agentId: string;
-  verdict: CmpsblSentinelVerdict;
+  verdict: CmpsblWitnessVerdict;
   competencyDelta: number;
   anomalyScore: number;
   signals: {
@@ -34,7 +35,7 @@ export interface CmpsblSentinelReading {
   observedAt: string;
 }
 
-export function cmpsbl_sentinel_witness(agentId: string, ctx: any): CmpsblSentinelReading {
+export function cmpsbl_witness_observe(agentId: string, ctx: any): CmpsblWitnessReading {
   const audit = Array.isArray(ctx?.audit) ? ctx.audit : [];
   const runtime = ctx?.runtime ?? {};
   const failed = audit.filter((a: any) => a.result === 'failed');
@@ -48,7 +49,7 @@ export function cmpsbl_sentinel_witness(agentId: string, ctx: any): CmpsblSentin
   const reasons: string[] = [];
   let anomalyScore = 0;
   let competencyDelta = 0;
-  let verdict: CmpsblSentinelVerdict = 'healthy';
+  let verdict: CmpsblWitnessVerdict = 'healthy';
 
   if (ctx?.error) { anomalyScore += 0.5; reasons.push('execution error'); }
   if (blocked) { anomalyScore += 0.3; competencyDelta -= 0.05; reasons.push('blocked by pre-layer'); }
@@ -74,7 +75,7 @@ export function cmpsbl_sentinel_witness(agentId: string, ctx: any): CmpsblSentin
 }
 `;
 
-const SENTINEL_PY = `
+const WITNESS_PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  ASCENSION LAYER — Sealed Module (proprietary).                               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
@@ -82,7 +83,7 @@ const SENTINEL_PY = `
 import time
 from typing import Any, Dict, List
 
-def cmpsbl_sentinel_witness(agent_id: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
+def cmpsbl_witness_observe(agent_id: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
     audit = ctx.get("audit") or []
     runtime = ctx.get("runtime") or {}
     failed = [a for a in audit if a.get("result") == "failed"]
@@ -139,29 +140,29 @@ def cmpsbl_sentinel_witness(agent_id: str, ctx: Dict[str, Any]) -> Dict[str, Any
     }
 `;
 
-const SENTINEL_WIRE_TS = `
-// Sealed wrapper — proprietary. SENTINEL is invoked by the host runtime
-// after each cmpsbl_run_governed completion to feed competency learning.`;
+const WITNESS_WIRE_TS = `
+// Sealed wrapper — proprietary. WITNESS is invoked by the host runtime
+// after each ARBITRIUM (cmpsbl_run_governed) completion to feed competency learning.`;
 
-const SENTINEL_WIRE_PY = `
+const WITNESS_WIRE_PY = `
 # Sealed wrapper — proprietary.`;
 
-export const SENTINEL_CORE: CmpsblLayerDefinition = {
-  id: 'sentinel-witness',
-  name: 'SENTINEL — Audit-Chain Witness',
+export const WITNESS_CORE: CmpsblLayerDefinition = {
+  id: 'witness-audit-chain',
+  name: 'WITNESS — Audit-Chain Witness',
   crownJewelRank: 12,
   cjpi: 94,
-  module: 'CORTEX',
+  module: 'AUDIT',
   description:
-    'Pairs with Governed Pipeline. Inspects every audit chain, scores anomaly + competency delta (healthy/degraded/anomalous/failed), and surfaces structured reasons so host runtimes learn from execution outcomes — not just AI calls.',
+    'Sub-primitive of the AUDIT Agent. Pairs with ARBITRIUM. Inspects every audit chain, scores anomaly + competency delta (healthy/degraded/anomalous/failed), and surfaces structured reasons so host runtimes learn from execution outcomes — not just AI calls.',
   priceCents: 0,
-  tsCode: SENTINEL_TS,
-  pyCode: SENTINEL_PY,
+  tsCode: WITNESS_TS,
+  pyCode: WITNESS_PY,
   autoWire: {
-    wrapperName: 'cmpsbl_sentinel_witness',
+    wrapperName: 'cmpsbl_witness_observe',
     behavior:
-      'After each governed pipeline run, SENTINEL emits a structured verdict with anomaly score and competency delta the host can route to its own learning store.',
-    tsWire: SENTINEL_WIRE_TS,
-    pyWire: SENTINEL_WIRE_PY,
+      'After each ARBITRIUM run, WITNESS emits a structured verdict with anomaly score and competency delta the host can route to its own learning store.',
+    tsWire: WITNESS_WIRE_TS,
+    pyWire: WITNESS_WIRE_PY,
   },
 };

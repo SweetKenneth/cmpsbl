@@ -1,19 +1,22 @@
 /**
- * SENTINEL — Audit-Chain Witness Agent
+ * WITNESS — Audit-Chain Witness Agent
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Pairs 1:1 with the Governed Execution Pipeline.
+ * Pairs 1:1 with ARBITRIUM, the Governed Execution Pipeline.
  *
  * Watches every governed run, scores its audit chain for anomalies
  * (blocked/override/failed patterns, layer-time skew, retry pressure),
  * and feeds heuristics back into agent_competency so the substrate
  * learns from execution outcomes — not just AI calls.
  *
- * Pure deterministic — no external AI. Substrate-side primitive that
- * Layer 2 emits a thin polyglot witness for. The substrate version
- * persists to Supabase; the Layer 2 version emits structured signals.
+ * Pure deterministic — no external AI. Sub-primitive of the AUDIT Agent.
+ * Layer 2 emits a thin polyglot witness wrapper for the host runtime;
+ * this substrate version persists to Supabase.
  *
- * Topology balance: Governed Pipeline = Engine (CORTEX authority).
- *                   SENTINEL          = Agent  (CORTEX witness).
+ * Topology balance:
+ *   ARBITRIUM (Governed Pipeline) → CORTEX Engine sub-primitive
+ *   WITNESS   (Audit-Chain)       → AUDIT  Agent  sub-primitive
+ *
+ * Matrix stays 12·12·8·8 = 40. See docs/libraries/staff/02-architecture-and-primitives.md §7.
  *
  * U.S. Patent App. No. 64/029,678 · © CMPSBL® · PromptFluid™
  */
@@ -21,13 +24,13 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { GovernedExecutionContext } from './governedPipeline';
 
-export type SentinelVerdict = 'healthy' | 'degraded' | 'anomalous' | 'failed';
+export type WitnessVerdict = 'healthy' | 'degraded' | 'anomalous' | 'failed';
 
-export interface SentinelReading {
+export interface WitnessReading {
   agentId: string;
-  verdict: SentinelVerdict;
-  competencyDelta: number;       // [-1, +1] applied to agent_competency
-  anomalyScore: number;           // [0, 1]
+  verdict: WitnessVerdict;
+  competencyDelta: number;
+  anomalyScore: number;
   signals: {
     blocked: boolean;
     overridden: boolean;
@@ -42,14 +45,11 @@ export interface SentinelReading {
   observedAt: string;
 }
 
-/**
- * Score a single governed-pipeline audit chain. Pure — no I/O.
- * Lower competencyDelta = penalize; higher = reward.
- */
+/** Score a single ARBITRIUM audit chain. Pure — no I/O. */
 export function witnessAuditChain<I, O>(
   agentId: string,
   ctx: GovernedExecutionContext<I, O>,
-): SentinelReading {
+): WitnessReading {
   const failed = ctx.audit.filter(a => a.result === 'failed');
   const blocked = ctx.audit.some(a => a.result === 'blocked');
   const overridden = ctx.audit.some(a => a.result === 'override');
@@ -61,7 +61,7 @@ export function witnessAuditChain<I, O>(
   const reasons: string[] = [];
   let anomalyScore = 0;
   let competencyDelta = 0;
-  let verdict: SentinelVerdict = 'healthy';
+  let verdict: WitnessVerdict = 'healthy';
 
   if (ctx.error) {
     anomalyScore += 0.5;
@@ -121,12 +121,10 @@ export function witnessAuditChain<I, O>(
 }
 
 /**
- * Persist a witness reading to agent_competency. Uses EMA-style updates
- * so a single run cannot dominate long-term competency. Idempotent: if no
- * row exists, the call is a no-op (the agent must be registered first via
- * the agency runtime — SENTINEL does not create agents).
+ * Persist a witness reading to agent_competency. EMA-smoothed (α=0.1).
+ * No-op if the agent is not registered (WITNESS does not create agents).
  */
-export async function persistWitnessReading(reading: SentinelReading): Promise<{ ok: boolean; error?: string }> {
+export async function persistWitnessReading(reading: WitnessReading): Promise<{ ok: boolean; error?: string }> {
   try {
     const { data: existing, error: readErr } = await supabase
       .from('agent_competency')
@@ -143,7 +141,6 @@ export async function persistWitnessReading(reading: SentinelReading): Promise<{
     const partial = (existing.partial_attempts ?? 0) + (reading.verdict === 'degraded' || reading.verdict === 'anomalous' ? 1 : 0);
     const successRate = totalAttempts > 0 ? successful / totalAttempts : 0;
 
-    // EMA smoothing — α = 0.1 so individual runs nudge, not dominate
     const prior = existing.competency_score ?? 0.5;
     const target = Math.max(0, Math.min(1, prior + reading.competencyDelta));
     const next = prior * 0.9 + target * 0.1;
@@ -179,14 +176,11 @@ export async function persistWitnessReading(reading: SentinelReading): Promise<{
   }
 }
 
-/**
- * Convenience: witness + persist in one call. Returns the reading regardless
- * of persistence result so callers can still react in-process.
- */
-export async function sentinelObserve<I, O>(
+/** Convenience: witness + persist in one call. */
+export async function witnessObserve<I, O>(
   agentId: string,
   ctx: GovernedExecutionContext<I, O>,
-): Promise<{ reading: SentinelReading; persisted: boolean; error?: string }> {
+): Promise<{ reading: WitnessReading; persisted: boolean; error?: string }> {
   const reading = witnessAuditChain(agentId, ctx);
   const result = await persistWitnessReading(reading);
   return { reading, persisted: result.ok, error: result.error };
