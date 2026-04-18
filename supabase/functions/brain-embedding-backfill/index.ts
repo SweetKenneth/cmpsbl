@@ -40,7 +40,7 @@ const SOURCES: Record<string, SourceConfig> = {
   crystals:    { table: "brain_knowledge_crystals", artifact_type: "crystal",     contentCol: "distilled_content",  idCol: "id" },
   traces:      { table: "brain_reasoning_traces",   artifact_type: "trace",       contentCol: "distilled_pattern",  idCol: "id" },
   memory_warm: { table: "brain_memory_warm",        artifact_type: "memory_warm", contentCol: "content",            idCol: "id" },
-  memory_cold: { table: "brain_memory_cold",        artifact_type: "memory_warm", contentCol: "summary",            idCol: "id" }, // remapped: CHECK constraint allows memory_warm only for cold-tier projection
+  memory_cold: { table: "brain_memory_cold",        artifact_type: "memory_cold", contentCol: "summary",            idCol: "id" },
   heuristics:  { table: "brain_transfer_heuristics",artifact_type: "heuristic",   contentCol: "heuristic_content",  idCol: "id" },
 };
 
