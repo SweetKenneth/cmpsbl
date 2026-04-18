@@ -243,16 +243,32 @@ export default function Genesis() {
                             'max-w-[85%] rounded-lg px-3.5 py-2.5 text-sm ' +
                             (turn.role === 'user'
                               ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted text-foreground border border-border')
+                              : turn.source === 'nexus'
+                                ? 'bg-amber-500/10 text-foreground border border-amber-500/30'
+                                : 'bg-muted text-foreground border border-border')
                           }
                         >
                           {turn.role === 'brain' && (
                             <div className="flex items-center gap-1.5 mb-1.5 text-[10px] font-mono uppercase tracking-wider opacity-70">
-                              <Brain className="h-3 w-3" /> BRAIN
-                              {turn.trace?.matchedCrystal && (
-                                <span className="ml-auto">
-                                  match: {(turn.trace.matchedCrystal.similarity * 100).toFixed(1)}%
-                                </span>
+                              {turn.source === 'nexus' ? (
+                                <>
+                                  <Network className="h-3 w-3" /> NEXUS
+                                  {turn.nexusMeta && (
+                                    <span className="ml-auto">
+                                      {turn.nexusMeta.model} · {turn.nexusMeta.latency}ms
+                                      {turn.nexusMeta.cached ? ' · cached' : ''}
+                                    </span>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  <Brain className="h-3 w-3" /> BRAIN
+                                  {turn.trace?.matchedCrystal && (
+                                    <span className="ml-auto">
+                                      match: {(turn.trace.matchedCrystal.similarity * 100).toFixed(1)}%
+                                    </span>
+                                  )}
+                                </>
                               )}
                             </div>
                           )}
