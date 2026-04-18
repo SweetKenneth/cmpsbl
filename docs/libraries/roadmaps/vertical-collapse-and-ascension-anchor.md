@@ -225,9 +225,99 @@ Each pass = one full sweep of a real vs theater question. Newest at top. Numbers
 - New **Step 0a** added below before Step 1: "Search-replace `discovery_capabilities` → `discoveries` everywhere it appears in docs/code."
 - New **Step 0b** added: "Decide: do the 36 unregistered S-Tier files get registered, deleted, or kept as scaffolds?"
 
-### Pass 2 — 2026-04-18 — Forge / Oracle / Minds / Harvest / Shadow source-of-truth
+### Pass 2 — 2026-04-18 — DREAM / Forge / Oracle / Harvest / Shadow / Minds source-of-truth
 
-*(pending — next turn)*
+**Method:** Read `src/lib/{dream,forge,oracle,harvest,shadow,minds}/` files; cross-reference DB tables and live row counts.
+
+#### 🟢 DREAM — REAL & PARTIALLY WIRED (biggest correction yet)
+Prior summaries called DREAM "real-silent (0 DB writes)." **That was wrong.** DREAM has 24 dream-related tables and the code already writes to several of them.
+
+**Code on disk:** `src/lib/dream/` — 18 files including `scheduler.ts`, `consolidationOrchestrator.ts`, `creativeSynthesis.ts`, `crossPatternRecognition.ts`, `insightExtraction.ts`, `insightGenerator.ts`, `patternMutation.ts`, `subconsciousQueue.ts`, `lucidDreaming.ts`, `nightmares.ts`, `lineageTracker.ts`, `semanticDrift.ts`, `dreamJournal.ts`, `dreamMetricsFeed.ts`, `coherenceValidator.ts`, `candidateFilter.ts`, `heuristicBuilder.ts`.
+
+**Tables DREAM code already queries:** `dream_cycle_logs`, `brain_memory_hot/warm`, `brain_actions_queue`, `brain_cross_insights`, `brain_events`, `ai_usage_log`.
+
+**Live DB rows (verified this pass):**
+- `cascade_dreams` — **18 rows** ✅
+- `dream_feeder_submissions` — **20 rows** ✅
+- `dream_cycle_logs` — **7 rows** ✅
+- `dream_ingestion_audit` — **5 rows** ✅
+- `dream_stream` — **3 rows** ✅
+- `dream_anomalies` — 2 rows ✅
+- `dream_eater_state` — 1 row ✅
+- `forge_reserved_names` — 25 rows ✅ (Forge has SOME wiring)
+
+**Tables that exist but DREAM code never writes to (the wiring gap):**
+- `dream_log` (0) · `dream_sessions` (0) · `dream_artifacts` (0) · `dream_learning_metrics` (0) · `dream_archaeology` (0) · `dream_echo_templates` · `dream_eater_audit` · `dream_eater_features` · `dream_eater_milestones` · `dream_rate_limits` · `node_dream_config` · `node_dream_log` · `agency_dream_consent/memory/pool`
+
+**Verdict:** DREAM is a real, running engine with active output. It's just **partially wired** — synthesis logs to `cascade_dreams` and `dream_cycle_logs`, but the journal/session/artifact/learning loops are disconnected even though the tables exist and the code references them by concept. **Fix, don't kill.**
+
+#### 🟡 FORGE — REAL ENGINE, MOSTLY DISCONNECTED
+**Code on disk:** `src/lib/forge/` — `botClasses.ts`, `botExporter.ts`, `name-validator.ts` + `ultimate/` (11 files: `artifactFoundry.ts`, `blueprintGenome.ts`, `collaborativeForge.ts`, `fabricationPipeline.ts`, `forgeMemory.ts`, `forgeTelemetry.ts`, `materialScience.ts`, `patternLibrary.ts`, `qaFurnace.ts`, `thermalGovernor.ts`).
+
+**DB writes:** `forge_reserved_names` (25 rows) only. `forge_agents` exists but is 0 rows. The 11 `ultimate/` files write to **nothing**.
+
+**Verdict:** Real engine code, real concepts, but the entire `ultimate/` subsystem (telemetry, memory, fabrication pipeline) was never connected to its tables. **Wiring gap, not theater.**
+
+#### 🟡 ORACLE — REAL ENGINE, ZERO DB WIRING
+**Code on disk:** `src/lib/oracle/ultimate/` — 12 files: `bayesianNetwork.ts`, `capacityPlanner.ts`, `causalInference.ts`, `earlyWarning.ts`, `oracleTelemetry.ts`, `predictionMarket.ts`, `prescriptiveEngine.ts`, `prophecyJournal.ts`, `riskMatrix.ts`, `scenarioSimulator.ts`, `trendForecaster.ts`.
+
+**DB writes:** **None.** No `oracle_*` tables exist either.
+
+**Verdict:** Real engine code, but **no destination tables ever created**. Either the migration was forgotten or the engine was built ahead of its persistence layer. **Needs schema + wiring, not deletion.**
+
+#### 🟡 HARVEST — REAL ENGINE, ZERO DB WIRING
+**Code on disk:** `src/lib/harvest/ultimate/` — 11 files: `anticipatoryPrefetch.ts`, `crawlerSwarm.ts`, `deduplicationForge.ts`, `freshnessOracle.ts`, `harvestTelemetry.ts`, `pipelineChoreographer.ts`, `provenanceLedger.ts`, `qualityFurnace.ts`, `schemaCartographer.ts`, `sourceGenome.ts`.
+
+**DB writes:** **None.** No `harvest_*` tables exist.
+
+**Verdict:** Same pattern as Oracle — real engine, missing persistence layer. **Wiring gap.**
+
+#### 🟢 SHADOW — REAL & PARTIALLY WIRED
+**Code on disk:** `src/lib/shadow/` — `analytics.ts`, `evolution-shadow.ts`, `mutate.ts`, `probe.ts`, `runBatch.ts`, `scheduler.ts`, `shadowBuild.ts`, `windowTelemetry.ts` + `ultimate/`.
+
+**Tables referenced:** `immune_escalations`, `immune_metrics` (both currently 0 rows but the writers exist).
+
+**Verdict:** Wired to the immune system but shadow runs aren't being triggered. **Check scheduler, not code.**
+
+#### 🟡 MINDS — REAL ENGINE, NO TABLES
+**Code on disk:** `src/lib/minds/intelligence/` — 14 files: `adaptiveTone.ts`, `confidenceSignaling.ts`, `consolidation.ts`, `contextWindowing.ts`, `failureRecovery.ts`, `featureFlags.ts`, `proficiencyGating.ts`, `promptScaffolding.ts`, `qualityScoring.ts`, `scopedResearch.ts`, `toolChain.ts`, `versionSnapshot.ts`, `vocabularyRegistry.ts`.
+
+**DB writes:** **None.** No `minds_*` tables exist.
+
+**Verdict:** This is intelligence-augmentation utility code that may not need its own tables — it likely should write to `brain_*` or `ai_usage_log`. **Decision needed: route it through brain or build dedicated tables.**
+
+---
+
+## 10. WIRING GAPS LEDGER — what's built but not reporting
+
+This is the master "fix-don't-kill" list. Each row = real code that exists but is silent because it was never connected to its data layer. Priority is **wire these up first** before judging anything as fake.
+
+| Engine | Code location | Files | Tables that exist | Tables that DON'T exist yet | Action |
+|---|---|---|---|---|---|
+| **DREAM journal/sessions** | `src/lib/dream/dreamJournal.ts`, `subconsciousQueue.ts`, `lucidDreaming.ts` | 18 | `dream_log`, `dream_sessions`, `dream_artifacts`, `dream_learning_metrics`, `dream_archaeology` (all 0 rows) | — | **Wire writers** in scheduler.ts + insightGenerator.ts to insert into existing tables |
+| **DREAM lineage** | `src/lib/dream/lineageTracker.ts` | 1 | `dream_archaeology` (0) | — | Wire lineage emit on each cascade |
+| **DREAM coherence** | `src/lib/dream/coherenceValidator.ts`, `semanticDrift.ts` | 2 | — | `dream_coherence_log`, `dream_drift_log` | Migration + writers |
+| **FORGE ultimate** | `src/lib/forge/ultimate/*` | 11 | `forge_agents` (0) | `forge_artifacts`, `forge_blueprints`, `forge_telemetry`, `forge_thermal` | Migration + wire `forgeTelemetry.ts` |
+| **ORACLE ultimate** | `src/lib/oracle/ultimate/*` | 12 | — | `oracle_predictions`, `oracle_scenarios`, `oracle_risk_matrix`, `oracle_prophecies`, `oracle_telemetry` | Migration + wire `oracleTelemetry.ts` |
+| **HARVEST ultimate** | `src/lib/harvest/ultimate/*` | 11 | — | `harvest_sources`, `harvest_runs`, `harvest_provenance`, `harvest_telemetry` | Migration + wire `harvestTelemetry.ts` |
+| **SHADOW runs** | `src/lib/shadow/runBatch.ts`, `scheduler.ts` | 8 | `immune_escalations` (0), `immune_metrics` (0) | — | Find why scheduler isn't firing — likely a cron/edge fn missing |
+| **MINDS** | `src/lib/minds/intelligence/*` | 14 | `brain_memory_*` (active), `ai_usage_log` (active) | — | Route MINDS output through `brain_actions_queue` writes (no new tables needed) |
+| **Ascension V1/V2 sessions** | `src/lib/ascension/*`, `src/lib/ascension-v2/*` | 49 | `ascension_sessions` (under-reported), `backup_exports` (44 rows) | — | Add `appendAudit()` calls in pre-export-harness + commitAscension paths |
+| **Export pipeline** | 194 emitter files | 194 | `backup_exports` (44 rows) | `export_emissions`, `polyglot_renders` | Optional — backup_exports may be enough; decide before adding tables |
+| **Engine registry sims** | `src/lib/substrate/engines/executors.ts` | 1 | — | — | **Step 0**: kill `simulateCapabilityExecution()` OR wire each registered engine to its real executor |
+| **Mesh cross-scanner** | `src/lib/scan/integrations/mesh-cross-scanner-resolution.ts:100` | 1 | — | — | Replace `simulateModuleVote()` with real module dispatch via pf-substrate |
+
+**Rule of engagement going forward:**
+1. Anything in this ledger = **real code, fix the wire**.
+2. Anything calling `simulate*()`, `Math.random()`, or returning hardcoded fixtures = **kill or rewire**.
+3. Anything with no code on disk = **delete the route/page/marketing**.
+4. Numbers in marketing/UI must come from `SELECT COUNT(*)` of the tables in column 4, not from the engine source files.
+
+---
+
+### Pass 3 — Edge function reality (114 functions, one by one)
+
+*(pending — will sample 20 functions and classify each as `real-work` / `canned-status` / `proxy-only`)*
 
 ### Pass 3 — Edge function reality (114 functions, one by one)
 
