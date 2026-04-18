@@ -340,9 +340,23 @@ public enum CognitiveMemory {
     private static var store: [String: Any] = [:]
     private static let lock = NSLock()
 
+    /// Strip framework-internal sidecar keys before persisting [String: Any] values.
+    private static func stripSidecars(_ v: Any) -> Any {
+        if let dict = v as? [String: Any] {
+            var out: [String: Any] = [:]
+            for (k, value) in dict {
+                if k.hasPrefix("_cmpsbl_") || k.hasPrefix("__cmpsbl_") { continue }
+                out[k] = stripSidecars(value)
+            }
+            return out
+        }
+        if let arr = v as? [Any] { return arr.map { stripSidecars($0) } }
+        return v
+    }
+
     public static func remember(_ key: String, _ value: Any) {
         lock.lock(); defer { lock.unlock() }
-        store[key] = value
+        store[key] = stripSidecars(value)
     }
 
     public static func recall(_ key: String) -> Any? {
