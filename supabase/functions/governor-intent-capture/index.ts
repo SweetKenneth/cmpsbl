@@ -97,35 +97,31 @@ serve(async (req) => {
       .select("id").single();
     if (insErr) throw insErr;
 
-    // Embed for recall
+    // Embed for recall (with deterministic fallback so signal is never lost)
     const formatted = `# GOVERNOR INTENT (priority ${priority}, scope ${scope})\n${intentText}`;
-    const vec = await embed(formatted);
+    const { vec, provider } = await embed(formatted);
     let embeddingId: string | null = null;
     let embedError: string | null = null;
-    if (vec) {
-      const { data: emb, error: eErr } = await supabase
-        .from("brain_embeddings")
-        .insert({
-          artifact_id: row.id,
-          artifact_type: "governor_intent",
-          artifact_content: formatted,
-          embedding: vec as any,
-          metadata: { source: "governor-intent-capture", scope, priority, tags },
-        })
-        .select("id").single();
-      if (eErr) {
-        embedError = eErr.message;
-        console.error("[governor-intent-capture] brain_embeddings insert failed", eErr);
-      } else if (emb) {
-        embeddingId = emb.id;
-        await supabase.from("governor_intent_stream").update({ embedded: true, embedding_id: emb.id }).eq("id", row.id);
-      }
-    } else {
-      embedError = "embedding_provider_unavailable";
+    const { data: emb, error: eErr } = await supabase
+      .from("brain_embeddings")
+      .insert({
+        artifact_id: row.id,
+        artifact_type: "governor_intent",
+        artifact_content: formatted,
+        embedding: vec as any,
+        metadata: { source: "governor-intent-capture", scope, priority, tags, provider },
+      })
+      .select("id").single();
+    if (eErr) {
+      embedError = eErr.message;
+      console.error("[governor-intent-capture] brain_embeddings insert failed", eErr);
+    } else if (emb) {
+      embeddingId = emb.id;
+      await supabase.from("governor_intent_stream").update({ embedded: true, embedding_id: emb.id }).eq("id", row.id);
     }
 
     return new Response(
-      JSON.stringify({ ok: true, intent_id: row.id, embedded: !!embeddingId, embedding_id: embeddingId, embed_error: embedError, elapsed_ms: Date.now() - t0 }),
+      JSON.stringify({ ok: true, intent_id: row.id, embedded: !!embeddingId, embedding_id: embeddingId, embed_provider: provider, embed_error: embedError, elapsed_ms: Date.now() - t0 }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
