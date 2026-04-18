@@ -37,7 +37,7 @@
 | `immunity_*` | 6 | IMMUNITY | 🟢 alive | Self-healing matrix (Shadow→Sim→Prod) |
 | `learning_*` | 6 | BRAIN | 🟡 migrate | Learning data — fold into brain edges/crystals |
 | `mesh_*` | 6 | LAYERS | 🟡 rename | Old "Mesh" naming → should be layer_* |
-| `ripple_*` | 6 | RIPPLE | ❓ review | Unknown subsystem — needs classification |
+| `ripple_*` | 6 | RIPPLE | 🟢 alive | **Pub/sub message bus + job queue + circuit breakers** — heavily used by `pf-substrate` edge fn (boot/shutdown events, fan-out subscriptions, dead-letter queue). Live UI at `RippleMessageBusTab.tsx`. Keep. |
 | `integration_*` | 5 | INTEGRATIONS | 🟢 alive | External API connectors |
 | `vertical_*` | 5 | VERTICALS | 🟢 alive | 12 vertical substrates |
 | `scan_*` | 4 | SCAN | 🟢 alive | Scanning runs + results |
