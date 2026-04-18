@@ -1,113 +1,899 @@
-# Substrate Cohesion Audit
+# Substrate Cohesion Audit — Auto-Generated Registry
 
-**Classification:** 🔒 GOVERNOR EYES ONLY
-**Last updated:** April 2026
-**Purpose:** Single source of truth for what's alive, dormant, theater, or
-slated for removal across the substrate's database surface (264 tables).
-Pairs with the Ascension V2 roadmap (`docs/libraries/roadmaps/ascension-v2.md`).
+> **Generated:** Phase 1 cohesion sweep. Single source of truth for all 432 public tables.
 
----
+> **Total tables:** 432  •  **Prefix families:** 111
 
-## §1. Canonical Matrix (Frozen)
+## Status Legend
 
-40 Primitives — 12 Organs · 12 Layers · 8 Engines · 8 Agents.
-Authoritative list: `docs/libraries/internal/15-primitive-specifications.md`
-and `src/lib/ascension-v2/canonical-primitives.ts`.
-
-**Terminology corrections applied this audit:**
-- Clarity ≠ IMMUNITY. **Clarity = CMPTBL = INCLUSIVE.**
-- Cognitives ≠ Agents. **CMPSBL Cognitives** is the original term (pre-"Agent"
-  era); used by the Forge / Agency subsystem.
-- MODERNIZER → EVOLVE → **EVOLUTION** (current). Also briefly "EVOLUTION Mesh."
-- "Modules" / "Module Registry" → legacy term for the **Primitive Matrix**.
+- 🟢 **alive** — actively used, do not touch
+- 🟡 **rename / migrate / mixed** — needs cleanup but not destructive
+- 🔴 **theater** — confirmed dead, safe to drop
+- ❓ **review** — needs founder classification
 
 ---
 
-## §1.5 Unclassified Inventory — Subsystem Sweep
+## Owner Subsystems
 
-The following 20 subsystems were surfaced by a full `information_schema` sweep
-and classified row-by-row with the Governor. Status legend:
-
-- 🟢 **alive** — actively writing/reading, owned, in production
-- 🟡 **dormant** — exists, low/no activity, decision pending
-- 🔴 **theater** — scaffolding, never mattered, slated for removal
-- ⚙️ **migrate** — signal worth preserving, fold into a primitive
-- ❓ **undecided** — Governor decision pending
-
-### Group 1 — Big-data subsystems
-
-| # | Subsystem | Owner | Status | Notes |
-|---|-----------|-------|--------|-------|
-| 1 | **VAULT** (`vault_promotions` 11,165 · `pipeline_vault` 214) | Discovery pipeline (no single primitive — it is the graduation table) | 🟢 alive | Original S-Tier vault / discovery engine output sink |
-| 2 | **AUTOBLOG** (`autoblog_*`, `auto_blog_posts`) | Standalone subsystem (peer to primitives) | 🟢 alive | Live & publishing; one of the strongest auto-blog systems built — thinks about what it posts |
-| 3 | **LEARNING** (`learning_cycles` 483, `learning_*`) | BRAIN (after migration) | ⚙️ migrate | Cascade-era debris. Migrate signal → BRAIN as edges / knowledge crystals, then deprecate tables |
-| 4 | **COMPILER** (`compiler_weights` 129, `compiled_products` 10) | Standalone — Autonomous Product Compiler | 🟢 alive | Feeds marketplace.cmpsbl.com. Spec: `mem://architecture/product/autonomous-product-compiler-v1-0-0-spec` |
-| 5 | **MUTATION** (`mutation_runs` 27) | EVOLUTION | ⚙️ migrate | Legacy MODERNIZER → EVOLVE → EVOLUTION. Same engine, old name. Fold in or rename |
-
-### Group 2 — Governance & registry
-
-| # | Subsystem | Owner | Status | Notes |
-|---|-----------|-------|--------|-------|
-| 6 | **LEX REGISTRY** (`lex_registry`) | LEX | 🟢 alive | Governs Mana = attachment/deploy portion of Ascension V2 (Patent #2). Ascension collision = Patent #1 |
-| 7 | **GOVERNANCE TRANSITION** (`governance_transition_log`) | LEX (tentative) | 🟡 dormant | Likely belongs to LEX; verify on next pass |
-| 8 | **MODULE REGISTRY** (`module_registry`) | n/a | 🔴 theater | Legacy term for the current Primitive Matrix. Rename or deprecate — not a separate subsystem |
-| 9 | **INTEGRITY FINDINGS** (`integrity_findings`) | n/a | 🔴 theater | Old ecosystem module (~1yr old, possibly old INCLUSIVE). Remove |
-| 10 | **STUDIO** (`studio_*` if any) | n/a | 🔴 theater | Old PromptFluid website-converter idea. Never mattered. Delete |
-
-### Group 3 — Developer / marketplace / runtime
-
-| # | Subsystem | Owner | Status | Notes |
-|---|-----------|-------|--------|-------|
-| 11 | **DEVELOPER stack** (`developer_skill_tree`, `developer_certifications`) | Developer Academy (CMPSBL learning hub) | ❓ undecided | Delete or resurface. Possibly precursor to XCTBL Dev Playground (`mem://architecture/xctbl/dev-playground-future`) |
-| 12 | **MARKETPLACE** (`marketplace_*`) | Standalone subsystem | 🟢 alive | marketplace.cmpsbl.com is live |
-| 13 | **COGNITIVE REGISTRY** (`cognitive_registry`, `agency_members.cognitive_id`) | Forge / Agency subsystem | 🟢 alive | **CMPSBL Cognitives** — pre-"Agent" terminology. Cognitives ≠ Agents. Keep terminology distinct in all docs |
-| 14 | **CONTROL PLANE** (`control_plane_state`) | Governor control surface (standalone) | 🟢 alive | control.cmpsbl.com — central hub for monitoring vertical substrates |
-| 15 | **RESILIENCE** (`resilience_ledger`, `restoration_sessions`) | n/a | 🔴 theater | Outdated. Deprecate / remove |
-
-### Group 4 — Brain extensions / PF legacy / TSAC
-
-| # | Subsystem | Owner | Status | Notes |
-|---|-----------|-------|--------|-------|
-| 16 | **BRAIN extensions** (`brain_persona*`, `brain_curiosity*`) | n/a | 🔴 theater | Cascade-era personalization experiments. Delete |
-| 17 | **PF legacy** (`pf_brain_ml_*`, `pf_threat_*`) | n/a | 🔴 theater | `pf_threat_*` = pre-DEFENSE-primitive defense system. Delete |
-| 18 | **GLOBAL / PRODUCTION** (`global_*`, `production_*` if present) | unknown | ❓ undecided | Governor unsure — re-investigate on next sweep |
-| 19 | **TSAC** (`tsac_executor_stats`) | EVOLUTION (Shadow Mesh training) | 🟡 dormant | TSAC = Stats for Executors (Resolvers) used to train coding agents that wrote substrate patches. Old MODERNIZER/EVOLVE training surface; survives as Shadow Mesh training system. Revisit later |
-| 20 | **MISC singletons** | — | 🟢 alive | Governor: "I think they're pretty good" — no further classification needed |
+| Prefix | Tables | Owner | Status | Purpose |
+|---|---:|---|---|---|
+| `pf_*` | 47 | DEFENSE | 🟢 alive | Threat detection, captcha, device fingerprinting, rate limiting |
+| `substrate_*` | 42 | SUBSTRATE CORE | 🟢 alive | Primitive matrix, layer telemetry, governance state |
+| `brain_*` | 38 | BRAIN | 🟡 mixed | Cognitive memory + edges + crystals (curiosity/persona = theater) |
+| `agency_*` | 16 | AGENCY | 🟢 alive | CMPSBL Cognitives team workspace + tasks + economics |
+| `dream_*` | 16 | DREAM | 🟢 alive | Algorithmic sub-threshold synthesis (no AI, patentable) |
+| `autoblog_*` | 12 | AUTOBLOG | 🟢 alive | Standalone publishing pipeline |
+| `evolution_*` | 9 | EVOLUTION | 🟢 alive | Patch generation + shadow mesh training (was MODERNIZER) |
+| `marketplace_*` | 9 | MARKETPLACE | 🟢 alive | Showroom + Junkyard + commercial drops |
+| `core_*` | 8 | SUBSTRATE CORE | 🟢 alive | Foundational primitives |
+| `developer_*` | 8 | DEVELOPER | ❓ review | Developer portal — possibly outdated |
+| `nexus_*` | 8 | NEXUS | 🟢 alive | AI provider router (replaces Lovable AI) |
+| `access_*` | 7 | ACCESS | 🟢 alive | API keys, quotas, subscriptions, usage |
+| `foundry_*` | 7 | FOUNDRY | 🟢 alive | Builder workspace |
+| `governance_*` | 7 | GOVERNANCE | 🟢 alive | Policy + Lex enforcement |
+| `modernizer_*` | 7 | EVOLUTION | 🟡 rename | Legacy MODERNIZER tables — should fold into evolution_* |
+| `system_*` | 7 | SUBSTRATE CORE | 🟢 alive | System-wide config + health |
+| `user_*` | 7 | AUTH | 🟢 alive | User profiles, roles, preferences |
+| `immunity_*` | 6 | IMMUNITY | 🟢 alive | Self-healing matrix (Shadow→Sim→Prod) |
+| `learning_*` | 6 | BRAIN | 🟡 migrate | Learning data — fold into brain edges/crystals |
+| `mesh_*` | 6 | LAYERS | 🟡 rename | Old "Mesh" naming → should be layer_* |
+| `ripple_*` | 6 | RIPPLE | ❓ review | Unknown subsystem — needs classification |
+| `integration_*` | 5 | INTEGRATIONS | 🟢 alive | External API connectors |
+| `vertical_*` | 5 | VERTICALS | 🟢 alive | 12 vertical substrates |
+| `scan_*` | 4 | SCAN | 🟢 alive | Scanning runs + results |
+| `ai_*` | 3 | NEXUS | 🟢 alive | AI usage telemetry |
+| `analytics_*` | 3 | ANALYTICS | 🟢 alive | PostHog-managed event stream |
+| `auth_*` | 3 | AUTH | 🟢 alive | Auth events, geo, rate limits |
+| `cascade_*` | 3 | CASCADE | 🔴 theater | Old personalized cascades — DELETE |
+| `circuit_*` | 3 | SUBSTRATE CORE | 🟢 alive | Circuit breaker telemetry |
+| `cognitive_*` | 3 | AGENCY | 🟢 alive | CMPSBL Cognitive registry |
+| `cortex_*` | 3 | CORTEX | 🟢 alive | Orchestration enforcement |
+| `defense_*` | 3 | DEFENSE | 🟢 alive | Defense layer policy |
+| `discovery_*` | 3 | DISCOVERY | 🟢 alive | Federated primitive discovery |
+| `email_*` | 3 | EMAIL | 🟢 alive | Outbound email queue + templates |
+| `global_*` | 3 | GLOBAL | ❓ review | Possibly outdated global state |
+| `immune_*` | 3 | IMMUNITY | 🟡 rename | Old "immune_" → consolidate with immunity_* |
+| `lex_*` | 3 | LEX | 🟢 alive | Governance rule registry |
+| `module_*` | 3 | SUBSTRATE CORE | 🟡 rename | Old "module_" → primitive_* (module_registry was theater, dropped) |
+| `mutation_*` | 3 | EVOLUTION | 🟡 migrate | Mutation engine — fold into evolution_* |
+| `site_*` | 3 | SITE | 🟢 alive | Public site config |
+| `tsac_*` | 3 | TSAC | 🟢 alive | TSAC executor stats |
+| `audit_*` | 2 | AUDIT | 🟢 alive | Merkle audit chain anchors + logs |
+| `auto_*` | 2 | AUTOBLOG | 🟢 alive | Auto-blog scheduler |
+| `backup_*` | 2 | SUBSTRATE CORE | 🟢 alive | Backup ledger |
+| `bots_*` | 2 | DEFENSE | 🟢 alive | Bot detection |
+| `change_*` | 2 | SUBSTRATE CORE | 🟢 alive | Change feed |
+| `cli_*` | 2 | CLI | 🟢 alive | @cmpsbl/cli + @cmpsbl/mana telemetry |
+| `cmpsbl_*` | 2 | SUBSTRATE CORE | 🟢 alive | Brand-level config |
+| `compiler_*` | 2 | COMPILER | 🟢 alive | Autonomous Product Compiler |
+| `daily_*` | 2 | SUBSTRATE CORE | 🟢 alive | Daily aggregates |
+| `decode_*` | 2 | DECODE | 🟢 alive | Unified agent + interface |
+| `forge_*` | 2 | FORGE | ❓ review | Possibly legacy — confirm vs Foundry |
+| `integrity_*` | 2 | SUBSTRATE CORE | 🟡 mixed | Integrity scans (findings table dropped earlier) |
+| `maintenance_*` | 2 | SUBSTRATE CORE | 🟢 alive | Maintenance windows |
+| `memory_*` | 2 | BRAIN | 🟢 alive | Memory stream pipeline |
+| `node_*` | 2 | SUBSTRATE CORE | 🟡 rename | Old "node" → primitive_* per terminology map |
+| `passkey_*` | 2 | AUTH | 🟢 alive | WebAuthn passkeys |
+| `referral_*` | 2 | MARKETPLACE | 🟢 alive | Referral program |
+| `webhook_*` | 2 | INTEGRATIONS | 🟢 alive | Outbound webhooks |
+| `accessibility_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `activation_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `admin_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `agencies_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `agent_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `artifact_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `atlas_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `bot_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `canary_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `captcha_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `causal_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `client_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `code_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `compiled_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `control_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `cost_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `crystallized_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `device_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `discovered_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `discoveries_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `ecosystem_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `edge_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `ethical_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `execution_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `gate_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `ip_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `lead_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `licensing_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `lovable_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `member_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `merchant_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `owner_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `pipeline_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `production_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `profiles_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `proposal_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `provider_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `quarry_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `radio_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `restoration_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `saved_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `security_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `slo_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `suppressed_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `task_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `tenants_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `usage_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `v_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `vault_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `verification_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `vision_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `workbench_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 
 ---
+## Full Table Inventory by Prefix
 
-## §2. Action Queue (derived from §1.5)
 
-**Migrate (signal → primitive):**
-- LEARNING `learning_*` → BRAIN edges / crystals → drop tables
-- MUTATION `mutation_*` → EVOLUTION (rename or fold) → drop legacy names
+### `pf_*` → DEFENSE (47 tables)
 
-**Delete (theater):**
-- `module_registry` (legacy term)
+- `pf_ai_logs`
+- `pf_brain_anomalies`
+- `pf_brain_behavioral_patterns`
+- `pf_clarity_admin_stats`
+- `pf_clarity_agent_config`
+- `pf_clarity_api_keys`
+- `pf_clarity_api_usage`
+- `pf_clarity_certifications`
+- `pf_clarity_clients`
+- `pf_clarity_compliance_history`
+- `pf_clarity_email_follows`
+- `pf_clarity_fix_suggestions`
+- `pf_clarity_fixes`
+- `pf_clarity_issue_priority`
+- `pf_clarity_issues`
+- `pf_clarity_notification_log`
+- `pf_clarity_notifications`
+- `pf_clarity_portfolio_stats`
+- `pf_clarity_reports`
+- `pf_clarity_scan_queue`
+- `pf_clarity_scans`
+- `pf_clarity_scheduled_scans`
+- `pf_clarity_sites`
+- `pf_clarity_subscriptions`
+- `pf_clarity_team_invites`
+- `pf_clarity_team_members`
+- `pf_clarity_teams`
+- `pf_clarity_webhooks`
+- `pf_clarity_whitelabel`
+- `pf_clarity_widget_analytics`
+- `pf_clarity_widgets`
+- `pf_clarity_wp_connections`
+- `pf_cost_logs`
+- `pf_deployments`
+- `pf_global_threat_feed`
+- `pf_image_outputs`
+- `pf_insight_logs`
+- `pf_media_cache`
+- `pf_merger_fusions`
+- `pf_merger_intents`
+- `pf_merger_metrics`
+- `pf_mvp_projects`
+- `pf_security_events`
+- `pf_system_config`
+- `pf_text_outputs`
+- `pf_threat_statistics`
+- `pf_video_outputs`
+
+### `substrate_*` → SUBSTRATE CORE (42 tables)
+
+- `substrate_agent_events`
+- `substrate_agents`
+- `substrate_applied_improvements`
+- `substrate_apps`
+- `substrate_audit_log`
+- `substrate_brain_improvements`
+- `substrate_canaries`
+- `substrate_capabilities`
+- `substrate_cascade_history`
+- `substrate_changes`
+- `substrate_chaos_rules`
+- `substrate_config`
+- `substrate_cp_restore_jobs`
+- `substrate_cp_revisions`
+- `substrate_cp_snapshot_manifest`
+- `substrate_cp_wal`
+- `substrate_developer_keys`
+- `substrate_extensions`
+- `substrate_flags`
+- `substrate_health_log`
+- `substrate_heuristics`
+- `substrate_idempotency`
+- `substrate_install_config`
+- `substrate_integrations`
+- `substrate_integrity_reports`
+- `substrate_leases`
+- `substrate_licenses`
+- `substrate_metrics_snapshot`
+- `substrate_queue_snapshot`
+- `substrate_retry_buckets`
+- `substrate_safe_mode`
+- `substrate_scheduler_queue`
+- `substrate_scheduler_receipts`
+- `substrate_schema_registry`
+- `substrate_sequence_outcomes`
+- `substrate_sequence_steps`
+- `substrate_sequences`
+- `substrate_templates`
+- `substrate_upgrade_config`
+- `substrate_upgrade_plans`
+- `substrate_upgrade_runs`
+- `substrate_usage_meters`
+
+### `brain_*` → BRAIN (38 tables)
+
+- `brain_actions_queue`
+- `brain_classifier_models`
+- `brain_cross_insights`
+- `brain_curiosity_log`
+- `brain_curiosity_settings`
+- `brain_daily_reports`
+- `brain_distillation_runs`
+- `brain_domain_usage`
+- `brain_drift_log`
+- `brain_embeddings`
+- `brain_events`
+- `brain_feedback`
+- `brain_forecasts`
+- `brain_graph_edges`
+- `brain_graph_nodes`
+- `brain_knowledge_crystals`
+- `brain_knowledge_edges`
+- `brain_maintenance_log`
+- `brain_memories`
+- `brain_memory_archive`
+- `brain_memory_cold`
+- `brain_memory_contradictions`
+- `brain_memory_hot`
+- `brain_memory_meta`
+- `brain_memory_pruned`
+- `brain_memory_warm`
+- `brain_metrics`
+- `brain_orchestrator_state`
+- `brain_policy`
+- `brain_rag_contexts`
+- `brain_reach_domains`
+- `brain_reasoning_traces`
+- `brain_reflection_log`
+- `brain_reflections`
+- `brain_reinforcement_log`
+- `brain_tiering_config`
+- `brain_transfer_heuristics`
+- `brain_user_fingerprints`
+
+### `agency_*` → AGENCY (16 tables)
+
+- `agency_agent_telemetry`
+- `agency_api_calls`
+- `agency_dream_consent`
+- `agency_dream_memory`
+- `agency_dream_pool`
+- `agency_economics`
+- `agency_email_queue`
+- `agency_members`
+- `agency_purchases`
+- `agency_scheduled_tasks`
+- `agency_settings`
+- `agency_task_artifacts`
+- `agency_task_deliverables`
+- `agency_task_logs`
+- `agency_tasks`
+- `agency_templates`
+
+### `dream_*` → DREAM (16 tables)
+
+- `dream_anomalies`
+- `dream_archaeology`
+- `dream_artifacts`
+- `dream_cycle_logs`
+- `dream_eater_audit`
+- `dream_eater_features`
+- `dream_eater_milestones`
+- `dream_eater_state`
+- `dream_echo_templates`
+- `dream_feeder_submissions`
+- `dream_ingestion_audit`
+- `dream_learning_metrics`
+- `dream_log`
+- `dream_rate_limits`
+- `dream_sessions`
+- `dream_stream`
+
+### `autoblog_*` → AUTOBLOG (12 tables)
+
+- `autoblog_assumptions`
+- `autoblog_confidence_weights`
+- `autoblog_drafts`
+- `autoblog_memory_reports`
+- `autoblog_publish_cycle`
+- `autoblog_publish_governor_logs`
+- `autoblog_publish_governor_state`
+- `autoblog_queue`
+- `autoblog_runs`
+- `autoblog_settings`
+- `autoblog_split_brain_audits`
+- `autoblog_topic_seeds`
+
+### `evolution_*` → EVOLUTION (9 tables)
+
+- `evolution_autonomy_config`
+- `evolution_circuit`
+- `evolution_entropy_ledger`
+- `evolution_pre_metrics`
+- `evolution_proposals`
+- `evolution_receipts`
+- `evolution_repair_log`
+- `evolution_runs`
+- `evolution_snapshots`
+
+### `marketplace_*` → MARKETPLACE (9 tables)
+
+- `marketplace_generated_templates`
+- `marketplace_inventory`
+- `marketplace_licenses`
+- `marketplace_mailing_list`
+- `marketplace_purchases`
+- `marketplace_release_alerts`
+- `marketplace_saved_templates`
+- `marketplace_template_stats`
+- `marketplace_user_interests`
+
+### `core_*` → SUBSTRATE CORE (8 tables)
+
+- `core_config`
+- `core_contexts`
+- `core_jobs`
+- `core_plans`
+- `core_settings`
+- `core_state`
+- `core_subscriptions`
+- `core_usage`
+
+### `developer_*` → DEVELOPER (8 tables)
+
+- `developer_ai_tool_usage`
+- `developer_certifications`
+- `developer_earned_badges`
+- `developer_progress`
+- `developer_sandbox_sessions`
+- `developer_skill_tree`
+- `developer_templates`
+- `developer_tutorial_progress`
+
+### `nexus_*` → NEXUS (8 tables)
+
+- `nexus_anomalies`
+- `nexus_cost_ledger`
+- `nexus_hourly_snapshots`
+- `nexus_logs`
+- `nexus_provider_affinity`
+- `nexus_provider_health`
+- `nexus_provider_limits`
+- `nexus_traces`
+
+### `access_*` → ACCESS (7 tables)
+
+- `access_api_keys`
+- `access_developers`
+- `access_products`
+- `access_quotas`
+- `access_scans`
+- `access_subscriptions`
+- `access_usage`
+
+### `foundry_*` → FOUNDRY (7 tables)
+
+- `foundry_bias_audit`
+- `foundry_bias_config`
+- `foundry_discovery_metrics`
+- `foundry_inventory`
+- `foundry_mine_events`
+- `foundry_tier_config`
+- `foundry_user_state`
+
+### `governance_*` → GOVERNANCE (7 tables)
+
+- `governance_audit_log`
+- `governance_compliance_reports`
+- `governance_issued_vetoes`
+- `governance_mode`
+- `governance_transition_approvals`
+- `governance_transition_log`
+- `governance_transition_votes`
+
+### `modernizer_*` → EVOLUTION (7 tables)
+
+- `modernizer_analytics`
+- `modernizer_autonomy_log`
+- `modernizer_extractions`
+- `modernizer_jobs`
+- `modernizer_outputs`
+- `modernizer_reports`
+- `modernizer_user_limits`
+
+### `system_*` → SUBSTRATE CORE (7 tables)
+
+- `system_boot_log`
+- `system_config`
+- `system_diffs`
+- `system_flags`
+- `system_metrics_history`
+- `system_snapshots`
+- `system_updates`
+
+### `user_*` → AUTH (7 tables)
+
+- `user_crystallized_entitlements`
+- `user_daily_pulls`
+- `user_layer_entitlements`
+- `user_limits`
+- `user_onboarding`
+- `user_pack_activations`
+- `user_roles`
+
+### `immunity_*` → IMMUNITY (6 tables)
+
+- `immunity_mesh_runs`
+- `immunity_rule_conflicts`
+- `immunity_rule_invocations`
+- `immunity_rule_lineage`
+- `immunity_rule_propagation`
+- `immunity_rules`
+
+### `learning_*` → BRAIN (6 tables)
+
+- `learning_confidence`
+- `learning_cycles`
+- `learning_logs`
+- `learning_patterns`
+- `learning_queries`
+- `learning_results`
+
+### `mesh_*` → LAYERS (6 tables)
+
+- `mesh_capability_recommendations`
+- `mesh_comms`
+- `mesh_discovery_gaps`
+- `mesh_discovery_runs`
+- `mesh_intents`
+- `mesh_saved_pipelines`
+
+### `ripple_*` → RIPPLE (6 tables)
+
+- `ripple_campaigns`
+- `ripple_circuit_breakers`
+- `ripple_events`
+- `ripple_jobs`
+- `ripple_subscriptions`
+- `ripple_topics`
+
+### `integration_*` → INTEGRATIONS (5 tables)
+
+- `integration_audit_log`
+- `integration_command_mappings`
+- `integration_connections`
+- `integration_discoveries`
+- `integration_usage`
+
+### `vertical_*` → VERTICALS (5 tables)
+
+- `vertical_ascension_sessions`
+- `vertical_clm_cycles`
+- `vertical_memory_stream`
+- `vertical_primitives`
+- `vertical_substrates`
+
+### `scan_*` → SCAN (4 tables)
+
+- `scan_finding_trends`
+- `scan_results_cache`
+- `scan_schedules`
+- `scan_webhooks`
+
+### `ai_*` → NEXUS (3 tables)
+
+- `ai_daily_quota`
+- `ai_learning_data`
+- `ai_usage_log`
+
+### `analytics_*` → ANALYTICS (3 tables)
+
+- `analytics_events`
+- `analytics_excluded_fingerprints`
+- `analytics_snapshots`
+
+### `auth_*` → AUTH (3 tables)
+
+- `auth_events`
+- `auth_geo_log`
+- `auth_rate_limits`
+
+### `cascade_*` → CASCADE (3 tables)
+
+- `cascade_conversations`
+- `cascade_dreams`
+- `cascade_events`
+
+### `circuit_*` → SUBSTRATE CORE (3 tables)
+
+- `circuit_breaker_failures`
+- `circuit_breaker_state`
+- `circuit_breaker_trips`
+
+### `cognitive_*` → AGENCY (3 tables)
+
+- `cognitive_orders`
+- `cognitive_registry`
+- `cognitive_stripe_map`
+
+### `cortex_*` → CORTEX (3 tables)
+
+- `cortex_audit_log`
+- `cortex_circuit_breakers`
+- `cortex_modes`
+
+### `defense_*` → DEFENSE (3 tables)
+
+- `defense_config`
+- `defense_events`
+- `defense_rules`
+
+### `discovery_*` → DISCOVERY (3 tables)
+
+- `discovery_lock`
+- `discovery_retired_combos`
+- `discovery_runs`
+
+### `email_*` → EMAIL (3 tables)
+
+- `email_send_log`
+- `email_send_state`
+- `email_unsubscribe_tokens`
+
+### `global_*` → GLOBAL (3 tables)
+
+- `global_correlation`
+- `global_forecasts`
+- `global_signals`
+
+### `immune_*` → IMMUNITY (3 tables)
+
+- `immune_escalations`
+- `immune_intelligence_events`
+- `immune_metrics`
+
+### `lex_*` → LEX (3 tables)
+
+- `lex_registry`
+- `lex_registry_events`
+- `lex_registry_public`
+
+### `module_*` → SUBSTRATE CORE (3 tables)
+
+- `module_registry`
+- `module_slo_status`
+- `module_sounding_board`
+
+### `mutation_*` → EVOLUTION (3 tables)
+
+- `mutation_proposals`
+- `mutation_receipts`
+- `mutation_runs`
+
+### `site_*` → SITE (3 tables)
+
+- `site_analytics_exclusions`
+- `site_page_views`
+- `site_sessions`
+
+### `tsac_*` → TSAC (3 tables)
+
+- `tsac_executor_stats`
+- `tsac_training_feedback`
+- `tsac_verifications`
+
+### `audit_*` → AUDIT (2 tables)
+
+- `audit_chain_anchors`
+- `audit_logs`
+
+### `auto_*` → AUTOBLOG (2 tables)
+
+- `auto_blog_posts`
+- `auto_blog_schedule`
+
+### `backup_*` → SUBSTRATE CORE (2 tables)
+
+- `backup_exports`
+- `backup_import_log`
+
+### `bots_*` → DEFENSE (2 tables)
+
+- `bots`
+- `bots_versions`
+
+### `change_*` → SUBSTRATE CORE (2 tables)
+
+- `change_artifacts`
+- `change_ledger`
+
+### `cli_*` → CLI (2 tables)
+
+- `cli_ascension_sessions`
+- `cli_sessions`
+
+### `cmpsbl_*` → SUBSTRATE CORE (2 tables)
+
+- `cmpsbl_patch_downloads`
+- `cmpsbl_patches`
+
+### `compiler_*` → COMPILER (2 tables)
+
+- `compiler_feedback`
+- `compiler_weights`
+
+### `daily_*` → SUBSTRATE CORE (2 tables)
+
+- `daily_backups`
+- `daily_state`
+
+### `decode_*` → DECODE (2 tables)
+
+- `decode_conversations`
+- `decode_search_results`
+
+### `forge_*` → FORGE (2 tables)
+
+- `forge_agents`
+- `forge_reserved_names`
+
+### `integrity_*` → SUBSTRATE CORE (2 tables)
+
 - `integrity_findings`
-- `studio_*` (if any)
-- `resilience_ledger`, `restoration_sessions`
-- `brain_persona*`, `brain_curiosity*`
-- `pf_brain_ml_*`, `pf_threat_*`
+- `integrity_scan_runs`
 
-**Decide (Governor):**
-- DEVELOPER stack — delete vs resurface as XCTBL Dev Playground
-- GLOBAL / PRODUCTION — re-investigate
-- GOVERNANCE TRANSITION — confirm LEX ownership
+### `maintenance_*` → SUBSTRATE CORE (2 tables)
 
-**Keep as standalone (peer to primitives):**
-- AUTOBLOG · COMPILER · MARKETPLACE · CONTROL PLANE · VAULT (discovery sink)
+- `maintenance_notification_config`
+- `maintenance_reports`
 
----
+### `memory_*` → BRAIN (2 tables)
 
-## §3. Open Sweeps
+- `memory_stream_config`
+- `memory_tier_receipts`
 
-Next audit passes should cover:
-- Row-level access control verification on every alive subsystem
-- RLS policy completeness on tables flagged "alive" but with sparse policies
-- Cross-reference of Crown Jewel registry against the alive marketplace inventory
-- Verification that Cognitives terminology is preserved in all UI surfaces
+### `node_*` → SUBSTRATE CORE (2 tables)
 
----
+- `node_dream_config`
+- `node_dream_log`
 
-*© CMPSBL® · PromptFluid™ · 2026 · Governor Eyes Only*
+### `passkey_*` → AUTH (2 tables)
+
+- `passkey_challenges`
+- `passkey_credentials`
+
+### `referral_*` → MARKETPLACE (2 tables)
+
+- `referral_codes`
+- `referral_redemptions`
+
+### `webhook_*` → INTEGRATIONS (2 tables)
+
+- `webhook_delivery_log`
+- `webhook_subscriptions`
+
+### `accessibility_*` → UNCLASSIFIED (1 tables)
+
+- `accessibility_scans`
+
+### `activation_*` → UNCLASSIFIED (1 tables)
+
+- `activation_audit_log`
+
+### `admin_*` → UNCLASSIFIED (1 tables)
+
+- `admin_ip_allowlist`
+
+### `agencies_*` → UNCLASSIFIED (1 tables)
+
+- `agencies`
+
+### `agent_*` → UNCLASSIFIED (1 tables)
+
+- `agent_competency`
+
+### `artifact_*` → UNCLASSIFIED (1 tables)
+
+- `artifact_registry`
+
+### `atlas_*` → UNCLASSIFIED (1 tables)
+
+- `atlas_capabilities`
+
+### `bot_*` → UNCLASSIFIED (1 tables)
+
+- `bot_sniper_api_keys`
+
+### `canary_*` → UNCLASSIFIED (1 tables)
+
+- `canary_tokens`
+
+### `captcha_*` → UNCLASSIFIED (1 tables)
+
+- `captcha_challenges`
+
+### `causal_*` → UNCLASSIFIED (1 tables)
+
+- `causal_traces`
+
+### `client_*` → UNCLASSIFIED (1 tables)
+
+- `client_error_log`
+
+### `code_*` → UNCLASSIFIED (1 tables)
+
+- `code_stamps`
+
+### `compiled_*` → UNCLASSIFIED (1 tables)
+
+- `compiled_products`
+
+### `control_*` → UNCLASSIFIED (1 tables)
+
+- `control_plane_state`
+
+### `cost_*` → UNCLASSIFIED (1 tables)
+
+- `cost_logs`
+
+### `crystallized_*` → UNCLASSIFIED (1 tables)
+
+- `crystallized_assets`
+
+### `device_*` → UNCLASSIFIED (1 tables)
+
+- `device_fingerprint_snapshots`
+
+### `discovered_*` → UNCLASSIFIED (1 tables)
+
+- `discovered_pipelines`
+
+### `discoveries_*` → UNCLASSIFIED (1 tables)
+
+- `discoveries`
+
+### `ecosystem_*` → UNCLASSIFIED (1 tables)
+
+- `ecosystem_memory`
+
+### `edge_*` → UNCLASSIFIED (1 tables)
+
+- `edge_rate_limits`
+
+### `ethical_*` → UNCLASSIFIED (1 tables)
+
+- `ethical_approvals`
+
+### `execution_*` → UNCLASSIFIED (1 tables)
+
+- `execution_traces`
+
+### `gate_*` → UNCLASSIFIED (1 tables)
+
+- `gate_runs`
+
+### `ip_*` → UNCLASSIFIED (1 tables)
+
+- `ip_reputation`
+
+### `lead_*` → UNCLASSIFIED (1 tables)
+
+- `lead_captures`
+
+### `licensing_*` → UNCLASSIFIED (1 tables)
+
+- `licensing_inquiries`
+
+### `lovable_*` → UNCLASSIFIED (1 tables)
+
+- `lovable_ai_usage`
+
+### `member_*` → UNCLASSIFIED (1 tables)
+
+- `member_usage_stats`
+
+### `merchant_*` → UNCLASSIFIED (1 tables)
+
+- `merchant_scan_log`
+
+### `owner_*` → UNCLASSIFIED (1 tables)
+
+- `owner_reports`
+
+### `pipeline_*` → UNCLASSIFIED (1 tables)
+
+- `pipeline_vault`
+
+### `production_*` → UNCLASSIFIED (1 tables)
+
+- `production_promotions`
+
+### `profiles_*` → UNCLASSIFIED (1 tables)
+
+- `profiles`
+
+### `proposal_*` → UNCLASSIFIED (1 tables)
+
+- `proposal_meta`
+
+### `provider_*` → UNCLASSIFIED (1 tables)
+
+- `provider_routing_events`
+
+### `quarry_*` → UNCLASSIFIED (1 tables)
+
+- `quarry_assets`
+
+### `radio_*` → UNCLASSIFIED (1 tables)
+
+- `radio_broadcasts`
+
+### `restoration_*` → UNCLASSIFIED (1 tables)
+
+- `restoration_sessions`
+
+### `saved_*` → UNCLASSIFIED (1 tables)
+
+- `saved_workflows`
+
+### `security_*` → UNCLASSIFIED (1 tables)
+
+- `security_audit_log`
+
+### `slo_*` → UNCLASSIFIED (1 tables)
+
+- `slo_specs`
+
+### `suppressed_*` → UNCLASSIFIED (1 tables)
+
+- `suppressed_emails`
+
+### `task_*` → UNCLASSIFIED (1 tables)
+
+- `task_presets`
+
+### `tenants_*` → UNCLASSIFIED (1 tables)
+
+- `tenants`
+
+### `usage_*` → UNCLASSIFIED (1 tables)
+
+- `usage_metrics`
+
+### `v_*` → UNCLASSIFIED (1 tables)
+
+- `v_user_summary`
+
+### `vault_*` → UNCLASSIFIED (1 tables)
+
+- `vault_promotions`
+
+### `verification_*` → UNCLASSIFIED (1 tables)
+
+- `verification_scans`
+
+### `vision_*` → UNCLASSIFIED (1 tables)
+
+- `vision_anomalies`
+
+### `workbench_*` → UNCLASSIFIED (1 tables)
+
+- `workbench_items`
