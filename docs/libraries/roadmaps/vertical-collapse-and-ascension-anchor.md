@@ -22,6 +22,10 @@ Prior audits were wrong because they searched canonical names only. These aliase
 | Governor | Admin, `admin_*` |
 | Memory Chain | Pipeline, `pipeline_*`, `chain_*` |
 | Crystallized Memory | Crystallized Pipeline, Primitive Chain, Node Chain, Module Chain, `crystal*`, `crystallized_*` |
+| Foundry | Quarry, Memory Stream, `foundry_*`, `quarry_*`, `memory_stream*`, `discoveries` |
+| Agency | 20-agent collective sourced from the Mint, `agency_*`, `mint_*` |
+| Agent Forge | Per-agent generator (distinct from FORGE), `agent_forge*` |
+| FORGE | Template Generator (NOT the same as Agent Forge), `forge_*`, `template_*` |
 
 **Unknown-name rule:** If I encounter any table/file/function name I don't recognize, **I ask Kenneth directly** before classifying it as fake, dead, or missing. No silent assumptions.
 
@@ -155,6 +159,38 @@ Discovered after alias expansion (`pipeline_*`, `chain_*`, `crystal*`):
 | `foundry_mine_events` | 58 |
 | `foundry_user_state` | 12 |
 | `foundry_tier_config` | 5 |
+
+### FOUNDRY ∪ QUARRY ∪ MEMORY STREAM (same engine, three names) — **ALIVE**
+| Table | Rows |
+|-------|------|
+| `discoveries` (Memory Stream output) | 7,266 |
+| `quarry_assets` | 136 |
+| `vertical_memory_stream` | 40 |
+| `memory_stream_config` | 6 |
+| **Combined Foundry/Quarry/Memory-Stream rows** | **~7,750** |
+
+**Verdict:** All three names point to the same discovery engine. Massively alive.
+
+### TEMPLATE / FORGE / AGENT FORGE — **disambiguation needed**
+Per Kenneth: **FORGE = template generator**, **Agent Forge = per-agent generator** (different things).
+
+| Table | Rows | Likely owner |
+|-------|------|--------------|
+| `developer_templates` | 200 | FORGE (template generator) — **ALIVE** |
+| `forge_reserved_names` | 25 | FORGE namespace registry |
+| `marketplace_template_stats` | 10 | FORGE downstream |
+| `agency_templates` | 10 | Agency / Mint |
+| `dream_echo_templates` | 8 | DREAM |
+| `forge_agents` | 0 | **Agent Forge** scaffolded, no writer |
+| `substrate_templates` | 0 | FORGE alt-namespace, no writer |
+| `marketplace_generated_templates` | 0 | FORGE downstream, no writer |
+| `marketplace_saved_templates` | 0 | FORGE downstream, no writer |
+
+**Verdict:** FORGE (the template generator) is alive via `developer_templates` (200 rows). **Agent Forge is the unwired half** — `forge_agents` exists with 0 rows. Prior pass conflated the two.
+
+### MINT (Agency source) — **NOT YET FOUND**
+No `mint_*` tables exist in the database. The 20-agent Agency collective has source tables (`agency_members` 20 rows, `agency_templates` 10 rows) but the **Mint that spawns them is not yet a persisted concept**. → Asking Kenneth: is "Mint" a code-only concept, a future build, or hidden under another name I haven't tried?
+
 
 ### AGENCY — **ALIVE**
 | Table | Rows |
