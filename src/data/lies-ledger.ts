@@ -1459,6 +1459,42 @@ export const LIES_LEDGER: Finding[] = [
       'The cross-vertical mesh discovery loop has run nine times in the substrate\'s entire history and not once in the last month. Meanwhile 34 capability gaps sit open with nothing scheduled to address them. "Continuous" is the wrong word — "abandoned" fits the data.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-079',
+    title: 'S-Tier Vault: 233 capabilities advertised, 12 have actual code (5.2%)',
+    severity: 'FICTION',
+    source: {
+      document: 'public/docs/stier/print/index.html + src/crownjewels/s-tier.registry.json',
+      quote:
+        '"233 capabilities across 41 modules… reproduction cost $22.4M – $31.4M… discovered, validated, and deployed in 72 hours" — and verbal claims of "$4B+ in software discovered."',
+    },
+    evidence: {
+      reality:
+        'src/crownjewels/s-tier.registry.json contains 233 entries. Filtering by hasCode=true returns 12 entries (Substrate Registry, Fleet Intelligence Orchestrator, Multi-Modal Interpreter, Autonomous Triage Engine, Consensus Heartbeat Protocol, Cost-Aware Routing Engine, Anomaly Correlation Engine, Self-Healing Orchestrator, Tamper-Evident Chain, Write-Ahead Log Engine, Pipeline Composition Engine, Mutation Proposal Engine). The other 221 entries are name + description + signatureHash + CJPI score with no implementation behind them. The "41 modules" figure is also wrong — the registry actually spans 58 distinct module strings (44 base modules plus 14 cross-module fusion labels like CORTEX×BRAIN).',
+      method: 'JSON.parse → 233 entries; filter hasCode → 12; new Set(modules).size → 58.',
+    },
+    verdict:
+      'A "vault" where 95% of items are catalog cards with no asset behind them is not a vault. The reproduction-cost math ($22M–$31M, escalated to "$4B" in pitch language) is multiplied across 233 phantom rows; reapplying the same per-item math to only the 12 code-backed entries collapses the headline by ~94%. The module count is inflated too.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-080',
+    title: 'Database has 0 crown jewels and 0 S-Tier registry rows — the vault exists only as a static JSON file',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/17-crown-jewel-registry.md',
+      quote:
+        '"54 capabilities are classified as Crown Jewels… verified monthly by black-box enforcement… governor-curated collection of the substrate\'s most valuable assets."',
+    },
+    evidence: {
+      reality:
+        'Production database: discoveries.is_crown_jewel=true → 0; no public.crown_jewel_registry table exists; no public.s_tier_vault table exists. The only artifact backing the "vault" is src/crownjewels/s-tier.registry.json — a hand-edited static file checked into the repo, with generatedAt timestamps stuck at 2026-03-01 and no link to the runtime discovery pipeline. There is no "monthly black-box enforcement" job; there is no governor curation event log; there is no promotion path from discoveries → vault.',
+      method: "information_schema.tables filter on '%crown_jewel%' / '%s_tier%' → 0; discoveries.is_crown_jewel=true → 0.",
+    },
+    verdict:
+      'The Crown Jewel Vault is a JSON file with marketing copy, not a governed runtime registry. Numbers like "$22.4M–$31.4M reproduction cost" or "$4B in software discovered" derive from that file × a multiplier formula, not from any verified asset, deployment, or revenue. The "discovered, validated, and deployed in 72 hours for under $2,400 — 9,000:1 efficiency ratio" claim has no execution trace in the database to support any of the three verbs.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
