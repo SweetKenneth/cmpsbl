@@ -25,7 +25,17 @@ export type MethodOp =
   | { kind: 'reset_all' }
   | { kind: 'clear_map'; field: string }
   | { kind: 'map_inc'; field: string; key: 'param'; by?: number | string }
-  | { kind: 'snapshot'; fields: string[] }; // returns dict/struct of named fields
+  | { kind: 'snapshot'; fields: string[] } // returns dict/struct of named fields
+  // ── Symbiotic Layer 2 ops (Oracle-Ripple / AI-Safety / Cog-Memory parity) ──
+  // Recursively redact secret-like strings inside the param value (deep walk).
+  // Preserves CMPSBL framework keys ('_cmpsbl_…' / '__cmpsbl_…'). Returns sanitized value.
+  | { kind: 'sanitize_deep'; from: 'param' }
+  // Recursively strip map keys whose name starts with '_cmpsbl_' or '__cmpsbl_'.
+  // Returns the cleaned value. Used by Cognitive Memory before persistence.
+  | { kind: 'strip_sidecar_keys'; from: 'param' }
+  // Append the param value to a context-scoped chain stored in `field` (declared as list<string>).
+  // Uses thread-local where the language supports it; otherwise a mutex-guarded module list.
+  | { kind: 'ctx_chain_push'; field: string; from: 'param' };
 
 export interface SpecMethod {
   name: string;            // snake_case canonical
