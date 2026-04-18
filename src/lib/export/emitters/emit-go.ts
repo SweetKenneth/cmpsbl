@@ -129,7 +129,11 @@ function returnTypeFor(m: SpecMethod, spec: ComponentSpec): string {
 export function emitGo(spec: ComponentSpec): string {
   const lines: string[] = [
     HEADER(spec.module, spec.description),
-    'import "sync"',
+    'import (\n\t"sync"\n\t"regexp"\n\t"strings"\n)',
+    '',
+    '// Suppress unused-import warnings if a spec uses no sanitize/strip ops.',
+    'var _ = regexp.MustCompile',
+    'var _ = strings.HasPrefix',
     '',
     `var cmpsbl${spec.module}Mu sync.Mutex`,
     ...spec.fields.map(f => `var ${goVarName(f.name)} ${goType(f.type)} = ${goInit(f)}${f.comment ? ` // ${f.comment}` : ''}`),
