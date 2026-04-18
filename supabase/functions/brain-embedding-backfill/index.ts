@@ -149,7 +149,7 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ ok: true, results, model: EMBED_MODEL, dim: 384 }),
+      JSON.stringify({ ok: true, results, model: EMBED_MODEL, dim: 1536 }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
