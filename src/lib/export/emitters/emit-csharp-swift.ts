@@ -147,6 +147,34 @@ function swOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `"${f}": ${f}`).join(', ');
       return [`return [${pairs}]`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `let __pat = try! NSRegularExpression(pattern: "(api[_-]?key|secret|password|token|bearer\\\\s+[\\\\w.-]+|sk-[\\\\w-]{16,})", options: [.caseInsensitive])`,
+        `func walk(_ v: Any) -> Any {`,
+        `    if let d = v as? [String: Any] { var o: [String: Any] = [:]; for (k, vv) in d { o[k] = (k.hasPrefix("_cmpsbl_") || k.hasPrefix("__cmpsbl_")) ? vv : walk(vv) }; return o }`,
+        `    if let l = v as? [Any] { return l.map { walk($0) } }`,
+        `    if let s = v as? String { let r = NSRange(s.startIndex..., in: s); return __pat.stringByReplacingMatches(in: s, options: [], range: r, withTemplate: "[REDACTED]") }`,
+        `    return v`,
+        `}`,
+        `return walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `func strip(_ v: Any) -> Any {`,
+        `    if let d = v as? [String: Any] { var o: [String: Any] = [:]; for (k, vv) in d { if k.hasPrefix("_cmpsbl_") || k.hasPrefix("__cmpsbl_") { continue }; o[k] = strip(vv) }; return o }`,
+        `    if let l = v as? [Any] { return l.map { strip($0) } }`,
+        `    return v`,
+        `}`,
+        `return strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.append("\\(${p})")`];
+    }
   }
 }
 function swRet(m: SpecMethod, spec: ComponentSpec): string {
