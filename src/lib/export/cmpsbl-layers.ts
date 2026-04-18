@@ -51,6 +51,12 @@ import { SHADOW_EXECUTION_CORE } from './layers/_shadow-execution-core';
 import { EFFECT_TRACKER_CORE } from './layers/_effect-tracker-core';
 import { RESOURCE_BUDGET_CORE } from './layers/_resource-budget-core';
 import { KERNEL_HEALTH_CORE } from './layers/_kernel-health-core';
+import { CIRCUIT_BREAKER_RECOVERABLE_CORE } from './layers/_circuit-breaker-recoverable-core';
+import { CAUSALITY_TRACKER_CORE } from './layers/_causality-tracker-core';
+import { BACKPRESSURE_GOVERNOR_CORE } from './layers/_backpressure-governor-core';
+import { DETERMINISM_FINGERPRINT_CORE } from './layers/_determinism-fingerprint-core';
+import { CONTRACT_VERSIONING_CORE } from './layers/_contract-versioning-core';
+import { SATURATION_METRICS_CORE } from './layers/_saturation-metrics-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -84,6 +90,12 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
   SHADOW_EXECUTION_CORE,
   EFFECT_TRACKER_CORE,
   RESOURCE_BUDGET_CORE,
+  CIRCUIT_BREAKER_RECOVERABLE_CORE,
+  SATURATION_METRICS_CORE,
+  BACKPRESSURE_GOVERNOR_CORE,
+  CAUSALITY_TRACKER_CORE,
+  DETERMINISM_FINGERPRINT_CORE,
+  CONTRACT_VERSIONING_CORE,
   KERNEL_HEALTH_CORE,
   KERNEL_BOOTSTRAP_CORE,
   CIRCUIT_BREAKER_CORE,
