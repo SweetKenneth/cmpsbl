@@ -4,18 +4,16 @@
  * Collector card style with flip, zoom, and swipe.
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { useSearchParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import {
-  ShoppingBag, Cpu, Users, Lock, Sparkles, Zap, Brain,
+  ShoppingBag, Cpu, Users, Sparkles, Zap, Brain,
   Shield, Layers, Radio, Eye,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { PublicNav } from "@/components/PublicNav";
 import { StoreOnboarding } from "@/components/onboarding/StoreOnboarding";
@@ -25,16 +23,11 @@ import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
 import { LayerInventory } from "@/components/store/LayerInventory";
 import { AscensionLayersHero } from "@/components/store/AscensionLayersHero";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
-import { PacksContent } from "@/components/store/PacksContent";
 import {
-  STORE_AGENTS, STORE_ENGINES, ALL_STORE_ITEMS, TIER_META,
-  type StoreTier,
+  STORE_AGENTS, STORE_ENGINES, ALL_STORE_ITEMS,
 } from "@/lib/store/catalog";
 
 type FilterMode = "all" | "agents" | "engines";
-type StoreTab = "store" | "memories";
-
-const TIERS: StoreTier[] = ["free", "starter", "pro", "elite", "apex"];
 
 const SEALED_FEATURES = [
   { label: "4-Tier Auto Memory", desc: "Automatic hot → warm → cool → cold data lifecycle — no configuration needed", icon: Brain },
@@ -45,41 +38,14 @@ const SEALED_FEATURES = [
   { label: "Encrypted Comms", desc: "Direct owner-to-agent encrypted communication channel", icon: Eye },
 ];
 
-const TAB_CONFIG = [
-  { value: "store" as const, label: "Store", icon: ShoppingBag },
-  { value: "memories" as const, label: "Memories", icon: Brain },
-];
-
 const FILTER_CONFIG = [
   { key: "all" as const, label: "All Products", shortLabel: "All", icon: ShoppingBag, count: ALL_STORE_ITEMS.length },
-  { key: "agents" as const, label: "Runtime Agents", shortLabel: "Agents", icon: Users, count: STORE_AGENTS.length },
-  { key: "engines" as const, label: "Engines", shortLabel: "Engines", icon: Cpu, count: STORE_ENGINES.length },
+  { key: "agents" as const, label: "Meta Agents", shortLabel: "Agents", icon: Users, count: STORE_AGENTS.length },
+  { key: "engines" as const, label: "Meta Engines", shortLabel: "Engines", icon: Cpu, count: STORE_ENGINES.length },
 ];
 
 export default function Store() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const tabParam = searchParams.get("tab") as StoreTab | null;
-  const [activeTab, setActiveTab] = useState<StoreTab>(
-    tabParam && ["store", "memories"].includes(tabParam) ? tabParam : "store"
-  );
   const [filter, setFilter] = useState<FilterMode>("all");
-
-  useEffect(() => {
-    if (tabParam && ["store", "memories"].includes(tabParam) && tabParam !== activeTab) {
-      setActiveTab(tabParam);
-    }
-  }, [tabParam]);
-
-  const handleTabChange = (value: string) => {
-    const tab = value as StoreTab;
-    setActiveTab(tab);
-    if (tab === "store") {
-      searchParams.delete("tab");
-    } else {
-      searchParams.set("tab", tab);
-    }
-    setSearchParams(searchParams, { replace: true });
-  };
 
   const items = filter === "agents" ? STORE_AGENTS
     : filter === "engines" ? STORE_ENGINES
@@ -123,179 +89,80 @@ export default function Store() {
           <div className="mb-6">
             <PublicBreadcrumb />
           </div>
-          {/* ═══ CINEMATIC HERO — Enhance Your Ascension ═══ */}
+
+          {/* CINEMATIC HERO */}
           <AscensionLayersHero />
 
-          {/* ═══ TABS ═══ */}
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex justify-center mb-10 sm:mb-12"
-            >
-              <TabsList className="h-12 sm:h-14 p-1.5 bg-card/60 backdrop-blur-md border border-border/40 rounded-2xl gap-1 shadow-lg shadow-background/50">
-                {TAB_CONFIG.map(({ value, label, icon: Icon }) => (
-                  <TabsTrigger
-                    key={value}
-                    value={value}
+          {/* SECTION 1 — Layers */}
+          <section className="mt-12">
+            <LayerInventory />
+          </section>
+
+          {/* SECTION 2 + 3 — Meta Engines & Meta Agents */}
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-16"
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-2">
+                Meta Engines & Meta Agents
+              </h2>
+              <p className="text-sm text-muted-foreground/80 max-w-xl mx-auto">
+                Premium add-ons that work in CLI, SDK, and standalone — the moat.
+              </p>
+            </div>
+
+            {/* Filter */}
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex gap-1 p-1 rounded-xl bg-card/60 border border-border/40">
+                {FILTER_CONFIG.map(({ key, label, icon: Icon }) => (
+                  <button
+                    key={key}
+                    onClick={() => setFilter(key)}
                     className={cn(
-                      "gap-2 px-5 sm:px-7 h-9 sm:h-10 rounded-xl text-xs sm:text-sm font-bold transition-all min-w-[100px]",
-                      "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=active]:shadow-primary/20",
-                      "data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground data-[state=inactive]:hover:bg-muted/50"
+                      "flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all",
+                      filter === key
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-3.5 h-3.5" />
                     {label}
-                  </TabsTrigger>
+                  </button>
                 ))}
-              </TabsList>
-            </motion.div>
-
-            {/* ═══ STORE TAB ═══ */}
-            <TabsContent value="store" className="mt-0">
-              {/* Pricing ladder + filter tabs removed per request */}
-
-
-              {/* ═══ NEW: Layer Inventory (first-class) ═══ */}
-              <LayerInventory />
-
-              {/* ═══ Original Agents & Engines (kept, moved below) ═══ */}
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="text-center mb-8">
-                  <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-1">
-                    Meta Agents & Engines
-                  </h2>
-                  <p className="text-xs text-muted-foreground/70">
-                    The founding 10 — five Runtime Agents and five Composable Engines
-                  </p>
-                </div>
-                <StoreCollectorDeck items={items} />
-              </motion.div>
-
-              {/* Bottom CTA */}
-              <motion.section
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                className="mt-16 sm:mt-20 text-center pb-8"
-              >
-                <p className="text-xs text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
-                  Every agent and engine runs on the CMPSBL Convex Core™ artifact — secure, self-improving, and yours to own
-                </p>
-                <div className="flex items-center justify-center gap-3 flex-wrap">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
-                    asChild
-                  >
-                    <Link to="/agents">
-                      <Users className="w-4 h-4" />
-                      Explore All 20 Original Agents
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
-                    asChild
-                  >
-                    <Link to="/engines">
-                      <Cpu className="w-4 h-4" />
-                      Discover All Engines
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
-                    asChild
-                  >
-                    <Link to="/plans">
-                      <Zap className="w-4 h-4" />
-                      Compare Plans
-                    </Link>
-                  </Button>
-                </div>
-              </motion.section>
-            </TabsContent>
-
-            {/* ═══ MEMORIES TAB ═══ */}
-            <TabsContent value="memories" className="mt-0">
-              <div className="max-w-6xl mx-auto">
-                {/* Memory Pack Explainer */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-10 sm:mb-12"
-                >
-                  <div className="max-w-3xl mx-auto text-center mb-8">
-                    <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
-                      <Brain className="w-3 h-3 mr-1.5 inline" />
-                      Memory Packs
-                    </Badge>
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-                      Capability Packs You Activate
-                    </h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mx-auto">
-                      Memory Packs are curated bundles of cognitive capabilities organized by domain — each pack occupies one slot in your runtime. Activate the packs that match your workflow, deactivate when you need room for others.
-                    </p>
-                  </div>
-
-                  <div className="max-w-3xl mx-auto grid sm:grid-cols-3 gap-4 mb-8">
-                    <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        <Layers className="w-4 h-4 text-primary" />
-                        What They Are
-                      </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        Pre-composed capability bundles spanning strategic domains — from content generation to security hardening. Each pack contains multiple primitives working in concert as a single activatable unit.
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        <Zap className="w-4 h-4 text-neon-green" />
-                        How to Use Them
-                      </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        Browse packs below, activate the ones you need (each uses 1 slot), and they immediately enhance your runtime. Your tier determines how many slots you have — Builder gets 3, Studio gets 6, Creator gets 9, Architect gets 12.
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
-                      <div className="flex items-center gap-2 text-sm font-semibold">
-                        <Cpu className="w-4 h-4 text-neon-purple" />
-                        Access via NPM
-                      </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        Active packs are delivered through the{' '}
-                        <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl/sdk</a>{' '}
-                        and{' '}
-                        <a href="https://www.npmjs.com/package/@cmpsbl/runtime" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl/runtime</a>{' '}
-                        packages. Install, authenticate, and your active packs are available instantly.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="max-w-3xl mx-auto text-center">
-                    <div className="inline-flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
-                      <code className="bg-muted px-2 py-1 rounded text-xs font-mono">npm i @cmpsbl/sdk</code>
-                      <span>·</span>
-                      <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
-                        View all 11 packages on NPM →
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <PacksContent />
               </div>
-            </TabsContent>
-          </Tabs>
+            </div>
+
+            <StoreCollectorDeck items={items} />
+          </motion.section>
+
+          {/* Bottom CTA */}
+          <motion.section
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="mt-16 sm:mt-20 text-center pb-8"
+          >
+            <p className="text-xs text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
+              Every layer, engine, and agent attaches to Ascension v2 — sealed, governed, yours
+            </p>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <Button variant="outline" size="sm" className="gap-2 min-h-[44px] rounded-xl" asChild>
+                <Link to="/ascension-v2">
+                  <Sparkles className="w-4 h-4" />
+                  Run Ascension v2
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" className="gap-2 min-h-[44px] rounded-xl" asChild>
+                <Link to="/plans">
+                  <Zap className="w-4 h-4" />
+                  Compare Plans
+                </Link>
+              </Button>
+            </div>
+          </motion.section>
         </div>
       </main>
 
