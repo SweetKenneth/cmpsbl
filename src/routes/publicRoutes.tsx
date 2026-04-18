@@ -143,7 +143,7 @@ export const publicRoutes = (
   <>
     {/* Core Public Pages */}
     <Route path="/" element={<DomainAwareHome />} />
-    <Route path="/lies" element={<Lies />} />
+    <Route path="/lies" element={<Navigate to="/" replace />} />
     <Route path="/verify/:fingerprint" element={<VerifyFingerprint />} />
     <Route path="/marketplace" element={<Navigate to="/store" replace />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
@@ -151,7 +151,7 @@ export const publicRoutes = (
     <Route path="/shield" element={<ShieldPage />} />
     <Route path="/mana/proof" element={<ManaProofPage />} />
     <Route path="/mana/lab" element={<ManaLabPage />} />
-    <Route path="/dreams" element={<DreamStatePage />} />
+    <Route path="/dreams" element={<Navigate to="/foundry" replace />} />
     <Route path="/lab" element={<LabPage />} />
     <Route path="/decode" element={<Navigate to="/" replace />} />
     <Route path="/feed-dream-eater" element={<FeedDreamEater />} />
@@ -163,12 +163,12 @@ export const publicRoutes = (
     <Route path="/substrate" element={<Navigate to="/ai-operating-system" replace />} />
     <Route path="/os" element={<SubstrateOS />} />
     <Route path="/demo" element={<Navigate to="/foundry" replace />} />
-    <Route path="/try" element={<TryIt />} />
-    <Route path="/genesis" element={<Genesis />} />
+    <Route path="/try" element={<Navigate to="/ascension-v2" replace />} />
+    <Route path="/genesis" element={<Navigate to="/about" replace />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/workbench" element={<MyWorkbench />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
-    <Route path="/memory-stream" element={<Foundry />} />
+    <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />
     <Route path="/proof" element={<ProofMode />} />
     <Route path="/showcase" element={<Navigate to="/" replace />} />
     <Route path="/publication" element={<Publication />} />
@@ -177,9 +177,9 @@ export const publicRoutes = (
     <Route path="/changelog" element={<Changelog />} />
     <Route path="/codelab" element={<CodeLab />} />
     <Route path="/workspace" element={<Workspace />} />
-    <Route path="/sdk-playground" element={<SDKPlayground />} />
+    <Route path="/sdk-playground" element={<Navigate to="/api-access" replace />} />
     <Route path="/templates" element={<Navigate to="/store" replace />} />
-    <Route path="/forge" element={<AgentForgeDashboard />} />
+    <Route path="/forge" element={<Navigate to="/store" replace />} />
     <Route path="/forge/catalog" element={<Navigate to="/forge" replace />} />
     <Route path="/agency" element={<Navigate to="/" replace />} />
     <Route path="/a/:slug" element={<AgencyPortal />} />
@@ -227,26 +227,26 @@ export const publicRoutes = (
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />
     <Route path="/operatives" element={<Navigate to="/store" replace />} />
     <Route path="/operatives/:slug" element={<Navigate to="/store" replace />} />
-    <Route path="/engines" element={<Engines />} />
+    <Route path="/engines" element={<Navigate to="/store" replace />} />
     <Route path="/engines/:slug" element={<EngineDetail />} />
-    <Route path="/agents" element={<AgentsLegacy />} />
+    <Route path="/agents" element={<Navigate to="/store" replace />} />
     <Route path="/agents/:slug" element={<LegacyAgentDetail />} />
-    <Route path="/composable-cognitives" element={<ComposableCognitives />} />
+    <Route path="/composable-cognitives" element={<Navigate to="/store" replace />} />
     <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
     <Route path="/composable-cognitives/download" element={<CognitivesDownload />} />
     <Route path="/admin/cognitive-uploads" element={<AdminCognitiveUploads />} />
 
     {/* Marketing / Info */}
     <Route path="/about" element={<About />} />
-    <Route path="/solutions" element={<Solutions />} />
-    <Route path="/projects" element={<CurrentProjects />} />
+    <Route path="/solutions" element={<Navigate to="/use-cases" replace />} />
+    <Route path="/projects" element={<Navigate to="/roadmap" replace />} />
     <Route path="/roadmap" element={<Roadmap />} />
     <Route path="/roadmap/substrate" element={<VerticalSecretGate verticalId="roadmap"><SubstrateRoadmap /></VerticalSecretGate>} />
     <Route path="/docs/internal/mana-distribution" element={<VerticalSecretGate verticalId="docs-internal"><ManaDistributionDoc /></VerticalSecretGate>} />
     <Route path="/contact" element={<Contact />} />
     <Route path="/llms-txt" element={<LlmsTxt />} />
     <Route path="/humans-txt" element={<HumansTxt />} />
-    <Route path="/foundations" element={<Foundations />} />
+    <Route path="/foundations" element={<Navigate to="/architecture" replace />} />
     <Route path="/namespace" element={<Namespace />} />
     <Route path="/insights" element={<Navigate to="/" replace />} />
     <Route path="/overview" element={<Navigate to="/" replace />} />
@@ -254,7 +254,7 @@ export const publicRoutes = (
     <Route path="/library" element={<Navigate to="/" replace />} />
     <Route path="/support" element={<Support />} />
     <Route path="/explore" element={<Navigate to="/" replace />} />
-    <Route path="/promptfluid" element={<PromptFluidHome />} />
+    <Route path="/promptfluid" element={<Navigate to="/" replace />} />
     <Route path="/security" element={<VerticalSecretGate verticalId="cyber"><CyberSecurityHome /></VerticalSecretGate>} />
 
     {/* System pages */}
@@ -296,7 +296,7 @@ export const publicRoutes = (
     <Route path="/x" element={<ProprietaryEvolution />} />
     <Route path="/ascension-v2" element={<AscensionV2 />} />
     <Route path="/ascension" element={<Navigate to="/ascension-v2" replace />} />
-    <Route path="/beta" element={<Beta />} />
+    <Route path="/beta" element={<Navigate to="/ascension-v2" replace />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
     <Route path="/junkyard" element={<JunkyardPage />} />
