@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS public.brain_persona CASCADE;
+DROP TABLE IF EXISTS public.brain_persona_patterns CASCADE;
+DROP TABLE IF EXISTS public.brain_persona_state CASCADE;
+DROP TABLE IF EXISTS public.pf_brain_ml_models CASCADE;
+DROP TABLE IF EXISTS public.pf_brain_ml_predictions CASCADE;
+DROP TABLE IF EXISTS public.studio_applies CASCADE;
+DROP TABLE IF EXISTS public.studio_audit CASCADE;
+DROP TABLE IF EXISTS public.studio_connections CASCADE;
+DROP TABLE IF EXISTS public.studio_previews CASCADE;
+DROP TABLE IF EXISTS public.studio_scans CASCADE;
+DROP TABLE IF EXISTS public.studio_verifications CASCADE;
+DROP TABLE IF EXISTS public.resilience_ledger CASCADE;
