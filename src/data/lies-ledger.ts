@@ -1298,6 +1298,59 @@ export const LIES_LEDGER: Finding[] = [
       'AutoBlog is the rare case where "autonomous" is mostly true on output (posts ship) but false on infrastructure (no persistent scheduler). It runs because someone keeps a browser tab open, not because a server-side cron drives it. Real output, fake autonomy mechanism.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-070',
+    title: '"Constant Learning Mode" claims 14,400 cycles/day but ai_learning_data table is empty',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/convergence/05-memory-stream-internals.md + 05-memory-data.md §5',
+      quote:
+        '"CLM runs up to 14,400 cycles per day (one per 6 seconds at maximum)" · "Training records: ai_learning_data with CLM metadata tags" · "Throughput: Up to 14,400 calls/day"',
+    },
+    evidence: {
+      reality:
+        'ai_learning_data — the table the doc explicitly names as the CLM training-record store — contains 0 rows lifetime and 0 in the last 30 days. At the documented 14,400 cycles/day rate it should have ~432,000 rows in the last 30 days. Actual: zero.',
+      method: "SELECT count(*) FROM ai_learning_data → 0; WHERE created_at > now() - interval '30 days' → 0.",
+    },
+    verdict:
+      'CLM is the headline learning mechanism (and a claimed protected-IP serialization asset). The table that should hold its output is empty. Either CLM has never run a single cycle, or it runs but writes nothing — both readings make the "14,400 cycles/day" figure fiction.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-071',
+    title: 'Agent competency "learning" frozen — last update 54 days ago, only 102 lifetime attempts across 15 agents',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/14-autonomous-decision-authority.md (trust calibration via competency)',
+      quote:
+        'Trust scores "earned through successful outcomes"; agent_competency tracks success_rate, total_attempts, heuristics, EMA-style learning',
+    },
+    evidence: {
+      reality:
+        'agent_competency: 15 rows, SUM(total_attempts)=102 lifetime (avg <7 per agent), MAX(updated_at) is 54 days stale. agency_members.total_learning_gain SUMs to 0.0000 across all members. agency_dream_memory (improvement payloads) contains 0 rows.',
+      method: 'SELECT SUM(total_attempts) → 102; EXTRACT(day FROM now() - max(updated_at)) → 54; SUM(total_learning_gain) → 0.',
+    },
+    verdict:
+      'The "agents learn from outcomes" loop has been silent for nearly two months. A competency model with 102 total attempts and zero accumulated learning gain is not a learning system — it is a schema. Trust calibration requires data flow that stopped.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-072',
+    title: 'Brain knowledge crystallization is genuinely active — 637 crystals in 30 days, latest <1 day old',
+    severity: 'FACT',
+    source: {
+      document: 'docs/libraries/internal/05-memory-data.md (knowledge distillation) + DREAM/Memory Stream specs',
+      quote: 'Memory Stream crystallizes high-value patterns into reusable knowledge artifacts',
+    },
+    evidence: {
+      reality:
+        'brain_knowledge_crystals: 734 lifetime, 637 created in the last 30 days, max(created_at) is <1 day old. brain_events: 69,106 lifetime across 21 distinct types, 34,259 in the last 7 days. brain_reasoning_traces: 410 lifetime, 195 in the last 7 days. The Brain layer\'s observation→crystallization pipeline is producing measurable, recent output.',
+      method: 'count(*) brain_knowledge_crystals 30d → 637; brain_events 7d → 34,259; brain_reasoning_traces 7d → 195.',
+    },
+    verdict:
+      'Recorded as a fact, not a lie: when the docs say the Brain crystallizes patterns continuously, the database confirms it. This is the rare "Learning" claim that survives audit — though it lives in a different pipeline than CLM (F-070) or agent competency (F-071), neither of which back up the same narrative.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
