@@ -15,6 +15,8 @@
  */
 
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
+import { emitComponent, isEmitterLang } from './emitters';
+import { getSpec } from './emitters/spec-registry';
 import { GO_LAYER_BODIES } from './layers-go/go-layers';
 import { GO_INVENTORY_BODIES } from './layers-go/go-inventory';
 import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
@@ -3156,11 +3158,23 @@ function generateLayerForLang(layer: CmpsblLayerDefinition, lang: string): strin
     return generateHDLBridge(layer, lang, lc);
   }
 
-  // Check native registry
+  // 1) Native registry — hand-tuned idiomatic bodies always win
   const nativeGen = NATIVE_REGISTRY.get(`${layer.id}:${lang}`);
   if (nativeGen) return nativeGen();
 
-  // Structural fallback — works for any layer
+  // 2) Spec registry + emitter — render ComponentSpec into target language
+  if (isEmitterLang(lang)) {
+    const spec = getSpec(layer.id);
+    if (spec) {
+      try {
+        return emitComponent(spec, lang);
+      } catch {
+        // fall through to structural fallback on emitter failure
+      }
+    }
+  }
+
+  // 3) Structural fallback — works for any layer
   const lc = LANG_COMMENT[lang] || '//';
   return generateStructuralFallback(layer, lang, lc);
 }
