@@ -46,6 +46,9 @@ import { CAPABILITY_REGISTRY_CORE } from './layers/_capability-registry-core';
 import { KERNEL_BOOTSTRAP_CORE } from './layers/_kernel-bootstrap-core';
 import { RECEIPT_EMITTER_CORE } from './layers/_receipt-emitter-core';
 import { TELEMETRY_BUS_CORE } from './layers/_telemetry-bus-core';
+import { REPLAY_LOG_CORE } from './layers/_replay-log-core';
+import { SHADOW_EXECUTION_CORE } from './layers/_shadow-execution-core';
+import { EFFECT_TRACKER_CORE } from './layers/_effect-tracker-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -75,6 +78,9 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
   CAPABILITY_REGISTRY_CORE,
   RECEIPT_EMITTER_CORE,
   TELEMETRY_BUS_CORE,
+  REPLAY_LOG_CORE,
+  SHADOW_EXECUTION_CORE,
+  EFFECT_TRACKER_CORE,
   KERNEL_BOOTSTRAP_CORE,
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
