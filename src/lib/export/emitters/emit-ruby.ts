@@ -14,7 +14,11 @@ function rbInit(f: SpecField): string {
   return String(f.init ?? 0);
 }
 
-function rbOp(op: MethodOp): string[] {
+function resolveKey(m: SpecMethod, key: 'param'): string {
+  return m.params?.[0]?.name ?? 'key';
+}
+
+function rbOp(op: MethodOp, m: SpecMethod): string[] {
   switch (op.kind) {
     case 'get': return [`return @${op.field}`];
     case 'set': return [`@${op.field} = ${op.from}`];
@@ -23,8 +27,10 @@ function rbOp(op: MethodOp): string[] {
     case 'reset_field': return [`@${op.field} = 0`];
     case 'reset_all': return ['@__reset_all__ = true'];
     case 'clear_map': return [`@${op.field}.clear`];
-    case 'map_inc':
-      return [`@${op.field}[${op.key}] = (@${op.field}[${op.key}] || 0) + ${op.by ?? 1}`];
+    case 'map_inc': {
+      const k = resolveKey(m, op.key);
+      return [`@${op.field}[${k}] = (@${op.field}[${k}] || 0) + ${op.by ?? 1}`];
+    }
     case 'snapshot':
       return [`return { ${op.fields.map(f => `${f}: @${f}`).join(', ')} }`];
   }
@@ -33,7 +39,7 @@ function rbOp(op: MethodOp): string[] {
 function rbMethod(spec: ComponentSpec, m: SpecMethod): string {
   const params = (m.params ?? []).map(p => p.name).join(', ');
   const sig = params ? `def self.${m.name}(${params})` : `def self.${m.name}`;
-  const body = m.ops.flatMap(rbOp);
+  const body = m.ops.flatMap(o => rbOp(o, m));
   // reset_all expands to clearing every field
   if (m.ops.some(o => o.kind === 'reset_all')) {
     body.length = 0;

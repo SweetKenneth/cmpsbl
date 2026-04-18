@@ -37,7 +37,11 @@ function pascal(s: string): string {
   return s.split('_').map(p => p[0].toUpperCase() + p.slice(1)).join('');
 }
 
-function goOp(op: MethodOp, spec: ComponentSpec): string[] {
+function resolveKey(m: SpecMethod, key: 'param'): string {
+  return m.params?.[0]?.name ?? 'key';
+}
+
+function goOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
   const v = (f: string) => goVarName(f);
   switch (op.kind) {
     case 'get': return [`return ${v(op.field)}`];
@@ -50,7 +54,7 @@ function goOp(op: MethodOp, spec: ComponentSpec): string[] {
     case 'clear_map':
       return [`for k := range ${v(op.field)} { delete(${v(op.field)}, k) }`];
     case 'map_inc':
-      return [`${v(op.field)}[${op.key}] += ${op.by ?? 1}`];
+      return [`${v(op.field)}[${resolveKey(m, op.key)}] += ${op.by ?? 1}`];
     case 'snapshot': {
       const pairs = op.fields.map(f => `"${f}": ${v(f)}`).join(', ');
       return [`return map[string]interface{}{${pairs}}`];
@@ -86,7 +90,7 @@ export function emitGo(spec: ComponentSpec): string {
       lines.push(`\tcmpsbl${spec.module}Mu.Lock()`);
       lines.push(`\tdefer cmpsbl${spec.module}Mu.Unlock()`);
     }
-    for (const op of m.ops) for (const l of goOp(op, spec)) lines.push(`\t${l}`);
+    for (const op of m.ops) for (const l of goOp(op, spec, m)) lines.push(`\t${l}`);
     lines.push('}');
     lines.push('');
   }

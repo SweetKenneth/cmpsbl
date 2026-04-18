@@ -34,7 +34,11 @@ function pascal(s: string): string {
   return s.split('_').map(p => p[0].toUpperCase() + p.slice(1)).join('');
 }
 
-function rsOp(op: MethodOp, spec: ComponentSpec): string[] {
+function resolveKey(m: SpecMethod, key: 'param'): string {
+  return m.params?.[0]?.name ?? 'key';
+}
+
+function rsOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
   switch (op.kind) {
     case 'get': return [`return s.${op.field}.clone();`];
     case 'set': return [`s.${op.field} = ${op.from};`];
@@ -45,7 +49,7 @@ function rsOp(op: MethodOp, spec: ComponentSpec): string[] {
       return spec.fields.map(f => `s.${f.name} = ${rsInit(f)};`);
     case 'clear_map': return [`s.${op.field}.clear();`];
     case 'map_inc':
-      return [`*s.${op.field}.entry(${op.key}.to_string()).or_insert(0) += ${op.by ?? 1};`];
+      return [`*s.${op.field}.entry(${resolveKey(m, op.key)}.to_string()).or_insert(0) += ${op.by ?? 1};`];
     case 'snapshot': {
       const pairs = op.fields.map(f => `("${f}".to_string(), format!("{:?}", s.${f}))`).join(', ');
       return [`return vec![${pairs}].into_iter().collect::<HashMap<String,String>>();`];
