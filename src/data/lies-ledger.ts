@@ -1244,6 +1244,60 @@ export const LIES_LEDGER: Finding[] = [
       'The convergence playbook claims active monitoring for academic adversaries reverse-engineering the pipeline. No such monitor exists. "Hasn\'t happened" is true by default because nobody is looking. Academic-credibility theater paired with academic-counter-intelligence theater.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-067',
+    title: '"Autonomous Decision Authority" (ADA) has zero database persistence — entirely in-memory theater',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/14-autonomous-decision-authority.md (v1.0.0)',
+      quote:
+        '"7-Gate Pipeline... Verdict (approved/denied/deferred/escalated) with reasoning and audit hash" · "getADAuditLog(100) // Last 100 verdicts" · "trust scores" persisted per node',
+    },
+    evidence: {
+      reality:
+        'No tables in public schema match %autonomous%, %ada_%, or %decision_authority% (count = 0). The audit log, trust scores, suspensions, and verdict history live only in process memory and reset on every page reload — there is no durable record of any "autonomous decision" ever being made or audited.',
+      method: "SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND name ILIKE patterns → 0.",
+    },
+    verdict:
+      'A 7-gate enterprise-grade decision pipeline with audit hashes and trust calibration is documented at v1.0.0, but it persists nothing. Reload the tab and the entire "authority" forgets every verdict, suspension, and trust score. Audit trails that vanish on refresh are not audit trails.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-068',
+    title: '"Autonomous evolution" claim contradicted by 0 applied proposals despite 34 generated',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/05-ai-patch-evolution-pipeline.md + module status response',
+      quote:
+        'EVOLUTION described as autonomously self-patching the substrate; pf-substrate evolution.status reports total_proposals: 34',
+    },
+    evidence: {
+      reality:
+        'evolution_proposals contains 34 rows lifetime, but status=\'applied\' returns 0. Zero proposals have ever been autonomously executed. The "autonomous patching" loop generates suggestions and stops — no closure, no application, no measurable evolution.',
+      method: "SELECT count(*) FROM evolution_proposals WHERE status='applied' → 0; total → 34.",
+    },
+    verdict:
+      'EVOLUTION proposes but never patches. A self-improving substrate that has applied zero of its 34 self-generated improvements is not autonomous — it is a suggestion box nobody opens.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-069',
+    title: 'AutoBlog autonomous engine is partially real — 29 posts in 30 days, but scheduler table is empty',
+    severity: 'PARTIAL',
+    source: {
+      document: 'src/lib/autoblog/autonomous-engine.ts (cadence_minutes loop, runAutonomousCycle)',
+      quote:
+        '"Self-running, self-learning blog automation" with cadence-driven setInterval and circuit-breaker gating',
+    },
+    evidence: {
+      reality:
+        'auto_blog_posts: 103 lifetime, 29 in last 30d, 6 in last 7d, latest <1 day old → genuinely producing content. However, auto_blog_schedule contains 0 rows and agency_scheduled_tasks shows 0 active / 0 run_count, so the "autonomous schedule" is not driven by the documented scheduler table — posts arrive via the in-memory setInterval only while a tab is open.',
+      method: 'SELECT count(*) FROM auto_blog_posts WHERE created_at > now() - interval \'30 days\' → 29; auto_blog_schedule → 0; agency_scheduled_tasks active → 0.',
+    },
+    verdict:
+      'AutoBlog is the rare case where "autonomous" is mostly true on output (posts ship) but false on infrastructure (no persistent scheduler). It runs because someone keeps a browser tab open, not because a server-side cron drives it. Real output, fake autonomy mechanism.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
