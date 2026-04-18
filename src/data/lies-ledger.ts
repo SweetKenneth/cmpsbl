@@ -1917,6 +1917,40 @@ export const LIES_LEDGER: Finding[] = [
       'Module quality is high but conversation persistence is not actually happening at scale. The "conversational" claim in the academic doc is partially supported — search history persists, but the conversation thread itself does not. Recommend: either wire agent-decode-chat to insert into decode_conversations on every turn, or rename the doc capability to "Conversational interpretation (in-session) and persistent search history" so the data tells the same story as the marketing.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-105',
+    title: 'Capabilities — "400+ depot capabilities" claim overstates the depot registry by ~3x',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/website/00-INDEX.html + 01-EXECUTIVE-SUMMARY.html',
+      quote: '"400+ depot capabilities with Crown Jewel protection" / "200 synergy pipelines, 200 templates, 400+ depot capabilities, 100 engines"',
+    },
+    evidence: {
+      reality:
+        'Counted entries across all six depot registry files in src/lib/capabilities/depot/: registry.ts=20, registry-expansion.ts=36, registry-stier.ts=22, registry-ultra.ts=30, registry-premium.ts=18, registry-recursive.ts=10. Total = 136 entries — about one-third of the claimed 400+. If you ALSO count s-tier.registry.json (233 ids) plus the 12 vertical-registry files plus a-tier (6 files) plus expansion-jewels (1 file), the union approaches ~370–400 distinct items, but those are NOT all "depot" entries — depot is a specific subsystem under src/lib/capabilities/depot/. The headline number conflates the depot subsystem with the entire crown-jewel + vertical + s-tier surface area.',
+      method: 'grep -cE "id:\\s*[\\\\\'\\\"]" src/lib/capabilities/depot/registry*.ts; cat src/crownjewels/s-tier.registry.json | grep -c \\\"id\\\".',
+    },
+    verdict:
+      'Off by a factor of ~3 if you read "depot" strictly. Off by ~10% if you read it loosely as "all catalogued capabilities anywhere in the substrate". Either tighten the claim to "136+ depot capabilities (370+ across the full crown-jewel surface)" or move the non-depot registries under src/lib/capabilities/depot/ so the directory name matches the claim. The crown-jewel surface itself IS real and large — this is a labeling/scoping defect, not a fabrication.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-106',
+    title: 'Capabilities — substantial code surface (51,707 LOC across 120 files) and live persistence verified',
+    severity: 'FACT',
+    source: {
+      document: 'public/docs/website/03-KEY-CAPABILITIES.html (capability table mapping each capability to its module)',
+      quote: '"Cross-Module Synergies — CORTEX — 200 pipelines, 125 executors, 171+ deployed actions"',
+    },
+    evidence: {
+      reality:
+        'find src -ipath "*capabilit*" returns 120 files totaling 51,707 LOC — substantial. Includes 5 Crown Jewel s-tier capability primitives (#026 capability-genesis-reactor, #074 capability-gate-engine, #133 capability-impact-forecaster, #140 recursive-capability-discoverer, #222 capability-forge-engine), capability-affinity, capability-scanner-primitive, expansion-capabilities, atlas/capability-gate, public-capability-manifest, tiered-unlock, crown-jewel-gate, crown-jewel-release-gate, compound-ip-guard. Live tables: atlas_capabilities (8 rows), substrate_capabilities (10 rows), mesh_capability_recommendations (128 rows). UI surface: CapabilityCard, CapabilityCardFree, CapabilityDetailModal, CapabilityMarketplace, CapabilitiesTab, RelatedCapabilities, SubstrateCapabilities. The infrastructure is real — gate logic, IP guard, manifest, marketplace, tiered unlock all wired.',
+      method: 'find + wc -l on src/**/capabilit*; psql counts on three capability tables; ls src/crownjewels/s-tier/0[2-9]*-capability*.ts.',
+    },
+    verdict:
+      'The capability infrastructure is unambiguously real and operational — gates, registries, IP guards, marketplace UI, and three live persistence tables. The architecture supports the larger story even though the specific "400+" depot count is loose (see F-105). Among substrate subsystems audited, capabilities ranks alongside DECODE and NEXUS in real implementation depth.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
