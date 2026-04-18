@@ -58,7 +58,58 @@ func cmpsbl_${prefix}_receipt(cap string, meta map[string]interface{}) Cmpsbl_${
 func cmpsbl_${prefix}_chain_len() int { return len(_cmpsbl_${prefix}_history) }`;
 
 export const ADAPTIVE_FORGE_GO = `\n${recipe('forge', 'Adaptive Forge')}\n`;
-export const AGENCY_ORCH_GO = `\n${recipe('agorch', 'Agency Orchestration Suite')}\n`;
+export const ADVERSARIAL_WARGAME_GO = `\n${recipe('wargame', 'Adversarial Wargame')}\n`;
+export const BEHAVIORAL_BIO_GO = `\n${recipe('biom', 'Behavioral Biometrics')}\n`;
+export const COMPLIANCE_AUDIT_GO = `\n${recipe('caudit', 'Compliance Audit')}\n`;
+export const CYBER_PERIM_GO = `\n${recipe('cyperim', 'Cyber Perimeter Suite')}\n`;
+export const DATA_SOV_GO = `\n${recipe('dsov', 'Data Sovereignty Partitioner')}\n`;
+export const REPLAY_VAULT_GO = `\n${recipe('rvault', 'Deterministic Replay Vault')}\n`;
+export const EMERGENT_GW_GO = `\n${recipe('egw', 'Emergent Gateway')}\n`;
+export const HOLO_INT_GO = `\n${recipe('holint', 'Holographic Integration Suite')}\n`;
+export const HONEYPOT_GO = `\n${recipe('honey', 'Honeypot Intelligence')}\n`;
+export const LAYERED_OBS_GO = `\n${recipe('lobs', 'Layered Observability Suite')}\n`;
+export const LLM_DEFENSE_GO = `\n${recipe('llmdef', 'LLM Defense Suite')}\n`;
+export const LOCALIZATION_GO = `\n${recipe('locmesh', 'Localization Mesh')}\n`;
+export const MULTI_MODEL_GO = `\n${recipe('mmcons', 'Multi-Model Consensus')}\n`;
+export const NEURAL_BROKER_GO = `\n${recipe('nbrok', 'Neural Broker')}\n`;
+export const NOCTURNE_GO = `\n${recipe('noct', 'Nocturne Consolidation')}\n`;
+export const PRIVACY_OBF_GO = `\n${recipe('privobf', 'Privacy Obfuscation')}\n`;
+export const PROBABILISTIC_GO = `\n${recipe('probcon', 'Probabilistic Conscience')}\n`;
+export const REFLEX_ORCH_GO = `\n${recipe('rxorch', 'Reflex Orchestration')}\n`;
+export const SELF_HEAL_SCAN_GO = `\n${recipe('shscan', 'Self-Healing Scanner')}\n`;
+export const SENTINEL_EVO_GO = `\n${recipe('sentevo', 'Sentinel Evolution')}\n`;
+export const SPECTRAL_AUD_GO = `\n${recipe('spec', 'Spectral Auditor')}\n`;
+export const SYMBOLIC_CRAFT_GO = `\n${recipe('symcr', 'Symbolic Crafter')}\n`;
+export const SYNTHETIC_CONTR_GO = `\n${recipe('syncon', 'Synthetic Contracts')}\n`;
+export const TOPO_SEC_GO = `\n${recipe('toposec', 'Topological Security Suite')}\n`;
+
+export const GO_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.freeze({
+  'adaptive-forge':                ADAPTIVE_FORGE_GO,
+  'adversarial-wargame':           ADVERSARIAL_WARGAME_GO,
+  'behavioral-biometrics':         BEHAVIORAL_BIO_GO,
+  'compliance-audit':              COMPLIANCE_AUDIT_GO,
+  'cyber-perimeter-suite':         CYBER_PERIM_GO,
+  'data-sovereignty-partitioner':  DATA_SOV_GO,
+  'deterministic-replay-vault':    REPLAY_VAULT_GO,
+  'emergent-gateway':              EMERGENT_GW_GO,
+  'holographic-integration-suite': HOLO_INT_GO,
+  'honeypot-intelligence':         HONEYPOT_GO,
+  'layered-observability-suite':   LAYERED_OBS_GO,
+  'llm-defense-suite':             LLM_DEFENSE_GO,
+  'localization-mesh':             LOCALIZATION_GO,
+  'multi-model-consensus':         MULTI_MODEL_GO,
+  'neural-broker':                 NEURAL_BROKER_GO,
+  'nocturne-consolidation':        NOCTURNE_GO,
+  'privacy-obfuscation':           PRIVACY_OBF_GO,
+  'probabilistic-conscience':      PROBABILISTIC_GO,
+  'reflex-orchestration':          REFLEX_ORCH_GO,
+  'self-healing-scanner':          SELF_HEAL_SCAN_GO,
+  'sentinel-evolution':            SENTINEL_EVO_GO,
+  'spectral-auditor':              SPECTRAL_AUD_GO,
+  'symbolic-crafter':              SYMBOLIC_CRAFT_GO,
+  'synthetic-contracts':           SYNTHETIC_CONTR_GO,
+  'topological-security-suite':    TOPO_SEC_GO,
+});
 export const COMPLIANCE_AUDIT_GO = `\n${recipe('caudit', 'Compliance Audit')}\n`;
 export const CYBER_PERIM_GO = `\n${recipe('cyperim', 'Cyber Perimeter Suite')}\n`;
 export const EMERGENT_GW_GO = `\n${recipe('egw', 'Emergent Gateway')}\n`;
