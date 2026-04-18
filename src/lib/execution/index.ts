@@ -51,6 +51,26 @@ export {
   updateAgentCompetency,
 } from './verifier';
 
+// Governed Pipeline (authority-bearing layered runtime)
+export {
+  type GovernedLayerName,
+  type GovernedLayerResult,
+  type GovernedPhase,
+  type GovernedExecutionContext,
+  type GovernedLayer,
+  type GovernedPipelineOptions,
+  executeGovernedPipeline,
+  DEFENSE_LAYER,
+  GOVERNANCE_LAYER,
+  MEMORY_LAYER,
+  FORESIGHT_LAYER,
+  NEXUS_LAYER,
+  EVOLUTION_LAYER,
+  AUDIT_LAYER,
+  COMPLIANCE_LAYER,
+  DEFAULT_GOVERNED_LAYERS,
+} from './governedPipeline';
+
 // Planner
 export {
   type PlannerConfig,
