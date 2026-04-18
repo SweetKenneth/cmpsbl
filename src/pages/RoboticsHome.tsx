@@ -272,7 +272,7 @@ export default function RoboticsHome() {
                 background: "hsl(220 10% 70% / 0.06)",
                 color: "hsl(220 10% 75%)",
               }}>
-                8 AUTONOMOUS AGENTS
+                8 GOVERNED AI WORKERS
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: "hsl(0 0% 95%)" }}>
                 Autonomous <span style={{ color: "hsl(220 10% 80%)" }}>Robotics Operations</span>

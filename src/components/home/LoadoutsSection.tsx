@@ -162,7 +162,7 @@ export function LoadoutsSection() {
           <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto">
             No boilerplate. No configuration. No wiring authentication, memory, or monitoring.
             Every loadout ships with the full substrate — persistent memory, governed execution,
-            self-healing, and continuous learning — already running.
+            a self-healing pipeline (in training), and continuous learning — already running.
           </p>
         </div>
 

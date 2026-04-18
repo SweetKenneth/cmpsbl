@@ -290,7 +290,7 @@ export default function CyberSecurityHome() {
                 background: "hsl(185 100% 50% / 0.08)",
                 color: "hsl(185 100% 60%)",
               }}>
-                8 AUTONOMOUS AGENTS
+                8 GOVERNED AI WORKERS
               </Badge>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 Autonomous <span style={{ color: "hsl(185 100% 55%)" }}>Defense Operations</span>

@@ -2,6 +2,8 @@
 
 **Version:** v19.0.0 — SYMBIOTIC Epoch
 
+> ⓘ **Canonical research deposit:** [`zenodo-v19/`](zenodo-v19/00-INDEX.md) — supersedes v13.5 (April 2025). Includes terminology updates appendix.
+
 ---
 
 ## Organization
@@ -10,6 +12,7 @@ All CMPSBL documentation is organized into audience-specific libraries:
 
 | Library | Audience | Classification |
 |---------|----------|---------------|
+| [**Zenodo v19**](zenodo-v19/00-INDEX.md) | Researchers, reviewers, patent examiners (canonical public deposit) | Open · Citable |
 | [**Public**](public/00-INDEX.md) | Anyone evaluating or learning about CMPSBL | Open |
 | [**Users**](users/00-INDEX.md) | Developers building on CMPSBL, operators running the platform | Open |
 | [**Convex Core™**](convex-core/00-INDEX.md) | Researchers, developers inspecting the processing layer | Open (Zenodo) |
