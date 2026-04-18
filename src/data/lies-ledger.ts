@@ -1742,6 +1742,58 @@ export const LIES_LEDGER: Finding[] = [
       'Real, populated, and visually exposed. 1,570 mesh communications is a non-trivial amount of cross-module traffic. The "decentralized routing" claim is backed by working schema and working UI. One of the strongest claim-to-implementation matches in the v13.5 set.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-095',
+    title: 'NEXUS — claim matches reality (3,406 LOC + 193,937 real AI calls + 24 providers in production)',
+    severity: 'FACT',
+    source: {
+      document: 'public/docs/academic-v13/print/02-system-overview.html + 08-intent-mesh.html §4.2 + 14-governance-risk.html',
+      quote:
+        '"NEXUS: AI provider routing and model selection — provider failover and load balancing, cost-aware routing, latency-optimized routing. Risk mitigation: technology obsolescence — Low — Model-agnostic via NEXUS."',
+    },
+    evidence: {
+      reality:
+        'src/lib/nexus/ contains 13 modules totaling 3,406 LOC: router.ts (524), batchRouting.ts (425), costEstimation.ts (398), loadBalancer.ts (299), healthRouter.ts (295), budgetGovernance.ts (251), cache.ts (233), circuitBreaker.ts (217), index.ts (194), learning.ts (166), core.ts (154), metrics.ts (135), cost-ceiling.ts (115). Six dedicated edge functions: pf-nexus-router, pf-nexus-pricing, pf-nexus-image-gen, nexus-budget-optimizer, nexus-code-assistant, nexus-provider-discovery. Live ai_usage_log: 193,937 total calls, 42.7M tokens, $2.81 actual spend, 24 distinct providers, 22,454 calls in last 7 days. First call 2026-03-19 → most recent today. router.ts references "provider" 66 times.',
+      method: 'wc -l src/lib/nexus/*.ts; ls supabase/functions/ | grep nexus; psql aggregates on ai_usage_log.',
+    },
+    verdict:
+      'Real, production-grade, and load-bearing. Among ALL the v13.5 claims, NEXUS is the most empirically substantiated — nearly 200K real calls is hard data. The "model-agnostic" claim in the risk register is genuinely true: top providers (groq, cerebras, sambanova, together, deepseek, mistral, openrouter, gemini) span 8+ vendors. This is one of the few places the substrate is unambiguously enterprise-grade.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-096',
+    title: 'NEXUS provider count drift — runtime reports 14 providers, ai_usage_log shows 24',
+    severity: 'PARTIAL',
+    source: {
+      document: 'pf-substrate edge function nexus.status response',
+      quote: '"providers": {"total": 14, "available": 14, "healthy": 14, "routing_order": ["groq","groq-scout","groq-qwen","groq-70b","cerebras","sambanova","together","deepseek","mistral","openrouter","gemini","local"]}',
+    },
+    evidence: {
+      reality:
+        'Live ai_usage_log SELECT COUNT(DISTINCT provider) returns 24, not 14. The routing_order list omits providers that have logged real traffic: openrouter-qwen (1,705 calls), google-aistudio (1,261), openrouter-free (1,142), openrouter-deepseek-r1 (1,130), claude-haiku (575), groq-llama (575), openai-mini (575), groq-8b (473), openai (360) and several others. Either these were registered ad-hoc outside the canonical router list, or the runtime registry is stale.',
+      method: 'Compare pf-substrate nexus.status routing_order vs psql SELECT DISTINCT provider FROM ai_usage_log.',
+    },
+    verdict:
+      'Not a fabrication — both numbers are real measurements — but the system is reporting an undercount of its own surface area. Investor-facing "14 providers" understates the actual fleet by ~70%. Either expand the canonical routing_order to include the other 10 providers seen in production, or prune the orphan providers if they are unauthorized one-offs.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-097',
+    title: 'NEXUS success_rate displays 100% in runtime status while ai_usage_log shows 20.7%',
+    severity: 'PARTIAL',
+    source: {
+      document: 'pf-substrate edge function nexus.status response',
+      quote: '"analytics": {"total_calls": 0, "success_rate": 100, "total_tokens": 0, "total_cost_usd": 0}',
+    },
+    evidence: {
+      reality:
+        'pf-substrate nexus.status returns success_rate=100 because total_calls=0 (default-on-empty). But the actual ai_usage_log table holds 193,937 calls of which only 20.74% have success=true. The "100%" is therefore a placeholder shown when the live counter is zero — it is not measuring anything. A reviewer glancing at the response would believe NEXUS has a perfect success rate when in fact ~80% of historical calls are flagged unsuccessful.',
+      method: 'pf-substrate nexus.status network response vs psql -c "SELECT COUNT(*) FILTER (WHERE success=true)*100.0/COUNT(*) FROM ai_usage_log".',
+    },
+    verdict:
+      'The 100% is technically a divide-by-zero default, not a lie — but it displays in the same panel that investors and operators read. Either backfill the analytics counter from ai_usage_log so the displayed number reflects reality, or render "n/a" when the live window is empty so no one mistakes the placeholder for a real metric. The 20.74% historical success rate itself deserves separate investigation — that is a real reliability signal being hidden.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
