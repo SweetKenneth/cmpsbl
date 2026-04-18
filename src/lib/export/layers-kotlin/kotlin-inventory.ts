@@ -35,7 +35,7 @@ object ${obj} {
     fun chainLen(): Int = synchronized(lock) { history.size }
 }`;
 
-private val NOCTURNE_KT = """${HEADER('Nocturne Consolidation')}
+const NOCTURNE_KT = `${HEADER('Nocturne Consolidation')}
 object Nocturne {
     private val mem = java.util.concurrent.ConcurrentHashMap<String, Double>()
     private const val DECAY = 0.92
@@ -54,9 +54,9 @@ object Nocturne {
         return mem.size to pruned
     }
     fun weight(cap: String): Double = mem[cap] ?: 0.0
-}""".trimIndent()
+}`;
 
-private val REPLAY_VAULT_KT = """${HEADER('Deterministic Replay Vault')}
+const REPLAY_VAULT_KT = `${HEADER('Deterministic Replay Vault')}
 object ReplayVault {
     data class Capsule(val id: String, val ts: Long, val cap: String, val input: String, val output: String, val seed: String)
     private val vault = mutableListOf<Capsule>()
@@ -68,7 +68,7 @@ object ReplayVault {
     }
     fun seal(cap: String, input: String, output: String): String = synchronized(lock) {
         val ts = System.currentTimeMillis()
-        val seed = fnv1a("$cap:$ts:$input")
+        val seed = fnv1a("\$cap:\$ts:\$input")
         val id = "rep_" + seed
         vault.add(Capsule(id, ts, cap, input, output, seed))
         if (vault.size > 4096) vault.removeAt(0)
@@ -76,7 +76,7 @@ object ReplayVault {
     }
     fun get(id: String): Capsule? = synchronized(lock) { vault.find { it.id == id } }
     fun count(): Int = synchronized(lock) { vault.size }
-}""".trimIndent()
+}`;
 
 export const KOTLIN_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.freeze({
   'adaptive-forge':                recipe('AdaptiveForge', 'Adaptive Forge'),
