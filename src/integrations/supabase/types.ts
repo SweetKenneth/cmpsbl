@@ -3121,6 +3121,7 @@ export type Database = {
           created_at: string
           embedding: string | null
           id: string
+          metadata: Json
           model_version: string
           updated_at: string
         }
@@ -3131,6 +3132,7 @@ export type Database = {
           created_at?: string
           embedding?: string | null
           id?: string
+          metadata?: Json
           model_version?: string
           updated_at?: string
         }
@@ -3141,6 +3143,7 @@ export type Database = {
           created_at?: string
           embedding?: string | null
           id?: string
+          metadata?: Json
           model_version?: string
           updated_at?: string
         }
