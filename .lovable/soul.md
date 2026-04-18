@@ -63,8 +63,9 @@ These rules are absolute. No exceptions. No "just this once." No optimization ju
 | **Primitive Matrix** | Module Registry |
 
 ### 3a. Cohesion Anchor — Subsystem Truth
-The substrate's 264-table surface is classified in
-`docs/libraries/internal/24-substrate-cohesion-audit.md`.
+The substrate's **432-table** surface is classified in
+`docs/libraries/internal/24-substrate-cohesion-audit.md` —
+auto-generated registry mapping every prefix → owner subsystem → status.
 Read it before re-litigating "is X a subsystem?" or "who owns Y?"
 
 **Standalone subsystems (peers to primitives, not owned by any):**
@@ -76,13 +77,20 @@ Ascension collision = Patent #1 (64/029,678) ·
 Mana attachment/deploy governed by LEX = Patent #2 (64/031,637) ·
 both converge in the V2 export pipeline
 
-**Slated for removal (theater):**
-module_registry · integrity_findings · studio_* · resilience_ledger ·
-restoration_sessions · brain_persona* · brain_curiosity* ·
-pf_brain_ml_* · pf_threat_*
+**Removed in Phase 2 sweep (Apr 2026):**
+brain_persona* · pf_brain_ml_* · studio_* · resilience_ledger
+(12 tables dropped, all empty or 2 rows of historical noise)
+
+**Still slated for removal (need code-removal pass first):**
+module_registry · integrity_findings · restoration_sessions ·
+brain_curiosity* · pf_threat_statistics · cascade_*
 
 **Slated for migration:**
-learning_* → BRAIN edges/crystals · mutation_* → EVOLUTION
+learning_* → BRAIN edges/crystals · mutation_* → EVOLUTION ·
+modernizer_* → evolution_* · mesh_* → layer_* · node_* → primitive_*
+
+**Needs founder classification (❓ in registry):**
+developer_* · ripple_* · global_* · forge_*
 
 ### 4. Data Integrity
 - **Real data only.** No mock data. No hardcoded metrics. No simulated flows.
