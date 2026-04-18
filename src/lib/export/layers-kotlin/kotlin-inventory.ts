@@ -85,7 +85,7 @@ export const KOTLIN_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.
   'compliance-audit':              recipe('ComplianceAudit', 'Compliance Audit'),
   'cyber-perimeter-suite':         recipe('CyberPerim', 'Cyber Perimeter Suite'),
   'data-sovereignty-partitioner':  recipe('DataSov', 'Data Sovereignty Partitioner'),
-  'deterministic-replay-vault':    recipe('ReplayVault', 'Deterministic Replay Vault'),
+  'deterministic-replay-vault':    REPLAY_VAULT_KT,
   'emergent-gateway':              recipe('EmergentGw', 'Emergent Gateway'),
   'holographic-integration-suite': recipe('HoloInt', 'Holographic Integration Suite'),
   'honeypot-intelligence':         recipe('Honeypot', 'Honeypot Intelligence'),
