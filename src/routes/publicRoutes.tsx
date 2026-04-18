@@ -33,6 +33,7 @@ const ProofMode = lazy(() => import("@/pages/ProofMode"));
 const STierDemos = lazy(() => import("@/pages/STierDemos"));
 const Publication = lazy(() => import("@/pages/Publication"));
 const Documentation = lazy(() => import("@/pages/Documentation"));
+const Lies = lazy(() => import("@/pages/Lies"));
 const IntentMeshPublic = lazy(() => import("@/pages/IntentMeshPublic"));
 const Changelog = lazy(() => import("@/pages/Changelog"));
 const CodeLab = lazy(() => import("@/pages/CodeLab"));
@@ -141,6 +142,7 @@ export const publicRoutes = (
   <>
     {/* Core Public Pages */}
     <Route path="/" element={<DomainAwareHome />} />
+    <Route path="/lies" element={<Lies />} />
     <Route path="/verify/:fingerprint" element={<VerifyFingerprint />} />
     <Route path="/marketplace" element={<MarketplaceHome />} />
     <Route path="/software-symbiosis" element={<SoftwareSymbiosis />} />
