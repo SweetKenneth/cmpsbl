@@ -1951,6 +1951,40 @@ export const LIES_LEDGER: Finding[] = [
       'The capability infrastructure is unambiguously real and operational — gates, registries, IP guards, marketplace UI, and three live persistence tables. The architecture supports the larger story even though the specific "400+" depot count is loose (see F-105). Among substrate subsystems audited, capabilities ranks alongside DECODE and NEXUS in real implementation depth.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-107',
+    title: 'Terminal Commands — total count is real and EXCEEDS the 500+ headline (966 actual command objects, 12,603 LOC)',
+    severity: 'FACT',
+    source: {
+      document: 'public/docs/website/14-VALUATION-ANALYSIS.html + src/components/substrate-os/terminal/TerminalCommands.ts header',
+      quote: '"Terminal Commands — 500+ commands — Operational interface IP; ~$200K"',
+    },
+    evidence: {
+      reality:
+        'src/components/substrate-os/terminal/TerminalCommands.ts (1,461 LOC) declares exactly 966 `{ command: \'…\', description, category, icon, requiresOperator, requiredTier }` objects in a single typed registry — nearly 2x the 500+ claim. Categories span 47 distinct namespaces (brain, decode, defense, nexus, vision, dream, evolution, cortex, atlas, sovereign, oracle, conscience, treaty, compass, echo, reflex, forge, lingua, phantom, harvest, medic, nerve, …). Total terminal infrastructure: 12,603 LOC across 25+ files including TerminalExecutor, TerminalBootScreen, TerminalMobileRenderer, plus 19 dedicated handler modules (analytics, core, encode, encoded, execution, expansion, governance, hardening, infra, infra-module, mesh, observability, ocg, power, seba, spine, synergy, system-audit, verification). Crown Jewel #098: terminal-command-parser. Plus useTerminalAliases, useTerminalAudit, useTerminalHistory, useTerminalMacros, useTerminalNLP, useTerminalScheduler, useTerminalVisuals, useTerminalWatch — eight dedicated hooks.',
+      method: 'grep -cE "^\\s*\\{\\s*command:\\s*[\\\\\'\\\"]" src/components/substrate-os/terminal/TerminalCommands.ts.',
+    },
+    verdict:
+      'Among the most under-claimed numbers in the substrate. 966 commands vs "500+" advertised — reality is nearly DOUBLE the headline. The valuation doc pegs Terminal Commands at ~$200K of IP based on 500+; if pricing scales with surface area, the real figure is closer to ~$385K. The infrastructure is unambiguously real and large.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-108',
+    title: 'Terminal Commands — "12 terminal commands" for free tier is off by 54× (reality: 653 free-tier commands)',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/website/13-INVESTOR-OVERVIEW.html',
+      quote: '"Every user gets persistent memory, Memory Stream access, rare agent discovery, 12 terminal commands, SDK templates, and full module telemetry at $0."',
+    },
+    evidence: {
+      reality:
+        'grep -E "requiredTier:\\s*\'free\'" src/components/substrate-os/terminal/TerminalCommands.ts returns 653 matches. The free tier in the canonical TerminalCommands registry actually exposes 653 of the 966 total commands — about 67.6%. The "12 terminal commands" claim in 13-INVESTOR-OVERVIEW.html is off by a factor of ~54x in the under-promising direction. Also note the same investor page elsewhere says "Terminal Commands: 66+ across 5 tiers" — that 66 figure matches src/lib/terminal/tiered-commands.ts (which has exactly 66 entries), suggesting two different count systems coexist: the tiered-commands.ts subset (66) and the full TerminalCommands.ts registry (966).',
+      method: 'grep -E "requiredTier:\\s*\'free\'" src/components/substrate-os/terminal/TerminalCommands.ts | wc -l; wc -l src/lib/terminal/tiered-commands.ts.',
+    },
+    verdict:
+      'Same module, three contradictory numbers in the public docs (12, 66+, 500+) and a real number that is none of them (653 free / 966 total). Recommend a single canonical claim updated to reality: "966 terminal commands across 47 categories and 5 tiers (653 available on the free tier)". The current investor copy massively undersells the free-tier offering — a free user gets ~14% of the substrate by command count for $0, not 12 commands. This is a pricing/marketing self-inflicted wound.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
