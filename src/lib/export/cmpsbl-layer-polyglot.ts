@@ -27,6 +27,12 @@ import { SWIFT_LAYER_BODIES } from './layers-swift/swift-layers';
 import { SWIFT_INVENTORY_BODIES } from './layers-swift/swift-inventory';
 import { KOTLIN_LAYER_BODIES } from './layers-kotlin/kotlin-layers';
 import { KOTLIN_INVENTORY_BODIES } from './layers-kotlin/kotlin-inventory';
+import { RS_KERNEL_BODIES } from './layers-rs/rs-kernel';
+import { GO_KERNEL_BODIES } from './layers-go/go-kernel';
+import { JAVA_KERNEL_BODIES } from './layers-java/java-kernel';
+import { CSHARP_KERNEL_BODIES } from './layers-csharp/csharp-kernel';
+import { SWIFT_KERNEL_BODIES } from './layers-swift/swift-kernel';
+import { KOTLIN_KERNEL_BODIES } from './layers-kotlin/kotlin-kernel';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -131,6 +137,24 @@ _registerJavaLayerBodies();
 _registerCsharpLayerBodies();
 _registerSwiftLayerBodies();
 _registerKotlinLayerBodies();
+
+// ── Tier 1 Kernel Bodies (kernel-clock, capability-registry, kernel-bootstrap)
+function _registerKernelBodies(): void {
+  const tables: Array<[string, Readonly<Record<string, string>>]> = [
+    ['rust', RS_KERNEL_BODIES],
+    ['go', GO_KERNEL_BODIES],
+    ['java', JAVA_KERNEL_BODIES],
+    ['csharp', CSHARP_KERNEL_BODIES],
+    ['swift', SWIFT_KERNEL_BODIES],
+    ['kotlin', KOTLIN_KERNEL_BODIES],
+  ];
+  for (const [lang, table] of tables) {
+    for (const [layerId, body] of Object.entries(table)) {
+      NATIVE_REGISTRY.set(`${layerId}:${lang}`, () => body.trim());
+    }
+  }
+}
+_registerKernelBodies();
 
 // ── Circuit Breaker native implementations ──────────────────────────────────
 
