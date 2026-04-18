@@ -38,6 +38,7 @@ import { DEGRADATION_CORE } from './layers/_degradation-core';
 import { BEACON_CORE } from './layers/_beacon-core';
 import { DEBUG_MODE_CORE } from './layers/_debug-mode-core';
 import { STATE_STORE_CORE } from './layers/_state-store-core';
+import { CONTRACT_VALIDATOR_CORE } from './layers/_contract-validator-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -60,6 +61,7 @@ import { STATE_STORE_CORE } from './layers/_state-store-core';
 // When OFF, they degrade to no-op shims — exports stay byte-compatible.
 export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
   STATE_STORE_CORE,
+  CONTRACT_VALIDATOR_CORE,
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
   RETRY_CORE,
