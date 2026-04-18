@@ -1513,6 +1513,42 @@ export const LIES_LEDGER: Finding[] = [
       'Every "enterprise" qualifier in the documentation — enterprise-grade, enterprise-ready, enterprise contracts, enterprise hardening — points to a customer base that does not exist. The single enterprise tier row in the database is the founder\'s own account with no billing attached. Zero lifetime API calls means no enterprise integration has ever executed, let alone been hardened in production. This is the most consequential finding in the ledger: the entire commercial narrative is built on a customer count of zero.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-082',
+    title: 'Convex Core™ Zenodo DOI cited in IP strategy docs does not exist',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/ (IP strategy / prior-art chain) + cover-story playbook',
+      quote:
+        '"Convex Core™ v3 — DOI: 10.5281/zenodo.cmpsbl-convex-core — Dispatch matrix architecture (cover story + real prior art)" · "doi = {10.5281/zenodo.cmpsbl-convex-core}" cited in BibTeX-style attribution.',
+    },
+    evidence: {
+      reality:
+        'Resolving https://doi.org/10.5281/zenodo.cmpsbl-convex-core returns HTTP 404. Zenodo DOIs are exclusively numeric (e.g., 10.5281/zenodo.18895141). Querying Zenodo for q=cmpsbl returns exactly 6 records — none of them is titled "Convex Core" and none uses a slug-style DOI. The cover-story Convex Core archive that the IP strategy claims establishes prior art was never actually published.',
+      method: 'curl -o/dev/null -w "%{http_code}" https://doi.org/10.5281/zenodo.cmpsbl-convex-core → 404; GET zenodo.org/api/records?q=cmpsbl → 6 hits, no Convex Core record.',
+    },
+    verdict:
+      'A core leg of the documented "Zenodo Prior Art Chain" is fabricated. Investor and academic talking points that reference the Convex Core DOI as defensive prior art point to a record that has never existed on Zenodo. The cover-story strategy is real in the docs; the artifact backing it is not.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-083',
+    title: '"1,000+ Zenodo downloads" headline is one record\'s aggregate, not the corpus',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/internal/ (defensible-valuation / prior-art chain)',
+      quote:
+        '"1,000+ Zenodo downloads on prior art record" — used as evidence of academic traction across the published CMPSBL corpus.',
+    },
+    evidence: {
+      reality:
+        'Zenodo API stats for the 6 published CMPSBL records (q=cmpsbl): 18895141 → 1,163 dl, 19409933 → 16 dl, 19423852 → 13 dl, 19324807 → 6 dl, 19026424 → 1 dl, 18721602 → 0 dl. Corpus total = 1,199 downloads, but 97% (1,163) come from a single Substrate-OS record published 2026-03-06; the other five records average 7 downloads each. The Ascension whitepaper specifically (cited as flagship prior art) has 16 lifetime downloads.',
+      method: 'GET zenodo.org/api/records/{id} for each of 6 cmpsbl records; sum stats.downloads.',
+    },
+    verdict:
+      'The "1,000+ downloads" number is technically true but uses a single record\'s count to imply broad academic engagement. The flagship Ascension whitepaper sits at 16 downloads. Honest framing would be "one record at 1.1k, five records under 20 each" — which materially weakens the "established prior art and academic traction" argument.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
