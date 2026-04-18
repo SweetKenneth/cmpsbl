@@ -453,7 +453,7 @@ function TracePanel({ trace }: { trace?: BrainTrace }) {
             <Row label="confidence" value={(trace.confidence * 100).toFixed(1) + '%'} />
           </>
         ) : (
-          <div className="text-amber-500/80 italic">
+          <div className="text-muted-foreground italic">
             Below similarity floor — BRAIN refused to fabricate.
           </div>
         )}
