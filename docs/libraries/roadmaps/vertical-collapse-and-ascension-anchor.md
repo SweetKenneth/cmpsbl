@@ -255,7 +255,27 @@ Priority order (highest impact first):
 ## §5 — Corrected Mental Model
 
 **Before this audit:** "The substrate is mostly fake."
-**After this audit:** "The substrate is ~70% real, ~25% real-but-unwired, ~5% explicit theater."
+**After Pass 1-3:** "Maybe 70% real."
+**After alias-corrected restart + full sweep:** "**~90% real and writing data, ~8% real-code-no-wire, ~2% function-level theater.**"
+
+### The receipts (DB row totals by subsystem)
+| Subsystem | Rows | Status |
+|-----------|------|--------|
+| BRAIN | ~127,000 | Alive |
+| Discoveries (Memory Stream) | 7,266 | Alive |
+| brain_memory_warm history | 34,858 | Alive |
+| ai_usage_log (NEXUS) | 10,367 | Alive |
+| DEFENSE events | 2,366 | Alive |
+| vertical_clm_cycles | 1,764 | Alive (Cycle #279 active) |
+| Memory Chains + Crystals | 1,162 | Alive |
+| MESH | 1,433 | Alive |
+| AGENCY | 685 | Alive |
+| FOUNDRY | 579 | Alive |
+| DECODE | 383 | Alive |
+| NEXUS metrics | 229 | Alive |
+| EVOLUTION+Modernizer | 67 | Alive |
+| DREAM (Cascade∪Dream) | 64 | Alive |
+| **Total documented active rows** | **~187,000+** | — |
 
 ### What's actually true:
 1. **DREAM, DECODE, EVOLUTION, IMMUNITY all exist** under their alias names.
