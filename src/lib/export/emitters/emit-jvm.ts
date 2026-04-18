@@ -45,6 +45,36 @@ function javaOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `m.put("${f}", ${f});`).join(' ');
       return [`java.util.Map<String,Object> m = new java.util.HashMap<>(); ${pairs} return m;`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `java.util.regex.Pattern __pat = java.util.regex.Pattern.compile("(?i)(api[_-]?key|secret|password|token|bearer\\\\s+[\\\\w.-]+|sk-[\\\\w-]{16,})");`,
+        `java.util.function.Function<Object, Object>[] __ref = new java.util.function.Function[1];`,
+        `__ref[0] = (Object v) -> {`,
+        `    if (v instanceof java.util.Map) { java.util.Map<Object,Object> mm = (java.util.Map<Object,Object>) v; java.util.Map<Object,Object> out = new java.util.HashMap<>(); for (java.util.Map.Entry<Object,Object> e : mm.entrySet()) { String ks = String.valueOf(e.getKey()); out.put(e.getKey(), (ks.startsWith("_cmpsbl_") || ks.startsWith("__cmpsbl_")) ? e.getValue() : __ref[0].apply(e.getValue())); } return out; }`,
+        `    if (v instanceof java.util.List) { java.util.List<Object> ll = (java.util.List<Object>) v; java.util.List<Object> out = new java.util.ArrayList<>(); for (Object x : ll) out.add(__ref[0].apply(x)); return out; }`,
+        `    if (v instanceof String) return __pat.matcher((String) v).replaceAll("[REDACTED]");`,
+        `    return v;`,
+        `};`,
+        `return __ref[0].apply(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `java.util.function.Function<Object, Object>[] __ref = new java.util.function.Function[1];`,
+        `__ref[0] = (Object v) -> {`,
+        `    if (v instanceof java.util.Map) { java.util.Map<Object,Object> mm = (java.util.Map<Object,Object>) v; java.util.Map<Object,Object> out = new java.util.HashMap<>(); for (java.util.Map.Entry<Object,Object> e : mm.entrySet()) { String ks = String.valueOf(e.getKey()); if (ks.startsWith("_cmpsbl_") || ks.startsWith("__cmpsbl_")) continue; out.put(e.getKey(), __ref[0].apply(e.getValue())); } return out; }`,
+        `    if (v instanceof java.util.List) { java.util.List<Object> ll = (java.util.List<Object>) v; java.util.List<Object> out = new java.util.ArrayList<>(); for (Object x : ll) out.add(__ref[0].apply(x)); return out; }`,
+        `    return v;`,
+        `};`,
+        `return __ref[0].apply(${p});`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.add(String.valueOf(${p}));`];
+    }
   }
 }
 function javaRet(m: SpecMethod, spec: ComponentSpec): string {

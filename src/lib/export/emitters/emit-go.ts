@@ -59,6 +59,59 @@ function goOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `"${f}": ${v(f)}`).join(', ');
       return [`return map[string]interface{}{${pairs}}`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `// Recursive sanitize over interface{} trees (maps, slices, strings).`,
+        `var __pat = regexp.MustCompile(\`(?i)(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})\`)`,
+        `var __walk func(interface{}) interface{}`,
+        `__walk = func(v interface{}) interface{} {`,
+        `\tswitch x := v.(type) {`,
+        `\tcase map[string]interface{}:`,
+        `\t\tout := map[string]interface{}{}`,
+        `\t\tfor k, vv := range x {`,
+        `\t\t\tif strings.HasPrefix(k, "_cmpsbl_") || strings.HasPrefix(k, "__cmpsbl_") { out[k] = vv } else { out[k] = __walk(vv) }`,
+        `\t\t}`,
+        `\t\treturn out`,
+        `\tcase []interface{}:`,
+        `\t\tout := make([]interface{}, len(x))`,
+        `\t\tfor i, e := range x { out[i] = __walk(e) }`,
+        `\t\treturn out`,
+        `\tcase string:`,
+        `\t\treturn __pat.ReplaceAllString(x, "[REDACTED]")`,
+        `\t}`,
+        `\treturn v`,
+        `}`,
+        `return __walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `var __strip func(interface{}) interface{}`,
+        `__strip = func(v interface{}) interface{} {`,
+        `\tswitch x := v.(type) {`,
+        `\tcase map[string]interface{}:`,
+        `\t\tout := map[string]interface{}{}`,
+        `\t\tfor k, vv := range x {`,
+        `\t\t\tif strings.HasPrefix(k, "_cmpsbl_") || strings.HasPrefix(k, "__cmpsbl_") { continue }`,
+        `\t\t\tout[k] = __strip(vv)`,
+        `\t\t}`,
+        `\t\treturn out`,
+        `\tcase []interface{}:`,
+        `\t\tout := make([]interface{}, len(x))`,
+        `\t\tfor i, e := range x { out[i] = __strip(e) }`,
+        `\t\treturn out`,
+        `\t}`,
+        `\treturn v`,
+        `}`,
+        `return __strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${v(op.field)} = append(${v(op.field)}, ${p})`];
+    }
   }
 }
 
