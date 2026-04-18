@@ -1,12 +1,14 @@
 // brain-embedding-backfill
-// Populates the unified brain_embeddings table (vector(384), MiniLM-L6-v2) with embeddings for:
+// Populates the unified brain_embeddings table (vector(1536), OpenAI text-embedding-3-small) for:
 //   - brain_knowledge_crystals (artifact_type='crystal')
 //   - brain_reasoning_traces   (artifact_type='trace')
 //   - brain_memory_warm        (artifact_type='memory_warm')
-//   - brain_memory_cold        (artifact_type='memory_cold')  ← needs CHECK update or remap to memory_warm
+//   - brain_memory_cold        (artifact_type='memory_warm', remapped due to CHECK constraint)
 //   - brain_transfer_heuristics (artifact_type='heuristic')
 //
-// Embeddings are produced via the Lovable AI Gateway (text-embedding model).
+// Embeddings are produced by OpenAI directly (text-embedding-3-small, native 1536-d).
+// Lovable AI gateway no longer supports embedding models — calling OpenAI satisfies the
+// "no Lovable AI for substrate" rule.
 // Resumable: skips rows that already have an entry in brain_embeddings for the same artifact_id+type.
 //
 // POST body: { source?: 'crystals'|'traces'|'memory_warm'|'memory_cold'|'heuristics'|'all', limit?: number }
@@ -22,11 +24,10 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const LOVABLE_KEY = Deno.env.get("LOVABLE_API_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
 
-// MiniLM-L6-v2 is 384-dim; the brain_embeddings table is fixed at vector(384).
-// We use the Lovable AI gateway's embedding endpoint and project to 384 if necessary.
-const EMBED_MODEL = "google/text-embedding-004"; // 768-dim → we mean-pool down to 384
+// Native 1536-dim. brain_embeddings is now vector(1536) — no pooling needed.
+const EMBED_MODEL = "text-embedding-3-small";
 
 type SourceConfig = {
   table: string;
@@ -44,13 +45,13 @@ const SOURCES: Record<string, SourceConfig> = {
 };
 
 async function embed(text: string): Promise<number[] | null> {
-  // Truncate aggressively — embeddings degrade past ~8K chars and gateway has limits.
-  const input = text.slice(0, 6000);
+  // OpenAI text-embedding-3-small handles up to ~8K tokens; truncate generously.
+  const input = text.slice(0, 8000);
   try {
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+    const res = await fetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${LOVABLE_KEY}`,
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ model: EMBED_MODEL, input }),
@@ -61,18 +62,11 @@ async function embed(text: string): Promise<number[] | null> {
     }
     const data = await res.json();
     const vec: number[] = data?.data?.[0]?.embedding;
-    if (!Array.isArray(vec)) return null;
-
-    // Project 768 → 384 by averaging adjacent pairs (deterministic, preserves cosine geometry well).
-    if (vec.length === 384) return vec;
-    if (vec.length === 768) {
-      const out = new Array(384);
-      for (let i = 0; i < 384; i++) out[i] = (vec[2 * i] + vec[2 * i + 1]) / 2;
-      return out;
+    if (!Array.isArray(vec) || vec.length !== 1536) {
+      console.error(`[embed] unexpected vector length: ${vec?.length}`);
+      return null;
     }
-    // Truncate or pad as a last resort.
-    if (vec.length > 384) return vec.slice(0, 384);
-    return [...vec, ...new Array(384 - vec.length).fill(0)];
+    return vec;
   } catch (e) {
     console.error("[embed] exception", e);
     return null;
@@ -123,7 +117,7 @@ async function backfillSource(
       artifact_type: cfg.artifact_type,
       artifact_content: content.slice(0, 4000),
       embedding: vec as any,
-      model_version: "lovable-text-embedding-004-pooled-384",
+      model_version: "openai-text-embedding-3-small-1536",
     });
     if (insErr) {
       console.error(`[${sourceKey}] insert error for ${id}`, insErr.message);

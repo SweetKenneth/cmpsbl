@@ -16,18 +16,19 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const LOVABLE_KEY = Deno.env.get("LOVABLE_API_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
 
-const EMBED_MODEL = "google/text-embedding-004";
+// Native 1536-dim OpenAI embedding. brain_embeddings is vector(1536) — no pooling.
+const EMBED_MODEL = "text-embedding-3-small";
 // Above this similarity, DECODE can answer locally (cited) without an LLM completion.
 const LOCAL_ANSWER_THRESHOLD = 0.82;
 
 async function embed(text: string): Promise<number[] | null> {
-  const input = text.slice(0, 4000);
+  const input = text.slice(0, 8000);
   try {
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+    const res = await fetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
-      headers: { "Authorization": `Bearer ${LOVABLE_KEY}`, "Content-Type": "application/json" },
+      headers: { "Authorization": `Bearer ${OPENAI_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: EMBED_MODEL, input }),
     });
     if (!res.ok) {
@@ -36,14 +37,11 @@ async function embed(text: string): Promise<number[] | null> {
     }
     const data = await res.json();
     const vec: number[] = data?.data?.[0]?.embedding;
-    if (!Array.isArray(vec)) return null;
-    if (vec.length === 384) return vec;
-    if (vec.length === 768) {
-      const out = new Array(384);
-      for (let i = 0; i < 384; i++) out[i] = (vec[2 * i] + vec[2 * i + 1]) / 2;
-      return out;
+    if (!Array.isArray(vec) || vec.length !== 1536) {
+      console.error(`[embed] unexpected vector length: ${vec?.length}`);
+      return null;
     }
-    return vec.length > 384 ? vec.slice(0, 384) : [...vec, ...new Array(384 - vec.length).fill(0)];
+    return vec;
   } catch (e) {
     console.error("[embed] exception", e);
     return null;
