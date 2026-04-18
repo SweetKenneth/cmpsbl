@@ -1,12 +1,14 @@
 // brain-embedding-backfill
-// Populates the unified brain_embeddings table (vector(384), MiniLM-L6-v2) with embeddings for:
+// Populates the unified brain_embeddings table (vector(1536), OpenAI text-embedding-3-small) for:
 //   - brain_knowledge_crystals (artifact_type='crystal')
 //   - brain_reasoning_traces   (artifact_type='trace')
 //   - brain_memory_warm        (artifact_type='memory_warm')
-//   - brain_memory_cold        (artifact_type='memory_cold')  ← needs CHECK update or remap to memory_warm
+//   - brain_memory_cold        (artifact_type='memory_warm', remapped due to CHECK constraint)
 //   - brain_transfer_heuristics (artifact_type='heuristic')
 //
-// Embeddings are produced via the Lovable AI Gateway (text-embedding model).
+// Embeddings are produced by OpenAI directly (text-embedding-3-small, native 1536-d).
+// Lovable AI gateway no longer supports embedding models — calling OpenAI satisfies the
+// "no Lovable AI for substrate" rule.
 // Resumable: skips rows that already have an entry in brain_embeddings for the same artifact_id+type.
 //
 // POST body: { source?: 'crystals'|'traces'|'memory_warm'|'memory_cold'|'heuristics'|'all', limit?: number }
@@ -22,11 +24,10 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const LOVABLE_KEY = Deno.env.get("LOVABLE_API_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
 
-// MiniLM-L6-v2 is 384-dim; the brain_embeddings table is fixed at vector(384).
-// We use the Lovable AI gateway's embedding endpoint and project to 384 if necessary.
-const EMBED_MODEL = "google/text-embedding-004"; // 768-dim → we mean-pool down to 384
+// Native 1536-dim. brain_embeddings is now vector(1536) — no pooling needed.
+const EMBED_MODEL = "text-embedding-3-small";
 
 type SourceConfig = {
   table: string;
