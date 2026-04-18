@@ -191,7 +191,7 @@ export default function MediaHome() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6">
             <div className="text-center mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold mb-3" style={{ color: TEXT_PRIMARY }}>Intelligence Agents</h2>
-              <p className="text-sm" style={{ color: TEXT_SECONDARY }}>8 autonomous agents governing content quality, distribution, and measurement</p>
+              <p className="text-sm" style={{ color: TEXT_SECONDARY }}>8 policy-governed AI workers governing content quality, distribution, and measurement</p>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               {AGENT_DATA.map((agent, i) => (

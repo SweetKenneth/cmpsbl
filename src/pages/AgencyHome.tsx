@@ -1,5 +1,5 @@
 /**
- * CMPSBL AGENCY™ — Autonomous Agent Infrastructure Landing Page
+ * CMPSBL AGENCY™ — Governed AI Worker Infrastructure Landing Page
  *
  * Warm amber/gold theme. Mission-control aesthetic.
  * Distinct visual identity for agency.cmpsbl.com.

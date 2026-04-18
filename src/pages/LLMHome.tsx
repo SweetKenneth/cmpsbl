@@ -230,7 +230,7 @@ export default function LLMHome() {
               LLM Agents
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              8 autonomous agents purpose-built for LLM security, alignment, and reliability
+              8 policy-governed AI workers purpose-built for LLM security, alignment, and reliability
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {AGENT_DATA.map((a, i) => (

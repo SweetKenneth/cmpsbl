@@ -398,7 +398,7 @@ function MerchantInfoSection() {
             How the Marketplace Works
           </h2>
           <p className="text-muted-foreground mb-8">
-            MERCHANT™ is an autonomous agent that scans all CMPSBL substrates every 8 hours,
+            MERCHANT™ is a policy-governed AI worker that scans all CMPSBL substrates every 8 hours,
             identifying the highest-quality software from S-Tier vaults, A-Tier vaults,
             and Memory Stream discoveries. Only software scoring CJPI 75+ qualifies.
             Pricing is set by the ECONOMY engine for maximum accessibility.
@@ -650,7 +650,7 @@ function SubstratePill({ active, onClick, label, count }: {
 function getCategoryDescription(category: ListingCategory): string {
   const descriptions: Record<ListingCategory, string> = {
     'meta-engine': 'Core algorithmic engines that power prediction, discovery, and recursive analysis across the substrate.',
-    'meta-agent': 'Autonomous agents that operate independently, scanning, curating, and optimizing system resources.',
+    'meta-agent': 'Policy-governed AI workers that operate on a schedule, scanning, curating, and optimizing system resources.',
     'memory-chain': 'Intelligent data lifecycle management — retention, migration, and selective forgetting systems.',
     'security-module': 'Breach calculation, penalty estimation, and covert signal routing for enterprise security.',
     'robotics-controller': 'Spatial awareness, mesh optimization, and coordination protocols for robotic systems.',
