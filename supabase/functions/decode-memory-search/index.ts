@@ -62,7 +62,7 @@ serve(async (req) => {
       );
     }
 
-    const threshold: number = typeof body.threshold === "number" ? body.threshold : 0.7;
+    const threshold: number = typeof body.threshold === "number" ? body.threshold : 0.25;
     const limit: number = Math.min(Math.max(Number(body.limit) || 6, 1), 20);
     const types: string[] | null = Array.isArray(body.types) && body.types.length > 0 ? body.types : null;
 
