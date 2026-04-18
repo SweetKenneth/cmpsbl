@@ -415,3 +415,60 @@ What IS true (the actual rot):
 ### Pass 5 — Crown Jewel S-Tier code presence (verify all 241 files compile and export real logic) *(pending)*
 
 ### Pass 6 — Cron schedule audit (which jobs fire, which silently failed) *(pending)*
+
+---
+
+## §13 — Terminology Alias Map (CRITICAL — Read Before Any Audit Pass)
+
+> **Context:** Prior audit passes likely misclassified real systems as "missing" or "fake" because they're stored under legacy names from the PromptFluid era or split-naming conventions. Always run codebase + DB searches against **all aliases** before declaring anything absent.
+
+### Identity Aliases (same thing, different name)
+
+| Canonical | Aliases / Legacy Names | Where it hides |
+|-----------|----------------------|----------------|
+| **Primitive** | Node, Module | Old DB columns, old edge functions, old docs |
+| **EVOLUTION** (Layer #17) | Modernizer, Evolve, MODERNIZER | Old table names, old function names |
+| **DREAM** (Engine #25) | Cascade, "the orchestrator" | `cascade_*` tables, `cascade-*` edge functions |
+| **DECODE** (Agent #34) | Cascade (the other half), originated split from DREAM | Shares `cascade_*` lineage with DREAM |
+| **ENCODE** (Agent #33) | ENCODED | Some tables/functions use the past-tense form |
+| **IMMUNITY** (Layer #14) | Clarity, CMPTBL | Older CMPTBL-era naming |
+| **CMPSBL substrate** | PromptFluid, PromptFluid substrate, ecosystem | `pf_*` tables, `pf-*` edge functions, `prompt_fluid_*` |
+| **Governor** | Admin | `admin_*` tables, admin role checks |
+
+### Prefix Aliases (file/table/function namespaces)
+
+| Prefix | Means |
+|--------|-------|
+| `pf_*` / `pf-*` | PromptFluid era — **still active CMPSBL code**, NOT dead |
+| `prompt_fluid_*` | Same as above |
+| `cmpsbl_*` / `cmpsbl-*` | Modern naming |
+| `cascade_*` / `cascade-*` | DREAM and/or DECODE (the split) |
+| `admin_*` | Governor surface |
+
+### Audit Re-Search Rules (apply retroactively to Passes 1–3)
+
+Before claiming any primitive/engine/agent is "missing," "silent," or "fake," I must search for **all** of:
+1. Canonical name (e.g., `DREAM`, `dream_*`)
+2. Cascade alias (e.g., `cascade_*`)
+3. PF prefix (e.g., `pf_dream_*`, `pf-dream-*`)
+4. Legacy alias from the table above
+
+**Example of likely prior miscall:**
+- Pass 2 said FORGE/ORACLE/HARVEST/MINDS lack DB persistence → **must re-check** under `pf_forge_*`, `pf_oracle_*`, `cascade_forge`, etc., before trusting that verdict.
+
+### The "Cascade" Special Case
+
+Cascade is the **pre-split origin**: it was the autonomous orchestrator AI that later split into:
+- **DREAM Primitive** (synthesis half — sub-threshold, pre-conscious emergence, no AI)
+- **DECODE Agent** (parser/interpreter half)
+
+Any `cascade_*` table or function may belong to **either** DREAM or DECODE (or both). When auditing, attribute cascade activity to **DREAM ∪ DECODE** until the specific function is read.
+
+### Pass 4 Pre-Flight Checklist
+
+Before continuing the simulator-registry audit (`executors.ts`), I will:
+- [ ] Re-grep the codebase for `pf_`, `cascade_`, `prompt_fluid_`, `cmptbl`, `clarity`, `modernizer`, `encoded`
+- [ ] Re-query DB tables matching those prefixes
+- [ ] Update §10 (Wiring Gaps Ledger) and §11 (Alive Ledger) with any false-negatives discovered
+- [ ] Only then classify executors as real vs sim-only
+
