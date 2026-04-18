@@ -37,6 +37,15 @@ import emergentGatewayImg from "@/assets/layers/items/emergent-gateway-layer.jpg
 import localizationMeshImg from "@/assets/layers/items/localization-mesh-layer.jpg";
 import neuralBrokerImg from "@/assets/layers/items/neural-broker-layer.jpg";
 
+// 7 new Crown-Jewel layers (post-Apr-18 inventory restructure)
+import honeypotIntelImg from "@/assets/layers/items/honeypot-intelligence.jpg";
+import behavioralBiometricsImg from "@/assets/layers/items/behavioral-biometrics.jpg";
+import adversarialWargameImg from "@/assets/layers/items/adversarial-wargame.jpg";
+import multiModelConsensusImg from "@/assets/layers/items/multi-model-consensus.jpg";
+import dataSovereigntyImg from "@/assets/layers/items/data-sovereignty-partitioner.jpg";
+import nocturneConsolidationImg from "@/assets/layers/items/nocturne-consolidation.jpg";
+import deterministicReplayImg from "@/assets/layers/items/deterministic-replay-vault.jpg";
+
 import {
   Shield, Zap, Network, Sparkles, type LucideIcon,
 } from "lucide-react";
@@ -69,6 +78,14 @@ export const LAYER_ITEM_IMAGES: Record<string, string> = {
   "emergent-gateway-layer": emergentGatewayImg,
   "localization-mesh-layer": localizationMeshImg,
   "neural-broker-layer": neuralBrokerImg,
+  // Apr-18 inventory restructure
+  "honeypot-intelligence": honeypotIntelImg,
+  "behavioral-biometrics": behavioralBiometricsImg,
+  "adversarial-wargame": adversarialWargameImg,
+  "multi-model-consensus": multiModelConsensusImg,
+  "data-sovereignty-partitioner": dataSovereigntyImg,
+  "nocturne-consolidation": nocturneConsolidationImg,
+  "deterministic-replay-vault": deterministicReplayImg,
 };
 
 /** Resolve item image with pillar fallback. */
