@@ -1848,6 +1848,40 @@ export const LIES_LEDGER: Finding[] = [
       'Actually understated — reality is 131, claim is 80+. Both numbers are technically true (131 satisfies "80+") but the docs are leaving real distinctness on the table. The resolver pattern is real, externally packaged (@cmpsbl/intent), and load-bearing for Intent Mesh routing. Recommend updating docs to "130+ resolvers".',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-101',
+    title: 'ENCODE — module exists and is large (17,563 LOC across 45 files), but doc description drifts from code reality',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/academic-v13/print/02-system-overview.html',
+      quote: '"ENCODE — Content generation and structured output"',
+    },
+    evidence: {
+      reality:
+        'ENCODE is real and substantial: 45 ENCODE-tagged files totaling 17,563 LOC. Core module at src/lib/substrate/encode-module/ holds 19 files / 6,118 LOC including astPatchEngine, codeQualityScorer, diffSimulation, governanceCompliance, multiFileOrchestrator, shadowVerdictAnalyzer, skillProficiency, templateSynthesis, escalation-processor, escalation-telemetry. Companion: src/lib/codeagent/encoded/ (12 files: anchor, communication, expert-patterns, feedback-loop, guard, knowledge-transfer, policy, production-pipeline, shadow-practice, skills, substrate-navigator, system-manifest), src/lib/substrate/clm/encoded-curriculum.ts + encoded-learning-engine.ts, src/lib/substrate/encode-error-patterns/, src/components/substrate-os/encode-console/ (5 panels), hooks useEncode + useEncodeOrchestration, admin EncodeConsolePage. The customer-facing limited variant is renamed VOLVER (src/packages/evolution-mesh/agent/stubbed-encode.ts).',
+      method: 'find src -ipath "*encode*" -type f | xargs wc -l; head src/lib/substrate/encode-module/index.ts.',
+    },
+    verdict:
+      'The MODULE is real and serious — but the doc one-liner ("Content generation and structured output") materially understates and mis-frames it. The actual module header reads "ENCODE — Code Execution & Generation Intelligence ... receiving structured task packets from DECODE ... producing governed code artifacts" with AST patching, multi-file orchestration, shadow verdict analysis, and skill proficiency tracking. This is a code agent, not a content generator. Either update 02-system-overview.html to describe ENCODE as the code-execution module (matching the index.ts header), or scope down the implementation. The current gap means an investor reading the docs will not recognize the module they are looking at in the codebase.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-102',
+    title: 'ENCODE has zero database tables and zero dedicated edge functions despite 17.5K LOC',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/academic-v13/print/03-memory-stream-foundry.html + 07-resilience-hardening.html',
+      quote: '"Generation outputs (ENCODE)" feed Memory Stream / "Compute-heavy: FORGE, ENCODE — Lower throughput, longer execution"',
+    },
+    evidence: {
+      reality:
+        'psql information_schema scan for tables LIKE "%encode%" returns 0 rows. ls supabase/functions/ | grep -i encode returns nothing. Yet the docs describe ENCODE as a producer feeding Memory Stream and as a compute-heavy resilience tier. With 17,563 LOC and no persistence layer or server-side surface, every "generation output" must either be ephemeral (lost on reload) or be writing into a generically-named table (e.g. brain_memory_*, agency_task_artifacts) without the ENCODE label being preserved. The escalation-telemetry and escalation-processor files inside encode-module suggest write-paths exist but they are not bound to ENCODE-named persistence.',
+      method: 'psql LIKE %encode% returned 0 tables; ls supabase/functions/ | grep -i encode returned nothing.',
+    },
+    verdict:
+      'Real client-side module without a server-side counterpart — meaning the "Generation outputs feed Memory Stream" claim cannot be cleanly traced. Either: (1) rename the table writes ENCODE performs to encode_* so the data lineage matches the docs, (2) add a dedicated pf-encode edge function for compute-heavy generation as 07-resilience-hardening.html implies, or (3) clarify in docs that ENCODE is purely a client-side intelligence layer that emits into shared Memory Stream tables. Today the module is undeniably real but unobservable from the database side.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
