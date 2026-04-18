@@ -1985,6 +1985,40 @@ export const LIES_LEDGER: Finding[] = [
       'Same module, three contradictory numbers in the public docs (12, 66+, 500+) and a real number that is none of them (653 free / 966 total). Recommend a single canonical claim updated to reality: "966 terminal commands across 47 categories and 5 tiers (653 available on the free tier)". The current investor copy massively undersells the free-tier offering — a free user gets ~14% of the substrate by command count for $0, not 12 commands. This is a pricing/marketing self-inflicted wound.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-109',
+    title: 'Terminal Commands — RUNTIME audit: dream/evolution/modernizer/system commands actually return real data over the wire (live pf-substrate execution, 2026-04-18)',
+    severity: 'FACT',
+    source: {
+      document: 'src/components/substrate-os/terminal/TerminalCommands.ts + src/lib/terminal/substrate-bridge.ts',
+      quote: '"Every command goes through the same edge function the dashboard uses." (substrate-bridge.ts header) + investor docs claim 500+ commands routed through pf-substrate.',
+    },
+    evidence: {
+      reality:
+        'Live POSTs to https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate on 2026-04-18 03:36 UTC with the exact {module, action} payloads the bridge sends — not strawmen, not the same code path twice, real network round-trips. Results: dream.status → HTTP 200 in 643ms, returns live row {id:7c2215bd…, current_mood:"dreaming", mood_score:0.1, dreams_consumed_today:9, mutation_level:3, last_fed_at:2026-03-03, updated_at:2026-04-17 20:23 UTC} — this is real persisted state, not seeded fixtures. dream.pulse → 200/236ms with {alive:true, version:"11.1.0", health:100, circuit:"closed", mutation_cap:20}. dream.anomalies → 200/331ms with multiple real anomaly rows (e.g. bad_feed_input warnings dating back to 2026-01-25). evolution.status → 200/434ms with live_data {primary_table:"evolution_proposals", total_records:34, query_latency_ms:48} and personality:"The Mutator" zone:"csz". evolution.jobs/health/omega all return real `evolution_proposals` rows including a "[Performance Boost] High Event Volume Detected" job with 1628 events/hr telemetry. modernizer.status and modernizer.health return identical evolution.* payloads — the alias mapping in execution-handlers.ts works end-to-end. system.health → 200/265ms with {overall_health:100, diagnostics:[{module:"core", health_score:100, circuit_state:"closed"},…]}. system.diagnostics → 200/1382ms with {substrate:{version:"11.1.0", type:"Cognitive Orchestration Substrate (HARDENED)", uptime_ms:1228}, orchestrator:{status:"healing", current_phase:"reflection", cycles_completed:8214}}. governance.health → 200/272ms with `mode_audit` row showing ACTIVE since 2026-02-25 ("Clockless active mode"). The substrate is genuinely live, multi-zone, persisting real telemetry, with the Modernizer→Evolution rename wired correctly at the routing layer.',
+      method: 'node /tmp/run-real.mjs — direct fetch() to pf-substrate edge function with the same body shape that callSubstrate(module, action, params) sends. No browser, no mocks, no instrumentation overhead.',
+    },
+    verdict:
+      'Among the strongest verifications in the ledger so far. The terminal command surface is not vaporware: real edge function, real DB reads, real personalities/zones, real circuit-breaker state, real persisted dream-eater mood, real evolution proposals queue with 34 rows. Latencies are honest (236ms–1382ms range, system.diagnostics being the heaviest). The MODERNIZER→EVOLUTION terminology rename (Lov Rules v3.2) is correctly wired — modernizer.* aliases route to evolution.* and return identical payloads, no orphaned handler.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-110',
+    title: 'Terminal Commands — RUNTIME audit: 3 of 15 sampled commands fail at the edge despite being registered as handlers (mesh.health, nexus.health, doctor)',
+    severity: 'PARTIAL',
+    source: {
+      document: 'src/lib/terminal/mesh-handlers.ts:35 + src/lib/terminal/execution-handlers.ts:28 + src/lib/terminal/core-handlers.ts:136',
+      quote: '`registerHandler("mesh.health", bridge("mesh", "health"));` and `registerHandler("nexus.health", bridge("nexus", "health"));` and `registerHandler("doctor", …)` — all three are present in the handler registry and listed in TerminalCommands.ts, implying they execute end-to-end.',
+    },
+    evidence: {
+      reality:
+        'Same 2026-04-18 03:36 UTC live test against pf-substrate. Failures: (1) mesh.health → HTTP 500 in 2893ms with body {success:false, error:"Unknown module: mesh", health:{mesh:{score:75, status:"degraded"}}} — the edge function does not recognize "mesh" as a module at all, despite a registered handler claiming it does. The fallback degraded-status payload is returned instead. (2) nexus.health → HTTP 500/189ms with {error:"Unknown nexus action: health"} — the nexus module IS recognized, but the "health" action is not implemented for it, even though every other module exposes .health and the registered handler implies parity. (3) system/doctor probe → HTTP 500/197ms with {error:"Unknown system action: doctor"} — "doctor" is registered as a top-level core handler in core-handlers.ts:136 and listed as a COGNITIVE_ALIAS in TerminalExecutor.ts:1218, but no edge-side dispatcher exists. 12 of 15 sampled commands worked perfectly; 3 failed. Failure rate at the runtime boundary: 20% on this sample. The good news: failures are loud (HTTP 500 + structured error), not silent — the substrate honestly reports "Unknown module/action" rather than fabricating data.',
+      method: 'Same /tmp/run-real.mjs run as F-109; failures captured verbatim from edge response bodies.',
+    },
+    verdict:
+      'The handler-registry layer over-promises vs. the edge function dispatch layer. Three concrete fixes needed: (a) add a "mesh" module case to pf-substrate (or remove the bridge call from mesh-handlers.ts:35 and route mesh.* through a different surface); (b) add a "health" action to the nexus module dispatch in pf-substrate to match the .health convention every other module follows; (c) wire the legacy "doctor" alias to system.diagnostics in pf-substrate, since the front-end already treats them as equivalent. None of these are theater — they are real plumbing gaps where two layers (handler registry + edge dispatcher) drifted out of sync. Easy to close in one edge-function patch.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
