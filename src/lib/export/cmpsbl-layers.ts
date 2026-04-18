@@ -210,6 +210,19 @@ const LAYER_PHASE_MAP: Readonly<Record<string, number>> = Object.freeze({
   // Phase 8 — Post Audit + Compliance
   'spectral-auditor':             PHASE_POST_COMPLIANCE,
   'compliance-audit':             PHASE_POST_COMPLIANCE,
+
+  // ── Apr-18 expansion (7 new Crown Jewel layers) ──────────────────────────
+  // Phase 1 — Governance + Security
+  'honeypot-intelligence':        PHASE_GOV_SECURITY,
+  'behavioral-biometrics':        PHASE_GOV_SECURITY,
+  'data-sovereignty-partitioner': PHASE_GOV_SECURITY,
+  // Phase 2 — Foresight + Detection
+  'adversarial-wargame':          PHASE_FORESIGHT,
+  // Phase 4 — Intelligence + Memory
+  'multi-model-consensus':        PHASE_INTELLIGENCE,
+  'nocturne-consolidation':       PHASE_INTELLIGENCE,
+  // Phase 7 — Evolution (post-execution observers)
+  'deterministic-replay-vault':   PHASE_EVOLUTION,
 });
 
 const PHASE_LABELS: Readonly<Record<number, string>> = Object.freeze({
