@@ -58,6 +58,7 @@ import { DETERMINISM_FINGERPRINT_CORE } from './layers/_determinism-fingerprint-
 import { CONTRACT_VERSIONING_CORE } from './layers/_contract-versioning-core';
 import { SATURATION_METRICS_CORE } from './layers/_saturation-metrics-core';
 import { GOVERNED_PIPELINE_CORE } from './layers/_governed-pipeline-core';
+import { SENTINEL_CORE } from './layers/_sentinel-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -107,6 +108,7 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
   DEGRADATION_CORE,
   BEACON_CORE,
   GOVERNED_PIPELINE_CORE,
+  SENTINEL_CORE,
   DEBUG_MODE_CORE,
 ]);
 
