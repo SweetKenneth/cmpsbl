@@ -43,6 +43,7 @@ The substrate is the same. The story is finally clean.
 | 13 | [Research Appendix](13-research-appendix.md) | Researchers | Method notes, references, glossary |
 | 14 | [Citation & Reproducibility](14-citation-and-reproducibility.md) | Researchers | How to cite v19.1, what is reproducible |
 | 15 | [Customer Clarity Roadmap](15-customer-clarity-roadmap.md) | Public | Phased plan for the v19.1 surface |
+| 16 | [Cognitive Independence Roadmap](16-cognitive-independence-roadmap.md) | Public | The 4-stage path off LLM dependency |
 
 ---
 

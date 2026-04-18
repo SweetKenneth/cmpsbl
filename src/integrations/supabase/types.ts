@@ -19050,6 +19050,21 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      match_brain_embeddings: {
+        Args: {
+          artifact_types?: string[]
+          match_count?: number
+          match_threshold?: number
+          query_embedding: string
+        }
+        Returns: {
+          artifact_content: string
+          artifact_id: string
+          artifact_type: string
+          id: string
+          similarity: number
+        }[]
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
