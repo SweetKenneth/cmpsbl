@@ -6123,6 +6123,57 @@ export type Database = {
         }
         Relationships: []
       }
+      decode_gap_log: {
+        Row: {
+          addressed: boolean
+          addressed_at: string | null
+          artifact_types: string[] | null
+          attempts: number
+          best_similarity: number
+          created_at: string
+          dream_id: string | null
+          id: string
+          match_count: number
+          metadata: Json | null
+          query: string
+          source: string | null
+          threshold_used: number | null
+          user_id: string | null
+        }
+        Insert: {
+          addressed?: boolean
+          addressed_at?: string | null
+          artifact_types?: string[] | null
+          attempts?: number
+          best_similarity?: number
+          created_at?: string
+          dream_id?: string | null
+          id?: string
+          match_count?: number
+          metadata?: Json | null
+          query: string
+          source?: string | null
+          threshold_used?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          addressed?: boolean
+          addressed_at?: string | null
+          artifact_types?: string[] | null
+          attempts?: number
+          best_similarity?: number
+          created_at?: string
+          dream_id?: string | null
+          id?: string
+          match_count?: number
+          metadata?: Json | null
+          query?: string
+          source?: string | null
+          threshold_used?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       decode_search_results: {
         Row: {
           created_at: string
