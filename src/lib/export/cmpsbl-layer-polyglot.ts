@@ -189,6 +189,12 @@ function _registerKernelBodies(): void {
     ['csharp', CSHARP_KERNEL_GOVERNANCE_BODIES],
     ['swift', SWIFT_KERNEL_GOVERNANCE_BODIES],
     ['kotlin', KOTLIN_KERNEL_GOVERNANCE_BODIES],
+    ['rust', RS_KERNEL_HARDENING_BODIES],
+    ['go', GO_KERNEL_HARDENING_BODIES],
+    ['java', JAVA_KERNEL_HARDENING_BODIES],
+    ['csharp', CSHARP_KERNEL_HARDENING_BODIES],
+    ['swift', SWIFT_KERNEL_HARDENING_BODIES],
+    ['kotlin', KOTLIN_KERNEL_HARDENING_BODIES],
   ];
   for (const [lang, table] of tables) {
     for (const [layerId, body] of Object.entries(table)) {
