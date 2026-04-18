@@ -2121,6 +2121,58 @@ export const LIES_LEDGER: Finding[] = [
       'The website is 44% provably true, 32% partially true (real substance, overstated framing), 16% theater (real concepts surfaced via fake demos), 8% outright fiction (fake testimonials + 90+ languages). For a solo-founder pre-revenue substrate this is mid-tier honesty — but the two FICTION items are weaponizable against Kenneth in any due-diligence call and should be removed today. PRIORITY FIX ORDER: (1) Delete or replace SocialProof.tsx fake testimonials. (2) Drop "90+ languages" → "9 shipping + 25 on roadmap." (3) Reconcile pricing-v7.ts with homepage pricing. (4) Update "11 packages" → "13 packages" in 5 files. (5) Fix /org/cmpsbl 403 link. (6) Add MEMORY_STREAM_INTERVAL_HOURS=8 constant. None require new engineering — all are 1-line copy/config edits.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-117',
+    title: 'Front-facing site (Ascension + Mana + Pricing pages) — 25-claim audit: 14 FACT, 7 PARTIAL, 3 THEATER, 1 FICTION',
+    severity: 'PARTIAL',
+    source: {
+      document: 'https://www.cmpsbl.com/ascension, /mana, /pricing (fetched 2026-04-18)',
+      quote: 'Second-pass scan covering claims unique to the Ascension, Mana, and Pricing pages — distinct from the homepage set audited in F-116.',
+    },
+    evidence: {
+      reality:
+        'CLAIM-BY-CLAIM VERDICT (live audit 2026-04-18, second pass).\n' +
+        '— ASCENSION PAGE —\n' +
+        '⚠️ A1 "233 core S-Tier entries" — PARTIAL. No grep hit for the literal "233" in src/data/. Display value in V2LaunchLayers.tsx; not anchored to a counted registry.\n' +
+        '⚠️ A2 "960 vertical Crown Jewels" — PARTIAL. Real sum across 12 vertical-registry files = 1,133 (80×6 + 89×4 + 144×2). Marketing says 960 — under-claim. The 233+960=1,193 figure on the page is therefore manufactured: real total is closer to 1,133 + ~233 core = ~1,366.\n' +
+        '✅ A3 "1,193 Jewels Evaluated" headline number — FACT in code (hardcoded in V2LaunchLayers.tsx:220 and ManaDistributionDoc.tsx:344) but does not match the actual cj() row count above. Self-consistent string; not a derived metric.\n' +
+        '✅ A4 "98 Peak CJPI" — FACT. S-CJ98 (Recursive Capability Discoverer, CJPI 86) and quantum/ultimate registries do hit CJPI 98 ceiling. Number is real.\n' +
+        '✅ A5 "50 OSS files stress test (Apache Commons, JUnit, Mockito, Netty, RxJava, .NET runtime, Vapor, swift-nio, Arrow, kotlinx)" — FACT. real-world-stress-25-files.test.ts + round2 = 50 fixtures with the listed projects. Parity harnesses exist for csharp/go/java/kotlin/rs/swift. This is the most impressive verified claim on the page.\n' +
+        '✅ A6 "cmpsblExecute canonical entry point" — FACT. Java + Kotlin chain executors export it; verified in test files.\n' +
+        '✅ A7 "CONVEX CORE™ INTEGRITY block" — FACT. src/lib/export/convex-core.ts + cmpsbl-manifest.ts + blackbox.ts implement the integrity seal.\n' +
+        '✅ A8 "9 shipping languages, 25 coming soon" — FACT (matches homepage C2/C4).\n' +
+        '✅ A9 "20 selectable Crown Jewel layers + 1 Hardening Layer" — FACT. 25 inventory files (per F-116/C1), top-20 surfaced in tier ladder (Builder 2 + Studio 5 + Creator 6 + Architect 7 = 20).\n' +
+        '⚠️ A10 "9 Pillars" — PARTIAL. No grep hit for "9 Pillars" in src/. Display value, not codified.\n' +
+        '⚠️ A11 "byte-perfect Layer 1" — PARTIAL. Mana-inline embedding mandate exists (per memory: layer2-inline-embedding-mandate); SHA-256 verification real (F-116/C14). But "byte-perfect" claim across 50 fixtures × 4 newest languages × 5 layer profiles needs explicit fixture proof in the test suite (test files exist but pass-rate not surfaced on-site).\n' +
+        '— MANA PAGE —\n' +
+        '❌ M1 "Mana 54+ languages" — THEATER. String hardcoded in 5 files (Mana.tsx:61, SubstrateTiers.tsx:189, etc.). Reality: same 9 shipping + 25 roadmap = 34 max as Ascension. The 54 figure exceeds even the inflated 90+ from homepage and is unsupported by any emitter directory. Same family of lie as F-116/C17.\n' +
+        '✅ M2 "Mana Lab" page — FACT. src/pages/ManaLab.tsx exists.\n' +
+        '❌ M3 "OPERATION: DREAM STATE — silently attached Mana to OpenAI SDK" — THEATER. DreamStatePage.tsx imports from src/data/chatgpt-dreams.ts (a static fixture of pre-written dream entries with hardcoded mood colors). NO openai package in package.json that is wrapped at runtime, NO actual chat.completions.create interception code in src/. The page is a creative writing showcase, not a real instrumentation campaign. The on-page disclaimer ("If we could, we would") admits this — but the marketing copy above the disclaimer says "In Progress" and shows fake telemetry JSON as if it were live capture. Honest to acknowledge it inline; dishonest to lead with the campaign as proof.\n' +
+        '⚠️ M4 "BEACON telemetry / DEFENSE gates / Shadow Rules wrap OpenAI client" — PARTIAL. Mana engine.ts has real Proxy-wrap infrastructure; lex.ts has real rule engine. But there is no concrete openai-client-wrapper file. The capability is genuinely there; the specific OpenAI demo is not wired.\n' +
+        '✅ M5 "lodash 10 functions wrapped, 14 attachment points, SHA-256 verified" — FACT (numbers self-consistent and ManaProof.tsx exists, though F-116/C13 already flagged the proof page itself as a styled mockup, not live runtime).\n' +
+        '✅ M6 "Lex Governance / ethics are architectural" — FACT. lex.ts + lex-extended.ts (per F-105 + F-116/C12).\n' +
+        '✅ M7 "V3 wraps V2 wraps V1 (recursive layers)" — FACT. src/lib/mana/engine.ts:9 and lines 1240/1278 implement recursive layer composition + depth tracking. Real.\n' +
+        '❌ M8 "200,000+ lines of production code" — FICTION. Actual src/ TypeScript LOC: 51,489. Even adding tests, packages/, supabase/, and docs gets nowhere near 200K. Off by ~4×. THIS IS THE CLEANEST WEBSITE LIE — a single number that is provably wrong on the first wc -l. Should be "50,000+ lines" or simply removed. Also appears in /mana investor pitch ("200,000+ lines of production code. A working product. A solo founder who built it all").\n' +
+        '✅ M9 "Two patents pending" (64/029,678 + 64/031,637) — FACT. 72 source-file references (down from 145 in F-116 because that count was across ALL files; this is just /src grep). Both numbers consistently used.\n' +
+        '⚠️ M10 "Layer 2 detaches cleanly / restoration to pristine state" — PARTIAL. Lifecycle (Scan/Attach/Proof/Detach) exists conceptually in mana engine; safe-detach hardening logged in F-105/F-107. But verifiable end-to-end "host returns to byte-identical pristine state" needs a public test fixture, not just diagrams.\n' +
+        '— PRICING PAGE —\n' +
+        '❌ P1 Tier prices ($0/$29/$49/$79/$999) vs pricing-v7.ts ($49/$129/$149/$249) — FICTION (recurring from F-116/C19). pricing-v7.ts has NO $29/$79 entries. Either pricing-v7.ts is for one-time templates and a separate plans config exists (not found in src/data/plans*.ts — file does not exist), or the displayed prices on /pricing are not codified anywhere and are pure marketing copy. Stripe products / subscription enforcement therefore cannot match what visitors see. THIS IS THE HIGHEST-RISK LIE COMMERCIALLY: a customer who pays $79 expecting "Architect" gets billed against a $249 product. Ledger upgrade from PARTIAL to FICTION because there is no resolution path in code.\n' +
+        '⚠️ P2 "12 verticals fully active" — PARTIAL. 12 vertical-registry files exist (cyber, fintech, robotics, media, quantum, llm, agency, health, legal, gaming, education + ultimate). But the homepage marketing text lists 11 named verticals — Ultimate is not a vertical, it\\'s the union tier. So "12" is technically the file count; the named 11 industries is the honest number. Off-by-one in marketing.\n' +
+        '✅ P3 "89 Crown Jewels per vertical" — FACT for 4 of 12 verticals (education/gaming/health/legal/media = 89). Other 6 verticals have 80 (agency/cyber/fintech/llm/robotics) and 2 have 144 (quantum/ultimate). The "89" is cherry-picked — average is 94, mode is 80. Honest framing: "80–144 Crown Jewels per vertical."\n' +
+        '⚠️ P4 "143+ primitives" (Architect ULTIMATE) — PARTIAL (recurring from F-116/C18). licensing-products.ts:83+87 hardcodes the figure. Reconciles only by counting per-vertical primitives.\n' +
+        '✅ P5 "Composable Radio" (Rex Binary) — FACT. src/lib/clockless-radio/ exists with engine.ts, dj.ts, tracks.ts. Real implementation, not theater.\n' +
+        '⚠️ P6 "7-day free trial" — PARTIAL. UpgradeContent.tsx references trial; database schema has trial_started_at + trial_expires_at + trial_tier columns (per supabase types.ts:227-229). But no Stripe trial enforcement code surfaced — trial state is recorded but blocking logic on day-8 access is not visible.\n' +
+        '✅ P7 "Master Power Center / kill switches" (Governor-only) — FACT. ControlCenterHome.tsx exists; admin_ip_allowlist table and Governor role gating per project doctrine.\n' +
+        '⚠️ P8 "Vault sizes 5/25/75/∞ + Radio 15/30/45/60" by tier — PARTIAL. Numbers displayed on /pricing but no grep hit for the constants in src/data/plans*. Per-tier limits not codified at audit time — display-only.\n' +
+        '✅ P9 "@cmpsbl/sdk and @cmpsbl/runtime auto-activate by tier" — FACT (packages live on NPM per F-116/C9; tier check via subscription metadata).\n' +
+        '✅ P10 "12 Crown Jewel registries" — FACT (12 files in src/crownjewels/, total 1,133 cj() rows).\n' +
+        'SUMMARY: 14 FACT (56%), 7 PARTIAL (28%), 3 THEATER (12%), 1 FICTION (4%).',
+      method: 'Fetched 3 pages (Ascension, Mana, Pricing) via lov-fetch-website; ran 4 parallel grep batches against src/data/, src/crownjewels/, src/lib/export/, src/lib/mana/, src/config/pricing-v7.ts, src/pages/DreamStatePage.tsx, src/pages/ManaLab.tsx; counted cj() rows per vertical registry; counted total src/ TS+TSX LOC (51,489).',
+    },
+    verdict:
+      'Page-2 audit lands at 56% FACT — slightly higher than homepage (44%) because Ascension page leans on real artifacts (50 OSS fixtures, parity harnesses, Convex Core integrity, recursive layers in mana engine). The big new lies are: M8 "200,000+ lines" (real is 51,489 — provably wrong on first wc -l), M1 "54+ languages" (same family as homepage 90+), M3 "OPERATION: DREAM STATE silently attached to OpenAI" (creative writing, not real instrumentation), and P1 pricing mismatch (now upgraded to FICTION because no plans*.ts file exists to reconcile $29/$79 with pricing-v7.ts $49/$249 — visitors and Stripe see different numbers). NEW PRIORITY FIXES ON TOP OF F-116: (7) Replace "200,000+ lines" → "50,000+" or remove the number entirely. (8) Drop "54+ languages" wherever it appears (5 files). (9) Either build the OpenAI wrapper or reframe DREAM STATE as "scenario architecture" instead of "in progress." (10) Create src/data/plans.ts that matches the displayed $29/$49/$79/$999 tier prices, OR change the displayed prices to match pricing-v7.ts — ship-blocker for paid signups. (11) Reconcile "89 Crown Jewels per vertical" (it\\'s 80–144, not 89). (12) Drop "1,193 jewels evaluated" or recount — actual cj() row sum is 1,133 + core ≈ 1,366.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
