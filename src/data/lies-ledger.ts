@@ -615,6 +615,63 @@ export const LIES_LEDGER: Finding[] = [
       'The 7-gate SEBA + TSAC pipeline is documented in detail but leaves no operational footprint. Either the gates run in-memory and discard receipts (contradicting "auditable transitions"), or the pipeline never actually executed in production. Either way, the "validated, auditable" claim is unsupported.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-032',
+    title: 'DREAM "every idle cycle" runs at ~0 cycles/day in production',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/14-dream-engine.md (§3, §4)',
+      quote:
+        '"20 agents compounding across every idle cycle ... DREAM | Every idle cycle | Cross-agent intelligence synthesis."',
+    },
+    evidence: {
+      reality:
+        'dream_cycle_logs has 7 rows total — all stamped 2026-01-21 (a single day, 3 months ago). dream_sessions: 0 rows. dream_log: 0 rows. dream_stream: 3 rows, frozen since 2026-02-11. There has been no DREAM cycle activity in production for ~9 weeks. The "every idle cycle" cadence is not occurring.',
+      method:
+        'Row counts and min/max(created_at) across dream_cycle_logs, dream_sessions, dream_log, dream_stream, dream_eater_audit, node_dream_log.',
+    },
+    verdict:
+      'The investor doc claims continuous idle-time consolidation across a 20-agent fleet. The database shows the engine has been silent since February. The "compounding while investors sleep" narrative is not currently true.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-033',
+    title: 'Synthetic Intuition Engine has zero artifacts in any DREAM table',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/14-dream-engine.md (§2a Crown Jewel)',
+      quote:
+        '"Fragment Collection ... Resonance Amplification ... Bias Injection ... CJPI Score: Novelty 98 · Complexity 96 · Total 90 — the highest novelty score in the entire substrate."',
+    },
+    evidence: {
+      reality:
+        'dream_artifacts: 0 rows. dream_archaeology: 0 rows. dream_learning_metrics: 0 rows. agency_dream_pool: 0 rows. agency_dream_memory: 0 rows. No "intuition vector", "resonance", "fragment", or "bias injection" column exists in any dream_* table. There is no schema-level evidence the three-layer Synthetic Intuition Engine was ever wired to storage.',
+      method:
+        'Row counts on every dream_* and agency_dream_* table; information_schema column scan for intuition/resonance/fragment/bias terms.',
+    },
+    verdict:
+      'The single highest-novelty Crown Jewel in the investor pack (CJPI 90, "Novelty 98") has no production footprint. The architecture exists in src/lib/dream/* code (heuristicBuilder, semanticDrift, lineageTracker, consolidationOrchestrator) but never wrote a single row. Pre-conscious emergence is, at present, unverified theater.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-034',
+    title: 'CLM "14,400 calls/day" reaffirmed alongside DREAM doc — both inactive',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/investors/14-dream-engine.md (§4 Moat Contribution table)',
+      quote:
+        '"CLM | 14,400 training calls/day | Permanent knowledge distillation. Memory Stream | Every 8 hours | New pipeline discoveries. DREAM | Every idle cycle | Cross-agent intelligence synthesis."',
+    },
+    evidence: {
+      reality:
+        'All three "compounding engines" are presented as live in the same investor table. Production reality: CLM is throttled (logs: "Auto-chain skipped — failure rate 55% too high", reduced to 1 cycle/burst — see F-028/F-029). DREAM dormant since Feb (F-032). Memory Stream / discoveries table has no inserts in the last 5+ days outside the recent backfill window. Three "parallel compounding engines" are in fact zero currently compounding.',
+      method:
+        'Cross-reference of pf-clm-engine edge function logs (2026-04-18) with dream_cycle_logs and discoveries created_at distribution.',
+    },
+    verdict:
+      'The "moat widens while investors sleep" claim depends on three engines running. On the date this audit was performed, none of the three were running at the documented cadence. The moat is not currently widening — it is paused.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
