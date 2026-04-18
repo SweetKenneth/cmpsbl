@@ -41,6 +41,9 @@ import { STATE_STORE_CORE } from './layers/_state-store-core';
 import { CONTRACT_VALIDATOR_CORE } from './layers/_contract-validator-core';
 import { QUARANTINE_CORE } from './layers/_quarantine-core';
 import { ISOLATED_EXECUTOR_CORE } from './layers/_isolated-executor-core';
+import { KERNEL_CLOCK_CORE } from './layers/_kernel-clock-core';
+import { CAPABILITY_REGISTRY_CORE } from './layers/_capability-registry-core';
+import { KERNEL_BOOTSTRAP_CORE } from './layers/_kernel-bootstrap-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -62,10 +65,13 @@ import { ISOLATED_EXECUTOR_CORE } from './layers/_isolated-executor-core';
 // IsolatedExecutor) are gated by CMPSBL_KERNEL_ENABLED env (default ON).
 // When OFF, they degrade to no-op shims — exports stay byte-compatible.
 export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze([
+  KERNEL_CLOCK_CORE,
   STATE_STORE_CORE,
   CONTRACT_VALIDATOR_CORE,
   QUARANTINE_CORE,
   ISOLATED_EXECUTOR_CORE,
+  CAPABILITY_REGISTRY_CORE,
+  KERNEL_BOOTSTRAP_CORE,
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
   RETRY_CORE,
