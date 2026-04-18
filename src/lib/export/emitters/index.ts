@@ -15,10 +15,16 @@ import { emitPhp } from './emit-php';
 import { emitLua } from './emit-lua';
 import { emitPerl } from './emit-perl';
 import { emitBash } from './emit-bash';
+import { emitC } from './emit-c';
+import { emitCpp } from './emit-cpp';
+import { emitZig } from './emit-zig';
+import { emitNim } from './emit-nim';
+import { emitD } from './emit-d';
 
 export type EmitterLang =
   | 'ruby' | 'go' | 'rust' | 'java' | 'kotlin' | 'csharp' | 'swift'
-  | 'python' | 'php' | 'lua' | 'perl' | 'bash';
+  | 'python' | 'php' | 'lua' | 'perl' | 'bash'
+  | 'c' | 'cpp' | 'zig' | 'nim' | 'd';
 
 const EMITTERS: Record<EmitterLang, (spec: ComponentSpec) => string> = {
   ruby: emitRuby,
@@ -33,6 +39,11 @@ const EMITTERS: Record<EmitterLang, (spec: ComponentSpec) => string> = {
   lua: emitLua,
   perl: emitPerl,
   bash: emitBash,
+  c: emitC,
+  cpp: emitCpp,
+  zig: emitZig,
+  nim: emitNim,
+  d: emitD,
 };
 
 export function emitComponent(spec: ComponentSpec, lang: EmitterLang): string {
