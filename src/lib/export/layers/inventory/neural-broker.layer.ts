@@ -110,24 +110,32 @@ def cmpsbl_brk_revoke(treaty_id: str) -> bool:
     return True
 `;
 
-const TS_WIRE = `// Auto-wire: brokers every execute against the ledgered treaty registry
-const __brk_a = (args[0] as any)?.__cmpsbl_party_a ?? 'self';
-const __brk_b = (args[0] as any)?.__cmpsbl_party_b ?? 'system';
-const __brk_action = (args[0] as any)?.__cmpsbl_action ?? 'execute';
-const __brk = cmpsbl_brk_match(__brk_a, __brk_b, __brk_action);
-if (!__brk.allowed) throw new Error('CMPSBL® Broker: no active treaty for ' + __brk_action);
-return await __cmpsbl_inner_execute(...args);
-`;
+const TS_WIRE = `
+const _cmpsbl_raw_execute_brk = cmpsbl_execute;
+cmpsbl_execute = function cmpsbl_execute_brk(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  // Default treaty: self ↔ system, action = capability name. Callers may override
+  // via reserved keys; an absent active treaty is permissive (ledgered as 'unbound').
+  const __brk_a = (input as any)?.__cmpsbl_party_a ?? 'self';
+  const __brk_b = (input as any)?.__cmpsbl_party_b ?? 'system';
+  const __brk_action = (input as any)?.__cmpsbl_action ?? capabilityName;
+  const __brk = cmpsbl_brk_match(__brk_a, __brk_b, __brk_action);
+  if (!__brk.allowed && (input as any)?.__cmpsbl_strict_broker) {
+    throw new Error('[CMPSBL:Broker:' + capabilityName + '] no active treaty for ' + __brk_action);
+  }
+  return _cmpsbl_raw_execute_brk(capabilityName, input);
+};`;
 
-const PY_WIRE = `# Auto-wire: brokers every execute against the ledgered treaty registry
-__brk_a = (args[0].get("__cmpsbl_party_a") if args and isinstance(args[0], dict) else None) or "self"
-__brk_b = (args[0].get("__cmpsbl_party_b") if args and isinstance(args[0], dict) else None) or "system"
-__brk_action = (args[0].get("__cmpsbl_action") if args and isinstance(args[0], dict) else None) or "execute"
-__brk = cmpsbl_brk_match(__brk_a, __brk_b, __brk_action)
-if not __brk["allowed"]:
-    raise RuntimeError(f"CMPSBL® Broker: no active treaty for {__brk_action}")
-return __cmpsbl_inner_execute(*args, **kwargs)
-`;
+const PY_WIRE = `
+_cmpsbl_raw_execute_brk = cmpsbl_execute
+def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
+    """Execute under Neural Broker (auto-wired)."""
+    __brk_a = input_data.get("__cmpsbl_party_a", "self") if isinstance(input_data, dict) else "self"
+    __brk_b = input_data.get("__cmpsbl_party_b", "system") if isinstance(input_data, dict) else "system"
+    __brk_action = input_data.get("__cmpsbl_action", capability_name) if isinstance(input_data, dict) else capability_name
+    __brk = cmpsbl_brk_match(__brk_a, __brk_b, __brk_action)
+    if not __brk["allowed"] and isinstance(input_data, dict) and input_data.get("__cmpsbl_strict_broker"):
+        raise RuntimeError(f"[CMPSBL:Broker:{capability_name}] no active treaty for {__brk_action}")
+    return _cmpsbl_raw_execute_brk(capability_name, input_data)`;
 
 export const NEURAL_BROKER_LAYER: CmpsblLayerDefinition = {
   id: 'neural-broker',

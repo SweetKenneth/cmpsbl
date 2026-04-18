@@ -93,22 +93,25 @@ def cmpsbl_syn_validate(operation_id: str, payload: Any):
     return {"ok": not missing and not drift, "missing": missing, "drift": drift}
 `;
 
-const TS_WIRE = `// Auto-wire: synthesizes I/O contracts from observed traffic
-const __syn_op = (this as any)?.__cmpsbl_op_id ?? 'execute';
-cmpsbl_syn_observe(__syn_op, args[0]);
-const __syn_result = await __cmpsbl_inner_execute(...args);
-cmpsbl_syn_observe(__syn_op + ':out', __syn_result);
-return __syn_result;
-`;
+const TS_WIRE = `
+const _cmpsbl_raw_execute_syn = cmpsbl_execute;
+cmpsbl_execute = function cmpsbl_execute_syn(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  // Observe input shape per capability — synthesizes typed contracts over time
+  cmpsbl_syn_observe(capabilityName, input);
+  const __syn_result = _cmpsbl_raw_execute_syn(capabilityName, input);
+  // Observe output shape — drift signals emerge as future calls deviate
+  cmpsbl_syn_observe(capabilityName + ':out', __syn_result as unknown);
+  return __syn_result;
+};`;
 
-const PY_WIRE = `# Auto-wire: synthesizes I/O contracts from observed traffic
-__syn_op = kwargs.get("__cmpsbl_op_id", "execute")
-if args:
-    cmpsbl_syn_observe(__syn_op, args[0])
-__syn_result = __cmpsbl_inner_execute(*args, **kwargs)
-cmpsbl_syn_observe(__syn_op + ":out", __syn_result)
-return __syn_result
-`;
+const PY_WIRE = `
+_cmpsbl_raw_execute_syn = cmpsbl_execute
+def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
+    """Execute under Synthetic Contracts (auto-wired)."""
+    cmpsbl_syn_observe(capability_name, input_data)
+    __syn_result = _cmpsbl_raw_execute_syn(capability_name, input_data)
+    cmpsbl_syn_observe(capability_name + ":out", __syn_result)
+    return __syn_result`;
 
 export const SYNTHETIC_CONTRACTS_LAYER: CmpsblLayerDefinition = {
   id: 'synthetic-contracts',
