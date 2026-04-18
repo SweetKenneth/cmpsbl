@@ -10,8 +10,15 @@ import { emitGo } from './emit-go';
 import { emitRust } from './emit-rust';
 import { emitJava, emitKotlin } from './emit-jvm';
 import { emitCSharp, emitSwift } from './emit-csharp-swift';
+import { emitPython } from './emit-python';
+import { emitPhp } from './emit-php';
+import { emitLua } from './emit-lua';
+import { emitPerl } from './emit-perl';
+import { emitBash } from './emit-bash';
 
-export type EmitterLang = 'ruby' | 'go' | 'rust' | 'java' | 'kotlin' | 'csharp' | 'swift';
+export type EmitterLang =
+  | 'ruby' | 'go' | 'rust' | 'java' | 'kotlin' | 'csharp' | 'swift'
+  | 'python' | 'php' | 'lua' | 'perl' | 'bash';
 
 const EMITTERS: Record<EmitterLang, (spec: ComponentSpec) => string> = {
   ruby: emitRuby,
@@ -21,6 +28,11 @@ const EMITTERS: Record<EmitterLang, (spec: ComponentSpec) => string> = {
   kotlin: emitKotlin,
   csharp: emitCSharp,
   swift: emitSwift,
+  python: emitPython,
+  php: emitPhp,
+  lua: emitLua,
+  perl: emitPerl,
+  bash: emitBash,
 };
 
 export function emitComponent(spec: ComponentSpec, lang: EmitterLang): string {
