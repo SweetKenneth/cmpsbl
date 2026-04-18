@@ -45,6 +45,12 @@ import { JAVA_KERNEL_REPLAY_BODIES } from './layers-java/java-kernel-replay';
 import { CSHARP_KERNEL_REPLAY_BODIES } from './layers-csharp/csharp-kernel-replay';
 import { SWIFT_KERNEL_REPLAY_BODIES } from './layers-swift/swift-kernel-replay';
 import { KOTLIN_KERNEL_REPLAY_BODIES } from './layers-kotlin/kotlin-kernel-replay';
+import { RS_KERNEL_GOVERNANCE_BODIES } from './layers-rs/rs-kernel-governance';
+import { GO_KERNEL_GOVERNANCE_BODIES } from './layers-go/go-kernel-governance';
+import { JAVA_KERNEL_GOVERNANCE_BODIES } from './layers-java/java-kernel-governance';
+import { CSHARP_KERNEL_GOVERNANCE_BODIES } from './layers-csharp/csharp-kernel-governance';
+import { SWIFT_KERNEL_GOVERNANCE_BODIES } from './layers-swift/swift-kernel-governance';
+import { KOTLIN_KERNEL_GOVERNANCE_BODIES } from './layers-kotlin/kotlin-kernel-governance';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -171,6 +177,12 @@ function _registerKernelBodies(): void {
     ['csharp', CSHARP_KERNEL_REPLAY_BODIES],
     ['swift', SWIFT_KERNEL_REPLAY_BODIES],
     ['kotlin', KOTLIN_KERNEL_REPLAY_BODIES],
+    ['rust', RS_KERNEL_GOVERNANCE_BODIES],
+    ['go', GO_KERNEL_GOVERNANCE_BODIES],
+    ['java', JAVA_KERNEL_GOVERNANCE_BODIES],
+    ['csharp', CSHARP_KERNEL_GOVERNANCE_BODIES],
+    ['swift', SWIFT_KERNEL_GOVERNANCE_BODIES],
+    ['kotlin', KOTLIN_KERNEL_GOVERNANCE_BODIES],
   ];
   for (const [lang, table] of tables) {
     for (const [layerId, body] of Object.entries(table)) {
@@ -2782,8 +2794,99 @@ registerNative('effect-tracker', 'ruby', () => [
 ].join('\n'));
 
 
+registerNative('resource-budget-gate', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Resource Budget Gate',
+  '# Per-call budget (wall-time, memory hint, recursion depth) with strike accumulation.',
+  'module CmpsblBudgetGate',
+  '  BREACH_MAX = 256',
+  '  STRIKE_THRESHOLD = 3',
+  '  @mutex = Mutex.new',
+  '  @budgets = {}',
+  '  @depth = Hash.new(0)',
+  '  @strikes = Hash.new(0)',
+  '  @breaches = []',
+  '',
+  '  def self.declare(name, budget); @mutex.synchronize { @budgets[name] = budget.dup }; end',
+  '',
+  '  def self._strike(name, kind, observed, limit)',
+  '    @strikes[name] += 1',
+  '    @breaches << { name: name, kind: kind, observed: observed, limit: limit, ts: (Time.now.to_f * 1000).to_i }',
+  '    @breaches.shift if @breaches.size > BREACH_MAX',
+  '    @strikes[name]',
+  '  end',
+  '',
+  '  def self.enter(name)',
+  '    @mutex.synchronize do',
+  '      cur = @depth[name]',
+  '      b = @budgets[name]',
+  '      if b && b[:max_depth] && cur >= b[:max_depth]',
+  '        n = _strike(name, "depth", cur + 1, b[:max_depth])',
+  '        return { allowed: false, reason: "depth-exceeded", strikes: n }',
+  '      end',
+  '      @depth[name] = cur + 1',
+  '      { allowed: true, reason: nil, strikes: @strikes[name] }',
+  '    end',
+  '  end',
+  '',
+  '  def self.exit(name, wall_ms, mem_bytes = nil)',
+  '    @mutex.synchronize do',
+  '      cur = @depth[name]',
+  '      @depth[name] = [0, cur - 1].max',
+  '      b = @budgets[name]',
+  '      return { allowed: true, reason: nil, strikes: @strikes[name] } unless b',
+  '      reason = nil',
+  '      if b[:max_wall_ms] && wall_ms > b[:max_wall_ms]',
+  '        _strike(name, "wall-time", wall_ms, b[:max_wall_ms]); reason = "wall-time-exceeded"',
+  '      end',
+  '      if mem_bytes && b[:max_memory_bytes] && mem_bytes > b[:max_memory_bytes]',
+  '        _strike(name, "memory", mem_bytes, b[:max_memory_bytes])',
+  '        reason = reason ? "#{reason}+memory-exceeded" : "memory-exceeded"',
+  '      end',
+  '      { allowed: reason.nil?, reason: reason, strikes: @strikes[name] }',
+  '    end',
+  '  end',
+  '',
+  '  def self.should_quarantine?(name); @mutex.synchronize { @strikes[name] >= STRIKE_THRESHOLD }; end',
+  '  def self.strikes_for(name); @mutex.synchronize { @strikes[name] }; end',
+  '  def self.clear_strikes(name); @mutex.synchronize { @strikes.delete(name) }; end',
+  '  def self.all_breaches; @mutex.synchronize { @breaches.dup }; end',
+  '  def self.declared_all; @mutex.synchronize { @budgets.keys }; end',
+  '  def self.reset; @mutex.synchronize { @budgets.clear; @depth.clear; @strikes.clear; @breaches.clear }; end',
+  'end',
+].join('\n'));
+
+registerNative('kernel-health-probe', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Kernel Health Probe',
+  '# Single read-only snapshot of kernel surfaces.',
+  'module CmpsblHealth',
+  '  @mutex = Mutex.new',
+  '  @surfaces = {}',
+  '  @counters = Hash.new(0)',
+  '',
+  '  def self.register_surface(name, present); @mutex.synchronize { @surfaces[name] = !!present }; end',
+  '  def self.set_counter(name, value); @mutex.synchronize { @counters[name] = value.to_i }; end',
+  '',
+  '  def self.probe',
+  '    @mutex.synchronize do',
+  '      count = %w[contracts quarantine executor budget].count { |k| @surfaces[k] }',
+  '      quartet = case count when 4 then "ok" when 1..3 then "degraded" else "down" end',
+  '      store = @surfaces["store"] ? "ok" : "down"',
+  '      {',
+  '        quartet: quartet, store: store,',
+  '        contracts: @counters["contracts"], quarantined: @counters["quarantined"],',
+  '        executions: @counters["executions"], receipts: @counters["receipts"],',
+  '        budget_strikes: @counters["budget_strikes"],',
+  '        ts: (Time.now.to_f * 1000).to_i,',
+  '      }',
+  '    end',
+  '  end',
+  'end',
+].join('\n'));
+
+
 // Public API — Generic for ALL layers
 // ═══════════════════════════════════════════════════════════════════════════════
+
 
 /**
  * Generate layer code for ANY layer in ANY language.
