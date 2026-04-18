@@ -22,6 +22,10 @@ Prior audits were wrong because they searched canonical names only. These aliase
 | Governor | Admin, `admin_*` |
 | Memory Chain | Pipeline, `pipeline_*`, `chain_*` |
 | Crystallized Memory | Crystallized Pipeline, Primitive Chain, Node Chain, Module Chain, `crystal*`, `crystallized_*` |
+| Foundry | Quarry, Memory Stream, `foundry_*`, `quarry_*`, `memory_stream*`, `discoveries` |
+| Agency | 20-agent collective sourced from the Mint, `agency_*`, `mint_*` |
+| Agent Forge | Per-agent generator (distinct from FORGE), `agent_forge*` |
+| FORGE | Template Generator (NOT the same as Agent Forge), `forge_*`, `template_*` |
 
 **Unknown-name rule:** If I encounter any table/file/function name I don't recognize, **I ask Kenneth directly** before classifying it as fake, dead, or missing. No silent assumptions.
 
