@@ -44,6 +44,8 @@ import { ISOLATED_EXECUTOR_CORE } from './layers/_isolated-executor-core';
 import { KERNEL_CLOCK_CORE } from './layers/_kernel-clock-core';
 import { CAPABILITY_REGISTRY_CORE } from './layers/_capability-registry-core';
 import { KERNEL_BOOTSTRAP_CORE } from './layers/_kernel-bootstrap-core';
+import { RECEIPT_EMITTER_CORE } from './layers/_receipt-emitter-core';
+import { TELEMETRY_BUS_CORE } from './layers/_telemetry-bus-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -71,6 +73,8 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
   QUARANTINE_CORE,
   ISOLATED_EXECUTOR_CORE,
   CAPABILITY_REGISTRY_CORE,
+  RECEIPT_EMITTER_CORE,
+  TELEMETRY_BUS_CORE,
   KERNEL_BOOTSTRAP_CORE,
   CIRCUIT_BREAKER_CORE,
   TIMEOUT_CORE,
