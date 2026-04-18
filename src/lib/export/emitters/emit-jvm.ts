@@ -147,6 +147,34 @@ function ktOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `"${f}" to ${f}`).join(', ');
       return [`return mapOf(${pairs})`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `val __pat = Regex("(?i)(api[_-]?key|secret|password|token|bearer\\\\s+[\\\\w.-]+|sk-[\\\\w-]{16,})")`,
+        `fun walk(v: Any?): Any? = when (v) {`,
+        `    is Map<*, *> -> v.entries.associate { (k, vv) -> val ks = k.toString(); k to (if (ks.startsWith("_cmpsbl_") || ks.startsWith("__cmpsbl_")) vv else walk(vv)) }`,
+        `    is List<*> -> v.map { walk(it) }`,
+        `    is String -> __pat.replace(v, "[REDACTED]")`,
+        `    else -> v`,
+        `}`,
+        `return walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `fun strip(v: Any?): Any? = when (v) {`,
+        `    is Map<*, *> -> v.entries.filter { (k, _) -> val ks = k.toString(); !(ks.startsWith("_cmpsbl_") || ks.startsWith("__cmpsbl_")) }.associate { (k, vv) -> k to strip(vv) }`,
+        `    is List<*> -> v.map { strip(it) }`,
+        `    else -> v`,
+        `}`,
+        `return strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.add(${p}.toString())`];
+    }
   }
 }
 function ktRet(m: SpecMethod, spec: ComponentSpec): string {
