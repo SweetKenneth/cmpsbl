@@ -91,16 +91,16 @@ export default function AgencyHome() {
   return (
     <>
       <Helmet>
-        <title>CMPSBL AGENCY™ — Governed Autonomous Agent Infrastructure</title>
-        <meta name="description" content="CMPSBL AGENCY™ — 16 specialized primitives empowering autonomous AI agents with research, collaboration, tool mastery, self-healing, and governed autonomy. Agents That Learn, Collaborate, and Ship." />
+        <title>CMPSBL AGENCY™ — Governed AI Worker Infrastructure</title>
+        <meta name="description" content="CMPSBL AGENCY™ — 16 specialized primitives empowering policy-governed AI workers with research, collaboration, tool mastery, a self-healing pipeline (in training), and governed autonomy. Workers That Learn, Collaborate, and Ship." />
         <link rel="canonical" href="https://agency.cmpsbl.com" />
-        <meta property="og:title" content="CMPSBL AGENCY™ — Governed Autonomous Agent Infrastructure" />
-        <meta property="og:description" content="16 specialized primitives for autonomous AI agents — research, collaboration, tool mastery, and self-healing." />
+        <meta property="og:title" content="CMPSBL AGENCY™ — Governed AI Worker Infrastructure" />
+        <meta property="og:description" content="16 specialized primitives for policy-governed AI workers — research, collaboration, tool mastery, and a self-healing pipeline (in training)." />
         <meta property="og:url" content="https://agency.cmpsbl.com" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="CMPSBL" />
       </Helmet>
-      <StructuredData type="webApplication" data={{ name: "CMPSBL AGENCY™", description: "Governed autonomous agent infrastructure — 16 specialized primitives for research, collaboration, tool mastery, and self-healing AI agents.", url: "https://agency.cmpsbl.com", features: "Autonomous Research, Agent Collaboration, Tool Mastery, Self-Healing, Governed Autonomy, Task Orchestration" }} />
+      <StructuredData type="webApplication" data={{ name: "CMPSBL AGENCY™", description: "Governed AI worker infrastructure — 16 specialized primitives for research, collaboration, tool mastery, and a self-healing pipeline (in training).", url: "https://agency.cmpsbl.com", features: "Governed Research, Worker Collaboration, Tool Mastery, Self-Healing Pipeline (in training), Policy-Governed Autonomy, Task Orchestration" }} />
 
       <VerticalReturnBanner verticalName="CMPSBL AGENCY™" accentColor={ACCENT} />
       <PublicNav />

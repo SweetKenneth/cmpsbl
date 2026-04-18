@@ -104,8 +104,8 @@ export function SubstrateAliveSection() {
             You can build here faster than anywhere else.
           </p>
           <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto">
-            Every loadout, engine, and agent ships with persistent memory, governed execution,
-            self-healing, and continuous learning — already running the moment you activate it.
+            Every loadout, engine, and policy-governed AI worker ships with persistent memory, governed execution,
+            a self-healing pipeline (in training), and continuous learning — already running the moment you activate it.
           </p>
         </div>
 

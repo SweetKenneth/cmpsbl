@@ -46,8 +46,8 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Cognitive Substrate Launched", description: "Launched the governed cognitive infrastructure substrate — 40 primitives across 4 categories, powered by dual-layer technology." },
-  { year: "2025", title: "200k+ Lines of Code", description: "Grew to a full cognitive runtime with patented dual-layer technology and deterministic processing." },
+  { year: "2024", title: "Governed Cognitive Infrastructure Launched", description: "Launched the substrate — 40 primitives across 4 categories, powered by dual-layer technology." },
+  { year: "2025", title: "200k+ Lines of Code", description: "Grew to a full governed runtime with patented dual-layer technology and deterministic processing." },
   { year: "2026", title: "CONTACT Epoch", description: "Complete site redesign, four-tier subscription model, Showroom, Ascension Lab, and Memory Stream. Dual U.S. patent applications filed." },
 ];
 

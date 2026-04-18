@@ -463,7 +463,7 @@ export default function SystemIntelligenceFeed() {
     <>
       <Helmet>
         <title>Observer Mode — Live 40-Primitive Intelligence Feed | CMPSBL</title>
-        <meta name="description" content="Watch the 40-primitive cognitive substrate's autonomous learning and Clockless Cognitive Reality engine operate in real-time. Memory Stream crystallization, DREAM Engine cycles, and primitive telemetry." />
+        <meta name="description" content="Watch the 40-primitive governed cognitive infrastructure's continuous learning loop and Clockless Cognitive Reality engine operate in real-time. Memory Stream crystallization, DREAM Engine cycles, and primitive telemetry." />
       </Helmet>
 
       <div className="min-h-screen bg-background relative flex flex-col">

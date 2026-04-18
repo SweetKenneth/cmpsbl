@@ -485,9 +485,9 @@ export default function UseCases() {
               Where Persistent Memory Goes Next
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              From self-healing aircraft to kitchens that learn your taste — see what's possible 
-              when AI remembers, adapts, and improves over time. Powered by the{" "}
-              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">cognitive substrate</Link>{" "}
+              From resilient aircraft systems to kitchens that learn your taste — see what's possible 
+              when AI remembers, adapts, and improves over time. Powered by{" "}
+              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">governed cognitive infrastructure</Link>{" "}
               and <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IoT integration</a>.
             </p>
           </motion.div>
