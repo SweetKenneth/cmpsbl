@@ -1082,6 +1082,60 @@ export const LIES_LEDGER: Finding[] = [
       'A Series A readiness target requires a credible path from current MRR to $200K/month. With 5 active subs and $0 in 90-day usage revenue, the gap is the entire goal. The TAM citation is also a forward-reference to a section that does not derive the $35B number.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-058',
+    title: '"8-hour DREAM synthesis runs" — 7 lifetime cycles, last on 2026-01-21',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/convergence/09-defensibility-playbook.md (line 19), cmpsbl-system-architecture-exposure-specification.md (line 349), 18-vertical-ecosystem.md (line 12)',
+      quote:
+        '"14,400 CLM observations per day, and 8-hour DREAM synthesis runs" · "DREAM synthesis contributions · Requires Memory Stream data and 8-hour autonomous cycle completion" · "Zero AI in DREAM synthesis. Pure algorithmic cognitive infrastructure"',
+    },
+    evidence: {
+      reality:
+        'dream_cycle_logs: 7 rows total lifetime, 0 in the last 30 days, last_cycle = 2026-01-21 (≈87 days stale at audit time). dream_artifacts: 0. dream_sessions: 0. dream_log: 0. An "8-hour cycle" cadence over the project lifetime would produce thousands of entries; 7 is a single day of cycles, not a continuous engine.',
+      method: 'SELECT count(*), max(created_at) on dream_cycle_logs, dream_artifacts, dream_sessions, dream_log.',
+    },
+    verdict:
+      'Multiple docs anchor the "8-hour autonomous synthesis" cadence as a load-bearing claim. The cadence is not running. There is no synthesis output stored, and the cycle log itself stopped on 2026-01-21.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-059',
+    title: '"126 SynthesisTemplates" claim has no schema or row evidence',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/flywheel-operations-guide.md (line 139)',
+      quote:
+        '"Processes all 126 SynthesisTemplates from the Reactor"',
+    },
+    evidence: {
+      reality:
+        'information_schema scan for tables matching %synth% returns zero results in the public schema. There is no synthesis_templates, dream_synthesis, or reactor_templates table. The "126" figure does not resolve to any queryable artifact, registry row, or code constant in src/lib that enumerates templates.',
+      method: "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name ILIKE '%synth%' (=0 rows).",
+    },
+    verdict:
+      'A flywheel guide that quotes a specific count ("126") for templates "processed" by the system should resolve to either a database table or a code enumeration. Neither exists.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-060',
+    title: '"Memory chains incl. KNOWLEDGE_SYNTHESIS, CAUSAL_SYNTHESIS, LINGUA_SYNTHESIS" lack execution records',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/13-primary-memory-chains.md (lines 58, 132, 175, 182)',
+      quote:
+        '"19 · KNOWLEDGE_SYNTHESIS · BRAIN → MEMORY → FORGE → ATLAS" · "56 · CAUSAL_SYNTHESIS · FORGE → BRAIN → DREAM → CORTEX" · "90 · LINGUA_SYNTHESIS" · "97 · MEMORY_TRANSCENDENCE"',
+    },
+    evidence: {
+      reality:
+        'dream_log: 0 rows. dream_sessions: 0 rows. dream_artifacts: 0 rows. cascade_dreams: 17 rows total (no per-chain attribution visible in name). The "100+ automated multi-primitive workflows" claim from staff/01-what-youre-building.md depends on these chains executing — they have no recorded executions in any synthesis-output table.',
+      method: 'SELECT count(*) on dream_log, dream_sessions, dream_artifacts, cascade_dreams; cross-ref staff/01 line 99 ("100+ memory chains").',
+    },
+    verdict:
+      'The chain catalog (90+ named chains incl. 4 explicitly named *_SYNTHESIS) reads as scaffolding. There is no execution ledger that records which chain ran, when, with what result. Cascade_dreams holds 17 rows total — far below "100+ automated workflows".',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
