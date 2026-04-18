@@ -51,6 +51,12 @@ import { JAVA_KERNEL_GOVERNANCE_BODIES } from './layers-java/java-kernel-governa
 import { CSHARP_KERNEL_GOVERNANCE_BODIES } from './layers-csharp/csharp-kernel-governance';
 import { SWIFT_KERNEL_GOVERNANCE_BODIES } from './layers-swift/swift-kernel-governance';
 import { KOTLIN_KERNEL_GOVERNANCE_BODIES } from './layers-kotlin/kotlin-kernel-governance';
+import { RS_KERNEL_HARDENING_BODIES } from './layers-rs/rs-kernel-hardening';
+import { GO_KERNEL_HARDENING_BODIES } from './layers-go/go-kernel-hardening';
+import { JAVA_KERNEL_HARDENING_BODIES } from './layers-java/java-kernel-hardening';
+import { CSHARP_KERNEL_HARDENING_BODIES } from './layers-csharp/csharp-kernel-hardening';
+import { SWIFT_KERNEL_HARDENING_BODIES } from './layers-swift/swift-kernel-hardening';
+import { KOTLIN_KERNEL_HARDENING_BODIES } from './layers-kotlin/kotlin-kernel-hardening';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
