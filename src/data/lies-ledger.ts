@@ -577,6 +577,44 @@ export const LIES_LEDGER: Finding[] = [
       '"CLM is foundational, must always be learning" is contradicted by the engine itself, which auto-disables when failures exceed threshold. The system is honest enough to throttle when broken — but the docs claiming "always learning" are not honest about the current state. The right framing: "CLM has a circuit breaker that fires when failure rate exceeds 50% — currently tripped at 58%."',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-030',
+    title: 'Evolution Engine "166 bugs fixed for $0.06 / 340 cycles" is unsupported by database',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/11-evolution-engine.md (§1, §3, §6)',
+      quote:
+        '"Over 340 controlled evolution cycles, the system found and fixed 166 real production bugs in its own codebase for a total cost of $0.06 ... 166 unique patches applied to production substrate files across five categories."',
+    },
+    evidence: {
+      reality:
+        'evolution_proposals: 34 total rows (not 340), 0 applied, 19 approved, 13 rejected, 2 rolled_back. evolution_runs: 31 rows. evolution_receipts: 0 rows. evolution_snapshots: 0 rows. system_diffs: 7 rows. system_snapshots: 23 rows. modernizer_outputs: 0. modernizer_analytics: 0. modernizer_reports: 0. modernizer_autonomy_log: 0. No table contains evidence of 166 applied patches or 340 cycles. Activity range: 2026-02-02 → 2026-03-06 (stopped over 6 weeks ago).',
+      method:
+        'SELECT counts and date ranges from evolution_proposals, evolution_runs, evolution_receipts, evolution_snapshots, system_diffs, system_snapshots, modernizer_* tables.',
+    },
+    verdict:
+      'The investor doc inflates real numbers by ~10x (34 proposals → "340 cycles") and claims 166 applied patches when production shows ZERO applied. The engine ran a small batch in Feb–early March, then stopped. "Continuous evolution" and "$0.06 cost" cannot be verified from any table. This is the highest-stakes fabrication in the audit so far — it appears in an investor-facing document.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-031',
+    title: 'SEBA 7-gate pipeline and TSAC have no operational evidence',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/04-evolution-seba.md (§3, §4)',
+      quote:
+        '"Every change must pass all 7 gates ... Minimum 10 shadow cycles required before promotion eligibility ... TSAC ensures evolution candidates preserve system truth."',
+    },
+    evidence: {
+      reality:
+        'Zero shadow_runs / TSAC / SEBA tables exist in the schema. evolution_receipts (which would record gate passes) is empty. evolution_snapshots (rollback substrate) is empty. evolution_repair_log is empty. evolution_entropy_ledger is empty. evolution_pre_metrics is empty. The 19 "approved" proposals never advanced to applied — meaning no gate-passage records exist for any production promotion.',
+      method:
+        'Schema scan for shadow/seba/tsac tables; row counts on evolution_receipts, evolution_snapshots, evolution_repair_log, evolution_entropy_ledger, evolution_pre_metrics.',
+    },
+    verdict:
+      'The 7-gate SEBA + TSAC pipeline is documented in detail but leaves no operational footprint. Either the gates run in-memory and discard receipts (contradicting "auditable transitions"), or the pipeline never actually executed in production. Either way, the "validated, auditable" claim is unsupported.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
