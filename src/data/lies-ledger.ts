@@ -812,6 +812,78 @@ export const LIES_LEDGER: Finding[] = [
       'The mechanism exists in code; the operational footprint (12 rows) reveals it has barely been exercised. The implication of a battle-tested tamper-evident audit trail is unsupported.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-043',
+    title: '"90+ languages" export claim contradicted by code and own docs',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/01-executive-summary.md, 02-technology-architecture.md, 09-defensible-valuation.md, 12-ascension-product-factory.md, public/ascension-user-guide.md',
+      quote:
+        '"single-file, zero-dependency, IP-protected artifact in 90+ languages (18 software + 7 HDL + GPU/blockchain/quantum/robotics)" — repeated across 10+ investor and public docs. Same investor pack also states: "Export languages: 25 (18 software, 7 HDL)."',
+    },
+    evidence: {
+      reality:
+        'src/lib/ascension-v2/ contains ZERO emitter directories. The only language strings found in the v2 pipeline are 10 software languages (typescript, javascript, python, rust, go, java, csharp, kotlin, swift, scala) used as classification tokens — not full code emitters. No GLSL, WGSL, VHDL, Verilog, CUDA, Solidity, Move, Cairo, Qiskit, Cirq, Q#, Quil, ROS2, or PX4 emitter is present in the active pipeline. The "90+" figure has no production basis; even the "25" figure (18+7) cannot be substantiated by code.',
+      method: 'find src/lib -path "*emitter*" → 0 results. grep for hardware/GPU/blockchain/quantum language tokens in src/lib/ascension-v2/ → none.',
+    },
+    verdict:
+      '"90+ languages" is the single most-repeated claim in the investor pack. The codebase ships with at most 10 software languages as classification labels and no working hardware/GPU/blockchain/quantum emitters. Two contradictory numbers (25 vs 90+) appear in the same document set, both unverified.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-044',
+    title: 'Ascension production pipeline has 2 lifetime runs',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/12-ascension-product-factory.md, 10-ascension-demo-script.md',
+      quote:
+        '"Already built. Already functional." · "self-compounding software factory ... discovers, builds, compiles, prices, and sells software products"',
+    },
+    evidence: {
+      reality:
+        'The only Ascension session tables in the database are cli_ascension_sessions (2 rows total) and vertical_ascension_sessions (1 row). No ascension_runs, ascension_exports, or ascension_artifacts tables exist. No production export has produced a sellable artifact tracked in the database.',
+      method: 'SELECT COUNT(*) on cli_ascension_sessions, vertical_ascension_sessions; information_schema scan for ascension_* tables.',
+    },
+    verdict:
+      '3 total Ascension sessions across all surfaces is not a "software factory." The pipeline runs in code; it has not been exercised at any meaningful scale.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-045',
+    title: '"Silent Software Symbiosis" patent product has zero registry footprint',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/investors/21-mana-the-real-product.md, 22-fear-equals-free-advertising.md, internal/22-mana-lex-e2e-architecture.md',
+      quote:
+        '"Mana is the Silent Software Symbiosis Engine ... U.S. Patent App. No. 64/031,637" · "the only reliable defense: the Lex Registry and the Shield" · "Lex Blacklist registration ... 100% qualified"',
+    },
+    evidence: {
+      reality:
+        'lex_registry: 0 rows. lex_registry_events: 0 rows. lex_registry_public: exists but empty. No mana_attachments, mana_sessions, or symbiosis_* tables exist. The "fear equals free advertising" thesis depends on demonstrated attachments; none are recorded.',
+      method: 'SELECT COUNT(*) on lex_registry, lex_registry_events; information_schema scan for mana_*, symbios*, attach* tables.',
+    },
+    verdict:
+      'The Mana/Lex/Shield trio is positioned as the patent-protected "real product" that markets itself through fear. With zero registry entries and zero attachment records, the marketing flywheel has nothing to spin on.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-046',
+    title: '"Self-compounding software factory" claim has no compounding evidence',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/compounding-autonomy-specification.md, flywheel-operations-guide.md',
+      quote:
+        '"The CMPSBL® substrate is a self-compounding software factory. It autonomously discovers, builds, compiles, prices, and sells software products — without human intervention" · "you\'re literally discovering new software products while you sleep"',
+    },
+    evidence: {
+      reality:
+        'Cross-referenced with prior findings: Memory Stream silent (F-008), DREAM silent ~9 weeks (F-032), CLM auto-throttled with 55% failure rate (F-034), Evolution 0 applied / activity ceased 2026-03-06 (F-030), Ascension 3 lifetime runs (F-044), Lex registry empty (F-045). Every engine the "compounding" thesis depends on is stalled or empty.',
+      method: 'Aggregate of F-008, F-030, F-032, F-034, F-044, F-045.',
+    },
+    verdict:
+      'The "factory while you sleep" narrative requires at least one engine to be running. None are. This is the load-bearing investor claim and it is currently unsupported.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
