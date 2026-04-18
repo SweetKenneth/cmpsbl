@@ -15,6 +15,8 @@
  */
 
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
+import { emitComponent, isEmitterLang } from './emitters';
+import { getSpec } from './emitters/spec-registry';
 import { GO_LAYER_BODIES } from './layers-go/go-layers';
 import { GO_INVENTORY_BODIES } from './layers-go/go-inventory';
 import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
