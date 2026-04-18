@@ -1351,6 +1351,60 @@ export const LIES_LEDGER: Finding[] = [
       'Recorded as a fact, not a lie: when the docs say the Brain crystallizes patterns continuously, the database confirms it. This is the rare "Learning" claim that survives audit — though it lives in a different pipeline than CLM (F-070) or agent competency (F-071), neither of which back up the same narrative.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-073',
+    title: 'CORTEX "Orchestrator" primitive has 1 lifetime audit entry — 0 dispatches in last 7 days',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/15-primitive-specifications.md (Primitive #38: CORTEX "Orchestrator" v9.0.0)',
+      quote:
+        'CORTEX advertised as the substrate-wide orchestration engine — "dispatch / observe / propose / evaluate / apply / rollback" PAAEL loop, governing all module-to-module dispatch',
+    },
+    evidence: {
+      reality:
+        'cortex_audit_log: 1 row lifetime, 0 in the last 7 days. cortex_modes: 1 row (single static mode). cortex_circuit_breakers: 4 rows (initialized, never tripped). The pf-substrate cortex.status response confirms proposals_pending=0, proposals_applied=0, proposals_rejected=0, learn_cycles=0. An orchestrator that has dispatched, evaluated, and applied nothing is not orchestrating.',
+      method: 'count(*) cortex_audit_log → 1; 7d → 0; pf-substrate cortex.status → all PAAEL counters = 0.',
+    },
+    verdict:
+      'CORTEX is documented as the central nervous system for primitive coordination. The audit table that should record every dispatch contains a single row. "Orchestrator" with one lifetime audit entry is a name on a diagram, not a runtime.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-074',
+    title: 'Cascade orchestration tables empty — cascade_events = 0, substrate_cascade_history = 0, cascade_conversations = 0',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/13-primary-memory-chains.md (v15.1.7 "Chain Orchestrator Guard Layer") + cortex legacy_alias "cascade"',
+      quote:
+        '"Expanded to 50 chains across 7 categories" with a Guard Layer overseeing chain orchestration; cascade subsystem documented as the multi-primitive workflow engine',
+    },
+    evidence: {
+      reality:
+        'cascade_events: 0 lifetime. cascade_conversations: 0 lifetime. substrate_cascade_history: 0 lifetime. The only cascade-adjacent table with rows is cascade_dreams at 17 (the same 17 referenced in F-060). No event stream, no conversation stream, no historical record of any chain execution exists.',
+      method: 'SELECT count(*) FROM cascade_events / cascade_conversations / substrate_cascade_history → 0, 0, 0.',
+    },
+    verdict:
+      'The "50 chains across 7 categories" with a Guard Layer protecting orchestration is unbacked by any execution evidence. Three separate tables built to capture cascade activity are all empty. The Guard Layer guards an empty hallway.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-075',
+    title: 'brain_orchestrator_state contains a single row — substrate-wide orchestrator is a singleton placeholder',
+    severity: 'THEATER',
+    source: {
+      document: 'Primitive matrix (CORTEX as substrate orchestrator) + brain layer architecture docs',
+      quote:
+        'Brain layer maintains an orchestrator state machine coordinating Memory Stream, DREAM, and chain execution',
+    },
+    evidence: {
+      reality:
+        'brain_orchestrator_state: exactly 1 row. There is no history, no transition log, and no per-tenant or per-session state branching — the entire "orchestrator state" is a single mutable record. Combined with cortex_modes also having 1 row, the substrate has never had more than one simultaneous orchestration context in its lifetime.',
+      method: 'SELECT count(*) FROM brain_orchestrator_state → 1; cortex_modes → 1.',
+    },
+    verdict:
+      'A singleton row with no history is a configuration value pretending to be a state machine. The orchestrator does not orchestrate multiple flows because the schema only ever stores one — and even that one has no audited transitions (see F-073).',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
