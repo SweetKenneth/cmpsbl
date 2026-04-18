@@ -60,36 +60,39 @@ serve(async (req) => {
       const severities = Array.from(new Set(rows.map(r => r.escalation_severity).filter(Boolean)));
       const policyKey = `immunity.auto.${sig.slice(0, 16)}.${repair}`;
 
-      // Check if a brain_policy entry already exists
+      // Check cortex_audit_log for an existing tightening proposal
       const { data: existing } = await supabase
-        .from("brain_policy")
+        .from("cortex_audit_log")
         .select("id")
-        .eq("policy_key", policyKey)
+        .eq("event_type", "policy_tightening_proposed")
+        .eq("target_action", policyKey)
         .limit(1)
-        .maybeSingle()
-        .catch(() => ({ data: null }));
+        .maybeSingle();
 
       if (existing) {
         proposals.push({ key: policyKey, occurrences: rows.length, action: "exists" });
         continue;
       }
 
-      const proposal = {
-        policy_key: policyKey,
-        policy_type: "immunity_promoted",
-        status: "proposed",
-        priority: 7,
-        rule_definition: {
-          source: "immunity-cortex-tightener",
+      const auditEntry = {
+        event_type: "policy_tightening_proposed",
+        actor: "immunity-cortex-tightener",
+        target_module: "cortex",
+        target_action: policyKey,
+        old_value: null,
+        new_value: {
           failure_signature: sig,
           repair_type: repair,
           severities,
           occurrences: rows.length,
           recommended_action: "tighten",
-          rationale: `Signature observed ${rows.length}× in last ${sinceMinutes}min — auto-proposed for CORTEX policy promotion.`,
-          sample_event_count: rows.length,
         },
-        metadata: { auto_proposed: true, requires_governor_approval: true },
+        reason: `Signature observed ${rows.length}× in last ${sinceMinutes}min — auto-proposed for CORTEX policy promotion.`,
+        metadata: {
+          auto_proposed: true,
+          requires_governor_approval: true,
+          source_event_count: rows.length,
+        },
       };
 
       if (dryRun) {
@@ -98,15 +101,14 @@ serve(async (req) => {
       }
 
       const { data: ins, error: insErr } = await supabase
-        .from("brain_policy")
-        .insert(proposal)
+        .from("cortex_audit_log")
+        .insert(auditEntry)
         .select("id")
-        .single()
-        .catch((err) => ({ data: null, error: err }));
+        .single();
 
       if (insErr) {
-        console.warn("[immunity-cortex-tightener] insert failed (table may not exist or schema mismatch)", insErr);
-        proposals.push({ key: policyKey, occurrences: rows.length, action: "skipped", error: String(insErr) });
+        console.warn("[immunity-cortex-tightener] insert failed", insErr);
+        proposals.push({ key: policyKey, occurrences: rows.length, action: "skipped", error: insErr.message });
         continue;
       }
       proposals.push({ key: policyKey, occurrences: rows.length, action: "proposed", id: ins?.id });
