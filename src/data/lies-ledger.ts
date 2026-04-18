@@ -1794,6 +1794,60 @@ export const LIES_LEDGER: Finding[] = [
       'The 100% is technically a divide-by-zero default, not a lie — but it displays in the same panel that investors and operators read. Either backfill the analytics counter from ai_usage_log so the displayed number reflects reality, or render "n/a" when the live window is empty so no one mistakes the placeholder for a real metric. The 20.74% historical success rate itself deserves separate investigation — that is a real reliability signal being hidden.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-098',
+    title: 'Executors — claim of "125 custom executors" matches reality exactly',
+    severity: 'FACT',
+    source: {
+      document: 'public/docs/website/01-EXECUTIVE-SUMMARY.html + 03-KEY-CAPABILITIES.html + 09-SYNERGY-CAPABILITIES.html',
+      quote:
+        '"200 synergy pipelines with 125 custom executors" / "125 implementations (76 core + 22 S-tier + 27 discovery pipelines)"',
+    },
+    evidence: {
+      reality:
+        'src/lib/capabilities/synergies/executors.ts exports exactly 103 `executeXxx` functions (5,832 LOC); src/lib/capabilities/synergies/stier/executors.ts exports exactly 22 (2,006 LOC). 103 + 22 = 125 — matches the headline claim to the unit. Each executor is a real async function with module-by-module step accumulation (DECODE→BRAIN→DREAM pattern visible in executeSmartRecall etc.).',
+      method: 'grep -cE "^export async function execute" on both executor files; wc -l for size.',
+    },
+    verdict:
+      'Rare: a precise count claim that holds. The architecture is real and the math is honest. The internal sub-counts (76 core + 22 S-tier + 27 discovery) sum to 125 but the file split is 103/22 — the "76 + 27 = 103" decomposition is plausible but not separately verified here. Headline number is solid.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-099',
+    title: 'Synergy pipeline count — docs say 200, registry holds 198',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/website/09-SYNERGY-CAPABILITIES.html',
+      quote: '"Total Synergies: 200 production-ready pipelines"',
+    },
+    evidence: {
+      reality:
+        'grep of `id:` entries across src/lib/capabilities/synergies/registry.ts (2,183 LOC), stier/depot-registry.ts (706 LOC), and infrastructure-pipelines.ts returns 198 entries — two short of the round 200 advertised. Likely a rounding/marketing convenience rather than fabrication; the gap is 1%.',
+      method: 'grep -E "^\\s*\\{?\\s*id:\\s*[\\\\\'\\\"]" on the three registry files.',
+    },
+    verdict:
+      'Off by 2 in the user-facing direction. Either add the two missing pipelines to hit the claimed 200, or update the docs to "198+". Trivially fixable; flagging because exact integers in marketing copy create unnecessary attack surface.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-100',
+    title: 'Resolvers — "80+ resolvers across 40 nodes" understates reality (131 in MESH_MANIFEST)',
+    severity: 'FACT',
+    source: {
+      document: 'public/docs/meta-paper/heritage.html',
+      quote:
+        '"80+ resolvers across 40 nodes" / "node.resolver_name → composable primitives" / "edge-function-as-resolver pattern"',
+    },
+    evidence: {
+      reality:
+        'src/lib/substrate/intent-mesh/manifest.ts (the canonical MESH_MANIFEST) declares 131 resolver entries in the dotted node.capability form (defense.threat_score, relay.email_by_actor, brain.reasoning_context, etc.). The runtime in router.ts resolves steps by `MESH_MANIFEST.find(r => r.id === step.resolverId)`. packages/intent/src/index.ts also exposes `registerResolver(intentType, handler)` and `registerResolverMap()` as a public Tier-1 API — the resolver pattern is both internal and externally distributable.',
+      method:
+        'grep -cE "id:\\s*[\\\\\'\\\"]" src/lib/substrate/intent-mesh/manifest.ts; grep -E "registerResolver" packages/intent/src/index.ts.',
+    },
+    verdict:
+      'Actually understated — reality is 131, claim is 80+. Both numbers are technically true (131 satisfies "80+") but the docs are leaving real distinctness on the table. The resolver pattern is real, externally packaged (@cmpsbl/intent), and load-bearing for Intent Mesh routing. Recommend updating docs to "130+ resolvers".',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
