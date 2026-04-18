@@ -35,6 +35,8 @@ import {
   Award,
   Eye,
   ExternalLink,
+  Key,
+  ShoppingCart,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -75,18 +77,19 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: "Explore",
     items: [
-      { name: "Store", href: "/store", icon: ShoppingBag, description: "Layers, Meta Engines & Meta Agents" },
+      { name: "Store", href: "/store", icon: ShoppingCart, description: "Layers, Meta Engines & Meta Agents", badge: "BUY" },
       { name: "Showroom", href: "/showroom", icon: Eye, description: "Interactive capability showcase" },
+      { name: "Case Studies", href: "/case-studies", icon: Award, description: "Real-world Ascension results" },
       { name: "Use Cases", href: "/use-cases", icon: Cpu, description: "Real-world implementation examples" },
     ],
   },
   {
-    title: "Resources",
+    title: "Developers",
     items: [
-      { name: "User Guides", href: "/docs", icon: BookOpen, description: "Developer guides, API reference & tutorials" },
-      { name: "Case Studies", href: "/case-studies", icon: Eye, description: "Real-world Ascension results" },
-      { name: "Blog", href: "/blog", icon: Newspaper, description: "Engineering insights & updates" },
+      { name: "API Access", href: "/api-access", icon: Key, description: "Get a free key — one endpoint, 40 primitives", badge: "FREE" },
+      { name: "Documentation", href: "/documentation", icon: BookOpen, description: "API reference, SDKs & guides" },
       { name: "Changelog", href: "/changelog", icon: ScrollText, description: "Version history & release notes" },
+      { name: "Blog", href: "/blog", icon: Newspaper, description: "Engineering insights & updates" },
       { name: "Heritage Paper", href: "/heritage-paper", icon: Award, description: "The founding technical paper" },
     ],
   },
@@ -95,7 +98,6 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { name: "About", href: "/about", icon: Building2, description: "Our mission & story" },
       { name: "Plans", href: "/plans", icon: CreditCard, description: "Free or Pro" },
-      { name: "Software Symbiosis", href: "/software-symbiosis", icon: Layers, description: "The vision behind Mana" },
       { name: "Investors", href: "/investors", icon: Award, description: "Investment thesis & traction" },
       { name: "Contact", href: "/contact", icon: Users, description: "Get in touch" },
     ],
@@ -105,9 +107,9 @@ const NAV_SECTIONS: NavSection[] = [
 /** Flat list for quick access */
 const ALL_NAV_ITEMS = NAV_SECTIONS.flatMap((s) => s.items);
 
-/** Top quick-links for mobile grid */
+/** Top quick-links for mobile grid — funnel targets */
 const MOBILE_QUICK_LINKS = ALL_NAV_ITEMS.filter((i) =>
-  ["/shield", "/ascension-v2", "/store", "/mana"].includes(i.href)
+  ["/ascension-v2", "/store", "/api-access", "/plans"].includes(i.href)
 );
 
 export function CmpsblNav() {

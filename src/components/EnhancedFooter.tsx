@@ -1,7 +1,7 @@
 /**
- * Enhanced Footer — Legacy Guide + Factory Navigation
- * 4 columns × 5 links each = 20 footer links (uniform)
- * Polished with shimmer bar, glass treatment, and hover micro-interactions
+ * Enhanced Footer — Funnel-Optimized v19.1
+ * 4 columns aligned to the 3 funnel targets: /ascension-v2, /store, /plans
+ * Plus Developers column → /api-access (key + docs hub)
  */
 
 import { useState } from "react";
@@ -33,34 +33,31 @@ export function EnhancedFooter() {
     {
       title: "Products",
       links: [
-        { name: "Showroom", href: "/showroom" },
-        { name: "Code Ascension", href: "/ascension-v2" },
+        { name: "Run Diagnostic", href: "/ascension-v2", highlight: true },
+        { name: "Shield", href: "/shield" },
+        { name: "Mana", href: "/mana" },
         { name: "Memory Stream", href: "/foundry" },
-        { name: "Junkyard", href: "/junkyard" },
-        { name: "Marketplace", href: "https://marketplace.cmpsbl.com", external: true },
+        { name: "Assembly", href: "/assembly" },
+      ]
+    },
+    {
+      title: "Buy",
+      links: [
+        { name: "Store", href: "/store", highlight: true },
         { name: "Plans & Pricing", href: "/plans", highlight: true },
-      ]
-    },
-    {
-      title: "Resources",
-      links: [
-        { name: "Documentation", href: "/documentation" },
-        { name: "Heritage Paper", href: "/heritage-paper", highlight: true },
-        { name: "API Access", href: "/api-access" },
-        { name: "Blog", href: "/blog" },
-        { name: "Changelog", href: "/changelog" },
+        { name: "Showroom", href: "/showroom" },
         { name: "Case Studies", href: "/case-studies" },
+        { name: "Use Cases", href: "/use-cases" },
       ]
     },
     {
-      title: "Explore",
+      title: "Developers",
       links: [
-        { name: "Verticals", href: "/verticals" },
-        { name: "Use Cases", href: "/use-cases" },
-        { name: "Try the Substrate", href: "/try" },
-        { name: "Enterprise", href: "/enterprise" },
-        { name: "Developers", href: "/developers" },
-        { name: "Architecture", href: "/architecture" },
+        { name: "API Access", href: "/api-access", highlight: true },
+        { name: "Documentation", href: "/documentation" },
+        { name: "Changelog", href: "/changelog" },
+        { name: "Blog", href: "/blog" },
+        { name: "Heritage Paper", href: "/heritage-paper" },
       ]
     },
     {
@@ -71,14 +68,11 @@ export function EnhancedFooter() {
         { name: "Roadmap", href: "/roadmap" },
         { name: "Contact", href: "/contact" },
         { name: "Support", href: "/support" },
-        { name: "Status", href: "/status" },
       ]
     },
   ];
 
   const legalLinks: FooterLink[] = [
-    { name: "PromptFluid™", href: "/promptfluid" },
-    { name: "Support", href: "/support" },
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
     { name: "LLMs.txt", href: "/llms-txt" },
@@ -116,20 +110,16 @@ export function EnhancedFooter() {
                 Memory Stream discovers. Ascension restores. 40 Primitives power everything.
               </p>
               <div className="flex flex-col gap-1 mb-4">
-                <Link 
-                  to="/plans" 
+                <Link
+                  to="/plans"
                   className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neon-cyan hover:text-neon-cyan/80 transition-colors"
                 >
                   View Plans →
                 </Link>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] sm:text-[11px] font-mono text-muted-foreground/70">
-                  <span>Builder (free)</span>
+                  <span>Free</span>
                   <span className="text-border">·</span>
-                  <span>Studio $29</span>
-                  <span className="text-border">·</span>
-                  <span>Creator $49</span>
-                  <span className="text-border">·</span>
-                  <span>Architect $79</span>
+                  <span>Pro</span>
                 </div>
               </div>
 
