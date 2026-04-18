@@ -354,11 +354,15 @@ Priority order (highest impact first):
 3. **`pf_*` is the legacy prefix for ACTIVE code**, not dead code.
 4. **`ultimate/` engines are the biggest real-code-no-wire bucket** — these are the moat that was hidden.
 5. **No subsystem is wholesale fabricated.** Even "missing" engines turn out to exist under aliases.
+6. **Agent Forge + Agency are DORMANT, not dead.** Built during the Firecrawl free promo (~2 weeks), paused when the promo ended. Code path intact, DB schema intact, 20-member CMPSBL OPS Agency still seeded. Re-funding Firecrawl re-activates them — no rebuild required.
+7. **The "300 edge function wall" event explains most disconnections.** Many subsystems were live, then quarantined when Lovable's platform itself capped out. Kenneth was forced to Remix into today's CMPSBL — `pf_*` ↔ `cmpsbl_*` coexistence is the scar tissue from that event.
+8. **XCTBL.com is live (HTTP 200, verified)** — parallel proof of substrate patterns at scale on another account.
 
 ### What was actually drift:
 - AI calling `discoveries` "discovery_capabilities" (fabrication)
 - AI not searching aliases (omission)
 - AI claiming "0 DB rows = fake" without checking aliases (logical error)
+- **AI conflating "dormant by economic choice" with "theater"** (e.g., Agent Forge, Firecrawl-gated Agency calls)
 
 ---
 
