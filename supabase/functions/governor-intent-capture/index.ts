@@ -17,11 +17,14 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
-async function embed(text: string): Promise<number[] | null> {
-  if (!OPENAI_API_KEY) {
-    console.warn("[governor-intent-capture] OPENAI_API_KEY missing — skipping embedding");
-    return null;
-  }
+function normalizeVec(vec: number[]): number[] {
+  if (vec.length === 1536) return vec;
+  if (vec.length > 1536) return vec.slice(0, 1536);
+  return vec.concat(new Array(1536 - vec.length).fill(0));
+}
+
+async function embedViaOpenAI(text: string): Promise<number[] | null> {
+  if (!OPENAI_API_KEY) return null;
   try {
     const res = await fetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
@@ -29,21 +32,37 @@ async function embed(text: string): Promise<number[] | null> {
       body: JSON.stringify({ model: "text-embedding-3-small", input: text.slice(0, 8000) }),
     });
     if (!res.ok) {
-      const errText = await res.text().catch(() => "");
-      console.error(`[governor-intent-capture] embed http ${res.status}: ${errText.slice(0, 300)}`);
+      console.error(`[governor-intent-capture] openai ${res.status}: ${(await res.text()).slice(0, 300)}`);
       return null;
     }
     const data = await res.json();
     const vec: number[] = data?.data?.[0]?.embedding;
-    if (!Array.isArray(vec) || vec.length !== 1536) {
-      console.error(`[governor-intent-capture] embed bad shape len=${vec?.length}`);
-      return null;
-    }
-    return vec;
+    return Array.isArray(vec) ? normalizeVec(vec) : null;
   } catch (e) {
-    console.error("[governor-intent-capture] embed exception", e);
+    console.error("[governor-intent-capture] openai exception", e);
     return null;
   }
+}
+
+// Deterministic fallback so governor intent is never lost when providers are down.
+function deterministicEmbed(text: string): number[] {
+  const vec = new Array(1536).fill(0);
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    const idx = Math.abs((code * 2654435761) | 0) % 1536;
+    vec[idx] += Math.sin(code * 0.017 + i * 0.013);
+  }
+  let mag = 0;
+  for (const v of vec) mag += v * v;
+  mag = Math.sqrt(mag) || 1;
+  return vec.map((v) => v / mag);
+}
+
+async function embed(text: string): Promise<{ vec: number[]; provider: string }> {
+  const v = await embedViaOpenAI(text);
+  if (v) return { vec: v, provider: "openai" };
+  console.warn("[governor-intent-capture] using deterministic embedding fallback");
+  return { vec: deterministicEmbed(text), provider: "deterministic" };
 }
 
 serve(async (req) => {
