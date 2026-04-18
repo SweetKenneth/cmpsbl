@@ -26,7 +26,11 @@ function csInit(f: SpecField): string {
   if (f.type === 'bool') return String(f.init ?? false);
   return `${f.init ?? 0}L`;
 }
-function csOp(op: MethodOp, spec: ComponentSpec): string[] {
+function resolveKey(m: SpecMethod, key: 'param'): string {
+  return m.params?.[0]?.name ?? 'key';
+}
+
+function csOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
   switch (op.kind) {
     case 'get': return [`return ${op.field};`];
     case 'set': return [`${op.field} = ${op.from};`];
@@ -35,8 +39,10 @@ function csOp(op: MethodOp, spec: ComponentSpec): string[] {
     case 'reset_field': return [`${op.field} = 0;`];
     case 'reset_all': return spec.fields.map(f => `${f.name} = ${csInit(f)};`);
     case 'clear_map': return [`${op.field}.Clear();`];
-    case 'map_inc':
-      return [`${op.field}[${op.key}] = (${op.field}.TryGetValue(${op.key}, out var __v) ? __v : 0L) + ${op.by ?? 1}L;`];
+    case 'map_inc': {
+      const k = resolveKey(m, op.key);
+      return [`${op.field}[${k}] = (${op.field}.TryGetValue(${k}, out var __v) ? __v : 0L) + ${op.by ?? 1}L;`];
+    }
     case 'snapshot': {
       const pairs = op.fields.map(f => `{"${f}", ${f}}`).join(', ');
       return [`return new System.Collections.Generic.Dictionary<string,object>{${pairs}};`];

@@ -144,7 +144,7 @@ export function emitKotlin(spec: ComponentSpec): string {
     const ret = ktRet(m, spec);
     lines.push(`    fun ${m.name}(${params})${ret} {`);
     lines.push('        synchronized(LOCK) {');
-    for (const op of m.ops) for (const l of ktOp(op, spec)) lines.push(`            ${l}`);
+    for (const op of m.ops) for (const l of ktOp(op, spec, m)) lines.push(`            ${l}`);
     lines.push('        }');
     lines.push('    }');
     lines.push('');
