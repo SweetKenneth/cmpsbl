@@ -200,7 +200,7 @@ export default function AgencyHome() {
               Agency Engines
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              8 specialized engines hot-swapped for autonomous agent operations
+              8 specialized engines hot-swapped for governed AI worker operations
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {ENGINE_DATA.map((e, i) => (
@@ -229,7 +229,7 @@ export default function AgencyHome() {
               Agency Agents
             </h2>
             <p className="text-sm mb-8" style={{ color: TEXT_SECONDARY }}>
-              8 autonomous agents purpose-built for agent fleet excellence
+              8 policy-governed AI workers purpose-built for fleet excellence
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {AGENT_DATA.map((a, i) => (
