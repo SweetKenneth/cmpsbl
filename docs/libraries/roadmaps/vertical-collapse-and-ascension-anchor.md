@@ -34,8 +34,9 @@ Ran against the live database `2026-04-18`. Every number below is `SELECT COUNT(
 | `discovered_pipelines` | 40 | — | ✅ real |
 | `foundry_discovery_metrics` | 202 | — | ✅ real |
 | `vertical_memory_stream` | 40 | **0** | ⚠️ **STALE** — 15 days dead |
-| `cli_ascension_sessions` | 2 | 0 | ⚠️ Ascension worked **twice ever** (2026-04-14) |
-| `vertical_ascension_sessions` | 1 | 0 | ⚠️ One real run |
+| `cli_ascension_sessions` | 2 | 0 | ⚠️ **Telemetry under-reports.** Kenneth has personally run V1+V2 100+ times — the engine is verified-real; the session log is just not being written by every entry path (web export pipeline doesn't insert here). Treat the **engine as load-bearing real**, not the row count. |
+| `vertical_ascension_sessions` | 1 | 0 | ⚠️ Same — one logged run, many real ones. |
+| `backup_exports` | 44 | — | ✅ **REAL** — 44 actual export artifacts persisted, corroborates the 100+ runs claim |
 | `artifact_registry` (apex/mythic/prime tiers) | 204 | **178 in 30d** | ✅ **REAL** — Crown Jewel pipeline produces |
 
 ### 1.3 The Crown Jewel reality
