@@ -42,6 +42,9 @@ const SOURCES: Record<string, SourceConfig> = {
   memory_warm: { table: "brain_memory_warm",        artifact_type: "memory_warm", contentCol: "content",            idCol: "id" },
   memory_cold: { table: "brain_memory_cold",        artifact_type: "memory_cold", contentCol: "summary",            idCol: "id" },
   heuristics:  { table: "brain_transfer_heuristics",artifact_type: "heuristic",   contentCol: "heuristic_content",  idCol: "id" },
+  // DREAM sources — autonomous cognition feedback loop
+  dreams:      { table: "dream_log",                artifact_type: "dream",       contentCol: "content",            idCol: "id" },
+  node_dreams: { table: "node_dream_log",           artifact_type: "dream",       contentCol: "summary",            idCol: "id" },
 };
 
 async function embed(text: string): Promise<number[] | null> {
