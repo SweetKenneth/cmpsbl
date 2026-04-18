@@ -26,7 +26,11 @@ function javaInit(f: SpecField): string {
   if (f.type === 'bool') return String(f.init ?? false);
   return `${f.init ?? 0}L`;
 }
-function javaOp(op: MethodOp, spec: ComponentSpec): string[] {
+function resolveKey(m: SpecMethod, key: 'param'): string {
+  return m.params?.[0]?.name ?? 'key';
+}
+
+function javaOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
   switch (op.kind) {
     case 'get': return [`return ${op.field};`];
     case 'set': return [`${op.field} = ${op.from};`];
@@ -36,7 +40,7 @@ function javaOp(op: MethodOp, spec: ComponentSpec): string[] {
     case 'reset_all': return spec.fields.map(f => `${f.name} = ${javaInit(f)};`);
     case 'clear_map': return [`${op.field}.clear();`];
     case 'map_inc':
-      return [`${op.field}.merge(${op.key}, ${op.by ?? 1}L, Long::sum);`];
+      return [`${op.field}.merge(${resolveKey(m, op.key)}, ${op.by ?? 1}L, Long::sum);`];
     case 'snapshot': {
       const pairs = op.fields.map(f => `m.put("${f}", ${f});`).join(' ');
       return [`java.util.Map<String,Object> m = new java.util.HashMap<>(); ${pairs} return m;`];

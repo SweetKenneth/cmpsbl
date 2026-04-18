@@ -90,7 +90,7 @@ export function emitRust(spec: ComponentSpec): string {
     const ret = returnTypeFor(m, spec);
     lines.push(`pub fn cmpsbl_${spec.module.toLowerCase()}_${m.name}(${params})${ret} {`);
     lines.push(`    let mut s = CMPSBL_${spec.module.toUpperCase()}.lock().unwrap();`);
-    for (const op of m.ops) for (const l of rsOp(op, spec)) lines.push(`    ${l}`);
+    for (const op of m.ops) for (const l of rsOp(op, spec, m)) lines.push(`    ${l}`);
     lines.push('}');
     lines.push('');
   }
