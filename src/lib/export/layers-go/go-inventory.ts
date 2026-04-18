@@ -63,7 +63,44 @@ export const BEHAVIORAL_BIO_GO = `\n${recipe('biom', 'Behavioral Biometrics')}\n
 export const COMPLIANCE_AUDIT_GO = `\n${recipe('caudit', 'Compliance Audit')}\n`;
 export const CYBER_PERIM_GO = `\n${recipe('cyperim', 'Cyber Perimeter Suite')}\n`;
 export const DATA_SOV_GO = `\n${recipe('dsov', 'Data Sovereignty Partitioner')}\n`;
-export const REPLAY_VAULT_GO = `\n${recipe('rvault', 'Deterministic Replay Vault')}\n`;
+export const REPLAY_VAULT_GO = `
+${HEADER('Deterministic Replay Vault')}
+
+type Cmpsbl_rvault_Capsule struct {
+\tID, Cap, Input, Output, Seed string
+\tTs int64
+}
+
+var _cmpsbl_rvault_vault []Cmpsbl_rvault_Capsule
+var _cmpsbl_rvault_mu sync.Mutex
+
+func _cmpsbl_rvault_fnv1a(s string) string {
+\tvar h uint32 = 2166136261
+\tfor _, c := range s { h ^= uint32(c); h *= 16777619 }
+\treturn fmt.Sprintf("%08x", h)
+}
+
+func cmpsbl_rvault_seal(cap, input, output string) string {
+\t_cmpsbl_rvault_mu.Lock(); defer _cmpsbl_rvault_mu.Unlock()
+\tts := time.Now().UnixMilli()
+\tseed := _cmpsbl_rvault_fnv1a(fmt.Sprintf("%s:%d:%s", cap, ts, input))
+\tid := "rep_" + seed
+\t_cmpsbl_rvault_vault = append(_cmpsbl_rvault_vault, Cmpsbl_rvault_Capsule{ID: id, Ts: ts, Cap: cap, Input: input, Output: output, Seed: seed})
+\tif len(_cmpsbl_rvault_vault) > 4096 { _cmpsbl_rvault_vault = _cmpsbl_rvault_vault[1:] }
+\treturn id
+}
+
+func cmpsbl_rvault_get(id string) *Cmpsbl_rvault_Capsule {
+\t_cmpsbl_rvault_mu.Lock(); defer _cmpsbl_rvault_mu.Unlock()
+\tfor i := range _cmpsbl_rvault_vault { if _cmpsbl_rvault_vault[i].ID == id { return &_cmpsbl_rvault_vault[i] } }
+\treturn nil
+}
+
+func cmpsbl_rvault_count() int {
+\t_cmpsbl_rvault_mu.Lock(); defer _cmpsbl_rvault_mu.Unlock()
+\treturn len(_cmpsbl_rvault_vault)
+}
+`;
 export const EMERGENT_GW_GO = `\n${recipe('egw', 'Emergent Gateway')}\n`;
 export const HOLO_INT_GO = `\n${recipe('holint', 'Holographic Integration Suite')}\n`;
 export const HONEYPOT_GO = `\n${recipe('honey', 'Honeypot Intelligence')}\n`;
@@ -72,7 +109,38 @@ export const LLM_DEFENSE_GO = `\n${recipe('llmdef', 'LLM Defense Suite')}\n`;
 export const LOCALIZATION_GO = `\n${recipe('locmesh', 'Localization Mesh')}\n`;
 export const MULTI_MODEL_GO = `\n${recipe('mmcons', 'Multi-Model Consensus')}\n`;
 export const NEURAL_BROKER_GO = `\n${recipe('nbrok', 'Neural Broker')}\n`;
-export const NOCTURNE_GO = `\n${recipe('noct', 'Nocturne Consolidation')}\n`;
+export const NOCTURNE_GO = `
+${HEADER('Nocturne Consolidation')}
+
+var _cmpsbl_noct_mem = map[string]float64{}
+var _cmpsbl_noct_mu sync.Mutex
+const _cmpsbl_noct_decay = 0.92
+const _cmpsbl_noct_floor = 0.05
+
+func cmpsbl_noct_record(cap string) {
+\t_cmpsbl_noct_mu.Lock(); defer _cmpsbl_noct_mu.Unlock()
+\tw := _cmpsbl_noct_mem[cap] + 0.1
+\tif w > 1.0 { w = 1.0 }
+\t_cmpsbl_noct_mem[cap] = w
+}
+
+func cmpsbl_noct_consolidate() (int, int, string) {
+\t_cmpsbl_noct_mu.Lock(); defer _cmpsbl_noct_mu.Unlock()
+\tpruned := 0; strongest := ""; var topW float64 = -1
+\tfor k, w := range _cmpsbl_noct_mem {
+\t\tnw := w * _cmpsbl_noct_decay
+\t\tif nw < _cmpsbl_noct_floor { delete(_cmpsbl_noct_mem, k); pruned++; continue }
+\t\t_cmpsbl_noct_mem[k] = nw
+\t\tif nw > topW { topW = nw; strongest = k }
+\t}
+\treturn len(_cmpsbl_noct_mem), pruned, strongest
+}
+
+func cmpsbl_noct_weight(cap string) float64 {
+\t_cmpsbl_noct_mu.Lock(); defer _cmpsbl_noct_mu.Unlock()
+\treturn _cmpsbl_noct_mem[cap]
+}
+`;
 export const PRIVACY_OBF_GO = `\n${recipe('privobf', 'Privacy Obfuscation')}\n`;
 export const PROBABILISTIC_GO = `\n${recipe('probcon', 'Probabilistic Conscience')}\n`;
 export const REFLEX_ORCH_GO = `\n${recipe('rxorch', 'Reflex Orchestration')}\n`;

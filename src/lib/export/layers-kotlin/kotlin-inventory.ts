@@ -35,6 +35,49 @@ object ${obj} {
     fun chainLen(): Int = synchronized(lock) { history.size }
 }`;
 
+const NOCTURNE_KT = `${HEADER('Nocturne Consolidation')}
+object Nocturne {
+    private val mem = java.util.concurrent.ConcurrentHashMap<String, Double>()
+    private const val DECAY = 0.92
+    private const val FLOOR = 0.05
+    @Volatile var lastStrongest: String? = null
+    fun record(cap: String) { mem.merge(cap, 0.1) { a, b -> minOf(1.0, a + b) } }
+    fun consolidate(): Pair<Int, Int> {
+        var pruned = 0; var strongest: String? = null; var topW = -1.0
+        for (k in mem.keys.toList()) {
+            val nw = (mem[k] ?: 0.0) * DECAY
+            if (nw < FLOOR) { mem.remove(k); pruned++; continue }
+            mem[k] = nw
+            if (nw > topW) { topW = nw; strongest = k }
+        }
+        lastStrongest = strongest
+        return mem.size to pruned
+    }
+    fun weight(cap: String): Double = mem[cap] ?: 0.0
+}`;
+
+const REPLAY_VAULT_KT = `${HEADER('Deterministic Replay Vault')}
+object ReplayVault {
+    data class Capsule(val id: String, val ts: Long, val cap: String, val input: String, val output: String, val seed: String)
+    private val vault = mutableListOf<Capsule>()
+    private val lock = Any()
+    private fun fnv1a(s: String): String {
+        var h: Long = 2166136261L
+        for (c in s) { h = h xor c.code.toLong(); h = (h * 16777619L) and 0xFFFFFFFFL }
+        return "%08x".format(h)
+    }
+    fun seal(cap: String, input: String, output: String): String = synchronized(lock) {
+        val ts = System.currentTimeMillis()
+        val seed = fnv1a("\$cap:\$ts:\$input")
+        val id = "rep_" + seed
+        vault.add(Capsule(id, ts, cap, input, output, seed))
+        if (vault.size > 4096) vault.removeAt(0)
+        id
+    }
+    fun get(id: String): Capsule? = synchronized(lock) { vault.find { it.id == id } }
+    fun count(): Int = synchronized(lock) { vault.size }
+}`;
+
 export const KOTLIN_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.freeze({
   'adaptive-forge':                recipe('AdaptiveForge', 'Adaptive Forge'),
   'adversarial-wargame':           recipe('AdvWargame', 'Adversarial Wargame'),
@@ -42,7 +85,7 @@ export const KOTLIN_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.
   'compliance-audit':              recipe('ComplianceAudit', 'Compliance Audit'),
   'cyber-perimeter-suite':         recipe('CyberPerim', 'Cyber Perimeter Suite'),
   'data-sovereignty-partitioner':  recipe('DataSov', 'Data Sovereignty Partitioner'),
-  'deterministic-replay-vault':    recipe('ReplayVault', 'Deterministic Replay Vault'),
+  'deterministic-replay-vault':    REPLAY_VAULT_KT,
   'emergent-gateway':              recipe('EmergentGw', 'Emergent Gateway'),
   'holographic-integration-suite': recipe('HoloInt', 'Holographic Integration Suite'),
   'honeypot-intelligence':         recipe('Honeypot', 'Honeypot Intelligence'),
@@ -51,7 +94,7 @@ export const KOTLIN_INVENTORY_BODIES: Readonly<Record<string, string>> = Object.
   'localization-mesh':             recipe('LocMesh', 'Localization Mesh'),
   'multi-model-consensus':         recipe('MultiModel', 'Multi-Model Consensus'),
   'neural-broker':                 recipe('NeuralBroker', 'Neural Broker'),
-  'nocturne-consolidation':        recipe('Nocturne', 'Nocturne Consolidation'),
+  'nocturne-consolidation':        NOCTURNE_KT,
   'privacy-obfuscation':           recipe('PrivacyObf', 'Privacy Obfuscation'),
   'probabilistic-conscience':      recipe('ProbConsc', 'Probabilistic Conscience'),
   'reflex-orchestration':          recipe('ReflexOrch', 'Reflex Orchestration'),
