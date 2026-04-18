@@ -153,8 +153,8 @@ Each step is independently shippable. Stop after any step if needed.
 - **The discovery engine is real.** 7,266 rows, daily activity. That's the strongest signal in the DB — preserve and surface it.
 - **CLM is real.** 780 cycles in 7 days. The "vertical CLM" is just one prime CLM with a vertical tag — flatten the tag, keep the engine.
 - **Crown Jewels are real but not vertical-attributed in the DB.** 205 artifacts. Vertical grouping was UI overlay — flatten it without data loss.
-- **Ascension is real but barely used.** 2 CLI sessions ever, last on April 14. **This is the moat per your direction** — the next session's home work makes that visible.
-- **Memory Stream is dead.** 15 days stale on every vertical. Either revive it as one prime stream or retire it. Recommend retire-then-rebuild as a single prime stream.
+- **Ascension is real and load-bearing.** Kenneth has personally run V1+V2 100+ times. The 2-row session log is a telemetry gap, not an engine reality — `backup_exports` shows 44 persisted artifacts that corroborate the user-attested usage. **Step 4a fixes this before Step 4b touches the home widget**, so we never ship a "0 ascensions today" badge backed by broken instrumentation. The engine is the moat; the counter is being repaired.
+- **Memory Stream is dead at the row level.** 15 days stale on every vertical. Either revive it as one prime stream or retire it. Recommend retire-then-rebuild as a single prime stream.
 - **The 7 phantom verticals never existed in the DB.** The Lies Ledger called this; we now have the row counts to prove it.
 
 ## 7. What this is NOT touching (per `mem://constraints/architecture/layer2-runtime-non-negotiables`)
