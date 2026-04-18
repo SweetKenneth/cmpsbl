@@ -1,6 +1,8 @@
 # CMPSBL® Users & Developers Documentation Library
 
-**Version:** v16.7.0 — CONTACT Epoch
+**Version:** v16.7.0 — CONTACT Epoch (operational copy)
+
+> ⓘ **Terminology updated to v19 (SYMBIOTIC, April 2026).** Public terminology now uses "governed cognitive infrastructure" and "policy-governed AI workers." See the canonical [Zenodo v19](../zenodo-v19/00-INDEX.md) deposit and the [terminology updates appendix](../zenodo-v19/09-terminology-updates-v19.md).
 
 ---
 

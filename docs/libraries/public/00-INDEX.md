@@ -1,6 +1,8 @@
 # CMPSBL® Public Documentation Library
 
-**Version:** v16.7.0 — CONTACT Epoch
+**Version:** v16.7.0 — CONTACT Epoch (operational copy)
+
+> ⓘ **Terminology updated to v19 (SYMBIOTIC, April 2026).** For the canonical research deposit and the v19 terminology updates appendix, see [`/docs/libraries/zenodo-v19/`](../zenodo-v19/00-INDEX.md). This library remains the operational reference for the live site.
 
 ---
 
