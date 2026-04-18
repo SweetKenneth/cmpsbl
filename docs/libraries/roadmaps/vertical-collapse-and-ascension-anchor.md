@@ -35,7 +35,8 @@ Prior audits were wrong because they searched canonical names only. These aliase
 | DREAM (Engine #25) | Cascade, `cascade_*`, `dream_*`, `node_dream_*` |
 | DECODE (Agent #34) | Cascade (split half), `decode_*`, `cascade_conversations` |
 | ENCODE (Agent #33) | ENCODED, `encoded/*` |
-| IMMUNITY (Layer #14) | Clarity, CMPTBL, `immunity_*`, `pf_clarity_*` |
+| INCLUSIVE (accessibility primitive) | Clarity, CMPTBL, PromptFluid Clarity, `pf_clarity_*`, `inclusive_*` |
+| IMMUNITY (Layer #14) | `immunity_*` (NOT Clarity — Clarity belongs to INCLUSIVE) |
 | CMPSBL substrate | PromptFluid, ecosystem, `pf_*`, `prompt_fluid_*`, `substrate_*`, `cmpsbl_*` |
 | Governor | Admin, `admin_*` |
 | Memory Chain | Pipeline, `pipeline_*`, `chain_*` |
@@ -92,15 +93,21 @@ Counts are real DB row counts as of restart.
 
 **Verdict:** EVOLUTION exists three times under three names. Real and wired.
 
-### IMMUNITY Layer (Clarity ∪ Immunity ∪ CMPTBL) — **ALIVE**
+### INCLUSIVE (Clarity ∪ CMPTBL ∪ PromptFluid Clarity) — **ALIVE**
 | Table | Rows |
 |-------|------|
 | `pf_clarity_scans` | 10 |
 | `pf_clarity_sites` | 1 |
-| `immunity_rules` | 0 (table exists, writer needed) |
 | `pf_clarity_*` total tables | 25 |
 
-**Verdict:** Clarity (the real wired-up half of IMMUNITY) is alive. The newer `immunity_*` tables are scaffolded but unwired.
+**Verdict:** Clarity (the original July 2025 WCAG product, codename CMPTBL) is the wired-up ancestor of the **INCLUSIVE** primitive — not IMMUNITY. Documented lineage: Heritage Paper §6 ("CMPTBL → INCLUSIVE").
+
+### IMMUNITY Layer (#14) — **SCAFFOLDED, UNWIRED**
+| Table | Rows |
+|-------|------|
+| `immunity_rules` | 0 (table exists, writer needed) |
+
+**Verdict:** Distinct primitive from INCLUSIVE. Tables exist but no writer is currently populating them.
 
 ### Substrate Core — **ALIVE**
 | Table | Rows |
