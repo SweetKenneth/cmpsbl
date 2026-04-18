@@ -62,7 +62,7 @@ Ran against the live database `2026-04-18`. Every number below is `SELECT COUNT(
 - `discoveries` + `discovery_runs` (7,266 + 3,343 rows, daily activity) → **the prime Discovery Engine works**
 - `vertical_clm_cycles` (1,764 rows, 780 in 7 days) → **CLM is running** — feed all 5 verticals' cycles into one prime stream
 - `artifact_registry` (205 real Crown Jewels across 7 tiers) → **the prime vault**
-- `cli_ascension_sessions` schema — **the moat**, even though only 2 sessions ran. Surface this in the home and make it the signup driver.
+- `cli_ascension_sessions` + `vertical_ascension_sessions` + `backup_exports` — **the moat.** Kenneth has used V1/V2 100+ times; telemetry under-reports because not all entry paths write a session row. **Action item baked into Step 4 below: instrument all Ascension entry paths to write a session row, so the home page's "live proof" widget reflects reality, not a broken counter.** Surface this in the home and make it the signup driver.
 - `foundry_discovery_metrics` (202 rows) — keep
 - `discovered_pipelines` (40 rows) — keep
 - `substrate_*` tables (50+ tables, real config/runtime) — untouched
