@@ -177,3 +177,66 @@ Each step is independently shippable. Stop after any step if needed.
 4. **Subdomain DNS** — once the redirect shim ships, do you want me to draft an issue/checklist for actually retiring the DNS A-records, or leave that to you?
 
 Answer those and the next session executes steps 1–8 in order.
+
+---
+
+## 9. TRUTH LEDGER — multi-pass audit log (live)
+
+Each pass = one full sweep of a real vs theater question. Newest at top. Numbers are `SELECT COUNT(*)` from live DB at the time of the pass; never estimates.
+
+### Pass 1 — 2026-04-18 — Subsystem inventory + DB reality recheck
+
+**Goal:** Re-baseline every prior claim. Several earlier numbers in this file (and prior summaries) used a non-existent table name.
+
+**Corrections to prior claims:**
+- ❌ Prior: "19 substrate edge functions." ✅ Reality: **114 edge functions** in `supabase/functions/` (87 prefixed, 27 unprefixed).
+- ❌ Prior: "discovery_capabilities table 7,266 rows." ✅ Reality: that table does not exist. The 7,266 rows are in `discoveries`. Engine output is real; the table name in earlier claims was wrong. *No change to the substantive verdict — Discovery is real and active.*
+- ❌ Prior: "205 Crown Jewels." ✅ Reality: **205 in `artifact_registry`** AND **241+ S-Tier .ts files on disk** (`src/crownjewels/s-tier/001-…241-…`). The disk has more than the registry knows about — registry is under-reporting code that exists.
+
+**Real-functional, with DB writes (verified this pass):**
+- `discoveries` — **7,266 rows**
+- `discovery_runs` — **3,343 rows**
+- `vertical_clm_cycles` — **1,764 rows** (live: CLM Engine v6.0.0 logs visible — Cycle #275 just ran with 3 AI calls in 13.8s)
+- `brain_memory_cold/warm/hot` — **9,950 / 7,539 / 446 rows** (auto-tiering active per console logs)
+- `artifact_registry` — **205 rows** (apex 83, mythic 50, prime 27, relic 34, mint 6)
+- `evolution_proposals` — 34 rows
+- `mesh_intents` — 25 rows
+- `accessibility_scans` — 17 rows (last scan 2026-04-14, score 90 WCAG AA, real)
+- `analytics_snapshots` — 28 rows
+- `backup_exports` — **44 rows** (corroborates Ascension usage)
+
+**Real-silent (built, not writing to DB):**
+- `dream_log`, `dream_sessions`, `dream_artifacts`, `forge_agents`, `ecosystem_memory`, `studio_scans`, `dream_learning_metrics`, `memory_tier_receipts`, `access_scans` — all **0 rows**, but `src/lib/dream/*` (18 files), `src/lib/forge/*` (4 files + `ultimate/`), `src/lib/shadow/*` (10 files + `ultimate/`), `src/lib/oracle/ultimate/`, `src/lib/minds/intelligence/`, `src/lib/harvest/ultimate/` all exist on disk.
+- `vertical_memory_stream` — 40 rows but stale 15 days (ingestion path broken).
+
+**Theater confirmed (this pass):**
+- `simulateModuleVote()` in `src/lib/scan/integrations/mesh-cross-scanner-resolution.ts:100` — explicit simulator wired into mesh scanning consensus.
+- 7 phantom verticals (`health`, `gaming`, `education`, `fintech`, `legal`, `media`, `ultimate`) confirmed 0 rows in `vertical_*` tables.
+
+**Open questions for Pass 2:**
+- Are `forge/ultimate/`, `oracle/ultimate/`, `harvest/ultimate/`, `shadow/ultimate/`, `minds/intelligence/` real engines or scaffolding? (Will read source.)
+- Of 114 edge functions, how many actually ship work vs return canned status? (Audit one-by-one.)
+- The 241 S-Tier files vs 205 registry rows: which 36 are unregistered? Are they real or scaffolds?
+
+**Roadmap delta from this pass:**
+- §1.1 vertical count was correct. No change.
+- §1.2 — confirm `discoveries` is the real table; references to `discovery_capabilities` in any other doc must be search-replaced.
+- §2.1 — add `brain_memory_*` (17,935 rows total) to KEEP list.
+- New **Step 0a** added below before Step 1: "Search-replace `discovery_capabilities` → `discoveries` everywhere it appears in docs/code."
+- New **Step 0b** added: "Decide: do the 36 unregistered S-Tier files get registered, deleted, or kept as scaffolds?"
+
+### Pass 2 — 2026-04-18 — Forge / Oracle / Minds / Harvest / Shadow source-of-truth
+
+*(pending — next turn)*
+
+### Pass 3 — Edge function reality (114 functions, one by one)
+
+*(pending)*
+
+### Pass 4 — Engine registry simulators vs real executors
+
+*(pending)*
+
+### Pass 5 — Crown Jewel S-Tier code presence (verify all 241 files compile and export real logic)
+
+*(pending)*
