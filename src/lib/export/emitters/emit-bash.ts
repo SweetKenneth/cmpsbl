@@ -49,6 +49,28 @@ function shOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod, prefix: string):
       lines.push('echo "}"');
       return lines;
     }
+    // Tier-3: bash cannot deep-walk JSON natively. Emit shallow regex redaction
+    // and pass-through for non-string params; document the limitation.
+    case 'sanitize_deep': {
+      const p = '"$' + (m.params?.[0]?.name ?? 'value') + '"';
+      return [
+        `# DEGRADED: shallow string redaction only (bash has no native JSON walker)`,
+        `local __out=$(echo ${p} | sed -E 's/(api[_-]?key|secret|password|token|bearer[[:space:]]+[A-Za-z0-9._-]+|sk-[A-Za-z0-9_-]{16,})/[REDACTED]/Ig')`,
+        `echo "$__out"`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = '"$' + (m.params?.[0]?.name ?? 'value') + '"';
+      return [
+        `# DEGRADED: pass-through (bash cannot mutate JSON keys without jq)`,
+        `# Recommend: pipe through 'jq "walk(if type == \\"object\\" then with_entries(select(.key | startswith(\\"_cmpsbl_\\") | not)) else . end)"' externally.`,
+        `echo ${p}`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = '"$' + (m.params?.[0]?.name ?? 'value') + '"';
+      return [`${v(op.field)}+=(${p})`];
+    }
   }
 }
 

@@ -32,6 +32,38 @@ function pyOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `'${f}': _state['${f}']`).join(', ');
       return [`return {${pairs}}`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `import re as _re`,
+        `_pat = _re.compile(r'(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})', _re.I)`,
+        `def _walk(v):`,
+        `    if isinstance(v, dict):`,
+        `        return {k: (vv if (isinstance(k, str) and (k.startswith('_cmpsbl_') or k.startswith('__cmpsbl_'))) else _walk(vv)) for k, vv in v.items()}`,
+        `    if isinstance(v, list):`,
+        `        return [_walk(x) for x in v]`,
+        `    if isinstance(v, str):`,
+        `        return _pat.sub('[REDACTED]', v)`,
+        `    return v`,
+        `return _walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `def _strip(v):`,
+        `    if isinstance(v, dict):`,
+        `        return {k: _strip(vv) for k, vv in v.items() if not (isinstance(k, str) and (k.startswith('_cmpsbl_') or k.startswith('__cmpsbl_')))}`,
+        `    if isinstance(v, list):`,
+        `        return [_strip(x) for x in v]`,
+        `    return v`,
+        `return _strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`_state['${op.field}'].append(${p})`];
+    }
   }
 }
 

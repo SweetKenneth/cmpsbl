@@ -47,6 +47,40 @@ function fsOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `"${f}", box ${f}`).join('; ');
       return [`dict [${pairs}]`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `let __pat = System.Text.RegularExpressions.Regex(@"(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})", System.Text.RegularExpressions.RegexOptions.IgnoreCase)`,
+        `let rec __walk (v: obj) : obj =`,
+        `    match v with`,
+        `    | :? System.Collections.IDictionary as d ->`,
+        `        let out = System.Collections.Generic.Dictionary<obj, obj>()`,
+        `        for k in d.Keys do let ks = string k in if ks.StartsWith("_cmpsbl_") || ks.StartsWith("__cmpsbl_") then out.[k] <- d.[k] else out.[k] <- __walk d.[k]`,
+        `        box out`,
+        `    | :? System.Collections.IList as l -> box [ for x in l -> __walk x ]`,
+        `    | :? string as s -> box (__pat.Replace(s, "[REDACTED]"))`,
+        `    | _ -> v`,
+        `__walk (box ${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `let rec __strip (v: obj) : obj =`,
+        `    match v with`,
+        `    | :? System.Collections.IDictionary as d ->`,
+        `        let out = System.Collections.Generic.Dictionary<obj, obj>()`,
+        `        for k in d.Keys do let ks = string k in if not (ks.StartsWith("_cmpsbl_") || ks.StartsWith("__cmpsbl_")) then out.[k] <- __strip d.[k]`,
+        `        box out`,
+        `    | :? System.Collections.IList as l -> box [ for x in l -> __strip x ]`,
+        `    | _ -> v`,
+        `__strip (box ${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.Add(${p})`];
+    }
   }
 }
 

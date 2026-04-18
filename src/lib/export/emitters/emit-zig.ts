@@ -44,6 +44,20 @@ function zigOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       ];
     }
     case 'snapshot': return [`// snapshot: caller composes struct from fields`];
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`// DEGRADED: zig requires a runtime helper for tagged-union JSON walking`,
+              `return cmpsbl_runtime.sanitize_deep(${p});`];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`// DEGRADED: delegated to runtime helper`,
+              `return cmpsbl_runtime.strip_sidecars(${p});`];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`try ${op.field}.append(${p});`];
+    }
   }
 }
 

@@ -35,6 +35,34 @@ function cljOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const keys = op.fields.map(f => `:${f}`).join(' ');
       return [`(select-keys @state [${keys}])`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `(let [pat #"(?i)(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})"`,
+        `      walk (fn walk [v]`,
+        `             (cond`,
+        `               (map? v) (into {} (for [[k vv] v] [k (let [ks (str (if (keyword? k) (name k) k))] (if (or (.startsWith ks "_cmpsbl_") (.startsWith ks "__cmpsbl_")) vv (walk vv)))]))`,
+        `               (sequential? v) (mapv walk v)`,
+        `               (string? v) (clojure.string/replace v pat "[REDACTED]")`,
+        `               :else v))]`,
+        `  (walk ${p}))`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `(let [strip (fn strip [v]`,
+        `              (cond`,
+        `                (map? v) (into {} (for [[k vv] v :let [ks (str (if (keyword? k) (name k) k))] :when (not (or (.startsWith ks "_cmpsbl_") (.startsWith ks "__cmpsbl_")))] [k (strip vv)]))`,
+        `                (sequential? v) (mapv strip v)`,
+        `                :else v))]`,
+        `  (strip ${p}))`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`(swap! state update :${op.field} (fnil conj []) ${p})`];
+    }
   }
 }
 

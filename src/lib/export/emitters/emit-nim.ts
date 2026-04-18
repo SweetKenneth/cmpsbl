@@ -44,6 +44,47 @@ function nimOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `("${f}", ${f})`).join(', ');
       return [`return {${pairs}}.toTable`];
     }
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `# Recursive sanitize over JsonNode (param assumed JsonNode). Falls back to identity for non-JSON.`,
+        `proc walk(n: JsonNode): JsonNode =`,
+        `  case n.kind`,
+        `  of JObject:`,
+        `    result = newJObject()`,
+        `    for k, v in n.fields:`,
+        `      if k.startsWith("_cmpsbl_") or k.startsWith("__cmpsbl_"): result[k] = v`,
+        `      else: result[k] = walk(v)`,
+        `  of JArray:`,
+        `    result = newJArray()`,
+        `    for x in n.elems: result.add(walk(x))`,
+        `  of JString:`,
+        `    result = %* n.str.replacef(re"(?i)(api[_-]?key|secret|password|token|bearer\\s+[\\w.-]+|sk-[\\w-]{16,})", "[REDACTED]")`,
+        `  else: result = n`,
+        `return walk(${p})`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `proc strip(n: JsonNode): JsonNode =`,
+        `  case n.kind`,
+        `  of JObject:`,
+        `    result = newJObject()`,
+        `    for k, v in n.fields:`,
+        `      if k.startsWith("_cmpsbl_") or k.startsWith("__cmpsbl_"): continue`,
+        `      result[k] = strip(v)`,
+        `  of JArray:`,
+        `    result = newJArray()`,
+        `    for x in n.elems: result.add(strip(x))`,
+        `  else: result = n`,
+        `return strip(${p})`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.add(${p})`];
+    }
   }
 }
 

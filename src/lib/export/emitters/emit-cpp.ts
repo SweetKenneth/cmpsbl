@@ -43,6 +43,26 @@ function cppOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
       const pairs = op.fields.map(f => `{"${f}", ${f}}`).join(', ');
       return [`return std::unordered_map<std::string,int64_t>{${pairs}};`];
     }
+    // Deep-walk requires a variant type; we use std::any tree consumed by helpers.
+    case 'sanitize_deep': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `// DEGRADED: deep sanitize is delegated to a runtime helper that walks std::any trees`,
+        `extern std::any cmpsbl_sanitize_deep(const std::any&);`,
+        `return cmpsbl_sanitize_deep(${p});`,
+      ];
+    }
+    case 'strip_sidecar_keys': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [
+        `extern std::any cmpsbl_strip_sidecars(const std::any&);`,
+        `return cmpsbl_strip_sidecars(${p});`,
+      ];
+    }
+    case 'ctx_chain_push': {
+      const p = m.params?.[0]?.name ?? 'value';
+      return [`${op.field}.push_back(${p});`];
+    }
   }
 }
 
