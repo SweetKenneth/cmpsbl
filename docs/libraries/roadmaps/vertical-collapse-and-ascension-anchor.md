@@ -20,6 +20,10 @@ Prior audits were wrong because they searched canonical names only. These aliase
 | IMMUNITY (Layer #14) | Clarity, CMPTBL, `immunity_*`, `pf_clarity_*` |
 | CMPSBL substrate | PromptFluid, ecosystem, `pf_*`, `prompt_fluid_*`, `substrate_*`, `cmpsbl_*` |
 | Governor | Admin, `admin_*` |
+| Memory Chain | Pipeline, `pipeline_*`, `chain_*` |
+| Crystallized Memory | Crystallized Pipeline, Primitive Chain, Node Chain, Module Chain, `crystal*`, `crystallized_*` |
+
+**Unknown-name rule:** If I encounter any table/file/function name I don't recognize, **I ask Kenneth directly** before classifying it as fake, dead, or missing. No silent assumptions.
 
 **Cascade special case:** Cascade was the pre-split orchestrator → split into DREAM (synthesis) + DECODE (parser). Any `cascade_*` row counts toward DREAM ∪ DECODE.
 
@@ -81,6 +85,19 @@ Counts are real DB row counts as of restart.
 | `substrate_audit_log` | 38 |
 | `substrate_applied_improvements` | 20 |
 | `substrate_capabilities` | 10 |
+
+### Memory Chains & Crystallized Memories (Pipelines ∪ Chains ∪ Crystals) — **MAJOR FIND**
+Discovered after alias expansion (`pipeline_*`, `chain_*`, `crystal*`):
+| Table | Rows |
+|-------|------|
+| `brain_knowledge_crystals` | **750** ← highest-volume crystallized memory store |
+| `pipeline_vault` | 214 |
+| `mesh_saved_pipelines` | 92 |
+| `crystallized_assets` | 66 |
+| `discovered_pipelines` | 40 |
+| `user_crystallized_entitlements` | 0 (writer needed for entitlement issuance) |
+
+**Verdict:** Memory Chains and Crystallized Memories are **alive and the largest single category by row count** (1,162 rows). Were 100% invisible to prior passes because of name drift.
 
 ### Verified previously (Pass 1-3, still valid):
 - `discoveries` (7,266), `discovery_runs` (3,343)
