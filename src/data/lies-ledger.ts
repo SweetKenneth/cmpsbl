@@ -1882,6 +1882,41 @@ export const LIES_LEDGER: Finding[] = [
       'Real client-side module without a server-side counterpart — meaning the "Generation outputs feed Memory Stream" claim cannot be cleanly traced. Either: (1) rename the table writes ENCODE performs to encode_* so the data lineage matches the docs, (2) add a dedicated pf-encode edge function for compute-heavy generation as 07-resilience-hardening.html implies, or (3) clarify in docs that ENCODE is purely a client-side intelligence layer that emits into shared Memory Stream tables. Today the module is undeniably real but unobservable from the database side.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-103',
+    title: 'DECODE — claim is real and well-supported (12,187 LOC + 2 edge functions + 2 DB tables)',
+    severity: 'FACT',
+    source: {
+      document: 'public/docs/academic-v13/print/02-system-overview.html + 08-intent-mesh.html + public/docs/website/03-KEY-CAPABILITIES.html',
+      quote: '"DECODE — Conversational interpretation and intent extraction" / "Intent Parsing — DECODE — Natural language interpretation, command routing"',
+    },
+    evidence: {
+      reality:
+        'DECODE is one of the most complete modules audited: 50 files / 12,187 LOC. Core at src/core/decode/ (14 files: commandExecutor, contextWindowManager, decodeAccessPolicy, depthResolver, epistemicAudit, integrityCache, intentClassifier, multiModalHandler, reasoningGraph, sessionMemory, streamingEngine, substrateRouter, voiceCalibration, voiceProfile). Library at src/lib/decode/ (command-router, contextEngine, governor-commands, index). Hardening at src/lib/substrate/decode/ (admin-directive, clockless-identity, decode-hardening, identity-context). Two dedicated edge functions: agent-decode-chat, pf-decode-search. Two live DB tables: decode_conversations, decode_search_results (389 rows). Contract-driven: src/lib/contracts/DecodeContract.ts + DecodeContractTypes.ts + DecodeRFC.md. Multiple UI surfaces (DecodeChat, DecodeFloat, DecodeStatusBar, DecodeIdentity, DecodeFactoryVoice, DecodeDebrief, DecodeOperativeControls).',
+      method:
+        'find src -ipath "*decode*" -type f; wc -l; psql counts; ls supabase/functions/ | grep -i decode.',
+    },
+    verdict:
+      'Among the strongest claim-to-reality matches in the substrate. DECODE has client code, server functions, persistence layer, contract spec, RFC, and live data — the full vertical stack. The doc one-liner ("Conversational interpretation and intent extraction") actually undersells it: the real module also performs epistemic verb classification (describe/interpret/reflect/pattern/project), voice calibration, multi-modal handling, and contract-based command validation. This is the opposite of ENCODE — DECODE delivers MORE than the doc promises.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-104',
+    title: 'DECODE — decode_conversations table holds only 2 rows despite "conversational" framing',
+    severity: 'PARTIAL',
+    source: {
+      document: 'public/docs/academic-v13/print/02-system-overview.html',
+      quote: '"DECODE — Conversational interpretation and intent extraction"',
+    },
+    evidence: {
+      reality:
+        'psql -c "SELECT COUNT(*) FROM decode_conversations" returns 2. Compare: decode_search_results holds 389 rows (search is healthy), and ai_usage_log holds 193,937 rows (NEXUS routing is healthy). The 2-row count for decode_conversations means either: (a) conversations are not being persisted by agent-decode-chat / pf-decode-search at write time, (b) sessionMemory.ts keeps state in-memory only and never reaches the table, or (c) the table is reserved for a future feature that is not yet wired.',
+      method: 'psql -c "SELECT COUNT(*) FROM decode_conversations".',
+    },
+    verdict:
+      'Module quality is high but conversation persistence is not actually happening at scale. The "conversational" claim in the academic doc is partially supported — search history persists, but the conversation thread itself does not. Recommend: either wire agent-decode-chat to insert into decode_conversations on every turn, or rename the doc capability to "Conversational interpretation (in-session) and persistent search history" so the data tells the same story as the marketing.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
