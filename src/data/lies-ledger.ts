@@ -884,6 +884,42 @@ export const LIES_LEDGER: Finding[] = [
       'The "factory while you sleep" narrative requires at least one engine to be running. None are. This is the load-bearing investor claim and it is currently unsupported.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-047',
+    title: '"World\'s first cognitive substrate" is unverifiable and category-confused',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/roadmaps/cmpsbl-master-roadmap-2026-2028.md (line 780), internal/18-vertical-ecosystem.md (line 12)',
+      quote:
+        '"✅ World\'s first cognitive substrate" (listed as already-documented achievement) · "CMPSBL® is the world\'s first Software Refurbishment & Cognitive Infrastructure Factory"',
+    },
+    evidence: {
+      reality:
+        'No publication, patent citation, or third-party recognition supports the "world\'s first" framing. Web search for "cognitive substrate" returns prior-art philosophy/ML papers (Bostick 2025, CODES Intelligence) using the exact term. "Software Refurbishment" is a long-established industry term (t2informatik smartpedia). The "factory" pattern is occupied (Cognizant AI Factory). No Zenodo/OSF record is cited next to the ✅.',
+      method: 'Web search for "cognitive substrate" and "software refurbishment" — both terms have established prior usage. The roadmap marks ✅ without an evidence link.',
+    },
+    verdict:
+      'Marking "world\'s first" as ✅ documented without a citation is self-attestation, not documentation. Both anchor terms have prior art findable in a single search.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-048',
+    title: 'Roadmap simultaneously claims silicon pipeline is achieved and still-achievable',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/roadmaps/cmpsbl-master-roadmap-2026-2028.md (lines 754-763 vs 779-789)',
+      quote:
+        '"World Firsts Still Achievable: ... First deterministic-to-silicon pipeline" (line 760) — and on line 784: "✅ Software-to-silicon pipeline (HDL export)"',
+    },
+    evidence: {
+      reality:
+        'The same document lists silicon export as both an unachieved world-first and an already-documented achievement. Cross-ref F-043 confirms zero HDL/VHDL/Verilog emitters exist in src/lib/ascension-v2/. "First autonomous software factory" depends on engines that are silent (F-008, F-044). "First self-evolving codebase" depends on Evolution which has 0 applied proposals and ceased 2026-03-06 (F-030).',
+      method: 'Diff between achievable list (lines 754-763) and achieved list (lines 779-789) in the same roadmap file; cross-reference with F-008, F-030, F-043, F-044.',
+    },
+    verdict:
+      'A roadmap that contradicts itself within 30 lines is not a credibility document. Neither the "achieved" nor the "achievable" framing is supported by code or database evidence.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
