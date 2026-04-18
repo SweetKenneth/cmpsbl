@@ -1405,6 +1405,60 @@ export const LIES_LEDGER: Finding[] = [
       'A singleton row with no history is a configuration value pretending to be a state machine. The orchestrator does not orchestrate multiple flows because the schema only ever stores one — and even that one has no audited transitions (see F-073).',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-076',
+    title: '10,266 "discoveries" reduce to 5 distinct pipeline fingerprints — 99.95% duplication',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/17-crown-jewel-registry.md + 11-defensible-valuation.md',
+      quote:
+        '"The substrate discovers new capabilities without human input. Every cycle compounds the IP corpus." · Discovery Engine framed as a growing vault of unique high-value algorithmic assets',
+    },
+    evidence: {
+      reality:
+        'discoveries: 10,266 rows, all created in the last 7 days, but COUNT(DISTINCT pipeline_fingerprint) = 5. The same five pipelines have been re-recorded ~2,053 times each. discovery_runs shows 3,339 lifetime / 1,470 in 30 days, but only 50 distinct run_ids actually appear in discoveries — the rest produced nothing.',
+      method: 'count(*) → 10,266; count(distinct pipeline_fingerprint) → 5; count(distinct run_id in discoveries) → 50.',
+    },
+    verdict:
+      'A "compounding IP corpus" that compounds duplicates is not compounding IP. The big number on the dashboard (10k+ discoveries) is row inflation: five real pipelines re-stamped thousands of times. Real novelty count is two orders of magnitude smaller than advertised.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-077',
+    title: 'Crown Jewel registry says 0 — but 3,523 rows sit above the documented S-Tier CJPI threshold',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/17-crown-jewel-registry.md (CJPI ≥ 100 → automatic S-Tier promotion)',
+      quote:
+        '"The highest-tier Crown Jewels (CJPI ≥ 100) are automatically promoted to the S-Tier Vault — a governor-curated collection."',
+    },
+    evidence: {
+      reality:
+        'discoveries.is_crown_jewel = true → 0 rows. discoveries WHERE cjpi >= 100 → 3,523 rows. The "automatic promotion" trigger has fired exactly zero times despite 3,523 candidates meeting the documented threshold. Every single discovery scores above the Prime floor (CJPI ≥ 68) and 78% scores above Apex (≥ 92), which itself indicates a broken scoring calibration.',
+      method: 'count is_crown_jewel=true → 0; cjpi>=100 → 3,523; cjpi>=68 → 10,266 (100%); avg cjpi → 95.73.',
+    },
+    verdict:
+      'Two failures stacked: (1) the auto-promotion mechanism is dead — 3,523 qualifying rows, 0 promoted; (2) the CJPI scorer is broken — 100% of discoveries clear the Prime floor and the average is 95.73/100, meaning scores are not discriminating quality. A registry that auto-promotes nothing while everything scores near-perfect is theater.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-078',
+    title: 'Mesh discovery runs dead — 9 lifetime, 0 in last 30 days, 34 unresolved gaps',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/18-vertical-ecosystem.md (mesh discovery feeding cross-vertical learning)',
+      quote:
+        'Mesh discovery runs continuously, surfacing capability gaps and cross-vertical opportunities; gaps feed back to the BRAIN for autonomous closure',
+    },
+    evidence: {
+      reality:
+        'mesh_discovery_runs: 9 lifetime, 0 in the last 30 days. mesh_discovery_gaps: 34 unresolved rows accumulating with no run to close them. integration_discoveries: 6 lifetime. discovery_retired_combos: 99 (more retirements than mesh runs ever).',
+      method: 'count mesh_discovery_runs → 9, 30d → 0; mesh_discovery_gaps → 34; integration_discoveries → 6.',
+    },
+    verdict:
+      'The cross-vertical mesh discovery loop has run nine times in the substrate\'s entire history and not once in the last month. Meanwhile 34 capability gaps sit open with nothing scheduled to address them. "Continuous" is the wrong word — "abandoned" fits the data.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
