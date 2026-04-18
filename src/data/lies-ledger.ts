@@ -672,6 +672,146 @@ export const LIES_LEDGER: Finding[] = [
       'The "moat widens while investors sleep" claim depends on three engines running. On the date this audit was performed, none of the three were running at the documented cadence. The moat is not currently widening — it is paused.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-035',
+    title: '"200,000+ lines of production code" overstates the codebase by ~4x',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/01-executive-summary.md (§Key Numbers)',
+      quote: '"Production code | 200,000+ lines"',
+    },
+    evidence: {
+      reality:
+        '`find src -name "*.ts" -o -name "*.tsx" | xargs wc -l` returns 51,489 total lines across the entire src tree (including tests, types, and generated files). Even adding edge functions and supabase migrations, the codebase is well under 100k lines.',
+      method: 'wc -l on every .ts/.tsx file under src/.',
+    },
+    verdict:
+      'Investor doc inflates the codebase ~4x. 51k lines is a respectable solo-founder codebase; the inflated number undermines credibility unnecessarily.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-036',
+    title: '"60+ production database tables" understates by 7x',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/investors/01-executive-summary.md, 05-engineering-proof.md',
+      quote: '"Database tables | 60+ production tables"',
+    },
+    evidence: {
+      reality:
+        'information_schema.tables shows 442 BASE TABLEs in the public schema. The real number is 7x larger than claimed. Whether all 442 are "production" is a separate question — many are empty per prior findings (F-007, F-018, F-031).',
+      method: "SELECT count(*) FROM information_schema.tables WHERE table_schema='public'.",
+    },
+    verdict:
+      'The "60+" claim is technically satisfied by 442 but radically understates scale. Combined with empty-table findings, the honest framing would be "442 tables exist, ~X actively populated."',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-037',
+    title: '"Paying subscribers reaching Stripe checkout" — there are zero paying subs',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/01-executive-summary.md (§Traction)',
+      quote: '"Paying subscribers reaching Stripe checkout"',
+    },
+    evidence: {
+      reality:
+        'access_subscriptions: 4 rows tier=free/status=active, 1 row tier=enterprise/status=active. Zero rows at the paid tiers documented in the same doc (Studio $29, Creator $49, Architect $79). The single enterprise row appears to be an internal grant, not a paying customer.',
+      method: 'SELECT tier, status, count(*) FROM access_subscriptions GROUP BY tier, status.',
+    },
+    verdict:
+      'The traction claim implies revenue is starting. The database shows zero paying subscribers exist. "Reaching checkout" without converting is a funnel event, not traction.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-038',
+    title: '"230 returning visitors in last 30 days" — actual count is 28',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/01-executive-summary.md (§Traction)',
+      quote: '"230 returning visitors in last 30 days"',
+    },
+    evidence: {
+      reality:
+        'Counting analytics_events sessions with activity on 2+ distinct days in the last 30 days returns 28. Total distinct sessions in 30 days: 5,280. The "230 returning" claim is overstated ~8x against the most generous interpretation of returning behavior.',
+      method:
+        "SELECT count(*) FROM (SELECT session_id FROM analytics_events WHERE created_at > now() - interval '30 days' GROUP BY session_id HAVING count(DISTINCT date_trunc('day',created_at)) > 1).",
+    },
+    verdict:
+      'The traction section uses a number 8x larger than what the analytics_events table supports. Real engagement is small but honest; the inflated number creates audit risk in any diligence call.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-039',
+    title: '"$2.9M per Memory Stream discovery" — no valuation column exists',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/20-why-invest-now.md (§1, §2)',
+      quote:
+        '"Memory Stream produces pipeline artifacts valued at up to $2.9M per discovery, already in service, running every 8 hours."',
+    },
+    evidence: {
+      reality:
+        'The discoveries table has 10,266 rows but no column named valuation, value, market_value, price, or worth_usd. There is no source-of-truth for the "$2.9M" figure anywhere in the schema. The number appears only in marketing prose, not in any computed or stored data.',
+      method: 'information_schema.columns scan on discoveries; metadata JSON inspection.',
+    },
+    verdict:
+      'A specific dollar figure attached to a per-unit output, repeated twice in the same investor document, with no underlying calculation or stored value. Textbook fabricated traction metric.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-040',
+    title: '"166 bugs auto-fixed for $0.06" — evolution_proposals shows zero applied',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/20-why-invest-now.md (§2, §3)',
+      quote:
+        '"166 bugs auto-fixed for $0.06 ... Capital efficient — $0.06 for 166 bug fixes demonstrates extreme efficiency."',
+    },
+    evidence: {
+      reality:
+        'evolution_proposals: 34 total rows, 0 applied, 19 approved, 13 rejected. evolution_receipts: 0 rows. No table tracks "bugs fixed." The $0.06 cost figure has no source row in ai_usage_log filtered to evolution-related calls (most evolution work was throttled per F-029).',
+      method: 'evolution_proposals.status counts; evolution_receipts row count; ai_usage_log filter.',
+    },
+    verdict:
+      'Same fabrication as F-030, but elevated to the "Why Invest Now" pitch. The headline "$0.06 for 166 fixes" appears as a bullet in the investment thesis. Zero of those 166 fixes can be substantiated.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-041',
+    title: '"675+ registered capabilities" and "500+ terminal commands" unverifiable',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/investors/01-executive-summary.md, 05-engineering-proof.md',
+      quote: '"Registered capabilities | 675+", "Terminal commands | 500+"',
+    },
+    evidence: {
+      reality:
+        'No database table named capabilities, capability_registry, terminal_commands, or commands exists in the public schema. The numbers may be derived from a code-side registry, but they are not introspectable from production data. The doc-05 footnote defines "capability" in terms unfalsifiable without an authoritative list.',
+      method: 'information_schema scan for capability/command tables.',
+    },
+    verdict:
+      'Not necessarily false — but not auditable. Investor diligence will ask "show me the 675" and there is no canonical answer. Either publish the list or remove the specific number.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-042',
+    title: '"Merkle audit chain" cited as proof — production chain has 12 rows',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/investors/05-engineering-proof.md (§3, §5)',
+      quote:
+        '"Merkle chain bounded at 10,000 entries ✅ ... Every autonomous change recorded in SHA-256 hash chains. Call verifyChain() to confirm integrity."',
+    },
+    evidence: {
+      reality:
+        'activation_audit_log (the closest production hash-chain table) has 12 rows total. evolution_receipts: 0. No production table holds a chain remotely close to the 10,000 bound. The verifyChain() function may exist in code but has almost nothing of operational scale to verify.',
+      method: 'Row count on activation_audit_log, evolution_receipts; schema search for merkle/hash_chain tables.',
+    },
+    verdict:
+      'The mechanism exists in code; the operational footprint (12 rows) reveals it has barely been exercised. The implication of a battle-tested tamper-evident audit trail is unsupported.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
