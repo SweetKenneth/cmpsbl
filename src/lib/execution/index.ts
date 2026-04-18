@@ -71,14 +71,14 @@ export {
   DEFAULT_GOVERNED_LAYERS,
 } from './governedPipeline';
 
-// SENTINEL — Audit-Chain Witness Agent (paired with Governed Pipeline)
+// WITNESS — Audit-Chain Witness (AUDIT Agent sub-primitive, paired with ARBITRIUM)
 export {
-  type SentinelVerdict,
-  type SentinelReading,
+  type WitnessVerdict,
+  type WitnessReading,
   witnessAuditChain,
   persistWitnessReading,
-  sentinelObserve,
-} from './sentinel';
+  witnessObserve,
+} from './witness';
 
 // Planner
 export {
