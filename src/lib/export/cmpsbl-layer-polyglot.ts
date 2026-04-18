@@ -33,6 +33,12 @@ import { JAVA_KERNEL_BODIES } from './layers-java/java-kernel';
 import { CSHARP_KERNEL_BODIES } from './layers-csharp/csharp-kernel';
 import { SWIFT_KERNEL_BODIES } from './layers-swift/swift-kernel';
 import { KOTLIN_KERNEL_BODIES } from './layers-kotlin/kotlin-kernel';
+import { RS_KERNEL_EMITTER_BODIES } from './layers-rs/rs-kernel-emitters';
+import { GO_KERNEL_EMITTER_BODIES } from './layers-go/go-kernel-emitters';
+import { JAVA_KERNEL_EMITTER_BODIES } from './layers-java/java-kernel-emitters';
+import { CSHARP_KERNEL_EMITTER_BODIES } from './layers-csharp/csharp-kernel-emitters';
+import { SWIFT_KERNEL_EMITTER_BODIES } from './layers-swift/swift-kernel-emitters';
+import { KOTLIN_KERNEL_EMITTER_BODIES } from './layers-kotlin/kotlin-kernel-emitters';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -138,7 +144,7 @@ _registerCsharpLayerBodies();
 _registerSwiftLayerBodies();
 _registerKotlinLayerBodies();
 
-// ── Tier 1 Kernel Bodies (kernel-clock, capability-registry, kernel-bootstrap)
+// ── Tier 1 Kernel Bodies (clock, registry, bootstrap, receipts, telemetry)
 function _registerKernelBodies(): void {
   const tables: Array<[string, Readonly<Record<string, string>>]> = [
     ['rust', RS_KERNEL_BODIES],
@@ -147,6 +153,12 @@ function _registerKernelBodies(): void {
     ['csharp', CSHARP_KERNEL_BODIES],
     ['swift', SWIFT_KERNEL_BODIES],
     ['kotlin', KOTLIN_KERNEL_BODIES],
+    ['rust', RS_KERNEL_EMITTER_BODIES],
+    ['go', GO_KERNEL_EMITTER_BODIES],
+    ['java', JAVA_KERNEL_EMITTER_BODIES],
+    ['csharp', CSHARP_KERNEL_EMITTER_BODIES],
+    ['swift', SWIFT_KERNEL_EMITTER_BODIES],
+    ['kotlin', KOTLIN_KERNEL_EMITTER_BODIES],
   ];
   for (const [lang, table] of tables) {
     for (const [layerId, body] of Object.entries(table)) {
@@ -2516,6 +2528,98 @@ registerNative('kernel-bootstrap', 'ruby', () => [
   '    end',
   '  end',
   'end',
+].join('\n'));
+
+registerNative('receipt-emitter', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Receipt Emitter',
+  '# FNV-1a chained provenance per cmpsbl_execute. Bounded ring (1024). Thread-safe.',
+  'module CmpsblReceipts',
+  '  RING_MAX = 1024',
+  '  @mutex = Mutex.new',
+  '  @chain = []',
+  '  @head = nil',
+  '  @seq = 0',
+  '',
+  '  def self.fnv1a(s)',
+  '    h = 0x811c9dc5',
+  '    s.each_byte { |b| h ^= b; h = (h * 0x01000193) & 0xFFFFFFFF }',
+  '    format("%08x", h)',
+  '  end',
+  '',
+  '  def self.emit(name, args_hash, result_hash, duration_ms, code)',
+  '    @mutex.synchronize do',
+  '      prev = @head',
+  '      @seq += 1',
+  '      ts = (Time.now.to_f * 1000).to_i',
+  '      prev_field = prev ? "\\"#{prev}\\"" : "null"',
+  '      payload = "{\\"name\\":\\"#{name}\\",\\"argsHash\\":\\"#{args_hash}\\",\\"resultHash\\":\\"#{result_hash}\\",\\"durationMs\\":#{duration_ms},\\"code\\":\\"#{code}\\",\\"prevHash\\":#{prev_field},\\"seq\\":#{@seq}}"',
+  '      hash = fnv1a(payload)',
+  '      r = { hash: hash, prev_hash: prev, name: name, args_hash: args_hash, result_hash: result_hash, duration_ms: duration_ms, code: code, ts: ts, seq: @seq }',
+  '      @chain << r',
+  '      @chain.shift if @chain.size > RING_MAX',
+  '      @head = hash',
+  '      r',
+  '    end',
+  '  end',
+  '',
+  '  def self.head; @mutex.synchronize { @head }; end',
+  '  def self.length; @mutex.synchronize { @chain.size }; end',
+  '  def self.chain; @mutex.synchronize { @chain.map(&:dup) }; end',
+  '',
+  '  def self.verify',
+  '    @mutex.synchronize do',
+  '      (1...@chain.size).each { |i| return false if @chain[i][:prev_hash] != @chain[i-1][:hash] }',
+  '      true',
+  '    end',
+  '  end',
+  '',
+  '  def self.reset',
+  '    @mutex.synchronize { @chain.clear; @head = nil; @seq = 0 }',
+  '  end',
+  'end',
+].join('\n'));
+
+registerNative('telemetry-bus', 'ruby', () => [
+  '# CMPSBL® Ascension Kernel — Telemetry Bus',
+  '# In-process pub/sub. Wildcard "*" receives all events. Handler errors isolated.',
+  'module CmpsblTelemetry',
+  '  MAX_HANDLERS = 256',
+  '  WILDCARD = "*"',
+  '  @mutex = Mutex.new',
+  '  @handlers = {}',
+  '  @seq = 0',
+  '',
+  '  def self.on(event, &handler)',
+  '    @mutex.synchronize do',
+  '      list = (@handlers[event] ||= [])',
+  '      return false if list.size >= MAX_HANDLERS',
+  '      list << handler',
+  '      true',
+  '    end',
+  '  end',
+  '',
+  '  def self.off(event)',
+  '    @mutex.synchronize { (@handlers.delete(event) || []).size }',
+  '  end',
+  '',
+  '  def self.emit(event, payload = nil)',
+  '    direct, wild, evt = nil, nil, nil',
+  '    @mutex.synchronize do',
+  '      @seq += 1',
+  '      evt = { event: event, payload: payload, ts: (Time.now.to_f * 1000).to_i, seq: @seq }',
+  '      direct = (@handlers[event] || []).dup',
+  '      wild = (@handlers[WILDCARD] || []).dup',
+  '    end',
+  '    fired = 0',
+  '    (direct + wild).each { |h| begin; h.call(evt); fired += 1; rescue StandardError; end }',
+  '    fired',
+  '  end',
+  '',
+  '  def self.channels; @mutex.synchronize { @handlers.keys }; end',
+  '  def self.subscriber_count(event); @mutex.synchronize { (@handlers[event] || []).size }; end',
+  'end',
+  '',
+  'def cmpsbl_emit(event, payload = nil); CmpsblTelemetry.emit(event, payload); end',
 ].join('\n'));
 
 // ═══════════════════════════════════════════════════════════════════════════════
