@@ -37,7 +37,7 @@
 | `immunity_*` | 6 | IMMUNITY | 🟢 alive | Self-healing matrix (Shadow→Sim→Prod) |
 | `learning_*` | 6 | BRAIN | 🟡 migrate | Learning data — fold into brain edges/crystals |
 | `mesh_*` | 6 | LAYERS | 🟡 rename | Old "Mesh" naming → should be layer_* |
-| `ripple_*` | 6 | RIPPLE | ❓ review | Unknown subsystem — needs classification |
+| `ripple_*` | 6 | RIPPLE | 🟢 alive | **Pub/sub message bus + job queue + circuit breakers** — heavily used by `pf-substrate` edge fn (boot/shutdown events, fan-out subscriptions, dead-letter queue). Live UI at `RippleMessageBusTab.tsx`. Keep. |
 | `integration_*` | 5 | INTEGRATIONS | 🟢 alive | External API connectors |
 | `vertical_*` | 5 | VERTICALS | 🟢 alive | 12 vertical substrates |
 | `scan_*` | 4 | SCAN | 🟢 alive | Scanning runs + results |
@@ -68,7 +68,7 @@
 | `compiler_*` | 2 | COMPILER | 🟢 alive | Autonomous Product Compiler |
 | `daily_*` | 2 | SUBSTRATE CORE | 🟢 alive | Daily aggregates |
 | `decode_*` | 2 | DECODE | 🟢 alive | Unified agent + interface |
-| `forge_*` | 2 | FORGE | ❓ review | Possibly legacy — confirm vs Foundry |
+| `forge_*` | 2 | FORGE (Engine #27) | 🟢 alive | **Cognitive Forge — the Architect engine.** Creates/seals CMPSBL Cognitives. `forge_reserved_names` holds 25 reserved cognitive names. Live hook `useForgeAgents.ts`. Distinct from `/foundry` (builder UI). Keep. |
 | `integrity_*` | 2 | SUBSTRATE CORE | 🟡 mixed | Integrity scans (findings table dropped earlier) |
 | `maintenance_*` | 2 | SUBSTRATE CORE | 🟢 alive | Maintenance windows |
 | `memory_*` | 2 | BRAIN | 🟢 alive | Memory stream pipeline |
