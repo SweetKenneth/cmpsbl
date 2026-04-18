@@ -1136,6 +1136,60 @@ export const LIES_LEDGER: Finding[] = [
       'The chain catalog (90+ named chains incl. 4 explicitly named *_SYNTHESIS) reads as scaffolding. There is no execution ledger that records which chain ran, when, with what result. Cascade_dreams holds 17 rows total — far below "100+ automated workflows".',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-061',
+    title: 'Governance "Decision Authority Matrix" has zero approval traffic',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/02-governance-authority.md (§3 Decision Authority Matrix, §2 Autonomy Levels)',
+      quote:
+        '"Supervised — System proposes, you approve" · "Mutation with confidence 0.85–0.94 → Governor Required (review)" · "Evolution pipeline reset → Governor Required" · "Governance policy change → Governor Required"',
+    },
+    evidence: {
+      reality:
+        'governance_transition_approvals: 0 rows lifetime. evolution_proposals: 34 rows (13 rejected, 21 approved/rolled_back, 0 pending), but 0 are in status="applied" — confirming F-053. Last evolution_proposal recorded 2026-03-06 (~43 days stale). The "Governor approval" workflow described in §3 has never been exercised against the approvals table.',
+      method: 'SELECT count(*) FROM governance_transition_approvals; SELECT status, count(*) FROM evolution_proposals GROUP BY status; SELECT max(created_at) FROM evolution_proposals.',
+    },
+    verdict:
+      'The decision matrix exists as documentation and the governance_mode singleton reads "ACTIVE", but the approvals queue that the matrix routes to is empty. No governor has ever approved or rejected anything through the documented surface — every "approved/rejected" proposal was state-flipped without a corresponding approval record.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-062',
+    title: 'AUDIT immutability + Merkle chain claim has no anchor records',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/internal/09-founder-intent.md (§2 Non-Negotiables #1) + 02-governance-authority.md (§5 Red Lines #5)',
+      quote:
+        '"AUDIT is immutable. No code path may delete, modify, or suppress audit records." · "No audit trail tampering — Merkle chain integrity is sacrosanct."',
+    },
+    evidence: {
+      reality:
+        'audit_chain_anchors: 0 rows lifetime. The table that anchors the Merkle chain head hash (the mechanism that makes "tamper-evidence" verifiable) has never been written to. audit_logs has 78 rows total / 64 in last 30 days — but with no anchors, there is no cryptographic chain to verify integrity against. The "Merkle chain integrity" red line protects a chain that does not exist on-disk.',
+      method: 'SELECT count(*) FROM audit_chain_anchors; SELECT count(*) FROM audit_logs.',
+    },
+    verdict:
+      'AUDIT writes happen, but the tamper-evidence layer described in two separate Governor-Eyes-Only documents is unbacked. A claim of "immutable + Merkle-anchored" requires anchors. Zero anchors = the immutability guarantee is documentation, not enforcement.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-063',
+    title: 'Governance modes (OBSERVE/LOCKDOWN/EVOLVE) have never transitioned',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/02-governance-authority.md (§4 Governance Modes)',
+      quote:
+        '"ACTIVE → OBSERVE (manual)" · "ACTIVE → LOCKDOWN (manual or automatic on critical alert)" · "ACTIVE → EVOLVE (manual, requires your confirmation)" · "LOCKDOWN → ACTIVE (manual, requires health verification)"',
+    },
+    evidence: {
+      reality:
+        'governance_mode: 1 row, value "ACTIVE". governance_transition_approvals: 0 rows. The pf-substrate edge function reports {"mode":"ACTIVE"} on every call. There is no recorded transition into or out of OBSERVE, LOCKDOWN, or EVOLVE — meaning the four-mode state machine has only ever occupied one state in production.',
+      method: 'SELECT * FROM governance_mode; SELECT count(*) FROM governance_transition_approvals; pf-substrate {module:"governance",action:"status"}.',
+    },
+    verdict:
+      'A documented four-mode governance state machine that has never left its default state is a static flag, not a state machine. The OBSERVE/LOCKDOWN/EVOLVE branches are scaffolded but unexercised — including the "automatic on critical alert" LOCKDOWN trigger that should have fired at least once given 13 rejected evolution proposals.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
