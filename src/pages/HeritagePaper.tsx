@@ -258,9 +258,28 @@ const HeritagePaper = () => {
             </div>
           </section>
 
+          {/* ═══════════ 1.4 HIDDEN WINDOW — XCTBL DETOUR ═══════════ */}
+          <section className="mb-8 sm:mb-10">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mt-2 mb-3">1.4 The Hidden Window — Oct 2024 – Feb 2025 (the Wall, XCTBL, and the Remix)</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              Earlier editions of this paper jump from the predecessor PromptFluid ecosystem straight into the January 2025 Genesis. That gap is real and is documented here for the record.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              By late 2024 the original PromptFluid ecosystem (with BRAIN already at the center) had grown to roughly <strong className="text-foreground">300 edge functions</strong> — a scale the underlying Lovable platform had not been built to handle. Edge function logs became unreadable, the project itself stalled, and forward progress halted. The platform vendor confirmed nobody had pushed it that far before, and committed to raising the ceiling — a process that took several months.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              During that waiting period, rather than idle, the author built <a href="https://XCTBL.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">XCTBL</a> — a connected <strong className="text-foreground">9-website "Space" universe</strong> unified by single sign-on and built explicitly for developers. XCTBL is fully live today (verified HTTP 200, "XCTBL³ Space — A New Star Can Enter") on a separate account and serves as a parallel proof that the substrate's architectural patterns ship at scale outside the main codebase. It currently surfaces from CMPSBL as a hyperlink in the site footer.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              <strong className="text-foreground">Forward role:</strong> XCTBL is planned to become the <strong className="text-foreground">official Developer Playground for CMPSBL</strong> — a story-driven, near-MMO universe where developers explore, test, and onboard against the substrate inside a 9-site SSO world. This integration is roadmap intent, not a shipped feature.
+            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground mb-3">
+              When the platform fix landed, the original ecosystem could not be lifted forward in place — it had to be <strong className="text-foreground">remixed</strong>. That remix is the direct ancestor of the CMPSBL substrate documented in the rest of this paper, which is why <code className="bg-muted px-1 rounded text-xs font-mono">pf_*</code> tables coexist with <code className="bg-muted px-1 rounded text-xs font-mono">cmpsbl_*</code> tables today: same lineage, post-Remix rebuild.
+            </p>
+          </section>
+
           <hr className="border-t-2 border-primary/20 my-8 sm:my-10" />
 
-          {/* ═══════════ 2. COMPLETE TIMELINE ═══════════ */}
           <section className="mb-8 sm:mb-10">
             <SectionTitle id="timeline" num="2" title="Complete Timeline of Development" />
 
