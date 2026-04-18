@@ -82,6 +82,7 @@ serve(async (req) => {
     const formatted = `# GOVERNOR INTENT (priority ${priority}, scope ${scope})\n${intentText}`;
     const vec = await embed(formatted);
     let embeddingId: string | null = null;
+    let embedError: string | null = null;
     if (vec) {
       const { data: emb, error: eErr } = await supabase
         .from("brain_embeddings")
@@ -93,14 +94,19 @@ serve(async (req) => {
           metadata: { source: "governor-intent-capture", scope, priority, tags },
         })
         .select("id").single();
-      if (!eErr && emb) {
+      if (eErr) {
+        embedError = eErr.message;
+        console.error("[governor-intent-capture] brain_embeddings insert failed", eErr);
+      } else if (emb) {
         embeddingId = emb.id;
         await supabase.from("governor_intent_stream").update({ embedded: true, embedding_id: emb.id }).eq("id", row.id);
       }
+    } else {
+      embedError = "embedding_provider_unavailable";
     }
 
     return new Response(
-      JSON.stringify({ ok: true, intent_id: row.id, embedded: !!embeddingId, embedding_id: embeddingId, elapsed_ms: Date.now() - t0 }),
+      JSON.stringify({ ok: true, intent_id: row.id, embedded: !!embeddingId, embedding_id: embeddingId, embed_error: embedError, elapsed_ms: Date.now() - t0 }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
