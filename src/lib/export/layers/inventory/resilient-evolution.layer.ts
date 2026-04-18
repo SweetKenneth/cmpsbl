@@ -100,32 +100,37 @@ def cmpsbl_res_pick() -> Optional[str]:
     return ranked[0]["id"] if ranked else None
 `;
 
-const TS_WIRE = `// Auto-wire: scores recovery strategy fitness on every execute
-const __res_strategy = cmpsbl_res_pick() ?? 'default';
-const __res_t0 = Date.now();
-let __res_ok = true;
-try {
-  return await __cmpsbl_inner_execute(...args);
-} catch (e) {
-  __res_ok = false;
-  throw e;
-} finally {
-  cmpsbl_res_record(__res_strategy, __res_ok, Date.now() - __res_t0);
-}
-`;
+const TS_WIRE = `
+const _cmpsbl_raw_execute_res = cmpsbl_execute;
+cmpsbl_execute = function cmpsbl_execute_res(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  // Score recovery-strategy fitness on every cycle (success rate + latency)
+  const __res_strategy = cmpsbl_res_pick() ?? 'default';
+  const __res_t0 = Date.now();
+  let __res_ok = true;
+  try {
+    return _cmpsbl_raw_execute_res(capabilityName, input);
+  } catch (e) {
+    __res_ok = false;
+    throw e;
+  } finally {
+    cmpsbl_res_record(__res_strategy, __res_ok, Date.now() - __res_t0);
+  }
+};`;
 
-const PY_WIRE = `# Auto-wire: scores recovery strategy fitness on every execute
-__res_strategy = cmpsbl_res_pick() or 'default'
-__res_t0 = time.time()
-__res_ok = True
-try:
-    return __cmpsbl_inner_execute(*args, **kwargs)
-except Exception:
-    __res_ok = False
-    raise
-finally:
-    cmpsbl_res_record(__res_strategy, __res_ok, (time.time() - __res_t0) * 1000)
-`;
+const PY_WIRE = `
+_cmpsbl_raw_execute_res = cmpsbl_execute
+def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
+    """Execute under Resilient Evolution (auto-wired)."""
+    __res_strategy = cmpsbl_res_pick() or 'default'
+    __res_t0 = time.time()
+    __res_ok = True
+    try:
+        return _cmpsbl_raw_execute_res(capability_name, input_data)
+    except Exception:
+        __res_ok = False
+        raise
+    finally:
+        cmpsbl_res_record(__res_strategy, __res_ok, (time.time() - __res_t0) * 1000)`;
 
 export const RESILIENT_EVOLUTION_LAYER: CmpsblLayerDefinition = {
   id: 'resilient-evolution',

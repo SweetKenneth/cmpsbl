@@ -86,16 +86,20 @@ def cmpsbl_emg_routable() -> List[EmergentPattern]:
     return [p for p in _PATTERNS.values() if p["promoted"]]
 `;
 
-const TS_WIRE = `// Auto-wire: observes input patterns to discover emergent gateways
-cmpsbl_emg_observe(args[0]);
-return await __cmpsbl_inner_execute(...args);
-`;
+const TS_WIRE = `
+const _cmpsbl_raw_execute_emg = cmpsbl_execute;
+cmpsbl_execute = function cmpsbl_execute_emg(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  // Observe inbound payload signature — promotes recurring shapes into gateways
+  cmpsbl_emg_observe({ capability: capabilityName, input });
+  return _cmpsbl_raw_execute_emg(capabilityName, input);
+};`;
 
-const PY_WIRE = `# Auto-wire: observes input patterns to discover emergent gateways
-if args:
-    cmpsbl_emg_observe(args[0])
-return __cmpsbl_inner_execute(*args, **kwargs)
-`;
+const PY_WIRE = `
+_cmpsbl_raw_execute_emg = cmpsbl_execute
+def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
+    """Execute under Emergent Gateway (auto-wired)."""
+    cmpsbl_emg_observe({"capability": capability_name, "input": input_data})
+    return _cmpsbl_raw_execute_emg(capability_name, input_data)`;
 
 export const EMERGENT_GATEWAY_LAYER: CmpsblLayerDefinition = {
   id: 'emergent-gateway',

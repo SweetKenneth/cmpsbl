@@ -97,26 +97,31 @@ def cmpsbl_loc_coverage(locale: str) -> float:
     return covered / len(all_keys)
 `;
 
-const TS_WIRE = `// Auto-wire: resolves localized strings declared via __cmpsbl_locale on inputs
-const __loc = (args[0] as any)?.__cmpsbl_locale;
-const __loc_key = (args[0] as any)?.__cmpsbl_locale_key;
-if (__loc && __loc_key) {
-  const resolved = cmpsbl_loc_resolve(__loc_key, __loc);
-  if (resolved !== null) (args[0] as any).__cmpsbl_locale_resolved = resolved;
-}
-return await __cmpsbl_inner_execute(...args);
-`;
+const TS_WIRE = `
+const _cmpsbl_raw_execute_loc = cmpsbl_execute;
+cmpsbl_execute = function cmpsbl_execute_loc(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  // Resolve declared locale key (if any) onto the payload before execution
+  const __loc = (input as any)?.__cmpsbl_locale;
+  const __loc_key = (input as any)?.__cmpsbl_locale_key;
+  if (__loc && __loc_key) {
+    const resolved = cmpsbl_loc_resolve(__loc_key, __loc);
+    if (resolved !== null) (input as any).__cmpsbl_locale_resolved = resolved;
+  }
+  return _cmpsbl_raw_execute_loc(capabilityName, input);
+};`;
 
-const PY_WIRE = `# Auto-wire: resolves localized strings declared via __cmpsbl_locale on inputs
-if args and isinstance(args[0], dict):
-    loc = args[0].get("__cmpsbl_locale")
-    key = args[0].get("__cmpsbl_locale_key")
-    if loc and key:
-        resolved = cmpsbl_loc_resolve(key, loc)
-        if resolved is not None:
-            args[0]["__cmpsbl_locale_resolved"] = resolved
-return __cmpsbl_inner_execute(*args, **kwargs)
-`;
+const PY_WIRE = `
+_cmpsbl_raw_execute_loc = cmpsbl_execute
+def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
+    """Execute under Localization Mesh (auto-wired)."""
+    if isinstance(input_data, dict):
+        loc = input_data.get("__cmpsbl_locale")
+        key = input_data.get("__cmpsbl_locale_key")
+        if loc and key:
+            resolved = cmpsbl_loc_resolve(key, loc)
+            if resolved is not None:
+                input_data["__cmpsbl_locale_resolved"] = resolved
+    return _cmpsbl_raw_execute_loc(capability_name, input_data)`;
 
 export const LOCALIZATION_MESH_LAYER: CmpsblLayerDefinition = {
   id: 'localization-mesh',
