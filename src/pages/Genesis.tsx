@@ -206,17 +206,27 @@ export default function Genesis() {
             <div className="grid gap-4 lg:grid-cols-[1fr,360px]">
               {/* Chat column */}
               <Card className="flex flex-col h-[600px] overflow-hidden border-border">
-                <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                    <span className="text-xs font-mono text-muted-foreground">
-                      DECODE → BRAIN · {BRAIN_REASONER_META.modelVersion} ·{' '}
-                      {BRAIN_REASONER_META.dimensions}-dim · {BRAIN_REASONER_META.crystalsLoaded} crystals
+                <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5 gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className={'h-2 w-2 rounded-full animate-pulse ' + (useNexus ? 'bg-amber-500' : 'bg-primary')} />
+                    <span className="text-xs font-mono text-muted-foreground truncate">
+                      {useNexus
+                        ? 'NEXUS → free-tier LLM · network active'
+                        : `DECODE → BRAIN · ${BRAIN_REASONER_META.modelVersion} · ${BRAIN_REASONER_META.dimensions}-dim · ${BRAIN_REASONER_META.crystalsLoaded} crystals`}
                     </span>
                   </div>
-                  <Badge variant="outline" className="text-[10px] font-mono">
-                    LLM calls: 0
-                  </Badge>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Network className={'h-3.5 w-3.5 ' + (useNexus ? 'text-amber-500' : 'text-muted-foreground/40')} />
+                    <Label htmlFor="nexus-toggle" className="text-[11px] font-mono cursor-pointer">
+                      NEXUS
+                    </Label>
+                    <Switch
+                      id="nexus-toggle"
+                      checked={useNexus}
+                      onCheckedChange={setUseNexus}
+                      disabled={thinking}
+                    />
+                  </div>
                 </div>
 
                 <ScrollArea className="flex-1 px-4 py-4" ref={scrollRef as never}>
