@@ -20,8 +20,9 @@ const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
 
 // Native 1536-dim OpenAI embedding. brain_embeddings is vector(1536) — no pooling.
 const EMBED_MODEL = "text-embedding-3-small";
-// Above this similarity, DECODE can answer locally (cited) without an LLM completion.
-const LOCAL_ANSWER_THRESHOLD = 0.82;
+// Distilled crystals/heuristics top out around 0.45-0.55 for natural questions.
+// Above this similarity, DECODE can confidently augment the LLM with cited memory context.
+const LOCAL_ANSWER_THRESHOLD = 0.45;
 
 async function embed(text: string): Promise<number[] | null> {
   const input = text.slice(0, 8000);
@@ -61,7 +62,7 @@ serve(async (req) => {
       );
     }
 
-    const threshold: number = typeof body.threshold === "number" ? body.threshold : 0.7;
+    const threshold: number = typeof body.threshold === "number" ? body.threshold : 0.25;
     const limit: number = Math.min(Math.max(Number(body.limit) || 6, 1), 20);
     const types: string[] | null = Array.isArray(body.types) && body.types.length > 0 ? body.types : null;
 
