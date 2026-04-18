@@ -86,7 +86,7 @@ const STATIC_VERTICALS = [
   {
     id: 'agency',
     name: 'CMPSBL AGENCY™',
-    tagline: 'Governed Autonomous Agent Infrastructure — Agents That Learn, Collaborate, and Ship',
+    tagline: 'Governed AI Worker Infrastructure — Workers That Learn, Collaborate, and Ship',
     url: 'https://agency.cmpsbl.com',
     icon: Users,
     accentColor: 'hsl(35 90% 55%)',
