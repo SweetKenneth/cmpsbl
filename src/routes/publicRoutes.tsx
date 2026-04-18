@@ -25,6 +25,7 @@ const SubstrateDashboard = lazy(() => import("@/pages/SubstrateDashboard"));
 const SubstrateOS = lazy(() => import("@/pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
 const TryIt = lazy(() => import("@/pages/TryIt"));
+const Genesis = lazy(() => import("@/pages/Genesis"));
 
 const Foundry = lazy(() => import("@/pages/Foundry"));
 const JunkyardPage = lazy(() => import("@/pages/Junkyard"));
@@ -160,6 +161,7 @@ export const publicRoutes = (
     <Route path="/os" element={<SubstrateOS />} />
     <Route path="/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/try" element={<TryIt />} />
+    <Route path="/genesis" element={<Genesis />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/workbench" element={<MyWorkbench />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
