@@ -15,20 +15,35 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
 
 async function embed(text: string): Promise<number[] | null> {
+  if (!OPENAI_API_KEY) {
+    console.warn("[governor-intent-capture] OPENAI_API_KEY missing — skipping embedding");
+    return null;
+  }
   try {
     const res = await fetch("https://api.openai.com/v1/embeddings", {
       method: "POST",
       headers: { "Authorization": `Bearer ${OPENAI_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: "text-embedding-3-small", input: text.slice(0, 8000) }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const errText = await res.text().catch(() => "");
+      console.error(`[governor-intent-capture] embed http ${res.status}: ${errText.slice(0, 300)}`);
+      return null;
+    }
     const data = await res.json();
     const vec: number[] = data?.data?.[0]?.embedding;
-    return Array.isArray(vec) && vec.length === 1536 ? vec : null;
-  } catch { return null; }
+    if (!Array.isArray(vec) || vec.length !== 1536) {
+      console.error(`[governor-intent-capture] embed bad shape len=${vec?.length}`);
+      return null;
+    }
+    return vec;
+  } catch (e) {
+    console.error("[governor-intent-capture] embed exception", e);
+    return null;
+  }
 }
 
 serve(async (req) => {
