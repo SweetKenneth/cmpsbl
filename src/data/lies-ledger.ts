@@ -539,6 +539,44 @@ export const LIES_LEDGER: Finding[] = [
       'Tiered memory exists and has 25,403 records distributed across tiers. That part is real. The "audit-grade promotion chain" is not — zero receipts means tier transitions are happening untraceably. Honest restate: "tiering operational, provenance trail not yet captured."',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-028',
+    title: 'CLM "14,400 calls/day always-on" claim is off by ~120× — and the legacy engine has been dead for 2 months',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/02-technology-architecture.md + 08-survivability.md + public/11-glossary.md',
+      quote:
+        '"CLM 14,400 calls/day, 70% system telemetry, 30% scheduled curriculum, knowledge permanently distilled." "The substrate has operated autonomously, running CLM at 14,400 calls/day... without manual intervention." "The always-on learning engine — up to 14,400 cycles/day."',
+    },
+    evidence: {
+      reality:
+        'learning_cycles: 483 lifetime, last cycle 2026-02-21 (~2 months silent), 0 in last 7 days. vertical_clm_cycles: 1,684 lifetime, 120 in last 24h, 780 in last 7 days. ai_learning_data: 0 rows EVER. learning_results: 0. learning_logs: 0. learning_confidence: 0. learning_patterns: 3 lifetime. Edge function pf-clm-engine literally logs: "Auto-chain skipped — failure rate 58% too high."',
+      method:
+        "SELECT count(*) FROM learning_cycles WHERE created_at > now()-interval '24 hours'; SELECT count(*) FROM vertical_clm_cycles WHERE created_at > now()-interval '24 hours'; SELECT count(*) FROM ai_learning_data; pf-clm-engine edge function logs.",
+    },
+    verdict:
+      'The 14,400/day claim fails on every dimension: (1) The legacy learning_cycles engine has been DEAD since Feb 21 — not "always-on." (2) Current vertical CLM runs at 120 cycles/day = 0.83% of the claimed 14,400. (3) Zero rows in ai_learning_data, learning_results, learning_logs, learning_confidence — there is no "knowledge permanently distilled" anywhere queryable. (4) The current CLM engine is actively self-throttling because its own failure rate is 58%. (5) "Operates autonomously without governor" is unsupported — the only running cycles are the 4-hour vertical scheduler. Honest restate: "Vertical CLM scheduler runs ~120 cycles/day at a 42% success rate. Legacy CLM engine has been offline since February 2026."',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-029',
+    title: 'CLM is currently self-throttling — substrate edge function reports 58% failure rate',
+    severity: 'THEATER',
+    source: {
+      document: 'docs/libraries/internal/09-founder-intent.md',
+      quote:
+        '"Learning is continuous. CLM is a foundational property, not optional. The substrate must always be learning."',
+    },
+    evidence: {
+      reality:
+        'Live edge function pf-clm-engine log (timestamp 2026-04-18T02:40:08Z): "Cycle #39: 3 AI calls in 7343ms" immediately followed by "Auto-chain skipped — failure rate 58% too high." Cycle counter shows only 39 chained cycles have completed in this engine instance — and the chain is currently halted by its own circuit breaker.',
+      method:
+        'Direct read of pf-clm-engine edge function logs. Cross-checked with empty ai_learning_data, learning_results, learning_logs, learning_confidence tables.',
+    },
+    verdict:
+      '"CLM is foundational, must always be learning" is contradicted by the engine itself, which auto-disables when failures exceed threshold. The system is honest enough to throttle when broken — but the docs claiming "always learning" are not honest about the current state. The right framing: "CLM has a circuit breaker that fires when failure rate exceeds 50% — currently tripped at 58%."',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
