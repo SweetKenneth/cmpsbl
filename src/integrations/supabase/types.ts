@@ -9147,6 +9147,54 @@ export type Database = {
           },
         ]
       }
+      governor_intent_stream: {
+        Row: {
+          created_at: string
+          embedded: boolean
+          embedding_id: string | null
+          id: string
+          intent_text: string
+          linked_refs: string[] | null
+          metadata: Json | null
+          priority: number
+          processed: boolean
+          processed_at: string | null
+          scope: string
+          source: string | null
+          tags: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          embedded?: boolean
+          embedding_id?: string | null
+          id?: string
+          intent_text: string
+          linked_refs?: string[] | null
+          metadata?: Json | null
+          priority?: number
+          processed?: boolean
+          processed_at?: string | null
+          scope?: string
+          source?: string | null
+          tags?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          embedded?: boolean
+          embedding_id?: string | null
+          id?: string
+          intent_text?: string
+          linked_refs?: string[] | null
+          metadata?: Json | null
+          priority?: number
+          processed?: boolean
+          processed_at?: string | null
+          scope?: string
+          source?: string | null
+          tags?: string[] | null
+        }
+        Relationships: []
+      }
       immune_escalations: {
         Row: {
           claimed_by: string | null
