@@ -168,7 +168,7 @@ export async function persistWitnessReading(reading: SentinelReading): Promise<{
         partial_attempts: partial,
         success_rate: successRate,
         last_execution_at: reading.observedAt,
-        heuristics: updatedHeuristics,
+        heuristics: JSON.parse(JSON.stringify(updatedHeuristics)),
       })
       .eq('agent_id', reading.agentId);
 
