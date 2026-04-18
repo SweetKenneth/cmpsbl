@@ -314,20 +314,48 @@ Limited to specific functions, not whole subsystems:
 
 ## §4 — Wiring Gaps Ledger (the real fix list)
 
-Priority order (highest impact first):
+Priority order (highest impact first). Every row maps 1:1 to an audit finding in §1–§3 so nothing surfaced gets lost.
 
-| # | Gap | Fix |
-|---|-----|-----|
-| 1 | `forge/ultimate` (10 files) → `forge_agents` table empty | Add writer in `forge/ultimate/artifactFoundry.ts` |
-| 2 | `harvest/ultimate` → no tables | Create `harvest_runs`, `harvest_outputs` migration + writer |
-| 3 | `oracle/ultimate` → no tables | Create `oracle_predictions`, `oracle_signals` migration + writer |
-| 4 | `dream_log` writer missing despite scheduler running | Wire `src/lib/dream/scheduler.ts` writes |
-| 5 | `evolution_receipts` writer missing | Wire `src/lib/evolve/evolution-receipts.ts` |
-| 6 | `pf_clarity_issues` not populated by scans | Wire issue extraction in `pf-clarity-scan` chain |
-| 7 | `immunity_rules` empty despite full immunity-mesh code | Wire `src/lib/evolution-mesh/promotion-service.ts` |
-| 8 | `substrate_sequences` empty despite sequencer code | Wire `src/lib/evolution/dagSequencer.ts` |
-| 9 | `simulateModuleVote()` → replace with real cross-scanner resolution | Engineering decision needed |
-| 10 | 7 vertical subdomains → no underlying engines | 301 redirect to cmpsbl.com (per prior approval) |
+### §4a — Tier 1: Engine→Table wiring (real code, no persistence)
+| # | Gap | Source-of-truth | Fix |
+|---|-----|-----------------|-----|
+| 1 | `forge/ultimate` (10 files) → `forge_agents` empty | §2 ultimate engines | Add writer in `forge/ultimate/artifactFoundry.ts` |
+| 2 | `harvest/ultimate` → no tables exist | §2 ultimate engines | Create `harvest_runs`, `harvest_outputs` migration + writer |
+| 3 | `oracle/ultimate` → no tables exist | §2 ultimate engines | Create `oracle_predictions`, `oracle_signals` migration + writer |
+| 4 | `phantom/ultimate`, `relay/ultimate`, `treaty/ultimate`, `compass/ultimate`, `audit/ultimate` → no tables | §2 ultimate engines | Audit each for needed persistence; create migrations or mark observation-only |
+| 5 | `substrate/{governance,nerve,sovereign,reflex,intent,integration,sandbox,simulate}/ultimate` → no tables | §2 ultimate engines | Same audit-each pass; many are pure routers and may stay table-less by design |
+
+### §4b — Tier 2: Schema exists, writer missing (DREAM/EVOLUTION/IMMUNITY/Clarity)
+| # | Gap | Source-of-truth | Fix |
+|---|-----|-----------------|-----|
+| 6 | `dream_log`, `dream_sessions`, `dream_artifacts`, `dream_archaeology`, `dream_learning_metrics` empty | §2 empty-table list | Wire writes from `src/lib/dream/scheduler.ts` and synthesis pipeline |
+| 7 | `cascade_conversations`, `cascade_events` empty | §2 empty-table list | Wire DECODE conversation pipe to `cascade_*` tables |
+| 8 | `evolution_receipts`, `evolution_snapshots` empty | §2 empty-table list | Wire `src/lib/evolve/evolution-receipts.ts` |
+| 9 | `modernizer_outputs`, `modernizer_analytics`, `modernizer_reports`, `modernizer_autonomy_log` empty | §2 empty-table list | Wire modernizer job completion handlers to write outputs |
+| 10 | `immunity_rules`, `immunity_rule_invocations`, `immunity_mesh_runs` empty | §1 IMMUNITY scaffolded | Wire `src/lib/evolution-mesh/promotion-service.ts` |
+| 11 | `pf_clarity_issues`, `pf_clarity_fixes` empty (scans run, issues not persisted) | §1 INCLUSIVE alive | Wire issue extraction in `pf-clarity-scan` edge fn chain |
+| 12 | `substrate_brain_improvements`, `substrate_cascade_history`, `substrate_sequences`, `substrate_sequence_steps` empty | §2 empty-table list | Wire `src/lib/evolution/dagSequencer.ts` + brain improvement applier |
+| 13 | `user_crystallized_entitlements` empty (purchase exists, entitlement issuance missing) | §1 Memory Chains | Wire entitlement issuer on `agency_purchases.status='paid'` |
+
+### §4c — Tier 3: Dormant by economic choice (Firecrawl-gated) — DO NOT KILL
+| # | Gap | Source-of-truth | Fix |
+|---|-----|-----------------|-----|
+| 14 | Agent Forge (`forge_agents` 0 rows) — paused since Firecrawl free promo ended | §-1 history, §1 Agency | Re-fund Firecrawl OR swap to NEXUS-routed scraper. **Code path intact, no rebuild.** |
+| 15 | `agency_api_calls` 0 rows — Firecrawl call telemetry not logged | §1 Agency Firecrawl wiring | Confirm telemetry path: either route Firecrawl through `agency_api_calls` writer or document that `mesh_discovery_runs` + `agency_agent_telemetry` cover it |
+
+### §4d — Tier 4: Theater removal (function-level, not system-level)
+| # | Gap | Source-of-truth | Fix |
+|---|-----|-----------------|-----|
+| 16 | `simulateModuleVote()` in `src/lib/mesh/cross-scanner-resolution.ts` | §3 confirmed theater | Replace with real cross-scanner resolution OR delete callers |
+| 17 | `simulateCapabilityExecution()` in substrate executors | §3 confirmed theater | Replace with real executor dispatch OR delete |
+| 18 | 7 vertical subdomains (health, gaming, education, media, mana-as-vertical, quantum, fintech) → 0 engine rows under any alias | §3 confirmed theater | 301 redirect to cmpsbl.com (per prior approval) |
+
+### §4e — Tier 5: Documentation & lineage debt
+| # | Gap | Source-of-truth | Fix |
+|---|-----|-----------------|-----|
+| 19 | Heritage Paper has ~10% drift; Oct 2024 – Feb 2025 window absent | §-1 history | Backfill the "Hidden Window" section (DONE — `HeritagePaper.tsx` §1.4) and re-verify other claims pass-by-pass |
+| 20 | XCTBL → CMPSBL bridge is footer-link only; planned Dev Playground integration not built | §-1 future role | Roadmap intent only — do not implement until Kenneth schedules. Track here so it isn't lost. |
+| 21 | `pf_*` ↔ `cmpsbl_*` coexistence undocumented in user-facing docs | §-1 history | Add a one-paragraph "Why two prefixes?" note to the Heritage Paper or developer docs |
 
 ---
 
