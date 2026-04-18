@@ -107,6 +107,29 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 - Zero external AI calls in Ascension
 - Layer 2 runtime engines frozen unless Kenneth approves
 - Vertical access dual-gate preserved
+- **Patent boundary:** Ascension collision = Patent #1 · Mana attachment/deploy
+  (governed by LEX) = Patent #2 · both converge in the V2 export pipeline
+- **Terminology:** Cognitives ≠ Agents · Clarity = INCLUSIVE (not IMMUNITY) ·
+  MODERNIZER/EVOLVE = legacy names for EVOLUTION
+
+---
+
+## Cohesion Linkage
+
+This roadmap pairs with `docs/libraries/internal/24-substrate-cohesion-audit.md`,
+which classifies the full 264-table surface area into alive / dormant / theater /
+migrate buckets. Action items relevant to V2:
+
+- **VAULT** (discovery graduation table, 11k+ promotions) feeds Ascension's
+  pre-export harness — keep alive, surface in receipt explorer (Phase 1)
+- **COMPILER** subsystem feeds `marketplace.cmpsbl.com` — Crown Jewel layers
+  selectable in Step 2 must stay in sync with compiler output
+- **LEX REGISTRY** governs every Mana attachment in Step 2 — registry health
+  is a V2 readiness signal
+- **MUTATION** tables to be folded into EVOLUTION before Phase 5 (determinism
+  guarantees) so reproducibility proofs reference one engine name only
+- **AUTOBLOG · CONTROL PLANE · MARKETPLACE** remain standalone peers — they
+  consume V2 receipts but do not gate the pipeline
 
 ---
 
