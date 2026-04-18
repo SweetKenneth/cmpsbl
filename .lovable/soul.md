@@ -52,12 +52,37 @@ These rules are absolute. No exceptions. No "just this once." No optimization ju
 | 40-Primitive | 40-node |
 | Primitives | Modules/Nodes |
 | Layers | Mesh |
-| EVOLUTION | MODERNIZER |
+| EVOLUTION | MODERNIZER / EVOLVE / EVOLUTION Mesh |
 | substrate | framework/system/platform |
 | we / CMPSBL | our team |
 | runs autonomously | triggered (for MemStream) |
 | NEXUS | Lovable AI |
 | Governed Cognitive Infrastructure | AI operating system |
+| **Clarity = INCLUSIVE (CMPTBL)** | Clarity = IMMUNITY |
+| **CMPSBL Cognitives** (Forge/Agency) | Agents (when referring to Cognitives) |
+| **Primitive Matrix** | Module Registry |
+
+### 3a. Cohesion Anchor — Subsystem Truth
+The substrate's 264-table surface is classified in
+`docs/libraries/internal/24-substrate-cohesion-audit.md`.
+Read it before re-litigating "is X a subsystem?" or "who owns Y?"
+
+**Standalone subsystems (peers to primitives, not owned by any):**
+AUTOBLOG · COMPILER (marketplace.cmpsbl.com) · MARKETPLACE ·
+CONTROL PLANE (control.cmpsbl.com) · VAULT (discovery graduation)
+
+**Patent boundary:**
+Ascension collision = Patent #1 (64/029,678) ·
+Mana attachment/deploy governed by LEX = Patent #2 (64/031,637) ·
+both converge in the V2 export pipeline
+
+**Slated for removal (theater):**
+module_registry · integrity_findings · studio_* · resilience_ledger ·
+restoration_sessions · brain_persona* · brain_curiosity* ·
+pf_brain_ml_* · pf_threat_*
+
+**Slated for migration:**
+learning_* → BRAIN edges/crystals · mutation_* → EVOLUTION
 
 ### 4. Data Integrity
 - **Real data only.** No mock data. No hardcoded metrics. No simulated flows.
