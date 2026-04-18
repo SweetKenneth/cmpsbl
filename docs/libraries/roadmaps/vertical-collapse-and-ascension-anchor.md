@@ -20,6 +20,10 @@ Prior audits were wrong because they searched canonical names only. These aliase
 | IMMUNITY (Layer #14) | Clarity, CMPTBL, `immunity_*`, `pf_clarity_*` |
 | CMPSBL substrate | PromptFluid, ecosystem, `pf_*`, `prompt_fluid_*`, `substrate_*`, `cmpsbl_*` |
 | Governor | Admin, `admin_*` |
+| Memory Chain | Pipeline, `pipeline_*`, `chain_*` |
+| Crystallized Memory | Crystallized Pipeline, Primitive Chain, Node Chain, Module Chain, `crystal*`, `crystallized_*` |
+
+**Unknown-name rule:** If I encounter any table/file/function name I don't recognize, **I ask Kenneth directly** before classifying it as fake, dead, or missing. No silent assumptions.
 
 **Cascade special case:** Cascade was the pre-split orchestrator → split into DREAM (synthesis) + DECODE (parser). Any `cascade_*` row counts toward DREAM ∪ DECODE.
 
