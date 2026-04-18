@@ -72,7 +72,7 @@ export function emitJava(spec: ComponentSpec): string {
     const ret = javaRet(m, spec);
     lines.push(`    public static ${ret} ${m.name}(${params}) {`);
     lines.push('        synchronized (LOCK) {');
-    for (const op of m.ops) for (const l of javaOp(op, spec)) lines.push(`            ${l}`);
+    for (const op of m.ops) for (const l of javaOp(op, spec, m)) lines.push(`            ${l}`);
     lines.push('        }');
     lines.push('    }');
     lines.push('');
@@ -100,7 +100,7 @@ function ktInit(f: SpecField): string {
   if (f.type === 'bool') return String(f.init ?? false);
   return `${f.init ?? 0}L`;
 }
-function ktOp(op: MethodOp, spec: ComponentSpec): string[] {
+function ktOp(op: MethodOp, spec: ComponentSpec, m: SpecMethod): string[] {
   switch (op.kind) {
     case 'get': return [`return ${op.field}`];
     case 'set': return [`${op.field} = ${op.from}`];
@@ -109,8 +109,10 @@ function ktOp(op: MethodOp, spec: ComponentSpec): string[] {
     case 'reset_field': return [`${op.field} = 0L`];
     case 'reset_all': return spec.fields.map(f => `${f.name} = ${ktInit(f)}`);
     case 'clear_map': return [`${op.field}.clear()`];
-    case 'map_inc':
-      return [`${op.field}[${op.key}] = (${op.field}[${op.key}] ?: 0L) + ${op.by ?? 1}L`];
+    case 'map_inc': {
+      const k = resolveKey(m, op.key);
+      return [`${op.field}[${k}] = (${op.field}[${k}] ?: 0L) + ${op.by ?? 1}L`];
+    }
     case 'snapshot': {
       const pairs = op.fields.map(f => `"${f}" to ${f}`).join(', ');
       return [`return mapOf(${pairs})`];
