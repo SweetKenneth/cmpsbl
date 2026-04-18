@@ -2019,6 +2019,40 @@ export const LIES_LEDGER: Finding[] = [
       'The handler-registry layer over-promises vs. the edge function dispatch layer. Three concrete fixes needed: (a) add a "mesh" module case to pf-substrate (or remove the bridge call from mesh-handlers.ts:35 and route mesh.* through a different surface); (b) add a "health" action to the nexus module dispatch in pf-substrate to match the .health convention every other module follows; (c) wire the legacy "doctor" alias to system.diagnostics in pf-substrate, since the front-end already treats them as equivalent. None of these are theater — they are real plumbing gaps where two layers (handler registry + edge dispatcher) drifted out of sync. Easy to close in one edge-function patch.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-111',
+    title: 'Terminal "think" — alias works end-to-end, but invocation contract is undocumented and easy to get wrong (top-level `query` is silently dropped)',
+    severity: 'PARTIAL',
+    source: {
+      document: 'src/lib/terminal/core-handlers.ts:127 + src/components/substrate-os/terminal/TerminalCommands.ts:85 + supabase/functions/pf-substrate/index.ts:5213',
+      quote: '`registerHandler("think", bridge("brain", "deep_think"));` and `{ command: "brain.deep_think", args: "<query> [depth]", example: "brain.deep_think \\"consciousness\\" 3" }`.',
+    },
+    evidence: {
+      reality:
+        'Live POST to pf-substrate on 2026-04-18 with `{module:"brain", action:"deep_think", query:"what is consciousness", depth:2}` returns HTTP 400 `{"success":false, "action":"deep_think", "error":"query is required"}`. Reading the dispatcher (pf-substrate/index.ts:907): `const { module, action, payload, data } = body` — top-level fields beyond those four are NOT forwarded to handlers. The handler at line 5214 reads `data.query`. Re-running with `{module:"brain", action:"deep_think", data:{query:"what is consciousness", depth:2}}` returns HTTP 200 with a 1500-token deep reasoning response (real chain-of-thought analysis citing IIT, GWT, neural Darwinism, plus integration with live brain_memory_hot/learning_patterns/brain_reflections rows from the DB). The `payload:{}` wrapper also works identically. So the capability is REAL and produces high-quality output — the "think" alias DOES route to brain.deep_think and DOES execute through NEXUS to a real LLM (per Lov Rules: NEXUS, not Lovable AI). But the contract is broken: the example string in TerminalCommands.ts (`brain.deep_think "consciousness" 3`) implies positional args at the top level, which the dispatcher silently drops. Any caller hitting the edge function directly without the `data:{}` wrapper gets a 400 with no hint about the wrapper requirement.',
+      method: 'curl POST to /functions/v1/pf-substrate with three payload shapes (top-level fields, data wrapper, payload wrapper); cross-referenced against pf-substrate/index.ts:907 destructure and :5213-5267 handler.',
+    },
+    verdict:
+      'Capability works, contract is fragile. Two concrete fixes: (1) update the dispatcher at line 907 to merge `{...body, ...payload, ...data}` so top-level fields work — this matches what the handler examples imply. (2) Or update TerminalCommands.ts examples and the substrate-bridge to always wrap params in `data:{}`. The current state means "think \\"x\\"" from the terminal works (because TerminalExecutor parses positional args into the data wrapper), but any SDK consumer or curl integration following the example will silently fail. Not theater — real working capability with a documentation/contract gap.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-112',
+    title: 'Capabilities — the depot "400+ downloadable capability artifacts" with Stripe checkout has ZERO database tables and ZERO edge function execution path',
+    severity: 'THEATER',
+    source: {
+      document: 'src/lib/capabilities/depot/index.ts header + license.ts:62 processDownloadRequest',
+      quote: '"Capabilities Depot — Main Export — 400+ Capability artifacts (32 S-tier, 14 Premium, 10 Recursive Self-Improvement) — Downloadable, licensed capability artifacts with full Stripe checkout"',
+    },
+    evidence: {
+      reality:
+        'Live recheck 2026-04-18: (1) DB SCHEMA — `psql -c "SELECT table_name FROM information_schema.tables WHERE table_name ILIKE \'%capabilit%\'"` returns exactly THREE tables: atlas_capabilities (8 rows), substrate_capabilities (10 rows), mesh_capability_recommendations (128 rows). The tables `capability_artifacts`, `capability_licenses`, `capability_purchases`, `capability_downloads` — every persistence target the depot license.ts and package.ts code references — DO NOT EXIST. (2) DOWNLOAD PATH — processDownloadRequest() in src/lib/capabilities/depot/license.ts:62 takes a `generateSignedUrl: (capabilityId, version) => string | null` callback as a constructor arg and there is NO caller anywhere in src/ that passes a real implementation — every reference passes a stub or omits it. There is no Storage bucket named "capability-artifacts". There is no edge function that resolves a license + signed URL. (3) EDGE EXECUTION — sampled four registered depot capabilities (cap-causal-inference, cap-threat-prediction, cap-wcag-auditor, cap-cost-optimizer) via pf-substrate with `{module:"capability", action:"<id>"}` — all four return HTTP 200 with `{success:false, error:"Unknown module: capability"}`. There is no `case "capability"` in pf-substrate/index.ts. (4) REGISTRY COUNTS — the six depot registry files (registry.ts, registry-stier.ts, registry-recursive.ts, registry-premium.ts, registry-expansion.ts, registry-ultra.ts) total 4,269 LOC and declare 136 capability id literals (20+22+10+18+36+30). The Stripe config files (stripe-*.ts) export price IDs but no Stripe webhook in supabase/functions/ writes to a capability_licenses table because that table does not exist. (5) WHAT IS REAL — the three substrate capability tables (atlas/substrate/mesh) ARE wired and queried by AtlasV2/SubstrateCapabilities UI components and return the live row counts above. The Crown Jewel registry, capability-gate-engine, capability-impact-forecaster, and capability-affinity primitives in src/crownjewels/ ARE real algorithmic code. The "infrastructure tier" capability story (gate, IP guard, manifest, marketplace UI) IS real (per F-106). What is NOT real: the downloadable-artifact-with-license-and-Stripe-checkout commerce surface advertised by depot/index.ts.',
+      method: 'psql information_schema.tables LIKE "%capabilit%"; live POST to pf-substrate with module:"capability"; grep for processDownloadRequest callers; wc -l on registry-*.ts; grep -cE "^\\s*id:" on each registry file; grep for "capability_artifacts" / "capability_licenses" in supabase/functions/.',
+    },
+    verdict:
+      'The depot is a façade. The TypeScript registries are real (4,269 LOC, 136 capability metadata records), the Stripe price ID config is real, but the entire downloadable-licensed-artifact pipeline — DB persistence, Storage bucket, signed URL generator, license validation against a real ledger, post-purchase entitlement grant — DOES NOT EXIST. A user clicking "buy" on any depot capability has no path to receive an artifact, because no table holds licenses and no function generates URLs. The honest framing is: "136 catalogued capability concepts with metadata and pricing" — not "400+ downloadable artifacts with full Stripe checkout." This is the largest gap between marketing surface and implementation reality found in the audit so far. Fixes required to make the claim true: (a) migration creating capability_artifacts + capability_licenses + capability_purchases tables with RLS; (b) Storage bucket "capability-artifacts" with signed-URL generation edge function; (c) Stripe webhook handler that grants licenses on checkout.session.completed; (d) at least one real artifact ZIP per advertised capability uploaded to the bucket. Until then, the depot should be marked "Coming Soon" or removed from public surface.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
