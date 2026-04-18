@@ -920,6 +920,60 @@ export const LIES_LEDGER: Finding[] = [
       'A roadmap that contradicts itself within 30 lines is not a credibility document. Neither the "achieved" nor the "achievable" framing is supported by code or database evidence.',
     recordedAt: '2026-04-18',
   },
+  {
+    id: 'F-049',
+    title: '"20 sealed-runtime agents" is overstated — registry holds 14',
+    severity: 'PARTIAL',
+    source: {
+      document: 'docs/libraries/investors/09-defensible-valuation.md (§3.4, line 81) · 01-executive-summary.md (line 33)',
+      quote:
+        '"Agent count: 20 sealed-runtime agents" · "Cognitive agents: 20 sealed-runtime agents"',
+    },
+    evidence: {
+      reality:
+        'cognitive_registry contains 14 rows, not 20. substrate_agents: 0 rows. cognitive_orders: 0 rows (no agent has ever been purchased). The "$3–5M raw value · $2–4M risk-adjusted" line item in the valuation table is therefore based on an inflated unit count and zero commercial traction.',
+      method: 'SELECT count(*) FROM cognitive_registry, substrate_agents, cognitive_orders.',
+    },
+    verdict:
+      'Two investor docs cite "20 agents" as a load-bearing valuation input. Database shows 14 registered, 0 sold. The headline number is wrong and the supporting marketplace is empty.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-050',
+    title: '"54 Crown Jewel algorithms" valued at $5–10M have zero artifact-registry footprint',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/09-defensible-valuation.md (§3.5, §4, §7, line 96, 158, 249)',
+      quote:
+        '"Crown Jewels: 54 governor-only capabilities" · "54 Crown Jewel algorithms · Raw $5–10M · Risk-Adjusted $3–7M" · "Algorithm IP: 54 Crown Jewels, sealed and classified · Cannot be accessed"',
+    },
+    evidence: {
+      reality:
+        'artifact_registry: 199 total artifacts across 6 categories, 0 rows match tier/category ILIKE %crown% or %jewel%. There is no crown_jewels table in the public schema. The "sealed and classified, cannot be accessed" framing is consistent with there being no database evidence of their existence.',
+      method: "SELECT count(*) FROM artifact_registry WHERE tier ILIKE '%crown%' OR category ILIKE '%crown%' OR category ILIKE '%jewel%'; information_schema scan for crown_*/jewel_* tables.",
+    },
+    verdict:
+      'A $3–7M risk-adjusted line item should leave a database trace. None exists. "Sealed and classified" is not a substitute for evidence — at minimum a count, hash registry, or version manifest would be expected.',
+    recordedAt: '2026-04-18',
+  },
+  {
+    id: 'F-051',
+    title: 'Defensible-valuation doc relies on "90+ language export" already shown to be 0',
+    severity: 'FICTION',
+    source: {
+      document: 'docs/libraries/investors/09-defensible-valuation.md (§3.8, line 143, line 274)',
+      quote:
+        '"Export targets: 90+ languages (software, HDL, GPU, blockchain, quantum & robotics)" · "Universal Export (90+ languages) · Raw $15–30M · Risk-Adjusted $11–21M"',
+    },
+    evidence: {
+      reality:
+        'Cross-ref F-043: src/lib/ascension-v2/ contains 0 emitter directories and 10 software language tokens used only for classification. Cross-ref F-044: Ascension has 3 lifetime runs across cli_ascension_sessions + vertical_ascension_sessions. The $11–21M risk-adjusted "Universal Export" line item is built on a capability that has not shipped.',
+      method: 'Aggregate of F-043 (emitter inventory) and F-044 (run counts) applied to the §3.8 / §7 valuation rows.',
+    },
+    verdict:
+      'The valuation document monetizes the same "90+ languages" claim that the codebase contradicts. Removing this row alone collapses the ceiling estimate by $11–21M.',
+    recordedAt: '2026-04-18',
+  },
 ];
 
 export const LEDGER_STATS = {
