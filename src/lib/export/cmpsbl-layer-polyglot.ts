@@ -45,6 +45,12 @@ import { JAVA_KERNEL_REPLAY_BODIES } from './layers-java/java-kernel-replay';
 import { CSHARP_KERNEL_REPLAY_BODIES } from './layers-csharp/csharp-kernel-replay';
 import { SWIFT_KERNEL_REPLAY_BODIES } from './layers-swift/swift-kernel-replay';
 import { KOTLIN_KERNEL_REPLAY_BODIES } from './layers-kotlin/kotlin-kernel-replay';
+import { RS_KERNEL_GOVERNANCE_BODIES } from './layers-rs/rs-kernel-governance';
+import { GO_KERNEL_GOVERNANCE_BODIES } from './layers-go/go-kernel-governance';
+import { JAVA_KERNEL_GOVERNANCE_BODIES } from './layers-java/java-kernel-governance';
+import { CSHARP_KERNEL_GOVERNANCE_BODIES } from './layers-csharp/csharp-kernel-governance';
+import { SWIFT_KERNEL_GOVERNANCE_BODIES } from './layers-swift/swift-kernel-governance';
+import { KOTLIN_KERNEL_GOVERNANCE_BODIES } from './layers-kotlin/kotlin-kernel-governance';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Bulk-register hand-written native bodies for SHIPPING languages.
@@ -171,6 +177,12 @@ function _registerKernelBodies(): void {
     ['csharp', CSHARP_KERNEL_REPLAY_BODIES],
     ['swift', SWIFT_KERNEL_REPLAY_BODIES],
     ['kotlin', KOTLIN_KERNEL_REPLAY_BODIES],
+    ['rust', RS_KERNEL_GOVERNANCE_BODIES],
+    ['go', GO_KERNEL_GOVERNANCE_BODIES],
+    ['java', JAVA_KERNEL_GOVERNANCE_BODIES],
+    ['csharp', CSHARP_KERNEL_GOVERNANCE_BODIES],
+    ['swift', SWIFT_KERNEL_GOVERNANCE_BODIES],
+    ['kotlin', KOTLIN_KERNEL_GOVERNANCE_BODIES],
   ];
   for (const [lang, table] of tables) {
     for (const [layerId, body] of Object.entries(table)) {
