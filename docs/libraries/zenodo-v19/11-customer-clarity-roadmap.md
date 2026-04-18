@@ -73,25 +73,26 @@ These are the **factory** — not the storefront. Customers benefit from output,
 
 ## /store — The Single Commerce Surface
 
-`/store` becomes the only place customers buy things. Three sections:
+`/store` sells exactly **three things**. Nothing else.
 
-### Section 1 — Add-on Layers (for Ascension v2)
-- Crown Jewel layers selectable in Step 2 (Enhance)
-- Purchased layers attach to user account
-- Auto-merge into Layer 2 during Ascension export
-- *This is the primary commerce loop.*
+### 1. Layers
+- Crown Jewel + SDK-built layers for Ascension v2
+- Purchased layers attach to the user's account
+- Auto-merge into Layer 2 during Ascension export (Step 2 — Enhance)
+- *Primary commerce loop — the everyday purchase.*
 
-### Section 2 — Engines & Software Suites (Merchant/Compiler surface)
-- Output of internal Compiler graduating Memory Stream discoveries
-- Standalone software suites users can purchase
-- Surface as completed products, not pipeline mechanics
-
-### Section 3 — Meta Engines / Meta Agents (the moat)
-- Premium add-ons that work in CLI, SDK, and standalone
+### 2. Meta Engines
+- Premium standalone engines (output of internal Compiler graduating Memory Stream discoveries)
+- Work in CLI, SDK, and standalone
 - Higher price point, higher capability
-- Reserved as a distinct tier of the Store
+- Surfaced as completed products, never as pipeline mechanics
 
-**No more Memory Packs as a separate Store SKU.** Their capabilities fold into CLI/SDK standard features.
+### 3. Meta Agents
+- Premium agent-class add-ons (CMPSBL Cognitives, not generic agents)
+- Work in CLI, SDK, and standalone
+- The moat — distinct from the saturated agent market because they ride the substrate
+
+**Removed from Store:** Memory Packs (folded into CLI/SDK standard), Engines/Software Suites as a separate section (collapsed into Meta Engines), any vertical-specific SKUs.
 
 ---
 
