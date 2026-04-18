@@ -9,19 +9,25 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Brain, Cpu, Lock, Download, FileText, Zap, ShieldCheck, WifiOff, Send, Sparkles } from 'lucide-react';
+import { Brain, Cpu, Lock, Download, FileText, Zap, ShieldCheck, WifiOff, Send, Sparkles, Network } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { brainReason, BRAIN_REASONER_META, type BrainTrace } from '@/lib/genesis/brainReasoner';
+import { processAIRequest } from '@/lib/nexus';
 
 interface ChatTurn {
   id: string;
   role: 'user' | 'brain';
   text: string;
   trace?: BrainTrace;
+  source?: 'brain' | 'nexus';
+  nexusMeta?: { model: string; latency: number; cached: boolean };
+  error?: boolean;
 }
 
 const SAMPLE_PROMPTS = [
