@@ -39,12 +39,14 @@ const SAMPLE_PROMPTS = [
 ];
 
 export default function Genesis() {
+  const [useNexus, setUseNexus] = useState(false);
   const [turns, setTurns] = useState<ChatTurn[]>([
     {
       id: 'init',
       role: 'brain',
       text:
-        "I am BRAIN, addressed through DECODE. I have no LLM behind me. Ask me anything — I will respond from my knowledge crystals, or honestly tell you when I don't have one. Open devtools → Network: you will see zero outbound calls when I think.",
+        "I am BRAIN, addressed through DECODE. I have no LLM behind me. Ask me anything — I will respond from my knowledge crystals, or honestly tell you when I don't have one. Open devtools → Network: you will see zero outbound calls when I think. Flip the NEXUS toggle above to compare against a routed LLM.",
+      source: 'brain',
     },
   ]);
   const [input, setInput] = useState('');
@@ -72,8 +74,38 @@ export default function Genesis() {
       };
       setTurns(prev => [...prev, userTurn]);
 
-      // Synchronous, deterministic — no await needed. We use a 0ms timeout
-      // only so the UI repaints the user message before the response.
+      if (useNexus) {
+        // NEXUS path — routes to a real free-tier provider. Network calls WILL appear.
+        processAIRequest({ prompt, type: 'reasoning', useCache: true })
+          .then(resp => {
+            setTurns(prev => [
+              ...prev,
+              {
+                id: 'n_' + Date.now(),
+                role: 'brain',
+                text: resp.content,
+                source: 'nexus',
+                nexusMeta: { model: resp.model, latency: resp.latency, cached: resp.cached },
+              },
+            ]);
+          })
+          .catch(err => {
+            setTurns(prev => [
+              ...prev,
+              {
+                id: 'n_' + Date.now(),
+                role: 'brain',
+                text: `NEXUS routing failed: ${err instanceof Error ? err.message : 'unknown error'}. This is what BRAIN protects you from when you run offline.`,
+                source: 'nexus',
+                error: true,
+              },
+            ]);
+          })
+          .finally(() => setThinking(false));
+        return;
+      }
+
+      // BRAIN path — synchronous, deterministic, no network. 0ms timeout for repaint.
       setTimeout(() => {
         const trace = brainReason(prompt, lastReceipt);
         const brainTurn: ChatTurn = {
@@ -81,13 +113,14 @@ export default function Genesis() {
           role: 'brain',
           text: trace.response,
           trace,
+          source: 'brain',
         };
         setTurns(prev => [...prev, brainTurn]);
         setLastReceipt(trace.receipt.fingerprint);
         setThinking(false);
       }, 16);
     },
-    [input, thinking, lastReceipt],
+    [input, thinking, lastReceipt, useNexus],
   );
 
   return (
