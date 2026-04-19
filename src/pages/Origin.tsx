@@ -2,8 +2,9 @@
  * /origin — The CMPSBL Origin Story
  *
  * Public-readable. Tells the truth of how the substrate was born:
- * Lovable credits → broken substrate ceiling → 2,500 users in a day →
- * all-inclusive humans story → CMPSBL.
+ * Lovable credits → broken substrate ceiling → XCTBL hit 2,500 users in
+ * a day while the substrate was being repaired → all-inclusive humans
+ * story → CMPSBL.
  *
  * This page is the "why" — surfaced for those who follow the trail back.
  * It is the door from CMPSBL out into the XCTBL universe, and the door
