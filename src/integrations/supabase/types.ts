@@ -5622,12 +5622,14 @@ export type Database = {
           description: string | null
           enabled: boolean
           id: string
+          is_fallback: boolean
           last_run_at: string | null
           last_signal_pressure: number
           max_interval_seconds: number
           metadata: Json
           min_interval_seconds: number
           name: string
+          priority: number
           signal_query: string | null
           signal_threshold: number
           target_function: string
@@ -5643,12 +5645,14 @@ export type Database = {
           description?: string | null
           enabled?: boolean
           id?: string
+          is_fallback?: boolean
           last_run_at?: string | null
           last_signal_pressure?: number
           max_interval_seconds?: number
           metadata?: Json
           min_interval_seconds?: number
           name: string
+          priority?: number
           signal_query?: string | null
           signal_threshold?: number
           target_function: string
@@ -5664,12 +5668,14 @@ export type Database = {
           description?: string | null
           enabled?: boolean
           id?: string
+          is_fallback?: boolean
           last_run_at?: string | null
           last_signal_pressure?: number
           max_interval_seconds?: number
           metadata?: Json
           min_interval_seconds?: number
           name?: string
+          priority?: number
           signal_query?: string | null
           signal_threshold?: number
           target_function?: string
