@@ -139,6 +139,7 @@ const ManaLabPage = lazy(() => import("@/pages/ManaLab"));
 const DreamStatePage = lazy(() => import("@/pages/DreamStatePage"));
 const LabPage = lazy(() => import("@/pages/Lab"));
 const ShieldPage = lazy(() => import("@/pages/Shield"));
+const Field = lazy(() => import("@/pages/Field"));
 
 export const publicRoutes = (
   <>
@@ -169,6 +170,7 @@ export const publicRoutes = (
     <Route path="/genesis" element={<Navigate to="/about" replace />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/origin" element={<Origin />} />
+    <Route path="/field" element={<Field />} />
     <Route path="/workbench" element={<MyWorkbench />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />

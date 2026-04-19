@@ -54,6 +54,7 @@ export function EnhancedFooter() {
       title: "Developers",
       links: [
         { name: "API Access", href: "/api-access", highlight: true },
+        { name: "In the Field", href: "/field" },
         { name: "Documentation", href: "/documentation" },
         { name: "Changelog", href: "/changelog" },
         { name: "Blog", href: "/blog" },
