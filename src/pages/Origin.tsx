@@ -86,10 +86,11 @@ export default function Origin() {
             </p>
 
             <p>
-              The first attempt at building on that opened ceiling was posted to
-              Hacker News. It hit 2,500 users in a single day. Lovable sent an
-              email. That year, the project landed in the top 1% of Lovable
-              builders by traffic.
+              While the substrate was being repaired, a side project —{" "}
+              <strong>XCTBL</strong> — was posted to Hacker News. It hit 2,500
+              users in a single day. Lovable sent an email. That year, the
+              account landed in the top 1% of Lovable builders by traffic — on
+              the back of the side project, not CMPSBL itself.
             </p>
 
             <p>
