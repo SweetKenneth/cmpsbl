@@ -38,6 +38,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 21 | [Capability Lifecycle E2E — Developer](21-capability-lifecycle-e2e-developer.md) | Shareable developer reference: 5-state model, integration workflow, verification guide |
 | 22 | [Mana + Lex E2E Architecture](22-mana-lex-e2e-architecture.md) | Governor reference: complete Mana/Lex execution model, wrapper composition, proof system, invariants |
 | 23 | [Ascension/Mana Wrapping Frontier](23-ascension-mana-wrapping-frontier.md) ([HTML](23-ascension-mana-wrapping-frontier.html)) | Governor reference: full wrapping spectrum, signal discovery, capability ladder, path to defense-grade ceiling |
+| 24 | [Primitive Intent & Patent Summary](24-primitive-intent-and-patent-summary.md) | Governor reference: per-primitive plain-English + patent angle, compiled from chat-history backfill of high-intent statements |
 
 ---
 
