@@ -18,8 +18,8 @@ export default function Upgrade() {
         <div className="absolute bottom-40 right-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.03) 0%, transparent 60%)" }} />
       </div>
       <SEO
-        title="Pricing — Free to Architect Plans | CMPSBL"
-        description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, 12 slots). Every tier gets full runtime access. Scale memory, exports, routing, and capabilities as you grow."
+        title="Plans & Pricing — Free, Pro & Enterprise | CMPSBL"
+        description="CMPSBL plans: Free ($0, full runtime), Pro ($29/mo, persistent memory + reasoning), and Enterprise (annual contract, full governance + 99.9% SLA). Start free, upgrade when ready."
       />
       <PublicNav />
       <UpgradeOnboarding />
