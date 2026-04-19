@@ -233,6 +233,7 @@ serve(async (req) => {
       clusters_found: clusters.length,
       promoted: written.length,
       below_floor: clusters.length - written.length,
+      cluster_scores: clusters.map((c) => ({ size: c.members.length, score: +c.score.toFixed(4), breakdown: c.breakdown })),
       syntheses: written,
       elapsed_ms: Date.now() - t0,
     }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
