@@ -2,8 +2,9 @@
  * /origin — The CMPSBL Origin Story
  *
  * Public-readable. Tells the truth of how the substrate was born:
- * Lovable credits → broken substrate ceiling → 2,500 users in a day →
- * all-inclusive humans story → CMPSBL.
+ * Lovable credits → broken substrate ceiling → XCTBL hit 2,500 users in
+ * a day while the substrate was being repaired → all-inclusive humans
+ * story → CMPSBL.
  *
  * This page is the "why" — surfaced for those who follow the trail back.
  * It is the door from CMPSBL out into the XCTBL universe, and the door
@@ -19,10 +20,7 @@ const XCTBL_SITES = [
   { name: "RNDRBL", url: "https://rndrbl.com", role: "Crew Log" },
   { name: "PTCHBL", url: "https://ptchbl.com", role: "Mars Settlement / Dream Eater" },
   { name: "RCKBL", url: "https://rckbl.com", role: "Dream Eater Companion" },
-  { name: "RSTRBL", url: "https://rstrbl.com", role: "Project Sanctuary" },
   { name: "RSLVBL", url: "https://rslvbl.com", role: "Transmissions Hub" },
-  { name: "CRCKBL", url: "https://crckbl.com", role: "Domain Miner Engine" },
-  { name: "Signal.XCTBL", url: "https://signal.xctbl.com", role: "Quantum Star Watch" },
 ];
 
 export default function Origin() {
@@ -32,7 +30,7 @@ export default function Origin() {
         <title>Origin — How CMPSBL Was Born | CMPSBL®</title>
         <meta
           name="description"
-          content="The true origin story of the CMPSBL substrate: broken ceilings, 2,500 users in a day, and a sci-fi universe written for all-inclusive humans."
+          content="The true origin story of the CMPSBL substrate: a broken ceiling, an XCTBL side project that hit 2,500 users in a day during the wait, and a sci-fi universe written for all-inclusive humans."
         />
         <link rel="canonical" href="https://cmpsbl.com/origin" />
         <meta property="og:title" content="Origin — How CMPSBL Was Born" />
@@ -88,10 +86,11 @@ export default function Origin() {
             </p>
 
             <p>
-              The first attempt at building on that opened ceiling was posted to
-              Hacker News. It hit 2,500 users in a single day. Lovable sent an
-              email. That year, the project landed in the top 1% of Lovable
-              builders by traffic.
+              While the substrate was being repaired, a side project —{" "}
+              <strong>XCTBL</strong> — was posted to Hacker News. It hit 2,500
+              users in a single day. Lovable sent an email. That year, the
+              account landed in the top 1% of Lovable builders by traffic — on
+              the back of the side project, not CMPSBL itself.
             </p>
 
             <p>
