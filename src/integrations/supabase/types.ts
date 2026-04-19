@@ -5575,6 +5575,146 @@ export type Database = {
         }
         Relationships: []
       }
+      conductor_pipelines: {
+        Row: {
+          consecutive_empty_runs: number
+          cost_estimate_cents: number
+          created_at: string
+          description: string | null
+          enabled: boolean
+          id: string
+          last_run_at: string | null
+          last_signal_pressure: number
+          max_interval_seconds: number
+          metadata: Json
+          min_interval_seconds: number
+          name: string
+          signal_query: string | null
+          signal_threshold: number
+          target_function: string
+          target_payload: Json
+          total_runs: number
+          total_work_units: number
+          updated_at: string
+        }
+        Insert: {
+          consecutive_empty_runs?: number
+          cost_estimate_cents?: number
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          last_run_at?: string | null
+          last_signal_pressure?: number
+          max_interval_seconds?: number
+          metadata?: Json
+          min_interval_seconds?: number
+          name: string
+          signal_query?: string | null
+          signal_threshold?: number
+          target_function: string
+          target_payload?: Json
+          total_runs?: number
+          total_work_units?: number
+          updated_at?: string
+        }
+        Update: {
+          consecutive_empty_runs?: number
+          cost_estimate_cents?: number
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          last_run_at?: string | null
+          last_signal_pressure?: number
+          max_interval_seconds?: number
+          metadata?: Json
+          min_interval_seconds?: number
+          name?: string
+          signal_query?: string | null
+          signal_threshold?: number
+          target_function?: string
+          target_payload?: Json
+          total_runs?: number
+          total_work_units?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      conductor_runs: {
+        Row: {
+          dispatched_at: string
+          duration_ms: number | null
+          error: string | null
+          id: string
+          outcome: string
+          pipeline_id: string
+          pipeline_name: string
+          response: Json | null
+          signal_pressure_at_dispatch: number
+          skip_reason: string | null
+          work_units: number
+        }
+        Insert: {
+          dispatched_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          outcome?: string
+          pipeline_id: string
+          pipeline_name: string
+          response?: Json | null
+          signal_pressure_at_dispatch?: number
+          skip_reason?: string | null
+          work_units?: number
+        }
+        Update: {
+          dispatched_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: string
+          outcome?: string
+          pipeline_id?: string
+          pipeline_name?: string
+          response?: Json | null
+          signal_pressure_at_dispatch?: number
+          skip_reason?: string | null
+          work_units?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conductor_runs_pipeline_id_fkey"
+            columns: ["pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "conductor_pipelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conductor_signals: {
+        Row: {
+          id: string
+          last_emitted_at: string
+          metadata: Json
+          pressure: number
+          signal_key: string
+        }
+        Insert: {
+          id?: string
+          last_emitted_at?: string
+          metadata?: Json
+          pressure?: number
+          signal_key: string
+        }
+        Update: {
+          id?: string
+          last_emitted_at?: string
+          metadata?: Json
+          pressure?: number
+          signal_key?: string
+        }
+        Relationships: []
+      }
       control_plane_state: {
         Row: {
           created_at: string
