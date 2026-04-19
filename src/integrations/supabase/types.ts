@@ -19184,6 +19184,11 @@ export type Database = {
         Args: { p_agent_id: string; p_max_words?: number; p_user_id: string }
         Returns: Json
       }
+      conductor_eval_signal: { Args: { q: string }; Returns: number }
+      conductor_increment_run: {
+        Args: { p_id: string; p_work_units: number }
+        Returns: undefined
+      }
       cp_acquire_lease: {
         Args: {
           p_env?: string
