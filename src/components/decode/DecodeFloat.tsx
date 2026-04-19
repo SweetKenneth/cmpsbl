@@ -336,6 +336,31 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
   const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging, dragging } = useSmartPosition(orbRef, isOpen);
 
+  // 🌙 DREAM unseen syntheses (Governor-only) — drives orb pulse + auto-greet
+  const dream = useDreamUnseen(user?.id, identityRole === 'governor');
+  const dreamGreetedRef = useRef(false);
+
+  // Auto-surface latest DREAM synthesis when Governor opens DECODE with unseen items
+  useEffect(() => {
+    if (!isOpen || identityRole !== 'governor') { dreamGreetedRef.current = false; return; }
+    if (dreamGreetedRef.current) return;
+    if (dream.count === 0 || !dream.latest) return;
+    dreamGreetedRef.current = true;
+    const s = dream.latest;
+    const conf = (Number(s.confidence) * 100).toFixed(0);
+    const tags = (s.tags || []).slice(0, 4).join(', ');
+    const greet =
+      `🌙 **DREAM noticed something while you were away** — ${dream.count} new synthes${dream.count === 1 ? 'is' : 'es'} from your intents.\n\n` +
+      `**Latest** *(${conf}% confidence · ${s.synthesis_kind})*\n\n` +
+      `> ${s.insight_text}\n\n` +
+      (tags ? `**Tags:** ${tags}\n\n` : '') +
+      `**Sources:** ${(s.source_intent_ids || []).length} intents · cycle \`${s.cycle_id}\`\n\n` +
+      `Run \`/dream\` to see all syntheses or \`/dream ${s.id.slice(0, 8)}\` for full lineage. ` +
+      `\`/dream-tune\` shows the scoring weights you can tune.`;
+    setMessages((prev) => [...prev, { role: 'assistant', content: greet }]);
+    void dream.acknowledge(dream.unseen.map((u) => u.id));
+  }, [isOpen, identityRole, dream]);
+
   useEffect(() => { setMounted(true); }, []);
 
   const scrollToBottom = useCallback(() => {
