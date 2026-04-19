@@ -11,6 +11,7 @@ import { isGovernorCommand, routeGovernorCommand } from "@/lib/decode/governor-c
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { lookupAnyFingerprint } from "@/lib/factory/restoration-session";
+import { useDreamUnseen } from "@/hooks/useDreamUnseen";
 
 type Props = {
   anchorId?: string;
