@@ -19,10 +19,7 @@ const XCTBL_SITES = [
   { name: "RNDRBL", url: "https://rndrbl.com", role: "Crew Log" },
   { name: "PTCHBL", url: "https://ptchbl.com", role: "Mars Settlement / Dream Eater" },
   { name: "RCKBL", url: "https://rckbl.com", role: "Dream Eater Companion" },
-  { name: "RSTRBL", url: "https://rstrbl.com", role: "Project Sanctuary" },
   { name: "RSLVBL", url: "https://rslvbl.com", role: "Transmissions Hub" },
-  { name: "CRCKBL", url: "https://crckbl.com", role: "Domain Miner Engine" },
-  { name: "Signal.XCTBL", url: "https://signal.xctbl.com", role: "Quantum Star Watch" },
 ];
 
 export default function Origin() {
