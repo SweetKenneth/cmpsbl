@@ -5575,6 +5575,45 @@ export type Database = {
         }
         Relationships: []
       }
+      conductor_health_snapshots: {
+        Row: {
+          active_pipelines: number
+          avg_duration_ms: number
+          empty_runs_1h: number
+          failed_runs_1h: number
+          health_score: number
+          id: string
+          metadata: Json
+          recorded_at: string
+          successful_runs_1h: number
+          throttled_pipelines: string[] | null
+        }
+        Insert: {
+          active_pipelines?: number
+          avg_duration_ms?: number
+          empty_runs_1h?: number
+          failed_runs_1h?: number
+          health_score?: number
+          id?: string
+          metadata?: Json
+          recorded_at?: string
+          successful_runs_1h?: number
+          throttled_pipelines?: string[] | null
+        }
+        Update: {
+          active_pipelines?: number
+          avg_duration_ms?: number
+          empty_runs_1h?: number
+          failed_runs_1h?: number
+          health_score?: number
+          id?: string
+          metadata?: Json
+          recorded_at?: string
+          successful_runs_1h?: number
+          throttled_pipelines?: string[] | null
+        }
+        Relationships: []
+      }
       conductor_pipelines: {
         Row: {
           consecutive_empty_runs: number

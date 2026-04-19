@@ -41,6 +41,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 24 | [Primitive Intent & Patent Summary](24-primitive-intent-and-patent-summary.md) | Governor reference: per-primitive plain-English + patent angle, compiled from chat-history backfill of high-intent statements |
 | 25 | [DREAM Cross-Wirings Batch 1](25-dream-cross-wirings-batch-1.md) | Governor reference: gap-driven dreaming, defense→memory learning, regret loop (negative-space synthesis). All deterministic, all autonomous, all idempotent. |
 | 26 | [Substrate Conductor](26-substrate-conductor.md) | Governor reference: signal-driven dynamic orchestrator that replaced N per-job crons with one heartbeat + adaptive pipelines. Patent-relevant scheduling primitive. |
+| 27 | [Cross-Wirings Batch 2 + Self-Aware Conductor](27-cross-wirings-batch-2-and-self-aware-conductor.md) | Governor reference: TELEMETRY→DREAM, IMMUNITY→CORTEX, HARVEST→DREAM, and CONDUCTOR↔SYSTEM HEALTH (recursive self-monitoring with hysteretic auto-throttle). |
 
 ---
 
