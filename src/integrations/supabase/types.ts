@@ -7560,6 +7560,8 @@ export type Database = {
           metadata: Json
           scoring: Json
           source_intent_ids: string[]
+          source_kind: string
+          source_refs: Json | null
           status: string
           superseded_by: string | null
           synthesis_kind: string
@@ -7575,6 +7577,8 @@ export type Database = {
           metadata?: Json
           scoring?: Json
           source_intent_ids?: string[]
+          source_kind?: string
+          source_refs?: Json | null
           status?: string
           superseded_by?: string | null
           synthesis_kind?: string
@@ -7590,6 +7594,8 @@ export type Database = {
           metadata?: Json
           scoring?: Json
           source_intent_ids?: string[]
+          source_kind?: string
+          source_refs?: Json | null
           status?: string
           superseded_by?: string | null
           synthesis_kind?: string
