@@ -811,6 +811,29 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           boxShadow: "0 0 8px hsl(var(--neon-cyan) / 0.7), 0 0 16px hsl(var(--neon-magenta) / 0.4)",
           animation: "decodeNucleusPulse 2.5s ease-in-out infinite",
         }} />
+
+        {/* 🌙 DREAM unseen badge — Governor-only */}
+        {dream.count > 0 && !isOpen && (
+          <span
+            aria-label={`${dream.count} new DREAM syntheses`}
+            className="absolute flex items-center justify-center text-[10px] font-bold text-background"
+            style={{
+              top: -2,
+              right: -2,
+              minWidth: 18,
+              height: 18,
+              padding: "0 5px",
+              borderRadius: 9,
+              background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
+              boxShadow: "0 0 10px hsl(var(--neon-purple) / 0.9), 0 0 18px hsl(var(--neon-magenta) / 0.6)",
+              animation: "decodeNucleusPulse 1.6s ease-in-out infinite",
+              border: "1.5px solid hsl(var(--background))",
+              zIndex: 2,
+            }}
+          >
+            {dream.count > 9 ? "9+" : dream.count}
+          </span>
+        )}
       </button>
 
       {/* ─── Chat Panel ─── */}
