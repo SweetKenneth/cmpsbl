@@ -1208,7 +1208,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       const currentLabel = getTierLabel(effectiveTier);
       return { 
         success: false, 
-        output: `▓ ACCESS DENIED: ${tierLabel} tier required for '${base}'\n  Your tier: ${currentLabel}\n  Upgrade at cmpsbl.com/upgrade to unlock this command.\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}` 
+        output: `▓ ACCESS DENIED: ${tierLabel} tier required for '${base}'\n  Your tier: ${currentLabel}\n  Upgrade at cmpsbl.com/plans to unlock this command.\n  ${getRandomItem(PERSONALITY_RESPONSES.error)}` 
       };
     }
   }

@@ -94,7 +94,7 @@ export default function InvestorsPublic() {
 
   const highlights = [
     { icon: Rocket, title: "Substrate Infrastructure", description: `40 primitives across 4 categories with 200+ capabilities. Patented dual-layer technology with cryptographic verification.` },
-    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + self-hosted licensing + capability marketplace + engine licensing. 90%+ gross margins." },
+    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free + Pro $29/mo) + Enterprise annual contracts + self-hosted licensing. 90%+ gross margins." },
     { icon: BarChart, title: "Compounding Moat", description: "Self-improvement + accumulated capabilities + deep modular architecture = a technical gap that widens daily." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];
@@ -325,7 +325,7 @@ export default function InvestorsPublic() {
       <RelatedCapabilities />
       <PageSEOBlock path="/investors" title="Investor Overview" faq={[
         { question: "What market does CMPSBL address?", answer: "CMPSBL targets the AI infrastructure market — the operating system layer between foundation models and applications. This is the fastest-growing segment of AI, projected to exceed $100B by 2028." },
-        { question: "What is CMPSBL's business model?", answer: "Usage-based SaaS with tiered plans. Free Builder tier drives adoption, with Studio, Creator, and Architect tiers for scaling. Enterprise custom deployments available." },
+        { question: "What is CMPSBL's business model?", answer: "Tiered subscription: Free (drives adoption), Pro ($29/mo, persistent memory + reasoning), and Enterprise (annual contract, full governance + SLA). Self-hosted licensing available." },
       ]} />
       <EnhancedFooter />
     </div>
