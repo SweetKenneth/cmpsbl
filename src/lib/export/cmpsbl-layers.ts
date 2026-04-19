@@ -59,6 +59,7 @@ import { CONTRACT_VERSIONING_CORE } from './layers/_contract-versioning-core';
 import { SATURATION_METRICS_CORE } from './layers/_saturation-metrics-core';
 import { GOVERNED_PIPELINE_CORE } from './layers/_governed-pipeline-core';
 import { WITNESS_CORE } from './layers/_witness-core';
+import { RUNTIME_ENVELOPE_CORE } from './layers/_runtime-envelope-core';
 
 // ── Always-On Core ───────────────────────────────────────────────────────────
 // Standard hardening primitives auto-inlined into every Layer 2 export.
@@ -85,6 +86,7 @@ export const CMPSBL_CORE_LAYERS: readonly CmpsblLayerDefinition[] = Object.freez
   CONTRACT_VALIDATOR_CORE,
   QUARANTINE_CORE,
   ISOLATED_EXECUTOR_CORE,
+  RUNTIME_ENVELOPE_CORE,
   CAPABILITY_REGISTRY_CORE,
   RECEIPT_EMITTER_CORE,
   TELEMETRY_BUS_CORE,

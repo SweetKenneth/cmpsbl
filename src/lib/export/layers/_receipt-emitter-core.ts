@@ -39,9 +39,13 @@ interface CmpsblReceipt {
   argsHash: string;
   resultHash: string;
   durationMs: number;
-  code: string;            // 'OK' | error code
+  code: string;            // 'OK' | error code | 'BLOCKED'
   ts: number;
   seq: number;
+  // ── Chain-context fields (populated when emitted by cmpsbl_chain) ─────────
+  chainShortCircuited?: boolean;
+  shortCircuitedAt?: number | null;   // phase number where chain stopped
+  actionsTakenCount?: number;          // proof-of-firing summary count
 }
 
 function _cmpsbl_kernel_enabled_re(): boolean {
@@ -68,13 +72,30 @@ class CmpsblReceiptEmitter {
 
   constructor() { this.enabled = _cmpsbl_kernel_enabled_re(); }
 
-  emit(name: string, argsHash: string, resultHash: string, durationMs: number, code: string): CmpsblReceipt {
+  emit(
+    name: string,
+    argsHash: string,
+    resultHash: string,
+    durationMs: number,
+    code: string,
+    chainCtx?: { shortCircuited?: boolean; shortCircuitedAt?: number | null; actionsTakenCount?: number },
+  ): CmpsblReceipt {
     const prevHash = this.headHash;
     const seq = ++this.seq;
     const ts = Date.now();
-    const payload = JSON.stringify({ name, argsHash, resultHash, durationMs, code, prevHash, seq });
+    const payload = JSON.stringify({
+      name, argsHash, resultHash, durationMs, code, prevHash, seq,
+      chainShortCircuited: chainCtx?.shortCircuited ?? false,
+      shortCircuitedAt: chainCtx?.shortCircuitedAt ?? null,
+      actionsTakenCount: chainCtx?.actionsTakenCount ?? 0,
+    });
     const hash = _cmpsbl_fnv1a(payload);
-    const receipt: CmpsblReceipt = { hash, prevHash, name, argsHash, resultHash, durationMs, code, ts, seq };
+    const receipt: CmpsblReceipt = {
+      hash, prevHash, name, argsHash, resultHash, durationMs, code, ts, seq,
+      chainShortCircuited: chainCtx?.shortCircuited,
+      shortCircuitedAt: chainCtx?.shortCircuitedAt,
+      actionsTakenCount: chainCtx?.actionsTakenCount,
+    };
 
     if (this.enabled) {
       this.chainArr.push(receipt);
@@ -144,20 +165,28 @@ class CmpsblReceiptEmitter:
         self._head: Optional[str] = None
         self._seq = 0
 
-    def emit(self, name: str, args_hash: str, result_hash: str, duration_ms: float, code: str) -> Dict[str, Any]:
+    def emit(self, name: str, args_hash: str, result_hash: str, duration_ms: float, code: str,
+             chain_ctx: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         prev_hash = self._head
         self._seq += 1
         seq = self._seq
         ts = int(time.time() * 1000)
+        chain_ctx = chain_ctx or {}
         payload = json.dumps({
             "name": name, "argsHash": args_hash, "resultHash": result_hash,
             "durationMs": duration_ms, "code": code, "prevHash": prev_hash, "seq": seq,
+            "chainShortCircuited": bool(chain_ctx.get("short_circuited", False)),
+            "shortCircuitedAt": chain_ctx.get("short_circuited_at"),
+            "actionsTakenCount": int(chain_ctx.get("actions_taken_count", 0)),
         }, sort_keys=True)
         h = _cmpsbl_fnv1a(payload)
         receipt = {
             "hash": h, "prev_hash": prev_hash, "name": name,
             "args_hash": args_hash, "result_hash": result_hash,
             "duration_ms": duration_ms, "code": code, "ts": ts, "seq": seq,
+            "chain_short_circuited": chain_ctx.get("short_circuited"),
+            "short_circuited_at": chain_ctx.get("short_circuited_at"),
+            "actions_taken_count": chain_ctx.get("actions_taken_count"),
         }
         if self._enabled:
             self._chain.append(receipt)
