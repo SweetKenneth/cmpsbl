@@ -268,7 +268,7 @@ export default function VerticalPortal() {
                       {!isVerticalAccessible(v.id, role) && v.id !== 'prime' && v.status !== 'Coming Soon' && (
                         <Badge variant="outline" className="gap-1 text-[10px] font-mono shrink-0 border-muted-foreground/20 text-muted-foreground">
                           <Lock className="w-2.5 h-2.5" />
-                          {v.id === 'ultimate' ? 'Architect' : 'Paid'}
+                          {v.id === 'ultimate' ? 'Enterprise' : 'Pro'}
                         </Badge>
                       )}
                     </div>
@@ -285,8 +285,8 @@ export default function VerticalPortal() {
                         <div className="text-xs text-muted-foreground">Capabilities</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-xl font-bold font-mono text-foreground">80</div>
-                        <div className="text-xs text-muted-foreground">Crown Jewels</div>
+                        <div className="text-xl font-bold font-mono text-foreground">S-Tier</div>
+                        <div className="text-xs text-muted-foreground">Modules</div>
                       </div>
                     </div>
 
