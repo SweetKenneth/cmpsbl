@@ -54,18 +54,18 @@ export default function Store() {
   return (
     <>
       <Helmet>
-        <title>Store — Runtime Agents, Engines & Plans | CMPSBL</title>
-        <meta name="description" content="10 sealed AI products across 5 tiers. Runtime Agents learn and execute. Composable Engines power infrastructure. Pick your tier, own it forever." />
+        <title>Store — Layers, Meta Engines & Meta Agents | CMPSBL</title>
+        <meta name="description" content="Three SKU types — Layers, Meta Engines, and Meta Agents. Layers attach to Ascension v2 in Step 2 (Enhance). Engines and Agents power CLI, SDK, and standalone deployments. Free to browse, Pro for unlimited access." />
         <link rel="canonical" href="https://cmpsbl.com/store" />
-        <meta property="og:title" content="The Store — CMPSBL Runtime Agents, Engines & Plans" />
-        <meta property="og:description" content="Sealed AI software you own forever. 10 products, 5 tiers, one pricing ladder. Agents learn. Engines power. Start free." />
+        <meta property="og:title" content="The Store — CMPSBL Layers, Meta Engines & Meta Agents" />
+        <meta property="og:description" content="Sealed AI software you own forever. Layers · Meta Engines · Meta Agents. Free to browse. Pro for unlimited Ascension. Enterprise by contract." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/store" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
           name: "CMPSBL Store",
-          description: "Runtime Agents and Composable Engines — sealed, self-improving AI software across 5 pricing tiers.",
+          description: "Layers, Meta Engines, and Meta Agents — sealed, self-improving AI software. Free + Pro plans.",
           url: "https://cmpsbl.com/store",
           publisher: { "@type": "Organization", name: "CMPSBL", url: "https://cmpsbl.com" },
         })}</script>
@@ -73,8 +73,8 @@ export default function Store() {
       <StructuredData
         type="product"
         data={{
-          name: "CMPSBL Runtime Agents & Engines",
-          description: "10 sealed AI products across 5 tiers. Runtime Agents learn and execute. Composable Engines power infrastructure.",
+          name: "CMPSBL Store — Layers, Meta Engines & Meta Agents",
+          description: "Three SKU types: Layers attach to Ascension v2; Meta Engines and Meta Agents power CLI, SDK, and standalone runtimes.",
           url: "https://cmpsbl.com/store",
           price: "0",
           category: "Software",
