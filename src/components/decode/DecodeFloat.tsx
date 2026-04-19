@@ -11,6 +11,7 @@ import { isGovernorCommand, routeGovernorCommand } from "@/lib/decode/governor-c
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { lookupAnyFingerprint } from "@/lib/factory/restoration-session";
+import { useDreamUnseen } from "@/hooks/useDreamUnseen";
 
 type Props = {
   anchorId?: string;
@@ -334,6 +335,31 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
   }, [user, setIdentityRole]);
 
   const { pos, onPointerDown, onPointerMove, onPointerUp, isDragging, dragging } = useSmartPosition(orbRef, isOpen);
+
+  // 🌙 DREAM unseen syntheses (Governor-only) — drives orb pulse + auto-greet
+  const dream = useDreamUnseen(user?.id, identityRole === 'governor');
+  const dreamGreetedRef = useRef(false);
+
+  // Auto-surface latest DREAM synthesis when Governor opens DECODE with unseen items
+  useEffect(() => {
+    if (!isOpen || identityRole !== 'governor') { dreamGreetedRef.current = false; return; }
+    if (dreamGreetedRef.current) return;
+    if (dream.count === 0 || !dream.latest) return;
+    dreamGreetedRef.current = true;
+    const s = dream.latest;
+    const conf = (Number(s.confidence) * 100).toFixed(0);
+    const tags = (s.tags || []).slice(0, 4).join(', ');
+    const greet =
+      `🌙 **DREAM noticed something while you were away** — ${dream.count} new synthes${dream.count === 1 ? 'is' : 'es'} from your intents.\n\n` +
+      `**Latest** *(${conf}% confidence · ${s.synthesis_kind})*\n\n` +
+      `> ${s.insight_text}\n\n` +
+      (tags ? `**Tags:** ${tags}\n\n` : '') +
+      `**Sources:** ${(s.source_intent_ids || []).length} intents · cycle \`${s.cycle_id}\`\n\n` +
+      `Run \`/dream\` to see all syntheses or \`/dream ${s.id.slice(0, 8)}\` for full lineage. ` +
+      `\`/dream-tune\` shows the scoring weights you can tune.`;
+    setMessages((prev) => [...prev, { role: 'assistant', content: greet }]);
+    void dream.acknowledge(dream.unseen.map((u) => u.id));
+  }, [isOpen, identityRole, dream]);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -785,6 +811,29 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
           boxShadow: "0 0 8px hsl(var(--neon-cyan) / 0.7), 0 0 16px hsl(var(--neon-magenta) / 0.4)",
           animation: "decodeNucleusPulse 2.5s ease-in-out infinite",
         }} />
+
+        {/* 🌙 DREAM unseen badge — Governor-only */}
+        {dream.count > 0 && !isOpen && (
+          <span
+            aria-label={`${dream.count} new DREAM syntheses`}
+            className="absolute flex items-center justify-center text-[10px] font-bold text-background"
+            style={{
+              top: -2,
+              right: -2,
+              minWidth: 18,
+              height: 18,
+              padding: "0 5px",
+              borderRadius: 9,
+              background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
+              boxShadow: "0 0 10px hsl(var(--neon-purple) / 0.9), 0 0 18px hsl(var(--neon-magenta) / 0.6)",
+              animation: "decodeNucleusPulse 1.6s ease-in-out infinite",
+              border: "1.5px solid hsl(var(--background))",
+              zIndex: 2,
+            }}
+          >
+            {dream.count > 9 ? "9+" : dream.count}
+          </span>
+        )}
       </button>
 
       {/* ─── Chat Panel ─── */}

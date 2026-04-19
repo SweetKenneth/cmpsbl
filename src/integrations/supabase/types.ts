@@ -6177,6 +6177,32 @@ export type Database = {
         }
         Relationships: []
       }
+      decode_dream_seen: {
+        Row: {
+          seen_at: string
+          synthesis_id: string
+          user_id: string
+        }
+        Insert: {
+          seen_at?: string
+          synthesis_id: string
+          user_id: string
+        }
+        Update: {
+          seen_at?: string
+          synthesis_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "decode_dream_seen_synthesis_id_fkey"
+            columns: ["synthesis_id"]
+            isOneToOne: false
+            referencedRelation: "dream_intent_syntheses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       decode_gap_log: {
         Row: {
           addressed: boolean
@@ -7522,6 +7548,62 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      dream_intent_syntheses: {
+        Row: {
+          confidence: number
+          created_at: string
+          cycle_id: string
+          id: string
+          insight_text: string
+          matched_fragment_ids: string[]
+          metadata: Json
+          scoring: Json
+          source_intent_ids: string[]
+          status: string
+          superseded_by: string | null
+          synthesis_kind: string
+          tags: string[]
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          cycle_id: string
+          id?: string
+          insight_text: string
+          matched_fragment_ids?: string[]
+          metadata?: Json
+          scoring?: Json
+          source_intent_ids?: string[]
+          status?: string
+          superseded_by?: string | null
+          synthesis_kind?: string
+          tags?: string[]
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          cycle_id?: string
+          id?: string
+          insight_text?: string
+          matched_fragment_ids?: string[]
+          metadata?: Json
+          scoring?: Json
+          source_intent_ids?: string[]
+          status?: string
+          superseded_by?: string | null
+          synthesis_kind?: string
+          tags?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dream_intent_syntheses_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "dream_intent_syntheses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dream_learning_metrics: {
         Row: {
