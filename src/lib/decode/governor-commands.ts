@@ -230,6 +230,94 @@ const GOVERNOR_COMMANDS: Record<string, GovernorHandler> = {
     return formatBlock(`AUDIT LOG — LAST ${data.length} ENTRIES`, lines);
   },
 
+  /** Recent DREAM syntheses derived from your governor intents (with full lineage) */
+  dream: async () => {
+    const { data: syn, error } = await supabase
+      .from('dream_intent_syntheses')
+      .select('id, insight_text, synthesis_kind, source_intent_ids, matched_fragment_ids, scoring, confidence, tags, status, cycle_id, metadata, created_at')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .limit(8);
+
+    if (error) return formatBlock('DREAM — ERROR', [error.message]);
+    if (!syn || syn.length === 0) {
+      return formatBlock('DREAM — NO SYNTHESES YET', [
+        'DREAM has not yet promoted any intent clusters above the floor.',
+        '',
+        'Cycles run every 30m on captured governor intents.',
+        'Use /dream-tune to inspect scoring weights and floor.',
+      ]);
+    }
+
+    const lines: string[] = [];
+    for (const s of syn) {
+      const conf = (Number(s.confidence) * 100).toFixed(1);
+      lines.push(`◈ [${conf}% · ${s.synthesis_kind}] ${(s.insight_text || '').slice(0, 220)}`);
+      lines.push(`  sources: ${(s.source_intent_ids || []).length} intents · fragments: ${(s.matched_fragment_ids || []).length} · tags: ${(s.tags || []).slice(0, 5).join(', ') || '—'}`);
+      const sc: any = s.scoring || {};
+      lines.push(`  breakdown: tag=${sc.tag_overlap ?? '–'} vec=${sc.vector_resonance ?? '–'} pri=${sc.priority_weight ?? '–'} rec=${sc.recency_weight ?? '–'} → ${sc.total ?? '–'} (floor ${sc.promotion_floor ?? '–'})`);
+      lines.push(`  id: ${s.id.slice(0, 8)} · cycle: ${s.cycle_id} · ${timeAgo(s.created_at)}`);
+      lines.push('');
+    }
+    lines.push('Use /dream <id-prefix> to see full lineage including the source intent text.');
+    return formatBlock(`DREAM SYNTHESES — ${syn.length} ACTIVE`, lines);
+  },
+
+  /** Show DREAM scoring weights and tunables */
+  'dream-tune': async () => {
+    // Pull cycle stats from recent syntheses to surface live distribution
+    const { data: recent } = await supabase
+      .from('dream_intent_syntheses')
+      .select('confidence, scoring, created_at')
+      .order('created_at', { ascending: false })
+      .limit(40);
+
+    const confs = (recent || []).map((r: any) => Number(r.confidence)).filter((n) => !isNaN(n));
+    const avg = confs.length ? (confs.reduce((a, b) => a + b, 0) / confs.length) : 0;
+    const min = confs.length ? Math.min(...confs) : 0;
+    const max = confs.length ? Math.max(...confs) : 0;
+
+    return formatBlock('DREAM TUNABLES — LIVE', [
+      'engine:           dream-from-intent v1.0.0',
+      'method:           algorithmic · deterministic · no LLM',
+      '',
+      '── weights ──',
+      '  W_TAG          0.40   (jaccard tag overlap)',
+      '  W_VECTOR       0.30   (cosine on intent embeddings)',
+      '  W_PRIORITY     0.20   (avg normalized priority 1-10)',
+      '  W_RECENCY      0.10   (exp decay, half-life ~36h)',
+      '',
+      '── thresholds ──',
+      '  PROMOTION_FLOOR  0.55',
+      '  MIN_CLUSTER_SIZE 2',
+      '  MAX_CLUSTERS     8',
+      '  RECENT_INTENTS   50',
+      '',
+      `── recent (n=${confs.length}) ──`,
+      `  avg confidence  ${avg.toFixed(3)}`,
+      `  min/max         ${min.toFixed(3)} / ${max.toFixed(3)}`,
+      '',
+      'To tune: edit supabase/functions/dream-from-intent/index.ts.',
+    ]);
+  },
+
+  /** Force a DREAM cycle now */
+  'dream-run': async () => {
+    const { data, error } = await supabase.functions.invoke('dream-from-intent', { body: {} });
+    if (error) return formatBlock('DREAM RUN — ERROR', [error.message || String(error)]);
+    const d: any = data || {};
+    return formatBlock('DREAM CYCLE EXECUTED', [
+      `cycle:           ${d.cycle_id || '?'}`,
+      `intents scanned: ${d.intents_scanned ?? 0}`,
+      `clusters found:  ${d.clusters_found ?? 0}`,
+      `promoted:        ${d.promoted ?? 0}`,
+      `below floor:     ${d.below_floor ?? 0}`,
+      `elapsed:         ${d.elapsed_ms ?? '?'}ms`,
+      '',
+      'Run /dream to view promoted syntheses.',
+    ]);
+  },
+
   /** Query audit_logs filtered to intent-related actions */
   intents: async () => {
     const { data, error } = await supabase
@@ -332,10 +420,59 @@ function governorHelp(): string {
     '/budget           — daily AI quota status',
     '/audit            — recent audit log entries',
     '/intents          — intent mesh receipts',
+    '/dream [id]       — DREAM syntheses from your intents (lineage)',
+    '/dream-tune       — DREAM scoring weights & live distribution',
+    '/dream-run        — force a DREAM cycle now',
     '',
     'All commands query live database tables.',
     'Non-command messages still route to LLM.',
   ]);
+}
+
+// ─── Lineage drill-down for a single synthesis ──────────────────
+
+async function dreamLineage(idPrefix: string): Promise<string> {
+  const { data: rows, error } = await supabase
+    .from('dream_intent_syntheses')
+    .select('id, insight_text, synthesis_kind, source_intent_ids, matched_fragment_ids, scoring, confidence, tags, status, cycle_id, metadata, created_at')
+    .ilike('id', `${idPrefix}%`)
+    .limit(1);
+  if (error) return formatBlock('DREAM LINEAGE — ERROR', [error.message]);
+  const s: any = rows?.[0];
+  if (!s) return formatBlock('DREAM LINEAGE — NOT FOUND', [`No synthesis matching "${idPrefix}".`]);
+
+  const { data: intents } = await supabase
+    .from('governor_intent_stream')
+    .select('id, intent_text, scope, priority, tags, created_at')
+    .in('id', s.source_intent_ids || []);
+
+  const sc = s.scoring || {};
+  const conf = (Number(s.confidence) * 100).toFixed(1);
+  const lines: string[] = [
+    `id:        ${s.id}`,
+    `cycle:     ${s.cycle_id}`,
+    `kind:      ${s.synthesis_kind}`,
+    `confidence: ${conf}%   (floor ${sc.promotion_floor ?? '–'})`,
+    `created:   ${timeAgo(s.created_at)}`,
+    '',
+    '── insight ──',
+    s.insight_text,
+    '',
+    '── scoring breakdown ──',
+    `  tag_overlap     ${sc.tag_overlap ?? '–'}   × W_TAG ${sc.weights?.W_TAG ?? '–'}`,
+    `  vector_resonance ${sc.vector_resonance ?? '–'}  × W_VECTOR ${sc.weights?.W_VECTOR ?? '–'}`,
+    `  priority_weight ${sc.priority_weight ?? '–'}   × W_PRIORITY ${sc.weights?.W_PRIORITY ?? '–'}`,
+    `  recency_weight  ${sc.recency_weight ?? '–'}   × W_RECENCY ${sc.weights?.W_RECENCY ?? '–'}`,
+    `  → total          ${sc.total ?? '–'}`,
+    '',
+    `── source intents (${(intents || []).length}) ──`,
+  ];
+  for (const it of (intents || []) as any[]) {
+    const txt = (it.intent_text || '').replace(/\s+/g, ' ').trim();
+    lines.push(`  • [pri ${it.priority} · ${it.scope}] ${txt.length > 200 ? txt.slice(0, 197) + '…' : txt}`);
+    lines.push(`     tags: ${(it.tags || []).join(', ') || '—'}   ${timeAgo(it.created_at)}   id: ${it.id.slice(0, 8)}`);
+  }
+  return formatBlock('DREAM LINEAGE — FULL TRACE', lines);
 }
 
 // ─── Public Router ──────────────────────────────────────────────
@@ -346,6 +483,7 @@ export function isGovernorCommand(input: string): boolean {
     'govern', 'set-mode', 'health', 'caps', 'comms',
     'nexus', 'budget', 'audit', 'intents',
     'enable', 'disable', 'gov-help',
+    'dream', 'dream-tune', 'dream-run',
   ].includes(cmd);
 }
 
@@ -368,6 +506,9 @@ export async function routeGovernorCommand(input: string): Promise<GovernorComma
       break;
     case 'disable':
       output = await toggleCapability(arg, false);
+      break;
+    case 'dream':
+      output = arg ? await dreamLineage(arg) : await GOVERNOR_COMMANDS.dream();
       break;
     default: {
       const handler = GOVERNOR_COMMANDS[cmd];
