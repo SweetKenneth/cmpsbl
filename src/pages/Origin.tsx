@@ -30,7 +30,7 @@ export default function Origin() {
         <title>Origin — How CMPSBL Was Born | CMPSBL®</title>
         <meta
           name="description"
-          content="The true origin story of the CMPSBL substrate: broken ceilings, 2,500 users in a day, and a sci-fi universe written for all-inclusive humans."
+          content="The true origin story of the CMPSBL substrate: a broken ceiling, an XCTBL side project that hit 2,500 users in a day during the wait, and a sci-fi universe written for all-inclusive humans."
         />
         <link rel="canonical" href="https://cmpsbl.com/origin" />
         <meta property="og:title" content="Origin — How CMPSBL Was Born" />
