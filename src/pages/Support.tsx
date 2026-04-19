@@ -117,12 +117,12 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "What subscription tiers are available?",
-    answer: "Builder (Free) — Full runtime, 3 memory slots, persistent memory. Studio ($29/mo) — 6 slots, expanded vault, priority routing. Creator ($49/mo) — 9 slots, export capabilities, advanced memory. Architect ($79/mo) — 12 slots, unlimited vault, custom memories, SLA.",
+    answer: "Two plans, plus Enterprise. Free (forever) — Ascension v2 (rate-limited), @cmpsbl/cli, @cmpsbl/sdk, DECODE unified interface, Crown Jewel system bonuses, and read-only access to /store, /showroom and /foundry. Pro ($29/mo) — unlimited Ascension v2, full 9-language polyglot export, unlimited Mana layer attachment, DREAM synthesis, priority restoration queue, and monthly Store credits. Enterprise — by contract, for custom infrastructure, white-label, and private deployment.",
   },
   {
     category: "Account & Access",
     question: "How do I upgrade my account?",
-    answer: "Navigate to your Dashboard → Settings → Subscription. You can upgrade, downgrade, or manage your plan at any time. Changes take effect immediately with prorated billing.",
+    answer: "Go to /plans and choose Pro. Changes take effect immediately with prorated billing. Need Enterprise? Use /contact and we'll set up a contract directly.",
   },
   {
     category: "Account & Access",
