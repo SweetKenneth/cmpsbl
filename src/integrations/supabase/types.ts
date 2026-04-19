@@ -6209,6 +6209,51 @@ export type Database = {
           },
         ]
       }
+      cross_vertical_bridges: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json
+          outcome: string | null
+          pattern_summary: string | null
+          pattern_type: string
+          similarity_score: number | null
+          source_memory_id: string | null
+          source_vertical: string
+          target_vertical: string
+          transferred: boolean
+          transferred_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          outcome?: string | null
+          pattern_summary?: string | null
+          pattern_type: string
+          similarity_score?: number | null
+          source_memory_id?: string | null
+          source_vertical: string
+          target_vertical: string
+          transferred?: boolean
+          transferred_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          outcome?: string | null
+          pattern_summary?: string | null
+          pattern_type?: string
+          similarity_score?: number | null
+          source_memory_id?: string | null
+          source_vertical?: string
+          target_vertical?: string
+          transferred?: boolean
+          transferred_at?: string | null
+        }
+        Relationships: []
+      }
       crystallized_assets: {
         Row: {
           asset_key: string
