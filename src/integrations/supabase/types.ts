@@ -5616,70 +5616,100 @@ export type Database = {
       }
       conductor_pipelines: {
         Row: {
+          breaker_opened_at: string | null
+          breaker_recovery_seconds: number
+          breaker_state: string
+          breaker_total_trips: number
           consecutive_empty_runs: number
+          consecutive_failures: number
           cost_estimate_cents: number
           created_at: string
           description: string | null
+          dispatch_timeout_ms: number
           enabled: boolean
           id: string
           is_fallback: boolean
           last_run_at: string | null
           last_signal_pressure: number
           max_interval_seconds: number
+          max_retries: number
           metadata: Json
           min_interval_seconds: number
           name: string
           priority: number
+          quarantine_reason: string | null
+          quarantined_at: string | null
           signal_query: string | null
           signal_threshold: number
           target_function: string
           target_payload: Json
+          total_failures: number
           total_runs: number
           total_work_units: number
           updated_at: string
         }
         Insert: {
+          breaker_opened_at?: string | null
+          breaker_recovery_seconds?: number
+          breaker_state?: string
+          breaker_total_trips?: number
           consecutive_empty_runs?: number
+          consecutive_failures?: number
           cost_estimate_cents?: number
           created_at?: string
           description?: string | null
+          dispatch_timeout_ms?: number
           enabled?: boolean
           id?: string
           is_fallback?: boolean
           last_run_at?: string | null
           last_signal_pressure?: number
           max_interval_seconds?: number
+          max_retries?: number
           metadata?: Json
           min_interval_seconds?: number
           name: string
           priority?: number
+          quarantine_reason?: string | null
+          quarantined_at?: string | null
           signal_query?: string | null
           signal_threshold?: number
           target_function: string
           target_payload?: Json
+          total_failures?: number
           total_runs?: number
           total_work_units?: number
           updated_at?: string
         }
         Update: {
+          breaker_opened_at?: string | null
+          breaker_recovery_seconds?: number
+          breaker_state?: string
+          breaker_total_trips?: number
           consecutive_empty_runs?: number
+          consecutive_failures?: number
           cost_estimate_cents?: number
           created_at?: string
           description?: string | null
+          dispatch_timeout_ms?: number
           enabled?: boolean
           id?: string
           is_fallback?: boolean
           last_run_at?: string | null
           last_signal_pressure?: number
           max_interval_seconds?: number
+          max_retries?: number
           metadata?: Json
           min_interval_seconds?: number
           name?: string
           priority?: number
+          quarantine_reason?: string | null
+          quarantined_at?: string | null
           signal_query?: string | null
           signal_threshold?: number
           target_function?: string
           target_payload?: Json
+          total_failures?: number
           total_runs?: number
           total_work_units?: number
           updated_at?: string
@@ -5757,6 +5787,75 @@ export type Database = {
           metadata?: Json
           pressure?: number
           signal_key?: string
+        }
+        Relationships: []
+      }
+      conductor_tick_health: {
+        Row: {
+          degradation_tier: string
+          dispatched: number
+          failed: number
+          half_open_breakers: number
+          health_score: number
+          id: string
+          open_breakers: number
+          quarantined: number
+          recorded_at: string
+          tick_duration_ms: number | null
+          tick_id: string
+        }
+        Insert: {
+          degradation_tier: string
+          dispatched?: number
+          failed?: number
+          half_open_breakers?: number
+          health_score: number
+          id?: string
+          open_breakers?: number
+          quarantined?: number
+          recorded_at?: string
+          tick_duration_ms?: number | null
+          tick_id: string
+        }
+        Update: {
+          degradation_tier?: string
+          dispatched?: number
+          failed?: number
+          half_open_breakers?: number
+          health_score?: number
+          id?: string
+          open_breakers?: number
+          quarantined?: number
+          recorded_at?: string
+          tick_duration_ms?: number | null
+          tick_id?: string
+        }
+        Relationships: []
+      }
+      conductor_tick_lease: {
+        Row: {
+          acquired_at: string | null
+          expires_at: string | null
+          holder_id: string | null
+          id: boolean
+          last_completed_at: string | null
+          last_completed_holder: string | null
+        }
+        Insert: {
+          acquired_at?: string | null
+          expires_at?: string | null
+          holder_id?: string | null
+          id?: boolean
+          last_completed_at?: string | null
+          last_completed_holder?: string | null
+        }
+        Update: {
+          acquired_at?: string | null
+          expires_at?: string | null
+          holder_id?: string | null
+          id?: boolean
+          last_completed_at?: string | null
+          last_completed_holder?: string | null
         }
         Relationships: []
       }
@@ -19274,9 +19373,22 @@ export type Database = {
         Args: { p_agent_id: string; p_max_words?: number; p_user_id: string }
         Returns: Json
       }
+      conductor_acquire_tick_lease: {
+        Args: { p_holder: string; p_ttl_seconds?: number }
+        Returns: boolean
+      }
       conductor_eval_signal: { Args: { q: string }; Returns: number }
       conductor_increment_run: {
         Args: { p_id: string; p_work_units: number }
+        Returns: undefined
+      }
+      conductor_promote_half_open: { Args: never; Returns: number }
+      conductor_record_breaker_outcome: {
+        Args: { p_id: string; p_outcome: string }
+        Returns: string
+      }
+      conductor_release_tick_lease: {
+        Args: { p_holder: string }
         Returns: undefined
       }
       cp_acquire_lease: {
