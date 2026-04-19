@@ -389,6 +389,7 @@ export function runPreExportHarness(input: HarnessInput): HarnessReport {
     checkFingerprint(input),
     checkLayerAutoWire(input),
     checkExecutionSmoke(input),
+    checkProofOfFiring(input),
   ];
 
   const completedAt = Date.now();

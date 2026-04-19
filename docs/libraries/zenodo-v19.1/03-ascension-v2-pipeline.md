@@ -47,6 +47,8 @@ Final gate before assembly:
 - Verify all layers merged cleanly
 - Verify polyglot emission readiness
 - Verify Merkle audit chain integrity
+- **Verify proof-of-firing** — every selected layer is referenced in the runtime envelope; silent layers fail export
+- **Seal the artifact** — compute end-of-flow fingerprint over (source ⊕ canonical layer manifest ⊕ phase order ⊕ kernel version)
 
 ## Phase 6 — Export
 Sealed artifact emitted. Contains:
@@ -56,6 +58,24 @@ Sealed artifact emitted. Contains:
 - Documentation
 - Merkle-linked receipt
 - 9-language polyglot variants
+- **Artifact fingerprint** — what `/verify/:fingerprint` resolves against
+
+## Runtime Envelope Contract
+
+Every chain invocation in the exported artifact runs through `cmpsbl_chain(input, preLayers, execute, postLayers)`. Layers share a single typed context:
+
+```ts
+CmpsblRuntimeCtx { input, output, blocked, override, error, blockReason,
+                   metadata: { phase, layerId, startTime, actionsTaken[] }, receipts[] }
+```
+
+**Short-circuit semantics:**
+- Phase 0 hardening sets `ctx.blocked` → skip ALL downstream phases
+- Phase 1–5 sets `ctx.blocked` → skip execution + remaining pre-layers
+- Phase 1–5 sets `ctx.override` → skip Layer 1, still run post-layer observers
+- Phase 6 (Layer 1) error → ctx.error set; Phase 7 layers can recover via override
+
+**Proof-of-firing:** every layer must call `cmpsbl_record_action(ctx, layerId, action)` exactly once per pass. The pre-export harness rejects any silent layer.
 
 ## Determinism Guarantee
 
