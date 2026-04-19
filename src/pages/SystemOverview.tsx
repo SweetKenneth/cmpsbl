@@ -234,26 +234,20 @@ function PricingSection() {
     {
       name: 'Free', price: '$0', interval: 'forever',
       desc: 'Explore the substrate. Full runtime access.',
-      features: ['3 memory slots', 'NEXUS routing (standard)', '1 memory namespace', '5 min/day radio access', '12 crystallized assets'],
+      features: ['Session memory', '40 primitives', 'NEXUS routing (standard)', 'Community support', 'No credit card required'],
       cta: 'Get Started', href: '/auth', highlight: false,
     },
     {
-      name: 'Studio', price: '$29', interval: '/mo',
-      desc: 'Expanded depth for serious builders.',
-      features: ['Everything in Free', '3 memory namespaces', 'DREAM background optimization', 'Automation scheduling', '30 crystallized assets', '30 min/day radio access'],
-      cta: 'Start Building', href: '/upgrade', highlight: false,
+      name: 'Pro', price: '$29', interval: '/mo',
+      desc: 'Persistent memory and full operational depth.',
+      features: ['Persistent memory', 'BRAIN reasoning', 'CLM learning (100 calls/day)', 'Automation scheduling', 'AutoBlog (2 posts/wk)', '24h support'],
+      cta: 'Upgrade to Pro', href: '/plans', highlight: true,
     },
     {
-      name: 'Creator', price: '$49', interval: '/mo',
-      desc: 'Full operational depth with trace exports.',
-      features: ['Everything in Studio', '6 memory namespaces', 'High-priority NEXUS routing', 'Execution trace exports', '45 crystallized assets', '45 min/day radio access'],
-      cta: 'Upgrade to Creator', href: '/upgrade', highlight: true,
-    },
-    {
-      name: 'Architect', price: '$79', interval: '/mo',
-      desc: 'Maximum depth. Full substrate control.',
-      features: ['Everything in Creator', '12 memory namespaces', 'Highest-priority routing', 'EVOLUTION safe self-modification', '60 crystallized assets', '60 min/day radio access'],
-      cta: 'Go Architect', href: '/upgrade', highlight: false,
+      name: 'Enterprise', price: 'Custom', interval: '',
+      desc: 'Annual contract with full governance and SLA.',
+      features: ['Full 4-tier memory', 'Full BRAIN + DREAM synthesis', 'CLM (14,400 calls/day)', 'ATLAS governance', 'Universal Export', '99.9% SLA · 4h support'],
+      cta: 'Contact Sales', href: '/contact', highlight: false,
     },
   ];
 
@@ -261,13 +255,13 @@ function PricingSection() {
     <section className="py-20 px-6 border-t border-border">
       <div className="max-w-6xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Choose Your Depth</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Choose Your Plan</h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            The runtime runs for everyone. Plans control how <em>deep</em> your systems operate — not whether they run.
+            The runtime runs for everyone. Plans unlock persistent memory, learning, and governance depth.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {tiers.map((tier, i) => (
             <motion.div
               key={tier.name}
