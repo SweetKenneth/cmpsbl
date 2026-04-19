@@ -8108,6 +8108,33 @@ async function handleDecode(
         console.warn('Auth check for IP protection failed gracefully:', authErr);
       }
 
+      // ═══ GOVERNOR INTENT AUTO-CAPTURE (v9.0.0) ═══
+      // When the Governor speaks to DECODE, capture every substantive message into
+      // governor_intent_stream + brain_embeddings so the substrate inherits intent
+      // automatically. Fire-and-forget — never blocks the chat response.
+      if (isGovernor) {
+        const intentText = String(message || '').trim();
+        if (intentText.length >= 24) {
+          const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+          const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
+          fetch(`${supabaseUrl}/functions/v1/governor-intent-capture`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${anonKey}`,
+            },
+            body: JSON.stringify({
+              intent_text: intentText,
+              scope: 'decode-chat',
+              priority: 7,
+              source: 'decode-governor-stream',
+              tags: ['decode', 'governor-stream', 'auto-captured'],
+              metadata: { session_id: effectiveSessionId, captured_at: new Date().toISOString() },
+            }),
+          }).catch((e) => console.warn('[decode] governor-intent-capture fire-and-forget failed', e));
+        }
+      }
+
       // Get active personality (v8.0.0 - dynamic, no more hardcoded poetry)
       const personality = await getActivePersonality(supabase);
       let systemPrompt = personality.systemPrompt;
