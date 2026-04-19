@@ -56,10 +56,10 @@ export default function FactoryHome() {
         keywords={['cognitive infrastructure', 'code hardening', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'Mana', 'Layer 2', 'free SDK', 'composable AI', 'governed AI', 'silent attachment', 'software symbiosis']}
         faq={[
           { question: 'What is CMPSBL?', answer: 'CMPSBL is governed cognitive infrastructure — a patented dual-layer substrate where intelligence persists across sessions, adapts through deterministic evolution, and compounds over time. No AI inside the output.' },
-          { question: 'Is there a free tier?', answer: 'Yes. All 11 @cmpsbl/* NPM packages are free forever, including the CLI, SDK, and core 40 primitives. No credit card required.' },
+          { question: 'Is there a free tier?', answer: 'Yes. Free is forever — Ascension v2 (rate-limited), the @cmpsbl/cli, the @cmpsbl/sdk, DECODE, and Crown Jewel system bonuses. No credit card required.' },
           { question: 'What is Ascension?', answer: 'Ascension transforms code by colliding it against 40 substrate primitives. Zero external AI calls. Your code gains security, governance, and resilience — without modification to the original source.' },
           { question: 'What is Mana?', answer: 'Mana is the Universal Software Adhesion Layer — it silently attaches capabilities (payments, security, telemetry) to any codebase without requiring developer permission or source modification. Protected by U.S. patent.' },
-          { question: 'How does pricing work?', answer: 'Free tier includes full SDK, CLI, and core primitives. Studio ($29) unlocks business verticals. Creator ($49) adds technical verticals. Architect ($79) unlocks all 143+ primitives.' },
+          { question: 'How does pricing work?', answer: 'Two plans. Free forever with rate-limited Ascension, CLI, and SDK. Pro at $29/mo unlocks unlimited Ascension, full 9-language polyglot export, DREAM synthesis, priority queue, and Store credits. Enterprise is by contract.' },
         ]}
       />
 
@@ -204,19 +204,19 @@ export default function FactoryHome() {
                 </Button>
               </div>
 
-              {/* Tier quick-reference */}
-              <div className="flex items-center justify-center gap-2 sm:gap-3 mt-6 animate-fade-in flex-wrap" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
-                {[
-                  { name: "Builder", price: "Free" },
-                  { name: "Studio", price: "$29" },
-                  { name: "Creator", price: "$49" },
-                  { name: "Architect", price: "$79" },
-                ].map((t, i) => (
-                  <span key={t.name} className="text-[10px] sm:text-xs text-white/60 font-mono font-medium">
-                    {i > 0 && <span className="mr-2 sm:mr-3 text-white/20">·</span>}
-                    <span className="text-white/80 font-bold">{t.name}</span> {t.price}
-                  </span>
-                ))}
+              {/* Tier quick-reference — v19.1: Free + Pro */}
+              <div className="flex items-center justify-center gap-3 sm:gap-4 mt-6 animate-fade-in flex-wrap" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
+                <span className="text-[10px] sm:text-xs text-white/70 font-mono font-medium">
+                  <span className="text-white font-bold">Free</span> forever
+                </span>
+                <span className="text-white/20">·</span>
+                <span className="text-[10px] sm:text-xs text-white/70 font-mono font-medium">
+                  <span className="text-white font-bold">Pro</span> $29/mo — unlimited Ascension
+                </span>
+                <span className="text-white/20">·</span>
+                <span className="text-[10px] sm:text-xs text-white/60 font-mono">
+                  <span className="text-white/80">Enterprise</span> by contract
+                </span>
               </div>
             </div>
 
