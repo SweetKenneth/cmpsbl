@@ -131,3 +131,84 @@ export function verifyFingerprint(
     drift: actual.functionCount !== expected.functionCount,
   });
 }
+
+// ═══════════════════════════════════════════════════════════════
+// End-of-Flow Artifact Fingerprint
+// ─────────────────────────────────────────────────────────────────
+// The Pre-Ascension Gate fingerprints the *input source*. This second
+// fingerprint, computed at the very end of the pipeline (after all layers
+// merge and the harness passes), seals the *entire executed chain* into
+// a single hash. `/verify/:fingerprint` resolves against this — proving
+// not just "the source is unchanged" but "this exact sealed chain produced
+// this artifact." If any layer in the manifest changes, if phase order
+// changes, or if the kernel version bumps, the artifact fingerprint shifts.
+// ═══════════════════════════════════════════════════════════════
+
+export interface ArtifactFingerprint {
+  readonly hash: string;
+  readonly sourceFingerprint: string;
+  readonly manifestHash: string;
+  readonly phaseOrderHash: string;
+  readonly kernelVersion: string;
+  readonly createdAt: number;
+}
+
+export interface ArtifactSealInput {
+  /** Original source fingerprint (from Pre-Ascension Gate). */
+  readonly sourceFingerprint: SourceFingerprint;
+  /** Ordered list of layer ids in their final emitted phase order. */
+  readonly orderedLayerIds: ReadonlyArray<string>;
+  /** Phase number for each layer id, in the same order. */
+  readonly orderedPhases: ReadonlyArray<number>;
+  /** Kernel version string emitted into the artifact (e.g. "v2.1.0"). */
+  readonly kernelVersion: string;
+}
+
+/**
+ * Seal the full executed chain into a single end-of-flow fingerprint.
+ *
+ * Hashes: source ⊕ canonical_layer_manifest ⊕ phase_order ⊕ kernel_version.
+ * Same input + same selected layers + same kernel = same artifact hash.
+ * Any drift surfaces as a different hash and `/verify` will refuse it.
+ */
+export function computeArtifactFingerprint(input: ArtifactSealInput): ArtifactFingerprint {
+  const manifestPayload = input.orderedLayerIds.join('|');
+  const manifestHash = fnv1a(manifestPayload);
+
+  const phasePayload = input.orderedPhases.join(',');
+  const phaseOrderHash = fnv1a(phasePayload);
+
+  const sealPayload = [
+    input.sourceFingerprint.hash,
+    manifestHash,
+    phaseOrderHash,
+    input.kernelVersion,
+  ].join(':');
+  const hash = fnv1a(sealPayload);
+
+  return Object.freeze({
+    hash,
+    sourceFingerprint: input.sourceFingerprint.hash,
+    manifestHash,
+    phaseOrderHash,
+    kernelVersion: input.kernelVersion,
+    createdAt: Date.now(),
+  });
+}
+
+/**
+ * Verify an artifact fingerprint against a recomputed seal. Use this in
+ * `/verify/:fingerprint` to prove the published artifact corresponds to
+ * an unmodified source + manifest + phase-order + kernel combination.
+ */
+export function verifyArtifactFingerprint(
+  input: ArtifactSealInput,
+  expected: ArtifactFingerprint,
+): { matches: boolean; expected: string; actual: string } {
+  const actual = computeArtifactFingerprint(input);
+  return {
+    matches: actual.hash === expected.hash,
+    expected: expected.hash,
+    actual: actual.hash,
+  };
+}

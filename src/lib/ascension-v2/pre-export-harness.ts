@@ -324,6 +324,59 @@ function checkExecutionSmoke(input: HarnessInput): HarnessCheck {
 }
 
 // ─────────────────────────────────────────────────────────────────────
+// ⑥ Proof-of-Firing — every selected layer must reference itself in
+//    the emitted runtime envelope so cmpsbl_chain can record its action.
+//    A layer whose id (or wrapper symbol) never appears in the emitted
+//    output is a layer that cannot fire — silent layers fail export.
+// ─────────────────────────────────────────────────────────────────────
+
+function checkProofOfFiring(input: HarnessInput): HarnessCheck {
+  const t0 = performance.now();
+  if (input.selectedLayers.length === 0) {
+    return {
+      id: 'proof_of_firing',
+      label: 'Proof-of-firing (per-layer action)',
+      severity: 'critical',
+      passed: true,
+      message: 'No layers selected — skip',
+      durationMs: Math.round(performance.now() - t0),
+    };
+  }
+
+  const code = input.ascendedCode;
+  const silent: string[] = [];
+
+  for (const layer of input.selectedLayers) {
+    // A layer is considered "able to fire" when at least ONE of:
+    //   • its id appears verbatim in the emitted envelope/wire
+    //   • its wrapper symbol appears in the emitted output
+    //   • a cmpsbl_record_action call references its id
+    // Silent layers (none of the above) cannot participate in cmpsbl_chain
+    // and therefore violate the chain contract.
+    const idPresent = code.includes(layer.id);
+    const wrapperPresent = code.includes(layer.autoWire.wrapperName);
+    const recordedAction = code.includes(`cmpsbl_record_action`) &&
+      (code.includes(`'${layer.id}'`) || code.includes(`"${layer.id}"`));
+
+    if (!idPresent && !wrapperPresent && !recordedAction) {
+      silent.push(`${layer.name} (${layer.id})`);
+    }
+  }
+
+  const passed = silent.length === 0;
+  return {
+    id: 'proof_of_firing',
+    label: 'Proof-of-firing (per-layer action)',
+    severity: 'critical',
+    passed,
+    message: passed
+      ? `All ${input.selectedLayers.length} layer(s) referenced in envelope`
+      : `${silent.length} silent layer(s) — cannot fire: ${silent.slice(0, 3).join(' | ')}`,
+    durationMs: Math.round(performance.now() - t0),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────
 // Public runner
 // ─────────────────────────────────────────────────────────────────────
 
