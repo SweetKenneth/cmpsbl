@@ -49,9 +49,9 @@ const STEPS: OnboardingStep[] = [
   },
   {
     icon: Layers,
-    tag: 'Tiers',
-    title: 'One Pricing Ladder',
-    body: 'Builder (Free) → Studio ($29) → Creator ($49) → Architect ($79) → Enterprise ($999+). Engines and agents are available as add-ons. FAILSAFE and BEACON are free for all authenticated users.',
+    tag: 'Plans',
+    title: 'Two Plans. Plus Enterprise.',
+    body: 'Free (forever) — Ascension v2 rate-limited, CLI, SDK, DECODE, Crown Jewel system bonuses. Pro ($29/mo) — unlimited Ascension, all 9 polyglot languages, DREAM synthesis, priority queue, monthly Store credits. Enterprise — by contract via /contact.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
