@@ -6254,48 +6254,6 @@ export type Database = {
         }
         Relationships: []
       }
-      decode_knowledge_gaps: {
-        Row: {
-          confidence_observed: number | null
-          context: Json | null
-          created_at: string
-          dream_synthesis_id: string | null
-          dreamed_at: string | null
-          frequency: number
-          gap_signal: string
-          id: string
-          last_seen_at: string
-          question_hash: string
-          question_text: string
-        }
-        Insert: {
-          confidence_observed?: number | null
-          context?: Json | null
-          created_at?: string
-          dream_synthesis_id?: string | null
-          dreamed_at?: string | null
-          frequency?: number
-          gap_signal?: string
-          id?: string
-          last_seen_at?: string
-          question_hash: string
-          question_text: string
-        }
-        Update: {
-          confidence_observed?: number | null
-          context?: Json | null
-          created_at?: string
-          dream_synthesis_id?: string | null
-          dreamed_at?: string | null
-          frequency?: number
-          gap_signal?: string
-          id?: string
-          last_seen_at?: string
-          question_hash?: string
-          question_text?: string
-        }
-        Relationships: []
-      }
       decode_search_results: {
         Row: {
           created_at: string
@@ -6425,45 +6383,6 @@ export type Database = {
           session_id?: string | null
           status_code?: number | null
           user_agent?: string | null
-        }
-        Relationships: []
-      }
-      defense_memory_signatures: {
-        Row: {
-          action: string
-          decay_score: number
-          first_seen_at: string
-          hit_count: number
-          id: string
-          last_seen_at: string
-          metadata: Json | null
-          signature_hash: string
-          signature_kind: string
-          signature_value: string
-        }
-        Insert: {
-          action: string
-          decay_score?: number
-          first_seen_at?: string
-          hit_count?: number
-          id?: string
-          last_seen_at?: string
-          metadata?: Json | null
-          signature_hash: string
-          signature_kind: string
-          signature_value: string
-        }
-        Update: {
-          action?: string
-          decay_score?: number
-          first_seen_at?: string
-          hit_count?: number
-          id?: string
-          last_seen_at?: string
-          metadata?: Json | null
-          signature_hash?: string
-          signature_kind?: string
-          signature_value?: string
         }
         Relationships: []
       }
