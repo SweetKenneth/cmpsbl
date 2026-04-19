@@ -21,3 +21,11 @@
   Cache-Control: public, max-age=2592000
 /*.ico
   Cache-Control: public, max-age=2592000
+
+# Public API — open CORS so federated sites can read the registry
+/api/public/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, OPTIONS
+  Access-Control-Allow-Headers: Content-Type
+  Cache-Control: public, max-age=300, s-maxage=600
+  Content-Type: application/json; charset=utf-8
