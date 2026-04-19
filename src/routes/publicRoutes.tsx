@@ -28,6 +28,7 @@ const TryIt = lazy(() => import("@/pages/TryIt"));
 const Genesis = lazy(() => import("@/pages/Genesis"));
 
 const Foundry = lazy(() => import("@/pages/Foundry"));
+const Origin = lazy(() => import("@/pages/Origin"));
 const JunkyardPage = lazy(() => import("@/pages/Junkyard"));
 const ProofMode = lazy(() => import("@/pages/ProofMode"));
 const STierDemos = lazy(() => import("@/pages/STierDemos"));
