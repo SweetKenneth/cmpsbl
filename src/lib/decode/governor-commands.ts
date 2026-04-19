@@ -288,7 +288,7 @@ const GOVERNOR_COMMANDS: Record<string, GovernorHandler> = {
       '  W_RECENCY      0.10   (exp decay, half-life ~36h)',
       '',
       '── thresholds ──',
-      '  PROMOTION_FLOOR  0.55',
+      '  PROMOTION_FLOOR  0.40',
       '  MIN_CLUSTER_SIZE 2',
       '  MAX_CLUSTERS     8',
       '  RECENT_INTENTS   50',
