@@ -147,10 +147,12 @@ Deno.serve(async (req) => {
         .eq('id', p.id);
 
       // Atomic increments for counters
-      await supabase.rpc('conductor_increment_run', {
-        p_id: p.id,
-        p_work_units: workUnits,
-      }).catch(() => {});
+      try {
+        await supabase.rpc('conductor_increment_run', {
+          p_id: p.id,
+          p_work_units: workUnits,
+        });
+      } catch { /* non-fatal */ }
 
       dispatched.push(p.name);
     }
