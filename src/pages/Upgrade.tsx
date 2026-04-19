@@ -28,9 +28,9 @@ export default function Upgrade() {
         <UpgradeContent />
       </main>
 
-      <PageSEOBlock path="/upgrade" title="Upgrade & Pricing" faq={[
-        { question: "Is there a free tier for CMPSBL?", answer: "Yes. The Builder tier is completely free with 3 capability slots, full platform access, and no credit card required. Upgrade anytime for more slots and features." },
-        { question: "What plans does CMPSBL offer?", answer: "Six tiers: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, 12 slots), Enterprise ($999+/mo), and Governor." },
+      <PageSEOBlock path="/upgrade" title="Plans & Pricing" faq={[
+        { question: "Is there a free tier for CMPSBL?", answer: "Yes. The Free plan includes full runtime access, 40 primitives, and NEXUS routing — no credit card required." },
+        { question: "What plans does CMPSBL offer?", answer: "Three plans: Free ($0, session memory + full runtime), Pro ($29/mo, persistent memory + BRAIN reasoning + CLM learning), and Enterprise (annual contract, full governance + DREAM synthesis + 99.9% SLA)." },
       ]} />
       <EnhancedFooter />
     </div>
