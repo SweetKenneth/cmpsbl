@@ -28,6 +28,7 @@ const TryIt = lazy(() => import("@/pages/TryIt"));
 const Genesis = lazy(() => import("@/pages/Genesis"));
 
 const Foundry = lazy(() => import("@/pages/Foundry"));
+const Origin = lazy(() => import("@/pages/Origin"));
 const JunkyardPage = lazy(() => import("@/pages/Junkyard"));
 const ProofMode = lazy(() => import("@/pages/ProofMode"));
 const STierDemos = lazy(() => import("@/pages/STierDemos"));
@@ -167,6 +168,7 @@ export const publicRoutes = (
     <Route path="/try" element={<Navigate to="/ascension-v2" replace />} />
     <Route path="/genesis" element={<Navigate to="/about" replace />} />
     <Route path="/foundry" element={<Foundry />} />
+    <Route path="/origin" element={<Origin />} />
     <Route path="/workbench" element={<MyWorkbench />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
     <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />
