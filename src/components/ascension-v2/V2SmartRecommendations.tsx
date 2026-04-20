@@ -95,7 +95,7 @@ export function V2SmartRecommendations({
                   <span className={
                     'text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded ' +
                     (r.reason === 'gap'
-                      ? 'bg-amber-500/10 text-amber-600'
+                      ? 'bg-neon-amber/10 text-neon-amber'
                       : 'bg-primary/10 text-primary')
                   }>
                     {r.reason === 'gap' ? `gap · ${r.driverPrimitive}` : `adj · ${r.driverPrimitive}`}
