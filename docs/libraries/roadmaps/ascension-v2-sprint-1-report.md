@@ -65,7 +65,23 @@ Same methodology: ref-count audit against `supabase/functions/` + `src/`, row co
 
 Verdict summary (batch 2): **10 of 10 alive or dormant-keep**. None drop-eligible. Pattern continues to validate the Sprint 1 retarget decision.
 
-**Cumulative: 15 of 52 unclassified prefixes processed. 37 remain.** Continue in Sprint 6 sweep.
+**Cumulative after batch 2: 15 of 52 unclassified prefixes processed.**
+
+### Single-Table Prefix Queue — batch 3 (5 prefix-groups · 12 tables classified)
+
+Prefixes scanned: `cognitive`, `control`, `cortex`, `crystallized`, `decode`. Same methodology (ref-count vs. row-count). Cognitive/Cortex are **runtime-critical** (referenced by `pf-substrate` cortex module + agency_members FK). Decode is the unified agent (6 edge fn refs, 367 search-result rows).
+
+| Prefix | Tables | Rows (max) | Refs (fns/src) | Verdict | Rationale |
+|---|---|---:|---|---|---|
+| `cognitive` | 3 (`cognitive_orders`, `_registry`, `_stripe_map`) | 0 | 3 / 55 | **dormant — keep** | `agency_members.cognitive_id` FK → `cognitive_registry`; Stripe purchase flow wired |
+| `control` | 1 (`control_plane_state`) | 0 | 0 / 18 | **dormant — keep** | `/control` master power center reads/writes plane state |
+| `cortex` | 3 (`cortex_audit_log`, `_circuit_breakers`, `_modes`) | 3 | 3 / 19 | **alive — keep (anchor)** | `pf-substrate` cortex module (v2.0.0) — PAAEL loop, mode dispatch |
+| `crystallized` | 1 (`crystallized_assets`) | 0 | 1 / 4 | **dormant — keep** | BRAIN distillation output target (knowledge crystals → assets) |
+| `decode` | 4 (`decode_conversations`, `_dream_seen`, `_gap_log`, `_search_results`) | 367 | 6 / 16 | **alive — keep (anchor)** | DECODE unified agent — conversations + DREAM feedback loop + CLM gap tuning (per memory) |
+
+Verdict summary (batch 3): **12 of 12 tables alive or dormant-keep**. None drop-eligible.
+
+**Cumulative: 20 of 52 unclassified prefixes processed. 32 remain.** Pattern of zero drop-eligible tables continues to hold across all 3 batches.
 
 
 ### Snapshot policy
