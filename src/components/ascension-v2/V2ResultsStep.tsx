@@ -677,6 +677,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           <RotateCcw className="w-3 h-3 mr-1" />
           Start Over with New Code
         </Button>
+
+        <a
+          href="/ascension-v2/layers"
+          className="block text-center text-[11px] sm:text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+        >
+          View all my layers →
+        </a>
       </div>
     </div>
   );

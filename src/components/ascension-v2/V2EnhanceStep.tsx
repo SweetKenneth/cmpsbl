@@ -11,7 +11,8 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { useState, useCallback, useRef, useMemo } from 'react';
+import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
+import { consumeReattachLayers } from '@/lib/ascension-v2/reattach';
 import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -88,6 +89,13 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const [done, setDone] = useState(false);
   const [attachmentCount, setAttachmentCount] = useState(0);
   const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
+
+  // If the user clicked "Re-attach" on /ascension-v2/layers, pre-select those
+  // layers exactly once on mount so the Enhance step opens with their picks.
+  useEffect(() => {
+    const preset = consumeReattachLayers();
+    if (preset.length > 0) setSelectedLayers(new Set(preset));
+  }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
@@ -141,6 +149,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
       void emitFunnelEvent('layer_attached', {
         runId: getSnapshot().runId,
         layerCount: layerIds.length,
+        layerIds,
         extras: { mana_attached: false },
       });
     }
@@ -219,6 +228,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
       void emitFunnelEvent('layer_attached', {
         runId: getSnapshot().runId,
         layerCount: (layerIds?.length ?? 0) + boundaries.length,
+        layerIds: layerIds ?? [],
         extras: {
           mana_attached: true,
           function_boundaries: boundaries.length,
