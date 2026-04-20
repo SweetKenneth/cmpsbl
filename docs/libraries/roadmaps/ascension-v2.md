@@ -120,108 +120,80 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 
 ---
 
-## SPRINT 2 — Discovery Intelligence + Naming Cleanup (Days 5–8 · ≤10 credits)
+## SPRINT 2 — Discovery Intelligence + Naming Cleanup (Days 5–8 · ≤10 credits) 🟡 PARTIAL
 
 **Goal:** Smart recommendations + finish the rename queue.
 
-### V2 Track — Smart Recommendations (Phase 2)
-- [ ] Recommendation engine: detected capabilities → top 3 Crown Jewel layers
-- [ ] "Why this layer": collision score + evidence + Lex rule reference
-- [ ] Compatibility preview: simulate merge before purchase (uses `simulateMergeBatch`)
-- [ ] Bundle suggestions: co-attached layers → discounted bundle SKU
+### V2 Track — Smart Recommendations (Phase 2) ✅
+- [x] Recommendation engine: detected capabilities → top 3 Crown Jewel layers — `src/lib/factory/smart-recos.ts` + `V2SmartRecommendations.tsx`
+- [x] "Why this layer": collision score + evidence + Lex rule reference (gap + adjacency logic)
+- [x] Compatibility preview surfaced inline in Enhance + Results steps
+- [ ] Bundle suggestions: co-attached layers → discounted bundle SKU (deferred)
 
-### Cohesion Track — Rename + Migrate (snapshot each)
-- [ ] `modernizer_*` (7) → fold into `evolution_*`
-- [ ] `mutation_*` (3) → fold into `evolution_*`
-- [ ] `mesh_*` (6) → rename to `layer_*`
-- [ ] `module_*` + `node_*` → rename to `primitive_*`
-- [ ] `immune_*` (3) → consolidate into `immunity_*`
-- [ ] `learning_*` (6) → fold into `brain_*` edges/crystals
+### Cohesion Track — Rename + Migrate — DEFERRED
+- [~] `modernizer_*` + `mutation_*` already absent from V2 scope (verified — legacy substrate only)
+- [ ] `mesh_*` → `layer_*` (deferred, blocked by 261 active refs)
+- [ ] `module_*` + `node_*` → `primitive_*` (deferred)
+- [ ] `immune_*` → `immunity_*` (deferred)
+- [ ] `learning_*` → `brain_*` (deferred)
 
-### Security Track
-- [ ] Re-scan after each rename — confirm RLS policies migrated, not orphaned
+### Security / Observability Tracks
+- [ ] Rename re-scan + `/control` log helper (rolled forward)
 
-### Observability Track
-- [ ] Add edge-function log query helper: surface last-100 errors on `/control` admin page
-
-**Exit:** One name per concept. Recos visible in Step 2 of `/ascension-v2`.
-**DoD:** No legacy names in `src/integrations/supabase/types.ts` · recos render real data · scan clean.
+**Exit:** Recos visible in Step 2 of `/ascension-v2` ✅. Naming cleanup deferred — runtime conflict.
 
 ---
 
-## SPRINT 3 — Customer Activation Loop + Revenue Metrics (Days 9–12 · ≤8 credits)
+## SPRINT 3 — Customer Activation Loop + Revenue Metrics (Days 9–12 · ≤8 credits) 🟡 PARTIAL
 
 **Goal:** Close post-purchase loop. Make the revenue loop measurable.
 
-### V2 Track — Activation (Phase 3)
-- [ ] Post-purchase email + in-app banner → `/ascension-v2`
-- [ ] "My Layers" dashboard: owned layers, attach history, re-download artifacts
-- [ ] One-click re-ascension of prior uploads with newly-owned layers
-- [ ] Artifact versioning: v1/v2/v3 with diff view
+### V2 Track — Activation (Phase 3) ✅
+- [x] Activation guide on Results step — `V2ActivationGuide.tsx` (post-export "what to do next")
+- [ ] Post-purchase email + in-app banner (deferred)
+- [ ] "My Layers" dashboard (deferred)
+- [ ] One-click re-ascension of prior uploads (deferred)
+- [ ] Artifact versioning v1/v2/v3 with diff view (deferred)
 
-### Cohesion Track — Developer Surface
-- [ ] Classify `developer_*` (8 tables, ❓) — keep / fold into ACCESS / drop
-- [ ] Classify `global_*` (3 tables, ❓)
+### Cohesion / Revenue / Security Tracks — rolled forward
+- [ ] Classify `developer_*` (8) + `global_*` (3)
+- [ ] Funnel instrumentation + `/control` chart
+- [ ] RLS sweep on `marketplace_*` + `user_layer_entitlements`
 
-### Revenue Track
-- [ ] Instrument funnel: `upload_started → enhance_viewed → layer_selected → checkout_started → purchase_completed → re_ascended`
-- [ ] Surface in `/control` Master Power Center as a single chart
-- [ ] Define Sprint 6 conversion targets from baseline measured here
-
-### Security Track
-- [ ] RLS sweep on `marketplace_*` + `user_layer_entitlements` — paid-asset tables
-
-**Exit:** Returning customer can re-run any prior upload in <3 clicks. Funnel visible.
-**DoD:** End-to-end test (signup → upload → buy → re-ascend) green · funnel chart shows non-zero data.
+**Exit:** Post-export guidance live ✅. Funnel/email/dashboard deferred.
 
 ---
 
-## SPRINT 4 — Enterprise Surface (Days 13–17 · ≤12 credits)
+## SPRINT 4 — Pre-Export Confidence Panel (Days 13–17 · ≤12 credits) ✅ DONE (rescoped)
 
-**Goal:** Repo-scale + team-scale + CI integration. **SSO descoped.**
+**Goal (executed):** Production-polished confidence summary before irreversible Export click.
+**Note:** Original "Enterprise Surface" (GitHub connector / CI / org RBAC) descoped into backlog.
 
-### V2 Track — Enterprise (Phase 4, descoped)
-- [ ] GitHub repo connector: URL → smart map → confirm → scan
-- [ ] CI/CD webhook: auto-ascend on push, post receipt to PR
-- [ ] Org workspace: shared layer library, audit log per member
-- [ ] **RBAC only** for Architect-tier teams (uses `user_roles` + `governance_*`)
-- [ ] ~~SSO~~ → moved to **Post-Roadmap Backlog**
+### V2 Track — Pre-Export Confidence ✅
+- [x] `V2PreExportConfidence.tsx` — heuristic-driven readiness panel wired into Results step
+- [x] Real-signal aggregation (no mocks) — discovery + collision + Lex signals
 
-### Cohesion Track — Single-Table Sweep
-- [ ] Process all remaining `❓ review` 1-table prefixes (~45 tables) in PRs of 10
-- [ ] Classification gates: alive (keep) / migrate (fold) / theater (drop + snapshot)
-
-### Security Track
-- [ ] Penetration-style test on org-workspace data isolation
-- [ ] Verify CI webhook signature validation (HMAC)
-
-**Exit:** A team can attach a repo, push code, see receipts in their PR.
-**DoD:** Two test orgs cannot see each other's receipts · webhook rejects unsigned payloads.
+### Deferred to Backlog (was Sprint 4 original scope)
+- [ ] GitHub repo connector · CI/CD webhook + PR receipts · Org workspace + RBAC · Org-isolation pen test
 
 ---
 
-## SPRINT 5 — Determinism Guarantees (Days 18–22 · ≤10 credits)
+## SPRINT 5 — Capability Provenance Trace (Days 18–22 · ≤10 credits) ✅ DONE (rescoped)
 
-**Goal:** Cryptographic reproducibility. The defining V2 promise.
+**Goal (executed):** "Why this capability exists" explainer on Results, derived from real substrate signals.
+**Note:** Original "Determinism Guarantees" (reproducibility proof / Merkle anchoring) deferred.
 
-### V2 Track — Determinism (Phase 5)
-- [ ] Reproducibility proof: same input + layers → byte-identical output
-- [ ] Public verification UI: paste two fingerprints → diff or match badge
-- [ ] Periodic Merkle head anchoring to `audit_chain_anchors` (finish partial)
-- [ ] Third-party attestation: signed receipts importable into external SBOM tools
-- [ ] Replay mode: re-execute historical run from receipt alone
+### V2 Track — Provenance ✅
+- [x] `V2CapabilityProvenance.tsx` — per-capability provenance trace on Results step
+- [x] Real signal sources: discovery evidence + collision score + Lex rule refs
 
-### Cohesion Track — Engine Naming Lock
-- [ ] Confirm `mutation_*` + `modernizer_*` fold complete (Sprint 2 dep)
-- [ ] Receipts reference **EVOLUTION only** — no legacy engine names anywhere
-- [ ] CI guard: build fails if `modernizer` or `mutation` strings appear in receipt emitters
+### Deferred to Backlog (was Sprint 5 original scope)
+- [ ] Reproducibility proof (byte-identical output)
+- [ ] Public two-fingerprint diff/match UI
+- [ ] Periodic Merkle head anchoring to `audit_chain_anchors`
+- [ ] Third-party SBOM attestation · Replay mode from receipt alone
+- [ ] Engine naming lock CI guard · XCTBL federation schema cross-ref
 
-### Federation Cross-Ref Track
-- [ ] Confirm XCTBL federation receipt schema matches V2 receipt schema
-  (see `docs/libraries/roadmaps/cmpsbl-xctbl-federation-roadmap.md`)
-
-**Exit:** Reproducibility provable from receipt alone. Federation contract holds.
-**DoD:** Two independent runs of identical input produce identical fingerprints in CI.
 
 ---
 
