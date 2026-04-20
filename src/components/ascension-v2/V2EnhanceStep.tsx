@@ -89,6 +89,13 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const [done, setDone] = useState(false);
   const [attachmentCount, setAttachmentCount] = useState(0);
   const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
+
+  // If the user clicked "Re-attach" on /ascension-v2/layers, pre-select those
+  // layers exactly once on mount so the Enhance step opens with their picks.
+  useEffect(() => {
+    const preset = consumeReattachLayers();
+    if (preset.length > 0) setSelectedLayers(new Set(preset));
+  }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
