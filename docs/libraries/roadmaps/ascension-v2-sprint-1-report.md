@@ -98,7 +98,33 @@ Prefixes scanned: `developer` (multi, was ❓), `discovery` (multi, was 🟢), `
 
 Verdict summary (batch 4): **44 of 44 tables alive**. None drop-eligible. **One reclassification: `developer_*` ❓ → 🟢.**
 
-**Cumulative: 26 of 52 unclassified prefixes processed. 26 remain.** Cohesion audit doc (`docs/libraries/internal/24-substrate-cohesion-audit.md`) updated with all batch 1-4 verdicts so this work is permanent.
+**Cumulative after batch 4: 26 of 52 unclassified prefixes processed.**
+
+### Single-Table Prefix Queue — batch 5 (14 single-prefix tables classified)
+
+Prefixes scanned: `cost`, `device`, `discovered`, `discoveries`, `ecosystem`, `ethical`, `execution`, `gate`, `ip`, `lead`, `licensing`, `lovable`, `member`, `merchant`, `owner`. Methodology: `pg_stat_user_tables` row count + grep ref count in `supabase/functions/` and `src/`. Low-ref tables additionally exact-name searched.
+
+| Prefix | Table | Rows | Refs | Verdict | Rationale |
+|---|---|---:|---|---|---|
+| `cost` | `cost_logs` | 0 | 10 fn / 83 src | **alive — keep** | Cost telemetry sink (referenced by NEXUS + AI usage tracking) |
+| `device` | `device_fingerprint_snapshots` | 0 | 2 fn / 19 src | **alive — keep** | DEFENSE fingerprint ledger |
+| `discovered` | `discovered_pipelines` | 0 | 7 fn / 14 src | **alive — keep** | DISCOVERY pipeline cache |
+| `discoveries` | (alias of discovered) | 0 | — | **alive — keep** | Singular alias |
+| `ecosystem` | `ecosystem_memory` | 0 | 1 fn / 2 src | **dormant — keep** | INTEGRATION adapter memory |
+| `ethical` | `ethical_approvals` | 0 | 1 fn / 29 src | **alive — keep** | GOVERNANCE approval ledger |
+| `execution` | `execution_traces` | 0 | 7 fn / 62 src | **alive — keep** | Runtime trace ledger |
+| `gate` | `gate_runs` | 0 | 1 fn / 25 src | **alive — keep** | LEX fingerprint gate ledger |
+| `ip` | `ip_reputation` | 0 | 6 fn / 101 src | **alive — keep** | DEFENSE IP reputation cache |
+| `lead` | `lead_captures` | 0 | 2 src (exact) | **dormant — keep** | Landing page lead capture |
+| `licensing` | `licensing_inquiries` | 0 | 1 src (exact) | **dormant — keep** | Patent licensing inquiry inbox |
+| `lovable` | `lovable_ai_usage` | 0 | 1 src (exact) | **dormant — keep** | Historical Lovable AI usage (read-only) |
+| `member` | `member_usage_stats` | 0 | 4 fn / 22 src | **alive — keep** | AGENCY member telemetry |
+| `merchant` | `merchant_scan_log` | 17 | 1 fn / 3 src | **alive — keep** | MERCHANT engine scan ledger |
+| `owner` | `owner_reports` | 236 | 4 fn / 13 src | **alive — keep (anchor)** | Governor owner-report archive |
+
+Verdict summary (batch 5): **14 of 14 alive or dormant-keep**. None drop-eligible. **All 15 prefixes flipped from ❓ → 🟢 in cohesion audit doc.**
+
+**Cumulative: 40 of 52 unclassified prefixes processed. 12 remain.**
 
 
 ### Snapshot policy
