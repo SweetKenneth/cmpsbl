@@ -326,12 +326,20 @@ ${tsEntryPointCode}
 
   return envelope;
 }`).join('\n');
-  return `// ═══════════════════════════════════════════════════════════════════════════════
+  const _emittedTsLayerCount = tsLayers.filter((l) => {
+    const w = l.autoWire?.tsWire ?? '';
+    return w.split('\n').some((ln) => {
+      const t = ln.trim();
+      return t && !t.startsWith('//') && !t.startsWith('/*') && !t.startsWith('*');
+    });
+  }).length;
+  const tsOutput = `// ═══════════════════════════════════════════════════════════════════════════════
 //  CMPSBL® Ascension Layer™ — ${packName}
 //  Black-Box Distribution · Single File · Zero Dependencies
 //
-//  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers · Avg score: ${avgCjpi}
+//  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${_emittedTsLayerCount} active layer${_emittedTsLayerCount === 1 ? '' : 's'} · ${allModules.length} primitive module${allModules.length === 1 ? '' : 's'} · Avg score: ${avgCjpi}
 //  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
+//  ${modeBanner.replace(/^\/\/\s*/, '')}
 //${selectedLayers?.length ? `\n//  Optional layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
 //
 //  HOW TO USE: drop this file into your stack, import it, and call it like
