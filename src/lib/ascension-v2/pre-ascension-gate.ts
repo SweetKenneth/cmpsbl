@@ -121,6 +121,15 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
   let inLineComment = false;
   let inBlockComment = false;
   let inPyTriple: '"""' | "'''" | null = null;
+  // Template-literal substitution depth: each `${ … }` inside a backtick
+  // string opens a new JS expression scope. We push '`' onto the template
+  // stack so that the matching '}' returns us to template-string mode.
+  const templateStack: number[] = []; // depth = current nested ${} count
+
+  // Heuristic: a `/` is a regex literal iff the preceding non-space token
+  // is one of: ( , = : ! & | ? { } ; return typeof in of new throw.
+  // Otherwise it's division.
+  const regexPrevTokens = /[\(,=:!&|?{};]\s*$|\b(return|typeof|in|of|new|throw|delete|void|await|yield)\s*$/;
 
   for (let i = 0; i < source.length; i++) {
     const c = source[i];
@@ -141,6 +150,14 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     }
     if (inStr) {
       if (c === '\\') { i++; continue; }
+      // Template-literal substitution start: `${`
+      if (inStr === '`' && c === '$' && next === '{') {
+        templateStack.push(stack.length);
+        stack.push({ ch: '{', off: i + 1 });
+        inStr = null;
+        i++;
+        continue;
+      }
       if (c === inStr) inStr = null;
       continue;
     }
@@ -149,6 +166,32 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     if (c === '/' && next === '/') { inLineComment = true; continue; }
     if (c === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (c === '#') { inLineComment = true; continue; }
+    // JS/TS regex literal: `/pattern/flags`. Detect via preceding token.
+    if (c === '/' && next !== '/' && next !== '*') {
+      const before = source.slice(Math.max(0, i - 16), i);
+      if (regexPrevTokens.test(before) || i === 0) {
+        // Consume regex body up to unescaped closing `/` followed by flags.
+        let j = i + 1;
+        let inClass = false;
+        while (j < source.length) {
+          const cj = source[j];
+          if (cj === '\\') { j += 2; continue; }
+          if (cj === '\n') break; // not a valid regex literal
+          if (cj === '[') inClass = true;
+          else if (cj === ']') inClass = false;
+          else if (cj === '/' && !inClass) {
+            // skip flags
+            j++;
+            while (j < source.length && /[gimsuyd]/.test(source[j])) j++;
+            i = j - 1;
+            break;
+          }
+          j++;
+        }
+        if (j < source.length) continue;
+        // fell through — treat as division, no-op
+      }
+    }
     if (trip === '"""' || trip === "'''") { inPyTriple = trip as '"""' | "'''"; i += 2; continue; }
     // Rust lifetime tick: `<'a>`, `&'a`, `&'a mut`, `'static`, `Foo<'a, 'b>`.
     // A `'` immediately followed by an identifier char and NOT closed by `'`
@@ -180,6 +223,12 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
       const top = stack.pop();
       if (!top || top.ch !== pairs[c]) {
         return { ok: false, offset: i, what: `unmatched '${c}'` };
+      }
+      // If this `}` closes a `${` substitution, re-enter template mode.
+      if (c === '}' && templateStack.length > 0 &&
+          templateStack[templateStack.length - 1] === stack.length) {
+        templateStack.pop();
+        inStr = '`';
       }
     }
   }
