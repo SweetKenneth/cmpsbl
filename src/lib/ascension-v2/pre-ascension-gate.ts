@@ -150,6 +150,29 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     if (c === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (c === '#') { inLineComment = true; continue; }
     if (trip === '"""' || trip === "'''") { inPyTriple = trip as '"""' | "'''"; i += 2; continue; }
+    // Rust lifetime tick: `<'a>`, `&'a`, `&'a mut`, `'static`, `Foo<'a, 'b>`.
+    // A `'` immediately followed by an identifier char and NOT closed by `'`
+    // within the next ~16 chars is a lifetime, not a char literal. We skip
+    // the identifier so the scanner doesn't mis-enter string mode.
+    if (c === "'") {
+      const prev = i > 0 ? source[i - 1] : '';
+      const startsLifetime =
+        /[A-Za-z_]/.test(next || '') &&
+        (prev === '<' || prev === ',' || prev === '&' || prev === ' ' || prev === '\t' || prev === '\n');
+      if (startsLifetime) {
+        // Consume the identifier; do NOT enter string mode.
+        let j = i + 1;
+        while (j < source.length && /[A-Za-z0-9_]/.test(source[j])) j++;
+        // If a closing `'` follows immediately AND is preceded by exactly one
+        // char (e.g. `'a'` char literal), treat as char literal instead.
+        if (source[j] === "'" && j - i === 2) {
+          inStr = "'";
+          continue;
+        }
+        i = j - 1;
+        continue;
+      }
+    }
     if (c === '"' || c === "'" || c === '`') { inStr = c as '"' | "'" | '`'; continue; }
 
     if (c === '(' || c === '[' || c === '{') stack.push({ ch: c, off: i });

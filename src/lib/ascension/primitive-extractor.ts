@@ -312,9 +312,14 @@ export function extractPrimitives(
           if (rawPrimitives.length >= MAX_RAW_PRIMITIVES) break;
 
           const name = match[pattern.nameGroup];
-          if (!name || name.length < 3 || name.length > 60) continue;
+          // Allow short domain names (tx, db, fn, io) — common in real code.
+          // The downstream quality gate filters useless ones via name + signals.
+          if (!name || name.length < 2 || name.length > 60) continue;
 
-          const dedupeKey = `${name}|${pattern.method}`;
+          // Dedupe per file so a primitive extracted by multiple patterns
+          // (e.g. ts-func + ts-arrow) doesn't duplicate, but the same name
+          // appearing in another file IS captured.
+          const dedupeKey = `${file.name}|${name}|${pattern.method}`;
           if (seenNames.has(dedupeKey)) continue;
           seenNames.add(dedupeKey);
 
