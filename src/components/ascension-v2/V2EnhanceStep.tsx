@@ -46,19 +46,18 @@ const LAYER_RANK_TO_TIER: Record<number, LayerTier> = (() => {
 })();
 
 function tierForLayer(layer: CmpsblLayerDefinition): LayerTier {
-  return LAYER_RANK_TO_TIER[layer.crownJewelRank] ?? 'architect';
+  return LAYER_RANK_TO_TIER[layer.crownJewelRank] ?? 'pro';
 }
 
 /** Numeric rank for tier comparison (higher number = more access). */
 const TIER_RANK: Record<LayerTier, number> = {
   builder: 1,
-  studio: 2,
-  creator: 3,
-  architect: 4,
-  enterprise: 5,
+  pro: 2,
+  enterprise: 3,
 };
 
-/** Map subscription tier → effective LayerTier for access checks. */
+/** Map subscription tier → effective LayerTier for access checks.
+ *  Legacy studio/creator/architect tiers all map to Pro (post-collapse). */
 function subscriptionToLayerTier(sub: SubscriptionTier): LayerTier {
   switch (sub) {
     case 'free':
@@ -66,12 +65,10 @@ function subscriptionToLayerTier(sub: SubscriptionTier): LayerTier {
     case 'builder':
       return 'builder';
     case 'studio':
-      return 'studio';
     case 'creator':
     case 'pro':
-      return 'creator';
     case 'architect':
-      return 'architect';
+      return 'pro';
     case 'enterprise':
       return 'enterprise';
     default:

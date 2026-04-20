@@ -112,7 +112,7 @@ export interface RecommendationInput {
  */
 const NAME_TO_REQUIRED_TIER: ReadonlyMap<string, LayerTier> = (() => {
   const m = new Map<string, LayerTier>();
-  for (const tier of ['builder', 'studio', 'creator', 'architect'] as const) {
+  for (const tier of ['builder', 'pro'] as const) {
     for (const entry of TIER_LAYERS[tier]) {
       m.set(entry.name.toLowerCase(), tier);
     }

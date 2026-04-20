@@ -242,8 +242,8 @@ const DeveloperAcademy = () => {
                     time: '4 min',
                   },
                   {
-                    title: 'Choosing Your Tier',
-                    desc: 'Compare Builder, Creator, Studio, and Architect tiers. See what each unlocks in terms of daily pulls, vault capacity, and runtime slots.',
+                    title: 'Free vs. Pro',
+                    desc: 'Compare the Free and Pro plans. See exactly which Ascension layers unlock at $0 vs. $29/mo, plus daily pulls, vault capacity, and runtime slots.',
                     tag: 'Guide',
                     link: '/plans',
                     time: '2 min',
