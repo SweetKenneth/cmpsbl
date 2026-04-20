@@ -183,7 +183,7 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
       });
       usedLayerIds.add(layer.id);
     }
-    return picked.slice(0, limit);
+    return applyTierOrdering(picked, input.userTier).slice(0, limit);
   }
 
   // ── Stage 1: gap-fillers ───────────────────────────────────────────────
