@@ -45,6 +45,8 @@ const FUNCTION_PATTERNS: RegExp[] = [
   /^\s*(?:Future<[^>]+>|Stream<[^>]+>|void|int|String|bool|double)\s+([a-zA-Z_]\w*)\s*\(/gm,
   // Tuning fix: Kotlin — `fun name(...)`, including expression-body
   /\bfun\s+([a-zA-Z_]\w*)\s*\(/g,
+  // Tuning fix T3: R — `name <- function(args)`
+  /^([A-Za-z_.][\w.]*)\s*<-\s*function\s*\(/gm,
   // Class methods: name(args) {  or  name: function
   /^\s+([a-zA-Z_$]\w*)\s*\([^)]*\)\s*\{/gm,
 ];
@@ -117,19 +119,31 @@ function detectPythonClassMethods(source: string): FunctionBoundary[] {
  *             @validator (Pydantic), @celery.task, @app.post/get/put/delete
  */
 const DECORATOR_TO_VERB: Array<{ pattern: RegExp; verbPrefix: string }> = [
-  { pattern: /@(Pre)?Authorize\b/i,        verbPrefix: 'authorize_' },
-  { pattern: /@RolesAllowed\b/i,           verbPrefix: 'authorize_' },
-  { pattern: /@RateLimit\b/i,              verbPrefix: 'throttle_' },
-  { pattern: /@Throttle\b/i,               verbPrefix: 'throttle_' },
-  { pattern: /@Audited\b/i,                verbPrefix: 'audit_' },
-  { pattern: /@Webhook\b/i,                verbPrefix: 'webhook_' },
-  { pattern: /@CircuitBreaker\b/i,         verbPrefix: 'circuit_' },
-  { pattern: /@Retry\b/i,                  verbPrefix: 'retry_' },
-  { pattern: /@validator\b/,               verbPrefix: 'validate_' },
-  { pattern: /@celery\.task\b/,            verbPrefix: 'orchestrate_' },
-  { pattern: /@app\.(post|put|patch|delete)\b/i, verbPrefix: 'create_' },
-  { pattern: /@(Post|Put|Patch|Delete)Mapping\b/, verbPrefix: 'create_' },
-  { pattern: /@HttpPost\b/,                verbPrefix: 'create_' },
+  // T1: auth — covers Spring @PreAuthorize, NestJS/.NET [Authorize], Django @login_required / @permission_required
+  { pattern: /@(Pre)?Authorize\b/i,                       verbPrefix: 'authorize_' },
+  { pattern: /\[(Pre)?Authorize\b/i,                      verbPrefix: 'authorize_' },
+  { pattern: /@RolesAllowed\b/i,                          verbPrefix: 'authorize_' },
+  { pattern: /@RequireLogin\b/i,                          verbPrefix: 'authorize_' },
+  { pattern: /@Authenticated\b/i,                         verbPrefix: 'authorize_' },
+  { pattern: /@login_required\b/,                         verbPrefix: 'authorize_' },
+  { pattern: /@permission_required\b/,                    verbPrefix: 'authorize_' },
+  // T1: rate-limit — Spring @RateLimited, generic @Throttle, DRF @throttle
+  { pattern: /@RateLimit(ed)?\b/i,                        verbPrefix: 'throttle_' },
+  { pattern: /@Throttle\b/i,                              verbPrefix: 'throttle_' },
+  { pattern: /@throttle\(/,                               verbPrefix: 'throttle_' },
+  // T1: validation — JSR-303 @Valid / @Validate
+  { pattern: /@Valid(ate)?\b/,                            verbPrefix: 'validate_' },
+  { pattern: /@validator\b/,                              verbPrefix: 'validate_' },
+  // existing
+  { pattern: /@Audited\b/i,                               verbPrefix: 'audit_' },
+  { pattern: /@Webhook\b/i,                               verbPrefix: 'webhook_' },
+  { pattern: /@CircuitBreaker\b/i,                        verbPrefix: 'circuit_' },
+  { pattern: /@Retry\b/i,                                 verbPrefix: 'retry_' },
+  { pattern: /@celery\.task\b/,                           verbPrefix: 'orchestrate_' },
+  { pattern: /@app\.(post|put|patch|delete)\b/i,          verbPrefix: 'create_' },
+  { pattern: /@(Post|Put|Patch|Delete)Mapping\b/,         verbPrefix: 'create_' },
+  { pattern: /\[Http(Post|Put|Patch|Delete)\]/,           verbPrefix: 'create_' },
+  { pattern: /@HttpPost\b/,                               verbPrefix: 'create_' },
 ];
 
 /** Extract the next method/function name after a decorator line. */
@@ -376,6 +390,8 @@ const CAPABILITY_SIGNALS: Array<{
       // Tuning fix #5: added destroy, drop, truncate, transfer, withdraw,
       // approve (Solidity/financial), Remove- (PowerShell), perform_create/destroy (Django)
       /^(save|update|delete|destroy|drop|truncate|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite|transfer|withdraw|approve|store_user|register|store|perform_create|perform_destroy|perform_update)/i,
+      // Tuning fix T2: WordPress / event-bus mutating hooks
+      /^on_.*_(save|register|create|delete|update|complete|destroy|charge|refund|cancel)$/i,
     ],
     capability: 'governance_hook',
     primitive: 'GOVERNANCE',
