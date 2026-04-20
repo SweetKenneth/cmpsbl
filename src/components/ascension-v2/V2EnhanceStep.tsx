@@ -29,6 +29,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { useLayerEntitlements } from '@/hooks/useLayerEntitlements';
 import { Link } from 'react-router-dom';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
+import { emitFunnelEvent, getSnapshot } from '@/lib/ascension-v2';
 
 /**
  * Build a rank → tier lookup from the canonical TIER_LAYERS map.
@@ -136,6 +137,13 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const handleSkip = useCallback(() => {
     // Even when skipping Mana, pass selected layers
     const layerIds = selectedLayers.size > 0 ? [...selectedLayers] : undefined;
+    if (layerIds && layerIds.length > 0) {
+      void emitFunnelEvent('layer_attached', {
+        runId: getSnapshot().runId,
+        layerCount: layerIds.length,
+        extras: { mana_attached: false },
+      });
+    }
     onComplete(false, layerIds);
   }, [onComplete, selectedLayers]);
 
@@ -207,6 +215,15 @@ export function V2EnhanceStep({ onComplete }: Props) {
         description: `${boundaries.length} function boundaries detected and wrapped.`,
       });
       const layerIds = selectedLayers.size > 0 ? [...selectedLayers] : undefined;
+      // Funnel event #4 — layer_attached (fires when Mana is attached or layers chosen)
+      void emitFunnelEvent('layer_attached', {
+        runId: getSnapshot().runId,
+        layerCount: (layerIds?.length ?? 0) + boundaries.length,
+        extras: {
+          mana_attached: true,
+          function_boundaries: boundaries.length,
+        },
+      });
       setTimeout(() => onComplete(true, layerIds), 600);
     } catch (err) {
       toast({ title: 'Attachment failed', description: String(err), variant: 'destructive' });

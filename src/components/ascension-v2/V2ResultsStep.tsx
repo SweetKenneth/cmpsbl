@@ -17,7 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { completeRun, getSnapshot, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
+import { completeRun, getSnapshot, emitFunnelEvent, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
@@ -168,6 +168,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const handleExport = async () => {
     if (capabilities.length === 0) return;
     setExporting(true);
+    const exportStartedAt = Date.now();
+
+    // Funnel event #5 — export_clicked
+    void emitFunnelEvent('export_clicked', {
+      runId: getSnapshot().runId,
+      capabilityCount: capabilities.length,
+      language: sourceLanguage,
+    });
 
     const baseName = (sourceFiles[0]?.name || 'source').replace(/\.[^.]+$/, '');
     setCeremonyName(`cmpsbl-ascended-${baseName}`);
@@ -355,6 +363,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
       const blob = await zip.generateAsync({ type: 'blob' });
       saveAs(blob, `${zipName}.zip`);
+
+      // Funnel event #6 — export_complete (the conversion target)
+      void emitFunnelEvent('export_complete', {
+        runId: getSnapshot().runId,
+        capabilityCount: capabilities.length,
+        language: sourceLanguage,
+        fingerprint,
+        durationMs: Date.now() - exportStartedAt,
+      });
 
       const verdictNote = harness.softWarnings > 0
         ? ` · ${harness.softWarnings} soft warning${harness.softWarnings === 1 ? '' : 's'}`
