@@ -91,23 +91,23 @@
 | `code_*` | 1 | ASCENSION | 🟢 alive | `code_stamps` — code provenance stamps, ascension-emitted. Sprint 1 batch 2. |
 | `compiled_*` | 1 | COMPILER | 🟢 alive | `compiled_products` — Autonomous Product Compiler output ledger, 25 fn refs. Sprint 1 batch 2. |
 | `control_*` | 1 | GOVERNANCE | 🟢 alive | `control_plane_state` — `/control` master power center reads/writes plane state. Sprint 1 batch 3. |
-| `cost_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `cost_*` | 1 | OBSERVABILITY | 🟢 alive | `cost_logs` — referenced by 3 files (cost telemetry sink). Sprint 1 batch 5. |
 | `crystallized_*` | 1 | BRAIN | 🟢 alive | `crystallized_assets` — BRAIN distillation output target. Sprint 1 batch 3. |
-| `device_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `discovered_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `discoveries_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `ecosystem_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `device_*` | 1 | DEFENSE | 🟢 alive | `device_fingerprint_snapshots` — 2 fn / 19 src refs, defense fingerprinting ledger. Sprint 1 batch 5. |
+| `discovered_*` | 1 | DISCOVERY | 🟢 alive | `discovered_pipelines` — 7 fn / 14 src refs, discovery output cache. Sprint 1 batch 5. |
+| `discoveries_*` | 1 | DISCOVERY | 🟢 alive | Singular form of discovered — discovery vault entries. Sprint 1 batch 5. |
+| `ecosystem_*` | 1 | INTEGRATION | 🟢 alive | `ecosystem_memory` — referenced by integration adapter. Sprint 1 batch 5. |
 | `edge_*` | 1 | DEFENSE | 🟢 alive | `edge_rate_limits` — 12 fn refs / 104 src refs, edge function rate limit ledger. Sprint 1 batch 4. |
-| `ethical_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `execution_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `gate_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `ip_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `lead_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `licensing_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `lovable_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `member_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `merchant_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `owner_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `ethical_*` | 1 | GOVERNANCE | 🟢 alive | `ethical_approvals` — governance approval ledger, 29 src refs. Sprint 1 batch 5. |
+| `execution_*` | 1 | RUNTIME | 🟢 alive | `execution_traces` — 7 fn / 62 src refs, runtime trace ledger. Sprint 1 batch 5. |
+| `gate_*` | 1 | LEX | 🟢 alive | `gate_runs` — 25 src refs, Lex fingerprint gate run ledger. Sprint 1 batch 5. |
+| `ip_*` | 1 | DEFENSE | 🟢 alive | `ip_reputation` — 6 fn / 101 src refs, defense IP reputation cache. Sprint 1 batch 5. |
+| `lead_*` | 1 | MARKETING | 🟢 alive | `lead_captures` — landing page lead capture sink. Sprint 1 batch 5. |
+| `licensing_*` | 1 | LEGAL | 🟢 alive | `licensing_inquiries` — patent licensing inquiry inbox. Sprint 1 batch 5. |
+| `lovable_*` | 1 | LEGACY | 🟢 alive | `lovable_ai_usage` — historical Lovable AI usage log (read-only, not written). Sprint 1 batch 5. |
+| `member_*` | 1 | AGENCY | 🟢 alive | `member_usage_stats` — 4 fn / 22 src refs, agency member telemetry. Sprint 1 batch 5. |
+| `merchant_*` | 1 | MARKETPLACE | 🟢 alive | `merchant_scan_log` — 17 rows, MERCHANT engine scan ledger. Sprint 1 batch 5. |
+| `owner_*` | 1 | GOVERNANCE | 🟢 alive | `owner_reports` — 236 rows, Governor owner-report archive. Sprint 1 batch 5. |
 | `pipeline_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `production_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `profiles_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
