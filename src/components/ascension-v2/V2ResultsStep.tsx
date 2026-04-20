@@ -37,6 +37,7 @@ import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/licens
 import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
+import { V2ActivationGuide } from './V2ActivationGuide';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
@@ -72,6 +73,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
   const [spdxChoice, setSpdxChoice] = useState<SpdxChoice>('auto');
+  // After export succeeds we surface the run-aware activation guide so the
+  // user has copy-pasteable next steps using their actual ascended filename.
+  const [exportedAscendedName, setExportedAscendedName] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -355,6 +359,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         description: `${zipName}.zip — ${capabilities.length} capabilities${verdictNote}, harness report bundled.`,
       });
 
+      // Surface the activation guide now that we know the real ascended name.
+      setExportedAscendedName(ascendedFileName);
+
       // Keep ceremony visible briefly after download starts
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
@@ -603,6 +610,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
                 : `Download cmpsbl-ascended-${displayBaseName}.zip`}
             </span>
           </Button>
+        )}
+
+        {exportedAscendedName && (
+          <V2ActivationGuide
+            ascendedFileName={exportedAscendedName}
+            language={sourceLanguage}
+            enhanced={enhanced || selectedLayers.size > 0}
+            attachedLayerIds={Array.from(selectedLayers)}
+          />
         )}
 
         <Button variant="ghost" onClick={onReset} className="w-full text-xs sm:text-sm">
