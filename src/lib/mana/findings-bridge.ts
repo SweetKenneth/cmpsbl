@@ -787,13 +787,22 @@ export function buildAttachmentPlan(
   const assigned = new Set<string>(); // Track function→capability pairs to avoid dupes
 
   for (const boundary of boundaries) {
+    // Tuning fix #1: strip Class.method prefix so `User.validate_email`
+    // matches signal regexes anchored on `^validate`. Match against both
+    // the qualified name AND the local method name.
+    const localName = boundary.name.includes('.')
+      ? boundary.name.split('.').pop() ?? boundary.name
+      : boundary.name;
+
     for (const signal of CAPABILITY_SIGNALS) {
       // Only apply if the relevant primitive was selected by the scanner
       if (!activePrimitives.has(signal.primitive)) continue;
 
+      // Tuning fix #2: patterns are non-global so .test() is stateless.
+      // lastIndex reset retained defensively.
       const matched = signal.patterns.some(p => {
         p.lastIndex = 0;
-        return p.test(boundary.name);
+        return p.test(localName) || (localName !== boundary.name && p.test(boundary.name));
       });
 
       if (!matched) continue;
