@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { detectLanguage } from './src/lib/factory/code-metrics';
-import { detectFunctionBoundaries, buildAttachmentPlan } from './src/lib/mana/findings-bridge';
+import { detectLanguage } from '../src/lib/factory/code-metrics';
+import { detectFunctionBoundaries, buildAttachmentPlan } from '../src/lib/mana/findings-bridge';
 
 const ROOT = '/tmp/stress2/corpus';
 const manifest: Array<{file:string;lang:string;expect:string[]}> =
