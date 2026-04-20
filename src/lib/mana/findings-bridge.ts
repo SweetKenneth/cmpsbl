@@ -393,6 +393,10 @@ const CAPABILITY_SIGNALS: Array<{
       /^(parse|deserialize)[A-Z_]/,
       // T1: synthesized validate_<method> from @Valid/@Validate decorators
       /^validate_[A-Za-z_]/,
+      // Custom-corpus T3: type-driven validators — narrow/refine/tryFrom/from_str/guard
+      /^(narrow|refine|tryFrom|try_from|from_str|fromStr|guard|coerce|cast)([A-Z_]|$)/,
+      // Bare parse/validate at module scope (zod schema.parse, serde from_str fns)
+      /^(parse|validate|check|verify)([A-Z_]|$)/,
     ],
     capability: 'payload_validator',
     primitive: 'DEFENSE',
