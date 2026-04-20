@@ -49,9 +49,16 @@ interface Props {
 function mapSubscriptionTier(tier: string | undefined): LayerTier {
   if (!tier) return 'builder';
   if (tier === 'enterprise') return 'enterprise';
-  if (tier === 'architect' || tier === 'pro') return 'architect';
-  if (tier === 'creator') return 'creator';
-  if (tier === 'studio' || tier === 'operator') return 'studio';
+  // All legacy paid tiers (studio/creator/architect/operator) collapse to Pro.
+  if (
+    tier === 'pro' ||
+    tier === 'architect' ||
+    tier === 'creator' ||
+    tier === 'studio' ||
+    tier === 'operator'
+  ) {
+    return 'pro';
+  }
   return 'builder';
 }
 

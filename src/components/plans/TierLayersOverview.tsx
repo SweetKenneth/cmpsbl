@@ -45,7 +45,7 @@ export function TierLayersOverview() {
         {TIER_ORDER.map((key) => {
           const tier = TIER_META[key];
           const layers = key === 'enterprise' ? [] : TIER_LAYERS[key];
-          const isFull = key === 'architect';
+          const isFull = key === 'pro';
           const isCustom = key === 'enterprise';
 
           return (

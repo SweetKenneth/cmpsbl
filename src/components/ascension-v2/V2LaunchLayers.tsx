@@ -301,7 +301,7 @@ export function V2LaunchLayers() {
                         <span className="text-base font-black text-primary tabular-nums">
                           {tier.priceLabel}
                         </span>
-                        {tierKey === 'architect' && (
+                        {tierKey === 'pro' && (
                           <span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] font-bold">
                             ALL 20
                           </span>
@@ -315,7 +315,7 @@ export function V2LaunchLayers() {
                   <Button
                     asChild
                     size="sm"
-                    variant={tierKey === 'architect' ? 'default' : 'outline'}
+                    variant={tierKey === 'pro' ? 'default' : 'outline'}
                     className="rounded-full text-[11px] font-semibold"
                   >
                     <Link to="/plans">
