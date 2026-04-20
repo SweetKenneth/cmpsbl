@@ -237,7 +237,9 @@ const CAPABILITY_SIGNALS: Array<{
   // ── GOVERNANCE family ──
   {
     patterns: [
-      /^(save|update|delete|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite)/i,
+      // Tuning fix #5: added destroy, drop, truncate, transfer, withdraw,
+      // approve (Solidity/financial), Remove- (PowerShell), perform_create/destroy (Django)
+      /^(save|update|delete|destroy|drop|truncate|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite|transfer|withdraw|approve|store_user|register|store|perform_create|perform_destroy|perform_update)/i,
     ],
     capability: 'governance_hook',
     primitive: 'GOVERNANCE',
@@ -278,7 +280,7 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
-      /^(auth|login|logout|verify|check.*perm|grant|revoke|elevate|impersonate)/i,
+      /^(auth|login|logout|verify|check.*perm|grant|revoke|elevate|impersonate|before_action|require_login)/i,
       /^(is.*admin|has.*role|can.*access|is.*authorized|is.*authenticated)/i,
     ],
     capability: 'access_controller',
@@ -288,7 +290,8 @@ const CAPABILITY_SIGNALS: Array<{
   // ── FAILSAFE family ──
   {
     patterns: [
-      /^(fetch|call|request|query|get.*api|post|send|connect|subscribe|poll|ping)/i,
+      // Tuning fix #5: added remote/external/api keywords + lowercase verbs
+      /^(fetch|call|request|query|get.*api|post|send|connect|subscribe|poll|ping|callremote|call_remote|call_external|callexternal)/i,
     ],
     capability: 'circuit_breaker',
     primitive: 'FAILSAFE',
@@ -594,7 +597,8 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
-      /^(authenticate|verify.*identity|check.*token|validate.*jwt)/i,
+      // Tuning fix #5: include verifyJwt/verifyToken/refreshToken/refreshSession/revokeSession
+      /^(authenticate|verify.*identity|check.*token|validate.*jwt|verify.*token|verify.*jwt|verifyjwt|verifytoken|refresh.*token|refresh.*session|revoke.*session|refreshtoken|revokesession)/i,
     ],
     capability: 'identity_auth_gate',
     primitive: 'IDENTITY',
