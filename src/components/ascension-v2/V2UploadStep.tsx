@@ -63,6 +63,17 @@ export function V2UploadStep({ onComplete }: Props) {
         content: f.content,
       }));
       const fp = commitUpload(sourceFiles, analysis.language);
+
+      // Stash a small source preview for the Governance Mode step.
+      // Ephemeral (sessionStorage) — never persisted server-side beyond
+      // the artifact_registry record committed below.
+      try {
+        const previewSource = sourceFiles[0]?.content?.slice(0, 8000) ?? '';
+        if (previewSource && typeof window !== 'undefined') {
+          window.sessionStorage.setItem('cmpsbl:v2:source-preview', previewSource);
+        }
+      } catch { /* non-fatal */ }
+
       const slugSeed = Date.now().toString(36);
       const candidateName = `CANDIDATE_${analysis.name}`;
       const description = `${analysis.language} — ${analysis.fileCount} files, ${analysis.sizeKb}KB`;
