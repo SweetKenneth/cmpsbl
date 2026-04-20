@@ -76,6 +76,13 @@ export interface ScanResult {
   durationMs: number;
   /** Per-archetype floor: which archetypes achieved ≥1 HIGH match */
   archetypeFloor: { total: number; withHigh: number; ids: string[] };
+  /** First-class security smell findings — surfaced from the security-gaps archetype */
+  securityGaps: Array<{
+    pattern: string;
+    severity: 'low' | 'medium' | 'high';
+    primitives: string[];
+    confidence: number;
+  }>;
 }
 
 export interface CJPIDiscovery {
@@ -206,6 +213,23 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
   }
 
   const durationMs = Math.round(performance.now() - start);
+
+  // Surface security-gaps as first-class findings (separate from the gap list,
+  // because security smells are *present* anti-patterns, not missing capabilities).
+  const securityGaps: ScanResult['securityGaps'] = [];
+  const securityMatch = matches.find(m => m.archetypeId === 'security-gaps');
+  if (securityMatch && securityMatch.structuralHits > 0) {
+    const severity: 'low' | 'medium' | 'high' =
+      securityMatch.confidence >= 0.7 ? 'high' :
+      securityMatch.confidence >= 0.4 ? 'medium' : 'low';
+    securityGaps.push({
+      pattern: securityMatch.archetypeName,
+      severity,
+      primitives: securityMatch.primitives,
+      confidence: securityMatch.confidence,
+    });
+  }
+
   const result: ScanResult = {
     matches,
     boostMap: Object.fromEntries(boostMap),
@@ -222,6 +246,7 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
       withHigh: archetypeHighIds.length,
       ids: archetypeHighIds,
     },
+    securityGaps,
   };
 
   cacheScanResult(fingerprint.hash, result);

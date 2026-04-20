@@ -121,6 +121,15 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
   let inLineComment = false;
   let inBlockComment = false;
   let inPyTriple: '"""' | "'''" | null = null;
+  // Template-literal substitution depth: each `${ … }` inside a backtick
+  // string opens a new JS expression scope. We push '`' onto the template
+  // stack so that the matching '}' returns us to template-string mode.
+  const templateStack: number[] = []; // depth = current nested ${} count
+
+  // Heuristic: a `/` is a regex literal iff the preceding non-space token
+  // is one of: ( , = : ! & | ? { } ; return typeof in of new throw.
+  // Otherwise it's division.
+  const regexPrevTokens = /[\(,=:!&|?{};]\s*$|\b(return|typeof|in|of|new|throw|delete|void|await|yield)\s*$/;
 
   for (let i = 0; i < source.length; i++) {
     const c = source[i];
@@ -141,6 +150,14 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     }
     if (inStr) {
       if (c === '\\') { i++; continue; }
+      // Template-literal substitution start: `${`
+      if (inStr === '`' && c === '$' && next === '{') {
+        templateStack.push(stack.length);
+        stack.push({ ch: '{', off: i + 1 });
+        inStr = null;
+        i++;
+        continue;
+      }
       if (c === inStr) inStr = null;
       continue;
     }
@@ -149,6 +166,32 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     if (c === '/' && next === '/') { inLineComment = true; continue; }
     if (c === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (c === '#') { inLineComment = true; continue; }
+    // JS/TS regex literal: `/pattern/flags`. Detect via preceding token.
+    if (c === '/' && next !== '/' && next !== '*') {
+      const before = source.slice(Math.max(0, i - 16), i);
+      if (regexPrevTokens.test(before) || i === 0) {
+        // Consume regex body up to unescaped closing `/` followed by flags.
+        let j = i + 1;
+        let inClass = false;
+        while (j < source.length) {
+          const cj = source[j];
+          if (cj === '\\') { j += 2; continue; }
+          if (cj === '\n') break; // not a valid regex literal
+          if (cj === '[') inClass = true;
+          else if (cj === ']') inClass = false;
+          else if (cj === '/' && !inClass) {
+            // skip flags
+            j++;
+            while (j < source.length && /[gimsuyd]/.test(source[j])) j++;
+            i = j - 1;
+            break;
+          }
+          j++;
+        }
+        if (j < source.length) continue;
+        // fell through — treat as division, no-op
+      }
+    }
     if (trip === '"""' || trip === "'''") { inPyTriple = trip as '"""' | "'''"; i += 2; continue; }
     // Rust lifetime tick: `<'a>`, `&'a`, `&'a mut`, `'static`, `Foo<'a, 'b>`.
     // A `'` immediately followed by an identifier char and NOT closed by `'`
@@ -180,6 +223,12 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
       const top = stack.pop();
       if (!top || top.ch !== pairs[c]) {
         return { ok: false, offset: i, what: `unmatched '${c}'` };
+      }
+      // If this `}` closes a `${` substitution, re-enter template mode.
+      if (c === '}' && templateStack.length > 0 &&
+          templateStack[templateStack.length - 1] === stack.length) {
+        templateStack.pop();
+        inStr = '`';
       }
     }
   }
@@ -356,7 +405,7 @@ function jsStructuralCheck(source: string): GateError | null {
   // Two-pass: locate the declaration head, then verify the *next non-space
   // char after the full signature* is '{'. This avoids regex backtracking
   // games over TS return-type annotations.
-  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)/g;
+  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s*<[^<>]*>)?(?:\s+extends\s+\w+\b(?:\s*<[^<>]*>)?)?(?:\s+implements\s+[\w,\s<>]+)?)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(source)) !== null) {
     let i = m.index + m[0].length;
@@ -395,12 +444,15 @@ function rubyStructuralCheck(source: string): GateError | null {
     .replace(/"(?:\\.|[^"\\])*"/g, '""')
     .replace(/'(?:\\.|[^'\\])*'/g, "''");
 
+  // Ruby 3.0+ endless methods: `def name(args) = expression` — no `end` needed.
+  // Strip them before counting `def` keywords.
+  const noEndless = stripped.replace(/\bdef\s+\w+[!?=]?\s*(?:\([^)]*\))?\s*=\s*[^\n]+/g, '');
+
   // Openers that require a matching `end`.
-  const openers = (stripped.match(/\b(def|class|module|do|begin|if|unless|case|while|until)\b/g) || []).length;
-  // `end` keyword (word-boundary) — but Ruby also has `do end`-less single-line ifs.
+  const openers = (noEndless.match(/\b(def|class|module|do|begin|if|unless|case|while|until)\b/g) || []).length;
   // Subtract single-line modifiers (`expr if cond`, `expr unless cond`, `expr while cond`).
-  const inlineModifiers = (stripped.match(/\S\s+(if|unless|while|until)\s+\S/g) || []).length;
-  const ends = (stripped.match(/\bend\b/g) || []).length;
+  const inlineModifiers = (noEndless.match(/\S\s+(if|unless|while|until)\s+\S/g) || []).length;
+  const ends = (noEndless.match(/\bend\b/g) || []).length;
   const expectedEnds = openers - inlineModifiers;
 
   if (expectedEnds > ends) {
