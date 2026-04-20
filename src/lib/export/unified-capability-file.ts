@@ -1105,6 +1105,9 @@ ${getAutoWireTs(selectedLayers || [])}
 // Unauthorized reproduction, modification, or redistribution prohibited.
 // ═══════════════════════════════════════════════════════════════════════════════
 `;
+  // SHA-256 integrity gate — refuse to emit if "byte-identical" claim is false.
+  assertEmbeddedSourcesIntact(tsOutput, tsFiles, 'typescript');
+  return tsOutput;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
