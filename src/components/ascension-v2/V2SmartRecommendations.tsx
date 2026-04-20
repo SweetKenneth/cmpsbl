@@ -100,7 +100,16 @@ function RecoRow({ reco, isSelected, onSelect, showPrice }: RecoRowProps) {
           {reco.rationale}
         </p>
       </div>
-      {onSelect ? (
+      {reco.upgradeRequired ? (
+        <Link
+          to="/ascension-v2#tiers"
+          className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded border border-amber-400/40 bg-amber-400/5 text-amber-300 hover:bg-amber-400/10"
+          title={`Unlocks at ${TIER_META[reco.upgradeRequired].name} (${TIER_META[reco.upgradeRequired].priceLabel})`}
+        >
+          <Lock className="h-3 w-3" />
+          {TIER_META[reco.upgradeRequired].name}
+        </Link>
+      ) : onSelect ? (
         <button
           onClick={() => onSelect(reco.layer.id)}
           className={
