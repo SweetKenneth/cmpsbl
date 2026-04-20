@@ -124,7 +124,38 @@ Prefixes scanned: `cost`, `device`, `discovered`, `discoveries`, `ecosystem`, `e
 
 Verdict summary (batch 5): **14 of 14 alive or dormant-keep**. None drop-eligible. **All 15 prefixes flipped from ❓ → 🟢 in cohesion audit doc.**
 
-**Cumulative: 40 of 52 unclassified prefixes processed. 12 remain.**
+**Cumulative after batch 5: 40 of 52 unclassified prefixes processed.**
+
+### Single-Table Prefix Queue — batch 6 FINAL (20 prefixes · classification complete)
+
+Prefixes scanned: `pipeline`, `production`, `profiles`, `proposal`, `provider`, `quarry`, `radio`, `restoration`, `saved`, `security`, `slo`, `suppressed`, `task`, `tenants`, `usage`, `v_`, `vault`, `verification`, `vision`, `workbench`. Also flipped `global_*` (multi-table, was ❓).
+
+| Prefix | Table | Rows | Refs (fns/src) | Verdict | Rationale |
+|---|---|---:|---|---|---|
+| `pipeline` | `pipeline_vault` | 1 | 6 / 63 | **alive — keep** | Pipeline metadata vault |
+| `production` | `production_promotions` | 0 | 3 / 27 | **alive — keep** | Production-tier promotions ledger |
+| `profiles` | `profiles` | — | 103 total | **alive — keep** | Core user profiles table |
+| `proposal` | `proposal_meta` | 0 | 2 / 50 | **alive — keep** | Evolution proposal metadata |
+| `provider` | `provider_routing_events` | 0 | 8 / 40 | **alive — keep** | NEXUS provider routing telemetry |
+| `quarry` | `quarry_assets` | 0 | 0 / 2 | **dormant — keep** | Foundry raw material queue |
+| `radio` | `radio_broadcasts` | 5 | 1 / 5 | **alive — keep** | Substrate radio broadcast bus |
+| `restoration` | `restoration_sessions` | 1 | 1 / 3 | **alive — keep** | DR session ledger |
+| `saved` | `saved_workflows` | 0 | 1 / 11 | **dormant — keep** | User-saved workflow pipelines |
+| `security` | `security_audit_log` | 0 | 6 / 59 | **alive — keep** | Security audit trail |
+| `slo` | `slo_specs` | 0 | 0 / 3 | **dormant — keep** | SLO specification definitions |
+| `suppressed` | `suppressed_emails` | 0 | 0 / 3 | **dormant — keep** | Email suppression list |
+| `task` | `task_presets` | 0 | 10 / 73 | **alive — keep** | Agency task preset library |
+| `tenants` | `tenants` | — | 12 total | **alive — keep** | Multi-tenant isolation table |
+| `usage` | `usage_metrics` | 0 | 15 / 72 | **alive — keep** | Usage telemetry aggregates |
+| `v_` | `v_user_summary` | 0 | 1 | **dormant — keep** | User summary view |
+| `vault` | `vault_promotions` | **11,165** | 3 / 16 | **alive — keep (anchor)** | Prime Vault promotion ledger |
+| `verification` | `verification_scans` | 0 | 3 / 22 | **alive — keep** | `/verify` scan result ledger |
+| `vision` | `vision_anomalies` | 0 | 5 / 22 | **alive — keep** | VISION anomaly detection ledger |
+| `workbench` | `workbench_items` | 0 | 0 / 3 | **dormant — keep** | Developer workbench items |
+
+Verdict summary (batch 6): **20 of 20 alive or dormant-keep**. None drop-eligible.
+
+**✅ CLASSIFICATION COMPLETE: 52 of 52 unclassified single-table prefixes processed across 6 batches. Zero tables drop-eligible. Cohesion audit doc fully updated — no ❓ review items remain.**
 
 
 ### Snapshot policy
