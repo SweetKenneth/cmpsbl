@@ -342,6 +342,8 @@ export function extractPrimitives(
           // Allow short domain names (tx, db, fn, io) — common in real code.
           // The downstream quality gate filters useless ones via name + signals.
           if (!name || name.length < 2 || name.length > 60) continue;
+          // Reserved-word stoplist: prevents language keywords from leaking through as primitive names
+          if (RESERVED_NAMES.has(name.toLowerCase())) continue;
 
           // Dedupe per file so a primitive extracted by multiple patterns
           // (e.g. ts-func + ts-arrow) doesn't duplicate, but the same name
