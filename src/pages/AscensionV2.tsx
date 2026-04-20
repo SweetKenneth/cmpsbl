@@ -101,10 +101,14 @@ export default function AscensionV2() {
     setStep(2);
   }, []);
 
+  const handleGovernanceComplete = useCallback(() => {
+    setStep(3);
+  }, []);
+
   const handleAnalysisComplete = useCallback((caps: DiscoveredCapability[], dedup: DedupResult) => {
     setCapabilities(caps);
     setDedupResult(dedup);
-    setStep(3);
+    setStep(4);
   }, []);
 
   const handleReset = useCallback(async () => {
@@ -137,6 +141,7 @@ export default function AscensionV2() {
   const phases = [
     <V2UploadStep key="upload" onComplete={handleUploadComplete} />,
     <V2EnhanceStep key="enhance" onComplete={handleEnhanceComplete} />,
+    <V2GovernanceModeStep key="govern" onComplete={handleGovernanceComplete} />,
     <V2ProcessingStep key="process" onComplete={handleAnalysisComplete} />,
     <V2ResultsStep
       key="results"
