@@ -32,6 +32,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { StatusDot } from "@/components/ui/StatusDot";
+import { V2FunnelChart } from "@/components/control/V2FunnelChart";
 
 /* ─── Auto-refresh interval (30s) ─── */
 const REFRESH_INTERVAL_MS = 30_000;
@@ -147,6 +148,7 @@ const TABS = [
   { id: "health", label: "Health", icon: Activity },
   { id: "memory", label: "Memory", icon: Brain },
   { id: "ascension", label: "Ascension", icon: Rocket },
+  { id: "funnel", label: "V2 Funnel", icon: TrendingUp },
   { id: "showroom", label: "Showroom", icon: PackageCheck },
   { id: "marketplace", label: "Marketplace", icon: ShoppingCart },
   { id: "discovery", label: "Discovery", icon: Sparkles },
@@ -533,6 +535,9 @@ export default function ControlCenterHome() {
                 </Card>
               )}
 
+              {/* Ascension V2 funnel preview */}
+              <V2FunnelChart windowDays={30} />
+
               {/* Alerts banner */}
               {criticalModules.length > 0 && (
                 <Card className="border border-destructive/30 bg-destructive/5">
@@ -662,7 +667,19 @@ export default function ControlCenterHome() {
               </div>
             </TabsContent>
 
-            {/* ─── SHOWROOM ─── */}
+            {/* ─── V2 FUNNEL ─── */}
+            <TabsContent value="funnel" className="mt-4 space-y-4">
+              <h2 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-primary" /> Ascension V2 Conversion Funnel
+              </h2>
+              <p className="text-xs text-muted-foreground font-mono mb-2">
+                Six events tracked per run: upload_started → gate_passed → discovery_complete → layer_attached → export_clicked → export_complete.
+              </p>
+              <div className="grid lg:grid-cols-2 gap-3">
+                <V2FunnelChart windowDays={7} />
+                <V2FunnelChart windowDays={30} />
+              </div>
+            </TabsContent>
             <TabsContent value="showroom" className="mt-4 space-y-4">
               <h2 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                 <PackageCheck className="h-4 w-4 text-neon-green" /> Showroom Processing
