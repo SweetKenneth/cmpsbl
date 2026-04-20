@@ -38,6 +38,7 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
 import { V2ActivationGuide } from './V2ActivationGuide';
+import { V2PreExportConfidence } from './V2PreExportConfidence';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
@@ -103,6 +104,18 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     sourceFiles.length > 0 &&
     spdxChoice === 'auto' &&
     detectedUpstream === null;
+
+  // Resolve the upstream license that will actually ship — same precedence as
+  // the export pipeline (SPDX override → sibling LICENSE → inline header).
+  // Lifted out of handleExport so the pre-export confidence panel can show
+  // the exact license posture that the ZIP will carry.
+  const shippingUpstream: DetectedLicense | null = useMemo(() => {
+    if (sourceFiles.length === 0) return null;
+    if (spdxChoice === 'none') return null;
+    if (spdxChoice !== 'auto') return buildLicenseFromSpdx(spdxChoice);
+    return detectLicenseFromSiblingFile(sourceFiles)
+      ?? detectUpstreamLicenseForExport(sourceFiles[0].content);
+  }, [sourceFiles, spdxChoice]);
 
   useEffect(() => {
     completeRun();
