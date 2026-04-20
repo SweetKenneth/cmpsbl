@@ -33,6 +33,21 @@ interface SurfaceSignal {
   readonly protection: string;
 }
 
+// Strict-mode scanner gates: a "Payment surface" only fires when payment-SDK
+// signals are present in the source AND a payment-verb function name matches.
+// Removes false positives from agent / domain code that uses words like
+// `charge`, `pay`, `cost_millicents`, etc. without ever touching real money.
+const PAYMENT_SDK_SIGNALS = [
+  /\bstripe\b/i, /@stripe\b/i, /\bpaddle\b/i, /\bbraintree\b/i, /\bsquareup\b/i,
+  /\bpaypal\b/i, /\bcheckoutdotcom\b/i, /\b(razorpay|adyen|mollie|klarna|wise)\b/i,
+  /payment_intents?\b/i, /\bcharges?\.create\b/i, /\bsetup_intents?\b/i,
+];
+
+function hasPaymentSdkSignal(src: string | null): boolean {
+  if (!src) return false;
+  return PAYMENT_SDK_SIGNALS.some((p) => p.test(src));
+}
+
 const SURFACE_SIGNALS: ReadonlyArray<SurfaceSignal> = [
   {
     patterns: [/^(charge|payment|pay|invoice|refund|subscribe|checkout|purchase)/i],
@@ -90,9 +105,15 @@ const SURFACE_SIGNALS: ReadonlyArray<SurfaceSignal> = [
   },
 ];
 
-function classifyFunction(name: string): SurfaceSignal | null {
+function classifyFunction(name: string, sdkContext: { hasPaymentSdk: boolean }): SurfaceSignal | null {
   for (const signal of SURFACE_SIGNALS) {
-    if (signal.patterns.some((p) => p.test(name))) return signal;
+    if (signal.patterns.some((p) => p.test(name))) {
+      // STRICT scanner: gate "Payment surface" on real SDK presence.
+      if (signal.surface === 'Payment surface' && !sdkContext.hasPaymentSdk) {
+        continue;
+      }
+      return signal;
+    }
   }
   return null;
 }
@@ -165,9 +186,10 @@ export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude
   const findings = useMemo<FindingRow[]>(() => {
     if (!source) return [];
     const boundaries = detectFunctionBoundaries(source);
+    const sdkContext = { hasPaymentSdk: hasPaymentSdkSignal(source) };
     const rows: FindingRow[] = [];
     for (const b of boundaries) {
-      const signal = classifyFunction(b.name);
+      const signal = classifyFunction(b.name, sdkContext);
       if (!signal) continue;
       rows.push({
         functionName: b.name,
