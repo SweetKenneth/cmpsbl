@@ -88,9 +88,9 @@ interface ExtractionPattern {
 
 const EXTRACTION_PATTERNS: ExtractionPattern[] = [
   // TypeScript / JavaScript
-  { id: 'ts-func', regex: /(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
-  { id: 'ts-arrow', regex: /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_]\w{2,})\s*=\s*(?:async\s+)?\([^)]*\)\s*(?::\s*\w+\s*)?=>/g, method: 'function', nameGroup: 1 },
-  { id: 'ts-class', regex: /(?:export\s+)?(?:abstract\s+)?class\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
+  { id: 'ts-func', regex: /(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_]\w*)\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  { id: 'ts-arrow', regex: /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_]\w*)\s*=\s*(?:async\s+)?\([^)]*\)\s*(?::\s*\w+\s*)?=>/g, method: 'function', nameGroup: 1 },
+  { id: 'ts-class', regex: /(?:export\s+)?(?:abstract\s+)?class\s+([A-Z][A-Za-z_]\w*)/g, method: 'class', nameGroup: 1 },
   // Python
   { id: 'py-func', regex: /def\s+([a-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
   { id: 'py-class', regex: /class\s+([A-Z][A-Za-z_]\w{1,})\s*[:(]/g, method: 'class', nameGroup: 1 },
