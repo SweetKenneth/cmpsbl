@@ -113,3 +113,7 @@ export type {
   DriftDetection,
   V2DriftReport,
 } from './v1-bridge';
+
+// Funnel telemetry — six events that prove the pipeline converts
+export { emitFunnelEvent } from './funnel';
+export type { FunnelEvent, FunnelEventPayload } from './funnel';

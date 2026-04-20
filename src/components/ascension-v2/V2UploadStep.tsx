@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { commitUpload, PreAscensionGateError } from '@/lib/ascension-v2';
+import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
 import { V2PreflightEstimator } from './V2PreflightEstimator';
 
@@ -46,6 +46,7 @@ export function V2UploadStep({ onComplete }: Props) {
   const handleSubmit = async () => {
     if (!hasInput || !user) return;
     setProcessing(true);
+    const startedAt = Date.now();
 
     try {
       const analysis = mode === 'upload'
@@ -63,7 +64,26 @@ export function V2UploadStep({ onComplete }: Props) {
         name: f.name,
         content: f.content,
       }));
+
+      // Funnel event #1 — upload_started (fires before the gate so we capture
+      // even runs that get rejected by the Pre-Ascension Gate).
+      const preRunId = getSnapshot().runId;
+      void emitFunnelEvent('upload_started', {
+        runId: preRunId,
+        language: analysis.language,
+        fileCount: sourceFiles.length,
+      });
+
       const fp = commitUpload(sourceFiles, analysis.language);
+
+      // Funnel event #2 — gate_passed (only fires if commitUpload didn't throw)
+      void emitFunnelEvent('gate_passed', {
+        runId: getSnapshot().runId,
+        language: analysis.language,
+        fileCount: sourceFiles.length,
+        fingerprint: fp.hash,
+        durationMs: Date.now() - startedAt,
+      });
 
       // Stash a small source preview for the Governance Mode step.
       // Ephemeral (sessionStorage) — never persisted server-side beyond
