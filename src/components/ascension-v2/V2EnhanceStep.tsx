@@ -143,6 +143,17 @@ export function V2EnhanceStep({ onComplete }: Props) {
     onComplete(false, layerIds);
   }, [onComplete, selectedLayers]);
 
+  // Single shared toggle handler — used by SmartRecs, Bundles, and the
+  // Layer catalog. Prevents three drifting copies of the same setState.
+  const toggleLayer = useCallback((layerId: string) => {
+    setSelectedLayers((prev) => {
+      const next = new Set(prev);
+      if (next.has(layerId)) next.delete(layerId);
+      else next.add(layerId);
+      return next;
+    });
+  }, []);
+
   const handleAttach = async () => {
     if (files.length === 0 || !user) return;
     setProcessing(true);
@@ -234,28 +245,14 @@ export function V2EnhanceStep({ onComplete }: Props) {
       <V2SmartRecommendations
         coveredPrimitives={[]}
         selectedLayerIds={Array.from(selectedLayers)}
-        onSelect={(layerId) => {
-          setSelectedLayers((prev) => {
-            const next = new Set(prev);
-            if (next.has(layerId)) next.delete(layerId);
-            else next.add(layerId);
-            return next;
-          });
-        }}
+        onSelect={toggleLayer}
         title="Suggested Layers — Start Here"
       />
 
       {/* Bundle Discounts — Sprint 2 final: co-attached layer SKUs */}
       <V2BundleSuggestions
         selectedLayerIds={Array.from(selectedLayers)}
-        onSelect={(layerId) => {
-          setSelectedLayers((prev) => {
-            const next = new Set(prev);
-            if (next.has(layerId)) next.delete(layerId);
-            else next.add(layerId);
-            return next;
-          });
-        }}
+        onSelect={toggleLayer}
       />
 
       {/* SDK Upload Zone */}
