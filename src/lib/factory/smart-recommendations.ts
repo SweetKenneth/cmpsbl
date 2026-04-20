@@ -241,5 +241,26 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
     .sort((a, b) => b.layer.cjpi - a.layer.cjpi)
     .forEach((r) => { if (picked.length < limit) picked.push(r); });
 
-  return picked.slice(0, limit);
+  return applyTierOrdering(picked, input.userTier).slice(0, limit);
+}
+
+/**
+ * Reorder picks so layers attachable-now (per the viewer's tier) appear
+ * first, with locked ones annotated via `upgradeRequired`. Pre-run mode
+ * also calls this so Free users always see attachable wins on top.
+ */
+function applyTierOrdering(
+  picks: LayerRecommendation[],
+  userTier: LayerTier | undefined,
+): LayerRecommendation[] {
+  if (!userTier) return picks;
+  const annotated = picks.map((r) => {
+    if (isLayerAttachableForTier(r.layer, userTier)) return r;
+    const rank = (r.layer as unknown as { rank?: number }).rank;
+    const required = typeof rank === 'number' ? tierForRank(rank) : undefined;
+    return required ? { ...r, upgradeRequired: required } : r;
+  });
+  const attachable = annotated.filter((r) => !r.upgradeRequired);
+  const gated = annotated.filter((r) => r.upgradeRequired);
+  return [...attachable, ...gated];
 }
