@@ -58,7 +58,7 @@ const LANGUAGE_SIGNATURES: LanguageSignature[] = [
 
 /** Detect language from code content and optional filename */
 export function detectLanguage(code: string, fileName?: string): { language: string; confidence: number } {
-  // Extension-based detection first
+  // Extension-based detection first — authoritative when extension is known
   if (fileName) {
     const ext = '.' + (fileName.split('.').pop() ?? '').toLowerCase();
     for (const sig of LANGUAGE_SIGNATURES) {
@@ -66,9 +66,27 @@ export function detectLanguage(code: string, fileName?: string): { language: str
         return { language: sig.language, confidence: 0.95 };
       }
     }
+    // Tuning fix #4: extension was present but unrecognized.
+    // Don't let content-scoring guess wrong (e.g. .nim → TypeScript) and
+    // cascade into a wrong language-specific scanner downstream.
+    // Require very strong content evidence before overriding 'Unknown'.
+    const scoresExt = LANGUAGE_SIGNATURES.map(sig => {
+      let score = 0;
+      for (const kw of sig.keywords) if (code.includes(kw)) score += 2;
+      for (const pat of sig.patterns) if (pat.test(code)) score += 3;
+      return { language: sig.language, score };
+    });
+    scoresExt.sort((a, b) => b.score - a.score);
+    const bestE = scoresExt[0];
+    const secondE = scoresExt[1];
+    if (bestE.score < 8 || (secondE && bestE.score - secondE.score < 4)) {
+      return { language: 'Unknown', confidence: 0 };
+    }
+    const confidenceE = Math.min(0.85, bestE.score / (bestE.score + (secondE?.score ?? 0) + 1));
+    return { language: bestE.language, confidence: confidenceE };
   }
 
-  // Content-based detection
+  // No filename — pure content-based detection
   const scores = LANGUAGE_SIGNATURES.map(sig => {
     let score = 0;
     for (const kw of sig.keywords) {

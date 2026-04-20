@@ -41,6 +41,10 @@ const FUNCTION_PATTERNS: RegExp[] = [
   /function\s+([a-zA-Z_]\w*)\s*\(/g,
   // Swift: func name(
   /func\s+([a-zA-Z_]\w*)\s*[(<]/g,
+  // Tuning fix: Dart — `Future<T> name(...)`, `T name(...)` at module level
+  /^\s*(?:Future<[^>]+>|Stream<[^>]+>|void|int|String|bool|double)\s+([a-zA-Z_]\w*)\s*\(/gm,
+  // Tuning fix: Kotlin — `fun name(...)`, including expression-body
+  /\bfun\s+([a-zA-Z_]\w*)\s*\(/g,
   // Class methods: name(args) {  or  name: function
   /^\s+([a-zA-Z_$]\w*)\s*\([^)]*\)\s*\{/gm,
 ];
@@ -100,6 +104,116 @@ function detectPythonClassMethods(source: string): FunctionBoundary[] {
 }
 
 /**
+ * Tuning fix #3: Decorator pre-pass.
+ *
+ * Many security/governance signals live on decorators (TS/Java/C#/Python),
+ * not in the function name. The next-line method may be invisible to
+ * FUNCTION_PATTERNS (e.g. `async deleteUser()` without leading `function`).
+ * This scan emits synthetic boundaries with decorator-prefixed names so
+ * downstream signal regexes can match them.
+ *
+ * Recognized: @Authorize, @PreAuthorize, @RolesAllowed, @RateLimit,
+ *             @Throttle, @Audited, @Webhook, @CircuitBreaker, @Retry,
+ *             @validator (Pydantic), @celery.task, @app.post/get/put/delete
+ */
+const DECORATOR_TO_VERB: Array<{ pattern: RegExp; verbPrefix: string }> = [
+  { pattern: /@(Pre)?Authorize\b/i,        verbPrefix: 'authorize_' },
+  { pattern: /@RolesAllowed\b/i,           verbPrefix: 'authorize_' },
+  { pattern: /@RateLimit\b/i,              verbPrefix: 'throttle_' },
+  { pattern: /@Throttle\b/i,               verbPrefix: 'throttle_' },
+  { pattern: /@Audited\b/i,                verbPrefix: 'audit_' },
+  { pattern: /@Webhook\b/i,                verbPrefix: 'webhook_' },
+  { pattern: /@CircuitBreaker\b/i,         verbPrefix: 'circuit_' },
+  { pattern: /@Retry\b/i,                  verbPrefix: 'retry_' },
+  { pattern: /@validator\b/,               verbPrefix: 'validate_' },
+  { pattern: /@celery\.task\b/,            verbPrefix: 'orchestrate_' },
+  { pattern: /@app\.(post|put|patch|delete)\b/i, verbPrefix: 'create_' },
+  { pattern: /@(Post|Put|Patch|Delete)Mapping\b/, verbPrefix: 'create_' },
+  { pattern: /@HttpPost\b/,                verbPrefix: 'create_' },
+];
+
+/** Extract the next method/function name after a decorator line. */
+function extractNextName(lines: string[], startIdx: number): string | null {
+  for (let i = startIdx + 1; i < Math.min(startIdx + 4, lines.length); i++) {
+    const ln = lines[i];
+    // Skip further decorators
+    if (/^\s*@/.test(ln)) continue;
+    // TS/JS method or function: optional access mods, optional async, name(
+    let m = ln.match(/^\s*(?:public|private|protected|static|async|export\s+)*\s*(?:function\s+)?([A-Za-z_$][\w$]*)\s*\(/);
+    if (m) return m[1];
+    // Python def
+    m = ln.match(/^\s*(?:async\s+)?def\s+([A-Za-z_]\w*)\s*\(/);
+    if (m) return m[1];
+    // Java/C# method: type name(...)
+    m = ln.match(/^\s*(?:public|private|protected|internal|static|final|async|override)\s+[\w<>?,\s\[\]]+\s+([A-Za-z_]\w*)\s*\(/);
+    if (m) return m[1];
+    break;
+  }
+  return null;
+}
+
+function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
+  const out: FunctionBoundary[] = [];
+  const lines = source.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    if (!/^\s*@/.test(ln)) continue;
+    for (const { pattern, verbPrefix } of DECORATOR_TO_VERB) {
+      if (!pattern.test(ln)) continue;
+      const name = extractNextName(lines, i);
+      if (!name) continue;
+      // Tuning fix #3b: avoid double-prefix when method already starts with verb
+      // e.g. @validator + validate_email shouldn't become validate_validate_email.
+      const verbRoot = verbPrefix.replace(/_$/, '').toLowerCase();
+      if (name.toLowerCase().startsWith(verbRoot)) {
+        out.push({ name, line: i + 1 });
+      } else {
+        out.push({ name: verbPrefix + name, line: i + 1 });
+      }
+      break;
+    }
+  }
+  return out;
+}
+
+/**
+ * Generic class-body method scanner (TS/Java/C#/Kotlin/Swift).
+ * Catches `async deleteUser(...) { }` inside a class body, which the
+ * top-level FUNCTION_PATTERNS miss without an access modifier or `function`.
+ */
+function detectClassBodyMethods(source: string): FunctionBoundary[] {
+  const out: FunctionBoundary[] = [];
+  const lines = source.split('\n');
+  let inClass = false;
+  let depth = 0;
+  let className = '';
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    const classMatch = ln.match(/\bclass\s+([A-Z]\w*)/);
+    if (classMatch && /\{/.test(ln)) {
+      inClass = true;
+      className = classMatch[1];
+      depth = 1;
+      continue;
+    }
+    if (!inClass) continue;
+    depth += (ln.match(/\{/g) ?? []).length;
+    depth -= (ln.match(/\}/g) ?? []).length;
+    if (depth <= 0) { inClass = false; continue; }
+    // Method line: optional decorators at start were stripped in pre-pass;
+    // catch `async name(...)`, `name(...)`, `static name(...)` etc.
+    const m = ln.match(/^\s*(?:public\s+|private\s+|protected\s+|static\s+|async\s+|override\s+)*([A-Za-z_$][\w$]*)\s*\(/);
+    if (m) {
+      const n = m[1];
+      if (n === 'if' || n === 'for' || n === 'while' || n === 'switch' || n === 'return' || n === 'catch') continue;
+      if (n.length < 2) continue;
+      out.push({ name: `${className}.${n}`, line: i + 1 });
+    }
+  }
+  return out;
+}
+
+/**
  * Detect function boundaries in source code.
  * Returns deduplicated function names in declaration order.
  */
@@ -111,6 +225,23 @@ export function detectFunctionBoundaries(source: string): FunctionBoundary[] {
   // that won't collide with top-level functions in the dedup set.
   const pythonHits = detectPythonClassMethods(source);
   for (const b of pythonHits) {
+    if (seen.has(b.name)) continue;
+    seen.add(b.name);
+    boundaries.push(b);
+  }
+
+  // Tuning fix #3: decorator pre-pass — synthesizes verb-prefixed boundaries
+  // for annotation-driven frameworks (Spring, NestJS, FastAPI, Django REST).
+  const decoratedHits = detectDecoratedBoundaries(source);
+  for (const b of decoratedHits) {
+    if (seen.has(b.name)) continue;
+    seen.add(b.name);
+    boundaries.push(b);
+  }
+
+  // TS/Java/C# class-body methods that lack `function` keyword and access mod.
+  const classBodyHits = detectClassBodyMethods(source);
+  for (const b of classBodyHits) {
     if (seen.has(b.name)) continue;
     seen.add(b.name);
     boundaries.push(b);
@@ -186,7 +317,10 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: added parse/deserialize/decode (Pydantic, serde, Zod parse)
       /^(validate|check|verify|assert|ensure).*(payload|schema|shape|type|format|body)/i,
+      /^(parse|deserialize|decode).*(payload|input|user|request|body|json|message)/i,
+      /^(parse|deserialize)[A-Z_]/,
     ],
     capability: 'payload_validator',
     primitive: 'DEFENSE',
@@ -194,7 +328,9 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: executeCommand/executeQuery (raw SQL, shell exec)
       /^(execute|eval|run|compile|interpret|render.*template)/i,
+      /^(execute|run).*(query|command|cmd|sql|shell|raw)/i,
       /^(process|execute|run).*(payment|charge|transfer|withdraw|deposit)/i,
     ],
     capability: 'injection_guard',
@@ -237,7 +373,9 @@ const CAPABILITY_SIGNALS: Array<{
   // ── GOVERNANCE family ──
   {
     patterns: [
-      /^(save|update|delete|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite)/i,
+      // Tuning fix #5: added destroy, drop, truncate, transfer, withdraw,
+      // approve (Solidity/financial), Remove- (PowerShell), perform_create/destroy (Django)
+      /^(save|update|delete|destroy|drop|truncate|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite|transfer|withdraw|approve|store_user|register|store|perform_create|perform_destroy|perform_update)/i,
     ],
     capability: 'governance_hook',
     primitive: 'GOVERNANCE',
@@ -278,7 +416,7 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
-      /^(auth|login|logout|verify|check.*perm|grant|revoke|elevate|impersonate)/i,
+      /^(auth|login|logout|verify|check.*perm|grant|revoke|elevate|impersonate|before_action|require_login)/i,
       /^(is.*admin|has.*role|can.*access|is.*authorized|is.*authenticated)/i,
     ],
     capability: 'access_controller',
@@ -288,7 +426,8 @@ const CAPABILITY_SIGNALS: Array<{
   // ── FAILSAFE family ──
   {
     patterns: [
-      /^(fetch|call|request|query|get.*api|post|send|connect|subscribe|poll|ping)/i,
+      // Tuning fix #5: added remote/external/api keywords + lowercase verbs
+      /^(fetch|call|request|query|get.*api|post|send|connect|subscribe|poll|ping|callremote|call_remote|call_external|callexternal)/i,
     ],
     capability: 'circuit_breaker',
     primitive: 'FAILSAFE',
@@ -412,7 +551,8 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
-      /^(expire|ttl|evict|invalidate|flush.*cache|clear.*cache)/i,
+      // Tuning fix #5: include common cache eviction verb forms
+      /^(expire|ttl|evict|invalidate|flush.*cache|clear.*cache|invalidatecache|evictexpired)/i,
     ],
     capability: 'memory_ttl',
     primitive: 'MEMORY',
@@ -420,7 +560,12 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: React/Compose/SwiftUI state hooks (useAuth, useState, observeState)
       /^(track.*state|watch.*state|observe.*state|subscribe.*state|on.*change)/i,
+      /^use[A-Z]/,
+      /^(observe|watch|track).*(event|interaction|count|state|store|flow)/i,
+      /^subscribe.*(updates|count|store|flow)/i,
+      /^(increment|decrement|toggle).*(counter|count|state)/i,
     ],
     capability: 'memory_state_track',
     primitive: 'MEMORY',
@@ -594,7 +739,8 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
-      /^(authenticate|verify.*identity|check.*token|validate.*jwt)/i,
+      // Tuning fix #5: include verifyJwt/verifyToken/refreshToken/refreshSession/revokeSession
+      /^(authenticate|verify.*identity|check.*token|validate.*jwt|verify.*token|verify.*jwt|verifyjwt|verifytoken|refresh.*token|refresh.*session|revoke.*session|refreshtoken|revokesession)/i,
     ],
     capability: 'identity_auth_gate',
     primitive: 'IDENTITY',
@@ -620,7 +766,10 @@ const CAPABILITY_SIGNALS: Array<{
   // ── RELAY family ──
   {
     patterns: [
+      // Tuning fix #5: bare subscribe/publish/emit (Combine, RxJS, EventEmitter)
       /^(sync|realtime|websocket|push|subscribe.*event)/i,
+      /^(subscribe|publish|emit)([A-Z_]|$)/,
+      /^(on|handle).*(payment|message|event)/i,
     ],
     capability: 'relay_sync',
     primitive: 'RELAY',
@@ -645,7 +794,11 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: WordPress/Stripe handlers (on_payment_received, register_webhook)
       /^(webhook|callback|notify.*endpoint|on.*event.*post)/i,
+      /^(register|setup|configure).*(webhook|hook|callback)/i,
+      /^on_(payment|order|subscription|invoice|checkout|charge)/i,
+      /^onPayment[A-Z]/,
     ],
     capability: 'integration_webhook',
     primitive: 'INTEGRATION',
@@ -787,13 +940,22 @@ export function buildAttachmentPlan(
   const assigned = new Set<string>(); // Track function→capability pairs to avoid dupes
 
   for (const boundary of boundaries) {
+    // Tuning fix #1: strip Class.method prefix so `User.validate_email`
+    // matches signal regexes anchored on `^validate`. Match against both
+    // the qualified name AND the local method name.
+    const localName = boundary.name.includes('.')
+      ? boundary.name.split('.').pop() ?? boundary.name
+      : boundary.name;
+
     for (const signal of CAPABILITY_SIGNALS) {
       // Only apply if the relevant primitive was selected by the scanner
       if (!activePrimitives.has(signal.primitive)) continue;
 
+      // Tuning fix #2: patterns are non-global so .test() is stateless.
+      // lastIndex reset retained defensively.
       const matched = signal.patterns.some(p => {
         p.lastIndex = 0;
-        return p.test(boundary.name);
+        return p.test(localName) || (localName !== boundary.name && p.test(boundary.name));
       });
 
       if (!matched) continue;
