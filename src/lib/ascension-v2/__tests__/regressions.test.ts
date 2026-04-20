@@ -73,17 +73,20 @@ describe('Python-emitter regressions', () => {
   // Patch C — 2026-04-20: case-insensitive language resolver.
   // Lowercase 'python' must not silently fall back to the TypeScript adapter
   // (which leaks semicolons into Python output).
-  it('regression(C): lowercase "python" resolves to the Python adapter (no semicolons)', async () => {
-    const mod = await import('../../factory/generate-refurbished-code');
-    if (typeof (mod as any).generateRefurbishedCode !== 'function') return; // skip if unavailable
-    const out = await (mod as any).generateRefurbishedCode({
-      language: 'python',
-      capabilityName: 'Echo',
-      sourceFiles: [{ name: 'echo.py', content: 'def echo(x):\n    return x\n' }],
-    }).catch(() => null);
-    if (!out || typeof out !== 'string') return; // adapter API surface drift — not this test's concern
-    // Python lines must not end with `;` from a mis-routed TS adapter.
-    const offenders = out.split('\n').filter(l => /;\s*(#.*)?$/.test(l) && !l.trim().startsWith('#'));
+  it('regression(C): lowercase "python" produces semicolon-free output', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(
+      'def echo(x):\n    return x\n',
+      [], // no primitives — we only care about adapter routing
+      'deadbeef',
+      'python',
+      'echo.py',
+    );
+    // Inspect the user-code surface: any non-comment line ending with `;` would
+    // mean the TypeScript adapter was used by mistake.
+    const offenders = out
+      .split('\n')
+      .filter(l => /;\s*$/.test(l) && !l.trim().startsWith('#') && !l.trim().startsWith('//'));
     expect(offenders).toHaveLength(0);
   });
 });
