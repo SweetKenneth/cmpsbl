@@ -41,6 +41,10 @@ const FUNCTION_PATTERNS: RegExp[] = [
   /function\s+([a-zA-Z_]\w*)\s*\(/g,
   // Swift: func name(
   /func\s+([a-zA-Z_]\w*)\s*[(<]/g,
+  // Tuning fix: Dart — `Future<T> name(...)`, `T name(...)` at module level
+  /^\s*(?:Future<[^>]+>|Stream<[^>]+>|void|int|String|bool|double)\s+([a-zA-Z_]\w*)\s*\(/gm,
+  // Tuning fix: Kotlin — `fun name(...)`, including expression-body
+  /\bfun\s+([a-zA-Z_]\w*)\s*\(/g,
   // Class methods: name(args) {  or  name: function
   /^\s+([a-zA-Z_$]\w*)\s*\([^)]*\)\s*\{/gm,
 ];
@@ -158,9 +162,14 @@ function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
       if (!pattern.test(ln)) continue;
       const name = extractNextName(lines, i);
       if (!name) continue;
-      // Synthesize a verb-prefixed boundary so signal regexes anchored on
-      // the verb (e.g. ^authorize, ^throttle) match it.
-      out.push({ name: verbPrefix + name, line: i + 1 });
+      // Tuning fix #3b: avoid double-prefix when method already starts with verb
+      // e.g. @validator + validate_email shouldn't become validate_validate_email.
+      const verbRoot = verbPrefix.replace(/_$/, '').toLowerCase();
+      if (name.toLowerCase().startsWith(verbRoot)) {
+        out.push({ name, line: i + 1 });
+      } else {
+        out.push({ name: verbPrefix + name, line: i + 1 });
+      }
       break;
     }
   }
