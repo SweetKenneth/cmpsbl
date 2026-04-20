@@ -150,7 +150,7 @@ export function V2GovernanceModePicker({ selected, onSelect }: Props) {
 
       {!isGovernor && effectiveTier === 'builder' && (
         <p className="text-[11px] text-center text-muted-foreground">
-          Soft and Enforce modes unlock with a paid plan — Observe protects your code today at no cost.
+          Soft and Enforce modes unlock with Pro ($29/mo) — Observe protects your code today at no cost.
         </p>
       )}
     </div>
