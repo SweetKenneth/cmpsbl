@@ -34,9 +34,11 @@ for (const m of manifest) {
   });
 }
 
-const recs = recommendLayers({ coveredPrimitives: [], selectedLayerIds: [], limit: 6 });
+const recs = recommendLayers({ coveredPrimitives: [], selectedLayerIds: [], limit: 6, userTier: 'builder' });
 const tierRecs = recs.filter((r) => !isStoreLayer(r.layer.id));
 const storeRecs = recs.filter((r) => isStoreLayer(r.layer.id));
+const attachableNow = recs.filter((r) => !(r as any).upgradeRequired);
+const lockedSuggestions = recs.filter((r) => (r as any).upgradeRequired);
 const bundle = summarizeStoreBundle(storeRecs.map((r) => r.layer));
 
 const FREE_RANKS = new Set(TIER_LAYERS.builder.map((l) => l.rank));
