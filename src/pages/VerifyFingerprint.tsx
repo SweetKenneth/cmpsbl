@@ -7,9 +7,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award, BarChart3 } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award, BarChart3, Anchor } from "lucide-react";
 import { lookupAnyFingerprint, type UnifiedLookupResult } from "@/lib/factory/restoration-session";
 import { ReceiptDetailCard } from "@/components/verify/ReceiptDetailCard";
+import { supabase } from "@/integrations/supabase/client";
 
 type VerifyState = "loading" | "verified" | "not-found";
 
@@ -152,13 +153,16 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
       {/* Success banner */}
       <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-6 py-4 flex items-center gap-3">
         <CheckCircle className="h-6 w-6 text-emerald-500 shrink-0" />
-        <div>
+        <div className="flex-1">
           <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Verified Authentic</p>
           <p className="text-xs text-emerald-600/80 dark:text-emerald-400/70">
             This artifact was processed through the CMPSBL® Ascension substrate.
           </p>
         </div>
       </div>
+
+      {/* Anchor status — Block 2 (Merkle head anchoring) */}
+      <AnchorBadge />
 
       {/* CJPI Hero */}
       <div className="px-6 pt-6 pb-4 text-center border-b border-border">
@@ -328,6 +332,66 @@ const CliCJPIBreakdown = ({ session }: { session: import("@/lib/factory/restorat
       <p className="text-[10px] text-muted-foreground mt-2">
         Composite: {session.cjpiTotal} · CLI Terminal Origin
       </p>
+    </div>
+  );
+};
+
+const AnchorBadge = () => {
+  const [state, setState] = useState<{ loaded: boolean; anchoredAt: string | null; receiptCount: number; consistent: boolean }>({
+    loaded: false,
+    anchoredAt: null,
+    receiptCount: 0,
+    consistent: false,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [primary, redundant] = await Promise.all([
+        supabase.from("audit_chain_anchors").select("anchored_at, head_hash, receipt_count").eq("store", "primary").order("anchored_at", { ascending: false }).limit(1),
+        supabase.from("audit_chain_anchors").select("head_hash").eq("store", "redundant").order("anchored_at", { ascending: false }).limit(1),
+      ]);
+      if (cancelled) return;
+      const p = primary.data?.[0];
+      const r = redundant.data?.[0];
+      setState({
+        loaded: true,
+        anchoredAt: p?.anchored_at ?? null,
+        receiptCount: p?.receipt_count ?? 0,
+        consistent: !!p && !!r && p.head_hash === r.head_hash,
+      });
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (!state.loaded) return null;
+  if (!state.anchoredAt) {
+    return (
+      <div className="border-b border-border bg-muted/30 px-6 py-2.5 flex items-center gap-2 text-[11px] text-muted-foreground">
+        <Anchor className="h-3.5 w-3.5" />
+        <span>Chain head not yet anchored.</span>
+      </div>
+    );
+  }
+
+  const ageMs = Date.now() - new Date(state.anchoredAt).getTime();
+  const ageLabel =
+    ageMs < 60_000 ? "just now" :
+    ageMs < 3_600_000 ? `${Math.floor(ageMs / 60_000)}m ago` :
+    ageMs < 86_400_000 ? `${Math.floor(ageMs / 3_600_000)}h ago` :
+    `${Math.floor(ageMs / 86_400_000)}d ago`;
+
+  return (
+    <div className="border-b border-border bg-muted/30 px-6 py-2.5 flex items-center justify-between gap-2 text-[11px]">
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <Anchor className={`h-3.5 w-3.5 ${state.consistent ? "text-emerald-500" : "text-amber-500"}`} />
+        <span>
+          Last anchored <span className="text-foreground font-medium">{ageLabel}</span> · {state.receiptCount.toLocaleString()} receipts
+        </span>
+      </div>
+      <span className={`text-[10px] font-mono uppercase tracking-wider ${state.consistent ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
+        {state.consistent ? "Chain OK" : "Sync pending"}
+      </span>
     </div>
   );
 };

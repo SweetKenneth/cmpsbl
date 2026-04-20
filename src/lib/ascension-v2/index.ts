@@ -117,3 +117,6 @@ export type {
 // Funnel telemetry — six events that prove the pipeline converts
 export { emitFunnelEvent } from './funnel';
 export type { FunnelEvent, FunnelEventPayload } from './funnel';
+
+// Chain anchoring — writes the post-export head into audit_chain_anchors
+export { anchorV2ExportHead } from './chain-anchor';

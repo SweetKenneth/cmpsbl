@@ -17,7 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { completeRun, getSnapshot, emitFunnelEvent, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
+import { completeRun, getSnapshot, emitFunnelEvent, anchorV2ExportHead, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
@@ -371,6 +371,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         language: sourceLanguage,
         fingerprint,
         durationMs: Date.now() - exportStartedAt,
+      });
+
+      // Block 2 — anchor the new chain head into audit_chain_anchors.
+      // Fire-and-forget: never blocks the user-facing export flow.
+      void anchorV2ExportHead({
+        runId: getSnapshot().runId,
+        fingerprint,
       });
 
       const verdictNote = harness.softWarnings > 0
