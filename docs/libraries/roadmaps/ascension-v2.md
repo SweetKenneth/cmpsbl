@@ -16,7 +16,7 @@
 |---|---|---|---|---|
 | **S0 — Pre-Flight + Baseline** | ✅ **DONE** | Baselines captured · `/verify/:fp` smoke-tested | 0 high-sev findings · `audit_chain_anchors` writable | `ascension-v2-baseline.md` |
 | **S1 — Trust & Visibility** | ✅ **DONE** (retarget) | ✅ Receipt drill-down · ✅ VAULT matches · ✅ Forensics · ✅ Pre-flight estimator | ✅ Classification queue 52/52 (zero drop-eligible) · ✅ Security baseline held | `ascension-v2-sprint-1-report.md` |
-| **S2 — Discovery Intelligence** | 🟡 **PARTIAL** | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ⬜ Bundle SKUs | ❌ DB renames abandoned (runtime-live; UI terminology map only) | *(no report — folded into roadmap)* |
+| **S2 — Discovery Intelligence** | ✅ **DONE** | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ✅ Bundle SKUs (`V2BundleSuggestions.tsx` + `bundle-suggestions.ts`) | ❌ DB renames abandoned (runtime-live; UI terminology map only — see S2 section) | *(folded into roadmap)* |
 | **S3 — Activation Loop** | 🟡 **PARTIAL** | ✅ Activation guide on Results · ⬜ Post-purchase email · ⬜ My Layers dashboard · ⬜ One-click re-ascension · ⬜ Artifact versioning | ⬜ `developer_*`/`global_*` classify (✅ done in S1 sweep) · ⬜ Funnel instrumentation · ⬜ RLS sweep `marketplace_*` | *(none)* |
 | **S4 — Pre-Export Confidence** | ✅ **DONE** (rescoped) | ✅ `V2PreExportConfidence.tsx` with real-signal aggregation | ⬜ GitHub connector · ⬜ CI/CD webhook · ⬜ Org RBAC (→ backlog) | *(none)* |
 | **S5 — Capability Provenance** | ✅ **DONE** (rescoped) | ✅ `V2CapabilityProvenance.tsx` per-capability trace | ⬜ Reproducibility proof · ⬜ Two-fp diff UI · ⬜ Periodic Merkle anchoring · ⬜ Engine-name CI guard (→ backlog) | *(none)* |
@@ -24,8 +24,8 @@
 
 ### Roll-up
 
-- **Sprints fully shipped:** S0, S1, S4, S5 (4 of 7)
-- **Sprints partial:** S2, S3 (V2 tracks shipped; cross-track items deferred)
+- **Sprints fully shipped:** S0, S1, S2, S4, S5 (5 of 7)
+- **Sprints partial:** S3 (V2 track shipped; cross-track items deferred)
 - **Sprints remaining:** S6 + the deferred items above
 - **Cohesion classification:** ✅ complete (52/52 prefixes audited — zero drop-eligible; substrate shrink target requires per-prefix migration plan)
 - **Security:** ✅ 0 high-sev findings, held since S0 baseline
@@ -157,15 +157,15 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 
 ---
 
-## SPRINT 2 — Discovery Intelligence + Naming Cleanup (Days 5–8 · ≤10 credits) 🟡 PARTIAL
+## SPRINT 2 — Discovery Intelligence + Naming Cleanup (Days 5–8 · ≤10 credits) ✅ DONE
 
 **Goal:** Smart recommendations + finish the rename queue.
 
 ### V2 Track — Smart Recommendations (Phase 2) ✅
-- [x] Recommendation engine: detected capabilities → top 3 Crown Jewel layers — `src/lib/factory/smart-recos.ts` + `V2SmartRecommendations.tsx`
+- [x] Recommendation engine: detected capabilities → top 3 Crown Jewel layers — `src/lib/factory/smart-recommendations.ts` + `V2SmartRecommendations.tsx`
 - [x] "Why this layer": collision score + evidence + Lex rule reference (gap + adjacency logic)
 - [x] Compatibility preview surfaced inline in Enhance + Results steps
-- [ ] Bundle suggestions: co-attached layers → discounted bundle SKU (deferred)
+- [x] Bundle suggestions: co-attached layers → discounted bundle SKU — `src/lib/factory/bundle-suggestions.ts` + `V2BundleSuggestions.tsx` (Family Packs · 10/15/20% tiered discounts · one-click add)
 
 ### Cohesion Track — Rename + Migrate — ❌ ABANDONED (runtime-live, not theater)
 
