@@ -100,7 +100,8 @@ const EXTRACTION_PATTERNS: ExtractionPattern[] = [
   { id: 'rs-trait', regex: /(?:pub\s+)?trait\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
   { id: 'rs-enum', regex: /(?:pub\s+)?enum\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
   // Go
-  { id: 'go-func', regex: /func\s+(?:\([^)]*\)\s+)?([A-Za-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  // Go: tolerate multi-token receivers like `(a *api)`, `(s Server[T])`, generic params `[T any]`
+  { id: 'go-func', regex: /func\s+(?:\(\s*[A-Za-z_]\w*\s+[*&]?[A-Za-z_][\w.\[\]]*\s*\)\s+)?([A-Za-z_]\w{2,})\s*(?:\[[^\]]*\])?\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
   { id: 'go-struct', regex: /type\s+([A-Z][A-Za-z_]\w{1,})\s+struct\b/g, method: 'class', nameGroup: 1 },
   { id: 'go-iface', regex: /type\s+([A-Z][A-Za-z_]\w{1,})\s+interface\b/g, method: 'class', nameGroup: 1 },
   // Java
