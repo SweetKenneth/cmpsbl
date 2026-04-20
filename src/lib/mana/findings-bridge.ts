@@ -100,6 +100,111 @@ function detectPythonClassMethods(source: string): FunctionBoundary[] {
 }
 
 /**
+ * Tuning fix #3: Decorator pre-pass.
+ *
+ * Many security/governance signals live on decorators (TS/Java/C#/Python),
+ * not in the function name. The next-line method may be invisible to
+ * FUNCTION_PATTERNS (e.g. `async deleteUser()` without leading `function`).
+ * This scan emits synthetic boundaries with decorator-prefixed names so
+ * downstream signal regexes can match them.
+ *
+ * Recognized: @Authorize, @PreAuthorize, @RolesAllowed, @RateLimit,
+ *             @Throttle, @Audited, @Webhook, @CircuitBreaker, @Retry,
+ *             @validator (Pydantic), @celery.task, @app.post/get/put/delete
+ */
+const DECORATOR_TO_VERB: Array<{ pattern: RegExp; verbPrefix: string }> = [
+  { pattern: /@(Pre)?Authorize\b/i,        verbPrefix: 'authorize_' },
+  { pattern: /@RolesAllowed\b/i,           verbPrefix: 'authorize_' },
+  { pattern: /@RateLimit\b/i,              verbPrefix: 'throttle_' },
+  { pattern: /@Throttle\b/i,               verbPrefix: 'throttle_' },
+  { pattern: /@Audited\b/i,                verbPrefix: 'audit_' },
+  { pattern: /@Webhook\b/i,                verbPrefix: 'webhook_' },
+  { pattern: /@CircuitBreaker\b/i,         verbPrefix: 'circuit_' },
+  { pattern: /@Retry\b/i,                  verbPrefix: 'retry_' },
+  { pattern: /@validator\b/,               verbPrefix: 'validate_' },
+  { pattern: /@celery\.task\b/,            verbPrefix: 'orchestrate_' },
+  { pattern: /@app\.(post|put|patch|delete)\b/i, verbPrefix: 'create_' },
+  { pattern: /@(Post|Put|Patch|Delete)Mapping\b/, verbPrefix: 'create_' },
+  { pattern: /@HttpPost\b/,                verbPrefix: 'create_' },
+];
+
+/** Extract the next method/function name after a decorator line. */
+function extractNextName(lines: string[], startIdx: number): string | null {
+  for (let i = startIdx + 1; i < Math.min(startIdx + 4, lines.length); i++) {
+    const ln = lines[i];
+    // Skip further decorators
+    if (/^\s*@/.test(ln)) continue;
+    // TS/JS method or function: optional access mods, optional async, name(
+    let m = ln.match(/^\s*(?:public|private|protected|static|async|export\s+)*\s*(?:function\s+)?([A-Za-z_$][\w$]*)\s*\(/);
+    if (m) return m[1];
+    // Python def
+    m = ln.match(/^\s*(?:async\s+)?def\s+([A-Za-z_]\w*)\s*\(/);
+    if (m) return m[1];
+    // Java/C# method: type name(...)
+    m = ln.match(/^\s*(?:public|private|protected|internal|static|final|async|override)\s+[\w<>?,\s\[\]]+\s+([A-Za-z_]\w*)\s*\(/);
+    if (m) return m[1];
+    break;
+  }
+  return null;
+}
+
+function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
+  const out: FunctionBoundary[] = [];
+  const lines = source.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    if (!/^\s*@/.test(ln)) continue;
+    for (const { pattern, verbPrefix } of DECORATOR_TO_VERB) {
+      if (!pattern.test(ln)) continue;
+      const name = extractNextName(lines, i);
+      if (!name) continue;
+      // Synthesize a verb-prefixed boundary so signal regexes anchored on
+      // the verb (e.g. ^authorize, ^throttle) match it.
+      out.push({ name: verbPrefix + name, line: i + 1 });
+      break;
+    }
+  }
+  return out;
+}
+
+/**
+ * Generic class-body method scanner (TS/Java/C#/Kotlin/Swift).
+ * Catches `async deleteUser(...) { }` inside a class body, which the
+ * top-level FUNCTION_PATTERNS miss without an access modifier or `function`.
+ */
+function detectClassBodyMethods(source: string): FunctionBoundary[] {
+  const out: FunctionBoundary[] = [];
+  const lines = source.split('\n');
+  let inClass = false;
+  let depth = 0;
+  let className = '';
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    const classMatch = ln.match(/\bclass\s+([A-Z]\w*)/);
+    if (classMatch && /\{/.test(ln)) {
+      inClass = true;
+      className = classMatch[1];
+      depth = 1;
+      continue;
+    }
+    if (!inClass) continue;
+    depth += (ln.match(/\{/g) ?? []).length;
+    depth -= (ln.match(/\}/g) ?? []).length;
+    if (depth <= 0) { inClass = false; continue; }
+    // Method line: optional decorators at start were stripped in pre-pass;
+    // catch `async name(...)`, `name(...)`, `static name(...)` etc.
+    const m = ln.match(/^\s*(?:public\s+|private\s+|protected\s+|static\s+|async\s+|override\s+)*([A-Za-z_$][\w$]*)\s*\(/);
+    if (m) {
+      const n = m[1];
+      if (n === 'if' || n === 'for' || n === 'while' || n === 'switch' || n === 'return' || n === 'catch') continue;
+      if (n.length < 2) continue;
+      out.push({ name: `${className}.${n}`, line: i + 1 });
+    }
+  }
+  return out;
+}
+
+/**
  * Detect function boundaries in source code.
  * Returns deduplicated function names in declaration order.
  */
@@ -111,6 +216,23 @@ export function detectFunctionBoundaries(source: string): FunctionBoundary[] {
   // that won't collide with top-level functions in the dedup set.
   const pythonHits = detectPythonClassMethods(source);
   for (const b of pythonHits) {
+    if (seen.has(b.name)) continue;
+    seen.add(b.name);
+    boundaries.push(b);
+  }
+
+  // Tuning fix #3: decorator pre-pass — synthesizes verb-prefixed boundaries
+  // for annotation-driven frameworks (Spring, NestJS, FastAPI, Django REST).
+  const decoratedHits = detectDecoratedBoundaries(source);
+  for (const b of decoratedHits) {
+    if (seen.has(b.name)) continue;
+    seen.add(b.name);
+    boundaries.push(b);
+  }
+
+  // TS/Java/C# class-body methods that lack `function` keyword and access mod.
+  const classBodyHits = detectClassBodyMethods(source);
+  for (const b of classBodyHits) {
     if (seen.has(b.name)) continue;
     seen.add(b.name);
     boundaries.push(b);
