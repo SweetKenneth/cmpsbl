@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { commitUpload, PreAscensionGateError } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
+import { V2PreflightEstimator } from './V2PreflightEstimator';
 
 interface Props {
   onComplete: () => void;
@@ -260,6 +261,10 @@ export function V2UploadStep({ onComplete }: Props) {
           onChange={(e) => setPastedCode(e.target.value)}
           className="min-h-[160px] sm:min-h-[200px] font-mono text-xs resize-none rounded-xl"
         />
+      )}
+
+      {hasInput && (
+        <V2PreflightEstimator files={files} pastedCode={pastedCode} mode={mode} />
       )}
 
       <Button
