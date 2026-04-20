@@ -324,12 +324,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
                   disabled={isLocked}
                   onClick={() => {
                     if (isLocked) return;
-                    setSelectedLayers(prev => {
-                      const next = new Set(prev);
-                      if (next.has(layer.id)) next.delete(layer.id);
-                      else next.add(layer.id);
-                      return next;
-                    });
+                    toggleLayer(layer.id);
                   }}
                   title={isLocked
                     ? `Locked — requires ${meta.name} (${meta.priceLabel}). Click your tier to upgrade.`
@@ -418,14 +413,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
               return (
                 <button
                   key={layer.id}
-                  onClick={() => {
-                    setSelectedLayers((prev) => {
-                      const next = new Set(prev);
-                      if (next.has(layer.id)) next.delete(layer.id);
-                      else next.add(layer.id);
-                      return next;
-                    });
-                  }}
+                  onClick={() => toggleLayer(layer.id)}
                   className={cn(
                     'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
                     isSelected
