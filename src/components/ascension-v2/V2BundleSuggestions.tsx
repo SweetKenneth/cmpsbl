@@ -81,13 +81,22 @@ export function V2BundleSuggestions({
                     <span className="text-xs font-semibold text-foreground">
                       {b.name}
                     </span>
-                    <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-neon-amber/10 text-neon-amber font-mono">
-                      −{b.discountPercent}%
-                    </span>
+                    {b.isFreeStack ? (
+                      <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono">
+                        free stack
+                      </span>
+                    ) : (
+                      <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-neon-amber/10 text-neon-amber font-mono">
+                        −{b.discountPercent}%
+                      </span>
+                    )}
                     <span className="text-[9px] font-mono text-muted-foreground">
                       avg CJPI {b.avgCjpi}
                     </span>
                   </div>
+                  <p className="text-[11px] text-foreground/90 leading-snug mt-1">
+                    {b.outcomeStatement}
+                  </p>
                   <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">
                     {b.rationale}
                   </p>
