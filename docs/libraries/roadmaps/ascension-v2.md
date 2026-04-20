@@ -10,13 +10,13 @@
 ## 📊 Consolidated Status Board (single source of truth)
 
 > One central tracker. Updated every sprint close. If it's not here, it's not done.
-> Last sync: April 20, 2026 · Cycle 1
+> Last sync: April 20, 2026 · Cycle 1 · Post-S2 audit pass complete
 
 | Sprint | Status | V2 Track | Cohesion / Security / Other | Report |
 |---|---|---|---|---|
 | **S0 — Pre-Flight + Baseline** | ✅ **DONE** | Baselines captured · `/verify/:fp` smoke-tested | 0 high-sev findings · `audit_chain_anchors` writable | `ascension-v2-baseline.md` |
 | **S1 — Trust & Visibility** | ✅ **DONE** (retarget) | ✅ Receipt drill-down · ✅ VAULT matches · ✅ Forensics · ✅ Pre-flight estimator | ✅ Classification queue 52/52 (zero drop-eligible) · ✅ Security baseline held | `ascension-v2-sprint-1-report.md` |
-| **S2 — Discovery Intelligence** | ✅ **DONE** | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ✅ Bundle SKUs (`V2BundleSuggestions.tsx` + `bundle-suggestions.ts`) | ❌ DB renames abandoned (runtime-live; UI terminology map only — see S2 section) | *(folded into roadmap)* |
+| **S2 — Discovery Intelligence** | ✅ **DONE** | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ✅ Bundle SKUs (`V2BundleSuggestions.tsx` + `bundle-suggestions.ts`, on Enhance + Results, 9 unit tests green) | ❌ DB renames abandoned (runtime-live; UI terminology map only — see S2 section) | *(folded into roadmap)* |
 | **S3 — Activation Loop** | 🟡 **PARTIAL** | ✅ Activation guide on Results · ⬜ Post-purchase email · ⬜ My Layers dashboard · ⬜ One-click re-ascension · ⬜ Artifact versioning | ⬜ `developer_*`/`global_*` classify (✅ done in S1 sweep) · ⬜ Funnel instrumentation · ⬜ RLS sweep `marketplace_*` | *(none)* |
 | **S4 — Pre-Export Confidence** | ✅ **DONE** (rescoped) | ✅ `V2PreExportConfidence.tsx` with real-signal aggregation | ⬜ GitHub connector · ⬜ CI/CD webhook · ⬜ Org RBAC (→ backlog) | *(none)* |
 | **S5 — Capability Provenance** | ✅ **DONE** (rescoped) | ✅ `V2CapabilityProvenance.tsx` per-capability trace | ⬜ Reproducibility proof · ⬜ Two-fp diff UI · ⬜ Periodic Merkle anchoring · ⬜ Engine-name CI guard (→ backlog) | *(none)* |
