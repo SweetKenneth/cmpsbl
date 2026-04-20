@@ -1,15 +1,18 @@
 /**
  * Tier ↔ Layer mapping — single source of truth.
  *
- * Maps each of the Top 20 Launch Layers to the tier that unlocks it.
- * Tiers ascend: builder → studio → creator → architect (full activation).
- * Enterprise is a custom-substrate tier; Governor unlocks everything.
+ * v19.1 collapse: Public pricing is Free + Pro $29 only (Enterprise by contract).
+ * The previous 4-tier ladder (Builder/Studio/Creator/Architect) was retired —
+ * everything that was paid now sits behind the single Pro tier.
  *
- * The `rank` field matches the rank in V2LaunchLayers so the UI can
- * cross-reference layer details without duplicating descriptions.
+ * Free (Builder) gets THREE everyday-power layers: Governance Shield,
+ * Tamper-Evident Audit, and Pipeline Composition. Self-Healing and all
+ * advanced intelligence/security/evolution/compliance layers are Pro-only.
+ *
+ * Governor unlocks everything regardless of tier.
  */
 
-export type LayerTier = 'builder' | 'studio' | 'creator' | 'architect' | 'enterprise';
+export type LayerTier = 'builder' | 'pro' | 'enterprise';
 
 export interface TierMeta {
   key: LayerTier;
@@ -36,41 +39,21 @@ export interface TierLayerEntry {
 export const TIER_META: Record<LayerTier, TierMeta> = {
   builder: {
     key: 'builder',
-    name: 'Builder',
+    name: 'Free',
     price: 0,
     priceLabel: 'Free',
-    tagline: 'Baseline protection & verification',
-    outcome: 'Your code is verified, traceable, and protected.',
+    tagline: 'Governance, audit & composition — on the house',
+    outcome: 'My code is verified, traceable, and orchestrated.',
     accent: 'border-emerald-400/30 bg-emerald-400/5',
     glyph: '🟢',
   },
-  studio: {
-    key: 'studio',
-    name: 'Studio',
+  pro: {
+    key: 'pro',
+    name: 'Pro',
     price: 29,
     priceLabel: '$29',
-    tagline: 'Core system reliability & control',
-    outcome: 'My software runs better, recovers, and handles inputs safely.',
-    accent: 'border-amber-400/40 bg-amber-400/5',
-    glyph: '🟡',
-  },
-  creator: {
-    key: 'creator',
-    name: 'Creator',
-    price: 49,
-    priceLabel: '$49',
-    tagline: 'Intelligence, foresight & coordination',
-    outcome: 'My system predicts, coordinates, and remembers.',
-    accent: 'border-sky-400/40 bg-sky-400/5',
-    glyph: '🔵',
-  },
-  architect: {
-    key: 'architect',
-    name: 'Architect',
-    price: 79,
-    priceLabel: '$79',
     tagline: 'Full system activation — all 20 layers',
-    outcome: 'This is fully upgraded, production-grade software.',
+    outcome: 'My software heals, predicts, defends, and evolves.',
     accent: 'border-fuchsia-400/40 bg-fuchsia-400/5',
     glyph: '🟣',
   },
@@ -86,42 +69,40 @@ export const TIER_META: Record<LayerTier, TierMeta> = {
   },
 };
 
-/** Display order — exactly the progression Kenneth specified. */
-export const TIER_ORDER: LayerTier[] = ['builder', 'studio', 'creator', 'architect', 'enterprise'];
+/** Display order — Free → Pro → Enterprise. */
+export const TIER_ORDER: LayerTier[] = ['builder', 'pro', 'enterprise'];
 
 /**
  * Layers per tier, in unlock order. Each rank corresponds to V2LaunchLayers.
- * Builder gets the two governance/verification layers + always-on Hardening.
- * Studio adds reliability + safety + composition + input intelligence.
- * Creator adds prediction + coordination + memory + cost intelligence.
- * Architect unlocks the remaining advanced security/perf/evolution/compliance set.
+ *
+ * Free (Builder): governance + audit + composition. Powerful, non-healing,
+ * non-self-modifying — gives users a real win on day one without giving away
+ * the marquee Pro layers (Self-Healing, Anomaly, Defense Breeding, etc.).
+ *
+ * Pro: every other launch layer in the Top 20.
  */
 export const TIER_LAYERS: Record<Exclude<LayerTier, 'enterprise'>, TierLayerEntry[]> = {
   builder: [
     { rank: 19, name: 'Tamper-Evident Audit Layer', tag: 'AUDIT' },
     { rank: 18, name: 'Governance Shield Layer', tag: 'GOVERNANCE' },
+    { rank: 15, name: 'Pipeline Composition Layer', tag: 'CORTEX' },
   ],
-  studio: [
+  pro: [
     { rank: 1,  name: 'Self-Healing Layer', tag: 'IMMUNITY' },
     { rank: 2,  name: 'Autonomous Triage Layer', tag: 'MEDIC' },
-    { rank: 10, name: 'AI Safety Layer', tag: 'DREAM×DEFENSE' },
-    { rank: 15, name: 'Pipeline Composition Layer', tag: 'CORTEX' },
-    { rank: 16, name: 'Universal Input Intelligence Layer', tag: 'DECODE' },
-  ],
-  creator: [
+    { rank: 3,  name: 'Distributed Consensus Layer', tag: 'NERVE' },
     { rank: 4,  name: 'Oracle-Ripple Precognition Layer', tag: 'ORACLE×RIPPLE' },
     { rank: 5,  name: 'Anomaly Correlation Layer', tag: 'VISION' },
-    { rank: 3,  name: 'Distributed Consensus Layer', tag: 'NERVE' },
-    { rank: 9,  name: 'Fleet Intelligence Layer', tag: 'NEXUS' },
-    { rank: 11, name: 'AI Cost Intelligence Layer', tag: 'NEXUS' },
-    { rank: 12, name: 'Cognitive Memory Layer', tag: 'BRAIN×MEMORY' },
-  ],
-  architect: [
     { rank: 6,  name: 'Adaptive Defense Breeding Layer', tag: 'IMMUNITY×EVOLUTION' },
     { rank: 7,  name: 'Zero-Trust Identity Layer', tag: 'IDENTITY×DEFENSE' },
     { rank: 8,  name: 'Cyber Defense Layer', tag: 'WATCHTOWER×AEGIS' },
+    { rank: 9,  name: 'Fleet Intelligence Layer', tag: 'NEXUS' },
+    { rank: 10, name: 'AI Safety Layer', tag: 'DREAM×DEFENSE' },
+    { rank: 11, name: 'AI Cost Intelligence Layer', tag: 'NEXUS' },
+    { rank: 12, name: 'Cognitive Memory Layer', tag: 'BRAIN×MEMORY' },
     { rank: 13, name: 'Performance Surgery Layer', tag: 'APEX×VISION' },
     { rank: 14, name: 'Data Pipeline Resilience Layer', tag: 'CONDUIT' },
+    { rank: 16, name: 'Universal Input Intelligence Layer', tag: 'DECODE' },
     { rank: 17, name: 'Self-Evolution Layer', tag: 'EVOLUTION' },
     { rank: 20, name: 'Regulatory Compliance Layer', tag: 'AUDIT×COMPASS' },
   ],
@@ -136,10 +117,10 @@ export const ALWAYS_ON = {
 
 /** Reverse lookup: layer rank → tier that unlocks it. */
 export function tierForRank(rank: number): LayerTier {
-  for (const t of ['builder', 'studio', 'creator', 'architect'] as const) {
+  for (const t of ['builder', 'pro'] as const) {
     if (TIER_LAYERS[t].some(l => l.rank === rank)) return t;
   }
-  return 'architect';
+  return 'pro';
 }
 
 /** Governor sees everything — UI helper. */
