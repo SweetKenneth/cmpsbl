@@ -298,6 +298,26 @@ export function getLayerCode(layerId: string, lang: string): string | null {
 }
 
 /**
+ * A wire body is "executable" only if, after stripping comments and
+ * whitespace, at least one non-empty line remains. This skips no-op
+ * sealed stubs (e.g. ARBITRIUM/WITNESS placeholders that contain only
+ * "// Sealed wrapper — proprietary.") so the manifest's "active layers"
+ * count never advertises layers that emit zero runtime behavior.
+ */
+function hasExecutableBody(wire: string, commentPrefix: '//' | '#'): boolean {
+  if (!wire) return false;
+  const lines = wire.split('\n');
+  for (const raw of lines) {
+    const trimmed = raw.trim();
+    if (!trimmed) continue;
+    if (commentPrefix === '//' && (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*'))) continue;
+    if (commentPrefix === '#' && trimmed.startsWith('#')) continue;
+    return true;
+  }
+  return false;
+}
+
+/**
  * Render the auto-wire integration code for TypeScript.
  *
  * Layers are emitted in deterministic phase order (Hardening → Governance →
@@ -305,9 +325,13 @@ export function getLayerCode(layerId: string, lang: string): string | null {
  * Evolution → Post Audit + Compliance). Single-pass model: each layer is
  * wired exactly once, in its assigned phase. The composition order is
  * stable across runs — same selection produces the same chain.
+ *
+ * Stub cleanup: layers whose tsWire is comments-only are skipped so the
+ * "active layers" count in the export header reflects reality.
  */
 export function getAutoWireTs(layers: CmpsblLayerDefinition[]): string {
-  const ordered = orderByPhase(layers);
+  const filtered = layers.filter((l) => hasExecutableBody(l.autoWire.tsWire, '//'));
+  const ordered = orderByPhase(filtered);
   if (ordered.length === 0) return '';
   const parts: string[] = [
     '',
@@ -353,9 +377,21 @@ export function getAutoWireTs(layers: CmpsblLayerDefinition[]): string {
   return parts.join('\n');
 }
 
-/** Render the auto-wire integration code for Python (deterministic phase order). */
+/**
+ * Render the auto-wire integration code for Python (deterministic phase order).
+ *
+ * Stub cleanup: layers whose pyWire is comments-only are skipped.
+ *
+ * Pythonic spine: instead of rebinding the module-level `cmpsbl_execute`
+ * function once per layer (which produces hostile stack traces and breaks
+ * IDE go-to-definition), we install a single `_CmpsblSpine` dispatcher with
+ * an ordered list of pre/post hooks. Layer wires that follow the standard
+ * `_cmpsbl_raw_execute_xxx = cmpsbl_execute` rebinding pattern still work
+ * unchanged — they simply add another wrapper on top of the spine.
+ */
 export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
-  const ordered = orderByPhase(layers);
+  const filtered = layers.filter((l) => hasExecutableBody(l.autoWire.pyWire, '#'));
+  const ordered = orderByPhase(filtered);
   if (ordered.length === 0) return '';
   const parts: string[] = [
     '',
@@ -364,6 +400,31 @@ export function getAutoWirePy(layers: CmpsblLayerDefinition[]): string {
     '# ║  Layers compose in locked phase order. Same input → same execution.     ║',
     '# ║  LAYER 1 (your code) executes at Phase 6 — never modified, only framed. ║',
     '# ╚══════════════════════════════════════════════════════════════════════════╝',
+    '',
+    '# ── Pythonic Spine ──',
+    '# Single dispatcher with an ordered hook list. Replaces N× function',
+    '# rebindings with one introspectable call frame. Each layer below may',
+    '# still wrap cmpsbl_execute directly; the spine survives either pattern.',
+    'class _CmpsblSpine:',
+    '    """Single-frame dispatcher for cmpsbl_execute. Hooks compose in order."""',
+    '    def __init__(self, base):',
+    '        self._base = base',
+    '        self._pre = []   # list[Callable[(name, input_data), None]]',
+    '        self._post = []  # list[Callable[(name, input_data, result), None]]',
+    '    def add_pre(self, fn):  self._pre.append(fn)',
+    '    def add_post(self, fn): self._post.append(fn)',
+    '    def __call__(self, capability_name, input_data):',
+    '        for h in self._pre:',
+    '            try: h(capability_name, input_data)',
+    '            except Exception: pass',
+    '        result = self._base(capability_name, input_data)',
+    '        for h in self._post:',
+    '            try: h(capability_name, input_data, result)',
+    '            except Exception: pass',
+    '        return result',
+    '',
+    '_cmpsbl_spine = _CmpsblSpine(cmpsbl_execute)',
+    'cmpsbl_execute = _cmpsbl_spine  # type: ignore',
     '',
   ];
   let lastPhase = -1;

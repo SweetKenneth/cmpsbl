@@ -33,6 +33,21 @@ interface SurfaceSignal {
   readonly protection: string;
 }
 
+// Strict-mode scanner gates: a "Payment surface" only fires when payment-SDK
+// signals are present in the source AND a payment-verb function name matches.
+// Removes false positives from agent / domain code that uses words like
+// `charge`, `pay`, `cost_millicents`, etc. without ever touching real money.
+const PAYMENT_SDK_SIGNALS = [
+  /\bstripe\b/i, /@stripe\b/i, /\bpaddle\b/i, /\bbraintree\b/i, /\bsquareup\b/i,
+  /\bpaypal\b/i, /\bcheckoutdotcom\b/i, /\b(razorpay|adyen|mollie|klarna|wise)\b/i,
+  /payment_intents?\b/i, /\bcharges?\.create\b/i, /\bsetup_intents?\b/i,
+];
+
+function hasPaymentSdkSignal(src: string | null): boolean {
+  if (!src) return false;
+  return PAYMENT_SDK_SIGNALS.some((p) => p.test(src));
+}
+
 const SURFACE_SIGNALS: ReadonlyArray<SurfaceSignal> = [
   {
     patterns: [/^(charge|payment|pay|invoice|refund|subscribe|checkout|purchase)/i],
@@ -90,9 +105,15 @@ const SURFACE_SIGNALS: ReadonlyArray<SurfaceSignal> = [
   },
 ];
 
-function classifyFunction(name: string): SurfaceSignal | null {
+function classifyFunction(name: string, sdkContext: { hasPaymentSdk: boolean }): SurfaceSignal | null {
   for (const signal of SURFACE_SIGNALS) {
-    if (signal.patterns.some((p) => p.test(name))) return signal;
+    if (signal.patterns.some((p) => p.test(name))) {
+      // STRICT scanner: gate "Payment surface" on real SDK presence.
+      if (signal.surface === 'Payment surface' && !sdkContext.hasPaymentSdk) {
+        continue;
+      }
+      return signal;
+    }
   }
   return null;
 }
@@ -156,18 +177,24 @@ interface Props {
   source: string | null;
   excludedFunctions: ReadonlyArray<string>;
   onToggleExclude: (functionName: string) => void;
+  /**
+   * Currently selected governance mode — used to render the
+   * "what would Enforce do" diff preview without changing internals.
+   */
+  selectedMode?: 'observe' | 'soft' | 'enforce';
 }
 
-export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude }: Props) {
+export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude, selectedMode = 'observe' }: Props) {
   const [codeOpen, setCodeOpen] = useState(true);
   const [reportOpen, setReportOpen] = useState(true);
 
   const findings = useMemo<FindingRow[]>(() => {
     if (!source) return [];
     const boundaries = detectFunctionBoundaries(source);
+    const sdkContext = { hasPaymentSdk: hasPaymentSdkSignal(source) };
     const rows: FindingRow[] = [];
     for (const b of boundaries) {
-      const signal = classifyFunction(b.name);
+      const signal = classifyFunction(b.name, sdkContext);
       if (!signal) continue;
       rows.push({
         functionName: b.name,
@@ -347,6 +374,36 @@ export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude
             <p className="text-[10px] italic text-muted-foreground/80 pt-2 border-t border-border/50">
               Governance scope is determined by Ascension's analysis. You retain full ownership of your source code.
             </p>
+
+            {/* ── Enforce-diff preview — shows what would change at full enforcement ── */}
+            {(() => {
+              const enforceableCount = activeCount;
+              const isEnforce = selectedMode === 'enforce';
+              if (enforceableCount === 0) {
+                return (
+                  <div className="mt-2 rounded-md border border-primary/30 bg-primary/5 p-2.5">
+                    <p className="text-[10px] font-semibold text-primary">
+                      What would Enforce do here?
+                    </p>
+                    <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">
+                      Nothing. No risk surfaces detected — Enforce behaves identically to Observe for this file. Mode auto-downgrades to a quiet watch.
+                    </p>
+                  </div>
+                );
+              }
+              return (
+                <div className="mt-2 rounded-md border border-border bg-muted/20 p-2.5">
+                  <p className="text-[10px] font-semibold text-foreground">
+                    What would Enforce do here?
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">
+                    {isEnforce
+                      ? `You're already at Enforce — Ascension actively protects ${enforceableCount} ${enforceableCount === 1 ? 'surface' : 'surfaces'} with rate-limits, replay guards, and audit trails.`
+                      : `Enforce would actively protect ${enforceableCount} ${enforceableCount === 1 ? 'surface' : 'surfaces'} (rate-limits, replay guards, audit trails). Currently ${selectedMode === 'soft' ? 'console-warning only' : 'observation-only'}.`}
+                  </p>
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>

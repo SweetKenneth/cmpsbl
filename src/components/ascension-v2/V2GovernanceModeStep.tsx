@@ -79,6 +79,7 @@ export function V2GovernanceModeStep({ onComplete }: Props) {
         source={source}
         excludedFunctions={excluded}
         onToggleExclude={handleToggleExclude}
+        selectedMode={mode}
       />
 
       <div className="flex flex-col items-center gap-2 pt-2 border-t border-border">
