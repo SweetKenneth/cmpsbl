@@ -77,6 +77,20 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   bind: 'configuration', mount: 'configuration', wire: 'configuration',
   search: 'analysis', query: 'analysis', explore: 'analysis',
   scan: 'analysis', inspect: 'analysis',
+  // F-26: domain primitives surfaced from corpus run 4 (rate limiting, state machines, repos, telemetry)
+  allow: 'validation', permit: 'validation', deny: 'validation', block: 'validation',
+  reject: 'validation', accept: 'validation', approve: 'validation',
+  limit: 'execution', bucket: 'execution', quota: 'execution',
+  breaker: 'execution', circuit: 'execution', gate: 'execution',
+  repository: 'storage', repo: 'storage',
+  telemetry: 'monitoring', metric: 'monitoring', meter: 'monitoring',
+  gauge: 'monitoring', counter: 'monitoring', histogram: 'monitoring',
+  state: 'execution', workflow: 'execution', transition: 'execution',
+  ship: 'execution', cancel: 'execution', pay: 'execution', order: 'execution',
+  step: 'execution', advance: 'execution',
+  min: 'computation', max: 'computation', clamp: 'computation',
+  mean: 'computation', median: 'computation', sum: 'computation', avg: 'computation',
+  limiter: 'execution', throttler: 'execution',
 };
 
 // Reserved words that must NEVER surface as primitive names (language keywords leaking through extraction)
@@ -399,10 +413,18 @@ export function extractPrimitives(
     warnings.push(`Extraction capped at ${MAX_RAW_PRIMITIVES} raw primitives`);
   }
 
-  // Pipeline: language post-processing → deduplication → quality gate
-  const postProcessed = rawPrimitives.flatMap((p) =>
-    postProcessPrimitives([p], p.sourceFile)
-  );
+  // Pipeline: language post-processing (per-file batched, enables F-25 boilerplate retention)
+  // → deduplication → quality gate
+  const byFile = new Map<string, ExtractedPrimitive[]>();
+  for (const p of rawPrimitives) {
+    const key = p.sourceFile || '__unknown__';
+    if (!byFile.has(key)) byFile.set(key, []);
+    byFile.get(key)!.push(p);
+  }
+  const postProcessed: ExtractedPrimitive[] = [];
+  for (const [fname, group] of byFile) {
+    postProcessed.push(...postProcessPrimitives(group, fname));
+  }
 
   const { canonical: deduplicated, mergedCount } = deduplicatePrimitives(postProcessed);
   if (mergedCount > 0) {

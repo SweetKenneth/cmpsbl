@@ -219,9 +219,13 @@ export function scanCapabilities(request: ScanRequest): ScanResult {
   const securityGaps: ScanResult['securityGaps'] = [];
   const securityMatch = matches.find(m => m.archetypeId === 'security-gaps');
   if (securityMatch && securityMatch.structuralHits > 0) {
+    // F-27: severity primarily reflects how many distinct anti-pattern hits fired.
+    // Confidence is dilution-prone (security-gaps has 16+ patterns), so hit-count
+    // is the more honest tier signal.
+    const hits = securityMatch.structuralHits;
     const severity: 'low' | 'medium' | 'high' =
-      securityMatch.confidence >= 0.7 ? 'high' :
-      securityMatch.confidence >= 0.4 ? 'medium' : 'low';
+      hits >= 3 || securityMatch.confidence >= 0.7 ? 'high' :
+      hits >= 2 || securityMatch.confidence >= 0.4 ? 'medium' : 'low';
     securityGaps.push({
       pattern: securityMatch.archetypeName,
       severity,
