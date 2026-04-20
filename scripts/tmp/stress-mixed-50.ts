@@ -335,11 +335,16 @@ function runOne(sample: Sample): FileResult {
   commitAscension(ddp.capabilities.length);
 
   // 6) REAL ascended-code generation
-  const primitiveRecs = attached.map((l) => ({
-    name: l.module || l.name,
-    score: l.cjpi || 80,
-    rationale: l.description || l.name,
-    icon: '⚡',
+  // PrimitiveRecommendation shape: primitiveId, name, category, impactScore,
+  //                                 rationale, chainPosition, collisionScore
+  const primitiveRecs = attached.map((l, idx) => ({
+    primitiveId: ((l as any).module || l.name).toLowerCase(),
+    name: ((l as any).module || l.name).toUpperCase(),
+    category: 'Layer' as const,
+    impactScore: (l as any).cjpi || 80,
+    rationale: (l as any).description || l.name,
+    chainPosition: idx + 1,
+    collisionScore: 50 + idx * 5,
   }));
   let ascended = '';
   try {
