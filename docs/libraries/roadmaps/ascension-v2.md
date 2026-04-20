@@ -189,7 +189,7 @@ DB-level renames are forbidden until a per-prefix migration plan with
 edge-function patching is approved per-prefix. Tracked in the audit doc.
 
 
-**Exit:** Recos visible in Step 2 of `/ascension-v2` ✅. Naming cleanup deferred — runtime conflict.
+**Exit:** Recos visible in Step 2 of `/ascension-v2` ✅. Bundle SKUs live ✅. Naming cleanup deferred — runtime conflict.
 
 ---
 
