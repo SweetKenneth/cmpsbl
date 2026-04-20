@@ -359,6 +359,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         description: `${zipName}.zip — ${capabilities.length} capabilities${verdictNote}, harness report bundled.`,
       });
 
+      // Surface the activation guide now that we know the real ascended name.
+      setExportedAscendedName(ascendedFileName);
+
       // Keep ceremony visible briefly after download starts
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
@@ -607,6 +610,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
                 : `Download cmpsbl-ascended-${displayBaseName}.zip`}
             </span>
           </Button>
+        )}
+
+        {exportedAscendedName && (
+          <V2ActivationGuide
+            ascendedFileName={exportedAscendedName}
+            language={sourceLanguage}
+            enhanced={enhanced || selectedLayers.size > 0}
+            attachedLayerIds={Array.from(selectedLayers)}
+          />
         )}
 
         <Button variant="ghost" onClick={onReset} className="w-full text-xs sm:text-sm">
