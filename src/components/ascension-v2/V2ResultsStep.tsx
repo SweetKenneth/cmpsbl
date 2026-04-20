@@ -39,6 +39,7 @@ import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmp
 import { V2SmartRecommendations } from './V2SmartRecommendations';
 import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
+import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
