@@ -77,16 +77,18 @@ export function emitFunnelEvent(
       if (payload.fingerprint !== undefined) metadata.fingerprint = payload.fingerprint;
       if (payload.extras) Object.assign(metadata, payload.extras);
 
-      await supabase.from('analytics_events').insert({
-        event_type: event,
-        category: 'funnel',
-        label: payload.language ?? null,
-        value: payload.durationMs ?? null,
-        page: '/ascension-v2',
-        session_id: getSessionId(),
-        user_id: userId,
-        metadata,
-      });
+      await supabase.from('analytics_events').insert([
+        {
+          event_type: event,
+          category: 'funnel',
+          label: payload.language ?? undefined,
+          value: payload.durationMs ?? undefined,
+          page: '/ascension-v2',
+          session_id: getSessionId(),
+          user_id: userId ?? undefined,
+          metadata: metadata as never,
+        },
+      ]);
     } catch {
       // Telemetry is best-effort. Never surface failures to the user.
     }
