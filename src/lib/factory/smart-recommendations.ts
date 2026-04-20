@@ -15,6 +15,7 @@ import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import {
   ORGANS, LAYERS, ENGINES, AGENTS, CANONICAL_PRIMITIVES,
 } from '@/lib/ascension-v2/canonical-primitives';
+import { tierForRank, TIER_ORDER, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 /** Set of layer IDs that come from the /store inventory (purchase per-SKU). */
 const STORE_LAYER_IDS: ReadonlySet<string> = new Set(
@@ -90,6 +91,27 @@ export interface RecommendationInput {
   selectedLayerIds?: string[];
   /** Max recommendations to return (default 5) */
   limit?: number;
+  /**
+   * The viewer's current tier. When provided, the recommender prioritizes
+   * layers the user can attach RIGHT NOW (tier-included) before surfacing
+   * upgrade-gated layers — so Free users always see a "win first, upgrade
+   * later" mix instead of an all-paywall list.
+   */
+  userTier?: LayerTier;
+}
+
+/**
+ * Returns true if a layer is unlocked for `tier`. Store layers are tracked
+ * separately (per-SKU purchase) and always considered "attachable" here.
+ * Layers without a `rank` (e.g. inventory/store) bypass the tier gate.
+ */
+function isLayerAttachableForTier(layer: CmpsblLayerDefinition, tier: LayerTier): boolean {
+  if (STORE_LAYER_IDS.has(layer.id)) return true;
+  const rank = (layer as unknown as { rank?: number }).rank;
+  if (typeof rank !== 'number') return true;
+  const layerTier = tierForRank(rank);
+  if (layerTier === 'enterprise') return tier === 'enterprise';
+  return TIER_ORDER.indexOf(tier) >= TIER_ORDER.indexOf(layerTier);
 }
 
 /** Adjacency families — primitives that commonly appear together. */
