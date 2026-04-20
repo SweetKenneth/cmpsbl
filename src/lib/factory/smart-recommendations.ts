@@ -11,9 +11,66 @@
  */
 
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import {
   ORGANS, LAYERS, ENGINES, AGENTS, CANONICAL_PRIMITIVES,
 } from '@/lib/ascension-v2/canonical-primitives';
+
+/** Set of layer IDs that come from the /store inventory (purchase per-SKU). */
+const STORE_LAYER_IDS: ReadonlySet<string> = new Set(
+  INVENTORY_LAYERS.map((l) => l.id),
+);
+
+/** True if a layer is sold individually in /store (vs. tier-included or free core). */
+export function isStoreLayer(layerId: string): boolean {
+  return STORE_LAYER_IDS.has(layerId);
+}
+
+/**
+ * Bundle-discount tier for a co-purchased set of store layers.
+ * Mirrors the prior bundle ladder but only ever applies inside one source
+ * (store). Tier-included layers never carry a discount.
+ */
+export function storeBundleDiscountPercent(count: number): number {
+  if (count >= 5) return 20;
+  if (count === 4) return 15;
+  if (count === 3) return 10;
+  return 0;
+}
+
+export interface StoreBundleSummary {
+  /** Store layer IDs included in the bundle */
+  layerIds: string[];
+  /** Sum of individual layer.priceCents */
+  subtotalCents: number;
+  /** Discount percentage (0 if <3 layers) */
+  discountPercent: number;
+  /** Final price after discount */
+  totalCents: number;
+  /** Savings in cents */
+  savingsCents: number;
+}
+
+/**
+ * Compute a single, opt-in bundle summary for the store layers in a
+ * recommendation set. Caller decides whether to surface it (UX rule:
+ * only show when count ≥ 3 so the discount is real).
+ */
+export function summarizeStoreBundle(
+  layers: CmpsblLayerDefinition[],
+): StoreBundleSummary {
+  const storeLayers = layers.filter((l) => STORE_LAYER_IDS.has(l.id));
+  const subtotalCents = storeLayers.reduce((s, l) => s + l.priceCents, 0);
+  const discountPercent = storeBundleDiscountPercent(storeLayers.length);
+  const savingsCents = Math.round((subtotalCents * discountPercent) / 100);
+  return {
+    layerIds: storeLayers.map((l) => l.id),
+    subtotalCents,
+    discountPercent,
+    totalCents: subtotalCents - savingsCents,
+    savingsCents,
+  };
+}
 
 export type RecoReason = 'gap' | 'adjacency';
 
