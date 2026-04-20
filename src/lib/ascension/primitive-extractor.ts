@@ -87,7 +87,7 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   gauge: 'monitoring', counter: 'monitoring', histogram: 'monitoring',
   state: 'execution', workflow: 'execution', transition: 'execution',
   ship: 'execution', cancel: 'execution', pay: 'execution', order: 'execution',
-  approve2: 'execution', step: 'execution', advance: 'execution',
+  step: 'execution', advance: 'execution',
   min: 'computation', max: 'computation', clamp: 'computation',
   mean: 'computation', median: 'computation', sum: 'computation', avg: 'computation',
   limiter: 'execution', throttler: 'execution',
