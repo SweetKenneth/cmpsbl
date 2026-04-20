@@ -7,6 +7,42 @@
 
 ---
 
+## 📊 Consolidated Status Board (single source of truth)
+
+> One central tracker. Updated every sprint close. If it's not here, it's not done.
+> Last sync: April 20, 2026 · Cycle 1
+
+| Sprint | Status | V2 Track | Cohesion / Security / Other | Report |
+|---|---|---|---|---|
+| **S0 — Pre-Flight + Baseline** | ✅ **DONE** | Baselines captured · `/verify/:fp` smoke-tested | 0 high-sev findings · `audit_chain_anchors` writable | `ascension-v2-baseline.md` |
+| **S1 — Trust & Visibility** | ✅ **DONE** (retarget) | ✅ Receipt drill-down · ✅ VAULT matches · ✅ Forensics · ✅ Pre-flight estimator | ✅ Classification queue 52/52 (zero drop-eligible) · ✅ Security baseline held | `ascension-v2-sprint-1-report.md` |
+| **S2 — Discovery Intelligence** | 🟡 **PARTIAL** | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ⬜ Bundle SKUs | ❌ DB renames abandoned (runtime-live; UI terminology map only) | *(no report — folded into roadmap)* |
+| **S3 — Activation Loop** | 🟡 **PARTIAL** | ✅ Activation guide on Results · ⬜ Post-purchase email · ⬜ My Layers dashboard · ⬜ One-click re-ascension · ⬜ Artifact versioning | ⬜ `developer_*`/`global_*` classify (✅ done in S1 sweep) · ⬜ Funnel instrumentation · ⬜ RLS sweep `marketplace_*` | *(none)* |
+| **S4 — Pre-Export Confidence** | ✅ **DONE** (rescoped) | ✅ `V2PreExportConfidence.tsx` with real-signal aggregation | ⬜ GitHub connector · ⬜ CI/CD webhook · ⬜ Org RBAC (→ backlog) | *(none)* |
+| **S5 — Capability Provenance** | ✅ **DONE** (rescoped) | ✅ `V2CapabilityProvenance.tsx` per-capability trace | ⬜ Reproducibility proof · ⬜ Two-fp diff UI · ⬜ Periodic Merkle anchoring · ⬜ Engine-name CI guard (→ backlog) | *(none)* |
+| **S6 — Scale & Polish** | ⬜ **NOT STARTED** | ⬜ Streaming export · ⬜ Parallel emitters · ⬜ Cached fingerprints · ⬜ `/ascension-v2` flagship landing | ⬜ Final cohesion sweep (443 → ~280) · ⬜ `/changelog` + `llms.txt` + `humans.txt` + `sitemap.xml` | *(none)* |
+
+### Roll-up
+
+- **Sprints fully shipped:** S0, S1, S4, S5 (4 of 7)
+- **Sprints partial:** S2, S3 (V2 tracks shipped; cross-track items deferred)
+- **Sprints remaining:** S6 + the deferred items above
+- **Cohesion classification:** ✅ complete (52/52 prefixes audited — zero drop-eligible; substrate shrink target requires per-prefix migration plan)
+- **Security:** ✅ 0 high-sev findings, held since S0 baseline
+
+### Definition of "DONE" on this board
+
+A box is checked only when: code is in `main` · build is green · referenced in a sprint report **or** verified by file path / smoke test · no mocks. Anything else stays ⬜.
+
+### What to do when a deferred item ships
+
+1. Find its row above → flip ⬜ to ✅
+2. Add evidence (file path or report link) in the cell
+3. Update the sprint section below if the whole sprint is now complete
+4. Bump the "Last sync" date
+
+---
+
 ## North Star
 
 **Same code. New behavior.**
