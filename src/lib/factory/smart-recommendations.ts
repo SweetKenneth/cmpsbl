@@ -15,7 +15,7 @@ import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import {
   ORGANS, LAYERS, ENGINES, AGENTS, CANONICAL_PRIMITIVES,
 } from '@/lib/ascension-v2/canonical-primitives';
-import { tierForRank, TIER_ORDER, type LayerTier } from '@/lib/ascension-v2/tier-layers';
+import { TIER_ORDER, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 /** Set of layer IDs that come from the /store inventory (purchase per-SKU). */
 const STORE_LAYER_IDS: ReadonlySet<string> = new Set(
@@ -275,8 +275,7 @@ function applyTierOrdering(
   if (!userTier) return picks;
   const annotated = picks.map((r) => {
     if (isLayerAttachableForTier(r.layer, userTier)) return r;
-    const rank = (r.layer as unknown as { rank?: number }).rank;
-    const required = typeof rank === 'number' ? tierForRank(rank) : undefined;
+    const required = requiredTierForLayer(r.layer);
     return required ? { ...r, upgradeRequired: required } : r;
   });
   const attachable = annotated.filter((r) => !r.upgradeRequired);
