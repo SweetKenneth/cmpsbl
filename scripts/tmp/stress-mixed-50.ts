@@ -31,6 +31,7 @@ import { TIER_LAYERS, TIER_META, type LayerTier } from '../../src/lib/ascension-
 import { LAYERS as LAUNCH_LAYERS } from '../../src/components/ascension-v2/V2LaunchLayers';
 import { isModeAllowed } from '../../src/lib/ascension-v2/governance-mode';
 import { generateRefurbishedCode } from '../../src/lib/factory/generate-refurbished-code';
+import { generateUnifiedCapabilityFile, type UnifiedCapabilityInput } from '../../src/lib/export/unified-capability-file';
 import { runPreExportHarness } from '../../src/lib/ascension-v2/pre-export-harness';
 import { getAvailableLayers } from '../../src/lib/export/cmpsbl-layers';
 
@@ -228,6 +229,7 @@ interface FileResult {
   exportCriticalFailures: number;
   exportSoftWarnings: number;
   exportSummary: string;
+  exportFailedChecks: { id: string; severity: string; message: string }[];
   verdict: Verdict;
   notes: string[];
 }
@@ -248,6 +250,7 @@ function runOne(sample: Sample): FileResult {
     proSeesMarqueeUnlocked: tier === 'pro' ? false : null,
     dedupGroups: 0,
     exportPassed: false, exportCriticalFailures: 0, exportSoftWarnings: 0, exportSummary: '',
+    exportFailedChecks: [],
     verdict: 'HARD', notes,
   };
 
@@ -334,9 +337,11 @@ function runOne(sample: Sample): FileResult {
   beginLocking();
   commitAscension(ddp.capabilities.length);
 
-  // 6) REAL ascended-code generation
-  // PrimitiveRecommendation shape: primitiveId, name, category, impactScore,
-  //                                 rationale, chainPosition, collisionScore
+  // 6) REAL ascended-code generation — use the SAME assembler the production
+  // V2 Results step uses (generateUnifiedCapabilityFile), so this harness audits
+  // the actual export the user gets, not a stub. The previous generateRefurbishedCode
+  // path was a primitive-only refurbisher that did not emit cmpsbl_execute / handlers
+  // / layer wrappers, which gave false crit failures.
   const primitiveRecs = attached.map((l, idx) => ({
     primitiveId: ((l as any).module || l.name).toLowerCase(),
     name: ((l as any).module || l.name).toUpperCase(),
@@ -346,15 +351,29 @@ function runOne(sample: Sample): FileResult {
     chainPosition: idx + 1,
     collisionScore: 50 + idx * 5,
   }));
+  // Synthesize one capability per attached layer (mirrors UI behaviour where
+  // each discovered capability becomes a UnifiedCapabilityInput entry).
+  const capInputs: UnifiedCapabilityInput[] = (attached.length > 0 ? attached : [{ name: 'Core', id: 'core' } as any])
+    .map((l, i) => ({
+      id: `asc_v2_${i}_${Date.now().toString(36)}`,
+      name: (((l as any).name || 'Core') as string).replace(/\s+/g, '_'),
+      cjpiScore: (l as any).cjpi || 80,
+      tier: 'gold',
+      chain: ['core'],
+      fingerprint: r.fingerprintHash || `fp_${sample.file}`,
+      moatSignature: `moat_${i}_${Date.now().toString(36)}`,
+      capabilityType: 'ascended',
+      description: (l as any).description || sample.intent,
+    }));
   let ascended = '';
   try {
-    ascended = generateRefurbishedCode(
-      sample.content || '// (intentionally empty)\n',
-      primitiveRecs as any,
-      r.fingerprintHash || 'fp_' + r.file,
-      sample.lang,
-      sample.file,
-      null,
+    const langKey = sample.lang.toLowerCase();
+    ascended = generateUnifiedCapabilityFile(
+      capInputs,
+      `cmpsbl-ascended-${sample.file.replace(/\.[^.]+$/, '').replace(/[^A-Za-z0-9]+/g, '_')}`,
+      langKey === 'typescript' ? 'typescript' : langKey,
+      files.length > 0 ? files : undefined,
+      attached.length > 0 ? (attached as any) : undefined,
     );
   } catch (e) {
     // Generator failures are downstream V1 issues — record but don't HARD-fail
@@ -362,6 +381,9 @@ function runOne(sample: Sample): FileResult {
     notes.push(`Ascended-code gen error (downstream V1): ${(e as Error).message.split('\n')[0]}`);
     ascended = '';
   }
+  // Keep the primitiveRecs reference live (used by older debug paths). 
+  void primitiveRecs;
+  void generateRefurbishedCode;
 
   // 7) Pre-Export Harness — INFORMATIONAL (V1-frozen path; not a V2 gate)
   if (ascended) {
@@ -376,6 +398,9 @@ function runOne(sample: Sample): FileResult {
       r.exportCriticalFailures = report.criticalFailures;
       r.exportSoftWarnings = report.softWarnings;
       r.exportSummary = `${report.passed ? '✓' : '✗'} crit=${report.criticalFailures} soft=${report.softWarnings}`;
+      r.exportFailedChecks = (report.checks || [])
+        .filter((c: any) => !c.passed)
+        .map((c: any) => ({ id: c.id, severity: c.severity, message: (c.message || '').slice(0, 240) }));
     } catch (e) {
       notes.push(`Harness threw (downstream): ${(e as Error).message.split('\n')[0]}`);
     }
