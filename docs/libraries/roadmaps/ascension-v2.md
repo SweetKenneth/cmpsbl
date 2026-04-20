@@ -76,19 +76,19 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 
 ---
 
-## SPRINT 0 — Pre-Flight + Baseline (Day 0, 2–3 hrs · ≤2 credits)
+## SPRINT 0 — Pre-Flight + Baseline (Day 0, 2–3 hrs · ≤2 credits) ✅ DONE
 
 **Goal:** Honest starting line. No work begins until "TBD" is replaced with numbers.
 
-- [ ] Confirm Ascension V2 build green (`bun run build`)
-- [ ] Confirm `audit_chain_anchors` accepting writes (insert test row, delete it)
-- [ ] Confirm `vault_*` + `compiler_*` tables responsive (`select count(*)`)
-- [ ] Snapshot `mem://index.md` Core rules
-- [ ] **Measure baselines** for the metrics table (runs/week, attach rate, median duration, table count, theater count)
-- [ ] Run `security--get_scan_results` → log current finding count as Sprint 0 baseline
-- [ ] Confirm `/verify/:fingerprint` route works against a known artifact
+- [x] Confirm Ascension V2 build green (`bun run build`)
+- [x] Confirm `audit_chain_anchors` accepting writes (insert test row, delete it)
+- [x] Confirm `vault_*` + `compiler_*` tables responsive (`select count(*)`)
+- [x] Snapshot `mem://index.md` Core rules
+- [x] **Measure baselines** for the metrics table (runs/week, attach rate, median duration, table count, theater count)
+- [x] Run `security--get_scan_results` → log current finding count as Sprint 0 baseline (0 high-sev)
+- [x] Confirm `/verify/:fingerprint` route works against a known artifact (`bfef2995-4a6f-4605-8406-ae33d2ce0bee`)
 
-**DoD:** Metrics table "Today" column has real numbers. No "TBD".
+**DoD:** Metrics table "Today" column has real numbers. No "TBD". → see `ascension-v2-baseline.md`
 
 ---
 
