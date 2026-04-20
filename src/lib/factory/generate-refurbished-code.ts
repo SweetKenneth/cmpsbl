@@ -3279,7 +3279,10 @@ export function generateRefurbishedCode(
     const criticalErrors = validation.errors.filter(e => e.severity === 'error');
     if (criticalErrors.length > 0) {
       const errorSummary = criticalErrors
-        .map(e => `  L${e.line}: ${e.message}`)
+        .map(e => {
+          const lineText = (layer2Code.split('\n')[e.line - 1] ?? '').trim().slice(0, 200);
+          return `  L${e.line}: ${e.message} | "${lineText}"`;
+        })
         .join('\n');
       throw new Error(
         `Layer 2 structural validation failed — ${criticalErrors.length} error(s) detected. ` +
