@@ -152,6 +152,14 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
       if (trip === inPyTriple) { i += 2; inPyTriple = null; }
       continue;
     }
+    if (inDollarQuote) {
+      // Skip body until matching closing tag ($$ or $tag$).
+      if (c === '$' && source.startsWith(inDollarQuote, i)) {
+        i += inDollarQuote.length - 1;
+        inDollarQuote = null;
+      }
+      continue;
+    }
     if (inStr) {
       if (c === '\\') { i++; continue; }
       // Template-literal substitution start: `${`
