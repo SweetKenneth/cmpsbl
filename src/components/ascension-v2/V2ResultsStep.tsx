@@ -37,6 +37,7 @@ import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/licens
 import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
+import { V2ActivationGuide } from './V2ActivationGuide';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
@@ -72,6 +73,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
   const [spdxChoice, setSpdxChoice] = useState<SpdxChoice>('auto');
+  // After export succeeds we surface the run-aware activation guide so the
+  // user has copy-pasteable next steps using their actual ascended filename.
+  const [exportedAscendedName, setExportedAscendedName] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
