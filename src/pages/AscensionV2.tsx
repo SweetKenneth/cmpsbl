@@ -215,7 +215,7 @@ export default function AscensionV2() {
           </div>
 
           {/* Reset button — visible during analysis only */}
-          {step === 2 && (
+          {step === 3 && (
             <div className="mt-6 text-center">
               <Button variant="ghost" size="sm" onClick={handleReset}>
                 <RotateCcw className="w-3 h-3 mr-1" />
