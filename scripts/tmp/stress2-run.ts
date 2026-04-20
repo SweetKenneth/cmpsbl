@@ -34,9 +34,11 @@ for (const m of manifest) {
   });
 }
 
-const recs = recommendLayers({ coveredPrimitives: [], selectedLayerIds: [], limit: 6 });
+const recs = recommendLayers({ coveredPrimitives: [], selectedLayerIds: [], limit: 6, userTier: 'builder' });
 const tierRecs = recs.filter((r) => !isStoreLayer(r.layer.id));
 const storeRecs = recs.filter((r) => isStoreLayer(r.layer.id));
+const attachableNow = recs.filter((r) => !(r as any).upgradeRequired);
+const lockedSuggestions = recs.filter((r) => (r as any).upgradeRequired);
 const bundle = summarizeStoreBundle(storeRecs.map((r) => r.layer));
 
 const FREE_RANKS = new Set(TIER_LAYERS.builder.map((l) => l.rank));
@@ -65,9 +67,10 @@ const out = {
   byLanguage: byLang,
   smartRecsFreeUser: {
     totalRecs: recs.length, tierIncluded: tierRecs.length, store: storeRecs.length,
+    attachableNow: attachableNow.length, lockedSuggestions: lockedSuggestions.length,
     bundleEligible: storeRecs.length >= 3 && bundle.discountPercent > 0,
     bundleDiscountPct: bundle.discountPercent, bundleSavingsCents: bundle.savingsCents,
-    items: recs.map((r) => `${r.layer.name} [${isStoreLayer(r.layer.id) ? 'STORE $' + (r.layer.priceCents/100).toFixed(2) : 'TIER'}] ← ${r.driverPrimitive}`),
+    items: recs.map((r: any) => `${r.layer.name} [${isStoreLayer(r.layer.id) ? 'STORE $' + (r.layer.priceCents/100).toFixed(2) : (r.upgradeRequired ? 'LOCKED→' + r.upgradeRequired : 'ATTACH-NOW')}] ← ${r.driverPrimitive}`),
   },
   freeUserTierAudit: {
     totalLaunchLayers: LAUNCH_LAYERS.length,
@@ -95,9 +98,9 @@ freeLayers.forEach((l) => console.log(`    ✓ #${l.rank} ${l.name}`));
 console.log(`  Locked (upgrade): ${lockedLayers.length}`);
 console.log('  Tier ladder:');
 Object.values(TIER_META).forEach((t) => console.log(`    ${t.glyph} ${t.name.padEnd(12)} ${(t.priceLabel || '').padEnd(8)} ${t.tagline}`));
-console.log('\nSMART RECS (Free user, pre-run):');
-console.log(`  Total=${recs.length} TierIncl=${tierRecs.length} Store=${storeRecs.length} BundleCTA=${out.smartRecsFreeUser.bundleEligible}`);
-out.smartRecsFreeUser.items.forEach((s) => console.log(`    • ${s}`));
+console.log('\nSMART RECS (Free/Builder user, pre-run):');
+console.log(`  Total=${recs.length} AttachNow=${attachableNow.length} Locked=${lockedSuggestions.length} Store=${storeRecs.length} BundleCTA=${out.smartRecsFreeUser.bundleEligible}`);
+out.smartRecsFreeUser.items.forEach((s: string) => console.log(`    • ${s}`));
 console.log('\nDEDUP:', JSON.stringify(out.dedupSanity));
 console.log('\nFILE ISSUES:');
 const issues = results.filter((r) => !r.gateOk || r.notes.length > 0);

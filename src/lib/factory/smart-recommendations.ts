@@ -15,6 +15,7 @@ import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import {
   ORGANS, LAYERS, ENGINES, AGENTS, CANONICAL_PRIMITIVES,
 } from '@/lib/ascension-v2/canonical-primitives';
+import { TIER_ORDER, TIER_LAYERS, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 /** Set of layer IDs that come from the /store inventory (purchase per-SKU). */
 const STORE_LAYER_IDS: ReadonlySet<string> = new Set(
@@ -81,6 +82,12 @@ export interface LayerRecommendation {
   driverPrimitive: string;
   /** One-liner explaining why this layer was picked */
   rationale: string;
+  /**
+   * Set when the caller passed `userTier` and this layer requires a higher
+   * plan than the viewer currently has. UI uses this to render a soft
+   * upgrade chip instead of a free "Add" toggle.
+   */
+  upgradeRequired?: LayerTier;
 }
 
 export interface RecommendationInput {
@@ -90,6 +97,45 @@ export interface RecommendationInput {
   selectedLayerIds?: string[];
   /** Max recommendations to return (default 5) */
   limit?: number;
+  /**
+   * The viewer's current tier. When provided, the recommender prioritizes
+   * layers the user can attach RIGHT NOW (tier-included) before surfacing
+   * upgrade-gated layers — so Free users always see a "win first, upgrade
+   * later" mix instead of an all-paywall list.
+   */
+  userTier?: LayerTier;
+}
+
+/**
+ * One-time index: layer-name → required tier, sourced from TIER_LAYERS
+ * (the single source of truth for unlock rules).
+ */
+const NAME_TO_REQUIRED_TIER: ReadonlyMap<string, LayerTier> = (() => {
+  const m = new Map<string, LayerTier>();
+  for (const tier of ['builder', 'studio', 'creator', 'architect'] as const) {
+    for (const entry of TIER_LAYERS[tier]) {
+      m.set(entry.name.toLowerCase(), tier);
+    }
+  }
+  return m;
+})();
+
+/** Required tier for a layer, or null if not in the launch-layer ladder. */
+function requiredTierForLayer(layer: CmpsblLayerDefinition): LayerTier | null {
+  return NAME_TO_REQUIRED_TIER.get(layer.name.toLowerCase()) ?? null;
+}
+
+/**
+ * Returns true if a layer is unlocked for `tier`. Store layers (per-SKU
+ * purchase) and core/baseline layers not in the launch ladder are treated
+ * as attachable so we never gate something the user already owns.
+ */
+function isLayerAttachableForTier(layer: CmpsblLayerDefinition, tier: LayerTier): boolean {
+  if (STORE_LAYER_IDS.has(layer.id)) return true;
+  const required = requiredTierForLayer(layer);
+  if (!required) return true; // not in the launch ladder = baseline / always-on
+  if (required === 'enterprise') return tier === 'enterprise';
+  return TIER_ORDER.indexOf(tier) >= TIER_ORDER.indexOf(required);
 }
 
 /** Adjacency families — primitives that commonly appear together. */
@@ -155,7 +201,7 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
       });
       usedLayerIds.add(layer.id);
     }
-    return picked.slice(0, limit);
+    return applyTierOrdering(picked, input.userTier).slice(0, limit);
   }
 
   // ── Stage 1: gap-fillers ───────────────────────────────────────────────
@@ -213,5 +259,25 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
     .sort((a, b) => b.layer.cjpi - a.layer.cjpi)
     .forEach((r) => { if (picked.length < limit) picked.push(r); });
 
-  return picked.slice(0, limit);
+  return applyTierOrdering(picked, input.userTier).slice(0, limit);
+}
+
+/**
+ * Reorder picks so layers attachable-now (per the viewer's tier) appear
+ * first, with locked ones annotated via `upgradeRequired`. Pre-run mode
+ * also calls this so Free users always see attachable wins on top.
+ */
+function applyTierOrdering(
+  picks: LayerRecommendation[],
+  userTier: LayerTier | undefined,
+): LayerRecommendation[] {
+  if (!userTier) return picks;
+  const annotated = picks.map((r) => {
+    if (isLayerAttachableForTier(r.layer, userTier)) return r;
+    const required = requiredTierForLayer(r.layer);
+    return required ? { ...r, upgradeRequired: required } : r;
+  });
+  const attachable = annotated.filter((r) => !r.upgradeRequired);
+  const gated = annotated.filter((r) => r.upgradeRequired);
+  return [...attachable, ...gated];
 }

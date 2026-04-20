@@ -122,8 +122,10 @@ export function deduplicateCapabilities(
   // Sort groups by representative score descending
   groups.sort((a, b) => b.representative.cjpiScore - a.representative.cjpiScore);
 
-  // Take top MAX_CAPS groups, ensure at least MIN_CAPS if available
-  const count = Math.max(MIN_CAPS, Math.min(groups.length, MAX_CAPS));
+  // Take top MAX_CAPS groups. The MIN floor only applies when we have
+  // enough raw signal to satisfy it — never inflate beyond what discovery
+  // actually produced. Caller can warn on low-signal (count < MIN_CAPS).
+  const count = Math.min(groups.length, MAX_CAPS);
   const final = groups.slice(0, count).map(g => g.representative);
 
   return {

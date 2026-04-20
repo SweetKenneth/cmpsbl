@@ -19,7 +19,7 @@
 import { useMemo } from 'react';
 import {
   Sparkles, Plus, Check, ArrowRight, Layers as LayersIcon,
-  ShoppingBag, Package,
+  ShoppingBag, Package, Lock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
@@ -28,6 +28,8 @@ import {
   summarizeStoreBundle,
   type LayerRecommendation,
 } from '@/lib/factory/smart-recommendations';
+import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 interface Props {
   /** Primitives covered by the current run (empty = pre-run heuristic mode) */
@@ -40,6 +42,17 @@ interface Props {
   limit?: number;
   /** Compact title override */
   title?: string;
+  /** Override viewer tier (default: read from subscription hook) */
+  userTier?: LayerTier;
+}
+
+function mapSubscriptionTier(tier: string | undefined): LayerTier {
+  if (!tier) return 'builder';
+  if (tier === 'enterprise') return 'enterprise';
+  if (tier === 'architect' || tier === 'pro') return 'architect';
+  if (tier === 'creator') return 'creator';
+  if (tier === 'studio' || tier === 'operator') return 'studio';
+  return 'builder';
 }
 
 function formatPrice(cents: number): string {
@@ -87,7 +100,16 @@ function RecoRow({ reco, isSelected, onSelect, showPrice }: RecoRowProps) {
           {reco.rationale}
         </p>
       </div>
-      {onSelect ? (
+      {reco.upgradeRequired ? (
+        <Link
+          to="/ascension-v2#tiers"
+          className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded border border-neon-amber/40 bg-neon-amber/5 text-neon-amber hover:bg-neon-amber/10"
+          title={`Unlocks at ${TIER_META[reco.upgradeRequired].name} (${TIER_META[reco.upgradeRequired].priceLabel})`}
+        >
+          <Lock className="h-3 w-3" />
+          {TIER_META[reco.upgradeRequired].name}
+        </Link>
+      ) : onSelect ? (
         <button
           onClick={() => onSelect(reco.layer.id)}
           className={
@@ -117,7 +139,11 @@ export function V2SmartRecommendations({
   onSelect,
   limit = 4,
   title,
+  userTier,
 }: Props) {
+  const subscription = useEngineSubscription();
+  const effectiveTier: LayerTier = userTier ?? mapSubscriptionTier(subscription.tier);
+
   // Stable signatures so new array refs from parents don't bust the memo.
   const coveredKey = useMemo(
     () => [...coveredPrimitives].map((p) => p.toUpperCase()).sort().join('|'),
@@ -135,9 +161,10 @@ export function V2SmartRecommendations({
       coveredPrimitives,
       selectedLayerIds,
       limit: Math.max(limit * 2, 8),
+      userTier: effectiveTier,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [coveredKey, selectedKey, limit],
+    [coveredKey, selectedKey, limit, effectiveTier],
   );
 
   const { tierRecos, storeRecos } = useMemo(() => {
