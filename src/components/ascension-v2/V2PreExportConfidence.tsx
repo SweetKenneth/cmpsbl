@@ -189,7 +189,7 @@ export function V2PreExportConfidence({
     >
       <header className="flex items-start gap-2">
         {warnCount > 0 ? (
-          <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+          <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-neon-amber flex-shrink-0 mt-0.5" />
         ) : (
           <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
         )}
@@ -214,7 +214,7 @@ export function V2PreExportConfidence({
             <row.icon
               className={cn(
                 'w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5',
-                row.severity === 'warn' && 'text-amber-500',
+                row.severity === 'warn' && 'text-neon-amber',
                 row.severity === 'ok' && 'text-primary',
                 row.severity === 'info' && 'text-muted-foreground',
               )}
@@ -225,7 +225,7 @@ export function V2PreExportConfidence({
                 <span
                   className={cn(
                     'text-[10px] sm:text-xs font-mono text-foreground truncate text-right min-w-0',
-                    row.severity === 'warn' && 'text-amber-600 dark:text-amber-400',
+                    row.severity === 'warn' && 'text-neon-amber',
                   )}
                 >
                   {row.value}
