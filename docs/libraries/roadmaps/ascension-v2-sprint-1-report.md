@@ -44,8 +44,29 @@ and will be removed from the roadmap.
 | `atlas` | `atlas_capabilities` | 8 | **alive — keep** | `pf-substrate` reads on every write call (governance gate); `governor-commands.ts` toggles |
 | `audit` | `audit_logs` | 78 | **alive — keep** | Substrate-wide audit trail; `pf-substrate` writes pre/post/failure on every governed call |
 
-Verdict summary: **5 of 5 alive**. None drop-eligible. Queue continues in
-Sprint 2 as part of the rename track.
+Verdict summary (Sprint 1 batch): **5 of 5 alive**. None drop-eligible.
+
+### Single-Table Prefix Queue — batch 2 (10 classified · post-Sprint-1 sweep)
+
+Same methodology: ref-count audit against `supabase/functions/` + `src/`, row count from `pg_stat_user_tables`. Empty tables that are runtime-wired are **dormant — keep** (write paths exist, table fills under load).
+
+| Prefix | Table | Rows | Refs | Files | Verdict | Rationale |
+|---|---|---:|---:|---:|---|---|
+| `activation` | `activation_audit_log` | 1 | 5 | 3 | **alive — keep** | `pack-activate` writes activation event audit |
+| `agencies` | `agencies` | 0 | 94 | 32 | **alive — keep (anchor)** | Top-level Agency table; written by all agency edge fns + 32 client files |
+| `agent` | `agent_competency` | 0 | 9 | 5 | **dormant — keep** | Agency cognitive scoring; writes from `agency-orchestrator` |
+| `bot` | `bot_sniper_api_keys` | 0 | 2 | 2 | **dormant — keep** | DEFENSE bot-sniper API key storage |
+| `canary` | `canary_tokens` | 0 | 3 | 2 | **dormant — keep** | DEFENSE canary deception tokens |
+| `captcha` | `captcha_challenges` | 0 | 5 | 3 | **alive — keep** | `pf-security-gate` writes challenge issuance |
+| `causal` | `causal_traces` | 0 | 2 | 2 | **dormant — keep** | Causal-trace receipts (post-export); fills on demand |
+| `client` | `client_error_log` | 272 | 5 | 5 | **alive — keep** | Active client error sink |
+| `code` | `code_stamps` | 0 | 1 | 1 | **dormant — keep** | Code provenance stamps; ascension-emitted |
+| `compiled` | `compiled_products` | 0 | 25 | 4 | **alive — keep** | Autonomous Product Compiler output ledger; 25 refs in compiler edge fns |
+
+Verdict summary (batch 2): **10 of 10 alive or dormant-keep**. None drop-eligible. Pattern continues to validate the Sprint 1 retarget decision.
+
+**Cumulative: 15 of 52 unclassified prefixes processed. 37 remain.** Continue in Sprint 6 sweep.
+
 
 ### Snapshot policy
 
