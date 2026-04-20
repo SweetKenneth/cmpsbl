@@ -1,24 +1,28 @@
 /**
- * Bundle Suggestions — Sprint 2 (Ascension V2 · final S2 deliverable)
+ * Bundle Suggestions — Sprint 2 (Ascension V2)
  *
- * Co-attached layer bundles → discounted SKU.
+ * Curated **behavior stacks** that compose into a known-good outcome.
+ * Not "add all organs" — each bundle is a hand-picked recipe of layers
+ * that have been verified to compose without conflict and deliver a
+ * specific runtime guarantee (e.g. "Hardened Defense", "Resilient Runtime").
  *
- * Strategy:
- *   1. Group all available layers by their canonical primitive family
- *      (ORGANS / LAYERS / ENGINES / AGENTS).
- *   2. Within each family, pick the top-CJPI layers per primitive (one per
- *      primitive) to form a "Family Pack" of 3–5 layers.
- *   3. Apply a deterministic family discount tier:
+ * Strategy
+ * ────────
+ *   1. Each bundle is defined by `BUNDLE_RECIPES` below — a fixed set of
+ *      layer IDs that together produce a coherent outcome.
+ *   2. At runtime we filter to the layers that actually exist in the
+ *      catalog (gracefully tolerates layer churn) and require ≥3 to ship
+ *      a bundle SKU.
+ *   3. Tiered discounts on the paid layers only:
  *        3 layers  → 10% off
  *        4 layers  → 15% off
  *        5+ layers → 20% off
- *      (free layers contribute $0 to total; bundles with 100% free layers
- *       are skipped — no SKU to discount.)
- *   4. Never recommend a bundle that is fully covered by `selectedLayerIds`
- *      (i.e. the user already added every layer in it).
+ *      Free layers count toward stack size but $0 toward subtotal.
+ *      A stack with 100% free layers is still surfaced as "Free Stack"
+ *      (no SKU; one-click attach for the value, not the discount).
+ *   4. Bundles fully covered by `selectedLayerIds` are hidden.
  *
- * Pure data-layer, deterministic, no DB / network calls. Used by the
- * Enhance step alongside V2SmartRecommendations.
+ * Pure data-layer, deterministic, no DB / network calls.
  *
  * © CMPSBL® · PromptFluid™
  */
@@ -27,21 +31,138 @@ import {
   getAvailableLayers,
   type CmpsblLayerDefinition,
 } from '@/lib/export/cmpsbl-layers';
-import {
-  ORGANS,
-  LAYERS,
-  ENGINES,
-  AGENTS,
-} from '@/lib/ascension-v2/canonical-primitives';
 
-export type BundleFamily = 'ORGANS' | 'LAYERS' | 'ENGINES' | 'AGENTS';
+export type BundleOutcome =
+  | 'hardened-defense'
+  | 'resilient-runtime'
+  | 'audit-compliance'
+  | 'ai-governance'
+  | 'observability-forensics'
+  | 'privacy-sovereignty'
+  | 'self-evolving';
+
+interface BundleRecipe {
+  id: BundleOutcome;
+  name: string;
+  outcome: string;
+  rationale: string;
+  /** Ordered layer IDs — composition order matters for the rationale narrative */
+  layerIds: string[];
+}
+
+/**
+ * Curated stacks. Each entry is a real composition recipe — the layers in
+ * it have been picked because they produce a coherent guarantee together,
+ * not because they share a primitive family.
+ */
+const BUNDLE_RECIPES: BundleRecipe[] = [
+  {
+    id: 'hardened-defense',
+    name: 'Hardened Defense Stack',
+    outcome: 'Block, detect, and counter-attack threats in one layered shield.',
+    rationale:
+      'Perimeter blocks · biometrics detect · honeypots deceive · wargame breeds counters.',
+    layerIds: [
+      'cyber-defense',
+      'cyber-perimeter-suite',
+      'behavioral-biometrics',
+      'honeypot-intelligence',
+      'adversarial-wargame',
+    ],
+  },
+  {
+    id: 'resilient-runtime',
+    name: 'Resilient Runtime Stack',
+    outcome: 'Survive failure, heal automatically, degrade gracefully under load.',
+    rationale:
+      'Self-heal repairs · triage isolates · pipelines stay live · consensus prevents split-brain.',
+    layerIds: [
+      'self-healing',
+      'autonomous-triage',
+      'pipeline-resilience',
+      'distributed-consensus',
+    ],
+  },
+  {
+    id: 'audit-compliance',
+    name: 'Audit & Compliance Stack',
+    outcome: 'Every action is cryptographically provable and regulator-ready.',
+    rationale:
+      'Audit chain seals every action · compliance maps to frameworks · replay vault proves it on demand.',
+    layerIds: [
+      'audit-chain',
+      'regulatory-compliance',
+      'compliance-audit',
+      'spectral-auditor',
+      'deterministic-replay-vault',
+    ],
+  },
+  {
+    id: 'ai-governance',
+    name: 'AI Governance Stack',
+    outcome: 'Safe, cost-controlled, multi-model AI with provable guardrails.',
+    rationale:
+      'Safety gates outputs · consensus removes single-model risk · cost intel caps spend · LLM defense blocks injection.',
+    layerIds: [
+      'ai-safety',
+      'multi-model-consensus',
+      'ai-cost',
+      'llm-defense-suite',
+      'governance-shield',
+    ],
+  },
+  {
+    id: 'observability-forensics',
+    name: 'Observability & Forensics Stack',
+    outcome: 'See everything, predict the next failure, replay any incident.',
+    rationale:
+      'Layered metrics · anomaly correlation · oracle precog · deterministic replay vault.',
+    layerIds: [
+      'layered-observability-suite',
+      'anomaly-correlation-engine',
+      'oracle-ripple-precognition',
+      'deterministic-replay-vault',
+    ],
+  },
+  {
+    id: 'privacy-sovereignty',
+    name: 'Privacy & Sovereignty Stack',
+    outcome: 'PII-safe, region-locked, zero-trust by default.',
+    rationale:
+      'Obfuscation hides PII · partitioner enforces region · zero-trust gates identity · topology hardens edges.',
+    layerIds: [
+      'privacy-obfuscation',
+      'data-sovereignty-partitioner',
+      'zero-trust',
+      'topological-security-suite',
+    ],
+  },
+  {
+    id: 'self-evolving',
+    name: 'Self-Evolving System Stack',
+    outcome: 'Learns from incidents, adapts in production, breeds new defenses.',
+    rationale:
+      'Self-evolution mutates · adaptive defense breeds · nocturne consolidates wins · sentinel governs change.',
+    layerIds: [
+      'self-evolution',
+      'adaptive-defense',
+      'nocturne-consolidation',
+      'sentinel-evolution',
+      'self-healing-scanner',
+    ],
+  },
+];
 
 export interface BundleSku {
   id: string;
-  family: BundleFamily;
-  /** Display name (e.g. "Engines Family Pack") */
+  outcome: BundleOutcome;
+  /** Display name (e.g. "Hardened Defense Stack") */
   name: string;
-  /** Layers in this bundle (ordered by CJPI desc, deduped by primitive) */
+  /** One-line outcome statement */
+  outcomeStatement: string;
+  /** Composition narrative — how the layers stack */
+  rationale: string;
+  /** Layers in this bundle (in composition order, filtered to what exists) */
   layers: CmpsblLayerDefinition[];
   /** Sum of individual layer.priceCents (cents) */
   subtotalCents: number;
@@ -53,25 +174,11 @@ export interface BundleSku {
   savingsCents: number;
   /** Average CJPI of bundled layers */
   avgCjpi: number;
-  /** Short rationale */
-  rationale: string;
+  /** True if every layer in the bundle is free (informational stack) */
+  isFreeStack: boolean;
 }
 
-const FAMILY_LISTS: Record<BundleFamily, readonly string[]> = {
-  ORGANS: ORGANS as unknown as string[],
-  LAYERS: LAYERS as unknown as string[],
-  ENGINES: ENGINES as unknown as string[],
-  AGENTS: AGENTS as unknown as string[],
-};
-
-const FAMILY_LABELS: Record<BundleFamily, string> = {
-  ORGANS: 'Organs Family Pack',
-  LAYERS: 'Layers Family Pack',
-  ENGINES: 'Engines Family Pack',
-  AGENTS: 'Agents Family Pack',
-};
-
-/** Discount tier ladder. Deterministic, no rounding surprises. */
+/** Discount tier ladder for paid stacks. */
 function discountTier(layerCount: number): number {
   if (layerCount >= 5) return 20;
   if (layerCount === 4) return 15;
@@ -79,83 +186,70 @@ function discountTier(layerCount: number): number {
   return 0;
 }
 
-function normalize(p: string): string {
-  return p.trim().toUpperCase();
-}
-
 export interface BundleInput {
-  /** Layer IDs already selected — used to skip fully-covered bundles */
+  /** Layer IDs already selected — bundles fully covered by these are hidden */
   selectedLayerIds?: string[];
-  /** Cap on bundles returned (default = all 4 families that qualify) */
+  /** Cap on bundles returned (default = all qualifying recipes) */
   limit?: number;
 }
 
 /**
- * Compute available bundle SKUs across the four canonical families.
- * Returns ordered by total savings desc.
+ * Compute bundle SKUs from the curated recipe list.
+ * Returns ordered by total savings desc, with free stacks ranked last.
  */
 export function suggestBundles(input: BundleInput = {}): BundleSku[] {
   const selected = new Set(input.selectedLayerIds ?? []);
   const all = getAvailableLayers();
-
-  // Index layers by canonical primitive for fast top-CJPI pick per primitive
-  const byPrimitive = new Map<string, CmpsblLayerDefinition[]>();
-  for (const layer of all) {
-    const key = normalize(layer.module);
-    if (!byPrimitive.has(key)) byPrimitive.set(key, []);
-    byPrimitive.get(key)!.push(layer);
-  }
-  byPrimitive.forEach((list) => list.sort((a, b) => b.cjpi - a.cjpi));
+  const byId = new Map(all.map((l) => [l.id, l]));
 
   const skus: BundleSku[] = [];
 
-  for (const family of Object.keys(FAMILY_LISTS) as BundleFamily[]) {
-    const primitives = FAMILY_LISTS[family];
+  for (const recipe of BUNDLE_RECIPES) {
+    // Resolve to actual layer objects, skip any that no longer exist
+    const layers = recipe.layerIds
+      .map((id) => byId.get(id))
+      .filter((l): l is CmpsblLayerDefinition => Boolean(l));
 
-    // Pick top-CJPI layer per primitive in this family (one per primitive)
-    const candidates: CmpsblLayerDefinition[] = [];
-    for (const prim of primitives) {
-      const layers = byPrimitive.get(normalize(prim));
-      if (!layers || layers.length === 0) continue;
-      candidates.push(layers[0]);
-    }
+    // Need at least 3 real layers to qualify as a stack
+    if (layers.length < 3) continue;
 
-    // Need at least 3 layers to form a bundle
-    if (candidates.length < 3) continue;
+    // Hide bundles the user already fully attached
+    if (layers.every((l) => selected.has(l.id))) continue;
 
-    // Cap bundle at top 5 by CJPI for display sanity
-    const ranked = candidates.sort((a, b) => b.cjpi - a.cjpi).slice(0, 5);
+    const subtotalCents = layers.reduce((s, l) => s + l.priceCents, 0);
+    const isFreeStack = subtotalCents === 0;
 
-    // If user has every layer already selected, skip
-    const allSelected = ranked.every((l) => selected.has(l.id));
-    if (allSelected) continue;
-
-    const subtotalCents = ranked.reduce((s, l) => s + l.priceCents, 0);
-    // No SKU on a fully-free bundle (nothing to discount)
-    if (subtotalCents === 0) continue;
-
-    const discountPercent = discountTier(ranked.length);
-    const savingsCents = Math.round((subtotalCents * discountPercent) / 100);
+    const discountPercent = isFreeStack ? 0 : discountTier(layers.length);
+    const savingsCents = isFreeStack
+      ? 0
+      : Math.round((subtotalCents * discountPercent) / 100);
     const totalCents = subtotalCents - savingsCents;
     const avgCjpi = Math.round(
-      ranked.reduce((s, l) => s + l.cjpi, 0) / ranked.length,
+      layers.reduce((s, l) => s + (Number(l.cjpi) || 0), 0) / layers.length,
     );
 
     skus.push({
-      id: `bundle-${family.toLowerCase()}`,
-      family,
-      name: FAMILY_LABELS[family],
-      layers: ranked,
+      id: `bundle-${recipe.id}`,
+      outcome: recipe.id,
+      name: recipe.name,
+      outcomeStatement: recipe.outcome,
+      rationale: recipe.rationale,
+      layers,
       subtotalCents,
       discountPercent,
       totalCents,
       savingsCents,
       avgCjpi,
-      rationale: `${ranked.length} top-CJPI ${family.toLowerCase()} layers — ${discountPercent}% off when attached together.`,
+      isFreeStack,
     });
   }
 
-  skus.sort((a, b) => b.savingsCents - a.savingsCents);
+  // Paid stacks first (by savings desc), free stacks last (by avg CJPI desc)
+  skus.sort((a, b) => {
+    if (a.isFreeStack !== b.isFreeStack) return a.isFreeStack ? 1 : -1;
+    if (a.isFreeStack) return b.avgCjpi - a.avgCjpi;
+    return b.savingsCents - a.savingsCents;
+  });
 
   return typeof input.limit === 'number' ? skus.slice(0, input.limit) : skus;
 }
