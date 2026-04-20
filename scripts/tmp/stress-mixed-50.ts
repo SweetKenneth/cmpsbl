@@ -34,6 +34,13 @@ import { generateRefurbishedCode } from '../../src/lib/factory/generate-refurbis
 import { generateUnifiedCapabilityFile, type UnifiedCapabilityInput } from '../../src/lib/export/unified-capability-file';
 import { runPreExportHarness } from '../../src/lib/ascension-v2/pre-export-harness';
 import { getAvailableLayers } from '../../src/lib/export/cmpsbl-layers';
+import { getShippingLanguages } from '../../src/lib/export/language-parity-tiers';
+
+// Canonical SHIPPING-language gate. Per mem://constraints/architecture/shipping-languages-only,
+// the Ascension export pipeline ships ONLY these languages today. Any fixture
+// in a non-shipping language (Ruby, PHP, C, C++, Shell, SQL, JSON, YAML, etc.)
+// is filtered OUT before the run — we don't grade languages we don't ship.
+const SHIPPING_LANG_IDS = new Set(getShippingLanguages().map((l) => l.id.toLowerCase()));
 
 // ─── Deterministic RNG so the run is reproducible ──────────────────────────
 function rng(seed: number) {
@@ -423,8 +430,10 @@ function runOne(sample: Sample): FileResult {
   return r;
 }
 
-// ─── Run all 50 ────────────────────────────────────────────────────────────
-const results = CORPUS.map(runOne);
+// ─── Filter to SHIPPING languages only, then run ──────────────────────────
+const SHIPPING_CORPUS = CORPUS.filter((s) => SHIPPING_LANG_IDS.has(s.lang.toLowerCase()));
+const SKIPPED = CORPUS.filter((s) => !SHIPPING_LANG_IDS.has(s.lang.toLowerCase()));
+const results = SHIPPING_CORPUS.map(runOne);
 
 // ─── Aggregate ─────────────────────────────────────────────────────────────
 const byTier = { builder: 0, pro: 0 } as Record<string, number>;
@@ -451,7 +460,13 @@ const govMatrix = (['observe','soft','enforce'] as const).map((m) => ({
 }));
 
 const out = {
-  meta: { total, seed: 20260420, runAt: new Date().toISOString() },
+  meta: {
+    total,
+    seed: 20260420,
+    runAt: new Date().toISOString(),
+    shippingLanguages: Array.from(SHIPPING_LANG_IDS).sort(),
+    skippedNonShipping: SKIPPED.map((s) => ({ file: s.file, lang: s.lang })),
+  },
   summary: {
     PASS: verdictCount.PASS, SOFT: verdictCount.SOFT, HARD: verdictCount.HARD,
     passPct: +passPct.toFixed(1),
@@ -472,7 +487,9 @@ fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
 
 // ─── Console report ───────────────────────────────────────────────────────
-console.log('═══ Mixed Free/Pro 50-File Stress ═══');
+console.log('═══ Mixed Free/Pro Stress (SHIPPING languages only) ═══');
+console.log(`Shipping: ${Array.from(SHIPPING_LANG_IDS).sort().join(', ')}`);
+console.log(`Graded: ${results.length}/${CORPUS.length}  (skipped ${SKIPPED.length} non-shipping)`);
 console.log(`Tiers: Free=${byTier.builder}  Pro=${byTier.pro}`);
 console.log(`Verdict: PASS=${verdictCount.PASS}  SOFT=${verdictCount.SOFT}  HARD=${verdictCount.HARD}`);
 console.log(`Pass%: ${passPct.toFixed(1)}%   Clean (PASS+SOFT)%: ${cleanPct.toFixed(1)}%`);
