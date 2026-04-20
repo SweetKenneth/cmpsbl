@@ -178,6 +178,18 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     if (c === '/' && next === '/') { inLineComment = true; continue; }
     if (c === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (c === '#') { inLineComment = true; continue; }
+    // SQL block comment: `-- …`
+    if (c === '-' && next === '-') { inLineComment = true; i++; continue; }
+    // PostgreSQL dollar-quoted string opener: `$$` or `$tag$`.
+    if (c === '$') {
+      // Match $tag$ where tag is empty or [A-Za-z_][A-Za-z0-9_]*
+      const m = /^\$([A-Za-z_][A-Za-z0-9_]*)?\$/.exec(source.slice(i, i + 64));
+      if (m) {
+        inDollarQuote = m[0];
+        i += m[0].length - 1;
+        continue;
+      }
+    }
     // JS/TS regex literal: `/pattern/flags`. Detect via preceding token.
     if (c === '/' && next !== '/' && next !== '*') {
       const before = source.slice(Math.max(0, i - 16), i);
