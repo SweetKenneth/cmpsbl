@@ -39,6 +39,7 @@ import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmp
 import { V2SmartRecommendations } from './V2SmartRecommendations';
 import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
+import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
@@ -505,6 +506,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             ))}
           </div>
         </div>
+      )}
+
+      {/* Sprint 5 — Capability provenance trace. Expandable per-capability
+          explainer derived entirely from real signals already on each
+          DiscoveredCapability (chain, band, channels, gaps, synergies,
+          merge verdict). No fabricated source-line mapping. */}
+      {capabilities.length > 0 && (
+        <V2CapabilityProvenance capabilities={capabilities} />
       )}
 
       {/* Layer selection indicator (selected on Enhance step) */}
