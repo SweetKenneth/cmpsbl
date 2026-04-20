@@ -73,23 +73,19 @@ export const GOVERNANCE_MODES: ReadonlyArray<GovernanceModeMeta> = [
 
 /**
  * Tier ceiling for mode selection.
- * Free / Builder → OBSERVE only.
- * Studio+ → SOFT.
- * Creator+ → ENFORCE.
- * Governor → all modes (handled by caller via isGovernor).
+ * Free (Builder) → OBSERVE only.
+ * Pro → SOFT + ENFORCE (and OBSERVE).
+ * Enterprise / Governor → all modes.
  */
 export function isModeAllowed(
   mode: GovernanceMode,
-  effectiveTier: 'builder' | 'studio' | 'creator' | 'architect' | 'enterprise',
+  effectiveTier: 'builder' | 'pro' | 'enterprise',
   isGovernor: boolean,
 ): boolean {
   if (isGovernor) return true;
   if (mode === 'observe') return true;
-  if (mode === 'soft') {
-    return ['studio', 'creator', 'architect', 'enterprise'].includes(effectiveTier);
-  }
-  // enforce
-  return ['creator', 'architect', 'enterprise'].includes(effectiveTier);
+  // soft + enforce both unlock at Pro
+  return effectiveTier === 'pro' || effectiveTier === 'enterprise';
 }
 
 /**
