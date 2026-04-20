@@ -73,8 +73,10 @@ export interface FunctionBoundary {
 function detectPythonClassMethods(source: string): FunctionBoundary[] {
   const out: FunctionBoundary[] = [];
   const lines = source.split('\n');
-  // Stack of { indent, name } — enclosing class scopes
-  const classStack: Array<{ indent: number; name: string }> = [];
+  // Stack of { indent, name, hasPermissionClasses } — enclosing class scopes.
+  // T5: track DRF-style `permission_classes = [...]` so we can stamp
+  // authorize_<method> boundaries on perform_create/update/destroy/list.
+  const classStack: Array<{ indent: number; name: string; gated: boolean }> = [];
 
   for (let i = 0; i < lines.length; i++) {
     const raw = lines[i];
@@ -88,18 +90,28 @@ function detectPythonClassMethods(source: string): FunctionBoundary[] {
 
     const classMatch = raw.match(/^(\s*)class\s+([A-Za-z_]\w*)/);
     if (classMatch) {
-      classStack.push({ indent, name: classMatch[2] });
+      classStack.push({ indent, name: classMatch[2], gated: false });
+      continue;
+    }
+
+    // T5: detect DRF permission gate at class scope.
+    if (classStack.length && /^\s*permission_classes\s*=/.test(raw)) {
+      classStack[classStack.length - 1].gated = true;
       continue;
     }
 
     const defMatch = raw.match(/^(\s*)(?:async\s+)?def\s+([A-Za-z_]\w*)\s*\(/);
     if (defMatch) {
       const methodName = defMatch[2];
-      // Skip pure dunders that are never real entry points
       if (methodName === '__str__' || methodName === '__repr__' || methodName === '__eq__') continue;
-      const cls = classStack.length ? classStack[classStack.length - 1].name : null;
+      const enclosing = classStack.length ? classStack[classStack.length - 1] : null;
+      const cls = enclosing ? enclosing.name : null;
       const qualified = cls ? `${cls}.${methodName}` : methodName;
       out.push({ name: qualified, line: i + 1 });
+      // T5: synth authorize_ boundary so access_controller signal fires.
+      if (enclosing?.gated && /^(perform_(create|update|destroy)|list|retrieve|create|update|destroy)$/.test(methodName)) {
+        out.push({ name: `authorize_${methodName}`, line: i + 1 });
+      }
     }
   }
   return out;
