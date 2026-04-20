@@ -103,11 +103,11 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 - [ ] Failed-run forensics: when Pre-Ascension Gate fails, cite failing check + remediation hint
 - [ ] Pre-flight estimator: projected layer count + language count *before* upload
 
-### Cohesion Track — Drop Theater (with rollback)
-- [ ] **Snapshot first:** export `cascade_*`, `brain_curiosity_*`, `brain_persona_*` to `/mnt/documents/cohesion-snapshots/sprint-1.sql`
-- [ ] DROP `cascade_*` (3 tables)
-- [ ] DROP `brain_curiosity_*` + `brain_persona_*`
-- [ ] Classify 5 of the ~50 `❓ review` 1-table prefixes (start the queue)
+### Cohesion Track — Classify (retargeted; original drop list was active)
+- [x] Audit `cascade_*` + `brain_curiosity_*` against runtime → **alive, not theater** (261 refs across 6 edge functions; `pf-substrate` writes `cascade_dreams`, `safeMode` writes `cascade_events`, `_shared/curiosityScorer` writes `brain_curiosity_log`)
+- [x] Roadmap correction recorded in `ascension-v2-sprint-1-report.md`
+- [x] Classify first 5 of the ~50 `❓ review` 1-table prefixes → all alive (`accessibility_scans`, `admin_ip_allowlist`, `artifact_registry`, `atlas_capabilities`, `audit_logs`)
+- [ ] Continue 1-table prefix queue in Sprint 2 (rolled forward)
 
 ### Security Track
 - [ ] Run `security--run_security_scan` → fix any finding tied to dropped tables
