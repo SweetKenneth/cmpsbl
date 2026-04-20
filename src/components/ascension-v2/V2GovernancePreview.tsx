@@ -177,9 +177,14 @@ interface Props {
   source: string | null;
   excludedFunctions: ReadonlyArray<string>;
   onToggleExclude: (functionName: string) => void;
+  /**
+   * Currently selected governance mode — used to render the
+   * "what would Enforce do" diff preview without changing internals.
+   */
+  selectedMode?: 'observe' | 'soft' | 'enforce';
 }
 
-export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude }: Props) {
+export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude, selectedMode = 'observe' }: Props) {
   const [codeOpen, setCodeOpen] = useState(true);
   const [reportOpen, setReportOpen] = useState(true);
 
@@ -369,6 +374,36 @@ export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude
             <p className="text-[10px] italic text-muted-foreground/80 pt-2 border-t border-border/50">
               Governance scope is determined by Ascension's analysis. You retain full ownership of your source code.
             </p>
+
+            {/* ── Enforce-diff preview — shows what would change at full enforcement ── */}
+            {(() => {
+              const enforceableCount = activeCount;
+              const isEnforce = selectedMode === 'enforce';
+              if (enforceableCount === 0) {
+                return (
+                  <div className="mt-2 rounded-md border border-emerald-500/30 bg-emerald-500/5 p-2.5">
+                    <p className="text-[10px] font-semibold text-emerald-400">
+                      What would Enforce do here?
+                    </p>
+                    <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">
+                      Nothing. No risk surfaces detected — Enforce behaves identically to Observe for this file. Mode auto-downgrades to a quiet watch.
+                    </p>
+                  </div>
+                );
+              }
+              return (
+                <div className="mt-2 rounded-md border border-border bg-muted/20 p-2.5">
+                  <p className="text-[10px] font-semibold text-foreground">
+                    What would Enforce do here?
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">
+                    {isEnforce
+                      ? `You're already at Enforce — Ascension actively protects ${enforceableCount} ${enforceableCount === 1 ? 'surface' : 'surfaces'} with rate-limits, replay guards, and audit trails.`
+                      : `Enforce would actively protect ${enforceableCount} ${enforceableCount === 1 ? 'surface' : 'surfaces'} (rate-limits, replay guards, audit trails). Currently ${selectedMode === 'soft' ? 'console-warning only' : 'observation-only'}.`}
+                  </p>
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
