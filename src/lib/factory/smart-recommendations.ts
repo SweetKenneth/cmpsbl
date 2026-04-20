@@ -107,17 +107,36 @@ export interface RecommendationInput {
 }
 
 /**
- * Returns true if a layer is unlocked for `tier`. Store layers are tracked
- * separately (per-SKU purchase) and always considered "attachable" here.
- * Layers without a `rank` (e.g. inventory/store) bypass the tier gate.
+ * Build a one-time index from layer-name → required tier, sourced from
+ * TIER_LAYERS (the single source of truth for unlock rules).
+ */
+import { TIER_LAYERS } from '@/lib/ascension-v2/tier-layers';
+const NAME_TO_REQUIRED_TIER: ReadonlyMap<string, LayerTier> = (() => {
+  const m = new Map<string, LayerTier>();
+  for (const tier of ['builder', 'studio', 'creator', 'architect'] as const) {
+    for (const entry of TIER_LAYERS[tier]) {
+      m.set(entry.name.toLowerCase(), tier);
+    }
+  }
+  return m;
+})();
+
+/** Required tier for a layer, or null if not in the launch-layer ladder. */
+function requiredTierForLayer(layer: CmpsblLayerDefinition): LayerTier | null {
+  return NAME_TO_REQUIRED_TIER.get(layer.name.toLowerCase()) ?? null;
+}
+
+/**
+ * Returns true if a layer is unlocked for `tier`. Store layers (per-SKU
+ * purchase) and core/baseline layers not in the launch ladder are treated
+ * as attachable so we never gate something the user already owns.
  */
 function isLayerAttachableForTier(layer: CmpsblLayerDefinition, tier: LayerTier): boolean {
   if (STORE_LAYER_IDS.has(layer.id)) return true;
-  const rank = (layer as unknown as { rank?: number }).rank;
-  if (typeof rank !== 'number') return true;
-  const layerTier = tierForRank(rank);
-  if (layerTier === 'enterprise') return tier === 'enterprise';
-  return TIER_ORDER.indexOf(tier) >= TIER_ORDER.indexOf(layerTier);
+  const required = requiredTierForLayer(layer);
+  if (!required) return true; // not in the launch ladder = baseline / always-on
+  if (required === 'enterprise') return tier === 'enterprise';
+  return TIER_ORDER.indexOf(tier) >= TIER_ORDER.indexOf(required);
 }
 
 /** Adjacency families — primitives that commonly appear together. */
