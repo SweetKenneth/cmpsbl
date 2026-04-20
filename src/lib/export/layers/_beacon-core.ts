@@ -166,7 +166,7 @@ export const BEACON_CORE: CmpsblLayerDefinition = {
   pyCode: BEACON_PY,
   autoWire: {
     wrapperName: 'cmpsbl_beacon_emit',
-    behavior: 'Sealed wrapper — proprietary.',
+    behavior: 'Wraps cmpsbl_execute as the outermost layer; emits a structured BEACON signal (capability, ok, durationMs, errorCode, traceId, ts) on every call to the in-memory ring buffer and any subscribed sinks.',
     tsWire: BEACON_WIRE_TS,
     pyWire: BEACON_WIRE_PY,
   },
