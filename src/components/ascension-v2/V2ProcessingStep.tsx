@@ -19,6 +19,7 @@ import {
   retry,
   deduplicateCapabilities,
   getSnapshot,
+  emitFunnelEvent,
   type DiscoveredCapability,
   type DedupResult,
   // Phase A — V1 Bridge (gaps 1-6)

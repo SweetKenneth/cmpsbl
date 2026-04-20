@@ -29,6 +29,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { useLayerEntitlements } from '@/hooks/useLayerEntitlements';
 import { Link } from 'react-router-dom';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
+import { emitFunnelEvent, getSnapshot } from '@/lib/ascension-v2';
 
 /**
  * Build a rank → tier lookup from the canonical TIER_LAYERS map.
