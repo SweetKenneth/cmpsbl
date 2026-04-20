@@ -59,13 +59,62 @@ export interface FunctionBoundary {
 }
 
 /**
+ * Python class-aware method scan. Tracks indentation to namespace methods
+ * to their enclosing class (e.g., `AgentExecutor._call`). Allows leading-
+ * underscore method names because Python frameworks (LangChain, asyncio,
+ * Pydantic) put real entry points in `_call`, `_arun`, `_acall`, `__init__`.
+ */
+function detectPythonClassMethods(source: string): FunctionBoundary[] {
+  const out: FunctionBoundary[] = [];
+  const lines = source.split('\n');
+  // Stack of { indent, name } — enclosing class scopes
+  const classStack: Array<{ indent: number; name: string }> = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw.trim() || raw.trim().startsWith('#')) continue;
+    const indent = raw.length - raw.trimStart().length;
+
+    // Pop class scopes we've dedented out of
+    while (classStack.length && indent <= classStack[classStack.length - 1].indent) {
+      classStack.pop();
+    }
+
+    const classMatch = raw.match(/^(\s*)class\s+([A-Za-z_]\w*)/);
+    if (classMatch) {
+      classStack.push({ indent, name: classMatch[2] });
+      continue;
+    }
+
+    const defMatch = raw.match(/^(\s*)(?:async\s+)?def\s+([A-Za-z_]\w*)\s*\(/);
+    if (defMatch) {
+      const methodName = defMatch[2];
+      // Skip pure dunders that are never real entry points
+      if (methodName === '__str__' || methodName === '__repr__' || methodName === '__eq__') continue;
+      const cls = classStack.length ? classStack[classStack.length - 1].name : null;
+      const qualified = cls ? `${cls}.${methodName}` : methodName;
+      out.push({ name: qualified, line: i + 1 });
+    }
+  }
+  return out;
+}
+
+/**
  * Detect function boundaries in source code.
  * Returns deduplicated function names in declaration order.
  */
 export function detectFunctionBoundaries(source: string): FunctionBoundary[] {
   const seen = new Set<string>();
   const boundaries: FunctionBoundary[] = [];
-  const lines = source.split('\n');
+
+  // Class-aware Python pass first — produces qualified names like `Agent._call`
+  // that won't collide with top-level functions in the dedup set.
+  const pythonHits = detectPythonClassMethods(source);
+  for (const b of pythonHits) {
+    if (seen.has(b.name)) continue;
+    seen.add(b.name);
+    boundaries.push(b);
+  }
 
   for (const pattern of FUNCTION_PATTERNS) {
     // Reset lastIndex for global regex reuse
