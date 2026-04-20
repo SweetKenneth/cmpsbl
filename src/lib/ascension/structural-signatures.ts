@@ -871,9 +871,13 @@ const ARCHETYPES: StructuralSignature[] = [
     name: 'Security Smells & Anti-Patterns',
     primitives: ['DEFENSE', 'CONSCIENCE', 'IMMUNITY'],
     patterns: [
-      // SQL string concat / template-literal injection
+      // SQL string concat / template-literal injection (JS/TS/Python/Java)
       /(query|execute|exec)\s*\(\s*["'`][^"'`]*\$?\{?\s*\w+\s*\}?[^"'`]*["'`]\s*\+/i,
       /["'`]\s*SELECT[\s\S]{0,80}["'`]\s*\+\s*\w+/i,
+      // PHP SQL injection via `.` concatenation with $_GET/$_POST/$_REQUEST/variables
+      /["']\s*(?:SELECT|INSERT|UPDATE|DELETE)[\s\S]{0,120}["']\s*\.\s*\$\w+/i,
+      /\$\w+\s*\.\s*["'][^"']*\b(?:WHERE|VALUES|SET)\b/i,
+      /(?:mysql_query|mysqli_query|pg_query)\s*\(\s*[^,)]*\$_(?:GET|POST|REQUEST|COOKIE)/i,
       // Hardcoded secrets / API keys
       /(api[_-]?key|secret|password|token)\s*[:=]\s*["'][A-Za-z0-9_\-]{12,}["']/i,
       /Authorization\s*:\s*["']Bearer\s+[A-Za-z0-9_\-]{12,}["']/i,

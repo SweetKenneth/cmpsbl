@@ -66,7 +66,33 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   initialize: 'configuration', config: 'configuration', register: 'configuration',
   open: 'io', close: 'io', connect: 'io', disconnect: 'io',
   upload: 'io', download: 'io', stream: 'io',
+  // Domain-specific verbs (expand coverage; reduces "unknown" category leakage)
+  handle: 'execution', resolve: 'execution', apply: 'execution',
+  refresh: 'execution', reload: 'execution', sync: 'execution',
+  start: 'execution', stop: 'execution', pause: 'execution', resume: 'execution',
+  build: 'transformation', compose: 'transformation', assemble: 'transformation',
+  generate: 'transformation', produce: 'transformation', create: 'transformation',
+  signal: 'communication',
+  commit: 'storage', rollback: 'storage', collect: 'storage',
+  bind: 'configuration', mount: 'configuration', wire: 'configuration',
+  search: 'analysis', query: 'analysis', explore: 'analysis',
+  scan: 'analysis', inspect: 'analysis',
 };
+
+// Reserved words that must NEVER surface as primitive names (language keywords leaking through extraction)
+const RESERVED_NAMES = new Set([
+  'const', 'let', 'var', 'func', 'function', 'class', 'struct', 'enum', 'trait',
+  'interface', 'namespace', 'module', 'package', 'import', 'export', 'return',
+  'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue',
+  'true', 'false', 'null', 'nil', 'none', 'undefined', 'void', 'self', 'this',
+  'new', 'delete', 'typeof', 'instanceof', 'in', 'of', 'as', 'is',
+  'public', 'private', 'protected', 'static', 'final', 'abstract', 'override',
+  'async', 'await', 'yield', 'try', 'catch', 'finally', 'throw',
+  'def', 'pass', 'lambda', 'with', 'from', 'global', 'nonlocal',
+  'fn', 'pub', 'mut', 'impl', 'use', 'mod', 'where',
+  'val', 'object', 'data', 'sealed', 'open', 'fun', 'suspend',
+  'main', 'todo', 'fixme', 'xxx',
+]);
 
 const CONTROL_FLOW_KEYWORDS = new Set([
   'if', 'else', 'switch', 'case', 'for', 'while', 'do', 'try', 'catch',
