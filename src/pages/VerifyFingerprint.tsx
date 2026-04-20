@@ -9,6 +9,7 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award, BarChart3 } from "lucide-react";
 import { lookupAnyFingerprint, type UnifiedLookupResult } from "@/lib/factory/restoration-session";
+import { ReceiptDetailCard } from "@/components/verify/ReceiptDetailCard";
 
 type VerifyState = "loading" | "verified" | "not-found";
 
@@ -220,6 +221,9 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
           </p>
         </div>
       </div>
+
+      {/* Receipt Detail (Sprint 1) */}
+      <ReceiptDetailCard result={result} />
 
       {/* CTA */}
       <div className="border-t border-border px-6 py-4 flex items-center justify-between">
