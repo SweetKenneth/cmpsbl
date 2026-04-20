@@ -381,8 +381,8 @@ export function V2GovernancePreview({ source, excludedFunctions, onToggleExclude
               const isEnforce = selectedMode === 'enforce';
               if (enforceableCount === 0) {
                 return (
-                  <div className="mt-2 rounded-md border border-emerald-500/30 bg-emerald-500/5 p-2.5">
-                    <p className="text-[10px] font-semibold text-emerald-400">
+                  <div className="mt-2 rounded-md border border-primary/30 bg-primary/5 p-2.5">
+                    <p className="text-[10px] font-semibold text-primary">
                       What would Enforce do here?
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">
