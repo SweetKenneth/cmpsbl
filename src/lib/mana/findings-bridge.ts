@@ -47,6 +47,14 @@ const FUNCTION_PATTERNS: RegExp[] = [
   /\bfun\s+([a-zA-Z_]\w*)\s*\(/g,
   // Tuning fix T3: R — `name <- function(args)`
   /^([A-Za-z_.][\w.]*)\s*<-\s*function\s*\(/gm,
+  // Custom-corpus T-TS: generic arrow exports — `export const x = <T>(...) =>`
+  /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$]\w*)\s*=\s*(?:async\s+)?<[^>]+>\s*\(/g,
+  // Custom-corpus T-TS: generator functions — `function* name(`
+  /(?:export\s+)?function\s*\*\s*([a-zA-Z_$]\w*)\s*\(/g,
+  // Custom-corpus T-TS: expression-bodied arrows w/ no parens — `const x = a => ...`
+  /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$]\w*)\s*=\s*(?:async\s+)?[a-zA-Z_$]\w*\s*=>/g,
+  // Custom-corpus T-TS: tagged-template fn factories — `export const x = sql\`...\``
+  /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$]\w*)\s*=\s*[a-zA-Z_$]\w*\s*`/g,
   // Class methods: name(args) {  or  name: function
   /^\s+([a-zA-Z_$]\w*)\s*\([^)]*\)\s*\{/gm,
 ];
