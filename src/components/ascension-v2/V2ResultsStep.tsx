@@ -597,6 +597,21 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           hasSource={sourceFiles.length > 0}
         />
 
+        {/* Sprint 4 — Pre-export confidence panel. Last scannable summary
+            before the irreversible Export. Aggregates: confidence bands,
+            merge verdicts, layer count, language parity, license posture,
+            estimated ZIP size. Hidden when capabilities=0 (export hidden too). */}
+        {!exportedAscendedName && (
+          <V2PreExportConfidence
+            capabilities={capabilities}
+            attachedLayerCount={selectedLayers.size}
+            language={sourceLanguage}
+            shippingUpstream={shippingUpstream}
+            upstreamMissing={upstreamMissing}
+            sourceFiles={sourceFiles}
+          />
+        )}
+
         {capabilities.length > 0 && (
           <Button
             onClick={handleExport}
