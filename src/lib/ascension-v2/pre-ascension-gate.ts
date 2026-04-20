@@ -405,17 +405,50 @@ function jsStructuralCheck(source: string): GateError | null {
   //    non-`{`/`;`/`}` run after the closing `)` until we hit `{`.
   //  • Generic type params on the function name (`function f<T>(…)`) are
   //    tolerated via an optional `<…>` slot before the parameter list.
-  // Two-pass: locate the declaration head, then verify the *next non-space
-  // char after the full signature* is '{'. This avoids regex backtracking
-  // games over TS return-type annotations.
-  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s*<[^<>]*>)?(?:\s+extends\s+\w+\b(?:\s*<[^<>]*>)?)?(?:\s+implements\s+[\w,\s<>]+)?)/g;
+  // Locate the declaration head identifier; then walk the signature with a
+  // paren-depth counter so nested parens (arrow-fn param types like
+  // `(a: A) => B`, default args, tuple types) don't terminate the param list
+  // prematurely. After the closing `)`, accept an optional TS return-type
+  // annotation (`: <type>`) and require the next non-space char to be `{`.
+  // For class declarations there is no `(...)`; the head ends at the
+  // identifier (+ optional generics / extends / implements) and must lead
+  // directly to `{`.
+  const headRe = /\b(?:function\s+\w+(?:\s*<[^<>]*>)?\s*\(|class\s+\w+(?:\s*<[^<>]*>)?(?:\s+extends\s+\w+(?:\s*<[^<>]*>)?)?(?:\s+implements\s+[\w,\s<>.]+)?)/g;
   let m: RegExpExecArray | null;
-  while ((m = re.exec(source)) !== null) {
+  while ((m = headRe.exec(source)) !== null) {
     let i = m.index + m[0].length;
-    // Skip a TS return-type annotation `: <type>` if present
-    if (source[i] === ':') {
-      i++;
-      while (i < source.length && source[i] !== '{' && source[i] !== ';' && source[i] !== '}') i++;
+    const isFunction = m[0].endsWith('(');
+    if (isFunction) {
+      // Walk parens with depth (ignoring strings/comments minimally).
+      let depth = 1;
+      while (i < source.length && depth > 0) {
+        const ch = source[i];
+        if (ch === '(') depth++;
+        else if (ch === ')') depth--;
+        else if (ch === '"' || ch === "'" || ch === '`') {
+          const q = ch; i++;
+          while (i < source.length) {
+            if (source[i] === '\\') { i += 2; continue; }
+            if (source[i] === q) { i++; break; }
+            i++;
+          }
+          continue;
+        }
+        i++;
+      }
+      // Skip optional TS return type annotation `: <type>` until `{`/`;`/`}`
+      while (i < source.length && /\s/.test(source[i])) i++;
+      if (source[i] === ':') {
+        i++;
+        let typeDepth = 0;
+        while (i < source.length) {
+          const ch = source[i];
+          if (typeDepth === 0 && (ch === '{' || ch === ';' || ch === '}')) break;
+          if (ch === '<' || ch === '(' || ch === '[') typeDepth++;
+          else if (ch === '>' || ch === ')' || ch === ']') typeDepth = Math.max(0, typeDepth - 1);
+          i++;
+        }
+      }
     }
     // Skip whitespace
     while (i < source.length && /\s/.test(source[i])) i++;

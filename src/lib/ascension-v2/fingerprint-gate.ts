@@ -67,11 +67,25 @@ function normalizeSource(source: string): string {
  */
 function countFunctions(source: string): number {
   const patterns = [
+    // JS/TS function declarations + arrow consts
     /(?:export\s+)?(?:async\s+)?function\s+\w+/g,
     /(?:const|let|var)\s+\w+\s*=\s*(?:async\s+)?\(?[^)]*\)?\s*=>/g,
+    // Python
     /def\s+\w+\s*\(/g,
+    // Rust
     /(?:pub\s+)?(?:async\s+)?fn\s+\w+/g,
-    /func\s+\w+/g,
+    // Go / Swift / Kotlin (`func` / `fun` keyword)
+    /\bfunc\s+\w+/g,
+    /\bfun\s+\w+/g,
+    // Java / C# / TS / JS class methods + constructors:
+    //   `public int Add(...)`, `static foo() {`, `Greet(...) =>`, `m() { … }`
+    // Heuristic: visibility/modifier(s) + (return type)? + identifier + `(`
+    // followed by either `{` or `=>` (C# expression-bodied, TS arrow method).
+    // Anchored to start-of-line (with leading indent) to avoid matching calls.
+    /^\s*(?:(?:public|private|protected|internal|static|final|override|virtual|abstract|async|suspend|inline)\s+)+[\w<>\[\],\s.?]*?\b\w+\s*\([^)]*\)\s*(?:->\s*[\w<>\[\],\s.?]+\s*)?(?:\{|=>)/gm,
+    // Kotlin / Swift / Scala-style `fun name(...)` already covered above.
+    // Constructor lines: `constructor(...)` (JS/TS class)
+    /\bconstructor\s*\(/g,
   ];
   let count = 0;
   for (const p of patterns) {
