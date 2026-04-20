@@ -228,6 +228,7 @@ interface FileResult {
   exportCriticalFailures: number;
   exportSoftWarnings: number;
   exportSummary: string;
+  exportFailedChecks: { id: string; severity: string; message: string }[];
   verdict: Verdict;
   notes: string[];
 }
@@ -248,6 +249,7 @@ function runOne(sample: Sample): FileResult {
     proSeesMarqueeUnlocked: tier === 'pro' ? false : null,
     dedupGroups: 0,
     exportPassed: false, exportCriticalFailures: 0, exportSoftWarnings: 0, exportSummary: '',
+    exportFailedChecks: [],
     verdict: 'HARD', notes,
   };
 
@@ -376,6 +378,9 @@ function runOne(sample: Sample): FileResult {
       r.exportCriticalFailures = report.criticalFailures;
       r.exportSoftWarnings = report.softWarnings;
       r.exportSummary = `${report.passed ? '✓' : '✗'} crit=${report.criticalFailures} soft=${report.softWarnings}`;
+      r.exportFailedChecks = (report.checks || [])
+        .filter((c: any) => !c.passed)
+        .map((c: any) => ({ id: c.id, severity: c.severity, message: (c.message || '').slice(0, 240) }));
     } catch (e) {
       notes.push(`Harness threw (downstream): ${(e as Error).message.split('\n')[0]}`);
     }
