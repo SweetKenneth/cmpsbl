@@ -38,6 +38,7 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
 import { V2ActivationGuide } from './V2ActivationGuide';
+import { V2PreExportConfidence } from './V2PreExportConfidence';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
@@ -103,6 +104,18 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     sourceFiles.length > 0 &&
     spdxChoice === 'auto' &&
     detectedUpstream === null;
+
+  // Resolve the upstream license that will actually ship — same precedence as
+  // the export pipeline (SPDX override → sibling LICENSE → inline header).
+  // Lifted out of handleExport so the pre-export confidence panel can show
+  // the exact license posture that the ZIP will carry.
+  const shippingUpstream: DetectedLicense | null = useMemo(() => {
+    if (sourceFiles.length === 0) return null;
+    if (spdxChoice === 'none') return null;
+    if (spdxChoice !== 'auto') return buildLicenseFromSpdx(spdxChoice);
+    return detectLicenseFromSiblingFile(sourceFiles)
+      ?? detectUpstreamLicenseForExport(sourceFiles[0].content);
+  }, [sourceFiles, spdxChoice]);
 
   useEffect(() => {
     completeRun();
@@ -232,19 +245,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // ── Generate all HTML docs ──
       const licenseHTML = generateV2LicenseHTML({ packName: zipName, fingerprint });
 
-      // Compute the upstream license that will actually ship — single source
-      // of truth for the README, NOTICE.txt, LICENSE-UPSTREAM.txt, and manifest
-      // entries below. Honors the SPDX dropdown override; otherwise falls
-      // through sibling-LICENSE → inline-header detection (same precedence
-      // as the live preview above the dropdown).
-      const overrideSpdx = spdxChoice === 'auto' ? null : (spdxChoice === 'none' ? null : spdxChoice);
-      const shippingUpstream: DetectedLicense | null =
-        sourceFiles.length === 0 || spdxChoice === 'none'
-          ? null
-          : overrideSpdx
-            ? buildLicenseFromSpdx(overrideSpdx)
-            : detectLicenseFromSiblingFile(sourceFiles)
-              ?? detectUpstreamLicenseForExport(sourceFiles[0].content);
+      // Upstream license that will actually ship — resolved at the component
+      // level so the pre-export confidence panel and the export pipeline use
+      // the exact same value (no drift between preview and ZIP contents).
+      // See `shippingUpstream` useMemo above for the precedence rules.
 
       const readmeHTML = generateV2ReadmeHTML({
         packName: zipName,
@@ -592,6 +596,21 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           detected={detectedUpstream}
           hasSource={sourceFiles.length > 0}
         />
+
+        {/* Sprint 4 — Pre-export confidence panel. Last scannable summary
+            before the irreversible Export. Aggregates: confidence bands,
+            merge verdicts, layer count, language parity, license posture,
+            estimated ZIP size. Hidden when capabilities=0 (export hidden too). */}
+        {!exportedAscendedName && (
+          <V2PreExportConfidence
+            capabilities={capabilities}
+            attachedLayerCount={selectedLayers.size}
+            language={sourceLanguage}
+            shippingUpstream={shippingUpstream}
+            upstreamMissing={upstreamMissing}
+            sourceFiles={sourceFiles}
+          />
+        )}
 
         {capabilities.length > 0 && (
           <Button
