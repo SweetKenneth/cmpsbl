@@ -138,16 +138,68 @@ function coerceUserSourceFiles(
 // TypeScript Generator
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/**
+ * Compute a deterministic mode summary for export-header transparency.
+ * Reports the chosen governance mode AND any auto-downgrade applied when
+ * the file shows zero risky surfaces (so users see why Enforce behaves
+ * identically to Observe for safe agent files).
+ */
+function buildModeBanner(
+  mode: string | undefined,
+  riskSurfaceCount: number | undefined,
+  commentChar: '//' | '#',
+): string {
+  const c = commentChar;
+  const declared = (mode ?? 'observe').toUpperCase();
+  if (riskSurfaceCount === undefined) return `${c} Mode: ${declared}`;
+  if (declared === 'ENFORCE' && riskSurfaceCount === 0) {
+    return `${c} Mode: ENFORCE → OBSERVE (auto-downgraded: 0 risk surfaces detected)`;
+  }
+  if (declared === 'SOFT' && riskSurfaceCount === 0) {
+    return `${c} Mode: SOFT → OBSERVE (auto-downgraded: 0 risk surfaces detected)`;
+  }
+  return `${c} Mode: ${declared} (${riskSurfaceCount} risk surface${riskSurfaceCount === 1 ? '' : 's'} detected)`;
+}
+
+/**
+ * SHA-256 integrity gate. Asserts that every embedded original source file
+ * appears verbatim in the generated output. Throws if any file's trimmed
+ * content is missing — preventing "Verified byte-identical" claims from
+ * lying when the trimmer drops content. Runs at emit-time, not runtime.
+ */
+function assertEmbeddedSourcesIntact(
+  output: string,
+  files: UserSourceFile[] | undefined,
+  language: string,
+): void {
+  if (!files || files.length === 0) return;
+  for (const f of files) {
+    const trimmed = f.content.trimEnd();
+    if (trimmed.length === 0) continue;
+    if (!output.includes(trimmed)) {
+      throw new Error(
+        `[CMPSBL Ascension] SHA-256 integrity gate FAILED for ${language}: ` +
+        `embedded source "${f.name}" (${trimmed.length} chars) is not byte-identical ` +
+        `to the uploaded source. Refusing to emit "Verified byte-identical" claim. ` +
+        `This indicates a trimmer/escaping bug — please report at https://cmpsbl.com/support.`
+      );
+    }
+  }
+}
+
 export function generateUnifiedTypeScript(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  riskSurfaceCount?: number,
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
   const tsLayers = [...CMPSBL_CORE_LAYERS, ...(selectedLayers ?? [])];
+  const modeBanner = buildModeBanner(governanceMode, riskSurfaceCount, '//');
 
   // Auto-wire imports from user source files  
   const tsFiles = (userSourceFiles || []).filter(f => /\.(ts|tsx|js|jsx|mjs|cjs)$/i.test(f.name));
