@@ -405,7 +405,7 @@ function jsStructuralCheck(source: string): GateError | null {
   // Two-pass: locate the declaration head, then verify the *next non-space
   // char after the full signature* is '{'. This avoids regex backtracking
   // games over TS return-type annotations.
-  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s+extends\s+\w+\b)?(?:\s+implements\s+[\w,\s]+)?)/g;
+  const re = /\b(function\s+\w+\b(?:\s*<[^<>]*>)?\s*\([^)]*\)|class\s+\w+\b(?:\s*<[^<>]*>)?(?:\s+extends\s+\w+\b(?:\s*<[^<>]*>)?)?(?:\s+implements\s+[\w,\s<>]+)?)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(source)) !== null) {
     let i = m.index + m[0].length;
@@ -444,12 +444,15 @@ function rubyStructuralCheck(source: string): GateError | null {
     .replace(/"(?:\\.|[^"\\])*"/g, '""')
     .replace(/'(?:\\.|[^'\\])*'/g, "''");
 
+  // Ruby 3.0+ endless methods: `def name(args) = expression` — no `end` needed.
+  // Strip them before counting `def` keywords.
+  const noEndless = stripped.replace(/\bdef\s+\w+[!?=]?\s*(?:\([^)]*\))?\s*=\s*[^\n]+/g, '');
+
   // Openers that require a matching `end`.
-  const openers = (stripped.match(/\b(def|class|module|do|begin|if|unless|case|while|until)\b/g) || []).length;
-  // `end` keyword (word-boundary) — but Ruby also has `do end`-less single-line ifs.
+  const openers = (noEndless.match(/\b(def|class|module|do|begin|if|unless|case|while|until)\b/g) || []).length;
   // Subtract single-line modifiers (`expr if cond`, `expr unless cond`, `expr while cond`).
-  const inlineModifiers = (stripped.match(/\S\s+(if|unless|while|until)\s+\S/g) || []).length;
-  const ends = (stripped.match(/\bend\b/g) || []).length;
+  const inlineModifiers = (noEndless.match(/\S\s+(if|unless|while|until)\s+\S/g) || []).length;
+  const ends = (noEndless.match(/\bend\b/g) || []).length;
   const expectedEnds = openers - inlineModifiers;
 
   if (expectedEnds > ends) {

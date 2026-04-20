@@ -877,8 +877,10 @@ const ARCHETYPES: StructuralSignature[] = [
       // Hardcoded secrets / API keys
       /(api[_-]?key|secret|password|token)\s*[:=]\s*["'][A-Za-z0-9_\-]{12,}["']/i,
       /Authorization\s*:\s*["']Bearer\s+[A-Za-z0-9_\-]{12,}["']/i,
-      // C# blocking async (.Result / .Wait()) on Task
-      /\.\s*(Result|Wait)\s*\(\s*\)\s*;/,
+      // C# blocking async — flexible: `.Result` (property), `.Result;`, `.Wait()`,
+      // `.GetAwaiter().GetResult()`, with optional whitespace and chains.
+      /\.\s*(Result|Wait\s*\(\s*\))\b/,
+      /\.\s*GetAwaiter\s*\(\s*\)\s*\.\s*GetResult\s*\(\s*\)/,
       // Ruby blanket rescue
       /\brescue\s+Exception\b/,
       // Bare except: in Python
@@ -891,6 +893,11 @@ const ARCHETYPES: StructuralSignature[] = [
       /(child_process|subprocess|os\.system|Runtime\.getRuntime\(\)\.exec)\s*[\.\(]/,
       // missing TLS verification
       /(verify\s*[:=]\s*false|rejectUnauthorized\s*:\s*false|InsecureSkipVerify\s*:\s*true)/i,
+      // Rust panic-prone: chained `.unwrap()` (≥2 in a chain) or `.expect("…")`
+      /\.\s*unwrap\s*\(\s*\)\s*\.\s*\w+[\s\S]{0,80}\.\s*unwrap\s*\(\s*\)/,
+      /\.\s*expect\s*\(\s*["'][^"']{0,80}["']\s*\)/,
+      // Rust `unsafe` block — flag for review (not always a smell, but worth surfacing)
+      /\bunsafe\s*\{/,
     ],
     coSignals: [
       'eval', 'exec', 'innerhtml', 'rescue', 'unsafe', 'todo', 'fixme',
