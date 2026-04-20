@@ -82,6 +82,12 @@ export interface LayerRecommendation {
   driverPrimitive: string;
   /** One-liner explaining why this layer was picked */
   rationale: string;
+  /**
+   * Set when the caller passed `userTier` and this layer requires a higher
+   * plan than the viewer currently has. UI uses this to render a soft
+   * upgrade chip instead of a free "Add" toggle.
+   */
+  upgradeRequired?: LayerTier;
 }
 
 export interface RecommendationInput {
