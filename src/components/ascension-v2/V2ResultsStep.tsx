@@ -36,6 +36,7 @@ import { detectLicenseFromSiblingFile } from '@/lib/factory/sibling-license-scan
 import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/license-attribution';
 import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
+import { V2SmartRecommendations } from './V2SmartRecommendations';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
@@ -504,6 +505,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </span>
         </div>
       )}
+
+      {/* Smart Recommendations — gap+adjacency picks based on what this run covered */}
+      <V2SmartRecommendations
+        coveredPrimitives={capabilities.flatMap((c) => c.chain.filter((p) => p !== 'CANDIDATE'))}
+        selectedLayerIds={Array.from(selectedLayers)}
+        limit={4}
+      />
 
       <div className="bg-muted/20 rounded-xl p-2.5 sm:p-3 flex items-center gap-2">
         <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" />
