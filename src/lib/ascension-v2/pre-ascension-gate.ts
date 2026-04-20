@@ -121,6 +121,10 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
   let inLineComment = false;
   let inBlockComment = false;
   let inPyTriple: '"""' | "'''" | null = null;
+  // PostgreSQL dollar-quoted string body: $$…$$ or $tag$…$tag$.
+  // Body is opaque to the bracket scanner — function bodies inside CREATE FUNCTION
+  // legitimately contain unbalanced punctuation (e.g. `BEGIN … END;` with `IF … THEN`).
+  let inDollarQuote: string | null = null;
   // Template-literal substitution depth: each `${ … }` inside a backtick
   // string opens a new JS expression scope. We push '`' onto the template
   // stack so that the matching '}' returns us to template-string mode.
