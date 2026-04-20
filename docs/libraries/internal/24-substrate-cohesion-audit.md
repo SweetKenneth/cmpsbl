@@ -51,7 +51,7 @@
 | `defense_*` | 3 | DEFENSE | 🟢 alive | Defense layer policy |
 | `discovery_*` | 3 | DISCOVERY | 🟢 alive | Federated primitive discovery |
 | `email_*` | 3 | EMAIL | 🟢 alive | Outbound email queue + templates |
-| `global_*` | 3 | GLOBAL | ❓ review | Possibly outdated global state |
+| `global_*` | 3 | GLOBAL | 🟢 alive | Global state config — reclassified via prefix sweep. Sprint 1 batch 6. |
 | `immune_*` | 3 | IMMUNITY | 🟡 rename | Old "immune_" → consolidate with immunity_* |
 | `lex_*` | 3 | LEX | 🟢 alive | Governance rule registry |
 | `module_*` | 3 | SUBSTRATE CORE | 🟡 rename | Old "module_" → primitive_* (module_registry was theater, dropped) |
@@ -108,26 +108,26 @@
 | `member_*` | 1 | AGENCY | 🟢 alive | `member_usage_stats` — 4 fn / 22 src refs, agency member telemetry. Sprint 1 batch 5. |
 | `merchant_*` | 1 | MARKETPLACE | 🟢 alive | `merchant_scan_log` — 17 rows, MERCHANT engine scan ledger. Sprint 1 batch 5. |
 | `owner_*` | 1 | GOVERNANCE | 🟢 alive | `owner_reports` — 236 rows, Governor owner-report archive. Sprint 1 batch 5. |
-| `pipeline_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `production_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `profiles_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `proposal_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `provider_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `quarry_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `radio_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `restoration_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `saved_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `security_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `slo_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `suppressed_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `task_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `tenants_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `usage_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `v_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `vault_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `verification_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `vision_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `workbench_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `pipeline_*` | 1 | SUBSTRATE CORE | 🟢 alive | `pipeline_vault` — 1 row, 6 fn / 63 src refs. Pipeline metadata vault. Sprint 1 batch 6. |
+| `production_*` | 1 | MARKETPLACE | 🟢 alive | `production_promotions` — 3 fn / 27 src refs. Production-tier promotions ledger. Sprint 1 batch 6. |
+| `profiles_*` | 1 | AUTH | 🟢 alive | `profiles` — 103 total refs. Core user profiles table. Sprint 1 batch 6. |
+| `proposal_*` | 1 | EVOLUTION | 🟢 alive | `proposal_meta` — 2 fn / 50 src refs. Evolution proposal metadata. Sprint 1 batch 6. |
+| `provider_*` | 1 | NEXUS | 🟢 alive | `provider_routing_events` — 8 fn / 40 src refs. NEXUS provider routing telemetry. Sprint 1 batch 6. |
+| `quarry_*` | 1 | FOUNDRY | 🟢 alive | `quarry_assets` — 2 src refs. Raw material queue for Foundry pipeline. Sprint 1 batch 6. |
+| `radio_*` | 1 | SUBSTRATE CORE | 🟢 alive | `radio_broadcasts` — 5 rows, 1 fn / 5 src refs. Substrate radio broadcast bus. Sprint 1 batch 6. |
+| `restoration_*` | 1 | SUBSTRATE CORE | 🟢 alive | `restoration_sessions` — 1 row, 1 fn / 3 src refs. Disaster recovery session ledger. Sprint 1 batch 6. |
+| `saved_*` | 1 | LAYERS | 🟢 alive | `saved_workflows` — 1 fn / 11 src refs. User-saved workflow pipelines. Sprint 1 batch 6. |
+| `security_*` | 1 | DEFENSE | 🟢 alive | `security_audit_log` — 6 fn / 59 src refs. Security audit trail. Sprint 1 batch 6. |
+| `slo_*` | 1 | OBSERVABILITY | 🟢 alive | `slo_specs` — 3 src refs. SLO specification definitions. Sprint 1 batch 6. |
+| `suppressed_*` | 1 | EMAIL | 🟢 alive | `suppressed_emails` — 3 src refs. Email suppression list (compliance). Sprint 1 batch 6. |
+| `task_*` | 1 | AGENCY | 🟢 alive | `task_presets` — 10 fn / 73 src refs. Agency task preset library. Sprint 1 batch 6. |
+| `tenants_*` | 1 | SUBSTRATE CORE | 🟢 alive | `tenants` — 12 total refs. Multi-tenant isolation table. Sprint 1 batch 6. |
+| `usage_*` | 1 | OBSERVABILITY | 🟢 alive | `usage_metrics` — 15 fn / 72 src refs. Usage telemetry aggregates. Sprint 1 batch 6. |
+| `v_*` | 1 | SUBSTRATE CORE | 🟢 alive | `v_user_summary` — 1 src ref. User summary view/materialized table. Sprint 1 batch 6. |
+| `vault_*` | 1 | ASCENSION | 🟢 alive | `vault_promotions` — **11,165 rows**, 3 fn / 16 src refs. Prime Vault promotion ledger (anchor). Sprint 1 batch 6. |
+| `verification_*` | 1 | ASCENSION | 🟢 alive | `verification_scans` — 3 fn / 22 src refs. `/verify` scan result ledger. Sprint 1 batch 6. |
+| `vision_*` | 1 | VISION | 🟢 alive | `vision_anomalies` — 5 fn / 22 src refs. VISION anomaly detection ledger. Sprint 1 batch 6. |
+| `workbench_*` | 1 | FOUNDRY | 🟢 alive | `workbench_items` — 3 src refs. Developer workbench item storage. Sprint 1 batch 6. |
 
 ---
 ## Full Table Inventory by Prefix
