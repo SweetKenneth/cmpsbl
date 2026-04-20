@@ -47,6 +47,14 @@ const FUNCTION_PATTERNS: RegExp[] = [
   /\bfun\s+([a-zA-Z_]\w*)\s*\(/g,
   // Tuning fix T3: R — `name <- function(args)`
   /^([A-Za-z_.][\w.]*)\s*<-\s*function\s*\(/gm,
+  // Custom-corpus T-TS: generic arrow exports — `export const x = <T>(...) =>`
+  /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$]\w*)\s*=\s*(?:async\s+)?<[^>]+>\s*\(/g,
+  // Custom-corpus T-TS: generator functions — `function* name(`
+  /(?:export\s+)?function\s*\*\s*([a-zA-Z_$]\w*)\s*\(/g,
+  // Custom-corpus T-TS: expression-bodied arrows w/ no parens — `const x = a => ...`
+  /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$]\w*)\s*=\s*(?:async\s+)?[a-zA-Z_$]\w*\s*=>/g,
+  // Custom-corpus T-TS: tagged-template fn factories — `export const x = sql\`...\``
+  /(?:export\s+)?(?:const|let|var)\s+([a-zA-Z_$]\w*)\s*=\s*[a-zA-Z_$]\w*\s*`/g,
   // Class methods: name(args) {  or  name: function
   /^\s+([a-zA-Z_$]\w*)\s*\([^)]*\)\s*\{/gm,
 ];
@@ -385,6 +393,10 @@ const CAPABILITY_SIGNALS: Array<{
       /^(parse|deserialize)[A-Z_]/,
       // T1: synthesized validate_<method> from @Valid/@Validate decorators
       /^validate_[A-Za-z_]/,
+      // Custom-corpus T3: type-driven validators — narrow/refine/tryFrom/from_str/guard
+      /^(narrow|refine|tryFrom|try_from|from_str|fromStr|guard|coerce|cast)([A-Z_]|$)/,
+      // Bare parse/validate at module scope (zod schema.parse, serde from_str fns)
+      /^(parse|validate|check|verify)([A-Z_]|$)/,
     ],
     capability: 'payload_validator',
     primitive: 'DEFENSE',
@@ -442,6 +454,16 @@ const CAPABILITY_SIGNALS: Array<{
       /^(save|update|delete|destroy|drop|truncate|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite|transfer|withdraw|approve|store_user|register|store|perform_create|perform_destroy|perform_update)/i,
       // Tuning fix T2: WordPress / event-bus mutating hooks
       /^on_.*_(save|register|create|delete|update|complete|destroy|charge|refund|cancel)$/i,
+      // Custom-corpus T1: lifecycle / dunder / Proxy traps / Drop / module init
+      /^(__init_subclass__|__set_name__|__set__|__delete__|__del__|__enter__|__exit__|__aenter__|__aexit__|__post_init__)$/,
+      // Proxy traps (JS) — set/deleteProperty/defineProperty are mutating
+      /^(deleteProperty|defineProperty|setPrototypeOf|preventExtensions)$/,
+      // Rust Drop / Deref mutation hooks
+      /^(drop|deref_mut|index_mut|borrow_mut|as_mut|into_mut|leak)$/,
+      // C# / .NET module init + finalizers
+      /^(ModuleInitializer|Finalize|Dispose|DisposeAsync)$/,
+      // Low-level allocators (formerly proposed memory_writer)
+      /^(allocate|deallocate|free|alloc|alloc_zeroed|stackalloc|allocateDirect|mmap|munmap|reserve|commit)$/i,
     ],
     capability: 'governance_hook',
     primitive: 'GOVERNANCE',
