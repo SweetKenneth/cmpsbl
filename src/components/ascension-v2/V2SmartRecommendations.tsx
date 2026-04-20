@@ -19,7 +19,7 @@
 import { useMemo } from 'react';
 import {
   Sparkles, Plus, Check, ArrowRight, Layers as LayersIcon,
-  ShoppingBag, Package,
+  ShoppingBag, Package, Lock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
@@ -28,6 +28,8 @@ import {
   summarizeStoreBundle,
   type LayerRecommendation,
 } from '@/lib/factory/smart-recommendations';
+import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 interface Props {
   /** Primitives covered by the current run (empty = pre-run heuristic mode) */
@@ -40,6 +42,17 @@ interface Props {
   limit?: number;
   /** Compact title override */
   title?: string;
+  /** Override viewer tier (default: read from subscription hook) */
+  userTier?: LayerTier;
+}
+
+function mapSubscriptionTier(tier: string | undefined): LayerTier {
+  if (!tier) return 'builder';
+  if (tier === 'enterprise') return 'enterprise';
+  if (tier === 'architect' || tier === 'pro') return 'architect';
+  if (tier === 'creator') return 'creator';
+  if (tier === 'studio' || tier === 'operator') return 'studio';
+  return 'builder';
 }
 
 function formatPrice(cents: number): string {
