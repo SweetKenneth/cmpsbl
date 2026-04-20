@@ -11,7 +11,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Upload, Layers, Search, Download, Check, RotateCcw } from 'lucide-react';
+import { Upload, Layers, ShieldCheck, Search, Download, Check, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,6 +24,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 
 import { V2UploadStep } from '@/components/ascension-v2/V2UploadStep';
 import { V2EnhanceStep } from '@/components/ascension-v2/V2EnhanceStep';
+import { V2GovernanceModeStep } from '@/components/ascension-v2/V2GovernanceModeStep';
 import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 import { V2LaunchLayers } from '@/components/ascension-v2/V2LaunchLayers';
@@ -44,6 +45,7 @@ import {
 const STEPS = [
   { label: 'Upload', icon: Upload },
   { label: 'Enhance', icon: Layers },
+  { label: 'Govern', icon: ShieldCheck },
   { label: 'Analyze', icon: Search },
   { label: 'Results', icon: Download },
 ] as const;
