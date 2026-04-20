@@ -150,6 +150,29 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     if (c === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (c === '#') { inLineComment = true; continue; }
     if (trip === '"""' || trip === "'''") { inPyTriple = trip as '"""' | "'''"; i += 2; continue; }
+    // Rust lifetime tick: `<'a>`, `&'a`, `&'a mut`, `'static`, `Foo<'a, 'b>`.
+    // A `'` immediately followed by an identifier char and NOT closed by `'`
+    // within the next ~16 chars is a lifetime, not a char literal. We skip
+    // the identifier so the scanner doesn't mis-enter string mode.
+    if (c === "'") {
+      const prev = i > 0 ? source[i - 1] : '';
+      const startsLifetime =
+        /[A-Za-z_]/.test(next || '') &&
+        (prev === '<' || prev === ',' || prev === '&' || prev === ' ' || prev === '\t' || prev === '\n');
+      if (startsLifetime) {
+        // Consume the identifier; do NOT enter string mode.
+        let j = i + 1;
+        while (j < source.length && /[A-Za-z0-9_]/.test(source[j])) j++;
+        // If a closing `'` follows immediately AND is preceded by exactly one
+        // char (e.g. `'a'` char literal), treat as char literal instead.
+        if (source[j] === "'" && j - i === 2) {
+          inStr = "'";
+          continue;
+        }
+        i = j - 1;
+        continue;
+      }
+    }
     if (c === '"' || c === "'" || c === '`') { inStr = c as '"' | "'" | '`'; continue; }
 
     if (c === '(' || c === '[' || c === '{') stack.push({ ch: c, off: i });
@@ -362,6 +385,38 @@ function jsStructuralCheck(source: string): GateError | null {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Ruby-specific structural check (def/end balance, class/end)
+// ═══════════════════════════════════════════════════════════════
+
+function rubyStructuralCheck(source: string): GateError | null {
+  // Strip strings + comments roughly so keywords inside them don't count.
+  const stripped = source
+    .replace(/#[^\n]*/g, '')
+    .replace(/"(?:\\.|[^"\\])*"/g, '""')
+    .replace(/'(?:\\.|[^'\\])*'/g, "''");
+
+  // Openers that require a matching `end`.
+  const openers = (stripped.match(/\b(def|class|module|do|begin|if|unless|case|while|until)\b/g) || []).length;
+  // `end` keyword (word-boundary) — but Ruby also has `do end`-less single-line ifs.
+  // Subtract single-line modifiers (`expr if cond`, `expr unless cond`, `expr while cond`).
+  const inlineModifiers = (stripped.match(/\S\s+(if|unless|while|until)\s+\S/g) || []).length;
+  const ends = (stripped.match(/\bend\b/g) || []).length;
+  const expectedEnds = openers - inlineModifiers;
+
+  if (expectedEnds > ends) {
+    return {
+      code: 'E_SOURCE_INVALID',
+      file: '',
+      line: source.split('\n').length,
+      column: 1,
+      message: `Ruby block imbalance: ${expectedEnds} opener(s), ${ends} 'end'`,
+      suggestion: "Add the missing `end` keyword(s) to close open def/class/do blocks.",
+    };
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Per-language validators
 // ═══════════════════════════════════════════════════════════════
 
@@ -411,6 +466,15 @@ function validateFile(file: SourceFile, lang: GateLang): GateError | null {
   } else if (lang === 'typescript' || lang === 'javascript') {
     const js = jsStructuralCheck(file.content);
     if (js) return { ...js, file: file.name };
+  } else if (lang === 'other') {
+    // Best-effort by extension for non-Tier-1 languages.
+    const lower = file.name.toLowerCase();
+    if (lower.endsWith('.rb')) {
+      const rb = rubyStructuralCheck(file.content);
+      if (rb) return { ...rb, file: file.name };
+    }
+    // C-family / Swift / Java / C# already covered by balancedScan +
+    // the new Rust-lifetime-aware tick handling.
   }
 
   return null;
