@@ -37,7 +37,6 @@ import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/licens
 import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
-import { V2BundleSuggestions } from './V2BundleSuggestions';
 import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
 import { V2CapabilityProvenance } from './V2CapabilityProvenance';
@@ -532,14 +531,6 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         coveredPrimitives={capabilities.flatMap((c) => c.chain.filter((p) => p !== 'CANDIDATE'))}
         selectedLayerIds={Array.from(selectedLayers)}
         limit={4}
-      />
-
-      {/* Bundle Suggestions — Sprint 2 parity on Results. Display-only here
-          (run is sealed); user can re-ascend with a full stack via /ascension-v2. */}
-      <V2BundleSuggestions
-        selectedLayerIds={Array.from(selectedLayers)}
-        onSelect={() => { /* read-only on Results — selection happens on Enhance */ }}
-        limit={2}
       />
 
       <div className="bg-muted/20 rounded-xl p-2.5 sm:p-3 flex items-center gap-2">

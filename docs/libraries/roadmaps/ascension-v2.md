@@ -16,7 +16,7 @@
 |---|---|---|---|---|
 | **S0 — Pre-Flight + Baseline** | ✅ **DONE** | Baselines captured · `/verify/:fp` smoke-tested | 0 high-sev findings · `audit_chain_anchors` writable | `ascension-v2-baseline.md` |
 | **S1 — Trust & Visibility** | ✅ **DONE** (retarget) | ✅ Receipt drill-down · ✅ VAULT matches · ✅ Forensics · ✅ Pre-flight estimator | ✅ Classification queue 52/52 (zero drop-eligible) · ✅ Security baseline held | `ascension-v2-sprint-1-report.md` |
-| **S2 — Discovery Intelligence** | ✅ **DONE** | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ✅ Bundle SKUs (`V2BundleSuggestions.tsx` + `bundle-suggestions.ts`, on Enhance + Results, 9 unit tests green) | ❌ DB renames abandoned (runtime-live; UI terminology map only — see S2 section) | *(folded into roadmap)* |
+| **S2 — Discovery Intelligence** | ✅ **DONE** (rescoped) | ✅ Smart recos · ✅ "Why this layer" · ✅ Inline compatibility · ❌ Bundle SKUs **REMOVED** (mixed unlock sources — tier-gated + store-purchased + free — can't ship as one cohesive SKU without /store commerce surface; smart recos already cover the use case without UX friction) | ❌ DB renames abandoned (runtime-live; UI terminology map only — see S2 section) | *(folded into roadmap)* |
 | **S3 — Activation Loop** | 🟡 **PARTIAL** | ✅ Activation guide on Results · ⬜ Post-purchase email · ⬜ My Layers dashboard · ⬜ One-click re-ascension · ⬜ Artifact versioning | ⬜ `developer_*`/`global_*` classify (✅ done in S1 sweep) · ⬜ Funnel instrumentation · ⬜ RLS sweep `marketplace_*` | *(none)* |
 | **S4 — Pre-Export Confidence** | ✅ **DONE** (rescoped) | ✅ `V2PreExportConfidence.tsx` with real-signal aggregation | ⬜ GitHub connector · ⬜ CI/CD webhook · ⬜ Org RBAC (→ backlog) | *(none)* |
 | **S5 — Capability Provenance** | ✅ **DONE** (rescoped) | ✅ `V2CapabilityProvenance.tsx` per-capability trace | ⬜ Reproducibility proof · ⬜ Two-fp diff UI · ⬜ Periodic Merkle anchoring · ⬜ Engine-name CI guard (→ backlog) | *(none)* |
@@ -165,7 +165,7 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 - [x] Recommendation engine: detected capabilities → top 3 Crown Jewel layers — `src/lib/factory/smart-recommendations.ts` + `V2SmartRecommendations.tsx`
 - [x] "Why this layer": collision score + evidence + Lex rule reference (gap + adjacency logic)
 - [x] Compatibility preview surfaced inline in Enhance + Results steps
-- [x] Bundle suggestions: co-attached layers → discounted bundle SKU — `src/lib/factory/bundle-suggestions.ts` + `V2BundleSuggestions.tsx` (Family Packs · 10/15/20% tiered discounts · one-click add)
+- [~] ~~Bundle suggestions~~ **REMOVED post-audit**: bundle recipes mixed three unlock sources (tier-gated layers, /store inventory SKUs, free core layers) which can't be sold or attached as one cohesive SKU without a /store commerce surface. Smart recommendations already deliver the same "what should I add next?" outcome without the friction. Removed `bundle-suggestions.ts`, `V2BundleSuggestions.tsx`, and the test suite. Decision: keep Ascension simple — run flow → see what unlocked → drop file back in.
 
 ### Cohesion Track — Rename + Migrate — ❌ ABANDONED (runtime-live, not theater)
 
@@ -189,7 +189,7 @@ DB-level renames are forbidden until a per-prefix migration plan with
 edge-function patching is approved per-prefix. Tracked in the audit doc.
 
 
-**Exit:** Recos visible in Step 2 of `/ascension-v2` ✅. Bundle SKUs live ✅. Naming cleanup deferred — runtime conflict.
+**Exit:** Recos visible in Step 2 of `/ascension-v2` ✅. Bundle SKUs removed (architectural mismatch with unlock sources). Naming cleanup deferred — runtime conflict.
 
 ---
 

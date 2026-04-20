@@ -29,7 +29,6 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { useLayerEntitlements } from '@/hooks/useLayerEntitlements';
 import { Link } from 'react-router-dom';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
-import { V2BundleSuggestions } from './V2BundleSuggestions';
 
 /**
  * Build a rank → tier lookup from the canonical TIER_LAYERS map.
@@ -247,12 +246,6 @@ export function V2EnhanceStep({ onComplete }: Props) {
         selectedLayerIds={Array.from(selectedLayers)}
         onSelect={toggleLayer}
         title="Suggested Layers — Start Here"
-      />
-
-      {/* Bundle Discounts — Sprint 2 final: co-attached layer SKUs */}
-      <V2BundleSuggestions
-        selectedLayerIds={Array.from(selectedLayers)}
-        onSelect={toggleLayer}
       />
 
       {/* SDK Upload Zone */}
