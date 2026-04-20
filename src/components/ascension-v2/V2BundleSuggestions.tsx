@@ -170,8 +170,9 @@ export function V2BundleSuggestions({
       </ul>
 
       <p className="text-[10px] text-muted-foreground/80 leading-relaxed">
-        Family packs combine top-impact layers from the same primitive family
-        with stacked discounts. Already-attached layers stay attached.
+        Curated stacks — each one composes layers that have been verified to
+        produce a specific outcome (defense, resilience, audit, etc.). Tiered
+        discounts apply automatically when the whole stack attaches.
       </p>
     </div>
   );
