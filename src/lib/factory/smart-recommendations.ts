@@ -79,6 +79,28 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
   const picked: LayerRecommendation[] = [];
   const usedLayerIds = new Set<string>();
 
+  // ── Pre-run mode: no covered primitives means we have no real signal.
+  // Surface top-CJPI layers across all primitives instead of labeling
+  // everything as a "gap" (which is technically true but misleading UX).
+  if (covered.size === 0) {
+    const ranked = allLayers.slice().sort((a, b) => b.cjpi - a.cjpi);
+    const seenPrimitive = new Set<string>();
+    for (const layer of ranked) {
+      if (picked.length >= limit) break;
+      const prim = normalize(layer.module);
+      if (seenPrimitive.has(prim)) continue;
+      seenPrimitive.add(prim);
+      picked.push({
+        layer,
+        reason: 'adjacency',
+        driverPrimitive: layer.module,
+        rationale: `Top-impact ${layer.module} layer — adds ${layer.name.toLowerCase()} to your artifact.`,
+      });
+      usedLayerIds.add(layer.id);
+    }
+    return picked.slice(0, limit);
+  }
+
   // ── Stage 1: gap-fillers ───────────────────────────────────────────────
   // Walk primitives in canonical order, pick top-CJPI layer for each gap.
   const gapPrimitives = CANONICAL_PRIMITIVES.filter((p) => !covered.has(normalize(p)));

@@ -35,9 +35,20 @@ export function V2SmartRecommendations({
   limit = 4,
   title,
 }: Props) {
+  // Stable signatures so new array refs from parents (e.g. Array.from(Set))
+  // don't bust the memo every render.
+  const coveredKey = useMemo(
+    () => [...coveredPrimitives].map((p) => p.toUpperCase()).sort().join('|'),
+    [coveredPrimitives],
+  );
+  const selectedKey = useMemo(
+    () => [...selectedLayerIds].sort().join('|'),
+    [selectedLayerIds],
+  );
   const recos = useMemo(
     () => recommendLayers({ coveredPrimitives, selectedLayerIds, limit }),
-    [coveredPrimitives, selectedLayerIds, limit],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [coveredKey, selectedKey, limit],
   );
 
   if (recos.length === 0) return null;
