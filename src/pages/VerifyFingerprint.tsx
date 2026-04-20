@@ -153,13 +153,16 @@ const VerifiedView = ({ fingerprint, result }: { fingerprint: string; result: Un
       {/* Success banner */}
       <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-6 py-4 flex items-center gap-3">
         <CheckCircle className="h-6 w-6 text-emerald-500 shrink-0" />
-        <div>
+        <div className="flex-1">
           <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Verified Authentic</p>
           <p className="text-xs text-emerald-600/80 dark:text-emerald-400/70">
             This artifact was processed through the CMPSBL® Ascension substrate.
           </p>
         </div>
       </div>
+
+      {/* Anchor status — Block 2 (Merkle head anchoring) */}
+      <AnchorBadge />
 
       {/* CJPI Hero */}
       <div className="px-6 pt-6 pb-4 text-center border-b border-border">
