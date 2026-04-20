@@ -45,6 +45,8 @@ const FUNCTION_PATTERNS: RegExp[] = [
   /^\s*(?:Future<[^>]+>|Stream<[^>]+>|void|int|String|bool|double)\s+([a-zA-Z_]\w*)\s*\(/gm,
   // Tuning fix: Kotlin — `fun name(...)`, including expression-body
   /\bfun\s+([a-zA-Z_]\w*)\s*\(/g,
+  // Tuning fix T3: R — `name <- function(args)`
+  /^([A-Za-z_.][\w.]*)\s*<-\s*function\s*\(/gm,
   // Class methods: name(args) {  or  name: function
   /^\s+([a-zA-Z_$]\w*)\s*\([^)]*\)\s*\{/gm,
 ];
@@ -71,8 +73,10 @@ export interface FunctionBoundary {
 function detectPythonClassMethods(source: string): FunctionBoundary[] {
   const out: FunctionBoundary[] = [];
   const lines = source.split('\n');
-  // Stack of { indent, name } — enclosing class scopes
-  const classStack: Array<{ indent: number; name: string }> = [];
+  // Stack of { indent, name, hasPermissionClasses } — enclosing class scopes.
+  // T5: track DRF-style `permission_classes = [...]` so we can stamp
+  // authorize_<method> boundaries on perform_create/update/destroy/list.
+  const classStack: Array<{ indent: number; name: string; gated: boolean }> = [];
 
   for (let i = 0; i < lines.length; i++) {
     const raw = lines[i];
@@ -86,18 +90,28 @@ function detectPythonClassMethods(source: string): FunctionBoundary[] {
 
     const classMatch = raw.match(/^(\s*)class\s+([A-Za-z_]\w*)/);
     if (classMatch) {
-      classStack.push({ indent, name: classMatch[2] });
+      classStack.push({ indent, name: classMatch[2], gated: false });
+      continue;
+    }
+
+    // T5: detect DRF permission gate at class scope.
+    if (classStack.length && /^\s*permission_classes\s*=/.test(raw)) {
+      classStack[classStack.length - 1].gated = true;
       continue;
     }
 
     const defMatch = raw.match(/^(\s*)(?:async\s+)?def\s+([A-Za-z_]\w*)\s*\(/);
     if (defMatch) {
       const methodName = defMatch[2];
-      // Skip pure dunders that are never real entry points
       if (methodName === '__str__' || methodName === '__repr__' || methodName === '__eq__') continue;
-      const cls = classStack.length ? classStack[classStack.length - 1].name : null;
+      const enclosing = classStack.length ? classStack[classStack.length - 1] : null;
+      const cls = enclosing ? enclosing.name : null;
       const qualified = cls ? `${cls}.${methodName}` : methodName;
       out.push({ name: qualified, line: i + 1 });
+      // T5: synth authorize_ boundary so access_controller signal fires.
+      if (enclosing?.gated && /^(perform_(create|update|destroy)|list|retrieve|create|update|destroy)$/.test(methodName)) {
+        out.push({ name: `authorize_${methodName}`, line: i + 1 });
+      }
     }
   }
   return out;
@@ -117,19 +131,31 @@ function detectPythonClassMethods(source: string): FunctionBoundary[] {
  *             @validator (Pydantic), @celery.task, @app.post/get/put/delete
  */
 const DECORATOR_TO_VERB: Array<{ pattern: RegExp; verbPrefix: string }> = [
-  { pattern: /@(Pre)?Authorize\b/i,        verbPrefix: 'authorize_' },
-  { pattern: /@RolesAllowed\b/i,           verbPrefix: 'authorize_' },
-  { pattern: /@RateLimit\b/i,              verbPrefix: 'throttle_' },
-  { pattern: /@Throttle\b/i,               verbPrefix: 'throttle_' },
-  { pattern: /@Audited\b/i,                verbPrefix: 'audit_' },
-  { pattern: /@Webhook\b/i,                verbPrefix: 'webhook_' },
-  { pattern: /@CircuitBreaker\b/i,         verbPrefix: 'circuit_' },
-  { pattern: /@Retry\b/i,                  verbPrefix: 'retry_' },
-  { pattern: /@validator\b/,               verbPrefix: 'validate_' },
-  { pattern: /@celery\.task\b/,            verbPrefix: 'orchestrate_' },
-  { pattern: /@app\.(post|put|patch|delete)\b/i, verbPrefix: 'create_' },
-  { pattern: /@(Post|Put|Patch|Delete)Mapping\b/, verbPrefix: 'create_' },
-  { pattern: /@HttpPost\b/,                verbPrefix: 'create_' },
+  // T1: auth — covers Spring @PreAuthorize, NestJS/.NET [Authorize], Django @login_required / @permission_required
+  { pattern: /@(Pre)?Authorize\b/i,                       verbPrefix: 'authorize_' },
+  { pattern: /\[(Pre)?Authorize\b/i,                      verbPrefix: 'authorize_' },
+  { pattern: /@RolesAllowed\b/i,                          verbPrefix: 'authorize_' },
+  { pattern: /@RequireLogin\b/i,                          verbPrefix: 'authorize_' },
+  { pattern: /@Authenticated\b/i,                         verbPrefix: 'authorize_' },
+  { pattern: /@login_required\b/,                         verbPrefix: 'authorize_' },
+  { pattern: /@permission_required\b/,                    verbPrefix: 'authorize_' },
+  // T1: rate-limit — Spring @RateLimited, generic @Throttle, DRF @throttle
+  { pattern: /@RateLimit(ed)?\b/i,                        verbPrefix: 'throttle_' },
+  { pattern: /@Throttle\b/i,                              verbPrefix: 'throttle_' },
+  { pattern: /@throttle\(/,                               verbPrefix: 'throttle_' },
+  // T1: validation — JSR-303 @Valid / @Validate
+  { pattern: /@Valid(ate)?\b/,                            verbPrefix: 'validate_' },
+  { pattern: /@validator\b/,                              verbPrefix: 'validate_' },
+  // existing
+  { pattern: /@Audited\b/i,                               verbPrefix: 'audit_' },
+  { pattern: /@Webhook\b/i,                               verbPrefix: 'webhook_' },
+  { pattern: /@CircuitBreaker\b/i,                        verbPrefix: 'circuit_' },
+  { pattern: /@Retry\b/i,                                 verbPrefix: 'retry_' },
+  { pattern: /@celery\.task\b/,                           verbPrefix: 'orchestrate_' },
+  { pattern: /@app\.(post|put|patch|delete)\b/i,          verbPrefix: 'create_' },
+  { pattern: /@(Post|Put|Patch|Delete)Mapping\b/,         verbPrefix: 'create_' },
+  { pattern: /\[Http(Post|Put|Patch|Delete)\]/,           verbPrefix: 'create_' },
+  { pattern: /@HttpPost\b/,                               verbPrefix: 'create_' },
 ];
 
 /** Extract the next method/function name after a decorator line. */
@@ -155,15 +181,51 @@ function extractNextName(lines: string[], startIdx: number): string | null {
 function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
   const out: FunctionBoundary[] = [];
   const lines = source.split('\n');
+  // Same-line method matchers (annotation + method on one line — common in
+  // Spring, NestJS, .NET, and inline TS class bodies).
+  const sameLineMatchers: RegExp[] = [
+    // Java/C#/TS: ... access type name(   OR   ... async name(
+    /\b(?:public|private|protected|internal|static|final|async|override|export)\s+(?:[\w<>?,\s\[\]]+\s+)?([A-Za-z_$][\w$]*)\s*\(/,
+    // Bare TS class method:  trailing ) or ] then  name(
+    /[)\]]\s+([A-Za-z_$][\w$]*)\s*\(/,
+  ];
+
+  // Strip leading decorator tokens of the form `@Foo`, `@Foo(...)`, `[Foo]`,
+  // `[Foo(...)]`, possibly stacked, leaving the actual method declaration.
+  const stripDecorators = (s: string): string => {
+    let out = s;
+    // peel one decorator per pass until none remain at the start
+    // tslint:disable-next-line:max-line-length
+    while (true) {
+      const m = out.match(/^\s*(?:@[A-Za-z_][\w.]*(?:\([^)]*\))?|\[[A-Za-z_][\w.]*(?:\([^)]*\))?\])\s*/);
+      if (!m) return out;
+      out = out.slice(m[0].length);
+    }
+  };
+
   for (let i = 0; i < lines.length; i++) {
     const ln = lines[i];
-    if (!/^\s*@/.test(ln)) continue;
+    if (!/^\s*[@\[]/.test(ln)) continue;
     for (const { pattern, verbPrefix } of DECORATOR_TO_VERB) {
       if (!pattern.test(ln)) continue;
-      const name = extractNextName(lines, i);
+
+      // 1) Try same-line first — strip stacked decorators from the head
+      let name: string | null = null;
+      const stripped = stripDecorators(ln);
+      for (const slm of sameLineMatchers) {
+        const m = stripped.match(slm);
+        if (m && m[1] && !/^(if|for|while|switch|return|catch)$/.test(m[1])) { name = m[1]; break; }
+      }
+      // also try a fully-bare class method:  identifier(
+      if (!name) {
+        const m = stripped.match(/^\s*([A-Za-z_$][\w$]*)\s*\(/);
+        if (m && m[1] && !/^(if|for|while|switch|return|catch)$/.test(m[1])) name = m[1];
+      }
+      // 2) Fallback to next-line scan
+      if (!name) name = extractNextName(lines, i);
       if (!name) continue;
+
       // Tuning fix #3b: avoid double-prefix when method already starts with verb
-      // e.g. @validator + validate_email shouldn't become validate_validate_email.
       const verbRoot = verbPrefix.replace(/_$/, '').toLowerCase();
       if (name.toLowerCase().startsWith(verbRoot)) {
         out.push({ name, line: i + 1 });
@@ -321,6 +383,8 @@ const CAPABILITY_SIGNALS: Array<{
       /^(validate|check|verify|assert|ensure).*(payload|schema|shape|type|format|body)/i,
       /^(parse|deserialize|decode).*(payload|input|user|request|body|json|message)/i,
       /^(parse|deserialize)[A-Z_]/,
+      // T1: synthesized validate_<method> from @Valid/@Validate decorators
+      /^validate_[A-Za-z_]/,
     ],
     capability: 'payload_validator',
     primitive: 'DEFENSE',
@@ -376,6 +440,8 @@ const CAPABILITY_SIGNALS: Array<{
       // Tuning fix #5: added destroy, drop, truncate, transfer, withdraw,
       // approve (Solidity/financial), Remove- (PowerShell), perform_create/destroy (Django)
       /^(save|update|delete|destroy|drop|truncate|remove|create|insert|write|set|put|patch|modify|mutate|assign|overwrite|transfer|withdraw|approve|store_user|register|store|perform_create|perform_destroy|perform_update)/i,
+      // Tuning fix T2: WordPress / event-bus mutating hooks
+      /^on_.*_(save|register|create|delete|update|complete|destroy|charge|refund|cancel)$/i,
     ],
     capability: 'governance_hook',
     primitive: 'GOVERNANCE',
