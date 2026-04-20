@@ -28,6 +28,7 @@ import { useEngineSubscription, type SubscriptionTier } from '@/hooks/useEngineS
 import { useUserRole } from '@/hooks/useUserRole';
 import { useLayerEntitlements } from '@/hooks/useLayerEntitlements';
 import { Link } from 'react-router-dom';
+import { V2SmartRecommendations } from './V2SmartRecommendations';
 
 /**
  * Build a rank → tier lookup from the canonical TIER_LAYERS map.
@@ -227,6 +228,21 @@ export function V2EnhanceStep({ onComplete }: Props) {
           Optionally attach SDK-built software to merge with your code before Ascension.
         </p>
       </div>
+
+      {/* Smart Recommendations — pre-run heuristic; one-tap add to selection */}
+      <V2SmartRecommendations
+        coveredPrimitives={[]}
+        selectedLayerIds={Array.from(selectedLayers)}
+        onSelect={(layerId) => {
+          setSelectedLayers((prev) => {
+            const next = new Set(prev);
+            if (next.has(layerId)) next.delete(layerId);
+            else next.add(layerId);
+            return next;
+          });
+        }}
+        title="Suggested Layers — Start Here"
+      />
 
       {/* SDK Upload Zone */}
       <div
