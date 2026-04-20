@@ -37,6 +37,7 @@ import { buildLicenseFromSpdx, type DetectedLicense } from '@/lib/factory/licens
 import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 import { V2SmartRecommendations } from './V2SmartRecommendations';
+import { V2BundleSuggestions } from './V2BundleSuggestions';
 import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
 import { V2CapabilityProvenance } from './V2CapabilityProvenance';
