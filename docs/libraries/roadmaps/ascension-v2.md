@@ -130,15 +130,27 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 - [x] Compatibility preview surfaced inline in Enhance + Results steps
 - [ ] Bundle suggestions: co-attached layers → discounted bundle SKU (deferred)
 
-### Cohesion Track — Rename + Migrate — DEFERRED
-- [~] `modernizer_*` + `mutation_*` already absent from V2 scope (verified — legacy substrate only)
-- [ ] `mesh_*` → `layer_*` (deferred, blocked by 261 active refs)
-- [ ] `module_*` + `node_*` → `primitive_*` (deferred)
-- [ ] `immune_*` → `immunity_*` (deferred)
-- [ ] `learning_*` → `brain_*` (deferred)
+### Cohesion Track — Rename + Migrate — ❌ ABANDONED (runtime-live, not theater)
 
-### Security / Observability Tracks
-- [ ] Rename re-scan + `/control` log helper (rolled forward)
+Cross-referenced against `docs/libraries/internal/24-substrate-cohesion-audit.md`
+(the unknown-table classification record). A live ref-count audit on every
+"🟡 rename" prefix shows all candidates are heavily wired — same pattern that
+killed the Sprint 1 cascade/brain_curiosity drop. **No DB renames will execute.**
+
+| Prefix | Audit verdict | Live refs | Files | Action |
+|---|---|---:|---:|---|
+| `modernizer_*` | 🟡 rename → evolution_* | 35 | 4 | **Keep** — fold deferred |
+| `mutation_*` | 🟡 migrate → evolution_* | 172 | 38 | **Keep** — engine still references |
+| `mesh_*` | 🟡 rename → layer_* | 145 | 32 | **Keep** — terminology only, no DB rename |
+| `module_*` | 🟡 rename → primitive_* | 313 | 88 | **Keep** — too deeply wired |
+| `node_*` | 🟡 rename → primitive_* | 173 | 60 | **Keep** — terminology map handles UI |
+| `immune_*` | 🟡 rename → immunity_* | 76 | 38 | **Keep** — consolidate via views |
+| `learning_*` | 🟡 migrate → brain_* | 239 | 81 | **Keep** — fold deferred |
+
+**Policy update:** Rename via terminology map at UI/docs layer only.
+DB-level renames are forbidden until a per-prefix migration plan with
+edge-function patching is approved per-prefix. Tracked in the audit doc.
+
 
 **Exit:** Recos visible in Step 2 of `/ascension-v2` ✅. Naming cleanup deferred — runtime conflict.
 
