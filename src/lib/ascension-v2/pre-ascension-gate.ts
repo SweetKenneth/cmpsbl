@@ -332,13 +332,16 @@ function pythonStructuralCheck(source: string): GateError | null {
 
     const trimmed = ln.trim();
 
-    // Block opener must end with ':' (excluding else:/try:/finally: which already do)
+    // Block opener must end with ':' OR contain ':' followed by inline body
+    // (Python single-line bodies: `if x: y`, `def f(): return 1`, `class C: pass`)
     if (blockOpeners.test(ln) && !trimmed.endsWith(':') && !trimmed.endsWith('\\')) {
       // Multi-line headers are OK when any implicit continuation delimiter stays open.
       const openGroupCount = (stripped.match(/[\(\[\{]/g) || []).length;
       const closeGroupCount = (stripped.match(/[\)\]\}]/g) || []).length;
       const keepsImplicitContinuationOpen = openGroupCount > closeGroupCount;
-      if (!keepsImplicitContinuationOpen) {
+      // Single-line body: a ':' exists outside brackets/strings with non-whitespace after it
+      const hasInlineBody = /:\s*\S/.test(stripped) && /[^:\s]/.test(stripped.split(':').slice(-1)[0] || '');
+      if (!keepsImplicitContinuationOpen && !hasInlineBody) {
         return {
           code: 'E_SOURCE_INVALID',
           file: '',

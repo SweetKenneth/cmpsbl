@@ -66,7 +66,33 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   initialize: 'configuration', config: 'configuration', register: 'configuration',
   open: 'io', close: 'io', connect: 'io', disconnect: 'io',
   upload: 'io', download: 'io', stream: 'io',
+  // Domain-specific verbs (expand coverage; reduces "unknown" category leakage)
+  handle: 'execution', resolve: 'execution', apply: 'execution',
+  refresh: 'execution', reload: 'execution', sync: 'execution',
+  start: 'execution', stop: 'execution', pause: 'execution', resume: 'execution',
+  build: 'transformation', compose: 'transformation', assemble: 'transformation',
+  generate: 'transformation', produce: 'transformation', create: 'transformation',
+  signal: 'communication',
+  commit: 'storage', rollback: 'storage', collect: 'storage',
+  bind: 'configuration', mount: 'configuration', wire: 'configuration',
+  search: 'analysis', query: 'analysis', explore: 'analysis',
+  scan: 'analysis', inspect: 'analysis',
 };
+
+// Reserved words that must NEVER surface as primitive names (language keywords leaking through extraction)
+const RESERVED_NAMES = new Set([
+  'const', 'let', 'var', 'func', 'function', 'class', 'struct', 'enum', 'trait',
+  'interface', 'namespace', 'module', 'package', 'import', 'export', 'return',
+  'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue',
+  'true', 'false', 'null', 'nil', 'none', 'undefined', 'void', 'self', 'this',
+  'new', 'delete', 'typeof', 'instanceof', 'in', 'of', 'as', 'is',
+  'public', 'private', 'protected', 'static', 'final', 'abstract', 'override',
+  'async', 'await', 'yield', 'try', 'catch', 'finally', 'throw',
+  'def', 'pass', 'lambda', 'with', 'from', 'global', 'nonlocal',
+  'fn', 'pub', 'mut', 'impl', 'use', 'mod', 'where',
+  'val', 'object', 'data', 'sealed', 'open', 'fun', 'suspend',
+  'main', 'todo', 'fixme', 'xxx',
+]);
 
 const CONTROL_FLOW_KEYWORDS = new Set([
   'if', 'else', 'switch', 'case', 'for', 'while', 'do', 'try', 'catch',
@@ -100,7 +126,8 @@ const EXTRACTION_PATTERNS: ExtractionPattern[] = [
   { id: 'rs-trait', regex: /(?:pub\s+)?trait\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
   { id: 'rs-enum', regex: /(?:pub\s+)?enum\s+([A-Z][A-Za-z_]\w{1,})/g, method: 'class', nameGroup: 1 },
   // Go
-  { id: 'go-func', regex: /func\s+(?:\([^)]*\)\s+)?([A-Za-z_]\w{2,})\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
+  // Go: tolerate multi-token receivers like `(a *api)`, `(s Server[T])`, generic params `[T any]`
+  { id: 'go-func', regex: /func\s+(?:\(\s*[A-Za-z_]\w*\s+[*&]?[A-Za-z_][\w.\[\]]*\s*\)\s+)?([A-Za-z_]\w{2,})\s*(?:\[[^\]]*\])?\s*\(([^)]*)\)/g, method: 'function', nameGroup: 1, paramsGroup: 2 },
   { id: 'go-struct', regex: /type\s+([A-Z][A-Za-z_]\w{1,})\s+struct\b/g, method: 'class', nameGroup: 1 },
   { id: 'go-iface', regex: /type\s+([A-Z][A-Za-z_]\w{1,})\s+interface\b/g, method: 'class', nameGroup: 1 },
   // Java
@@ -315,6 +342,8 @@ export function extractPrimitives(
           // Allow short domain names (tx, db, fn, io) — common in real code.
           // The downstream quality gate filters useless ones via name + signals.
           if (!name || name.length < 2 || name.length > 60) continue;
+          // Reserved-word stoplist: prevents language keywords from leaking through as primitive names
+          if (RESERVED_NAMES.has(name.toLowerCase())) continue;
 
           // Dedupe per file so a primitive extracted by multiple patterns
           // (e.g. ts-func + ts-arrow) doesn't duplicate, but the same name
