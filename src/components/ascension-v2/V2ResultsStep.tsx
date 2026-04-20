@@ -245,19 +245,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // ── Generate all HTML docs ──
       const licenseHTML = generateV2LicenseHTML({ packName: zipName, fingerprint });
 
-      // Compute the upstream license that will actually ship — single source
-      // of truth for the README, NOTICE.txt, LICENSE-UPSTREAM.txt, and manifest
-      // entries below. Honors the SPDX dropdown override; otherwise falls
-      // through sibling-LICENSE → inline-header detection (same precedence
-      // as the live preview above the dropdown).
-      const overrideSpdx = spdxChoice === 'auto' ? null : (spdxChoice === 'none' ? null : spdxChoice);
-      const shippingUpstream: DetectedLicense | null =
-        sourceFiles.length === 0 || spdxChoice === 'none'
-          ? null
-          : overrideSpdx
-            ? buildLicenseFromSpdx(overrideSpdx)
-            : detectLicenseFromSiblingFile(sourceFiles)
-              ?? detectUpstreamLicenseForExport(sourceFiles[0].content);
+      // Upstream license that will actually ship — resolved at the component
+      // level so the pre-export confidence panel and the export pipeline use
+      // the exact same value (no drift between preview and ZIP contents).
+      // See `shippingUpstream` useMemo above for the precedence rules.
 
       const readmeHTML = generateV2ReadmeHTML({
         packName: zipName,
