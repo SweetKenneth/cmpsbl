@@ -383,6 +383,8 @@ const CAPABILITY_SIGNALS: Array<{
       /^(validate|check|verify|assert|ensure).*(payload|schema|shape|type|format|body)/i,
       /^(parse|deserialize|decode).*(payload|input|user|request|body|json|message)/i,
       /^(parse|deserialize)[A-Z_]/,
+      // T1: synthesized validate_<method> from @Valid/@Validate decorators
+      /^validate_[A-Za-z_]/,
     ],
     capability: 'payload_validator',
     primitive: 'DEFENSE',
