@@ -2689,9 +2689,44 @@ const ADAPTERS: Record<string, LanguageAdapter> = {
   },
 };
 
-/** Resolve the adapter for a detected language, falling back to TypeScript */
+/** Resolve the adapter for a detected language, falling back to TypeScript.
+ *  Lookup is case-insensitive and accepts common aliases ('py' → Python,
+ *  'cs' → 'C#', 'cpp'/'c++' → 'C++', 'rb' → Ruby, etc.) so callers passing
+ *  lowercase language codes (e.g. 'python', 'rust', 'go') still resolve to
+ *  the correct guard transformer instead of silently falling back to TS.
+ */
 function getAdapter(language: string): LanguageAdapter {
-  return ADAPTERS[language] ?? ADAPTERS['TypeScript'];
+  if (ADAPTERS[language]) return ADAPTERS[language];
+  const norm = language.trim().toLowerCase();
+  const aliasMap: Record<string, string> = {
+    typescript: 'TypeScript', ts: 'TypeScript', tsx: 'TypeScript',
+    javascript: 'JavaScript', js: 'JavaScript', jsx: 'JavaScript', mjs: 'JavaScript', cjs: 'JavaScript',
+    python: 'Python', py: 'Python',
+    rust: 'Rust', rs: 'Rust',
+    go: 'Go', golang: 'Go',
+    java: 'Java',
+    csharp: 'C#', 'c#': 'C#', cs: 'C#',
+    c: 'C',
+    cpp: 'C++', 'c++': 'C++', cxx: 'C++', cc: 'C++',
+    ruby: 'Ruby', rb: 'Ruby',
+    swift: 'Swift',
+    kotlin: 'Kotlin', kt: 'Kotlin',
+    php: 'PHP',
+    scala: 'Scala',
+    lua: 'Lua',
+    r: 'R',
+    dart: 'Dart',
+    elixir: 'Elixir', ex: 'Elixir',
+    vhdl: 'VHDL',
+    verilog: 'Verilog',
+  };
+  const canonical = aliasMap[norm];
+  if (canonical && ADAPTERS[canonical]) return ADAPTERS[canonical];
+  // Try direct case-insensitive match against keys
+  for (const key of Object.keys(ADAPTERS)) {
+    if (key.toLowerCase() === norm) return ADAPTERS[key];
+  }
+  return ADAPTERS['TypeScript'];
 }
 
 /** Extract module path and symbol names from a TS import string */

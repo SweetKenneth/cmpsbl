@@ -121,6 +121,10 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
   let inLineComment = false;
   let inBlockComment = false;
   let inPyTriple: '"""' | "'''" | null = null;
+  // PostgreSQL dollar-quoted string body: $$…$$ or $tag$…$tag$.
+  // Body is opaque to the bracket scanner — function bodies inside CREATE FUNCTION
+  // legitimately contain unbalanced punctuation (e.g. `BEGIN … END;` with `IF … THEN`).
+  let inDollarQuote: string | null = null;
   // Template-literal substitution depth: each `${ … }` inside a backtick
   // string opens a new JS expression scope. We push '`' onto the template
   // stack so that the matching '}' returns us to template-string mode.
@@ -148,6 +152,14 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
       if (trip === inPyTriple) { i += 2; inPyTriple = null; }
       continue;
     }
+    if (inDollarQuote) {
+      // Skip body until matching closing tag ($$ or $tag$).
+      if (c === '$' && source.startsWith(inDollarQuote, i)) {
+        i += inDollarQuote.length - 1;
+        inDollarQuote = null;
+      }
+      continue;
+    }
     if (inStr) {
       if (c === '\\') { i++; continue; }
       // Template-literal substitution start: `${`
@@ -166,6 +178,18 @@ function balancedScan(source: string): { ok: boolean; offset: number; what: stri
     if (c === '/' && next === '/') { inLineComment = true; continue; }
     if (c === '/' && next === '*') { inBlockComment = true; i++; continue; }
     if (c === '#') { inLineComment = true; continue; }
+    // SQL block comment: `-- …`
+    if (c === '-' && next === '-') { inLineComment = true; i++; continue; }
+    // PostgreSQL dollar-quoted string opener: `$$` or `$tag$`.
+    if (c === '$') {
+      // Match $tag$ where tag is empty or [A-Za-z_][A-Za-z0-9_]*
+      const m = /^\$([A-Za-z_][A-Za-z0-9_]*)?\$/.exec(source.slice(i, i + 64));
+      if (m) {
+        inDollarQuote = m[0];
+        i += m[0].length - 1;
+        continue;
+      }
+    }
     // JS/TS regex literal: `/pattern/flags`. Detect via preceding token.
     if (c === '/' && next !== '/' && next !== '*') {
       const before = source.slice(Math.max(0, i - 16), i);

@@ -86,6 +86,14 @@ function countFunctions(source: string): number {
     // Kotlin / Swift / Scala-style `fun name(...)` already covered above.
     // Constructor lines: `constructor(...)` (JS/TS class)
     /\bconstructor\s*\(/g,
+    // C / C++: `[static|inline] [const] type [*] name(args) {` at start of line.
+    // Type token is permissive — handles `unsigned int`, `struct Foo *`, `void`.
+    /^\s*(?:(?:static|inline|extern|const|virtual|explicit)\s+)*(?:[A-Za-z_][\w:]*\s*[\*&]?\s+)+([A-Za-z_]\w*)\s*\([^;{]*\)\s*(?:const\s*)?\{/gm,
+    // Shell: `name() { … }`  or  `function name { … }`  or  `function name() { … }`
+    /^\s*(?:function\s+)?[A-Za-z_]\w*\s*\(\s*\)\s*\{/gm,
+    /^\s*function\s+[A-Za-z_]\w*\s*\{/gm,
+    // SQL: CREATE [OR REPLACE] FUNCTION/PROCEDURE name(...)
+    /\bCREATE\s+(?:OR\s+REPLACE\s+)?(?:FUNCTION|PROCEDURE)\s+[\w."]+\s*\(/gi,
   ];
   let count = 0;
   for (const p of patterns) {
