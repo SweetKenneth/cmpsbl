@@ -861,6 +861,48 @@ const ARCHETYPES: StructuralSignature[] = [
     ],
     weight: 0.65,
   },
+
+  // ── 26. CODE SMELLS / SECURITY GAPS (gap-class) ─────────────────────────────
+  // Detects anti-patterns the substrate should *flag* as opportunities for
+  // upgrade. Maps to DEFENSE/CONSCIENCE/IMMUNITY so the gap surfaces in
+  // capability discovery instead of being silently exported.
+  {
+    id: 'security-gaps',
+    name: 'Security Smells & Anti-Patterns',
+    primitives: ['DEFENSE', 'CONSCIENCE', 'IMMUNITY'],
+    patterns: [
+      // SQL string concat / template-literal injection
+      /(query|execute|exec)\s*\(\s*["'`][^"'`]*\$?\{?\s*\w+\s*\}?[^"'`]*["'`]\s*\+/i,
+      /["'`]\s*SELECT[\s\S]{0,80}["'`]\s*\+\s*\w+/i,
+      // Hardcoded secrets / API keys
+      /(api[_-]?key|secret|password|token)\s*[:=]\s*["'][A-Za-z0-9_\-]{12,}["']/i,
+      /Authorization\s*:\s*["']Bearer\s+[A-Za-z0-9_\-]{12,}["']/i,
+      // C# blocking async (.Result / .Wait()) on Task
+      /\.\s*(Result|Wait)\s*\(\s*\)\s*;/,
+      // Ruby blanket rescue
+      /\brescue\s+Exception\b/,
+      // Bare except: in Python
+      /^\s*except\s*:\s*$/m,
+      // eval / exec / Function constructor
+      /\b(eval|exec|Function)\s*\(\s*[\w.+]+\s*\)/,
+      // innerHTML with variable (XSS)
+      /\.\s*innerHTML\s*=\s*[^"'`;]+[\w)]/,
+      // shell injection patterns
+      /(child_process|subprocess|os\.system|Runtime\.getRuntime\(\)\.exec)\s*[\.\(]/,
+      // missing TLS verification
+      /(verify\s*[:=]\s*false|rejectUnauthorized\s*:\s*false|InsecureSkipVerify\s*:\s*true)/i,
+    ],
+    coSignals: [
+      'eval', 'exec', 'innerhtml', 'rescue', 'unsafe', 'todo', 'fixme',
+      'hack', 'xxx', 'temporary', 'workaround', 'plaintext',
+      'password', 'secret', 'apikey', 'token', 'hardcoded',
+    ],
+    intentSignals: [
+      'TODO', 'FIXME', 'HACK', 'XXX', 'unsafe', 'insecure',
+      'remove before commit', 'do not ship', 'temporary fix',
+    ],
+    weight: 0.95,
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
