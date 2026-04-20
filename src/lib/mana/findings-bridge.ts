@@ -184,11 +184,24 @@ function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
   // Same-line method matchers (annotation + method on one line — common in
   // Spring, NestJS, .NET, and inline TS class bodies).
   const sameLineMatchers: RegExp[] = [
-    // Java/C#/TS: ... access type name(   OR   ... async name(   OR   ... name(
+    // Java/C#/TS: ... access type name(   OR   ... async name(
     /\b(?:public|private|protected|internal|static|final|async|override|export)\s+(?:[\w<>?,\s\[\]]+\s+)?([A-Za-z_$][\w$]*)\s*\(/,
-    // Bare TS class method:  ) name(  or  } name(  or just identifier(
-    /\)\s*([A-Za-z_$][\w$]*)\s*\(/,
+    // Bare TS class method:  trailing ) or ] then  name(
+    /[)\]]\s+([A-Za-z_$][\w$]*)\s*\(/,
   ];
+
+  // Strip leading decorator tokens of the form `@Foo`, `@Foo(...)`, `[Foo]`,
+  // `[Foo(...)]`, possibly stacked, leaving the actual method declaration.
+  const stripDecorators = (s: string): string => {
+    let out = s;
+    // peel one decorator per pass until none remain at the start
+    // tslint:disable-next-line:max-line-length
+    while (true) {
+      const m = out.match(/^\s*(?:@[A-Za-z_][\w.]*(?:\([^)]*\))?|\[[A-Za-z_][\w.]*(?:\([^)]*\))?\])\s*/);
+      if (!m) return out;
+      out = out.slice(m[0].length);
+    }
+  };
 
   for (let i = 0; i < lines.length; i++) {
     const ln = lines[i];
@@ -196,11 +209,17 @@ function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
     for (const { pattern, verbPrefix } of DECORATOR_TO_VERB) {
       if (!pattern.test(ln)) continue;
 
-      // 1) Try same-line first
+      // 1) Try same-line first — strip stacked decorators from the head
       let name: string | null = null;
+      const stripped = stripDecorators(ln);
       for (const slm of sameLineMatchers) {
-        const m = ln.replace(/^\s*[@\[][^)]*\)?\]?\s*/, '').match(slm);
+        const m = stripped.match(slm);
         if (m && m[1] && !/^(if|for|while|switch|return|catch)$/.test(m[1])) { name = m[1]; break; }
+      }
+      // also try a fully-bare class method:  identifier(
+      if (!name) {
+        const m = stripped.match(/^\s*([A-Za-z_$][\w$]*)\s*\(/);
+        if (m && m[1] && !/^(if|for|while|switch|return|catch)$/.test(m[1])) name = m[1];
       }
       // 2) Fallback to next-line scan
       if (!name) name = extractNextName(lines, i);
