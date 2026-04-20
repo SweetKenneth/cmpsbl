@@ -149,6 +149,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
       void emitFunnelEvent('layer_attached', {
         runId: getSnapshot().runId,
         layerCount: layerIds.length,
+        layerIds,
         extras: { mana_attached: false },
       });
     }
@@ -227,6 +228,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
       void emitFunnelEvent('layer_attached', {
         runId: getSnapshot().runId,
         layerCount: (layerIds?.length ?? 0) + boundaries.length,
+        layerIds: layerIds ?? [],
         extras: {
           mana_attached: true,
           function_boundaries: boundaries.length,
