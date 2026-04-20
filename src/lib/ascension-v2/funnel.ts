@@ -32,6 +32,8 @@ export interface FunnelEventPayload {
   durationMs?: number;
   capabilityCount?: number;
   layerCount?: number;
+  /** IDs of layers attached on this run (used by /ascension-v2/layers). */
+  layerIds?: string[];
   fingerprint?: string;
   /** Optional free-form extras — never PII. */
   extras?: Record<string, string | number | boolean | null>;
@@ -74,6 +76,7 @@ export function emitFunnelEvent(
       if (payload.durationMs !== undefined) metadata.duration_ms = payload.durationMs;
       if (payload.capabilityCount !== undefined) metadata.capability_count = payload.capabilityCount;
       if (payload.layerCount !== undefined) metadata.layer_count = payload.layerCount;
+      if (payload.layerIds !== undefined) metadata.layer_ids = payload.layerIds;
       if (payload.fingerprint !== undefined) metadata.fingerprint = payload.fingerprint;
       if (payload.extras) Object.assign(metadata, payload.extras);
 
