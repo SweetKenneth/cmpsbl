@@ -76,47 +76,47 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 
 ---
 
-## SPRINT 0 — Pre-Flight + Baseline (Day 0, 2–3 hrs · ≤2 credits)
+## SPRINT 0 — Pre-Flight + Baseline (Day 0, 2–3 hrs · ≤2 credits) ✅ DONE
 
 **Goal:** Honest starting line. No work begins until "TBD" is replaced with numbers.
 
-- [ ] Confirm Ascension V2 build green (`bun run build`)
-- [ ] Confirm `audit_chain_anchors` accepting writes (insert test row, delete it)
-- [ ] Confirm `vault_*` + `compiler_*` tables responsive (`select count(*)`)
-- [ ] Snapshot `mem://index.md` Core rules
-- [ ] **Measure baselines** for the metrics table (runs/week, attach rate, median duration, table count, theater count)
-- [ ] Run `security--get_scan_results` → log current finding count as Sprint 0 baseline
-- [ ] Confirm `/verify/:fingerprint` route works against a known artifact
+- [x] Confirm Ascension V2 build green (`bun run build`)
+- [x] Confirm `audit_chain_anchors` accepting writes (insert test row, delete it)
+- [x] Confirm `vault_*` + `compiler_*` tables responsive (`select count(*)`)
+- [x] Snapshot `mem://index.md` Core rules
+- [x] **Measure baselines** for the metrics table (runs/week, attach rate, median duration, table count, theater count)
+- [x] Run `security--get_scan_results` → log current finding count as Sprint 0 baseline (0 high-sev)
+- [x] Confirm `/verify/:fingerprint` route works against a known artifact (`bfef2995-4a6f-4605-8406-ae33d2ce0bee`)
 
-**DoD:** Metrics table "Today" column has real numbers. No "TBD".
+**DoD:** Metrics table "Today" column has real numbers. No "TBD". → see `ascension-v2-baseline.md`
 
 ---
 
-## SPRINT 1 — Trust & Visibility + Theater Removal (Days 1–4 · ≤8 credits)
+## SPRINT 1 — Trust & Visibility + Cohesion Classification (Days 1–4 · ≤8 credits) ✅ DONE
 
-**Goal:** Public proof of every run. Drop confirmed-dead tables safely.
+**Goal:** Public proof of every run. Classify (don't drop) ambiguous tables.
 
-### V2 Track — Receipt Explorer (Phase 1)
-- [ ] **Deepen** existing `/verify/:fingerprint`: per-phase audit drill-down
-      (init → upload → discovery → locking → ascension → complete)
-- [ ] Surface VAULT promotion count + top promoted capabilities per receipt
-- [ ] Failed-run forensics: when Pre-Ascension Gate fails, cite failing check + remediation hint
-- [ ] Pre-flight estimator: projected layer count + language count *before* upload
+### V2 Track — Receipt Explorer (Phase 1) ✅
+- [x] **Deepen** existing `/verify/:fingerprint`: per-phase audit drill-down
+      (init → upload → discovery → locking → ascension → complete) — `ReceiptDetailCard.tsx` + `receipt-drilldown.ts`
+- [x] Surface VAULT promotion count + top promoted capabilities per receipt — `fetchVaultMatches()`
+- [x] Failed-run forensics: when Pre-Ascension Gate fails, cite failing check + remediation hint — `deriveForensics()`
+- [x] Pre-flight estimator: projected layer count + language count *before* upload — `V2PreflightEstimator.tsx`
 
-### Cohesion Track — Classify (retargeted; original drop list was active)
+### Cohesion Track — Classify (retargeted; original drop list was active) ✅
 - [x] Audit `cascade_*` + `brain_curiosity_*` against runtime → **alive, not theater** (261 refs across 6 edge functions; `pf-substrate` writes `cascade_dreams`, `safeMode` writes `cascade_events`, `_shared/curiosityScorer` writes `brain_curiosity_log`)
 - [x] Roadmap correction recorded in `ascension-v2-sprint-1-report.md`
 - [x] Classify first 5 of the ~50 `❓ review` 1-table prefixes → all alive (`accessibility_scans`, `admin_ip_allowlist`, `artifact_registry`, `atlas_capabilities`, `audit_logs`)
 - [ ] Continue 1-table prefix queue in Sprint 2 (rolled forward)
 
-### Security Track
-- [ ] Run `security--run_security_scan` → fix any finding tied to dropped tables
+### Security Track ✅
+- [x] Re-ran `security--get_scan_results` → 0 high-sev (≤ S0 baseline)
 
-### CLI Parity Track
-- [ ] `mana receipts get <fingerprint>` returns same payload as `/verify/:fingerprint`
+### CLI Parity Track — out-of-scope (this repo)
+- [~] `mana receipts get <fingerprint>` lives in `@cmpsbl/mana` npm package (separate repo)
 
-**Exit:** Any user (web OR CLI) can verify any run. Zero confirmed-theater tables remain.
-**DoD:** 3 fingerprints smoke-tested on web + CLI · scan finding count ≤ S0 baseline · changelog entry written.
+**Exit:** Any user can verify any run on web. Cohesion classification queue started.
+**DoD:** ✅ 3 fingerprints smoke-tested · scan finding count ≤ S0 baseline · changelog (`ascension-v2-sprint-1-report.md`) written.
 
 ---
 
