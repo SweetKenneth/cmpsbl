@@ -181,15 +181,32 @@ function extractNextName(lines: string[], startIdx: number): string | null {
 function detectDecoratedBoundaries(source: string): FunctionBoundary[] {
   const out: FunctionBoundary[] = [];
   const lines = source.split('\n');
+  // Same-line method matchers (annotation + method on one line — common in
+  // Spring, NestJS, .NET, and inline TS class bodies).
+  const sameLineMatchers: RegExp[] = [
+    // Java/C#/TS: ... access type name(   OR   ... async name(   OR   ... name(
+    /\b(?:public|private|protected|internal|static|final|async|override|export)\s+(?:[\w<>?,\s\[\]]+\s+)?([A-Za-z_$][\w$]*)\s*\(/,
+    // Bare TS class method:  ) name(  or  } name(  or just identifier(
+    /\)\s*([A-Za-z_$][\w$]*)\s*\(/,
+  ];
+
   for (let i = 0; i < lines.length; i++) {
     const ln = lines[i];
-    if (!/^\s*@/.test(ln)) continue;
+    if (!/^\s*[@\[]/.test(ln)) continue;
     for (const { pattern, verbPrefix } of DECORATOR_TO_VERB) {
       if (!pattern.test(ln)) continue;
-      const name = extractNextName(lines, i);
+
+      // 1) Try same-line first
+      let name: string | null = null;
+      for (const slm of sameLineMatchers) {
+        const m = ln.replace(/^\s*[@\[][^)]*\)?\]?\s*/, '').match(slm);
+        if (m && m[1] && !/^(if|for|while|switch|return|catch)$/.test(m[1])) { name = m[1]; break; }
+      }
+      // 2) Fallback to next-line scan
+      if (!name) name = extractNextName(lines, i);
       if (!name) continue;
+
       // Tuning fix #3b: avoid double-prefix when method already starts with verb
-      // e.g. @validator + validate_email shouldn't become validate_validate_email.
       const verbRoot = verbPrefix.replace(/_$/, '').toLowerCase();
       if (name.toLowerCase().startsWith(verbRoot)) {
         out.push({ name, line: i + 1 });
