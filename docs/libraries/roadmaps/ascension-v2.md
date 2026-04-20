@@ -106,8 +106,9 @@ layer-augmented artifact in 9 languages, with cryptographic receipts.
 ### Cohesion Track — Classify (retargeted; original drop list was active) ✅
 - [x] Audit `cascade_*` + `brain_curiosity_*` against runtime → **alive, not theater** (261 refs across 6 edge functions; `pf-substrate` writes `cascade_dreams`, `safeMode` writes `cascade_events`, `_shared/curiosityScorer` writes `brain_curiosity_log`)
 - [x] Roadmap correction recorded in `ascension-v2-sprint-1-report.md`
-- [x] Classify first 5 of the ~50 `❓ review` 1-table prefixes → all alive (`accessibility_scans`, `admin_ip_allowlist`, `artifact_registry`, `atlas_capabilities`, `audit_logs`)
-- [ ] Continue 1-table prefix queue in Sprint 2 (rolled forward)
+- [x] Classify first 5 of the ~52 `❓ review` 1-table prefixes → all alive (`accessibility_scans`, `admin_ip_allowlist`, `artifact_registry`, `atlas_capabilities`, `audit_logs`)
+- [x] Classify batch 2 (10 prefixes) → all alive/dormant-keep (`activation`, `agencies`, `agent`, `bot`, `canary`, `captcha`, `causal`, `client`, `code`, `compiled`) — see `ascension-v2-sprint-1-report.md` batch 2
+- [ ] Continue queue (37 remaining) in Sprint 6 final sweep
 
 ### Security Track ✅
 - [x] Re-ran `security--get_scan_results` → 0 high-sev (≤ S0 baseline)
