@@ -186,7 +186,10 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: added parse/deserialize/decode (Pydantic, serde, Zod parse)
       /^(validate|check|verify|assert|ensure).*(payload|schema|shape|type|format|body)/i,
+      /^(parse|deserialize|decode).*(payload|input|user|request|body|json|message)/i,
+      /^(parse|deserialize)[A-Z_]/,
     ],
     capability: 'payload_validator',
     primitive: 'DEFENSE',
@@ -194,7 +197,9 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: executeCommand/executeQuery (raw SQL, shell exec)
       /^(execute|eval|run|compile|interpret|render.*template)/i,
+      /^(execute|run).*(query|command|cmd|sql|shell|raw)/i,
       /^(process|execute|run).*(payment|charge|transfer|withdraw|deposit)/i,
     ],
     capability: 'injection_guard',
@@ -415,7 +420,8 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
-      /^(expire|ttl|evict|invalidate|flush.*cache|clear.*cache)/i,
+      // Tuning fix #5: include common cache eviction verb forms
+      /^(expire|ttl|evict|invalidate|flush.*cache|clear.*cache|invalidatecache|evictexpired)/i,
     ],
     capability: 'memory_ttl',
     primitive: 'MEMORY',
@@ -423,7 +429,12 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: React/Compose/SwiftUI state hooks (useAuth, useState, observeState)
       /^(track.*state|watch.*state|observe.*state|subscribe.*state|on.*change)/i,
+      /^use[A-Z]/,
+      /^(observe|watch|track).*(event|interaction|count|state|store|flow)/i,
+      /^subscribe.*(updates|count|store|flow)/i,
+      /^(increment|decrement|toggle).*(counter|count|state)/i,
     ],
     capability: 'memory_state_track',
     primitive: 'MEMORY',
@@ -624,7 +635,10 @@ const CAPABILITY_SIGNALS: Array<{
   // ── RELAY family ──
   {
     patterns: [
+      // Tuning fix #5: bare subscribe/publish/emit (Combine, RxJS, EventEmitter)
       /^(sync|realtime|websocket|push|subscribe.*event)/i,
+      /^(subscribe|publish|emit)([A-Z_]|$)/,
+      /^(on|handle).*(payment|message|event)/i,
     ],
     capability: 'relay_sync',
     primitive: 'RELAY',
@@ -649,7 +663,11 @@ const CAPABILITY_SIGNALS: Array<{
   },
   {
     patterns: [
+      // Tuning fix #5: WordPress/Stripe handlers (on_payment_received, register_webhook)
       /^(webhook|callback|notify.*endpoint|on.*event.*post)/i,
+      /^(register|setup|configure).*(webhook|hook|callback)/i,
+      /^on_(payment|order|subscription|invoice|checkout|charge)/i,
+      /^onPayment[A-Z]/,
     ],
     capability: 'integration_webhook',
     primitive: 'INTEGRATION',
