@@ -580,6 +580,16 @@ export function V2ProcessingStep({ onComplete }: Props) {
     setProgress(95);
     setStatusIdx(7);
 
+    // Funnel event #3 — discovery_complete (fires once per run after dedup)
+    void emitFunnelEvent('discovery_complete', {
+      runId: getSnapshot().runId,
+      capabilityCount: dedup.capabilities.length,
+      extras: {
+        raw_count: dedup.rawCount,
+        group_count: dedup.groupCount,
+      },
+    });
+
     setDone(true);
     setTimeout(() => onCompleteRef.current([...dedup.capabilities], dedup), 800);
   }, []);
