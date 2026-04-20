@@ -7,9 +7,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award, BarChart3 } from "lucide-react";
+import { Shield, CheckCircle, XCircle, Loader2, ExternalLink, FileCode, Award, BarChart3, Anchor } from "lucide-react";
 import { lookupAnyFingerprint, type UnifiedLookupResult } from "@/lib/factory/restoration-session";
 import { ReceiptDetailCard } from "@/components/verify/ReceiptDetailCard";
+import { supabase } from "@/integrations/supabase/client";
 
 type VerifyState = "loading" | "verified" | "not-found";
 
