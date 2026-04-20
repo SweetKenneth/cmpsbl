@@ -82,7 +82,7 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   reject: 'validation', accept: 'validation', approve: 'validation',
   limit: 'execution', bucket: 'execution', quota: 'execution',
   breaker: 'execution', circuit: 'execution', gate: 'execution',
-  repository: 'storage', repo: 'storage', aggregate: 'storage',
+  repository: 'storage', repo: 'storage',
   telemetry: 'monitoring', metric: 'monitoring', meter: 'monitoring',
   gauge: 'monitoring', counter: 'monitoring', histogram: 'monitoring',
   state: 'execution', workflow: 'execution', transition: 'execution',
@@ -92,21 +92,6 @@ const KEYWORD_CATEGORIES: Record<string, PrimitiveCategory> = {
   mean: 'computation', median: 'computation', sum: 'computation', avg: 'computation',
   limiter: 'execution', throttler: 'execution',
 };
-
-// Reserved words that must NEVER surface as primitive names (language keywords leaking through extraction)
-const RESERVED_NAMES = new Set([
-  'const', 'let', 'var', 'func', 'function', 'class', 'struct', 'enum', 'trait',
-  'interface', 'namespace', 'module', 'package', 'import', 'export', 'return',
-  'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue',
-  'true', 'false', 'null', 'nil', 'none', 'undefined', 'void', 'self', 'this',
-  'new', 'delete', 'typeof', 'instanceof', 'in', 'of', 'as', 'is',
-  'public', 'private', 'protected', 'static', 'final', 'abstract', 'override',
-  'async', 'await', 'yield', 'try', 'catch', 'finally', 'throw',
-  'def', 'pass', 'lambda', 'with', 'from', 'global', 'nonlocal',
-  'fn', 'pub', 'mut', 'impl', 'use', 'mod', 'where',
-  'val', 'object', 'data', 'sealed', 'open', 'fun', 'suspend',
-  'main', 'todo', 'fixme', 'xxx',
-]);
 
 // Reserved words that must NEVER surface as primitive names (language keywords leaking through extraction)
 const RESERVED_NAMES = new Set([
