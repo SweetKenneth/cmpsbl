@@ -534,6 +534,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         limit={4}
       />
 
+      {/* Bundle Suggestions — Sprint 2 parity on Results. Display-only here
+          (run is sealed); user can re-ascend with a full stack via /ascension-v2. */}
+      <V2BundleSuggestions
+        selectedLayerIds={Array.from(selectedLayers)}
+        onSelect={() => { /* read-only on Results — selection happens on Enhance */ }}
+        limit={2}
+      />
+
       <div className="bg-muted/20 rounded-xl p-2.5 sm:p-3 flex items-center gap-2">
         <ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" />
         <div className="flex-1 min-w-0">
