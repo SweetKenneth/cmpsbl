@@ -15,7 +15,7 @@ import { INVENTORY_LAYERS } from '@/lib/export/layers/inventory';
 import {
   ORGANS, LAYERS, ENGINES, AGENTS, CANONICAL_PRIMITIVES,
 } from '@/lib/ascension-v2/canonical-primitives';
-import { TIER_ORDER, type LayerTier } from '@/lib/ascension-v2/tier-layers';
+import { TIER_ORDER, TIER_LAYERS, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 /** Set of layer IDs that come from the /store inventory (purchase per-SKU). */
 const STORE_LAYER_IDS: ReadonlySet<string> = new Set(
@@ -107,10 +107,9 @@ export interface RecommendationInput {
 }
 
 /**
- * Build a one-time index from layer-name → required tier, sourced from
- * TIER_LAYERS (the single source of truth for unlock rules).
+ * One-time index: layer-name → required tier, sourced from TIER_LAYERS
+ * (the single source of truth for unlock rules).
  */
-import { TIER_LAYERS } from '@/lib/ascension-v2/tier-layers';
 const NAME_TO_REQUIRED_TIER: ReadonlyMap<string, LayerTier> = (() => {
   const m = new Map<string, LayerTier>();
   for (const tier of ['builder', 'studio', 'creator', 'architect'] as const) {
