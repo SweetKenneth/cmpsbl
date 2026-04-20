@@ -16,7 +16,7 @@ import { computeFingerprint } from '../fingerprint-gate';
 
 describe('Pre-Ascension Gate regressions', () => {
   // Patch A — 2026-04-20
-  it('regression(A): PostgreSQL $$ … $$ dollar-quoted body must not unbalance the scanner', async () => {
+  it('regression(A): PostgreSQL $$ … $$ dollar-quoted body must not unbalance the scanner', () => {
     const sql = [
       'CREATE OR REPLACE FUNCTION foo() RETURNS void AS $$',
       'BEGIN',
@@ -26,16 +26,16 @@ describe('Pre-Ascension Gate regressions', () => {
       'END;',
       '$$ LANGUAGE plpgsql;',
     ].join('\n');
-    const r = await runPreAscensionGate([{ name: 'fn.sql', content: sql }], 'sql');
+    const r = runPreAscensionGate([{ name: 'fn.sql', content: sql }], 'sql');
     expect(r.ok).toBe(true);
   });
 
-  it('regression(A): SQL line comments (-- …) must be ignored by the scanner', async () => {
+  it('regression(A): SQL line comments (-- …) must be ignored by the scanner', () => {
     const sql = [
       '-- this comment ( has an unbalanced bracket on purpose',
       'SELECT 1;',
     ].join('\n');
-    const r = await runPreAscensionGate([{ name: 'q.sql', content: sql }], 'sql');
+    const r = runPreAscensionGate([{ name: 'q.sql', content: sql }], 'sql');
     expect(r.ok).toBe(true);
   });
 });

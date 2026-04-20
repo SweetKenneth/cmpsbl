@@ -30,14 +30,15 @@ const langArb = fc.constantFrom(...SHIPPING_LANGS);
 // Reasonable source-code arbitrary: printable ASCII + newlines, bounded size.
 const sourceArb = fc.string({ minLength: 1, maxLength: 4096 });
 
-// Capability arbitrary
+// Capability arbitrary — matches the actual DiscoveredCapability shape
+// (identified by `name`, not `id`).
 const capabilityArb: fc.Arbitrary<DiscoveredCapability> = fc.record({
-  id: fc.uuid(),
   name: fc.string({ minLength: 1, maxLength: 60 }),
   cjpiScore: fc.integer({ min: 0, max: 100 }),
-  primitives: fc.array(fc.string({ minLength: 1, maxLength: 20 }), { maxLength: 8 }),
+  tier: fc.constantFrom('S', 'A', 'B', 'C'),
   description: fc.string({ maxLength: 200 }),
-  tier: fc.constantFrom('S', 'A', 'B', 'C') as fc.Arbitrary<'S' | 'A' | 'B' | 'C'>,
+  chain: fc.array(fc.string({ minLength: 1, maxLength: 20 }), { maxLength: 8 }),
+  chainDepth: fc.integer({ min: 0, max: 8 }),
 }) as unknown as fc.Arbitrary<DiscoveredCapability>;
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -110,7 +111,7 @@ describe('deduplicateCapabilities properties', () => {
         const twice = deduplicateCapabilities([...once.capabilities]);
         return (
           once.capabilities.length === twice.capabilities.length &&
-          once.capabilities.every((c, i) => c.id === twice.capabilities[i].id)
+          once.capabilities.every((c, i) => c.name === twice.capabilities[i].name)
         );
       }),
       { numRuns: 300 },
@@ -143,9 +144,9 @@ describe('deduplicateCapabilities properties', () => {
   it('membership: every result was in the original input', () => {
     fc.assert(
       fc.property(fc.array(capabilityArb, { maxLength: 50 }), (caps) => {
-        const ids = new Set(caps.map(c => c.id));
+        const names = new Set(caps.map(c => c.name));
         const r = deduplicateCapabilities(caps);
-        return r.capabilities.every(c => ids.has(c.id));
+        return r.capabilities.every(c => names.has(c.name));
       }),
       { numRuns: 200 },
     );
