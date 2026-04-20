@@ -81,7 +81,24 @@ Prefixes scanned: `cognitive`, `control`, `cortex`, `crystallized`, `decode`. Sa
 
 Verdict summary (batch 3): **12 of 12 tables alive or dormant-keep**. None drop-eligible.
 
-**Cumulative: 20 of 52 unclassified prefixes processed. 32 remain.** Pattern of zero drop-eligible tables continues to hold across all 3 batches.
+**Cumulative after batch 3: 20 of 52 unclassified prefixes processed.**
+
+### Single-Table Prefix Queue — batch 4 (1 single-prefix + 5 multi-prefix groups already 🟢 verified)
+
+Prefixes scanned: `developer` (multi, was ❓), `discovery` (multi, was 🟢), `dream` (multi, was 🟢), `edge` (single), `evolution` (multi, was 🟢), `foundry` (multi, was 🟢). Re-verified runtime refs and confirmed all classifications. `developer_*` flipped from ❓ → 🟢 in cohesion audit (8 tables, 9 fn / 31 src refs).
+
+| Prefix | Tables | Rows (max) | Refs (fns/src) | Verdict | Rationale |
+|---|---|---:|---|---|---|
+| `developer` | 8 | 0 | 9 / 31 | **dormant — keep** (was ❓) | Developer portal: skill tree, certifications, sandbox, templates. Wired but unused. |
+| `discovery` | 3 | 56 | 11 / 36 | **alive — keep** (confirmed) | `discovery_runs` 56, `discovery_retired_combos` 39 — federated discovery vault active |
+| `dream` | 16 | 780 | 22 / 79 | **alive — keep (anchor)** | `dream_log` 780 rows, `dream_intent_syntheses` 80, full DREAM pipeline live |
+| `edge` | 1 | 0 | 12 / 104 | **alive — keep** | `edge_rate_limits` — every edge function references it for rate limiting |
+| `evolution` | 9 | 0 | 10 / 121 | **alive — keep** | All evolution tables wired (proposals, receipts, snapshots) — 121 src refs |
+| `foundry` | 6 | 16 | 3 / 6 | **alive — keep** | `foundry_inventory` 16, `foundry_user_state` 2 — Foundry workspace live |
+
+Verdict summary (batch 4): **44 of 44 tables alive**. None drop-eligible. **One reclassification: `developer_*` ❓ → 🟢.**
+
+**Cumulative: 26 of 52 unclassified prefixes processed. 26 remain.** Cohesion audit doc (`docs/libraries/internal/24-substrate-cohesion-audit.md`) updated with all batch 1-4 verdicts so this work is permanent.
 
 
 ### Snapshot policy

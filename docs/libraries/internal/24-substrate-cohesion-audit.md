@@ -26,7 +26,7 @@
 | `evolution_*` | 9 | EVOLUTION | 🟢 alive | Patch generation + shadow mesh training (was MODERNIZER) |
 | `marketplace_*` | 9 | MARKETPLACE | 🟢 alive | Showroom + Junkyard + commercial drops |
 | `core_*` | 8 | SUBSTRATE CORE | 🟢 alive | Foundational primitives |
-| `developer_*` | 8 | DEVELOPER | ❓ review | Developer portal — possibly outdated |
+| `developer_*` | 8 | DEVELOPER | 🟢 alive | Developer portal — 8 tables, 9 fn refs / 31 src refs (sandbox sessions, skill tree, certifications, templates). Dormant rows but heavily wired. |
 | `nexus_*` | 8 | NEXUS | 🟢 alive | AI provider router (replaces Lovable AI) |
 | `access_*` | 7 | ACCESS | 🟢 alive | API keys, quotas, subscriptions, usage |
 | `foundry_*` | 7 | FOUNDRY | 🟢 alive | Builder workspace |
@@ -76,28 +76,28 @@
 | `passkey_*` | 2 | AUTH | 🟢 alive | WebAuthn passkeys |
 | `referral_*` | 2 | MARKETPLACE | 🟢 alive | Referral program |
 | `webhook_*` | 2 | INTEGRATIONS | 🟢 alive | Outbound webhooks |
-| `accessibility_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `activation_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `admin_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `agencies_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `agent_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `artifact_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `atlas_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `bot_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `canary_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `captcha_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `causal_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `client_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `code_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `compiled_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `control_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `accessibility_*` | 1 | INCLUSIVE | 🟢 alive | `accessibility_scans` — 17 rows, public scan history (`/access` flows). Sprint 1 batch 1. |
+| `activation_*` | 1 | ACTIVATION | 🟢 alive | `activation_audit_log` — 5 fn refs, written by `pack-activate`. Sprint 1 batch 2. |
+| `admin_*` | 1 | DEFENSE | 🟢 alive | `admin_ip_allowlist` — `pf-security-gate` enforces on every request; empty by design. Sprint 1 batch 1. |
+| `agencies_*` | 1 | AGENCY | 🟢 alive | `agencies` top-level table — 94 fn refs / 32 src refs. Anchor table. Sprint 1 batch 2. |
+| `agent_*` | 1 | AGENCY | 🟢 alive | `agent_competency` — agency cognitive scoring, written by `agency-orchestrator`. Sprint 1 batch 2. |
+| `artifact_*` | 1 | SUBSTRATE CORE | 🟢 alive | `artifact_registry` — 201 rows, primary artifact ledger. Sprint 0 baseline anchor. Sprint 1 batch 1. |
+| `atlas_*` | 1 | GOVERNANCE | 🟢 alive | `atlas_capabilities` — `pf-substrate` reads on every governed call. Sprint 1 batch 1. |
+| `bot_*` | 1 | DEFENSE | 🟢 alive | `bot_sniper_api_keys` — DEFENSE bot-sniper API key storage, dormant. Sprint 1 batch 2. |
+| `canary_*` | 1 | DEFENSE | 🟢 alive | `canary_tokens` — DEFENSE deception tokens, dormant. Sprint 1 batch 2. |
+| `captcha_*` | 1 | DEFENSE | 🟢 alive | `captcha_challenges` — `pf-security-gate` writes challenge issuance. Sprint 1 batch 2. |
+| `causal_*` | 1 | AUDIT | 🟢 alive | `causal_traces` — causal-trace receipts post-export, fills on demand. Sprint 1 batch 2. |
+| `client_*` | 1 | OBSERVABILITY | 🟢 alive | `client_error_log` — 272 rows, active client error sink. Sprint 1 batch 2. |
+| `code_*` | 1 | ASCENSION | 🟢 alive | `code_stamps` — code provenance stamps, ascension-emitted. Sprint 1 batch 2. |
+| `compiled_*` | 1 | COMPILER | 🟢 alive | `compiled_products` — Autonomous Product Compiler output ledger, 25 fn refs. Sprint 1 batch 2. |
+| `control_*` | 1 | GOVERNANCE | 🟢 alive | `control_plane_state` — `/control` master power center reads/writes plane state. Sprint 1 batch 3. |
 | `cost_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `crystallized_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `crystallized_*` | 1 | BRAIN | 🟢 alive | `crystallized_assets` — BRAIN distillation output target. Sprint 1 batch 3. |
 | `device_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `discovered_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `discoveries_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `ecosystem_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
-| `edge_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
+| `edge_*` | 1 | DEFENSE | 🟢 alive | `edge_rate_limits` — 12 fn refs / 104 src refs, edge function rate limit ledger. Sprint 1 batch 4. |
 | `ethical_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `execution_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
 | `gate_*` | 1 | UNCLASSIFIED | ❓ review | Single-table prefix — needs review |
