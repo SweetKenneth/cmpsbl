@@ -286,7 +286,7 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
   // ── Stage 2: adjacency ─────────────────────────────────────────────────
   // For each covered primitive, suggest top-CJPI layer from the same family
   // whose primitive isn't already covered or already recommended.
-  const recommendedPrimitives = new Set(picked.map((r) => normalize(r.driverPrimitive)));
+  for (const r of picked) recommendedPrimitives.add(normalize(r.driverPrimitive));
   const adjacencyCandidates: LayerRecommendation[] = [];
 
   for (const cov of covered) {
