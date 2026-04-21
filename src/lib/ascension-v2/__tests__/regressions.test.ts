@@ -154,3 +154,62 @@ describe('Python-emitter regressions', () => {
     expect(out).toContain('async def _cmpsbl_async_wrapper');
   });
 });
+
+describe('Rust-emitter regressions', () => {
+  // Patch E — 2026-04-21: Rust/Axum attachment.
+  // Previous Rust emit (1) commented out Layer 1, (2) defined cmpsbl_execute
+  // twice (E0428), and (3) had no async-aware wrapper or Tower middleware.
+  const AXUM = [
+    'use axum::{Router, routing::post, Json};',
+    'use serde::Deserialize;',
+    '',
+    '#[derive(Deserialize)]',
+    'struct Order { id: u64 }',
+    '',
+    'async fn create_order(Json(o): Json<Order>) -> Json<u64> {',
+    '    Json(o.id)',
+    '}',
+    '',
+    'fn compute_total(items: &[u64]) -> u64 {',
+    '    items.iter().sum()',
+    '}',
+    '',
+    '#[tokio::main]',
+    'async fn main() {',
+    '    let app = Router::new().route("/orders", post(create_order));',
+    '    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();',
+    '    axum::serve(listener, app).await.unwrap();',
+    '}',
+    '',
+  ].join('\n');
+  const PRIMS: any[] = [{ name: 'DEFENSE', primitiveId: 'DEFENSE', collisionScore: 90 }];
+
+  it('regression(E): no duplicate cmpsbl_execute definition', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(AXUM, PRIMS, 'deadbeef', 'rust', 'svc.rs');
+    const execDefs = (out.match(/^\s*(?:pub\s+)?fn\s+cmpsbl_execute\s*\(/gm) ?? []).length;
+    expect(execDefs).toBeLessThanOrEqual(1);
+  });
+
+  it('regression(E): Layer 1 emitted as real code, not commented out', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(AXUM, PRIMS, 'deadbeef', 'rust', 'svc.rs');
+    expect(/^\s*async\s+fn\s+create_order\b/m.test(out)).toBe(true);
+    expect(/^\s*async\s+fn\s+main\b/m.test(out) || /^\s*fn\s+main\b/m.test(out)).toBe(true);
+  });
+
+  it('regression(E): Tower Layer middleware emitted for Axum attachment', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(AXUM, PRIMS, 'deadbeef', 'rust', 'svc.rs');
+    expect(out).toContain('pub struct CmpsblTowerLayer');
+    expect(out).toContain('tower::Layer<S>');
+  });
+
+  it('regression(E): async wrappers emitted that .await user fn', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(AXUM, PRIMS, 'deadbeef', 'rust', 'svc.rs');
+    expect(out).toContain('cmpsbl_wrap_async');
+    expect(out).toContain('std::future::Future');
+    expect(out).toContain('fut.await');
+  });
+});
