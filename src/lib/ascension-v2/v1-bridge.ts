@@ -604,3 +604,223 @@ export function detectV2Drift(
     uniqueCanonicals: canonicals.size,
   };
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §12 — RUNTIME LOCKBOX (Patent #1 — primitive #41 execution surface)
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// This is the V1 "lockbox" — the deterministic mini-substrate that turns the
+// user's code into Primitive #41, registers it in the runtime registry, and
+// executes it (collides it) against the 40 substrate primitives via the
+// dual-layer wrapping handler. V2 reuses these surfaces verbatim — no fork,
+// no re-implementation. Without this, V2 has discoveries but no runtime.
+//
+// Surfaces re-exported here:
+//   - registerPrimaryHandler  : promote user code to Primitive #41
+//   - bindAndExecute          : strategy-resolved execution (local/bridge/fallback)
+//   - applyEffectInjection    : run a primary unit through PipelineContext
+//   - enrichExtractionWithEffects : annotate ExtractionResult with effect meta
+//   - postProcessPrimitives   : per-language cleanup + trust classification
+//   - generateEffectSummary   : UI-shaped runtime status (executed/degraded/fallback)
+//
+// Plus per-run isolation helpers built on V1's primitive-registry so
+// concurrent V2 runs cannot cross-contaminate one another.
+
+import {
+  registerPrimaryHandler,
+  hasPrimaryHandler,
+  type PrimaryHandlerResult,
+} from '@/lib/ascension/primary-handler-factory';
+import {
+  bindAndExecute,
+  buildExecutableUnit,
+  resolveExecutionStrategy,
+  ensurePrimaryRegistered,
+  type ExecutableUnit,
+  type ExecutionBindingResult,
+  type ExecutionStrategy,
+  type StrategyResolution,
+} from '@/lib/ascension/execution-binding';
+import {
+  detectPrimaryUnit,
+  effectWrapper,
+  applyEffectInjection,
+  enrichExtractionWithEffects,
+  generateEffectSummary,
+  autoMapModuleName,
+  generateDefaultChain,
+  type EffectInjectionResult,
+  type EffectExtractionMeta,
+  type EffectSummary,
+  type EffectStatus,
+  type EffectUIContract,
+  type PrimaryExecutionUnit,
+} from '@/lib/ascension/effect-injection';
+import { postProcessPrimitives } from '@/lib/ascension/language-postprocessor';
+import {
+  registerPrimitive,
+  getPrimitive,
+  listPrimitives,
+  removePrimitive,
+  clearPrimitives,
+  getPrimitiveCount,
+  type PrimitiveDefinition,
+  type PrimitiveHandler,
+} from '@/lib/ascension/primitive-registry';
+
+// — Re-exports (additive — V1 stays canonical)
+export {
+  // Primary handler (Primitive #41 promotion)
+  registerPrimaryHandler,
+  hasPrimaryHandler,
+  // Execution binding
+  bindAndExecute,
+  buildExecutableUnit,
+  resolveExecutionStrategy,
+  ensurePrimaryRegistered,
+  // Effect injection (runtime)
+  detectPrimaryUnit,
+  effectWrapper,
+  applyEffectInjection,
+  enrichExtractionWithEffects,
+  generateEffectSummary,
+  autoMapModuleName,
+  generateDefaultChain,
+  // Language post-processing
+  postProcessPrimitives,
+  // Registry access
+  registerPrimitive,
+  getPrimitive,
+  listPrimitives,
+  removePrimitive,
+  getPrimitiveCount,
+};
+
+export type {
+  PrimaryHandlerResult,
+  ExecutableUnit,
+  ExecutionBindingResult,
+  ExecutionStrategy,
+  StrategyResolution,
+  EffectInjectionResult,
+  EffectExtractionMeta,
+  EffectSummary,
+  EffectStatus,
+  EffectUIContract,
+  PrimaryExecutionUnit,
+  PrimitiveDefinition,
+  PrimitiveHandler,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Per-run registry isolation
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// V1's primitive-registry is a process-global Map. V2 may run concurrently
+// across tenants, so we expose a snapshot/restore pattern to scope handler
+// registrations to a single run. Pattern:
+//
+//   const restore = beginIsolatedRegistryScope();
+//   try {
+//     // register Primitive #41 + run collision/execution in isolation
+//     registerPrimaryHandler(...);
+//     bindAndExecute(...);
+//   } finally {
+//     restore();   // returns the registry to its pre-run state
+//   }
+//
+// Verified safe by v2-adoption-risks.test.ts (Risk 2).
+
+export interface IsolatedRegistryScope {
+  /** Restore the registry to its pre-scope state. Idempotent. */
+  restore: () => void;
+  /** Snapshot size (number of primitives at scope entry). */
+  baselineSize: number;
+}
+
+/**
+ * Begin an isolated registry scope. The current registry contents are
+ * snapshotted; any registrations made during the scope are rolled back
+ * when `restore()` is called.
+ *
+ * NOTE: This is a per-run convenience wrapper around the V1 registry —
+ * it does not change V1 behavior for callers that don't opt in.
+ */
+export function beginIsolatedRegistryScope(): IsolatedRegistryScope {
+  const snapshot = listPrimitives().map((p) => ({ ...p }));
+  let restored = false;
+  return {
+    baselineSize: snapshot.length,
+    restore: () => {
+      if (restored) return;
+      restored = true;
+      clearPrimitives();
+      for (const def of snapshot) registerPrimitive(def);
+    },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// V2-flavoured Primitive #41 promotion + execution
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Convenience: V2 callers that already have extracted primitives and a
+// language tag can promote+execute in one call. Internally this is just
+// V1's registerPrimaryHandler → bindAndExecute, with a friendlier shape
+// for V2's discovery loop.
+
+import type { ExtractedPrimitive } from '@/lib/ascension/types';
+
+export interface RuntimeExecutionInput {
+  /** Module/candidate name that will be promoted to Primitive #41. */
+  primaryName: string;
+  /** Primitives extracted from the user's source (post quality-gate). */
+  primitives: ReadonlyArray<ExtractedPrimitive>;
+  /** Source language (typescript, python, php, …). */
+  sourceLanguage: string;
+  /** Optional original source for cognitive overlay metadata. */
+  originalSource?: string | null;
+  /** Input data passed to the wrapping handler. */
+  input?: Record<string, unknown>;
+}
+
+export interface RuntimeExecutionOutput {
+  registration: PrimaryHandlerResult;
+  binding: ExecutionBindingResult;
+  summary: EffectSummary;
+}
+
+/**
+ * Promote user code to Primitive #41 and execute it through the V1 lockbox.
+ * Returns the registration record, the canonical execution binding result,
+ * and a UI-shaped effect summary — everything V2 needs to display runtime
+ * status without re-implementing any of it.
+ */
+export function runRuntimeForPrimitive(
+  input: RuntimeExecutionInput,
+): RuntimeExecutionOutput {
+  const registration = registerPrimaryHandler(
+    input.primaryName,
+    [...input.primitives],
+    input.sourceLanguage,
+    input.originalSource ?? null,
+  );
+
+  const unit = buildExecutableUnit(
+    {
+      name: input.primaryName,
+      category: registration.profile?.categories[0] ?? 'execution',
+      confidence: registration.hasMeaningfulBehavior ? 0.85 : 0.5,
+      complexity: input.primitives.length,
+      extractionMethod: 'function',
+      canonicalName: input.primaryName,
+      language: input.sourceLanguage,
+    },
+    input.sourceLanguage,
+  );
+
+  const binding = bindAndExecute(unit, input.input ?? {});
+  const summary = generateEffectSummary(binding, input.primaryName);
+
+  return { registration, binding, summary };
+}
