@@ -382,6 +382,9 @@ ${cmt} [CMPSBL_SEALED_RUNTIME_${sn.toUpperCase()}]
 
 const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   typescript: genTypeScript,
+  // JavaScript shares the TypeScript runtime template — both emit via the
+  // canonical TS path and are byte-locked together by golden-file regression.
+  javascript: genTypeScript,
   python: genPython,
   go: genGo,
   rust: genRust,
