@@ -5,7 +5,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { generateUnifiedCapabilityFile } from '@/lib/export/unified-capability-file';
-import { isLanguageShipping } from '@/lib/export/language-parity-tiers';
+import { isLanguageSupported } from '@/lib/export/v2-supported-languages';
 
 const CAPS = [
   { id: '1', name: 'Auto_Defense', cjpiScore: 90, tier: 'apex', chain: ['DEFENSE', 'BRAIN'], fingerprint: 'fp_def_test123456', moatSignature: 'moat_1', capabilityType: 'ascended' },
@@ -477,7 +477,7 @@ describe('12-Language Export Pipeline', () => {
   for (const [langName, src] of Object.entries(SOURCES)) {
     // Parity gate: only run full pipeline assertions for SHIPPING languages.
     // COMING_SOON languages are intentionally blocked from emitting artifacts.
-    const block = isLanguageShipping(src.lang) ? describe : describe.skip;
+    const block = isLanguageSupported(src.lang) ? describe : describe.skip;
     block(langName, () => {
       let output: string;
 

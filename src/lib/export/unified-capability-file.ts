@@ -3006,7 +3006,7 @@ export function generateUnifiedCapabilityFile(
   //     `generateUnifiedGeneric` architecture/port spec, depending on whether
   //     a hand-tuned template body exists for the language.
   // The gate is currently a no-op so every visible language emits a real file.
-  assertLanguageShipping(lang);
+  assertLanguageSupported(lang);
 
   let raw: string;
   // Single boundary: normalize chains for every language emitter so raw

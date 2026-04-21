@@ -49,7 +49,7 @@ import {
   runPreExportHarness,
   type HarnessInput,
 } from '@/lib/ascension-v2/pre-export-harness';
-import { getShippingLanguages } from '@/lib/export/language-parity-tiers';
+import { getSupportedLanguages as getShippingLanguages } from '@/lib/export/v2-supported-languages';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // Per-language fixture: (canonical source, adversarial source, file ext)
@@ -368,17 +368,17 @@ beforeEach(() => {
   resetChain();
 });
 
-describe('V2 Pipeline — registry parity', () => {
-  it('every fixture language is currently SHIPPING in the parity registry', () => {
-    const shippingIds = new Set(getShippingLanguages().map(l => l.id));
+describe('V2 Pipeline — registry coverage', () => {
+  it('every fixture language is currently supported in the V2 registry', () => {
+    const supportedIds = new Set(getShippingLanguages().map(l => l.id));
     for (const f of FIXTURES) {
-      expect(shippingIds.has(f.id), `${f.label} must be SHIPPING`).toBe(true);
+      expect(supportedIds.has(f.id), `${f.label} must be supported`).toBe(true);
     }
   });
 
-  it('all SHIPPING languages have an end-to-end fixture', () => {
-    const shippingIds = new Set(getShippingLanguages().map(l => l.id));
-    expect(FIXTURES.length).toBe(shippingIds.size);
+  it('all supported languages have an end-to-end fixture', () => {
+    const supportedIds = new Set(getShippingLanguages().map(l => l.id));
+    expect(FIXTURES.length).toBe(supportedIds.size);
   });
 });
 
@@ -622,9 +622,9 @@ describe('V2 Pipeline — cross-language invariants', () => {
     expect(verifyChain()).toBe(false);
   });
 
-  it('every shipping language in the parity registry has an E2E fixture', () => {
-    const shippingIds = getShippingLanguages().map(l => l.id).sort();
+  it('every supported language in the V2 registry has an E2E fixture', () => {
+    const supportedIds = getShippingLanguages().map(l => l.id).sort();
     const fixtureIds = FIXTURES.map(f => f.id).sort();
-    expect(fixtureIds).toEqual(shippingIds);
+    expect(fixtureIds).toEqual(supportedIds);
   });
 });
