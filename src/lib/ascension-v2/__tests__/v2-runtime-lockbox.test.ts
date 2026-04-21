@@ -24,8 +24,9 @@ import {
 // Use V1's primitive-registry directly via the bridge re-export
 // to verify the isolation contract.
 import { listPrimitives } from '@/lib/ascension/primitive-registry';
+import type { ExtractedPrimitive } from '@/lib/ascension/types';
 
-const samplePrimitives = [
+const samplePrimitives: ExtractedPrimitive[] = [
   {
     id: 'p1',
     name: 'processOrder',
@@ -34,15 +35,15 @@ const samplePrimitives = [
     confidence: 0.9,
     complexity: 4,
     qualityScore: 0.85,
-    extractionMethod: 'function' as const,
-    extractionTrust: 'high' as const,
+    extractionMethod: 'function',
+    extractionTrust: 'high',
     language: 'typescript',
     inputs: ['order'],
     outputs: ['receipt'],
     keywords: ['validate', 'transform', 'persist'],
     sourceSnippet: 'if (x) { for (i) { save(x); } }',
     sourceFile: 'orders.ts',
-  },
+  } as unknown as ExtractedPrimitive,
 ];
 
 describe('V2 Runtime Lockbox — Primitive #41 promotion + execution', () => {
