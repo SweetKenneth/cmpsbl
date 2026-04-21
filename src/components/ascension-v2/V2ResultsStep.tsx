@@ -149,6 +149,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           setSourceFiles(data.metadata.source_files as SourceFileData[]);
           setCandidateName(data.name?.replace('CANDIDATE_', '') || 'source');
           setSourceLanguage(data.metadata.language || 'typescript');
+          const fpHash = (data.metadata as { fingerprint_hash?: string }).fingerprint_hash;
+          if (typeof fpHash === 'string' && fpHash.length > 0) {
+            setSourceFingerprintHash(fpHash);
+          }
         }
       } catch {
         /* non-fatal — export will still work without originals */
@@ -699,7 +703,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
                   extension: f.extension,
                 })),
                 layerIds: Array.from(selectedLayers),
-                priorFingerprint: integrityHash || null,
+                // Source FNV fingerprint (NOT the audit-chain SHA). Lets the
+                // next run compute a meaningful `fingerprint_changed` flag.
+                priorFingerprint: sourceFingerprintHash,
               });
               onReset();
               navigate('/ascension-v2');
