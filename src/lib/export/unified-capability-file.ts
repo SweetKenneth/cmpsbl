@@ -2325,9 +2325,31 @@ ${executeOriginalBody}
 CMPSBLCapability = CmpsblCapability
 
 
+# ── Layer Hook Registry (replaces cmpsbl_execute rebinding) ──────────────
+# Layers register pre/post hooks instead of clobbering this function.
+# Each pre-hook receives (capability_name, input_data) and may raise to
+# short-circuit; each post-hook receives (capability_name, input_data, result).
+# This keeps cmpsbl_execute single-bodied, async-safe, and composable.
+_cmpsbl_hooks_pre: list = []
+_cmpsbl_hooks_post: list = []
+
+def cmpsbl_register_hook(stage: str, fn) -> None:
+    """Register a pre or post layer hook. stage in {'pre','post'}."""
+    if stage == 'pre':
+        _cmpsbl_hooks_pre.append(fn)
+    elif stage == 'post':
+        _cmpsbl_hooks_post.append(fn)
+    else:
+        raise ValueError("stage must be 'pre' or 'post'")
+
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute any capability by name."""
-    return CmpsblCapability(capability_name).execute(input_data)
+    """Execute any capability by name, running registered layer hooks."""
+    for _h in _cmpsbl_hooks_pre:
+        _h(capability_name, input_data)
+    result = CmpsblCapability(capability_name).execute(input_data)
+    for _h in _cmpsbl_hooks_post:
+        _h(capability_name, input_data, result)
+    return result
 
 # Backwards compatibility alias
 execute = cmpsbl_execute

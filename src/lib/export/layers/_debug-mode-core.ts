@@ -128,12 +128,11 @@ cmpsbl_execute = function cmpsbl_execute_debug_surfaced(capabilityName: string, 
 };`;
 
 const DEBUG_WIRE_PY = `
-_cmpsbl_raw_execute_dbg = cmpsbl_execute
-def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Surface debug banner + BEACON sink on first call when debug is enabled."""
+def _cmpsbl_debug_pre(capability_name, input_data):
     if _cmpsbl_debug_active(input_data):
         _cmpsbl_debug_banner(capability_name)
-    return _cmpsbl_raw_execute_dbg(capability_name, input_data)`;
+
+cmpsbl_register_hook('pre', _cmpsbl_debug_pre)`;
 
 export const DEBUG_MODE_CORE: CmpsblLayerDefinition = {
   id: 'debug-surface',
