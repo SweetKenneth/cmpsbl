@@ -15,6 +15,11 @@ import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot, init
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
 import { consumeReAscendPayload, type ReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { V2PreflightEstimator } from './V2PreflightEstimator';
+import {
+  getCanonicalLanguages,
+  getBetaLanguages,
+  getSupportedLanguages,
+} from '@/lib/export/v2-supported-languages';
 
 interface Props {
   onComplete: () => void;
