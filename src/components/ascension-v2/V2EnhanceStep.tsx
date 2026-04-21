@@ -334,7 +334,8 @@ export function V2EnhanceStep({ onComplete }: Props) {
               const isSelected = selectedLayers.has(layer.id);
               const layerTier = tierForLayer(layer);
               const meta = TIER_META[layerTier];
-              const isLocked = TIER_RANK[layerTier] > userTierRank;
+              // Governor bypasses every tier gate — they own the substrate.
+              const isLocked = isGovernor ? false : TIER_RANK[layerTier] > userTierRank;
               return (
                 <button
                   key={layer.id}
