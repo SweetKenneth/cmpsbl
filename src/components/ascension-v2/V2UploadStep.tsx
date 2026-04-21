@@ -228,9 +228,13 @@ export function V2UploadStep({ onComplete }: Props) {
     };
 
     setReAscendBanner({ priorRunId: payload.priorRunId });
-    void runIngestion(analysis, {
+    runIngestion(analysis, {
       priorRunId: payload.priorRunId,
       priorFingerprint: payload.priorFingerprint,
+    }).catch(() => {
+      // Surface the manual upload UI again on failure instead of stranding
+      // the user on an infinite "Re-ascending…" spinner.
+      setReAscendBanner(null);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

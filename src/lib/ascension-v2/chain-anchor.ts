@@ -36,9 +36,19 @@ export async function anchorV2ExportHead(params: {
   fingerprint: string;
 }): Promise<void> {
   try {
+    // Count only V2-pipeline artifacts so the anchor reflects the V2 chain,
+    // not the entire registry (which mixes V1, vertical exports, restorations,
+    // and store inventory). Counted *after* the export row is committed so the
+    // new artifact is included in the receipt total it gets anchored against.
     const { count } = await supabase
       .from('artifact_registry')
-      .select('id', { count: 'exact', head: true });
+      .select('id', { count: 'exact', head: true })
+      .in('category', [
+        'proprietary-evolution-v2',
+        'proprietary-discovery-v2',
+        'proprietary-ascended-v2',
+        'proprietary-mana-attachment-v2',
+      ]);
 
     const receiptCount = count ?? 0;
     const headInput = [
