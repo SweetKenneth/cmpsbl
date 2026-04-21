@@ -187,6 +187,34 @@ function assertEmbeddedSourcesIntact(
   }
 }
 
+/**
+ * Heuristic risk-surface counter. Looks for the patterns that justify
+ * Soft / Enforce mode: network listeners, raw input handlers, eval-like
+ * dynamic code, child-process spawns, file-system writes, raw SQL,
+ * unparameterised template strings, secrets in URLs.
+ *
+ * Used by the mode banner to honestly auto-downgrade Enforce → Observe
+ * when the file shows zero risky surfaces (so users see why).
+ */
+function computeRiskSurfaceCount(files: UserSourceFile[] | undefined): number {
+  if (!files || files.length === 0) return 0;
+  const RISK_PATTERNS: RegExp[] = [
+    /\b(WebSocketServer|createServer|listen\s*\()/,
+    /\beval\s*\(|new\s+Function\s*\(/,
+    /\bchild_process|spawn\s*\(|execSync?\s*\(/,
+    /\bfs\.(write|append|unlink|rm)/,
+    /\bquery\s*\(\s*[`'"]\s*(SELECT|INSERT|UPDATE|DELETE)/i,
+    /\b(req|request)\.(body|query|params|headers)/,
+    /Bearer\s+\$\{|api[_-]?key.*=.*process\.env/i,
+    /\bcrypto\.createHmac|crypto\.createCipher/,
+  ];
+  let count = 0;
+  for (const f of files) {
+    for (const re of RISK_PATTERNS) if (re.test(f.content)) count++;
+  }
+  return count;
+}
+
 export function generateUnifiedTypeScript(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
@@ -194,6 +222,7 @@ export function generateUnifiedTypeScript(
   selectedLayers?: CmpsblLayerDefinition[],
   governanceMode?: string,
   riskSurfaceCount?: number,
+  excludedFunctions?: ReadonlyArray<string>,
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
@@ -1155,8 +1184,11 @@ export function generateUnifiedJavaScript(
   packName: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  riskSurfaceCount?: number,
+  excludedFunctions?: ReadonlyArray<string>,
 ): string {
-  const ts = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+  const ts = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   const js = stripTypeScriptSyntax(ts);
 
   // Collect public function names for the CommonJS footer (best-effort)
@@ -1192,6 +1224,10 @@ export function generateUnifiedPython(
   packName: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  riskSurfaceCount?: number,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _excludedFunctions?: ReadonlyArray<string>,
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
