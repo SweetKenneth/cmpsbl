@@ -89,4 +89,68 @@ describe('Python-emitter regressions', () => {
       .filter(l => /;\s*$/.test(l) && !l.trim().startsWith('#') && !l.trim().startsWith('//'));
     expect(offenders).toHaveLength(0);
   });
+
+  // Patch D — 2026-04-21: real user-code wrapping + no execute rebinding.
+  // The previous Python emit detected user functions but never wrapped them
+  // (Layer 1 ran without ever touching cmpsbl_execute). It also rebuilt
+  // cmpsbl_execute via `_cmpsbl_raw_execute_XX = cmpsbl_execute` 16 times,
+  // clobbering the async spine. This regression locks both bug classes out.
+  it('regression(D): emitter does NOT rebind cmpsbl_execute via _cmpsbl_raw_execute_*', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const fastapi = [
+      'from fastapi import FastAPI',
+      'app = FastAPI()',
+      '@app.post("/orders")',
+      'async def create_order(payload: dict):',
+      '    return {"ok": True}',
+      '',
+      'def compute_total(items):',
+      '    return sum(items)',
+      ''
+    ].join('\n');
+    const PRIMS: any[] = [
+      { name: 'DEFENSE', primitiveId: 'DEFENSE', collisionScore: 90 },
+    ];
+    const out = generateRefurbishedCode(fastapi, PRIMS, 'deadbeef', 'python', 'svc.py');
+    expect(/_cmpsbl_raw_execute_/.test(out)).toBe(false);
+    const execDefs = (out.match(/^\s*def\s+cmpsbl_execute\s*\(/gm) ?? []).length;
+    expect(execDefs).toBeLessThanOrEqual(1);
+  });
+
+  it('regression(D): user functions are wrapped through _cmpsbl_wrap', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const fastapi = [
+      'from fastapi import FastAPI',
+      'app = FastAPI()',
+      '@app.post("/orders")',
+      'async def create_order(payload: dict):',
+      '    return {"ok": True}',
+      '',
+      'def compute_total(items):',
+      '    return sum(items)',
+      ''
+    ].join('\n');
+    const PRIMS: any[] = [
+      { name: 'DEFENSE', primitiveId: 'DEFENSE', collisionScore: 90 },
+    ];
+    const out = generateRefurbishedCode(fastapi, PRIMS, 'deadbeef', 'python', 'svc.py');
+    expect(out).toContain('def _cmpsbl_wrap(');
+    const rebound = (out.match(/=\s*_cmpsbl_wrap\(/g) ?? []).length;
+    expect(rebound).toBeGreaterThanOrEqual(1);
+  });
+
+  it('regression(D): async detection uses inspect.iscoroutinefunction', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const fastapi = [
+      'async def create_order(payload: dict):',
+      '    return {"ok": True}',
+      ''
+    ].join('\n');
+    const PRIMS: any[] = [
+      { name: 'DEFENSE', primitiveId: 'DEFENSE', collisionScore: 90 },
+    ];
+    const out = generateRefurbishedCode(fastapi, PRIMS, 'deadbeef', 'python', 'svc.py');
+    expect(out).toContain('iscoroutinefunction');
+    expect(out).toContain('async def _cmpsbl_async_wrapper');
+  });
 });
