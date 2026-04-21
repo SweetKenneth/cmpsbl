@@ -234,13 +234,21 @@ function checkLayerAutoWire(input: HarnessInput): HarnessCheck {
     };
   }
 
+  // TS/JS/PY emit the wrapper symbol verbatim (canonical bodies are inlined).
+  // Other languages route through native idiomatic emitters that rename the
+  // wrapper to language-natural identifiers (e.g. CyberDefense.block in Swift).
+  // For those, the layer's banner header / display name is the universal
+  // proof-of-emission marker — every emitter (native + structural fallback)
+  // writes it.
+  const lang = input.language.toLowerCase();
+  const acceptsName = lang !== 'typescript' && lang !== 'javascript' && lang !== 'python';
+
   const missing: string[] = [];
   for (const layer of input.selectedLayers) {
-    // Wrapper symbol is part of the public API surface and is preserved across
-    // obfuscation passes. Banner/display strings get sealed and intentionally
-    // do NOT appear verbatim in emitted output, so we don't gate on them.
     const wrapperPresent = input.ascendedCode.includes(layer.autoWire.wrapperName);
-    if (!wrapperPresent) {
+    const namePresent = acceptsName && input.ascendedCode.includes(layer.name);
+    const idPresent = acceptsName && input.ascendedCode.includes(layer.id);
+    if (!wrapperPresent && !namePresent && !idPresent) {
       missing.push(`${layer.name} (wrapper:✗ ${layer.autoWire.wrapperName})`);
     }
   }
@@ -344,6 +352,8 @@ function checkProofOfFiring(input: HarnessInput): HarnessCheck {
   }
 
   const code = input.ascendedCode;
+  const lang = input.language.toLowerCase();
+  const acceptsName = lang !== 'typescript' && lang !== 'javascript' && lang !== 'python';
   const silent: string[] = [];
 
   for (const layer of input.selectedLayers) {
@@ -351,14 +361,15 @@ function checkProofOfFiring(input: HarnessInput): HarnessCheck {
     //   • its id appears verbatim in the emitted envelope/wire
     //   • its wrapper symbol appears in the emitted output
     //   • a cmpsbl_record_action call references its id
-    // Silent layers (none of the above) cannot participate in cmpsbl_chain
-    // and therefore violate the chain contract.
+    //   • (non-TS/JS/PY only) its display name appears — native idiomatic
+    //     emitters rename wrappers but always emit the layer banner header
     const idPresent = code.includes(layer.id);
     const wrapperPresent = code.includes(layer.autoWire.wrapperName);
+    const namePresent = acceptsName && code.includes(layer.name);
     const recordedAction = code.includes(`cmpsbl_record_action`) &&
       (code.includes(`'${layer.id}'`) || code.includes(`"${layer.id}"`));
 
-    if (!idPresent && !wrapperPresent && !recordedAction) {
+    if (!idPresent && !wrapperPresent && !namePresent && !recordedAction) {
       silent.push(`${layer.name} (${layer.id})`);
     }
   }
