@@ -25,7 +25,7 @@ import { ShieldCheck, AlertTriangle, Layers, Languages, FileWarning, HardDrive }
 import { cn } from '@/lib/utils';
 import type { DiscoveredCapability } from '@/lib/ascension-v2';
 import type { DetectedLicense } from '@/lib/factory/license-attribution';
-import { getLanguageParityStatus, getLanguageParityEntry } from '@/lib/export/language-parity-tiers';
+import { getV2LanguageStatus, getV2LanguageEntry } from '@/lib/export/v2-supported-languages';
 
 interface SourceFileLite {
   readonly name: string;
@@ -95,8 +95,8 @@ export function V2PreExportConfidence({
     return out;
   }, [capabilities]);
 
-  const langParity = getLanguageParityStatus(language);
-  const langEntry = getLanguageParityEntry(language);
+  const langParity = getV2LanguageStatus(language);
+  const langEntry = getV2LanguageEntry(language);
   const sizeBand = useMemo(() => estimateZipBand(sourceFiles, attachedLayerCount), [sourceFiles, attachedLayerCount]);
 
   if (capabilities.length === 0) return null;
