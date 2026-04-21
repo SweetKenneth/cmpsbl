@@ -3513,6 +3513,9 @@ function renderPythonAttachmentBlock(
     lines.push(
       `try:\n    ${w.functionName} = _cmpsbl_wrap(${JSON.stringify(w.capability)}, ${w.functionName})\nexcept NameError:\n    pass`,
     );
+  }
+  lines.push(`# Total wrapped: ${wrappable.length} function(s)`);
+  return lines.join('\n');
 }
 
 /**
