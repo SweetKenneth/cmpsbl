@@ -39,12 +39,18 @@ interface Props {
   selectedLayerIds?: string[];
   /** If provided, each reco renders an Add button that toggles selection */
   onSelect?: (layerId: string) => void;
-  /** Max recos to show (default 4) */
+  /** Max recos to show (default 3 — we cap aggressively now) */
   limit?: number;
   /** Compact title override */
   title?: string;
   /** Override viewer tier (default: read from subscription hook) */
   userTier?: LayerTier;
+  /**
+   * User source files. When supplied, recommendations are driven by real
+   * code signals (HTTP routes, DB calls, crypto, etc.) instead of canonical
+   * primitive order. Falls back to gap/adjacency when no signals fire.
+   */
+  userSource?: ReadonlyArray<{ name: string; content: string }>;
 }
 
 function mapSubscriptionTier(tier: string | undefined): LayerTier {
