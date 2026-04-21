@@ -4,12 +4,14 @@
  *
  * For a small, growing set of frameworks where we recognize the user's
  * source idiomatically, we emit a *real* middleware that wraps every
- * inbound request through the kernel. This is the antidote to the generic
- * regex stubs in `layer-1-5-rebound.ts` — when we know the framework, we
- * give back a drop-in middleware the developer can register in two lines.
+ * inbound request through the kernel. This is the ONLY honest way to
+ * attach Layer 2 governance to native-language code without touching the
+ * user's source — we wire ourselves into the framework's request boundary,
+ * never into the user's call sites.
  *
  * Detection is conservative — if we're not sure, we return `null` and the
- * caller falls back to the generic rebound stubs (or, ideally, nothing).
+ * caller emits nothing. The kernel still ships in the artifact; the
+ * developer wires `cmpsbl_chain` at their own boundary.
  *
  * Currently supported:
  *   • Swift / Vapor — `Middleware` conformance + `app.middleware.use(...)`
