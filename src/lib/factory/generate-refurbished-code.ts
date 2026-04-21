@@ -3702,6 +3702,127 @@ function renderRustAttachmentBlock(
   return lines.join('\n');
 }
 
+/**
+ * Render the Go user-function attachment block.
+ *
+ * Mirrors renderPythonAttachmentBlock / renderRustAttachmentBlock. Emits
+ * a `cmpsbl_attach` package-level block with:
+ *   • CmpsblWrap            — generic context-aware wrapper (any func).
+ *   • CmpsblMiddleware      — http.Handler middleware (stdlib + chi/gorilla/gin).
+ *   • Cmpsbl<Name>          — per-handler aliases (only for HTTP handlers).
+ * Original symbols are UNTOUCHED. Goroutine-safe; context cancellation is
+ * propagated by passing the request's ctx into cmpsbl_execute pre/post.
+ */
+function renderGoAttachmentBlock(
+  plan: ReadonlyArray<{ functionName: string; capability: string; primitive: string; isHandler: boolean }>,
+): string {
+  const seen = new Set<string>();
+  const wrappable: Array<{ functionName: string; capability: string; isHandler: boolean }> = [];
+  for (const entry of plan) {
+    const n = entry.functionName;
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(n)) continue;
+    if (seen.has(n)) continue;
+    seen.add(n);
+    wrappable.push({ functionName: n, capability: entry.capability, isHandler: entry.isHandler });
+  }
+  if (wrappable.length === 0) return '';
+
+  const lines: string[] = [
+    '// ═══════════════════════════════════════════════════════════',
+    '// CMPSBL® USER-FUNCTION ATTACHMENT (Layer 2 wrap — Go)',
+    '// CmpsblWrap          → generic context-aware wrapper.',
+    '// CmpsblMiddleware    → http.Handler middleware (stdlib + chi/gorilla/gin).',
+    '// Per-fn aliases      → Cmpsbl<Name>(w, r) for HTTP handlers.',
+    '// Goroutine-safe; honors context cancellation. Layer 1 is UNTOUCHED.',
+    '// U.S. Patent App. No. 64/031,637',
+    '// ═══════════════════════════════════════════════════════════',
+    '',
+    '// CmpsblWrap pre/post-flights any closure through the governance pipeline.',
+    '// Pass the caller\'s context.Context so cancellation propagates into hooks.',
+    'func CmpsblWrap[T any](ctx context.Context, capability string, fn func(context.Context) (T, error)) (T, error) {',
+    '    func() {',
+    '        defer func() { _ = recover() }()',
+    '        input := map[string]interface{}{"_cmpsbl_phase": "pre", "fn": capability}',
+    '        if ctx != nil {',
+    '            select {',
+    '            case <-ctx.Done():',
+    '                return',
+    '            default:',
+    '            }',
+    '        }',
+    '        _, _ = cmpsbl_execute(capability, input)',
+    '    }()',
+    '    out, err := fn(ctx)',
+    '    func() {',
+    '        defer func() { _ = recover() }()',
+    '        phase := "post"',
+    '        if err != nil { phase = "error" }',
+    '        input := map[string]interface{}{"_cmpsbl_phase": phase, "fn": capability}',
+    '        _, _ = cmpsbl_execute(capability, input)',
+    '    }()',
+    '    return out, err',
+    '}',
+    '',
+    '// CmpsblMiddleware returns an http.Handler middleware that flows every',
+    '// request through cmpsbl_execute pre/post. Compatible with the stdlib',
+    '// http.ServeMux and any router accepting http.Handler (chi, gorilla, gin).',
+    '//   mux := http.NewServeMux()',
+    '//   handler := CmpsblMiddleware("api")(mux)',
+    '//   http.ListenAndServe(":8080", handler)',
+    'func CmpsblMiddleware(capability string) func(http.Handler) http.Handler {',
+    '    return func(next http.Handler) http.Handler {',
+    '        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {',
+    '            func() {',
+    '                defer func() { _ = recover() }()',
+    '                input := map[string]interface{}{',
+    '                    "_cmpsbl_phase":  "pre",',
+    '                    "_cmpsbl_method": r.Method,',
+    '                    "_cmpsbl_path":   r.URL.Path,',
+    '                }',
+    '                _, _ = cmpsbl_execute(capability, input)',
+    '            }()',
+    '            next.ServeHTTP(w, r)',
+    '            func() {',
+    '                defer func() { _ = recover() }()',
+    '                input := map[string]interface{}{"_cmpsbl_phase": "post", "_cmpsbl_path": r.URL.Path}',
+    '                _, _ = cmpsbl_execute(capability, input)',
+    '            }()',
+    '        })',
+    '    }',
+    '}',
+    '',
+    '// ─── Per-function aliases (opt-in routing) ───',
+    '// HTTP handlers get a Cmpsbl<Name> wrapper that flows through governance.',
+    '// Non-handler funcs: wrap manually with CmpsblWrap.',
+  ];
+  for (const w of wrappable) {
+    const aliasName = `Cmpsbl${w.functionName.charAt(0).toUpperCase()}${w.functionName.slice(1)}`;
+    if (w.isHandler) {
+      lines.push(
+        '',
+        `// ${aliasName} wraps ${w.functionName} for capability "${w.capability}".`,
+        `// NOTE: only emitted as a free-function wrapper. If ${w.functionName} is a`,
+        `// method on a receiver (e.g. (*Server).${w.functionName}), use CmpsblMiddleware`,
+        `// on the mux instead — Go cannot call methods through free-function aliases.`,
+        `func ${aliasName}(w http.ResponseWriter, r *http.Request) {`,
+        `    _, _ = CmpsblWrap(r.Context(), ${JSON.stringify(w.capability)}, func(ctx context.Context) (struct{}, error) {`,
+        `        ${w.functionName}(w, r.WithContext(ctx))`,
+        `        return struct{}{}, nil`,
+        `    })`,
+        `}`,
+      );
+    } else {
+      lines.push(
+        '',
+        `// Wrap ${w.functionName} manually:`,
+        `//   _, err := CmpsblWrap(ctx, ${JSON.stringify(w.capability)}, func(ctx context.Context) (T, error) { return ${w.functionName}(...), nil })`,
+      );
+    }
+  }
+  lines.push('', `// Total wrappable: ${wrappable.length} function(s)`);
+  return lines.join('\n');
+}
+
 /** Get the correct file extension for the refurbished output */
 export function getRefurbishedExtension(sourceLanguage: string): string {
   const adapter = getAdapter(sourceLanguage);
