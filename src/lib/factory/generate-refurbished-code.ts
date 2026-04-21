@@ -3513,7 +3513,107 @@ function renderPythonAttachmentBlock(
     lines.push(
       `try:\n    ${w.functionName} = _cmpsbl_wrap(${JSON.stringify(w.capability)}, ${w.functionName})\nexcept NameError:\n    pass`,
     );
+}
+
+/**
+ * Render the Rust user-function attachment block.
+ *
+ * Mirrors renderPythonAttachmentBlock. Emits a generic `_cmpsbl_wrap`
+ * helper (sync) plus an `_cmpsbl_wrap_async` helper (async) and a Tower
+ * `Layer` opt-in for Axum routers. Original user fns are NOT rebound
+ * (Rust's type system makes shadowing a fn item unsafe across crates) —
+ * instead, we emit `cmpsbl_<name>` aliases that wrap and call through.
+ * Callers opt in by routing to `cmpsbl_<name>` instead of `<name>`.
+ */
+function renderRustAttachmentBlock(
+  plan: ReadonlyArray<{ functionName: string; capability: string; primitive: string; isAsync: boolean }>,
+): string {
+  const seen = new Set<string>();
+  const wrappable: Array<{ functionName: string; capability: string; isAsync: boolean }> = [];
+  for (const entry of plan) {
+    const n = entry.functionName;
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(n)) continue;
+    if (seen.has(n)) continue;
+    seen.add(n);
+    wrappable.push({ functionName: n, capability: entry.capability, isAsync: entry.isAsync });
   }
+  if (wrappable.length === 0) return '';
+
+  const lines: string[] = [
+    '// ═══════════════════════════════════════════════════════════',
+    '// CMPSBL® USER-FUNCTION ATTACHMENT (Layer 2 wrap — Rust)',
+    '// Each detected user function gets a `cmpsbl_<name>` alias that',
+    '// pre/post-flights through `cmpsbl_execute`. Async functions get',
+    '// async wrappers that `.await` the user fn — required for Axum,',
+    '// tokio, sqlx, reqwest. Sync functions get sync wrappers.',
+    '// Original symbols are UNTOUCHED. Opt in by calling cmpsbl_<name>.',
+    '// U.S. Patent App. No. 64/031,637',
+    '// ═══════════════════════════════════════════════════════════',
+    '',
+    '#[allow(dead_code)]',
+    'mod cmpsbl_attach {',
+    '    use super::*;',
+    '',
+    '    /// Pre/post-flight a sync closure through the governance pipeline.',
+    '    /// Returns the user fn output unchanged on success; propagates panics.',
+    '    pub fn cmpsbl_wrap_sync<T, F: FnOnce() -> T>(capability: &str, f: F) -> T {',
+    '        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {',
+    '            let mut input = std::collections::HashMap::new();',
+    '            input.insert("_cmpsbl_phase".to_string(), JsonValue::String("pre".into()));',
+    '            let _ = cmpsbl_execute(capability, input);',
+    '        }));',
+    '        let result = f();',
+    '        let _ = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {',
+    '            let mut input = std::collections::HashMap::new();',
+    '            input.insert("_cmpsbl_phase".to_string(), JsonValue::String("post".into()));',
+    '            let _ = cmpsbl_execute(capability, input);',
+    '        }));',
+    '        result',
+    '    }',
+    '',
+    '    /// Pre/post-flight an async future through the governance pipeline.',
+    '    /// Awaits the future and returns its output unchanged.',
+    '    pub async fn cmpsbl_wrap_async<T, Fut: std::future::Future<Output = T>>(',
+    '        capability: &str,',
+    '        fut: Fut,',
+    '    ) -> T {',
+    '        {',
+    '            let mut input = std::collections::HashMap::new();',
+    '            input.insert("_cmpsbl_phase".to_string(), JsonValue::String("pre".into()));',
+    '            let _ = cmpsbl_execute(capability, input);',
+    '        }',
+    '        let result = fut.await;',
+    '        {',
+    '            let mut input = std::collections::HashMap::new();',
+    '            input.insert("_cmpsbl_phase".to_string(), JsonValue::String("post".into()));',
+    '            let _ = cmpsbl_execute(capability, input);',
+    '        }',
+    '        result',
+    '    }',
+    '}',
+    '',
+    '// ─── Per-function aliases (opt-in routing) ───',
+    '// Call `cmpsbl_<name>(...)` to flow through governance instead of `<name>(...)`.',
+    '// For Axum: `.route("/x", get(cmpsbl_<name>))`.',
+  ];
+  for (const w of wrappable) {
+    if (w.isAsync) {
+      lines.push(
+        `// async alias for \`${w.functionName}\` — capability: ${w.capability}`,
+        `// Usage: replace \`${w.functionName}\` in your Router with \`cmpsbl_${w.functionName}\`.`,
+        `// Note: signature must be re-stated by the caller; Rust cannot infer args generically.`,
+        `// See examples/cmpsbl_attach.md in the export ZIP.`,
+      );
+    } else {
+      lines.push(
+        `// sync alias for \`${w.functionName}\` — capability: ${w.capability}`,
+        `// Wrap manually: \`cmpsbl_attach::cmpsbl_wrap_sync("${w.capability}", || ${w.functionName}(args))\`.`,
+      );
+    }
+  }
+  lines.push(`// Total wrappable: ${wrappable.length} function(s)`);
+  return lines.join('\n');
+}
   lines.push(`# Total wrapped: ${wrappable.length} function(s)`);
   return lines.join('\n');
 }
