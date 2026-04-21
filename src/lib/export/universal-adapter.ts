@@ -51,11 +51,9 @@ export type ExportLanguage =
   | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
   | 'scala' | 'haskell'
   // Extended software
-  | 'perl' | 'r' | 'julia' | 'nim' | 'crystal' | 'fsharp'
-  | 'clojure' | 'erlang' | 'ocaml' | 'groovy' | 'd'
-  | 'fortran' | 'objective-c'
-  // Shell / Infra
-  | 'bash' | 'powershell'
+  | 'r'
+  // (Removed doc-only langs: Nim, Crystal, F#, Clojure, Erlang, OCaml, Groovy,
+  //  D, Fortran, Objective-C, Perl, Julia, Bash, PowerShell.)
   // Blockchain
   | 'solidity' | 'vyper' | 'move' | 'cairo'
   // GPU / Shaders
@@ -69,9 +67,7 @@ export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
   'go', 'rust', 'java', 'csharp',
   'ruby', 'swift', 'kotlin', 'elixir', 'lua',
   'c', 'cpp', 'dart', 'zig', 'scala', 'haskell',
-  'perl', 'r', 'julia', 'nim', 'crystal', 'fsharp',
-  'clojure', 'erlang', 'ocaml', 'groovy', 'd',
-  'fortran', 'objective-c', 'bash', 'powershell',
+  'r',
   'solidity', 'vyper', 'move', 'cairo',
   'cuda', 'glsl', 'hlsl', 'wgsl', 'metal', 'opencl',
 ];
@@ -123,11 +119,7 @@ const LANG_EXT: Record<ExportLanguage, string> = {
   elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
   scala: 'scala', haskell: 'hs',
   // Extended software
-  perl: 'pl', r: 'R', julia: 'jl', nim: 'nim', crystal: 'cr', fsharp: 'fs',
-  clojure: 'clj', erlang: 'erl', ocaml: 'ml', groovy: 'groovy', d: 'd',
-  fortran: 'f90', 'objective-c': 'm',
-  // Shell / Infra
-  bash: 'sh', powershell: 'ps1',
+  r: 'R',
   // Blockchain
   solidity: 'sol', vyper: 'vy', move: 'move', cairo: 'cairo',
   // GPU / Shaders
@@ -144,10 +136,7 @@ const LANG_LABELS: Record<ExportLanguage, string> = {
   c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
   scala: 'Scala', haskell: 'Haskell',
   // Extended
-  perl: 'Perl', r: 'R', julia: 'Julia', nim: 'Nim', crystal: 'Crystal', fsharp: 'F#',
-  clojure: 'Clojure', erlang: 'Erlang', ocaml: 'OCaml', groovy: 'Groovy', d: 'D',
-  fortran: 'Fortran', 'objective-c': 'Objective-C',
-  bash: 'Bash', powershell: 'PowerShell',
+  r: 'R',
   solidity: 'Solidity', vyper: 'Vyper', move: 'Move', cairo: 'Cairo',
   cuda: 'CUDA', glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL', metal: 'Metal', opencl: 'OpenCL',
   verilog: 'Verilog', vhdl: 'VHDL', systemverilog: 'SystemVerilog', chisel: 'Chisel (Scala)',
@@ -175,11 +164,10 @@ export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
  *
  * Layered gating:
  *   1. Score-tier unlocks (rarity-based — Mint/Prime/Relic/Silicon)
- *   2. Parity-tier filter (HIDDEN langs are never returned; COMING_SOON
- *      langs are returned but marked locked with a Coming Soon reason)
+ *   2. Registry visibility filter (HIDDEN langs are never returned)
  *
- * The parity gate is the safety net: even if a score unlocks a language,
- * the export pipeline will refuse to emit it until parity is verified.
+ * The registry is the safety net: even if a score unlocks a language,
+ * the export pipeline will refuse to emit it unless it is visible.
  */
 export function getLanguagesForScore(
   score: number,
@@ -346,9 +334,7 @@ type CodeGen = (a: ExportableArtifact, adapter: ExportAdapter) => string;
 
 /** Comment prefix map for bridge-adapted languages */
 const COMMENT_PREFIX: Partial<Record<ExportLanguage, string>> = {
-  perl: '#', r: '#', julia: '#', nim: '#', crystal: '#', fsharp: '//',
-  clojure: ';;', erlang: '%', ocaml: '(*', groovy: '//', d: '//',
-  fortran: '!', 'objective-c': '//', bash: '#', powershell: '#',
+  r: '#',
   solidity: '//', vyper: '#', move: '//', cairo: '//',
   cuda: '//', glsl: '//', hlsl: '//', wgsl: '//', metal: '//', opencl: '//',
   firrtl: ';', bluespec: '//',
@@ -410,21 +396,7 @@ const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   spice: genSPICE,
   systemc: genSystemC,
   // Extended languages — bridge-adapted
-  perl: genBridge('perl'),
   r: genBridge('r'),
-  julia: genBridge('julia'),
-  nim: genBridge('nim'),
-  crystal: genBridge('crystal'),
-  fsharp: genBridge('fsharp'),
-  clojure: genBridge('clojure'),
-  erlang: genBridge('erlang'),
-  ocaml: genBridge('ocaml'),
-  groovy: genBridge('groovy'),
-  d: genBridge('d'),
-  fortran: genBridge('fortran'),
-  'objective-c': genBridge('objective-c'),
-  bash: genBridge('bash'),
-  powershell: genBridge('powershell'),
   solidity: genBridge('solidity'),
   vyper: genBridge('vyper'),
   move: genBridge('move'),

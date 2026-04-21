@@ -11,17 +11,13 @@
  *                produce a working single-file runtime. Golden-file regression
  *                locked.
  *
- *   BETA       — Everything else that emits today. Two real fulfillment paths:
- *                  (a) `polyglot-templates.ts` → hand-tuned native kernel +
- *                      Layer 1 verbatim (Rust, Go, Java, Kotlin, C#, Swift,
- *                      C, C++, Zig, Scala, Ruby, Lua, R, Dart, Elixir, Haskell,
- *                      and the HDL/GPU/blockchain families).
- *                  (b) `generateUnifiedGeneric` → structured architecture/port
- *                      spec in the language's comment syntax (Nim, Crystal,
- *                      Groovy, Clojure, F#, VB.NET, Objective-C, Perl, Julia,
- *                      Erlang, OCaml, Elm, Bash, PowerShell, Fortran, D).
- *                Both paths emit a real downloadable file. Surfaced under one
- *                honest "Beta" badge.
+ *   BETA       — Everything else that emits today. Real fulfillment via
+ *                `polyglot-templates.ts` → hand-tuned native kernel +
+ *                Layer 1 verbatim (Rust, Go, Java, Kotlin, C#, Swift,
+ *                C, C++, Zig, Scala, Ruby, Lua, R, Dart, Elixir, Haskell,
+ *                and the HDL/GPU/blockchain families). Every BETA language
+ *                emits a real downloadable file via the polyglot template
+ *                engine — no doc-only / port-spec emitters.
  *
  *   HIDDEN     — Not in the picker. Default for any unknown language.
  *
@@ -96,21 +92,6 @@ export const V2_LANGUAGE_REGISTRY: ReadonlyArray<V2LanguageEntry> = Object.freez
   beta('move',          'Move'),
   beta('cairo',         'Cairo'),
 
-  // ─── BETA — structured port-spec via generateUnifiedGeneric ───────────
-  beta('nim',           'Nim'),
-  beta('crystal',       'Crystal'),
-  beta('groovy',        'Groovy'),
-  beta('clojure',       'Clojure'),
-  beta('fsharp',        'F#'),
-  beta('objective-c',   'Objective-C'),
-  beta('perl',          'Perl'),
-  beta('julia',         'Julia'),
-  beta('erlang',        'Erlang'),
-  beta('ocaml',         'OCaml'),
-  beta('fortran',       'Fortran'),
-  beta('d',             'D'),
-  beta('bash',          'Bash'),
-  beta('powershell',    'PowerShell'),
 ]);
 
 const REGISTRY_INDEX: ReadonlyMap<string, V2LanguageEntry> = new Map(
