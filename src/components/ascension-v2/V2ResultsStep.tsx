@@ -45,7 +45,7 @@ import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
-  getShippingLanguages,
+  getCanonicalLanguages,
 } from '@/lib/export/language-parity-tiers';
 import { Clock } from 'lucide-react';
 import JSZip from 'jszip';
