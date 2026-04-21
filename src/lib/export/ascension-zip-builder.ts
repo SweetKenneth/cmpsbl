@@ -20,6 +20,7 @@
 import type { RestorationReport } from '@/lib/factory/restoration-docs';
 import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
 import { generateRefurbishedCode as generateAscendedCode, generateLicense, getRefurbishedExtension as getAscendedExtension } from '@/lib/factory/generate-refurbished-code';
+import { blackboxFile } from './blackbox';
 import { wrapPremiumDocPage } from './premium-html-wrapper';
 import { wrapPremiumHtml, type PremiumDocInput } from './premium-html-wrapper';
 import { generateUniversalUserGuide } from './universal-user-guide';
@@ -408,7 +409,13 @@ export async function buildAscensionZip(input: AscensionZipInput): Promise<Ascen
   // ═══════════════════════════════════════════════════════════
 
   zip.file('src/original-source.txt', code || '// No source provided');
-  zip.file(`src/ascended-source${refExt}`, freshAscended || '// Ascended code not generated');
+  // Apply black-box obfuscation — protects CJPI weights, tier thresholds,
+  // and substrate internals embedded in the Layer 2 wrap. Brings Ascension
+  // exports to parity with Foundry's IP protection (foundry-tiered-zip:278).
+  zip.file(
+    `src/ascended-source${refExt}`,
+    freshAscended ? blackboxFile(freshAscended, detectedLang || 'typescript') : '// Ascended code not generated',
+  );
   fileCount += 2;
 
   // ═══════════════════════════════════════════════════════════
