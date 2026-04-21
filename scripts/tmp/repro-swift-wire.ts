@@ -23,3 +23,10 @@ console.log('--- HARNESS PASSED:', h.passed);
 for (const c of h.checks) {
   if (!c.passed) console.log('  FAIL', c.id, c.severity, '—', c.message);
 }
+// Find layer fragments
+const idxCD = code.indexOf('Cyber Defense');
+console.log('\n--- CD region (idx', idxCD, ') ---');
+console.log(code.slice(Math.max(0, idxCD - 50), idxCD + 1200));
+const idxHIS = code.indexOf('Holographic');
+console.log('\n--- HIS region (idx', idxHIS, ') ---');
+console.log(code.slice(Math.max(0, idxHIS - 50), idxHIS + 1200));
