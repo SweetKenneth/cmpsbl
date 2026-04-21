@@ -213,3 +213,85 @@ describe('Rust-emitter regressions', () => {
     expect(out).toContain('fut.await');
   });
 });
+
+describe('Go-emitter regressions', () => {
+  // Patch F — 2026-04-21: Go/net-http attachment.
+  // Previous Go emit (1) commented out Layer 1, (2) emitted a synthetic
+  // `package main` even when Layer 1 already declared one (multi-package
+  // compile error), and (3) had no http.Handler middleware or context-
+  // aware wrapper. This regression locks all three out.
+  const NET_HTTP = [
+    'package main',
+    '',
+    'import (',
+    '    "context"',
+    '    "encoding/json"',
+    '    "net/http"',
+    '    "time"',
+    ')',
+    '',
+    'type Server struct{}',
+    '',
+    'func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {',
+    '    w.Header().Set("Content-Type", "application/json")',
+    '    json.NewEncoder(w).Encode(map[string]string{"status": "ok"})',
+    '}',
+    '',
+    'func computeTotal(ctx context.Context, items []int) int {',
+    '    sum := 0',
+    '    for _, v := range items { sum += v }',
+    '    return sum',
+    '}',
+    '',
+    'func main() {',
+    '    s := &Server{}',
+    '    mux := http.NewServeMux()',
+    '    mux.HandleFunc("/health", s.handleHealth)',
+    '    srv := &http.Server{Addr: ":8080", Handler: mux, ReadTimeout: 5 * time.Second}',
+    '    _ = srv.ListenAndServe()',
+    '}',
+    '',
+  ].join('\n');
+  const PRIMS: any[] = [{ name: 'DEFENSE', primitiveId: 'DEFENSE', collisionScore: 90 }];
+
+  it('regression(F): no duplicate cmpsbl_execute definition', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(NET_HTTP, PRIMS, 'deadbeef', 'go', 'svc.go');
+    const execDefs = (out.match(/^\s*func\s+cmpsbl_execute\s*\(/gm) ?? []).length;
+    expect(execDefs).toBeLessThanOrEqual(1);
+  });
+
+  it('regression(F): exactly one `package` declaration in the output', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(NET_HTTP, PRIMS, 'deadbeef', 'go', 'svc.go');
+    // Strip block comments + line comments, then count `package <name>` decls.
+    const stripped = out
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .split('\n')
+      .filter(l => !l.trim().startsWith('//'))
+      .join('\n');
+    const pkgDecls = (stripped.match(/^\s*package\s+[A-Za-z_][A-Za-z0-9_]*\s*$/gm) ?? []).length;
+    expect(pkgDecls).toBe(1);
+  });
+
+  it('regression(F): Layer 1 emitted as real code, not commented out', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(NET_HTTP, PRIMS, 'deadbeef', 'go', 'svc.go');
+    expect(/^\s*func\s+\(s\s+\*Server\)\s+handleHealth\b/m.test(out)).toBe(true);
+    expect(/^\s*func\s+main\s*\(/m.test(out)).toBe(true);
+  });
+
+  it('regression(F): http.Handler middleware emitted', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(NET_HTTP, PRIMS, 'deadbeef', 'go', 'svc.go');
+    expect(out).toContain('func CmpsblMiddleware(capability string)');
+    expect(out).toContain('func(http.Handler) http.Handler');
+  });
+
+  it('regression(F): context-aware generic wrapper emitted', async () => {
+    const { generateRefurbishedCode } = await import('../../factory/generate-refurbished-code');
+    const out = generateRefurbishedCode(NET_HTTP, PRIMS, 'deadbeef', 'go', 'svc.go');
+    expect(out).toContain('func CmpsblWrap[T any](ctx context.Context');
+    expect(out).toContain('ctx.Done()');
+  });
+});
