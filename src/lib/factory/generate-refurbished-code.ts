@@ -3349,7 +3349,31 @@ export function generateRefurbishedCode(
   const upstreamLicense = resolveLayer1License(verbatimSource, upstreamLicenseSpdx);
   const upstreamLicenseLines = renderLicenseAttribution(upstreamLicense, adapter.comment);
 
-  // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) ───────
+  // ── Python User-Function Wrapping (real attachment, not just manifest) ──
+  // For Python, after Layer 1 we re-bind each detected user function through
+  // _cmpsbl_wrap so calls actually flow through cmpsbl_execute (and therefore
+  // every registered layer hook). Async functions get an async wrapper via
+  // inspect.iscoroutinefunction so FastAPI / asyncpg / httpx remain correct.
+  //
+  // Wrapping is driven by ALL detected boundaries — not just the capability-
+  // matched attachment plan — because the plan is for routing/documentation,
+  // while wrapping is the universal pre/post-flight surface every user fn
+  // needs to flow governance through.
+  const pythonWrapPlan = (langLower === 'python')
+    ? boundaries.map(b => {
+        const matched = attachmentPlan.find(p => p.functionName === b.name);
+        return {
+          functionName: b.name,
+          capability: matched?.capability ?? 'user_function',
+          primitive: matched?.primitive ?? 'GENERIC',
+        };
+      })
+    : [];
+  const pythonWrapBlock = pythonWrapPlan.length > 0
+    ? renderPythonAttachmentBlock(pythonWrapPlan)
+    : '';
+
+  // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) + [Wrap] ───────
   return [
     filePrelude + layer2Code,
     '',
@@ -3362,10 +3386,107 @@ export function generateRefurbishedCode(
     '',
     verbatimSource,
     '',
+    ...(pythonWrapBlock ? [pythonWrapBlock, ''] : []),
     verifyBlock,
     '',
     adapter.blockComment(footerLines),
   ].join('\n');
+}
+
+/**
+ * Render the Python user-function attachment block.
+ *
+ * Emitted AFTER Layer 1 (so the user symbols exist) and BEFORE the
+ * self-verify block. For each plan entry whose functionName is a bare
+ * identifier present in the source, we re-bind the symbol through
+ * _cmpsbl_wrap. Async functions are detected at runtime via
+ * inspect.iscoroutinefunction and get an awaitable wrapper.
+ */
+function renderPythonAttachmentBlock(
+  attachmentPlan: ReadonlyArray<{ functionName: string; capability: string; primitive: string }>,
+): string {
+  // Only wrap bare-identifier targets — class methods (`Foo.bar`) and
+  // decorator synth boundaries (`POST_create_order`) are reported in the
+  // manifest but are not safely re-bindable at module scope.
+  const seen = new Set<string>();
+  const wrappable: Array<{ functionName: string; capability: string }> = [];
+  for (const entry of attachmentPlan) {
+    const n = entry.functionName;
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(n)) continue;
+    if (seen.has(n)) continue;
+    seen.add(n);
+    wrappable.push({ functionName: n, capability: entry.capability });
+  }
+  if (wrappable.length === 0) return '';
+
+  const lines: string[] = [
+    '# ═══════════════════════════════════════════════════════════',
+    '# CMPSBL® USER-FUNCTION ATTACHMENT (Layer 2 wrap)',
+    '# Each detected user function is re-bound through cmpsbl_execute',
+    '# so registered layer hooks (defense, zero-trust, debug, ...) fire',
+    '# pre/post every call. Async functions stay async — verified via',
+    '# inspect.iscoroutinefunction so FastAPI / asyncpg / httpx work.',
+    '# U.S. Patent App. No. 64/031,637',
+    '# ═══════════════════════════════════════════════════════════',
+    'import inspect as _cmpsbl_inspect',
+    'import functools as _cmpsbl_functools',
+    '',
+    'def _cmpsbl_wrap(_cmpsbl_capability, _cmpsbl_fn):',
+    '    """Wrap a user function so calls flow through cmpsbl_execute hooks."""',
+    '    if _cmpsbl_fn is None:',
+    '        return _cmpsbl_fn',
+    '    if _cmpsbl_inspect.iscoroutinefunction(_cmpsbl_fn):',
+    '        @_cmpsbl_functools.wraps(_cmpsbl_fn)',
+    '        async def _cmpsbl_async_wrapper(*args, **kwargs):',
+    '            try:',
+    '                cmpsbl_execute(_cmpsbl_capability, {"_cmpsbl_phase": "pre", "fn": _cmpsbl_fn.__name__})',
+    '            except Exception:',
+    '                raise',
+    '            try:',
+    '                _cmpsbl_result = await _cmpsbl_fn(*args, **kwargs)',
+    '            except Exception:',
+    '                try:',
+    '                    cmpsbl_execute(_cmpsbl_capability, {"_cmpsbl_phase": "error", "fn": _cmpsbl_fn.__name__})',
+    '                except Exception:',
+    '                    pass',
+    '                raise',
+    '            try:',
+    '                cmpsbl_execute(_cmpsbl_capability, {"_cmpsbl_phase": "post", "fn": _cmpsbl_fn.__name__})',
+    '            except Exception:',
+    '                pass',
+    '            return _cmpsbl_result',
+    '        return _cmpsbl_async_wrapper',
+    '    @_cmpsbl_functools.wraps(_cmpsbl_fn)',
+    '    def _cmpsbl_sync_wrapper(*args, **kwargs):',
+    '        try:',
+    '            cmpsbl_execute(_cmpsbl_capability, {"_cmpsbl_phase": "pre", "fn": _cmpsbl_fn.__name__})',
+    '        except Exception:',
+    '            raise',
+    '        try:',
+    '            _cmpsbl_result = _cmpsbl_fn(*args, **kwargs)',
+    '        except Exception:',
+    '            try:',
+    '                cmpsbl_execute(_cmpsbl_capability, {"_cmpsbl_phase": "error", "fn": _cmpsbl_fn.__name__})',
+    '            except Exception:',
+    '                pass',
+    '            raise',
+    '        try:',
+    '            cmpsbl_execute(_cmpsbl_capability, {"_cmpsbl_phase": "post", "fn": _cmpsbl_fn.__name__})',
+    '        except Exception:',
+    '            pass',
+    '        return _cmpsbl_result',
+    '    return _cmpsbl_sync_wrapper',
+    '',
+    '# ─── Re-bind detected user functions ───',
+  ];
+  for (const w of wrappable) {
+    // Guard each rebind so a missing/renamed symbol can't crash module load.
+    lines.push(
+      `try:\n    ${w.functionName} = _cmpsbl_wrap(${JSON.stringify(w.capability)}, ${w.functionName})\nexcept NameError:\n    pass`,
+    );
+  }
+  lines.push(`# Total wrapped: ${wrappable.length} function(s)`);
+  return lines.join('\n');
 }
 
 /** Get the correct file extension for the refurbished output */

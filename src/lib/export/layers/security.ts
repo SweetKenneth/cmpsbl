@@ -120,17 +120,18 @@ cmpsbl_execute = function cmpsbl_execute_defended(capabilityName: string, input:
 };`;
 
 const ADAPTIVE_DEFENSE_WIRE_PY = `
-_cmpsbl_raw_execute_def = cmpsbl_execute
-def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under evolutionary defense (auto-wired)."""
+def _cmpsbl_defense_pre(capability_name, input_data):
     if capability_name not in _cmpsbl_defense_pool:
         cmpsbl_seed_defense(capability_name)
-    result = _cmpsbl_raw_execute_def(capability_name, input_data)
+
+def _cmpsbl_defense_post(capability_name, input_data, result):
     g = _cmpsbl_defense_pool.get(capability_name)
     if g:
         g.survived_attacks += 1
         g.fitness = min(1.0, g.fitness + 0.005)
-    return result`;
+
+cmpsbl_register_hook('pre', _cmpsbl_defense_pre)
+cmpsbl_register_hook('post', _cmpsbl_defense_post)`;
 
 const ADAPTIVE_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "adaptive-defense",
@@ -275,16 +276,16 @@ cmpsbl_execute = function cmpsbl_execute_zerotrust(capabilityName: string, input
 };`;
 
 const ZERO_TRUST_WIRE_PY = `
-_cmpsbl_raw_execute_zt = cmpsbl_execute
 _cmpsbl_default_session = cmpsbl_bind_session('default-principal', 'default-fingerprint')
-def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under zero-trust verification (auto-wired)."""
+
+def _cmpsbl_zerotrust_pre(capability_name, input_data):
     session_id = input_data.get('_cmpsbl_session', _cmpsbl_default_session.id)
     fingerprint = input_data.get('_cmpsbl_fingerprint', 'default-fingerprint')
     verdict = cmpsbl_verify_session(session_id, fingerprint, 0)
     if not verdict['allowed']:
         raise RuntimeError(f"[CMPSBL:ZeroTrust:{capability_name}] Session denied — trust_score={verdict['trust_score']} reason={verdict.get('reason', 'low_trust')}")
-    return _cmpsbl_raw_execute_zt(capability_name, input_data)`;
+
+cmpsbl_register_hook('pre', _cmpsbl_zerotrust_pre)`;
 
 const ZERO_TRUST_LAYER: CmpsblLayerDefinition = {
   id: "zero-trust",
@@ -423,17 +424,19 @@ cmpsbl_execute = function cmpsbl_execute_cyberdefense(capabilityName: string, in
 
 const CYBER_DEFENSE_WIRE_PY = `
 import random as _cmpsbl_random_cd
-_cmpsbl_raw_execute_cd = cmpsbl_execute
-def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under cyber-defense matrix (auto-wired)."""
+
+def _cmpsbl_cyberdefense_pre(capability_name, input_data):
     ddos = cmpsbl_ddos_check()
     if ddos['absorbing'] and _cmpsbl_random_cd.random() < 0.5:
         raise RuntimeError(f"[CMPSBL:CyberDefense:{capability_name}] DDoS absorption active — rps={ddos['rps']} (request shed)")
-    try:
-        return _cmpsbl_raw_execute_cd(capability_name, input_data)
-    except Exception as e:
-        cmpsbl_record_ioc('execution_failure', capability_name, 0.6)
-        raise`;
+
+def _cmpsbl_cyberdefense_post(capability_name, input_data, result):
+    # Result inspection point. Failures are recorded by the user-fn wrapper,
+    # which catches exceptions around the full execute() call.
+    return
+
+cmpsbl_register_hook('pre', _cmpsbl_cyberdefense_pre)
+cmpsbl_register_hook('post', _cmpsbl_cyberdefense_post)`;
 
 const CYBER_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "cyber-defense",
