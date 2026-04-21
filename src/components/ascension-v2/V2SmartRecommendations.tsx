@@ -151,9 +151,10 @@ export function V2SmartRecommendations({
   coveredPrimitives,
   selectedLayerIds = [],
   onSelect,
-  limit = 4,
+  limit = 3,
   title,
   userTier,
+  userSource,
 }: Props) {
   const subscription = useEngineSubscription();
   const { isGovernor } = useUserRole();
@@ -170,6 +171,11 @@ export function V2SmartRecommendations({
     () => [...selectedLayerIds].sort().join('|'),
     [selectedLayerIds],
   );
+  // Hash the source set so signal scans only re-run when the corpus changes.
+  const sourceKey = useMemo(
+    () => (userSource ?? []).map((f) => `${f.name}:${f.content.length}`).join('|'),
+    [userSource],
+  );
 
   // We pull a wider candidate pool so each unlock source has a real chance
   // to populate. Final per-group rendering still respects `limit`.
@@ -177,11 +183,12 @@ export function V2SmartRecommendations({
     () => recommendLayers({
       coveredPrimitives,
       selectedLayerIds,
-      limit: Math.max(limit * 2, 8),
+      limit: Math.max(limit * 2, 6),
       userTier: effectiveTier,
+      userSource,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [coveredKey, selectedKey, limit, effectiveTier],
+    [coveredKey, selectedKey, limit, effectiveTier, sourceKey],
   );
 
   const { tierRecos, storeRecos } = useMemo(() => {
