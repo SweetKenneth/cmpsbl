@@ -23,10 +23,13 @@ console.log('--- HARNESS PASSED:', h.passed);
 for (const c of h.checks) {
   if (!c.passed) console.log('  FAIL', c.id, c.severity, '—', c.message);
 }
-// Find layer fragments
-const idxCD = code.indexOf('Cyber Defense');
-console.log('\n--- CD region (idx', idxCD, ') ---');
-console.log(code.slice(Math.max(0, idxCD - 50), idxCD + 1200));
-const idxHIS = code.indexOf('Holographic');
-console.log('\n--- HIS region (idx', idxHIS, ') ---');
-console.log(code.slice(Math.max(0, idxHIS - 50), idxHIS + 1200));
+// Search for any layer marker in output
+console.log('\n--- LAYER MARKERS ---');
+console.log('"Auto-Wire:" count:', (code.match(/Auto-Wire:/g) || []).length);
+console.log('"Cyber Defense Layer" count:', (code.match(/Cyber Defense Layer/g) || []).length);
+console.log('"cmpsbl_ddos" count:', (code.match(/cmpsbl_ddos/g) || []).length);
+console.log('"Holographic Integration" count:', (code.match(/Holographic Integration/g) || []).length);
+console.log('"cmpsbl_his" count:', (code.match(/cmpsbl_his/g) || []).length);
+// dump tail
+console.log('\n--- LAST 2000 chars ---');
+console.log(code.slice(-2000));
