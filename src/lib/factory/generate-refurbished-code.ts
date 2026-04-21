@@ -3373,6 +3373,34 @@ export function generateRefurbishedCode(
     ? renderPythonAttachmentBlock(pythonWrapPlan)
     : '';
 
+  // ── Rust User-Function Wrapping (real attachment, not just manifest) ──
+  // Rust mirrors Python: re-bind each detected user function through a
+  // generic `_cmpsbl_wrap` helper so calls actually flow through
+  // `cmpsbl_execute` (and every registered hook). Async fns get an
+  // `async fn` wrapper that `.await`s the user fn — required for Axum,
+  // tokio, sqlx, reqwest. Sync fns get a sync wrapper. We never modify
+  // the user's function body — we wrap, we don't rewrite.
+  //
+  // For Axum apps we additionally emit a Tower `Layer` that any router
+  // can opt into via `.layer(CmpsblTowerLayer::new("user_function"))`.
+  // We do NOT auto-attach the Tower layer to the user's Router — that
+  // would mutate Layer 1. The block is opt-in and documented inline.
+  const rustWrapPlan = (langLower === 'rust')
+    ? boundaries.map(b => {
+        const matched = attachmentPlan.find(p => p.functionName === b.name);
+        return {
+          functionName: b.name,
+          capability: matched?.capability ?? 'user_function',
+          primitive: matched?.primitive ?? 'GENERIC',
+          isAsync: /^\s*(?:pub(?:\([^)]*\))?\s+)?async\s+fn\b/m.test(b.signature ?? '')
+                || /\basync\s+fn\s+' + b.name + '\b/.test(verbatimSource),
+        };
+      })
+    : [];
+  const rustWrapBlock = rustWrapPlan.length > 0
+    ? renderRustAttachmentBlock(rustWrapPlan, verbatimSource)
+    : '';
+
   // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) + [Wrap] ───────
   return [
     filePrelude + layer2Code,
@@ -3387,6 +3415,7 @@ export function generateRefurbishedCode(
     verbatimSource,
     '',
     ...(pythonWrapBlock ? [pythonWrapBlock, ''] : []),
+    ...(rustWrapBlock ? [rustWrapBlock, ''] : []),
     verifyBlock,
     '',
     adapter.blockComment(footerLines),
