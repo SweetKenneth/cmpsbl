@@ -710,12 +710,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           Start Over with New Code
         </Button>
 
-        <a
-          href="/ascension-v2/layers"
-          className="block text-center text-[11px] sm:text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+        <button
+          type="button"
+          onClick={() => navigate('/ascension-v2/layers')}
+          className="block w-full text-center text-[11px] sm:text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
         >
           View all my layers →
-        </a>
+        </button>
       </div>
     </div>
   );
