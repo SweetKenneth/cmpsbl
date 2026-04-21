@@ -2660,7 +2660,7 @@ export function generatePolyglotFile(
     const block = fwk ? fwk.block : '';
     if (block) {
       // Place the Layer 1.5 block immediately AFTER Layer 1 so kernels (emitted
-      // later in the file) can reference CmpsblRebound / CmpsblTraceMiddleware.
+      // later in the file) can reference CmpsblTraceMiddleware / CmpsblConfigure.
       const endMarker = 'END OF LAYER 1';
       const endIdx = assembled.indexOf(endMarker);
       if (endIdx > 0) {
