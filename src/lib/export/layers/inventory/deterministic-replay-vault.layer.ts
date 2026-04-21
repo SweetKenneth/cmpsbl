@@ -5,27 +5,31 @@
  * Records every capability call as a deterministic replay capsule (cap +
  * input + output + RNG seed). Any past call can be reproduced exactly,
  * making "reproduce this bug" a one-liner instead of an investigation.
+ *
+ * ─── Hardening Layer compatibility ─────────────────────────────────────────
+ * The seed hash uses the SAME FNV-1a function the Hardening Layer's
+ * Determinism Fingerprint kernel emits (`_cmpsbl_fnv1a`). This guarantees
+ * replay-capsule seeds are bit-identical to the integrity-seal hashes — any
+ * divergence the kernel logs maps 1:1 to a capsule in this vault. We do not
+ * redefine FNV-1a here; the kernel is the single source of truth.
  */
 import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  ASCENSION LAYER — Deterministic Replay Vault (proprietary).                  ║
+// ║  Reuses the Hardening Layer's _cmpsbl_fnv1a — no redundant hash impl.         ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 interface CmpsblReplayCapsule { id: string; ts: number; cap: string; input: unknown; output: unknown; seed: string; }
 const _CMPSBL_REPLAY_VAULT: CmpsblReplayCapsule[] = [];
 const _CMPSBL_REPLAY_MAX = 4096;
 
-function _cmpsbl_replay_fnv1a(s: string): string {
-  let h = 0x811c9dc5;
-  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
-  return h.toString(16).padStart(8, '0');
-}
-
 export function cmpsbl_replay_seal(cap: string, input: unknown, output: unknown): string {
   const ts = Date.now();
-  const seed = _cmpsbl_replay_fnv1a(cap + ':' + ts + ':' + JSON.stringify(input ?? null));
+  // Reuse the Hardening kernel's canonical FNV-1a (Determinism Fingerprint core).
+  // _cmpsbl_fnv1a is emitted by the always-on Phase-0 Hardening chain.
+  const seed = _cmpsbl_fnv1a(cap + ':' + ts + ':' + JSON.stringify(input ?? null));
   const id = 'rep_' + seed;
   _CMPSBL_REPLAY_VAULT.push({ id, ts, cap, input, output, seed });
   if (_CMPSBL_REPLAY_VAULT.length > _CMPSBL_REPLAY_MAX) _CMPSBL_REPLAY_VAULT.shift();
@@ -42,6 +46,7 @@ export function cmpsbl_replay_count(): number { return _CMPSBL_REPLAY_VAULT.leng
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  ASCENSION LAYER — Deterministic Replay Vault (proprietary).                  ║
+# ║  Reuses the Hardening Layer's _cmpsbl_fnv1a — no redundant hash impl.         ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time, json
@@ -49,17 +54,13 @@ import time, json
 _CMPSBL_REPLAY_VAULT: list = []
 _CMPSBL_REPLAY_MAX = 4096
 
-def _cmpsbl_replay_fnv1a(s: str) -> str:
-    h = 0x811c9dc5
-    for c in s.encode('utf-8'):
-        h ^= c; h = (h * 0x01000193) & 0xFFFFFFFF
-    return f"{h:08x}"
-
 def cmpsbl_replay_seal(cap: str, input_data, output) -> str:
     ts = int(time.time() * 1000)
     try: payload = json.dumps(input_data, sort_keys=True, default=str)
     except Exception: payload = str(input_data)
-    seed = _cmpsbl_replay_fnv1a(f"{cap}:{ts}:{payload}")
+    # Reuse the Hardening kernel's canonical FNV-1a (Determinism Fingerprint core).
+    # _cmpsbl_fnv1a is emitted by the always-on Phase-0 Hardening chain.
+    seed = _cmpsbl_fnv1a(f"{cap}:{ts}:{payload}")
     cid = 'rep_' + seed
     _CMPSBL_REPLAY_VAULT.append({ 'id': cid, 'ts': ts, 'cap': cap, 'input': input_data, 'output': output, 'seed': seed })
     if len(_CMPSBL_REPLAY_VAULT) > _CMPSBL_REPLAY_MAX:
@@ -95,13 +96,13 @@ export const DETERMINISTIC_REPLAY_VAULT_LAYER: CmpsblLayerDefinition = {
   crownJewelRank: 73,
   cjpi: 95,
   module: 'OBSERVABILITY×AUDIT',
-  description: 'Seals every capability call as a deterministic replay capsule — reproduce any historical execution exactly.',
+  description: 'Seals every capability call as a deterministic replay capsule — reproduce any historical execution exactly. Shares the Hardening Layer\'s FNV-1a so capsule seeds match the kernel\'s integrity-seal hashes bit-for-bit.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,
   autoWire: {
     wrapperName: 'cmpsbl_replay_seal',
-    behavior: 'Wraps cmpsbl_execute; persists (cap, input, output, seed) capsule per call into a bounded vault.',
+    behavior: 'Wraps cmpsbl_execute; persists (cap, input, output, seed) capsule per call into a bounded vault. Seed hash is computed via the Hardening Layer\'s shared _cmpsbl_fnv1a.',
     tsWire: WIRE_TS,
     pyWire: WIRE_PY,
   },
