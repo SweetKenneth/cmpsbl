@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { completeRun, getSnapshot, emitFunnelEvent, anchorV2ExportHead, type DiscoveredCapability, type DedupResult } from '@/lib/ascension-v2';
 import { getChainState, getChainIntegrityHash } from '@/lib/ascension-v2/audit-chain';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { readModeSelection, DEFAULT_GOVERNANCE_MODE, type GovernanceMode } from '@/lib/ascension-v2/governance-mode';
 import { formatEnhancedCapabilityName } from '@/lib/export/humanize-name';
 import { validateLayer2Linkage } from '@/lib/export/layer2-validator';
 import { runPreExportHarness, formatHarnessVerdict } from '@/lib/ascension-v2/pre-export-harness';
@@ -229,13 +230,21 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // ── Resolve selected layers ──
       const activeLayers = availableLayers.filter(l => selectedLayers.has(l.id));
 
-      // ── Generate the ascended file (L2 wrapped + optional layers) ──
+      // ── Read user's governance mode choice (Step 2.5) ──
+      // Falls back to OBSERVE for safety if nothing was captured.
+      const modeSel = readModeSelection();
+      const chosenMode: GovernanceMode = modeSel?.mode ?? DEFAULT_GOVERNANCE_MODE;
+      const excludedFns = modeSel?.excludedFunctions ?? [];
+
+      // ── Generate the ascended file (L2 wrapped + optional layers + mode) ──
       const ascendedCode = generateUnifiedCapabilityFile(
         capInputs,
         zipName,
         lang === 'typescript' ? 'typescript' : lang,
         sourceFiles.length > 0 ? sourceFiles : undefined,
         activeLayers.length > 0 ? activeLayers : undefined,
+        chosenMode,
+        excludedFns,
       );
 
       // ── Pre-ZIP acceptance gate: dynamically generated test harness ──
