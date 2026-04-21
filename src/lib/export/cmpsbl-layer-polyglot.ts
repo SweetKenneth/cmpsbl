@@ -3166,17 +3166,10 @@ function generateLayerForLang(layer: CmpsblLayerDefinition, lang: string): strin
   const nativeGen = NATIVE_REGISTRY.get(`${layer.id}:${lang}`);
   if (nativeGen) return nativeGen();
 
-  // 2) Spec registry + emitter — render ComponentSpec into target language
-  if (isEmitterLang(lang)) {
-    const spec = getSpec(layer.id);
-    if (spec) {
-      try {
-        return emitComponent(spec, lang);
-      } catch {
-        // fall through to structural fallback on emitter failure
-      }
-    }
-  }
+  // 2) [DISABLED] V2 spec emitter pass — caused duplicate symbol emission
+  //     (cmpsbl_execute ×9, _cmpsbl_fnv1a ×2, CmpsblCircuitBreaker ×2, etc.)
+  //     V1 polyglot (native registry → structural fallback) is the single source
+  //     of truth for non-canonical languages. Re-enabling requires a dedup pass.
 
   // 3) Structural fallback — works for any layer
   const lc = LANG_COMMENT[lang] || '//';

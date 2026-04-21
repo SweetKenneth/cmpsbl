@@ -333,28 +333,38 @@ ${tsEntryPointCode}
       return t && !t.startsWith('//') && !t.startsWith('/*') && !t.startsWith('*');
     });
   }).length;
-  const tsOutput = `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Ascension Layer™ — ${packName}
-//  Black-Box Distribution · Single File · Zero Dependencies
+  const tsOutput = `// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//                                                                              ▲
+//   C M P S B L   S U B S T R A T E   A S C E N S I O N   v2                   ▲
+//   ${packName}                                                                  ▲
+//                                                                              ▲
+//   A single self-contained file. Your code, untouched, wrapped in a           ▲
+//   deterministic 40-primitive cognitive substrate that hardens, governs,      ▲
+//   and observes every call — without changing a line of what you wrote.       ▲
+//                                                                              ▲
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//   ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'}  ·  ${_emittedTsLayerCount} active layer${_emittedTsLayerCount === 1 ? '' : 's'}  ·  ${allModules.length} primitive module${allModules.length === 1 ? '' : 's'}  ·  Avg score: ${avgCjpi}
+//   Top: ${topCap.name} — ${topCap.tier.toUpperCase()} (${topCap.cjpiScore}/100)
+//   Fingerprint: ${topCap.fingerprint.slice(0, 16).toUpperCase()}
+//   ${modeBanner.replace(/^\/\/\s*/, '')}${selectedLayers?.length ? `\n//   Optional layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//   HOW IT WORKS
+//     LAYER 1  →  your original source, copied here verbatim, runs first
+//     LAYER 2  →  the Ascension substrate wraps each call in a 6-phase pipeline:
+//                 Hardening → Governance → Cognition → Audit → Performance → Execute
+//     Same input, same output, same execution path — every time, on every machine.
 //
-//  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${_emittedTsLayerCount} active layer${_emittedTsLayerCount === 1 ? '' : 's'} · ${allModules.length} primitive module${allModules.length === 1 ? '' : 's'} · Avg score: ${avgCjpi}
-//  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
-//  ${modeBanner.replace(/^\/\/\s*/, '')}
-//${selectedLayers?.length ? `\n//  Optional layers: ${selectedLayers.map(l => l.name).join(', ')}` : ''}
+//   VERIFY THIS ARTIFACT
+//     https://cmpsbl.com/verify/${topCap.fingerprint}
+//     Anyone can confirm this file's authenticity from the fingerprint above.
 //
-//  HOW TO USE: drop this file into your stack, import it, and call it like
-//  any other module. Your original code is preserved verbatim in LAYER 1
-//  below; everything beneath is the proprietary Ascension Layer that
-//  protects, enriches, and governs your code at runtime.
+//   ADVANCED SETTINGS  →  npx @cmpsbl/cli
+//     Configure layers, inspect telemetry, manage receipts, rotate keys.
 //
-//  Configure layers, view telemetry, or learn more:
-//    · https://cmpsbl.com
-//    · npx @cmpsbl/cli  (for advanced settings)
-//
-//  U.S. Patent App. No. 64/029,678 · No. 64/031,637
-//  © 2025–2026 CMPSBL®. All rights reserved.
-//  BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
-// ═══════════════════════════════════════════════════════════════════════════════
+//   U.S. Patent App. No. 64/029,678  ·  No. 64/031,637
+//   © 2025–2026 CMPSBL®. All rights reserved.
+//   BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${layerHeader}
 
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
@@ -1089,21 +1099,20 @@ export const selfTest = cmpsbl_self_test;
 ${tsLayers.map(l => l.tsCode).join('\n')}
 ${getAutoWireTs(selectedLayers || [])}
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// CMPSBL® Ascension Layer™ — Governed Cognitive Infrastructure
-// Black-Box Distribution · Drop-In · Zero Dependencies
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//   CMPSBL Substrate Ascension v2  ·  Governed Cognitive Infrastructure
+//   Single-file distribution. No runtime dependencies. No network calls.
 //
-// Inventor: Kenneth E. Sweet Jr.
-// U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
-// U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+//   Inventor:  Kenneth E. Sweet Jr.
+//   Patents:   U.S. App. No. 64/029,678 — Deterministic Code Processing
+//              U.S. App. No. 64/031,637 — Software Symbiosis Distribution
 //
-// Learn more or configure layers:
-//   · https://cmpsbl.com
-//   · npx @cmpsbl/cli   (advanced settings · telemetry · layer management)
+//   Verify any artifact:  https://cmpsbl.com/verify/<fingerprint>
+//   Advanced settings:    npx @cmpsbl/cli
 //
-// © 2009–2026 CMPSBL® · All rights reserved
-// Unauthorized reproduction, modification, or redistribution prohibited.
-// ═══════════════════════════════════════════════════════════════════════════════
+//   © 2009–2026 CMPSBL® · All rights reserved.
+//   Unauthorized reproduction, modification, or redistribution prohibited.
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
   // SHA-256 integrity gate — refuse to emit if "byte-identical" claim is false.
   assertEmbeddedSourcesIntact(tsOutput, tsFiles, 'typescript');
@@ -1164,10 +1173,11 @@ if (typeof module !== 'undefined' && module.exports) {
 }\n`
     : '';
 
-  const banner = `// ═══════════════════════════════════════════════════════════════════════════════
-//  CMPSBL® Ascension Layer™ — JavaScript Edition (CommonJS + ESM compatible)
-//  Type annotations stripped from the TS surface; behavior is identical.
-// ═══════════════════════════════════════════════════════════════════════════════
+  const banner = `// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//   CMPSBL Substrate Ascension v2 — JavaScript Edition (CommonJS + ESM)
+//   Type annotations stripped from the TypeScript surface; behavior is identical.
+//   Verify: https://cmpsbl.com/verify/<fingerprint>   ·   Advanced: npx @cmpsbl/cli
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
   return banner + js + cjsFooter;
@@ -1331,26 +1341,37 @@ ${embeddedSources}
     : '';
 
   return `"""
-═══════════════════════════════════════════════════════════════════════════════
- CMPSBL® Ascension Layer™ — ${packName}
- Black-Box Distribution · Single File · Zero Dependencies
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                                                                              ▲
+  C M P S B L   S U B S T R A T E   A S C E N S I O N   v2                   ▲
+  ${packName}
+                                                                              ▲
+  A single self-contained file. Your code, untouched, wrapped in a            ▲
+  deterministic 40-primitive cognitive substrate that hardens, governs,       ▲
+  and observes every call — without changing a line of what you wrote.        ▲
+                                                                              ▲
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'}  ·  ${allModules.length} active layers  ·  Avg score: ${avgCjpi}
+  Top: ${topCap.name} — ${topCap.tier.toUpperCase()} (${topCap.cjpiScore}/100)
+  Fingerprint: ${topCap.fingerprint.slice(0, 16).toUpperCase()}${pyLayerLine}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  HOW IT WORKS
+    LAYER 1  →  your original source, copied here verbatim, runs first
+    LAYER 2  →  the Ascension substrate wraps each call in a 6-phase pipeline:
+                Hardening → Governance → Cognition → Audit → Performance → Execute
+    Same input, same output, same execution path — every time, on every machine.
 
- ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers · Avg score: ${avgCjpi}
- Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
-${pyLayerLine}
- HOW TO USE: drop this file into your stack, import it, and call it like
- any other module. Your original code is preserved verbatim in LAYER 1
- below; everything beneath is the proprietary Ascension Layer that
- protects, enriches, and governs your code at runtime.
+  VERIFY THIS ARTIFACT
+    https://cmpsbl.com/verify/${topCap.fingerprint}
+    Anyone can confirm this file's authenticity from the fingerprint above.
 
- Configure layers, view telemetry, or learn more:
-   · https://cmpsbl.com
-   · npx @cmpsbl/cli  (for advanced settings)
+  ADVANCED SETTINGS  →  npx @cmpsbl/cli
+    Configure layers, inspect telemetry, manage receipts, rotate keys.
 
- U.S. Patent App. No. 64/029,678 · No. 64/031,637
- © 2025–2026 CMPSBL®. All rights reserved.
- BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
-═══════════════════════════════════════════════════════════════════════════════
+  U.S. Patent App. No. 64/029,678  ·  No. 64/031,637
+  © 2025–2026 CMPSBL®. All rights reserved.
+  BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
 
 import time
@@ -2390,7 +2411,7 @@ self_test = cmpsbl_self_test
 
 
 if __name__ == "__main__":
-    print(f"CMPSBL® Ascension Layer — {CMPSBL_PACK_META['name']}")
+    print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
     print(f"Active layers: {CMPSBL_PACK_META['modules']}")
     print()
@@ -2401,21 +2422,20 @@ if __name__ == "__main__":
 ${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# CMPSBL® Ascension Layer™ — Governed Cognitive Infrastructure
-# Black-Box Distribution · Drop-In · Zero Dependencies
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#   CMPSBL Substrate Ascension v2  ·  Governed Cognitive Infrastructure
+#   Single-file distribution. No runtime dependencies. No network calls.
 #
-# Inventor: Kenneth E. Sweet Jr.
-# U.S. Patent App. No. 64/029,678 — Deterministic Code Processing
-# U.S. Patent App. No. 64/031,637 — Software Symbiosis Distribution
+#   Inventor:  Kenneth E. Sweet Jr.
+#   Patents:   U.S. App. No. 64/029,678 — Deterministic Code Processing
+#              U.S. App. No. 64/031,637 — Software Symbiosis Distribution
 #
-# Learn more or configure layers:
-#   · https://cmpsbl.com
-#   · npx @cmpsbl/cli   (advanced settings · telemetry · layer management)
+#   Verify any artifact:  https://cmpsbl.com/verify/<fingerprint>
+#   Advanced settings:    npx @cmpsbl/cli
 #
-# © 2009–2026 CMPSBL® · All rights reserved
-# Unauthorized reproduction, modification, or redistribution prohibited.
-# ═══════════════════════════════════════════════════════════════════════════════
+#   © 2009–2026 CMPSBL® · All rights reserved.
+#   Unauthorized reproduction, modification, or redistribution prohibited.
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 }
 
@@ -2502,26 +2522,37 @@ export function generateUnifiedPhp(
 
   return `<?php
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- *  CMPSBL® Ascension Layer™ — ${packName}
- *  Black-Box Distribution · Single File · Zero Dependencies
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *                                                                              ▲
+ *   C M P S B L   S U B S T R A T E   A S C E N S I O N   v2                   ▲
+ *   ${packName}                                                                  ▲
+ *                                                                              ▲
+ *   A single self-contained file. Your code, untouched, wrapped in a           ▲
+ *   deterministic 40-primitive cognitive substrate that hardens, governs,      ▲
+ *   and observes every call — without changing a line of what you wrote.       ▲
+ *                                                                              ▲
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *   ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'}  ·  ${allModules.length} active layers  ·  Avg score: ${avgCjpi}
+ *   Top: ${topCap.name} — ${topCap.tier.toUpperCase()} (${topCap.cjpiScore}/100)
+ *   Fingerprint: ${topCap.fingerprint.slice(0, 16).toUpperCase()}
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *   HOW IT WORKS
+ *     LAYER 1  →  your original source, copied here verbatim, runs first
+ *     LAYER 2  →  the Ascension substrate wraps each call in a 6-phase pipeline:
+ *                 Hardening → Governance → Cognition → Audit → Performance → Execute
+ *     Same input, same output, same execution path — every time, on every machine.
  *
- *  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers · Avg score: ${avgCjpi}
- *  Top: ${topCap.name} (${topCap.tier.toUpperCase()}, score ${topCap.cjpiScore})
+ *   VERIFY THIS ARTIFACT
+ *     https://cmpsbl.com/verify/${topCap.fingerprint}
+ *     Anyone can confirm this file's authenticity from the fingerprint above.
  *
- *  HOW TO USE: drop this file into your stack, require it, and call it like
- *  any other PHP module. Your original code is preserved verbatim in LAYER 1
- *  below; everything beneath is the proprietary Ascension Layer that
- *  protects, enriches, and governs your code at runtime.
+ *   ADVANCED SETTINGS  →  npx @cmpsbl/cli
+ *     Configure layers, inspect telemetry, manage receipts, rotate keys.
  *
- *  Configure layers, view telemetry, or learn more:
- *    · https://cmpsbl.com
- *    · npx @cmpsbl/cli  (for advanced settings)
- *
- *  U.S. Patent App. No. 64/029,678 · No. 64/031,637
- *  © 2025–2026 CMPSBL®. All rights reserved.
- *  BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
- * ═══════════════════════════════════════════════════════════════════════════════
+ *   U.S. Patent App. No. 64/029,678  ·  No. 64/031,637
+ *   © 2025–2026 CMPSBL®. All rights reserved.
+ *   BLACK-BOXED RUNTIME — Do not modify. Redistribution prohibited.
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  */
 
 ${inlineBlock}
@@ -2921,41 +2952,40 @@ export function generateUnifiedGeneric(
   const line = LANG_COMMENT[lang] || '//';
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
 
-  return `${line} ═══════════════════════════════════════════════════════════════════════════════
-${line}  CMPSBL® Ascension Layer™ — ${packName}
-${line}  Target: ${lang.toUpperCase()} · Single-File Reference Distribution
+  return `${line} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${line}   CMPSBL Substrate Ascension v2  —  ${lang.toUpperCase()} reference port
+${line}   ${packName}
 ${line}
-${line}  ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'} · ${allModules.length} active layers
+${line}   ${capabilities.length} ascended capabilit${capabilities.length === 1 ? 'y' : 'ies'}  ·  ${allModules.length} active layers
 ${line}
-${line}  This file is a structured reference for porting the Ascension Layer to
-${line}  ${lang.toUpperCase()}. The TypeScript / Python / PHP single-file distributions
-${line}  are complete, working implementations — port them 1:1.
+${line}   This file is a structured reference for porting the Ascension Substrate
+${line}   to ${lang.toUpperCase()}. The TypeScript / Python / PHP single-file distributions
+${line}   are complete, working implementations — port them 1:1 from those.
 ${line}
-${line}  §1 — Ascension Core           (deterministic scorer, tier classifier)
-${line}  §2 — Layer Handlers           (one per primitive · transforms context)
-${line}  §3 — Ascension Runtime Bridge (deterministic chain executor + trace)
-${line}  §4 — Public API Surface       (execute · validate · metadata)
+${line}   ARCHITECTURE
+${line}     §1 — Ascension Core           (deterministic scorer, tier classifier)
+${line}     §2 — Layer Handlers           (one per primitive · transforms context)
+${line}     §3 — Ascension Runtime Bridge (deterministic chain executor + trace)
+${line}     §4 — Public API Surface       (execute · validate · metadata)
 ${line}
-${line}  EXECUTION MODEL (identical across all languages):
-${line}    1. Load capability metadata (name, score, tier, layer chain, fingerprint)
-${line}    2. Create context = { _input: input, _data: input, _signals: [], _errors: [] }
-${line}    3. For each layer in chain:
-${line}         context = layer_handler(context, layer_name, metadata)
-${line}    4. Return { success, output: context._data, trace, metadata }
+${line}   EXECUTION MODEL (identical across all languages):
+${line}     1. Load capability metadata (name, score, tier, layer chain, fingerprint)
+${line}     2. Create context = { _input: input, _data: input, _signals: [], _errors: [] }
+${line}     3. For each layer in chain:  context = layer_handler(context, name, meta)
+${line}     4. Return { success, output: context._data, trace, metadata }
 ${line}
-${line}  ACTIVE LAYERS TO IMPLEMENT:
-${allModules.map(m => `${line}    ${m.padEnd(12)} → See TypeScript/Python reference for layer behavior`).join('\n')}
+${line}   ACTIVE LAYERS TO IMPLEMENT
+${allModules.map(m => `${line}     ${m.padEnd(14)} → see TypeScript / Python reference for layer behavior`).join('\n')}
 ${line}
-${line}  ASCENDED CAPABILITIES:
-${capabilities.map(c => `${line}    ${formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'))} — score ${c.cjpiScore} (${c.tier.toUpperCase()}) — Layer chain: ${c.chain.join(' → ')}`).join('\n')}
+${line}   ASCENDED CAPABILITIES
+${capabilities.map(c => `${line}     ${formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'))} — ${c.cjpiScore}/100 (${c.tier.toUpperCase()})  ·  chain: ${c.chain.join(' → ')}`).join('\n')}
 ${line}
-${line}  Configure layers, view telemetry, or learn more:
-${line}    · https://cmpsbl.com
-${line}    · npx @cmpsbl/cli  (for advanced settings)
+${line}   VERIFY ANY ARTIFACT  →  https://cmpsbl.com/verify/<fingerprint>
+${line}   ADVANCED SETTINGS    →  npx @cmpsbl/cli
 ${line}
-${line}  U.S. Patent App. No. 64/029,678 · No. 64/031,637
-${line}  © 2025–2026 CMPSBL®. All rights reserved.
-${line} ═══════════════════════════════════════════════════════════════════════════════
+${line}   U.S. Patent App. No. 64/029,678  ·  No. 64/031,637
+${line}   © 2025–2026 CMPSBL®. All rights reserved.
+${line} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 }
 
