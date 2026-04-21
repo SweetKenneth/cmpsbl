@@ -694,6 +694,7 @@ export {
   listPrimitives,
   removePrimitive,
   getPrimitiveCount,
+  clearPrimitives,
 };
 
 export type {
