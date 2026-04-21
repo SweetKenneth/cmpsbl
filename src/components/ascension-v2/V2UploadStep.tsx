@@ -253,6 +253,18 @@ export function V2UploadStep({ onComplete }: Props) {
     );
   }
 
+  if (reAscendBanner && processing) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-12 sm:py-16 animate-in fade-in">
+        <RefreshCw className="w-10 h-10 sm:w-12 sm:h-12 text-primary animate-spin" />
+        <p className="text-foreground font-medium text-sm sm:text-base">Re-ascending your code</p>
+        <p className="text-muted-foreground text-xs">
+          Replaying your last run with the same source and layers…
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="text-center">
