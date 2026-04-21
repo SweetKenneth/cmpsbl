@@ -782,13 +782,24 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
     ctx._signals.push({ type: 'resolve', source: mod, ts: Date.now() });
     return ctx;
   },
-  SOVEREIGN: (ctx, mod) => {
-    ctx._data._sovereign = { jurisdiction: 'default', authority: 'delegated', classification: 'standard' };
+  SOVEREIGN: (ctx, mod, meta) => {
+    // Real classification: tier-based authority delegation (parity with Python).
+    const tier = String(meta.tier ?? 'mint');
+    const authMap: Record<string, string> = { apex: 'delegated', mythic: 'delegated', relic: 'supervised', prime: 'supervised', mint: 'constrained' };
+    ctx._data._sovereign = { jurisdiction: 'default', authority: authMap[tier] ?? 'constrained', classification: tier };
     ctx._signals.push({ type: 'classify', source: mod, ts: Date.now() });
     return ctx;
   },
   ATLAS: (ctx, mod) => {
-    ctx._data._atlas = { capabilities: userKeys(ctx._data).length, coverage: 'full', registry: 'active' };
+    // Real registry mapping: enumerate observable surfaces + coverage ratio.
+    const keys = userKeys(ctx._data);
+    const surfaceTypes: Record<string, number> = {};
+    for (const k of keys) {
+      const t = typeof (ctx._data as Record<string, unknown>)[k];
+      surfaceTypes[t] = (surfaceTypes[t] ?? 0) + 1;
+    }
+    const coverage = Math.min(1, keys.length / 16);
+    ctx._data._atlas = { surfacesMapped: keys.length, surfaceTypes, coverage: Math.round(coverage * 10000) / 10000, registry: 'active' };
     ctx._signals.push({ type: 'map', source: mod, ts: Date.now() });
     return ctx;
   },
@@ -842,7 +853,15 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
     return ctx;
   },
   REFLEX: (ctx, mod) => {
-    ctx._data._reflex = { edgeRouted: true, decisionTree: 'optimized', latency: 'sub-ms' };
+    // Real edge decision: route by payload weight (parity with Python).
+    const payloadBytes = JSON.stringify(ctx._data).length;
+    const decision = payloadBytes < 1024 ? 'fast_path' : 'deep_path';
+    ctx._data._reflex = {
+      edgeRouted: true,
+      decision,
+      payloadBytes,
+      latencyClass: payloadBytes < 1024 ? 'sub_ms' : 'low_ms',
+    };
     ctx._signals.push({ type: 'reflex', source: mod, ts: Date.now() });
     return ctx;
   },
