@@ -264,11 +264,16 @@ export function V2EnhanceStep({ onComplete }: Props) {
         </p>
       </div>
 
-      {/* Smart Recommendations — pre-run heuristic; one-tap add to selection */}
+      {/* Smart Recommendations — signal-driven from the uploaded source preview */}
       <V2SmartRecommendations
         coveredPrimitives={[]}
         selectedLayerIds={Array.from(selectedLayers)}
         onSelect={toggleLayer}
+        userSource={(() => {
+          if (typeof window === 'undefined') return undefined;
+          const preview = window.sessionStorage.getItem('cmpsbl:v2:source-preview');
+          return preview ? [{ name: 'source', content: preview }] : undefined;
+        })()}
         title="Suggested Layers — Start Here"
       />
 
