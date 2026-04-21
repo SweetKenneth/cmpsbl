@@ -13,7 +13,7 @@
 
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { consumeReattachLayers } from '@/lib/ascension-v2/reattach';
-import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock, ShoppingBag } from 'lucide-react';
+import { Upload, SkipForward, Loader2, CheckCircle2, FileCode2, Layers, Package, Zap, Check, Lock, ShoppingBag, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -89,6 +89,17 @@ export function V2EnhanceStep({ onComplete }: Props) {
   const [done, setDone] = useState(false);
   const [attachmentCount, setAttachmentCount] = useState(0);
   const [selectedLayers, setSelectedLayers] = useState<Set<string>>(new Set());
+  const [expandedLayers, setExpandedLayers] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = useCallback((layerId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedLayers((prev) => {
+      const next = new Set(prev);
+      if (next.has(layerId)) next.delete(layerId);
+      else next.add(layerId);
+      return next;
+    });
+  }, []);
 
   // If the user clicked "Re-attach" on /ascension-v2/layers, pre-select those
   // layers exactly once on mount so the Enhance step opens with their picks.
