@@ -3000,11 +3000,12 @@ export function generateUnifiedCapabilityFile(
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
 ): string {
-  // Hard parity gate — refuse to emit artifacts in any language that does
-  // not have full layer parity + a verified deterministic chain executor.
-  // This is the boundary that prevents "looks like a layer but isn't" stubs
-  // from ever reaching a customer's stack. Languages graduate from
-  // COMING_SOON → SHIPPING only when their parity tests are green.
+  // Soft visibility gate. Two real tiers ship:
+  //   • CANONICAL (TS, JS, Python, PHP) → branded single-file runtime
+  //   • BETA_POLYGLOT (everything else)  → polyglot-templates kernel OR
+  //     `generateUnifiedGeneric` architecture/port spec, depending on whether
+  //     a hand-tuned template body exists for the language.
+  // The gate is currently a no-op so every visible language emits a real file.
   assertLanguageShipping(lang);
 
   let raw: string;

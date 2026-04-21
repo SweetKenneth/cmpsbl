@@ -262,32 +262,32 @@ export function AscensionV2ReleaseCTA() {
                 </p>
               </div>
 
-              {/* Coming soon */}
-              <div className="rounded-xl border border-fuchsia-400/30 bg-fuchsia-400/[0.04] p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <Hourglass className="w-4 h-4 text-fuchsia-300" />
-                  <span className="text-xs font-bold tracking-[0.18em] uppercase text-fuchsia-300/90">
-                    Coming Soon
-                  </span>
-                </div>
-                <p className="text-sm font-bold text-foreground mb-3">
-                  {COMING_SOON_LANGUAGES.length} languages on the parity roadmap
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {COMING_SOON_LANGUAGES.map((lang) => (
-                    <span
-                      key={lang.id}
-                      className="text-[11px] font-semibold px-2.5 py-1 rounded-md border border-fuchsia-400/30 bg-fuchsia-400/5 text-foreground/85"
-                    >
-                      {lang.label}
+              {/* Coming soon — only render when the registry actually lists any.
+                  Today the answer is zero: every visible language emits something
+                  (canonical runtime or Beta polyglot), so this section stays hidden. */}
+              {COMING_SOON_LANGUAGES.length > 0 && (
+                <div className="rounded-xl border border-fuchsia-400/30 bg-fuchsia-400/[0.04] p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Hourglass className="w-4 h-4 text-fuchsia-300" />
+                    <span className="text-xs font-bold tracking-[0.18em] uppercase text-fuchsia-300/90">
+                      Coming Soon
                     </span>
-                  ))}
+                  </div>
+                  <p className="text-sm font-bold text-foreground mb-3">
+                    {COMING_SOON_LANGUAGES.length} languages on the polyglot roadmap
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {COMING_SOON_LANGUAGES.map((lang) => (
+                      <span
+                        key={lang.id}
+                        className="text-[11px] font-semibold px-2.5 py-1 rounded-md border border-fuchsia-400/30 bg-fuchsia-400/5 text-foreground/85"
+                      >
+                        {lang.label}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <p className="text-[11px] text-muted-foreground/60 mt-3 leading-relaxed">
-                  Unlocks once a polyglot template body is added for each
-                  language and a smoke test confirms native syntactic validity.
-                </p>
-              </div>
+              )}
             </div>
           </div>
         </div>

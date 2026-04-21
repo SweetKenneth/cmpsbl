@@ -96,72 +96,95 @@ const beta = (id: string, label: string): LanguageParityEntry =>
 
 export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Object.freeze([
   // ─── Tier 1 — CANONICAL (the contract; golden-file locked) ──────────────
+  // First-class generators in `unified-capability-file.ts` that produce a
+  // working single-file runtime, not just a port spec.
   { id: 'typescript', label: 'TypeScript', status: 'CANONICAL' },
   { id: 'javascript', label: 'JavaScript', status: 'CANONICAL' },
   { id: 'python',     label: 'Python',     status: 'CANONICAL' },
+  { id: 'php',        label: 'PHP',        status: 'CANONICAL' },
 
   // ─── Tier 2 — BETA_POLYGLOT ──────────────────────────────────────────────
-  // Every language with a generator wired into `LANGUAGE_GENERATORS` in
-  // `polyglot-templates.ts`. These emit a real native file via the V1
-  // polyglot engine, but are not yet runtime-verified parity with the
-  // canonical TS executor — hence the "Beta" surface in the UI.
-  // Source of truth: src/lib/export/polyglot-templates.ts → LANGUAGE_GENERATORS.
+  // One unified Beta bucket. Two real fulfillment paths under the hood:
+  //
+  //   (a) `polyglot-templates.ts` → hand-tuned native kernel + Layer 1
+  //       verbatim. Rust, Go, C, C++, Zig, Java, Kotlin, Scala, C#, Swift,
+  //       Ruby, Lua, R, Dart, Elixir, Haskell, and the HDL family.
+  //
+  //   (b) `generateUnifiedGeneric` fallback → structured architecture/port
+  //       spec in the language's comment syntax. Used for everything else
+  //       that doesn't have a polyglot template yet (Nim, Crystal, Groovy,
+  //       Clojure, F#, VB.NET, Objective-C, Perl, Julia, Erlang, OCaml,
+  //       Elm, Bash, PowerShell).
+  //
+  // Both paths emit a real downloadable file. Neither is byte-locked or
+  // runtime-verified parity with the canonical generators yet — hence one
+  // honest "Beta" badge across the whole tier.
+  // Source of truth for path (a): src/lib/export/polyglot-templates.ts.
 
+  // — Path (a): hand-tuned polyglot template —
   // Systems & native
   beta('rust',          'Rust'),
   beta('go',            'Go'),
   beta('c',             'C'),
   beta('cpp',           'C++'),
   beta('zig',           'Zig'),
-
   // JVM family
   beta('java',          'Java'),
   beta('kotlin',        'Kotlin'),
   beta('scala',         'Scala'),
-
   // .NET family
   beta('csharp',        'C#'),
-
   // Apple platforms
   beta('swift',         'Swift'),
-
   // Scripting & dynamic
   beta('ruby',          'Ruby'),
   beta('lua',           'Lua'),
   beta('r',             'R'),
   beta('dart',          'Dart'),
-
   // BEAM family
   beta('elixir',        'Elixir'),
-
   // Functional
   beta('haskell',       'Haskell'),
-
-  // Hardware / HDL (polyglot engine ships kernels for these)
+  // Hardware / HDL
   beta('verilog',       'Verilog'),
   beta('systemverilog', 'SystemVerilog'),
   beta('vhdl',          'VHDL'),
   beta('chisel',        'Chisel'),
   beta('amaranth',      'Amaranth'),
-  beta('spinalhdl',     'SpinalHDL'),
   beta('firrtl',        'FIRRTL'),
+  beta('systemc',       'SystemC'),
+  beta('spice',         'SPICE'),
+  beta('bluespec',      'Bluespec'),
 
-  // ─── Tier 3 — COMING_SOON (no polyglot generator yet) ───────────────────
-  cs('nim',         'Nim'),
-  cs('crystal',     'Crystal'),
-  cs('groovy',      'Groovy'),
-  cs('clojure',     'Clojure'),
-  cs('fsharp',      'F#'),
-  cs('vbnet',       'VB.NET'),
-  cs('objectivec',  'Objective-C'),
-  cs('php',         'PHP'),
-  cs('perl',        'Perl'),
-  cs('julia',       'Julia'),
-  cs('erlang',      'Erlang'),
-  cs('ocaml',       'OCaml'),
-  cs('elm',         'Elm'),
-  cs('bash',        'Bash'),
-  cs('powershell',  'PowerShell'),
+  // — GPU / shader (emit via generic port-spec; supported by the picker tiers) —
+  beta('cuda',          'CUDA'),
+  beta('glsl',          'GLSL'),
+  beta('hlsl',          'HLSL'),
+  beta('wgsl',          'WGSL'),
+  beta('metal',         'Metal'),
+  beta('opencl',        'OpenCL'),
+
+  // — Blockchain / smart contract —
+  beta('solidity',      'Solidity'),
+  beta('vyper',         'Vyper'),
+  beta('move',          'Move'),
+  beta('cairo',         'Cairo'),
+
+  // — Path (b): structured port-spec via generateUnifiedGeneric —
+  beta('nim',           'Nim'),
+  beta('crystal',       'Crystal'),
+  beta('groovy',        'Groovy'),
+  beta('clojure',       'Clojure'),
+  beta('fsharp',        'F#'),
+  beta('objective-c',   'Objective-C'),
+  beta('perl',          'Perl'),
+  beta('julia',         'Julia'),
+  beta('erlang',        'Erlang'),
+  beta('ocaml',         'OCaml'),
+  beta('fortran',       'Fortran'),
+  beta('d',             'D'),
+  beta('bash',          'Bash'),
+  beta('powershell',    'PowerShell'),
 ]);
 
 

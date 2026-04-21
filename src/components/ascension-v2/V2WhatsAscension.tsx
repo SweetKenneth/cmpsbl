@@ -140,7 +140,8 @@ export function V2WhatsAscension() {
               Supported Languages
             </h3>
             <span className="text-[11px] sm:text-xs font-mono text-muted-foreground uppercase tracking-[0.18em]">
-              {canonical.length} canonical · {beta.length} beta · {comingSoon.length} coming soon
+              {canonical.length} canonical · {beta.length} beta
+              {comingSoon.length > 0 ? ` · ${comingSoon.length} coming soon` : ''}
             </span>
           </div>
 
@@ -171,7 +172,7 @@ export function V2WhatsAscension() {
                   <span
                     key={lang.id}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/40 text-[11px] sm:text-xs font-medium text-foreground"
-                    title="Native file via the V1 polyglot engine — Beta tier, not byte-locked yet"
+                    title="Emits via the V1 polyglot engine — Beta tier, not byte-locked yet"
                   >
                     {lang.label}
                     <span className="px-1 py-px rounded text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider bg-foreground/10 text-foreground/70">
@@ -183,29 +184,34 @@ export function V2WhatsAscension() {
             </>
           )}
 
-          <details className="mt-4 group">
-            <summary className="cursor-pointer text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
-              <span>View {comingSoon.length} coming-soon languages</span>
-              <span className="transition-transform group-open:rotate-180">▾</span>
-            </summary>
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {comingSoon.map((lang) => (
-                <span
-                  key={lang.id}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-border bg-muted/30 text-[10.5px] sm:text-[11px] text-muted-foreground"
-                  title={lang.roadmapNote}
-                >
-                  {lang.label}
-                </span>
-              ))}
-            </div>
-            <p className="mt-3 text-[11px] text-muted-foreground/80 leading-relaxed">
-              Canonical languages are byte-locked by golden-file regression. Beta polyglot
-              languages emit native files via the V1 polyglot engine and embed your source
-              verbatim, but aren&apos;t byte-locked yet. Coming-soon languages stay disabled
-              until their polyglot body lands.
-            </p>
-          </details>
+          {/* Coming-soon disclosure — only render when the registry has any.
+              Today every visible language emits, so this stays hidden. */}
+          {comingSoon.length > 0 && (
+            <details className="mt-4 group">
+              <summary className="cursor-pointer text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
+                <span>View {comingSoon.length} coming-soon languages</span>
+                <span className="transition-transform group-open:rotate-180">▾</span>
+              </summary>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {comingSoon.map((lang) => (
+                  <span
+                    key={lang.id}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-border bg-muted/30 text-[10.5px] sm:text-[11px] text-muted-foreground"
+                    title={lang.roadmapNote}
+                  >
+                    {lang.label}
+                  </span>
+                ))}
+              </div>
+            </details>
+          )}
+
+          <p className="mt-4 text-[11px] text-muted-foreground/80 leading-relaxed">
+            Canonical languages ship a working single-file runtime, byte-locked by golden-file
+            regression. Beta polyglot languages emit a downloadable artifact via the V1 polyglot
+            engine — either a hand-tuned native kernel with your source embedded verbatim, or a
+            structured architecture/port spec in the language&apos;s comment syntax.
+          </p>
         </div>
       </div>
     </section>
