@@ -176,12 +176,21 @@ function normalize(p: string): string {
 }
 
 /**
- * Compute Balanced (gaps + adjacency) recommendations.
- * - Stage 1: gap-fillers (primitives NOT covered, ranked by CJPI desc)
- * - Stage 2: adjacency (primitives in same family as covered ones, fill remainder)
+ * Compute recommendations.
+ *
+ *   Stage 0 (NEW): signal-driven picks — when `userSource` (or
+ *     `precomputedSignals`) is supplied, scan the source for real code
+ *     evidence (HTTP routes, DB calls, crypto, etc.) and prioritize the
+ *     primitives that match. The resulting rationale cites the snippet so
+ *     the user can see *why* the pick fits their actual code.
+ *   Stage 1: gap-fillers (primitives NOT covered, ranked by CJPI desc).
+ *   Stage 2: adjacency (peers in the same family as covered primitives).
+ *
+ * Default `limit` is 3 — we cap aggressively so the user faces a tight,
+ * defensible list instead of an all-layers buffet.
  */
 export function recommendLayers(input: RecommendationInput): LayerRecommendation[] {
-  const limit = input.limit ?? 5;
+  const limit = input.limit ?? 3;
   const covered = new Set(input.coveredPrimitives.map(normalize));
   const excluded = new Set(input.selectedLayerIds ?? []);
 
@@ -199,11 +208,41 @@ export function recommendLayers(input: RecommendationInput): LayerRecommendation
 
   const picked: LayerRecommendation[] = [];
   const usedLayerIds = new Set<string>();
+  const recommendedPrimitives = new Set<string>();
 
-  // ── Pre-run mode: no covered primitives means we have no real signal.
-  // Surface top-CJPI layers across all primitives instead of labeling
-  // everything as a "gap" (which is technically true but misleading UX).
-  if (covered.size === 0) {
+  // ── Stage 0: signal-driven (NEW) ───────────────────────────────────────
+  // Scan user source — if real code signals fire, they outrank gap/adjacency.
+  const signals: ReadonlyArray<CodeSignal> =
+    input.precomputedSignals
+    ?? (input.userSource && input.userSource.length > 0
+          ? scanCodeSignals({ files: input.userSource })
+          : []);
+  if (signals.length > 0) {
+    const boosts: PrimitiveBoost[] = boostsFromSignals(signals);
+    for (const boost of boosts) {
+      if (picked.length >= limit) break;
+      const layers = byPrimitive.get(normalize(boost.primitive));
+      if (!layers || layers.length === 0) continue;
+      const best = layers[0];
+      if (usedLayerIds.has(best.id)) continue;
+      picked.push({
+        layer: best,
+        reason: 'signal',
+        driverPrimitive: boost.primitive,
+        rationale: `Detected ${boost.topSignalLabel} in your code — ${best.name.toLowerCase()} hardens ${boost.primitive}.`,
+        evidence: boost.evidence,
+      });
+      usedLayerIds.add(best.id);
+      recommendedPrimitives.add(normalize(boost.primitive));
+    }
+    if (picked.length >= limit) {
+      return applyTierOrdering(picked, input.userTier).slice(0, limit);
+    }
+  }
+
+  // ── Pre-run mode: no covered primitives AND no signals — fall back to
+  // top-CJPI sweep so the panel never renders empty.
+  if (covered.size === 0 && signals.length === 0) {
     const ranked = allLayers.slice().sort((a, b) => b.cjpi - a.cjpi);
     const seenPrimitive = new Set<string>();
     for (const layer of ranked) {
