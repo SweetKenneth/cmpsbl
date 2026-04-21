@@ -45,7 +45,7 @@ import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
   getLanguageParityStatus,
   getLanguageParityEntry,
-  getShippingLanguages,
+  getCanonicalLanguages,
 } from '@/lib/export/language-parity-tiers';
 import { Clock } from 'lucide-react';
 import JSZip from 'jszip';
@@ -583,8 +583,26 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
         const status = getLanguageParityStatus(lang);
         const entry = getLanguageParityEntry(lang);
-        if (status === 'SHIPPING') return null;
+        if (status === 'CANONICAL') return null;
         const label = entry?.label ?? sourceLanguage;
+        if (status === 'BETA_POLYGLOT') {
+          return (
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
+              <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0 space-y-1">
+                <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                  {label} export — polyglot (Beta)
+                </p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
+                  Native {label} file emitted via the V1 polyglot engine. Layer 1 source is embedded verbatim and the selected layers render in {label} idiom. Beta tier — not yet byte-locked by golden-file regression like the canonical generators.
+                </p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
+                  Canonical (byte-locked): {getCanonicalLanguages().map(l => l.label).join(', ')}.
+                </p>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
             <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
@@ -593,10 +611,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
                 {label} export — pass-through mode
               </p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-                Your {label} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Native {label} layer parity is on the roadmap.
+                Your {label} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Polyglot {label} body is on the roadmap.
               </p>
               <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
-                Full native parity today: {getShippingLanguages().map(l => l.label).join(', ')}.
+                Canonical today: {getCanonicalLanguages().map(l => l.label).join(', ')}.
               </p>
             </div>
           </div>

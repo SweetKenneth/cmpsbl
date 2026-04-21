@@ -1,4 +1,20 @@
 /**
+ * @deprecated V2 PARITY SCAFFOLDING — NOT ON THE V2 EXPORT PATH.
+ *
+ * The V2 Ascension export uses the V1 polyglot template engine
+ * (`polyglot-templates.ts` + `cmpsbl-layer-polyglot.ts`) for non-canonical
+ * languages. The per-language chain-executor / parity-harness files in
+ * `layers-{rs,go,java,csharp,swift,kotlin}/` were scaffolded for a parity
+ * model that never landed end-to-end. They are kept for reference only.
+ *
+ * Do not wire these into `unified-capability-file.ts`. If you find yourself
+ * reaching for these, you probably want `polyglot-templates.ts` instead.
+ *
+ * Canonical export path: TS / JS / Python = first-class generators.
+ * Beta polyglot path:    everything else  = polyglot-templates.ts.
+ */
+
+/**
  * CMPSBL® Kotlin Chain Executor — Phase-Locked Wrapper Template
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Generates the deterministic `cmpsblExecute` chain executor in Kotlin.

@@ -146,13 +146,17 @@ export function V2PreExportConfidence({
     id: 'parity',
     icon: Languages,
     label: 'Language parity',
-    value: langParity === 'SHIPPING'
+    value: langParity === 'CANONICAL'
       ? `${langEntry?.label ?? language} · native`
-      : `${langEntry?.label ?? language} · pass-through sidecar`,
-    hint: langParity === 'SHIPPING'
+      : langParity === 'BETA_POLYGLOT'
+        ? `${langEntry?.label ?? language} · polyglot (Beta)`
+        : `${langEntry?.label ?? language} · pass-through sidecar`,
+    hint: langParity === 'CANONICAL'
       ? undefined
-      : 'Original source ships untouched + sealed TypeScript runtime',
-    severity: langParity === 'SHIPPING' ? 'ok' : 'warn',
+      : langParity === 'BETA_POLYGLOT'
+        ? 'Native file via the V1 polyglot engine — Beta tier, not byte-locked yet'
+        : 'Original source ships untouched + sealed TypeScript runtime',
+    severity: langParity === 'CANONICAL' ? 'ok' : langParity === 'BETA_POLYGLOT' ? 'info' : 'warn',
   });
 
   // 5. Upstream license posture.

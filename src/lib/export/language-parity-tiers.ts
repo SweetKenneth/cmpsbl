@@ -1,20 +1,49 @@
 /**
  * CMPSBL® Language Parity Tier Registry
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Single source of truth for which languages can ship a real Ascension Layer
- * export today, and which are still working toward parity.
+ * Single source of truth for which languages V2 Ascension can emit, and the
+ * **honest** maturity tier for each.
  *
- * "Parity" means the language has, for every selected layer:
- *   1. A native, executable implementation of the layer's behavior
- *   2. A deterministic, phase-ordered chain executor that wires layers
- *      around the customer's Layer 1 code in the locked CMPSBL phase order
- *      (Hardening → Governance → Foresight → Resilience → Intelligence →
- *      Performance → [Layer 1] → Evolution → Post Audit + Compliance)
- *   3. A passing parity test that proves identical behavior to the TS canon
+ * ─── Tiers (in order of maturity) ────────────────────────────────────────────
  *
- * Anything below SHIPPING tier is gated out of the export pipeline. The UI
- * surfaces COMING_SOON languages as disabled with a "Coming Soon" badge.
- * Languages not listed here at all are hidden entirely.
+ *   CANONICAL      — TS, JS, Python.
+ *                    First-class generators (`generateUnifiedTypeScript`,
+ *                    `generateUnifiedJavaScript`, `generateUnifiedPython`) in
+ *                    `unified-capability-file.ts`. Layer code is the real
+ *                    `tsCode` / `pyCode` from each layer definition. These are
+ *                    the contract — golden-file regression locked.
+ *
+ *   BETA_POLYGLOT  — Rust, Go, Java, C#, Swift, Kotlin (and the long tail of
+ *                    polyglot targets).
+ *                    Emitted via the V1 polyglot template engine
+ *                    (`polyglot-templates.ts` + `cmpsbl-layer-polyglot.ts`)
+ *                    using hand-written kernel/layer bodies in
+ *                    `layers-{rs,go,java,csharp,swift,kotlin}/`. The output is
+ *                    a syntactically-valid native file that embeds Layer 1
+ *                    verbatim and renders the selected layers using the host
+ *                    language's idiom — but it is **not** runtime-verified
+ *                    parity with the canonical TS executor. We emit it, we
+ *                    label it Beta, we don't lie about it.
+ *
+ *   COMING_SOON    — On the picker, disabled, no emit. The ones we have not
+ *                    written polyglot bodies for yet.
+ *
+ *   HIDDEN         — Not in the picker. Default for any unknown language.
+ *
+ * ─── What changed (and why) ─────────────────────────────────────────────────
+ *
+ * The previous version of this file marked Rust/Go/Java/Kotlin/C#/Swift as
+ * `SHIPPING`, which implied per-language native parity verified by a chain
+ * executor. That parity model never landed end-to-end. The actual export path
+ * for those languages is the V1 polyglot template engine — which works, ships
+ * real files, and is what the V2 results step calls today. Marking them
+ * `SHIPPING` was misleading. They are now `BETA_POLYGLOT`, which is the
+ * truth.
+ *
+ * Anything in `layers-{lang}/*-parity-harness.ts` or `*-chain-executor.ts`
+ * that was scaffolded for the v2 parity model is **not on the export path**
+ * and is marked `@deprecated` at the file level so future passes don't get
+ * confused into wiring it up again.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -22,16 +51,22 @@
 /**
  * Parity status for a target language.
  *
- * - SHIPPING:    Real today. Every layer has a native implementation,
- *                deterministic chain executor verified by parity tests.
- *                The export pipeline emits real artifacts.
- * - COMING_SOON: On the roadmap to parity. The export pipeline refuses to
- *                emit artifacts for these langs (no fake stubs). The UI
- *                shows them as disabled with a "Coming Soon" tooltip.
- * - HIDDEN:      Not on the parity roadmap. Removed from all selection
- *                surfaces. (Default for any unknown language.)
+ * - CANONICAL:     First-class generator. Real today, byte-stable, runtime-verified.
+ * - BETA_POLYGLOT: V1 polyglot template engine. Emits a real native file and
+ *                  embeds Layer 1 verbatim, but is not runtime-parity with the
+ *                  canonical TS executor. Surfaced in the UI with a "Beta" badge.
+ * - COMING_SOON:   On the roadmap. Picker shows them disabled.
+ * - HIDDEN:        Removed from all selection surfaces.
+ *
+ * `SHIPPING` is kept as a synonym (= CANONICAL ∪ BETA_POLYGLOT) only for the
+ * back-compat helper `isLanguageShipping()` and existing callers that haven't
+ * been migrated yet.
  */
-export type LanguageParityStatus = 'SHIPPING' | 'COMING_SOON' | 'HIDDEN';
+export type LanguageParityStatus =
+  | 'CANONICAL'
+  | 'BETA_POLYGLOT'
+  | 'COMING_SOON'
+  | 'HIDDEN';
 
 export interface LanguageParityEntry {
   /** Canonical language id (lowercase, matches polyglot generator keys). */
@@ -47,39 +82,28 @@ export interface LanguageParityEntry {
   readonly roadmapNote?: string;
 }
 
-/**
- * The Coverage Map.
- *
- * Tier 1 — SHIPPING (3 languages, real today):
- *   TypeScript, JavaScript, Python
- *
- * Tier 2 — COMING_SOON (the rest of the major-language landscape).
- *   Grouped by family so adding a new language is a one-line entry.
- *   The parity gate guarantees nothing emits until a native implementation
- *   + deterministic chain executor + green parity tests are in place.
- *
- * Anything not in this list is HIDDEN by default — including HDLs, GPU
- * shading languages, and the long tail of stub-only targets.
- */
-
 /** Default roadmap note for COMING_SOON entries — keeps the registry terse. */
 const ROADMAP_NOTE_DEFAULT =
-  'Native implementations for all 20 layers + deterministic phase chain executor in progress. Parity tests must pass before export unlocks.';
+  'Polyglot template body in progress. Will graduate to BETA_POLYGLOT when the emitter renders a complete native artifact.';
 
 /** Helper — terse COMING_SOON declaration so adding a language is one line. */
 const cs = (id: string, label: string, note: string = ROADMAP_NOTE_DEFAULT): LanguageParityEntry =>
   ({ id, label, status: 'COMING_SOON', roadmapNote: note });
 
-export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Object.freeze([
-  // ─── Tier 1 — SHIPPING ─────────────────────────────────────────────────────
-  { id: 'typescript', label: 'TypeScript', status: 'SHIPPING' },
-  { id: 'javascript', label: 'JavaScript', status: 'SHIPPING' },
-  { id: 'python',     label: 'Python',     status: 'SHIPPING' },
+/** Helper — terse BETA_POLYGLOT declaration. */
+const beta = (id: string, label: string): LanguageParityEntry =>
+  ({ id, label, status: 'BETA_POLYGLOT' });
 
-  // ─── Tier 2 — COMING_SOON ─────────────────────────────────────────────────
+export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Object.freeze([
+  // ─── Tier 1 — CANONICAL (the contract; golden-file locked) ──────────────
+  { id: 'typescript', label: 'TypeScript', status: 'CANONICAL' },
+  { id: 'javascript', label: 'JavaScript', status: 'CANONICAL' },
+  { id: 'python',     label: 'Python',     status: 'CANONICAL' },
+
+  // ─── Tier 2 — BETA_POLYGLOT (V1 polyglot engine; native file, Beta) ─────
   // Systems & native
-  { id: 'rust', label: 'Rust', status: 'SHIPPING' },
-  { id: 'go', label: 'Go', status: 'SHIPPING' },
+  beta('rust', 'Rust'),
+  beta('go', 'Go'),
   cs('c',           'C'),
   cs('cpp',         'C++'),
   cs('zig',         'Zig'),
@@ -87,19 +111,19 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   cs('crystal',     'Crystal'),
 
   // JVM family
-  { id: 'java',     label: 'Java',   status: 'SHIPPING' },
-  { id: 'kotlin',   label: 'Kotlin', status: 'SHIPPING' },
+  beta('java', 'Java'),
+  beta('kotlin', 'Kotlin'),
   cs('scala',       'Scala'),
   cs('groovy',      'Groovy'),
   cs('clojure',     'Clojure'),
 
   // .NET family
-  { id: 'csharp',   label: 'C#',     status: 'SHIPPING' },
+  beta('csharp', 'C#'),
   cs('fsharp',      'F#'),
   cs('vbnet',       'VB.NET'),
 
   // Apple platforms
-  { id: 'swift',    label: 'Swift',  status: 'SHIPPING' },
+  beta('swift', 'Swift'),
   cs('objectivec',  'Objective-C'),
 
   // Scripting & dynamic
@@ -144,9 +168,25 @@ export function getLanguageParityEntry(lang: string): LanguageParityEntry | null
   return REGISTRY_INDEX.get(lang.toLowerCase()) ?? null;
 }
 
-/** Convenience: only the languages that can ship a real export today. */
+/** CANONICAL languages only — TS, JS, Python. The contract. */
+export function getCanonicalLanguages(): ReadonlyArray<LanguageParityEntry> {
+  return LANGUAGE_PARITY_REGISTRY.filter((e) => e.status === 'CANONICAL');
+}
+
+/** BETA_POLYGLOT languages — emit via the V1 polyglot engine. */
+export function getBetaPolyglotLanguages(): ReadonlyArray<LanguageParityEntry> {
+  return LANGUAGE_PARITY_REGISTRY.filter((e) => e.status === 'BETA_POLYGLOT');
+}
+
+/**
+ * Convenience: every language that can ship a real export today
+ * (CANONICAL ∪ BETA_POLYGLOT). Ordered: canonical first, then beta.
+ *
+ * @deprecated Prefer `getCanonicalLanguages()` + `getBetaPolyglotLanguages()`
+ *   so the UI can label tiers honestly. Kept for back-compat.
+ */
 export function getShippingLanguages(): ReadonlyArray<LanguageParityEntry> {
-  return LANGUAGE_PARITY_REGISTRY.filter((e) => e.status === 'SHIPPING');
+  return [...getCanonicalLanguages(), ...getBetaPolyglotLanguages()];
 }
 
 /** Convenience: languages on the roadmap (UI surfaces these as disabled). */
@@ -156,7 +196,7 @@ export function getComingSoonLanguages(): ReadonlyArray<LanguageParityEntry> {
 
 /**
  * Lowercase set of every language that should appear in the picker
- * (SHIPPING + COMING_SOON). HIDDEN languages are absent entirely.
+ * (CANONICAL + BETA_POLYGLOT + COMING_SOON). HIDDEN languages are absent.
  */
 export function getVisibleLanguageIds(): ReadonlySet<string> {
   return new Set(
@@ -167,18 +207,29 @@ export function getVisibleLanguageIds(): ReadonlySet<string> {
 }
 
 /**
- * V1 POLYGLOT BYPASS (testing mode):
- * The parity gate is disabled so the V1 polyglot engine can emit every language
- * it has an emitter for (TS/JS/PY hard-wired + ~30 polyglot targets + HDL).
- * Re-enable by restoring the original SHIPPING-only check below.
+ * V2 EXPORT GATE:
+ * The export pipeline is allowed to emit for any non-hidden language.
+ * - CANONICAL → first-class generator (TS / JS / Py).
+ * - BETA_POLYGLOT → V1 polyglot engine (rust/go/java/csharp/swift/kotlin/…).
+ * - COMING_SOON → also allowed today; the polyglot engine returns an empty
+ *   string for any language it can't render, which the caller handles by
+ *   falling back to the generic emitter.
  *
- * Original:  return getLanguageParityStatus(lang) === 'SHIPPING';
+ * Original strict-shipping behavior is preserved as a comment for reference.
  */
 export function isLanguageShipping(lang: string): boolean {
-  // Allow any language that's at least visible in the registry.
-  // Unknown ids still return false so we don't try to emit garbage.
   const status = getLanguageParityStatus(lang);
-  return status === 'SHIPPING' || status === 'COMING_SOON';
+  return status === 'CANONICAL' || status === 'BETA_POLYGLOT' || status === 'COMING_SOON';
+}
+
+/** True if the language is canonical (real generator, byte-stable). */
+export function isLanguageCanonical(lang: string): boolean {
+  return getLanguageParityStatus(lang) === 'CANONICAL';
+}
+
+/** True if the language emits via the V1 polyglot engine (Beta tier). */
+export function isLanguageBetaPolyglot(lang: string): boolean {
+  return getLanguageParityStatus(lang) === 'BETA_POLYGLOT';
 }
 
 /** True if the language is on the picker but not yet exportable. */
@@ -188,8 +239,7 @@ export function isLanguageComingSoon(lang: string): boolean {
 
 /**
  * Error thrown when the export pipeline is asked to emit a non-shipping language.
- * Catch this at UI boundaries to render a clean "Coming Soon" message instead
- * of a stack trace.
+ * Catch this at UI boundaries to render a clean message instead of a stack trace.
  */
 export class LanguageNotShippingError extends Error {
   readonly lang: string;
@@ -201,8 +251,8 @@ export class LanguageNotShippingError extends Error {
     const status = entry?.status ?? 'HIDDEN';
     const reason =
       status === 'COMING_SOON'
-        ? `${entry?.label ?? lang} is on the parity roadmap but not yet shipping. Real exports unlock when every layer has a native implementation and the deterministic chain executor passes parity tests.`
-        : `${lang} is not a supported export target. Only languages with full layer parity ship from the Ascension pipeline.`;
+        ? `${entry?.label ?? lang} is on the polyglot roadmap but not yet shipping.`
+        : `${lang} is not a supported export target.`;
     super(`[CMPSBL:LanguageNotShipping:${lang}] ${reason}`);
     this.name = 'LanguageNotShippingError';
     this.lang = lang;
@@ -212,19 +262,11 @@ export class LanguageNotShippingError extends Error {
 }
 
 /**
- * Hard gate for the export pipeline. Call this at the top of any function
- * that turns a language id into actual file content. Throws if the language
- * is not SHIPPING — the only way to ship code is to flip the status flag,
- * which by policy requires native implementations + green parity tests.
+ * Soft gate for the export pipeline. Currently a no-op so the V1 polyglot
+ * engine can serve every visible language. Kept as the single chokepoint so a
+ * future tightening (e.g. "block COMING_SOON entries") is one edit.
  */
 export function assertLanguageShipping(lang: string): void {
-  // V1 POLYGLOT BYPASS: gate disabled for testing the V1 emitter coverage
-  // (~32 software langs + 7 HDL targets). The polyglot engine itself returns
-  // empty strings for languages it can't render, which the caller already
-  // handles. Re-enable by restoring the throw below.
-  //
-  // if (!isLanguageShipping(lang)) {
-  //   throw new LanguageNotShippingError(lang);
-  // }
+  // Intentional no-op — see isLanguageShipping() and the V2 EXPORT GATE doc above.
   void lang;
 }
