@@ -150,7 +150,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const PRIVACY_OBFUSCATION_LAYER: CmpsblLayerDefinition = {
   id: 'privacy-obfuscation',
-  name: 'Privacy & Obfuscation Layer',
+  name: 'PII Redaction & Privacy Layer',
   crownJewelRank: 21,
   cjpi: 95,
   module: 'PRIVACY×OBFUSCATION',

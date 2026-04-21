@@ -137,7 +137,7 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const PROBABILISTIC_CONSCIENCE_LAYER: CmpsblLayerDefinition = {
   id: 'probabilistic-conscience',
-  name: 'Probabilistic Conscience Layer',
+  name: 'Ethical Guardrails Layer',
   crownJewelRank: 26,
   cjpi: 92,
   module: 'BRAIN×CONSCIENCE',
