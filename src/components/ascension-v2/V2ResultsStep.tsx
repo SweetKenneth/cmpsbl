@@ -77,6 +77,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const [sourceFiles, setSourceFiles] = useState<SourceFileData[]>([]);
   const [candidateName, setCandidateName] = useState('');
   const [sourceLanguage, setSourceLanguage] = useState('typescript');
+  // Source fingerprint of THIS run (FNV from commitUpload), persisted in
+  // candidate metadata. Distinct from the audit-chain integrityHash (SHA over
+  // events). We hand this to the next run so `fingerprint_changed` actually
+  // means "source changed" — not "of course the audit chain differs".
+  const [sourceFingerprintHash, setSourceFingerprintHash] = useState<string | null>(null);
   const [spdxChoice, setSpdxChoice] = useState<SpdxChoice>('auto');
   // After export succeeds we surface the run-aware activation guide so the
   // user has copy-pasteable next steps using their actual ascended filename.
