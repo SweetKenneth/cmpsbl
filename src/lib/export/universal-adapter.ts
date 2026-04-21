@@ -164,11 +164,10 @@ export function getAllLanguages(): { value: ExportLanguage; label: string }[] {
  *
  * Layered gating:
  *   1. Score-tier unlocks (rarity-based — Mint/Prime/Relic/Silicon)
- *   2. Parity-tier filter (HIDDEN langs are never returned; COMING_SOON
- *      langs are returned but marked locked with a Coming Soon reason)
+ *   2. Registry visibility filter (HIDDEN langs are never returned)
  *
- * The parity gate is the safety net: even if a score unlocks a language,
- * the export pipeline will refuse to emit it until parity is verified.
+ * The registry is the safety net: even if a score unlocks a language,
+ * the export pipeline will refuse to emit it unless it is visible.
  */
 export function getLanguagesForScore(
   score: number,
