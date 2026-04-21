@@ -115,12 +115,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const SYNTHETIC_CONTRACTS_LAYER: CmpsblLayerDefinition = {
   id: 'synthetic-contracts',
-  name: 'Synthetic Contracts Layer',
+  name: 'Auto-Generated API Contract Layer',
   crownJewelRank: 19,
   cjpi: 8.9,
   module: 'INTEGRATION',
-  description:
-    'Synthesizes typed I/O contracts from observed runtime traffic, validates subsequent calls, and emits drift signals when shapes deviate.',
+  description: 'Learns the shape of your API from real traffic, generates typed I/O contracts you didn\'t have to write, and alerts when callers drift from them — schema-first hygiene without the upfront cost.',
   priceCents: 4900,
   tsCode: TS_CODE,
   pyCode: PY_CODE,

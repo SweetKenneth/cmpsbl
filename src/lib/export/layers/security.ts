@@ -135,11 +135,11 @@ cmpsbl_register_hook('post', _cmpsbl_defense_post)`;
 
 const ADAPTIVE_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "adaptive-defense",
-  name: "Adaptive Defense Breeding Layer",
+  name: "Evolving Defense Layer",
   crownJewelRank: 6,
   cjpi: 95,
   module: "IMMUNITY×EVOLUTION",
-  description: "Breeds progressively stronger security defenses via evolutionary pressure against attack simulations. Survivors promoted; failures extinct.",
+  description: "Breeds progressively stronger defenses by running them against simulated attacks — survivors get promoted, weak defenses go extinct, your security posture compounds over time.",
   priceCents: 0,
   tsCode: ADAPTIVE_DEFENSE_TS,
   pyCode: ADAPTIVE_DEFENSE_PY,
@@ -289,11 +289,11 @@ cmpsbl_register_hook('pre', _cmpsbl_zerotrust_pre)`;
 
 const ZERO_TRUST_LAYER: CmpsblLayerDefinition = {
   id: "zero-trust",
-  name: "Zero-Trust Identity Layer",
+  name: "Continuous Identity Verification Layer",
   crownJewelRank: 2,
   cjpi: 91,
   module: "IDENTITY×DEFENSE",
-  description: "Continuous session verification with behavioral trust scoring that flags compromised credentials through usage pattern deviation.",
+  description: "Continuous session re-verification with behavioral trust scoring — flag a compromised credential the moment usage starts to look wrong, not after the breach is in the news.",
   priceCents: 0,
   tsCode: ZERO_TRUST_TS,
   pyCode: ZERO_TRUST_PY,
@@ -440,11 +440,11 @@ cmpsbl_register_hook('post', _cmpsbl_cyberdefense_post)`;
 
 const CYBER_DEFENSE_LAYER: CmpsblLayerDefinition = {
   id: "cyber-defense",
-  name: "Cyber Defense Layer",
+  name: "Threat Correlation & DDoS Absorption Layer",
   crownJewelRank: 3,
   cjpi: 97,
   module: "WATCHTOWER×AEGIS",
-  description: "Cross-correlates indicators of compromise across temporal, spatial, and contextual dimensions while dynamically absorbing volumetric attacks.",
+  description: "Cross-correlates indicators of compromise across time, location, and context while dynamically absorbing volumetric attacks — multi-vector defense in one layer.",
   priceCents: 0,
   tsCode: CYBER_DEFENSE_TS,
   pyCode: CYBER_DEFENSE_PY,

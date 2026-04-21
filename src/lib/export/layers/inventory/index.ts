@@ -6,11 +6,11 @@
  * polyglot engine auto-renders all shipping languages with no per-layer
  * branching.
  *
- *   Defense & Security        — LLM Defense · Cyber Perimeter · Privacy · Topological · Honeypot
- *   Observability & Audit     — Layered Obs · Compliance Audit · Spectral · Conscience · Self-Healing · Replay Vault
- *   Synthesis & Evolution     — Adaptive Forge · Symbolic · Sentinel · Reflex · Behavioral Bio · Nocturne
- *   Integration & Contracts   — Holographic · Emergent · Synthetic · Localization · Neural Broker
- *   Specialty Suite           — Multi-Model Consensus · Data Sovereignty · Adversarial Wargame
+ *   Defense & Security        — AI Defense · Perimeter · PII Privacy · Trust-Graph · Decoy
+ *   Observability & Audit     — Live Metrics · Compliance · Drift · Ethics · Fault Learning · Replay
+ *   Synthesis & Evolution     — Auto-Tuning · Safe Templates · Safe Patches · Reflexes · Biometrics · Memory
+ *   Integration & Contracts   — Schema Audit · Pattern Routing · API Contracts · Localization · AI Routing
+ *   Specialty Layers          — AI Consensus · Data Residency · Red-Team Stress
  *
  * Files registered in this index = files included in INVENTORY_LAYERS.
  * Anything outside this list is intentionally absent from the bundle.
@@ -47,7 +47,7 @@ import { SYNTHETIC_CONTRACTS_LAYER } from './synthetic-contracts.layer';
 import { LOCALIZATION_MESH_LAYER } from './localization-mesh.layer';
 import { NEURAL_BROKER_LAYER } from './neural-broker.layer';
 
-// ── Specialty Suite (3) ────────────────────────────────────────────────────
+// ── Specialty Layers (3) ───────────────────────────────────────────────────
 import { MULTI_MODEL_CONSENSUS_LAYER } from './multi-model-consensus.layer';
 import { DATA_SOVEREIGNTY_PARTITIONER_LAYER } from './data-sovereignty-partitioner.layer';
 import { ADVERSARIAL_WARGAME_LAYER } from './adversarial-wargame.layer';
@@ -79,7 +79,7 @@ export const INVENTORY_LAYERS: readonly CmpsblLayerDefinition[] = Object.freeze(
   SYNTHETIC_CONTRACTS_LAYER,
   LOCALIZATION_MESH_LAYER,
   NEURAL_BROKER_LAYER,
-  // Specialty Suite
+  // Specialty Layers
   MULTI_MODEL_CONSENSUS_LAYER,
   DATA_SOVEREIGNTY_PARTITIONER_LAYER,
   ADVERSARIAL_WARGAME_LAYER,

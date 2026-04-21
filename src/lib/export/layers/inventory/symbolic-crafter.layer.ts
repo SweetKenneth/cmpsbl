@@ -133,7 +133,7 @@ cmpsbl_execute = function cmpsbl_execute_craft(capabilityName: string, input: Re
 const WIRE_PY = `
 _cmpsbl_raw_execute_craft = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Symbolic Crafter Layer (auto-wired)."""
+    """Execute under Safe Template Generation Layer (auto-wired)."""
     result = _cmpsbl_raw_execute_craft(capability_name, input_data)
     if isinstance(result, dict):
         for k, v in result.items():
@@ -145,11 +145,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const SYMBOLIC_CRAFTER_LAYER: CmpsblLayerDefinition = {
   id: 'symbolic-crafter',
-  name: 'Symbolic Crafter Layer',
+  name: 'Safe Template Generation Layer',
   crownJewelRank: 28,
   cjpi: 90,
   module: 'CORTEX×DREAM',
-  description: 'Template-driven generative synthesis with slot validation, schema inference from samples, and cortex-governed safety check.',
+  description: 'Generates structured outputs from templates with slot validation, schema inference from samples, and a safety check on every result — production-safe alternative to free-form LLM generation.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

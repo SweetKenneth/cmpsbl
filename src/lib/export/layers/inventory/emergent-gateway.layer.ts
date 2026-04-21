@@ -103,12 +103,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const EMERGENT_GATEWAY_LAYER: CmpsblLayerDefinition = {
   id: 'emergent-gateway',
-  name: 'Emergent Gateway Layer',
+  name: 'Auto-Discovered Pattern Routing Layer',
   crownJewelRank: 18,
   cjpi: 8.7,
   module: 'INTEGRATION',
-  description:
-    'Discovers recurrent input patterns at runtime and promotes stable signatures into named, routable gateways without code changes.',
+  description: 'Watches your traffic, detects which input shapes recur, and automatically promotes them into named, routable gateways — your API self-organizes around real usage instead of guessed-at endpoints.',
   priceCents: 5900,
   tsCode: TS_CODE,
   pyCode: PY_CODE,

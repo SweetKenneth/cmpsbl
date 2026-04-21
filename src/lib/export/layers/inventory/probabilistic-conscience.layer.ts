@@ -16,7 +16,7 @@ const TS = `
 interface CmpsblConsGuard { name: string; weight: number; pattern: RegExp }
 
 const _CMPSBL_CONS_GUARDS: CmpsblConsGuard[] = [
-  { name: 'self-harm',   weight: 1.0, pattern: /\\b(suicide|self[- ]harm|kill\\s+myself)\\b/i },
+  { name: 'Ethical Guardrails Layer',   weight: 1.0, pattern: /\\b(suicide|self[- ]harm|kill\\s+myself)\\b/i },
   { name: 'violence',    weight: 0.85, pattern: /\\b(bomb|attack|murder|massacre|slaughter)\\b/i },
   { name: 'illegal',     weight: 0.7,  pattern: /\\b(child\\s+porn|cp\\b|drug\\s+deal|hitman)\\b/i },
   { name: 'discrimination', weight: 0.6, pattern: /\\b(racial\\s+slur|ethnic\\s+cleansing)\\b/i },
@@ -120,7 +120,7 @@ cmpsbl_execute = function cmpsbl_execute_cons(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_cons = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Probabilistic Conscience Layer (auto-wired)."""
+    """Execute under Ethical Guardrails Layer (auto-wired)."""
     score = cmpsbl_cons_score(input_data)
     decision = cmpsbl_cons_arbitrate(score)
     if decision['decision'] == 'embargo':
@@ -137,11 +137,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const PROBABILISTIC_CONSCIENCE_LAYER: CmpsblLayerDefinition = {
   id: 'probabilistic-conscience',
-  name: 'Probabilistic Conscience Layer',
+  name: 'Ethical Guardrails Layer',
   crownJewelRank: 26,
   cjpi: 92,
   module: 'BRAIN×CONSCIENCE',
-  description: 'Weighted probabilistic guardrails (6 ethical axes) with allow/sieve/embargo arbitration on inputs and outputs.',
+  description: 'Six weighted ethical axes that score every input and output, then allow, sieve, or embargo the action — gives your AI a conscience without hand-coding rules.',
   priceCents: 5900,
   tsCode: TS,
   pyCode: PY,

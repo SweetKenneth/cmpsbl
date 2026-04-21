@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Deterministic Replay Vault
+ * CMPSBL® Inventory Layer — Bug Reproduction & Replay Layer
  * Primitives: CAPSULE · SEAL · REPLAY
  *
  * Records every capability call as a deterministic replay capsule (cap +
@@ -17,7 +17,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Deterministic Replay Vault (proprietary).                  ║
+// ║  ASCENSION LAYER — Bug Reproduction & Replay Layer (proprietary).                  ║
 // ║  Reuses the Hardening Layer's _cmpsbl_fnv1a — no redundant hash impl.         ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -45,7 +45,7 @@ export function cmpsbl_replay_count(): number { return _CMPSBL_REPLAY_VAULT.leng
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Deterministic Replay Vault (proprietary).                  ║
+# ║  ASCENSION LAYER — Bug Reproduction & Replay Layer (proprietary).                  ║
 # ║  Reuses the Hardening Layer's _cmpsbl_fnv1a — no redundant hash impl.         ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
@@ -92,11 +92,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const DETERMINISTIC_REPLAY_VAULT_LAYER: CmpsblLayerDefinition = {
   id: 'deterministic-replay-vault',
-  name: 'Deterministic Replay Vault',
+  name: 'Bug Reproduction & Replay Layer',
   crownJewelRank: 73,
   cjpi: 95,
   module: 'OBSERVABILITY×AUDIT',
-  description: 'Seals every capability call as a deterministic replay capsule — reproduce any historical execution exactly. Shares the Hardening Layer\'s FNV-1a so capsule seeds match the kernel\'s integrity-seal hashes bit-for-bit.',
+  description: 'Seals every capability call as a deterministic replay capsule. Reproduce any production bug locally — exact inputs, exact seeds, exact result — without staging data or guesswork.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

@@ -139,12 +139,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const NEURAL_BROKER_LAYER: CmpsblLayerDefinition = {
   id: 'neural-broker',
-  name: 'Neural Broker Layer',
+  name: 'Multi-Provider AI Routing Layer',
   crownJewelRank: 21,
   cjpi: 9.0,
   module: 'CONTRACTS',
-  description:
-    'Watches access patterns, ledgers every match, and brokers treaties between counterparties — turning ad-hoc agreements into ledgered, audited, enforceable contracts.',
+  description: 'Watches access patterns and brokers ledgered, audited contracts between callers and providers — turn ad-hoc \'just call OpenAI\' code into enforceable, swappable AI agreements.',
   priceCents: 3900,
   tsCode: TS_CODE,
   pyCode: PY_CODE,

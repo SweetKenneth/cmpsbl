@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Holographic Integration Suite
+ * CMPSBL® Inventory Layer — Schema Contract & Merge-Audit Layer
  * Primitives: PRISM · MIRROR · WEAVE · RESONATE
  *
  *   PRISM    → multi-source merge with conflict policy (last/first/sum/max)
@@ -27,7 +27,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Holographic Integration Suite (proprietary).               ║
+// ║  ASCENSION LAYER — Schema Contract & Merge-Audit Layer (proprietary).               ║
 // ║  Hardening already clones inputs — this layer only enforces RESONATE          ║
 // ║  contracts and emits matched/missing/extras receipts.                          ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
@@ -125,7 +125,7 @@ export function cmpsbl_his_receipts(): CmpsblResonateReceipt[] {
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Holographic Integration Suite (proprietary).               ║
+# ║  ASCENSION LAYER — Schema Contract & Merge-Audit Layer (proprietary).               ║
 # ║  Hardening already clones inputs — this layer only enforces RESONATE          ║
 # ║  contracts and emits matched/missing/extras receipts.                          ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
@@ -226,7 +226,7 @@ cmpsbl_execute = function cmpsbl_execute_his(capabilityName: string, input: Reco
 const WIRE_PY = `
 _cmpsbl_raw_execute_his = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Holographic Integration Suite (RESONATE contract + receipt). Hardening already cloned input_data."""
+    """Execute under Schema Contract & Merge-Audit Layer (RESONATE contract + receipt). Hardening already cloned input_data."""
     required = input_data.get('_cmpsbl_required_keys')
     if isinstance(required, list):
         receipt = cmpsbl_his_resonate_receipt(capability_name, input_data, required)
@@ -236,11 +236,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const HOLOGRAPHIC_INTEGRATION_SUITE_LAYER: CmpsblLayerDefinition = {
   id: 'holographic-integration-suite',
-  name: 'Holographic Integration Suite',
+  name: 'Schema Contract & Merge-Audit Layer',
   crownJewelRank: 28,
   cjpi: 88,
   module: 'INTEGRATION',
-  description: 'PRISM merge + WEAVE braid + RESONATE schema-contract gate with structured matched/missing/extras receipts. MIRROR exported as utility (Hardening already clones execute inputs — no double-clone on the wire).',
+  description: 'Validates every payload against a schema contract, merges multi-source inputs, and returns a structured receipt of what matched, what was missing, and what was extra — kills silent integration mismatches.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

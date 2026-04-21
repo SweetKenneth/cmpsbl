@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Data Sovereignty Partitioner
+ * CMPSBL® Inventory Layer — Geographic Data Residency Layer
  * Primitives: PARTITION · GATE · RESIDENCY
  *
  * Distinct from regulatory-compliance (rules) and localization-mesh (translation):
@@ -9,7 +9,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Data Sovereignty Partitioner (proprietary).                ║
+// ║  ASCENSION LAYER — Geographic Data Residency Layer (proprietary).                ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblRegion = 'us' | 'eu' | 'apac' | 'gov' | 'unknown';
@@ -36,7 +36,7 @@ export function cmpsbl_dsp_gate(recordId: string, callerRegion: CmpsblRegion): {
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Data Sovereignty Partitioner (proprietary).                ║
+# ║  ASCENSION LAYER — Geographic Data Residency Layer (proprietary).                ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 from typing import Dict
@@ -86,11 +86,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const DATA_SOVEREIGNTY_PARTITIONER_LAYER: CmpsblLayerDefinition = {
   id: 'data-sovereignty-partitioner',
-  name: 'Data Sovereignty Partitioner',
+  name: 'Geographic Data Residency Layer',
   crownJewelRank: 35,
   cjpi: 97,
   module: 'COMPLIANCE×CORTEX',
-  description: 'Geographic data residency enforcement at the function-call boundary; classifies records and gates cross-region access.',
+  description: 'Classifies records by region (EU, US, APAC) and gates cross-region access at the function-call boundary — meet GDPR / data-residency contracts without re-architecting your storage.',
   priceCents: 9900,
   tsCode: TS,
   pyCode: PY,

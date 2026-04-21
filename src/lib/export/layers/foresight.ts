@@ -368,11 +368,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const ORACLE_RIPPLE_LAYER: CmpsblLayerDefinition = {
   id: 'oracle-ripple-precognition',
-  name: 'Oracle-Ripple Precognition Layer',
+  name: 'Failure Forecasting & Auto-Mitigation Layer',
   crownJewelRank: 8,
   cjpi: 96,
   module: 'ORACLE',
-  description: 'Predictive failure forecasting fused with causal propagation. Detects downstream cascades before they occur and auto-executes preemptive scale, reroute, throttle, or isolate actions.',
+  description: 'Predicts which failures are about to happen, traces the downstream blast radius, and pre-emptively scales, reroutes, throttles, or isolates — stop outages before they start.',
   priceCents: 19900,
   tsCode: ORACLE_RIPPLE_TS,
   pyCode: ORACLE_RIPPLE_PY,
@@ -681,11 +681,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const ANOMALY_CORRELATION_LAYER: CmpsblLayerDefinition = {
   id: 'anomaly-correlation-engine',
-  name: 'Anomaly Correlation Layer',
+  name: 'Multi-Signal Incident Correlation Layer',
   crownJewelRank: 7,
   cjpi: 96,
   module: 'VISION',
-  description: 'Multi-stream anomaly correlation across temporal, causal, spatial, and behavioral dimensions. Produces ranked incident hypotheses from signals no single monitor would catch alone. Reduces false-positive alerts by 89%.',
+  description: 'Correlates anomalies across time, cause, location, and behavior into ranked incident hypotheses — surfaces real incidents and cuts false-positive alert noise dramatically.',
   priceCents: 14900,
   tsCode: ANOMALY_CORRELATION_TS,
   pyCode: ANOMALY_CORRELATION_PY,

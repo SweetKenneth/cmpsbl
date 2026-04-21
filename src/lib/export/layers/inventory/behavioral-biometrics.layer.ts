@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Behavioral Biometrics
+ * CMPSBL® Inventory Layer — Continuous User Authentication Layer
  * Primitives: PROFILE · DRIFT · CHALLENGE
  *
  * Continuous authentication. Distinct from zero-trust (session-start) —
@@ -10,7 +10,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Behavioral Biometrics (proprietary).                       ║
+// ║  ASCENSION LAYER — Continuous User Authentication Layer (proprietary).                       ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 interface CmpsblBioProfile { actorId: string; calls: number; lastCallAt: number; capCounts: Record<string, number>; avgInputSize: number; }
@@ -46,7 +46,7 @@ export function cmpsbl_bio_challenge(actorId: string): { required: boolean; reas
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Behavioral Biometrics (proprietary).                       ║
+# ║  ASCENSION LAYER — Continuous User Authentication Layer (proprietary).                       ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -106,11 +106,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const BEHAVIORAL_BIOMETRICS_LAYER: CmpsblLayerDefinition = {
   id: 'behavioral-biometrics',
-  name: 'Behavioral Biometrics',
+  name: 'Continuous User Authentication Layer',
   crownJewelRank: 104,
   cjpi: 96,
   module: 'DEFENSE×CORTEX',
-  description: 'Continuous authentication via per-actor behavioral profiles, drift scoring, and idle-timeout challenges.',
+  description: 'Builds a behavioral profile per user (typing cadence, call patterns, timing) and continuously re-verifies them — catches stolen sessions and account takeovers a password check can\'t.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

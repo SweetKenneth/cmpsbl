@@ -129,11 +129,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const PIPE_COMPOSE_LAYER: CmpsblLayerDefinition = {
   id: "pipeline-composition",
-  name: "Pipeline Composition Layer",
+  name: "Composable Typed Pipeline Layer",
   crownJewelRank: 15,
   cjpi: 95,
   module: "CORTEX",
-  description: "Composable pipeline builder with typed stage connections and backpressure control.",
+  description: "Build multi-stage data and request pipelines with typed connections and built-in backpressure — replace ad-hoc orchestration scripts with one composable spine.",
   priceCents: 0,
   tsCode: PIPE_COMPOSE_TS,
   pyCode: PIPE_COMPOSE_PY,
@@ -290,11 +290,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const UNIVERSAL_INPUT_LAYER: CmpsblLayerDefinition = {
   id: "universal-input",
-  name: "Universal Input Intelligence Layer",
+  name: "Unified Input Understanding Layer",
   crownJewelRank: 16,
   cjpi: 97,
   module: "DECODE",
-  description: "Context Threading + Multi-Modal Interpreter. Maintains conversational context plus unified interpretation of NL/CLI/structured/code.",
+  description: "Threads conversational context across natural language, CLI, structured payloads, and code — one input layer that understands every way a user or agent might talk to your system.",
   priceCents: 0,
   tsCode: UNIVERSAL_INPUT_TS,
   pyCode: UNIVERSAL_INPUT_PY,

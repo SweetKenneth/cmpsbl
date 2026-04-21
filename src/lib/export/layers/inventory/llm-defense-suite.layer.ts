@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — LLM Defense Suite
+ * CMPSBL® Inventory Layer — AI Hallucination & Prompt Injection Defense Layer
  * Primitives: VERITAS · RAMPART · TETHER · FULCRUM
  *
  * Hardens any function that ships LLM input/output:
@@ -16,7 +16,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — LLM Defense Suite (proprietary).                           ║
+// ║  ASCENSION LAYER — AI Hallucination & Prompt Injection Defense Layer (proprietary).                           ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 // ── RAMPART · Injection / jailbreak patterns ────────────────────────────────
@@ -91,7 +91,7 @@ export function cmpsbl_lds_fulcrum(output: string): { quality: number; refusal: 
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — LLM Defense Suite (proprietary).                           ║
+# ║  ASCENSION LAYER — AI Hallucination & Prompt Injection Defense Layer (proprietary).                           ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import re
@@ -194,7 +194,7 @@ cmpsbl_execute = function cmpsbl_execute_lds(capabilityName: string, input: Reco
 const WIRE_PY = `
 _cmpsbl_raw_execute_lds = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under LLM Defense Suite (auto-wired)."""
+    """Execute under AI Hallucination & Prompt Injection Defense Layer (auto-wired)."""
     clean = {}
     for k, v in input_data.items():
         if isinstance(v, str):
@@ -214,11 +214,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const LLM_DEFENSE_SUITE_LAYER: CmpsblLayerDefinition = {
   id: 'llm-defense-suite',
-  name: 'LLM Defense Suite',
+  name: 'AI Hallucination & Prompt Injection Defense Layer',
   crownJewelRank: 21,
   cjpi: 94,
   module: 'DEFENSE×DREAM',
-  description: 'VERITAS grounding + RAMPART injection shield + TETHER output clamp + FULCRUM quality scoring.',
+  description: 'Stops your LLM from making things up and from being hijacked by malicious prompts. Grounds answers in source-of-truth, sanitizes inputs, clamps outputs, and scores response quality before it reaches the user.',
   priceCents: 9900,
   tsCode: TS,
   pyCode: PY,

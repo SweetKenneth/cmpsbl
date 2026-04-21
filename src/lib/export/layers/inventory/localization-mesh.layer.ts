@@ -125,12 +125,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const LOCALIZATION_MESH_LAYER: CmpsblLayerDefinition = {
   id: 'localization-mesh',
-  name: 'Localization Mesh Layer',
+  name: 'Multi-Region Translation & Routing Layer',
   crownJewelRank: 20,
   cjpi: 8.4,
   module: 'INTEGRATION',
-  description:
-    'Translates, transcreates, and persona-shifts strings across locales via a hierarchical bridge with locale → language → root fallback.',
+  description: 'Translates, transcreates, and persona-shifts strings across locales with locale → language → root fallback — ship a multilingual product without juggling a dozen translation files.',
   priceCents: 5900,
   tsCode: TS_CODE,
   pyCode: PY_CODE,

@@ -141,7 +141,7 @@ cmpsbl_execute = function cmpsbl_execute_sent(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_sent = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Sentinel Evolution Layer (auto-wired)."""
+    """Execute under Safe Patch Rollout Layer (auto-wired)."""
     patch_id = input_data.get('_cmpsbl_patch_id')
     if patch_id:
         sim = cmpsbl_sent_simulate(patch_id)
@@ -151,11 +151,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const SENTINEL_EVOLUTION_LAYER: CmpsblLayerDefinition = {
   id: 'sentinel-evolution',
-  name: 'Sentinel Evolution Layer',
+  name: 'Safe Patch Rollout Layer',
   crownJewelRank: 29,
   cjpi: 88,
   module: 'EVOLUTION×GOVERNANCE',
-  description: 'Patch queue with topological ordering, dependency simulation, and risk-gated rollout — refuses unsafe sequences before they ship.',
+  description: 'Queues code or config patches, simulates dependencies in topological order, and refuses to ship any sequence that would break something downstream — safe deploys without a release engineer.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

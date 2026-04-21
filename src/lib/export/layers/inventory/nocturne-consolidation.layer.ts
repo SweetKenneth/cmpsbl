@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Nocturne Consolidation
+ * CMPSBL® Inventory Layer — Memory Consolidation & Pattern Reinforcement Layer
  * Primitives: REPLAY · PRUNE · STRENGTHEN
  *
  * Sleep-cycle memory consolidation: replays the day's capability traces,
@@ -10,7 +10,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Nocturne Consolidation (proprietary).                      ║
+// ║  ASCENSION LAYER — Memory Consolidation & Pattern Reinforcement Layer (proprietary).                      ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 interface CmpsblNocturneTrace { cap: string; weight: number; lastSeen: number; }
@@ -42,7 +42,7 @@ export function cmpsbl_nocturne_weight(cap: string): number {
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Nocturne Consolidation (proprietary).                      ║
+# ║  ASCENSION LAYER — Memory Consolidation & Pattern Reinforcement Layer (proprietary).                      ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -89,11 +89,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const NOCTURNE_CONSOLIDATION_LAYER: CmpsblLayerDefinition = {
   id: 'nocturne-consolidation',
-  name: 'Nocturne Consolidation',
+  name: 'Memory Consolidation & Pattern Reinforcement Layer',
   crownJewelRank: 71,
   cjpi: 94,
   module: 'DREAM×EVOLUTION',
-  description: 'Sleep-cycle memory consolidation: decays weak capability traces, reinforces high-utility ones.',
+  description: 'Sleep-cycle for your runtime: decays weakly-used patterns, reinforces high-utility ones, and surfaces the strongest paths — keeps long-running systems from drowning in stale state.',
   priceCents: 6900,
   tsCode: TS,
   pyCode: PY,

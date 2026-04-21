@@ -317,11 +317,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const SELF_HEALING_LAYER: CmpsblLayerDefinition = {
   id: 'self-healing',
-  name: 'Self-Healing Layer',
+  name: 'Auto-Detect & Auto-Repair Layer',
   crownJewelRank: 1,
   cjpi: 96,
   module: 'IMMUNITY',
-  description: 'Auto-detects failures, selects lowest-blast-radius repair strategy, executes recovery with rollback, and learns from outcomes. No source modification.',
+  description: 'Detects failures, picks the lowest-blast-radius repair, executes recovery with rollback, and learns which fixes work — production heals itself without a 3am page.',
   priceCents: 14900,
   tsCode: SELF_HEALING_TS,
   pyCode: SELF_HEALING_PY,
@@ -633,11 +633,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const TRIAGE_LAYER: CmpsblLayerDefinition = {
   id: 'autonomous-triage',
-  name: 'Autonomous Triage Layer',
+  name: 'Failure Triage & Repair Dispatch Layer',
   crownJewelRank: 4,
   cjpi: 97,
   module: 'MEDIC',
-  description: 'Medical-grade triage protocol for distributed systems. Differential diagnosis with automated repair dispatch. Prioritizes by blast radius, dependency depth, and user impact.',
+  description: 'Medical-grade triage for distributed systems: differential diagnosis on every failure, automated repair dispatch, prioritized by blast radius and user impact.',
   priceCents: 12900,
   tsCode: TRIAGE_TS,
   pyCode: TRIAGE_PY,
@@ -955,11 +955,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const CONSENSUS_LAYER: CmpsblLayerDefinition = {
   id: 'distributed-consensus',
-  name: 'Distributed Consensus Layer',
+  name: 'Distributed Consensus & Split-Brain Prevention Layer',
   crownJewelRank: 5,
   cjpi: 96,
   module: 'NERVE',
-  description: 'Consensus Heartbeat Protocol + Quorum Negotiator. Gossip-style liveness detection with Byzantine-fault-tolerant negotiation and split-brain prevention.',
+  description: 'Gossip-style liveness detection plus Byzantine-fault-tolerant quorum negotiation — distributed nodes agree on truth without ever splitting into competing realities.',
   priceCents: 9900,
   tsCode: CONSENSUS_TS,
   pyCode: CONSENSUS_PY,

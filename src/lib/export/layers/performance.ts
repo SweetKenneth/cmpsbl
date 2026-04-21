@@ -153,11 +153,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const PERF_SURGERY_LAYER: CmpsblLayerDefinition = {
   id: "performance-surgery",
-  name: "Performance Surgery Layer",
+  name: "Hot-Path Bottleneck Detection Layer",
   crownJewelRank: 13,
   cjpi: 98,
   module: "APEX×VISION",
-  description: "Hot Path Flame Graph Analyzer + Performance Regression Detector. Identifies CPU bottlenecks with automatic Big-O classification.",
+  description: "Generates flame graphs of your hottest call paths, classifies algorithmic complexity automatically, and flags performance regressions — find the slow code before users do.",
   priceCents: 0,
   tsCode: PERF_SURGERY_TS,
   pyCode: PERF_SURGERY_PY,
@@ -298,11 +298,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const PIPELINE_RES_LAYER: CmpsblLayerDefinition = {
   id: "pipeline-resilience",
-  name: "Data Pipeline Resilience Layer",
+  name: "Streaming Backpressure & Event Sourcing Layer",
   crownJewelRank: 14,
   cjpi: 98,
   module: "CONDUIT",
-  description: "Stream Backpressure Manager + Event Sourcing Pattern Engine. Reactive backpressure with consumer lag monitoring.",
+  description: "Reactive backpressure on every stream with consumer-lag monitoring and event-sourced replay — your data pipeline stops collapsing under load spikes.",
   priceCents: 0,
   tsCode: PIPELINE_RES_TS,
   pyCode: PIPELINE_RES_PY,

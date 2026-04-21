@@ -157,11 +157,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const SELF_EVOLVE_LAYER: CmpsblLayerDefinition = {
   id: "self-evolution",
-  name: "Self-Evolution Layer",
+  name: "Safe Self-Improvement Layer",
   crownJewelRank: 17,
   cjpi: 95,
   module: "EVOLUTION",
-  description: "Mutation Proposal Engine + Shadow Run Environment. Generates, evaluates, and applies system mutations with rollback safety.",
+  description: "Proposes code mutations, evaluates them in an isolated shadow environment, and rolls them back automatically if metrics regress — your system gets better on its own without breaking prod.",
   priceCents: 0,
   tsCode: SELF_EVOLVE_TS,
   pyCode: SELF_EVOLVE_PY,

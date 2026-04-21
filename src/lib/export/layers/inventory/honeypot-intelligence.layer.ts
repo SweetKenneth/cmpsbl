@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Honeypot Intelligence
+ * CMPSBL® Inventory Layer — Attacker Decoy & Threat-Blocking Layer
  * Primitives: LURE · TRAP · PROFILE
  *
  * Active deception: surface fake-but-believable canary tokens, classify any
@@ -11,7 +11,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Honeypot Intelligence (proprietary).                       ║
+// ║  ASCENSION LAYER — Attacker Decoy & Threat-Blocking Layer (proprietary).                       ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 interface CmpsblHoneypotProfile { firstSeen: number; hits: number; tokens: string[]; classification: string; }
@@ -39,7 +39,7 @@ export function cmpsbl_honey_profile(callerId: string): CmpsblHoneypotProfile | 
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Honeypot Intelligence (proprietary).                       ║
+# ║  ASCENSION LAYER — Attacker Decoy & Threat-Blocking Layer (proprietary).                       ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import time
@@ -95,11 +95,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const HONEYPOT_INTELLIGENCE_LAYER: CmpsblLayerDefinition = {
   id: 'honeypot-intelligence',
-  name: 'Honeypot Intelligence',
+  name: 'Attacker Decoy & Threat-Blocking Layer',
   crownJewelRank: 77,
   cjpi: 96,
   module: 'DEFENSE×DREAM',
-  description: 'Active-deception layer: planted canary tokens, attacker classification, and persistent-threat blocking.',
+  description: 'Plants invisible canary tokens to catch attackers in the act, classifies them by behavior, and permanently blocks repeat offenders — turns probes into actionable threat intel.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,
