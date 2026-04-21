@@ -15,8 +15,10 @@
  */
 
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
-import { emitComponent, isEmitterLang } from './emitters';
-import { getSpec } from './emitters/spec-registry';
+// NOTE: The spec-driven emitter registry (`./emitters`) was the v2 parity
+// model and is intentionally NOT wired here. The V2 export path uses only the
+// V1 polyglot template engine + per-language `layers-{lang}/` kernel bodies.
+
 import { GO_LAYER_BODIES } from './layers-go/go-layers';
 import { GO_INVENTORY_BODIES } from './layers-go/go-inventory';
 import { RS_LAYER_BODIES } from './layers-rs/rs-layers';
