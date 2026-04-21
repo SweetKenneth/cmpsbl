@@ -40,8 +40,6 @@ import {
   getLearningInsights,
 } from '../brain-learning-bridge';
 
-import type { ExtractionResult } from '../types';
-
 // ─────────────────────────────────────────────────────────────────────
 // Risk 1 — primitive-executor-bridge offline survivability
 // ─────────────────────────────────────────────────────────────────────
