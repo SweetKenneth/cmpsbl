@@ -3339,7 +3339,10 @@ export function generateRefurbishedCode(
   if (langLower === 'php') {
     filePrelude = '<?php\n';
   } else if (langLower === 'go') {
-    filePrelude = 'package main\n\n';
+    // Only emit the synthetic `package main` if Layer 1 doesn't already declare one.
+    // Go forbids multiple package decls — emitting both produces an unbuildable file.
+    const hasGoPackage = /^\s*package\s+[A-Za-z_][A-Za-z0-9_]*\s*$/m.test(verbatimSource);
+    filePrelude = hasGoPackage ? '' : 'package main\n\n';
   }
 
   // ── Upstream license detection (Apache-2.0, MIT, BSD, MPL, ISC) ────
