@@ -37,6 +37,7 @@ import {
   type DiscoveredCapability,
   type DedupResult,
 } from '@/lib/ascension-v2';
+import { peekReAscendPayload } from '@/lib/ascension-v2/reascend';
 
 // ═══════════════════════════════════════════════════════════════
 // Step config — 4 steps (Enhance is skippable)
@@ -66,15 +67,22 @@ export default function AscensionV2() {
   const stepperRef = useRef<HTMLElement | null>(null);
   const isFirstStepRender = useRef(true);
 
-  // Init a fresh run on mount
+  // Init a fresh run on mount.
+  // Skip the reset when a re-ascension payload is pending — V2UploadStep will
+  // call initRun() itself as part of its auto-replay so the chain doesn't get
+  // wiped mid-flight by a parent effect racing the child.
   useEffect(() => {
+    if (peekReAscendPayload()) {
+      // Child will own the run lifecycle for this re-ascension.
+      return;
+    }
     const id = initRun({
       onError: (error: string) => {
         toast({ title: 'Pipeline error', description: error, variant: 'destructive' });
       },
     });
     setRunId(id);
-  }, []);
+  }, [toast]);
 
   // Snap to the Ascension UI section on every step change so users always
   // see the animated flow as they advance.
