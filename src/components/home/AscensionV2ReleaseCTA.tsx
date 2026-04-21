@@ -20,7 +20,8 @@ import {
 } from "lucide-react";
 import { TIER_LAYERS, ALWAYS_ON } from "@/lib/ascension-v2/tier-layers";
 import {
-  getShippingLanguages,
+  getCanonicalLanguages,
+  getBetaPolyglotLanguages,
   getComingSoonLanguages,
 } from "@/lib/export/language-parity-tiers";
 
@@ -52,9 +53,10 @@ const V2_BENEFITS = [
 ] as const;
 
 // Pulled live from the parity registry — single source of truth.
-// SHIPPING = real today, runtime-verified, every layer has a native
-// implementation. COMING_SOON = on the roadmap, picker shows them disabled.
-const SHIPPING_LANGUAGES = getShippingLanguages();
+// CANONICAL = first-class generators, byte-locked. BETA_POLYGLOT = V1 polyglot
+// engine, native file but not byte-locked yet. COMING_SOON = roadmap.
+const CANONICAL_LANGUAGES = getCanonicalLanguages();
+const BETA_POLYGLOT_LANGUAGES = getBetaPolyglotLanguages();
 const COMING_SOON_LANGUAGES = getComingSoonLanguages();
 
 const BUILDER_FREE_LAYERS = TIER_LAYERS.builder;
@@ -220,11 +222,14 @@ export function AscensionV2ReleaseCTA() {
                     Supported Languages
                   </span>
                 </div>
-                <p className="text-sm font-bold text-foreground mb-3">
-                  {SHIPPING_LANGUAGES.length} verified targets shipping today
+                <p className="text-sm font-bold text-foreground mb-2">
+                  {CANONICAL_LANGUAGES.length} canonical · {BETA_POLYGLOT_LANGUAGES.length} polyglot (Beta)
                 </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {SHIPPING_LANGUAGES.map((lang) => (
+                <p className="text-[10.5px] font-mono uppercase tracking-[0.18em] text-sky-300/80 mb-1.5">
+                  Canonical · byte-locked
+                </p>
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {CANONICAL_LANGUAGES.map((lang) => (
                     <span
                       key={lang.id}
                       className="text-[11px] font-semibold px-2.5 py-1 rounded-md border border-sky-400/30 bg-sky-400/5 text-foreground/85"
@@ -233,9 +238,27 @@ export function AscensionV2ReleaseCTA() {
                     </span>
                   ))}
                 </div>
+                <p className="text-[10.5px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
+                  Polyglot · Beta
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {BETA_POLYGLOT_LANGUAGES.map((lang) => (
+                    <span
+                      key={lang.id}
+                      className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-border bg-muted/40 text-foreground/85"
+                      title="Native file via the V1 polyglot engine — Beta tier, not byte-locked yet"
+                    >
+                      {lang.label}
+                      <span className="px-1 py-px rounded text-[8.5px] font-mono uppercase tracking-wider bg-foreground/10 text-foreground/70">
+                        Beta
+                      </span>
+                    </span>
+                  ))}
+                </div>
                 <p className="text-[11px] text-muted-foreground/60 mt-3 leading-relaxed">
-                  Every layer has a native implementation and a passing parity
-                  test against the TypeScript canon.
+                  Canonical generators are byte-locked by golden-file regression. Beta
+                  polyglot emits a native file via the V1 polyglot engine and embeds your
+                  source verbatim — not byte-locked yet.
                 </p>
               </div>
 
@@ -261,8 +284,8 @@ export function AscensionV2ReleaseCTA() {
                   ))}
                 </div>
                 <p className="text-[11px] text-muted-foreground/60 mt-3 leading-relaxed">
-                  Unlocks once every layer has a native implementation and the
-                  deterministic chain executor passes parity tests.
+                  Unlocks once a polyglot template body is added for each
+                  language and a smoke test confirms native syntactic validity.
                 </p>
               </div>
             </div>
