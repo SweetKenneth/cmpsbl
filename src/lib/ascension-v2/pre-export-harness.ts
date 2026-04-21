@@ -234,13 +234,21 @@ function checkLayerAutoWire(input: HarnessInput): HarnessCheck {
     };
   }
 
+  // TS/JS/PY emit the wrapper symbol verbatim (canonical bodies are inlined).
+  // Other languages route through native idiomatic emitters that rename the
+  // wrapper to language-natural identifiers (e.g. CyberDefense.block in Swift).
+  // For those, the layer's banner header / display name is the universal
+  // proof-of-emission marker — every emitter (native + structural fallback)
+  // writes it.
+  const lang = input.language.toLowerCase();
+  const acceptsName = lang !== 'typescript' && lang !== 'javascript' && lang !== 'python';
+
   const missing: string[] = [];
   for (const layer of input.selectedLayers) {
-    // Wrapper symbol is part of the public API surface and is preserved across
-    // obfuscation passes. Banner/display strings get sealed and intentionally
-    // do NOT appear verbatim in emitted output, so we don't gate on them.
     const wrapperPresent = input.ascendedCode.includes(layer.autoWire.wrapperName);
-    if (!wrapperPresent) {
+    const namePresent = acceptsName && input.ascendedCode.includes(layer.name);
+    const idPresent = acceptsName && input.ascendedCode.includes(layer.id);
+    if (!wrapperPresent && !namePresent && !idPresent) {
       missing.push(`${layer.name} (wrapper:✗ ${layer.autoWire.wrapperName})`);
     }
   }
