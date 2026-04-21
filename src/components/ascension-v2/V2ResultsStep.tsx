@@ -10,7 +10,9 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText, Zap, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText, Zap, Check, RefreshCw } from 'lucide-react';
+import { setReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { supabase } from '@/integrations/supabase/client';
 import { DownloadCeremonyOverlay } from '@/components/downloads/DownloadCeremonyOverlay';
 import { useToast } from '@/hooks/use-toast';
@@ -66,6 +68,7 @@ interface SourceFileData {
 }
 
 export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], onReset }: Props) {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [ceremonyOpen, setCeremonyOpen] = useState(false);
@@ -671,6 +674,35 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             enhanced={enhanced || selectedLayers.size > 0}
             attachedLayerIds={Array.from(selectedLayers)}
           />
+        )}
+
+        {/* One-click re-ascension — same source + same layers, fresh run.
+            Hands off via sessionStorage so V2UploadStep auto-replays on mount.
+            Only available when we actually have the source bundle in hand. */}
+        {sourceFiles.length > 0 && (
+          <Button
+            variant="secondary"
+            className="w-full h-10 sm:h-11 rounded-xl text-xs sm:text-sm"
+            onClick={() => {
+              setReAscendPayload({
+                priorRunId: getSnapshot().runId,
+                language: sourceLanguage,
+                files: sourceFiles.map((f) => ({
+                  name: f.name,
+                  content: f.content,
+                  language: f.language,
+                  extension: f.extension,
+                })),
+                layerIds: Array.from(selectedLayers),
+                priorFingerprint: integrityHash || null,
+              });
+              onReset();
+              navigate('/ascension-v2');
+            }}
+          >
+            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+            Run again with same layers
+          </Button>
         )}
 
         <Button variant="ghost" onClick={onReset} className="w-full text-xs sm:text-sm">

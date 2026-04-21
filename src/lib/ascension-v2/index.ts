@@ -120,3 +120,12 @@ export type { FunnelEvent, FunnelEventPayload } from './funnel';
 
 // Chain anchoring — writes the post-export head into audit_chain_anchors
 export { anchorV2ExportHead } from './chain-anchor';
+
+// Re-attach + Re-ascension session handoffs (Block 3 + Block 4)
+export { setReattachLayers, consumeReattachLayers } from './reattach';
+export {
+  setReAscendPayload,
+  consumeReAscendPayload,
+  peekReAscendPayload,
+} from './reascend';
+export type { ReAscendPayload, ReAscendSourceFile } from './reascend';

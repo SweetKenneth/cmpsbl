@@ -3,8 +3,8 @@
  * Computes fingerprint via V2 engine, stores with v2 category.
  */
 
-import { useState, useCallback, useRef } from 'react';
-import { Upload, FileCode2, ClipboardPaste, Loader2, CheckCircle2 } from 'lucide-react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { Upload, FileCode2, ClipboardPaste, Loader2, CheckCircle2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
+import { consumeReAscendPayload, type ReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { V2PreflightEstimator } from './V2PreflightEstimator';
 
 interface Props {
@@ -26,6 +27,7 @@ export function V2UploadStep({ onComplete }: Props) {
   const [pastedCode, setPastedCode] = useState('');
   const [processing, setProcessing] = useState(false);
   const [done, setDone] = useState(false);
+  const [reAscendBanner, setReAscendBanner] = useState<{ priorRunId: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
@@ -43,51 +45,72 @@ export function V2UploadStep({ onComplete }: Props) {
 
   const hasInput = mode === 'upload' ? files.length > 0 : pastedCode.trim().length > 20;
 
-  const handleSubmit = async () => {
-    if (!hasInput || !user) return;
+  /**
+   * Shared commit path used by manual submit AND one-click re-ascension.
+   * Takes the already-analyzed source bundle (no File objects required) so
+   * re-runs can replay a prior session without re-uploading.
+   */
+  const runIngestion = useCallback(async (
+    analysis: {
+      name: string;
+      language: string;
+      fileCount: number;
+      sizeKb: number;
+      resolverCount: number;
+      ingestedFiles: Array<{
+        name: string;
+        extension: string;
+        language: string;
+        sizeBytes: number;
+        charCount: number;
+        truncated: boolean;
+        content: string;
+      }>;
+    },
+    reAscendOf?: { priorRunId: string; priorFingerprint: string | null },
+  ) => {
+    if (!user) return;
     setProcessing(true);
     const startedAt = Date.now();
 
     try {
-      const analysis = mode === 'upload'
-        ? await analyzeUploadedFiles(files)
-        : analyzePastedCode(pastedCode);
-
       if (analysis.ingestedFiles.length === 0) {
         toast({ title: 'No code found', description: 'Could not read source code from input.', variant: 'destructive' });
         setProcessing(false);
         return;
       }
 
-      // Compute fingerprint via V2 orchestrator
       const sourceFiles = analysis.ingestedFiles.map(f => ({
         name: f.name,
         content: f.content,
       }));
 
-      // Funnel event #1 — upload_started (fires before the gate so we capture
-      // even runs that get rejected by the Pre-Ascension Gate).
       const preRunId = getSnapshot().runId;
       void emitFunnelEvent('upload_started', {
         runId: preRunId,
         language: analysis.language,
         fileCount: sourceFiles.length,
+        extras: reAscendOf ? { re_ascension_of: reAscendOf.priorRunId } : undefined,
       });
 
       const fp = commitUpload(sourceFiles, analysis.language);
 
-      // Funnel event #2 — gate_passed (only fires if commitUpload didn't throw)
       void emitFunnelEvent('gate_passed', {
         runId: getSnapshot().runId,
         language: analysis.language,
         fileCount: sourceFiles.length,
         fingerprint: fp.hash,
         durationMs: Date.now() - startedAt,
+        extras: reAscendOf
+          ? {
+              re_ascension_of: reAscendOf.priorRunId,
+              fingerprint_changed: reAscendOf.priorFingerprint
+                ? reAscendOf.priorFingerprint !== fp.hash
+                : null,
+            }
+          : undefined,
       });
 
-      // Stash a small source preview for the Governance Mode step.
-      // Ephemeral (sessionStorage) — never persisted server-side beyond
-      // the artifact_registry record committed below.
       try {
         const previewSource = sourceFiles[0]?.content?.slice(0, 8000) ?? '';
         if (previewSource && typeof window !== 'undefined') {
@@ -108,6 +131,7 @@ export function V2UploadStep({ onComplete }: Props) {
         fingerprint_hash: fp.hash,
         fingerprint_function_count: fp.functionCount,
         ingested_at: new Date().toISOString(),
+        re_ascension_of: reAscendOf?.priorRunId ?? null,
         source_files: analysis.ingestedFiles.map(f => ({
           name: f.name,
           extension: f.extension,
@@ -119,7 +143,6 @@ export function V2UploadStep({ onComplete }: Props) {
         })),
       };
 
-      // Clear previous v2 cycle
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (supabase as any)
@@ -128,8 +151,6 @@ export function V2UploadStep({ onComplete }: Props) {
           .eq('user_id', user.id)
           .in('category', ['proprietary-evolution-v2', 'proprietary-discovery-v2', 'proprietary-ascended-v2', 'proprietary-mana-attachment-v2']);
 
-        // WHY: the collision engine still resolves candidate nodes from the
-        // legacy category, so V2 needs a fresh mirror record there.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (supabase as any)
           .from('artifact_registry')
@@ -139,8 +160,6 @@ export function V2UploadStep({ onComplete }: Props) {
           .eq('tier', 'candidate');
       } catch { /* non-fatal */ }
 
-      // Register both the V2 source-of-truth candidate and a legacy mirror
-      // so the existing collision engine can actually resolve the upload.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { error } = await (supabase as any).from('artifact_registry').insert([
         {
@@ -150,10 +169,7 @@ export function V2UploadStep({ onComplete }: Props) {
           tier: 'candidate',
           category: 'proprietary-evolution-v2',
           description,
-          metadata: {
-            ...baseMetadata,
-            pipeline_version: 'v2',
-          },
+          metadata: { ...baseMetadata, pipeline_version: 'v2' },
         },
         {
           user_id: user.id,
@@ -162,11 +178,7 @@ export function V2UploadStep({ onComplete }: Props) {
           tier: 'candidate',
           category: 'proprietary-evolution',
           description,
-          metadata: {
-            ...baseMetadata,
-            pipeline_version: 'v2-mirror',
-            mirror_source: 'ascension-v2',
-          },
+          metadata: { ...baseMetadata, pipeline_version: 'v2-mirror', mirror_source: 'ascension-v2' },
         },
       ]);
 
@@ -176,7 +188,6 @@ export function V2UploadStep({ onComplete }: Props) {
       setTimeout(() => onComplete(), 600);
     } catch (err) {
       if (err instanceof PreAscensionGateError) {
-        // 🔒 Pre-Ascension Gate rejection — show first error with file:line:col
         const first = err.errors[0];
         const more = err.errors.length > 1 ? ` (+${err.errors.length - 1} more)` : '';
         toast({
@@ -190,6 +201,46 @@ export function V2UploadStep({ onComplete }: Props) {
     } finally {
       setProcessing(false);
     }
+  }, [user, onComplete, toast]);
+
+  // One-click re-ascension: if Results step handed us a payload, replay it
+  // immediately on mount with the prior source + language. Layers are
+  // preselected by V2EnhanceStep via the reattach handoff (set in parallel).
+  useEffect(() => {
+    const payload: ReAscendPayload | null = consumeReAscendPayload();
+    if (!payload || !user) return;
+
+    const analysis = {
+      name: payload.files[0]?.name?.replace(/\.[^.]+$/, '') || 'reascend',
+      language: payload.language,
+      fileCount: payload.files.length,
+      sizeKb: Math.max(1, Math.round(payload.files.reduce((n, f) => n + (f.content?.length ?? 0), 0) / 1024)),
+      resolverCount: payload.files.length,
+      ingestedFiles: payload.files.map((f) => ({
+        name: f.name,
+        extension: f.extension ?? f.name.split('.').pop() ?? '',
+        language: f.language ?? payload.language,
+        sizeBytes: f.sizeBytes ?? (f.content?.length ?? 0),
+        charCount: f.charCount ?? (f.content?.length ?? 0),
+        truncated: false,
+        content: f.content,
+      })),
+    };
+
+    setReAscendBanner({ priorRunId: payload.priorRunId });
+    void runIngestion(analysis, {
+      priorRunId: payload.priorRunId,
+      priorFingerprint: payload.priorFingerprint,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const handleSubmit = async () => {
+    if (!hasInput || !user) return;
+    const analysis = mode === 'upload'
+      ? await analyzeUploadedFiles(files)
+      : analyzePastedCode(pastedCode);
+    await runIngestion(analysis);
   };
 
   if (done) {
@@ -198,6 +249,18 @@ export function V2UploadStep({ onComplete }: Props) {
         <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
         <p className="text-foreground font-medium text-sm sm:text-base">Code uploaded</p>
         <p className="text-muted-foreground text-xs">Moving to analysis…</p>
+      </div>
+    );
+  }
+
+  if (reAscendBanner && processing) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-12 sm:py-16 animate-in fade-in">
+        <RefreshCw className="w-10 h-10 sm:w-12 sm:h-12 text-primary animate-spin" />
+        <p className="text-foreground font-medium text-sm sm:text-base">Re-ascending your code</p>
+        <p className="text-muted-foreground text-xs">
+          Replaying your last run with the same source and layers…
+        </p>
       </div>
     );
   }
