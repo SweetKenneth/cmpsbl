@@ -1,18 +1,40 @@
 /**
  * CMPSBL® Inventory Layer — Self-Healing Scanner
- * Caps: LEARNING · EVOLUTION · DEFENSE · pattern memory · auto-patch
+ * Caps: LEARNING · EVOLUTION · DEFENSE · pattern memory · quarantine promotion
  *
- * Continuously inspects runtime, learns failure patterns, and patches defects
- * autonomously — every incident becomes training data.
+ * Continuously inspects runtime, fingerprints failure patterns, and PROMOTES
+ * recurring faults to the Hardening Layer's quarantine kernel — every
+ * incident becomes training data that hardens the always-on chain.
+ *
+ * ─── Hardening Layer compatibility ─────────────────────────────────────────
+ * The Phase-0 Hardening chain already provides retry (`_retry-core`),
+ * graceful degradation (`_degradation-core`), and quarantine
+ * (`_quarantine-core`). This layer used to perform its own retry/fallback,
+ * which doubled work and could mask the kernel's metrics.
+ *
+ * What this layer now does on top of Hardening:
+ *   • Records every fault as a normalized error-signature pattern.
+ *   • Escalates the pattern's severity by recurrence count
+ *     (1 = observed → 2-4 = repeating → 5+ = recurring).
+ *   • PROMOTES recurring patterns to the Hardening Layer's quarantine
+ *     kernel via `cmpsbl_quarantine().report(name, signature)`, which then
+ *     applies kernel-grade hold/cool-down/release semantics.
+ *   • Re-throws every fault so Hardening's retry/degradation engines see
+ *     them and react as configured. The scanner observes — it never swallows.
+ *
+ * Net effect: the kernel keeps single ownership of retry & isolation; the
+ * scanner adds learning + auto-promotion that compounds the kernel's value.
  */
 import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
 // ║  ASCENSION LAYER — Self-Healing Scanner (proprietary).                        ║
+// ║  Observes faults and promotes recurring patterns to the Hardening Layer's     ║
+// ║  quarantine kernel. Does NOT retry or fallback — Hardening owns those.        ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-interface CmpsblHealPattern { signature: string; count: number; lastSeen: number; healStrategy: 'retry' | 'fallback' | 'isolate' }
+interface CmpsblHealPattern { signature: string; count: number; lastSeen: number; severity: 'observed' | 'repeating' | 'recurring' }
 
 const _CMPSBL_HEAL_PATTERNS = new Map<string, CmpsblHealPattern>();
 const _CMPSBL_HEAL_MAX = 512;
@@ -27,11 +49,11 @@ export function cmpsbl_heal_record(err: unknown): CmpsblHealPattern {
   const existing = _CMPSBL_HEAL_PATTERNS.get(sig);
   if (existing) {
     existing.count++; existing.lastSeen = Date.now();
-    if (existing.count >= 5) existing.healStrategy = 'isolate';
-    else if (existing.count >= 2) existing.healStrategy = 'fallback';
+    if (existing.count >= 5) existing.severity = 'recurring';
+    else if (existing.count >= 2) existing.severity = 'repeating';
     return existing;
   }
-  const p: CmpsblHealPattern = { signature: sig, count: 1, lastSeen: Date.now(), healStrategy: 'retry' };
+  const p: CmpsblHealPattern = { signature: sig, count: 1, lastSeen: Date.now(), severity: 'observed' };
   _CMPSBL_HEAL_PATTERNS.set(sig, p);
   if (_CMPSBL_HEAL_PATTERNS.size > _CMPSBL_HEAL_MAX) {
     const oldest = [..._CMPSBL_HEAL_PATTERNS.entries()].sort((a, b) => a[1].lastSeen - b[1].lastSeen)[0];
@@ -44,28 +66,35 @@ export function cmpsbl_heal_lookup(err: unknown): CmpsblHealPattern | null {
   return _CMPSBL_HEAL_PATTERNS.get(_cmpsbl_heal_sig(err)) ?? null;
 }
 
-export function cmpsbl_heal_patch<T>(fn: () => T, fallback: T): T {
-  try { return fn(); }
-  catch (e) {
-    const p = cmpsbl_heal_record(e);
-    if (p.healStrategy === 'retry') {
-      try { return fn(); } catch { return fallback; }
+/** Promote a recurring fault signature to the Hardening Layer's quarantine kernel. */
+export function cmpsbl_heal_promote_to_quarantine(capabilityName: string, pattern: CmpsblHealPattern): void {
+  if (pattern.severity !== 'recurring') return;
+  // cmpsbl_quarantine() is provided by the always-on Hardening chain
+  // (_quarantine-core). Strikes accumulate against the capability name and
+  // the kernel applies its configured threshold/TTL hold semantics.
+  if (typeof (globalThis as any).cmpsbl_quarantine === 'function') {
+    try {
+      (globalThis as any).cmpsbl_quarantine().report(capabilityName, 'self_healing:' + pattern.signature);
+    } catch {
+      // Quarantine kernel disabled (CMPSBL_KERNEL_ENABLED=false). Pattern
+      // is still recorded locally for offline analysis.
     }
-    return fallback;
   }
 }
 
-export function cmpsbl_heal_report(): { patterns: number; isolated: number; topSignatures: string[] } {
+export function cmpsbl_heal_report(): { patterns: number; recurring: number; topSignatures: string[] } {
   const all = [..._CMPSBL_HEAL_PATTERNS.values()];
-  const isolated = all.filter(p => p.healStrategy === 'isolate').length;
+  const recurring = all.filter(p => p.severity === 'recurring').length;
   const top = all.sort((a, b) => b.count - a.count).slice(0, 5).map(p => p.signature);
-  return { patterns: all.length, isolated, topSignatures: top };
+  return { patterns: all.length, recurring, topSignatures: top };
 }
 `;
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  ASCENSION LAYER — Self-Healing Scanner (proprietary).                        ║
+# ║  Observes faults and promotes recurring patterns to the Hardening Layer's     ║
+# ║  quarantine kernel. Does NOT retry or fallback — Hardening owns those.        ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import re, time
@@ -86,11 +115,11 @@ def cmpsbl_heal_record(err) -> dict:
         existing['count'] += 1
         existing['last_seen'] = int(time.time() * 1000)
         if existing['count'] >= 5:
-            existing['heal_strategy'] = 'isolate'
+            existing['severity'] = 'recurring'
         elif existing['count'] >= 2:
-            existing['heal_strategy'] = 'fallback'
+            existing['severity'] = 'repeating'
         return existing
-    p = { 'signature': sig, 'count': 1, 'last_seen': int(time.time() * 1000), 'heal_strategy': 'retry' }
+    p = { 'signature': sig, 'count': 1, 'last_seen': int(time.time() * 1000), 'severity': 'observed' }
     _CMPSBL_HEAL_PATTERNS[sig] = p
     if len(_CMPSBL_HEAL_PATTERNS) > _CMPSBL_HEAL_MAX:
         oldest = min(_CMPSBL_HEAL_PATTERNS.items(), key=lambda kv: kv[1]['last_seen'])
@@ -100,38 +129,41 @@ def cmpsbl_heal_record(err) -> dict:
 def cmpsbl_heal_lookup(err):
     return _CMPSBL_HEAL_PATTERNS.get(_cmpsbl_heal_sig(err))
 
-def cmpsbl_heal_patch(fn, fallback):
-    try:
-        return fn()
-    except Exception as e:
-        p = cmpsbl_heal_record(e)
-        if p['heal_strategy'] == 'retry':
-            try:
-                return fn()
-            except Exception:
-                return fallback
-        return fallback
+def cmpsbl_heal_promote_to_quarantine(capability_name: str, pattern: dict) -> None:
+    """Promote a recurring fault signature to the Hardening Layer's quarantine kernel."""
+    if pattern.get('severity') != 'recurring':
+        return
+    # cmpsbl_quarantine() is provided by the always-on Hardening chain
+    # (_quarantine-core). Strikes accumulate against the capability name and
+    # the kernel applies its configured threshold/TTL hold semantics.
+    quarantine_fn = globals().get('cmpsbl_quarantine')
+    if callable(quarantine_fn):
+        try:
+            quarantine_fn().report(capability_name, 'self_healing:' + pattern['signature'])
+        except Exception:
+            # Quarantine kernel disabled (CMPSBL_KERNEL_ENABLED=false). Pattern
+            # is still recorded locally for offline analysis.
+            pass
 
 def cmpsbl_heal_report() -> dict:
     all_p = list(_CMPSBL_HEAL_PATTERNS.values())
-    isolated = sum(1 for p in all_p if p['heal_strategy'] == 'isolate')
+    recurring = sum(1 for p in all_p if p['severity'] == 'recurring')
     top = [p['signature'] for p in sorted(all_p, key=lambda x: -x['count'])[:5]]
-    return { 'patterns': len(all_p), 'isolated': isolated, 'top_signatures': top }
+    return { 'patterns': len(all_p), 'recurring': recurring, 'top_signatures': top }
 `;
 
 const WIRE_TS = `
 const _cmpsbl_raw_execute_heal = cmpsbl_execute;
 cmpsbl_execute = function cmpsbl_execute_heal(capabilityName: string, input: Record<string, unknown>): ExecutionResult {
+  // Observe-and-promote pattern. Hardening Layer's _retry-core and
+  // _degradation-core wrappers run AROUND this one; they own retry/fallback.
+  // We just learn from every fault and escalate recurring signatures into
+  // the Hardening quarantine kernel, then re-throw so the kernel keeps acting.
   try {
     return _cmpsbl_raw_execute_heal(capabilityName, input);
   } catch (e) {
     const pattern = cmpsbl_heal_record(e);
-    if (pattern.healStrategy === 'retry') {
-      return _cmpsbl_raw_execute_heal(capabilityName, input);
-    }
-    if (pattern.healStrategy === 'isolate') {
-      throw new Error(\`[CMPSBL:Heal:\${capabilityName}] isolated recurring fault: \${pattern.signature}\`);
-    }
+    cmpsbl_heal_promote_to_quarantine(capabilityName, pattern);
     throw e;
   }
 };`;
@@ -139,15 +171,16 @@ cmpsbl_execute = function cmpsbl_execute_heal(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_heal = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Self-Healing Scanner Layer (auto-wired)."""
+    """Execute under Self-Healing Scanner Layer (observe + promote-to-quarantine, no retry)."""
+    # Observe-and-promote pattern. Hardening Layer's _retry-core and
+    # _degradation-core wrappers run AROUND this one; they own retry/fallback.
+    # We just learn from every fault and escalate recurring signatures into
+    # the Hardening quarantine kernel, then re-raise so the kernel keeps acting.
     try:
         return _cmpsbl_raw_execute_heal(capability_name, input_data)
     except Exception as e:
         pattern = cmpsbl_heal_record(e)
-        if pattern['heal_strategy'] == 'retry':
-            return _cmpsbl_raw_execute_heal(capability_name, input_data)
-        if pattern['heal_strategy'] == 'isolate':
-            raise RuntimeError(f"[CMPSBL:Heal:{capability_name}] isolated recurring fault: {pattern['signature']}")
+        cmpsbl_heal_promote_to_quarantine(capability_name, pattern)
         raise`;
 
 export const SELF_HEALING_SCANNER_LAYER: CmpsblLayerDefinition = {
@@ -156,13 +189,13 @@ export const SELF_HEALING_SCANNER_LAYER: CmpsblLayerDefinition = {
   crownJewelRank: 27,
   cjpi: 94,
   module: 'LEARNING×EVOLUTION',
-  description: 'Pattern-memorizing fault scanner with adaptive heal strategies (retry → fallback → isolate) keyed on normalized error signatures.',
+  description: 'Pattern-memorizing fault scanner. Fingerprints every fault, escalates by recurrence (observed → repeating → recurring), and promotes recurring patterns to the Hardening Layer\'s quarantine kernel. Hardening owns retry & fallback — this layer learns and teaches.',
   priceCents: 9900,
   tsCode: TS,
   pyCode: PY,
   autoWire: {
-    wrapperName: 'cmpsbl_heal_patch',
-    behavior: 'Catches every fault, fingerprints it, and escalates from retry to isolate as the same signature recurs.',
+    wrapperName: 'cmpsbl_heal_promote_to_quarantine',
+    behavior: 'Catches every fault, fingerprints it, and after 5 recurrences of the same signature promotes the capability to the Hardening quarantine kernel. Faults are always re-thrown so Hardening\'s retry/degradation cores can react.',
     tsWire: WIRE_TS,
     pyWire: WIRE_PY,
   },
