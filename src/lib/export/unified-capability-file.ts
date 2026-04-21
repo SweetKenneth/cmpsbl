@@ -260,40 +260,53 @@ ${embeddedSources}
     : '';
 
   // ── Smart Entry Point Detection for TypeScript ──
-  // First-match-wins: the very first viable target is invoked, the rest are skipped.
-  // Functions take priority over classes; both skip Error/Exception subclasses.
+  // Per-target try/catch — a sniff that throws (e.g. wrong arity like
+  // `verifyToken(token, secret)` called with one arg) MUST NOT mark
+  // originalExecuted=true and MUST NOT poison the next sniff.
+  // Honesty rule: if no method on a class instance succeeds, we do NOT
+  // claim execution — originalExecuted stays false (no `_created: true` lie).
+  // Filter: any function/class the user explicitly excluded on the Govern
+  // screen is skipped here (governance respects user opt-out).
+  const excludedSet = new Set((excludedFunctions ?? []).map((s) => s.toLowerCase()));
+  const isExcluded = (n: string) => excludedSet.has(n.toLowerCase());
   let tsEntryPointCode = '    originalResult = input;\n    originalExecuted = false;';
   if (tsFiles.length > 0) {
     const src = tsFiles[0].content;
     const fnMatches = [...src.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(/g)];
-    const exportedFns = fnMatches.map(m => m[1]).filter(n => !n.startsWith('_'));
+    const exportedFns = fnMatches.map(m => m[1]).filter(n => !n.startsWith('_') && !isExcluded(n));
     const classMatches = [...src.matchAll(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?/g)];
     const substantiveClasses = classMatches
       .filter(m => !/Error|Exception/.test(m[2] || ''))
-      .map(m => m[1]);
+      .map(m => m[1])
+      .filter((n) => !isExcluded(n));
 
     const targets: string[] = [];
     for (const fn of exportedFns.slice(0, 5)) {
-      targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
+      // Each sniff is independently guarded — arity mismatches surface as
+      // entryErrors and we move on without lying about execution.
+      targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') {
+      try { originalResult = (${fn} as (...a: unknown[]) => unknown)(input); originalExecuted = true; }
+      catch (e) { entryErrors.push('${fn}: ' + (e instanceof Error ? e.message : String(e))); }
+    }`);
     }
     for (const cls of substantiveClasses.slice(0, 3)) {
-      // Sealed dispatch — proprietary.
+      // Sealed dispatch — proprietary. Honest: if construction or every
+      // method invocation fails, executed remains false.
       targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
-      let inst: unknown;
-      try { inst = new ${cls}(); }
-      catch(_ctorErr) { inst = null; }
+      let inst: unknown = null;
+      try { inst = new (${cls} as new (...a: unknown[]) => unknown)(); }
+      catch(e) { entryErrors.push('${cls}#ctor: ' + (e instanceof Error ? e.message : String(e))); inst = null; }
       if (inst) {
         const methods = ['execute','run','handle','process','main'];
-        let invoked = false;
         for (const m of methods) {
           if (typeof (inst as Record<string, unknown>)[m] === 'function') {
-            originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
-            originalExecuted = true;
-            invoked = true;
-            break;
+            try {
+              originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
+              originalExecuted = true;
+              break;
+            } catch (e) { entryErrors.push('${cls}#' + m + ': ' + (e instanceof Error ? e.message : String(e))); }
           }
         }
-        if (!invoked) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
       }
     }`);
     }
