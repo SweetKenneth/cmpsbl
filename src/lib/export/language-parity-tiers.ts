@@ -100,51 +100,66 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   { id: 'javascript', label: 'JavaScript', status: 'CANONICAL' },
   { id: 'python',     label: 'Python',     status: 'CANONICAL' },
 
-  // ─── Tier 2 — BETA_POLYGLOT (V1 polyglot engine; native file, Beta) ─────
+  // ─── Tier 2 — BETA_POLYGLOT ──────────────────────────────────────────────
+  // Every language with a generator wired into `LANGUAGE_GENERATORS` in
+  // `polyglot-templates.ts`. These emit a real native file via the V1
+  // polyglot engine, but are not yet runtime-verified parity with the
+  // canonical TS executor — hence the "Beta" surface in the UI.
+  // Source of truth: src/lib/export/polyglot-templates.ts → LANGUAGE_GENERATORS.
+
   // Systems & native
-  beta('rust', 'Rust'),
-  beta('go', 'Go'),
-  cs('c',           'C'),
-  cs('cpp',         'C++'),
-  cs('zig',         'Zig'),
-  cs('nim',         'Nim'),
-  cs('crystal',     'Crystal'),
+  beta('rust',          'Rust'),
+  beta('go',            'Go'),
+  beta('c',             'C'),
+  beta('cpp',           'C++'),
+  beta('zig',           'Zig'),
 
   // JVM family
-  beta('java', 'Java'),
-  beta('kotlin', 'Kotlin'),
-  cs('scala',       'Scala'),
-  cs('groovy',      'Groovy'),
-  cs('clojure',     'Clojure'),
+  beta('java',          'Java'),
+  beta('kotlin',        'Kotlin'),
+  beta('scala',         'Scala'),
 
   // .NET family
-  beta('csharp', 'C#'),
-  cs('fsharp',      'F#'),
-  cs('vbnet',       'VB.NET'),
+  beta('csharp',        'C#'),
 
   // Apple platforms
-  beta('swift', 'Swift'),
-  cs('objectivec',  'Objective-C'),
+  beta('swift',         'Swift'),
 
   // Scripting & dynamic
-  cs('ruby',        'Ruby'),
-  cs('php',         'PHP'),
-  cs('perl',        'Perl'),
-  cs('lua',         'Lua'),
-  cs('r',           'R'),
-  cs('julia',       'Julia'),
-  cs('dart',        'Dart'),
+  beta('ruby',          'Ruby'),
+  beta('lua',           'Lua'),
+  beta('r',             'R'),
+  beta('dart',          'Dart'),
 
   // BEAM family
-  cs('elixir',      'Elixir'),
-  cs('erlang',      'Erlang'),
+  beta('elixir',        'Elixir'),
 
   // Functional
-  cs('haskell',     'Haskell'),
+  beta('haskell',       'Haskell'),
+
+  // Hardware / HDL (polyglot engine ships kernels for these)
+  beta('verilog',       'Verilog'),
+  beta('systemverilog', 'SystemVerilog'),
+  beta('vhdl',          'VHDL'),
+  beta('chisel',        'Chisel'),
+  beta('amaranth',      'Amaranth'),
+  beta('spinalhdl',     'SpinalHDL'),
+  beta('firrtl',        'FIRRTL'),
+
+  // ─── Tier 3 — COMING_SOON (no polyglot generator yet) ───────────────────
+  cs('nim',         'Nim'),
+  cs('crystal',     'Crystal'),
+  cs('groovy',      'Groovy'),
+  cs('clojure',     'Clojure'),
+  cs('fsharp',      'F#'),
+  cs('vbnet',       'VB.NET'),
+  cs('objectivec',  'Objective-C'),
+  cs('php',         'PHP'),
+  cs('perl',        'Perl'),
+  cs('julia',       'Julia'),
+  cs('erlang',      'Erlang'),
   cs('ocaml',       'OCaml'),
   cs('elm',         'Elm'),
-
-  // Shell
   cs('bash',        'Bash'),
   cs('powershell',  'PowerShell'),
 ]);
