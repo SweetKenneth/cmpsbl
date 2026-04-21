@@ -2999,6 +2999,8 @@ export function generateUnifiedCapabilityFile(
   lang: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  excludedFunctions?: ReadonlyArray<string>,
 ): string {
   // Two real tiers ship:
   //   • CANONICAL (TS, JS, Python, PHP) → branded single-file runtime
@@ -3008,6 +3010,10 @@ export function generateUnifiedCapabilityFile(
   // hand-tuned polyglot template, otherwise we hard-fail at this gate.
   assertLanguageSupported(lang);
 
+  // Compute risk surface count from the embedded source — drives the
+  // honest mode banner ("ENFORCE → OBSERVE auto-downgraded" when 0 risks).
+  const riskSurfaceCount = computeRiskSurfaceCount(userSourceFiles);
+
   let raw: string;
   // Single boundary: normalize chains for every language emitter so raw
   // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.
@@ -3016,14 +3022,14 @@ export function generateUnifiedCapabilityFile(
   userSourceFiles = coerceUserSourceFiles(userSourceFiles);
 
   if (lang === 'typescript') {
-    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'javascript') {
     // JS diverges from TS: strips type annotations from the public surface and
     // appends a CommonJS-compatible export footer so the file works equally
     // well via `require()` or ESM `import`.
-    raw = generateUnifiedJavaScript(capabilities, packName, userSourceFiles, selectedLayers);
+    raw = generateUnifiedJavaScript(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'python') {
-    raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers);
+    raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'php') {
     raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
   } else if (hasPolyglotGenerator(lang)) {
