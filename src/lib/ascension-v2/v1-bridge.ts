@@ -629,7 +629,7 @@ export function detectV2Drift(
 import {
   registerPrimaryHandler,
   hasPrimaryHandler,
-  type PrimaryHandlerResult,
+  type PrimaryHandlerRegistration,
 } from '@/lib/ascension/primary-handler-factory';
 import {
   bindAndExecute,
@@ -697,7 +697,7 @@ export {
 };
 
 export type {
-  PrimaryHandlerResult,
+  PrimaryHandlerRegistration as PrimaryHandlerResult,
   ExecutableUnit,
   ExecutionBindingResult,
   ExecutionStrategy,
@@ -769,7 +769,7 @@ export function beginIsolatedRegistryScope(): IsolatedRegistryScope {
 // V1's registerPrimaryHandler → bindAndExecute, with a friendlier shape
 // for V2's discovery loop.
 
-import type { ExtractedPrimitive } from '@/lib/ascension/types';
+// (ExtractedPrimitive type already imported at the top of this file.)
 
 export interface RuntimeExecutionInput {
   /** Module/candidate name that will be promoted to Primitive #41. */
@@ -785,7 +785,7 @@ export interface RuntimeExecutionInput {
 }
 
 export interface RuntimeExecutionOutput {
-  registration: PrimaryHandlerResult;
+  registration: PrimaryHandlerRegistration;
   binding: ExecutionBindingResult;
   summary: EffectSummary;
 }
