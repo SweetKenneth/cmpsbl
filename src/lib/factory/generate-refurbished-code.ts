@@ -3354,8 +3354,23 @@ export function generateRefurbishedCode(
   // _cmpsbl_wrap so calls actually flow through cmpsbl_execute (and therefore
   // every registered layer hook). Async functions get an async wrapper via
   // inspect.iscoroutinefunction so FastAPI / asyncpg / httpx remain correct.
-  const pythonWrapBlock = (langLower === 'python' && attachmentPlan.length > 0)
-    ? renderPythonAttachmentBlock(attachmentPlan)
+  //
+  // Wrapping is driven by ALL detected boundaries — not just the capability-
+  // matched attachment plan — because the plan is for routing/documentation,
+  // while wrapping is the universal pre/post-flight surface every user fn
+  // needs to flow governance through.
+  const pythonWrapPlan = (langLower === 'python')
+    ? boundaries.map(b => {
+        const matched = attachmentPlan.find(p => p.functionName === b.name);
+        return {
+          functionName: b.name,
+          capability: matched?.capability ?? 'user_function',
+          primitive: matched?.primitive ?? 'GENERIC',
+        };
+      })
+    : [];
+  const pythonWrapBlock = pythonWrapPlan.length > 0
+    ? renderPythonAttachmentBlock(pythonWrapPlan)
     : '';
 
   // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) + [Wrap] ───────
