@@ -353,64 +353,95 @@ export function V2EnhanceStep({ onComplete }: Props) {
               // Governor bypasses every tier gate — they own the substrate.
               const isLocked = isGovernor ? false : TIER_RANK[layerTier] > userTierRank;
               return (
-                <button
+                <div
                   key={layer.id}
-                  disabled={isLocked}
-                  onClick={() => {
-                    if (isLocked) return;
-                    toggleLayer(layer.id);
-                  }}
-                  title={isLocked
-                    ? `Locked — requires ${meta.name} (${meta.priceLabel}). Click your tier to upgrade.`
-                    : `${meta.name} tier — included in your plan`}
                   className={cn(
-                    'w-full flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg border transition-all text-left',
+                    'rounded-lg border transition-all overflow-hidden',
                     isLocked
-                      ? 'border-border/40 bg-muted/10 opacity-50 cursor-not-allowed'
+                      ? 'border-border/40 bg-muted/10 opacity-50'
                       : isSelected
                         ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/40 hover:bg-muted/40',
+                        : 'border-border hover:border-primary/40',
                   )}
                 >
-                  <div className={cn(
-                    'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
-                    isLocked
-                      ? 'bg-muted/40 text-muted-foreground'
-                      : isSelected
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted text-muted-foreground',
-                  )}>
-                    {isLocked
-                      ? <Lock className="w-3 h-3" />
-                      : isSelected
-                        ? <Check className="w-3 h-3" />
-                        : <Zap className="w-3 h-3" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className={cn(
-                        'text-[10px] sm:text-xs font-medium',
-                        isLocked ? 'text-muted-foreground' : 'text-foreground',
+                  <div className="flex items-stretch">
+                    <button
+                      type="button"
+                      disabled={isLocked}
+                      onClick={() => {
+                        if (isLocked) return;
+                        toggleLayer(layer.id);
+                      }}
+                      title={isLocked
+                        ? `Locked — requires ${meta.name} (${meta.priceLabel}). Click your tier to upgrade.`
+                        : `${meta.name} tier — included in your plan`}
+                      className={cn(
+                        'flex-1 flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 text-left min-w-0',
+                        isLocked ? 'cursor-not-allowed' : 'hover:bg-muted/40',
+                      )}
+                    >
+                      <div className={cn(
+                        'w-5 h-5 sm:w-6 sm:h-6 rounded-md flex items-center justify-center flex-shrink-0 transition-colors',
+                        isLocked
+                          ? 'bg-muted/40 text-muted-foreground'
+                          : isSelected
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted text-muted-foreground',
                       )}>
-                        {layer.name}
+                        {isLocked
+                          ? <Lock className="w-3 h-3" />
+                          : isSelected
+                            ? <Check className="w-3 h-3" />
+                            : <Zap className="w-3 h-3" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className={cn(
+                            'text-[10px] sm:text-xs font-medium',
+                            isLocked ? 'text-muted-foreground' : 'text-foreground',
+                          )}>
+                            {layer.name}
+                          </span>
+                          <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono">
+                            CJ #{layer.crownJewelRank} · CJPI {layer.cjpi}
+                          </span>
+                        </div>
+                        <p className="text-[9px] sm:text-[10px] text-muted-foreground truncate">
+                          {layer.description}
+                        </p>
+                      </div>
+                      <span
+                        className={cn(
+                          'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
+                          meta.accent,
+                        )}
+                      >
+                        {meta.name}
                       </span>
-                      <span className="text-[8px] sm:text-[9px] text-muted-foreground font-mono">
-                        CJ #{layer.crownJewelRank} · CJPI {layer.cjpi}
-                      </span>
-                    </div>
-                    <p className="text-[9px] sm:text-[10px] text-muted-foreground truncate">
-                      {layer.description}
-                    </p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => toggleExpanded(layer.id, e)}
+                      aria-label={isExpanded ? 'Hide details' : 'Show details'}
+                      aria-expanded={isExpanded}
+                      className="flex items-center justify-center px-2 sm:px-2.5 border-l border-border/40 text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors"
+                    >
+                      <ChevronDown
+                        className={cn(
+                          'w-3.5 h-3.5 transition-transform duration-200',
+                          isExpanded && 'rotate-180',
+                        )}
+                      />
+                    </button>
                   </div>
-                  <span
-                    className={cn(
-                      'text-[8px] sm:text-[9px] font-semibold flex-shrink-0 px-1.5 py-0.5 rounded border uppercase tracking-wide text-foreground',
-                      meta.accent,
-                    )}
-                  >
-                    {meta.name}
-                  </span>
-                </button>
+                  {isExpanded && (
+                    <div className="px-3 py-2 border-t border-border/40 bg-muted/20 animate-fade-in">
+                      <p className="text-[10px] sm:text-xs text-foreground/80 leading-relaxed">
+                        {layer.description}
+                      </p>
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
