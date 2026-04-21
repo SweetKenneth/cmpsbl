@@ -16,10 +16,10 @@
  * No mixed-source bundles. No silent unlock failures.
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Sparkles, Plus, Check, ArrowRight, Layers as LayersIcon,
-  ShoppingBag, Package, Lock,
+  ShoppingBag, Package, Lock, ChevronDown,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
@@ -82,73 +82,122 @@ interface RecoRowProps {
 }
 
 function RecoRow({ reco, isSelected, onSelect, showPrice }: RecoRowProps) {
+  const [expanded, setExpanded] = useState(false);
   const Icon = reco.reason === 'gap' ? Plus : LayersIcon;
   return (
-    <li className="flex items-start gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-lg bg-background/60 border border-border/40">
-      <div className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-md bg-primary/10 text-primary shrink-0">
-        <Icon className="h-3 w-3" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs font-medium text-foreground truncate">
-            {reco.layer.name}
-          </span>
-          <span className="text-[9px] font-mono text-muted-foreground">
-            CJPI {reco.layer.cjpi}
-          </span>
-          {showPrice ? (
-            <span className="text-[9px] font-mono text-foreground/80">
-              {formatPrice(reco.layer.priceCents)}
-            </span>
-          ) : null}
-          <span className={
-            'text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded ' +
-            (reco.reason === 'signal'
-              ? 'bg-primary/15 text-primary'
-              : reco.reason === 'gap'
-                ? 'bg-neon-amber/10 text-neon-amber'
-                : 'bg-primary/10 text-primary')
-          }>
-            {reco.reason === 'signal'
-              ? `match · ${reco.driverPrimitive}`
-              : reco.reason === 'gap'
-                ? `gap · ${reco.driverPrimitive}`
-                : `adj · ${reco.driverPrimitive}`}
-          </span>
-        </div>
-        <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">
-          {reco.rationale}
-        </p>
-      </div>
-      {reco.upgradeRequired ? (
-        <Link
-          to="/ascension-v2#tiers"
-          className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded border border-neon-amber/40 bg-neon-amber/5 text-neon-amber hover:bg-neon-amber/10"
-          title={`Unlocks at ${TIER_META[reco.upgradeRequired].name} (${TIER_META[reco.upgradeRequired].priceLabel})`}
-        >
-          <Lock className="h-3 w-3" />
-          {TIER_META[reco.upgradeRequired].name}
-        </Link>
-      ) : onSelect ? (
+    <li className="rounded-lg bg-background/60 border border-border/40">
+      <div className="flex items-start gap-2 sm:gap-3 p-2 sm:p-2.5">
         <button
-          onClick={() => onSelect(reco.layer.id)}
-          className={
-            'shrink-0 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded border transition-colors ' +
-            (isSelected
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-primary/40 text-primary hover:bg-primary/10')
-          }
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          aria-label={expanded ? 'Collapse details' : 'Expand details'}
+          className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-md bg-primary/10 text-primary shrink-0 hover:bg-primary/20 transition-colors"
         >
-          {isSelected ? <><Check className="h-3 w-3 inline" /> Added</> : 'Add'}
+          <ChevronDown
+            className={
+              'h-3 w-3 transition-transform ' + (expanded ? 'rotate-180' : '')
+            }
+          />
         </button>
-      ) : (
-        <Link
-          to="/ascension-v2"
-          className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-primary hover:underline"
-        >
-          Attach <ArrowRight className="h-3 w-3" />
-        </Link>
-      )}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <Icon className="h-3 w-3 text-primary/70 shrink-0" />
+            <span className="text-xs font-medium text-foreground truncate">
+              {reco.layer.name}
+            </span>
+            <span className="text-[9px] font-mono text-muted-foreground">
+              CJPI {reco.layer.cjpi}
+            </span>
+            {showPrice ? (
+              <span className="text-[9px] font-mono text-foreground/80">
+                {formatPrice(reco.layer.priceCents)}
+              </span>
+            ) : null}
+            <span className={
+              'text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded ' +
+              (reco.reason === 'signal'
+                ? 'bg-primary/15 text-primary'
+                : reco.reason === 'gap'
+                  ? 'bg-neon-amber/10 text-neon-amber'
+                  : 'bg-primary/10 text-primary')
+            }>
+              {reco.reason === 'signal'
+                ? `match · ${reco.driverPrimitive}`
+                : reco.reason === 'gap'
+                  ? `gap · ${reco.driverPrimitive}`
+                  : `adj · ${reco.driverPrimitive}`}
+            </span>
+          </div>
+          <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">
+            {reco.rationale}
+          </p>
+        </div>
+        {reco.upgradeRequired ? (
+          <Link
+            to="/ascension-v2#tiers"
+            className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded border border-neon-amber/40 bg-neon-amber/5 text-neon-amber hover:bg-neon-amber/10"
+            title={`Unlocks at ${TIER_META[reco.upgradeRequired].name} (${TIER_META[reco.upgradeRequired].priceLabel})`}
+          >
+            <Lock className="h-3 w-3" />
+            {TIER_META[reco.upgradeRequired].name}
+          </Link>
+        ) : onSelect ? (
+          <button
+            onClick={() => onSelect(reco.layer.id)}
+            className={
+              'shrink-0 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded border transition-colors ' +
+              (isSelected
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'border-primary/40 text-primary hover:bg-primary/10')
+            }
+          >
+            {isSelected ? <><Check className="h-3 w-3 inline" /> Added</> : 'Add'}
+          </button>
+        ) : (
+          <Link
+            to="/ascension-v2"
+            className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-primary hover:underline"
+          >
+            Attach <ArrowRight className="h-3 w-3" />
+          </Link>
+        )}
+      </div>
+      {expanded ? (
+        <div className="px-2 sm:px-2.5 pb-2 sm:pb-2.5 pl-9 sm:pl-10 space-y-1.5 border-t border-border/30 pt-2 mt-0">
+          <div>
+            <div className="text-[9px] uppercase tracking-wider text-muted-foreground mb-0.5">
+              What it does
+            </div>
+            <p className="text-[11px] text-foreground/90 leading-snug">
+              {reco.layer.description}
+            </p>
+          </div>
+          {reco.layer.autoWire?.behavior ? (
+            <div>
+              <div className="text-[9px] uppercase tracking-wider text-muted-foreground mb-0.5">
+                How it auto-wires
+              </div>
+              <p className="text-[11px] text-foreground/80 leading-snug">
+                {reco.layer.autoWire.behavior}
+              </p>
+            </div>
+          ) : null}
+          {reco.evidence ? (
+            <div>
+              <div className="text-[9px] uppercase tracking-wider text-muted-foreground mb-0.5">
+                Evidence in your code
+              </div>
+              <code className="block text-[10px] font-mono bg-muted/40 text-foreground/80 px-1.5 py-1 rounded overflow-x-auto whitespace-pre">
+                {reco.evidence}
+              </code>
+            </div>
+          ) : null}
+          <div className="text-[10px] text-muted-foreground">
+            Primitive · <span className="font-mono text-foreground/70">{reco.layer.module}</span>
+          </div>
+        </div>
+      ) : null}
     </li>
   );
 }
