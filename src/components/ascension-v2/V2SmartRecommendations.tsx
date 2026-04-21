@@ -103,11 +103,17 @@ function RecoRow({ reco, isSelected, onSelect, showPrice }: RecoRowProps) {
           ) : null}
           <span className={
             'text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded ' +
-            (reco.reason === 'gap'
-              ? 'bg-neon-amber/10 text-neon-amber'
-              : 'bg-primary/10 text-primary')
+            (reco.reason === 'signal'
+              ? 'bg-primary/15 text-primary'
+              : reco.reason === 'gap'
+                ? 'bg-neon-amber/10 text-neon-amber'
+                : 'bg-primary/10 text-primary')
           }>
-            {reco.reason === 'gap' ? `gap · ${reco.driverPrimitive}` : `adj · ${reco.driverPrimitive}`}
+            {reco.reason === 'signal'
+              ? `match · ${reco.driverPrimitive}`
+              : reco.reason === 'gap'
+                ? `gap · ${reco.driverPrimitive}`
+                : `adj · ${reco.driverPrimitive}`}
           </span>
         </div>
         <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">
