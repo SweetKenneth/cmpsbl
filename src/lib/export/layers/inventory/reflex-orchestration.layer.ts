@@ -106,7 +106,7 @@ cmpsbl_execute = function cmpsbl_execute_reflex(capabilityName: string, input: R
 const WIRE_PY = `
 _cmpsbl_raw_execute_reflex = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Reflex Orchestration Layer (auto-wired)."""
+    """Execute under Event-Driven Cross-Service Reflex Layer (auto-wired)."""
     cmpsbl_reflex_emit(capability_name + ':pre', input_data)
     result = _cmpsbl_raw_execute_reflex(capability_name, input_data)
     cmpsbl_reflex_emit(capability_name + ':post', result)
@@ -114,11 +114,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const REFLEX_ORCHESTRATION_LAYER: CmpsblLayerDefinition = {
   id: 'reflex-orchestration',
-  name: 'Reflex Orchestration Layer',
+  name: 'Event-Driven Cross-Service Reflex Layer',
   crownJewelRank: 32,
   cjpi: 85,
   module: 'REFLEX×ECONOMY',
-  description: 'Event-driven reflex registry with conditional triggers, treaty cost calculation, and append-only firing ledger for cross-service coordination.',
+  description: 'Wire \'when X happens, do Y\' across services with conditional triggers, cost calculation, and an append-only firing ledger — replaces a half-dozen ad-hoc webhook scripts with one auditable registry.',
   priceCents: 3900,
   tsCode: TS,
   pyCode: PY,

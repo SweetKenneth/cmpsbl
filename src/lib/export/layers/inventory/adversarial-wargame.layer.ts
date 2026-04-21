@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Adversarial Wargame
+ * CMPSBL® Inventory Layer — Continuous Red-Team Stress Layer
  * Primitives: ATTACK · DEFEND · SCORE
  *
  * Continuous red-teaming. Distinct from cyber-defense (runtime blocking) —
@@ -11,7 +11,7 @@ import type { CmpsblLayerDefinition } from '../types';
 // with the attack corpus (e.g. ${jndi:...}, backticks, etc.).
 const TS = [
   '// ╔═══════════════════════════════════════════════════════════════════════════════╗',
-  '// ║  ASCENSION LAYER — Adversarial Wargame (proprietary).                         ║',
+  '// ║  ASCENSION LAYER — Continuous Red-Team Stress Layer (proprietary).                         ║',
   '// ╚═══════════════════════════════════════════════════════════════════════════════╝',
   '',
   'interface CmpsblWargameResult { capability: string; attacks: number; passed: number; passRate: number; failedSamples: string[]; }',
@@ -60,7 +60,7 @@ const TS = [
 
 const PY = [
   '# ╔═══════════════════════════════════════════════════════════════════════════════╗',
-  '# ║  ASCENSION LAYER — Adversarial Wargame (proprietary).                         ║',
+  '# ║  ASCENSION LAYER — Continuous Red-Team Stress Layer (proprietary).                         ║',
   '# ╚═══════════════════════════════════════════════════════════════════════════════╝',
   '',
   'from typing import Callable, Dict',
@@ -109,11 +109,11 @@ const WIRE_PY = '# Adversarial Wargame is opt-in: customer code calls cmpsbl_wg_
 
 export const ADVERSARIAL_WARGAME_LAYER: CmpsblLayerDefinition = {
   id: 'adversarial-wargame',
-  name: 'Adversarial Wargame',
+  name: 'Continuous Red-Team Stress Layer',
   crownJewelRank: 70,
   cjpi: 95,
   module: 'DEFENSE×EVOLUTION',
-  description: 'Continuous red-team corpus runs against every capability; reports pass-rate and weakest defender.',
+  description: 'Runs an adversarial corpus against every capability on a schedule, reports pass-rate and weakest defender — automated red-teaming so you find the hole before an attacker does.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

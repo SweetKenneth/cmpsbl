@@ -171,7 +171,7 @@ cmpsbl_execute = function cmpsbl_execute_heal(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_heal = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Self-Healing Scanner Layer (observe + promote-to-quarantine, no retry)."""
+    """Execute under Recurring-Fault Learning & Quarantine Layer (observe + promote-to-quarantine, no retry)."""
     # Observe-and-promote pattern. Hardening Layer's _retry-core and
     # _degradation-core wrappers run AROUND this one; they own retry/fallback.
     # We just learn from every fault and escalate recurring signatures into
@@ -185,11 +185,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const SELF_HEALING_SCANNER_LAYER: CmpsblLayerDefinition = {
   id: 'self-healing-scanner',
-  name: 'Self-Healing Scanner Layer',
+  name: 'Recurring-Fault Learning & Quarantine Layer',
   crownJewelRank: 27,
   cjpi: 94,
   module: 'LEARNING×EVOLUTION',
-  description: 'Pattern-memorizing fault scanner. Fingerprints every fault, escalates by recurrence (observed → repeating → recurring), and promotes recurring patterns to the Hardening Layer\'s quarantine kernel. Hardening owns retry & fallback — this layer learns and teaches.',
+  description: 'Fingerprints every fault, escalates by recurrence (observed → repeating → recurring), and tells the always-on Hardening Layer to quarantine repeat offenders — so the same bug never bites you twice.',
   priceCents: 9900,
   tsCode: TS,
   pyCode: PY,

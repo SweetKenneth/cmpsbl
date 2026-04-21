@@ -120,7 +120,7 @@ cmpsbl_execute = function cmpsbl_execute_comp(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_comp = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Compliance Audit Layer (auto-wired)."""
+    """Execute under GDPR / HIPAA / PCI / SOC2 Compliance Audit Layer (auto-wired)."""
     ev = cmpsbl_comp_evaluate(capability_name, input_data)
     if ev['blocked']:
         rules = ','.join(f['rule_id'] for f in ev['findings'])
@@ -129,11 +129,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const COMPLIANCE_AUDIT_LAYER: CmpsblLayerDefinition = {
   id: 'compliance-audit',
-  name: 'Compliance Audit Layer',
+  name: 'GDPR / HIPAA / PCI / SOC2 Compliance Audit Layer',
   crownJewelRank: 25,
   cjpi: 89,
   module: 'AUDIT×CONSCIENCE',
-  description: 'GDPR/PCI/HIPAA/SOC2 rule engine with persistent finding trail and per-framework rolling-window certification.',
+  description: 'Continuously checks every call against GDPR, HIPAA, PCI, and SOC2 rules, keeps a permanent finding trail, and produces rolling-window certification you can hand to an auditor.',
   priceCents: 5900,
   tsCode: TS,
   pyCode: PY,

@@ -131,7 +131,7 @@ cmpsbl_execute = function cmpsbl_execute_spec(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_spec = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Spectral Auditor Layer (auto-wired)."""
+    """Execute under Behavior Drift Detection & Quarantine Layer (auto-wired)."""
     in_receipt = cmpsbl_spec_receipt(capability_name + ':in', input_data)
     cit = cmpsbl_spec_citadel(in_receipt)
     if cit['quarantine']:
@@ -142,11 +142,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const SPECTRAL_AUDITOR_LAYER: CmpsblLayerDefinition = {
   id: 'spectral-auditor',
-  name: 'Spectral Auditor Layer',
+  name: 'Behavior Drift Detection & Quarantine Layer',
   crownJewelRank: 24,
   cjpi: 91,
   module: 'AUDIT×BASTION',
-  description: 'Continuous spectral fingerprinting per capability with EMA baselines, hash-chained receipts, and citadel quarantine on anomaly drift.',
+  description: 'Builds a behavioral fingerprint of every capability, watches for drift from that baseline, and quarantines anything that suddenly behaves differently — catches silent regressions and supply-chain tampering.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

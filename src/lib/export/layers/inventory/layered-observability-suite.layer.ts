@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Layered Observability Suite
+ * CMPSBL® Inventory Layer — Live Metrics, Drift & Anomaly Layer
  * Primitives: PULSE · SPECTRUM · HORIZON · ORACLE
  *
  *   PULSE    → rolling latency/throughput counter (constant-time tick)
@@ -15,7 +15,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Layered Observability Suite (proprietary).                 ║
+// ║  ASCENSION LAYER — Live Metrics, Drift & Anomaly Layer (proprietary).                 ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 // ── PULSE · rolling counters ────────────────────────────────────────────────
@@ -62,7 +62,7 @@ export function cmpsbl_los_oracle_verdict(h: CmpsblEwma, value: number, k: numbe
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Layered Observability Suite (proprietary).                 ║
+# ║  ASCENSION LAYER — Live Metrics, Drift & Anomaly Layer (proprietary).                 ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import math
@@ -129,7 +129,7 @@ _cmpsbl_los_pulse = cmpsbl_los_pulse_new()
 _cmpsbl_los_horizon = cmpsbl_los_horizon_new(0.2)
 _cmpsbl_raw_execute_los = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Layered Observability Suite (PULSE + HORIZON telemetry)."""
+    """Execute under Live Metrics, Drift & Anomaly Layer (PULSE + HORIZON telemetry)."""
     import time
     start = time.time() * 1000
     try:
@@ -141,11 +141,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const LAYERED_OBSERVABILITY_SUITE_LAYER: CmpsblLayerDefinition = {
   id: 'layered-observability-suite',
-  name: 'Layered Observability Suite',
+  name: 'Live Metrics, Drift & Anomaly Layer',
   crownJewelRank: 27,
   cjpi: 89,
   module: 'OBSERVABILITY',
-  description: 'PULSE counters + SPECTRUM histogram + HORIZON EWMA drift sensor + ORACLE anomaly verdict.',
+  description: 'Drop-in production telemetry: live counters, latency histograms, drift sensors, and an anomaly verdict — see what\'s slow, broken, or off-baseline without bolting on a separate metrics stack.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

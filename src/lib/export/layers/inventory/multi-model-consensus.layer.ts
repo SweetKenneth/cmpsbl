@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Multi-Model Consensus
+ * CMPSBL® Inventory Layer — Multi-AI Consensus & Dissent Layer
  * Primitives: QUORUM · VOTE · ARBITER
  *
  * Distinct from ai-safety (guardrails on one model) and ai-cost (routing) —
@@ -9,7 +9,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Multi-Model Consensus (proprietary).                       ║
+// ║  ASCENSION LAYER — Multi-AI Consensus & Dissent Layer (proprietary).                       ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 type CmpsblModelAdapter = (prompt: string) => Promise<string> | string;
@@ -53,7 +53,7 @@ export function cmpsbl_mmc_arbiter(result: CmpsblConsensusResult, threshold: num
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Multi-Model Consensus (proprietary).                       ║
+# ║  ASCENSION LAYER — Multi-AI Consensus & Dissent Layer (proprietary).                       ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 from typing import Dict, Callable, List
@@ -91,11 +91,11 @@ const WIRE_PY = `
 
 export const MULTI_MODEL_CONSENSUS_LAYER: CmpsblLayerDefinition = {
   id: 'multi-model-consensus',
-  name: 'Multi-Model Consensus',
+  name: 'Multi-AI Consensus & Dissent Layer',
   crownJewelRank: 28,
   cjpi: 96,
   module: 'INTELLIGENCE×DREAM',
-  description: 'Submits a prompt to N model adapters and produces majority consensus, agreement score, and dissent list.',
+  description: 'Asks N AI models the same question, returns the majority answer plus an agreement score and dissent list — catch hallucinations and edge-case disagreements before they reach the user.',
   priceCents: 9900,
   tsCode: TS,
   pyCode: PY,

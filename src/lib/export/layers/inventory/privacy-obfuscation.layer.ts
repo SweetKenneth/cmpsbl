@@ -14,7 +14,7 @@ const TS = `
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 const _CMPSBL_PRIV_PII = [
-  { name: 'email',  re: /\\b[\\w.+-]+@[\\w-]+\\.[\\w.-]+\\b/g },
+  { name: 'PII Redaction & Privacy Layer',  re: /\\b[\\w.+-]+@[\\w-]+\\.[\\w.-]+\\b/g },
   { name: 'ssn',    re: /\\b\\d{3}-\\d{2}-\\d{4}\\b/g },
   { name: 'phone',  re: /\\b(?:\\+?1[-.\\s]?)?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b/g },
   { name: 'card',   re: /\\b(?:\\d[ -]*?){13,19}\\b/g },
@@ -141,7 +141,7 @@ cmpsbl_execute = function cmpsbl_execute_priv(capabilityName: string, input: Rec
 const WIRE_PY = `
 _cmpsbl_raw_execute_priv = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Privacy & Obfuscation Layer (auto-wired)."""
+    """Execute under PII Redaction & Privacy Layer (auto-wired)."""
     clean = cmpsbl_priv_obfuscate(input_data)
     result = _cmpsbl_raw_execute_priv(capability_name, clean)
     if isinstance(result, dict):
@@ -154,7 +154,7 @@ export const PRIVACY_OBFUSCATION_LAYER: CmpsblLayerDefinition = {
   crownJewelRank: 21,
   cjpi: 95,
   module: 'PRIVACY×OBFUSCATION',
-  description: 'Field-level PII redaction, identifier masking, sensitive-key obfuscation, and zero-leak telemetry.',
+  description: 'Automatically finds and masks personal data (emails, phone numbers, IDs, sensitive keys) in every request, response, and log — so a single mistake can\'t leak a customer\'s identity.',
   priceCents: 9900,
   tsCode: TS,
   pyCode: PY,

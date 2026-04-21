@@ -118,7 +118,7 @@ cmpsbl_execute = function cmpsbl_execute_forge(capabilityName: string, input: Re
 const WIRE_PY = `
 _cmpsbl_raw_execute_forge = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Adaptive Forge Layer (auto-wired)."""
+    """Execute under Auto-Tuning Threshold & Re-Genesis Layer (auto-wired)."""
     import time as _t
     t0 = _t.time() * 1000
     result = _cmpsbl_raw_execute_forge(capability_name, input_data)
@@ -128,11 +128,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const ADAPTIVE_FORGE_LAYER: CmpsblLayerDefinition = {
   id: 'adaptive-forge',
-  name: 'Adaptive Forge Layer',
+  name: 'Auto-Tuning Threshold & Re-Genesis Layer',
   crownJewelRank: 30,
   cjpi: 87,
   module: 'FORGE×GENESIS',
-  description: 'EMA-smoothed condition observation, threshold validation, incentive accumulation, and re-genesis triggering when metrics breach.',
+  description: 'Watches your live metrics, smooths the noise, and automatically retunes thresholds or triggers a clean re-genesis when conditions breach — no more manually chasing config knobs at 3am.',
   priceCents: 5900,
   tsCode: TS,
   pyCode: PY,

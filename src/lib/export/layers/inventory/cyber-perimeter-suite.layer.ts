@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Cyber Perimeter Suite
+ * CMPSBL® Inventory Layer — Rate-Limit, Origin & Secret-Leak Defense Layer
  * Primitives: WATCHTOWER · AEGIS · BASTION · CIPHER
  *
  *   WATCHTOWER → request rate / abuse detection per identity
@@ -15,7 +15,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Cyber Perimeter Suite (proprietary).                       ║
+// ║  ASCENSION LAYER — Rate-Limit, Origin & Secret-Leak Defense Layer (proprietary).                       ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 // ── WATCHTOWER · per-identity rate gate ─────────────────────────────────────
@@ -85,7 +85,7 @@ export function cmpsbl_cps_cipher(text: string): { redacted: string; replacement
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Cyber Perimeter Suite (proprietary).                       ║
+# ║  ASCENSION LAYER — Rate-Limit, Origin & Secret-Leak Defense Layer (proprietary).                       ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 import re, time
@@ -175,7 +175,7 @@ cmpsbl_execute = function cmpsbl_execute_cps(capabilityName: string, input: Reco
 const WIRE_PY = `
 _cmpsbl_raw_execute_cps = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Cyber Perimeter Suite (auto-wired)."""
+    """Execute under Rate-Limit, Origin & Secret-Leak Defense Layer (auto-wired)."""
     identity = str(input_data.get('_cmpsbl_identity', 'anonymous'))
     origin = input_data.get('_cmpsbl_origin') if isinstance(input_data.get('_cmpsbl_origin'), str) else None
     wt = cmpsbl_cps_watchtower(identity)
@@ -197,11 +197,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const CYBER_PERIMETER_SUITE_LAYER: CmpsblLayerDefinition = {
   id: 'cyber-perimeter-suite',
-  name: 'Cyber Perimeter Suite',
+  name: 'Rate-Limit, Origin & Secret-Leak Defense Layer',
   crownJewelRank: 22,
   cjpi: 93,
   module: 'DEFENSE',
-  description: 'WATCHTOWER rate gate + AEGIS origin allow/deny + BASTION payload signatures + CIPHER secret redaction.',
+  description: 'Front-door protection: throttles abusive callers, blocks unknown origins, signature-checks payloads, and redacts API keys or secrets before they ever leave a log line.',
   priceCents: 7900,
   tsCode: TS,
   pyCode: PY,

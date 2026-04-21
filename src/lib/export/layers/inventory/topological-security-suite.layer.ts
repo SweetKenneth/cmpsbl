@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Inventory Layer — Topological Security Suite
+ * CMPSBL® Inventory Layer — Trust-Graph & Forbidden-Path Security Layer
  * Primitives: KNOT · MANIFOLD · GEODESIC · BOUNDARY
  *
  *   KNOT      → cycle detector over a directed call graph
@@ -15,7 +15,7 @@ import type { CmpsblLayerDefinition } from '../types';
 
 const TS = `
 // ╔═══════════════════════════════════════════════════════════════════════════════╗
-// ║  ASCENSION LAYER — Topological Security Suite (proprietary).                  ║
+// ║  ASCENSION LAYER — Trust-Graph & Forbidden-Path Security Layer (proprietary).                  ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 // ── KNOT · cycle detector ───────────────────────────────────────────────────
@@ -80,7 +80,7 @@ export function cmpsbl_tss_boundary_allowed(forbidden: Array<[string, string]>, 
 
 const PY = `
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  ASCENSION LAYER — Topological Security Suite (proprietary).                  ║
+# ║  ASCENSION LAYER — Trust-Graph & Forbidden-Path Security Layer (proprietary).                  ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
 
 from typing import Dict, List, Optional, Tuple
@@ -149,7 +149,7 @@ cmpsbl_execute = function cmpsbl_execute_tss(capabilityName: string, input: Reco
 const WIRE_PY = `
 _cmpsbl_raw_execute_tss = cmpsbl_execute
 def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
-    """Execute under Topological Security Suite (BOUNDARY pre-flight)."""
+    """Execute under Trust-Graph & Forbidden-Path Security Layer (BOUNDARY pre-flight)."""
     caller = input_data.get('_cmpsbl_caller')
     forbidden = input_data.get('_cmpsbl_forbidden_edges')
     if isinstance(caller, str) and isinstance(forbidden, list):
@@ -159,11 +159,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 export const TOPOLOGICAL_SECURITY_SUITE_LAYER: CmpsblLayerDefinition = {
   id: 'topological-security-suite',
-  name: 'Topological Security Suite',
+  name: 'Trust-Graph & Forbidden-Path Security Layer',
   crownJewelRank: 26,
   cjpi: 91,
   module: 'TOPOLOGY',
-  description: 'KNOT cycle detector + MANIFOLD trust region + GEODESIC BFS path + BOUNDARY forbidden-edge gate.',
+  description: 'Models who-can-call-what as a trust graph, detects suspicious call cycles, and refuses any execution path that crosses a forbidden boundary — stops privilege-escalation chains before they execute.',
   priceCents: 8900,
   tsCode: TS,
   pyCode: PY,
