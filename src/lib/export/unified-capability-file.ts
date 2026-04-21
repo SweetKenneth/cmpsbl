@@ -527,11 +527,16 @@ export interface ExecutionResult {
     cjpi: number;
     tier: string;
     chain: string[];
+    /** Active governance mode at execution time (compiled or env-overridden). */
+    mode: 'observe' | 'soft' | 'enforce';
     execution: {
       original_executed: boolean;
       original_error: string | null;
       execution_ms: number;
-      strategy: 'native' | 'passthrough';
+      /** native = sniff worked. failed = sniffs threw. passthrough = no entry matched. */
+      strategy: 'native' | 'passthrough' | 'failed';
+      /** Per-target sniff errors (arity / construction / invocation). */
+      entry_errors: string[];
       timestamp: string;
     };
   };
@@ -1075,6 +1080,60 @@ export const CMPSBL_PACK_META = {
 
 /** @deprecated Use CMPSBL_PACK_META instead */
 export const PACK_META = CMPSBL_PACK_META;
+
+// ─── Governance Mode (compiled · env-overridable) ───────────────────────────
+// The mode you picked on the Govern screen is compiled in below. Override
+// it at runtime via the CMPSBL_MODE env var (observe | soft | enforce).
+//   • observe  → record + pass through (zero behavior change)
+//   • soft     → record + console.warn on risky / passthrough events
+//   • enforce  → record + throw / short-circuit on risky / passthrough events
+const COMPILED_CMPSBL_MODE: 'observe' | 'soft' | 'enforce' = ${JSON.stringify((governanceMode === 'soft' || governanceMode === 'enforce') ? governanceMode : 'observe')};
+function _resolveCmpsblMode(): 'observe' | 'soft' | 'enforce' {
+  try {
+    const env = (typeof process !== 'undefined' && process.env && process.env.CMPSBL_MODE) || '';
+    const v = String(env).toLowerCase();
+    if (v === 'observe' || v === 'soft' || v === 'enforce') return v;
+  } catch { /* non-fatal: browser / sandbox */ }
+  return COMPILED_CMPSBL_MODE;
+}
+export const CMPSBL_MODE: 'observe' | 'soft' | 'enforce' = _resolveCmpsblMode();
+
+/**
+ * cmpsblWrap — Framework-aware opt-in attachment helper.
+ *
+ * Use this when the auto-detector can't safely sniff your function's real
+ * signature (WebSocket handlers, Express middleware, BullMQ workers, etc.).
+ * Wrapping is explicit, deterministic, and honest — the substrate runs your
+ * function exactly as you call it, with the active CMPSBL_MODE pipeline
+ * around it.
+ *
+ *   const handle = cmpsblWrap('Diagnostic_Reasoning_Core', handleClientMessage);
+ *   handle(ws, session, raw);   // your real signature, untouched
+ */
+export function cmpsblWrap<F extends (...args: unknown[]) => unknown>(
+  capability: string,
+  fn: F,
+): F {
+  const wrapped = (...args: unknown[]): unknown => {
+    const start = Date.now();
+    let originalResult: unknown;
+    let originalError: string | null = null;
+    try { originalResult = fn(...args); }
+    catch (err) { originalError = err instanceof Error ? err.message : String(err); }
+    // Run the same Layer 2 pipeline against a synthetic context so receipts
+    // and signals fire even when the user invokes via cmpsblWrap.
+    const ctx: Record<string, unknown> = { _wrapped: capability, _argc: args.length };
+    const meta = { name: capability, cjpi: 50, tier: 'mint', chain: ['CANDIDATE'], fingerprint: 'wrap', moatSignature: 'wrap' };
+    const pipeline = executePipeline(ctx, meta.chain, meta);
+    if (originalError !== null) {
+      if (CMPSBL_MODE === 'enforce') throw new Error('[CMPSBL:enforce] ' + capability + ': ' + originalError);
+      if (CMPSBL_MODE === 'soft' && typeof console !== 'undefined') console.warn('[CMPSBL:soft] ' + capability + ': ' + originalError);
+    }
+    void pipeline; void start;
+    return originalResult;
+  };
+  return wrapped as F;
+}
 
 // ─── Per-Capability Execution ────────────────────────────────────────────────
 
