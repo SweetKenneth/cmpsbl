@@ -16,10 +16,10 @@
  * No mixed-source bundles. No silent unlock failures.
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Sparkles, Plus, Check, ArrowRight, Layers as LayersIcon,
-  ShoppingBag, Package, Lock,
+  ShoppingBag, Package, Lock, ChevronDown,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
