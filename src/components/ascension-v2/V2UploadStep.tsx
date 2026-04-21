@@ -218,6 +218,11 @@ export function V2UploadStep({ onComplete }: Props) {
     const payload: ReAscendPayload | null = consumeReAscendPayload();
     if (!payload || !user) return;
 
+    // The page-level effect skips initRun when a re-ascension is pending, so
+    // we own the run lifecycle here. Always reset to guarantee a clean chain
+    // regardless of whatever phase the prior run left the orchestrator in.
+    initRun();
+
     const analysis = {
       name: payload.files[0]?.name?.replace(/\.[^.]+$/, '') || 'reascend',
       language: payload.language,
