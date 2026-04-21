@@ -16,6 +16,10 @@ import {
   ORGANS, LAYERS, ENGINES, AGENTS, CANONICAL_PRIMITIVES,
 } from '@/lib/ascension-v2/canonical-primitives';
 import { TIER_ORDER, TIER_LAYERS, type LayerTier } from '@/lib/ascension-v2/tier-layers';
+import {
+  scanCodeSignals, boostsFromSignals,
+  type CodeSignal, type PrimitiveBoost,
+} from './code-signals';
 
 /** Set of layer IDs that come from the /store inventory (purchase per-SKU). */
 const STORE_LAYER_IDS: ReadonlySet<string> = new Set(
