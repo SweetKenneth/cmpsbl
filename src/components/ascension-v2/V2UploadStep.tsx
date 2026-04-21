@@ -3,8 +3,8 @@
  * Computes fingerprint via V2 engine, stores with v2 category.
  */
 
-import { useState, useCallback, useRef } from 'react';
-import { Upload, FileCode2, ClipboardPaste, Loader2, CheckCircle2 } from 'lucide-react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { Upload, FileCode2, ClipboardPaste, Loader2, CheckCircle2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
+import { consumeReAscendPayload, type ReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { V2PreflightEstimator } from './V2PreflightEstimator';
 
 interface Props {
