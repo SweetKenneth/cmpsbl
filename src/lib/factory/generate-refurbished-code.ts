@@ -3614,9 +3614,6 @@ function renderRustAttachmentBlock(
   lines.push(`// Total wrappable: ${wrappable.length} function(s)`);
   return lines.join('\n');
 }
-  lines.push(`# Total wrapped: ${wrappable.length} function(s)`);
-  return lines.join('\n');
-}
 
 /** Get the correct file extension for the refurbished output */
 export function getRefurbishedExtension(sourceLanguage: string): string {
