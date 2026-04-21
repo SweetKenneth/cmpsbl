@@ -96,21 +96,6 @@ export const V2_LANGUAGE_REGISTRY: ReadonlyArray<V2LanguageEntry> = Object.freez
   beta('move',          'Move'),
   beta('cairo',         'Cairo'),
 
-  // ─── BETA — structured port-spec via generateUnifiedGeneric ───────────
-  beta('nim',           'Nim'),
-  beta('crystal',       'Crystal'),
-  beta('groovy',        'Groovy'),
-  beta('clojure',       'Clojure'),
-  beta('fsharp',        'F#'),
-  beta('objective-c',   'Objective-C'),
-  beta('perl',          'Perl'),
-  beta('julia',         'Julia'),
-  beta('erlang',        'Erlang'),
-  beta('ocaml',         'OCaml'),
-  beta('fortran',       'Fortran'),
-  beta('d',             'D'),
-  beta('bash',          'Bash'),
-  beta('powershell',    'PowerShell'),
 ]);
 
 const REGISTRY_INDEX: ReadonlyMap<string, V2LanguageEntry> = new Map(
