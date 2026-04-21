@@ -39,12 +39,18 @@ interface Props {
   selectedLayerIds?: string[];
   /** If provided, each reco renders an Add button that toggles selection */
   onSelect?: (layerId: string) => void;
-  /** Max recos to show (default 4) */
+  /** Max recos to show (default 3 — we cap aggressively now) */
   limit?: number;
   /** Compact title override */
   title?: string;
   /** Override viewer tier (default: read from subscription hook) */
   userTier?: LayerTier;
+  /**
+   * User source files. When supplied, recommendations are driven by real
+   * code signals (HTTP routes, DB calls, crypto, etc.) instead of canonical
+   * primitive order. Falls back to gap/adjacency when no signals fire.
+   */
+  userSource?: ReadonlyArray<{ name: string; content: string }>;
 }
 
 function mapSubscriptionTier(tier: string | undefined): LayerTier {
@@ -97,11 +103,17 @@ function RecoRow({ reco, isSelected, onSelect, showPrice }: RecoRowProps) {
           ) : null}
           <span className={
             'text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded ' +
-            (reco.reason === 'gap'
-              ? 'bg-neon-amber/10 text-neon-amber'
-              : 'bg-primary/10 text-primary')
+            (reco.reason === 'signal'
+              ? 'bg-primary/15 text-primary'
+              : reco.reason === 'gap'
+                ? 'bg-neon-amber/10 text-neon-amber'
+                : 'bg-primary/10 text-primary')
           }>
-            {reco.reason === 'gap' ? `gap · ${reco.driverPrimitive}` : `adj · ${reco.driverPrimitive}`}
+            {reco.reason === 'signal'
+              ? `match · ${reco.driverPrimitive}`
+              : reco.reason === 'gap'
+                ? `gap · ${reco.driverPrimitive}`
+                : `adj · ${reco.driverPrimitive}`}
           </span>
         </div>
         <p className="text-[10px] text-muted-foreground leading-snug mt-0.5">
@@ -145,9 +157,10 @@ export function V2SmartRecommendations({
   coveredPrimitives,
   selectedLayerIds = [],
   onSelect,
-  limit = 4,
+  limit = 3,
   title,
   userTier,
+  userSource,
 }: Props) {
   const subscription = useEngineSubscription();
   const { isGovernor } = useUserRole();
@@ -164,6 +177,11 @@ export function V2SmartRecommendations({
     () => [...selectedLayerIds].sort().join('|'),
     [selectedLayerIds],
   );
+  // Hash the source set so signal scans only re-run when the corpus changes.
+  const sourceKey = useMemo(
+    () => (userSource ?? []).map((f) => `${f.name}:${f.content.length}`).join('|'),
+    [userSource],
+  );
 
   // We pull a wider candidate pool so each unlock source has a real chance
   // to populate. Final per-group rendering still respects `limit`.
@@ -171,11 +189,12 @@ export function V2SmartRecommendations({
     () => recommendLayers({
       coveredPrimitives,
       selectedLayerIds,
-      limit: Math.max(limit * 2, 8),
+      limit: Math.max(limit * 2, 6),
       userTier: effectiveTier,
+      userSource,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [coveredKey, selectedKey, limit, effectiveTier],
+    [coveredKey, selectedKey, limit, effectiveTier, sourceKey],
   );
 
   const { tierRecos, storeRecos } = useMemo(() => {

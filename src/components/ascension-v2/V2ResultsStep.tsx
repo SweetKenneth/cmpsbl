@@ -562,11 +562,12 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       )}
 
-      {/* Smart Recommendations — gap+adjacency picks based on what this run covered */}
+      {/* Smart Recommendations — signal-driven (real code evidence) + gap/adjacency fallback */}
       <V2SmartRecommendations
         coveredPrimitives={capabilities.flatMap((c) => c.chain.filter((p) => p !== 'CANDIDATE'))}
         selectedLayerIds={Array.from(selectedLayers)}
-        limit={4}
+        userSource={sourceFiles}
+        limit={3}
       />
 
       <div className="bg-muted/20 rounded-xl p-2.5 sm:p-3 flex items-center gap-2">
