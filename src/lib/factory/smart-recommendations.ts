@@ -77,7 +77,7 @@ export function summarizeStoreBundle(
   };
 }
 
-export type RecoReason = 'gap' | 'adjacency';
+export type RecoReason = 'gap' | 'adjacency' | 'signal';
 
 export interface LayerRecommendation {
   layer: CmpsblLayerDefinition;
@@ -92,6 +92,11 @@ export interface LayerRecommendation {
    * upgrade chip instead of a free "Add" toggle.
    */
   upgradeRequired?: LayerTier;
+  /**
+   * When `reason === 'signal'`, the actual snippet from the user source
+   * that triggered the recommendation. Lets the UI prove the pick is real.
+   */
+  evidence?: string;
 }
 
 export interface RecommendationInput {
@@ -99,7 +104,7 @@ export interface RecommendationInput {
   coveredPrimitives: string[];
   /** Layer IDs the user has already selected — never recommend these again */
   selectedLayerIds?: string[];
-  /** Max recommendations to return (default 5) */
+  /** Max recommendations to return (default 3 — we cap aggressively now) */
   limit?: number;
   /**
    * The viewer's current tier. When provided, the recommender prioritizes
@@ -108,6 +113,15 @@ export interface RecommendationInput {
    * later" mix instead of an all-paywall list.
    */
   userTier?: LayerTier;
+  /**
+   * Optional user source files. When present we scan for real code
+   * signals (HTTP routes, DB calls, crypto, etc.) and rank picks by what
+   * the code actually does — instead of canonical-primitive order. Falls
+   * back to gap/adjacency when no signals fire.
+   */
+  userSource?: ReadonlyArray<{ name: string; content: string }>;
+  /** Pre-computed signals (skips the scan when supplied) */
+  precomputedSignals?: ReadonlyArray<CodeSignal>;
 }
 
 /**
