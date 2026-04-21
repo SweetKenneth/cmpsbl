@@ -13,19 +13,22 @@
 
 import { useMemo } from "react";
 import { Gauge, Layers, Globe2, Sparkles } from "lucide-react";
+import { getSupportedLanguages } from "@/lib/export/v2-supported-languages";
 
-// 9 polyglot languages currently shipped by the export pipeline (soul.md fact)
-const SHIPPED_LANGS = 9;
+// Live count of every language the V2 export pipeline can emit (canonical + beta).
+const SHIPPED_LANGS = getSupportedLanguages().length;
 
+// Extension → display label map. Restricted to the V2 supported set so the
+// preflight estimator can never claim a language the pipeline won't actually emit.
 const LANG_BY_EXT: Record<string, string> = {
   ts: "TypeScript", tsx: "TypeScript", js: "JavaScript", jsx: "JavaScript",
   py: "Python", rs: "Rust", go: "Go", sol: "Solidity",
-  vhd: "VHDL", vhdl: "VHDL", v: "Verilog", sv: "Verilog",
+  vhd: "VHDL", vhdl: "VHDL", v: "Verilog", sv: "SystemVerilog",
   glsl: "GLSL", wgsl: "WGSL", c: "C", h: "C", cpp: "C++", hpp: "C++",
   java: "Java", kt: "Kotlin", swift: "Swift", rb: "Ruby", php: "PHP",
-  cs: "C#", scala: "Scala", ex: "Elixir", erl: "Erlang", clj: "Clojure",
-  hs: "Haskell", ml: "OCaml", lua: "Lua", r: "R", jl: "Julia", dart: "Dart",
-  sh: "Shell", zig: "Zig", nim: "Nim",
+  cs: "C#", scala: "Scala", ex: "Elixir",
+  hs: "Haskell", lua: "Lua", r: "R", dart: "Dart",
+  zig: "Zig",
 };
 
 interface Estimate {
@@ -35,7 +38,7 @@ interface Estimate {
   primitiveBandLow: number;   // estimated organs+layers+engines+agents fired (of 40)
   primitiveBandHigh: number;
   cjpiBand: string;           // qualitative band, never a fake number
-  polyglotCount: number;      // always 9 today
+  polyglotCount: number;      // live count from the V2 registry
   confidence: "low" | "medium" | "high";
 }
 

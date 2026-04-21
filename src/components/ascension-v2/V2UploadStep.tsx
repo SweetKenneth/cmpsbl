@@ -15,6 +15,11 @@ import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot, init
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
 import { consumeReAscendPayload, type ReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { V2PreflightEstimator } from './V2PreflightEstimator';
+import {
+  getCanonicalLanguages,
+  getBetaLanguages,
+  getSupportedLanguages,
+} from '@/lib/export/v2-supported-languages';
 
 interface Props {
   onComplete: () => void;
@@ -287,7 +292,7 @@ export function V2UploadStep({ onComplete }: Props) {
       <div className="text-center">
         <h2 className="text-base sm:text-lg font-semibold text-foreground">Upload Your Code</h2>
         <p className="text-muted-foreground text-xs sm:text-sm mt-1">
-          Drop source files or paste code. <span className="text-foreground font-medium">9 languages shipping today</span> · others coming soon.
+          Drop source files or paste code. <span className="text-foreground font-medium">{getSupportedLanguages().length} languages shipping today</span> · {getCanonicalLanguages().length} canonical, {getBetaLanguages().length} beta polyglot.
         </p>
       </div>
 
