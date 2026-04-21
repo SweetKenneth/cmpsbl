@@ -187,6 +187,34 @@ function assertEmbeddedSourcesIntact(
   }
 }
 
+/**
+ * Heuristic risk-surface counter. Looks for the patterns that justify
+ * Soft / Enforce mode: network listeners, raw input handlers, eval-like
+ * dynamic code, child-process spawns, file-system writes, raw SQL,
+ * unparameterised template strings, secrets in URLs.
+ *
+ * Used by the mode banner to honestly auto-downgrade Enforce → Observe
+ * when the file shows zero risky surfaces (so users see why).
+ */
+function computeRiskSurfaceCount(files: UserSourceFile[] | undefined): number {
+  if (!files || files.length === 0) return 0;
+  const RISK_PATTERNS: RegExp[] = [
+    /\b(WebSocketServer|createServer|listen\s*\()/,
+    /\beval\s*\(|new\s+Function\s*\(/,
+    /\bchild_process|spawn\s*\(|execSync?\s*\(/,
+    /\bfs\.(write|append|unlink|rm)/,
+    /\bquery\s*\(\s*[`'"]\s*(SELECT|INSERT|UPDATE|DELETE)/i,
+    /\b(req|request)\.(body|query|params|headers)/,
+    /Bearer\s+\$\{|api[_-]?key.*=.*process\.env/i,
+    /\bcrypto\.createHmac|crypto\.createCipher/,
+  ];
+  let count = 0;
+  for (const f of files) {
+    for (const re of RISK_PATTERNS) if (re.test(f.content)) count++;
+  }
+  return count;
+}
+
 export function generateUnifiedTypeScript(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
@@ -194,6 +222,7 @@ export function generateUnifiedTypeScript(
   selectedLayers?: CmpsblLayerDefinition[],
   governanceMode?: string,
   riskSurfaceCount?: number,
+  excludedFunctions?: ReadonlyArray<string>,
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
@@ -231,40 +260,53 @@ ${embeddedSources}
     : '';
 
   // ── Smart Entry Point Detection for TypeScript ──
-  // First-match-wins: the very first viable target is invoked, the rest are skipped.
-  // Functions take priority over classes; both skip Error/Exception subclasses.
+  // Per-target try/catch — a sniff that throws (e.g. wrong arity like
+  // `verifyToken(token, secret)` called with one arg) MUST NOT mark
+  // originalExecuted=true and MUST NOT poison the next sniff.
+  // Honesty rule: if no method on a class instance succeeds, we do NOT
+  // claim execution — originalExecuted stays false (no `_created: true` lie).
+  // Filter: any function/class the user explicitly excluded on the Govern
+  // screen is skipped here (governance respects user opt-out).
+  const excludedSet = new Set((excludedFunctions ?? []).map((s) => s.toLowerCase()));
+  const isExcluded = (n: string) => excludedSet.has(n.toLowerCase());
   let tsEntryPointCode = '    originalResult = input;\n    originalExecuted = false;';
   if (tsFiles.length > 0) {
     const src = tsFiles[0].content;
     const fnMatches = [...src.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)\s*\(/g)];
-    const exportedFns = fnMatches.map(m => m[1]).filter(n => !n.startsWith('_'));
+    const exportedFns = fnMatches.map(m => m[1]).filter(n => !n.startsWith('_') && !isExcluded(n));
     const classMatches = [...src.matchAll(/(?:export\s+)?class\s+(\w+)(?:\s+extends\s+(\w+))?/g)];
     const substantiveClasses = classMatches
       .filter(m => !/Error|Exception/.test(m[2] || ''))
-      .map(m => m[1]);
+      .map(m => m[1])
+      .filter((n) => !isExcluded(n));
 
     const targets: string[] = [];
     for (const fn of exportedFns.slice(0, 5)) {
-      targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') { originalResult = ${fn}(input); originalExecuted = true; }`);
+      // Each sniff is independently guarded — arity mismatches surface as
+      // entryErrors and we move on without lying about execution.
+      targets.push(`    if (!originalExecuted && typeof ${fn} === 'function') {
+      try { originalResult = (${fn} as (...a: unknown[]) => unknown)(input); originalExecuted = true; }
+      catch (e) { entryErrors.push('${fn}: ' + (e instanceof Error ? e.message : String(e))); }
+    }`);
     }
     for (const cls of substantiveClasses.slice(0, 3)) {
-      // Sealed dispatch — proprietary.
+      // Sealed dispatch — proprietary. Honest: if construction or every
+      // method invocation fails, executed remains false.
       targets.push(`    if (!originalExecuted && typeof ${cls} === 'function') {
-      let inst: unknown;
-      try { inst = new ${cls}(); }
-      catch(_ctorErr) { inst = null; }
+      let inst: unknown = null;
+      try { inst = new (${cls} as new (...a: unknown[]) => unknown)(); }
+      catch(e) { entryErrors.push('${cls}#ctor: ' + (e instanceof Error ? e.message : String(e))); inst = null; }
       if (inst) {
         const methods = ['execute','run','handle','process','main'];
-        let invoked = false;
         for (const m of methods) {
           if (typeof (inst as Record<string, unknown>)[m] === 'function') {
-            originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
-            originalExecuted = true;
-            invoked = true;
-            break;
+            try {
+              originalResult = ((inst as Record<string, (i: unknown) => unknown>)[m])(input);
+              originalExecuted = true;
+              break;
+            } catch (e) { entryErrors.push('${cls}#' + m + ': ' + (e instanceof Error ? e.message : String(e))); }
           }
         }
-        if (!invoked) { originalResult = { _instance: '${cls}', _created: true }; originalExecuted = true; }
       }
     }`);
     }
@@ -284,10 +326,13 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
   const meta = ${JSON.stringify({ name: cap.name, cjpi: cap.cjpiScore, tier: cap.tier, chain: cap.chain, fingerprint: cap.fingerprint, moatSignature: cap.moatSignature })};
   const start = Date.now();
 
-  // LAYER 1 — Run your original code (Smart Entry Point Detection)
+  // LAYER 1 — Run your original code (sniffs).
+  // Each sniff is independently guarded; arity mismatches collect into
+  // entryErrors instead of poisoning the executed flag.
   let originalResult: unknown = input;
   let originalExecuted = false;
   let originalError: string | null = null;
+  const entryErrors: string[] = [];
   try {
 ${tsEntryPointCode}
   } catch (err) {
@@ -308,13 +353,34 @@ ${tsEntryPointCode}
     _pipeline: pipeline,
     _cmpsbl: {
       capability: meta.name, cjpi: meta.cjpi, tier: meta.tier, chain: meta.chain,
+      mode: CMPSBL_MODE,
       execution: {
         original_executed: originalExecuted, original_error: originalError,
-        execution_ms: Date.now() - start, strategy: originalExecuted ? 'native' : 'passthrough',
+        execution_ms: Date.now() - start,
+        strategy: originalExecuted ? 'native' : (entryErrors.length > 0 ? 'failed' : 'passthrough'),
+        entry_errors: entryErrors,
         timestamp: new Date().toISOString(),
       },
     },
   };
+
+  // Mode enforcement: under ENFORCE, silent passthrough is a credibility
+  // failure — the substrate must surface that no real attachment fired.
+  if (!originalExecuted && CMPSBL_MODE === 'enforce') {
+    throw new CmpsblExecutionError(
+      meta.name,
+      'handler_failure',
+      entryErrors.length > 0
+        ? 'enforce mode: no entry point succeeded — ' + entryErrors.join(' | ')
+        : 'enforce mode: no entry point matched — wrap your function with cmpsblWrap(fn) for explicit attachment',
+      envelope,
+    );
+  }
+  if (!originalExecuted && CMPSBL_MODE === 'soft') {
+    if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+      console.warn('[CMPSBL:soft] ' + meta.name + ' ran in passthrough — no entry matched. Use cmpsblWrap(fn) for explicit attachment.');
+    }
+  }
 
   // Sealed propagation — proprietary.
   if (originalError !== null || pipeline.success === false) {
@@ -461,11 +527,16 @@ export interface ExecutionResult {
     cjpi: number;
     tier: string;
     chain: string[];
+    /** Active governance mode at execution time (compiled or env-overridden). */
+    mode: 'observe' | 'soft' | 'enforce';
     execution: {
       original_executed: boolean;
       original_error: string | null;
       execution_ms: number;
-      strategy: 'native' | 'passthrough';
+      /** native = sniff worked. failed = sniffs threw. passthrough = no entry matched. */
+      strategy: 'native' | 'passthrough' | 'failed';
+      /** Per-target sniff errors (arity / construction / invocation). */
+      entry_errors: string[];
       timestamp: string;
     };
   };
@@ -711,13 +782,24 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
     ctx._signals.push({ type: 'resolve', source: mod, ts: Date.now() });
     return ctx;
   },
-  SOVEREIGN: (ctx, mod) => {
-    ctx._data._sovereign = { jurisdiction: 'default', authority: 'delegated', classification: 'standard' };
+  SOVEREIGN: (ctx, mod, meta) => {
+    // Real classification: tier-based authority delegation (parity with Python).
+    const tier = String(meta.tier ?? 'mint');
+    const authMap: Record<string, string> = { apex: 'delegated', mythic: 'delegated', relic: 'supervised', prime: 'supervised', mint: 'constrained' };
+    ctx._data._sovereign = { jurisdiction: 'default', authority: authMap[tier] ?? 'constrained', classification: tier };
     ctx._signals.push({ type: 'classify', source: mod, ts: Date.now() });
     return ctx;
   },
   ATLAS: (ctx, mod) => {
-    ctx._data._atlas = { capabilities: userKeys(ctx._data).length, coverage: 'full', registry: 'active' };
+    // Real registry mapping: enumerate observable surfaces + coverage ratio.
+    const keys = userKeys(ctx._data);
+    const surfaceTypes: Record<string, number> = {};
+    for (const k of keys) {
+      const t = typeof (ctx._data as Record<string, unknown>)[k];
+      surfaceTypes[t] = (surfaceTypes[t] ?? 0) + 1;
+    }
+    const coverage = Math.min(1, keys.length / 16);
+    ctx._data._atlas = { surfacesMapped: keys.length, surfaceTypes, coverage: Math.round(coverage * 10000) / 10000, registry: 'active' };
     ctx._signals.push({ type: 'map', source: mod, ts: Date.now() });
     return ctx;
   },
@@ -771,7 +853,15 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
     return ctx;
   },
   REFLEX: (ctx, mod) => {
-    ctx._data._reflex = { edgeRouted: true, decisionTree: 'optimized', latency: 'sub-ms' };
+    // Real edge decision: route by payload weight (parity with Python).
+    const payloadBytes = JSON.stringify(ctx._data).length;
+    const decision = payloadBytes < 1024 ? 'fast_path' : 'deep_path';
+    ctx._data._reflex = {
+      edgeRouted: true,
+      decision,
+      payloadBytes,
+      latencyClass: payloadBytes < 1024 ? 'sub_ms' : 'low_ms',
+    };
     ctx._signals.push({ type: 'reflex', source: mod, ts: Date.now() });
     return ctx;
   },
@@ -1010,6 +1100,60 @@ export const CMPSBL_PACK_META = {
 /** @deprecated Use CMPSBL_PACK_META instead */
 export const PACK_META = CMPSBL_PACK_META;
 
+// ─── Governance Mode (compiled · env-overridable) ───────────────────────────
+// The mode you picked on the Govern screen is compiled in below. Override
+// it at runtime via the CMPSBL_MODE env var (observe | soft | enforce).
+//   • observe  → record + pass through (zero behavior change)
+//   • soft     → record + console.warn on risky / passthrough events
+//   • enforce  → record + throw / short-circuit on risky / passthrough events
+const COMPILED_CMPSBL_MODE: 'observe' | 'soft' | 'enforce' = ${JSON.stringify((governanceMode === 'soft' || governanceMode === 'enforce') ? governanceMode : 'observe')};
+function _resolveCmpsblMode(): 'observe' | 'soft' | 'enforce' {
+  try {
+    const env = (typeof process !== 'undefined' && process.env && process.env.CMPSBL_MODE) || '';
+    const v = String(env).toLowerCase();
+    if (v === 'observe' || v === 'soft' || v === 'enforce') return v;
+  } catch { /* non-fatal: browser / sandbox */ }
+  return COMPILED_CMPSBL_MODE;
+}
+export const CMPSBL_MODE: 'observe' | 'soft' | 'enforce' = _resolveCmpsblMode();
+
+/**
+ * cmpsblWrap — Framework-aware opt-in attachment helper.
+ *
+ * Use this when the auto-detector can't safely sniff your function's real
+ * signature (WebSocket handlers, Express middleware, BullMQ workers, etc.).
+ * Wrapping is explicit, deterministic, and honest — the substrate runs your
+ * function exactly as you call it, with the active CMPSBL_MODE pipeline
+ * around it.
+ *
+ *   const handle = cmpsblWrap('Diagnostic_Reasoning_Core', handleClientMessage);
+ *   handle(ws, session, raw);   // your real signature, untouched
+ */
+export function cmpsblWrap<F extends (...args: unknown[]) => unknown>(
+  capability: string,
+  fn: F,
+): F {
+  const wrapped = (...args: unknown[]): unknown => {
+    const start = Date.now();
+    let originalResult: unknown;
+    let originalError: string | null = null;
+    try { originalResult = fn(...args); }
+    catch (err) { originalError = err instanceof Error ? err.message : String(err); }
+    // Run the same Layer 2 pipeline against a synthetic context so receipts
+    // and signals fire even when the user invokes via cmpsblWrap.
+    const ctx: Record<string, unknown> = { _wrapped: capability, _argc: args.length };
+    const meta = { name: capability, cjpi: 50, tier: 'mint', chain: ['CANDIDATE'], fingerprint: 'wrap', moatSignature: 'wrap' };
+    const pipeline = executePipeline(ctx, meta.chain, meta);
+    if (originalError !== null) {
+      if (CMPSBL_MODE === 'enforce') throw new Error('[CMPSBL:enforce] ' + capability + ': ' + originalError);
+      if (CMPSBL_MODE === 'soft' && typeof console !== 'undefined') console.warn('[CMPSBL:soft] ' + capability + ': ' + originalError);
+    }
+    void pipeline; void start;
+    return originalResult;
+  };
+  return wrapped as F;
+}
+
 // ─── Per-Capability Execution ────────────────────────────────────────────────
 
 ${tsCapabilityExecutors}
@@ -1155,8 +1299,11 @@ export function generateUnifiedJavaScript(
   packName: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  riskSurfaceCount?: number,
+  excludedFunctions?: ReadonlyArray<string>,
 ): string {
-  const ts = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+  const ts = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   const js = stripTypeScriptSyntax(ts);
 
   // Collect public function names for the CommonJS footer (best-effort)
@@ -1192,6 +1339,10 @@ export function generateUnifiedPython(
   packName: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  riskSurfaceCount?: number,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _excludedFunctions?: ReadonlyArray<string>,
 ): string {
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
@@ -2999,6 +3150,8 @@ export function generateUnifiedCapabilityFile(
   lang: string,
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
+  governanceMode?: string,
+  excludedFunctions?: ReadonlyArray<string>,
 ): string {
   // Two real tiers ship:
   //   • CANONICAL (TS, JS, Python, PHP) → branded single-file runtime
@@ -3008,6 +3161,10 @@ export function generateUnifiedCapabilityFile(
   // hand-tuned polyglot template, otherwise we hard-fail at this gate.
   assertLanguageSupported(lang);
 
+  // Compute risk surface count from the embedded source — drives the
+  // honest mode banner ("ENFORCE → OBSERVE auto-downgraded" when 0 risks).
+  const riskSurfaceCount = computeRiskSurfaceCount(userSourceFiles);
+
   let raw: string;
   // Single boundary: normalize chains for every language emitter so raw
   // uploaded module names (e.g. "SHELVE") never leak into runtime lookups.
@@ -3016,14 +3173,14 @@ export function generateUnifiedCapabilityFile(
   userSourceFiles = coerceUserSourceFiles(userSourceFiles);
 
   if (lang === 'typescript') {
-    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers);
+    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'javascript') {
     // JS diverges from TS: strips type annotations from the public surface and
     // appends a CommonJS-compatible export footer so the file works equally
     // well via `require()` or ESM `import`.
-    raw = generateUnifiedJavaScript(capabilities, packName, userSourceFiles, selectedLayers);
+    raw = generateUnifiedJavaScript(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'python') {
-    raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers);
+    raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'php') {
     raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
   } else if (hasPolyglotGenerator(lang)) {
