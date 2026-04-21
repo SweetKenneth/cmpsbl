@@ -128,11 +128,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const FLEET_INTEL_LAYER: CmpsblLayerDefinition = {
   id: "fleet-intelligence",
-  name: "Fleet Intelligence Layer",
+  name: "AI Provider Quality Routing Layer",
   crownJewelRank: 9,
   cjpi: 98,
   module: "NEXUS",
-  description: "Real-time scoring matrix across all AI providers. Weighted round-robin with quality-gated fallback chains.",
+  description: "Real-time scoring across every AI provider with weighted round-robin and quality-gated fallback — always route to the best-performing model, automatically degrade when one slows down.",
   priceCents: 0,
   tsCode: FLEET_INTEL_TS,
   pyCode: FLEET_INTEL_PY,
@@ -282,11 +282,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const AI_SAFETY_LAYER: CmpsblLayerDefinition = {
   id: "ai-safety",
-  name: "AI Safety Layer",
+  name: "AI Hallucination & Injection Safety Layer",
   crownJewelRank: 10,
   cjpi: 95,
   module: "DREAM×DEFENSE",
-  description: "Hallucination Guard + Prompt Injection Shield. Multi-source verification + multi-layer input sanitization.",
+  description: "Multi-source fact verification plus multi-layer prompt-injection sanitization — keep your LLM from making things up or being manipulated into doing something it shouldn't.",
   priceCents: 0,
   tsCode: AI_SAFETY_TS,
   pyCode: AI_SAFETY_PY,
@@ -416,11 +416,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const AI_COST_LAYER: CmpsblLayerDefinition = {
   id: "ai-cost",
-  name: "AI Cost Intelligence Layer",
+  name: "AI Cost Cap & Token Optimization Layer",
   crownJewelRank: 11,
   cjpi: 96,
   module: "NEXUS",
-  description: "Cost-Aware Routing Engine + Token Optimization. Real-time budget tracking with progressive quality degradation.",
+  description: "Real-time token budget tracking with progressive quality degradation when you approach the cap — never wake up to a runaway AI bill again.",
   priceCents: 0,
   tsCode: AI_COST_TS,
   pyCode: AI_COST_PY,
@@ -617,11 +617,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const COG_MEMORY_LAYER: CmpsblLayerDefinition = {
   id: "cognitive-memory",
-  name: "Cognitive Memory Layer",
+  name: "Long-Term Knowledge Graph Memory Layer",
   crownJewelRank: 12,
   cjpi: 94,
   module: "BRAIN×MEMORY",
-  description: "Semantic Knowledge Graph + Knowledge Compaction. Graph-based knowledge representation with relationship inference.",
+  description: "Stores everything your AI learns as a semantic graph with relationship inference and automatic compaction — your assistant remembers context across sessions instead of starting from zero.",
   priceCents: 0,
   tsCode: COG_MEMORY_TS,
   pyCode: COG_MEMORY_PY,

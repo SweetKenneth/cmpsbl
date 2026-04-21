@@ -144,11 +144,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const COMPLIANCE_LAYER: CmpsblLayerDefinition = {
   id: "regulatory-compliance",
-  name: "Regulatory Compliance Layer",
+  name: "Automated Compliance Reporting & Routing Layer",
   crownJewelRank: 20,
   cjpi: 93,
   module: "AUDIT×COMPASS",
-  description: "Compliance Attestation Generator + Jurisdiction-Aware Router. Automated reports + intelligent routing respecting data residency.",
+  description: "Generates audit-ready compliance reports on demand and routes data through jurisdiction-aware paths — keep regulators happy without a full-time compliance engineer.",
   priceCents: 0,
   tsCode: COMPLIANCE_TS,
   pyCode: COMPLIANCE_PY,

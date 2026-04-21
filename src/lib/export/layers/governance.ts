@@ -103,11 +103,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const GOV_SHIELD_LAYER: CmpsblLayerDefinition = {
   id: "governance-shield",
-  name: "Governance Shield Layer",
+  name: "Policy Veto & Self-Audit Layer",
   crownJewelRank: 18,
   cjpi: 94,
   module: "GOVERNANCE",
-  description: "Veto Authority Engine + Self-Audit Loop. Authority-gated veto system with continuous self-audit and policy compliance.",
+  description: "Authority-gated veto on any disallowed operation plus a continuous self-audit loop — prove to the board (and to your future self) that policy is actually being enforced.",
   priceCents: 0,
   tsCode: GOV_SHIELD_TS,
   pyCode: GOV_SHIELD_PY,
@@ -241,11 +241,11 @@ def cmpsbl_execute(capability_name: str, input_data: dict) -> dict:
 
 const AUDIT_CHAIN_LAYER: CmpsblLayerDefinition = {
   id: "audit-chain",
-  name: "Tamper-Evident Audit Layer",
+  name: "Tamper-Evident Audit Trail Layer",
   crownJewelRank: 19,
   cjpi: 95,
   module: "AUDIT",
-  description: "Hash-chained audit log with FNV-1a entry hashing. Cryptographic tamper detection for SOC2/HIPAA/FedRAMP audit trails.",
+  description: "Hash-chained audit log where any tampering breaks the chain and is immediately visible — the audit trail SOC2, HIPAA, and FedRAMP auditors actually want to see.",
   priceCents: 0,
   tsCode: AUDIT_CHAIN_TS,
   pyCode: AUDIT_CHAIN_PY,
