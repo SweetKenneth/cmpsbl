@@ -352,6 +352,7 @@ export function V2EnhanceStep({ onComplete }: Props) {
               const meta = TIER_META[layerTier];
               // Governor bypasses every tier gate — they own the substrate.
               const isLocked = isGovernor ? false : TIER_RANK[layerTier] > userTierRank;
+              const isExpanded = expandedLayers.has(layer.id);
               return (
                 <div
                   key={layer.id}
