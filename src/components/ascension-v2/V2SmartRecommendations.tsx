@@ -29,6 +29,7 @@ import {
   type LayerRecommendation,
 } from '@/lib/factory/smart-recommendations';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { useUserRole } from '@/hooks/useUserRole';
 import { TIER_META, type LayerTier } from '@/lib/ascension-v2/tier-layers';
 
 interface Props {
@@ -149,7 +150,10 @@ export function V2SmartRecommendations({
   userTier,
 }: Props) {
   const subscription = useEngineSubscription();
-  const effectiveTier: LayerTier = userTier ?? mapSubscriptionTier(subscription.tier);
+  const { isGovernor } = useUserRole();
+  // Governor bypasses every tier gate — they own the substrate.
+  const effectiveTier: LayerTier =
+    userTier ?? (isGovernor ? 'enterprise' : mapSubscriptionTier(subscription.tier));
 
   // Stable signatures so new array refs from parents don't bust the memo.
   const coveredKey = useMemo(
