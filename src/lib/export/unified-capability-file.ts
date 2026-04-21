@@ -326,10 +326,13 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
   const meta = ${JSON.stringify({ name: cap.name, cjpi: cap.cjpiScore, tier: cap.tier, chain: cap.chain, fingerprint: cap.fingerprint, moatSignature: cap.moatSignature })};
   const start = Date.now();
 
-  // LAYER 1 — Run your original code (Smart Entry Point Detection)
+  // LAYER 1 — Run your original code (sniffs).
+  // Each sniff is independently guarded; arity mismatches collect into
+  // entryErrors instead of poisoning the executed flag.
   let originalResult: unknown = input;
   let originalExecuted = false;
   let originalError: string | null = null;
+  const entryErrors: string[] = [];
   try {
 ${tsEntryPointCode}
   } catch (err) {
@@ -350,13 +353,34 @@ ${tsEntryPointCode}
     _pipeline: pipeline,
     _cmpsbl: {
       capability: meta.name, cjpi: meta.cjpi, tier: meta.tier, chain: meta.chain,
+      mode: CMPSBL_MODE,
       execution: {
         original_executed: originalExecuted, original_error: originalError,
-        execution_ms: Date.now() - start, strategy: originalExecuted ? 'native' : 'passthrough',
+        execution_ms: Date.now() - start,
+        strategy: originalExecuted ? 'native' : (entryErrors.length > 0 ? 'failed' : 'passthrough'),
+        entry_errors: entryErrors,
         timestamp: new Date().toISOString(),
       },
     },
   };
+
+  // Mode enforcement: under ENFORCE, silent passthrough is a credibility
+  // failure — the substrate must surface that no real attachment fired.
+  if (!originalExecuted && CMPSBL_MODE === 'enforce') {
+    throw new CmpsblExecutionError(
+      meta.name,
+      'handler_failure',
+      entryErrors.length > 0
+        ? 'enforce mode: no entry point succeeded — ' + entryErrors.join(' | ')
+        : 'enforce mode: no entry point matched — wrap your function with cmpsblWrap(fn) for explicit attachment',
+      envelope,
+    );
+  }
+  if (!originalExecuted && CMPSBL_MODE === 'soft') {
+    if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+      console.warn('[CMPSBL:soft] ' + meta.name + ' ran in passthrough — no entry matched. Use cmpsblWrap(fn) for explicit attachment.');
+    }
+  }
 
   // Sealed propagation — proprietary.
   if (originalError !== null || pipeline.success === false) {
