@@ -13,8 +13,12 @@
 
 import type { UnifiedCapabilityInput } from './unified-capability-file';
 import { formatEnhancedCapabilityName } from './humanize-name';
-import { buildReboundBlock, needsReboundLayer } from './layer-1-5-rebound';
 import { detectFrameworkMiddleware } from './framework-middleware';
+
+// Native langs (Swift/Rust/Kotlin/Java/Go/C#) where Layer 1 is comment-escaped
+// and we can only attach governance through framework boundaries — never by
+// fabricating shadow symbols of user code.
+const NATIVE_LANGS = new Set(['swift', 'rust', 'kotlin', 'java', 'go', 'csharp']);
 
 const displayCap = (c: UnifiedCapabilityInput): string =>
   formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'));
@@ -2640,30 +2644,23 @@ export function generatePolyglotFile(
     }
   }
 
-  // Layer 1.5 — Framework-aware middleware (preferred) or generic Rebound stubs.
-  // Native langs (Swift/Rust/Kotlin/Java/Go/C#) have a comment-escaped Layer 1
-  // and need a real call-site so Layer 2 governance fires. We try to recognize
-  // the framework first (e.g. Swift+Vapor → AsyncMiddleware). When we DO know
-  // the framework we emit a drop-in middleware. When we DON'T, we fall back to
-  // the generic Rebound stubs so we never silently emit a "live" wrapper that
-  // doesn't actually wrap anything.
+  // Layer 1.5 — Framework-aware middleware ONLY.
+  // Native langs (Swift/Rust/Kotlin/Java/Go/C#) keep Layer 1 comment-escaped.
+  // We attach governance ONLY through real framework boundaries (e.g. Vapor
+  // AsyncMiddleware). When no framework is recognized we emit NOTHING — the
+  // kernel ships in the artifact, the developer wires `cmpsbl_chain` at their
+  // own boundary. We never fabricate shadow symbols of user code.
   if (
     userSourceFiles &&
     userSourceFiles.length > 0 &&
-    needsReboundLayer(lang) &&
+    NATIVE_LANGS.has(lang) &&
     !assembled.includes('LAYER 1.5')
   ) {
-    let block = '';
     const fwk = detectFrameworkMiddleware(userSourceFiles, lang);
-    if (fwk) {
-      block = fwk.block;
-    } else {
-      const rebound = buildReboundBlock(userSourceFiles, lang);
-      block = rebound.block;
-    }
+    const block = fwk ? fwk.block : '';
     if (block) {
       // Place the Layer 1.5 block immediately AFTER Layer 1 so kernels (emitted
-      // later in the file) can reference CmpsblRebound / CmpsblTraceMiddleware.
+      // later in the file) can reference CmpsblTraceMiddleware / CmpsblConfigure.
       const endMarker = 'END OF LAYER 1';
       const endIdx = assembled.indexOf(endMarker);
       if (endIdx > 0) {
