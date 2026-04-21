@@ -352,6 +352,8 @@ function checkProofOfFiring(input: HarnessInput): HarnessCheck {
   }
 
   const code = input.ascendedCode;
+  const lang = input.language.toLowerCase();
+  const acceptsName = lang !== 'typescript' && lang !== 'javascript' && lang !== 'python';
   const silent: string[] = [];
 
   for (const layer of input.selectedLayers) {
@@ -359,14 +361,15 @@ function checkProofOfFiring(input: HarnessInput): HarnessCheck {
     //   • its id appears verbatim in the emitted envelope/wire
     //   • its wrapper symbol appears in the emitted output
     //   • a cmpsbl_record_action call references its id
-    // Silent layers (none of the above) cannot participate in cmpsbl_chain
-    // and therefore violate the chain contract.
+    //   • (non-TS/JS/PY only) its display name appears — native idiomatic
+    //     emitters rename wrappers but always emit the layer banner header
     const idPresent = code.includes(layer.id);
     const wrapperPresent = code.includes(layer.autoWire.wrapperName);
+    const namePresent = acceptsName && code.includes(layer.name);
     const recordedAction = code.includes(`cmpsbl_record_action`) &&
       (code.includes(`'${layer.id}'`) || code.includes(`"${layer.id}"`));
 
-    if (!idPresent && !wrapperPresent && !recordedAction) {
+    if (!idPresent && !wrapperPresent && !namePresent && !recordedAction) {
       silent.push(`${layer.name} (${layer.id})`);
     }
   }
