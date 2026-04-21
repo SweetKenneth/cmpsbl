@@ -3443,6 +3443,7 @@ export function generateRefurbishedCode(
     '',
     ...(pythonWrapBlock ? [pythonWrapBlock, ''] : []),
     ...(rustWrapBlock ? [rustWrapBlock, ''] : []),
+    ...(goWrapBlock ? [goWrapBlock, ''] : []),
     verifyBlock,
     '',
     adapter.blockComment(footerLines),
