@@ -606,14 +606,19 @@ export function detectV2Drift(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §12 — RUNTIME LOCKBOX (Patent #1 — primitive #41 execution surface)
+// §12 — RUNTIME ENGINE (Patent #1 — primitive #41 execution surface)
 // ═══════════════════════════════════════════════════════════════════════════════
 //
-// This is the V1 "lockbox" — the deterministic mini-substrate that turns the
-// user's code into Primitive #41, registers it in the runtime registry, and
-// executes it (collides it) against the 40 substrate primitives via the
+// This is the V1 runtime engine — the deterministic mini-substrate that turns
+// the user's code into Primitive #41, registers it in the runtime registry,
+// and executes it (collides it) against the 40 substrate primitives via the
 // dual-layer wrapping handler. V2 reuses these surfaces verbatim — no fork,
 // no re-implementation. Without this, V2 has discoveries but no runtime.
+//
+// NOTE: This is the RUNTIME engine, not the export "blackbox". The blackbox
+// (which hides substrate internals inside the Layer 2 wrapper at export time)
+// lives in src/lib/factory/generate-refurbished-code.ts and the polyglot
+// emitters — a separate concern from runtime execution.
 //
 // Surfaces re-exported here:
 //   - registerPrimaryHandler  : promote user code to Primitive #41
