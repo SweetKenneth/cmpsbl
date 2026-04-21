@@ -57,19 +57,26 @@ describe('Risk 1 — primitive-executor-bridge offline path', () => {
   });
 
   it('sync executor returns a result without throwing when offline', () => {
-    const out = primitiveExecutorSync('SOME_UNREGISTERED_PRIMITIVE', { foo: 'bar' });
+    const out = primitiveExecutorSync('SOME_UNREGISTERED_PRIMITIVE', { foo: 'bar' }, 0.5);
     expect(out).toBeTruthy();
-    // Shape is { data, confidence_delta, signal } — bridge guarantees a result
     expect(typeof out).toBe('object');
+    expect(out).toHaveProperty('data');
+    expect(out).toHaveProperty('confidence_delta');
+    expect(out).toHaveProperty('signal');
   });
 
   it('async executor resolves (never rejects) when offline', async () => {
-    const out = await primitiveExecutor('SOME_UNREGISTERED_PRIMITIVE', { x: 1 });
+    const out = await primitiveExecutor(
+      'SOME_UNREGISTERED_PRIMITIVE',
+      { _data: { x: 1 }, _signals: [], _errors: [] },
+      0.5,
+    );
     expect(out).toBeTruthy();
+    expect(out).toHaveProperty('data');
   });
 
   it('telemetry buffer is accessible and bounded', () => {
-    primitiveExecutorSync('TELEMETRY_PROBE', {});
+    primitiveExecutorSync('TELEMETRY_PROBE', {}, 0.5);
     const buf = getTelemetryBuffer();
     expect(Array.isArray(buf)).toBe(true);
   });
@@ -124,25 +131,31 @@ describe('Risk 2 — primitive-registry per-run isolation pattern', () => {
 // Risk 3 — brain-learning-bridge non-blocking safety
 // ─────────────────────────────────────────────────────────────────────
 describe('Risk 3 — brain-learning-bridge non-blocking safety', () => {
-  it('recordExtractionLearning never throws even with empty input', () => {
-    const empty: ExtractionResult = {
-      primitives: [],
-      stats: {
-        totalCandidates: 0,
-        extracted: 0,
-        rejected: 0,
-        byCategory: {},
-        byMethod: {},
-        byLanguage: {},
-        averageConfidence: 0,
-        extractionTimeMs: 0,
+  it('recordExtractionLearning resolves (never throws) with minimal input', async () => {
+    const minimalNode = {
+      id: 'risk-node',
+      name: 'risk-node',
+      language: 'typescript',
+    } as any;
+    const minimalResult = {
+      correlationId: 'risk-corr',
+      durationMs: 0,
+      quality: {
+        accepted: [],
+        rejected: [],
+        summary: {
+          totalAccepted: 0,
+          totalRejected: 0,
+          avgQualityScore: 0,
+          avgConfidence: 0,
+          topCategories: [],
+        },
       },
-      sourceFile: 'risk-test.ts',
-      sourceLanguage: 'typescript',
-      extractedAt: Date.now(),
-    } as unknown as ExtractionResult;
+    } as any;
 
-    expect(() => recordExtractionLearning(empty)).not.toThrow();
+    await expect(
+      recordExtractionLearning(minimalNode, minimalResult),
+    ).resolves.not.toThrow();
   });
 
   it('getLearningInsights returns a structured object even with no recorded events', () => {
