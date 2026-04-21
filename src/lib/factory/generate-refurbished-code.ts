@@ -3404,6 +3404,30 @@ export function generateRefurbishedCode(
     ? renderRustAttachmentBlock(rustWrapPlan)
     : '';
 
+  // ── Go User-Function Wrapping (real attachment, not just manifest) ──
+  // Mirrors Python/Rust. Emits a CmpsblWrap helper (context-aware), a
+  // CmpsblMiddleware (http.Handler — works with stdlib mux, chi, gorilla,
+  // gin via http.Handler), and per-fn Cmpsbl<Name> aliases for handlers.
+  // Never modifies Layer 1 — opt-in by routing to Cmpsbl<Name> or wrapping
+  // your mux: `mux := cmpsbl_attach.CmpsblMiddleware("cap")(yourMux)`.
+  const goWrapPlan = (langLower === 'go')
+    ? boundaries.map(b => {
+        const matched = attachmentPlan.find(p => p.functionName === b.name);
+        const handlerRe = new RegExp(
+          `func\\s*(?:\\([^)]*\\)\\s*)?${b.name}\\s*\\([^)]*http\\.ResponseWriter[^)]*\\*http\\.Request`,
+        );
+        return {
+          functionName: b.name,
+          capability: matched?.capability ?? 'user_function',
+          primitive: matched?.primitive ?? 'GENERIC',
+          isHandler: handlerRe.test(verbatimSource),
+        };
+      })
+    : [];
+  const goWrapBlock = goWrapPlan.length > 0
+    ? renderGoAttachmentBlock(goWrapPlan)
+    : '';
+
   // ── Final Assembly: [Prelude] + Layer 2 + [Upstream License] + Layer 1 (verbatim) + [Wrap] ───────
   return [
     filePrelude + layer2Code,
