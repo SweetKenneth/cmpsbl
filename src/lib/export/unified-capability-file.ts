@@ -350,7 +350,7 @@ ${tsEntryPointCode}
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //   HOW IT WORKS
 //     LAYER 1  →  your original source, copied here verbatim, runs first
-//     LAYER 2  →  the Ascension substrate wraps each call in a 6-phase pipeline:
+//     LAYER 2  →  the Ascension substrate wraps each substrate call in a 6-phase pipeline:
 //                 Hardening → Governance → Cognition → Audit → Performance → Execute
 //     Same input, same output, same execution path — every time, on every machine.
 //
@@ -1357,7 +1357,7 @@ ${embeddedSources}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   HOW IT WORKS
     LAYER 1  →  your original source, copied here verbatim, runs first
-    LAYER 2  →  the Ascension substrate wraps each call in a 6-phase pipeline:
+    LAYER 2  →  the Ascension substrate wraps each substrate call in a 6-phase pipeline:
                 Hardening → Governance → Cognition → Audit → Performance → Execute
     Same input, same output, same execution path — every time, on every machine.
 
@@ -2538,7 +2538,7 @@ export function generateUnifiedPhp(
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  *   HOW IT WORKS
  *     LAYER 1  →  your original source, copied here verbatim, runs first
- *     LAYER 2  →  the Ascension substrate wraps each call in a 6-phase pipeline:
+ *     LAYER 2  →  the Ascension substrate wraps each substrate call in a 6-phase pipeline:
  *                 Hardening → Governance → Cognition → Audit → Performance → Execute
  *     Same input, same output, same execution path — every time, on every machine.
  *
