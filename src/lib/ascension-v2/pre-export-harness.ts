@@ -360,10 +360,11 @@ function checkProofOfFiring(input: HarnessInput): HarnessCheck {
   // For native langs, the *active* firing signal is a real call-site:
   //   • the kernel wrapper symbol (`cmpsbl_execute` / `CmpsblIsolatedExecutor`)
   //   • a Layer-1.5 rebound stub (`CmpsblRebound.<symbol>`)
+  //   • a framework-aware middleware (`CmpsblTraceMiddleware`, `CmpsblConfigure`)
   // A banner-name-only match is presence, not firing — we downgrade those to
   // a soft warning rather than a silent pass.
   const hasActiveCallSite =
-    /CmpsblIsolatedExecutor|cmpsbl_execute|CmpsblRebound|cmpsbl_rebound|CmpsblExecute/.test(code);
+    /CmpsblIsolatedExecutor|cmpsbl_execute|CmpsblRebound|cmpsbl_rebound|CmpsblExecute|CmpsblTraceMiddleware|CmpsblConfigure/.test(code);
 
   for (const layer of input.selectedLayers) {
     // A layer is considered "able to fire" when at least ONE of:
