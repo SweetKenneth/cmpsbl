@@ -69,6 +69,9 @@ export type {
 // V1 Bridge — exposes the canonical V1 quality, integrity, audit,
 // scoring, contract, merge, learning, feedback, and drift engines
 // to the V2 pipeline (Phase A: gaps 1-6, Phase B: gaps 7-11).
+// Phase C (§12) re-exports V1's runtime "lockbox" — Primitive #41
+// promotion + dual-layer execution binding + effect injection — so
+// V2 reuses the working runtime instead of re-implementing it.
 export {
   // Phase A — gaps 1-6
   bandDiscovery,
@@ -91,6 +94,28 @@ export {
   getV2FeedbackVocabulary,
   getV2FeedbackStats,
   detectV2Drift,
+  // Phase C — runtime lockbox (§12)
+  registerPrimaryHandler,
+  hasPrimaryHandler,
+  bindAndExecute,
+  buildExecutableUnit,
+  resolveExecutionStrategy,
+  ensurePrimaryRegistered,
+  detectPrimaryUnit,
+  effectWrapper,
+  applyEffectInjection,
+  enrichExtractionWithEffects,
+  generateEffectSummary,
+  autoMapModuleName,
+  generateDefaultChain,
+  postProcessPrimitives,
+  registerPrimitive,
+  getPrimitive,
+  listPrimitives,
+  removePrimitive,
+  getPrimitiveCount,
+  beginIsolatedRegistryScope,
+  runRuntimeForPrimitive,
 } from './v1-bridge';
 export type {
   ConfidenceBand,
@@ -112,6 +137,23 @@ export type {
   FeedbackExtraction,
   DriftDetection,
   V2DriftReport,
+  // Phase C — runtime types
+  PrimaryHandlerResult,
+  ExecutableUnit,
+  ExecutionBindingResult,
+  ExecutionStrategy,
+  StrategyResolution,
+  EffectInjectionResult,
+  EffectExtractionMeta,
+  EffectSummary,
+  EffectStatus,
+  EffectUIContract,
+  PrimaryExecutionUnit,
+  PrimitiveDefinition,
+  PrimitiveHandler,
+  IsolatedRegistryScope,
+  RuntimeExecutionInput,
+  RuntimeExecutionOutput,
 } from './v1-bridge';
 
 // Funnel telemetry — six events that prove the pipeline converts
