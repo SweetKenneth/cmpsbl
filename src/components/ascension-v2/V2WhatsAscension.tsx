@@ -5,7 +5,10 @@
  *   1. The CMPSBL® Hardening Layer — the standard code upgrade every file
  *      receives, no matter the tier.
  *   2. What Ascension does for free for everyone.
- *   3. The 9 shipping languages today + others coming soon.
+ *   3. The shipping languages today + others coming soon.
+ *
+ * Language counts and labels are sourced live from the V2 supported-languages
+ * registry, so this section can never drift from what the pipeline emits.
  *
  * Uses semantic tokens only. No live numbers — fully static copy.
  *
@@ -16,6 +19,7 @@ import { Shield, Sparkles, Layers, FileCheck, GitBranch, Lock, Check } from 'luc
 import {
   getCanonicalLanguages,
   getBetaLanguages,
+  getSupportedLanguages,
 } from '@/lib/export/v2-supported-languages';
 
 // ─── Static copy (no dynamic metrics) ───────────────────────────────────────
@@ -43,8 +47,8 @@ const HARDENING_PILLARS = [
   },
 ] as const;
 
-const FREE_FOR_EVERYONE = [
-  'Upload any code — files or paste — in 9 supported languages.',
+const FREE_FOR_EVERYONE = (totalLangs: number): readonly string[] => [
+  `Upload any code — files or paste — in ${totalLangs} supported languages.`,
   'Automatic language + ecosystem detection with semantic drift analysis.',
   '40-Primitive collision scan that classifies your code as Primitive #41.',
   'A single ascended artifact you can download with the CMPSBL® Hardening Layer attached.',
@@ -55,6 +59,8 @@ const FREE_FOR_EVERYONE = [
 export function V2WhatsAscension() {
   const canonical = getCanonicalLanguages();
   const beta = getBetaLanguages();
+  const totalLangs = getSupportedLanguages().length;
+  const freeForEveryone = FREE_FOR_EVERYONE(totalLangs);
 
   return (
     <section
@@ -122,7 +128,7 @@ export function V2WhatsAscension() {
             </h3>
           </div>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-            {FREE_FOR_EVERYONE.map((line) => (
+            {freeForEveryone.map((line) => (
               <li key={line} className="flex items-start gap-2 text-xs sm:text-[13px] text-foreground/85 leading-relaxed">
                 <Check className="w-3.5 h-3.5 mt-0.5 text-primary shrink-0" />
                 <span>{line}</span>
@@ -184,8 +190,7 @@ export function V2WhatsAscension() {
           <p className="mt-4 text-[11px] text-muted-foreground/80 leading-relaxed">
             Canonical languages ship a working single-file runtime, byte-locked by golden-file
             regression. Beta polyglot languages emit a downloadable artifact via the V1 polyglot
-            engine — either a hand-tuned native kernel with your source embedded verbatim, or a
-            structured architecture/port spec in the language&apos;s comment syntax.
+            engine — a hand-tuned native kernel with your source embedded verbatim.
           </p>
         </div>
       </div>

@@ -26,7 +26,7 @@ const FAQS: ReadonlyArray<FaqItem> = [
   },
   {
     q: 'Which languages are supported today?',
-    a: 'Nine languages ship today: TypeScript, JavaScript, Python, Rust, Go, Java, Kotlin, C#, and Swift. Every shipping language has native implementations of all 20 layers and a deterministic chain executor verified by parity tests. Coming-soon languages are visible in the picker but disabled until they pass the same parity bar.',
+    a: 'V2 ships two real tiers. CANONICAL: TypeScript, JavaScript, Python, and PHP — each emits a byte-locked single-file runtime with native implementations of all 20 layers and a deterministic chain executor. BETA POLYGLOT: every other supported language (Rust, Go, Java, Kotlin, C#, Swift, C, C++, Zig, Scala, Ruby, Lua, R, Dart, Elixir, Haskell, plus the HDL/GPU/blockchain families) emits via the V1 polyglot template engine — a hand-tuned native kernel with your Layer 1 source embedded verbatim. Beta artifacts are not yet golden-file-locked like the canonical four, but every visible language emits a real downloadable file — no doc-only stubs.',
   },
   {
     q: 'Why aren\'t more languages shipping yet?',
