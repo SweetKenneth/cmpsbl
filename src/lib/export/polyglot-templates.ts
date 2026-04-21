@@ -14,6 +14,7 @@
 import type { UnifiedCapabilityInput } from './unified-capability-file';
 import { formatEnhancedCapabilityName } from './humanize-name';
 import { buildReboundBlock, needsReboundLayer } from './layer-1-5-rebound';
+import { detectFrameworkMiddleware } from './framework-middleware';
 
 const displayCap = (c: UnifiedCapabilityInput): string =>
   formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'));
@@ -2639,20 +2640,30 @@ export function generatePolyglotFile(
     }
   }
 
-  // Layer 1.5 — Rebound Stubs (Swift/Rust/Kotlin/Java/Go/C# only).
-  // Re-declares user symbols and routes them through the kernel so Layer 2
-  // governance has a real call-site to wrap. TS/JS/PY are rewritten by the
-  // assembler directly and don't need this bridge.
+  // Layer 1.5 — Framework-aware middleware (preferred) or generic Rebound stubs.
+  // Native langs (Swift/Rust/Kotlin/Java/Go/C#) have a comment-escaped Layer 1
+  // and need a real call-site so Layer 2 governance fires. We try to recognize
+  // the framework first (e.g. Swift+Vapor → AsyncMiddleware). When we DO know
+  // the framework we emit a drop-in middleware. When we DON'T, we fall back to
+  // the generic Rebound stubs so we never silently emit a "live" wrapper that
+  // doesn't actually wrap anything.
   if (
     userSourceFiles &&
     userSourceFiles.length > 0 &&
     needsReboundLayer(lang) &&
     !assembled.includes('LAYER 1.5')
   ) {
-    const { block } = buildReboundBlock(userSourceFiles, lang);
+    let block = '';
+    const fwk = detectFrameworkMiddleware(userSourceFiles, lang);
+    if (fwk) {
+      block = fwk.block;
+    } else {
+      const rebound = buildReboundBlock(userSourceFiles, lang);
+      block = rebound.block;
+    }
     if (block) {
-      // Place the rebound block immediately AFTER Layer 1 so kernels (which
-      // are emitted later in the file) can reference CmpsblRebound symbols.
+      // Place the Layer 1.5 block immediately AFTER Layer 1 so kernels (emitted
+      // later in the file) can reference CmpsblRebound / CmpsblTraceMiddleware.
       const endMarker = 'END OF LAYER 1';
       const endIdx = assembled.indexOf(endMarker);
       if (endIdx > 0) {
