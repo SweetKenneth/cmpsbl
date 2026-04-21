@@ -13,6 +13,7 @@
 
 import type { UnifiedCapabilityInput } from './unified-capability-file';
 import { formatEnhancedCapabilityName } from './humanize-name';
+import { buildReboundBlock, needsReboundLayer } from './layer-1-5-rebound';
 
 const displayCap = (c: UnifiedCapabilityInput): string =>
   formatEnhancedCapabilityName(c.name, c.chain.filter(p => p !== 'CANDIDATE'));
@@ -2619,6 +2620,7 @@ export function generatePolyglotFile(
   const raw = generator({ capabilities, packName, allModules, avgCjpi, topCap, userSourceFiles });
 
   // Inject Layer 1 block if source files were provided and not already embedded
+  let assembled = raw;
   if (userSourceFiles && userSourceFiles.length > 0 && !raw.includes('LAYER 1')) {
     const LANG_COMMENT: Record<string, string> = {
       rust: '//', go: '//', java: '//', csharp: '//', ruby: '#', swift: '//', kotlin: '//',
@@ -2631,13 +2633,40 @@ export function generatePolyglotFile(
     const firstSection = raw.indexOf('§1');
     if (firstSection > 0) {
       const insertPoint = raw.lastIndexOf('\n', firstSection);
-      return raw.slice(0, insertPoint) + '\n\n' + layer1 + '\n' + raw.slice(insertPoint);
+      assembled = raw.slice(0, insertPoint) + '\n\n' + layer1 + '\n' + raw.slice(insertPoint);
+    } else {
+      assembled = raw + '\n\n' + layer1;
     }
-    // Fallback: append at end
-    return raw + '\n\n' + layer1;
   }
 
-  return raw;
+  // Layer 1.5 — Rebound Stubs (Swift/Rust/Kotlin/Java/Go/C# only).
+  // Re-declares user symbols and routes them through the kernel so Layer 2
+  // governance has a real call-site to wrap. TS/JS/PY are rewritten by the
+  // assembler directly and don't need this bridge.
+  if (
+    userSourceFiles &&
+    userSourceFiles.length > 0 &&
+    needsReboundLayer(lang) &&
+    !assembled.includes('LAYER 1.5')
+  ) {
+    const { block } = buildReboundBlock(userSourceFiles, lang);
+    if (block) {
+      // Place the rebound block immediately AFTER Layer 1 so kernels (which
+      // are emitted later in the file) can reference CmpsblRebound symbols.
+      const endMarker = 'END OF LAYER 1';
+      const endIdx = assembled.indexOf(endMarker);
+      if (endIdx > 0) {
+        const lineEnd = assembled.indexOf('\n', endIdx);
+        const after = assembled.indexOf('\n', lineEnd + 1); // skip the closing ╚╝ line
+        const insertAt = after > 0 ? after + 1 : lineEnd + 1;
+        assembled = assembled.slice(0, insertAt) + block + assembled.slice(insertAt);
+      } else {
+        assembled = assembled + '\n' + block;
+      }
+    }
+  }
+
+  return assembled;
 }
 
 export const SUPPORTED_LANGUAGES = Object.keys(LANGUAGE_GENERATORS);

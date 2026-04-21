@@ -353,36 +353,53 @@ function checkProofOfFiring(input: HarnessInput): HarnessCheck {
 
   const code = input.ascendedCode;
   const lang = input.language.toLowerCase();
-  const acceptsName = lang !== 'typescript' && lang !== 'javascript' && lang !== 'python';
+  const isNative = lang !== 'typescript' && lang !== 'javascript' && lang !== 'python';
   const silent: string[] = [];
+  const bannerOnly: string[] = [];
+
+  // For native langs, the *active* firing signal is a real call-site:
+  //   • the kernel wrapper symbol (`cmpsbl_execute` / `CmpsblIsolatedExecutor`)
+  //   • a Layer-1.5 rebound stub (`CmpsblRebound.<symbol>`)
+  // A banner-name-only match is presence, not firing — we downgrade those to
+  // a soft warning rather than a silent pass.
+  const hasActiveCallSite =
+    /CmpsblIsolatedExecutor|cmpsbl_execute|CmpsblRebound|cmpsbl_rebound|CmpsblExecute/.test(code);
 
   for (const layer of input.selectedLayers) {
     // A layer is considered "able to fire" when at least ONE of:
     //   • its id appears verbatim in the emitted envelope/wire
     //   • its wrapper symbol appears in the emitted output
     //   • a cmpsbl_record_action call references its id
-    //   • (non-TS/JS/PY only) its display name appears — native idiomatic
-    //     emitters rename wrappers but always emit the layer banner header
     const idPresent = code.includes(layer.id);
     const wrapperPresent = code.includes(layer.autoWire.wrapperName);
-    const namePresent = acceptsName && code.includes(layer.name);
     const recordedAction = code.includes(`cmpsbl_record_action`) &&
       (code.includes(`'${layer.id}'`) || code.includes(`"${layer.id}"`));
+    const namePresent = isNative && code.includes(layer.name);
 
-    if (!idPresent && !wrapperPresent && !namePresent && !recordedAction) {
-      silent.push(`${layer.name} (${layer.id})`);
+    if (idPresent || wrapperPresent || recordedAction) continue;
+    if (namePresent && hasActiveCallSite) continue; // banner + real bridge ⇒ ok
+    if (namePresent) {
+      bannerOnly.push(layer.name);
+      continue;
     }
+    silent.push(`${layer.name} (${layer.id})`);
   }
 
   const passed = silent.length === 0;
+  let message: string;
+  if (passed && bannerOnly.length === 0) {
+    message = `All ${input.selectedLayers.length} layer(s) referenced in envelope`;
+  } else if (passed) {
+    message = `All layers referenced — ${bannerOnly.length} banner-only (no active call-site detected)`;
+  } else {
+    message = `${silent.length} silent layer(s) — cannot fire: ${silent.slice(0, 3).join(' | ')}`;
+  }
   return {
     id: 'proof_of_firing',
     label: 'Proof-of-firing (per-layer action)',
     severity: 'critical',
     passed,
-    message: passed
-      ? `All ${input.selectedLayers.length} layer(s) referenced in envelope`
-      : `${silent.length} silent layer(s) — cannot fire: ${silent.slice(0, 3).join(' | ')}`,
+    message,
     durationMs: Math.round(performance.now() - t0),
   };
 }
