@@ -10,7 +10,9 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText, Zap, Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Trophy, Download, RotateCcw, Loader2, ShieldCheck, FileCode2, Package, FileText, Zap, Check, RefreshCw } from 'lucide-react';
+import { setReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { supabase } from '@/integrations/supabase/client';
 import { DownloadCeremonyOverlay } from '@/components/downloads/DownloadCeremonyOverlay';
 import { useToast } from '@/hooks/use-toast';
