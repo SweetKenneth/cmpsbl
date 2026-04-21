@@ -215,8 +215,8 @@ describe('10-Language Ascension Export Smoke Test', () => {
 // PHP Layer 2 Inline Embedding Test (Patent Compliance)
 // ═══════════════════════════════════════════════════════════════
 
-// Parity gate: PHP is COMING_SOON. Skip its dedicated suites until shipping.
-const phpDescribe = isLanguageShipping('php') ? describe : describe.skip;
+// PHP is canonical and supported — describe runs unconditionally.
+const phpDescribe = isLanguageSupported('php') ? describe : describe.skip;
 
 phpDescribe('PHP Inline Embedding (Patent Compliance)', () => {
   let phpOutput: string;
