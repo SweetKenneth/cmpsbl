@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot } from '@/lib/ascension-v2';
+import { commitUpload, PreAscensionGateError, emitFunnelEvent, getSnapshot, initRun } from '@/lib/ascension-v2';
 import { analyzeUploadedFiles, analyzePastedCode } from '@/components/proprietary-evolution/ingest-utils';
 import { consumeReAscendPayload, type ReAscendPayload } from '@/lib/ascension-v2/reascend';
 import { V2PreflightEstimator } from './V2PreflightEstimator';
@@ -84,6 +84,14 @@ export function V2UploadStep({ onComplete }: Props) {
         name: f.name,
         content: f.content,
       }));
+
+      // Defensive: ensure orchestrator is in `idle` before commitUpload.
+      // Re-ascension can route back to /ascension-v2 without a remount, and a
+      // user navigating back from Results never hits the page-level initRun.
+      // Without this guard, commitUpload throws "Cannot upload in phase: done".
+      if (getSnapshot().phase !== 'idle') {
+        initRun();
+      }
 
       const preRunId = getSnapshot().runId;
       void emitFunnelEvent('upload_started', {
