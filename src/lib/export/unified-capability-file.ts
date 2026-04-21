@@ -3000,12 +3000,12 @@ export function generateUnifiedCapabilityFile(
   userSourceFiles?: UserSourceFile[],
   selectedLayers?: CmpsblLayerDefinition[],
 ): string {
-  // Soft visibility gate. Two real tiers ship:
+  // Two real tiers ship:
   //   • CANONICAL (TS, JS, Python, PHP) → branded single-file runtime
-  //   • BETA_POLYGLOT (everything else)  → polyglot-templates kernel OR
-  //     `generateUnifiedGeneric` architecture/port spec, depending on whether
-  //     a hand-tuned template body exists for the language.
-  // The gate is currently a no-op so every visible language emits a real file.
+  //   • BETA_POLYGLOT (everything else)  → polyglot-templates kernel
+  // The legacy `generateUnifiedGeneric` doc-only fallback was removed —
+  // every visible language must have either a canonical generator or a
+  // hand-tuned polyglot template, otherwise we hard-fail at this gate.
   assertLanguageSupported(lang);
 
   let raw: string;
@@ -3029,7 +3029,11 @@ export function generateUnifiedCapabilityFile(
   } else if (hasPolyglotGenerator(lang)) {
     raw = generatePolyglotFile(lang, capabilities, packName, userSourceFiles);
   } else {
-    raw = generateUnifiedGeneric(capabilities, packName, lang);
+    // Belt-and-suspenders: registry says supported but no template exists.
+    // Refuse to silently emit a doc-only stub.
+    throw new Error(
+      `[CMPSBL:NoEmitter:${lang}] Language is registered but has no canonical or polyglot-template generator.`,
+    );
   }
 
   // Sealed layer composition — proprietary.
