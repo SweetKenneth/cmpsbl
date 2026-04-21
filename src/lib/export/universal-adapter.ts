@@ -43,9 +43,11 @@ import {
 } from './v2-supported-languages';
 
 export type ExportLanguage =
+  // Canonical
+  | 'typescript' | 'javascript' | 'python' | 'php'
   // Software
-  | 'typescript' | 'python' | 'go' | 'rust' | 'java'
-  | 'csharp' | 'ruby' | 'php' | 'swift' | 'kotlin'
+  | 'go' | 'rust' | 'java'
+  | 'csharp' | 'ruby' | 'swift' | 'kotlin'
   | 'elixir' | 'lua' | 'c' | 'cpp' | 'dart' | 'zig'
   | 'scala' | 'haskell'
   // Extended software
@@ -63,8 +65,9 @@ export type ExportLanguage =
   | 'amaranth' | 'spice' | 'systemc' | 'firrtl' | 'bluespec';
 
 export const SOFTWARE_LANGUAGES: ExportLanguage[] = [
-  'typescript', 'python', 'go', 'rust', 'java', 'csharp',
-  'ruby', 'php', 'swift', 'kotlin', 'elixir', 'lua',
+  'typescript', 'javascript', 'python', 'php',
+  'go', 'rust', 'java', 'csharp',
+  'ruby', 'swift', 'kotlin', 'elixir', 'lua',
   'c', 'cpp', 'dart', 'zig', 'scala', 'haskell',
   'perl', 'r', 'julia', 'nim', 'crystal', 'fsharp',
   'clojure', 'erlang', 'ocaml', 'groovy', 'd',
@@ -115,7 +118,7 @@ export interface ExportBundle {
 }
 
 const LANG_EXT: Record<ExportLanguage, string> = {
-  typescript: 'ts', python: 'py', go: 'go', rust: 'rs', java: 'java',
+  typescript: 'ts', javascript: 'js', python: 'py', go: 'go', rust: 'rs', java: 'java',
   csharp: 'cs', ruby: 'rb', php: 'php', swift: 'swift', kotlin: 'kt',
   elixir: 'ex', lua: 'lua', c: 'c', cpp: 'cpp', dart: 'dart', zig: 'zig',
   scala: 'scala', haskell: 'hs',
@@ -135,7 +138,7 @@ const LANG_EXT: Record<ExportLanguage, string> = {
 };
 
 const LANG_LABELS: Record<ExportLanguage, string> = {
-  typescript: 'TypeScript', python: 'Python', go: 'Go', rust: 'Rust',
+  typescript: 'TypeScript', javascript: 'JavaScript', python: 'Python', go: 'Go', rust: 'Rust',
   java: 'Java', csharp: 'C#', ruby: 'Ruby', php: 'PHP',
   swift: 'Swift', kotlin: 'Kotlin', elixir: 'Elixir', lua: 'Lua',
   c: 'C', cpp: 'C++', dart: 'Dart', zig: 'Zig',
@@ -379,6 +382,9 @@ ${cmt} [CMPSBL_SEALED_RUNTIME_${sn.toUpperCase()}]
 
 const CODE_GENERATORS: Record<ExportLanguage, CodeGen> = {
   typescript: genTypeScript,
+  // JavaScript shares the TypeScript runtime template — both emit via the
+  // canonical TS path and are byte-locked together by golden-file regression.
+  javascript: genTypeScript,
   python: genPython,
   go: genGo,
   rust: genRust,

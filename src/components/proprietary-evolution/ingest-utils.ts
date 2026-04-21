@@ -1,123 +1,99 @@
+/**
+ * Ascension V2 Ingest — extension → language map
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * Single source of truth for what V2 will accept on upload. Strictly bounded to
+ * the languages declared in `v2-supported-languages.ts` so the import surface
+ * matches the export surface byte-for-byte. Any extension not listed here is
+ * rejected upstream as Unknown.
+ *
+ * Display labels match the registry's `label` field exactly. Extensionless
+ * project files (Dockerfile, Makefile, etc.) are intentionally NOT accepted —
+ * they're build manifests, not Ascension targets.
+ *
+ * © CMPSBL® — All rights reserved.
+ */
 export const LANG_MAP: Record<string, string> = {
-  // ═══ Web / Scripting ═══
-  ts: 'TypeScript', tsx: 'TypeScript/React', js: 'JavaScript', jsx: 'JavaScript/React',
-  mjs: 'JavaScript', cjs: 'JavaScript', mts: 'TypeScript',
+  // ─── Canonical ────────────────────────────────────────────────────────
+  ts: 'TypeScript', tsx: 'TypeScript', mts: 'TypeScript',
+  js: 'JavaScript', jsx: 'JavaScript', mjs: 'JavaScript', cjs: 'JavaScript',
   py: 'Python', pyw: 'Python', pyi: 'Python',
-  rb: 'Ruby', erb: 'Ruby/ERB',
   php: 'PHP', phtml: 'PHP',
-  lua: 'Lua',
-  pl: 'Perl', pm: 'Perl',
-  r: 'R', R: 'R', rmd: 'R Markdown',
-  jl: 'Julia',
-  groovy: 'Groovy', gvy: 'Groovy',
-  coffee: 'CoffeeScript',
 
-  // ═══ Systems ═══
+  // ─── Beta · systems & native ──────────────────────────────────────────
   rs: 'Rust',
   go: 'Go',
-  c: 'C', h: 'C/C++ Header',
-  cpp: 'C++', cc: 'C++', cxx: 'C++', hpp: 'C++ Header', hxx: 'C++ Header', hh: 'C++ Header',
+  c: 'C', h: 'C',
+  cpp: 'C++', cc: 'C++', cxx: 'C++', hpp: 'C++', hxx: 'C++', hh: 'C++',
   zig: 'Zig',
-  nim: 'Nim', nims: 'Nim',
-  cr: 'Crystal',
-  d: 'D',
-  asm: 'Assembly', s: 'Assembly',
 
-  // ═══ JVM ═══
+  // ─── Beta · JVM family ────────────────────────────────────────────────
   java: 'Java',
   kt: 'Kotlin', kts: 'Kotlin',
   scala: 'Scala', sc: 'Scala',
-  clj: 'Clojure', cljs: 'ClojureScript', cljc: 'Clojure',
-  groovy2: 'Groovy',
 
-  // ═══ .NET / Microsoft ═══
-  cs: 'C#', csx: 'C# Script',
-  fs: 'F#', fsx: 'F# Script', fsi: 'F#',
-  vb: 'Visual Basic',
-  ps1: 'PowerShell', psm1: 'PowerShell', psd1: 'PowerShell',
+  // ─── Beta · .NET ──────────────────────────────────────────────────────
+  cs: 'C#', csx: 'C#',
 
-  // ═══ Apple / Mobile ═══
+  // ─── Beta · Apple platforms ───────────────────────────────────────────
   swift: 'Swift',
+
+  // ─── Beta · scripting & dynamic ───────────────────────────────────────
+  rb: 'Ruby', erb: 'Ruby',
+  lua: 'Lua',
+  r: 'R', R: 'R',
   dart: 'Dart',
-  m: 'Objective-C', mm: 'Objective-C++',
 
-  // ═══ Functional ═══
-  hs: 'Haskell', lhs: 'Haskell',
-  ml: 'OCaml', mli: 'OCaml',
-  erl: 'Erlang', hrl: 'Erlang',
+  // ─── Beta · BEAM ──────────────────────────────────────────────────────
   ex: 'Elixir', exs: 'Elixir',
-  elm: 'Elm',
-  purs: 'PureScript',
-  rkt: 'Racket',
-  scm: 'Scheme',
-  lisp: 'Lisp',
 
-  // ═══ Blockchain / Smart Contracts ═══
+  // ─── Beta · functional ────────────────────────────────────────────────
+  hs: 'Haskell', lhs: 'Haskell',
+
+  // ─── Beta · HDL ───────────────────────────────────────────────────────
+  v: 'Verilog',
+  sv: 'SystemVerilog', svh: 'SystemVerilog',
+  vhd: 'VHDL', vhdl: 'VHDL',
+  chisel: 'Chisel',
+  // Amaranth is hosted in Python; intentionally NOT mapped from `.py` (Python wins).
+  firrtl: 'FIRRTL', fir: 'FIRRTL',
+  bsv: 'Bluespec',
+  cir: 'SPICE', sp: 'SPICE', spice: 'SPICE',
+
+  // ─── Beta · GPU / shaders ─────────────────────────────────────────────
+  cu: 'CUDA',
+  glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL',
+  metal: 'Metal',
+  cl: 'OpenCL',
+
+  // ─── Beta · blockchain / smart contracts ──────────────────────────────
   sol: 'Solidity',
   vy: 'Vyper',
   move: 'Move',
   cairo: 'Cairo',
-  fe: 'Fe',
 
-  // ═══ HDL / Hardware ═══
-  v: 'Verilog', sv: 'SystemVerilog', svh: 'SystemVerilog',
-  vhd: 'VHDL', vhdl: 'VHDL',
-  bsv: 'Bluespec',
-  chisel: 'Chisel',
-  cir: 'SPICE', sp: 'SPICE', spice: 'SPICE',
-  firrtl: 'FIRRTL',
-
-  // ═══ Scientific / HPC ═══
+  // ─── Beta · structured port-spec targets ──────────────────────────────
+  nim: 'Nim', nims: 'Nim',
+  cr: 'Crystal',
+  groovy: 'Groovy', gvy: 'Groovy',
+  clj: 'Clojure', cljs: 'Clojure', cljc: 'Clojure',
+  fs: 'F#', fsx: 'F#', fsi: 'F#',
+  m: 'Objective-C', mm: 'Objective-C',
+  pl: 'Perl', pm: 'Perl',
+  jl: 'Julia',
+  erl: 'Erlang', hrl: 'Erlang',
+  ml: 'OCaml', mli: 'OCaml',
   f90: 'Fortran', f95: 'Fortran', f03: 'Fortran', f08: 'Fortran', f: 'Fortran', for: 'Fortran',
-  mat: 'MATLAB',
-  nb: 'Mathematica', wl: 'Wolfram',
-
-  // ═══ Shell ═══
-  sh: 'Shell', bash: 'Bash', zsh: 'Zsh', fish: 'Fish',
-  bat: 'Batch', cmd: 'Batch',
-
-  // ═══ Infrastructure / Config ═══
-  tf: 'Terraform/HCL', hcl: 'HCL',
-  proto: 'Protobuf',
-  sql: 'SQL',
-  graphql: 'GraphQL', gql: 'GraphQL',
-  prisma: 'Prisma',
-  dockerfile: 'Dockerfile',
-
-  // ═══ Markup / Data ═══
-  json: 'JSON', yaml: 'YAML', yml: 'YAML', toml: 'TOML', xml: 'XML',
-  md: 'Markdown', txt: 'Text', csv: 'CSV', ini: 'INI',
-  cfg: 'Config', conf: 'Config', env: 'Environment',
-  cmake: 'CMake', make: 'Makefile', mk: 'Makefile',
-  gradle: 'Gradle', sbt: 'SBT',
-  nix: 'Nix', dhall: 'Dhall',
-  jsonnet: 'Jsonnet', libsonnet: 'Jsonnet',
-
-  // ═══ WebAssembly ═══
-  wat: 'WebAssembly Text', wast: 'WebAssembly',
-
-  // ═══ GPU / Shaders ═══
-  glsl: 'GLSL', hlsl: 'HLSL', wgsl: 'WGSL', cu: 'CUDA', cl: 'OpenCL',
-  metal: 'Metal',
+  d: 'D',
+  sh: 'Bash', bash: 'Bash',
+  ps1: 'PowerShell', psm1: 'PowerShell', psd1: 'PowerShell',
 };
 
-/** Extensionless filenames → language mapping (case-insensitive) */
-const EXTENSIONLESS_MAP: Record<string, string> = {
-  dockerfile: 'Dockerfile',
-  makefile: 'Makefile',
-  rakefile: 'Ruby/Rake',
-  gemfile: 'Ruby/Bundler',
-  vagrantfile: 'Ruby/Vagrant',
-  justfile: 'Justfile',
-  cmakelists: 'CMake',
-  snakefile: 'Snakemake',
-  jenkinsfile: 'Groovy/Jenkins',
-  procfile: 'Procfile',
-  brewfile: 'Homebrew',
-  taskfile: 'Taskfile',
-  earthfile: 'Earthfile',
-  containerfile: 'Containerfile',
-};
+/**
+ * Extensionless filenames → language mapping.
+ * Empty by design: V2 only ascends source files in registered languages.
+ * Build manifests (Dockerfile, Makefile, etc.) are not Ascension inputs.
+ */
+const EXTENSIONLESS_MAP: Record<string, string> = {};
 
 const SUPPORTED_TEXT_EXTENSIONS = new Set(Object.keys(LANG_MAP));
 const TEXT_SAMPLE_BYTES = 64 * 1024;
