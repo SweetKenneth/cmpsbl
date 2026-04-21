@@ -10,7 +10,7 @@ import {
   detectLayer1License,
   renderLicenseAttribution,
 } from '@/lib/factory/license-attribution';
-import { getShippingLanguages } from '@/lib/export/language-parity-tiers';
+import { getSupportedLanguages as getShippingLanguages } from '@/lib/export/v2-supported-languages';
 import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
 
 const PRIMS: PrimitiveRecommendation[] = [

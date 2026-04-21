@@ -145,13 +145,13 @@ const LANGUAGES = [
   { lang: 'kotlin',     ext: '.kt', idioms: ['fun ', 'class ', 'val '] },
 ];
 
-import { isLanguageShipping } from '../language-parity-tiers';
+import { isLanguageSupported } from '../v2-supported-languages';
 
 describe('10-Language Ascension Export Smoke Test', () => {
   for (const { lang, ext, idioms } of LANGUAGES) {
-    // Non-shipping languages are gated at the export gate by design.
+    // Unsupported languages are gated at the export gate by design.
     // Skip the suite cleanly so the gate is honored, not bypassed.
-    const d = isLanguageShipping(lang) ? describe : describe.skip;
+    const d = isLanguageSupported(lang) ? describe : describe.skip;
     d(`${lang.toUpperCase()} Export`, () => {
       // Lazy generation — never invoked when suite is skipped.
       let output = '';
@@ -215,8 +215,8 @@ describe('10-Language Ascension Export Smoke Test', () => {
 // PHP Layer 2 Inline Embedding Test (Patent Compliance)
 // ═══════════════════════════════════════════════════════════════
 
-// Parity gate: PHP is COMING_SOON. Skip its dedicated suites until shipping.
-const phpDescribe = isLanguageShipping('php') ? describe : describe.skip;
+// PHP is canonical and supported — describe runs unconditionally.
+const phpDescribe = isLanguageSupported('php') ? describe : describe.skip;
 
 phpDescribe('PHP Inline Embedding (Patent Compliance)', () => {
   let phpOutput: string;

@@ -25,7 +25,7 @@ import { ShieldCheck, AlertTriangle, Layers, Languages, FileWarning, HardDrive }
 import { cn } from '@/lib/utils';
 import type { DiscoveredCapability } from '@/lib/ascension-v2';
 import type { DetectedLicense } from '@/lib/factory/license-attribution';
-import { getLanguageParityStatus, getLanguageParityEntry } from '@/lib/export/language-parity-tiers';
+import { getV2LanguageStatus, getV2LanguageEntry } from '@/lib/export/v2-supported-languages';
 
 interface SourceFileLite {
   readonly name: string;
@@ -95,8 +95,8 @@ export function V2PreExportConfidence({
     return out;
   }, [capabilities]);
 
-  const langParity = getLanguageParityStatus(language);
-  const langEntry = getLanguageParityEntry(language);
+  const langParity = getV2LanguageStatus(language);
+  const langEntry = getV2LanguageEntry(language);
   const sizeBand = useMemo(() => estimateZipBand(sourceFiles, attachedLayerCount), [sourceFiles, attachedLayerCount]);
 
   if (capabilities.length === 0) return null;
@@ -143,20 +143,20 @@ export function V2PreExportConfidence({
 
   // 4. Language parity — warn when sidecar mode.
   rows.push({
-    id: 'parity',
+    id: 'tier',
     icon: Languages,
-    label: 'Language parity',
+    label: 'Language tier',
     value: langParity === 'CANONICAL'
-      ? `${langEntry?.label ?? language} · native`
-      : langParity === 'BETA_POLYGLOT'
-        ? `${langEntry?.label ?? language} · polyglot (Beta)`
+      ? `${langEntry?.label ?? language} · canonical`
+      : langParity === 'BETA'
+        ? `${langEntry?.label ?? language} · beta`
         : `${langEntry?.label ?? language} · pass-through sidecar`,
     hint: langParity === 'CANONICAL'
       ? undefined
-      : langParity === 'BETA_POLYGLOT'
+      : langParity === 'BETA'
         ? 'Native file via the V1 polyglot engine — Beta tier, not byte-locked yet'
         : 'Original source ships untouched + sealed TypeScript runtime',
-    severity: langParity === 'CANONICAL' ? 'ok' : langParity === 'BETA_POLYGLOT' ? 'info' : 'warn',
+    severity: langParity === 'CANONICAL' ? 'ok' : langParity === 'BETA' ? 'info' : 'warn',
   });
 
   // 5. Upstream license posture.

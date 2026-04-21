@@ -15,9 +15,8 @@
 import { Shield, Sparkles, Layers, FileCheck, GitBranch, Lock, Check } from 'lucide-react';
 import {
   getCanonicalLanguages,
-  getBetaPolyglotLanguages,
-  getComingSoonLanguages,
-} from '@/lib/export/language-parity-tiers';
+  getBetaLanguages,
+} from '@/lib/export/v2-supported-languages';
 
 // ─── Static copy (no dynamic metrics) ───────────────────────────────────────
 
@@ -55,8 +54,7 @@ const FREE_FOR_EVERYONE = [
 
 export function V2WhatsAscension() {
   const canonical = getCanonicalLanguages();
-  const beta = getBetaPolyglotLanguages();
-  const comingSoon = getComingSoonLanguages();
+  const beta = getBetaLanguages();
 
   return (
     <section
@@ -141,7 +139,6 @@ export function V2WhatsAscension() {
             </h3>
             <span className="text-[11px] sm:text-xs font-mono text-muted-foreground uppercase tracking-[0.18em]">
               {canonical.length} canonical · {beta.length} beta
-              {comingSoon.length > 0 ? ` · ${comingSoon.length} coming soon` : ''}
             </span>
           </div>
 
@@ -182,28 +179,6 @@ export function V2WhatsAscension() {
                 ))}
               </div>
             </>
-          )}
-
-          {/* Coming-soon disclosure — only render when the registry has any.
-              Today every visible language emits, so this stays hidden. */}
-          {comingSoon.length > 0 && (
-            <details className="mt-4 group">
-              <summary className="cursor-pointer text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
-                <span>View {comingSoon.length} coming-soon languages</span>
-                <span className="transition-transform group-open:rotate-180">▾</span>
-              </summary>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {comingSoon.map((lang) => (
-                  <span
-                    key={lang.id}
-                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-border bg-muted/30 text-[10.5px] sm:text-[11px] text-muted-foreground"
-                    title={lang.roadmapNote}
-                  >
-                    {lang.label}
-                  </span>
-                ))}
-              </div>
-            </details>
           )}
 
           <p className="mt-4 text-[11px] text-muted-foreground/80 leading-relaxed">

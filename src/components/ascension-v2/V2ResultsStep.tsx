@@ -43,10 +43,10 @@ import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
 import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
-  getLanguageParityStatus,
-  getLanguageParityEntry,
+  getV2LanguageStatus,
+  getV2LanguageEntry,
   getCanonicalLanguages,
-} from '@/lib/export/language-parity-tiers';
+} from '@/lib/export/v2-supported-languages';
 import { Clock } from 'lucide-react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
@@ -407,13 +407,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
       setCeremonyOpen(false);
-      // Distinguish Coming Soon language gating from real failures so the
-      // user sees a clean roadmap message instead of a stack trace.
-      const isComingSoon = err instanceof Error && err.name === 'LanguageNotShippingError';
+      // Distinguish unsupported-language gating from real failures so the
+      // user sees a clean message instead of a stack trace.
+      const isUnsupported = err instanceof Error && err.name === 'LanguageNotSupportedError';
       toast({
-        title: isComingSoon ? 'Language coming soon' : 'Export failed',
+        title: isUnsupported ? 'Language not supported' : 'Export failed',
         description: err instanceof Error ? err.message : String(err),
-        variant: isComingSoon ? 'default' : 'destructive',
+        variant: isUnsupported ? 'default' : 'destructive',
       });
     } finally {
       setExporting(false);
@@ -581,17 +581,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           sidecar that runs the layers. The user's language always comes home. */}
       {(() => {
         const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
-        const status = getLanguageParityStatus(lang);
-        const entry = getLanguageParityEntry(lang);
+        const status = getV2LanguageStatus(lang);
+        const entry = getV2LanguageEntry(lang);
         if (status === 'CANONICAL') return null;
         const label = entry?.label ?? sourceLanguage;
-        if (status === 'BETA_POLYGLOT') {
+        if (status === 'BETA') {
           return (
             <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
               <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0 space-y-1">
                 <p className="text-[11px] sm:text-xs font-semibold text-foreground">
-                  {label} export — polyglot (Beta)
+                  {label} export — Beta
                 </p>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
                   Native {label} file emitted via the V1 polyglot engine. Layer 1 source is embedded verbatim and the selected layers render in {label} idiom. Beta tier — not yet byte-locked by golden-file regression like the canonical generators.

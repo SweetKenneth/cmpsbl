@@ -37,10 +37,10 @@ import {
   generateExportScaffolding,
 } from './test-harness-generator';
 import {
-  getLanguageParityStatus,
-  getLanguageParityEntry,
+  getV2LanguageStatus,
+  getV2LanguageEntry,
   getVisibleLanguageIds,
-} from './language-parity-tiers';
+} from './v2-supported-languages';
 
 export type ExportLanguage =
   // Software
@@ -209,8 +209,7 @@ export function getLanguagesForScore(
   const sourceLangNormalized = sourceLanguage?.toLowerCase().replace(/\s+/g, '') as ExportLanguage | undefined;
   if (sourceLangNormalized) unlocked.add(sourceLangNormalized);
 
-  // Layer 2: parity registry filter — hide HIDDEN langs entirely, mark
-  // COMING_SOON langs as locked with a Coming Soon explanation.
+  // Layer 2: registry filter — hide HIDDEN langs entirely.
   // EXCEPTION: the source language is never filtered out — always available.
   const visible = getVisibleLanguageIds();
 
@@ -220,21 +219,19 @@ export function getLanguagesForScore(
       const lang = v as ExportLanguage;
       const isSource = lang === sourceLangNormalized;
       const scoreUnlocked = unlocked.has(lang);
-      const status = getLanguageParityStatus(v);
-      const isComingSoon = status === 'COMING_SOON';
-      const entry = getLanguageParityEntry(v);
+      // Reference entry to keep type-binding stable; status drives no logic now.
+      void getV2LanguageStatus(v);
+      void getV2LanguageEntry(v);
       // Source language bypasses every gate — it's the user's own code coming home.
-      const locked = isSource ? false : (!scoreUnlocked || isComingSoon);
+      const locked = isSource ? false : !scoreUnlocked;
       return {
         value: lang,
         label: l,
         locked,
-        comingSoon: isSource ? false : isComingSoon,
+        comingSoon: false,
         isSource,
         reason: isSource
           ? undefined
-          : isComingSoon
-          ? entry?.roadmapNote ?? `${l} is on the parity roadmap. Coming Soon.`
           : !scoreUnlocked
           ? `Requires higher artifact score.`
           : undefined,

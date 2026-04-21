@@ -10,7 +10,7 @@
  *   - Wrappers (auto-wire) follow the same caller-isolation rules as TS/Go/Py:
  *     never mutate the caller input map; strip sidecar keys from output.
  *   - Phase ordering is enforced by the Java chain executor
- *     (java-chain-executor.ts), not by these snippets.
+ *     by the polyglot template engine, not by these snippets.
  *
  * © CMPSBL® — All rights reserved.
  */

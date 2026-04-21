@@ -164,9 +164,9 @@ function uniqueMarker(lang: string, combo: string): string {
 // Languages where we expect emitter to actually produce non-empty output.
 // Anything with a polyglot generator OR a hand-written emitter (ts/py/php).
 function shouldEmit(lang: string): boolean {
-  // unified-capability-file gates by assertLanguageShipping; non-shipping langs
+  // unified-capability-file gates by assertLanguageSupported; unsupported langs
   // throw. We catch & skip those rather than fail — the seal is still applied
-  // for shipping langs which is what this test verifies.
+  // for supported langs which is what this test verifies.
   return true;
 }
 

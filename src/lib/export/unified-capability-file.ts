@@ -21,7 +21,7 @@ import { blackboxFile } from './blackbox';
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock, CMPSBL_CORE_LAYERS } from './cmpsbl-layers';
 import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmpsbl-layer-polyglot';
-import { assertLanguageShipping } from './language-parity-tiers';
+import { assertLanguageSupported } from './v2-supported-languages';
 import { formatEnhancedCapabilityName } from './humanize-name';
 
 // Re-use the UnifiedCapabilityInput interface shape
@@ -3006,7 +3006,7 @@ export function generateUnifiedCapabilityFile(
   //     `generateUnifiedGeneric` architecture/port spec, depending on whether
   //     a hand-tuned template body exists for the language.
   // The gate is currently a no-op so every visible language emits a real file.
-  assertLanguageShipping(lang);
+  assertLanguageSupported(lang);
 
   let raw: string;
   // Single boundary: normalize chains for every language emitter so raw

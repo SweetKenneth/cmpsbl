@@ -21,9 +21,8 @@ import {
 import { TIER_LAYERS, ALWAYS_ON } from "@/lib/ascension-v2/tier-layers";
 import {
   getCanonicalLanguages,
-  getBetaPolyglotLanguages,
-  getComingSoonLanguages,
-} from "@/lib/export/language-parity-tiers";
+  getBetaLanguages,
+} from "@/lib/export/v2-supported-languages";
 
 const V2_BENEFITS = [
   {
@@ -52,12 +51,11 @@ const V2_BENEFITS = [
   },
 ] as const;
 
-// Pulled live from the parity registry — single source of truth.
-// CANONICAL = first-class generators, byte-locked. BETA_POLYGLOT = V1 polyglot
-// engine, native file but not byte-locked yet. COMING_SOON = roadmap.
+// Pulled live from the V2 supported-languages registry — single source of truth.
+// CANONICAL = first-class generators, byte-locked. BETA = V1 polyglot engine
+// or structured port-spec, native file but not byte-locked yet.
 const CANONICAL_LANGUAGES = getCanonicalLanguages();
-const BETA_POLYGLOT_LANGUAGES = getBetaPolyglotLanguages();
-const COMING_SOON_LANGUAGES = getComingSoonLanguages();
+const BETA_LANGUAGES = getBetaLanguages();
 
 const BUILDER_FREE_LAYERS = TIER_LAYERS.builder;
 
@@ -162,8 +160,8 @@ export function AscensionV2ReleaseCTA() {
               })}
             </div>
 
-            {/* ─── Three info columns: Free Builder · Languages · Coming Soon ─── */}
-            <div className="grid md:grid-cols-3 gap-3 sm:gap-4">
+            {/* ─── Two info columns: Free Builder · Languages ─── */}
+            <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
               {/* Free Builder access */}
               <div className="rounded-xl border border-emerald-400/30 bg-emerald-400/[0.04] p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -223,7 +221,7 @@ export function AscensionV2ReleaseCTA() {
                   </span>
                 </div>
                 <p className="text-sm font-bold text-foreground mb-2">
-                  {CANONICAL_LANGUAGES.length} canonical · {BETA_POLYGLOT_LANGUAGES.length} polyglot (Beta)
+                  {CANONICAL_LANGUAGES.length} canonical · {BETA_LANGUAGES.length} beta
                 </p>
                 <p className="text-[10.5px] font-mono uppercase tracking-[0.18em] text-sky-300/80 mb-1.5">
                   Canonical · byte-locked
@@ -239,10 +237,10 @@ export function AscensionV2ReleaseCTA() {
                   ))}
                 </div>
                 <p className="text-[10.5px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                  Polyglot · Beta
+                  Beta
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                  {BETA_POLYGLOT_LANGUAGES.map((lang) => (
+                  {BETA_LANGUAGES.map((lang) => (
                     <span
                       key={lang.id}
                       className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-border bg-muted/40 text-foreground/85"
@@ -257,37 +255,10 @@ export function AscensionV2ReleaseCTA() {
                 </div>
                 <p className="text-[11px] text-muted-foreground/60 mt-3 leading-relaxed">
                   Canonical generators are byte-locked by golden-file regression. Beta
-                  polyglot emits a native file via the V1 polyglot engine and embeds your
-                  source verbatim — not byte-locked yet.
+                  languages emit a native file via the V1 polyglot engine or a structured
+                  port-spec, embedding your source verbatim — not byte-locked yet.
                 </p>
               </div>
-
-              {/* Coming soon — only render when the registry actually lists any.
-                  Today the answer is zero: every visible language emits something
-                  (canonical runtime or Beta polyglot), so this section stays hidden. */}
-              {COMING_SOON_LANGUAGES.length > 0 && (
-                <div className="rounded-xl border border-fuchsia-400/30 bg-fuchsia-400/[0.04] p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Hourglass className="w-4 h-4 text-fuchsia-300" />
-                    <span className="text-xs font-bold tracking-[0.18em] uppercase text-fuchsia-300/90">
-                      Coming Soon
-                    </span>
-                  </div>
-                  <p className="text-sm font-bold text-foreground mb-3">
-                    {COMING_SOON_LANGUAGES.length} languages on the polyglot roadmap
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {COMING_SOON_LANGUAGES.map((lang) => (
-                      <span
-                        key={lang.id}
-                        className="text-[11px] font-semibold px-2.5 py-1 rounded-md border border-fuchsia-400/30 bg-fuchsia-400/5 text-foreground/85"
-                      >
-                        {lang.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

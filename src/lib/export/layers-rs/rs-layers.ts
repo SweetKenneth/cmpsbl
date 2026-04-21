@@ -10,7 +10,7 @@
  *     `CmpsblValue` enum so the export remains zero-dependency).
  *   - State that needs cross-call persistence lives in `static` `Mutex<T>`
  *     guarded by `std::sync::OnceLock` for thread-safe lazy init.
- *   - Phase ordering is enforced by `rs-chain-executor.ts`, not these bodies.
+ *   - Phase ordering is enforced by the polyglot template engine, not these bodies.
  *
  * © CMPSBL® — All rights reserved.
  */

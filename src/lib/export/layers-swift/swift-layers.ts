@@ -9,7 +9,7 @@
  *   - Wrappers (auto-wire) follow the same caller-isolation rules as the other
  *     SHIPPING langs: never mutate the caller `[String: Any]`; strip sidecar
  *     keys from output before returning.
- *   - Phase ordering is enforced by swift-chain-executor.ts.
+ *   - Phase ordering is enforced by the polyglot template engine.
  *
  * © CMPSBL® — All rights reserved.
  */
