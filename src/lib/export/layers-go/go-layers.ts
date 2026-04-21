@@ -9,7 +9,7 @@
  *     a single `cmpsbl_layers.go` file alongside Layer 1.
  *   - Wrappers (auto-wire) follow the same caller-isolation rules as TS/Py:
  *     never mutate the caller input map; strip sidecar keys from output.
- *   - Phase ordering is enforced by the Go chain executor (go-chain-executor.ts),
+ *   - Phase ordering is enforced by the polyglot template engine,
  *     not by these snippets.
  *
  * © CMPSBL® — All rights reserved.

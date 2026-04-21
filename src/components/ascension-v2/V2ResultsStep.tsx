@@ -407,13 +407,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
       setCeremonyOpen(false);
-      // Distinguish Coming Soon language gating from real failures so the
-      // user sees a clean roadmap message instead of a stack trace.
-      const isComingSoon = err instanceof Error && err.name === 'LanguageNotShippingError';
+      // Distinguish unsupported-language gating from real failures so the
+      // user sees a clean message instead of a stack trace.
+      const isUnsupported = err instanceof Error && err.name === 'LanguageNotSupportedError';
       toast({
-        title: isComingSoon ? 'Language coming soon' : 'Export failed',
+        title: isUnsupported ? 'Language not supported' : 'Export failed',
         description: err instanceof Error ? err.message : String(err),
-        variant: isComingSoon ? 'default' : 'destructive',
+        variant: isUnsupported ? 'default' : 'destructive',
       });
     } finally {
       setExporting(false);

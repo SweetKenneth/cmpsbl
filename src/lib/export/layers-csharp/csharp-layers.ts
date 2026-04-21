@@ -11,7 +11,7 @@
  *     Go/Rust/Python: never mutate the caller input dictionary; strip sidecar
  *     keys from output.
  *   - Phase ordering is enforced by the C# chain executor
- *     (csharp-chain-executor.ts), not by these snippets.
+ *     by the polyglot template engine, not by these snippets.
  *
  * © CMPSBL® — All rights reserved.
  */
