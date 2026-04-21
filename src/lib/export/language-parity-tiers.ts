@@ -151,8 +151,24 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   beta('vhdl',          'VHDL'),
   beta('chisel',        'Chisel'),
   beta('amaranth',      'Amaranth'),
-  beta('spinalhdl',     'SpinalHDL'),
   beta('firrtl',        'FIRRTL'),
+  beta('systemc',       'SystemC'),
+  beta('spice',         'SPICE'),
+  beta('bluespec',      'Bluespec'),
+
+  // — GPU / shader (emit via generic port-spec; supported by the picker tiers) —
+  beta('cuda',          'CUDA'),
+  beta('glsl',          'GLSL'),
+  beta('hlsl',          'HLSL'),
+  beta('wgsl',          'WGSL'),
+  beta('metal',         'Metal'),
+  beta('opencl',        'OpenCL'),
+
+  // — Blockchain / smart contract —
+  beta('solidity',      'Solidity'),
+  beta('vyper',         'Vyper'),
+  beta('move',          'Move'),
+  beta('cairo',         'Cairo'),
 
   // — Path (b): structured port-spec via generateUnifiedGeneric —
   beta('nim',           'Nim'),
@@ -160,13 +176,13 @@ export const LANGUAGE_PARITY_REGISTRY: ReadonlyArray<LanguageParityEntry> = Obje
   beta('groovy',        'Groovy'),
   beta('clojure',       'Clojure'),
   beta('fsharp',        'F#'),
-  beta('vbnet',         'VB.NET'),
-  beta('objectivec',    'Objective-C'),
+  beta('objective-c',   'Objective-C'),
   beta('perl',          'Perl'),
   beta('julia',         'Julia'),
   beta('erlang',        'Erlang'),
   beta('ocaml',         'OCaml'),
-  beta('elm',           'Elm'),
+  beta('fortran',       'Fortran'),
+  beta('d',             'D'),
   beta('bash',          'Bash'),
   beta('powershell',    'PowerShell'),
 ]);
