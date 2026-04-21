@@ -2411,7 +2411,7 @@ self_test = cmpsbl_self_test
 
 
 if __name__ == "__main__":
-    print(f"CMPSBL® Ascension Layer — {CMPSBL_PACK_META['name']}")
+    print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
     print(f"Active layers: {CMPSBL_PACK_META['modules']}")
     print()
