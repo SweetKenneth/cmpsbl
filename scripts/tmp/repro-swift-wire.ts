@@ -1,5 +1,6 @@
 import { generateUnifiedCapabilityFile, type UnifiedCapabilityInput } from '@/lib/export/unified-capability-file';
-import { CYBER_DEFENSE_LAYER } from '@/lib/export/layers/security';
+import { SECURITY_LAYERS } from '@/lib/export/layers/security';
+const CYBER_DEFENSE_LAYER = SECURITY_LAYERS[2];
 import { runPreExportHarness } from '@/lib/ascension-v2/pre-export-harness';
 import { HOLOGRAPHIC_INTEGRATION_SUITE_LAYER } from '@/lib/export/layers/inventory/holographic-integration-suite.layer';
 
