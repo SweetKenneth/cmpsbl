@@ -14,7 +14,8 @@
 
 import { Shield, Sparkles, Layers, FileCheck, GitBranch, Lock, Check } from 'lucide-react';
 import {
-  getShippingLanguages,
+  getCanonicalLanguages,
+  getBetaPolyglotLanguages,
   getComingSoonLanguages,
 } from '@/lib/export/language-parity-tiers';
 
@@ -53,7 +54,8 @@ const FREE_FOR_EVERYONE = [
 ] as const;
 
 export function V2WhatsAscension() {
-  const shipping = getShippingLanguages();
+  const canonical = getCanonicalLanguages();
+  const beta = getBetaPolyglotLanguages();
   const comingSoon = getComingSoonLanguages();
 
   return (
@@ -138,12 +140,16 @@ export function V2WhatsAscension() {
               Supported Languages
             </h3>
             <span className="text-[11px] sm:text-xs font-mono text-muted-foreground uppercase tracking-[0.18em]">
-              {shipping.length} shipping · {comingSoon.length} coming soon
+              {canonical.length} canonical · {beta.length} beta · {comingSoon.length} coming soon
             </span>
           </div>
 
+          {/* Canonical row */}
+          <p className="text-[10.5px] sm:text-[11px] font-mono uppercase tracking-[0.18em] text-primary/80 mb-1.5">
+            Canonical · byte-locked
+          </p>
           <div className="flex flex-wrap gap-1.5 sm:gap-2">
-            {shipping.map((lang) => (
+            {canonical.map((lang) => (
               <span
                 key={lang.id}
                 className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-primary/30 bg-primary/[0.08] text-[11px] sm:text-xs font-medium text-foreground"
@@ -153,6 +159,29 @@ export function V2WhatsAscension() {
               </span>
             ))}
           </div>
+
+          {/* Beta polyglot row */}
+          {beta.length > 0 && (
+            <>
+              <p className="text-[10.5px] sm:text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mt-4 mb-1.5">
+                Polyglot · Beta
+              </p>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {beta.map((lang) => (
+                  <span
+                    key={lang.id}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/40 text-[11px] sm:text-xs font-medium text-foreground"
+                    title="Native file via the V1 polyglot engine — Beta tier, not byte-locked yet"
+                  >
+                    {lang.label}
+                    <span className="px-1 py-px rounded text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider bg-foreground/10 text-foreground/70">
+                      Beta
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
 
           <details className="mt-4 group">
             <summary className="cursor-pointer text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
@@ -171,9 +200,10 @@ export function V2WhatsAscension() {
               ))}
             </div>
             <p className="mt-3 text-[11px] text-muted-foreground/80 leading-relaxed">
-              Coming-soon languages stay disabled in the picker until each has a native
-              implementation of all 20 layers and a green parity test against the TypeScript
-              canon. We don&apos;t ship stubs.
+              Canonical languages are byte-locked by golden-file regression. Beta polyglot
+              languages emit native files via the V1 polyglot engine and embed your source
+              verbatim, but aren&apos;t byte-locked yet. Coming-soon languages stay disabled
+              until their polyglot body lands.
             </p>
           </details>
         </div>
