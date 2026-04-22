@@ -206,6 +206,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     const baseName = (sourceFiles[0]?.name || 'source').replace(/\.[^.]+$/, '');
     setCeremonyName(`cmpsbl-ascended-${baseName}`);
     setCeremonyOpen(true);
+    // Phase 7 fix — clear any prior contract proof so a re-export with a
+    // different language/mode never flashes stale verification state before
+    // the new proof is computed below.
+    setContractProof(null);
     try {
       const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
 
