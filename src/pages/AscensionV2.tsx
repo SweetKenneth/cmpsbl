@@ -15,7 +15,7 @@ import { Upload, Layers, ShieldCheck, Search, Download, Check } from 'lucide-rea
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
+// Button no longer used at page level — Results owns its own controls.
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
