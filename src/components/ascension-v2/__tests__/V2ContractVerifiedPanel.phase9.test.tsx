@@ -18,7 +18,7 @@ import type { EnvelopeVerification } from '@/lib/export/envelope-verifier';
 
 const failingSelfCheck: ExportSelfCheckResult = {
   ok: false,
-  language: 'python',
+  lang: 'python',
   issues: [
     { token: 'cmpsbl_verify_envelope', message: 'verifier function missing' },
   ],
@@ -122,7 +122,7 @@ describe('Phase 9 — V2ContractVerifiedPanel per-finding overrides', () => {
         mode="observe"
         capability="cap-y"
         chain={['DEFENSE']}
-        selfCheck={{ ok: true, language: 'typescript', issues: [] }}
+        selfCheck={{ ok: true, lang: 'typescript', issues: [] }}
         envelope={{
           ok: true,
           issues: [],
