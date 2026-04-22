@@ -177,8 +177,9 @@ export default function AscensionV2() {
           {/* Cinematic Hero — only on upload step, above the machine */}
           {step === 0 && <V2CinematicHero />}
 
-          {/* "What's Ascension" explainer — only on upload step, below hero */}
-          {step === 0 && <V2WhatsAscension />}
+          {/* "What's Ascension" explainer — upload step, Advanced mode only.
+              Simple mode keeps the calm path: hero → machine. */}
+          {step === 0 && uiMode === 'advanced' && <V2WhatsAscension />}
 
           {/* Stepper — 4 steps, responsive */}
           <nav ref={stepperRef} className="mb-6 sm:mb-8 scroll-mt-4">
@@ -241,8 +242,8 @@ export default function AscensionV2() {
               has its own implicit cancel via initRun() on remount. No need
               for a duplicate page-level Start Over button. */}
 
-          {/* FAQ — only on upload step, page bottom */}
-          {step === 0 && <V2Faq />}
+          {/* FAQ — upload step, Advanced mode only. */}
+          {step === 0 && uiMode === 'advanced' && <V2Faq />}
         </div>
       </main>
 
