@@ -51,10 +51,14 @@ function sha256Hex(input: string): string {
       utf8.push(0x80 | (cp & 0x3f));
     }
   }
-  const ml = utf8.length * 8;
+  const mlBits = utf8.length * 8;
   utf8.push(0x80);
   while ((utf8.length % 64) !== 56) utf8.push(0);
-  for (let i = 7; i >= 0; i--) utf8.push((ml >>> (i * 8)) & 0xff);
+  // 64-bit big-endian length in bits. JS bitshifts are 32-bit, so split:
+  const mlHigh = Math.floor(mlBits / 0x100000000) >>> 0;
+  const mlLow = (mlBits >>> 0);
+  for (let i = 3; i >= 0; i--) utf8.push((mlHigh >>> (i * 8)) & 0xff);
+  for (let i = 3; i >= 0; i--) utf8.push((mlLow >>> (i * 8)) & 0xff);
 
   const K = [
     0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
