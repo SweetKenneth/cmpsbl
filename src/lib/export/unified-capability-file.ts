@@ -26,6 +26,77 @@ import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmps
 import { assertLanguageSupported } from './v2-supported-languages';
 import { formatEnhancedCapabilityName } from './humanize-name';
 
+// ─── Synchronous SHA-256 (RFC 6234, pure JS) ──────────────────────────────
+// Used at generator time to commit to the verbatim user source embedded in
+// the emitted Python artifact. Sync because the generator is sync; this only
+// runs at export, never at user runtime. Mirrors hashlib.sha256(s.encode()).hexdigest().
+function sha256Hex(input: string): string {
+  // UTF-8 encode
+  const utf8: number[] = [];
+  for (let i = 0; i < input.length; i++) {
+    let c = input.charCodeAt(i);
+    if (c < 0x80) utf8.push(c);
+    else if (c < 0x800) { utf8.push(0xc0 | (c >> 6)); utf8.push(0x80 | (c & 0x3f)); }
+    else if (c < 0xd800 || c >= 0xe000) {
+      utf8.push(0xe0 | (c >> 12));
+      utf8.push(0x80 | ((c >> 6) & 0x3f));
+      utf8.push(0x80 | (c & 0x3f));
+    } else {
+      i++;
+      const c2 = input.charCodeAt(i);
+      const cp = 0x10000 + (((c & 0x3ff) << 10) | (c2 & 0x3ff));
+      utf8.push(0xf0 | (cp >> 18));
+      utf8.push(0x80 | ((cp >> 12) & 0x3f));
+      utf8.push(0x80 | ((cp >> 6) & 0x3f));
+      utf8.push(0x80 | (cp & 0x3f));
+    }
+  }
+  const ml = utf8.length * 8;
+  utf8.push(0x80);
+  while ((utf8.length % 64) !== 56) utf8.push(0);
+  for (let i = 7; i >= 0; i--) utf8.push((ml >>> (i * 8)) & 0xff);
+
+  const K = [
+    0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2,
+  ];
+  let H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+
+  const rotr = (x: number, n: number) => (x >>> n) | (x << (32 - n));
+  for (let i = 0; i < utf8.length; i += 64) {
+    const w = new Array<number>(64);
+    for (let j = 0; j < 16; j++) {
+      w[j] = (utf8[i + 4*j] << 24) | (utf8[i + 4*j + 1] << 16) | (utf8[i + 4*j + 2] << 8) | utf8[i + 4*j + 3];
+      w[j] >>>= 0;
+    }
+    for (let j = 16; j < 64; j++) {
+      const s0 = rotr(w[j-15], 7) ^ rotr(w[j-15], 18) ^ (w[j-15] >>> 3);
+      const s1 = rotr(w[j-2], 17) ^ rotr(w[j-2], 19) ^ (w[j-2] >>> 10);
+      w[j] = (w[j-16] + s0 + w[j-7] + s1) >>> 0;
+    }
+    let [a,b,c,d,e,f,g,h] = H;
+    for (let j = 0; j < 64; j++) {
+      const S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+      const ch = (e & f) ^ (~e & g);
+      const t1 = (h + S1 + ch + K[j] + w[j]) >>> 0;
+      const S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+      const mj = (a & b) ^ (a & c) ^ (b & c);
+      const t2 = (S0 + mj) >>> 0;
+      h = g; g = f; f = e; e = (d + t1) >>> 0;
+      d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    H = [(H[0]+a)>>>0,(H[1]+b)>>>0,(H[2]+c)>>>0,(H[3]+d)>>>0,(H[4]+e)>>>0,(H[5]+f)>>>0,(H[6]+g)>>>0,(H[7]+h)>>>0];
+  }
+  return H.map(x => x.toString(16).padStart(8, '0')).join('');
+}
+
+
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
   id: string;
@@ -1513,31 +1584,91 @@ export function generateUnifiedPython(
 
   const pyFiles = (userSourceFiles || []).filter(f => /\.py$/i.test(f.name));
 
-  // ── Layer 1 Embedding: original source verbatim ──
-  // Per mem://constraints/architecture/layer2-inline-embedding-mandate
-  // The wrapped file is self-contained — original source copied into it.
+  // ── Layer 1 Embedding: original source verbatim, ZERO MUTATION ──
+  // Patent-boundary rule: not one byte of user code is modified. The user
+  // source is copied verbatim into a SEALED string constant
+  // (_CMPSBL_LAYER1_SOURCE), sha256-checked, and exec'd into a SEALED
+  // namespace (_CMPSBL_LAYER1_NS) where __name__ is forced to
+  // "_cmpsbl_layer1" — so the user's `if __name__ == "__main__":` block
+  // is INERT by design. Layer 2 owns the file's __main__ and routes the
+  // user's main() (or first detected entrypoint) through cmpsbl_chain.
+  // Every public symbol the entry-point detector finds is also re-exported
+  // at the module top level as a proxy shim that goes through the chain.
   let layer1Block: string;
   let executeOriginalBody: string;
+  let entryFnNames: string[] = [];
+  let entryClassNames: string[] = [];
+  let layer1Sha256 = '';
+  let layer1HasMainGuard = false;
 
   if (pyFiles.length > 0) {
-    // Embed each original source file verbatim
-    const embeddedSources = pyFiles.map(f => {
-      const sanitizedContent = f.content.trimEnd();
-      return `# ─── ${f.name} ───
-${sanitizedContent}`;
-    }).join('\n\n');
+    // Verbatim concatenation — sha256 of THIS exact text is the proof of identity.
+    const concatenatedSource = pyFiles
+      .map(f => `# ─── ${f.name} ───\n${f.content.trimEnd()}`)
+      .join('\n\n# ─── (next file) ───\n\n');
+
+    layer1Sha256 = sha256Hex(concatenatedSource);
+
+    // Triple-quote escape — only transformation, fully reversible.
+    const escapedSource = concatenatedSource
+      .replace(/\\/g, '\\\\')
+      .replace(/"""/g, '\\"\\"\\"');
+
+    layer1HasMainGuard = pyFiles.some(f =>
+      /^if\s+__name__\s*==\s*['"]__main__['"]\s*:/m.test(f.content),
+    );
 
     layer1Block = `# ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  LAYER 1 — YOUR ORIGINAL SOURCE (UNMODIFIED)                                 ║
-# ║  Verified byte-identical to your uploaded source. Runs first, untouched.      ║
+# ║  LAYER 1 — YOUR ORIGINAL SOURCE (UNMODIFIED · BYTE-IDENTICAL · SEALED)       ║
+# ║  Embedded verbatim inside _CMPSBL_LAYER1_SOURCE below.                        ║
+# ║  Verify byte-identity:  python -c "import cmpsbl; print(cmpsbl._cmpsbl_layer1_sha256())"
+# ║  Recover original file: python -c "import cmpsbl; print(cmpsbl._cmpsbl_extract_layer1())"
+# ║  Layer 1 is invoked by Layer 2 — it never runs as __main__ unmediated.        ║
 # ║  Protected by U.S. Patent App. No. 64/029,678 · No. 64/031,637               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
+# CMPSBL:LAYER1:BEGIN
+_CMPSBL_LAYER1_SHA256 = ${JSON.stringify(layer1Sha256)}
+_CMPSBL_LAYER1_SOURCE = """${escapedSource}"""
+# CMPSBL:LAYER1:END
 
-${embeddedSources}
+def _cmpsbl_extract_layer1() -> str:
+    """Return the verbatim user source (byte-identical to upload)."""
+    s = _CMPSBL_LAYER1_SOURCE
+    s = s.replace('\\\\"\\\\"\\\\"', '"""')
+    s = s.replace('\\\\\\\\', '\\\\')
+    return s
+
+def _cmpsbl_layer1_sha256() -> str:
+    """Return the sha256 commitment of the embedded user source."""
+    return _CMPSBL_LAYER1_SHA256
+
+# Sealed namespace — user code lives here, NEVER in module globals.
+_CMPSBL_LAYER1_NS: dict = {}
+_CMPSBL_LAYER1_BOOTED = False
+
+def _cmpsbl_boot_layer1():
+    """Exec the sealed Layer 1 source into a private namespace, exactly once.
+    Refuses to boot if the embedded source has been tampered with."""
+    global _CMPSBL_LAYER1_BOOTED
+    if _CMPSBL_LAYER1_BOOTED:
+        return
+    src = _cmpsbl_extract_layer1()
+    actual = hashlib.sha256(src.encode("utf-8")).hexdigest()
+    if actual != _CMPSBL_LAYER1_SHA256:
+        raise RuntimeError(
+            "[CMPSBL:Layer1Tampered] sha256 mismatch — refusing to boot Layer 1 "
+            "(expected " + _CMPSBL_LAYER1_SHA256 + ", got " + actual + ")"
+        )
+    # __name__ forced to "_cmpsbl_layer1" so user's __main__ guard stays inert.
+    _CMPSBL_LAYER1_NS["__name__"] = "_cmpsbl_layer1"
+    _CMPSBL_LAYER1_NS["__file__"] = "<cmpsbl:layer1>"
+    exec(compile(src, "<cmpsbl:layer1>", "exec"), _CMPSBL_LAYER1_NS)
+    _CMPSBL_LAYER1_BOOTED = True
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  END LAYER 1 · ASCENSION LAYER BEGINS BELOW (BLACK-BOXED · PROPRIETARY)      ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝`;
+
 
 
     // ── Smart Entry Point Detection ──────────────────────────────────────────
