@@ -553,98 +553,110 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </p>
       </div>
 
-      {/* Summary stats — responsive grid */}
+      {/* Unified package overview — single bordered surface that bundles the
+          summary tiles, package contents preview, and activated capabilities.
+          Internal dividers (not nested cards) keep the eye on one designed
+          region instead of three stacked boxes with competing borders. */}
       {capabilities.length > 0 && (
-        <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div className="bg-muted/30 rounded-xl p-2.5 sm:p-3 text-center">
-            <p className="text-lg sm:text-2xl font-bold text-foreground">{capabilities.length}</p>
-            <p className="text-[9px] sm:text-[10px] text-muted-foreground">Unique</p>
+        <section
+          aria-label="Ascended package overview"
+          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60"
+        >
+          {/* Row 1 — summary tiles */}
+          <div className="grid grid-cols-3 divide-x divide-border/60">
+            <div className="p-3 sm:p-4 text-center">
+              <p className="text-lg sm:text-2xl font-bold text-foreground leading-none">{capabilities.length}</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Unique</p>
+            </div>
+            <div className="p-3 sm:p-4 text-center">
+              <p className={cn('text-lg sm:text-2xl font-bold leading-none', scoreColor(avgScore))}>{avgScore}</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Avg CJPI</p>
+            </div>
+            <div className="p-3 sm:p-4 text-center">
+              <p className={cn('text-lg sm:text-2xl font-bold leading-none', scoreColor(topScore))}>{topScore}</p>
+              <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Top Score</p>
+            </div>
           </div>
-          <div className="bg-muted/30 rounded-xl p-2.5 sm:p-3 text-center">
-            <p className="text-lg sm:text-2xl font-bold text-foreground">{avgScore}</p>
-            <p className="text-[9px] sm:text-[10px] text-muted-foreground">Avg CJPI</p>
-          </div>
-          <div className="bg-muted/30 rounded-xl p-2.5 sm:p-3 text-center">
-            <p className="text-lg sm:text-2xl font-bold text-foreground">{topScore}</p>
-            <p className="text-[9px] sm:text-[10px] text-muted-foreground">Top Score</p>
-          </div>
-        </div>
-      )}
 
-      {/* Package contents preview — mobile-friendly file list */}
-      {capabilities.length > 0 && (
-        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
-          <div className="flex items-center gap-2">
-            <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-            <span className="text-xs sm:text-sm font-medium text-foreground">Export Package Contents</span>
+          {/* Row 2 — package contents preview */}
+          <div className="p-3 sm:p-4 space-y-2 sm:space-y-2.5">
+            <div className="flex items-center gap-2">
+              <Package className="w-4 h-4 text-primary flex-shrink-0" />
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                Package contents
+              </span>
+            </div>
+            <div className="space-y-1 sm:space-y-1.5">
+              {[
+                { icon: FileText, name: 'LICENSE.html', desc: 'Commercial license' },
+                { icon: FileText, name: 'README.html', desc: 'Overview & quick start' },
+                { icon: FileText, name: 'USER-GUIDE.html', desc: 'Full activation guide' },
+                { icon: FileCode2, name: sourceFiles[0]?.name || 'source.*', desc: 'Original — untouched' },
+                { icon: FileCode2, name: `cmpsbl.${displayBaseName}.*`, desc: `${capabilities.length} capabilities` },
+                { icon: FileText, name: 'ADVERTISEMENT.html', desc: 'Mana layers preview' },
+              ].map((item) => (
+                <div key={item.name} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1 min-w-0">
+                  <item.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-[10px] sm:text-xs font-mono text-foreground truncate min-w-0 flex-1">{item.name}</span>
+                  <span className="text-[9px] sm:text-[10px] text-muted-foreground flex-shrink-0 hidden xs:inline">{item.desc}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="space-y-1 sm:space-y-1.5">
-            {[
-              { icon: FileText, name: 'LICENSE.html', desc: 'Commercial license' },
-              { icon: FileText, name: 'README.html', desc: 'Overview & quick start' },
-              { icon: FileText, name: 'USER-GUIDE.html', desc: 'Full activation guide' },
-              { icon: FileCode2, name: sourceFiles[0]?.name || 'source.*', desc: 'Original — untouched' },
-              { icon: FileCode2, name: `cmpsbl.${displayBaseName}.*`, desc: `${capabilities.length} capabilities` },
-              { icon: FileText, name: 'ADVERTISEMENT.html', desc: 'Mana layers preview' },
-            ].map((item) => (
-              <div key={item.name} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1 min-w-0">
-                <item.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground flex-shrink-0" />
-                <span className="text-[10px] sm:text-xs font-mono text-foreground truncate min-w-0 flex-1">{item.name}</span>
-                <span className="text-[9px] sm:text-[10px] text-muted-foreground flex-shrink-0 hidden xs:inline">{item.desc}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Capabilities list */}
-      {capabilities.length > 0 && (
-        <div className="bg-muted/20 border border-border rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
-          <div className="flex items-center gap-2">
-            <FileCode2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-            <span className="text-xs sm:text-sm font-medium text-foreground">Activated Capabilities</span>
-          </div>
-          <div className="space-y-1 sm:space-y-1.5 max-h-[180px] sm:max-h-[200px] overflow-y-auto">
-            {capabilities.map((cap, i) => (
-              <div key={i} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">
-                  {formatEnhancedCapabilityName(cap.name, cap.chain.filter((p) => p !== 'CANDIDATE'))}
-                </span>
-                {cap.mergeVerdict && (
-                  <span
-                    className={cn(
-                      'text-[8px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 rounded flex-shrink-0',
-                      cap.mergeVerdict === 'beneficial' && 'bg-primary/15 text-primary',
-                      cap.mergeVerdict === 'neutral' && 'bg-muted text-muted-foreground',
-                      cap.mergeVerdict === 'risky' && 'bg-destructive/15 text-destructive',
-                    )}
-                    title={`Merge verdict: ${cap.mergeVerdict}${cap.mergeNetImprovement !== undefined ? ` · Δ ${cap.mergeNetImprovement}` : ''}`}
-                  >
-                    {cap.mergeVerdict === 'beneficial' ? '↑' : cap.mergeVerdict === 'risky' ? '↓' : '='}
+          {/* Row 3 — activated capabilities */}
+          <div className="p-3 sm:p-4 space-y-2 sm:space-y-2.5">
+            <div className="flex items-center gap-2">
+              <FileCode2 className="w-4 h-4 text-primary flex-shrink-0" />
+              <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                Activated capabilities
+              </span>
+              <span className="ml-auto text-[10px] sm:text-[11px] text-muted-foreground/70 font-mono">
+                {capabilities.length}
+              </span>
+            </div>
+            <div className="space-y-1 sm:space-y-1.5 max-h-[180px] sm:max-h-[200px] overflow-y-auto">
+              {capabilities.map((cap, i) => (
+                <div key={i} className="flex items-center gap-1.5 sm:gap-2 py-0.5 sm:py-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  <span className="text-[10px] sm:text-xs text-foreground truncate flex-1 min-w-0">
+                    {formatEnhancedCapabilityName(cap.name, cap.chain.filter((p) => p !== 'CANDIDATE'))}
                   </span>
-                )}
-                {cap.band && (
-                  <span
-                    className={cn(
-                      'text-[8px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 rounded flex-shrink-0',
-                      cap.band === 'high' && 'bg-primary/15 text-primary',
-                      cap.band === 'medium' && 'bg-amber-500/15 text-amber-600 dark:text-amber-400',
-                      cap.band === 'low' && 'bg-muted text-muted-foreground',
-                      cap.band === 'hypothesis' && 'bg-muted/50 text-muted-foreground italic',
-                    )}
-                    title={`Confidence: ${cap.band}${cap.bandChannelCount !== undefined ? ` · ${cap.bandChannelCount}/3 channels` : ''}`}
-                  >
-                    {cap.band}
+                  {cap.mergeVerdict && (
+                    <span
+                      className={cn(
+                        'text-[8px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 rounded flex-shrink-0',
+                        cap.mergeVerdict === 'beneficial' && 'bg-primary/15 text-primary',
+                        cap.mergeVerdict === 'neutral' && 'bg-muted text-muted-foreground',
+                        cap.mergeVerdict === 'risky' && 'bg-destructive/15 text-destructive',
+                      )}
+                      title={`Merge verdict: ${cap.mergeVerdict}${cap.mergeNetImprovement !== undefined ? ` · Δ ${cap.mergeNetImprovement}` : ''}`}
+                    >
+                      {cap.mergeVerdict === 'beneficial' ? '↑' : cap.mergeVerdict === 'risky' ? '↓' : '='}
+                    </span>
+                  )}
+                  {cap.band && (
+                    <span
+                      className={cn(
+                        'text-[8px] sm:text-[9px] font-mono uppercase px-1.5 py-0.5 rounded flex-shrink-0',
+                        cap.band === 'high' && 'bg-primary/15 text-primary',
+                        cap.band === 'medium' && 'bg-amber-500/15 text-amber-600 dark:text-amber-400',
+                        cap.band === 'low' && 'bg-muted text-muted-foreground',
+                        cap.band === 'hypothesis' && 'bg-muted/50 text-muted-foreground italic',
+                      )}
+                      title={`Confidence: ${cap.band}${cap.bandChannelCount !== undefined ? ` · ${cap.bandChannelCount}/3 channels` : ''}`}
+                    >
+                      {cap.band}
+                    </span>
+                  )}
+                  <span className={cn('text-[10px] sm:text-xs font-mono font-bold flex-shrink-0', scoreColor(cap.cjpiScore))}>
+                    {cap.cjpiScore}
                   </span>
-                )}
-                <span className={cn('text-[10px] sm:text-xs font-mono font-bold flex-shrink-0', scoreColor(cap.cjpiScore))}>
-                  {cap.cjpiScore}
-                </span>
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
       )}
 
       
