@@ -243,13 +243,10 @@ export function AscensionV2ReleaseCTA() {
                   {BETA_LANGUAGES.map((lang) => (
                     <span
                       key={lang.id}
-                      className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-border bg-muted/40 text-foreground/85"
+                      className="inline-flex items-center text-[11px] font-semibold px-2.5 py-1 rounded-md border border-border bg-muted/40 text-foreground/85"
                       title="Native file via the V1 polyglot engine — Beta tier, not byte-locked yet"
                     >
                       {lang.label}
-                      <span className="px-1 py-px rounded text-[8.5px] font-mono uppercase tracking-wider bg-foreground/10 text-foreground/70">
-                        Beta
-                      </span>
                     </span>
                   ))}
                 </div>
