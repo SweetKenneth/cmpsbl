@@ -216,8 +216,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     setCeremonyOpen(true);
     // Phase 7 fix — clear any prior contract proof so a re-export with a
     // different language/mode never flashes stale verification state before
-    // the new proof is computed below.
+    // the new proof is computed below. Phase 9 also clears finding overrides
+    // so a previous run's accept/block decisions don't bleed into this one.
     setContractProof(null);
+    setFindingsOverrides(null);
     try {
       const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
 
