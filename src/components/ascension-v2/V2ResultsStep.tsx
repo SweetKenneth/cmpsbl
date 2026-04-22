@@ -565,7 +565,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           // (license picker, export button) around mid-transition. The
           // section itself no longer animates — only its rows do — so the
           // outer box reserves its full final height from frame 1.
-          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60 [contain:layout_paint]"
+          className="rounded-2xl border border-border bg-card/40 overflow-hidden [contain:layout_paint]"
         >
           {/* Row 1 — summary tiles. Each row uses the shared `fade-in` keyframe
               (which combines opacity + translateY) with a stepped delay so
