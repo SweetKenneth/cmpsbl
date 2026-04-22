@@ -10,7 +10,8 @@
  * the snapshot intentionally and bump CANONICAL_HANDLER_OUTPUT_V1.
  */
 import { describe, it, expect } from 'vitest';
-import { cmpsbl_execute_chain, generateUnifiedPython } from '../unified-capability-file';
+import { executeChain, generateUnifiedPython } from '../unified-capability-file';
+const cmpsbl_execute_chain = executeChain;
 
 const FIXTURE_CLEAN = { user: 'alice', count: 3, items: ['a', 'b'] };
 const FIXTURE_THREAT = {
@@ -61,11 +62,16 @@ describe('Canonical Parity Snapshot V1', () => {
   });
 
   it('Python template carries the same DEFENSE shape (string-presence guard)', () => {
-    const py = generateUnifiedPython({
-      capabilities: [],
-      packageName: 'parity-test',
-      version: '1.0.0',
-    } as Parameters<typeof generateUnifiedPython>[0]);
+    const py = generateUnifiedPython(
+      [{
+        name: 'parity-probe',
+        description: 'parity probe',
+        chain: ['DEFENSE', 'GOVERNANCE', 'COMPASS'],
+        cjpiScore: 50,
+        tier: 'mint',
+      } as Parameters<typeof generateUnifiedPython>[0][number]],
+      'parity-test',
+    );
     // These tokens MUST exist in the Python template to keep parity with TS:
     expect(py).toContain('threats_found');
     expect(py).toContain('threat_breakdown');
