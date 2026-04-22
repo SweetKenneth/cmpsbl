@@ -2772,6 +2772,108 @@ def cmpsbl_self_test() -> dict:
 self_test = cmpsbl_self_test
 
 
+# ── Phase 8 — Envelope Verifier (parity with TS verifyEnvelope) ──────────
+# Validates a parsed `_cmpsbl` envelope against the V1 contract. Returns
+# {"ok": bool, "issues": [...], "summary": {...}}. Never raises on bad
+# input — designed for runtime self-attestation, CI gates, and downstream
+# language tooling. Mirrors src/lib/export/envelope-verifier.ts exactly.
+_CMPSBL_VALID_MODES = ("observe", "soft", "enforce")
+_CMPSBL_VALID_STRATEGIES = ("native", "passthrough", "failed")
+
+def cmpsbl_verify_envelope(envelope) -> dict:
+    """Verify a parsed `_cmpsbl` envelope (or full envelope) against the V1 contract."""
+    issues = []
+    summary = {
+        "capability": None, "mode": None, "strategy": None,
+        "originalExecuted": None, "verdict": None,
+    }
+    if not isinstance(envelope, dict):
+        issues.append({"path": "<root>", "code": "WRONG_TYPE", "message": "envelope must be a JSON object"})
+        return {"ok": False, "issues": issues, "summary": summary}
+
+    cmpsbl = envelope.get("_cmpsbl") if isinstance(envelope.get("_cmpsbl"), dict) else envelope
+
+    for key in ("capability", "cjpi", "tier", "chain", "mode", "execution"):
+        if key not in cmpsbl:
+            issues.append({"path": f"_cmpsbl.{key}", "code": "MISSING_KEY", "message": f'required key "_cmpsbl.{key}" is missing'})
+
+    if isinstance(cmpsbl.get("capability"), str):
+        summary["capability"] = cmpsbl["capability"]
+    elif "capability" in cmpsbl:
+        issues.append({"path": "_cmpsbl.capability", "code": "WRONG_TYPE", "message": "capability must be string"})
+
+    if "cjpi" in cmpsbl and not isinstance(cmpsbl["cjpi"], (int, float)):
+        issues.append({"path": "_cmpsbl.cjpi", "code": "WRONG_TYPE", "message": "cjpi must be number"})
+    if "tier" in cmpsbl and not isinstance(cmpsbl["tier"], str):
+        issues.append({"path": "_cmpsbl.tier", "code": "WRONG_TYPE", "message": "tier must be string"})
+
+    chain = cmpsbl.get("chain")
+    if "chain" in cmpsbl:
+        if not isinstance(chain, list):
+            issues.append({"path": "_cmpsbl.chain", "code": "WRONG_TYPE", "message": "chain must be string[]"})
+        elif len(chain) == 0:
+            issues.append({"path": "_cmpsbl.chain", "code": "EMPTY_CHAIN", "message": "chain must contain at least one primitive"})
+        elif any(not isinstance(p, str) for p in chain):
+            issues.append({"path": "_cmpsbl.chain[]", "code": "WRONG_TYPE", "message": "chain entries must be strings"})
+
+    mode = cmpsbl.get("mode")
+    if isinstance(mode, str) and mode in _CMPSBL_VALID_MODES:
+        summary["mode"] = mode
+    elif "mode" in cmpsbl:
+        issues.append({"path": "_cmpsbl.mode", "code": "INVALID_ENUM", "message": f"mode must be observe|soft|enforce, got {mode!r}"})
+
+    exec_block = cmpsbl.get("execution")
+    if isinstance(exec_block, dict):
+        for key in ("original_executed", "original_error", "execution_ms", "strategy"):
+            if key not in exec_block:
+                issues.append({"path": f"_cmpsbl.execution.{key}", "code": "MISSING_KEY", "message": f'required key "_cmpsbl.execution.{key}" is missing'})
+        if isinstance(exec_block.get("original_executed"), bool):
+            summary["originalExecuted"] = exec_block["original_executed"]
+        elif "original_executed" in exec_block:
+            issues.append({"path": "_cmpsbl.execution.original_executed", "code": "WRONG_TYPE", "message": "original_executed must be boolean"})
+        if "original_error" in exec_block and exec_block["original_error"] is not None and not isinstance(exec_block["original_error"], str):
+            issues.append({"path": "_cmpsbl.execution.original_error", "code": "WRONG_TYPE", "message": "original_error must be string|null"})
+        if "execution_ms" in exec_block and not isinstance(exec_block["execution_ms"], (int, float)):
+            issues.append({"path": "_cmpsbl.execution.execution_ms", "code": "WRONG_TYPE", "message": "execution_ms must be number"})
+        strategy = exec_block.get("strategy")
+        if isinstance(strategy, str) and strategy in _CMPSBL_VALID_STRATEGIES:
+            summary["strategy"] = strategy
+        elif "strategy" in exec_block:
+            issues.append({"path": "_cmpsbl.execution.strategy", "code": "INVALID_ENUM", "message": f"strategy must be native|passthrough|failed, got {strategy!r}"})
+
+        # Cross-field consistency: enforce + passthrough is forbidden.
+        if summary["mode"] == "enforce" and summary["originalExecuted"] is False and summary["strategy"] == "passthrough":
+            issues.append({"path": "_cmpsbl", "code": "INCONSISTENT_STATE", "message": "enforce mode must never return a passthrough envelope — generator contract violated"})
+    elif "execution" in cmpsbl:
+        issues.append({"path": "_cmpsbl.execution", "code": "WRONG_TYPE", "message": "execution must be object"})
+
+    # Optional defense verdict surface (full envelope only).
+    if envelope is not cmpsbl and isinstance(envelope, dict):
+        enriched = envelope.get("_enriched") if isinstance(envelope.get("_enriched"), dict) else None
+        defense = enriched.get("_defense") if enriched and isinstance(enriched.get("_defense"), dict) else None
+        if defense and isinstance(defense.get("verdict"), str):
+            v = defense["verdict"]
+            if v in ("block", "warn", "allow"):
+                summary["verdict"] = v
+            else:
+                issues.append({"path": "_enriched._defense.verdict", "code": "INVALID_ENUM", "message": f"defense verdict must be block|warn|allow, got {v!r}"})
+
+    return {"ok": len(issues) == 0, "issues": issues, "summary": summary}
+
+
+def cmpsbl_verify_envelope_json(json_str: str) -> dict:
+    """Parse a JSON string and verify the resulting envelope."""
+    try:
+        parsed = json.loads(json_str)
+    except Exception as e:
+        return {
+            "ok": False,
+            "issues": [{"path": "<root>", "code": "WRONG_TYPE", "message": f"invalid JSON: {e}"}],
+            "summary": {"capability": None, "mode": None, "strategy": None, "originalExecuted": None, "verdict": None},
+        }
+    return cmpsbl_verify_envelope(parsed)
+
+
 if __name__ == "__main__":
     print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
@@ -3370,6 +3472,128 @@ function cmpsbl_self_test(): array
         }
     }
     return ['passed' => $passed, 'failed' => $failed, 'results' => $results];
+}
+
+// ── Phase 8 — Envelope Verifier (parity with TS verifyEnvelope) ──────────
+// Validates a parsed _cmpsbl envelope against the V1 contract. Returns
+// ['ok' => bool, 'issues' => [...], 'summary' => [...]]. Never throws on
+// bad input — designed for runtime self-attestation, CI gates, and
+// downstream tooling. Mirrors src/lib/export/envelope-verifier.ts exactly.
+function cmpsbl_verify_envelope(\\$envelope): array
+{
+    \\$validModes      = ['observe', 'soft', 'enforce'];
+    \\$validStrategies = ['native', 'passthrough', 'failed'];
+    \\$issues  = [];
+    \\$summary = ['capability' => null, 'mode' => null, 'strategy' => null, 'originalExecuted' => null, 'verdict' => null];
+
+    if (!is_array(\\$envelope)) {
+        \\$issues[] = ['path' => '<root>', 'code' => 'WRONG_TYPE', 'message' => 'envelope must be a JSON object'];
+        return ['ok' => false, 'issues' => \\$issues, 'summary' => \\$summary];
+    }
+
+    \\$cmpsbl = (isset(\\$envelope['_cmpsbl']) && is_array(\\$envelope['_cmpsbl'])) ? \\$envelope['_cmpsbl'] : \\$envelope;
+
+    foreach (['capability', 'cjpi', 'tier', 'chain', 'mode', 'execution'] as \\$key) {
+        if (!array_key_exists(\\$key, \\$cmpsbl)) {
+            \\$issues[] = ['path' => "_cmpsbl.\\$key", 'code' => 'MISSING_KEY', 'message' => "required key \\\"_cmpsbl.\\$key\\\" is missing"];
+        }
+    }
+
+    if (isset(\\$cmpsbl['capability']) && is_string(\\$cmpsbl['capability'])) {
+        \\$summary['capability'] = \\$cmpsbl['capability'];
+    } elseif (array_key_exists('capability', \\$cmpsbl)) {
+        \\$issues[] = ['path' => '_cmpsbl.capability', 'code' => 'WRONG_TYPE', 'message' => 'capability must be string'];
+    }
+
+    if (array_key_exists('cjpi', \\$cmpsbl) && !is_int(\\$cmpsbl['cjpi']) && !is_float(\\$cmpsbl['cjpi'])) {
+        \\$issues[] = ['path' => '_cmpsbl.cjpi', 'code' => 'WRONG_TYPE', 'message' => 'cjpi must be number'];
+    }
+    if (array_key_exists('tier', \\$cmpsbl) && !is_string(\\$cmpsbl['tier'])) {
+        \\$issues[] = ['path' => '_cmpsbl.tier', 'code' => 'WRONG_TYPE', 'message' => 'tier must be string'];
+    }
+
+    if (array_key_exists('chain', \\$cmpsbl)) {
+        \\$chain = \\$cmpsbl['chain'];
+        if (!is_array(\\$chain)) {
+            \\$issues[] = ['path' => '_cmpsbl.chain', 'code' => 'WRONG_TYPE', 'message' => 'chain must be string[]'];
+        } elseif (count(\\$chain) === 0) {
+            \\$issues[] = ['path' => '_cmpsbl.chain', 'code' => 'EMPTY_CHAIN', 'message' => 'chain must contain at least one primitive'];
+        } else {
+            foreach (\\$chain as \\$p) {
+                if (!is_string(\\$p)) {
+                    \\$issues[] = ['path' => '_cmpsbl.chain[]', 'code' => 'WRONG_TYPE', 'message' => 'chain entries must be strings'];
+                    break;
+                }
+            }
+        }
+    }
+
+    \\$mode = \\$cmpsbl['mode'] ?? null;
+    if (is_string(\\$mode) && in_array(\\$mode, \\$validModes, true)) {
+        \\$summary['mode'] = \\$mode;
+    } elseif (array_key_exists('mode', \\$cmpsbl)) {
+        \\$issues[] = ['path' => '_cmpsbl.mode', 'code' => 'INVALID_ENUM', 'message' => 'mode must be observe|soft|enforce, got ' . json_encode(\\$mode)];
+    }
+
+    if (isset(\\$cmpsbl['execution']) && is_array(\\$cmpsbl['execution'])) {
+        \\$exec = \\$cmpsbl['execution'];
+        foreach (['original_executed', 'original_error', 'execution_ms', 'strategy'] as \\$key) {
+            if (!array_key_exists(\\$key, \\$exec)) {
+                \\$issues[] = ['path' => "_cmpsbl.execution.\\$key", 'code' => 'MISSING_KEY', 'message' => "required key \\\"_cmpsbl.execution.\\$key\\\" is missing"];
+            }
+        }
+        if (array_key_exists('original_executed', \\$exec) && is_bool(\\$exec['original_executed'])) {
+            \\$summary['originalExecuted'] = \\$exec['original_executed'];
+        } elseif (array_key_exists('original_executed', \\$exec)) {
+            \\$issues[] = ['path' => '_cmpsbl.execution.original_executed', 'code' => 'WRONG_TYPE', 'message' => 'original_executed must be boolean'];
+        }
+        if (array_key_exists('original_error', \\$exec) && \\$exec['original_error'] !== null && !is_string(\\$exec['original_error'])) {
+            \\$issues[] = ['path' => '_cmpsbl.execution.original_error', 'code' => 'WRONG_TYPE', 'message' => 'original_error must be string|null'];
+        }
+        if (array_key_exists('execution_ms', \\$exec) && !is_int(\\$exec['execution_ms']) && !is_float(\\$exec['execution_ms'])) {
+            \\$issues[] = ['path' => '_cmpsbl.execution.execution_ms', 'code' => 'WRONG_TYPE', 'message' => 'execution_ms must be number'];
+        }
+        \\$strategy = \\$exec['strategy'] ?? null;
+        if (is_string(\\$strategy) && in_array(\\$strategy, \\$validStrategies, true)) {
+            \\$summary['strategy'] = \\$strategy;
+        } elseif (array_key_exists('strategy', \\$exec)) {
+            \\$issues[] = ['path' => '_cmpsbl.execution.strategy', 'code' => 'INVALID_ENUM', 'message' => 'strategy must be native|passthrough|failed, got ' . json_encode(\\$strategy)];
+        }
+
+        if (\\$summary['mode'] === 'enforce' && \\$summary['originalExecuted'] === false && \\$summary['strategy'] === 'passthrough') {
+            \\$issues[] = ['path' => '_cmpsbl', 'code' => 'INCONSISTENT_STATE', 'message' => 'enforce mode must never return a passthrough envelope — generator contract violated'];
+        }
+    } elseif (array_key_exists('execution', \\$cmpsbl)) {
+        \\$issues[] = ['path' => '_cmpsbl.execution', 'code' => 'WRONG_TYPE', 'message' => 'execution must be object'];
+    }
+
+    if (\\$envelope !== \\$cmpsbl && is_array(\\$envelope)) {
+        \\$enriched = (isset(\\$envelope['_enriched']) && is_array(\\$envelope['_enriched'])) ? \\$envelope['_enriched'] : null;
+        \\$defense  = (\\$enriched && isset(\\$enriched['_defense']) && is_array(\\$enriched['_defense'])) ? \\$enriched['_defense'] : null;
+        if (\\$defense && isset(\\$defense['verdict']) && is_string(\\$defense['verdict'])) {
+            \\$v = \\$defense['verdict'];
+            if (in_array(\\$v, ['block', 'warn', 'allow'], true)) {
+                \\$summary['verdict'] = \\$v;
+            } else {
+                \\$issues[] = ['path' => '_enriched._defense.verdict', 'code' => 'INVALID_ENUM', 'message' => 'defense verdict must be block|warn|allow, got ' . json_encode(\\$v)];
+            }
+        }
+    }
+
+    return ['ok' => count(\\$issues) === 0, 'issues' => \\$issues, 'summary' => \\$summary];
+}
+
+function cmpsbl_verify_envelope_json(string \\$json): array
+{
+    \\$parsed = json_decode(\\$json, true);
+    if (\\$parsed === null && json_last_error() !== JSON_ERROR_NONE) {
+        return [
+            'ok' => false,
+            'issues' => [['path' => '<root>', 'code' => 'WRONG_TYPE', 'message' => 'invalid JSON: ' . json_last_error_msg()]],
+            'summary' => ['capability' => null, 'mode' => null, 'strategy' => null, 'originalExecuted' => null, 'verdict' => null],
+        ];
+    }
+    return cmpsbl_verify_envelope(\\$parsed);
 }
 `;
 }
