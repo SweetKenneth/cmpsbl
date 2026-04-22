@@ -105,6 +105,23 @@ describe('Canonical Parity Snapshot V1 — generator string-presence', () => {
     expect(ts).toContain('DEFENSE');
     expect(py).toContain('handle_defense');
   });
+
+  it('JS generator carries the V1 DEFENSE shape (delegates to TS)', () => {
+    const js = generateUnifiedJavaScript(CAP, PACK);
+    for (const tok of V1_DEFENSE_TOKENS) {
+      expect(js, `JS missing token: ${tok}`).toContain(tok);
+    }
+  });
+
+  it('PHP generator carries the V1 DEFENSE shape', () => {
+    const php = generateUnifiedPhp(CAP, PACK);
+    for (const tok of V1_DEFENSE_TOKENS) {
+      expect(php, `PHP missing token: ${tok}`).toContain(tok);
+    }
+    expect(php).toContain('handleDefense');
+    expect(php).toContain('threat_breakdown');
+    expect(php).toContain("'verdict'");
+  });
 });
 
 // ── Phase 2 — Mode Wiring Audit (4 canonical generators) ─────────────────
