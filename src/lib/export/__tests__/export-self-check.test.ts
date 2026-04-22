@@ -110,17 +110,17 @@ describe('generateUnifiedCapabilityFile — gate is wired', () => {
     it(`emits TS artifact through the gate (mode=${mode})`, () => {
       // The gate runs assertExportArtifact internally; if the contract
       // ever drifts, this call throws and the test fails loudly.
-      const out = generateUnifiedCapabilityFile('typescript', CAP, PACK, undefined, undefined, mode);
+      const out = generateUnifiedCapabilityFile(CAP, PACK, 'typescript', undefined, undefined, mode);
       expect(out.length).toBeGreaterThan(0);
     });
 
     it(`emits Python artifact through the gate (mode=${mode})`, () => {
-      const out = generateUnifiedCapabilityFile('python', CAP, PACK, undefined, undefined, mode);
+      const out = generateUnifiedCapabilityFile(CAP, PACK, 'python', undefined, undefined, mode);
       expect(out.length).toBeGreaterThan(0);
     });
 
     it(`emits PHP artifact through the gate (mode=${mode})`, () => {
-      const out = generateUnifiedCapabilityFile('php', CAP, PACK, undefined, undefined, mode);
+      const out = generateUnifiedCapabilityFile(CAP, PACK, 'php', undefined, undefined, mode);
       expect(out.length).toBeGreaterThan(0);
     });
   }
@@ -128,7 +128,7 @@ describe('generateUnifiedCapabilityFile — gate is wired', () => {
   // Ensure every shipping polyglot language passes the gate too.
   for (const lang of SUPPORTED_LANGUAGES) {
     it(`emits polyglot[${lang}] artifact through the gate (mode=observe)`, () => {
-      const out = generateUnifiedCapabilityFile(lang, CAP, PACK, undefined, undefined, 'observe');
+      const out = generateUnifiedCapabilityFile(CAP, PACK, lang, undefined, undefined, 'observe');
       expect(out.length).toBeGreaterThan(0);
     });
   }
