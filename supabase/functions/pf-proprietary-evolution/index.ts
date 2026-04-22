@@ -1265,6 +1265,7 @@ function collideNodesMultiChain(
   targetNode: string,
   permutationDepth: number,
   softwareArchetype?: SoftwareArchetype,
+  fileShape: FileShapeProfile = { shape: 'unknown', confidence: 0 },
 ): CollisionResult[] {
   // ═══ DERIVE NODE 41's CAPABILITY SURFACE ═══
   const surface = deriveCapabilitySurface(candidateName, candidateMeta);
@@ -1407,7 +1408,7 @@ function collideNodesMultiChain(
 
   // ═══ ENHANCEMENT PASS — Recommend capabilities that ALIGN with the code ═══
   if (softwareArchetype) {
-    const enhancements = generateEnhancementDiscoveries(surface, softwareArchetype, targetNode, results.length);
+    const enhancements = generateEnhancementDiscoveries(surface, softwareArchetype, targetNode, results.length, fileShape);
     results.push(...enhancements);
   }
 
