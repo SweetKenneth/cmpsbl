@@ -1748,7 +1748,12 @@ def _cmpsbl_boot_layer1():
     }
 
     // Capture entry symbol names for top-level proxy shim emission.
-    entryFnNames = [...new Set([...allFns, ...fallbackFns.slice(0, 5)])];
+    // Always include `main` if the user defined it — DevOps CLIs and scripts
+    // route through it, and the Layer 2 __main__ guard depends on its presence
+    // in the entry-point table.
+    const fnSet = new Set<string>([...allFns, ...fallbackFns.slice(0, 5)]);
+    if (publicFns.includes('main')) fnSet.add('main');
+    entryFnNames = [...fnSet];
     entryClassNames = [
       ...new Set([
         ...allClasses.map(c => c.name),
@@ -1756,18 +1761,52 @@ def _cmpsbl_boot_layer1():
       ]),
     ];
 
+    // Ensure `main` is in the entry_points table for execute_original dispatch.
+    if (publicFns.includes('main') && !entryPoints.some(e => e.includes('"main"'))) {
+      entryPoints.push(`("function", "main")`);
+    }
+
     if (entryPoints.length > 0) {
       const entryPointsList = entryPoints.join(', ');
-      executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace."""
+      executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace.
+
+        When called with a string target_name (via execute_function), dispatches
+        DIRECTLY to that symbol with the user's original *args/**kwargs preserved
+        — no signature coercion, no positional-iteration guesswork.
+        """
         _cmpsbl_boot_layer1()
         _ns = _CMPSBL_LAYER1_NS
+
+        # Name-aware dispatch path (used by every proxy shim).
+        if isinstance(input_data, dict) and "_cmpsbl_target" in input_data:
+            target_name = input_data["_cmpsbl_target"]
+            target = _ns.get(target_name)
+            if target is None:
+                raise NameError(f"Layer 1 symbol '{target_name}' not found in sealed namespace")
+            t_args = input_data.get("_cmpsbl_args", ())
+            t_kwargs = input_data.get("_cmpsbl_kwargs", {})
+            if isinstance(target, type):
+                instance = target(*t_args, **t_kwargs)
+                for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
+                    method = getattr(instance, method_name, None)
+                    if callable(method):
+                        return method()
+                return instance
+            return target(*t_args, **t_kwargs)
+
+        # Legacy positional path — preserved for direct CmpsblCapability().execute(dict)
+        # callers that don't go through a shim. Tries entry points in priority order.
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
             target = _ns.get(name)
             if target is None:
                 continue
             if kind == "function" and callable(target):
-                return target(input_data) if input_data else target()
+                try:
+                    return target(input_data) if input_data else target()
+                except TypeError:
+                    # Signature mismatch (e.g., argparse Namespace expected) — skip.
+                    continue
             if kind == "class" and isinstance(target, type):
                 try:
                     instance = target(input_data) if input_data else target()
