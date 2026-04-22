@@ -1105,35 +1105,39 @@ function generateEnhancementDiscoveries(
   archetype: SoftwareArchetype,
   targetNode: string,
   existingCount: number,
+  fileShape: FileShapeProfile = { shape: 'unknown', confidence: 0 },
 ): CollisionResult[] {
   const enhancements = ARCHETYPE_ENHANCEMENTS[archetype] || ARCHETYPE_ENHANCEMENTS.hybrid;
-  
-  // Filter to enhancements that involve the target node's primitive
+
   const targetRelated = enhancements.filter(e => e.primitive === targetNode);
-  // Also include some high-value non-target enhancements for variety
   const others = enhancements
     .filter(e => e.primitive !== targetNode)
     .sort((a, b) => b.baseScore - a.baseScore)
     .slice(0, 2);
-  
+
   const candidates = [...targetRelated, ...others];
   if (candidates.length === 0) return [];
-  
+
   const results: CollisionResult[] = [];
-  
+
   for (const enh of candidates) {
     const nameHash = hashString(`${surface.nodeName}:${enh.name}:${enh.primitive}:enh`);
     const variance = ((nameHash >> 4) % 11) - 5;
     const synergy = getSectorSynergy([surface.sector, NODE_SECTOR[enh.primitive] || 'unknown']);
-    
+
     let cjpi = enh.baseScore + variance + synergy + Math.min(3, Math.floor(surface.capabilities.length / 2));
     cjpi = Math.max(40, Math.min(cjpi, 92));
-    
+
     const categoryLabel = ENHANCEMENT_CATEGORY_LABELS[enh.category] || 'Enhancement';
-    const desc = `${enh.description} [${categoryLabel}]`;
-    
+    // Architecture-aware naming: rewrite generic suffixes (Middleware, Gateway,
+    // Router, Handler, Filter, Pipeline) to terms that match the file shape so
+    // a CLI doesn't get tagged with "_Middleware" capabilities.
+    const shapedName = rewriteCapabilityNameForShape(enh.name, fileShape.shape, fileShape.confidence);
+    const shapedDesc = rewriteDescriptionForShape(enh.description, fileShape.shape, fileShape.confidence);
+    const desc = `${shapedDesc} [${categoryLabel}]`;
+
     results.push({
-      name: enh.name,
+      name: shapedName,
       description: `${surface.nodeName} (${surface.capabilities.slice(0, 2).join(', ')}) → ${enh.primitive} ${NODE_CAPABILITY_LABELS[enh.primitive] || enh.primitive.toLowerCase()}. ${desc}`,
       cjpi_score: cjpi,
       tier: scoreTier(cjpi),
@@ -1145,7 +1149,7 @@ function generateEnhancementDiscoveries(
       candidate_surface: surface,
     });
   }
-  
+
   return results.sort((a, b) => b.cjpi_score - a.cjpi_score).slice(0, 3);
 }
 
