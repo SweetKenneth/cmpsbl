@@ -244,11 +244,10 @@ export default function AscensionV2() {
           </nav>
 
           {/* UI mode toggle — Simple is the calm default; Advanced unlocks the
-              expert surfaces in Govern + Results (contract proof, drift
-              overrides, provenance, language status). Hidden on Upload — there's
-              nothing advanced to show yet — and on Processing where it would
-              flicker mid-analysis. Choice persists per user. */}
-          {step !== 3 && (
+              expert surfaces in Govern + Results. The chosen mode persists for
+              the entire run, so we only render the picker on Step 0 (Upload).
+              No per-step re-toggle: choose once, the rest of the flow honors it. */}
+          {step === 0 && (
             <div className="flex justify-center mb-4 sm:mb-6 animate-fade-in">
               <V2UiModeToggle mode={uiMode} onChange={setUiMode} />
             </div>

@@ -1841,12 +1841,12 @@ def _cmpsbl_boot_layer1():
     } else {
       executeOriginalBody = `        """Layer 1 dispatch — empty source."""
         _cmpsbl_boot_layer1()
-        return input_data or {}`;
+        return (input_data or {}), False`;
     }
   } else {
     layer1Block = '# No source files provided — LAYER 1 is empty. Wire your code manually.';
     executeOriginalBody = `        """LAYER 1 — No original source provided."""
-        return input_data or {}`;
+        return (input_data or {}), False`;
   }
 
   const pyLayerLine = selectedLayers?.length
