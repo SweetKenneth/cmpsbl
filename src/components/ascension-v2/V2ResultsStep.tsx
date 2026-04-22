@@ -818,31 +818,8 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </Button>
         )}
 
-        {isAdvanced && contractProof && (
-          <V2ContractVerifiedPanel
-            lang={contractProof.lang}
-            mode={contractProof.mode}
-            capability={contractProof.capability}
-            chain={contractProof.chain}
-            selfCheck={contractProof.selfCheck}
-            envelope={contractProof.envelope}
-            onOverridesChange={(summary) => {
-              setFindingsOverrides(summary);
-              // Funnel telemetry — fire-and-forget. Lets us measure how often
-              // users actually engage with the per-finding policy surface.
-              void emitFunnelEvent('findings_overrides_changed', {
-                runId: getSnapshot().runId,
-                language: contractProof.lang,
-                extras: {
-                  mode: contractProof.mode,
-                  total_findings: summary.totalFindings,
-                  accepted: summary.accepted,
-                  blocked: summary.blocked,
-                },
-              });
-            }}
-          />
-        )}
+        {/* Contract proof + per-finding overrides moved into the grouped
+            advanced disclosure above the actions block. */}
 
         {exportedAscendedName && (
           <V2ActivationGuide
