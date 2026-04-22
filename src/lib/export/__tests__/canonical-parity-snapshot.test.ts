@@ -105,3 +105,43 @@ describe('Canonical Parity Snapshot V1 — generator string-presence', () => {
     expect(py).toContain('handle_defense');
   });
 });
+
+// ── Phase 2 — Mode Wiring Audit (4 canonical generators) ─────────────────
+// Every canonical generator must expose: COMPILED_CMPSBL_MODE, env override,
+// envelope `mode` field, and an enforce-throw on passthrough.
+describe('Canonical Mode Wiring Audit V1', () => {
+  for (const mode of ['observe', 'soft', 'enforce'] as const) {
+    it(`TS generator wires mode=${mode}`, () => {
+      const out = generateUnifiedTypeScript(CAP, PACK, undefined, undefined, mode);
+      expect(out).toContain('COMPILED_CMPSBL_MODE');
+      expect(out).toContain('CMPSBL_MODE');
+      expect(out).toContain(`'${mode}'`);
+      expect(out).toContain("'enforce'");
+      expect(out).toContain("mode: CMPSBL_MODE");
+    });
+
+    it(`JS generator wires mode=${mode} (delegates to TS)`, () => {
+      const out = generateUnifiedJavaScript(CAP, PACK, undefined, undefined, mode);
+      expect(out).toContain('COMPILED_CMPSBL_MODE');
+      expect(out).toContain(`'${mode}'`);
+    });
+
+    it(`Python generator wires mode=${mode}`, () => {
+      const out = generateUnifiedPython(CAP, PACK, undefined, undefined, mode);
+      expect(out).toContain('COMPILED_CMPSBL_MODE');
+      expect(out).toContain('_resolve_cmpsbl_mode');
+      expect(out).toContain(`"${mode}"`);
+      expect(out).toContain('"mode": CMPSBL_MODE');
+      expect(out).toContain('CMPSBL_MODE == "enforce"');
+    });
+
+    it(`PHP generator wires mode=${mode}`, () => {
+      const out = generateUnifiedPhp(CAP, PACK, undefined, mode);
+      expect(out).toContain('COMPILED_CMPSBL_MODE');
+      expect(out).toContain('_resolve_cmpsbl_mode');
+      expect(out).toContain(`'${mode}'`);
+      expect(out).toContain("'mode' =>");
+      expect(out).toContain("=== 'enforce'");
+    });
+  }
+});
