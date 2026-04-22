@@ -10,8 +10,7 @@
  * the snapshot intentionally and bump CANONICAL_HANDLER_OUTPUT_V1.
  */
 import { describe, it, expect } from 'vitest';
-import { executeChain, generateUnifiedPython } from '../unified-capability-file';
-const cmpsbl_execute_chain = executeChain;
+import { cmpsbl_execute_chain, generateUnifiedPython } from '@/lib/export/unified-capability-file';
 
 const FIXTURE_CLEAN = { user: 'alice', count: 3, items: ['a', 'b'] };
 const FIXTURE_THREAT = {
