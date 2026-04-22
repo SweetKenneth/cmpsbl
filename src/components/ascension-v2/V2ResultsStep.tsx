@@ -41,6 +41,7 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 
 import { V2ActivationGuide } from './V2ActivationGuide';
+import { V2AdvancedDisclosure } from './V2AdvancedDisclosure';
 import {
   V2ContractVerifiedPanel,
   type FindingsOverrideSummary,
@@ -510,6 +511,29 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const primaryFileName = sourceFiles[0]?.name || 'source';
   const displayBaseName = primaryFileName.replace(/\.[^.]+$/, '');
 
+  // ── Advanced-mode panel registry ─────────────────────────────────────────
+  // Each entry decides whether the panel has content for this run. The
+  // disclosure header shows "X of Y active" so users see at a glance how
+  // much extra context is available before opening it.
+  const langKey = sourceLanguage.toLowerCase().replace(/\s+/g, '');
+  const langStatus = getV2LanguageStatus(langKey);
+  const langEntry = getV2LanguageEntry(langKey);
+  const langLabel = langEntry?.label ?? sourceLanguage;
+  const hasLanguageNotice = langStatus !== 'CANONICAL';
+  const hasProvenance = capabilities.length > 0;
+  const hasContractProof = !!contractProof;
+  const hasDriftHint =
+    !!findingsOverrides &&
+    (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0);
+  const advancedTotal = 4;
+  const advancedActive =
+    (hasProvenance ? 1 : 0) +
+    (hasLanguageNotice ? 1 : 0) +
+    (hasContractProof ? 1 : 0) +
+    (hasDriftHint ? 1 : 0);
+
+
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <DownloadCeremonyOverlay
@@ -622,13 +646,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       )}
 
-      {/* Sprint 5 — Capability provenance trace. Expandable per-capability
-          explainer derived entirely from real signals already on each
-          DiscoveredCapability (chain, band, channels, gaps, synergies,
-          merge verdict). No fabricated source-line mapping. */}
-      {isAdvanced && capabilities.length > 0 && (
-        <V2CapabilityProvenance capabilities={capabilities} />
-      )}
+      {/* Advanced provenance moved into the grouped disclosure below. */}
 
       {/* Layer selection indicator (selected on Enhance step) */}
       {selectedLayers.size > 0 && (
@@ -654,50 +672,85 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       </div>
 
-      {/* Source-language notice — when native layer parity isn't done yet, the
-          ZIP still ships: original source untouched + sealed TypeScript runtime
-          sidecar that runs the layers. The user's language always comes home. */}
-      {isAdvanced && (() => {
-        const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
-        const status = getV2LanguageStatus(lang);
-        const entry = getV2LanguageEntry(lang);
-        if (status === 'CANONICAL') return null;
-        const label = entry?.label ?? sourceLanguage;
-        if (status === 'BETA') {
-          return (
+      {/* Grouped advanced disclosure — single collapsible section that bundles
+          provenance, language-status notice, contract proof / per-finding
+          overrides, and the staged-decisions hint. Header shows "X of Y active"
+          so users know how much depth this run carries before opening it. */}
+      {isAdvanced && advancedActive > 0 && (
+        <V2AdvancedDisclosure activeCount={advancedActive} totalCount={advancedTotal}>
+          {hasProvenance && <V2CapabilityProvenance capabilities={capabilities} />}
+
+          {hasLanguageNotice && langStatus === 'BETA' && (
             <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
               <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0 space-y-1">
                 <p className="text-[11px] sm:text-xs font-semibold text-foreground">
-                  {label} export — Beta
+                  {langLabel} export — Beta
                 </p>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-                  Native {label} file emitted via the V1 polyglot engine. Layer 1 source is embedded verbatim and the selected layers render in {label} idiom. Beta tier — not yet byte-locked by golden-file regression like the canonical generators.
+                  Native {langLabel} file emitted via the V1 polyglot engine. Layer 1 source is embedded verbatim and the selected layers render in {langLabel} idiom. Beta tier — not yet byte-locked by golden-file regression like the canonical generators.
                 </p>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
                   Canonical (byte-locked): {getCanonicalLanguages().map(l => l.label).join(', ')}.
                 </p>
               </div>
             </div>
-          );
-        }
-        return (
-          <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
-            <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-            <div className="flex-1 min-w-0 space-y-1">
-              <p className="text-[11px] sm:text-xs font-semibold text-foreground">
-                {label} export — pass-through mode
-              </p>
-              <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-                Your {label} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Polyglot {label} body is on the roadmap.
-              </p>
-              <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
-                Canonical today: {getCanonicalLanguages().map(l => l.label).join(', ')}.
-              </p>
+          )}
+
+          {hasLanguageNotice && langStatus !== 'BETA' && (
+            <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
+              <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0 space-y-1">
+                <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                  {langLabel} export — pass-through mode
+                </p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
+                  Your {langLabel} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Polyglot {langLabel} body is on the roadmap.
+                </p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
+                  Canonical today: {getCanonicalLanguages().map(l => l.label).join(', ')}.
+                </p>
+              </div>
             </div>
-          </div>
-        );
-      })()}
+          )}
+
+          {hasContractProof && contractProof && (
+            <V2ContractVerifiedPanel
+              lang={contractProof.lang}
+              mode={contractProof.mode}
+              capability={contractProof.capability}
+              chain={contractProof.chain}
+              selfCheck={contractProof.selfCheck}
+              envelope={contractProof.envelope}
+              onOverridesChange={(summary) => {
+                setFindingsOverrides(summary);
+                void emitFunnelEvent('findings_overrides_changed', {
+                  runId: getSnapshot().runId,
+                  language: contractProof.lang,
+                  extras: {
+                    mode: contractProof.mode,
+                    total_findings: summary.totalFindings,
+                    accepted: summary.accepted,
+                    blocked: summary.blocked,
+                  },
+                });
+              }}
+            />
+          )}
+
+          {hasDriftHint && findingsOverrides && (
+            <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
+              <span className="truncate">
+                Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}
+                {findingsOverrides.blocked} blocked · {findingsOverrides.defaulted} default
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
+                local · downloadable
+              </span>
+            </div>
+          )}
+        </V2AdvancedDisclosure>
+      )}
 
       {/* Actions — source language always exports. No gating. */}
       <div className="space-y-3">
@@ -765,31 +818,8 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </Button>
         )}
 
-        {isAdvanced && contractProof && (
-          <V2ContractVerifiedPanel
-            lang={contractProof.lang}
-            mode={contractProof.mode}
-            capability={contractProof.capability}
-            chain={contractProof.chain}
-            selfCheck={contractProof.selfCheck}
-            envelope={contractProof.envelope}
-            onOverridesChange={(summary) => {
-              setFindingsOverrides(summary);
-              // Funnel telemetry — fire-and-forget. Lets us measure how often
-              // users actually engage with the per-finding policy surface.
-              void emitFunnelEvent('findings_overrides_changed', {
-                runId: getSnapshot().runId,
-                language: contractProof.lang,
-                extras: {
-                  mode: contractProof.mode,
-                  total_findings: summary.totalFindings,
-                  accepted: summary.accepted,
-                  blocked: summary.blocked,
-                },
-              });
-            }}
-          />
-        )}
+        {/* Contract proof + per-finding overrides moved into the grouped
+            advanced disclosure above the actions block. */}
 
         {exportedAscendedName && (
           <V2ActivationGuide
@@ -800,20 +830,9 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           />
         )}
 
-        {/* Phase 9 — small persistent hint that the user has staged drift
-            decisions. Reassures them the choices are captured and downloadable
-            from the verified panel above. */}
-        {isAdvanced && findingsOverrides && (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0) && (
-          <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
-            <span className="truncate">
-              Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}
-              {findingsOverrides.blocked} blocked · {findingsOverrides.defaulted} default
-            </span>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
-              local · downloadable
-            </span>
-          </div>
-        )}
+        {/* Phase 9 drift-decisions hint also moved into the grouped advanced
+            disclosure so it lives next to the panel that produces it. */}
+
 
         {/* One-click re-ascension — same source + same layers, fresh run.
             Hands off via sessionStorage so V2UploadStep auto-replays on mount.
