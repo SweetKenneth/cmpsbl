@@ -770,6 +770,19 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             chain={contractProof.chain}
             selfCheck={contractProof.selfCheck}
             envelope={contractProof.envelope}
+            onOverridesChange={(summary) => {
+              setFindingsOverrides(summary);
+              // Funnel telemetry — fire-and-forget. Lets us measure how often
+              // users actually engage with the per-finding policy surface.
+              void emitFunnelEvent('findings_overrides_changed', {
+                runId: getSnapshot().runId,
+                language: contractProof.lang,
+                mode: contractProof.mode,
+                totalFindings: summary.totalFindings,
+                accepted: summary.accepted,
+                blocked: summary.blocked,
+              });
+            }}
           />
         )}
 
