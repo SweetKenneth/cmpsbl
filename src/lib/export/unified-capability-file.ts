@@ -2824,6 +2824,20 @@ class CmpsblCapability:
         else:
             self.meta = CMPSBL_PACK_META["capabilities"][0] if CMPSBL_PACK_META["capabilities"] else {}
 
+    def execute_function(self, target_name: str, args: tuple = (), kwargs: dict = None) -> Any:
+        """Name-aware shim entry — preserves the user's original call signature.
+
+        Wraps the call in the standard governance envelope and returns whatever
+        the user's function/class returned (NOT the envelope) so proxy shims
+        are signature-preserving and drop-in transparent.
+        """
+        env = self.execute({
+            "_cmpsbl_target": target_name,
+            "_cmpsbl_args": tuple(args or ()),
+            "_cmpsbl_kwargs": dict(kwargs or {}),
+        })
+        return env.get("_original")
+
     def execute_original(self, input_data: dict = None) -> Any:
 ${executeOriginalBody}
 
