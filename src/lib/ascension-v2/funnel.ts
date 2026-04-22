@@ -23,7 +23,11 @@ export type FunnelEvent =
   | 'discovery_complete'
   | 'layer_attached'
   | 'export_clicked'
-  | 'export_complete';
+  | 'export_complete'
+  // Phase 9 — fired when the user accepts/blocks a contract drift finding
+  // in the V2ContractVerifiedPanel. Lets us measure per-finding policy
+  // engagement without coupling the panel to product analytics.
+  | 'findings_overrides_changed';
 
 export interface FunnelEventPayload {
   runId: string;

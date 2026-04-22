@@ -41,7 +41,10 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 
 import { V2ActivationGuide } from './V2ActivationGuide';
-import { V2ContractVerifiedPanel } from './V2ContractVerifiedPanel';
+import {
+  V2ContractVerifiedPanel,
+  type FindingsOverrideSummary,
+} from './V2ContractVerifiedPanel';
 import { checkExportArtifact, type ExportSelfCheckResult } from '@/lib/export/export-self-check';
 import { verifyEnvelope, type EnvelopeVerification } from '@/lib/export/envelope-verifier';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
@@ -100,6 +103,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     selfCheck: ExportSelfCheckResult;
     envelope: EnvelopeVerification;
   } | null>(null);
+  // Phase 9 — per-finding policy overrides captured from the verified panel.
+  // Surfaced into the export funnel so we can measure whether users actually
+  // engage with drift accept/block, and so the next run can replay decisions.
+  const [findingsOverrides, setFindingsOverrides] =
+    useState<FindingsOverrideSummary | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -208,8 +216,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     setCeremonyOpen(true);
     // Phase 7 fix — clear any prior contract proof so a re-export with a
     // different language/mode never flashes stale verification state before
-    // the new proof is computed below.
+    // the new proof is computed below. Phase 9 also clears finding overrides
+    // so a previous run's accept/block decisions don't bleed into this one.
     setContractProof(null);
+    setFindingsOverrides(null);
     try {
       const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
 
@@ -760,6 +770,21 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             chain={contractProof.chain}
             selfCheck={contractProof.selfCheck}
             envelope={contractProof.envelope}
+            onOverridesChange={(summary) => {
+              setFindingsOverrides(summary);
+              // Funnel telemetry — fire-and-forget. Lets us measure how often
+              // users actually engage with the per-finding policy surface.
+              void emitFunnelEvent('findings_overrides_changed', {
+                runId: getSnapshot().runId,
+                language: contractProof.lang,
+                extras: {
+                  mode: contractProof.mode,
+                  total_findings: summary.totalFindings,
+                  accepted: summary.accepted,
+                  blocked: summary.blocked,
+                },
+              });
+            }}
           />
         )}
 
@@ -770,6 +795,21 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             enhanced={enhanced || selectedLayers.size > 0}
             attachedLayerIds={Array.from(selectedLayers)}
           />
+        )}
+
+        {/* Phase 9 — small persistent hint that the user has staged drift
+            decisions. Reassures them the choices are captured and downloadable
+            from the verified panel above. */}
+        {findingsOverrides && (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0) && (
+          <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
+            <span className="truncate">
+              Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}
+              {findingsOverrides.blocked} blocked · {findingsOverrides.defaulted} default
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
+              local · downloadable
+            </span>
+          </div>
         )}
 
         {/* One-click re-ascension — same source + same layers, fresh run.
