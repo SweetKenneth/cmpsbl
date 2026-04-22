@@ -3389,7 +3389,7 @@ export function generateUnifiedCapabilityFile(
   } else if (lang === 'php') {
     raw = generateUnifiedPhp(capabilities, packName, userSourceFiles, governanceMode);
   } else if (hasPolyglotGenerator(lang)) {
-    raw = generatePolyglotFile(lang, capabilities, packName, userSourceFiles);
+    raw = generatePolyglotFile(lang, capabilities, packName, userSourceFiles, governanceMode);
   } else {
     // Belt-and-suspenders: registry says supported but no template exists.
     // Refuse to silently emit a doc-only stub.
