@@ -601,7 +601,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               Delay (~120ms) lands the line just before Row 2 starts at 160ms. */}
           <div
             aria-hidden="true"
-            className="h-px bg-border/60 origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
+            className="h-px bg-gradient-to-r from-transparent via-border to-transparent origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
             style={{ animationDelay: '120ms', animationFillMode: 'both' }}
           />
 
@@ -638,7 +638,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               line just before Row 3 starts at 260ms. */}
           <div
             aria-hidden="true"
-            className="h-px bg-border/60 origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
+            className="h-px bg-gradient-to-r from-transparent via-border to-transparent origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
             style={{ animationDelay: '220ms', animationFillMode: 'both' }}
           />
 
