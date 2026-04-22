@@ -23,6 +23,7 @@ import {
   generateUnifiedCapabilityFile,
 } from '@/lib/export/unified-capability-file';
 import { generatePolyglotFile, SUPPORTED_LANGUAGES } from '@/lib/export/polyglot-templates';
+import { isLanguageSupported } from '@/lib/export/v2-supported-languages';
 
 const CAP = [{
   id: 'self-check-probe',
@@ -125,8 +126,10 @@ describe('generateUnifiedCapabilityFile — gate is wired', () => {
     });
   }
 
-  // Ensure every shipping polyglot language passes the gate too.
-  for (const lang of SUPPORTED_LANGUAGES) {
+  // Ensure every shipping polyglot language that is also V2-registered
+  // passes the gate. (SUPPORTED_LANGUAGES is the polyglot template
+  // registry; the V2 shipping registry is a subset.)
+  for (const lang of SUPPORTED_LANGUAGES.filter((l) => isLanguageSupported(l))) {
     it(`emits polyglot[${lang}] artifact through the gate (mode=observe)`, () => {
       const out = generateUnifiedCapabilityFile(CAP, PACK, lang, undefined, undefined, 'observe');
       expect(out.length).toBeGreaterThan(0);
