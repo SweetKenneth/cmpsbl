@@ -628,6 +628,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             </div>
           </div>
 
+          {/* Divider before Row 3 — same sweep, delay (~220ms) lands the
+              line just before Row 3 starts at 260ms. */}
+          <div
+            aria-hidden="true"
+            className="h-px bg-border/60 origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
+            style={{ animationDelay: '220ms', animationFillMode: 'both' }}
+          />
+
           {/* Row 3 — activated capabilities */}
           <div
             className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none [will-change:opacity,transform]"
