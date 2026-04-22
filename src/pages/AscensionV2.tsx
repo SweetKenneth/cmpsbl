@@ -242,8 +242,8 @@ export default function AscensionV2() {
               has its own implicit cancel via initRun() on remount. No need
               for a duplicate page-level Start Over button. */}
 
-          {/* FAQ — only on upload step, page bottom */}
-          {step === 0 && <V2Faq />}
+          {/* FAQ — upload step, Advanced mode only. */}
+          {step === 0 && uiMode === 'advanced' && <V2Faq />}
         </div>
       </main>
 
