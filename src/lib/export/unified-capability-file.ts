@@ -2571,6 +2571,22 @@ class CmpsblExecutionError(Exception):
         self.envelope = envelope
 
 
+
+# ── Governance Mode (parity with TS COMPILED_CMPSBL_MODE) ────────────────
+# Compiled at Ascension time; overridable at runtime via CMPSBL_MODE env var.
+#   • observe → record signals only (default)
+#   • soft    → record + warn on risky/passthrough events
+#   • enforce → record + raise on risky/passthrough events
+import os as _cmpsbl_os
+COMPILED_CMPSBL_MODE = ${JSON.stringify((governanceMode === 'soft' || governanceMode === 'enforce') ? governanceMode : 'observe')}
+def _resolve_cmpsbl_mode():
+    env = (_cmpsbl_os.environ.get("CMPSBL_MODE") or "").strip().lower()
+    if env in ("observe", "soft", "enforce"):
+        return env
+    return COMPILED_CMPSBL_MODE
+CMPSBL_MODE = _resolve_cmpsbl_mode()
+
+
 class CmpsblCapability:
     """Sealed capability executor."""
 
