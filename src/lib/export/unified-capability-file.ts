@@ -3078,11 +3078,14 @@ def cmpsbl_verify_envelope_json(json_str: str) -> dict:
 ${(() => {
   if (entryFnNames.length === 0 && entryClassNames.length === 0) return '';
   const mkShim = (name: string, kind: 'function' | 'class') => `def ${name}(*args, **kwargs):
-    """Layer 2 proxy shim — routes user ${kind} '${name}' through the governance chain."""
+    """Layer 2 proxy shim — routes user ${kind} '${name}' through the governance chain.
+
+    Signature-preserving: forwards *args/**kwargs verbatim to the sealed Layer 1
+    symbol, so callers (argparse Namespaces, positional CLI args, kwargs, etc.)
+    work unchanged.
+    """
     _cmpsbl_boot_layer1()
-    payload = kwargs if kwargs else (args[0] if (len(args) == 1 and isinstance(args[0], dict)) else {"_args": list(args)})
-    env = CmpsblCapability().execute(payload)
-    return env.get("_original")`;
+    return CmpsblCapability().execute_function("${name}", args, kwargs)`;
   const fnShims = entryFnNames.map(n => mkShim(n, 'function')).join('\n\n');
   const classShims = entryClassNames.map(n => mkShim(n, 'class')).join('\n\n');
   return `\n# ╔═══════════════════════════════════════════════════════════════════════════════╗
@@ -3095,26 +3098,42 @@ ${fnShims}${fnShims && classShims ? '\n\n' : ''}${classShims}\n`;
 })()}
 
 if __name__ == "__main__":
-    # Layer 2 owns __main__. Boot the sealed namespace, run self-test, then if
-    # the user defined a "main" callable, route it through the governance chain.
+    # Layer 2 owns __main__. Boot the sealed namespace, then if the user defined
+    # a "main" callable, route it through the governance chain — preserving the
+    # user's original CLI/script semantics. Diagnostic banner + self-test are
+    # SILENT BY DEFAULT (gated by CMPSBL_VERBOSE=1 or --cmpsbl-diagnose flag) so
+    # this file is safe to invoke from CI pipelines and stdout-parsing scripts.
+    import os as _os, sys as _sys
     _had_layer1 = ${pyFiles.length > 0 ? 'True' : 'False'}
+    _verbose = (_os.environ.get("CMPSBL_VERBOSE") == "1") or ("--cmpsbl-diagnose" in _sys.argv)
+    if "--cmpsbl-diagnose" in _sys.argv:
+        _sys.argv.remove("--cmpsbl-diagnose")
     if _had_layer1:
         _cmpsbl_boot_layer1()
-    print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
-    print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
-    print(f"Active layers: {CMPSBL_PACK_META['modules']}")
-    print()
-    result = cmpsbl_self_test()
-    print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
-    for name, ok in result["results"].items():
-        print(f"  {'OK' if ok else 'XX'} {name}")
+    if _verbose:
+        print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
+        print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
+        print(f"Active layers: {CMPSBL_PACK_META['modules']}")
+        print()
+        result = cmpsbl_self_test()
+        print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
+        for name, ok in result["results"].items():
+            print(f"  {'OK' if ok else 'XX'} {name}")
     if _had_layer1:
         _user_main = _CMPSBL_LAYER1_NS.get("main")
         if callable(_user_main):
-            print()
-            print("[CMPSBL] Routing user main() through governance chain...")
-            _env = CmpsblCapability().execute({})
-            print(f"[CMPSBL] original_executed={_env['_cmpsbl']['execution']['original_executed']} mode={_env['_cmpsbl']['mode']}")
+            if _verbose:
+                print()
+                print("[CMPSBL] Routing user main() through governance chain...")
+            # Preserve the user's original main() call semantics — most CLIs
+            # take no args; if main accepts argv, it will read sys.argv itself.
+            _env = CmpsblCapability().execute({
+                "_cmpsbl_target": "main",
+                "_cmpsbl_args": (),
+                "_cmpsbl_kwargs": {},
+            })
+            if _verbose:
+                print(f"[CMPSBL] original_executed={_env['_cmpsbl']['execution']['original_executed']} mode={_env['_cmpsbl']['mode']}")
 ${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
