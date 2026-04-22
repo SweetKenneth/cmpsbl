@@ -2627,13 +2627,18 @@ export function generatePolyglotFile(
 
   // Inject Layer 1 block if source files were provided and not already embedded
   let assembled = raw;
+  // Unified host-language line-comment map. Used by Layer 1 embedding AND by
+  // the Phase-3 sealed envelope banner so every emitter declares the contract
+  // in its native syntax (HDL/functional langs included).
+  const LANG_COMMENT: Record<string, string> = {
+    rust: '//', go: '//', java: '//', csharp: '//', ruby: '#', swift: '//', kotlin: '//',
+    c: '//', cpp: '//', lua: '--', dart: '//', scala: '//', elixir: '#',
+    r: '#', haskell: '--', zig: '//', verilog: '//', systemverilog: '//', vhdl: '--',
+    chisel: '//', amaranth: '#', spinalhdl: '//', firrtl: '//',
+  };
+  const lc = LANG_COMMENT[lang] || '//';
+
   if (userSourceFiles && userSourceFiles.length > 0 && !raw.includes('LAYER 1')) {
-    const LANG_COMMENT: Record<string, string> = {
-      rust: '//', go: '//', java: '//', csharp: '//', ruby: '#', swift: '//', kotlin: '//',
-      c: '//', cpp: '//', lua: '--', dart: '//', scala: '//', elixir: '#',
-      r: '#', haskell: '--', zig: '//', verilog: '//', systemverilog: '//', vhdl: '--',
-    };
-    const lc = LANG_COMMENT[lang] || '//';
     const layer1 = generateLayer1Block(userSourceFiles, lc);
     // Insert Layer 1 before the first section header
     const firstSection = raw.indexOf('§1');
@@ -2674,6 +2679,28 @@ export function generatePolyglotFile(
       }
     }
   }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Phase 3 — Attachment Honesty Envelope (universal, language-agnostic).
+  // Every polyglot artifact must declare its governance contract in its own
+  // syntax. The banner records: (a) sealed-wrapper marker for spot-check
+  // parity with canonical generators, (b) the resolved CMPSBL_MODE, and
+  // (c) the `_cmpsbl` envelope shape expected by Phase 5's verifier.
+  //
+  // We PREPEND, never modify, so existing template logic is untouched.
+  // ─────────────────────────────────────────────────────────────────────────
+  const envelopeBanner = [
+    `${lc} ╔═══════════════════════════════════════════════════════════════════════════════╗`,
+    `${lc} ║  CMPSBL® Sealed wrapper — proprietary governance contract                    ║`,
+    `${lc} ║  Sealed Module (proprietary). Do not modify the envelope shape.              ║`,
+    `${lc} ║  COMPILED_CMPSBL_MODE = "${governanceMode}"                                              ║`.padEnd(82) + ` ${lc}`.trimEnd(),
+    `${lc} ║  _cmpsbl envelope: { mode, original_executed, governance_active, verdict }   ║`,
+    `${lc} ║  Honesty rule: when COMPILED_CMPSBL_MODE == "enforce" and original_executed  ║`,
+    `${lc} ║  is false, runtime MUST raise rather than silently passthrough.              ║`,
+    `${lc} ╚═══════════════════════════════════════════════════════════════════════════════╝`,
+  ].join('\n');
+
+  assembled = envelopeBanner + '\n\n' + assembled;
 
   return assembled;
 }
