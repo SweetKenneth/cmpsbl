@@ -413,6 +413,12 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
   try {
 ${tsEntryPointCode}
   } catch (err) {
+    // OBSERVE MODE CONTRACT: when CMPSBL_MODE === 'observe' the substrate
+    // promises that user code runs *identically* — including propagating
+    // the *original error object* (not a wrapped CmpsblExecutionError) so
+    // callers catching specific subclasses (TypeError, RangeError, custom
+    // domain errors, etc.) keep working. Soft/Enforce still wrap below.
+    if (CMPSBL_MODE === 'observe') throw err;
     originalError = err instanceof Error ? err.message : String(err);
   }
 
@@ -2842,16 +2848,32 @@ class CmpsblCapability:
 ${executeOriginalBody}
 
     def execute(self, input_data: dict = None) -> dict:
-        """Sealed executor entry point."""
+        """Sealed executor entry point.
+
+        OBSERVE MODE CONTRACT: when CMPSBL_MODE == "observe", the substrate
+        promises that the user's code runs *identically* to its un-ascended
+        form. That includes propagating the *original exception object* —
+        not a wrapped CmpsblExecutionError — so callers that catch specific
+        types (FileNotFoundError, OSError, KeyError, etc.) keep working.
+        Soft and Enforce modes still wrap into CmpsblExecutionError because
+        they explicitly opt in to governed surfaces.
+        """
         start = time.time()
         original_executed = False
         original_error = None
+        original_exc = None
 
         try:
             original_result = self.execute_original(input_data or {})
             original_executed = True
         except Exception as e:
+            # OBSERVE: re-raise the *original* exception unchanged. No envelope,
+            # no wrapping, no type substitution. The user's try/except code
+            # must see exactly what it would have seen without ascension.
+            if CMPSBL_MODE == "observe":
+                raise
             original_error = str(e)
+            original_exc = e
             original_result = input_data or {}
 
         execution_ms = round((time.time() - start) * 1000, 3)
@@ -2954,23 +2976,13 @@ def cmpsbl_list_capabilities() -> list:
 list_capabilities = cmpsbl_list_capabilities
 
 
-def cmpsbl_self_test() -> dict:
-    results = {}
-    passed = failed = 0
-    for cap in CMPSBL_PACK_META["capabilities"]:
-        try:
-            r = cmpsbl_execute(cap["name"], {"_test": True})
-            ok = r["_pipeline"]["success"]
-            results[cap["name"]] = ok
-            if ok: passed += 1
-            else: failed += 1
-        except Exception:
-            results[cap["name"]] = False
-            failed += 1
-    return {"passed": passed, "failed": failed, "results": results}
 
-# Backwards compatibility alias
-self_test = cmpsbl_self_test
+# Note: cmpsbl_self_test() was removed in v2.1 — it called user capabilities
+# with a synthetic {"_test": True} payload that never matched real signatures,
+# so it always reported false failures. Use cmpsbl_verify_envelope() against a
+# real call's envelope for substrate self-attestation instead.
+
+
 
 
 # ── Phase 8 — Envelope Verifier (parity with TS verifyEnvelope) ──────────
@@ -3114,11 +3126,8 @@ if __name__ == "__main__":
         print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
         print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
         print(f"Active layers: {CMPSBL_PACK_META['modules']}")
+        print(f"Mode: {CMPSBL_MODE}")
         print()
-        result = cmpsbl_self_test()
-        print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
-        for name, ok in result["results"].items():
-            print(f"  {'OK' if ok else 'XX'} {name}")
     if _had_layer1:
         _user_main = _CMPSBL_LAYER1_NS.get("main")
         if callable(_user_main):
