@@ -3197,6 +3197,7 @@ ${phpExecuteOriginalBody(phpFiles)}
         $pipelineInput = is_array($originalResult) ? $originalResult : ['_original' => $originalResult];
         $pipeline = cmpsbl_execute_pipeline($pipelineInput, $this->meta['chain'] ?? [], $this->meta);
 
+        \\$mode = _resolve_cmpsbl_mode();
         $envelope = [
             '_original' => $originalResult,
             '_enriched' => $pipeline['output'],
@@ -3206,6 +3207,7 @@ ${phpExecuteOriginalBody(phpFiles)}
                 'cjpi' => $this->meta['cjpi'] ?? 0,
                 'tier' => $this->meta['tier'] ?? 'mint',
                 'chain' => $this->meta['chain'] ?? [],
+                'mode' => \\$mode,
                 'execution' => [
                     'original_executed' => $originalExecuted,
                     'original_error' => $originalError,
@@ -3214,6 +3216,19 @@ ${phpExecuteOriginalBody(phpFiles)}
                 ],
             ],
         ];
+
+        // Mode enforcement (parity with TS): under ENFORCE, silent passthrough is a credibility failure.
+        if (!$originalExecuted && \\$mode === 'enforce') {
+            throw new CmpsblExecutionError(
+                $this->meta['name'] ?? 'unknown',
+                'handler_failure',
+                'enforce mode: no entry point matched — wrap your function with cmpsbl_wrap(fn) for explicit attachment',
+                $envelope,
+            );
+        }
+        if (!$originalExecuted && \\$mode === 'soft') {
+            error_log('[CMPSBL:soft] ' . ($this->meta['name'] ?? 'unknown') . ': passthrough — no entry point matched');
+        }
 
         // Sealed propagation — proprietary.
         $pipelineSuccess = $pipeline['success'] ?? true;
