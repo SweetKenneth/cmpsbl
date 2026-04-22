@@ -1539,6 +1539,7 @@ ${embeddedSources}
 # ║  END LAYER 1 · ASCENSION LAYER BEGINS BELOW (BLACK-BOXED · PROPRIETARY)      ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝`;
 
+
     // ── Smart Entry Point Detection ──────────────────────────────────────────
     // Proprietary algorithm to find the actual Layer 1 attachment point:
     //   1. Parse __all__ to find the intended public API
