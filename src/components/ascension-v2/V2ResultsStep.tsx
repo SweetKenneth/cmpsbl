@@ -560,13 +560,20 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       {capabilities.length > 0 && (
         <section
           aria-label="Ascended package overview"
-          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60 animate-fade-in motion-reduce:animate-none"
+          // `contain: layout paint` isolates the staggered children's
+          // transform animations so their translateY can't push siblings
+          // (license picker, export button) around mid-transition. The
+          // section itself no longer animates — only its rows do — so the
+          // outer box reserves its full final height from frame 1.
+          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60 [contain:layout_paint]"
         >
           {/* Row 1 — summary tiles. Each row uses the shared `fade-in` keyframe
               (which combines opacity + translateY) with a stepped delay so
-              the dividers cascade in instead of appearing all at once. */}
+              the dividers cascade in instead of appearing all at once.
+              `will-change: opacity, transform` keeps the GPU on the hook so
+              the browser doesn't repaint surrounding layout each frame. */}
           <div
-            className="grid grid-cols-3 divide-x divide-border/60 animate-fade-in motion-reduce:animate-none"
+            className="grid grid-cols-3 divide-x divide-border/60 animate-fade-in motion-reduce:animate-none [will-change:opacity,transform]"
             style={{ animationDelay: '60ms', animationFillMode: 'both' }}
           >
             <div className="p-3 sm:p-4 text-center">
@@ -585,7 +592,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
           {/* Row 2 — package contents preview */}
           <div
-            className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none"
+            className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none [will-change:opacity,transform]"
             style={{ animationDelay: '160ms', animationFillMode: 'both' }}
           >
             <div className="flex items-center gap-2">
@@ -614,7 +621,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
 
           {/* Row 3 — activated capabilities */}
           <div
-            className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none"
+            className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none [will-change:opacity,transform]"
             style={{ animationDelay: '260ms', animationFillMode: 'both' }}
           >
             <div className="flex items-center gap-2">
