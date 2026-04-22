@@ -2828,7 +2828,9 @@ export function generateUnifiedPhp(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
+  governanceMode?: string,
 ): string {
+  const phpMode = (governanceMode === 'soft' || governanceMode === 'enforce') ? governanceMode : 'observe';
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
