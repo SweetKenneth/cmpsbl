@@ -777,10 +777,12 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               void emitFunnelEvent('findings_overrides_changed', {
                 runId: getSnapshot().runId,
                 language: contractProof.lang,
-                mode: contractProof.mode,
-                totalFindings: summary.totalFindings,
-                accepted: summary.accepted,
-                blocked: summary.blocked,
+                extras: {
+                  mode: contractProof.mode,
+                  total_findings: summary.totalFindings,
+                  accepted: summary.accepted,
+                  blocked: summary.blocked,
+                },
               });
             }}
           />
