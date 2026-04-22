@@ -3387,7 +3387,7 @@ export function generateUnifiedCapabilityFile(
   } else if (lang === 'python') {
     raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'php') {
-    raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
+    raw = generateUnifiedPhp(capabilities, packName, userSourceFiles, governanceMode);
   } else if (hasPolyglotGenerator(lang)) {
     raw = generatePolyglotFile(lang, capabilities, packName, userSourceFiles);
   } else {
