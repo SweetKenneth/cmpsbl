@@ -66,6 +66,7 @@ export default function AscensionV2() {
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { mode: uiMode, setMode: setUiMode } = useV2UiMode();
   const stepperRef = useRef<HTMLElement | null>(null);
   const isFirstStepRender = useRef(true);
 
