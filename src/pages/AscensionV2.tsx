@@ -40,6 +40,7 @@ import {
   type DedupResult,
 } from '@/lib/ascension-v2';
 import { peekReAscendPayload } from '@/lib/ascension-v2/reascend';
+import { writeModeSelection, DEFAULT_GOVERNANCE_MODE } from '@/lib/ascension-v2/governance-mode';
 
 // ═══════════════════════════════════════════════════════════════
 // Step config — 4 steps (Enhance is skippable)
@@ -122,6 +123,27 @@ export default function AscensionV2() {
     setStep(4);
   }, []);
 
+  // Simple mode = calm auto-flow: upload → (skip enhance) → (skip govern w/ defaults)
+  // → analyze → results. User only acts on Upload and Results.
+  // Advanced keeps the full 5-step wizard.
+  useEffect(() => {
+    if (uiMode !== 'simple') return;
+    if (step === 1) {
+      // Skip Enhance — no Mana attachment, no extra layers (defaults).
+      setEnhanced(false);
+      setSelectedLayerIds([]);
+      setStep(2);
+    } else if (step === 2) {
+      // Skip Govern — write the safe default (Observe, no exclusions).
+      writeModeSelection({
+        mode: DEFAULT_GOVERNANCE_MODE,
+        excludedFunctions: [],
+        chosenAt: new Date().toISOString(),
+      });
+      setStep(3);
+    }
+  }, [uiMode, step]);
+
   const handleReset = useCallback(async () => {
     try {
       if (user) {
@@ -177,9 +199,8 @@ export default function AscensionV2() {
           {/* Cinematic Hero — only on upload step, above the machine */}
           {step === 0 && <V2CinematicHero />}
 
-          {/* "What's Ascension" explainer — upload step, Advanced mode only.
-              Simple mode keeps the calm path: hero → machine. */}
-          {step === 0 && uiMode === 'advanced' && <V2WhatsAscension />}
+          {/* "What's Ascension" explainer — only on upload step, below hero */}
+          {step === 0 && <V2WhatsAscension />}
 
           {/* Stepper — 4 steps, responsive */}
           <nav ref={stepperRef} className="mb-6 sm:mb-8 scroll-mt-4">
@@ -242,8 +263,8 @@ export default function AscensionV2() {
               has its own implicit cancel via initRun() on remount. No need
               for a duplicate page-level Start Over button. */}
 
-          {/* FAQ — upload step, Advanced mode only. */}
-          {step === 0 && uiMode === 'advanced' && <V2Faq />}
+          {/* FAQ — only on upload step, page bottom */}
+          {step === 0 && <V2Faq />}
         </div>
       </main>
 
