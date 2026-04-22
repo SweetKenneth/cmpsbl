@@ -511,6 +511,29 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   const primaryFileName = sourceFiles[0]?.name || 'source';
   const displayBaseName = primaryFileName.replace(/\.[^.]+$/, '');
 
+  // ── Advanced-mode panel registry ─────────────────────────────────────────
+  // Each entry decides whether the panel has content for this run. The
+  // disclosure header shows "X of Y active" so users see at a glance how
+  // much extra context is available before opening it.
+  const langKey = sourceLanguage.toLowerCase().replace(/\s+/g, '');
+  const langStatus = getV2LanguageStatus(langKey);
+  const langEntry = getV2LanguageEntry(langKey);
+  const langLabel = langEntry?.label ?? sourceLanguage;
+  const hasLanguageNotice = langStatus !== 'CANONICAL';
+  const hasProvenance = capabilities.length > 0;
+  const hasContractProof = !!contractProof;
+  const hasDriftHint =
+    !!findingsOverrides &&
+    (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0);
+  const advancedTotal = 4;
+  const advancedActive =
+    (hasProvenance ? 1 : 0) +
+    (hasLanguageNotice ? 1 : 0) +
+    (hasContractProof ? 1 : 0) +
+    (hasDriftHint ? 1 : 0);
+
+
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <DownloadCeremonyOverlay
