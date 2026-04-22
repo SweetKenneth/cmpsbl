@@ -556,8 +556,13 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       {/* Unified package overview — single bordered surface that bundles the
           summary tiles, package contents preview, and activated capabilities.
           Internal dividers (not nested cards) keep the eye on one designed
-          region instead of three stacked boxes with competing borders. */}
-      {capabilities.length > 0 && (
+          region instead of three stacked boxes with competing borders.
+          While `loading`, render a structurally-identical skeleton so the
+          swap to real content causes zero layout shift (same row heights,
+          same dividers, same padding). */}
+      {loading ? (
+        <V2PackageOverviewSkeleton />
+      ) : capabilities.length > 0 && (
         <section
           aria-label="Ascended package overview"
           // `contain: layout paint` isolates the staggered children's
