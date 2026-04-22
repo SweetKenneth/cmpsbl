@@ -2959,7 +2959,7 @@ class CMPSBLModuleHandlers
         $patterns = [
             'xss'            => '/<script|on\\w+\\s*=|javascript:/i',
             'sqli'           => '/(union\\s+select|or\\s+1\\s*=\\s*1|--\\s|;\\s*drop\\s+table)/i',
-            'rce'            => '/eval\\(|exec\\(|system\\(|passthru\\(|`[^`]+`/i',
+            'rce'            => '/eval\\(|exec\\(|system\\(|passthru\\(|\`[^\`]+\`/i',
             'path_traversal' => '/\\.\\.\\/|\\.\\.\\\\\\\\|\\/etc\\/passwd|\\/proc\\/self/i',
         ];
         $breakdown = [];
