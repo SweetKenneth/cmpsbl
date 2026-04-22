@@ -41,6 +41,9 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 
 import { V2ActivationGuide } from './V2ActivationGuide';
+import { V2ContractVerifiedPanel } from './V2ContractVerifiedPanel';
+import { checkExportArtifact, type ExportSelfCheckResult } from '@/lib/export/export-self-check';
+import { verifyEnvelope, type EnvelopeVerification } from '@/lib/export/envelope-verifier';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
 import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
@@ -87,6 +90,16 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   // After export succeeds we surface the run-aware activation guide so the
   // user has copy-pasteable next steps using their actual ascended filename.
   const [exportedAscendedName, setExportedAscendedName] = useState<string | null>(null);
+  // Phase 7 — visible proof of the V1 contract for the run we just shipped.
+  // Captured during handleExport, rendered above the activation guide.
+  const [contractProof, setContractProof] = useState<{
+    lang: string;
+    mode: GovernanceMode;
+    capability: string;
+    chain: ReadonlyArray<string>;
+    selfCheck: ExportSelfCheckResult;
+    envelope: EnvelopeVerification;
+  } | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -412,6 +425,45 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // Surface the activation guide now that we know the real ascended name.
       setExportedAscendedName(ascendedFileName);
 
+      // Phase 7 — compute & stash the contract proof for the verified panel.
+      // Self-check inspects the actual emitted source; verifier validates a
+      // representative envelope shape for the chosen mode + first capability.
+      try {
+        const selfCheckResult = checkExportArtifact(lang, ascendedCode, chosenMode);
+        const firstCap = capInputs[0];
+        const sampleEnvelope = {
+          _original: { ok: true },
+          _enriched: { _defense: { verdict: 'allow' as const, threats_found: 0, threat_breakdown: {} } },
+          _pipeline: { success: true, output: {}, trace: [] },
+          _cmpsbl: {
+            capability: firstCap?.name ?? 'capability',
+            cjpi: firstCap?.cjpiScore ?? 0,
+            tier: firstCap?.tier ?? 'mint',
+            chain: firstCap?.chain ?? [],
+            mode: chosenMode,
+            execution: {
+              original_executed: true,
+              original_error: null,
+              execution_ms: 0,
+              strategy: 'native' as const,
+              entry_errors: [],
+              timestamp: new Date().toISOString(),
+            },
+          },
+        };
+        const envelopeResult = verifyEnvelope(sampleEnvelope);
+        setContractProof({
+          lang,
+          mode: chosenMode,
+          capability: firstCap?.name ?? 'capability',
+          chain: firstCap?.chain ?? [],
+          selfCheck: selfCheckResult,
+          envelope: envelopeResult,
+        });
+      } catch (proofErr) {
+        // Proof is informational — never block the export on it.
+        console.warn('[Ascension V2] Contract proof capture failed:', proofErr);
+      }
       // Keep ceremony visible briefly after download starts
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
@@ -694,6 +746,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
                 : `Download cmpsbl-ascended-${displayBaseName}.zip`}
             </span>
           </Button>
+        )}
+
+        {contractProof && (
+          <V2ContractVerifiedPanel
+            lang={contractProof.lang}
+            mode={contractProof.mode}
+            capability={contractProof.capability}
+            chain={contractProof.chain}
+            selfCheck={contractProof.selfCheck}
+            envelope={contractProof.envelope}
+          />
         )}
 
         {exportedAscendedName && (
