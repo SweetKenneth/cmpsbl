@@ -174,13 +174,10 @@ export function V2WhatsAscension() {
                 {beta.map((lang) => (
                   <span
                     key={lang.id}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/40 text-[11px] sm:text-xs font-medium text-foreground"
+                    className="inline-flex items-center px-2.5 py-1 rounded-md border border-border bg-muted/40 text-[11px] sm:text-xs font-medium text-foreground"
                     title="Emits via the V1 polyglot engine — Beta tier, not byte-locked yet"
                   >
                     {lang.label}
-                    <span className="px-1 py-px rounded text-[8.5px] sm:text-[9px] font-mono uppercase tracking-wider bg-foreground/10 text-foreground/70">
-                      Beta
-                    </span>
                   </span>
                 ))}
               </div>
