@@ -48,3 +48,4 @@ The two are complementary. Ascension finds what's there. Mana governs what runs.
 ---
 
 © 2025–2026 CMPSBL® · public release
+
