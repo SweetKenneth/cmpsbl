@@ -3143,6 +3143,22 @@ class CmpsblExecutionError extends \\RuntimeException
     }
 }
 
+// ── Governance Mode (parity with TS COMPILED_CMPSBL_MODE) ──────────────
+// Compiled at Ascension time; overridable via CMPSBL_MODE env var.
+//   • observe → record signals only (default)
+//   • soft    → record + warn on risky/passthrough events
+//   • enforce → record + throw on risky/passthrough events
+const COMPILED_CMPSBL_MODE = '${phpMode}';
+function _resolve_cmpsbl_mode(): string {
+    \\$env = getenv('CMPSBL_MODE');
+    if (\\$env !== false) {
+        \\$v = strtolower(trim(\\$env));
+        if (in_array(\\$v, ['observe', 'soft', 'enforce'], true)) return \\$v;
+    }
+    return COMPILED_CMPSBL_MODE;
+}
+const CMPSBL_MODE = ''; // sentinel — actual value resolved per-call below
+
 class CMPSBLCapability
 {
     private array $meta;
