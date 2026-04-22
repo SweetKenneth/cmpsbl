@@ -132,6 +132,13 @@ export default {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+        // Used for the unified Package Overview card dividers — sweeps the
+        // line out from the center while fading in. Pairs with row fade-ins.
+        "divider-sweep": {
+          "0%": { opacity: "0", transform: "scaleX(0)" },
+          "60%": { opacity: "1" },
+          "100%": { opacity: "1", transform: "scaleX(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -145,6 +152,7 @@ export default {
         shake: "shake 0.5s ease-in-out",
         marquee: "marquee 30s linear infinite",
         "ascension-flow": "ascension-flow 6s ease-in-out infinite",
+        "divider-sweep": "divider-sweep 0.45s ease-out",
       },
     },
   },

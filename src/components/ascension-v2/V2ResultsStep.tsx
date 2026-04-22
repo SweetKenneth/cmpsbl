@@ -565,7 +565,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           // (license picker, export button) around mid-transition. The
           // section itself no longer animates — only its rows do — so the
           // outer box reserves its full final height from frame 1.
-          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60 [contain:layout_paint]"
+          className="rounded-2xl border border-border bg-card/40 overflow-hidden [contain:layout_paint]"
         >
           {/* Row 1 — summary tiles. Each row uses the shared `fade-in` keyframe
               (which combines opacity + translateY) with a stepped delay so
@@ -589,6 +589,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Top Score</p>
             </div>
           </div>
+
+          {/* Divider before Row 2 — sweeps from center, syncs with Row 2 fade.
+              `origin-center` + scaleX in the keyframe gives the line-draw feel.
+              Delay (~120ms) lands the line just before Row 2 starts at 160ms. */}
+          <div
+            aria-hidden="true"
+            className="h-px bg-border/60 origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
+            style={{ animationDelay: '120ms', animationFillMode: 'both' }}
+          />
 
           {/* Row 2 — package contents preview */}
           <div
@@ -618,6 +627,14 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
               ))}
             </div>
           </div>
+
+          {/* Divider before Row 3 — same sweep, delay (~220ms) lands the
+              line just before Row 3 starts at 260ms. */}
+          <div
+            aria-hidden="true"
+            className="h-px bg-border/60 origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
+            style={{ animationDelay: '220ms', animationFillMode: 'both' }}
+          />
 
           {/* Row 3 — activated capabilities */}
           <div
