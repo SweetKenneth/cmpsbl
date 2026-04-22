@@ -36,6 +36,28 @@ interface Props {
 }
 
 const STAGGER_MS = 60;
+// Persisted across reloads so power users don't re-open the panel every visit.
+// Scoped to the V2 surface; cleared along with other cmpsbl_v2_* keys.
+const STORAGE_KEY = 'cmpsbl_v2_advanced_disclosure_open';
+
+function readPersistedOpen(fallback: boolean): boolean {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw === '1') return true;
+    if (raw === '0') return false;
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writePersistedOpen(open: boolean): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, open ? '1' : '0');
+  } catch {
+    /* non-fatal — user just doesn't get persistence */
+  }
+}
 
 export function V2AdvancedDisclosure({
   activeCount,
@@ -43,11 +65,33 @@ export function V2AdvancedDisclosure({
   children,
   defaultOpen = false,
 }: Props) {
+  // Start with `defaultOpen` for SSR/first paint determinism, then hydrate
+  // from localStorage in an effect below to avoid a flash of wrong state.
   const [open, setOpen] = useState(defaultOpen);
   // Once opened, keep DOM mounted so the closing transition has something to
   // animate from. Avoids the "instant snap closed" you get when unmounting.
   const [hasOpened, setHasOpened] = useState(defaultOpen);
   const [maxHeight, setMaxHeight] = useState<number | 'auto'>(defaultOpen ? 'auto' : 0);
+
+  // Hydrate persisted choice on mount. If the stored value differs from the
+  // default we flip state — the height effect below will then animate it open.
+  useEffect(() => {
+    const persisted = readPersistedOpen(defaultOpen);
+    if (persisted !== open) {
+      setOpen(persisted);
+      if (persisted) setHasOpened(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Persist every user-driven change.
+  const handleToggle = () => {
+    setOpen((prev) => {
+      const next = !prev;
+      writePersistedOpen(next);
+      return next;
+    });
+  };
   const innerRef = useRef<HTMLDivElement | null>(null);
   const pct = totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0;
 
