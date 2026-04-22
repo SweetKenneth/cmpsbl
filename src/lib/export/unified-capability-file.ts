@@ -1748,7 +1748,12 @@ def _cmpsbl_boot_layer1():
     }
 
     // Capture entry symbol names for top-level proxy shim emission.
-    entryFnNames = [...new Set([...allFns, ...fallbackFns.slice(0, 5)])];
+    // Always include `main` if the user defined it — DevOps CLIs and scripts
+    // route through it, and the Layer 2 __main__ guard depends on its presence
+    // in the entry-point table.
+    const fnSet = new Set<string>([...allFns, ...fallbackFns.slice(0, 5)]);
+    if (publicFns.includes('main')) fnSet.add('main');
+    entryFnNames = [...fnSet];
     entryClassNames = [
       ...new Set([
         ...allClasses.map(c => c.name),
@@ -1756,18 +1761,52 @@ def _cmpsbl_boot_layer1():
       ]),
     ];
 
+    // Ensure `main` is in the entry_points table for execute_original dispatch.
+    if (publicFns.includes('main') && !entryPoints.some(e => e.includes('"main"'))) {
+      entryPoints.push(`("function", "main")`);
+    }
+
     if (entryPoints.length > 0) {
       const entryPointsList = entryPoints.join(', ');
-      executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace."""
+      executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace.
+
+        When called with a string target_name (via execute_function), dispatches
+        DIRECTLY to that symbol with the user's original *args/**kwargs preserved
+        — no signature coercion, no positional-iteration guesswork.
+        """
         _cmpsbl_boot_layer1()
         _ns = _CMPSBL_LAYER1_NS
+
+        # Name-aware dispatch path (used by every proxy shim).
+        if isinstance(input_data, dict) and "_cmpsbl_target" in input_data:
+            target_name = input_data["_cmpsbl_target"]
+            target = _ns.get(target_name)
+            if target is None:
+                raise NameError(f"Layer 1 symbol '{target_name}' not found in sealed namespace")
+            t_args = input_data.get("_cmpsbl_args", ())
+            t_kwargs = input_data.get("_cmpsbl_kwargs", {})
+            if isinstance(target, type):
+                instance = target(*t_args, **t_kwargs)
+                for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
+                    method = getattr(instance, method_name, None)
+                    if callable(method):
+                        return method()
+                return instance
+            return target(*t_args, **t_kwargs)
+
+        # Legacy positional path — preserved for direct CmpsblCapability().execute(dict)
+        # callers that don't go through a shim. Tries entry points in priority order.
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
             target = _ns.get(name)
             if target is None:
                 continue
             if kind == "function" and callable(target):
-                return target(input_data) if input_data else target()
+                try:
+                    return target(input_data) if input_data else target()
+                except TypeError:
+                    # Signature mismatch (e.g., argparse Namespace expected) — skip.
+                    continue
             if kind == "class" and isinstance(target, type):
                 try:
                     instance = target(input_data) if input_data else target()
@@ -2785,6 +2824,20 @@ class CmpsblCapability:
         else:
             self.meta = CMPSBL_PACK_META["capabilities"][0] if CMPSBL_PACK_META["capabilities"] else {}
 
+    def execute_function(self, target_name: str, args: tuple = (), kwargs: dict = None) -> Any:
+        """Name-aware shim entry — preserves the user's original call signature.
+
+        Wraps the call in the standard governance envelope and returns whatever
+        the user's function/class returned (NOT the envelope) so proxy shims
+        are signature-preserving and drop-in transparent.
+        """
+        env = self.execute({
+            "_cmpsbl_target": target_name,
+            "_cmpsbl_args": tuple(args or ()),
+            "_cmpsbl_kwargs": dict(kwargs or {}),
+        })
+        return env.get("_original")
+
     def execute_original(self, input_data: dict = None) -> Any:
 ${executeOriginalBody}
 
@@ -3025,11 +3078,14 @@ def cmpsbl_verify_envelope_json(json_str: str) -> dict:
 ${(() => {
   if (entryFnNames.length === 0 && entryClassNames.length === 0) return '';
   const mkShim = (name: string, kind: 'function' | 'class') => `def ${name}(*args, **kwargs):
-    """Layer 2 proxy shim — routes user ${kind} '${name}' through the governance chain."""
+    """Layer 2 proxy shim — routes user ${kind} '${name}' through the governance chain.
+
+    Signature-preserving: forwards *args/**kwargs verbatim to the sealed Layer 1
+    symbol, so callers (argparse Namespaces, positional CLI args, kwargs, etc.)
+    work unchanged.
+    """
     _cmpsbl_boot_layer1()
-    payload = kwargs if kwargs else (args[0] if (len(args) == 1 and isinstance(args[0], dict)) else {"_args": list(args)})
-    env = CmpsblCapability().execute(payload)
-    return env.get("_original")`;
+    return CmpsblCapability().execute_function("${name}", args, kwargs)`;
   const fnShims = entryFnNames.map(n => mkShim(n, 'function')).join('\n\n');
   const classShims = entryClassNames.map(n => mkShim(n, 'class')).join('\n\n');
   return `\n# ╔═══════════════════════════════════════════════════════════════════════════════╗
@@ -3042,26 +3098,42 @@ ${fnShims}${fnShims && classShims ? '\n\n' : ''}${classShims}\n`;
 })()}
 
 if __name__ == "__main__":
-    # Layer 2 owns __main__. Boot the sealed namespace, run self-test, then if
-    # the user defined a "main" callable, route it through the governance chain.
+    # Layer 2 owns __main__. Boot the sealed namespace, then if the user defined
+    # a "main" callable, route it through the governance chain — preserving the
+    # user's original CLI/script semantics. Diagnostic banner + self-test are
+    # SILENT BY DEFAULT (gated by CMPSBL_VERBOSE=1 or --cmpsbl-diagnose flag) so
+    # this file is safe to invoke from CI pipelines and stdout-parsing scripts.
+    import os as _os, sys as _sys
     _had_layer1 = ${pyFiles.length > 0 ? 'True' : 'False'}
+    _verbose = (_os.environ.get("CMPSBL_VERBOSE") == "1") or ("--cmpsbl-diagnose" in _sys.argv)
+    if "--cmpsbl-diagnose" in _sys.argv:
+        _sys.argv.remove("--cmpsbl-diagnose")
     if _had_layer1:
         _cmpsbl_boot_layer1()
-    print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
-    print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
-    print(f"Active layers: {CMPSBL_PACK_META['modules']}")
-    print()
-    result = cmpsbl_self_test()
-    print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
-    for name, ok in result["results"].items():
-        print(f"  {'OK' if ok else 'XX'} {name}")
+    if _verbose:
+        print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
+        print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
+        print(f"Active layers: {CMPSBL_PACK_META['modules']}")
+        print()
+        result = cmpsbl_self_test()
+        print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
+        for name, ok in result["results"].items():
+            print(f"  {'OK' if ok else 'XX'} {name}")
     if _had_layer1:
         _user_main = _CMPSBL_LAYER1_NS.get("main")
         if callable(_user_main):
-            print()
-            print("[CMPSBL] Routing user main() through governance chain...")
-            _env = CmpsblCapability().execute({})
-            print(f"[CMPSBL] original_executed={_env['_cmpsbl']['execution']['original_executed']} mode={_env['_cmpsbl']['mode']}")
+            if _verbose:
+                print()
+                print("[CMPSBL] Routing user main() through governance chain...")
+            # Preserve the user's original main() call semantics — most CLIs
+            # take no args; if main accepts argv, it will read sys.argv itself.
+            _env = CmpsblCapability().execute({
+                "_cmpsbl_target": "main",
+                "_cmpsbl_args": (),
+                "_cmpsbl_kwargs": {},
+            })
+            if _verbose:
+                print(f"[CMPSBL] original_executed={_env['_cmpsbl']['execution']['original_executed']} mode={_env['_cmpsbl']['mode']}")
 ${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
