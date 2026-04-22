@@ -1464,25 +1464,10 @@ export function cmpsbl_list_capabilities(): string[] {
 /** @deprecated Use cmpsbl_list_capabilities instead */
 export const listCapabilities = cmpsbl_list_capabilities;
 
-/**
- * Quick self-test — run all capabilities with test input.
- */
-export function cmpsbl_self_test(): { passed: number; failed: number; results: Record<string, boolean> } {
-  const results: Record<string, boolean> = {};
-  let passed = 0, failed = 0;
-  for (const cap of CMPSBL_PACK_META.capabilities) {
-    try {
-      const r = cmpsbl_execute(cap.name, { _test: true });
-      const ok = r._pipeline.success && r._cmpsbl.execution.original_executed;
-      results[cap.name] = ok;
-      ok ? passed++ : failed++;
-    } catch { results[cap.name] = false; failed++; }
-  }
-  return { passed, failed, results };
-}
-
-/** @deprecated Use cmpsbl_self_test instead */
-export const selfTest = cmpsbl_self_test;
+// NOTE: cmpsbl_self_test() was removed in v2.1 — it called every capability
+// with a synthetic { _test: true } payload that never matched real user
+// signatures, so it always reported false failures. Use the contract verifier
+// (cmpsbl_verify_envelope) against your own real inputs instead.
 ${tsLayers.map(l => l.tsCode).join('\n')}
 ${getAutoWireTs(selectedLayers || [])}
 
@@ -1776,9 +1761,11 @@ def _cmpsbl_boot_layer1():
       const entryPointsList = entryPoints.join(', ');
       executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace.
 
-        When called with a string target_name (via execute_function), dispatches
-        DIRECTLY to that symbol with the user's original *args/**kwargs preserved
-        — no signature coercion, no positional-iteration guesswork.
+        Returns a (result, entered_user_code) tuple so the caller can tell
+        the difference between "no entry point matched" (entered=False) and
+        "user code raised" (entered=True). On exception we stash the flag on
+        the exception object as ._cmpsbl_entered_user_code so the executor
+        can branch error propagation by mode.
         """
         _cmpsbl_boot_layer1()
         _ns = _CMPSBL_LAYER1_NS
@@ -1792,13 +1779,25 @@ def _cmpsbl_boot_layer1():
             t_args = input_data.get("_cmpsbl_args", ())
             t_kwargs = input_data.get("_cmpsbl_kwargs", {})
             if isinstance(target, type):
-                instance = target(*t_args, **t_kwargs)
+                try:
+                    instance = target(*t_args, **t_kwargs)
+                except Exception as _e:
+                    setattr(_e, "_cmpsbl_entered_user_code", True)
+                    raise
                 for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
                     method = getattr(instance, method_name, None)
                     if callable(method):
-                        return method()
-                return instance
-            return target(*t_args, **t_kwargs)
+                        try:
+                            return method(), True
+                        except Exception as _e:
+                            setattr(_e, "_cmpsbl_entered_user_code", True)
+                            raise
+                return instance, True
+            try:
+                return target(*t_args, **t_kwargs), True
+            except Exception as _e:
+                setattr(_e, "_cmpsbl_entered_user_code", True)
+                raise
 
         # Legacy positional path — preserved for direct CmpsblCapability().execute(dict)
         # callers that don't go through a shim. Tries entry points in priority order.
@@ -1809,34 +1808,45 @@ def _cmpsbl_boot_layer1():
                 continue
             if kind == "function" and callable(target):
                 try:
-                    return target(input_data) if input_data else target()
+                    result = target(input_data) if input_data else target()
                 except TypeError:
                     # Signature mismatch (e.g., argparse Namespace expected) — skip.
                     continue
+                except Exception as _e:
+                    setattr(_e, "_cmpsbl_entered_user_code", True)
+                    raise
+                return result, True
             if kind == "class" and isinstance(target, type):
                 try:
                     instance = target(input_data) if input_data else target()
                 except TypeError:
                     continue
+                except Exception as _e:
+                    setattr(_e, "_cmpsbl_entered_user_code", True)
+                    raise
                 for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
                     method = getattr(instance, method_name, None)
                     if callable(method):
-                        return method(input_data) if input_data else method()
-                return {"_instance": name, "_created": True}
-        return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
+                        try:
+                            return (method(input_data) if input_data else method()), True
+                        except Exception as _e:
+                            setattr(_e, "_cmpsbl_entered_user_code", True)
+                            raise
+                return {"_instance": name, "_created": True}, True
+        return {"_passthrough": input_data or {}, "_no_entry_point": True}, False`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
       executeOriginalBody = `        """Layer 1 dispatch — sealed namespace passthrough."""
         _cmpsbl_boot_layer1()
-        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in _CMPSBL_LAYER1_NS if not k.startswith("_") and k[0].isupper()]}`;
+        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in _CMPSBL_LAYER1_NS if not k.startswith("_") and k[0].isupper()]}, False`;
     } else {
       executeOriginalBody = `        """Layer 1 dispatch — empty source."""
         _cmpsbl_boot_layer1()
-        return input_data or {}`;
+        return (input_data or {}), False`;
     }
   } else {
     layer1Block = '# No source files provided — LAYER 1 is empty. Wire your code manually.';
     executeOriginalBody = `        """LAYER 1 — No original source provided."""
-        return input_data or {}`;
+        return (input_data or {}), False`;
   }
 
   const pyLayerLine = selectedLayers?.length
@@ -2850,30 +2860,94 @@ ${executeOriginalBody}
     def execute(self, input_data: dict = None) -> dict:
         """Sealed executor entry point.
 
-        OBSERVE MODE CONTRACT: when CMPSBL_MODE == "observe", the substrate
-        promises that the user's code runs *identically* to its un-ascended
-        form. That includes propagating the *original exception object* —
-        not a wrapped CmpsblExecutionError — so callers that catch specific
-        types (FileNotFoundError, OSError, KeyError, etc.) keep working.
-        Soft and Enforce modes still wrap into CmpsblExecutionError because
-        they explicitly opt in to governed surfaces.
+        Three failure modes are distinguished honestly:
+
+          1. ENTERED user code, returned cleanly       → original_executed=True
+          2. ENTERED user code, raised an exception    → entered_user_code=True,
+                                                          original_executed=False
+          3. NEVER ENTERED user code (no entry match)  → entered_user_code=False
+                                                          original_executed=False
+
+        This matters because the substrate's promise to callers depends on
+        which case actually happened:
+
+          • OBSERVE + user code raised → re-raise the *original* exception
+            object unchanged. Same type, same args, same traceback. Callers
+            catching FileNotFoundError/OSError/KeyError/etc. keep working
+            exactly as they did pre-ascension.
+          • SOFT + user code raised → log a warning to stderr explaining
+            what raised, then re-raise the *original* exception so the type
+            stays honest.
+          • ENFORCE + user code raised → wrap in CmpsblExecutionError with
+            reason="user_code_exception" and surface the original type in
+            the detail string. Enforce explicitly opts in to governance.
+          • Any mode + no entry point matched → distinct passthrough path
+            with a different message ("no entry point matched"). Never
+            confuse this with "user code raised".
         """
         start = time.time()
+        entered_user_code = False
         original_executed = False
         original_error = None
         original_exc = None
 
         try:
-            original_result = self.execute_original(input_data or {})
+            original_result, entered_user_code = self.execute_original(input_data or {})
             original_executed = True
         except Exception as e:
-            # OBSERVE: re-raise the *original* exception unchanged. No envelope,
-            # no wrapping, no type substitution. The user's try/except code
-            # must see exactly what it would have seen without ascension.
-            if CMPSBL_MODE == "observe":
-                raise
-            original_error = str(e)
+            # Did the exception come from inside the user's code, or from the
+            # dispatch machinery? execute_original returns a (result, entered)
+            # tuple on the happy path; on raise it stashes the entered flag
+            # on the exception so we can branch correctly here.
+            entered_user_code = bool(getattr(e, "_cmpsbl_entered_user_code", False))
             original_exc = e
+            original_error = str(e)
+
+            if entered_user_code:
+                # OBSERVE: zero-mutation contract — re-raise unchanged so
+                # callers' specific try/except blocks still match.
+                if CMPSBL_MODE == "observe":
+                    raise
+                # SOFT: warn (preserving exception type) then re-raise honestly.
+                if CMPSBL_MODE == "soft":
+                    import sys as _sys
+                    print(
+                        "[CMPSBL:soft] " + self.meta.get("name", "unknown") +
+                        ": user code raised " + type(e).__name__ + ": " + original_error,
+                        file=_sys.stderr,
+                    )
+                    raise
+                # ENFORCE: wrap, surfacing the original exception type.
+                # Envelope is built lazily because we never entered the pipeline.
+                raise CmpsblExecutionError(
+                    self.meta.get("name", "unknown"),
+                    "user_code_exception",
+                    type(e).__name__ + ": " + original_error,
+                    {
+                        "_original": None,
+                        "_enriched": None,
+                        "_pipeline": None,
+                        "_cmpsbl": {
+                            "capability": self.meta.get("name", "unknown"),
+                            "cjpi": self.meta.get("cjpi", 0),
+                            "tier": self.meta.get("tier", "mint"),
+                            "chain": self.meta.get("chain", []),
+                            "mode": CMPSBL_MODE,
+                            "execution": {
+                                "original_executed": False,
+                                "entered_user_code": True,
+                                "original_error": original_error,
+                                "original_error_type": type(e).__name__,
+                                "execution_ms": round((time.time() - start) * 1000, 3),
+                                "strategy": "user_exception",
+                            },
+                        },
+                    },
+                )
+
+            # Dispatch-side error (no user code entered). Fall through to the
+            # passthrough envelope path so the existing "no entry point" /
+            # mode-aware messaging fires correctly.
             original_result = input_data or {}
 
         execution_ms = round((time.time() - start) * 1000, 3)
@@ -2892,32 +2966,34 @@ ${executeOriginalBody}
                 "mode": CMPSBL_MODE,
                 "execution": {
                     "original_executed": original_executed,
+                    "entered_user_code": entered_user_code,
                     "original_error": original_error,
+                    "original_error_type": (type(original_exc).__name__ if original_exc is not None else None),
                     "execution_ms": execution_ms,
                     "strategy": "native" if original_executed else "passthrough",
                 },
             },
         }
 
-        # Mode enforcement (parity with TS): under ENFORCE, silent passthrough
-        # is a credibility failure — raise honestly instead.
-        if not original_executed and CMPSBL_MODE == "enforce":
+        # Mode enforcement: silent passthrough is a credibility failure under
+        # ENFORCE — but the message must be truthful about *why* we're here.
+        if not original_executed and not entered_user_code and CMPSBL_MODE == "enforce":
             raise CmpsblExecutionError(
                 self.meta.get("name", "unknown"),
                 "handler_failure",
                 "enforce mode: no entry point matched — wrap your function with cmpsbl_wrap(fn) for explicit attachment",
                 envelope,
             )
-        if not original_executed and CMPSBL_MODE == "soft":
+        if not original_executed and not entered_user_code and CMPSBL_MODE == "soft":
             import sys as _sys
             print("[CMPSBL:soft] " + self.meta.get("name", "unknown") + ": passthrough — no entry point matched", file=_sys.stderr)
 
-        # Sealed propagation — proprietary.
-        if original_error is not None or pipeline.get("success") is False:
-            reason = "handler_failure" if original_error is not None else "pipeline_failure"
+        # Sealed propagation for pipeline failures (user code already handled
+        # above for the entered_user_code path).
+        if pipeline.get("success") is False:
             first_err = next((t for t in pipeline.get("trace", []) if t.get("status") == "error"), None)
-            detail = original_error if original_error is not None else (first_err.get("error") if first_err else "pipeline reported success=False")
-            raise CmpsblExecutionError(self.meta.get("name", "unknown"), reason, str(detail), envelope)
+            detail = first_err.get("error") if first_err else "pipeline reported success=False"
+            raise CmpsblExecutionError(self.meta.get("name", "unknown"), "pipeline_failure", str(detail), envelope)
 
         return envelope
 
