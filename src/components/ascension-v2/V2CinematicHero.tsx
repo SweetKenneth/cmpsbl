@@ -51,22 +51,27 @@ export function V2CinematicHero() {
         <div className="text-center max-w-3xl mx-auto mb-3 sm:mb-4">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-[-0.02em] leading-[1.05]">
             <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
-              Attach. Collide.
+              Upgrade your code
             </span>{' '}
             <span className="bg-gradient-to-r from-cyan-400 via-fuchsia-400 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_hsl(280_85%_60%/0.45)]">
-              Ascend.
+              without rewriting it.
             </span>
           </h1>
         </div>
-        <div className="text-center max-w-xl mx-auto mb-7 sm:mb-12 px-2 space-y-3">
+        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-12 px-2 space-y-3">
           <p className="text-base sm:text-lg text-foreground font-semibold leading-snug">
-            Same code. New behavior.
+            Drop in your source. Get back a hardened, governed, self-healing version of the same software.
           </p>
           <p className="text-sm sm:text-base text-muted-foreground/85 leading-relaxed">
-            Attach runtime layers that upgrade your software — without modifying a single line.
+            Ascension wraps your code in runtime layers — governance, audit, self-healing, anomaly detection, and more — then exports a single drop-in file that runs anywhere your code already runs.{' '}
+            <span className="text-foreground/80 font-medium">Zero edits to your logic. Zero lock-in.</span>
           </p>
-          <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono uppercase tracking-wider pt-1">
-            Powered by a deterministic, phase-locked runtime pipeline.
+          <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
+            Expect a ~60-second pipeline:{' '}
+            <span className="font-mono text-foreground/75">ingest → 40-primitive collision → ascended package</span>, with a downloadable artifact and activation guide at the end.
+          </p>
+          <p className="text-[11px] sm:text-xs text-muted-foreground/55 font-mono uppercase tracking-wider pt-1">
+            Deterministic · Phase-locked · No AI in the runtime
           </p>
         </div>
 
