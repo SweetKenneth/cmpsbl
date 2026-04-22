@@ -21,6 +21,7 @@ import {
   generateUnifiedPython,
   generateUnifiedPhp,
 } from '@/lib/export/unified-capability-file';
+import { generatePolyglotFile, SUPPORTED_LANGUAGES } from '@/lib/export/polyglot-templates';
 
 const CAP = [{
   id: 'parity-probe',
@@ -143,5 +144,25 @@ describe('Canonical Mode Wiring Audit V1', () => {
       expect(out).toContain("'mode' =>");
       expect(out).toContain("=== 'enforce'");
     });
+  }
+});
+
+// ── Phase 3 — Attachment Honesty Envelope across all 23 polyglot templates ──
+// Every polyglot artifact must declare the sealed wrapper banner + the
+// _cmpsbl envelope contract in its native syntax. Mode must be reflected.
+describe('Polyglot Attachment Honesty Envelope V1', () => {
+  for (const lang of SUPPORTED_LANGUAGES) {
+    for (const mode of ['observe', 'soft', 'enforce'] as const) {
+      it(`polyglot[${lang}] mode=${mode} emits sealed envelope banner`, () => {
+        const out = generatePolyglotFile(lang, CAP, PACK, undefined, mode);
+        expect(out, `${lang} produced empty output`).not.toBe('');
+        expect(out).toContain('Sealed wrapper');
+        expect(out).toContain('Sealed Module (proprietary)');
+        expect(out).toContain('COMPILED_CMPSBL_MODE');
+        expect(out).toContain(`"${mode}"`);
+        expect(out).toContain('_cmpsbl envelope');
+        expect(out).toContain('original_executed');
+      });
+    }
   }
 });
