@@ -425,6 +425,45 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       // Surface the activation guide now that we know the real ascended name.
       setExportedAscendedName(ascendedFileName);
 
+      // Phase 7 — compute & stash the contract proof for the verified panel.
+      // Self-check inspects the actual emitted source; verifier validates a
+      // representative envelope shape for the chosen mode + first capability.
+      try {
+        const selfCheckResult = checkExportArtifact(lang, ascendedCode, chosenMode);
+        const firstCap = capInputs[0];
+        const sampleEnvelope = {
+          _original: { ok: true },
+          _enriched: { _defense: { verdict: 'allow' as const, threats_found: 0, threat_breakdown: {} } },
+          _pipeline: { success: true, output: {}, trace: [] },
+          _cmpsbl: {
+            capability: firstCap?.name ?? 'capability',
+            cjpi: firstCap?.cjpiScore ?? 0,
+            tier: firstCap?.tier ?? 'mint',
+            chain: firstCap?.chain ?? [],
+            mode: chosenMode,
+            execution: {
+              original_executed: true,
+              original_error: null,
+              execution_ms: 0,
+              strategy: 'native' as const,
+              entry_errors: [],
+              timestamp: new Date().toISOString(),
+            },
+          },
+        };
+        const envelopeResult = verifyEnvelope(sampleEnvelope);
+        setContractProof({
+          lang,
+          mode: chosenMode,
+          capability: firstCap?.name ?? 'capability',
+          chain: firstCap?.chain ?? [],
+          selfCheck: selfCheckResult,
+          envelope: envelopeResult,
+        });
+      } catch (proofErr) {
+        // Proof is informational — never block the export on it.
+        console.warn('[Ascension V2] Contract proof capture failed:', proofErr);
+      }
       // Keep ceremony visible briefly after download starts
       setTimeout(() => setCeremonyOpen(false), 3500);
     } catch (err) {
