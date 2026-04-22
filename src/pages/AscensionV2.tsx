@@ -29,6 +29,8 @@ import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 import { V2LaunchLayers } from '@/components/ascension-v2/V2LaunchLayers';
 import { V2CinematicHero } from '@/components/ascension-v2/V2CinematicHero';
+import { V2UiModeToggle } from '@/components/ascension-v2/V2UiModeToggle';
+import { useV2UiMode } from '@/lib/ascension-v2/ui-mode';
 import { V2WhatsAscension } from '@/components/ascension-v2/V2WhatsAscension';
 import { V2Faq } from '@/components/ascension-v2/V2Faq';
 
