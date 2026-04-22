@@ -221,6 +221,13 @@ export default function AscensionV2() {
             </div>
           </nav>
 
+          {/* UI mode toggle — Simple is the calm default; Advanced unlocks the
+              full expert surface (contract proof, drift overrides, provenance,
+              harness, language status). Choice persists per user. */}
+          <div className="flex justify-center mb-4 sm:mb-6">
+            <V2UiModeToggle mode={uiMode} onChange={setUiMode} />
+          </div>
+
           {/* Step content */}
           <div className="min-h-[300px] sm:min-h-[400px]">
             {phases[step]}
