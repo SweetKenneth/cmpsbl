@@ -1650,7 +1650,8 @@ serve(async (req: Request) => {
         const clientArchetype = validateString(input.archetype, 20) as SoftwareArchetype | null;
         const archetypeProfile = classifyArchetype(allContent, String(candidateMeta.domain || 'software'), String(candidateMeta.language || 'unknown'));
         const resolvedArchetype: SoftwareArchetype = (clientArchetype && ['active', 'passive', 'hybrid'].includes(clientArchetype)) ? clientArchetype : archetypeProfile.archetype;
-        const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth, resolvedArchetype);
+        const fileShape = detectFileShape(allContent, String(candidateMeta.language || 'unknown'));
+        const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth, resolvedArchetype, fileShape);
 
         // Only persist the TOP 1 weighted result per collision run
         // All results are returned to the client for display, but we avoid DB bloat
@@ -1743,12 +1744,13 @@ serve(async (req: Request) => {
         const batchClientArchetype = validateString(input.archetype, 20) as SoftwareArchetype | null;
         const batchArchetypeProfile = classifyArchetype(batchContent, String(candidateMeta.domain || 'software'), String(candidateMeta.language || 'unknown'));
         const batchArchetype: SoftwareArchetype = (batchClientArchetype && ['active', 'passive', 'hybrid'].includes(batchClientArchetype)) ? batchClientArchetype : batchArchetypeProfile.archetype;
+        const batchFileShape = detectFileShape(batchContent, String(candidateMeta.language || 'unknown'));
         const filteredNodes = filterNodesByArchetype(batchArchetype);
-        
+
         const allResults: CollisionResult[] = [];
 
         for (const node of filteredNodes) {
-          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth, batchArchetype);
+          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth, batchArchetype, batchFileShape);
           allResults.push(...results);
         }
 
