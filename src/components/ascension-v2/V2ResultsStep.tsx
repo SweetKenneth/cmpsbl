@@ -90,6 +90,16 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
   // After export succeeds we surface the run-aware activation guide so the
   // user has copy-pasteable next steps using their actual ascended filename.
   const [exportedAscendedName, setExportedAscendedName] = useState<string | null>(null);
+  // Phase 7 — visible proof of the V1 contract for the run we just shipped.
+  // Captured during handleExport, rendered above the activation guide.
+  const [contractProof, setContractProof] = useState<{
+    lang: string;
+    mode: GovernanceMode;
+    capability: string;
+    chain: ReadonlyArray<string>;
+    selfCheck: ExportSelfCheckResult;
+    envelope: EnvelopeVerification;
+  } | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
