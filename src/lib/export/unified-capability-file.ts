@@ -2842,16 +2842,32 @@ class CmpsblCapability:
 ${executeOriginalBody}
 
     def execute(self, input_data: dict = None) -> dict:
-        """Sealed executor entry point."""
+        """Sealed executor entry point.
+
+        OBSERVE MODE CONTRACT: when CMPSBL_MODE == "observe", the substrate
+        promises that the user's code runs *identically* to its un-ascended
+        form. That includes propagating the *original exception object* —
+        not a wrapped CmpsblExecutionError — so callers that catch specific
+        types (FileNotFoundError, OSError, KeyError, etc.) keep working.
+        Soft and Enforce modes still wrap into CmpsblExecutionError because
+        they explicitly opt in to governed surfaces.
+        """
         start = time.time()
         original_executed = False
         original_error = None
+        original_exc = None
 
         try:
             original_result = self.execute_original(input_data or {})
             original_executed = True
         except Exception as e:
+            # OBSERVE: re-raise the *original* exception unchanged. No envelope,
+            # no wrapping, no type substitution. The user's try/except code
+            # must see exactly what it would have seen without ascension.
+            if CMPSBL_MODE == "observe":
+                raise
             original_error = str(e)
+            original_exc = e
             original_result = input_data or {}
 
         execution_ms = round((time.time() - start) * 1000, 3)
