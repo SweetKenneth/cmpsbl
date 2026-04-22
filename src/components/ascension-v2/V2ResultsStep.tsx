@@ -748,6 +748,17 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </Button>
         )}
 
+        {contractProof && (
+          <V2ContractVerifiedPanel
+            lang={contractProof.lang}
+            mode={contractProof.mode}
+            capability={contractProof.capability}
+            chain={contractProof.chain}
+            selfCheck={contractProof.selfCheck}
+            envelope={contractProof.envelope}
+          />
+        )}
+
         {exportedAscendedName && (
           <V2ActivationGuide
             ascendedFileName={exportedAscendedName}
