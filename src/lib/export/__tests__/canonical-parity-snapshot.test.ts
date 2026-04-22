@@ -40,8 +40,8 @@ const PACK = 'parity-test';
 const V1_DEFENSE_TOKENS = [
   'threat_breakdown',
   'threats_found',
-  '"block"',
-  '"allow"',
+  'block',
+  'allow',
   'xss',
   'sqli',
   'rce',
