@@ -3157,7 +3157,6 @@ function _resolve_cmpsbl_mode(): string {
     }
     return COMPILED_CMPSBL_MODE;
 }
-const CMPSBL_MODE = ''; // sentinel — actual value resolved per-call below
 
 class CMPSBLCapability
 {
