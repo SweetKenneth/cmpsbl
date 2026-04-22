@@ -19,6 +19,7 @@
 import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
 import { blackboxFile } from './blackbox';
 import { assertExportArtifact } from './export-self-check';
+import type { GovernanceMode } from '@/lib/ascension-v2/governance-mode';
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock, CMPSBL_CORE_LAYERS } from './cmpsbl-layers';
 import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmpsbl-layer-polyglot';
