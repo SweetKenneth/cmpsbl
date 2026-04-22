@@ -23,6 +23,7 @@ import {
 } from 'react';
 import { ChevronDown, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Props {
   /** Count of advanced panels with content for this run (header indicator). */
@@ -37,12 +38,36 @@ interface Props {
 
 const STAGGER_MS = 60;
 // Persisted across reloads so power users don't re-open the panel every visit.
-// Scoped to the V2 surface; cleared along with other cmpsbl_v2_* keys.
-const STORAGE_KEY = 'cmpsbl_v2_advanced_disclosure_open';
+// Scoped per-identity: signed-in users key off their auth UID; signed-out
+// users get a stable per-browser anonymous ID so two accounts on the same
+// machine don't trample each other's preference.
+const STORAGE_KEY_PREFIX = 'cmpsbl_v2_advanced_disclosure_open';
+const ANON_ID_KEY = 'cmpsbl_v2_anon_id';
 
-function readPersistedOpen(fallback: boolean): boolean {
+function getAnonId(): string {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let id = localStorage.getItem(ANON_ID_KEY);
+    if (!id) {
+      id =
+        typeof crypto !== 'undefined' && 'randomUUID' in crypto
+          ? crypto.randomUUID()
+          : `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+      localStorage.setItem(ANON_ID_KEY, id);
+    }
+    return id;
+  } catch {
+    return 'anon';
+  }
+}
+
+function buildStorageKey(userId: string | null | undefined): string {
+  const scope = userId && userId.length > 0 ? `u:${userId}` : `a:${getAnonId()}`;
+  return `${STORAGE_KEY_PREFIX}:${scope}`;
+}
+
+function readPersistedOpen(key: string, fallback: boolean): boolean {
+  try {
+    const raw = localStorage.getItem(key);
     if (raw === '1') return true;
     if (raw === '0') return false;
     return fallback;
@@ -51,9 +76,9 @@ function readPersistedOpen(fallback: boolean): boolean {
   }
 }
 
-function writePersistedOpen(open: boolean): void {
+function writePersistedOpen(key: string, open: boolean): void {
   try {
-    localStorage.setItem(STORAGE_KEY, open ? '1' : '0');
+    localStorage.setItem(key, open ? '1' : '0');
   } catch {
     /* non-fatal — user just doesn't get persistence */
   }
@@ -65,6 +90,9 @@ export function V2AdvancedDisclosure({
   children,
   defaultOpen = false,
 }: Props) {
+  const { user } = useAuth();
+  const storageKey = buildStorageKey(user?.id);
+
   // Start with `defaultOpen` for SSR/first paint determinism, then hydrate
   // from localStorage in an effect below to avoid a flash of wrong state.
   const [open, setOpen] = useState(defaultOpen);
@@ -73,22 +101,21 @@ export function V2AdvancedDisclosure({
   const [hasOpened, setHasOpened] = useState(defaultOpen);
   const [maxHeight, setMaxHeight] = useState<number | 'auto'>(defaultOpen ? 'auto' : 0);
 
-  // Hydrate persisted choice on mount. If the stored value differs from the
-  // default we flip state — the height effect below will then animate it open.
+  // Hydrate persisted choice whenever the active identity changes (mount,
+  // sign-in, sign-out). Each identity has its own key so switching accounts
+  // restores that account's last preference instead of bleeding state.
   useEffect(() => {
-    const persisted = readPersistedOpen(defaultOpen);
-    if (persisted !== open) {
-      setOpen(persisted);
-      if (persisted) setHasOpened(true);
-    }
+    const persisted = readPersistedOpen(storageKey, defaultOpen);
+    setOpen(persisted);
+    if (persisted) setHasOpened(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [storageKey]);
 
-  // Persist every user-driven change.
+  // Persist every user-driven change against the current identity's key.
   const handleToggle = () => {
     setOpen((prev) => {
       const next = !prev;
-      writePersistedOpen(next);
+      writePersistedOpen(storageKey, next);
       return next;
     });
   };
