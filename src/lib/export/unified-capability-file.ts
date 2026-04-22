@@ -1761,9 +1761,11 @@ def _cmpsbl_boot_layer1():
       const entryPointsList = entryPoints.join(', ');
       executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace.
 
-        When called with a string target_name (via execute_function), dispatches
-        DIRECTLY to that symbol with the user's original *args/**kwargs preserved
-        — no signature coercion, no positional-iteration guesswork.
+        Returns a (result, entered_user_code) tuple so the caller can tell
+        the difference between "no entry point matched" (entered=False) and
+        "user code raised" (entered=True). On exception we stash the flag on
+        the exception object as ._cmpsbl_entered_user_code so the executor
+        can branch error propagation by mode.
         """
         _cmpsbl_boot_layer1()
         _ns = _CMPSBL_LAYER1_NS
@@ -1777,13 +1779,25 @@ def _cmpsbl_boot_layer1():
             t_args = input_data.get("_cmpsbl_args", ())
             t_kwargs = input_data.get("_cmpsbl_kwargs", {})
             if isinstance(target, type):
-                instance = target(*t_args, **t_kwargs)
+                try:
+                    instance = target(*t_args, **t_kwargs)
+                except Exception as _e:
+                    setattr(_e, "_cmpsbl_entered_user_code", True)
+                    raise
                 for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
                     method = getattr(instance, method_name, None)
                     if callable(method):
-                        return method()
-                return instance
-            return target(*t_args, **t_kwargs)
+                        try:
+                            return method(), True
+                        except Exception as _e:
+                            setattr(_e, "_cmpsbl_entered_user_code", True)
+                            raise
+                return instance, True
+            try:
+                return target(*t_args, **t_kwargs), True
+            except Exception as _e:
+                setattr(_e, "_cmpsbl_entered_user_code", True)
+                raise
 
         # Legacy positional path — preserved for direct CmpsblCapability().execute(dict)
         # callers that don't go through a shim. Tries entry points in priority order.
@@ -1794,25 +1808,36 @@ def _cmpsbl_boot_layer1():
                 continue
             if kind == "function" and callable(target):
                 try:
-                    return target(input_data) if input_data else target()
+                    result = target(input_data) if input_data else target()
                 except TypeError:
                     # Signature mismatch (e.g., argparse Namespace expected) — skip.
                     continue
+                except Exception as _e:
+                    setattr(_e, "_cmpsbl_entered_user_code", True)
+                    raise
+                return result, True
             if kind == "class" and isinstance(target, type):
                 try:
                     instance = target(input_data) if input_data else target()
                 except TypeError:
                     continue
+                except Exception as _e:
+                    setattr(_e, "_cmpsbl_entered_user_code", True)
+                    raise
                 for method_name in ("execute", "run", "handle", "process", "main", "__call__"):
                     method = getattr(instance, method_name, None)
                     if callable(method):
-                        return method(input_data) if input_data else method()
-                return {"_instance": name, "_created": True}
-        return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
+                        try:
+                            return (method(input_data) if input_data else method()), True
+                        except Exception as _e:
+                            setattr(_e, "_cmpsbl_entered_user_code", True)
+                            raise
+                return {"_instance": name, "_created": True}, True
+        return {"_passthrough": input_data or {}, "_no_entry_point": True}, False`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
       executeOriginalBody = `        """Layer 1 dispatch — sealed namespace passthrough."""
         _cmpsbl_boot_layer1()
-        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in _CMPSBL_LAYER1_NS if not k.startswith("_") and k[0].isupper()]}`;
+        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in _CMPSBL_LAYER1_NS if not k.startswith("_") and k[0].isupper()]}, False`;
     } else {
       executeOriginalBody = `        """Layer 1 dispatch — empty source."""
         _cmpsbl_boot_layer1()
