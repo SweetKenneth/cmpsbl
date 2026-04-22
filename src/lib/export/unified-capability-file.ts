@@ -846,10 +846,40 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
 
   // ─── LAYERS (12) ───
   DEFENSE: (ctx, mod) => {
-    const str = JSON.stringify(ctx._data);
-    const suspicious = /(<script|eval\\(|__proto__|constructor\\[)/i.test(str);
-    ctx._data._defense = { sanitized: true, threats: suspicious ? 1 : 0, injectionBlocked: suspicious, validated: true };
-    ctx._signals.push({ type: 'defense', source: mod, ts: Date.now() });
+    // Real threat scan: multi-pattern findings + verdict (parity with Python handle_defense).
+    const threatPatterns: Array<[string, RegExp]> = [
+      ['xss', /<\s*script\b|javascript:|on\w+\s*=/gi],
+      ['sqli', /(\bunion\b.*\bselect\b|;\s*drop\s+table|--\s*$)/gi],
+      ['rce', /\beval\s*\(|\bexec\s*\(|__proto__|constructor\s*\[/g],
+      ['path_traversal', /\.\.[/\\]/g],
+    ];
+    const findings: Record<string, number> = {};
+    let total = 0;
+    const walkStrings = (v: unknown): void => {
+      if (typeof v === 'string') {
+        for (const [label, pat] of threatPatterns) {
+          const m = v.match(pat);
+          if (m && m.length) { findings[label] = (findings[label] ?? 0) + m.length; total += m.length; }
+        }
+      } else if (Array.isArray(v)) {
+        for (const item of v) walkStrings(item);
+      } else if (v && typeof v === 'object') {
+        for (const item of Object.values(v as Record<string, unknown>)) walkStrings(item);
+      }
+    };
+    walkStrings(ctx._data);
+    const verdict = total > 0 ? 'block' : 'allow';
+    ctx._data._defense = {
+      scanned: true,
+      sanitized: true,
+      threats: total,
+      threats_found: total,
+      threat_breakdown: findings,
+      injectionBlocked: total > 0,
+      validated: true,
+      verdict,
+    };
+    ctx._signals.push({ type: 'defense', source: mod, ts: Date.now(), verdict: total > 0 ? findings : 'clean' });
     return ctx;
   },
   IMMUNITY: (ctx, mod) => {
