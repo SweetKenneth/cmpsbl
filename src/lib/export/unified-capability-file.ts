@@ -3040,7 +3040,7 @@ ${fnShims}${fnShims && classShims ? '\n\n' : ''}${classShims}\n`;
 
 if __name__ == "__main__":
     # Layer 2 owns __main__. Boot the sealed namespace, run self-test, then if
-    # the user defined a `main` callable, route it through the governance chain.
+    # the user defined a "main" callable, route it through the governance chain.
     _had_layer1 = ${pyFiles.length > 0 ? 'True' : 'False'}
     if _had_layer1:
         _cmpsbl_boot_layer1()
