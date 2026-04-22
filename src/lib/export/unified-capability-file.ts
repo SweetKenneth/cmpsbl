@@ -1744,12 +1744,23 @@ def _cmpsbl_boot_layer1():
       }
     }
 
+    // Capture entry symbol names for top-level proxy shim emission.
+    entryFnNames = [...new Set([...allFns, ...fallbackFns.slice(0, 5)])];
+    entryClassNames = [
+      ...new Set([
+        ...allClasses.map(c => c.name),
+        ...initClasses.map(c => c.name),
+      ]),
+    ];
+
     if (entryPoints.length > 0) {
       const entryPointsList = entryPoints.join(', ');
-      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
+      executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace."""
+        _cmpsbl_boot_layer1()
+        _ns = _CMPSBL_LAYER1_NS
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
-            target = globals().get(name)
+            target = _ns.get(name)
             if target is None:
                 continue
             if kind == "function" and callable(target):
@@ -1766,10 +1777,12 @@ def _cmpsbl_boot_layer1():
                 return {"_instance": name, "_created": True}
         return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
-      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
-        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in globals() if not k.startswith("_") and k[0].isupper()]}`;
+      executeOriginalBody = `        """Layer 1 dispatch — sealed namespace passthrough."""
+        _cmpsbl_boot_layer1()
+        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in _CMPSBL_LAYER1_NS if not k.startswith("_") and k[0].isupper()]}`;
     } else {
-      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
+      executeOriginalBody = `        """Layer 1 dispatch — empty source."""
+        _cmpsbl_boot_layer1()
         return input_data or {}`;
     }
   } else {
