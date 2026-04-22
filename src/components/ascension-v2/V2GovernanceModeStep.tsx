@@ -26,9 +26,12 @@ import {
 
 interface Props {
   onComplete: () => void;
+  /** When 'simple' the env-var hint is suppressed to keep the calm path quiet. */
+  uiMode?: 'simple' | 'advanced';
 }
 
-export function V2GovernanceModeStep({ onComplete }: Props) {
+export function V2GovernanceModeStep({ onComplete, uiMode = 'simple' }: Props) {
+  const isAdvanced = uiMode === 'advanced';
   const [mode, setMode] = useState<GovernanceMode>(DEFAULT_GOVERNANCE_MODE);
   const [excluded, setExcluded] = useState<string[]>([]);
   const [source, setSource] = useState<string | null>(null);
@@ -88,9 +91,11 @@ export function V2GovernanceModeStep({ onComplete }: Props) {
           Continue to Analyze
           <ArrowRight className="w-3.5 h-3.5" />
         </Button>
-        <p className="text-[10px] text-muted-foreground/80">
-          You can change governance mode anytime by setting <code className="font-mono">CMPSBL_MODE</code> in your environment.
-        </p>
+        {isAdvanced && (
+          <p className="text-[10px] text-muted-foreground/80">
+            You can change governance mode anytime by setting <code className="font-mono">CMPSBL_MODE</code> in your environment.
+          </p>
+        )}
       </div>
     </div>
   );
