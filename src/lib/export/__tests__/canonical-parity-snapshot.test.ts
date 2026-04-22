@@ -21,12 +21,15 @@ import {
 } from '@/lib/export/unified-capability-file';
 
 const CAP = [{
+  id: 'parity-probe',
   name: 'parity-probe',
   description: 'parity probe',
   chain: ['DEFENSE', 'GOVERNANCE', 'COMPASS'],
   cjpiScore: 50,
   tier: 'mint' as const,
   fingerprint: '0123456789abcdef0123456789abcdef',
+  moatSignature: 'parity-moat',
+  capabilityType: 'utility',
 }];
 
 const PACK = 'parity-test';
