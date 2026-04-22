@@ -40,6 +40,7 @@ import {
   type DedupResult,
 } from '@/lib/ascension-v2';
 import { peekReAscendPayload } from '@/lib/ascension-v2/reascend';
+import { writeModeSelection, DEFAULT_GOVERNANCE_MODE } from '@/lib/ascension-v2/governance-mode';
 
 // ═══════════════════════════════════════════════════════════════
 // Step config — 4 steps (Enhance is skippable)
