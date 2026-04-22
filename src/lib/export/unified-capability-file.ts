@@ -413,6 +413,12 @@ export function execute_${cap.name.toLowerCase().replace(/[^a-z0-9]/g, '_')}(inp
   try {
 ${tsEntryPointCode}
   } catch (err) {
+    // OBSERVE MODE CONTRACT: when CMPSBL_MODE === 'observe' the substrate
+    // promises that user code runs *identically* — including propagating
+    // the *original error object* (not a wrapped CmpsblExecutionError) so
+    // callers catching specific subclasses (TypeError, RangeError, custom
+    // domain errors, etc.) keep working. Soft/Enforce still wrap below.
+    if (CMPSBL_MODE === 'observe') throw err;
     originalError = err instanceof Error ? err.message : String(err);
   }
 
