@@ -2571,6 +2571,22 @@ class CmpsblExecutionError(Exception):
         self.envelope = envelope
 
 
+
+# ── Governance Mode (parity with TS COMPILED_CMPSBL_MODE) ────────────────
+# Compiled at Ascension time; overridable at runtime via CMPSBL_MODE env var.
+#   • observe → record signals only (default)
+#   • soft    → record + warn on risky/passthrough events
+#   • enforce → record + raise on risky/passthrough events
+import os as _cmpsbl_os
+COMPILED_CMPSBL_MODE = ${JSON.stringify((governanceMode === 'soft' || governanceMode === 'enforce') ? governanceMode : 'observe')}
+def _resolve_cmpsbl_mode():
+    env = (_cmpsbl_os.environ.get("CMPSBL_MODE") or "").strip().lower()
+    if env in ("observe", "soft", "enforce"):
+        return env
+    return COMPILED_CMPSBL_MODE
+CMPSBL_MODE = _resolve_cmpsbl_mode()
+
+
 class CmpsblCapability:
     """Sealed capability executor."""
 
@@ -2612,6 +2628,7 @@ ${executeOriginalBody}
                 "cjpi": self.meta.get("cjpi", 0),
                 "tier": self.meta.get("tier", "mint"),
                 "chain": self.meta.get("chain", []),
+                "mode": CMPSBL_MODE,
                 "execution": {
                     "original_executed": original_executed,
                     "original_error": original_error,
@@ -2620,6 +2637,19 @@ ${executeOriginalBody}
                 },
             },
         }
+
+        # Mode enforcement (parity with TS): under ENFORCE, silent passthrough
+        # is a credibility failure — raise honestly instead.
+        if not original_executed and CMPSBL_MODE == "enforce":
+            raise CmpsblExecutionError(
+                self.meta.get("name", "unknown"),
+                "handler_failure",
+                "enforce mode: no entry point matched — wrap your function with cmpsbl_wrap(fn) for explicit attachment",
+                envelope,
+            )
+        if not original_executed and CMPSBL_MODE == "soft":
+            import sys as _sys
+            print("[CMPSBL:soft] " + self.meta.get("name", "unknown") + ": passthrough — no entry point matched", file=_sys.stderr)
 
         # Sealed propagation — proprietary.
         if original_error is not None or pipeline.get("success") is False:
@@ -2798,7 +2828,9 @@ export function generateUnifiedPhp(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
+  governanceMode?: string,
 ): string {
+  const phpMode = (governanceMode === 'soft' || governanceMode === 'enforce') ? governanceMode : 'observe';
   const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
@@ -3111,6 +3143,21 @@ class CmpsblExecutionError extends \\RuntimeException
     }
 }
 
+// ── Governance Mode (parity with TS COMPILED_CMPSBL_MODE) ──────────────
+// Compiled at Ascension time; overridable via CMPSBL_MODE env var.
+//   • observe → record signals only (default)
+//   • soft    → record + warn on risky/passthrough events
+//   • enforce → record + throw on risky/passthrough events
+const COMPILED_CMPSBL_MODE = '${phpMode}';
+function _resolve_cmpsbl_mode(): string {
+    \\$env = getenv('CMPSBL_MODE');
+    if (\\$env !== false) {
+        \\$v = strtolower(trim(\\$env));
+        if (in_array(\\$v, ['observe', 'soft', 'enforce'], true)) return \\$v;
+    }
+    return COMPILED_CMPSBL_MODE;
+}
+
 class CMPSBLCapability
 {
     private array $meta;
@@ -3150,6 +3197,7 @@ ${phpExecuteOriginalBody(phpFiles)}
         $pipelineInput = is_array($originalResult) ? $originalResult : ['_original' => $originalResult];
         $pipeline = cmpsbl_execute_pipeline($pipelineInput, $this->meta['chain'] ?? [], $this->meta);
 
+        \\$mode = _resolve_cmpsbl_mode();
         $envelope = [
             '_original' => $originalResult,
             '_enriched' => $pipeline['output'],
@@ -3159,6 +3207,7 @@ ${phpExecuteOriginalBody(phpFiles)}
                 'cjpi' => $this->meta['cjpi'] ?? 0,
                 'tier' => $this->meta['tier'] ?? 'mint',
                 'chain' => $this->meta['chain'] ?? [],
+                'mode' => \\$mode,
                 'execution' => [
                     'original_executed' => $originalExecuted,
                     'original_error' => $originalError,
@@ -3167,6 +3216,19 @@ ${phpExecuteOriginalBody(phpFiles)}
                 ],
             ],
         ];
+
+        // Mode enforcement (parity with TS): under ENFORCE, silent passthrough is a credibility failure.
+        if (!$originalExecuted && \\$mode === 'enforce') {
+            throw new CmpsblExecutionError(
+                $this->meta['name'] ?? 'unknown',
+                'handler_failure',
+                'enforce mode: no entry point matched — wrap your function with cmpsbl_wrap(fn) for explicit attachment',
+                $envelope,
+            );
+        }
+        if (!$originalExecuted && \\$mode === 'soft') {
+            error_log('[CMPSBL:soft] ' . ($this->meta['name'] ?? 'unknown') . ': passthrough — no entry point matched');
+        }
 
         // Sealed propagation — proprietary.
         $pipelineSuccess = $pipeline['success'] ?? true;
@@ -3325,7 +3387,7 @@ export function generateUnifiedCapabilityFile(
   } else if (lang === 'python') {
     raw = generateUnifiedPython(capabilities, packName, userSourceFiles, selectedLayers, governanceMode, riskSurfaceCount, excludedFunctions);
   } else if (lang === 'php') {
-    raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
+    raw = generateUnifiedPhp(capabilities, packName, userSourceFiles, governanceMode);
   } else if (hasPolyglotGenerator(lang)) {
     raw = generatePolyglotFile(lang, capabilities, packName, userSourceFiles);
   } else {
