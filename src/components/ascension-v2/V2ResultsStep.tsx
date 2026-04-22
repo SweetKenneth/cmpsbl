@@ -584,7 +584,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </div>
 
           {/* Row 2 — package contents preview */}
-          <div className="p-3 sm:p-4 space-y-2 sm:space-y-2.5">
+          <div
+            className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none"
+            style={{ animationDelay: '160ms', animationFillMode: 'both' }}
+          >
             <div className="flex items-center gap-2">
               <Package className="w-4 h-4 text-primary flex-shrink-0" />
               <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
