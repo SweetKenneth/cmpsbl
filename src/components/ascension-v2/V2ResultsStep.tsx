@@ -42,6 +42,7 @@ import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmp
 
 import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2AdvancedDisclosure } from './V2AdvancedDisclosure';
+import { V2PackageOverviewSkeleton } from './V2PackageOverviewSkeleton';
 import { V2WhyTooltip } from './V2WhyTooltip';
 import {
   V2ContractVerifiedPanel,
