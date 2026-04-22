@@ -241,10 +241,6 @@ export default function AscensionV2() {
               has its own implicit cancel via initRun() on remount. No need
               for a duplicate page-level Start Over button. */}
 
-          {/* Top 20 Launch Layers — curated lineup. Hidden on Results so the
-              ascended-package action block stays the focal point. */}
-          {step !== 4 && <V2LaunchLayers />}
-
           {/* FAQ — only on upload step, page bottom */}
           {step === 0 && <V2Faq />}
         </div>
