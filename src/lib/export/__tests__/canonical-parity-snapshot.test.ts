@@ -21,6 +21,7 @@ import {
   generateUnifiedPython,
   generateUnifiedPhp,
 } from '@/lib/export/unified-capability-file';
+import { generatePolyglotFile, SUPPORTED_LANGUAGES } from '@/lib/export/polyglot-templates';
 
 const CAP = [{
   id: 'parity-probe',
