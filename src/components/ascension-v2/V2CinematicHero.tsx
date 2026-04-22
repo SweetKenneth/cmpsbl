@@ -78,9 +78,9 @@ export function V2CinematicHero() {
         {/* ═══ Stage tag row ═══ */}
         <div className="mt-5 sm:mt-7 grid grid-cols-3 gap-2 sm:gap-3 max-w-3xl mx-auto">
           {[
-            { num: '01', label: 'Ingest', tone: 'from-cyan-400/20 to-cyan-400/5 border-cyan-400/30 text-cyan-200' },
-            { num: '02', label: 'Attach + Collide', tone: 'from-fuchsia-400/20 to-fuchsia-400/5 border-fuchsia-400/30 text-fuchsia-200' },
-            { num: '03', label: 'Ascend + Export', tone: 'from-amber-300/20 to-amber-300/5 border-amber-300/30 text-amber-100' },
+            { num: '01', label: 'Ingest', tone: 'from-cyan-400/15 to-cyan-400/5 border-cyan-500/40 text-cyan-700 dark:text-cyan-200' },
+            { num: '02', label: 'Attach + Collide', tone: 'from-fuchsia-400/15 to-fuchsia-400/5 border-fuchsia-500/40 text-fuchsia-700 dark:text-fuchsia-200' },
+            { num: '03', label: 'Ascend + Export', tone: 'from-amber-300/20 to-amber-300/5 border-amber-500/40 text-amber-700 dark:text-amber-100' },
           ].map((s) => (
             <div
               key={s.num}
