@@ -64,6 +64,8 @@ interface Props {
   dedup: DedupResult;
   enhanced?: boolean;
   selectedLayerIds?: string[];
+  /** UI mode — 'simple' (default) hides expert panels; 'advanced' shows all. */
+  uiMode?: 'simple' | 'advanced';
   onReset: () => void;
 }
 
@@ -74,7 +76,8 @@ interface SourceFileData {
   content: string;
 }
 
-export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], onReset }: Props) {
+export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], uiMode = 'simple', onReset }: Props) {
+  const isAdvanced = uiMode === 'advanced';
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
@@ -623,7 +626,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           explainer derived entirely from real signals already on each
           DiscoveredCapability (chain, band, channels, gaps, synergies,
           merge verdict). No fabricated source-line mapping. */}
-      {capabilities.length > 0 && (
+      {isAdvanced && capabilities.length > 0 && (
         <V2CapabilityProvenance capabilities={capabilities} />
       )}
 
@@ -654,7 +657,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       {/* Source-language notice — when native layer parity isn't done yet, the
           ZIP still ships: original source untouched + sealed TypeScript runtime
           sidecar that runs the layers. The user's language always comes home. */}
-      {(() => {
+      {isAdvanced && (() => {
         const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
         const status = getV2LanguageStatus(lang);
         const entry = getV2LanguageEntry(lang);
@@ -762,7 +765,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </Button>
         )}
 
-        {contractProof && (
+        {isAdvanced && contractProof && (
           <V2ContractVerifiedPanel
             lang={contractProof.lang}
             mode={contractProof.mode}
@@ -800,7 +803,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         {/* Phase 9 — small persistent hint that the user has staged drift
             decisions. Reassures them the choices are captured and downloadable
             from the verified panel above. */}
-        {findingsOverrides && (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0) && (
+        {isAdvanced && findingsOverrides && (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0) && (
           <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
             <span className="truncate">
               Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}

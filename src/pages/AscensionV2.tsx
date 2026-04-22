@@ -29,6 +29,8 @@ import { V2ProcessingStep } from '@/components/ascension-v2/V2ProcessingStep';
 import { V2ResultsStep } from '@/components/ascension-v2/V2ResultsStep';
 import { V2LaunchLayers } from '@/components/ascension-v2/V2LaunchLayers';
 import { V2CinematicHero } from '@/components/ascension-v2/V2CinematicHero';
+import { V2UiModeToggle } from '@/components/ascension-v2/V2UiModeToggle';
+import { useV2UiMode } from '@/lib/ascension-v2/ui-mode';
 import { V2WhatsAscension } from '@/components/ascension-v2/V2WhatsAscension';
 import { V2Faq } from '@/components/ascension-v2/V2Faq';
 
@@ -64,6 +66,7 @@ export default function AscensionV2() {
   const [dedupResult, setDedupResult] = useState<DedupResult | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { mode: uiMode, setMode: setUiMode } = useV2UiMode();
   const stepperRef = useRef<HTMLElement | null>(null);
   const isFirstStepRender = useRef(true);
 
@@ -157,6 +160,7 @@ export default function AscensionV2() {
       dedup={dedupResult || { capabilities: [], rawCount: 0, groupCount: 0 }}
       enhanced={enhanced}
       selectedLayerIds={selectedLayerIds}
+      uiMode={uiMode}
       onReset={handleReset}
     />,
   ];
@@ -216,6 +220,13 @@ export default function AscensionV2() {
               })}
             </div>
           </nav>
+
+          {/* UI mode toggle — Simple is the calm default; Advanced unlocks the
+              full expert surface (contract proof, drift overrides, provenance,
+              harness, language status). Choice persists per user. */}
+          <div className="flex justify-center mb-4 sm:mb-6">
+            <V2UiModeToggle mode={uiMode} onChange={setUiMode} />
+          </div>
 
           {/* Step content */}
           <div className="min-h-[300px] sm:min-h-[400px]">
