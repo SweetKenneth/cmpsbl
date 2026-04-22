@@ -797,6 +797,21 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           />
         )}
 
+        {/* Phase 9 — small persistent hint that the user has staged drift
+            decisions. Reassures them the choices are captured and downloadable
+            from the verified panel above. */}
+        {findingsOverrides && (findingsOverrides.accepted > 0 || findingsOverrides.blocked > 0) && (
+          <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
+            <span className="truncate">
+              Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}
+              {findingsOverrides.blocked} blocked · {findingsOverrides.defaulted} default
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
+              local · downloadable
+            </span>
+          </div>
+        )}
+
         {/* One-click re-ascension — same source + same layers, fresh run.
             Hands off via sessionStorage so V2UploadStep auto-replays on mount.
             Only available when we actually have the source bundle in hand. */}
