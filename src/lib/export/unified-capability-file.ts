@@ -1636,8 +1636,8 @@ _CMPSBL_LAYER1_SOURCE = """${escapedSource}"""
 # CMPSBL:LAYER1:END
 
 def _cmpsbl_extract_layer1() -> str:
-    """Return the verbatim user source (byte-identical to upload).
-    Python already resolved \\\\ -> \\ and \\" -> " at parse time when reading
+    r"""Return the verbatim user source (byte-identical to upload).
+    Python already resolved \\ -> \ and \" -> " at parse time when reading
     the triple-quoted literal, so no further unescaping is required."""
     return _CMPSBL_LAYER1_SOURCE
 
