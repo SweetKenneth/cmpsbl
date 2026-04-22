@@ -137,6 +137,38 @@ describe('Canonical Parity Snapshot V1 — generator string-presence', () => {
   });
 });
 
+// ── Phase 4 — Per-Finding Policy Matcher across 4 canonical generators ───
+// Locks the matcher contract: POLICY_MATCHER table, decisions[] array with
+// {kind, count, action, reason}, and the warn verdict tier.
+describe('Canonical Per-Finding Matcher V1', () => {
+  const ts  = generateUnifiedTypeScript(CAP, PACK);
+  const js  = generateUnifiedJavaScript(CAP, PACK);
+  const py  = generateUnifiedPython(CAP, PACK);
+  const php = generateUnifiedPhp(CAP, PACK);
+
+  const langs: Array<[string, string]> = [
+    ['TS', ts], ['JS', js], ['Python', py], ['PHP', php],
+  ];
+
+  for (const [name, out] of langs) {
+    it(`${name} generator emits the V1 MATCHER contract`, () => {
+      for (const tok of V1_MATCHER_TOKENS) {
+        expect(out, `${name} missing matcher token: ${tok}`).toContain(tok);
+      }
+    });
+  }
+
+  it('All 4 generators declare path_traversal=warn (per-class policy parity)', () => {
+    for (const [name, out] of langs) {
+      const hasWarnPolicy =
+        out.includes("path_traversal: 'warn'") ||
+        out.includes('"path_traversal": "warn"') ||
+        out.includes("'path_traversal' => 'warn'");
+      expect(hasWarnPolicy, `${name} missing path_traversal=warn policy`).toBe(true);
+    }
+  });
+});
+
 // ── Phase 2 — Mode Wiring Audit (4 canonical generators) ─────────────────
 // Every canonical generator must expose: COMPILED_CMPSBL_MODE, env override,
 // envelope `mode` field, and an enforce-throw on passthrough.
