@@ -3120,11 +3120,8 @@ if __name__ == "__main__":
         print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
         print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
         print(f"Active layers: {CMPSBL_PACK_META['modules']}")
+        print(f"Mode: {CMPSBL_MODE}")
         print()
-        result = cmpsbl_self_test()
-        print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
-        for name, ok in result["results"].items():
-            print(f"  {'OK' if ok else 'XX'} {name}")
     if _had_layer1:
         _user_main = _CMPSBL_LAYER1_NS.get("main")
         if callable(_user_main):
