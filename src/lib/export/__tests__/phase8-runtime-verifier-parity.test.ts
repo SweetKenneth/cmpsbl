@@ -92,8 +92,10 @@ describe('Phase 8 — PHP verifier parity', () => {
   });
 
   it('PHP verifier returns the V1 contract shape [ok, issues, summary]', () => {
-    expect(src).toMatch(/'ok'\s*=>\s*count\(\$issues\)\s*===\s*0/);
-    expect(src).toMatch(/'issues'\s*=>\s*\$issues/);
-    expect(src).toMatch(/'summary'\s*=>\s*\$summary/);
+    // Note: the PHP generator emits `\$` (escaped dollar) consistent with
+    // the rest of the file's PHP scaffolding — match that literal form.
+    expect(src).toMatch(/'ok'\s*=>\s*count\(\\\$issues\)\s*===\s*0/);
+    expect(src).toMatch(/'issues'\s*=>\s*\\\$issues/);
+    expect(src).toMatch(/'summary'\s*=>\s*\\\$summary/);
   });
 });
