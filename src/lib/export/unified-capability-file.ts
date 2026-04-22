@@ -2953,10 +2953,32 @@ class CMPSBLModuleHandlers
 
     public static function handleDefense(array $ctx, string $mod, array $meta): array
     {
-        $s = json_encode($ctx['_data']);
-        $suspicious = preg_match('/(<script|eval\\(|__proto__)/i', $s);
-        $ctx['_data']['_defense'] = ['sanitized' => true, 'threats' => $suspicious ? 1 : 0];
-        $ctx['_signals'][] = ['type' => 'defense', 'source' => $mod, 'ts' => microtime(true)];
+        // V1 canonical DEFENSE — multi-pattern threat scan with structured verdict.
+        // Mirrors the TypeScript / Python contract: same threat classes, same shape.
+        $haystack = json_encode($ctx['_data']) ?: '';
+        $patterns = [
+            'xss'            => '/<script|on\\w+\\s*=|javascript:/i',
+            'sqli'           => '/(union\\s+select|or\\s+1\\s*=\\s*1|--\\s|;\\s*drop\\s+table)/i',
+            'rce'            => '/eval\\(|exec\\(|system\\(|passthru\\(|`[^`]+`/i',
+            'path_traversal' => '/\\.\\.\\/|\\.\\.\\\\\\\\|\\/etc\\/passwd|\\/proc\\/self/i',
+        ];
+        $breakdown = [];
+        $total = 0;
+        foreach ($patterns as $kind => $regex) {
+            $hits = preg_match_all($regex, $haystack);
+            if ($hits > 0) {
+                $breakdown[$kind] = $hits;
+                $total += $hits;
+            }
+        }
+        $verdict = $total > 0 ? 'block' : 'allow';
+        $ctx['_data']['_defense'] = [
+            'sanitized'        => $verdict === 'allow',
+            'threats_found'    => $total,
+            'threat_breakdown' => (object) $breakdown,
+            'verdict'          => $verdict,
+        ];
+        $ctx['_signals'][] = ['type' => 'defense', 'source' => $mod, 'ts' => microtime(true), 'verdict' => $verdict];
         return $ctx;
     }
 
