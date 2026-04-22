@@ -103,6 +103,11 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
     selfCheck: ExportSelfCheckResult;
     envelope: EnvelopeVerification;
   } | null>(null);
+  // Phase 9 — per-finding policy overrides captured from the verified panel.
+  // Surfaced into the export funnel so we can measure whether users actually
+  // engage with drift accept/block, and so the next run can replay decisions.
+  const [findingsOverrides, setFindingsOverrides] =
+    useState<FindingsOverrideSummary | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
