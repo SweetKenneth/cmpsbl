@@ -2773,7 +2773,7 @@ self_test = cmpsbl_self_test
 
 
 # ── Phase 8 — Envelope Verifier (parity with TS verifyEnvelope) ──────────
-# Validates a parsed `_cmpsbl` envelope against the V1 contract. Returns
+# Validates a parsed _cmpsbl envelope against the V1 contract. Returns
 # {"ok": bool, "issues": [...], "summary": {...}}. Never raises on bad
 # input — designed for runtime self-attestation, CI gates, and downstream
 # language tooling. Mirrors src/lib/export/envelope-verifier.ts exactly.
@@ -2781,7 +2781,7 @@ _CMPSBL_VALID_MODES = ("observe", "soft", "enforce")
 _CMPSBL_VALID_STRATEGIES = ("native", "passthrough", "failed")
 
 def cmpsbl_verify_envelope(envelope) -> dict:
-    """Verify a parsed `_cmpsbl` envelope (or full envelope) against the V1 contract."""
+    """Verify a parsed _cmpsbl envelope (or full envelope) against the V1 contract."""
     issues = []
     summary = {
         "capability": None, "mode": None, "strategy": None,
