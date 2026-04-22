@@ -64,6 +64,8 @@ interface Props {
   dedup: DedupResult;
   enhanced?: boolean;
   selectedLayerIds?: string[];
+  /** UI mode — 'simple' (default) hides expert panels; 'advanced' shows all. */
+  uiMode?: 'simple' | 'advanced';
   onReset: () => void;
 }
 
