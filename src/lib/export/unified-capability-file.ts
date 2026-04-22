@@ -2628,6 +2628,7 @@ ${executeOriginalBody}
                 "cjpi": self.meta.get("cjpi", 0),
                 "tier": self.meta.get("tier", "mint"),
                 "chain": self.meta.get("chain", []),
+                "mode": CMPSBL_MODE,
                 "execution": {
                     "original_executed": original_executed,
                     "original_error": original_error,
@@ -2636,6 +2637,19 @@ ${executeOriginalBody}
                 },
             },
         }
+
+        # Mode enforcement (parity with TS): under ENFORCE, silent passthrough
+        # is a credibility failure — raise honestly instead.
+        if not original_executed and CMPSBL_MODE == "enforce":
+            raise CmpsblExecutionError(
+                self.meta.get("name", "unknown"),
+                "handler_failure",
+                "enforce mode: no entry point matched — wrap your function with cmpsbl_wrap(fn) for explicit attachment",
+                envelope,
+            )
+        if not original_executed and CMPSBL_MODE == "soft":
+            import sys as _sys
+            print("[CMPSBL:soft] " + self.meta.get("name", "unknown") + ": passthrough — no entry point matched", file=_sys.stderr)
 
         # Sealed propagation — proprietary.
         if original_error is not None or pipeline.get("success") is False:
