@@ -3019,7 +3019,31 @@ def cmpsbl_verify_envelope_json(json_str: str) -> dict:
     return cmpsbl_verify_envelope(parsed)
 
 
+${(() => {
+  if (entryFnNames.length === 0 && entryClassNames.length === 0) return '';
+  const mkShim = (name: string, kind: 'function' | 'class') => `def ${name}(*args, **kwargs):
+    """Layer 2 proxy shim — routes user ${kind} '${name}' through the governance chain."""
+    _cmpsbl_boot_layer1()
+    payload = kwargs if kwargs else (args[0] if (len(args) == 1 and isinstance(args[0], dict)) else {"_args": list(args)})
+    env = CmpsblCapability().execute(payload)
+    return env.get("_original")`;
+  const fnShims = entryFnNames.map(n => mkShim(n, 'function')).join('\n\n');
+  const classShims = entryClassNames.map(n => mkShim(n, 'class')).join('\n\n');
+  return `\n# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║  §3 — LAYER 2 PROXY SHIMS  (Public symbols routed through the chain)         ║
+# ║  Calling these names invokes Layer 2 governance, which then dispatches into  ║
+# ║  the SEALED Layer 1 namespace (_CMPSBL_LAYER1_NS). User code is never        ║
+# ║  touched, mutated, or executed unmediated.                                   ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+${fnShims}${fnShims && classShims ? '\n\n' : ''}${classShims}\n`;
+})()}
+
 if __name__ == "__main__":
+    # Layer 2 owns __main__. Boot the sealed namespace, run self-test, then if
+    # the user defined a `main` callable, route it through the governance chain.
+    _had_layer1 = ${pyFiles.length > 0 ? 'True' : 'False'}
+    if _had_layer1:
+        _cmpsbl_boot_layer1()
     print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
     print(f"Active layers: {CMPSBL_PACK_META['modules']}")
@@ -3027,7 +3051,14 @@ if __name__ == "__main__":
     result = cmpsbl_self_test()
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
     for name, ok in result["results"].items():
-        print(f"  {'✅' if ok else '❌'} {name}")
+        print(f"  {'OK' if ok else 'XX'} {name}")
+    if _had_layer1:
+        _user_main = _CMPSBL_LAYER1_NS.get("main")
+        if callable(_user_main):
+            print()
+            print("[CMPSBL] Routing user main() through governance chain...")
+            _env = CmpsblCapability().execute({})
+            print(f"[CMPSBL] original_executed={_env['_cmpsbl']['execution']['original_executed']} mode={_env['_cmpsbl']['mode']}")
 ${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
