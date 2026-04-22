@@ -613,7 +613,10 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </div>
 
           {/* Row 3 — activated capabilities */}
-          <div className="p-3 sm:p-4 space-y-2 sm:space-y-2.5">
+          <div
+            className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none"
+            style={{ animationDelay: '260ms', animationFillMode: 'both' }}
+          >
             <div className="flex items-center gap-2">
               <FileCode2 className="w-4 h-4 text-primary flex-shrink-0" />
               <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
