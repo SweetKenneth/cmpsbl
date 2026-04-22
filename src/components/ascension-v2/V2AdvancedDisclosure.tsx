@@ -1,33 +1,41 @@
 /**
  * V2 Advanced Disclosure — single collapsible group for expert panels.
  *
- * In Advanced mode the results step exposes four optional surfaces:
- *   • Capability provenance trace
- *   • Source-language status notice (Beta / pass-through)
- *   • Contract proof + per-finding policy overrides
- *   • Staged drift-decisions hint
- *
- * Rather than stack them as four loose cards, this component groups them under
- * one disclosure with a header that shows how many of the panels are actually
- * active for this run (the "progress indicator"). Users open it once when they
- * want depth, close it when they don't.
+ * Animations:
+ *   • Container height transitions from 0 → measured scrollHeight (and back)
+ *     using a ref so we can animate `auto` content smoothly.
+ *   • Child sections stagger in via `animate-fade-in` with per-child
+ *     `animationDelay` (60ms steps) so the panels feel sequenced rather than
+ *     arriving in a single thump.
+ *   • Honors `prefers-reduced-motion` by collapsing both effects to instant.
  *
  * © CMPSBL® — All rights reserved.
  */
-import { useState, type ReactNode } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  Children,
+  isValidElement,
+  cloneElement,
+  type ReactNode,
+  type CSSProperties,
+} from 'react';
 import { ChevronDown, Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Props {
-  /** Total advanced panels available this run (panels with content to show). */
+  /** Count of advanced panels with content for this run (header indicator). */
   readonly activeCount: number;
   /** Total advanced panels possible (for the "X of Y" indicator). */
   readonly totalCount: number;
-  /** Render-prop body — only mounted when the disclosure is open. */
+  /** Body — kept mounted after first open so collapse can animate too. */
   readonly children: ReactNode;
   /** Whether the disclosure starts open. Defaults to closed. */
   readonly defaultOpen?: boolean;
 }
+
+const STAGGER_MS = 60;
 
 export function V2AdvancedDisclosure({
   activeCount,
@@ -36,7 +44,69 @@ export function V2AdvancedDisclosure({
   defaultOpen = false,
 }: Props) {
   const [open, setOpen] = useState(defaultOpen);
+  // Once opened, keep DOM mounted so the closing transition has something to
+  // animate from. Avoids the "instant snap closed" you get when unmounting.
+  const [hasOpened, setHasOpened] = useState(defaultOpen);
+  const [maxHeight, setMaxHeight] = useState<number | 'auto'>(defaultOpen ? 'auto' : 0);
+  const innerRef = useRef<HTMLDivElement | null>(null);
   const pct = totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0;
+
+  // Drive the height animation. We snap to the measured scrollHeight on open,
+  // then drop back to `auto` after the transition so dynamic child changes
+  // (e.g. expanding a row inside provenance) aren't clipped.
+  useEffect(() => {
+    const node = innerRef.current;
+    if (!node) return;
+
+    if (open) {
+      setHasOpened(true);
+      // Two-step: 0 → measured → auto. Reading scrollHeight forces a flush.
+      const target = node.scrollHeight;
+      setMaxHeight(target);
+      const t = window.setTimeout(() => setMaxHeight('auto'), 260);
+      return () => window.clearTimeout(t);
+    }
+
+    // Closing: lock current measured height first so the transition has a
+    // concrete starting point, then on next frame collapse to 0.
+    if (hasOpened) {
+      const current = node.scrollHeight;
+      setMaxHeight(current);
+      const raf = window.requestAnimationFrame(() => setMaxHeight(0));
+      return () => window.cancelAnimationFrame(raf);
+    }
+  }, [open, hasOpened]);
+
+  // Stagger each immediate child by injecting an animation-delay style.
+  // Uses inline style on a wrapper so we don't require children to opt-in.
+  const staggered = Children.toArray(children).map((child, i) => {
+    const style: CSSProperties = {
+      animationDelay: open ? `${i * STAGGER_MS}ms` : '0ms',
+      animationFillMode: 'both',
+    };
+    if (isValidElement(child)) {
+      // Wrap rather than mutate child props — keeps types safe and avoids
+      // colliding with whatever className/style the child already owns.
+      return (
+        <div
+          key={(child.key as string | number | undefined) ?? `panel-${i}`}
+          className={open ? 'animate-fade-in motion-reduce:animate-none' : ''}
+          style={open ? style : undefined}
+        >
+          {cloneElement(child)}
+        </div>
+      );
+    }
+    return (
+      <div
+        key={`panel-${i}`}
+        className={open ? 'animate-fade-in motion-reduce:animate-none' : ''}
+        style={open ? style : undefined}
+      >
+        {child}
+      </div>
+    );
+  });
 
   return (
     <div className="rounded-xl border border-border/60 bg-muted/10 overflow-hidden">
@@ -65,16 +135,31 @@ export function V2AdvancedDisclosure({
         </div>
         <ChevronDown
           className={cn(
-            'w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform',
+            'w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform duration-200',
             open && 'rotate-180',
           )}
         />
       </button>
-      {open && (
-        <div className="px-3 sm:px-4 pb-3 sm:pb-4 pt-1 space-y-3 sm:space-y-4 border-t border-border/40">
-          {children}
-        </div>
-      )}
+
+      <div
+        // Animated wrapper — height transitions; overflow hidden keeps the
+        // collapse clean. `motion-reduce` users get an instant change.
+        className="overflow-hidden transition-[max-height] duration-300 ease-out motion-reduce:transition-none"
+        style={{
+          maxHeight:
+            maxHeight === 'auto' ? 'none' : `${maxHeight}px`,
+        }}
+        aria-hidden={!open}
+      >
+        {hasOpened && (
+          <div
+            ref={innerRef}
+            className="px-3 sm:px-4 pb-3 sm:pb-4 pt-1 space-y-3 sm:space-y-4 border-t border-border/40"
+          >
+            {staggered}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
