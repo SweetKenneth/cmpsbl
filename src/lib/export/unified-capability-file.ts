@@ -846,13 +846,22 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
 
   // ─── LAYERS (12) ───
   DEFENSE: (ctx, mod) => {
-    // Real threat scan: multi-pattern findings + verdict (parity with Python handle_defense).
+    // Phase 4 — Per-finding policy matcher.
+    // Each threat class has a declared action (block | warn | allow). Findings
+    // are scanned, then routed through the matcher to produce decisions[] +
+    // an aggregate verdict. This is the contract Phase 5's verifier reads.
     const threatPatterns: Array<[string, RegExp]> = [
       ['xss', /<\s*script\b|javascript:|on\w+\s*=/gi],
       ['sqli', /(\bunion\b.*\bselect\b|;\s*drop\s+table|--\s*$)/gi],
       ['rce', /\beval\s*\(|\bexec\s*\(|__proto__|constructor\s*\[/g],
       ['path_traversal', /\.\.[/\\]/g],
     ];
+    const POLICY_MATCHER: Record<string, 'block' | 'warn' | 'allow'> = {
+      xss: 'block',
+      sqli: 'block',
+      rce: 'block',
+      path_traversal: 'warn',
+    };
     const findings: Record<string, number> = {};
     let total = 0;
     const walkStrings = (v: unknown): void => {
@@ -868,18 +877,26 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
       }
     };
     walkStrings(ctx._data);
-    const verdict = total > 0 ? 'block' : 'allow';
+    const decisions: Array<{ kind: string; count: number; action: 'block' | 'warn' | 'allow'; reason: string }> = [];
+    for (const [kind, count] of Object.entries(findings)) {
+      const action = POLICY_MATCHER[kind] ?? 'warn';
+      decisions.push({ kind, count, action, reason: `policy:${kind}=${action}` });
+    }
+    const hasBlock = decisions.some(d => d.action === 'block');
+    const hasWarn  = decisions.some(d => d.action === 'warn');
+    const verdict: 'block' | 'warn' | 'allow' = hasBlock ? 'block' : hasWarn ? 'warn' : 'allow';
     ctx._data._defense = {
       scanned: true,
       sanitized: true,
       threats: total,
       threats_found: total,
       threat_breakdown: findings,
-      injectionBlocked: total > 0,
+      decisions,
+      injectionBlocked: hasBlock,
       validated: true,
       verdict,
     };
-    ctx._signals.push({ type: 'defense', source: mod, ts: Date.now(), verdict: total > 0 ? findings : 'clean' });
+    ctx._signals.push({ type: 'defense', source: mod, ts: Date.now(), verdict, decisions });
     return ctx;
   },
   IMMUNITY: (ctx, mod) => {
