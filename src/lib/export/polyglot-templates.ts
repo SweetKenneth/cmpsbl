@@ -2614,6 +2614,7 @@ export function generatePolyglotFile(
   capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
+  governanceMode: 'observe' | 'soft' | 'enforce' = 'observe',
 ): string {
   const generator = LANGUAGE_GENERATORS[lang];
   if (!generator) return '';
