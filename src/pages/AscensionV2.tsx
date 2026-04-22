@@ -2,7 +2,7 @@
  * Ascension V2 — Hardened Pipeline UI
  * Route: /ascension-v2 (isolated from /ascension)
  *
- * 4-step wizard: Upload → Enhance (skippable) → Analyze+Dedup+Lock → Results
+ * 5-step wizard: Upload → Enhance (skippable) → Govern → Analyze → Results
  * Wired to V2 orchestrator with audit chain + fingerprint gate.
  *
  * Uses V2 category prefix in artifact_registry for data isolation.
@@ -152,7 +152,7 @@ export default function AscensionV2() {
   const phases = [
     <V2UploadStep key="upload" onComplete={handleUploadComplete} />,
     <V2EnhanceStep key="enhance" onComplete={handleEnhanceComplete} />,
-    <V2GovernanceModeStep key="govern" onComplete={handleGovernanceComplete} />,
+    <V2GovernanceModeStep key="govern" uiMode={uiMode} onComplete={handleGovernanceComplete} />,
     <V2ProcessingStep key="process" onComplete={handleAnalysisComplete} />,
     <V2ResultsStep
       key="results"
@@ -222,29 +222,28 @@ export default function AscensionV2() {
           </nav>
 
           {/* UI mode toggle — Simple is the calm default; Advanced unlocks the
-              full expert surface (contract proof, drift overrides, provenance,
-              harness, language status). Choice persists per user. */}
-          <div className="flex justify-center mb-4 sm:mb-6">
-            <V2UiModeToggle mode={uiMode} onChange={setUiMode} />
-          </div>
+              expert surfaces in Govern + Results (contract proof, drift
+              overrides, provenance, language status). Hidden on Upload — there's
+              nothing advanced to show yet — and on Processing where it would
+              flicker mid-analysis. Choice persists per user. */}
+          {step !== 0 && step !== 3 && (
+            <div className="flex justify-center mb-4 sm:mb-6 animate-fade-in">
+              <V2UiModeToggle mode={uiMode} onChange={setUiMode} />
+            </div>
+          )}
 
           {/* Step content */}
           <div className="min-h-[300px] sm:min-h-[400px]">
             {phases[step]}
           </div>
 
-          {/* Reset button — visible during analysis only */}
-          {step === 3 && (
-            <div className="mt-6 text-center">
-              <Button variant="ghost" size="sm" onClick={handleReset}>
-                <RotateCcw className="w-3 h-3 mr-1" />
-                Start Over
-              </Button>
-            </div>
-          )}
+          {/* Reset is provided directly inside Results; the Processing step
+              has its own implicit cancel via initRun() on remount. No need
+              for a duplicate page-level Start Over button. */}
 
-          {/* Top 20 Launch Layers — curated lineup */}
-          <V2LaunchLayers />
+          {/* Top 20 Launch Layers — curated lineup. Hidden on Results so the
+              ascended-package action block stays the focal point. */}
+          {step !== 4 && <V2LaunchLayers />}
 
           {/* FAQ — only on upload step, page bottom */}
           {step === 0 && <V2Faq />}
