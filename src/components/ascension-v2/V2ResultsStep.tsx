@@ -560,10 +560,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       {capabilities.length > 0 && (
         <section
           aria-label="Ascended package overview"
-          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60"
+          className="rounded-2xl border border-border bg-card/40 overflow-hidden divide-y divide-border/60 animate-fade-in motion-reduce:animate-none"
         >
-          {/* Row 1 — summary tiles */}
-          <div className="grid grid-cols-3 divide-x divide-border/60">
+          {/* Row 1 — summary tiles. Each row uses the shared `fade-in` keyframe
+              (which combines opacity + translateY) with a stepped delay so
+              the dividers cascade in instead of appearing all at once. */}
+          <div
+            className="grid grid-cols-3 divide-x divide-border/60 animate-fade-in motion-reduce:animate-none"
+            style={{ animationDelay: '60ms', animationFillMode: 'both' }}
+          >
             <div className="p-3 sm:p-4 text-center">
               <p className="text-lg sm:text-2xl font-bold text-foreground leading-none">{capabilities.length}</p>
               <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Unique</p>
