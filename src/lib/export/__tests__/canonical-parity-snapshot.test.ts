@@ -17,7 +17,9 @@
 import { describe, it, expect } from 'vitest';
 import {
   generateUnifiedTypeScript,
+  generateUnifiedJavaScript,
   generateUnifiedPython,
+  generateUnifiedPhp,
 } from '@/lib/export/unified-capability-file';
 
 const CAP = [{
