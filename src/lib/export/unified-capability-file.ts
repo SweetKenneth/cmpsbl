@@ -18,6 +18,8 @@
 
 import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
 import { blackboxFile } from './blackbox';
+import { assertExportArtifact } from './export-self-check';
+import type { GovernanceMode } from '@/lib/ascension-v2/governance-mode';
 import type { CmpsblLayerDefinition } from './cmpsbl-layers';
 import { getLayerCode, getAutoWireTs, getAutoWirePy, getLayerHeaderBlock, CMPSBL_CORE_LAYERS } from './cmpsbl-layers';
 import { getAllLayerCode, getAutoWireForLang, getLayerCommentChar } from './cmpsbl-layer-polyglot';
@@ -3495,6 +3497,13 @@ export function generateUnifiedCapabilityFile(
       }
     }
   }
+
+  // Phase 6 — Export-time self-check. Refuse to ship any artifact whose
+  // emitted source has drifted from the V1 contract for its language.
+  // Runs BEFORE blackboxing so we inspect readable source.
+  const effectiveMode: GovernanceMode =
+    governanceMode === 'soft' || governanceMode === 'enforce' ? governanceMode : 'observe';
+  assertExportArtifact(lang, raw, effectiveMode);
 
   // Apply black-box obfuscation to protect IP
   return blackboxFile(raw, lang);
