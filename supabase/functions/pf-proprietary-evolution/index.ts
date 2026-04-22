@@ -940,6 +940,112 @@ interface EnhancementRecommendation {
   baseScore: number;
 }
 
+// ═══ FILE-SHAPE DETECTION — pick capability names that match the artifact ═══
+// "Threat_Detection_Middleware" is wrong for a CLI tool (no middleware in a
+// CLI). Detect the actual *runtime shape* of the user code and rewrite the
+// generic catalog suffix to one the architecture actually supports.
+type FileShape = 'cli' | 'http_service' | 'worker' | 'socket_handler' | 'library' | 'ui' | 'unknown';
+
+interface FileShapeProfile {
+  shape: FileShape;
+  confidence: number;
+}
+
+function detectFileShape(content: string, language: string): FileShapeProfile {
+  if (!content || content.length < 20) return { shape: 'unknown', confidence: 0 };
+  const lc = content.toLowerCase();
+  const langLc = (language || '').toLowerCase();
+
+  let cli = 0, http = 0, worker = 0, socket = 0, ui = 0, lib = 0;
+
+  // CLI signals — argparse, click, cobra, clap, sys.argv, process.argv
+  if (/\bargparse\b|\bclick\.command\b|\boptparse\b|\btyper\b/.test(lc)) cli += 5;
+  if (/\bsys\.argv\b|\bprocess\.argv\b/.test(lc)) cli += 3;
+  if (/\bcobra\.command\b|\bspf13\/cobra\b|flag\.parse\b/.test(lc)) cli += 5;
+  if (/\bclap::|structopt|use clap/.test(lc)) cli += 5;
+  if (/^#!.*\b(python|node|bash|sh|ruby|perl)\b/m.test(content)) cli += 3;
+  if (/\bsubcommand\b|\bsubparser\b|add_parser\b/.test(lc)) cli += 3;
+
+  // HTTP service signals
+  if (/\bflask\b|\bfastapi\b|\bdjango\b|\bstarlette\b|\bsanic\b|\bbottle\b/.test(lc)) http += 5;
+  if (/\bexpress\(\)|\bkoa\b|\bhapi\b|\bnestjs\b|\bfastify\b/.test(lc)) http += 5;
+  if (/\bgin\.|\bgorilla\/mux\b|\bechov4\b|\bfiber\b|\bnet\/http\b/.test(lc)) http += 4;
+  if (/\bactix_web\b|\brocket::\b|\baxum::\b|\bwarp::\b/.test(lc)) http += 5;
+  if (/@(get|post|put|delete|patch|requestmapping)\b|@route|app\.route|router\./i.test(content)) http += 3;
+  if (/\bmiddleware\b/.test(lc)) http += 1;
+
+  // Worker signals
+  if (/\bcelery\b|@app\.task|\bsidekiq\b|\brq\.queue\b|\bdramatiq\b/.test(lc)) worker += 5;
+  if (/\bbull\b|\bbullmq\b|\bagenda\b|\bbee-?queue\b/.test(lc)) worker += 4;
+  if (/\bkafkaconsumer\b|\bconfluent_kafka\b|\bsqs\b|\bpubsub\b/.test(lc)) worker += 4;
+  if (/\bcron\b|\bschedule\b|\bsetinterval\b|\bwhile true:/.test(lc)) worker += 2;
+
+  // Socket / streaming signals
+  if (/\bsocket\.io\b|\bwebsockets?\b|\bws:\/\/|\bwss:\/\/|\bgrpc\b|\bmqtt\b/.test(lc)) socket += 5;
+  if (/\btcp_server\b|\budp_server\b/.test(lc)) socket += 4;
+
+  // UI signals
+  if (/\breact\b|\bvue\b|\bsvelte\b|\bjsx\b|\btsx\b|<\/?[a-z]+>/i.test(content)) ui += 4;
+
+  // Library signals
+  const hasMain = /\bif\s+__name__\s*==\s*["']__main__["']|\bfunc\s+main\s*\(|\bint\s+main\s*\(|\bpublic\s+static\s+void\s+main\b|fn\s+main\s*\(/i.test(content);
+  if (!hasMain && /\bexport\b|\bmodule\.exports\b|\bpub\s+fn\b|^def\s+\w+/m.test(content)) lib += 2;
+
+  if ((langLc === 'go' || langLc === 'rust') && cli > 0) cli += 1;
+
+  const scores: Array<[FileShape, number]> = [
+    ['cli', cli], ['http_service', http], ['worker', worker],
+    ['socket_handler', socket], ['ui', ui], ['library', lib],
+  ];
+  scores.sort((a, b) => b[1] - a[1]);
+  const [topShape, topScore] = scores[0];
+  const total = scores.reduce((s, [, v]) => s + v, 0);
+  if (total === 0 || topScore < 3) return { shape: 'unknown', confidence: 0 };
+  return { shape: topShape, confidence: Math.min(0.99, topScore / Math.max(total, topScore + 1)) };
+}
+
+// Suffix rewrite map — generic catalog tokens → architecture-correct tokens.
+const SHAPE_SUFFIX_REMAP: Record<string, Partial<Record<FileShape, string>>> = {
+  Middleware: { cli: 'Guard',      worker: 'Interceptor', socket_handler: 'Filter',      library: 'Wrapper' },
+  Gateway:    { cli: 'Gate',       worker: 'Dispatcher',  socket_handler: 'Bridge',      library: 'Facade'  },
+  Router:     { cli: 'Dispatcher', worker: 'Scheduler',   socket_handler: 'Multiplexer', library: 'Selector' },
+  Handler:    { cli: 'Command',    worker: 'Processor',   socket_handler: 'Listener',    library: 'Callback' },
+  Filter:     { cli: 'Sieve',      worker: 'Predicate',                                  library: 'Validator' },
+  Pipeline:   { cli: 'Workflow',   worker: 'Stream',                                     library: 'Composition' },
+};
+
+function rewriteCapabilityNameForShape(name: string, shape: FileShape, confidence: number): string {
+  if (shape === 'unknown' || confidence < 0.4) return name;
+  for (const [stale, byShape] of Object.entries(SHAPE_SUFFIX_REMAP)) {
+    const re = new RegExp(`(_?)${stale}$`);
+    if (re.test(name)) {
+      const replacement = byShape[shape];
+      if (replacement) return name.replace(re, `$1${replacement}`);
+    }
+  }
+  return name;
+}
+
+function rewriteDescriptionForShape(desc: string, shape: FileShape, confidence: number): string {
+  if (shape === 'unknown' || confidence < 0.4) return desc;
+  let out = desc;
+  if (shape === 'cli') {
+    out = out.replace(/\brequest pipeline\b/gi, 'command pipeline');
+    out = out.replace(/\byour handlers?\b/gi, 'your subcommands');
+    out = out.replace(/\byour endpoints?\b/gi, 'your subcommands');
+    out = out.replace(/\bAPI endpoints?\b/gi, 'CLI subcommands');
+  } else if (shape === 'worker') {
+    out = out.replace(/\brequest pipeline\b/gi, 'job pipeline');
+    out = out.replace(/\byour handlers?\b/gi, 'your job handlers');
+    out = out.replace(/\byour endpoints?\b/gi, 'your job consumers');
+  } else if (shape === 'socket_handler') {
+    out = out.replace(/\brequest pipeline\b/gi, 'message pipeline');
+    out = out.replace(/\byour handlers?\b/gi, 'your message handlers');
+  }
+  return out;
+}
+
+
 const ARCHETYPE_ENHANCEMENTS: Record<SoftwareArchetype, EnhancementRecommendation[]> = {
   active: [
     // Amplify — make what the agent already does, better
