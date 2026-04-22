@@ -123,6 +123,27 @@ export default function AscensionV2() {
     setStep(4);
   }, []);
 
+  // Simple mode = calm auto-flow: upload → (skip enhance) → (skip govern w/ defaults)
+  // → analyze → results. User only acts on Upload and Results.
+  // Advanced keeps the full 5-step wizard.
+  useEffect(() => {
+    if (uiMode !== 'simple') return;
+    if (step === 1) {
+      // Skip Enhance — no Mana attachment, no extra layers (defaults).
+      setEnhanced(false);
+      setSelectedLayerIds([]);
+      setStep(2);
+    } else if (step === 2) {
+      // Skip Govern — write the safe default (Observe, no exclusions).
+      writeModeSelection({
+        mode: DEFAULT_GOVERNANCE_MODE,
+        excludedFunctions: [],
+        chosenAt: new Date().toISOString(),
+      });
+      setStep(3);
+    }
+  }, [uiMode, step]);
+
   const handleReset = useCallback(async () => {
     try {
       if (user) {
