@@ -62,6 +62,19 @@ const V1_COMPASS_TOKENS = [
   'riskLevel', // TS naming
 ];
 
+// Phase 4 — Per-finding policy matcher contract.
+// Each canonical generator must emit POLICY_MATCHER, decisions[], and the
+// 'warn' verdict tier (added in Phase 4 alongside block/allow).
+const V1_MATCHER_TOKENS = [
+  'POLICY_MATCHER',
+  'decisions',
+  'warn',
+  'reason',
+  'action',
+  'kind',
+  'count',
+];
+
 describe('Canonical Parity Snapshot V1 — generator string-presence', () => {
   const ts = generateUnifiedTypeScript(CAP, PACK);
   const py = generateUnifiedPython(CAP, PACK);
@@ -121,6 +134,38 @@ describe('Canonical Parity Snapshot V1 — generator string-presence', () => {
     expect(php).toContain('handleDefense');
     expect(php).toContain('threat_breakdown');
     expect(php).toContain("'verdict'");
+  });
+});
+
+// ── Phase 4 — Per-Finding Policy Matcher across 4 canonical generators ───
+// Locks the matcher contract: POLICY_MATCHER table, decisions[] array with
+// {kind, count, action, reason}, and the warn verdict tier.
+describe('Canonical Per-Finding Matcher V1', () => {
+  const ts  = generateUnifiedTypeScript(CAP, PACK);
+  const js  = generateUnifiedJavaScript(CAP, PACK);
+  const py  = generateUnifiedPython(CAP, PACK);
+  const php = generateUnifiedPhp(CAP, PACK);
+
+  const langs: Array<[string, string]> = [
+    ['TS', ts], ['JS', js], ['Python', py], ['PHP', php],
+  ];
+
+  for (const [name, out] of langs) {
+    it(`${name} generator emits the V1 MATCHER contract`, () => {
+      for (const tok of V1_MATCHER_TOKENS) {
+        expect(out, `${name} missing matcher token: ${tok}`).toContain(tok);
+      }
+    });
+  }
+
+  it('All 4 generators declare path_traversal=warn (per-class policy parity)', () => {
+    for (const [name, out] of langs) {
+      const hasWarnPolicy =
+        out.includes("path_traversal: 'warn'") ||
+        out.includes('"path_traversal": "warn"') ||
+        out.includes("'path_traversal' => 'warn'");
+      expect(hasWarnPolicy, `${name} missing path_traversal=warn policy`).toBe(true);
+    }
   });
 });
 

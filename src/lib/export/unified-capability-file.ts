@@ -846,13 +846,22 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
 
   // ─── LAYERS (12) ───
   DEFENSE: (ctx, mod) => {
-    // Real threat scan: multi-pattern findings + verdict (parity with Python handle_defense).
+    // Phase 4 — Per-finding policy matcher.
+    // Each threat class has a declared action (block | warn | allow). Findings
+    // are scanned, then routed through the matcher to produce decisions[] +
+    // an aggregate verdict. This is the contract Phase 5's verifier reads.
     const threatPatterns: Array<[string, RegExp]> = [
       ['xss', /<\s*script\b|javascript:|on\w+\s*=/gi],
       ['sqli', /(\bunion\b.*\bselect\b|;\s*drop\s+table|--\s*$)/gi],
       ['rce', /\beval\s*\(|\bexec\s*\(|__proto__|constructor\s*\[/g],
       ['path_traversal', /\.\.[/\\]/g],
     ];
+    const POLICY_MATCHER: Record<string, 'block' | 'warn' | 'allow'> = {
+      xss: 'block',
+      sqli: 'block',
+      rce: 'block',
+      path_traversal: 'warn',
+    };
     const findings: Record<string, number> = {};
     let total = 0;
     const walkStrings = (v: unknown): void => {
@@ -868,18 +877,26 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
       }
     };
     walkStrings(ctx._data);
-    const verdict = total > 0 ? 'block' : 'allow';
+    const decisions: Array<{ kind: string; count: number; action: 'block' | 'warn' | 'allow'; reason: string }> = [];
+    for (const [kind, count] of Object.entries(findings)) {
+      const action = POLICY_MATCHER[kind] ?? 'warn';
+      decisions.push({ kind, count, action, reason: 'policy:' + kind + '=' + action });
+    }
+    const hasBlock = decisions.some(d => d.action === 'block');
+    const hasWarn  = decisions.some(d => d.action === 'warn');
+    const verdict: 'block' | 'warn' | 'allow' = hasBlock ? 'block' : hasWarn ? 'warn' : 'allow';
     ctx._data._defense = {
       scanned: true,
       sanitized: true,
       threats: total,
       threats_found: total,
       threat_breakdown: findings,
-      injectionBlocked: total > 0,
+      decisions,
+      injectionBlocked: hasBlock,
       validated: true,
       verdict,
     };
-    ctx._signals.push({ type: 'defense', source: mod, ts: Date.now(), verdict: total > 0 ? findings : 'clean' });
+    ctx._signals.push({ type: 'defense', source: mod, ts: Date.now(), verdict, decisions });
     return ctx;
   },
   IMMUNITY: (ctx, mod) => {
@@ -1904,13 +1921,24 @@ def handle_encode(ctx, mod, meta):
     return ctx
 
 def handle_defense(ctx, mod, meta):
-    """Real threat scan: pattern-match across every string in the payload."""
+    """Phase 4 — Per-finding policy matcher.
+
+    Mirrors the TypeScript / PHP contract: each threat class is routed through
+    POLICY_MATCHER to produce decisions[], which then derive the aggregate
+    verdict (block > warn > allow). Phase 5's verifier reads decisions[].
+    """
     threat_patterns = [
         ("xss", re.compile(r"<\\s*script\\b|javascript:|on\\w+\\s*=", re.I)),
         ("sqli", re.compile(r"(\\bunion\\b.*\\bselect\\b|;\\s*drop\\s+table|--\\s*$)", re.I)),
         ("rce", re.compile(r"\\beval\\s*\\(|\\bexec\\s*\\(|__proto__|constructor\\s*\\[")),
         ("path_traversal", re.compile(r"\\.\\.[/\\\\]")),
     ]
+    POLICY_MATCHER = {
+        "xss": "block",
+        "sqli": "block",
+        "rce": "block",
+        "path_traversal": "warn",
+    }
     findings: Dict[str, int] = {}
     total = 0
     for s in _walk_strings(ctx["_data"]):
@@ -1919,13 +1947,21 @@ def handle_defense(ctx, mod, meta):
             if n:
                 findings[label] = findings.get(label, 0) + n
                 total += n
+    decisions = []
+    for kind, count in findings.items():
+        action = POLICY_MATCHER.get(kind, "warn")
+        decisions.append({"kind": kind, "count": count, "action": action, "reason": "policy:" + kind + "=" + action})
+    has_block = any(d["action"] == "block" for d in decisions)
+    has_warn  = any(d["action"] == "warn"  for d in decisions)
+    verdict = "block" if has_block else ("warn" if has_warn else "allow")
     ctx["_data"]["_defense"] = {
         "scanned": True,
         "threats_found": total,
         "threat_breakdown": findings,
-        "verdict": "block" if total > 0 else "allow",
+        "decisions": decisions,
+        "verdict": verdict,
     }
-    ctx["_signals"].append({"type": "defense", "source": mod, "ts": time.time(), "verdict": findings or "clean"})
+    ctx["_signals"].append({"type": "defense", "source": mod, "ts": time.time(), "verdict": verdict, "decisions": decisions})
     return ctx
 
 def handle_oracle(ctx, mod, meta):
@@ -2953,14 +2989,22 @@ class CMPSBLModuleHandlers
 
     public static function handleDefense(array $ctx, string $mod, array $meta): array
     {
-        // V1 canonical DEFENSE — multi-pattern threat scan with structured verdict.
-        // Mirrors the TypeScript / Python contract: same threat classes, same shape.
+        // Phase 4 — Per-finding policy matcher.
+        // Mirrors the TypeScript / Python contract: each threat class routes
+        // through POLICY_MATCHER to produce decisions[]; aggregate verdict is
+        // derived (block > warn > allow). Phase 5's verifier reads decisions[].
         $haystack = json_encode($ctx['_data']) ?: '';
         $patterns = [
             'xss'            => '/<script|on\\w+\\s*=|javascript:/i',
             'sqli'           => '/(union\\s+select|or\\s+1\\s*=\\s*1|--\\s|;\\s*drop\\s+table)/i',
             'rce'            => '/eval\\(|exec\\(|system\\(|passthru\\(|\`[^\`]+\`/i',
             'path_traversal' => '/\\.\\.\\/|\\.\\.\\\\\\\\|\\/etc\\/passwd|\\/proc\\/self/i',
+        ];
+        $POLICY_MATCHER = [
+            'xss'            => 'block',
+            'sqli'           => 'block',
+            'rce'            => 'block',
+            'path_traversal' => 'warn',
         ];
         $breakdown = [];
         $total = 0;
@@ -2971,14 +3015,29 @@ class CMPSBLModuleHandlers
                 $total += $hits;
             }
         }
-        $verdict = $total > 0 ? 'block' : 'allow';
+        $decisions = [];
+        $hasBlock = false;
+        $hasWarn  = false;
+        foreach ($breakdown as $kind => $count) {
+            $action = $POLICY_MATCHER[$kind] ?? 'warn';
+            $decisions[] = [
+                'kind'   => $kind,
+                'count'  => $count,
+                'action' => $action,
+                'reason' => 'policy:' . $kind . '=' . $action,
+            ];
+            if ($action === 'block') $hasBlock = true;
+            if ($action === 'warn')  $hasWarn  = true;
+        }
+        $verdict = $hasBlock ? 'block' : ($hasWarn ? 'warn' : 'allow');
         $ctx['_data']['_defense'] = [
             'sanitized'        => $verdict === 'allow',
             'threats_found'    => $total,
             'threat_breakdown' => (object) $breakdown,
+            'decisions'        => $decisions,
             'verdict'          => $verdict,
         ];
-        $ctx['_signals'][] = ['type' => 'defense', 'source' => $mod, 'ts' => microtime(true), 'verdict' => $verdict];
+        $ctx['_signals'][] = ['type' => 'defense', 'source' => $mod, 'ts' => microtime(true), 'verdict' => $verdict, 'decisions' => $decisions];
         return $ctx;
     }
 
