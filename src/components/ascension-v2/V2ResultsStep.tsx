@@ -646,13 +646,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       )}
 
-      {/* Sprint 5 — Capability provenance trace. Expandable per-capability
-          explainer derived entirely from real signals already on each
-          DiscoveredCapability (chain, band, channels, gaps, synergies,
-          merge verdict). No fabricated source-line mapping. */}
-      {isAdvanced && capabilities.length > 0 && (
-        <V2CapabilityProvenance capabilities={capabilities} />
-      )}
+      {/* Advanced provenance moved into the grouped disclosure below. */}
 
       {/* Layer selection indicator (selected on Enhance step) */}
       {selectedLayers.size > 0 && (
