@@ -41,7 +41,7 @@ function _cmpsbl_kernel_enabled_ix(): boolean {
   return String(v).toLowerCase() !== 'false';
 }
 
-async function cmpsbl_execute<T>(
+async function cmpsbl_execute_isolated<T>(
   name: string,
   fn: (...args: unknown[]) => T | Promise<T>,
   args: unknown[] = [],
@@ -122,7 +122,7 @@ def _cmpsbl_kernel_enabled_ix() -> bool:
     return str(os.environ.get("CMPSBL_KERNEL_ENABLED", "true")).lower() != "false"
 
 
-async def cmpsbl_execute(
+async def cmpsbl_execute_isolated(
     name: str,
     fn: Callable[..., Any],
     args: Optional[List[Any]] = None,
@@ -203,20 +203,24 @@ async def cmpsbl_execute(
 `;
 
 const ISOLATED_EXECUTOR_WIRE_TS = `
-// IsolatedExecutor exposes cmpsbl_execute(name, fn, args). It wraps every
+// IsolatedExecutor exposes cmpsbl_execute_isolated(name, fn, args). It wraps every
 // invocation with quarantine pre-check → input contract → fn dispatch →
 // output contract → state-store observability. Returns a typed envelope.
+// NOTE: distinct from the substrate's cmpsbl_execute(capabilityName, input)
+// to avoid shadowing the auto-wired layer chain (trace/circuit/timeout/retry/beacon).
 if (_cmpsbl_kernel_enabled_ix()) {
-  // No instance to construct — cmpsbl_execute is a standalone function.
-  void cmpsbl_execute;
+  // No instance to construct — cmpsbl_execute_isolated is a standalone function.
+  void cmpsbl_execute_isolated;
 }`;
 
 const ISOLATED_EXECUTOR_WIRE_PY = `
-# IsolatedExecutor exposes cmpsbl_execute(name, fn, args). It wraps every
+# IsolatedExecutor exposes cmpsbl_execute_isolated(name, fn, args). It wraps every
 # invocation with quarantine pre-check -> input contract -> fn dispatch ->
 # output contract -> state-store observability. Returns a typed envelope.
+# NOTE: distinct from the substrate's cmpsbl_execute(capability_name, input_data)
+# to avoid shadowing the auto-wired layer chain (trace/circuit/timeout/retry/beacon).
 if _cmpsbl_kernel_enabled_ix():
-    _ = cmpsbl_execute`;
+    _ = cmpsbl_execute_isolated`;
 
 const ISOLATED_EXECUTOR_CORE: CmpsblLayerDefinition = {
   id: 'isolated-executor',
@@ -230,9 +234,9 @@ const ISOLATED_EXECUTOR_CORE: CmpsblLayerDefinition = {
   tsCode: ISOLATED_EXECUTOR_TS,
   pyCode: ISOLATED_EXECUTOR_PY,
   autoWire: {
-    wrapperName: 'cmpsbl_execute',
+    wrapperName: 'cmpsbl_execute_isolated',
     behavior:
-      'Wraps every governed function invocation with the kernel triad (Quarantine → Contracts → Observability). Layers and customer code call cmpsbl_execute(name, fn, args) to receive a uniform envelope and automatic strike/cooldown enforcement.',
+      'Wraps fn-style invocations with the kernel triad (Quarantine → Contracts → Observability). Layers and customer code call cmpsbl_execute_isolated(name, fn, args) to receive a uniform envelope and automatic strike/cooldown enforcement. Distinct from the substrate-level cmpsbl_execute(capabilityName, input) so the auto-wired layer chain (trace/circuit/timeout/retry/beacon) is never shadowed.',
     tsWire: ISOLATED_EXECUTOR_WIRE_TS,
     pyWire: ISOLATED_EXECUTOR_WIRE_PY,
   },
