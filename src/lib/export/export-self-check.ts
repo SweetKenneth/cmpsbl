@@ -81,6 +81,27 @@ export function checkExportArtifact(
     });
   }
 
+  // Phase 7 — Python Zero-Mutation Attachment Gate.
+  // When the Python emitter embeds Layer 1 source (sha256 commitment present),
+  // the governance substrate MUST also emit the sealed-namespace boot routine,
+  // forbid raw globals() resolution, and own __main__ via Layer 2 proxy shims.
+  if (lang === 'python' && source.includes('_CMPSBL_LAYER1_SHA256')) {
+    const pyRequired = [
+      '_CMPSBL_LAYER1_SOURCE',
+      '_CMPSBL_LAYER1_NS',
+      '_cmpsbl_boot_layer1',
+      'LAYER 2 PROXY SHIMS',
+    ];
+    for (const tok of pyRequired) {
+      if (!source.includes(tok)) {
+        issues.push({
+          token: tok,
+          message: `Python Zero-Mutation contract drift — required token "${tok}" missing`,
+        });
+      }
+    }
+  }
+
   return { ok: issues.length === 0, lang, mode, issues };
 }
 

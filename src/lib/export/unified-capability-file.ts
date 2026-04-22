@@ -51,10 +51,14 @@ function sha256Hex(input: string): string {
       utf8.push(0x80 | (cp & 0x3f));
     }
   }
-  const ml = utf8.length * 8;
+  const mlBits = utf8.length * 8;
   utf8.push(0x80);
   while ((utf8.length % 64) !== 56) utf8.push(0);
-  for (let i = 7; i >= 0; i--) utf8.push((ml >>> (i * 8)) & 0xff);
+  // 64-bit big-endian length in bits. JS bitshifts are 32-bit, so split:
+  const mlHigh = Math.floor(mlBits / 0x100000000) >>> 0;
+  const mlLow = (mlBits >>> 0);
+  for (let i = 3; i >= 0; i--) utf8.push((mlHigh >>> (i * 8)) & 0xff);
+  for (let i = 3; i >= 0; i--) utf8.push((mlLow >>> (i * 8)) & 0xff);
 
   const K = [
     0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
@@ -1632,11 +1636,10 @@ _CMPSBL_LAYER1_SOURCE = """${escapedSource}"""
 # CMPSBL:LAYER1:END
 
 def _cmpsbl_extract_layer1() -> str:
-    """Return the verbatim user source (byte-identical to upload)."""
-    s = _CMPSBL_LAYER1_SOURCE
-    s = s.replace('\\\\"\\\\"\\\\"', '"""')
-    s = s.replace('\\\\\\\\', '\\\\')
-    return s
+    r"""Return the verbatim user source (byte-identical to upload).
+    Python already resolved \\ -> \ and \" -> " at parse time when reading
+    the triple-quoted literal, so no further unescaping is required."""
+    return _CMPSBL_LAYER1_SOURCE
 
 def _cmpsbl_layer1_sha256() -> str:
     """Return the sha256 commitment of the embedded user source."""
@@ -1744,12 +1747,23 @@ def _cmpsbl_boot_layer1():
       }
     }
 
+    // Capture entry symbol names for top-level proxy shim emission.
+    entryFnNames = [...new Set([...allFns, ...fallbackFns.slice(0, 5)])];
+    entryClassNames = [
+      ...new Set([
+        ...allClasses.map(c => c.name),
+        ...initClasses.map(c => c.name),
+      ]),
+    ];
+
     if (entryPoints.length > 0) {
       const entryPointsList = entryPoints.join(', ');
-      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
+      executeOriginalBody = `        """Layer 1 dispatch — routes into the SEALED Layer 1 namespace."""
+        _cmpsbl_boot_layer1()
+        _ns = _CMPSBL_LAYER1_NS
         _entry_points = [${entryPointsList}]
         for kind, name in _entry_points:
-            target = globals().get(name)
+            target = _ns.get(name)
             if target is None:
                 continue
             if kind == "function" and callable(target):
@@ -1766,10 +1780,12 @@ def _cmpsbl_boot_layer1():
                 return {"_instance": name, "_created": True}
         return {"_passthrough": input_data or {}, "_no_entry_point": True}`;
     } else if (classMatches.length > 0 || fnMatches.length > 0) {
-      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
-        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in globals() if not k.startswith("_") and k[0].isupper()]}`;
+      executeOriginalBody = `        """Layer 1 dispatch — sealed namespace passthrough."""
+        _cmpsbl_boot_layer1()
+        return {"_passthrough": input_data or {}, "_available_symbols": [k for k in _CMPSBL_LAYER1_NS if not k.startswith("_") and k[0].isupper()]}`;
     } else {
-      executeOriginalBody = `        """Layer 1 dispatch — sealed."""
+      executeOriginalBody = `        """Layer 1 dispatch — empty source."""
+        _cmpsbl_boot_layer1()
         return input_data or {}`;
     }
   } else {
@@ -3006,7 +3022,31 @@ def cmpsbl_verify_envelope_json(json_str: str) -> dict:
     return cmpsbl_verify_envelope(parsed)
 
 
+${(() => {
+  if (entryFnNames.length === 0 && entryClassNames.length === 0) return '';
+  const mkShim = (name: string, kind: 'function' | 'class') => `def ${name}(*args, **kwargs):
+    """Layer 2 proxy shim — routes user ${kind} '${name}' through the governance chain."""
+    _cmpsbl_boot_layer1()
+    payload = kwargs if kwargs else (args[0] if (len(args) == 1 and isinstance(args[0], dict)) else {"_args": list(args)})
+    env = CmpsblCapability().execute(payload)
+    return env.get("_original")`;
+  const fnShims = entryFnNames.map(n => mkShim(n, 'function')).join('\n\n');
+  const classShims = entryClassNames.map(n => mkShim(n, 'class')).join('\n\n');
+  return `\n# ╔═══════════════════════════════════════════════════════════════════════════════╗
+# ║  §3 — LAYER 2 PROXY SHIMS  (Public symbols routed through the chain)         ║
+# ║  Calling these names invokes Layer 2 governance, which then dispatches into  ║
+# ║  the SEALED Layer 1 namespace (_CMPSBL_LAYER1_NS). User code is never        ║
+# ║  touched, mutated, or executed unmediated.                                   ║
+# ╚═══════════════════════════════════════════════════════════════════════════════╝
+${fnShims}${fnShims && classShims ? '\n\n' : ''}${classShims}\n`;
+})()}
+
 if __name__ == "__main__":
+    # Layer 2 owns __main__. Boot the sealed namespace, run self-test, then if
+    # the user defined a "main" callable, route it through the governance chain.
+    _had_layer1 = ${pyFiles.length > 0 ? 'True' : 'False'}
+    if _had_layer1:
+        _cmpsbl_boot_layer1()
     print(f"CMPSBL Substrate Ascension v2 — {CMPSBL_PACK_META['name']}")
     print(f"Capabilities: {len(CMPSBL_PACK_META['capabilities'])}")
     print(f"Active layers: {CMPSBL_PACK_META['modules']}")
@@ -3014,7 +3054,14 @@ if __name__ == "__main__":
     result = cmpsbl_self_test()
     print(f"Self-test: {result['passed']} passed, {result['failed']} failed")
     for name, ok in result["results"].items():
-        print(f"  {'✅' if ok else '❌'} {name}")
+        print(f"  {'OK' if ok else 'XX'} {name}")
+    if _had_layer1:
+        _user_main = _CMPSBL_LAYER1_NS.get("main")
+        if callable(_user_main):
+            print()
+            print("[CMPSBL] Routing user main() through governance chain...")
+            _env = CmpsblCapability().execute({})
+            print(f"[CMPSBL] original_executed={_env['_cmpsbl']['execution']['original_executed']} mode={_env['_cmpsbl']['mode']}")
 ${pyLayers.map(l => l.pyCode).join('\n')}
 ${getAutoWirePy(selectedLayers || [])}
 
