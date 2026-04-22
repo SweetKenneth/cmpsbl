@@ -42,6 +42,7 @@ import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmp
 
 import { V2ActivationGuide } from './V2ActivationGuide';
 import { V2AdvancedDisclosure } from './V2AdvancedDisclosure';
+import { V2WhyTooltip } from './V2WhyTooltip';
 import {
   V2ContractVerifiedPanel,
   type FindingsOverrideSummary,
@@ -678,76 +679,159 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           so users know how much depth this run carries before opening it. */}
       {isAdvanced && advancedActive > 0 && (
         <V2AdvancedDisclosure activeCount={advancedActive} totalCount={advancedTotal}>
-          {hasProvenance && <V2CapabilityProvenance capabilities={capabilities} />}
+          {hasProvenance && (
+            <section className="space-y-1.5">
+              <header className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    Capability provenance
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
+                    Per-capability trace of which discovery channels, signals, and merge
+                    verdicts produced each result — no fabricated mapping.
+                  </p>
+                </div>
+                <V2WhyTooltip
+                  reason={`Discovery returned ${capabilities.length} capabilit${capabilities.length === 1 ? 'y' : 'ies'} for this run, so a provenance trace is available.`}
+                  tip="Expand any row to see the chain, confidence band, channel count, and merge verdict that determined its score."
+                />
+              </header>
+              <V2CapabilityProvenance capabilities={capabilities} />
+            </section>
+          )}
 
           {hasLanguageNotice && langStatus === 'BETA' && (
-            <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
-              <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-              <div className="flex-1 min-w-0 space-y-1">
-                <p className="text-[11px] sm:text-xs font-semibold text-foreground">
-                  {langLabel} export — Beta
-                </p>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-                  Native {langLabel} file emitted via the V1 polyglot engine. Layer 1 source is embedded verbatim and the selected layers render in {langLabel} idiom. Beta tier — not yet byte-locked by golden-file regression like the canonical generators.
-                </p>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
-                  Canonical (byte-locked): {getCanonicalLanguages().map(l => l.label).join(', ')}.
-                </p>
+            <section className="space-y-1.5">
+              <header className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    Source-language status
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
+                    {langLabel} ships natively but is still in Beta tier — useful, not yet byte-locked.
+                  </p>
+                </div>
+                <V2WhyTooltip
+                  reason={`You uploaded ${langLabel} source. ${langLabel} is supported by the V1 polyglot engine but has not yet passed golden-file regression like the canonical generators.`}
+                  tip="The export is safe to use; just expect minor formatting drift run-to-run until it graduates to canonical."
+                />
+              </header>
+              <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
+                <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0 space-y-1">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    {langLabel} export — Beta
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
+                    Native {langLabel} file emitted via the V1 polyglot engine. Layer 1 source is embedded verbatim and the selected layers render in {langLabel} idiom. Beta tier — not yet byte-locked by golden-file regression like the canonical generators.
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
+                    Canonical (byte-locked): {getCanonicalLanguages().map(l => l.label).join(', ')}.
+                  </p>
+                </div>
               </div>
-            </div>
+            </section>
           )}
 
           {hasLanguageNotice && langStatus !== 'BETA' && (
-            <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
-              <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-              <div className="flex-1 min-w-0 space-y-1">
-                <p className="text-[11px] sm:text-xs font-semibold text-foreground">
-                  {langLabel} export — pass-through mode
-                </p>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
-                  Your {langLabel} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Polyglot {langLabel} body is on the roadmap.
-                </p>
-                <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
-                  Canonical today: {getCanonicalLanguages().map(l => l.label).join(', ')}.
-                </p>
+            <section className="space-y-1.5">
+              <header className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    Source-language status
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
+                    {langLabel} runs in pass-through — your source ships untouched alongside a TS runtime sidecar.
+                  </p>
+                </div>
+                <V2WhyTooltip
+                  reason={`${langLabel} does not yet have a native polyglot generator, so the pipeline ships your original source plus a sealed TypeScript runtime sidecar that executes the CMPSBL Layers.`}
+                  tip="Run the sidecar entry point from your build to attach governance — full instructions are in USER-GUIDE.html."
+                />
+              </header>
+              <div className="bg-muted/40 border border-border rounded-xl p-3 sm:p-4 flex items-start gap-2.5">
+                <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0 space-y-1">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    {langLabel} export — pass-through mode
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed">
+                    Your {langLabel} source ships untouched in the ZIP alongside a sealed TypeScript runtime sidecar that runs the CMPSBL Layers. Polyglot {langLabel} body is on the roadmap.
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground/80 leading-relaxed">
+                    Canonical today: {getCanonicalLanguages().map(l => l.label).join(', ')}.
+                  </p>
+                </div>
               </div>
-            </div>
+            </section>
           )}
 
           {hasContractProof && contractProof && (
-            <V2ContractVerifiedPanel
-              lang={contractProof.lang}
-              mode={contractProof.mode}
-              capability={contractProof.capability}
-              chain={contractProof.chain}
-              selfCheck={contractProof.selfCheck}
-              envelope={contractProof.envelope}
-              onOverridesChange={(summary) => {
-                setFindingsOverrides(summary);
-                void emitFunnelEvent('findings_overrides_changed', {
-                  runId: getSnapshot().runId,
-                  language: contractProof.lang,
-                  extras: {
-                    mode: contractProof.mode,
-                    total_findings: summary.totalFindings,
-                    accepted: summary.accepted,
-                    blocked: summary.blocked,
-                  },
-                });
-              }}
-            />
+            <section className="space-y-1.5">
+              <header className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    Contract proof &amp; per-finding overrides
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
+                    Verifies the export envelope and lets you accept or block individual policy findings before download.
+                  </p>
+                </div>
+                <V2WhyTooltip
+                  reason={`Governance mode for this run is "${contractProof.mode}" and the harness produced a verifiable contract for ${contractProof.capability} in ${contractProof.lang}.`}
+                  tip="Decisions are stored locally and travel with the export so reviewers can replay them — no decisions are required; defaults apply if you skip."
+                />
+              </header>
+              <V2ContractVerifiedPanel
+                lang={contractProof.lang}
+                mode={contractProof.mode}
+                capability={contractProof.capability}
+                chain={contractProof.chain}
+                selfCheck={contractProof.selfCheck}
+                envelope={contractProof.envelope}
+                onOverridesChange={(summary) => {
+                  setFindingsOverrides(summary);
+                  void emitFunnelEvent('findings_overrides_changed', {
+                    runId: getSnapshot().runId,
+                    language: contractProof.lang,
+                    extras: {
+                      mode: contractProof.mode,
+                      total_findings: summary.totalFindings,
+                      accepted: summary.accepted,
+                      blocked: summary.blocked,
+                    },
+                  });
+                }}
+              />
+            </section>
           )}
 
           {hasDriftHint && findingsOverrides && (
-            <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
-              <span className="truncate">
-                Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}
-                {findingsOverrides.blocked} blocked · {findingsOverrides.defaulted} default
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
-                local · downloadable
-              </span>
-            </div>
+            <section className="space-y-1.5">
+              <header className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-xs font-semibold text-foreground">
+                    Staged drift decisions
+                  </p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-snug">
+                    Confirmation that your accept/block choices are captured and will travel with the export.
+                  </p>
+                </div>
+                <V2WhyTooltip
+                  reason={`You changed at least one per-finding policy override in the contract proof panel above (${findingsOverrides.accepted} accepted, ${findingsOverrides.blocked} blocked).`}
+                  tip="The decisions are saved locally and bundled into the ZIP under decisions.json so reviewers can audit or replay them."
+                />
+              </header>
+              <div className="rounded-lg border border-border/50 bg-muted/20 px-3 py-2 text-[11px] text-muted-foreground flex items-center justify-between gap-2">
+                <span className="truncate">
+                  Drift decisions staged: {findingsOverrides.accepted} accepted ·{' '}
+                  {findingsOverrides.blocked} blocked · {findingsOverrides.defaulted} default
+                </span>
+                <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
+                  local · downloadable
+                </span>
+              </div>
+            </section>
           )}
         </V2AdvancedDisclosure>
       )}
