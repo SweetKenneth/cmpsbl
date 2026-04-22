@@ -226,7 +226,7 @@ export default function AscensionV2() {
               overrides, provenance, language status). Hidden on Upload — there's
               nothing advanced to show yet — and on Processing where it would
               flicker mid-analysis. Choice persists per user. */}
-          {step !== 0 && step !== 3 && (
+          {step !== 3 && (
             <div className="flex justify-center mb-4 sm:mb-6 animate-fade-in">
               <V2UiModeToggle mode={uiMode} onChange={setUiMode} />
             </div>
