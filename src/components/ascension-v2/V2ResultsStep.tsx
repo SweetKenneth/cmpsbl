@@ -41,6 +41,7 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 
 import { V2ActivationGuide } from './V2ActivationGuide';
+import { V2AdvancedDisclosure } from './V2AdvancedDisclosure';
 import {
   V2ContractVerifiedPanel,
   type FindingsOverrideSummary,
