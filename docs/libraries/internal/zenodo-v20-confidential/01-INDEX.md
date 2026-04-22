@@ -51,3 +51,4 @@ The two patents are **complementary, not redundant**. Ascension finds what's the
 ---
 
 © 2025–2026 CMPSBL® · CONFIDENTIAL
+
