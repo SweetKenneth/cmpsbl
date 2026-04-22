@@ -41,6 +41,9 @@ import { AlertTriangle } from 'lucide-react';
 import { getAvailableLayers, type CmpsblLayerDefinition } from '@/lib/export/cmpsbl-layers';
 
 import { V2ActivationGuide } from './V2ActivationGuide';
+import { V2ContractVerifiedPanel } from './V2ContractVerifiedPanel';
+import { checkExportArtifact, type ExportSelfCheckResult } from '@/lib/export/export-self-check';
+import { verifyEnvelope, type EnvelopeVerification } from '@/lib/export/envelope-verifier';
 import { V2PreExportConfidence } from './V2PreExportConfidence';
 import { V2CapabilityProvenance } from './V2CapabilityProvenance';
 import {
