@@ -647,7 +647,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
         </div>
       )}
 
-      {/* Advanced provenance moved into the grouped disclosure below. */}
+      
 
       {/* Layer selection indicator (selected on Enhance step) */}
       {selectedLayers.size > 0 && (
@@ -902,8 +902,6 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </Button>
         )}
 
-        {/* Contract proof + per-finding overrides moved into the grouped
-            advanced disclosure above the actions block. */}
 
         {exportedAscendedName && (
           <V2ActivationGuide
@@ -913,10 +911,6 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             attachedLayerIds={Array.from(selectedLayers)}
           />
         )}
-
-        {/* Phase 9 drift-decisions hint also moved into the grouped advanced
-            disclosure so it lives next to the panel that produces it. */}
-
 
         {/* One-click re-ascension — same source + same layers, fresh run.
             Hands off via sessionStorage so V2UploadStep auto-replays on mount.
