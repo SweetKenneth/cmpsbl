@@ -590,6 +590,15 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
             </div>
           </div>
 
+          {/* Divider before Row 2 — sweeps from center, syncs with Row 2 fade.
+              `origin-center` + scaleX in the keyframe gives the line-draw feel.
+              Delay (~120ms) lands the line just before Row 2 starts at 160ms. */}
+          <div
+            aria-hidden="true"
+            className="h-px bg-border/60 origin-center animate-divider-sweep motion-reduce:animate-none [will-change:transform,opacity]"
+            style={{ animationDelay: '120ms', animationFillMode: 'both' }}
+          />
+
           {/* Row 2 — package contents preview */}
           <div
             className="p-3 sm:p-4 space-y-2 sm:space-y-2.5 animate-fade-in motion-reduce:animate-none [will-change:opacity,transform]"
