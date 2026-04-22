@@ -1632,11 +1632,10 @@ _CMPSBL_LAYER1_SOURCE = """${escapedSource}"""
 # CMPSBL:LAYER1:END
 
 def _cmpsbl_extract_layer1() -> str:
-    """Return the verbatim user source (byte-identical to upload)."""
-    s = _CMPSBL_LAYER1_SOURCE
-    s = s.replace('\\\\"\\\\"\\\\"', '"""')
-    s = s.replace('\\\\\\\\', '\\\\')
-    return s
+    """Return the verbatim user source (byte-identical to upload).
+    Python already resolved \\\\ -> \\ and \\" -> " at parse time when reading
+    the triple-quoted literal, so no further unescaping is required."""
+    return _CMPSBL_LAYER1_SOURCE
 
 def _cmpsbl_layer1_sha256() -> str:
     """Return the sha256 commitment of the embedded user source."""
