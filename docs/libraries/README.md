@@ -12,6 +12,8 @@ All CMPSBL documentation is organized into audience-specific libraries:
 
 | Library | Audience | Classification |
 |---------|----------|---------------|
+| [**Zenodo v20 Public**](zenodo-v20-public/01-INDEX.md) | Public-facing Ascension V2 + Mana scrutiny set | Open · Citable |
+| [**Zenodo v20 Confidential**](internal/zenodo-v20-confidential/01-INDEX.md) | Full internal case study with filing-style drafts and withheld details restored | Confidential |
 | [**Zenodo v19.1**](zenodo-v19.1/00-INDEX.md) | Researchers, reviewers, patent examiners (canonical public deposit) | Open · Citable |
 | [**Zenodo v19**](zenodo-v19/00-INDEX.md) | Superseded — kept for reference | Archived |
 | [**Public**](public/00-INDEX.md) | Anyone evaluating or learning about CMPSBL | Open |
