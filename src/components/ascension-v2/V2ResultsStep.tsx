@@ -76,7 +76,8 @@ interface SourceFileData {
   content: string;
 }
 
-export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], onReset }: Props) {
+export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedLayerIds = [], uiMode = 'simple', onReset }: Props) {
+  const isAdvanced = uiMode === 'advanced';
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
