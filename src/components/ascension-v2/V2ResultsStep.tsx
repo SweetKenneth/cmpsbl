@@ -765,7 +765,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           </Button>
         )}
 
-        {contractProof && (
+        {isAdvanced && contractProof && (
           <V2ContractVerifiedPanel
             lang={contractProof.lang}
             mode={contractProof.mode}
