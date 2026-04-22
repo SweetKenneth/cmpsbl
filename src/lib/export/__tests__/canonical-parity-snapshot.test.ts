@@ -62,6 +62,19 @@ const V1_COMPASS_TOKENS = [
   'riskLevel', // TS naming
 ];
 
+// Phase 4 — Per-finding policy matcher contract.
+// Each canonical generator must emit POLICY_MATCHER, decisions[], and the
+// 'warn' verdict tier (added in Phase 4 alongside block/allow).
+const V1_MATCHER_TOKENS = [
+  'POLICY_MATCHER',
+  'decisions',
+  'warn',
+  'reason',
+  'action',
+  'kind',
+  'count',
+];
+
 describe('Canonical Parity Snapshot V1 — generator string-presence', () => {
   const ts = generateUnifiedTypeScript(CAP, PACK);
   const py = generateUnifiedPython(CAP, PACK);
