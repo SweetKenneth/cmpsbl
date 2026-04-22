@@ -1513,31 +1513,91 @@ export function generateUnifiedPython(
 
   const pyFiles = (userSourceFiles || []).filter(f => /\.py$/i.test(f.name));
 
-  // ── Layer 1 Embedding: original source verbatim ──
-  // Per mem://constraints/architecture/layer2-inline-embedding-mandate
-  // The wrapped file is self-contained — original source copied into it.
+  // ── Layer 1 Embedding: original source verbatim, ZERO MUTATION ──
+  // Patent-boundary rule: not one byte of user code is modified. The user
+  // source is copied verbatim into a SEALED string constant
+  // (_CMPSBL_LAYER1_SOURCE), sha256-checked, and exec'd into a SEALED
+  // namespace (_CMPSBL_LAYER1_NS) where __name__ is forced to
+  // "_cmpsbl_layer1" — so the user's `if __name__ == "__main__":` block
+  // is INERT by design. Layer 2 owns the file's __main__ and routes the
+  // user's main() (or first detected entrypoint) through cmpsbl_chain.
+  // Every public symbol the entry-point detector finds is also re-exported
+  // at the module top level as a proxy shim that goes through the chain.
   let layer1Block: string;
   let executeOriginalBody: string;
+  let entryFnNames: string[] = [];
+  let entryClassNames: string[] = [];
+  let layer1Sha256 = '';
+  let layer1HasMainGuard = false;
 
   if (pyFiles.length > 0) {
-    // Embed each original source file verbatim
-    const embeddedSources = pyFiles.map(f => {
-      const sanitizedContent = f.content.trimEnd();
-      return `# ─── ${f.name} ───
-${sanitizedContent}`;
-    }).join('\n\n');
+    // Verbatim concatenation — sha256 of THIS exact text is the proof of identity.
+    const concatenatedSource = pyFiles
+      .map(f => `# ─── ${f.name} ───\n${f.content.trimEnd()}`)
+      .join('\n\n# ─── (next file) ───\n\n');
+
+    layer1Sha256 = sha256Hex(concatenatedSource);
+
+    // Triple-quote escape — only transformation, fully reversible.
+    const escapedSource = concatenatedSource
+      .replace(/\\/g, '\\\\')
+      .replace(/"""/g, '\\"\\"\\"');
+
+    layer1HasMainGuard = pyFiles.some(f =>
+      /^if\s+__name__\s*==\s*['"]__main__['"]\s*:/m.test(f.content),
+    );
 
     layer1Block = `# ╔═══════════════════════════════════════════════════════════════════════════════╗
-# ║  LAYER 1 — YOUR ORIGINAL SOURCE (UNMODIFIED)                                 ║
-# ║  Verified byte-identical to your uploaded source. Runs first, untouched.      ║
+# ║  LAYER 1 — YOUR ORIGINAL SOURCE (UNMODIFIED · BYTE-IDENTICAL · SEALED)       ║
+# ║  Embedded verbatim inside _CMPSBL_LAYER1_SOURCE below.                        ║
+# ║  Verify byte-identity:  python -c "import cmpsbl; print(cmpsbl._cmpsbl_layer1_sha256())"
+# ║  Recover original file: python -c "import cmpsbl; print(cmpsbl._cmpsbl_extract_layer1())"
+# ║  Layer 1 is invoked by Layer 2 — it never runs as __main__ unmediated.        ║
 # ║  Protected by U.S. Patent App. No. 64/029,678 · No. 64/031,637               ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝
+# CMPSBL:LAYER1:BEGIN
+_CMPSBL_LAYER1_SHA256 = ${JSON.stringify(layer1Sha256)}
+_CMPSBL_LAYER1_SOURCE = """${escapedSource}"""
+# CMPSBL:LAYER1:END
 
-${embeddedSources}
+def _cmpsbl_extract_layer1() -> str:
+    """Return the verbatim user source (byte-identical to upload)."""
+    s = _CMPSBL_LAYER1_SOURCE
+    s = s.replace('\\\\"\\\\"\\\\"', '"""')
+    s = s.replace('\\\\\\\\', '\\\\')
+    return s
+
+def _cmpsbl_layer1_sha256() -> str:
+    """Return the sha256 commitment of the embedded user source."""
+    return _CMPSBL_LAYER1_SHA256
+
+# Sealed namespace — user code lives here, NEVER in module globals.
+_CMPSBL_LAYER1_NS: dict = {}
+_CMPSBL_LAYER1_BOOTED = False
+
+def _cmpsbl_boot_layer1():
+    """Exec the sealed Layer 1 source into a private namespace, exactly once.
+    Refuses to boot if the embedded source has been tampered with."""
+    global _CMPSBL_LAYER1_BOOTED
+    if _CMPSBL_LAYER1_BOOTED:
+        return
+    src = _cmpsbl_extract_layer1()
+    actual = hashlib.sha256(src.encode("utf-8")).hexdigest()
+    if actual != _CMPSBL_LAYER1_SHA256:
+        raise RuntimeError(
+            "[CMPSBL:Layer1Tampered] sha256 mismatch — refusing to boot Layer 1 "
+            "(expected " + _CMPSBL_LAYER1_SHA256 + ", got " + actual + ")"
+        )
+    # __name__ forced to "_cmpsbl_layer1" so user's __main__ guard stays inert.
+    _CMPSBL_LAYER1_NS["__name__"] = "_cmpsbl_layer1"
+    _CMPSBL_LAYER1_NS["__file__"] = "<cmpsbl:layer1>"
+    exec(compile(src, "<cmpsbl:layer1>", "exec"), _CMPSBL_LAYER1_NS)
+    _CMPSBL_LAYER1_BOOTED = True
 
 # ╔═══════════════════════════════════════════════════════════════════════════════╗
 # ║  END LAYER 1 · ASCENSION LAYER BEGINS BELOW (BLACK-BOXED · PROPRIETARY)      ║
 # ╚═══════════════════════════════════════════════════════════════════════════════╝`;
+
 
 
     // ── Smart Entry Point Detection ──────────────────────────────────────────
