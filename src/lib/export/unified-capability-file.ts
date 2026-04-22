@@ -2970,23 +2970,13 @@ def cmpsbl_list_capabilities() -> list:
 list_capabilities = cmpsbl_list_capabilities
 
 
-def cmpsbl_self_test() -> dict:
-    results = {}
-    passed = failed = 0
-    for cap in CMPSBL_PACK_META["capabilities"]:
-        try:
-            r = cmpsbl_execute(cap["name"], {"_test": True})
-            ok = r["_pipeline"]["success"]
-            results[cap["name"]] = ok
-            if ok: passed += 1
-            else: failed += 1
-        except Exception:
-            results[cap["name"]] = False
-            failed += 1
-    return {"passed": passed, "failed": failed, "results": results}
 
-# Backwards compatibility alias
-self_test = cmpsbl_self_test
+# Note: cmpsbl_self_test() was removed in v2.1 — it called user capabilities
+# with a synthetic {"_test": True} payload that never matched real signatures,
+# so it always reported false failures. Use cmpsbl_verify_envelope() against a
+# real call's envelope for substrate self-attestation instead.
+
+
 
 
 # ── Phase 8 — Envelope Verifier (parity with TS verifyEnvelope) ──────────
