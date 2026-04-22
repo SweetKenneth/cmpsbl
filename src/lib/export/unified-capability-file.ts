@@ -880,7 +880,7 @@ const MODULE_HANDLERS: Record<string, ModuleHandler> = {
     const decisions: Array<{ kind: string; count: number; action: 'block' | 'warn' | 'allow'; reason: string }> = [];
     for (const [kind, count] of Object.entries(findings)) {
       const action = POLICY_MATCHER[kind] ?? 'warn';
-      decisions.push({ kind, count, action, reason: `policy:${kind}=${action}` });
+      decisions.push({ kind, count, action, reason: 'policy:' + kind + '=' + action });
     }
     const hasBlock = decisions.some(d => d.action === 'block');
     const hasWarn  = decisions.some(d => d.action === 'warn');
