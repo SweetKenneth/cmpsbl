@@ -160,6 +160,7 @@ export default function AscensionV2() {
       dedup={dedupResult || { capabilities: [], rawCount: 0, groupCount: 0 }}
       enhanced={enhanced}
       selectedLayerIds={selectedLayerIds}
+      uiMode={uiMode}
       onReset={handleReset}
     />,
   ];
