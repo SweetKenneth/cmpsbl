@@ -626,7 +626,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
           explainer derived entirely from real signals already on each
           DiscoveredCapability (chain, band, channels, gaps, synergies,
           merge verdict). No fabricated source-line mapping. */}
-      {capabilities.length > 0 && (
+      {isAdvanced && capabilities.length > 0 && (
         <V2CapabilityProvenance capabilities={capabilities} />
       )}
 
@@ -657,7 +657,7 @@ export function V2ResultsStep({ capabilities, dedup, enhanced = false, selectedL
       {/* Source-language notice — when native layer parity isn't done yet, the
           ZIP still ships: original source untouched + sealed TypeScript runtime
           sidecar that runs the layers. The user's language always comes home. */}
-      {(() => {
+      {isAdvanced && (() => {
         const lang = sourceLanguage.toLowerCase().replace(/\s+/g, '');
         const status = getV2LanguageStatus(lang);
         const entry = getV2LanguageEntry(lang);
