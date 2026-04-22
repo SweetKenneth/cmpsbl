@@ -11,7 +11,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Upload, Layers, ShieldCheck, Search, Download, Check, RotateCcw } from 'lucide-react';
+import { Upload, Layers, ShieldCheck, Search, Download, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
