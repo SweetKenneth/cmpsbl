@@ -1,3 +1,16 @@
+<!-- SHPBL-PROVENANCE -->
+> **Status: provenance — preserved, not maintained.**
+>
+> The original CMPSBL capability tree. The primitive capabilities SHPBL harvests from trace back to this corpus.
+>
+> This repository is part of the SHPBL / CMPSBL provenance record. It is kept so
+> that current work can be traced back to where it came from. It is not the
+> product, it is not supported, and nothing here should be treated as current
+> SHPBL behaviour. Issues and pull requests are not worked.
+>
+> Current entry point: [SHPBL.com](https://shpbl.com). Canonical repository:
+> `SweetKenneth/shpbl-master`. See `PROVENANCE.md` in this repository.
+
 # CMPSBL®
 
 **Governed Cognitive Infrastructure**
